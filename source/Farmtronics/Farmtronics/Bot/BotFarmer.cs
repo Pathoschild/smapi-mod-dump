@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using Farmtronics.Utils;
-using Microsoft.Xna.Framework;
 using StardewValley;
 using xTile.Dimensions;
 

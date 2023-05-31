@@ -27,6 +27,7 @@ namespace Omegasis.Revitalize.Framework.Constants.PathConstants.Graphics
         public static string CraftingMenu = Path.Combine(Menus, "CraftingMenu");
         public static string EnergyMenu = Path.Combine(Menus, "EnergyMenu");
         public static string InventoryMenu = Path.Combine(Menus, "InventoryMenu");
+        public static string DimensionalStorageMenu = Path.Combine(Menus, "DimensionalStorageMenu");
 
         public static string Misc = Path.Combine(Menus, "Misc");
 

@@ -12,12 +12,16 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Netcode;
+using StardewArchipelago.Items.Traps;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.Tools;
+using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants;
 using Object = StardewValley.Object;
+using StardewArchipelago.Items.Unlocks;
 
 namespace StardewArchipelago.Items.Mail
 {
@@ -25,12 +29,16 @@ namespace StardewArchipelago.Items.Mail
     {
         private readonly IModHelper _modHelper;
         private readonly Mailman _mail;
+        private readonly TrapManager _trapManager;
         private Dictionary<string, Action<string>> _letterActions;
+        private ArchipelagoClient _archipelago;
 
-        public LetterActions(IModHelper modHelper, Mailman mail)
+        public LetterActions(IModHelper modHelper, Mailman mail, ArchipelagoClient archipelago, TrapManager trapManager)
         {
             _modHelper = modHelper;
             _mail = mail;
+            _archipelago = archipelago;
+            _trapManager = trapManager;
             _letterActions = new Dictionary<string, Action<string>>();
             _letterActions.Add(LetterActionsKeys.Friendship, IncreaseFriendshipWithEveryone);
             _letterActions.Add(LetterActionsKeys.Backpack, (_) => IncreaseBackpackLevel());
@@ -54,6 +62,7 @@ namespace StardewArchipelago.Items.Mail
             _letterActions.Add(LetterActionsKeys.GiveFurniture, ReceiveFurniture);
             _letterActions.Add(LetterActionsKeys.GiveHat, ReceiveHat);
             _letterActions.Add(LetterActionsKeys.IslandUnlock, PerformParrotUpgrade);
+            _letterActions.Add(LetterActionsKeys.Trap, ExecuteTrap);
         }
 
         public void ExecuteLetterAction(string key, string parameter)
@@ -84,12 +93,19 @@ namespace StardewArchipelago.Items.Mail
                     Game1.player.MaxItems = 24;
                     backpackName = Game1.content.LoadString("Strings\\StringsFromCSFiles:GameLocation.cs.8708");
                     break;
-                case >= 24:
+                case < 36:
                     Game1.player.MaxItems = 36;
                     backpackName = Game1.content.LoadString("Strings\\StringsFromCSFiles:GameLocation.cs.8709");
                     break;
+                case >= 36:
+                    if (_archipelago.SlotData.Mods.HasMod(ModNames.BIGGER_BACKPACK) & (Game1.player.MaxItems >= 36))
+                    {
+                        Game1.player.MaxItems = 48;
+                        backpackName = "Premium Pack";
+                    }
+                    break;
             }
-
+            
             if (previousMaxItems >= Game1.player.MaxItems)
             {
                 return;
@@ -285,7 +301,7 @@ namespace StardewArchipelago.Items.Mail
 
         private void GetFishingRodOfNextLevel()
         {
-            var numberOfPreviousFishingRodLetters = _mail.OpenedMailsContainingKey(UnlockManager.PROGRESSIVE_FISHING_ROD_AP_NAME);
+            var numberOfPreviousFishingRodLetters = _mail.OpenedMailsContainingKey(VanillaUnlockManager.PROGRESSIVE_FISHING_ROD_AP_NAME);
 
             numberOfPreviousFishingRodLetters = Math.Max(1, Math.Min(4, numberOfPreviousFishingRodLetters));
             var upgradeLevel = numberOfPreviousFishingRodLetters - 1;
@@ -505,6 +521,16 @@ namespace StardewArchipelago.Items.Mail
             var shortcutOutUnlockedField = _modHelper.Reflection.GetField<NetBool>(volcanoDungeon, "shortcutOutUnlocked");
             shortcutOutUnlockedField.GetValue().Value = true;
 
+        }
+
+        private void ExecuteTrap(string trapName)
+        {
+            if (!_trapManager.IsTrap(trapName))
+            {
+                throw new ArgumentException(trapName);
+            }
+
+            _trapManager.TryExecuteTrapImmediately(trapName);
         }
     }
 }

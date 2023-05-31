@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit 0bf891140bb9618945e8a7baeedbc468ea967b93
-   Merge: 7402ca6 e954dda
    Author: Renaldas S <renaldas.sorys@gmail.com>
    Date:   Sat Feb 16 11:42:16 2019 +0000
    

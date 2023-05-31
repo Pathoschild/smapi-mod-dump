@@ -10,6 +10,8 @@
 
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -23,16 +25,71 @@ namespace MinecartPatcher
 
 		private int LastPage = 0;
 		private int PageCount = 0;
+		private PerScreen<MCPModHooks> ModHooks = new();
 
 		public override void Entry(IModHelper helper)
 		{
-			helper.Content.AssetLoaders.Add(new AssetLoader());
-			new MCPModHooks(this);
+			helper.Events.Content.AssetRequested += this.OnAssetRequested;
 			helper.Events.GameLoop.DayStarted += (obj, dsea) => LoadData();
+		}
+
+		private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+		{
+			if (e.Name.IsEquivalentTo("MinecartPatcher.Minecarts"))
+			{
+				e.LoadFrom(() => new Dictionary<string, MinecartInstance>()
+				{
+					{
+						"minecartpatcher.busstop",
+						new MinecartInstance()
+						{
+							VanillaPassthrough = "Minecart_Bus",
+							DisplayName = Game1.content.LoadString("Strings\\Locations:MineCart_Destination_BusStop"),
+							LocationName = "BusStop", LandingPointX = 4, LandingPointY = 4, LandingPointDirection = 2,
+							IsUnderground = false, MailCondition = null
+						}
+					},
+					{
+						"minecartpatcher.town",
+						new MinecartInstance()
+						{
+							VanillaPassthrough = "Minecart_Town",
+							DisplayName = Game1.content.LoadString("Strings\\Locations:MineCart_Destination_Town"),
+							LocationName = "Town", LandingPointX = 105, LandingPointY = 80, LandingPointDirection = 1,
+							IsUnderground = false, MailCondition = null
+						}
+					},
+					{
+						"minecartpatcher.mines",
+						new MinecartInstance()
+						{
+							VanillaPassthrough = "Minecart_Mines",
+							DisplayName = Game1.content.LoadString("Strings\\Locations:MineCart_Destination_Mines"),
+							LocationName = "Mine", LandingPointX = 13, LandingPointY = 9, LandingPointDirection = 1,
+							IsUnderground = true, MailCondition = null
+						}
+					},
+					{
+						"minecartpatcher.quarry",
+						new MinecartInstance()
+						{
+							VanillaPassthrough = "Minecart_Quarry",
+							DisplayName = Game1.content.LoadString("Strings\\Locations:MineCart_Destination_Quarry"),
+							LocationName = "Mountain", LandingPointX = 124, LandingPointY = 12,
+							LandingPointDirection = 2, IsUnderground = false, MailCondition = "ccCraftsRoom"
+						}
+					},
+				},
+				AssetLoadPriority.Medium);
+			}
 		}
 
 		public void LoadData()
 		{
+			if (ModHooks.GetValueForScreen(Context.ScreenId) == null)
+			{
+				ModHooks.SetValueForScreen(Context.ScreenId, new MCPModHooks(this));
+			}
 			Minecarts = Helper.GameContent.Load<Dictionary<string, MinecartInstance>>("MinecartPatcher.Minecarts");
 		}
 
@@ -59,34 +116,56 @@ namespace MinecartPatcher
 
 		public void drawMinecartDialogue(MinecartInstance src, GameLocation l, int page, bool finalPage)
 		{
-			LoadData();
-			List<Response> responses = new List<Response>();
-			if (page > 0) responses.Add(new Response("MCP.PaginationMinus", Helper.Translation.Get("previous")));
-			int counter = 0;
-			int startCount = (page * 4) + 2;
-			if (page == 0) startCount -= 2;
-			int endCount = ((page + 1) * 4) + 1;
-			if (finalPage) endCount++;
-			foreach (var mc in Minecarts.OrderBy(x => x.Value.DisplayName))
-			{
-				if (mc.Value.NetworkId != src.NetworkId) continue;
-				if (mc.Value.LocationName == l.Name)
-				{
-					if (RawDistance(mc.Value.LandingPointX, mc.Value.LandingPointY, Game1.player.getTileX(), Game1.player.getTileY()) < 6) continue;
-				}
-				if (Game1.getLocationFromName(mc.Value.LocationName) == null) continue;
-				if (mc.Value.MailCondition != null && !Game1.MasterPlayer.mailReceived.Contains(mc.Value.MailCondition)) continue;
-				counter += 1;
-				if (counter >= startCount && counter <= endCount) responses.Add(new Response(mc.Key, mc.Value.DisplayName));
-			}
-			PageCount = counter / 5;
-			if (counter % 5 > 0) PageCount += 1;
-			if (page < PageCount - 1) responses.Add(new Response("MCP.PaginationPlus", Helper.Translation.Get("next")));
-			responses.Add(new Response("Cancel", Game1.content.LoadString("Strings\\Locations:MineCart_Destination_Cancel")));
-			LastPage = page;
-			Game1.activeClickableMenu = new DialogueBox(src, this, responses);
-			Game1.dialogueUp = true;
-			Game1.player.CanMove = false;
+            // Prepare the menu
+            LoadData();
+            List<Response> responses = new List<Response>();
+            List<Response> carts = new List<Response>();
+
+            // Acquire a list of all valid minecarts
+            foreach (var mc in Minecarts.OrderBy(x => x.Value.DisplayName))
+            {
+                if (mc.Value.NetworkId != src.NetworkId) continue;
+                if (mc.Value.LocationName == l.Name)
+                {
+                    if (RawDistance(mc.Value.LandingPointX, mc.Value.LandingPointY, Game1.player.getTileX(), Game1.player.getTileY()) < 6) continue;
+                }
+                if (Game1.getLocationFromName(mc.Value.LocationName) == null) continue;
+                if (mc.Value.MailCondition != null && !Game1.MasterPlayer.mailReceived.Contains(mc.Value.MailCondition)) continue;
+                carts.Add(new Response(mc.Key, mc.Value.DisplayName));
+            }
+
+            // Get the number of pages
+            PageCount = (int)Math.Max(1, Math.Ceiling(((double)carts.Count - 1.0) / 4.0));
+            // Get the size of the current page
+            int pageSize = (page == 0) ? 5 : 4;
+
+            // Handle the lack of a "next" option for the final page
+            if (PageCount > 1 && ((carts.Count - 2) % 4 == 0))
+            {
+                PageCount -= 1;
+                if (page + 1 == PageCount) pageSize += 1;
+            }
+
+            // Add options to the page
+            if (page > 0) responses.Add(new Response("MCP.PaginationMinus", Helper.Translation.Get("previous")));
+
+            // Index handling to account for page one having an extra option
+            int baseIndex = (page * 4) + ((page == 0) ? 0 : 1);
+
+            for (int i = 0; i < pageSize && (i + baseIndex) < carts.Count; i++)
+            {
+                // Index handling for lopsided pages
+                responses.Add(carts[i + baseIndex]);
+            }
+
+            if (page < PageCount - 1) responses.Add(new Response("MCP.PaginationPlus", Helper.Translation.Get("next")));
+            responses.Add(new Response("Cancel", Game1.content.LoadString("Strings\\Locations:MineCart_Destination_Cancel")));
+
+            // Display the page
+            LastPage = page;
+            Game1.activeClickableMenu = new DialogueBox(src, this, responses);
+            Game1.dialogueUp = true;
+            Game1.player.CanMove = false;
 		}
 
 		public bool onDialogueSelect(MinecartInstance src, string key)

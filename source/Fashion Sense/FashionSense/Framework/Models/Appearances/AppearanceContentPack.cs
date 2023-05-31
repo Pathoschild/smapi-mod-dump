@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using FashionSense.Framework.Interfaces.API;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -18,23 +19,8 @@ namespace FashionSense.Framework.Models.Appearances
 {
     public abstract class AppearanceContentPack
     {
-        public enum Type
-        {
-            Unknown,
-            Hair,
-            Accessory,
-            AccessorySecondary,
-            AccessoryTertiary,
-            Hat,
-            Shirt,
-            Pants,
-            Sleeves,
-            Shoes,
-            Player
-        }
-
         public bool IsLocked { get; set; }
-        internal Type PackType { get; set; }
+        internal IApi.Type PackType { get; set; }
         internal string Owner { get; set; }
         internal string Author { get; set; }
         public string Name { get; set; }

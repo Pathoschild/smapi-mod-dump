@@ -45,8 +45,8 @@ namespace Custom_Farm_Loader.GameLoopInjections
             );
 
             harmony.Patch(
-                original: AccessTools.PropertyGetter(typeof(GameLocation), nameof(GameLocation.Map)),
-                prefix: new HarmonyMethod(typeof(_GameLocation), nameof(_GameLocation.getMap_Prefix))
+                original: AccessTools.PropertySetter(typeof(GameLocation), nameof(GameLocation.Map)),
+                postfix: new HarmonyMethod(typeof(_GameLocation), nameof(_GameLocation.setMap_Postfix))
             );
 
             harmony.Patch(
@@ -55,11 +55,9 @@ namespace Custom_Farm_Loader.GameLoopInjections
             );
         }
 
-        public static bool getMap_Prefix(GameLocation __instance, ref xTile.Map __result)
+        public static void setMap_Postfix(GameLocation __instance)
         {
             ReplaceMapProperties(__instance);
-
-            return true;
         }
 
         public static void loadMap_Postfix(GameLocation __instance, string mapPath)

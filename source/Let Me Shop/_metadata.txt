@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/StardewModders/mod-ideas
+   Git: https://github.com/StardewModders/mod-ideas.git
+
+mods:
+   Let Me Shop
+
+latest commit:
+   commit f5380a2534aaf197a5d9d274767eb9e8f9f85d7e
+   Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
+   Date:   Tue Jan 8 11:51:00 2019 -0500
+   
+       expand readme
+   

@@ -1,7 +1,7 @@
 ﻿{
     "Name": "STardewOverview",
     "Author": "Sto13",
-    "Version": "1.0.9",
+    "Version": "1.0.10",
     "Description": "take screenshots regularly in order to create a timelapse",
     "UniqueID": "Sto13.STardewOverview",
     "EntryDll": "STardewOverview.dll",

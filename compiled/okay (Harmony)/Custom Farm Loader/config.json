@@ -1,4 +1,5 @@
 {
   "LoadMenuIconScale": 1.0,
-  "CoopMenuIconScale": 1.0
+  "CoopMenuIconScale": 1.0,
+  "IncludeVanilla": false
 }

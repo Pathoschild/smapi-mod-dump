@@ -27,7 +27,6 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using IGenericModConfigMenuApi = DecidedlyShared.APIs.IGenericModConfigMenuApi;
 using Patches = SmartBuilding.HarmonyPatches.Patches;
-using SObject = StardewValley.Object;
 
 namespace SmartBuilding
 {
@@ -36,7 +35,7 @@ namespace SmartBuilding
         // SMAPI gubbins.
         private static IModHelper helper = null!;
         private static IMonitor monitor = null!;
-        private static Logger logger = null!;
+        private Logger logger = null!;
         private static ModConfig config = null!;
         private ButtonActions buttonActions;
 
@@ -49,7 +48,6 @@ namespace SmartBuilding
         // Helper utilities
         private DrawingUtils drawingUtils;
         private Toolbar gameToolbar;
-        private ITapGiantCropsAPI? giantCropTapApi;
         private IdentificationUtils identificationUtils;
 
         // UI gubbins
@@ -60,6 +58,8 @@ namespace SmartBuilding
 
         // Mod integrations.
         private IMoreFertilizersAPI? moreFertilizersApi;
+        private ITapGiantCropsAPI? giantCropTapApi;
+        private IGrowableBushesAPI? growBushesApi;
         private PlacementUtils placementUtils;
         private PlayerUtils playerUtils;
         private Options.ItemStowingModes previousStowingMode;
@@ -86,7 +86,7 @@ namespace SmartBuilding
             I18n.Init(helper.Translation);
             ModEntry.helper = helper;
             monitor = this.Monitor;
-            logger = new Logger(monitor, helper.Translation);
+            this.logger = new Logger(monitor, helper.Translation);
             config = ModEntry.helper.ReadConfig<ModConfig>();
 
             // This is where we'll register with GMCM.
@@ -107,10 +107,13 @@ namespace SmartBuilding
             // We need this to handle our custom UI events. The alternative is a Harmony patch, but that feels excessive.
             ModEntry.helper.Events.GameLoop.UpdateTicking += this.OnUpdateTicking;
 
+            // Register our SaveLoaded event to get the initial item stowing setting.
+            ModEntry.helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
+
             // If the screen is changed, clear our painted tiles, because currently, placing objects is done on the current screen.
             ModEntry.helper.Events.Player.Warped += (sender, args) => { this.LeaveBuildMode(); };
 
-            ModEntry.helper.Events.GameLoop.SaveLoaded += (sender, args) => { this.LeaveBuildMode(); };
+            ModEntry.helper.Events.GameLoop.SaveLoaded += this.OnGameLoopOnSaveLoaded;
 
             ModEntry.helper.Events.GameLoop.ReturnedToTitle += (sender, args) => { this.LeaveBuildMode(); };
 
@@ -142,6 +145,12 @@ namespace SmartBuilding
             harmony.Patch(
                 AccessTools.Method(typeof(StorageFurniture), nameof(StorageFurniture.checkForAction)),
                 new HarmonyMethod(typeof(Patches), nameof(Patches.StorageFurniture_DoAction_Prefix)));
+        }
+
+        private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
+        {
+            // Get the initial state of the item stowing mode setting.
+            this.previousStowingMode = Game1.options.stowingMode;
         }
 
         private void KillToolUi()
@@ -188,7 +197,7 @@ namespace SmartBuilding
             };
 
             // If we're enabling building mode, we create our UI, and set it to enabled.
-            this.toolMenuUi = new ToolMenu(logger, this.toolButtonsTexture, toolButtons, this.modState);
+            this.toolMenuUi = new ToolMenu(this.logger, this.toolButtonsTexture, toolButtons, this.modState);
             this.toolMenuUi.Enabled = true;
 
             // Then, if it isn't already in onScreenMenus, we add it.
@@ -208,7 +217,7 @@ namespace SmartBuilding
                 }
                 catch (Exception e)
                 {
-                    logger.Exception(e);
+                    this.logger.Exception(e);
                 }
 
             // First, check whether DGA is installed.
@@ -217,7 +226,7 @@ namespace SmartBuilding
                 {
                     if (modInfo.Manifest.Version.IsOlderThan("1.4.3"))
                     {
-                        logger.Log("Installed version of DGA is too low. Please update to DGA v1.4.3 or higher.");
+                        this.logger.Log("Installed version of DGA is too low. Please update to DGA v1.4.3 or higher.");
                         this.dgaApi = null;
                     }
 
@@ -229,7 +238,7 @@ namespace SmartBuilding
                     }
                     catch (Exception e)
                     {
-                        logger.Exception(e);
+                        this.logger.Exception(e);
                     }
                 }
 
@@ -242,7 +251,17 @@ namespace SmartBuilding
                 }
                 catch (Exception e)
                 {
-                    logger.Exception(e);
+                    this.logger.Exception(e);
+                }
+
+            if (helper.ModRegistry.IsLoaded("atravita.GrowableBushes"))
+                try
+                {
+                    this.growBushesApi = this.Helper.ModRegistry.GetApi<IGrowableBushesAPI>("atravita.GrowableBushes");
+                }
+                catch (Exception e)
+                {
+                    this.logger.Exception(e);
                 }
 
             // Check if Toolbar Icons is installed.
@@ -251,7 +270,7 @@ namespace SmartBuilding
                 {
                     if (modInfo.Manifest.Version.IsOlderThan("2.3.0"))
                     {
-                        logger.Log(
+                        this.logger.Log(
                             "Installed version of Toolbar Icons is too old. Please update it to 2.3.0 or higher.");
                         this.toolbarIconsApi = null;
                     }
@@ -264,7 +283,7 @@ namespace SmartBuilding
                         }
                         catch (Exception e)
                         {
-                            logger.Exception(e);
+                            this.logger.Exception(e);
                         }
                 }
         }
@@ -276,7 +295,7 @@ namespace SmartBuilding
 
             if (configMenuApi == null)
             {
-                logger.Log(I18n.SmartBuilding_Warning_GmcmNotInstalled());
+                this.logger.Log(I18n.SmartBuilding_Warning_GmcmNotInstalled());
 
                 return;
             }
@@ -308,6 +327,17 @@ namespace SmartBuilding
             );
 
             this.RegisterToggleSettings(configMenuApi);
+
+            configMenuApi.AddSectionTitle(
+                this.ModManifest,
+                () => I18n.SmartBuilding_Settings_ItemStowing_Title()
+            );
+
+            configMenuApi.AddParagraph(
+                mod: this.ModManifest,
+                text: () => I18n.SmartBuilding_Settings_ItemStowing_TitleScreenOnly());
+
+            this.RegisterItemStowingSettings(configMenuApi);
 
             configMenuApi.AddSectionTitle(
                 this.ModManifest,
@@ -442,6 +472,13 @@ namespace SmartBuilding
 
         private void RegisterCheatyToggleOptions(IGenericModConfigMenuApi configMenuApi)
         {
+            configMenuApi.AddBoolOption(
+                this.ModManifest,
+                name: () => I18n.SmartBuilding_Settings_CheatyOptions_CreativeMode(),
+                getValue: () => config.CreativeMode,
+                setValue: value => config.CreativeMode = value
+            );
+
             configMenuApi.AddBoolOption(
                 this.ModManifest,
                 name: () => I18n.SmartBuilding_Settings_CheatyOptions_CrabPotsInAnyWaterTile(),
@@ -646,6 +683,27 @@ namespace SmartBuilding
             );
         }
 
+        private void RegisterItemStowingSettings(IGenericModConfigMenuApi config)
+        {
+            config.SetTitleScreenOnlyForNextOptions(
+                mod: this.ModManifest,
+                true);
+
+            config.AddParagraph(
+                mod: this.ModManifest,
+                text: () => I18n.SmartBuilding_Settings_ItemStowing_Description());
+
+            config.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => I18n.SmartBuilding_Settings_ItemStowing_ControlItemStowing(),
+                getValue: () => ModEntry.config.ShouldControlItemStowing,
+                setValue: b => ModEntry.config.ShouldControlItemStowing = b);
+
+            config.SetTitleScreenOnlyForNextOptions(
+                mod: this.ModManifest,
+                false);
+        }
+
         private List<Vector2> CalculateRectangle(Vector2 cornerOne, Vector2 cornerTwo, Item item)
         {
             Vector2 topLeft;
@@ -726,7 +784,7 @@ namespace SmartBuilding
             // If inserting items is disabled, we do nothing.
             if (!config.EnableInsertingItemsIntoMachines)
             {
-                logger.Log(I18n.SmartBuilding_Message_CheatyOptions_EnableInsertingItemsIntoMachines_Disabled(),
+                this.logger.Log(I18n.SmartBuilding_Message_CheatyOptions_EnableInsertingItemsIntoMachines_Disabled(),
                     LogLevel.Trace, true);
                 return;
             }
@@ -753,19 +811,19 @@ namespace SmartBuilding
             // Set up our helpers.
             this.drawingUtils = new DrawingUtils();
             this.identificationUtils =
-                new IdentificationUtils(helper, logger, config, this.dgaApi, this.moreFertilizersApi,
+                new IdentificationUtils(helper, this.logger, config, this.dgaApi, this.moreFertilizersApi, this.growBushesApi,
                     this.placementUtils);
             this.placementUtils = new PlacementUtils(config, this.identificationUtils, this.moreFertilizersApi,
-                this.giantCropTapApi, logger, helper);
-            this.playerUtils = new PlayerUtils(logger);
+                this.giantCropTapApi, this.growBushesApi, this.logger, helper);
+            this.playerUtils = new PlayerUtils(this.logger);
             this.worldUtils = new WorldUtils(this.identificationUtils, this.placementUtils, this.playerUtils,
-                this.giantCropTapApi, config, logger, this.moreFertilizersApi);
-            this.modState = new ModState(logger, this.playerUtils, this.identificationUtils, this.worldUtils,
+                this.giantCropTapApi, config, this.logger, this.moreFertilizersApi, this.growBushesApi);
+            this.modState = new ModState(this.logger, config, this.playerUtils, this.identificationUtils, this.worldUtils,
                 this.placementUtils);
             this.buttonActions = new ButtonActions(this, this.modState); // Ew, no. Fix this ugly nonsense later.
 
             // Set up our console commands.
-            this.commands = new ConsoleCommand(logger, this, this.dgaApi, this.identificationUtils);
+            this.commands = new ConsoleCommand(this.logger, this, this.dgaApi, this.identificationUtils);
             this.Helper.ConsoleCommands.Add("sb_test", I18n.SmartBuilding_Commands_Debug_SbTest(),
                 this.commands.TestCommand);
             this.Helper.ConsoleCommands.Add("sb_identify_all_items",
@@ -773,9 +831,9 @@ namespace SmartBuilding
                 this.commands.IdentifyItemsCommand);
             this.Helper.ConsoleCommands.Add("sb_identify_cursor_target", "Identify targets under the cursor.",
                 this.commands.IdentifyCursorTarget);
-
-            // Then get the initial state of the item stowing mode setting.
-            this.previousStowingMode = Game1.options.stowingMode;
+            this.Helper.ConsoleCommands.Add("sb_count",
+                "Count how many instances of an object exist in the current map.",
+                this.commands.CountInMap);
 
             if (this.toolbarIconsApi != null)
             {
@@ -788,6 +846,16 @@ namespace SmartBuilding
                     if (s.Equals("smart-building.toggle-build-mode")) this.ToggleBuildMode();
                 };
             }
+        }
+
+        private void OnGameLoopOnSaveLoaded(object sender, SaveLoadedEventArgs args)
+        {
+            this.LeaveBuildMode();
+
+            if (config.ShouldControlItemStowing)
+                this.logger.Log($"Controlling item stowing for this play session.", LogLevel.Info);
+            else
+                this.logger.Log($"Not controlling item stowing for this play session.", LogLevel.Info);
         }
 
         /// <summary>
@@ -854,17 +922,17 @@ namespace SmartBuilding
                             var type = this.identificationUtils.IdentifyItemType((SObject)player.CurrentItem);
                             var item = player.CurrentItem;
 
-                            logger.Log($"{I18n.SmartBuilding_Message_ItemName()}");
-                            logger.Log($"\t{item.Name}");
-                            logger.Log($"{I18n.SmartBuilding_Message_ItemParentSheetIndex()}");
-                            logger.Log($"\t{item.ParentSheetIndex}");
-                            logger.Log($"{I18n.SmartBuilding_Message_ItemCategory()}");
-                            logger.Log($"\t{item.Category}");
-                            logger.Log($"{I18n.SmartBuilding_Message_ItemType()}");
-                            logger.Log($"\t{(item as SObject).Type}");
-                            logger.Log($"{I18n.SmartBuilding_Message_ItemSmartBuildingType()}");
-                            logger.Log($"\t{type}.");
-                            logger.Log("");
+                            this.logger.Log($"{I18n.SmartBuilding_Message_ItemName()}");
+                            this.logger.Log($"\t{item.Name}");
+                            this.logger.Log($"{I18n.SmartBuilding_Message_ItemParentSheetIndex()}");
+                            this.logger.Log($"\t{item.ParentSheetIndex}");
+                            this.logger.Log($"{I18n.SmartBuilding_Message_ItemCategory()}");
+                            this.logger.Log($"\t{item.Category}");
+                            this.logger.Log($"{I18n.SmartBuilding_Message_ItemType()}");
+                            this.logger.Log($"\t{(item as SObject).Type}");
+                            this.logger.Log($"{I18n.SmartBuilding_Message_ItemSmartBuildingType()}");
+                            this.logger.Log($"\t{type}.");
+                            this.logger.Log("");
                         }
                 }
 
@@ -879,9 +947,9 @@ namespace SmartBuilding
                         var producer = here.objects[targetTile];
                         var type = this.identificationUtils.IdentifyProducer(producer);
 
-                        logger.Log($"Identified producer {producer.Name} as {type}.");
-                        logger.Log($"{I18n.SmartBuilding_Message_ProducerBeingIdentified()} {producer.Name}");
-                        logger.Log($"{I18n.SmartBuilding_Message_IdentifiedProducerType()}: {type}");
+                        this.logger.Log($"Identified producer {producer.Name} as {type}.");
+                        this.logger.Log($"{I18n.SmartBuilding_Message_ProducerBeingIdentified()} {producer.Name}");
+                        this.logger.Log($"{I18n.SmartBuilding_Message_IdentifiedProducerType()}: {type}");
                     }
                 }
             }
@@ -1023,7 +1091,7 @@ namespace SmartBuilding
             this.previousStowingMode = Game1.options.stowingMode;
 
             // Then we set it to off to avoid a strange stuttery drawing issue.
-            Game1.options.stowingMode = Options.ItemStowingModes.Off;
+            if (config.ShouldControlItemStowing) Game1.options.stowingMode = Options.ItemStowingModes.Off;
         }
 
         private void LeaveBuildMode()
@@ -1041,7 +1109,7 @@ namespace SmartBuilding
             this.modState.ResetState();
 
             // Then, finally, set the stowing mode back to what it used to be.
-            Game1.options.stowingMode = this.previousStowingMode;
+            if (config.ShouldControlItemStowing) Game1.options.stowingMode = this.previousStowingMode;
         }
 
         /// <summary>
@@ -1110,7 +1178,7 @@ namespace SmartBuilding
                     screenHeight = Game1.uiViewport.Height;
                     var startingPoint = new Vector2();
 
-                    #region Shameless decompile copy
+#region Shameless decompile copy
 
                     var playerGlobalPosition = Game1.player.GetBoundingBox().Center;
                     var playerLocalVector =
@@ -1118,7 +1186,7 @@ namespace SmartBuilding
                             viewport: Game1.viewport);
                     bool toolbarAtTop = playerLocalVector.Y > Game1.viewport.Height / 2 + 64 ? true : false;
 
-                    #endregion
+#endregion
 
 
                     if (toolbarAtTop)
@@ -1166,6 +1234,6 @@ namespace SmartBuilding
             }
         }
 
-        #endregion
+#endregion
     }
 }

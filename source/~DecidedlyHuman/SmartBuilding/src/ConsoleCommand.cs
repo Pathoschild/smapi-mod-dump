@@ -10,12 +10,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DecidedlyShared.Logging;
 using DecidedlyShared.APIs;
 using SmartBuilding.Utilities;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
+using StardewValley.TerrainFeatures;
+using xTile.ObjectModel;
 using Object = StardewValley.Object;
 
 namespace SmartBuilding
@@ -29,7 +32,7 @@ namespace SmartBuilding
         private ModEntry mod;
 
         public ConsoleCommand(Logger logger, ModEntry mod, IDynamicGameAssetsApi dgaApi,
-                              IdentificationUtils identificationUtils)
+            IdentificationUtils identificationUtils)
         {
             this.logger = logger;
             this.mod = mod; // This is a terrible way to access the item identification, but it'll do for now.
@@ -61,6 +64,57 @@ namespace SmartBuilding
             }
         }
 
+        public void CountInMap(string command, string[] args)
+        {
+            if (args.Length < 1)
+            {
+                this.logger.Error("Invalid number of arguments.");
+                this.logger.Error("Usage: sb_count <objects|hoedirt> [ParentSheetID].");
+                this.logger.Error("Example: \"sb_count objects 645\" for counting all iridium sprinklers on the map.");
+                this.logger.Error("Example: \"sb_count hoedirt\" for counting all patches of hoed dirt on the map.");
+
+                return;
+            }
+
+            GameLocation location = Game1.currentLocation;
+            int objectCount = 0;
+
+            // Now we need to determine if we're handling objects, or HoeDirts.
+            if (args[0].Equals("objects"))
+            {
+                // If we're querying objects, we need to know a parent sheet ID.
+                if (args.Length < 2)
+                {
+                    this.logger.Error("Invalid number of arguments.");
+                    this.logger.Error("Usage: sb_count <objects|hoedirt> [ParentSheetID].");
+                    this.logger.Error(
+                        "Example: \"sb_count objects 645\" for counting all iridium sprinklers on the map.");
+                    this.logger.Error(
+                        "Example: \"sb_count hoedirt\" for counting all patches of hoed dirt on the map.");
+
+                    return;
+                }
+
+                if (!int.TryParse(args[1], out int parentSheetIndex))
+                {
+                    this.logger.Error("Couldn't parse ParentSheetID. Are you sure it's just a number?");
+
+                    return;
+                }
+
+                int count = location.Objects.Values.Where(o => o.ParentSheetIndex == parentSheetIndex).Count();
+
+                this.logger.Log(
+                    $"Found {count.ToString()} objects with a ParentSheetIndex matching {parentSheetIndex.ToString()} in this location.");
+            }
+            else if (args[0].Equals("hoedirt"))
+            {
+                int count = location.terrainFeatures.Values.Where(tf => tf is HoeDirt).Count();
+
+                this.logger.Log($"Found {count.ToString()} HoeDirts in this location.");
+            }
+        }
+
         public void IdentifyCursorTarget(string command, string[] args)
         {
             var here = Game1.currentLocation;
@@ -84,6 +138,26 @@ namespace SmartBuilding
                 foreach (string? key in data.Keys)
                 foreach (string? value in data.Values)
                     this.logger.Log($"Key: {key}, {value}");
+
+                if (obj.heldObject != null)
+                {
+                    this.logger.Log($"Held object name: {obj.heldObject.Value.Name}", LogLevel.Info);
+                    this.logger.Log($"Held object display name: {obj.heldObject.Value.DisplayName}", LogLevel.Info);
+                    this.logger.Log($"Held object parent sheet ID: {obj.heldObject.Value.ParentSheetIndex}",
+                        LogLevel.Info);
+
+                    if (obj.heldObject.Value.heldObject.Value != null)
+                    {
+                        this.logger.Log($"Held object's held object name: {obj.heldObject.Value.heldObject.Value.Name}",
+                            LogLevel.Info);
+                        this.logger.Log(
+                            $"Held object's held object display name: {obj.heldObject.Value.heldObject.Value.DisplayName}",
+                            LogLevel.Info);
+                        this.logger.Log(
+                            $"Held object's held object parent sheet ID: {obj.heldObject.Value.heldObject.Value.ParentSheetIndex}",
+                            LogLevel.Info);
+                    }
+                }
             }
 
             if (here.terrainFeatures.ContainsKey(targetTile))

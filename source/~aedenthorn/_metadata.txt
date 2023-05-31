@@ -14,6 +14,7 @@ mods:
    Animated Parrot and Perch
    Another Jump Mod
    April Bug Fix Suite
+   Bat Form
    Bed Tweaks
    Bee Paths
    Better Elevator
@@ -37,6 +38,7 @@ mods:
    Custom Dungeon Floors
    Custom Fixed Dialogue
    Custom Gift Limits
+   Custom Hay
    Custom Locks
    Custom Mine Cart Steam
    Custom Object Production
@@ -50,6 +52,7 @@ mods:
    Custom Spouse Patio Redux
    Custom Spouse Patio Wizard
    Custom Spouse Rooms
+   Custom Starter Furniture
    Custom Starter Package
    Custom Toolbar
    Custom Tree Tweaks
@@ -210,9 +213,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 51e418e484b8c19dc228d4d0c15f72f73993530a
+   commit 8ef8cc8afc104cb08b74df23908eb1b3037b88df
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Thu Apr 27 16:21:05 2023 -0400
+   Date:   Sun May 28 13:35:29 2023 -0400
    
        etc
    

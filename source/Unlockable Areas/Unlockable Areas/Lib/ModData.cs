@@ -45,6 +45,7 @@ namespace Unlockable_Areas.Lib
                 Instance.UnlockablePurchased[key] = new Dictionary<string, bool>();
 
             Instance.UnlockablePurchased[key][location] = value;
+            API.UnlockableAreasAPI.clearCache();
         }
     }
 }

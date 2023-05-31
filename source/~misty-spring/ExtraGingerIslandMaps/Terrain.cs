@@ -52,7 +52,7 @@ namespace ExtraGingerIslandMaps
                 currentFeatures.Add(active);
             }
             //add large terrain features
-            foreach (LargeTerrainFeature largeTerrainFeature in where.largeTerrainFeatures)
+            foreach (var largeTerrainFeature in where.largeTerrainFeatures)
             {
                 if (TypesToReset.Contains(((object)largeTerrainFeature).GetType()))
                 {

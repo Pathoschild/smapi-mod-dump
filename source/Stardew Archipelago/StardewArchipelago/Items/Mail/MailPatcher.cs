@@ -24,11 +24,11 @@ namespace StardewArchipelago.Items.Mail
         private static LetterActions _letterActions;
         private readonly Harmony _harmony;
 
-        public MailPatcher(IMonitor monitor, LetterActions letterActions, Harmony harmony)
+        public MailPatcher(IMonitor monitor, Harmony harmony, LetterActions letterActions)
         {
             _monitor = monitor;
-            _letterActions = letterActions;
             _harmony = harmony;
+            _letterActions = letterActions;
         }
 
         public void PatchMailBoxForApItems()
@@ -48,7 +48,7 @@ namespace StardewArchipelago.Items.Mail
         {
             try
             {
-                if (__instance is not LetterViewerMenu letterMenuInstance || letterMenuInstance.mailTitle == null)
+                if (__instance is not LetterViewerMenu letterMenuInstance || letterMenuInstance.mailTitle == null || letterMenuInstance.isFromCollection)
                 {
                     return;
                 }

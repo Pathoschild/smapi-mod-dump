@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Netcode;
+using Omegasis.Revitalize.Framework.Utilities.Ranges;
 
 namespace Omegasis.Revitalize.Framework.Utilities
 {

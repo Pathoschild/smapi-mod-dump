@@ -19,6 +19,11 @@
 	"UpdateKeys": [ "Nexus:10956" ],
 	"Dependencies": [
 		{
+			"UniqueID": "Shockah.Kokoro",
+			"IsRequired": true,
+			"MinimumVersion": "2.0.0"
+		},
+		{
 			"UniqueID": "spacechase0.SpaceCore",
 			"IsRequired": true
 		},

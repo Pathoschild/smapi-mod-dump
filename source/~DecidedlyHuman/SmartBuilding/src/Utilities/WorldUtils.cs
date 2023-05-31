@@ -17,7 +17,6 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using SObject = StardewValley.Object;
 
 namespace SmartBuilding.Utilities
 {
@@ -28,12 +27,13 @@ namespace SmartBuilding.Utilities
         private readonly IdentificationUtils identificationUtils;
         private readonly Logger logger;
         private readonly IMoreFertilizersAPI? moreFertilizersApi;
+        private readonly IGrowableBushesAPI? growableBushesAPI;
         private readonly PlacementUtils placementUtils;
         private readonly PlayerUtils playerUtils;
 
         public WorldUtils(IdentificationUtils identificationUtils, PlacementUtils placementutils,
-                          PlayerUtils playerUtils, ITapGiantCropsAPI giantCropTapApi, ModConfig config, Logger logger,
-                          IMoreFertilizersAPI moreFertilizersApi)
+            PlayerUtils playerUtils, ITapGiantCropsAPI? giantCropTapApi, ModConfig config, Logger logger,
+            IMoreFertilizersAPI? moreFertilizersApi, IGrowableBushesAPI? growableBushesAPI)
         {
             this.identificationUtils = identificationUtils;
             this.placementUtils = placementutils;
@@ -41,6 +41,7 @@ namespace SmartBuilding.Utilities
             this.config = config;
             this.logger = logger;
             this.moreFertilizersApi = moreFertilizersApi;
+            this.growableBushesAPI = growableBushesAPI;
             this.giantCropTapApi = giantCropTapApi;
         }
 
@@ -57,6 +58,19 @@ namespace SmartBuilding.Utilities
             var targetTile = item.Key;
             var itemInfo = item.Value;
             var here = Game1.currentLocation;
+
+            if (itemToPlace is not null && itemInfo.ItemType == ItemType.atravitaBush)
+            {
+                // try to place the bush.
+                if (this.growableBushesAPI?.TryPlaceBush(itemToPlace, here, targetTile, this.config.LessRestrictiveObjectPlacement) != true)
+                {
+                    // refund the bush.
+                    this.playerUtils.RefundItem(itemToPlace,
+                        $"{I18n.SmartBuilding_Integrations_GrowableBushes_InvalidBushPosition()}: {itemToPlace.Name} @ {targetTile}",
+                        LogLevel.Debug, true);
+                }
+                return;
+            }
 
             if (itemToPlace != null && this.placementUtils.CanBePlacedHere(targetTile, itemInfo.Item))
             {
@@ -450,12 +464,13 @@ namespace SmartBuilding.Utilities
                 {
                     // TODO: Fix bug where placing furniture with more lax placement on ignores rotations.
                     bool placedSuccessfully = false;
-                    Furniture furniture = null;
+                    Furniture? furniture = null;
 
                     // Determine exactly how we're placing this furniture.
                     if (this.config.LessRestrictiveFurniturePlacement && !itemInfo.IsDgaItem)
                     {
                         furniture = new Furniture(itemToPlace.ParentSheetIndex, targetTile);
+                        furniture.currentRotation.Value = (itemToPlace as Furniture).currentRotation.Value;
                         here.furniture.Add(furniture);
                     }
                     else
@@ -481,14 +496,14 @@ namespace SmartBuilding.Utilities
                             //itemToPlace.placementAction(Game1.currentLocation, (int)item.Key.X * 64, (int)item.Key.Y * 64, Game1.player);
 
                             // We know it's a fence by type, but we need to make sure it isn't a gate, and to ensure it isn't already "holding" anything.
-                            if (o.Name.Equals("Gate") && o.heldObject != null)
+                            if (o.Name.Equals("Gate") && o.heldObject.Value != null)
                                 // There's something in there, so we need to refund the torch.
                                 this.playerUtils.RefundItem(item.Value.Item,
                                     I18n.SmartBuilding_Error_Torch_PlacementInFenceFailed(), LogLevel.Error);
 
                             o.performObjectDropInAction(itemToPlace, false, Game1.player);
 
-                            if (this.identificationUtils.IdentifyItemType(o.heldObject) != ItemType.Torch)
+                            if (this.identificationUtils.IdentifyItemType(o.heldObject.Value) != ItemType.Torch)
                                 // If the fence isn't "holding" a torch, there was a problem, so we should refund.
                                 this.playerUtils.RefundItem(item.Value.Item,
                                     I18n.SmartBuilding_Error_Torch_PlacementInFenceFailed(), LogLevel.Error);
@@ -520,11 +535,11 @@ namespace SmartBuilding.Utilities
                         this.playerUtils.RefundItem(item.Value.Item,
                             I18n.SmartBuilding_Error_Object_PlacementFailed(), LogLevel.Error);
                 }
-
             }
             else
             {
-                this.playerUtils.RefundItem(item.Value.Item, I18n.SmartBuilding_Error_Object_PlacementFailed(), LogLevel.Error);
+                this.playerUtils.RefundItem(item.Value.Item, I18n.SmartBuilding_Error_Object_PlacementFailed(),
+                    LogLevel.Error);
             }
         }
 
@@ -650,12 +665,46 @@ namespace SmartBuilding.Utilities
                             return;
 
                         // Now we need to figure out whether the object has a heldItem within it.
-                        if (o.heldObject != null)
+                        if (o.heldObject.Value != null)
+                        {
                             // There's an item inside here, so we need to determine whether to refund the item, or discard it if it's a chest.
                             if (o.heldObject.Value is Chest)
+                            {
                                 // It's a chest, so we want to force it to drop all of its items.
                                 if ((o.heldObject.Value as Chest).items.Count > 0)
                                     (o.heldObject.Value as Chest).destroyAndDropContents(tile * 64, here);
+                            }
+                            else
+                            {
+                                // We know there's a held object, and it isn't a chest. At this point, I know of
+                                // only two things it can be: pressure nozzles, or enrichers.
+                                // TODO: Modularise this for the big rewrite. This is a quick, hacky fix.
+
+                                if (o.heldObject.Value != null && o.heldObject.Value.ParentSheetIndex == 915)
+                                {
+                                    // This is a pressure nozzle, so we refund it before destroying the sprinkler.
+                                    Game1.player.addItemByMenuIfNecessary(o.heldObject.Value.getOne());
+                                }
+                                else if (o.heldObject.Value.ParentSheetIndex == 913)
+                                {
+                                    // This is an enricher, which itself should have a held object. Held objectception.
+
+                                    if (o.heldObject.Value.heldObject.Value != null)
+                                    {
+                                        // It, does, indeed has a held object.
+
+                                        if (o.heldObject.Value.heldObject.Value is Chest enricherChest)
+                                        {
+                                            // And it is definitely a chest, so we want the chest to drop its items.
+                                            enricherChest.destroyAndDropContents(tile * 64, here);
+                                        }
+                                    }
+
+                                    // We now want to refund the enricher itself.
+                                    Game1.player.addItemByMenuIfNecessary(o.heldObject.Value.getOne());
+                                }
+                            }
+                        }
 
                         o.performRemoveAction(tile * 64, here);
                         Game1.player.addItemByMenuIfNecessary(o.getOne());
@@ -700,6 +749,22 @@ namespace SmartBuilding.Utilities
                         here.terrainFeatures.Remove(tile);
                     }
                 }
+
+            // handle picking up growable bushes.
+            if (feature == TileFeature.LargeTerrainFeature)
+            {
+                // try to pick up a bush. If successful, we'll be given the bush as an item.
+                if (this.growableBushesAPI?.TryPickUpBush(here, tile, false) is SObject bush)
+                {
+                    // try to add it to the player inventory.
+                    if (!Game1.player.addItemToInventoryBool(bush))
+                    {
+                        // if we fail, drop it at their feet.
+                        var debris = new Debris(bush, Game1.player.Position);
+                        here.debris.Add(debris);
+                    }
+                }
+            }
 
             if (feature == TileFeature.Furniture)
             {

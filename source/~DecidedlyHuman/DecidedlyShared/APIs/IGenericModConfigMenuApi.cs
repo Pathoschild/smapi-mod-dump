@@ -60,7 +60,7 @@ namespace DecidedlyShared.APIs
         /// <param name="texturePixelArea">The pixel area within the texture to display, or <c>null</c> to show the entire image.</param>
         /// <param name="scale">The zoom factor to apply to the image.</param>
         void AddImage(IManifest mod, Func<Texture2D> texture, Rectangle? texturePixelArea = null,
-                      int scale = Game1.pixelZoom);
+            int scale = Game1.pixelZoom);
 
         /// <summary>Add a boolean option at the current position in the form.</summary>
         /// <param name="mod">The mod's manifest.</param>
@@ -76,7 +76,7 @@ namespace DecidedlyShared.APIs
         ///     randomized ID.
         /// </param>
         void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name,
-                           Func<string> tooltip = null, string fieldId = null);
+            Func<string> tooltip = null, string fieldId = null);
 
         /// <summary>Add an integer option at the current position in the form.</summary>
         /// <param name="mod">The mod's manifest.</param>
@@ -96,8 +96,8 @@ namespace DecidedlyShared.APIs
         ///     randomized ID.
         /// </param>
         void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name,
-                             Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null,
-                             Func<int, string> formatValue = null, string fieldId = null);
+            Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null,
+            Func<int, string> formatValue = null, string fieldId = null);
 
         /// <summary>Add a float option at the current position in the form.</summary>
         /// <param name="mod">The mod's manifest.</param>
@@ -117,8 +117,8 @@ namespace DecidedlyShared.APIs
         ///     randomized ID.
         /// </param>
         void AddNumberOption(IManifest mod, Func<float> getValue, Action<float> setValue, Func<string> name,
-                             Func<string> tooltip = null, float? min = null, float? max = null, float? interval = null,
-                             Func<float, string> formatValue = null, string fieldId = null);
+            Func<string> tooltip = null, float? min = null, float? max = null, float? interval = null,
+            Func<float, string> formatValue = null, string fieldId = null);
 
         /// <summary>Add a string option at the current position in the form.</summary>
         /// <param name="mod">The mod's manifest.</param>
@@ -139,8 +139,8 @@ namespace DecidedlyShared.APIs
         ///     randomized ID.
         /// </param>
         void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name,
-                           Func<string> tooltip = null, string[] allowedValues = null,
-                           Func<string, string> formatAllowedValue = null, string fieldId = null);
+            Func<string> tooltip = null, string[] allowedValues = null,
+            Func<string, string> formatAllowedValue = null, string fieldId = null);
 
         /// <summary>Add a key binding at the current position in the form.</summary>
         /// <param name="mod">The mod's manifest.</param>
@@ -156,7 +156,7 @@ namespace DecidedlyShared.APIs
         ///     randomized ID.
         /// </param>
         void AddKeybind(IManifest mod, Func<SButton> getValue, Action<SButton> setValue, Func<string> name,
-                        Func<string> tooltip = null, string fieldId = null);
+            Func<string> tooltip = null, string fieldId = null);
 
         /// <summary>Add a key binding list at the current position in the form.</summary>
         /// <param name="mod">The mod's manifest.</param>
@@ -172,7 +172,7 @@ namespace DecidedlyShared.APIs
         ///     randomized ID.
         /// </param>
         void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name,
-                            Func<string> tooltip = null, string fieldId = null);
+            Func<string> tooltip = null, string fieldId = null);
 
 
         /****
@@ -244,9 +244,9 @@ namespace DecidedlyShared.APIs
         ///     For example, you can store state in a static field or use closures to use a state variable.
         /// </remarks>
         void AddComplexOption(IManifest mod, Func<string> name, Action<SpriteBatch, Vector2> draw,
-                              Func<string> tooltip = null, Action beforeMenuOpened = null, Action beforeSave = null,
-                              Action afterSave = null, Action beforeReset = null, Action afterReset = null,
-                              Action beforeMenuClosed = null, Func<int> height = null, string fieldId = null);
+            Func<string> tooltip = null, Action beforeMenuOpened = null, Action beforeSave = null,
+            Action afterSave = null, Action beforeReset = null, Action afterReset = null,
+            Action beforeMenuClosed = null, Func<int> height = null, string fieldId = null);
 
         /// <summary>Set whether the options registered after this point can only be edited from the title screen.</summary>
         /// <param name="mod">The mod's manifest.</param>

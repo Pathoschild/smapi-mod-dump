@@ -57,7 +57,7 @@ namespace Shockah.Kokoro
 			DynamicMethod method = new($"set_{field.Name}", typeof(void), new Type[] { typeof(TValue) });
 			var il = method.GetILGenerator();
 			il.Emit(OpCodes.Ldarg_0);
-			il.Emit(OpCodes.Ldsfld, field);
+			il.Emit(OpCodes.Stsfld, field);
 			il.Emit(OpCodes.Ret);
 			return method.CreateDelegate<Action<TValue>>();
 		}

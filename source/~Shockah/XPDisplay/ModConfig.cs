@@ -10,6 +10,7 @@
 
 using Newtonsoft.Json;
 using Shockah.Kokoro.UI;
+using System.Collections.Generic;
 
 namespace Shockah.XPDisplay
 {
@@ -20,6 +21,7 @@ namespace Shockah.XPDisplay
 		[JsonProperty] public float Alpha { get; internal set; } = 0.6f;
 		[JsonProperty] public string? LevelUpSoundName { get; internal set; } = "crystal";
 		[JsonProperty] public ToolbarSkillBarConfig ToolbarSkillBar { get; internal set; } = new();
+		[JsonProperty] public ISet<string> SkillsToExcludeFromToolbarOnXPGain { get; internal set; } = new HashSet<string> { "Achtuur.Travelling" };
 	}
 
 	public sealed class ToolbarSkillBarConfig

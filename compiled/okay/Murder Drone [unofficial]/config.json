@@ -1,6 +1,7 @@
 {
   "Active": true,
   "KeyboardShortcut": "F7",
+  "Keybind": "None",
   "RotationSpeed": 2,
   "Damage": -1,
   "ProjectileVelocity": 16

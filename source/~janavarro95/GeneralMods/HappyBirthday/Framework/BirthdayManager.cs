@@ -65,6 +65,8 @@ namespace Omegasis.HappyBirthday.Framework
             }
             this.playerBirthdayData.BirthdaySeason = season;
             this.playerBirthdayData.BirthdayDay = day;
+            this.playerBirthdayData.PlayersName = Game1.player.Name;
+            this.playerBirthdayData.PlayerUniqueMultiplayerId = Game1.player.UniqueMultiplayerID;
         }
 
         /// <summary>Get whether today is the player's birthday.</summary>

@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/delixx/stardew-valley-desert-bloom-farm
+**
+*************************************************/
+
+{
+  "oasis_tunnel": "Eskiden burada gizli bir yere giden bir geçit vardı. Bazı vahşi dostlarımızın yardımıyla burayı tekrar açabiliriz.",
+  "oasis_1": "Şu anda bu kaynak oldukça cansız, ancak çeşitli tatlı su balıkları için harika bir üreme alanı olabilir. Bana her birinden biraz getirin, gerisini ben hallederim. Mevsim, zaman ve hava koşullarından bağımsız olarak burada balık tutabileceksiniz.",
+  "oasis_2": "Balıklar canlı ve iyi durumda, ancak o kadar hızlı çoğalmıyorlar. Doğru yem balıkçılık şansını büyük ölçüde artırabilir.",
+  "oasis_3": "Stardew Vadisi çevresindeki sulara özgü bazı balıklar var. Onlara yeni bir yuva vermezsek soyları tükenmek üzere. Bu gölet türlerinin kurtarıcısı olabilir. Onları yakalamak şansınıza bağlı. Akrabaları da yedek olarak çalışıyor",
+  "mill_tier1": "Bu eski su pompasını onarmanıza yardımcı olabiliriz. Sanırım tüm bitkilerin yaklaşık %50'sini sulayacak ve kanalı bir miktar kazmanızı sağlayacaktır.",
+  "mill_tier2": "Yeraltı boruları eski ve tıkalı. Bunların değiştirilmesi ve sızıntıların giderilmesi sulamayı %65 oranında iyileştirecektir.",
+  "mill_tier3": "Duyuyor musunuz? Çarklar aşınmış ve değiştirilmeleri gerekiyor. Yeni çarklar sulamayı %80 oranında iyileştirebilir.",
+  "mill_tier4": "Aklıma harika bir fikir geldi! Yardımcı bir elektrik motoru pompalama gücünü %100 sulamaya izin verecek şekilde artırabilir!",
+  "mill_tier5": "Neyin eksik olduğunu tahmin edebilir misiniz? İridyum! Temeli güçlendirerek %125'lik bir sulama sağlayabiliriz! Oh ve belki de elimiz değmişken derme çatma fiber yelkenlerimizi düzgün kumaş yelkenlerle değiştirebiliriz'. Ek besin maddelerinin ekinlerin büyümesinin bir gün daha az sürmesine yardımcı olacağını tahmin ediyorum.",
+  "mine_1": "Ugh! Şu saçmalığa bak... Bak ne diyeceğim evlat, çevreyi temizlememe yardım et, ben de zamanına değmesini sağlayayım. Her türlü çöp iş görür",
+  "mine_2": "Hazine için kazmayı gerçekten seviyorum. Çok eğlenceli! Ama bunu boş bir mideyle yapmak tüm eğlenceyi mahvediyor. Bak ne diyeceğim evlat, bana güzel bir şeyler pişir, ben de zamanına değmesini sağlayayım! Hayır, para değil. Hazine!",
+  "mine_3": "Hey evlat, kaktüs meyvesini sever misin? Hayır mı? Ben seviyorum ve çok istiyorum! Bir arkadaşına yardım et, ben de sana karşılığını vereyim! Hayır, para ya da hazine değil. Bu vadide otların çok daha hızlı yayılmasını sağlayacağım! Ne anlaşma ama!"
+}

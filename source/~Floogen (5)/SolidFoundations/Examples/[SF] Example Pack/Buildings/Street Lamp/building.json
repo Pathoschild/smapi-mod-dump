@@ -1,0 +1,47 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/SolidFoundations
+**
+*************************************************/
+
+{
+  "Name": "Street Lamp",
+  "Description": "...",
+  "DrawShadow": false,
+
+  "SourceRect": "0 0 16 64",
+  "Size": {
+    "X": 1,
+    "Y": 1
+  },
+
+  "Lights": [
+    {
+      "Tile": {
+        "X": 0,
+        "Y": -3
+      },
+      "TileOffsetInPixels": {
+        "X": 14,
+        "Y": 16
+      },
+      "TextureID": 4,
+      "Radius": {
+        "RandomValue": {
+          "Values": [ 1.5, 1.6, 1.4 ]
+        }
+      },
+      "UpdateIntervalMilliseconds": {
+        "RandomRange": {
+          "Min": 800,
+          "Max": 2000
+        }
+      },
+      "Color": [ 255, 255, 255, 255 ]
+    }
+  ]
+}

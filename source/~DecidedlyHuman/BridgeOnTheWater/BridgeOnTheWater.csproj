@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Build\SDV-1.5.6.targets"/>
+    <Import Project="..\Build\Common.csproj"/>
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared"/>
+
+    <PropertyGroup>
+        <Name>Bridge on the Water</Name>
+        <Description>There's no fire in the sky here.</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:00000</UpdateKeys>
+        <Version>1.0.0-alpha</Version>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Folder Include="assets"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <EnableHarmony>true</EnableHarmony>
+        <IgnoreModFilePatterns>\.aseprite$</IgnoreModFilePatterns>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+</Project>

@@ -1,0 +1,113 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/Archery
+**
+*************************************************/
+
+{
+  // Bows
+  "Weapon.Name.MakeshiftBow": "Derme Çatma Yay",
+  "Weapon.Description.MakeshiftBow": "Lif ve ince dallardan oluşan gelişigüzel yapılmış bir yay.",
+
+  "Weapon.Name.WoodenBow": "Ahşap Yay",
+  "Weapon.Description.WoodenBow": "Odun ve ipten yapılmış basit bir yay.",
+
+  "Weapon.Name.CopperBow": "Bakır Yay",
+  "Weapon.Description.CopperBow": "Bakırla güçlendirilmiş parlak bir yay.",
+
+  "Weapon.Name.SteelBow": "Çelik Yay",
+  "Weapon.Description.SteelBow": "Yumruğu oturtan ağır çelik bir yay.",
+
+  "Weapon.Name.GoldBow": "Altın Yay",
+  "Weapon.Description.GoldBow": "Altınla güçlendirilmiş göz kamaştırıcı bir yay.",
+
+  "Weapon.Name.IridiumBow": "İridyum Yay",
+  "Weapon.Description.IridiumBow": "Daha önce hiç görmediğin malzemeden yapılmış ultra hafif bir yay.",
+
+  "Weapon.Name.YobasDivineHarp": "Yoba'nın Kutsal Arpı",
+  "Weapon.Description.YobasDivineHarp": "Her tıngırdatmada rastgele bir nota atan yay benzeri bir arp.",
+
+  // Crossbows
+  "Weapon.Name.WoodenCrossbow": "Ahşap Arbalet",
+  "Weapon.Description.WoodenCrossbow": "Odun ve ipten yapılmış basit bir arbalet.",
+
+  "Weapon.Name.CopperCrossbow": "Bakır Arbalet",
+  "Weapon.Description.CopperCrossbow": "Bakırla güçlendirilmiş parlak bir arbalet.",
+
+  "Weapon.Name.SteelCrossbow": "Çelik Arbalet",
+  "Weapon.Description.SteelCrossbow": "Yumruğu oturtan ağır çelik bir arbalet.",
+
+  "Weapon.Name.GoldCrossbow": "Altın Arbalet",
+  "Weapon.Description.GoldCrossbow": "Altınla güçlendirilmiş göz kamaştırıcı bir arbalet.",
+
+  "Weapon.Name.IridiumCrossbow": "İridyum Arbalet",
+  "Weapon.Description.IridiumCrossbow": "Daha önce hiç görmediğin malzemeden yapılmış ultra hafif bir arbalet.",
+
+  "Weapon.Name.DwarvenRepeatingCrossbow": "Tekrarlayan Cüce Arbaleti",
+  "Weapon.Description.DwarvenRepeatingCrossbow": "Yeniden doldurmaya ihtiyaç duymadan önce birden fazla sürgü atabilen eski bir cüce arbaleti.",
+
+  // Arrows
+  "Ammo.Name.MakeshiftArrow": "Derme Çatma Ok",
+  "Ammo.Description.MakeshiftArrow": "Odundan yapılmış basit bir ok.",
+
+  "Ammo.Name.StoneArrow": "Taş Ok",
+  "Ammo.Description.StoneArrow": "Taş uçlu ahşap bir ok.",
+
+  "Ammo.Name.CopperArrow": "Bakır Ok",
+  "Ammo.Description.CopperArrow": "Bakır uçlu ahşap bir ok.",
+
+  "Ammo.Name.SteelArrow": "Çelik Ok",
+  "Ammo.Description.SteelArrow": "Çelik uçlu ahşap bir ok.",
+
+  "Ammo.Name.GoldArrow": "Altın Ok",
+  "Ammo.Description.GoldArrow": "Altın uçlu ahşap bir ok.\nBu okların kritik vuruş şansı yüksektir.",
+
+  "Ammo.Name.IridiumArrow": "İridyum Ok",
+  "Ammo.Description.IridiumArrow": "İridyum uçlu ahşap bir ok.",
+
+  // Bolts
+  "Ammo.Name.StoneBolt": "Taş Sürgü",
+  "Ammo.Description.StoneBolt": "Taş uçlu ahşap bir arbalet sürgüsü.",
+
+  "Ammo.Name.CopperBolt": "Bakır Sürgü",
+  "Ammo.Description.CopperBolt": "Bakır uçlu ahşap bir arbalet sürgüsü.",
+
+  "Ammo.Name.SteelBolt": "Çelik Sürgü",
+  "Ammo.Description.SteelBolt": "Çelik uçlu ahşap bir arbalet sürgüsü.",
+
+  "Ammo.Name.GoldBolt": "Altın Sürgü",
+  "Ammo.Description.GoldBolt": "Altın uçlu ahşap bir arbalet sürgüsü.\nBu sürgülerin kritik vuruş şansı yüksektir.",
+
+  "Ammo.Name.IridiumBolt": "İridyum Sürgü",
+  "Ammo.Description.IridiumBolt": "İridyum uçlu ahşap bir arbalet sürgüsü.",
+
+  // Enchanted Arrows
+  "Ammo.Name.Enchanted.AquamarineArrow": "Gök Zümrütlü Ok",
+  "Ammo.Description.Enchanted.AquamarineArrow": "Gök zümrütü gömülü çelik uçlu bir ok.",
+
+  "Ammo.Name.Enchanted.DiamondArrow": "Elmas Ok",
+  "Ammo.Description.Enchanted.DiamondArrow": "Elmas gömülü çelik uçlu bir ok.",
+
+  "Ammo.Name.Enchanted.EmeraldArrow": "Zümrüt Ok",
+  "Ammo.Description.Enchanted.EmeraldArrow": "Zümrüt gömülü çelik uçlu bir ok",
+
+  "Ammo.Name.Enchanted.RubyArrow": "Yakut Ok",
+  "Ammo.Description.Enchanted.RubyArrow": "Yakut gömülü çelik uçlu bir ok",
+
+  // Enchanted Bolts
+  "Ammo.Name.Enchanted.AquamarineBolt": "Gök Zümrütlü Sürgü",
+  "Ammo.Description.Enchanted.AquamarineBolt": "Gök zümrütü gömülü çelik uçlu bir arbalet sürgüsü.",
+
+  "Ammo.Name.Enchanted.DiamondBolt": "Elmas Sürgü",
+  "Ammo.Description.Enchanted.DiamondBolt": "Elmas gömülü çelik uçlu bir arbalet sürgüsü.",
+
+  "Ammo.Name.Enchanted.EmeraldBolt": "Zümrüt Sürgü",
+  "Ammo.Description.Enchanted.EmeraldBolt": "Zümrüt gömülü çelik uçlu bir arbalet sürgüsü.",
+
+  "Ammo.Name.Enchanted.RubyBolt": "Yakut Sürgü",
+  "Ammo.Description.Enchanted.RubyBolt": "Yakut gömülü çelik uçlu bir arbalet sürgüsü."
+}

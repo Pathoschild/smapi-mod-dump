@@ -1,15 +1,17 @@
 urls:
-   web: https://github.com/Floogen/FishingTrawler
-   Git: https://github.com/Floogen/FishingTrawler.git
+   web: https://github.com/Floogen/MysticalBuildings
+   Git: https://github.com/Floogen/MysticalBuildings.git
 
 mods:
-   Fishing Trawler
-   Fishing Trawler - New Horizons
+   Cave of Memories
+   Mystical Buildings
 
 latest commit:
-   commit 04cd0d1d61bf3f46cee2729910d2461df77e10f1
+   commit 6e7abc9364cf4325e777764256c3d335ac063439
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Sun Mar 26 16:10:54 2023 -0500
+   Date:   Thu Jun 30 16:02:39 2022 -0500
    
-       v1.1.2 released
+       Merge pull request #1 from KediDili/development
+       
+       Adding tr.json files
    

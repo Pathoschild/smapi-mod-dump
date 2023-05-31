@@ -10,42 +10,23 @@
 
 using Microsoft.Xna.Framework;
 using Shockah.Kokoro;
+using Shockah.Kokoro.Map;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using SObject = StardewValley.Object;
 
 namespace Shockah.FlexibleSprinklers
 {
-	internal class GameLocationMap : IMap.WithKnownSize
+	internal class GameLocationMap : IMap<SoilType>.WithKnownSize
 	{
 		private readonly GameLocation Location;
-		private readonly IEnumerable<Func<GameLocation, Vector2, bool?>> CustomWaterableTileProviders;
+		private readonly IEnumerable<Func<GameLocation, IntPoint, bool?>> CustomWaterableTileProviders;
 
-		public int Width
-			=> Location.Map.DisplayWidth / Game1.tileSize;
-
-		public int Height
-			=> Location.Map.DisplayHeight / Game1.tileSize;
-
-		internal GameLocationMap(GameLocation location, IEnumerable<Func<GameLocation, Vector2, bool?>> customWaterableTileProviders)
-		{
-			this.Location = location;
-			this.CustomWaterableTileProviders = customWaterableTileProviders;
-		}
-
-		public override bool Equals(object? obj)
-			=> obj is IMap other && Equals(other);
-
-		public bool Equals(IMap? other)
-			=> other is GameLocationMap map && (ReferenceEquals(Location, map.Location) || Location == map.Location);
-
-		public override int GetHashCode()
-			=> Location.GetHashCode();
+		public IntRectangle Bounds
+			=> new(IntPoint.Zero, Location.Map.DisplayWidth / Game1.tileSize, Location.Map.DisplayHeight / Game1.tileSize);
 
 		public SoilType this[IntPoint point]
 		{
@@ -63,7 +44,7 @@ namespace Shockah.FlexibleSprinklers
 
 				foreach (var provider in CustomWaterableTileProviders)
 				{
-					bool? result = provider(Location, tileVector);
+					bool? result = provider(Location, point);
 					if (result.HasValue)
 						return result.Value ? SoilType.Waterable : SoilType.NonWaterable;
 				}
@@ -76,25 +57,16 @@ namespace Shockah.FlexibleSprinklers
 			}
 		}
 
-		public void WaterTile(IntPoint point)
+		internal GameLocationMap(GameLocation location, IEnumerable<Func<GameLocation, IntPoint, bool?>> customWaterableTileProviders)
 		{
-			var can = new WateringCan();
-			var tileVector = new Vector2(point.X, point.Y);
-
-			if (Location.terrainFeatures.TryGetValue(tileVector, out TerrainFeature feature))
-				feature.performToolAction(can, 0, tileVector, Location);
-			if (Location.Objects.TryGetValue(tileVector, out SObject @object))
-				@object.performToolAction(can, Location);
-			Location.performToolAction(can, point.X, point.Y);
-
-			// TODO: add animation, if needed
+			this.Location = location;
+			this.CustomWaterableTileProviders = customWaterableTileProviders;
 		}
 
-		public IEnumerable<(IntPoint position, SprinklerInfo info)> GetAllSprinklers()
-		{
-			return Location.Objects.Values
-				.Where(o => o.IsSprinkler())
-				.Select(s => (position: new IntPoint((int)s.TileLocation.X, (int)s.TileLocation.Y), info: FlexibleSprinklers.Instance.GetSprinklerInfo(s)));
-		}
+		public override bool Equals(object? obj)
+			=> obj is GameLocationMap map && (ReferenceEquals(Location, map.Location) || Location == map.Location);
+
+		public override int GetHashCode()
+			=> Location.GetHashCode();
 	}
 }

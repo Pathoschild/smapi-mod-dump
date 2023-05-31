@@ -28,6 +28,7 @@ namespace ItemBags
     {
         private const string CookingSkillModUniqueId = "spacechase0.CookingSkill";
         private static bool IsCookingSkillModCompatible;
+        private const string BetterCraftingUniqueId = "leclair.bettercrafting";
 
         private static IModHelper Helper { get; set; }
 
@@ -36,11 +37,22 @@ namespace ItemBags
         {
             CraftingHandler.Helper = Helper;
 
-            Helper.Events.Display.MenuChanged += Display_MenuChanged;
-            Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+            //  "Better Crafting" mod replaces the vanilla StardewValley.Menus.CraftingPage object with a custom IClickableMenu that doesn't have the same _materialContainers field
+            bool IsBetterCraftingInstalled = Helper.ModRegistry.IsLoaded(BetterCraftingUniqueId);
+            if (IsBetterCraftingInstalled)
+            {
+                ItemBagsMod.ModInstance.Monitor.Log($"'Better Crafting' mod ({BetterCraftingUniqueId}) detected. " +
+                    $"You will not be able to craft using items inside of bags.", LogLevel.Info);
+            }
+            else
+            {
 
-            IsCookingSkillModCompatible = Helper.ModRegistry.IsLoaded(CookingSkillModUniqueId) && 
-                Helper.ModRegistry.Get(CookingSkillModUniqueId).Manifest.Version.IsNewerThan("1.1.4"); // "_materialContainers" field was added to CookingSkill.NewCraftingPage in version 1.1.5
+                Helper.Events.Display.MenuChanged += Display_MenuChanged;
+                Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
+
+                IsCookingSkillModCompatible = Helper.ModRegistry.IsLoaded(CookingSkillModUniqueId) &&
+                    Helper.ModRegistry.Get(CookingSkillModUniqueId).Manifest.Version.IsNewerThan("1.1.4"); // "_materialContainers" field was added to CookingSkill.NewCraftingPage in version 1.1.5
+            }
         }
 
         private static HashSet<ItemBag> BagsInUse = null;

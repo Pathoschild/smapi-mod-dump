@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Omegasis.Revitalize.Framework.Constants.ItemIds.Objects;
 using Omegasis.Revitalize.Framework.World.Objects.InformationFiles;
 
 namespace Omegasis.Revitalize.Framework.Utilities
@@ -33,10 +32,10 @@ namespace Omegasis.Revitalize.Framework.Utilities
             ResourcesForMachines = new Dictionary<string, List<ResourceInformation>>()
             {
                 /*
-            {"Revitalize.Objects.Machines.BatteryBin" ,new List<ResourceInformation>(){
+            {"Omegasis.Revitalize.Objects.Machines.BatteryBin" ,new List<ResourceInformation>(){
                 new ResourceInformation(new StardewValley.Object((int)Enums.SDVObject.BatteryPack,1),1,1,1,1,1,1,0,0,0,0)
             } },
-            {"Revitalize.Objects.Machines.Sandbox",new List<ResourceInformation>(){
+            {"Omegasis.Revitalize.Objects.Machines.Sandbox",new List<ResourceInformation>(){
                 new ResourceInformation(ModCore.ObjectManager.GetItem(MiscEarthenResources.Sand,1),1,1,1,1,1,1,0,0,0,0)
             } }
                 */

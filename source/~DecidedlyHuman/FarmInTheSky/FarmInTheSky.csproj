@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Build\SDV-1.5.6.targets"/>
+    <Import Project="..\Build\Common.csproj"/>
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared"/>
+
+    <PropertyGroup>
+        <Name>Farm in the Sky</Name>
+        <Description>A farm high, high up in the clouds. Maybe the altitude will affect your farming?</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:00000</UpdateKeys>
+        <Version>1.0.0-alpha</Version>
+        <GameModsPath>$(GameModsPath)/$(AssemblyName)</GameModsPath>
+        <_PackOutputLocation>$(GameModsPath)/</_PackOutputLocation>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <EnableHarmony>false</EnableHarmony>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Folder Include="pack"/>
+    </ItemGroup>
+
+    <Target Name="DeployPack" AfterTargets="Build">
+        <Message Text="Running DeployPack target..."/>
+        <ItemGroup>
+            <_FilesToCopy Exclude="$(ProjectDir)pack/**/*.aseprite" Include="$(ProjectDir)pack/**/*"/>
+        </ItemGroup>
+
+        <Copy SourceFiles="@(_FilesToCopy)" DestinationFiles="@(_FilesToCopy->'$(_PackOutputLocation)%(RecursiveDir)%(Filename)%(Extension)')"/>
+        <!-- Use ZipDirectory after build. -->
+    </Target>
+
+</Project>

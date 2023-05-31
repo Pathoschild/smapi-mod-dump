@@ -1,0 +1,23 @@
+{
+  "Mine": {
+    "StoneChanceMultiplier": 1.0,
+    "MonsterChanceMultiplier": 1.0,
+    "ItemChanceMultiplier": 1.0,
+    "GemStoneChanceMultiplier": 1.0,
+    "MonsterMuskChanceMultiplier": 2.0
+  },
+  "SkullCavern": {
+    "StoneChanceMultiplier": 1.0,
+    "MonsterChanceMultiplier": 1.0,
+    "ItemChanceMultiplier": 1.0,
+    "GemStoneChanceMultiplier": 1.0,
+    "MonsterMuskChanceMultiplier": 2.0
+  },
+  "Volcano": {
+    "StoneChanceMultiplier": 1.0,
+    "MonsterChanceMultiplier": 1.0,
+    "ItemChanceMultiplier": 1.0,
+    "GemStoneChanceMultiplier": 1.0,
+    "MonsterMuskChanceMultiplier": 2.0
+  }
+}

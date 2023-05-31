@@ -33,7 +33,7 @@ namespace SmartBuilding.Utilities
         ///     <see cref="StardewModdingAPI.LogLevel.Error" />, and <see cref="StardewModdingAPI.LogLevel.Warn" />.
         /// </param>
         public void RefundItem(Item item, string reason = "Something went wrong", LogLevel logLevel = LogLevel.Trace,
-                               bool shouldLog = false)
+            bool shouldLog = false)
         {
             Game1.player.addItemByMenuIfNecessary(item.getOne());
 

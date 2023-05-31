@@ -8,6 +8,326 @@
 **
 *************************************************/
 
+Key:
++ Added Content/Feature.
+~ Changed Content/Feature or Bugfix.
+- Removed Content/Feature.
+! Broken/Alert
+
+~~~~~~~~~~~~0.0.1 Revitalize 5-1-2023 xx.xx P.M~~~~~~~~~~~~~~
++Finished Automatic Tree Farms.
+~Changed machines to be able to give their entire held object queue at once instead of just one item at a time.
+
+~~~~~~~~~~~~0.0.1 Revitalize 4-19-2023 xx.xx P.M~~~~~~~~~~~~~~
++Started work on Automatic Tree Farms.
+
+~~~~~~~~~~~~0.0.1 Revitalize 4-18-2023 xx.xx P.M~~~~~~~~~~~~~~
++Added windmills to the game. Sold by Robin once the player has achieved foraging level 5.
+~Blueprints can no longer be dropped or trashed, preventing them from being accidentally lost.
+
+~~~~~~~~~~~~0.0.1 Revitalize 4-11-2023 xx.xx P.M~~~~~~~~~~~~~~
++Added Hardwood Kegs. Processes goods 25% faster than a normal keg.
++Added Industrial Kegs. Processes goods 50% faster than a normal keg.
++Desert Trader sells blueprints for the Hardwood Keg.
++Island Trader sells blueprints for the Industrial Keg.
++Kegs and Preserve Jars are now more flexible with vegetables and fruit inputs, and should allow creating of goods from any mod by default.
+
+~~~~~~~~~~~~0.0.1 Revitalize 4-9-2023 xx.xx P.M~~~~~~~~~~~~~~
++Added Harwood Preserves Jar. Processes 25% faster than a normal preserve jar. Sold by the Desert or Island Traders.
++Added Ancient Preserves Jar. Processes 50% faster than a normal preserve jar. Sold by the Desert or Island Traders.
+
+~~~~~~~~~~~~0.0.1 Revitalize 4-5-2023 xx.xx P.M~~~~~~~~~~~~~~
++Desert Trader sells the blueprints for Darkwood Casks for 20 wine.
++The Island Trader sells the blueprints for Midnight Casks for 50 wine.
++Qi's Walnut room sells the blueprints for Abyss Casks for 50 Qi gems
++The Island Trader now also sells the blueprints for Advanced Solar Panels for 250 Solar Essence.
+
+~~~~~~~~~~~~0.0.1 Revitalize 4-4-2023 xx.xx P.M~~~~~~~~~~~~~~
++Added darkwood, midnight, and abyss casks which all provide bonuses to processing goods anywhere.
+~Fixed an issue where the Crystal refiner would take twice as long to convert a gold quality mineral to an iridium quality one.
+
+~~~~~~~~~~~~0.0.1 Revitalize 3-31-2023 xx.xx P.M~~~~~~~~~~~~~~
++Fixed some code regarding held object dropping location for the crystal refiner.
++Crystal Refiners now change colors when processing prismatic shards
++Added Crystal Refiner Unlock at donating 40 minerals to the musuem.
+~Changed the Crystal Refiner Recipe to require more variety of resources, but less of them.
+
+~~~~~~~~~~~~0.0.1 Revitalize 3-31-2023 xx.xx P.M~~~~~~~~~~~~~~
++Fixed a lot of code regarding object placement and object interaction.
++Continued working on the Crystal Refiner.
+
+~~~~~~~~~~~~0.0.1 Revitalize 3-22-2023 xx.xx P.M~~~~~~~~~~~~~~
+~Fixed some code so now dropping in items into machines functions with holding right click like normal gameplay.
++Added manual powered machine type that runs on stamina. Currently only used for Anvils.
++Added artifact trove and golden coconut processing recipes to magical and (unimplemented) galaxy geode crushers.
+~Cleaned up more code from the defunct anvil crafting.
+
+~~~~~~~~~~~~0.0.1 Revitalize 3-21-2023 xx.xx P.M~~~~~~~~~~~~~~
+~Anvils no longer are used to craft objects due to not being able to think of many use cases.
++Anvils now can manually crack geodes, artifact troves, and golden coconuts.
+
+~~~~~~~~~~~~0.0.1 Revitalize 3-16-2023 xx.xx P.M~~~~~~~~~~~~~~
++Added in the Dimensional Storage Bag, which allows accessing items from anywhere!
+  +Can be bought from the Walnut room for 100qi gems
+  +Alternatively the blueprints can be bought from the Walnut room for 35 qi gems.
+
+~~~~~~~~~~~~0.0.1 Revitalize 3-14-2023 xx.xx P.M~~~~~~~~~~~~~~
++Added in Dimensional Storage Chest
+    +Allows accessing the Dimensional Storage Unit's contents from anywhere.
+    +Added Automate compatibility for this as well, which would allow for mass automating of operations from a single storage source.
+~Fixed a glitch where objects would be consumed when holding and dragging left click.
+~Fixed more naming conventions for Deluxe Charcoal Kiln
+~Added a more helpful error message when crafting blueprints fail to load.
+~Updated SDVRevitalizeCreationTool to set the paths properly.
+
+~~~~~~~~~~~~0.0.1 Revitalize 3-13-2023 xx.xx P.M~~~~~~~~~~~~~~
+~Fixed geode crusher outputs scaling too high.
+!Fixed a typo with Delux->Deluxe
+
+~~~~~~~~~~~~0.0.1 Revitalize 2-24-2023 xx.xx P.M~~~~~~~~~~~~~~
+~Fix displaying crafting recipe output multiple time for same object crafting in many ways.
+
+~~~~~~~~~~~~0.0.1 Revitalize 2-23-2023 xx.xx P.M~~~~~~~~~~~~~~
++Crafting Blueprints use new data format to be able to unlock multiple recipes at once.
+
+~~~~~~~~~~~~0.0.1 Revitalize 2-21-2023 xx.xx P.M~~~~~~~~~~~~~~
++Added in StorageBags, which are portable, yet smaller ItemVaults. Can be bought from the Adventure's Guild once certain backpack upgrades have been obtained.
++Added a code feature to allow for scaling animation frames, allowing for higher-res textures for certain objects.
+
+~~~~~~~~~~~~0.0.1 Revitalize 2-15-2023 xx.xx P.M~~~~~~~~~~~~~~
++Added ColorPicking to ItemVaults so that way they can be dyed in the exact same manner as chests can.
+
+~~~~~~~~~~~~0.0.1 Revitalize 2-12-2023 xx.xx P.M~~~~~~~~~~~~~~
++Added new storage options: Item vaults. Come in 4 sizes that can hold 2 to 5 chests worth of contents depending on the version. Sold by Clint.
+~Updated SDVRevitalizeCreationTool to use Godot 4.0 and .Net 6.0.
++Added ItemVault compatibility to Automate+Revitalize mod.
+~Migrated Revitalize from old AsssetEdit code to new SMAPI 4.0 Asset Request Events.
+
+~~~~~~~~~~~~0.0.1 Revitalize 2-2-2023 xx.xx P.M~~~~~~~~~~~~~~
+~Migrated all item ids that used Revitalize to use the standard accepted <ModAuthor>.<ModName> format, in this case Omegasis.Revitalize
+~Migrated all XML Serlaization Types to use the same convention of "Mod_Omegasis.Revitalize" instead of "Mod_Revitalize"
+~Fixed a bug with PoweredMachine input to properly display an error message when a lack of energy input (batteries, coal, etc) was not present.
+~Fixed a bug when interacting with a PoweredMachine while holding no active item in the Player's hand causing an error to occur.
+
+~~~~~~~~~~~~0.0.1 Revitalize 1-24-2023 xx.xx P.M~~~~~~~~~~~~~~
++Migrated all mining drill outputs to ProcessingRecipe format .json files.
+~Machines should not process the next imput until it's entire output queue has been grabbed by the player (or automate).
+-Removed easter eggs for mining drills as there are simply better sources of wood...
+
+~~~~~~~~~~~~0.0.1 Revitalize 1-18-2023 xx.xx P.M~~~~~~~~~~~~~~
++Successfully generated out output recipes for all geode crushers into ProcessingRecipe format.
++Updated GeodeCrushers to take a random recipe and use that to generate it's outputs.
+~Processing recipes now properly take item chance to obtain into considerations when generating outputs.
+~Started to define loot tables for mining drills.
+
+~~~~~~~~~~~~0.0.1 Revitalize 1-17-2023 xx.xx P.M~~~~~~~~~~~~~~
++Added in conversion method to convert old JsonCraftingRecipe files for machines into the new ProcessingRecipe format.
+    ~Also converted all of the old machine recipes as well, but need to run extensive testing on them first.
++Added support for ItemRecipeDropInMachines to handle recipes with multiple inputs and multiple outputs.
+    ~Fixed a bug where AdvancedCharcoalKilns would crash with Automate due to not properly broadcasting a sprite using the machine's game location.
+
+~~~~~~~~~~~~0.0.1 Revitalize 1-16-2023 xx.xx P.M~~~~~~~~~~~~~~
++Continued to work on code to migrate old machine processing recipes from CraftingRecipe class to ProcessingRecipe class rebuilt with machines in mind.
+
+~~~~~~~~~~~~0.0.1 Revitalize 1-10-2023 xx.xx P.M~~~~~~~~~~~~~~
+~TextureManagers now can recover from missing asset errors if a image is moved to a different folder inside of it's search params.
+~Added AdvancedBatteryPackGenerator
+~Fixed some issues with loading category names
+~Migrated BatteryGenerators to the recipe format.
+~Added a way to keep track of what items the player has obtained.
+~Rewrote more code where now performObjectDropInAction->performItemDropinAction to prevent consuming the player's active item.
+~Fixed mining drills not working
+~Fixed HayMakers not working by renaming the recipe book.json
+~Fixed an issue where interacting with HayMakers with edible items would bring up the edibility prompt.
+
+~~~~~~~~~~~~0.0.1 Revitalize 1-9-2023 xx.xx P.M~~~~~~~~~~~~~~
+~Separated the logic from the DimensionalStorageUnitMenu into a base InventoryDisplayMenu and extended off of that for more flexibility to be reused with future storage containers.
+~Restructured a lot of code surounding machines and their json crafting recipes.
+    -Removed the old MachinRecipeBookIds in most cases since it makes more sense to use the object's id instead.
+    +Added recipe books for Advanced, Superior, and Delux Charcoal Kilns
+    ~Cleaned up a lot of duplicate code across machine implementations, so now classes are far more streamlines for implementation and readibility.
+    +Added new ItemDropInMachine.cs to be an intermediary class between PoweredMachine and Machine.cs.
+        *Note that some machines like MinindDrill and GeodeCrusher don't currently have recipe books as they still carry their own custom implementations.
+    ~Fixed a few bugs regarding item drop-in actions for machines.
+
+~~~~~~~~~~~~0.0.1 Revitalize 1-2-2023 xx.xx P.M~~~~~~~~~~~~~~
++Added the ability to upgrade the dimensional storage unit building using void essences from either the dimensional storage unit or the player's inventory.
+
+~~~~~~~~~~~~0.0.1 Revitalize 12-30-2022 xx.xx P.M~~~~~~~~~~~~~~
+! Happy New Years! 
++Added new search modes to the item search bar for the Dimensional Storage Unit, to have different ways to find different items.
++Added a background to the player's inventory in the dimensional storage unit menu.
++Added a way to see the capacity of the dimensional storage unit.
+
+~~~~~~~~~~~~0.0.1 Revitalize 12-30-2022 xx.xx P.M~~~~~~~~~~~~~~
++Dimensional storage unit menu is starting to become more complete. Now has a grab menu that the player can use to throw items into it.
++Dimensional storage unit cna have items thrown into it directly. Just for fun.
+
+~~~~~~~~~~~~0.0.1 Revitalize 12-29-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Removed all references to JsonItemReference and migrated all of them to ItemReference in preparation for ItemReference upgrade.
++Now all SDV Object and BigCraftable items are registered by their 1.6 item ids in the ObjectManager to unify some of the object fetching/creation logic.
++Added support for ItemReference to hold info for Artisinal goods.
+~Fixed a bug where having multiple cellars built on the farm causes the game to not load???
++Started work on the DimensionalStorageUnitBuilding
+~Started to fix InventoryTransferMenu.cs to be able to transfer items back and forth between the player's inventory and the dimensional storage unit.
+
+~~~~~~~~~~~~0.0.1 Revitalize 12-28-2022 xx.xx P.M~~~~~~~~~~~~~~
++Added in infrastructure to add in new buildings! Now custom buildings can be added in for the mod.
++Added in a buildable Cellar. The first tier is smaller than the farmhouse cellar. May add in more into the future.
++Made BuildingBlueprintHelper.cs to help make Stardew Valley Building Blueprints easier.
+
+
+~~~~~~~~~~~~0.0.1 Revitalize 12-20-2022 xx.xx P.M~~~~~~~~~~~~~~
++Added Statue of Statistics.
+    Shows multiple statistics about the player.
++Added in Statue of Perfection Tracking.
+    -Tells you what you are missing from shipped items, cooking recipes, crafting recipes, and caught fish.
++Added in Advanced Solar Panels
+    -Makes a Battery Pack every 5 sunny days.
++Added in Superior Solar Panels
+    -Makes a Battery Pack every 3 sunny days.
+~~~~~~~~~~~~0.0.1 Revitalize 12-12-2022 xx.xx P.M~~~~~~~~~~~~~~
+~ElectricFurnaces (and their upgrade tiers) now glow when smelting items.
+~Reworked some logic regarding the LightManager class to work better, but it might still have issues since that original code was written years ago so there might be cases where I should makde different changes.
+    -These changes would be made in CustomObject.cs or CustomItem.cs initializeLightSource, where maybe there should just be one initial light source???
+~Fixed some code issues with adding LightSources with the LightManager to some machines.
+~Added a more straightforward way to add light sources on CustomObjects
+~Added LightSources to BatteryGenerators and CharcoalKilns.
+~Fixed a glitch where Charcoal Kilns would work as long as a single piece of wood was provided.
++Added in blueprints for the Burner generator which can either be bought from Clint, or awarded to the player upon reaching floor 50 of the mines.
++Added in blueprints for the Nuclear generator which can either be bought from Clint after unlocking the Walnut Room, or by enabling the hard version of the mines.
+
+~~~~~~~~~~~~0.0.1 Revitalize 12-08-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Fixed SDV revitalize tool to generate c# vars as const and not static
++Added in proper graphics for burner generator
++Added in nuclear generators
++Added in smoke effects for when charcoal kilns work
+~Changed charcoal kiln sound effects to match the base game.
+
+~~~~~~~~~~~~0.0.1 Revitalize 12-08-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Renamed the ItemIds folder to be Ids for future use cases.
+    ~This means the SDV Revitalize tool also had some string values update accordingly as well.
++Added in the BurnerGenerator code and a placeholder graphic in the meantime.
+
+~~~~~~~~~~~~0.0.1 Revitalize 11-24-2022 xx.xx P.M~~~~~~~~~~~~~~
++Added in Advanced, Delux, and Superior Charcoal kilns that turn wood into coal and better rates. Unlocked with higher forging levels and by collecting golden walnuts. Sold by Clint.
+~Fixed a glitch where Geode crushers were always consuming fuel charges, this consuming more fuel items even when not operating.
++Cleaned up some code related to machines to make it easier to understand the flow as well as to interface for automate compatibility.
++Added automate compatibility for the geode crushers
++Added automate compatibilityb for the charcoal kilns
+~Rewrote much of the logic related to automatce compatibility in the compatibility mod to be able to much easier add compatibility at least for new machines, in the future.
++Added in automate compatibility for the mining drill.
++Added in automate compatibility for ResoruceBushes
+~Rewrote some code on ResourceBushes to support Automate compatibility.
+~Added new draw methods to choose whether or not to draw the held object for an item.
+
+~~~~~~~~~~~~0.0.1 Revitalize 11-22-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Fixed crash on displaying strings for Mining Drill Blueprints
++Added in more advanced Geode Crushers! Blueprints can be unlocked by cracking 200, 500, 750, and 1000 geodes respectively via the mail! More advanced versions can also crack artifact troves and golden coconuts!
+~Reduced the amount of time AdvancedGeodeCrushers take to process.
++Clint now sells the advanced geode crusher blueprints on the odd off case that the ones sent in the mail are lost somehow.
+
+~~~~~~~~~~~~0.0.1 Revitalize 11-10-2022 xx.xx P.M~~~~~~~~~~~~~~
++Added mail that Clint sends out to start selling mining drills.
++Upgraded MailManager.cs to start being able to attach custom items from item references to mail.
++Added in Movie Theater ticket subscription, which means that you can get free tickets every season!
+~Fixed json properties on ItemReference.cs
+
+
+~~~~~~~~~~~~0.0.1 Revitalize 11-5-2022 xx.xx P.M~~~~~~~~~~~~~~
+-Removed Strings in base mod folder
++Added Revitalize Content Packs which are currently used for loading strings based on the game's current locale. Allows for translations of the mod's content.
+
+~~~~~~~~~~~~0.0.1 Revitalize 11-3-2022 xx.xx P.M~~~~~~~~~~~~~~
++Added Burner Mining Drill Blueprints sold by Clint when the bottom of the mines are reached.
++Added Electric Mining Drill Blueprints sold by Clint when the bottom of the mines are reached and a battery pack has been obtaied.
++Added Nuclear Mining Drill Blueprints sold by Qi's Walnut Room.
++Added Magical Mining Drill Blueprints sold by Qi's Walnut Room.
+
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-31-2022 xx.xx P.M~~~~~~~~~~~~~~
++The radioactive fuel cell blueprint can now be bought from Qi's wallnut room shop for 5 qi gems.
++Added Coal, Nuclear, and Magical mining drills.
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-30-2022 xx.xx P.M~~~~~~~~~~~~~~
++Verified that minging drills work.
+~Changed Electric Mining Drill graphic
+~Machine Status bubbles now render properly above the machine.
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-26-2022 xx.xx P.M~~~~~~~~~~~~~~
++Created PoweredMachine.cs which is the base for all machines that consume fuel as well as consolidate the common logic there so that it's not scattered across all of the classes again.
++Created new PoweredMachineTier Coal tier which uses coal to operate as an early game solution for some machines.
++Added more display strings for ElectricMiningDrill
+~Replaced error strings file for ElectricFurnace with machine common error strings.
+~Added ability to distinguish if fuel must be an active object or not to be consumed.
++Added small easter egg when placing mining drills on wooden floors.
+
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-24-2022 xx.xx P.M~~~~~~~~~~~~~~
++Started work on the Mining Drill.
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-18-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Cleaned up some code in DwarfShopUtilities to make it more clear on how resource bushes are sold.
++Added Coal, Copper, Iron, Gold, Iridium, and Radioactive resource bushes to Qi's Walnut room.
++Added config file for Qi's Walnut room sell prices including for existing nuclear and magical furnace blueprints.
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-17-2022 xx.xx P.M~~~~~~~~~~~~~~
+~ Slightly reduced the default chance of resource bushes being sold by the Dwarf.
++ Added the ability for resource bush chances being sold by the Dwarf to a config file.
+~ Changed it so that the Player must have obtained the Skull Cavern Key before any resource bush will be sold by the Dwarf.
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-14-2022 xx.xx P.M~~~~~~~~~~~~~~
++Added silo refill item to Hay Maker Shop.
++Added silo refill item to Marnie's shop.
+  +Also added in mail to let the player know when this is available.
+-Removed selling the HayMaker from Marnie's shop
++Added the Hay Feed Shop item to Marnie's shop when a teir two barn or coop is built.
+~Added some dialogue letting the player know how much hay is in their silos when the silos are filled.
++Added in Hay Maker Blueprints so that Hay Makers can be crafted.
++Hay Makers now give a bonus for hay depending on how much money would have been made if the input item was sold.
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-13-2022 xx.xx P.M~~~~~~~~~~~~~~
+~ Hay maker now uses the common recipe format used for other machines for it's inputs.
+~ Fixed an issue where the hay maker would process items for forever.
+~ Fixed an issues where hay makers would take too many items when inputing for processing.
+~ Fixed an issue where if you right clicked a hay maker with an input item in your hand, and there was still some left after inputting and they were edible, it would always bring up the "Do you want to eat" dialogue.
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-12-2022 xx.xx P.M~~~~~~~~~~~~~~
++Added code to add items to Mr. Qi's walnut room shop.
++Added Nuclear Furnace blueprints to the Walnut room shop.
++Added Magical Furnace blueprints to the Walnut room shop.
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-11-2022 xx.xx P.M~~~~~~~~~~~~~~
+~ Moved hard coded strings from ElectricFurnace.cs to separate .json files.
+~ Fixed a bug where smelting an object with not enough fuel would not consume the input and give the smelted object for free.
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-09-2022 xx.xx P.M~~~~~~~~~~~~~~
++AutomaticFarmingSystems can now harvest from ResourceBushes.
+~Finished migrating all objects to use their display strings in the .json files in the ModAssets/Strings/Objects folder and sub folder.
++Added in Coal Resource Bushes.
++Dwarf now sells all resource bushes. 25% chance for coal and copper, 20% for iron and gold, 15% for Iridium, and 10% for Radioactive.
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-08-2022 xx.xx P.M~~~~~~~~~~~~~~
++Cleaned up some code regarding save data for shops.
++Added some documentation for how to add new mail for the mod.
++Made ELectricFurnace blueprints guarded by when the Player obtains their first battery pack (or any battery pack).
++Added in mail for when ElectricFurnace blueprints are available for sale.
+
+~~~~~~~~~~~~0.0.1 Revitalize 10-06-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Changed from hardcoading strings form display names and item descriptions to loading them all from json files instead. [WIP]
+
+~~~~~~~~~~~~0.0.1 Revitalize 9-28-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Rewrote a lot of the ElectricFurnace code when it comes to processing items.
++Electric, Nuclear, and Magical furnaces now load their recipes from .json files. Only allow for a single input and output item, but allows flexibility for new recipes or modifying them.
+~Cleaned up code related to ElectricFurnace Automate compatibility mod!
+
+~~~~~~~~~~~~0.0.1 Revitalize 9-27-2022 xx.xx P.M~~~~~~~~~~~~~~
+~Cleaned up lots of code in Robin's Shop Utils to make it easier to add new items to Robin's shop.
++Added blueprints for Nuclear Furnace.
++Added blueprints for Magical Furnace.
+~Automatic Farming System should now render properly on Blueprints.
++Added an error message that occurs when attempting to get an invalid item from the ObjectManager.
+
 ~~~~~~~~~~~~0.0.1 Revitalize 7-25-2022 xx.xx P.M~~~~~~~~~~~~~~
 +Made blueprints for irrigated garden pot, and it's attachments
 +made blueprints for automatic farming system

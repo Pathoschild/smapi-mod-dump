@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+	"mailTitle":"Omegasis.Revitalize.CarpentersShop.ElectricFurnaceCanBePurchased",
+	"message":"Hey @,^I've been working on an improved furnace that uses battery packs to smelt objects instead of coal!^It has the added benefit that each battery pack can smelt a number of objects before being depleted as well as being more efficient than a normal furnace! This should help pollute less into the environment which I'm sure will make my dad happy as well.^I told mom to start selling you a copy of the blueprints in the shop, so come on by and thanks for supporting me!^ -Maru",
+	"itemReference":{
+		"stardewValleyItemId": "NULL",
+		"stardewValleyBigCraftableId": "NULL",
+		"registeredObjectId": "",
+		"amount": 1
+	},
+}

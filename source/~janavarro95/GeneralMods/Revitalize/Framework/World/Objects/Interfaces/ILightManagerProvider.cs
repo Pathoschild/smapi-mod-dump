@@ -19,7 +19,9 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Interfaces
 {
     public interface ILightManagerProvider
     {
-
-        LightManager GetLightManager();
+        LightManager LightManager
+        {
+            get;set;
+        }
     }
 }

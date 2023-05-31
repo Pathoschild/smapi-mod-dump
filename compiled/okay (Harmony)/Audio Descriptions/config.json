@@ -1,9 +1,13 @@
 {
   "Type": "HUDMessage",
+  "Blacklist": null,
   "CoolDown": 5,
+  "YOffset": 0,
+  "XOffset": 0,
   "PlayerSounds": false,
   "NPCs": true,
   "Environment": true,
   "ItemSounds": false,
-  "FishingCatch": true
+  "FishingCatch": true,
+  "Minigames": false
 }

@@ -32,6 +32,20 @@ namespace Omegasis.Revitalize.Framework.Configs.ShopConfigs
 
         public bool SellOmniGeodesEveryDayInsteadOnJustSundays;
 
+        public double CoalResourceBushSellChance = .20;
+        public double CopperResourceBushSellChance = .20;
+        public double IronResourceBushSellChance = .15;
+        public double GoldResourceBushSellChance = .15;
+        public double IrridiumResourceBushSellChance = .10;
+        public double RadioactiveResourceBushSellChance = .5;
+
+        public int CoalResourceBushSellPrice = 10_000;
+        public int CopperResourceBushSellPrice = 5_000;
+        public int IronResourceBushSellPrice = 15_000;
+        public int GoldResourceBushSellPrice = 20_000;
+        public int IridiumResourceBushSellPrice = 25_000;
+        public int RadioactiveResourceBushSellPrice = 100_000;
+
         public DwarfShopConfig()
         {
 

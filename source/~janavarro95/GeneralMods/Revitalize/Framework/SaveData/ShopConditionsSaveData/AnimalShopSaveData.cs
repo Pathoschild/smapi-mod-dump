@@ -18,8 +18,13 @@ using Newtonsoft.Json;
 
 namespace Omegasis.Revitalize.Framework.SaveData.ShopConditionsSaveData
 {
-    public class AnimalShopSaveData : SaveDataBase
+    public class AnimalShopSaveData : ShopSaveDataInfo
     {
+        public const string SaveFileName = "AnimalShopSaveData.json";
+
+        /// <summary>
+        /// Used to determine if the player has a tier 2 better barn or coop built to unlock the hay maker.
+        /// </summary>
         [JsonProperty]
         public bool hasBuiltTier2BarnOrCoop;
 
@@ -30,7 +35,7 @@ namespace Omegasis.Revitalize.Framework.SaveData.ShopConditionsSaveData
 
         public override void save()
         {
-            RevitalizeModCore.ModHelper.Data.WriteJsonFile(Path.Combine(RevitalizeModCore.SaveDataManager.getRelativeSaveDataPath(), "ShopConditionsSaveData", "AnimalShopSaveData.json"), this);
+            this.save(SaveFileName);
         }
 
         public virtual void setHasBuiltTier2OrHigherBarnOrCoop()
@@ -41,18 +46,6 @@ namespace Omegasis.Revitalize.Framework.SaveData.ShopConditionsSaveData
         public virtual bool getHasBuiltTier2OrHigherBarnOrCoop()
         {
             return this.hasBuiltTier2BarnOrCoop;
-        }
-
-        public static AnimalShopSaveData LoadOrCreate()
-        {
-            if (File.Exists(Path.Combine(RevitalizeModCore.SaveDataManager.getFullSaveDataPath(), "ShopConditionsSaveData", "AnimalShopSaveData.json")))
-                return RevitalizeModCore.ModHelper.Data.ReadJsonFile<AnimalShopSaveData>(Path.Combine(RevitalizeModCore.SaveDataManager.getRelativeSaveDataPath(), "ShopConditionsSaveData", "AnimalShopSaveData.json"));
-            else
-            {
-                AnimalShopSaveData Config = new AnimalShopSaveData();
-                RevitalizeModCore.ModHelper.Data.WriteJsonFile(Path.Combine(RevitalizeModCore.SaveDataManager.getRelativeSaveDataPath(), "ShopConditionsSaveData", "AnimalShopSaveData.json"), Config);
-                return Config;
-            }
         }
 
     }

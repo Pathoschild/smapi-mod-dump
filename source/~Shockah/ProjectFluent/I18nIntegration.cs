@@ -173,7 +173,7 @@ namespace Shockah.ProjectFluent
 			try
 			{
 				return new SequenceBlockMatcher<CodeInstruction>(instructions)
-					.AsAnchorable<CodeInstruction, Guid, Guid, SequencePointerMatcher<CodeInstruction>, SequenceBlockMatcher<CodeInstruction>>()
+					.AsGuidAnchorable()
 					.Find(
 						ILMatches.Call("get_Current"),
 						ILMatches.AnyStloc.WithAutoAnchor(out Guid modInfoLocalInstruction),
@@ -188,18 +188,18 @@ namespace Shockah.ProjectFluent
 					)
 					.AnchorBlock(out Guid findBlock)
 
-					.MoveToPointerAnchor(modInfoLocalInstruction)
+					.PointerMatcher(modInfoLocalInstruction)
 					.CreateLdlocInstruction(out var modInfoLoadInstruction)
 
-					.MoveToPointerAnchor(errorsLocalInstruction)
+					.PointerMatcher(errorsLocalInstruction)
 					.CreateLdlocaInstruction(out var errorsLoadAddressInstruction)
 
-					.MoveToPointerAnchor(translationsLocalInstruction)
+					.PointerMatcher(translationsLocalInstruction)
 					.CreateLdlocInstruction(out var translationsLoadInstruction)
 
-					.MoveToBlockAnchor(findBlock)
+					.BlockMatcher(findBlock)
 					.Insert(
-						SequenceMatcherPastBoundsDirection.After, true,
+						SequenceMatcherPastBoundsDirection.After, SequenceMatcherInsertionResultingBounds.JustInsertion,
 
 						modInfoLoadInstruction,
 						translationsLoadInstruction,

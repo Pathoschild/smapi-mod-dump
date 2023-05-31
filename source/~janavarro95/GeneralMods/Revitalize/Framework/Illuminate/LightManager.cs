@@ -23,11 +23,16 @@ namespace Omegasis.Revitalize.Framework.Illuminate
 {
     /// <summary>
     /// Deals with handling lights on custom objects.
+    /// Note that since lighting in Stardew Valley seems to work as a subtraction value, that's the reason many methods here do color inversions.
+    /// <see cref="addLightToTileLocation(Vector2, GameLocation, LightManager.LightIdentifier, Color, Vector2, float)"/> for a version that takes the actual color passed in.
     /// </summary>
     public class LightManager : NetObject
     {
+        /// <summary>
+        /// The light souces for this LightManager. The key is the positional pixel offset for the light source.
+        /// </summary>
         [XmlIgnore]
-
+        
         public readonly NetVector2Dictionary<LightSource, NetRef<LightSource>> lights = new NetVector2Dictionary<LightSource, NetRef<LightSource>>();
 
         /// <summary>
@@ -44,6 +49,22 @@ namespace Omegasis.Revitalize.Framework.Illuminate
         /// </summary>
         public const int lightBigNumber = 1000000;
 
+        /// <summary>
+        /// Different light shapes supported by the base game.
+        /// </summary>
+        public enum LightIdentifier
+        {
+
+            Lantern = 1,
+
+            WindowLight = 2,
+
+            SconceLight = 4,
+
+            CauldronLight = 5,
+
+            IndoorWindowLight = 6,
+        }
 
         /// <summary>
         /// Constructor.
@@ -64,38 +85,26 @@ namespace Omegasis.Revitalize.Framework.Illuminate
 
         }
 
-        /// <summary>Add a light to the list of tracked lights.</summary>
-        public bool addLight(Vector2 IdKey, LightSource light, StardewValley.Object gameObject)
-        {
-            if (gameObject.TileLocation.X < 0) gameObject.TileLocation = new Vector2(gameObject.TileLocation.X * -1, gameObject.TileLocation.Y);
-            if (gameObject.TileLocation.Y < 0) gameObject.TileLocation = new Vector2(gameObject.TileLocation.X, gameObject.TileLocation.Y * -1);
-
-            Vector2 initialPosition = gameObject.TileLocation * Game1.tileSize;
-            initialPosition += IdKey;
-
-            if (this.lights.ContainsKey(IdKey))
-                return false;
-
-            light.position.Value = initialPosition;
-            this.lights.Add(IdKey, light);
-            if (this.fakeLights.ContainsKey(IdKey)) return true;
-            this.fakeLights.Add(IdKey, new FakeLightSource(light.Identifier, light.position.Value, light.color.Value.Invert(), light.radius.Value));
-            return true;
-        }
-
         /// <summary>
         /// Adds in a light at the given tile location in the world.
         /// </summary>
         /// <param name="IdKey"></param>
         /// <param name="light"></param>
-        /// <param name="gameObjectTileLocation"></param>
+        /// <param name="tileLocation"></param>
         /// <returns></returns>
-        public bool addLight(Vector2 IdKey, LightSource light, Vector2 gameObjectTileLocation)
+        public bool addLightToTileLocation(Vector2 IdKey, GameLocation gameLocation ,LightSource light, Vector2 tileLocation)
         {
-            if (gameObjectTileLocation.X < 0) gameObjectTileLocation = new Vector2(gameObjectTileLocation.X * -1, gameObjectTileLocation.Y);
-            if (gameObjectTileLocation.Y < 0) gameObjectTileLocation = new Vector2(gameObjectTileLocation.X, gameObjectTileLocation.Y * -1);
+            if (this.fakeLights.ContainsKey(IdKey))
+            {
+                this.turnOnLight(IdKey, gameLocation, tileLocation);
+                return true;
+            }
 
-            Vector2 initialPosition = gameObjectTileLocation * Game1.tileSize;
+            if (tileLocation.X < 0) tileLocation = new Vector2(tileLocation.X * -1, tileLocation.Y);
+            if (tileLocation.Y < 0) tileLocation = new Vector2(tileLocation.X, tileLocation.Y * -1);
+
+
+            Vector2 initialPosition = tileLocation * Game1.tileSize;
             initialPosition += IdKey;
 
             if (this.lights.ContainsKey(IdKey))
@@ -103,9 +112,58 @@ namespace Omegasis.Revitalize.Framework.Illuminate
 
             light.position.Value = initialPosition;
             this.lights.Add(IdKey, light);
-            if (this.fakeLights.ContainsKey(IdKey)) return true;
-            this.fakeLights.Add(IdKey, new FakeLightSource(light.Identifier, light.position.Value, light.color.Value.Invert(), light.radius.Value));
+            if (!this.fakeLights.ContainsKey(IdKey))
+            {
+                this.fakeLights.Add(IdKey, new FakeLightSource(light.Identifier, light.position.Value, light.color.Value.Invert(), light.radius.Value));
+            }
+            this.turnOnLight(IdKey, gameLocation, tileLocation);
             return true;
+        }
+
+        /// <summary>
+        /// Adds in a light source to the world.
+        /// </summary>
+        /// <param name="IdKey">The identifier key to find for the light</param>
+        /// <param name="lightShape"></param>
+        /// <param name="DesiredColor"></param>
+        /// <param name="TileLocation"></param>
+        /// <param name="LightRadius"></param>
+        /// <returns></returns>
+        public bool addLightToTileLocation(Vector2 IdKey, GameLocation gameLocation ,LightIdentifier lightShape, Color DesiredColor, Vector2 TileLocation, float LightRadius)
+        {
+            return this.addLightToTileLocation(IdKey,gameLocation ,new LightSource((int)lightShape, TileLocation, LightRadius, DesiredColor.Invert()), TileLocation);
+        }
+
+        /// <summary>
+        /// Removes a light 
+        /// </summary>
+        /// <param name="IdKey"></param>
+        /// <returns></returns>
+        public bool removeLight(Vector2 IdKey, GameLocation location)
+        {
+            this.turnOffLight(IdKey, location);
+            this.fakeLights.Remove(IdKey);
+            return this.lights.Remove(IdKey);
+        }
+
+        /// <summary>
+        /// Removes all of the lights associated with this light manager.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public bool removeLights(GameLocation location)
+        {
+            List<Vector2> lightIds = new List<Vector2>(this.fakeLights.Keys);
+            bool anyRemoved = false;
+            foreach (Vector2 lightId in lightIds)
+            {
+                bool removed = this.removeLight(lightId, location);
+                if (anyRemoved == false && removed == true)
+                {
+                    anyRemoved = true;
+                }
+            }
+            return anyRemoved;
         }
 
         /// <summary>Turn off a single light.</summary>
@@ -121,32 +179,38 @@ namespace Omegasis.Revitalize.Framework.Illuminate
         }
 
         /// <summary>Turn on a single light.</summary>
-        public bool turnOnLight(Vector2 IdKey, GameLocation location, StardewValley.Object gameObject)
+        public bool turnOnLight(Vector2 IdKey, GameLocation location, Vector2 TilePosition)
         {
+
+            if (location == null)
+            {
+                return false;
+            }
+
             if (!this.lights.ContainsKey(IdKey))
                 return false;
 
+
             this.lights.TryGetValue(IdKey, out var light);
-            if (light == null)
-                throw new Exception("Light is null????");
 
             Game1.currentLightSources.Add(light);
-            if (location == null)
-                throw new Exception("WHY IS LOC NULL???");
-
-            if (location.sharedLights == null)
-                throw new Exception("Locational lights is null!");
-
 
             if (light.lightTexture == null)
                 light.lightTexture = this.loadTextureFromConstantValue(light.Identifier);
-
-            Game1.currentLightSources.Add(light);
-            location.sharedLights.Add((int)IdKey.X * lightBigNumber + (int)IdKey.Y, light);
-            this.repositionLight(light, IdKey, gameObject);
+            if (!Game1.currentLightSources.Contains(light))
+            {
+                Game1.currentLightSources.Add(light);
+            }
+            //Light is already displayed at the shared location.
+            if (!location.sharedLights.ContainsKey((int)IdKey.X * lightBigNumber + (int)IdKey.Y))
+            {
+                location.sharedLights.Add((int)IdKey.X * lightBigNumber + (int)IdKey.Y, light);
+            }
+            this.repositionLight(light, IdKey, TilePosition);
             return true;
         }
 
+        /*
         /// <summary>Add a light source to this location.</summary>
         /// <param name="environment">The game location to add the light source in.</param>
         public virtual void turnOnLights(GameLocation environment, StardewValley.Object gameObject)
@@ -167,17 +231,18 @@ namespace Omegasis.Revitalize.Framework.Illuminate
             foreach (KeyValuePair<Vector2, LightSource> pair in this.lights.Pairs)
                 this.turnOffLight(pair.Key, environment);
         }
+        */
 
         /// <summary>
         /// Repositions all lights for this object.
         /// </summary>
         /// <param name="gameObject"></param>
-        public void repositionLights(StardewValley.Object gameObject)
+        public void repositionLights(Vector2 newTilePosition, GameLocation gameLocation)
         {
             if (this.lights.Count() < this.fakeLights.Count())
-                this.regenerateRealLightsFromFakeLights();
+                this.regenerateRealLightsFromFakeLights(gameLocation);
             foreach (KeyValuePair<Vector2, LightSource> pair in this.lights.Pairs)
-                this.repositionLight(pair.Value, pair.Key, gameObject);
+                this.repositionLight(pair.Value, pair.Key, newTilePosition);
         }
 
         /// <summary>
@@ -186,12 +251,13 @@ namespace Omegasis.Revitalize.Framework.Illuminate
         /// <param name="light"></param>
         /// <param name="offset"></param>
         /// <param name="gameObject"></param>
-        public void repositionLight(LightSource light, Vector2 offset, StardewValley.Object gameObject)
+        public void repositionLight(LightSource light, Vector2 offset, Vector2 NewTilePosition)
         {
-            Vector2 initialPosition = gameObject.TileLocation * Game1.tileSize;
+            Vector2 initialPosition = NewTilePosition * Game1.tileSize;
             light.position.Value = initialPosition + offset;
         }
 
+        /*
         /// <summary>
         /// Toggles the lights for this object.
         /// </summary>
@@ -214,15 +280,7 @@ namespace Omegasis.Revitalize.Framework.Illuminate
                 return;
             }
         }
-
-        /// <summary>
-        /// Removes the lights from the world when this object needs to be cleaned up.
-        /// </summary>
-        /// <param name="loc"></param>
-        public virtual void removeForCleanUp(GameLocation loc)
-        {
-            this.turnOffLights(loc);
-        }
+        */
 
         /// <summary>
         /// Loads in the appropriate texture from sdv depending on the int value used.
@@ -235,19 +293,14 @@ namespace Omegasis.Revitalize.Framework.Illuminate
             {
                 case 1:
                     return Game1.lantern;
-                    break;
                 case 2:
                     return Game1.windowLight;
-                    break;
                 case 4:
                     return Game1.sconceLight;
-                    break;
                 case 5:
                     return Game1.cauldronLight;
-                    break;
                 case 6:
                     return Game1.indoorWindowLight;
-                    break;
             }
             return Game1.sconceLight;
         }
@@ -269,14 +322,14 @@ namespace Omegasis.Revitalize.Framework.Illuminate
                     position -= light.Key;
                     position /= Game1.tileSize;
                     position = new Vector2((float)Math.Round(position.X), (float)Math.Round(position.Y));
-                    copy.addLight(light.Key, new LightSource(light.Value.id, new Vector2(0, 0), light.Value.radius, light.Value.color.Invert()), position);
+                    copy.addLightToTileLocation(light.Key,null ,new LightSource(light.Value.id, new Vector2(0, 0), light.Value.radius, light.Value.color.Invert()), position);
                 }
             }
             return copy;
         }
 
 
-        public virtual void regenerateRealLightsFromFakeLights()
+        public virtual void regenerateRealLightsFromFakeLights(GameLocation gameLocation)
         {
             //ModCore.log("Info for file"+Path.GetFileNameWithoutExtension(file)+" has this many lights: " + info.info.lightManager.fakeLights.Count);
             this.lights.Clear();
@@ -286,7 +339,7 @@ namespace Omegasis.Revitalize.Framework.Illuminate
                 position -= light.Key;
                 position /= Game1.tileSize;
                 position = new Vector2((float)Math.Round(position.X), (float)Math.Round(position.Y));
-                this.addLight(light.Key, new LightSource(light.Value.id, new Vector2(0, 0), light.Value.radius, light.Value.color.Invert()), position);
+                this.addLightToTileLocation(light.Key, gameLocation, new LightSource(light.Value.id, new Vector2(0, 0), light.Value.radius, light.Value.color.Invert()), position);
             }
         }
 

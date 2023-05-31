@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/AndrewGraber/Skull-Cavern-Drill-Redux
+**
+*************************************************/
+
+{
+  "Name": "SkullCavernDrillRedux",
+  "Author": "NetworkOverflow",
+  "Version": "1.0.0",
+  "Description": "A spinoff of the original Dwarven Drill + Skull Cavern Drill mod combo by S1mmyy with more reasonable prices.",
+  "UniqueID": "NetworkOverflow.SkullCavernDrillRedux",
+  "EntryDll": "SkullCavernDrillRedux.dll",
+  "MinimumApiVersion": "3.0.0",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets",
+      "MinimumVersion": "1.6.2"
+    }
+  ],
+  "UpdateKeys": []
+}

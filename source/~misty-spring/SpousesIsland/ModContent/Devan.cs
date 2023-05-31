@@ -8,17 +8,76 @@
 **
 *************************************************/
 
-using StardewModdingAPI.Events;
-using StardewModdingAPI;
-using System.Collections.Generic;
-using xTile;
-using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewValley;
 
-namespace SpousesIsland
+namespace SpousesIsland.ModContent
 {
-    internal class Devan
+    internal static class Devan
     {
+        /// <summary>
+        /// Changes Devan's schedule depending on how many kids there are.
+        /// </summary>
+        /// <param name="who">Devan.</param>
+        internal static void CorrectSchedule(string who = "Devan")
+        {
+            if (BedCode.HasCrib(Game1.player)) return; //no crib
+            ModEntry.Mon.Log("no cribs found. reloading schedule...", LogLevel.Debug);
+
+            var npc = Game1.getCharacterFromName(who);
+
+            const string nocrib = "0 FarmHouse 6 6 0/630 FarmHouse 8 5 1/640 FarmHouse 17 6 1/700 FarmHouse 12 13 2/730 FarmHouse 9 14 0/830 FarmHouse 5 14 0 Devan_spoon/900 FarmHouse 5 14 2 Devan_bottle/1000 FarmHouse 8 14 0 Devan_washing/1100 FarmHouse 8 15 2/1150 FarmHouse 5 14 0 Devan_cook/1250 FarmHouse 5 14 2 Devan_plate/1400 FarmHouse 8 14 0 Devan_washing/1700 FarmHouse 11 16 0 Devan_broom/2130 FarmHouse 12 13 3/2200 FarmHouse 10 14 2/a2300 FarmHouse 12 19 2";
+
+            //stop any npc action
+            npc.Halt();
+            npc.followSchedule = false;
+            npc.clearSchedule();
+
+            //set data
+            var schedule = npc.parseMasterSchedule(nocrib);
+            npc.Schedule = schedule;
+            npc.followSchedule = true;
+        }
+
+        internal static void WalkTo(Character who)
+        {
+            var devan = Utility.fuzzyCharacterSearch("Devan", false);
+
+            var position = who.Position.ToPoint();
+            position.X++;
+
+            devan.controller = new PathFindController(devan, devan.currentLocation, position, 0);
+        }
+
+        internal static void Wander(int maxDistance)
+        {
+            var devan = Utility.fuzzyCharacterSearch("Devan", false);
+
+            var randomlocation = Point.Zero;
+            Point difference;
+
+            //can try at max. 10 times to fix position
+            for (int i = 0; i < 10; i++)
+            {
+                randomlocation = new Point(Game1.random.Next(devan.currentLocation.Map.Layers[0].LayerWidth), Game1.random.Next(devan.currentLocation.Map.Layers[0].LayerHeight));
+
+                difference = new Point(
+                (int)(randomlocation.X - devan.Position.X),
+                (int)(randomlocation.Y - devan.Position.Y));
+
+                if (Math.Abs(difference.X) <= maxDistance && Math.Abs(difference.Y) <= maxDistance)
+                {
+                    break;
+                }
+            }
+            
+            devan.controller = new PathFindController(devan, devan.currentLocation, randomlocation, Game1.random.Next(0, 4));
+        }
+
         /* Required for devan to load 
          * All content here has been made international (by adding TL keys)! */
         internal static void MainData(AssetRequestedEventArgs e)
@@ -61,11 +120,11 @@ namespace SpousesIsland
                 if (e.NameWithoutLocale.IsEquivalentTo("Data/Festivals/spring13"))
                     e.Edit(asset =>
                     {
-                        IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                        var data = asset.AsDictionary<string, string>().Data;
                         if (data.ContainsKey("Set-Up_additionalCharacters"))
                         {
-                            data.TryGetValue("Set-Up_additionalCharacters", out string spring13_setup);
-                            data["Set-Up_additionalCharacters"] = spring13_setup + "/Devan 25 69 up";
+                            data.TryGetValue("Set-Up_additionalCharacters", out var spring13Setup);
+                            data["Set-Up_additionalCharacters"] = spring13Setup + "/Devan 25 69 up";
                         }
                         else
                         {
@@ -74,8 +133,8 @@ namespace SpousesIsland
 
                         if (data.ContainsKey("MainEvent_additionalCharacters"))
                         {
-                            data.TryGetValue("MainEvent_additionalCharacters", out string spring13_main);
-                            data["MainEvent_additionalCharacters"] = spring13_main + "/Devan 25 73 up";
+                            data.TryGetValue("MainEvent_additionalCharacters", out var spring13Main);
+                            data["MainEvent_additionalCharacters"] = spring13Main + "/Devan 25 73 up";
                         }
                         else
                         {
@@ -87,11 +146,11 @@ namespace SpousesIsland
                 if (e.NameWithoutLocale.IsEquivalentTo("Data/Festivals/spring24"))
                     e.Edit(asset =>
                     {
-                        IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                        var data = asset.AsDictionary<string, string>().Data;
                         if (data.ContainsKey("Set-Up_additionalCharacters"))
                         {
-                            data.TryGetValue("Set-Up_additionalCharacters", out string spring24_setup);
-                            data["Set-Up_additionalCharacters"] = spring24_setup + "/Devan 9 34 down";
+                            data.TryGetValue("Set-Up_additionalCharacters", out var spring24Setup);
+                            data["Set-Up_additionalCharacters"] = spring24Setup + "/Devan 9 34 down";
                         }
                         else
                         {
@@ -99,8 +158,8 @@ namespace SpousesIsland
                         }
                         if (data.ContainsKey("MainEvent_additionalCharacters"))
                         {
-                            data.TryGetValue("MainEvent_additionalCharacters", out string spring24_main);
-                            data["MainEvent_additionalCharacters"] = spring24_main + "/Devan 8 30 up";
+                            data.TryGetValue("MainEvent_additionalCharacters", out var spring24Main);
+                            data["MainEvent_additionalCharacters"] = spring24Main + "/Devan 8 30 up";
                         }
                         else
                         {
@@ -113,11 +172,11 @@ namespace SpousesIsland
                 if (e.NameWithoutLocale.IsEquivalentTo("Data/Festivals/summer11"))
                     e.Edit(asset =>
                     {
-                        IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                        var data = asset.AsDictionary<string, string>().Data;
                         if (data.ContainsKey("Set-Up_additionalCharacters"))
                         {
-                            data.TryGetValue("Set-Up_additionalCharacters", out string summer11_setup);
-                            data["Set-Up_additionalCharacters"] = summer11_setup + "/Devan 13 9 down";
+                            data.TryGetValue("Set-Up_additionalCharacters", out var summer11Setup);
+                            data["Set-Up_additionalCharacters"] = summer11Setup + "/Devan 13 9 down";
                         }
                         else
                         {
@@ -125,8 +184,8 @@ namespace SpousesIsland
                         }
                         if (data.ContainsKey("MainEvent_additionalCharacters"))
                         {
-                            data.TryGetValue("MainEvent_additionalCharacters", out string summer11_main);
-                            data["MainEvent_additionalCharacters"] = summer11_main + "/Devan 30 14 right";
+                            data.TryGetValue("MainEvent_additionalCharacters", out var summer11Main);
+                            data["MainEvent_additionalCharacters"] = summer11Main + "/Devan 30 14 right";
                         }
                         else
                         {
@@ -136,11 +195,11 @@ namespace SpousesIsland
                 if (e.NameWithoutLocale.IsEquivalentTo("Data/Festivals/summer28"))
                     e.Edit(asset =>
                     {
-                        IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                        var data = asset.AsDictionary<string, string>().Data;
                         if (data.ContainsKey("Set-Up_additionalCharacters"))
                         {
-                            data.TryGetValue("Set-Up_additionalCharacters", out string summer28_setup);
-                            data["Set-Up_additionalCharacters"] = summer28_setup + "/Devan 11 18 left";
+                            data.TryGetValue("Set-Up_additionalCharacters", out var summer28Setup);
+                            data["Set-Up_additionalCharacters"] = summer28Setup + "/Devan 11 18 left";
                         }
                         else
                         {
@@ -153,11 +212,11 @@ namespace SpousesIsland
                 if (e.NameWithoutLocale.IsEquivalentTo("Data/Festivals/fall16"))
                     e.Edit(asset =>
                     {
-                        IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                        var data = asset.AsDictionary<string, string>().Data;
                         if (data.ContainsKey("Set-Up_additionalCharacters"))
                         {
-                            data.TryGetValue("Set-Up_additionalCharacters", out string fall16_setup);
-                            data["Set-Up_additionalCharacters"] = fall16_setup + "/Devan 66 65 down";
+                            data.TryGetValue("Set-Up_additionalCharacters", out var fall16Setup);
+                            data["Set-Up_additionalCharacters"] = fall16Setup + "/Devan 66 65 down";
                         }
                         else
                         {
@@ -167,11 +226,11 @@ namespace SpousesIsland
                 if (e.NameWithoutLocale.IsEquivalentTo("Data/Festivals/fall27"))
                     e.Edit(asset =>
                     {
-                        IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                        var data = asset.AsDictionary<string, string>().Data;
                         if (data.ContainsKey("Set-Up_additionalCharacters"))
                         {
-                            data.TryGetValue("Set-Up_additionalCharacters", out string fall27_setup);
-                            data["Set-Up_additionalCharacters"] = fall27_setup + "/Devan 27 68 up";
+                            data.TryGetValue("Set-Up_additionalCharacters", out var fall27Setup);
+                            data["Set-Up_additionalCharacters"] = fall27Setup + "/Devan 27 68 up";
                         }
                         else
                         {
@@ -184,11 +243,11 @@ namespace SpousesIsland
                 if (e.NameWithoutLocale.IsEquivalentTo("Data/Festivals/winter8"))
                     e.Edit(asset =>
                     {
-                        IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                        var data = asset.AsDictionary<string, string>().Data;
                         if (data.ContainsKey("Set-Up_additionalCharacters"))
                         {
-                            data.TryGetValue("Set-Up_additionalCharacters", out string winter8_setup);
-                            data["Set-Up_additionalCharacters"] = winter8_setup + "/Devan 66 14 right";
+                            data.TryGetValue("Set-Up_additionalCharacters", out var winter8Setup);
+                            data["Set-Up_additionalCharacters"] = winter8Setup + "/Devan 66 14 right";
                         }
                         else
                         {
@@ -196,9 +255,8 @@ namespace SpousesIsland
                         }
                         if (data.ContainsKey("MainEvent_additionalCharacters"))
                         {
-                            string winter8_main;
-                            data.TryGetValue("MainEvent_additionalCharacters", out winter8_main);
-                            data["MainEvent_additionalCharacters"] = winter8_main + "/Devan 69 27 down";
+                            data.TryGetValue("MainEvent_additionalCharacters", out string winter8Main);
+                            data["MainEvent_additionalCharacters"] = winter8Main + "/Devan 69 27 down";
                         }
                         else
                         {
@@ -208,11 +266,11 @@ namespace SpousesIsland
                 if (e.NameWithoutLocale.IsEquivalentTo("Data/Festivals/winter25"))
                     e.Edit(asset =>
                     {
-                        IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                        var data = asset.AsDictionary<string, string>().Data;
                         if (data.ContainsKey("Set-Up_additionalCharacters"))
                         {
-                            data.TryGetValue("Set-Up_additionalCharacters", out string winter25_setup);
-                            data["Set-Up_additionalCharacters"] = winter25_setup + "/Devan 23 74 up";
+                            data.TryGetValue("Set-Up_additionalCharacters", out var winter25Setup);
+                            data["Set-Up_additionalCharacters"] = winter25Setup + "/Devan 23 74 up";
                         }
                         else
                         {

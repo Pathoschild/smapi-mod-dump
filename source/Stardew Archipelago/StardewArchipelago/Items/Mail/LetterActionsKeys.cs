@@ -34,5 +34,6 @@ namespace StardewArchipelago.Items.Mail
         public const string GiveFurniture = "GiveFurniture";
         public const string GiveHat = "GiveHat";
         public const string IslandUnlock = "IslandUnlock";
+        public const string Trap = "Trap";
     }
 }

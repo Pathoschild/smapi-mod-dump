@@ -11,6 +11,7 @@ mods:
    Kokoro
    Machine Status
    Maximize Fix
+   Mine Tweaks
    Please Gift Me In Person
    Predictable Retaining Soil
    Project Fluent
@@ -19,9 +20,9 @@ mods:
    XP Display
 
 latest commit:
-   commit 0cc4bd4a9369f192705d0b218a9e6236f291187f
+   commit a8e06eac7070a2d6e277555eb55b02a79d574e3a
    Author: MichaÅ‚ DolaÅ› <me@shockah.pl>
-   Date:   Sat Apr 1 20:44:13 2023 +0200
+   Date:   Tue May 30 15:04:30 2023 +0200
    
-       MaximizeFix: Version 1.0.0 - new mod
+       All-around project changes
    

@@ -21,7 +21,6 @@ using xTile.Dimensions;
 using Omegasis.Revitalize.Framework.Utilities;
 using Omegasis.Revitalize.Framework.Managers;
 using Omegasis.Revitalize.Framework.Configs;
-using Omegasis.Revitalize.Framework.Constants.ItemIds.Objects;
 using Omegasis.Revitalize.Framework.Constants;
 using Omegasis.Revitalize.Framework.Crafting;
 using Omegasis.Revitalize.Framework.Environment;
@@ -30,11 +29,17 @@ using Omegasis.Revitalize.Framework.Player;
 using Omegasis.Revitalize.Framework.SaveData;
 using Omegasis.Revitalize.Framework.World;
 using Omegasis.Revitalize.Framework.World.WorldUtilities.Shops;
-using Omegasis.Revitalize.Framework.Constants.ItemIds.Items;
 using Omegasis.Revitalize.Framework.Constants.PathConstants.Graphics;
 using Omegasis.Revitalize.Framework.Constants.PathConstants;
 using Omegasis.Revitalize.Framework.Content;
-using Omegasis.Revitalize.Framework.Constants.ItemIds.Items.BlueprintIds;
+using Omegasis.Revitalize.Framework.Constants.Ids.Objects;
+using Omegasis.Revitalize.Framework.Constants.Ids.Items;
+using Omegasis.Revitalize.Framework.World.Objects.Items.Utilities;
+using Netcode;
+using Omegasis.Revitalize.Framework.World.Objects.Machines.Furnaces;
+using Omegasis.Revitalize.Framework.World.Buildings;
+using Omegasis.Revitalize.Framework.HUD;
+using Omegasis.Revitalize.Framework.Constants.Ids.Items.BlueprintIds;
 
 namespace Omegasis.Revitalize
 {
@@ -42,43 +47,7 @@ namespace Omegasis.Revitalize
     // TODO:
     /*
     // -Make this mod able to load content packs for easier future modding
-    //
-    //  -Multiple Lights On Object
-    //  -Illumination Colors
-    //  Furniture:
-    //      -rugs 
-    //      -tables
-    //      -lamps
-    //      -dressers/other storage containers 
-    //      -fun interactables
-    //          -Arcade machines
-    //      -More crafting tables 
-    //      -Baths (see chairs but swimming)
-    //
-    //  -Machines
-    //      !=Energy
-    //            Generators:
-                  -solar
-                  -burnable
-                  -watermill
-                  -windmill
-                  -crank (costs stamina)
-                  Storage:
-                  -Batery Pack
-             -Mini-greenhouse
-                   -takes fertilizer which can do things like help crops grow or increase prodcuction yield/quality.
-                   -takes crop/extended crop seeds
-                   -takes sprinklers
-                   -has grid (1x1, 2x2, 3x3, 4x4, 5x5) system for growing crops/placing sprinkers
-                   -sprinkers auto water crops
-                   -can auto harvest
-                   -hover over crop to see it's info
-                   -can be upgraded to grow crops from specific seasons with season stones (spring,summer, fall winter) (configurable if they are required)
-                   -Add in season stone recipe
 
-    //      -Furnace
-    //      -Seed Maker
-    //      -Stone Quarry
     //      -Mayo Maker
     //      -Cheese Maker
             -Yogurt Maker
@@ -87,40 +56,6 @@ namespace Omegasis.Revitalize
     //      -Auto Preserves
     //      -Auto Keg
     //      -Auto Cask
-    //      -Calcinator (oil+stone: produces titanum?)
-    //  -Materials
-    //      -Tin/Bronze/Alluminum/Silver?Platinum/Etc (all but platinum: may add in at a later date)
-            -titanium (d0ne)
-            -Alloys!
-                -Brass (done)
-                -Electrum (done)
-                -Steel (done)
-                -Bronze (done)
-            -Mythrill
-            
-            -Star Metal
-            -Star Steel
-            -Cobalt
-        -Liquids
-            -oil
-            -water
-            -coal
-            -juice???
-            -lava?
-
-        -Dyes!
-            -Dye custom objects certain colors!
-            -Rainbow Dye -(set a custom object to any color)
-            -red, green, blue, yellow, pink, etc
-            -Make dye from flowers/coal/algee/minerals/gems (black), etc
-                -soapstone (washes off dye)
-                -Lunarite (white)
-        Dye Machine
-            -takes custom object and dye
-            -dyes the object
-            -can use water to wash off dye.
-            -maybe dye stardew valley items???
-            -Dyed Wool (Artisan good)
 
         Menus:
     //  -Crafting Menu
@@ -177,7 +112,6 @@ namespace Omegasis.Revitalize
     //  
     //  Locations:
             -Make extra bus stop sign that travels between new towns/locations.
-    //      -Small Island Home?
     //      -New town inspired by FOMT;Mineral Town/The Valley HM DS
     //
     //  More crops
@@ -199,7 +133,7 @@ namespace Omegasis.Revitalize
             -Pendants
     */
 
-    public class RevitalizeModCore : Mod, IAssetEditor
+    public class RevitalizeModCore : Mod
     {
 
         public static RevitalizeModCore Instance;
@@ -213,8 +147,6 @@ namespace Omegasis.Revitalize
         public static ConfigManager Configs;
 
         public static SaveDataManager SaveDataManager;
-
-
 
         public static ModContentManager ModContentManager;
 
@@ -230,34 +162,45 @@ namespace Omegasis.Revitalize
 
             ModContentManager.initializeModContent(this.ModManifest);
 
-            //Adds in event handling for the mod.
+            //Save events.
             ModHelper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
             ModHelper.Events.GameLoop.SaveCreated += this.GameLoop_SaveCreated;
 
-            ModHelper.Events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
-            ModHelper.Events.GameLoop.UpdateTicked += this.GameLoop_UpdateTicked;
-            ModHelper.Events.GameLoop.ReturnedToTitle += this.GameLoop_ReturnedToTitle;
 
-            ModHelper.Events.Player.Warped +=ModContentManager.objectManager.resources.OnPlayerLocationChanged;
+            //Player Events.
+            ModHelper.Events.Player.Warped += ModContentManager.objectManager.resources.OnPlayerLocationChanged;
+            ModHelper.Events.Player.InventoryChanged += PlayerUtilities.OnItemAddedToPlayersInventory;
+
+            //Game time change events.
+            ModHelper.Events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
             ModHelper.Events.GameLoop.DayStarted += this.GameLoop_DayStarted;
             ModHelper.Events.GameLoop.DayEnding += this.GameLoop_DayEnding;
 
+            //Input events.
             ModHelper.Events.Input.ButtonPressed += ObjectInteractionHacks.Input_CheckForObjectInteraction;
-
-            ModHelper.Events.Display.RenderedWorld += ObjectInteractionHacks.Render_RenderCustomObjectsHeldInMachines;
-            //ModHelper.Events.Display.Rendered += MenuHacks.EndOfDay_OnMenuChanged;
-            ModHelper.Events.Display.MenuChanged += ShopUtilities.OnNewMenuOpened;
-
-            ModHelper.Events.Display.MenuChanged += ModContentManager.mailManager.onNewMenuOpened ;
             //ModHelper.Events.GameLoop.Saved += MenuHacks.EndOfDay_CleanupForNewDay;
             ModHelper.Events.Input.ButtonPressed += ObjectInteractionHacks.ResetNormalToolsColorOnLeftClick;
 
-            ModHelper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
+            //Render events.
+            ModHelper.Events.Display.RenderedWorld += ObjectInteractionHacks.Render_RenderCustomObjectsHeldInMachines;
 
+            //Menu Events.
+            ModHelper.Events.Display.MenuChanged += ShopUtilities.OnNewMenuOpened;
+            ModHelper.Events.Display.MenuChanged += ModContentManager.mailManager.onNewMenuOpened;
+
+            //Game Loop events.
+            ModHelper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
+            ModHelper.Events.GameLoop.ReturnedToTitle += this.GameLoop_ReturnedToTitle;
+            ModHelper.Events.GameLoop.UpdateTicked += this.GameLoop_UpdateTicked;
+
+
+            ModHelper.Events.Content.AssetRequested += this.Content_AssetRequested;
 
             SaveDataManager = new SaveDataManager();
             playerInfo = new PlayerInfo();
         }
+
+
 
         ///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~///
         ///                     Initialize Mod Content                     ///
@@ -266,7 +209,6 @@ namespace Omegasis.Revitalize
 
         private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
         {
-            RevitalizeModCore.log("Hello world!");
 
             ModContentManager.loadContentOnGameLaunched();
 
@@ -275,7 +217,14 @@ namespace Omegasis.Revitalize
 
         private void GameLoop_ReturnedToTitle(object sender, StardewModdingAPI.Events.ReturnedToTitleEventArgs e)
         {
+
+            DimensionalStorageUnitBuilding.CachedDimensionalStorageUnitBuilding = null;
+
+            //Do more cleanup here...
+
         }
+
+
 
 
 
@@ -288,7 +237,27 @@ namespace Omegasis.Revitalize
         {
             ModContentManager.objectManager.resources.DailyResourceSpawn(senderm, e);
             ShopUtilities.OnNewDay(senderm, e);
-            ModContentManager.mailManager.tryToAddMailToMailbox();
+
+            //Used to also check if a player has items that would do things such as unlocking a crafting recipe when loading a day.
+            PlayerUtilities.CheckForInventoryItem(Game1.player.Items);
+
+            ModContentManager.mailManager.tryToAddAllMailToMailbox();
+
+
+
+            this.warpToWalnutRoom();
+        }
+
+        /// <summary>
+        /// Used just for testing purposes.
+        /// </summary>
+        private void warpToWalnutRoom()
+        {
+            if (false)
+            {
+                Game1.warpFarmer("QiNutRoom", 7, 8, 0);
+                Game1.player.QiGems = 100;
+            }
         }
 
         /// <summary>
@@ -304,32 +273,38 @@ namespace Omegasis.Revitalize
         private void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
         {
             SaveDataManager.loadOrCreateSaveData();
+
             //ModContentManager.mailManager.tryToAddMailToMailbox();
 
-
-
-            /*
             //HACKS
             //Game1.player.Money = 100_000;
 
+            Game1.player.ForagingLevel = 5;
+
             Game1.player.addItemsByMenuIfNecessary(new List<Item>()
             {
+                ModContentManager.objectManager.getItem(StorageIds.LargeItemVault),
+                                ModContentManager.objectManager.getItem(MachineIds.Windmill),
+                                ModContentManager.objectManager.getItem(FarmingObjectIds.AutomaticTreeFarm),
+              /*
 
 
-                            ObjectManager.getItem(Machines.ElectricFurnace),
-                            ObjectManager.getItem(Machines.NuclearFurnace),
-                            ObjectManager.getItem(Machines.MagicalFurnace),
-                            ObjectManager.getItem(Enums.SDVObject.CopperOre,999),
-                            ObjectManager.getItem(Enums.SDVObject.BatteryPack,999),
-                            ObjectManager.getItem(MiscItemIds.RadioactiveFuel,999),
-                            ObjectManager.getItem(Enums.SDVBigCraftable.Chest,1),
+                                                        ModContentManager.objectManager.getItem(StorageIds.HugeItemVault),
+                                                        
+                ModContentManager.objectManager.getItem(FarmingObjects.HayMaker),
 
-              //ObjectManager.getItem(Enums.SDVBigCraftable.Furnace),
-            }) ;
-            */
-            Game1.player.addItemToInventoryBool(ModContentManager.objectManager.getItem(CraftingStations.WorkStation_Id));
-            Game1.player.addItemToInventoryBool(ModContentManager.objectManager.getItem(WorkbenchBlueprintIds.Workbench_AnvilCraftingRecipeBlueprint));
-            Game1.player.addItemToInventoryBool(ModContentManager.objectManager.getItem(Enums.SDVObject.IronBar, 20));
+                            ModContentManager.objectManager.getItem(MachineIds.ElectricAdvancedGeodeCrusher),
+                            
+                            ModContentManager.objectManager.getItem(Enums.SDVObject.OmniGeode,100),
+                            ModContentManager.objectManager.getItem(Enums.SDVObject.BatteryPack,100),
+                            ModContentManager.objectManager.getItem(Enums.SDVBigCraftable.Chest,10),
+              */
+
+            });
+            //Game1.player.addItemToInventoryBool(ModContentManager.objectManager.getItem(WorkbenchBlueprintIds.Workbench_AnvilCraftingRecipeBlueprint));
+            //Game1.player.addItemToInventoryBool(ModContentManager.objectManager.getItem(Enums.SDVObject.IronBar, 20));
+
+
 
             Framework.World.WorldUtilities.WorldUtility.InitializeGameWorld();
 
@@ -338,7 +313,7 @@ namespace Omegasis.Revitalize
         private void GameLoop_SaveCreated(object sender, StardewModdingAPI.Events.SaveCreatedEventArgs e)
         {
             SaveDataManager.loadOrCreateSaveData();
-            ModContentManager.mailManager.tryToAddMailToMailbox();
+            ModContentManager.mailManager.tryToAddAllMailToMailbox();
             Framework.World.WorldUtilities.WorldUtility.InitializeGameWorld();
         }
 
@@ -347,6 +322,7 @@ namespace Omegasis.Revitalize
         {
             DarkerNight.SetDarkerColor();
             playerInfo.update();
+            HudUtilities.OnGameUpdateTicked();
         }
 
         private void GameLoop_TimeChanged(object sender, StardewModdingAPI.Events.TimeChangedEventArgs e)
@@ -378,14 +354,14 @@ namespace Omegasis.Revitalize
 
         public static void log(object message, bool StackTrace, params string[] strs)
         {
-            message = string.Format(message.ToString(),strs);
+            message = string.Format(message.ToString(), strs);
             if (StackTrace)
                 ModMonitor.Log(message.ToString() + " " + getFileDebugInfo());
             else
                 ModMonitor.Log(message.ToString());
         }
 
-        public static string getFileDebugInfo(bool fullStackTrace=false)
+        public static string getFileDebugInfo(bool fullStackTrace = false)
         {
             if (fullStackTrace)
             {
@@ -400,22 +376,12 @@ namespace Omegasis.Revitalize
 
         }
 
-        public bool CanEdit<T>(IAssetInfo asset)
+        private void Content_AssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
         {
             if (ModContentManager.mailManager != null)
             {
-                return ModContentManager.mailManager.canEditAsset(asset);
+                ModContentManager.mailManager.editMailAsset(e);
             }
-            return false;
-        }
-
-        public void Edit<T>(IAssetData asset)
-        {
-            if (ModContentManager.mailManager != null)
-            {
-                ModContentManager.mailManager.editMailAsset(asset);
-            }
-
         }
     }
 }

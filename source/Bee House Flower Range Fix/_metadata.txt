@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit c25579dd2ded9c8fc83eff2464398326b145e72d
-   Merge: 87a4b3e d730924
    Author: Justin Reeves <kjryan.reeves@gmail.com>
    Date:   Mon Mar 18 09:38:43 2019 -0700
    

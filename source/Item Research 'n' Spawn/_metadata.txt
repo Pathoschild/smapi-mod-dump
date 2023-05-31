@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit 286f0005b5dd114dc2b05f807b0d3f90d945a097
-   Merge: e3e6015 019e03e
    Author: aleksi_ttu <aleksi@ttu.ee>
    Date:   Mon Aug 23 00:42:58 2021 +0300
    

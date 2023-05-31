@@ -22,11 +22,15 @@ using Omegasis.Revitalize.Framework.Constants.PathConstants.Graphics;
 using Omegasis.Revitalize.Framework.Crafting;
 using Omegasis.Revitalize.Framework.Managers;
 using Omegasis.Revitalize.Framework.Utilities;
-using Omegasis.Revitalize.Framework.World;
+using Omegasis.Revitalize.Framework.World.Mail;
 using Omegasis.Revitalize.Framework.World.Objects;
 using Omegasis.Revitalize.Framework.World.Objects.InformationFiles;
 using Omegasis.Revitalize.Framework.World.Objects.InformationFiles.Json;
 using Omegasis.Revitalize.Framework.World.Objects.InformationFiles.Json.Crafting;
+using Omegasis.Revitalize.Framework.World.Objects.Machines.Misc;
+using Omegasis.Revitalize.Framework.World.Objects.Machines.ResourceGeneration;
+using Omegasis.Revitalize.Framework.World.WorldUtilities;
+using Omegasis.Revitalize.Framework.World.WorldUtilities.Items;
 using Omegasis.Revitalize.Framework.World.WorldUtilities.Shops;
 using StardewModdingAPI;
 
@@ -34,15 +38,33 @@ namespace Omegasis.Revitalize.Framework.Content
 {
     public class ModContentManager
     {
+        /// <summary>
+        /// Manages all content packs for the mod.
+        /// </summary>
+        public Revitalize.Framework.ContentPacks.RevitalizeContentPackManager revitalizeContentPackManager;
+
+        /// <summary>
+        /// Manages crafting recipes for crafting stations for the mod.
+        /// </summary>
         public CraftingManager craftingManager;
         /// <summary>
         /// Keeps track of custom objects.
         /// </summary>
         public ObjectManager objectManager;
+        /// <summary>
+        /// Manages all mail added by the mod.
+        /// </summary>
         public MailManager mailManager;
 
-
+        /// <summary>
+        /// Manages all building assets loaded by the mod.
+        /// </summary>
         public BuildingAssetLoader buildingAssetLoader;
+
+        /// <summary>
+        /// Deals with all processing recipes for objects and machines for the mod.
+        /// </summary>
+        public ProcessingRecipeManager objectProcessingRecipesManager;
 
         public ModContentManager()
         {
@@ -59,9 +81,13 @@ namespace Omegasis.Revitalize.Framework.Content
             //Loads in textures to be used by the mod.
             TextureManagers.loadInTextures();
 
+            this.revitalizeContentPackManager = new ContentPacks.RevitalizeContentPackManager();
+
             //Loads in objects to be use by the mod.
             this.objectManager = new ObjectManager(modManifest);
 
+            this.objectProcessingRecipesManager = new ProcessingRecipeManager();
+            this.objectProcessingRecipesManager.loadRecipes();
 
             this.mailManager = new MailManager();
 
@@ -70,18 +96,27 @@ namespace Omegasis.Revitalize.Framework.Content
             this.buildingAssetLoader = new BuildingAssetLoader();
             this.buildingAssetLoader.registerEvents();
 
+
         }
 
         public virtual void loadContentOnGameLaunched()
         {
+            //Content packs hold display strings so they should be loaded first.
+            this.revitalizeContentPackManager.initializeContentPacks();
+
             //Load in all objects from disk.
             this.objectManager.loadItemsFromDisk();
 
             //Once all objects have been initialized, then we can add references to them for recipes and initialize all of the crafting recipes for the mod.
             this.craftingManager.initializeRecipeBooks();
 
+            //AdvancedGeodeCrusher.GenerateOutputJsonFiles();
+            //MiningDrill.GenerateOutputJsonFiles();
+
             this.dumpAllObjectIdsToJsonFile();
         }
+
+
 
         private void createDirectories()
         {

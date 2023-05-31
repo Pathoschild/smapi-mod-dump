@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit dc302955d1793a0a6ef14a1bf2de02075d63403b
+   commit 1ce99bd6ec18b6f6edcac64025bc29207e96a464
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Apr 30 20:09:06 2023 -0400
+   Date:   Tue May 16 20:40:05 2023 -0400
    
-       clarify ToArea defaults in the docs
+       fix some patch migrations not applied to included files
    

@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{22CED42A-3C4C-4282-BB23-2B999492A3F5}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		Configuration.props = Configuration.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DontStopMeNow", "DontStopMeNow\DontStopMeNow.csproj", "{580D339A-1525-4F3B-862F-B1FA06ADC6FE}"
@@ -35,6 +36,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JunimoWarp", "JunimoWarp\JunimoWarp.csproj", "{883867F6-8723-4DD8-A00C-B5FA6F923500}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MaximizeFix", "MaximizeFix\MaximizeFix.csproj", "{9B44E15D-3F83-4AA8-96D2-E1464C0F9995}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MineTweaks", "MineTweaks\MineTweaks.csproj", "{856B03FD-49A4-4E53-87AD-DD250EB4D85D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,6 +101,10 @@ Global
 		{9B44E15D-3F83-4AA8-96D2-E1464C0F9995}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B44E15D-3F83-4AA8-96D2-E1464C0F9995}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B44E15D-3F83-4AA8-96D2-E1464C0F9995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{856B03FD-49A4-4E53-87AD-DD250EB4D85D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{856B03FD-49A4-4E53-87AD-DD250EB4D85D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{856B03FD-49A4-4E53-87AD-DD250EB4D85D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{856B03FD-49A4-4E53-87AD-DD250EB4D85D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

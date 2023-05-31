@@ -10,8 +10,6 @@
 
 using Microsoft.Xna.Framework;
 using StardewValley;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace FarmVisitors

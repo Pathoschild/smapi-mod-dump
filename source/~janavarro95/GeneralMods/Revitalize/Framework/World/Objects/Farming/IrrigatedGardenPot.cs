@@ -18,7 +18,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using Omegasis.Revitalize.Framework.Constants;
-using Omegasis.Revitalize.Framework.Constants.ItemIds.Items;
+using Omegasis.Revitalize.Framework.Constants.Ids.Items;
 using Omegasis.Revitalize.Framework.Utilities;
 using Omegasis.Revitalize.Framework.World.Objects.InformationFiles;
 using Omegasis.Revitalize.Framework.World.Objects.Interfaces;
@@ -35,7 +35,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
     /// <summary>
     /// A variation of the <see cref="StardewValley.Objects.IndoorPot"/> which keeps watered every day. Credits goes to the game for most of this code, modifications were made to accomidate it being always being irrigated and having a custom animation. 
     /// </summary>
-    [XmlType("Mods_Revitalize.Framework.World.Objects.Farming.IrrigatedGardenPot")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.Farming.IrrigatedGardenPot")]
     public class IrrigatedGardenPot : CustomObject, ICustomModObject
     {
 
@@ -132,7 +132,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
 
             this.hoeDirt.Value = new HoeDirt();
             this.makeSoilWet();
-            base.showNextIndex.Value = (int)this.hoeDirt.Value.state == 1;
+            base.showNextIndex.Value = (int)this.hoeDirt.Value.state.Value == 1;
         }
 
         protected override void initializeNetFieldsPostConstructor()
@@ -141,11 +141,11 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
             this.NetFields.AddFields(this.bush, this.hoeDirt, this.bushLoadDirty, this.hasPlanterAttachment,this.hasEnricherAttachment,this.hasAutoHarvestAttachment);
         }
 
-        public override bool performObjectDropInAction(Item dropInItem, bool probe, Farmer who)
+        public override bool performItemDropInAction(Item dropInItem, bool probe, Farmer who)
         {
-            if (who != null && dropInItem != null && this.bush.Value == null && this.hoeDirt.Value.canPlantThisSeedHere(dropInItem.parentSheetIndex, (int)base.tileLocation.X, (int)base.tileLocation.Y, dropInItem.Category == -19))
+            if (who != null && dropInItem != null && this.bush.Value == null && this.hoeDirt.Value.canPlantThisSeedHere(dropInItem.ParentSheetIndex, (int)base.TileLocation.X, (int)base.TileLocation.Y, dropInItem.Category == -19))
             {
-                if ((int)dropInItem.parentSheetIndex == 805)
+                if ((int)dropInItem.ParentSheetIndex == 805)
                 {
                     if (!probe)
                     {
@@ -153,7 +153,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                     }
                     return false;
                 }
-                if ((int)dropInItem.parentSheetIndex == 499)
+                if ((int)dropInItem.ParentSheetIndex == 499)
                 {
                     if (!probe)
                     {
@@ -164,7 +164,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 }
                 if (!probe)
                 {
-                    if (!this.hoeDirt.Value.plant(dropInItem.parentSheetIndex, (int)base.tileLocation.X, (int)base.tileLocation.Y, who, dropInItem.Category == -19, who.currentLocation))
+                    if (!this.hoeDirt.Value.plant(dropInItem.ParentSheetIndex, (int)base.TileLocation.X, (int)base.TileLocation.Y, who, dropInItem.Category == -19, who.currentLocation))
                     {
                         return false;
                     }
@@ -175,7 +175,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 }
                 return true;
             }
-            if (who != null && dropInItem != null && this.hoeDirt.Value.crop == null && this.bush.Value == null && dropInItem is StardewValley.Object && !(dropInItem as StardewValley.Object).bigCraftable && (int)dropInItem.parentSheetIndex == 251)
+            if (who != null && dropInItem != null && this.hoeDirt.Value.crop == null && this.bush.Value == null && dropInItem is StardewValley.Object && !(dropInItem as StardewValley.Object).bigCraftable.Value && (int)dropInItem.ParentSheetIndex == 251)
             {
                 if (probe)
                 {
@@ -183,7 +183,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 }
                 else
                 {
-                    this.bush.Value = new Bush(base.tileLocation, 3, who.currentLocation);
+                    this.bush.Value = new Bush(base.TileLocation, 3, who.currentLocation);
                     if (!who.currentLocation.IsOutdoors)
                     {
                         this.bush.Value.greenhouseBush.Value = true;
@@ -244,7 +244,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
         {
             if (isFertilizer)
             {
-                if (this.Crop != null && (int)this.Crop.currentPhase != 0 && (index == (int)Enums.SDVObject.BasicFertilizer || index == (int)Enums.SDVObject.DeluxeFertilizer))
+                if (this.Crop != null && (int)this.Crop.currentPhase.Value != 0 && (index == (int)Enums.SDVObject.BasicFertilizer || index == (int)Enums.SDVObject.DeluxeFertilizer))
                 {
                     return false;
                 }
@@ -266,7 +266,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 return false;
             }
             this.Crop = c;
-            if ((bool)c.raisedSeeds && farmerActuallyPlantingThisCrop!=null)
+            if ((bool)c.raisedSeeds.Value && farmerActuallyPlantingThisCrop!=null)
             {
                 location.playSound("stoneStep");
             }
@@ -349,15 +349,15 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
 
         public virtual List<StardewValley.Item> harvest()
         {
-            if ((bool)this.Crop.dead)
+            if ((bool)this.Crop.dead.Value)
             {
                 return null;
             }
-            if ((bool)this.Crop.forageCrop)
+            if ((bool)this.Crop.forageCrop.Value)
             {
                 StardewValley.Object o = null;
                 Random r2 = new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2 + (int)this.TileLocation.X * 1000 + (int)this.TileLocation.Y * 2000);
-                switch ((int)this.Crop.whichForageCrop)
+                switch ((int)this.Crop.whichForageCrop.Value)
                 {
                     case 1:
                         o = new StardewValley.Object(399, 1);
@@ -381,12 +381,12 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 //Game1.stats.ItemsForaged += (uint)o.Stack;
                 return new List<Item>{ o};
             }
-            else if ((int)this.Crop.currentPhase >= this.Crop.phaseDays.Count - 1 && (!this.Crop.fullyGrown || (int)this.Crop.dayOfCurrentPhase <= 0))
+            else if ((int)this.Crop.currentPhase.Value>= this.Crop.phaseDays.Count - 1 && (!this.Crop.fullyGrown.Value || (int)this.Crop.dayOfCurrentPhase.Value <= 0))
             {
                 int numToHarvest = 1;
                 int cropQuality = 0;
                 int fertilizerQualityLevel = 0;
-                if ((int)this.Crop.indexOfHarvest == 0)
+                if ((int)this.Crop.indexOfHarvest.Value == 0)
                 {
                     return null;
                 }
@@ -417,52 +417,51 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 {
                     cropQuality = 1;
                 }
-                if ((int)this.Crop.minHarvest > 1 || (int)this.Crop.maxHarvest > 1)
+                if ((int)this.Crop.minHarvest.Value > 1 || (int)this.Crop.maxHarvest.Value > 1)
                 {
                     int max_harvest_increase = 0;
                     if (this.Crop.maxHarvestIncreasePerFarmingLevel.Value > 0)
                     {
-                            max_harvest_increase = this.getOwner().FarmingLevel / (int)this.Crop.maxHarvestIncreasePerFarmingLevel;
+                            max_harvest_increase = this.getOwner().FarmingLevel / (int)this.Crop.maxHarvestIncreasePerFarmingLevel.Value;
                         
                     }
-                    numToHarvest = r.Next(this.Crop.minHarvest, Math.Max((int)this.Crop.minHarvest + 1, (int)this.Crop.maxHarvest + 1 + max_harvest_increase));
+                    numToHarvest = r.Next(this.Crop.minHarvest.Value, Math.Max((int)this.Crop.minHarvest.Value + 1, (int)this.Crop.maxHarvest.Value + 1 + max_harvest_increase));
                 }
-                if ((double)this.Crop.chanceForExtraCrops > 0.0)
+                if ((double)this.Crop.chanceForExtraCrops.Value > 0.0)
                 {
-                    while (r.NextDouble() < Math.Min(0.9, this.Crop.chanceForExtraCrops))
+                    while (r.NextDouble() < Math.Min(0.9, this.Crop.chanceForExtraCrops.Value))
                     {
                         numToHarvest++;
                     }
                 }
-                if ((int)this.Crop.indexOfHarvest == 771 || (int)this.Crop.indexOfHarvest == 889)
+                if ((int)this.Crop.indexOfHarvest.Value == 771 || (int)this.Crop.indexOfHarvest.Value == 889)
                 {
                     cropQuality = 0;
                 }
-                StardewValley.Object harvestedItem = (this.Crop.programColored ? new ColoredObject(this.Crop.indexOfHarvest, 1, this.Crop.tintColor)
+                StardewValley.Object harvestedItem = (this.Crop.programColored.Value ? new ColoredObject(this.Crop.indexOfHarvest.Value, 1, this.Crop.tintColor.Value)
                 {
                     Quality = cropQuality
-                } : new StardewValley.Object(this.Crop.indexOfHarvest, 1, isRecipe: false, -1, cropQuality));
+                } : new StardewValley.Object(this.Crop.indexOfHarvest.Value, 1, isRecipe: false, -1, cropQuality));
 
                 harvestedItem.Stack = numToHarvest;
 
                 List<Item> harvestedObjects = new List<Item>();
                 harvestedObjects.Add(harvestedItem);
 
-                ///FIX THIS TO COME BEFORE THE RETURN!!!!
-                if ((int)this.Crop.indexOfHarvest == 421)
+                if ((int)this.Crop.indexOfHarvest.Value == 421)
                 {
                     this.Crop.indexOfHarvest.Value = 431;
                     numToHarvest = r.Next(1, 4);
                 }
-                harvestedItem = (this.Crop.programColored ? new ColoredObject(this.Crop.indexOfHarvest, 1, this.Crop.tintColor) : new StardewValley.Object(this.Crop.indexOfHarvest, 1));
+                harvestedItem = (this.Crop.programColored.Value ? new ColoredObject(this.Crop.indexOfHarvest.Value, 1, this.Crop.tintColor.Value) : new StardewValley.Object(this.Crop.indexOfHarvest.Value, 1));
 
 
-                if ((int)this.Crop.indexOfHarvest == 262 && r.NextDouble() < 0.4)
+                if ((int)this.Crop.indexOfHarvest.Value == 262 && r.NextDouble() < 0.4)
                 {
                     StardewValley.Object hay_item = new StardewValley.Object(178, 1);
                     harvestedObjects.Add(hay_item.getOne());
                 }
-                else if ((int)this.Crop.indexOfHarvest == 771)
+                else if ((int)this.Crop.indexOfHarvest.Value == 771)
                 {
                     if (r.NextDouble() < 0.1)
                     {
@@ -471,13 +470,13 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                     }
                 }
                 this.Crop.fullyGrown.Value = true;
-                if (this.Crop.dayOfCurrentPhase.Value == (int)this.Crop.regrowAfterHarvest)
+                if (this.Crop.dayOfCurrentPhase.Value == (int)this.Crop.regrowAfterHarvest.Value)
                 {
                     this.Crop.updateDrawMath(this.TileLocation);
                 }
-                this.Crop.dayOfCurrentPhase.Value = this.Crop.regrowAfterHarvest;
+                this.Crop.dayOfCurrentPhase.Value = this.Crop.regrowAfterHarvest.Value;
 
-                if (this.Crop.regrowAfterHarvest == -1)
+                if (this.Crop.regrowAfterHarvest.Value == -1)
                 {
                     this.Crop = null;
                 }
@@ -564,10 +563,10 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
             if (t != null)
             {
 
-                this.hoeDirt.Value.performToolAction(t, -1, base.tileLocation, location);
+                this.hoeDirt.Value.performToolAction(t, -1, base.TileLocation, location);
                 if (this.bush.Value != null)
                 {
-                    if (this.bush.Value.performToolAction(t, -1, base.tileLocation, location))
+                    if (this.bush.Value.performToolAction(t, -1, base.TileLocation, location))
                     {
                         this.bush.Value = null;
                     }
@@ -575,7 +574,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 }
 
             }
-            if ((int)this.hoeDirt.Value.state == 1)
+            if ((int)this.hoeDirt.Value.state.Value == 1)
             {
                 base.showNextIndex.Value = true;
             }
@@ -611,9 +610,9 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 if (justCheckingForActivity)
                 {
                     string season = Game1.GetSeasonForLocation(who.currentLocation);
-                    if (this.bush.Value != null && (int)this.bush.Value.overrideSeason != -1)
+                    if (this.bush.Value != null && (int)this.bush.Value.overrideSeason.Value != -1)
                     {
-                        season = Utility.getSeasonNameFromNumber(this.bush.Value.overrideSeason);
+                        season = Utility.getSeasonNameFromNumber(this.bush.Value.overrideSeason.Value);
                     }
                     if (!this.hoeDirt.Value.readyForHarvest() && base.heldObject.Value == null)
                     {
@@ -640,19 +639,19 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                     }
                     return num;
                 }
-                bool b = this.hoeDirt.Value.performUseAction(base.tileLocation, who.currentLocation);
+                bool b = this.hoeDirt.Value.performUseAction(base.TileLocation, who.currentLocation);
                 if (b)
                 {
                     return b;
                 }
-                if (this.hoeDirt.Value.crop != null && (int)this.hoeDirt.Value.crop.currentPhase > 0 && this.hoeDirt.Value.getMaxShake() == 0f)
+                if (this.hoeDirt.Value.crop != null && (int)this.hoeDirt.Value.crop.currentPhase.Value > 0 && this.hoeDirt.Value.getMaxShake() == 0f)
                 {
                     this.hoeDirt.Value.shake((float)Math.PI / 32f, (float)Math.PI / 50f, Game1.random.NextDouble() < 0.5);
                     DelayedAction.playSoundAfterDelay("leafrustle", Game1.random.Next(100));
                 }
                 if (this.bush.Value != null)
                 {
-                    this.bush.Value.performUseAction(base.tileLocation, who.currentLocation);
+                    this.bush.Value.performUseAction(base.TileLocation, who.currentLocation);
                 }
             }
             return false;
@@ -661,7 +660,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
         protected virtual void updateAnimation(bool ShowDrippingAnimation)
         {
 
-            if (this.hasEnricherAttachment.Value == true && this.hasPlanterAttachment.Value == true && this.hasAutoHarvestAttachment)
+            if (this.hasEnricherAttachment.Value == true && this.hasPlanterAttachment.Value == true && this.hasAutoHarvestAttachment.Value)
             {
                 if (ShowDrippingAnimation)
                 {
@@ -674,7 +673,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 return;
             }
 
-            if (this.hasEnricherAttachment.Value==false && this.hasPlanterAttachment.Value==false && this.hasAutoHarvestAttachment)
+            if (this.hasEnricherAttachment.Value==false && this.hasPlanterAttachment.Value==false && this.hasAutoHarvestAttachment.Value)
             {
                 if (ShowDrippingAnimation)
                 {
@@ -687,7 +686,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 return;
             }
 
-            if (this.hasEnricherAttachment.Value == false && this.hasPlanterAttachment.Value == true && this.hasAutoHarvestAttachment)
+            if (this.hasEnricherAttachment.Value == false && this.hasPlanterAttachment.Value == true && this.hasAutoHarvestAttachment.Value)
             {
                 if (ShowDrippingAnimation)
                 {
@@ -700,7 +699,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 return;
             }
 
-            if (this.hasEnricherAttachment.Value == true && this.hasPlanterAttachment.Value == false && this.hasAutoHarvestAttachment)
+            if (this.hasEnricherAttachment.Value == true && this.hasPlanterAttachment.Value == false && this.hasAutoHarvestAttachment.Value)
             {
                 if (ShowDrippingAnimation)
                 {
@@ -713,7 +712,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 return;
             }
 
-            if (this.hasEnricherAttachment.Value && this.hasPlanterAttachment.Value && this.hasAutoHarvestAttachment==false)
+            if (this.hasEnricherAttachment.Value && this.hasPlanterAttachment.Value && this.hasAutoHarvestAttachment.Value==false)
             {
                 if (ShowDrippingAnimation)
                 {
@@ -725,7 +724,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 }
                 return;
             }
-            if (this.hasEnricherAttachment.Value && !this.hasPlanterAttachment.Value && this.hasAutoHarvestAttachment == false)
+            if (this.hasEnricherAttachment.Value && !this.hasPlanterAttachment.Value && this.hasAutoHarvestAttachment.Value == false)
             {
                 if (ShowDrippingAnimation)
                 {
@@ -737,7 +736,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 }
                 return;
             }
-            if (!this.hasEnricherAttachment.Value && this.hasPlanterAttachment.Value && this.hasAutoHarvestAttachment == false)
+            if (!this.hasEnricherAttachment.Value && this.hasPlanterAttachment.Value && this.hasAutoHarvestAttachment.Value == false)
             {
                 if (ShowDrippingAnimation)
                 {
@@ -769,16 +768,16 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
             this.updateAnimation(true);
             if (this.hoeDirt.Value != null)
             {
-                this.hoeDirt.Value.performPlayerEntryAction(base.tileLocation);
+                this.hoeDirt.Value.performPlayerEntryAction(base.TileLocation);
             }
         }
 
         public override void updateWhenCurrentLocation(GameTime time, GameLocation environment)
         {
             //base.updateWhenCurrentLocation(time, environment);
-            this.hoeDirt.Value.tickUpdate(time, base.tileLocation, environment);
+            this.hoeDirt.Value.tickUpdate(time, base.TileLocation, environment);
             this.bush.Value?.tickUpdate(time, environment);
-            if ((bool)this.bushLoadDirty)
+            if ((bool)this.bushLoadDirty.Value)
             {
                 this.bush.Value?.loadSprite();
                 this.bushLoadDirty.Value = false;
@@ -795,9 +794,9 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
         {
             // base.DayUpdate(location)
 
-            this.hoeDirt.Value.dayUpdate(location, base.tileLocation);
+            this.hoeDirt.Value.dayUpdate(location, base.TileLocation);
             this.makeSoilWet();
-            base.showNextIndex.Value = (int)this.hoeDirt.Value.state == 1;
+            base.showNextIndex.Value = (int)this.hoeDirt.Value.state.Value == 1;
             if (base.heldObject.Value != null)
             {
                 base.readyForHarvest.Value = true;
@@ -828,23 +827,23 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
         {
             this.DrawICustomModObject(spriteBatch, alpha);
 
-            if ((int)this.hoeDirt.Value.fertilizer != 0)
+            if ((int)this.hoeDirt.Value.fertilizer.Value != 0)
             {
-                Rectangle fertilizer_rect = this.hoeDirt.Value.GetFertilizerSourceRect(this.hoeDirt.Value.fertilizer);
+                Rectangle fertilizer_rect = this.hoeDirt.Value.GetFertilizerSourceRect(this.hoeDirt.Value.fertilizer.Value);
                 fertilizer_rect.Width = 13;
                 fertilizer_rect.Height = 13;
-                float depth = (base.tileLocation.Y - this.basicItemInformation.drawOffset.Y+ 0.65f) * 64f / 10000f + (float)x * 1E-05f;
-                spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(base.tileLocation.X * 64f + 4f, base.tileLocation.Y * 64f - 12f)), fertilizer_rect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, depth+ .00001f);
+                float depth = (base.TileLocation.Y - this.basicItemInformation.drawOffset.Y+ 0.65f) * 64f / 10000f + (float)x * 1E-05f;
+                spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(base.TileLocation.X * 64f + 4f, base.TileLocation.Y * 64f - 12f)), fertilizer_rect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, depth+ .00001f);
             }
             if (this.hoeDirt.Value.crop != null)
             {
                 //  this.hoeDirt.Value.crop.drawWithOffset(spriteBatch, base.tileLocation, ((int)this.hoeDirt.Value.state == 1 && (int)this.hoeDirt.Value.crop.currentPhase == 0 && !this.hoeDirt.Value.crop.raisedSeeds) ? (new Color(180, 100, 200) * 1f) : Color.White, this.hoeDirt.Value.getShakeRotation(), new Vector2(32f, 8f));
 
-                this.drawCropWithOffset(spriteBatch, this.TileLocation, ((int)this.hoeDirt.Value.state == 1 && (int)this.hoeDirt.Value.crop.currentPhase == 0 && !this.hoeDirt.Value.crop.raisedSeeds) ? (new Color(180, 100, 200) * 1f) : Color.White, this.hoeDirt.Value.getShakeRotation(), new Vector2(32f, 8f), (this.TileLocation.Y - this.basicItemInformation.drawOffset.Y));
+                this.drawCropWithOffset(spriteBatch, this.TileLocation, ((int)this.hoeDirt.Value.state.Value == 1 && (int)this.hoeDirt.Value.crop.currentPhase.Value == 0 && !this.hoeDirt.Value.crop.raisedSeeds.Value) ? (new Color(180, 100, 200) * 1f) : Color.White, this.hoeDirt.Value.getShakeRotation(), new Vector2(32f, 8f), (this.TileLocation.Y - this.basicItemInformation.drawOffset.Y));
             }
             if (base.heldObject.Value != null)
             {
-                base.heldObject.Value.draw(spriteBatch, x * 64, y * 64 - 48 + 64, (base.tileLocation.Y + 0.66f) * 64f / 10000f + (float)x * 1E-05f, 1f);
+                base.heldObject.Value.draw(spriteBatch, x * 64, y * 64 - 48 + 64, (base.TileLocation.Y + 0.66f) * 64f / 10000f + (float)x * 1E-05f, 1f);
             }
             if (this.bush.Value != null)
             {
@@ -855,21 +854,21 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
         public virtual void drawCropWithOffset(SpriteBatch b, Vector2 tileLocation, Color toTint, float rotation, Vector2 offset, float YTileDepthOffset)
         {
 
-            if ((bool)this.Crop.forageCrop)
+            if ((bool)this.Crop.forageCrop.Value)
             {
-                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, offset + new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), this.sourceRect, Color.White, 0f, new Vector2(8f, 8f), 4f, SpriteEffects.None, (tileLocation.Y + 0.66f) * 64f / 10000f + tileLocation.X * 1E-05f);
+                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, offset + new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), this.sourceRect.Value, Color.White, 0f, new Vector2(8f, 8f), 4f, SpriteEffects.None, (tileLocation.Y + 0.66f) * 64f / 10000f + tileLocation.X * 1E-05f);
                 return;
             }
-            Rectangle coloredSourceRect = new Rectangle(((!this.Crop.fullyGrown) ? ((int)this.Crop.currentPhase + 1 + 1) : (((int)this.Crop.dayOfCurrentPhase <= 0) ? 6 : 7)) * 16 + (((int)this.Crop.rowInSpriteSheet % 2 != 0) ? 128 : 0), (int)this.Crop.rowInSpriteSheet / 2 * 16 * 2, 16, 32); ;
+            Rectangle coloredSourceRect = new Rectangle(((!this.Crop.fullyGrown.Value) ? ((int)this.Crop.currentPhase.Value + 1 + 1) : (((int)this.Crop.dayOfCurrentPhase.Value <= 0) ? 6 : 7)) * 16 + (((int)this.Crop.rowInSpriteSheet.Value % 2 != 0) ? 128 : 0), (int)this.Crop.rowInSpriteSheet.Value / 2 * 16 * 2, 16, 32); ;
 
             float originalDepth = (YTileDepthOffset - .5f + 0.66f) * 64f / 10000f + tileLocation.X * 1E-05f;
 
             float depth = originalDepth;//Math.Max(originalDepth, modDepth);
 
-            b.Draw(Game1.cropSpriteSheet, Game1.GlobalToLocal(Game1.viewport, offset + new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), this.Crop.getSourceRect((int)tileLocation.X * 7 + (int)tileLocation.Y * 11), toTint, rotation, new Vector2(8f, 24f), 4f, this.Crop.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, depth + .00001f);
-            if (!this.Crop.tintColor.Equals(Color.White) && (int)this.Crop.currentPhase == this.Crop.phaseDays.Count - 1 && !this.Crop.dead)
+            b.Draw(Game1.cropSpriteSheet, Game1.GlobalToLocal(Game1.viewport, offset + new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), this.Crop.getSourceRect((int)tileLocation.X * 7 + (int)tileLocation.Y * 11), toTint, rotation, new Vector2(8f, 24f), 4f, this.Crop.flip.Value ? SpriteEffects.FlipHorizontally : SpriteEffects.None, depth + .00001f);
+            if (!this.Crop.tintColor.Equals(Color.White) && (int)this.Crop.currentPhase.Value == this.Crop.phaseDays.Count - 1 && !this.Crop.dead.Value)
             {
-                b.Draw(Game1.cropSpriteSheet, Game1.GlobalToLocal(Game1.viewport, offset + new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), coloredSourceRect, this.Crop.tintColor, rotation, new Vector2(8f, 24f), 4f, this.Crop.flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, depth + .00002f);
+                b.Draw(Game1.cropSpriteSheet, Game1.GlobalToLocal(Game1.viewport, offset + new Vector2(tileLocation.X * 64f, tileLocation.Y * 64f)), coloredSourceRect, this.Crop.tintColor.Value, rotation, new Vector2(8f, 24f), 4f, this.Crop.flip.Value ? SpriteEffects.FlipHorizontally : SpriteEffects.None, depth + .00002f);
             }
         }
 

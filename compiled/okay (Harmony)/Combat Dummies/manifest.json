@@ -1,0 +1,16 @@
+{
+  "Name": "Combat Dummy",
+  "Author": "PeacefulEnd",
+  "Version": "1.1.1",
+  "Description": "...",
+  "UniqueID": "PeacefulEnd.CombatDummy",
+  "EntryDll": "CombatDummy.dll",
+  "MinimumApiVersion": "3.14.4",
+  "UpdateKeys": [ "Nexus:16769" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.DynamicGameAssets",
+      "IsRequired": true
+    }
+  ]
+}

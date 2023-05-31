@@ -1,16 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
-    <!-- ModBuildConfig settings. -->
-    <Import Project="..\Build\SDV-1.5.6_SMAPI-3.14.0.targets" />
+    <Import Project="..\Build\SDV-1.5.6.targets"/>
+    <Import Project="..\Build\Common.csproj"/>
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared"/>
 
     <PropertyGroup>
+        <Name>Into the Game (Save Loaded Notifier)</Name>
+        <Description>Lets you know with an audible notification when the game has loaded.</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:12826</UpdateKeys>
         <Version>1.0.2</Version>
-        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
-        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.0" />
-    </ItemGroup>
 
     <PropertyGroup>
         <Nullable>enable</Nullable>

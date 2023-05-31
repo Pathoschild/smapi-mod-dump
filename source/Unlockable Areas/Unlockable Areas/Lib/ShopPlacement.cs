@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Text.RegularExpressions;
 using StardewModdingAPI.Events;
+using StardewValley.Objects;
 
 namespace Unlockable_Areas.Lib
 {
@@ -58,11 +59,14 @@ namespace Unlockable_Areas.Lib
         public static void dayStarted(object sender, DayStartedEventArgs e)
         {
             if (!Context.IsMainPlayer) {
-                ModData.Instance = new ModData();
+                if (ModData.Instance == null)
+                    ModData.Instance = new ModData();
                 return;
             }
 
             ModData.Instance = Helper.Data.ReadSaveData<ModData>("main") ?? new ModData();
+            Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("UnlockableAreas/Unlockables"));
+            API.UnlockableAreasAPI.clearCache();
             var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableAreas/Unlockables");
             modifiedLocations = new List<GameLocation>();
 
@@ -81,6 +85,9 @@ namespace Unlockable_Areas.Lib
 
                 }
             }
+
+            ModEntry._Helper.Multiplayer.SendMessage(true, "UnlockablesReady", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
+            ModEntry._API.raiseIsReady(new API.IsReadyEventArgs(Game1.player));
         }
 
         private static void validateUnlockable(UnlockableModel u)
@@ -126,7 +133,11 @@ namespace Unlockable_Areas.Lib
             modifiedLocations.Add(location);
 
             var shopObject = new ShopObject(unlockable.vShopPosition, unlockable);
-            location.setObject(unlockable.vShopPosition, shopObject);
+
+            if (!location.isTileOccupiedIgnoreFloors(unlockable.vShopPosition))
+                location.setObject(unlockable.vShopPosition, shopObject);
+            else
+                Monitor.Log($"Failed to place Shop Object for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}' as it is occupied", LogLevel.Warn);
         }
 
         public static bool shopExists(Unlockable unlockable)
@@ -134,7 +145,7 @@ namespace Unlockable_Areas.Lib
             var location = unlockable.getGameLocation();
             var obj = location.getObjectAtTile((int)unlockable.vShopPosition.X, (int)unlockable.vShopPosition.Y);
             return obj != null
-                && obj.GetType() == typeof(ShopObject)
+                && obj is ShopObject
                 && (obj as ShopObject).Unlockable.ID == unlockable.ID;
         }
 

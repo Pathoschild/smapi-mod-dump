@@ -12,7 +12,7 @@
   "whichTab": "Default",
   "isUnlocked": false,
   "recipe": {
-	"craftingRecipeId": "Revitalize.Workbench.Farming.Revitalize.Framework.World.Objects.Items.Farming.AutoPlanterGardenPotAttachment",
+	"craftingRecipeId": "Omegasis.Revitalize.Workbench.Farming.Revitalize.Framework.World.Objects.Items.Farming.AutoPlanterGardenPotAttachment",
     "outputName": "",
     "outputDescription": "",
     "MinutesToCraft": 0,
@@ -40,7 +40,7 @@
 			"item":{
 			"stardewValleyItemId": "NULL",
 			"stardewValleyBigCraftableId": "NULL",
-			"registeredObjectId": "Revitalize.Framework.World.Objects.Items.Farming.AutoPlanterGardenPotAttachment",
+			"registeredObjectId": "Omegasis.Revitalize.Framework.World.Objects.Items.Farming.AutoPlanterGardenPotAttachment",
 			"amount": 1
 			}
 		},

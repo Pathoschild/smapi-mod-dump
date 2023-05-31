@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.808.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDew", "ToDew\ToDew.csproj", "{1F068A35-79EE-4BEC-B551-E929949F25D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiTest", "ApiTest\ApiTest.csproj", "{4F56C1A4-56E9-42D9-98C0-36052FFDAF51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|anycpu = Debug|anycpu
@@ -15,6 +17,10 @@ Global
 		{1F068A35-79EE-4BEC-B551-E929949F25D8}.Debug|anycpu.Build.0 = Debug|Any CPU
 		{1F068A35-79EE-4BEC-B551-E929949F25D8}.Release|anycpu.ActiveCfg = Release|Any CPU
 		{1F068A35-79EE-4BEC-B551-E929949F25D8}.Release|anycpu.Build.0 = Release|Any CPU
+		{4F56C1A4-56E9-42D9-98C0-36052FFDAF51}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{4F56C1A4-56E9-42D9-98C0-36052FFDAF51}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{4F56C1A4-56E9-42D9-98C0-36052FFDAF51}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{4F56C1A4-56E9-42D9-98C0-36052FFDAF51}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

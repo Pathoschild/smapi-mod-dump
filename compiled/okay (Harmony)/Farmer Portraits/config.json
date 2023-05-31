@@ -3,6 +3,7 @@
   "ShowWithQuestions": true,
   "ShowWithEvents": false,
   "ShowWithNPCPortrait": true,
+  "ShowMisc": false,
   "FacingFront": false,
   "UseCustomPortrait": false,
   "UseCustomBackground": true

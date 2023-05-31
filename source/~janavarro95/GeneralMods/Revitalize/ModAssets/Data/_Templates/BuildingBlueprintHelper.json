@@ -1,0 +1,47 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+  "revitalizeBuildingId": "",
+  "buildingMaterials": [
+		{
+			"stardewValleyItemId": "NULL",
+			"stardewValleyBigCraftableId": "NULL",
+			"registeredObjectId": "",
+			"amount": 1
+		},	
+	],
+  "tileDimensions": {
+    "X": 1,
+    "Y": 1
+  },
+  "humanDoorPosition": {
+    "X": -1,
+    "Y": -1
+  },
+  "animalDoorPosition": {
+    "X": -1,
+    "Y": -1
+  },
+  "mapToWarpTo": "",
+  "upgradeForWhichBuildingType": "none",
+  "buildingTextureDimensions": {
+    "X": 0,
+    "Y": 0
+  },
+  "maxOccupants": 20,
+  "actionBehavior": "null",
+  "namesOfOkBuildingLocationsList": [
+    "Farm"
+  ],
+  "moneyRequired": 0,
+  "isMagical": false,
+  "daysToConstruct": 2
+}

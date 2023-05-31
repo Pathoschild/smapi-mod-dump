@@ -49,7 +49,7 @@ namespace Shockah.Kokoro.Stardew
 		public static GameLocation? FindGameLocation(this SObject self, GameLocation? potentialLocation = null)
 		{
 			static bool IsObjectInLocation(SObject @object, GameLocation location)
-				=> location.Objects.Values.Contains(@object);
+				=> (@object is Furniture furniture && location.furniture.Contains(furniture)) || location.Objects.Values.Contains(@object);
 
 			if (potentialLocation is not null && IsObjectInLocation(self, potentialLocation))
 				return potentialLocation;

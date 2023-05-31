@@ -14,6 +14,7 @@
   "MaxPixelZoom": 5.0,
   "DisableTextShadow": false,
   "SimplifiedDropDown": true,
+  "EnableLatinDialogueFont": true,
   "OpenFontSettingsMenu": "LeftAlt + F",
   "CustomFontFolders": []
 }

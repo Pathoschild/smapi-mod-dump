@@ -101,6 +101,7 @@ external file via SMAPI console commands.  Type `help todo-export` or
 
 ## Compatibility
 
+Requires Stardew Valley 1.5.5 / SMAPI 3.17 beginning with version 1.13.
 Requires Stardew Valley 1.5.5 / SMAPI 3.13 beginning with version 1.10.
 Older versions work with Stardew Valley 1.5 / SMAPI 3.9.
 
@@ -134,3 +135,8 @@ If the host and a farmhand have different versions of To-Dew installed,
 the mod attempts to make intelligent decisions about what to do.  Look for
 messages in the SMAPI console log.  This scenario is probably not
 well-tested and may contain bugs.
+
+# API for Mod Authors
+
+The [To-Dew API](ToDew/IToDewApi.cs) gives other mods the ability to
+provide items to display in the overlay.

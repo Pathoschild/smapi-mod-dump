@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/TMThong/Stardew-Mods
+   Git: https://github.com/TMThong/Stardew-Mods.git
+
+mods:
+   Mini Tool NPC
+   Multiplayer Mod
+
+latest commit:
+   commit d8b8e00e8cce2245670773cb733ac8be291c3292
+   Author: TMThong <98743684+TMThong@users.noreply.github.com>
+   Date:   Sun May 28 09:46:11 2023 +0700
+   
+       Update README.md
+   

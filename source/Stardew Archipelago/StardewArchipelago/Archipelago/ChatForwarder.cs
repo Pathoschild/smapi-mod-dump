@@ -15,7 +15,7 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.GameModifications.CodeInjections;
 using StardewArchipelago.Goals;
-using StardewArchipelago.Locations.CodeInjections;
+using StardewArchipelago.Locations.CodeInjections.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;

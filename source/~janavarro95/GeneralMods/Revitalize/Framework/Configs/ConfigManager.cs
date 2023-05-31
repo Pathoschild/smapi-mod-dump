@@ -33,12 +33,19 @@ namespace Omegasis.Revitalize.Framework.Configs
 
         public WorldConfigManager worldConfigManager;
 
+        /// <summary>
+        /// Configs for dealing with revitalize content packs.
+        /// </summary>
+        public ContentPackConfig contentPackConfig;
+
         public ConfigManager()
         {
 
             this.objectConfigManager = new ObjectConfigManager();
             this.shopsConfigManager = new ShopsConfigManager();
             this.worldConfigManager = new WorldConfigManager();
+
+            this.contentPackConfig = InitializeConfig<ContentPackConfig>("ContentPackConfigs.cs");
         }
 
         /// <summary>
@@ -47,9 +54,15 @@ namespace Omegasis.Revitalize.Framework.Configs
         /// <typeparam name="T"></typeparam>
         /// <param name="RelativePathToConfig"></param>
         /// <returns></returns>
-        public static T initializeConfig<T>(params string[] RelativePathToConfig) where T : class
+        public static T InitializeConfig<T>(params string[] RelativePathToConfig) where T : class
         {
-            return initializeConfig<T>(Revitalize.RevitalizeModCore.ModHelper, RelativePathToConfig);
+            string combinedPath = Path.Combine(RelativePathToConfig);
+            if (string.IsNullOrEmpty(combinedPath))
+            {
+                throw new Exception("A relative path to a config file MUST be supplied otherwise a file access error will be thrown.");
+            }
+
+            return InitializeConfig<T>(Revitalize.RevitalizeModCore.ModHelper, RelativePathToConfig);
         }
 
         /// <summary>
@@ -59,8 +72,14 @@ namespace Omegasis.Revitalize.Framework.Configs
         /// <param name="helper">The mod helper to use to get the full path for file existence checking.</param>
         /// <param name="RelativePathToConfig"></param>
         /// <returns></returns>
-        public static T initializeConfig<T>(IModHelper helper, params string[] RelativePathToConfig) where T : class
+        public static T InitializeConfig<T>(IModHelper helper, params string[] RelativePathToConfig) where T : class
         {
+            string combinedPath = Path.Combine(RelativePathToConfig);
+            if (string.IsNullOrEmpty(combinedPath))
+            {
+                throw new Exception("A relative path to a config file MUST be supplied otherwise a file access error will be thrown.");
+            }
+
             string relativePath = Path.Combine(RelativePathToConfig);
             if (File.Exists(Path.Combine(helper.DirectoryPath, relativePath)))
                 return helper.Data.ReadJsonFile<T>(relativePath);

@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit e8d7f06a54fa63d7d58b46d7c6a59320a46edaba
-   Merge: ce33099 865c7fc
    Author: Gilar Fasulaki <gilar.fasulaki@gmail.com>
    Date:   Wed Jan 15 19:40:51 2020 +0200
    

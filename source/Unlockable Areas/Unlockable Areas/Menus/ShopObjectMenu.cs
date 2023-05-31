@@ -49,6 +49,7 @@ namespace Unlockable_Areas.Menus
         int heightOfCostArea;
 
         int costPageIndex = 0;
+        private long scrollCounter = 0; //Used to scroll cost name
 
         ClickableComponent YesButton;
         ClickableComponent NoButton;
@@ -106,12 +107,16 @@ namespace Unlockable_Areas.Menus
                 return;
             }
 
+            removeAllRequiredItemsFromInventory();
+            processPurchase();
+        }
+        public void processPurchase()
+        {
             ModData.setUnlockablePurchased(Unlockable.ID, Unlockable.LocationUnique);
             ModEntry._API.raiseShopPurchased(new API.ShopPurchasedEventArgs(who, Unlockable.Location, Unlockable.LocationUnique, Unlockable.ID, true));
             Helper.Multiplayer.SendMessage((UnlockableModel)Unlockable, "ApplyUnlockable/Purchased", modIDs: new[] { Mod.ModManifest.UniqueID });
             exitThisMenu();
             Task.Delay(800).ContinueWith(t => ShopPlacement.removeShop(Unlockable));
-            removeAllRequiredItemsFromInventory();
             who.completelyStopAnimatingOrDoingAction();
             if (Unlockable.ShopEvent == "")
                 Game1.globalFadeToBlack(playPurchasedEvent);
@@ -124,7 +129,7 @@ namespace Unlockable_Areas.Menus
         public void resetUI()
         {
             width = 1000;
-            height = SpriteText.getHeightOfString(Unlockable.ShopDescription, width - 20) + 200;
+            height = SpriteText.getHeightOfString(Unlockable.getTranslatedShopDescription(), width - 20) + 200;
             x = (int)Utility.getTopLeftPositionForCenteringOnScreen(base.width, base.height).X;
             y = Game1.uiViewport.Height - base.height - 64;
 
@@ -261,8 +266,16 @@ namespace Unlockable_Areas.Menus
 
         public string shortenCostName(string displayName)
         {
-            var SplitString = Game1.parseText(displayName, Game1.dialogueFont, (int)((widthOfCostArea - 160) / 2)).Split(Environment.NewLine);
-            return SplitString.Count() == 1 ? SplitString.First() : SplitString.First() + "..";
+            var maxChars = ModEntry.Config.ScrollCharacterLength;
+            var delay = ModEntry.Config.ScrollDelay;
+
+            if (displayName.Length <= maxChars)
+                return displayName;
+
+            var i = (int)(scrollCounter / delay) % (displayName.Length + 1);
+            var s = displayName + " " + displayName + " ";
+
+            return s.Substring(i, maxChars);
         }
 
         public override bool readyToClose()
@@ -307,11 +320,13 @@ namespace Unlockable_Areas.Menus
 
         public void drawDescription(SpriteBatch b)
         {
-            SpriteText.drawString(b, Unlockable.ShopDescription, x + 8, y + 12, 999999, base.width - 16);
+            SpriteText.drawString(b, Unlockable.getTranslatedShopDescription(), x + 8, y + 12, 999999, base.width - 16);
         }
 
         public void drawCost(SpriteBatch b)
         {
+            scrollCounter++;
+
             //Horizontal Border
             b.Draw(Game1.mouseCursors, new Rectangle(x, yPositionOfCostArea - 20, width, 24), new Rectangle(275, 313, 1, 6), Color.White);
             b.Draw(Game1.mouseCursors, new Vector2(x - 44, yPositionOfCostArea - 20), new Rectangle(261, 313, 14, 11), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.87f);

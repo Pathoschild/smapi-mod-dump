@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/AndrewGraber/Skull-Cavern-Drill-Redux
+   Git: https://github.com/AndrewGraber/Skull-Cavern-Drill-Redux.git
+
+mods:
+   Skull Cavern Drill Redux
+
+latest commit:
+   commit e266f41a5aff7ded8d0e5a60c867eeb784167f66
+   Author: AndrewGraber <andrewcgraber@gmail.com>
+   Date:   Fri May 5 03:33:11 2023 -0400
+   
+       Merge branch 'main' of professional:AndrewGraber/Skull-Cavern-Drill-Redux into main
+   

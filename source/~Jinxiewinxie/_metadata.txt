@@ -9,7 +9,6 @@ mods:
 
 latest commit:
    commit 214e5b26b544d0308c6dfbb44797fca4a149baa1
-   Merge: 47fe7ab 044194f
    Author: Jinxiewinxie <jinxiewinxie@gmail.com>
    Date:   Tue Nov 28 11:30:12 2017 -0800
    

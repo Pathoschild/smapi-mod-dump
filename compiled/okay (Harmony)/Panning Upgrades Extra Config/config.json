@@ -14,5 +14,6 @@
   "WidthIridium": 5,
   "RangeReaching": 12,
   "WidthReaching": 9,
-  "AllowPanToBeUpgradedToReaching": true
+  "AllowPanToBeUpgradedToReaching": true,
+  "AllowPanToBeUpgradedToSwift": true
 }

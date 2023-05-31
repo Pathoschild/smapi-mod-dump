@@ -21,5 +21,11 @@ namespace StardewArchipelago.GameModifications.Buildings
             displayName = $"Free {displayName}";
             description = $"A gift from {sendingPlayerName}. {description}";
         }
+
+        public void SetDisplayFields(string displayName, string description, string sendingPlayerName)
+        {
+            this.displayName = $"Free {displayName}";
+            this.description = $"A gift from {sendingPlayerName}. {description}";
+        }
     }
 }

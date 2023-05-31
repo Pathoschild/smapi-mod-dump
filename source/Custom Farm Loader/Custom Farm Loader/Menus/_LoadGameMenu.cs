@@ -80,6 +80,11 @@ namespace Custom_Farm_Loader.Menus
             );
 
             harmony.Patch(
+               original: AccessTools.Method(typeof(LoadGameMenu), "deleteFile"),
+               postfix: new HarmonyMethod(typeof(_LoadGameMenu), nameof(_LoadGameMenu.deleteFile_Postfix))
+            );
+
+            harmony.Patch(
                original: AccessTools.Method(typeof(LoadGameMenu), "setScrollBarToCurrentIndex"),
                prefix: new HarmonyMethod(typeof(_LoadGameMenu), nameof(_LoadGameMenu.setScrollBarToCurrentIndex_Prefix))
             );
@@ -251,7 +256,7 @@ namespace Custom_Farm_Loader.Menus
             int k = 0;
 
             using (var stream = File.OpenRead(fullFilePath)) {
-                stream.Seek(fileInfo.Length - 15000, SeekOrigin.Begin);
+                stream.Seek(fileInfo.Length - 25000, SeekOrigin.Begin);
 
                 using (StreamReader sr = new StreamReader(stream))
                     while (sr.Peek() >= 0) {
@@ -282,5 +287,7 @@ namespace Custom_Farm_Loader.Menus
             CachedFarmTypes = new Dictionary<int, string>();
             CustomFarm.getAll().ForEach(farm => farm.reloadTextures());
         }
+
+        public static void deleteFile_Postfix(LoadGameMenu __instance, int which) => LoadGameMenu_Postfix(__instance);
     }
 }

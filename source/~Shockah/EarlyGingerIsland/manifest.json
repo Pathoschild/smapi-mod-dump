@@ -11,7 +11,7 @@
 {
 	"Name": "Early Ginger Island",
 	"Author": "Shockah",
-	"Version": "1.1.0",
+	"Version": "1.1.1",
 	"Description": "Unlocks the Ginger Island early and/or reduces the costs of tickets or unlocking it.",
 	"UniqueID": "Shockah.EarlyGingerIsland",
 	"EntryDll": "EarlyGingerIsland.dll",
@@ -21,7 +21,7 @@
 		{
 			"UniqueID": "Shockah.Kokoro",
 			"IsRequired": true,
-			"MinimumVersion": "0.1.0"
+			"MinimumVersion": "2.0.1"
 		}
 	]
 }

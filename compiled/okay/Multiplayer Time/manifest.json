@@ -1,11 +1,11 @@
 ﻿{
   "Name": "MultiplayerTime",
   "Author": "lolmaj",
-  "Version": "3.2",
+  "Version": "4.1",
   "Description": "Stop time if each player on server should have time stopped.",
   "UniqueID": "lolmaj.MultiplayerTime",
   "EntryDll": "MultiplayerTime.dll",
-  "MinimumApiVersion": "3.8",
+  "MinimumApiVersion": "3.18",
   "UpdateKeys": [ "Nexus:2543" ],
   "Dependencies": [
     {

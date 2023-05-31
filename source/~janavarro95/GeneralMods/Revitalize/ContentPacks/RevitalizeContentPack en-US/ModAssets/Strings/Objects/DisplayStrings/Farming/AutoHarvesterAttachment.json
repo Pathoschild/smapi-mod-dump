@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+	"Omegasis.Revitalize.Framework.World.Objects.Items.Farming.AutoHarvesterGardenPotAttachment":
+	{
+		"displayName":"Auto Harvester Attachment",
+		"description":"An attachment that when used on a Irrigated Garden Pot, will allow an Automatic Farming System to automatically harvest crops from the pot!"
+	},
+}

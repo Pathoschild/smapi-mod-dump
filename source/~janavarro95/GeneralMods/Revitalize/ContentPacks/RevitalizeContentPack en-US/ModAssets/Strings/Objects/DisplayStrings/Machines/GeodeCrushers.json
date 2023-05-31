@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+  "Omegasis.Revitalize.Objects.Machines.GeodeCrushers.CoalAdvancedGeodeCrusher": {
+    "displayName": "Advanced Burner Geode Crusher",
+    "description": "Cracks geodes open automatically. Has a slight chance to give bonus artifacts and minerals. Requires coal to run."
+  },
+  "Omegasis.Revitalize.Objects.Machines.GeodeCrushers.ElectricAdvancedGeodeCrusher": {
+    "displayName": "Electric Geode Crusher",
+    "description": "Cracks geodes open automatically. Has a slight bonus to give extra resources such as clay, stone, and previous bonuses as well as being faster. Requires battery packs to run."
+  },
+  "Omegasis.Revitalize.Objects.Machines.GeodeCrushers.NuclearAdvancedGeodeCrusher": {
+    "displayName": "Nuclear Geode Crusher",
+    "description": "Cracks geodes open automatically. Has a slight bonus to give more ore as well as previous bonuses as well as being faster. Requires nuclear fuel cells to run."
+  },
+  "Omegasis.Revitalize.Objects.Machines.GeodeCrushers.MagicalAdvancedGeodeCrusher": {
+    "displayName": "Magical Geode Crusher",
+    "description": "Cracks geodes automatically. Has improved chances to give more of every resource as well as being faster. Does not require fuel to run due to it's magical reactor core."
+  },
+  "Omegasis.Revitalize.Objects.Machines.GeodeCrushers.GalaxyGeodeCrusher": {
+    "displayName": "Galaxy Geode Crusher",
+    "description": "Cracks geodes automatically. Has greatly increased chances to give more of every resource as well as being faster. Does not require fuel to run due to it's magical reactor core."
+  }
+}

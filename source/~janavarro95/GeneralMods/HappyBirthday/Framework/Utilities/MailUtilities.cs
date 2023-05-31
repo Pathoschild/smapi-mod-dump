@@ -42,7 +42,7 @@ namespace Omegasis.HappyBirthday.Framework.Utilities
                 string mailKey = npcNameToMailKey.Value;
 
                 Item gift= HappyBirthdayModCore.Instance.giftManager.getNextBirthdayGift(npcName);
-                int itemParentSheetIndex = gift.parentSheetIndex;
+                int itemParentSheetIndex = gift.ParentSheetIndex;
                 int stackSize = gift.Stack;
                 string formattedMailItemString = GetItemMailStringFormat(itemParentSheetIndex, stackSize, npcName);
 

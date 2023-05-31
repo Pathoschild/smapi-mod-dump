@@ -1,0 +1,46 @@
+﻿{
+  // menu title
+  "title": "Menú de Planificador Diario",
+
+  // menu tabs
+  "tabs.daily": "Día",
+  "tabs.checklist": "Lista de Verificación",
+  "tabs.weekly": "Semana",
+  "tabs.monthly": "Mes",
+  "tabs.add": "Agregar Tarea",
+  "tabs.remove": "Eliminar Tarea",
+
+  // season names
+  "seasons.spring": "Primavera",
+  "seasons.summer": "Verano",
+  "seasons.fall": "Otoño",
+  "seasons.winter": "Invierno",
+  "seasons.all_year": "Todo el Año",
+
+  // weekday names
+  "week.monday": "Lunes",
+  "week.tuesday": "Martes",
+  "week.wednesday": "Miércoles",
+  "week.thursday": "Jueves",
+  "week.friday": "Viernes",
+  "week.saturday": "Sábado",
+  "week.sunday": "Domingo",
+
+  // word for year
+  "year.year": "Año",
+
+  // slider labels
+  "slider.season": "Estación",
+  "slider.week": "Día de la semana",
+  "slider.day": "Día",
+
+  // task types
+  "task.daily": "A diario",
+  "task.weekly": "Semanalmente",
+  "task.on_date": "A tiempo",
+
+  // instructions
+  "instructions.add_one_day": "Agregar tarea en una fecha específica:",
+  "instructions.add_daily": "Agregar tarea diaria:",
+  "instructions.add_weekly": "Agregar tarea semanal:"
+}

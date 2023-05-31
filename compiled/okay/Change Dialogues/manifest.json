@@ -1,0 +1,16 @@
+{
+  "Name": "ChangeDialogues",
+  "Author": "mardrest",
+  "Version": "3.0.8",
+  "Description": "Replaces the character sprites and dialogues",
+  "UniqueID": "mardrest.ChangeDialogues",
+  "EntryDll": "ChangeDialogues.dll",
+  "MinimumApiVersion": "3.13.0",
+  "UpdateKeys": [ "Chucklefish:5995", "Nexus: 5335", "ModDrop:800760" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": true
+    }
+  ]
+}

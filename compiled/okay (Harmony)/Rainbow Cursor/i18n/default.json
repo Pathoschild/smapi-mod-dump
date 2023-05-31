@@ -1,0 +1,33 @@
+{
+    "config.enabled": "Enabled",
+    "config.enabled.tooltip": "Is the mod enabled?",
+    "config.speed": "Speed",
+    "config.speed.tooltip": "How fast to transition between colors",
+    "config.fade": "Fade between colors",
+    "config.fade.tooltip": "Whether to fade between colors or switch abruptly",
+    "config.palette": "Color palette",
+    "config.palette.tooltip": "The colors to use",
+    "config.preview": "Preview",
+    "config.install-gmcm-options": "If you install the GMCM Options mod then you will see the color palette rendered here.",
+    "message.install-gmcm-options": "For full functionality of the configuration menu, install the GMCM Options mod (https://www.nexusmods.com/stardewvalley/mods/10505)",
+
+    "palette.prismatic.name": "Prismatic",
+
+    "palette.conflict": "Mod {{modName}} attempted to add a color palette with id {{id}}, but a color palette with that id was already added by {{conflictingModName}}.",
+    "palette.no-colors": "Mod {{modName}} attempted to add color palette \"{{paletteName}}\" (id {{id}}) with no colors.",
+
+    "status.adding-palette": "Adding color palette {{paletteId}} (\"{{paletteName}}\") provided by {{providedBy}}",
+    "status.added-content-pack": "Added {{numAdded}} color palettes from content pack {{name}}",
+
+    "content-pack.palettes.error": "Error reading palettes.json in content pack {{cpName}}; ignoring.  Details: \n{{details}}",
+    "content-pack.palettes.missing": "Content pack {{cpName}} does not contain a palettes.json; ignoring.",
+    "content-pack.palettes.format-missing": "The palettes.json in content pack {{cpName}} is missing the FormatVersion field; ignoring.",
+    "content-pack.palettes.new-minor-format": "The FormatVersion in palettes.json in content pack {{cpName}} ({{cpFormatVersion}}) is newer than the format version supported by {{modName}} ({{modFormatVersion}}).  It has the same major version, so everything should work fine.",
+    "content-pack.palettes.new-major-format": "The FormatVersion in palettes.json in content pack {{cpName}} ({{cpFormatVersion}}) is newer than the format version supported by {{modName}} ({{modFormatVersion}}).  It has a different major version; things might not work.",
+    "content-pack.palette.missing-id": "In content pack {{cpName}} palettes.json, palette at index {{paletteIndex}} is missing the required Id property; ignoring.",
+    "content-pack.palette.missing-colors": "In content pack {{cpName}} palettes.json, palette {{paletteName}} is missing the Colors property; ignoring.",
+    "content-pack.palettes.read-0": "Content pack {{cpName}} contained no palettes.",
+    "content-pack.palettes.read-1": "Read one palette from content pack {{cpName}}.",
+    "content-pack.palettes.read-n": "Read {{count}} palettes from content pack {{cpName}}"
+
+}

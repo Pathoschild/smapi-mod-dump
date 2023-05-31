@@ -458,7 +458,7 @@ namespace Shockah.EarlyGingerIsland
 			try
 			{
 				return new SequenceBlockMatcher<CodeInstruction>(instructions)
-					.AsAnchorable<CodeInstruction, Guid, Guid, SequencePointerMatcher<CodeInstruction>, SequenceBlockMatcher<CodeInstruction>>()
+					.AsGuidAnchorable()
 
 					// replacing boat ticket price call - the original method gets inlined
 					.Do(matcher =>
@@ -487,11 +487,11 @@ namespace Shockah.EarlyGingerIsland
 						return matcher
 							.Find(
 								ILMatches.LdcI4(BatteryPackID),
-								ILMatches.LdcI4(5).WithAutoAnchor(out var countAnchor),
+								ILMatches.LdcI4(5).WithAutoAnchor(out Guid countAnchor),
 								ILMatches.LdcI4(0),
 								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.hasItemInInventory)))
 							)
-							.MoveToPointerAnchor(countAnchor)
+							.PointerMatcher(countAnchor)
 							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixBatteryPacksRequired));
 					})
 					.Do(matcher =>
@@ -499,11 +499,11 @@ namespace Shockah.EarlyGingerIsland
 						return matcher
 							.Find(
 								ILMatches.LdcI4(HardwoodID),
-								ILMatches.LdcI4(200).WithAutoAnchor(out var countAnchor),
+								ILMatches.LdcI4(200).WithAutoAnchor(out Guid countAnchor),
 								ILMatches.LdcI4(0),
 								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.hasItemInInventory)))
 							)
-							.MoveToPointerAnchor(countAnchor)
+							.PointerMatcher(countAnchor)
 							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixHardwoodRequired));
 					})
 					.Do(matcher =>
@@ -511,11 +511,11 @@ namespace Shockah.EarlyGingerIsland
 						return matcher
 							.Find(
 								ILMatches.LdcI4(IridiumBarID),
-								ILMatches.LdcI4(5).WithAutoAnchor(out var countAnchor),
+								ILMatches.LdcI4(5).WithAutoAnchor(out Guid countAnchor),
 								ILMatches.LdcI4(0),
 								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.hasItemInInventory)))
 							)
-							.MoveToPointerAnchor(countAnchor)
+							.PointerMatcher(countAnchor)
 							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixIridiumBarsRequired));
 					})
 
@@ -533,7 +533,7 @@ namespace Shockah.EarlyGingerIsland
 			try
 			{
 				return new SequenceBlockMatcher<CodeInstruction>(instructions)
-					.AsAnchorable<CodeInstruction, Guid, Guid, SequencePointerMatcher<CodeInstruction>, SequenceBlockMatcher<CodeInstruction>>()
+					.AsGuidAnchorable()
 
 					// replacing boat ticket price call - the original method gets inlined
 					.Do(matcher =>
@@ -553,10 +553,10 @@ namespace Shockah.EarlyGingerIsland
 							.Find(
 								ILMatches.Call(AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.player))),
 								ILMatches.LdcI4(BatteryPackID),
-								ILMatches.LdcI4(5).WithAutoAnchor(out var countAnchor),
+								ILMatches.LdcI4(5).WithAutoAnchor(out Guid countAnchor),
 								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.removeItemsFromInventory)))
 							)
-							.MoveToPointerAnchor(countAnchor)
+							.PointerMatcher(countAnchor)
 							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixBatteryPacksRequired));
 					})
 					.Do(matcher =>
@@ -565,10 +565,10 @@ namespace Shockah.EarlyGingerIsland
 							.Find(
 								ILMatches.Call(AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.player))),
 								ILMatches.LdcI4(HardwoodID),
-								ILMatches.LdcI4(200).WithAutoAnchor(out var countAnchor),
+								ILMatches.LdcI4(200).WithAutoAnchor(out Guid countAnchor),
 								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.removeItemsFromInventory)))
 							)
-							.MoveToPointerAnchor(countAnchor)
+							.PointerMatcher(countAnchor)
 							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixHardwoodRequired));
 					})
 					.Do(matcher =>
@@ -577,10 +577,10 @@ namespace Shockah.EarlyGingerIsland
 							.Find(
 								ILMatches.Call(AccessTools.PropertyGetter(typeof(Game1), nameof(Game1.player))),
 								ILMatches.LdcI4(IridiumBarID),
-								ILMatches.LdcI4(5).WithAutoAnchor(out var countAnchor),
+								ILMatches.LdcI4(5).WithAutoAnchor(out Guid countAnchor),
 								ILMatches.Call(AccessTools.Method(typeof(Farmer), nameof(Farmer.removeItemsFromInventory)))
 							)
-							.MoveToPointerAnchor(countAnchor)
+							.PointerMatcher(countAnchor)
 							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatFixIridiumBarsRequired));
 					})
 
@@ -632,7 +632,7 @@ namespace Shockah.EarlyGingerIsland
 					.CreateStlocInstruction(out var requiredMailsStlocInstruction)
 					.Advance()
 					.Insert(
-						SequenceMatcherPastBoundsDirection.Before, true,
+						SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.JustInsertion,
 
 						requiredMailsLdlocInstruction,
 						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(EarlyGingerIsland), nameof(ParrotUpgradePerch_IsAvailable_Transpiler_ModifyRequiredMails))),
@@ -674,13 +674,13 @@ namespace Shockah.EarlyGingerIsland
 			try
 			{
 				return new SequenceBlockMatcher<CodeInstruction>(instructions)
-					.AsAnchorable<CodeInstruction, Guid, Guid, SequencePointerMatcher<CodeInstruction>, SequenceBlockMatcher<CodeInstruction>>()
+					.AsGuidAnchorable()
 					.Find(
 						ILMatches.Ldloc<int>(originalMethod.GetMethodBody()!.LocalVariables),
-						ILMatches.LdcI4(100).WithAutoAnchor(out var countAnchor),
+						ILMatches.LdcI4(100).WithAutoAnchor(out Guid countAnchor),
 						ILMatches.Bge
 					)
-					.MoveToPointerAnchor(countAnchor)
+					.PointerMatcher(countAnchor)
 					.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.GoldenWalnutsRequiredForQiRoom))
 					.AllElements();
 			}

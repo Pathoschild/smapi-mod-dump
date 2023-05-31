@@ -11,10 +11,14 @@
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text;
 
-namespace DynamicDialogues
+namespace DynamicDialogues.Framework
 {
-    internal class Getter
+    [SuppressMessage("ReSharper", "LoopCanBeConvertedToQuery")]
+    internal static class Getter
     {
         /// <summary>
         /// Formats the bubble set by user. "@" is replaced by player name.
@@ -23,10 +27,10 @@ namespace DynamicDialogues
         /// <returns></returns>
         internal static string FormatBubble(string which)
         {
-            string result = which;
+            var result = which;
 
             var rawspan = which.AsSpan();
-            if (rawspan.Contains<char>('@'))
+            if (rawspan.Contains('@'))
             {
                 result = which.Replace("@", Game1.player?.Name);
             }
@@ -47,42 +51,48 @@ namespace DynamicDialogues
             }
             var word = which.ToLower();
 
-            if (word is "up")
-            { return 0; }
-
-            if (word is "right")
-            { return 1; }
-
-            if (word is "down")
-            { return 2; }
-
-            if (word is "left")
-            { return 3; }
-
-            try
+            switch (word)
             {
-                int toInt = int.Parse(which);
-                if (toInt >= 0 && toInt <= 3)
-                {
-                    return toInt;
-                }
-            }
-            catch(Exception)
-            { }
+                case "up":
+                    return 0;
+                case "right":
+                    return 1;
+                case "down":
+                    return 2;
+                case "left":
+                    return 3;
+                default:
+                    try
+                    {
+                        var toInt = int.Parse(which);
+                        if (toInt is >= 0 and <= 3)
+                        {
+                            return toInt;
+                        }
+                    }
+                    // ReSharper disable once EmptyGeneralCatchClause
+                    catch(Exception)
+                    { }
 
-            return -1;
+                    return -1;
+            }
         }
 
         /// <summary>
         /// Returns a string with all questions/answers a character can give.
         /// </summary>
-        /// <param name="QAs">List of q data.</param>
+        /// <param name="questionAndAnswer">List of q data.</param>
+        /// <param name="who">The NPC.</param>
         /// <returns></returns>
-        internal static string QuestionDialogue(List<RawQuestions> QAs, NPC who)
+        internal static string QuestionDialogue(List<RawQuestions> questionAndAnswer, NPC who)
         {
             //$y seems to be infinite version of question. so it's used for this
-            string result = "$y '...";
-            foreach(var extra in QAs)
+            var result = "$qna#";
+            var questions = "";
+            var answers = "";
+            var missions = "";
+
+            foreach(var extra in questionAndAnswer)
             {
                 if(extra.From > Game1.timeOfDay || extra.To < Game1.timeOfDay)
                 {
@@ -95,28 +105,47 @@ namespace DynamicDialogues
 
                 if(extra.MaxTimesAsked > 0)
                 {
-                    int count = 0;
-                    if (ModEntry.QuestionCounter.ContainsKey(extra.Question))
+                    var count = 0;
+                    if (ModEntry.QuestionCounter.TryGetValue(extra.Question, out var value))
                     {
-                        count = ModEntry.QuestionCounter[extra.Question];
+                        count = value;
                     }
                     else
                     {
                         ModEntry.QuestionCounter.Add(extra.Question, 0);
                     }
 
-                    if (count < extra.MaxTimesAsked)
-                    {
-                        result += $"_{extra.Question}_{extra.Answer}";
-                        ModEntry.QuestionCounter[extra.Question]++;
-                    }
+                    if (count >= extra.MaxTimesAsked) continue;
+                    questions += $"{extra.Question}_";
+                    answers += $"{extra.Answer}_";
+                    missions += $"{extra.QuestToStart ?? "none"}_";
+                    ModEntry.QuestionCounter[extra.Question]++;
                 }
                 else
                 {
-                    result += $"_{extra.Question}_{extra.Answer}";
+                    questions += $"{extra.Question}_";
+                    answers += $"{extra.Answer}_";
+                    missions += $"{extra.QuestToStart ?? "none"}_";
                 }
             }
-            result += "'";
+            
+            //if the last char is '_', remove it from string.
+            if(questions.Last().Equals('_'))
+            {
+                var q = new StringBuilder(questions);
+                var a = new StringBuilder(answers);
+                var m = new StringBuilder(missions);
+                q.Remove(q.Length - 1, 0);
+                a.Remove(a.Length - 1, 0);
+                m.Remove(m.Length - 1, 0);
+
+                questions = q.ToString();
+                answers = a.ToString();
+                missions = m.ToString();
+            }
+
+            result += $"{questions}#{answers}#{missions}"; //changed ¬ to #
+
             return result;
         }
 
@@ -124,10 +153,11 @@ namespace DynamicDialogues
         /// Return a random dialogue from a list.
         /// </summary>
         /// <param name="data">The list to be used.</param>
+        /// <param name="who">The NPC.</param>
         /// <returns></returns>
         internal static string RandomDialogue(List<string> data, string who)
         {
-            if (data == null || data?.Count == 0)
+            if (data == null || data.Count == 0)
             {
                 ModEntry.Mon.Log("data file is empty.");
                 return null;
@@ -138,7 +168,7 @@ namespace DynamicDialogues
             //if its already been used, check for another
             if (ModEntry.AlreadyPatched.Contains((who, $"{index}", "random")))
             {
-                for(int i = 0; i < data.Count; i++)
+                for(var i = 0; i < data.Count; i++)
                 {
                     index = Game1.random.Next(data.Count);
 
@@ -166,6 +196,8 @@ namespace DynamicDialogues
             return data[index];
         }
         
+        /*
+         * deprecated in uhh check later
         /// <summary>
         /// Return a formatted question, which uses a random RawMission from a list.
         /// </summary>
@@ -261,7 +293,7 @@ namespace DynamicDialogues
                 //if parsed correctly, add quest to player
                 who.addQuest(numOnly);
             }
-        }
+        }*/
         
         /// <summary>
         /// Return the index in a dictionary.
@@ -272,8 +304,8 @@ namespace DynamicDialogues
         /// <exception cref="ArgumentOutOfRangeException">if it's not in the dictionary</exception>
         internal static int GetIndex(Dictionary<string, RawQuestions> dict, string name)
         {
-            int position = 0;
-            foreach(string key in dict.Keys)
+            var position = 0;
+            foreach(var key in dict.Keys)
             {
                 if(key.Equals(name))
                 {
@@ -293,10 +325,10 @@ namespace DynamicDialogues
         /// <returns></returns>
         internal static int[] FramesForAnimation(string data)
         {
-            var AsList = data.Split(' ');
+            var asList = data.Split(' ');
             var result = new List<int>();
 
-            foreach(var item in AsList)
+            foreach(var item in asList)
             {
                 var parsedItem = int.Parse(item);
                 result.Add(parsedItem);

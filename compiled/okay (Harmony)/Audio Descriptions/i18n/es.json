@@ -6,6 +6,13 @@
     "config.msg.values.Box":"Caja",
     "config.CoolDown.name": "Tiempo de espera",
     "config.CoolDown.description": "Si un sonido es repetitivo (e.j ladridos), el mod espera este tiempo antes de avisar de nuevo (no afecta ruidos diferentes).",
+    "config.XOffset.name": "Distancia X",
+    "config.XOffset.description": "Distancia horizontal que agregar.",
+    "config.YOffset.name": "Distancia Y",
+    "config.YOffset.description": "Distancia vertical que agregar.",
+
+    "config.Sounds.name": "Sonidos",
+    "config.Sounds.description": "Sonidos que el mod detectará.",
     "config.NPCs.name": "PNJs",
     "config.NPCs.description": "Ruidos de PNJs (e.j grito de serpiente).",
     "config.Environment.name": "Ambiente",
@@ -16,6 +23,8 @@
     "config.Player.description": "Sonidos hechos por el/la jugador(a).",
     "config.Fishing.name": "De pesca",
     "config.Fishing.description": "Alerta cuando un pez muerde el anzuelo.",
+    "config.Minigames.name": "Minijuegos",
+    "config.Minigames.description": "Sonidos relacionados a minijuegos (como \"Rey de la pradera\").",
     
     /* Sonidos */
 	"axe":"Sonido de hacha",
@@ -135,5 +144,20 @@
     "Stadium_cheer": "Grito del público",
     "parrot": "Loro",
     "submarine_landing": "Vibración y burbujeo.",
-    "serpentDie":"Grito de serpiente"
+    "serpentDie":"Grito de serpiente",
+    "batFlap": "Alas moviéndose",
+
+    /* minigame */
+    "Cowboy_Secret": "Secreto",
+    "Cowboy_monsterDie": "Monstruo muere",
+    "Cowboy_gunshot": "Disparo",
+    "cowboy_dead": "Jugador muere",
+    "Cowboy_Footstep": "Pasos",
+    "Cowboy_undead": "Zombie",
+    "cowboy_powerup": "Item power-up",
+    "cowboy_gunload": "Pistola recargada",
+    "Pickup_Coin15": "Monedas",
+    "cowboy_monsterhit": "Golpe contra monstruo",
+    "cowboy_gopher": "Gopher",
+    "cowboy_explosion": "Explosión"
 }

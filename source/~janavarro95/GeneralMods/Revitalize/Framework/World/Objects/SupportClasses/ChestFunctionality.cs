@@ -28,7 +28,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.SupportClasses
     /// <summary>
     /// A simple, abstracted class which allows complete access to a simple chest functionality without the need of the actual chest object.
     /// </summary>
-    [XmlType("Mods_Revitalize.Framework.World.SupportClasses.ChestFunctionality")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.SupportClasses.ChestFunctionality")]
     public class ChestFunctionality:NetObject
     {
         public readonly NetObjectList<Item> items = new NetObjectList<Item>();

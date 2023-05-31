@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using FashionSense.Framework.Interfaces.API;
 using FashionSense.Framework.Models.Appearances;
 using FashionSense.Framework.Patches.Renderer;
 using FashionSense.Framework.Utilities;
@@ -60,7 +61,7 @@ namespace FashionSense.Framework.Models
         public string PantsColor { get; set; }
         [Obsolete("No longer used as of Fashion Sense v5.5, use AppearanceToMaskColors instead.")]
         public string ShoesColor { get; set; }
-        public Dictionary<AppearanceContentPack.Type, List<Color>> AppearanceToMaskColors { get; set; }
+        public Dictionary<IApi.Type, List<Color>> AppearanceToMaskColors { get; set; }
 
         public Outfit()
         {
@@ -86,7 +87,7 @@ namespace FashionSense.Framework.Models
             HairColor = who.hairstyleColor.Value.PackedValue.ToString();
             AccessoryColors = FashionSense.accessoryManager.GetActiveAccessoryColorValues(who);
 
-            AppearanceToMaskColors = new Dictionary<AppearanceContentPack.Type, List<Color>>();
+            AppearanceToMaskColors = new Dictionary<IApi.Type, List<Color>>();
             foreach (var metadata in DrawPatch.GetCurrentlyEquippedModels(who, who.FacingDirection))
             {
                 if (metadata is null)
@@ -100,7 +101,7 @@ namespace FashionSense.Framework.Models
             // Add manual handling for the "Override Shoe Color" artificial ShoePack
             if (who.modData.ContainsKey(ModDataKeys.CUSTOM_SHOES_ID) && who.modData[ModDataKeys.CUSTOM_SHOES_ID] == ModDataKeys.INTERNAL_COLOR_OVERRIDE_SHOE_ID)
             {
-                AppearanceToMaskColors[AppearanceContentPack.Type.Shoes] = new List<Color>() { FashionSense.colorManager.GetColor(who, AppearanceModel.GetColorKey(AppearanceContentPack.Type.Shoes)) };
+                AppearanceToMaskColors[IApi.Type.Shoes] = new List<Color>() { FashionSense.colorManager.GetColor(who, AppearanceModel.GetColorKey(IApi.Type.Shoes)) };
             }
         }
     }

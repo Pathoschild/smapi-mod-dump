@@ -21,8 +21,8 @@ namespace Omegasis.Revitalize.Framework.Constants.PathConstants.Data
     {
 
 
-        public static string TemplatesPath = Path.Combine(RelativePaths.Content_Data_Folder, RelativePaths.TemplatesFoldersName);
+        public static string TemplatesPath = Path.Combine(RelativePaths.ModAssets_Data_Folder, RelativePaths.TemplatesFoldersName);
         public static string AnimationTemplatesPath = Path.Combine(TemplatesPath, "Animations");
-
+        public static string BulidingBlueprintHelpers = Path.Combine(RelativePaths.ModAssets_Data_Folder, "BuildingBlueprintHelpers"); 
     }
 }

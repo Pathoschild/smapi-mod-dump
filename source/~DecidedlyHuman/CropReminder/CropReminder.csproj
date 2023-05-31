@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\Build\SDV-1.5.6.targets"/>
+    <Import Project="..\Build\Common.csproj"/>
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared"/>
+
+	<PropertyGroup>
+        <Name>Crop Reminder</Name>
+        <Description>Unreleased.</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:00000</UpdateKeys>
+        <Version>1.0.0-alpha</Version>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<EnableHarmony>true</EnableHarmony>
+		<IgnoreModFilePatterns>\.aseprite$</IgnoreModFilePatterns>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="assets" />
+	</ItemGroup>
+
+</Project>

@@ -17,113 +17,108 @@ using StardewModdingAPI;
 // isn't meant to be extended upon, it's okay for now.
 namespace PlayerCoordinates.Utilities
 {
-	public class CoordinateLogger
-	{
-		// Strictly speaking, this doesn't need to be a list. Consider just using a string?
-		// I anticipate no problems with it being a list, though. Definitely consider it, though,
-		// given how 32-bit SDV can runs into memory issues for some people.
-		private List<string> _fileContents = new List<string>();
+    public class CoordinateLogger
+    {
+        private readonly Coordinates _coordsToAdd;
 
-		private readonly FileInfo _fileInfo;
-		private readonly Coordinates _coordsToAdd;
-		private readonly string _mapName;
-		private readonly IMonitor _monitor;
+        private readonly FileInfo _fileInfo;
+        private readonly string _mapName;
 
-		private bool _logTrackingTarget;
-		private bool _trackingCursor;
+        private readonly IMonitor _monitor;
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="fileName">Full file path</param>
-		/// <param name="coordinates">Co-ordinates to log</param>
-		/// <param name="mapName">Map name</param>
-		/// <param name="monitor">SMAPI logger</param>
-		public CoordinateLogger(string fileName, Coordinates coordinates, string mapName, bool trackingCursor,
-								bool logTrackingTarget, IMonitor monitor)
-		{
-			_fileInfo = new FileInfo(fileName);
-			_coordsToAdd = new Coordinates(coordinates.x, coordinates.y);
-			_mapName = mapName;
-			_monitor = monitor;
-			_trackingCursor = trackingCursor;
-			_logTrackingTarget = logTrackingTarget;
-		}
+        // Strictly speaking, this doesn't need to be a list. Consider just using a string?
+        // I anticipate no problems with it being a list, though. Definitely consider it, though,
+        // given how 32-bit SDV can runs into memory issues for some people.
+        private List<string> _fileContents = new();
 
-		public bool LogCoordinates()
-		{
-			return SaveCoords();
-		}
+        private readonly bool _logTrackingTarget;
+        private readonly bool _trackingCursor;
 
-		private bool SaveCoords()
-		{
-			// Best to fail safe, and not try to write the co-ordinates to file if either loading the file, or adding
-			// them to the list fails.
-			try
-			{
-				LoadCoordsFromFile();
-				AddNewCoords();
-			}
-			catch (Exception e)
-			{
-				Logger.LogException(_monitor, e);
+        /// <summary>
+        /// </summary>
+        /// <param name="fileName">Full file path</param>
+        /// <param name="coordinates">Co-ordinates to log</param>
+        /// <param name="mapName">Map name</param>
+        /// <param name="monitor">SMAPI logger</param>
+        public CoordinateLogger(string fileName, Coordinates coordinates, string mapName, bool trackingCursor,
+            bool logTrackingTarget, IMonitor monitor)
+        {
+            this._fileInfo = new FileInfo(fileName);
+            this._coordsToAdd = new Coordinates(coordinates.x, coordinates.y);
+            this._mapName = mapName;
+            this._monitor = monitor;
+            this._trackingCursor = trackingCursor;
+            this._logTrackingTarget = logTrackingTarget;
+        }
 
-				return false;
-			}
+        public bool LogCoordinates()
+        {
+            return this.SaveCoords();
+        }
 
-			try
-			{
-				WriteCoordsToFile();
-			}
-			catch (Exception e)
-			{
-				Logger.LogException(_monitor, e);
+        private bool SaveCoords()
+        {
+            // Best to fail safe, and not try to write the co-ordinates to file if either loading the file, or adding
+            // them to the list fails.
+            try
+            {
+                this.LoadCoordsFromFile();
+                this.AddNewCoords();
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(this._monitor, e);
 
-				return false;
-			}
+                return false;
+            }
 
-			return true;
-		}
+            try
+            {
+                this.WriteCoordsToFile();
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(this._monitor, e);
 
-		private void AddNewCoords()
-		{
-			// Add new co-ordinates to the existing file contents, if any.
-			_fileContents.Add($"Map: {_mapName}");
-			if (_logTrackingTarget) // If the player doesn't want to log the co-ordinate source, we needn't do anything!
-				_fileContents.Add($"Tracking: {(_trackingCursor ? "Cursor" : "Player")}");
-			_fileContents.Add($"Tile X: {_coordsToAdd.x}, Tile Y: {_coordsToAdd.y}");
-		}
+                return false;
+            }
 
-		private void LoadCoordsFromFile()
-		{
-			// If the file already exists, load the contents into our list. 
-			List<string> oldFileContents = new List<string>();
+            return true;
+        }
 
-			if (_fileInfo.Exists)
-			{
-				string[] contents = File.ReadAllLines(_fileInfo.FullName);
+        private void AddNewCoords()
+        {
+            // Add new co-ordinates to the existing file contents, if any.
+            this._fileContents.Add($"Map: {this._mapName}");
+            if (this._logTrackingTarget) // If the player doesn't want to log the co-ordinate source, we needn't do anything!
+                this._fileContents.Add($"Tracking: {(this._trackingCursor ? "Cursor" : "Player")}");
+            this._fileContents.Add($"Tile X: {this._coordsToAdd.x}, Tile Y: {this._coordsToAdd.y}");
+        }
 
-				foreach (string s in contents)
-				{
-					oldFileContents.Add(s);
-				}
-			}
+        private void LoadCoordsFromFile()
+        {
+            // If the file already exists, load the contents into our list. 
+            var oldFileContents = new List<string>();
 
-			_fileContents.Clear();
-			_fileContents = oldFileContents;
-		}
+            if (this._fileInfo.Exists)
+            {
+                string[] contents = File.ReadAllLines(this._fileInfo.FullName);
 
-		private void WriteCoordsToFile()
-		{
-			StreamWriter fileWriter = new StreamWriter(_fileInfo.FullName);
+                foreach (string s in contents) oldFileContents.Add(s);
+            }
 
-			foreach (string s in _fileContents)
-			{
-				fileWriter.WriteLine(s);
-			}
+            this._fileContents.Clear();
+            this._fileContents = oldFileContents;
+        }
 
-			fileWriter.WriteLine();
-			fileWriter.Close();
-		}
-	}
+        private void WriteCoordsToFile()
+        {
+            var fileWriter = new StreamWriter(this._fileInfo.FullName);
+
+            foreach (string s in this._fileContents) fileWriter.WriteLine(s);
+
+            fileWriter.WriteLine();
+            fileWriter.Close();
+        }
+    }
 }

@@ -1,0 +1,8 @@
+{
+	"Omegasis.Revitalize.Objects.EnergyGeneration.Windmill":
+	{
+		"displayName":"Windmill",
+		"description":"<New Item Description>",
+		"category":"<New Item Category>"
+	},
+}

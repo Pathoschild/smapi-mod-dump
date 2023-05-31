@@ -1,7 +1,7 @@
 {
     "Name": "PanningUpgrades Extra Config",
     "Author": "trashcan9",
-    "Version": "1.1.0",
+    "Version": "1.2.0",
     "Description": "Adds extra config options for PanningUpgrades",
     "UniqueID": "trashcan9.PanningUpgrades.ExtraConfig",
     "EntryDll": "PanningUpgrades.ExtraConfig.dll",

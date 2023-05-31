@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="34" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="25" nextobjectid="49">
+ <tileset firstgid="1" name="untitled tile sheet" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior" width="512" height="1088"/>
+  <tile id="1259">
+   <animation>
+    <frame tileid="1259" duration="500"/>
+    <frame tileid="1323" duration="500"/>
+    <frame tileid="1259" duration="500"/>
+    <frame tileid="1325" duration="500"/>
+    <frame tileid="1259" duration="500"/>
+   </animation>
+  </tile>
+  <tile id="1260">
+   <animation>
+    <frame tileid="1260" duration="500"/>
+    <frame tileid="1324" duration="500"/>
+    <frame tileid="1260" duration="500"/>
+    <frame tileid="1326" duration="500"/>
+    <frame tileid="1260" duration="500"/>
+   </animation>
+  </tile>
+  <tile id="1291">
+   <animation>
+    <frame tileid="1291" duration="500"/>
+    <frame tileid="1355" duration="500"/>
+    <frame tileid="1291" duration="500"/>
+    <frame tileid="1357" duration="500"/>
+    <frame tileid="1291" duration="500"/>
+   </animation>
+  </tile>
+  <tile id="1292">
+   <animation>
+    <frame tileid="1292" duration="500"/>
+    <frame tileid="1356" duration="500"/>
+    <frame tileid="1292" duration="500"/>
+    <frame tileid="1358" duration="500"/>
+    <frame tileid="1292" duration="500"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="2177" name="z_bnw" tilewidth="16" tileheight="16" tilecount="1975" columns="25">
+  <image source="spring_1_bnw_tilesheet.png" width="400" height="1264"/>
+ </tileset>
+ <tileset firstgid="4152" name="z_bnw2" tilewidth="16" tileheight="16" tilecount="2976" columns="32">
+  <image source="bnw_vanilla_furniture.png" width="512" height="1488"/>
+ </tileset>
+ <tileset firstgid="7128" name="z_bnw3" tilewidth="16" tileheight="16" tilecount="560" columns="16">
+  <image source="walls_and_floors.png" width="256" height="560"/>
+ </tileset>
+ <tileset firstgid="7688" name="z_bnw4" tilewidth="16" tileheight="16" tilecount="36" columns="4">
+  <image source="paths.png" width="64" height="144"/>
+ </tileset>
+ <tileset firstgid="7724" name="z_bnw5" tilewidth="16" tileheight="16" tilecount="72" columns="8">
+  <image source="bnw_vanilla_weapons.png" width="128" height="144"/>
+ </tileset>
+ <layer id="1" name="Back" width="34" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztzjEBACAMxMD4twBOwAmI6VINPENuyRqQJOkvszuiF7C7K3oBt3uiF9I7BQXlBGY=
+  </data>
+ </layer>
+ <layer id="3" name="Back2" width="34" height="20">
+  <properties>
+   <property name="Draw" value="Back"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRQA9QONAOGOLAcqAdAAWRA+0AKKgcaAeMglFAQwAAwJMBfQ==
+  </data>
+ </layer>
+ <layer id="5" name="Back3" width="34" height="20">
+  <properties>
+   <property name="Draw" value="Back"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAoGP7AcaAdAQeRAOwAKKgfaAaNgFNAQAAB2RQEM
+  </data>
+ </layer>
+ <layer id="24" name="Back4" width="34" height="20">
+  <properties>
+   <property name="Draw" value="Back"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAoGP7AcaAdAQeRAOwAKKgfaAaNgFNAQAAB2RQEM
+  </data>
+ </layer>
+ <layer id="7" name="Buildings" width="34" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztkrEOwUAcxv9Kk1YYMJMYLOUlBDsWMVrM2EQweAGxsngMavII2HgYX3NtcLkWjbsuvuSXy90l/f9y/Yj+4aOBOEdCsUMRWILzCigp9KiCJmhxtEFDsccADDlGEXgswc4g2gPbYOerCDycnDD/DC7G4+5I4v7GJHqIsgYd8/VMVn+DPGx3VdHfII8rqetvkEff/Sd5FKMATI31V9QbnjAeE8wbY51inT0x57qR0onSOuuNKBtib+Z3/87j2zi9aXFnzv4AuvTolWwPrzfPcfY3Yu96leCRSRJlQS4Z4uM/9LAwvwwqEXvUML8OGpI9tnI//3FiAnru3cLn3uOXuQOSJSoA
+  </data>
+ </layer>
+ <layer id="21" name="Buildings2" width="34" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjALagDVcA+0CCDg6SNxxD8kdLxkHzh1DFVgOtAOgIHKgHQAFlTQy9zQnA8MZID7LSSMLiARPgPY/BeJnA+yOUTAwAAC/pgms
+  </data>
+ </layer>
+ <layer id="22" name="Buildings3" width="34" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAoGP7AcaAdAQeRAOwAKKgfaAaNgFNAQAAB2RQEM
+  </data>
+ </layer>
+ <layer id="23" name="Buildings4" width="34" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAoGP7AcaAeMglEwCugGAOsQADo=
+  </data>
+ </layer>
+ <layer id="9" name="Front" width="34" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFQwV0iA2c3e0cQPuBuBOIVwygOxYA7V8IxIs4Bs4NQxUwDrD9A5l+QeAuEwPDPSbap19PTgYGSyDtzYkq7gvl/wW64R8QMzLR1h1JQPsigXQKkE5FwujgDQsDw1sW2rplFBAHfgDj5ycQ/8IST/QGBnID7YKRCRYB8VEkvBgqvgRNHB3TA9DLHhgAAD5RHWs=
+  </data>
+ </layer>
+ <layer id="11" name="Front2" width="34" height="20">
+  <properties>
+   <property name="Draw" value="Front"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApGwUCDTZwMDJuBeAvnQLtkFIyCgQcAwUcCNQ==
+  </data>
+ </layer>
+ <layer id="13" name="Paths" width="34" height="20">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20ND6AAAODHAAqgAAE=
+  </data>
+ </layer>
+ <layer id="15" name="AlwaysFront" width="34" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUDEcwl4mBYR7TQLuCgWEv0A37gHgy60C7ZBSMglEwCkbBUAEAdy4DVw==
+  </data>
+ </layer>
+ <layer id="17" name="AlwaysFront2" width="34" height="20">
+  <properties>
+   <property name="Draw" value="AlwaysFront"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20ND6AAAODHAAqgAAE=
+  </data>
+ </layer>
+ <layer id="19" name="AlwaysFront3" width="34" height="20">
+  <properties>
+   <property name="Draw" value="AlwaysFront"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20ND6AAAODHAAqgAAE=
+  </data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <objectgroup id="8" name="Buildings">
+  <object id="3" name="TileData" x="32" y="112" width="16" height="16">
+   <properties>
+    <property name="Action" value="DropBox MarlonChest"/>
+   </properties>
+  </object>
+  <object id="35" name="TileData" x="128" y="160" width="16" height="16">
+   <properties>
+    <property name="Action" value=""/>
+    <property name="Shop" value="bnw_EradicationList"/>
+   </properties>
+  </object>
+  <object id="36" name="TileData" x="128" y="144" width="16" height="16">
+   <properties>
+    <property name="Action" value=""/>
+    <property name="Shop" value="bnw_EradicationList"/>
+   </properties>
+  </object>
+  <object id="48" name="TileData" x="32" y="192" width="16" height="16">
+   <properties>
+    <property name="Action" value="Door"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="10" name="Front"/>
+ <objectgroup id="14" name="Paths"/>
+ <objectgroup id="16" name="AlwaysFront"/>
+</map>

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Audio descriptions",
   "Author": "mistyspring",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Displays current sound and a description.",
   "UniqueID": "mistyspring.AudioDescription",
   "EntryDll": "AudioDescription.dll",

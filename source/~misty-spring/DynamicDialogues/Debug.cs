@@ -10,26 +10,29 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using StardewValley;
 using lv = StardewModdingAPI.LogLevel;
 
 namespace DynamicDialogues
 {
-    internal class Debug
+    [SuppressMessage("ReSharper", "ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator")]
+    internal static class Debug
     {
         internal static void Print(string arg1, string[] arg2)
         {
-            if (!arg2.Any() || arg2 == null || arg2?.Length == 0)
+            if (!arg2.Any() || arg2.Length == 0)
             {
                 ModEntry.Mon.Log("Please specify a type. (Possible values: Dialogues, Random, Questions, Notifs", lv.Warn);
                 return;
             }
 
-            bool det = arg2.Contains("det");
+            var det = arg2.Contains("det");
 
             if (arg2.Contains("Dialogues"))
             {
-                string dials = "Dialogues: ";
+                var dials = "Dialogues: ";
                 if(ModEntry.Dialogues == null || ModEntry.Dialogues?.Count == 0)
                 {
                     dials += "None";
@@ -37,6 +40,7 @@ namespace DynamicDialogues
                 }
                 else
                 {
+                    // ReSharper disable once PossibleNullReferenceException
                     foreach (var pair in ModEntry.Dialogues)
                     {
                         dials += pair.Key + $" ({pair.Value?.Count}), ";
@@ -46,7 +50,7 @@ namespace DynamicDialogues
             }
             if (arg2.Contains("Notifs"))
             {
-                string noti = "Notifications: ";
+                var noti = "Notifications: ";
 
                 if (ModEntry.Notifs?.Count == 0 || ModEntry.Notifs == null)
                 {
@@ -67,7 +71,7 @@ namespace DynamicDialogues
             }
             if (arg2.Contains("Random"))
             {
-                string ran = "Random dialogues: ";
+                var ran = "Random dialogues: ";
 
                 if(ModEntry.RandomPool?.Count == 0 || ModEntry.RandomPool == null)
                 {
@@ -86,62 +90,98 @@ namespace DynamicDialogues
                     ModEntry.Mon.Log(ran, lv.Info);
                 }
             }
-            if (arg2.Contains("Questions"))
-            {
-                string Qs = "Questions: ";
 
-                if (ModEntry.Questions == null || ModEntry.Questions?.Count == 0)
-                {
-                    Qs += "None";
-                    ModEntry.Mon.Log(Qs, lv.Info);
-                }
-                else
-                {
-                    foreach (var pair in ModEntry.Dialogues)
-                    {
-                        Qs += pair.Key + $" ({pair.Value?.Count}), ";
-                    }
-                    ModEntry.Mon.Log(Qs, lv.Info);
-                }
-            }
+            if (!arg2.Contains("Questions")) return;
             
-            if(arg2.Contains("Missions") || arg2.Contains("Quests"))
-            {
-                string mis = "Missions: ";
-                if (ModEntry.MissionData == null || ModEntry.MissionData?.Count == 0)
-                {
-                    mis += "None";
-                    ModEntry.Mon.Log(mis, lv.Info);
-                }
-                else
-                {
-                    foreach (var pair in ModEntry.MissionData)
-                    {
-                        mis += pair.Key + $" {(det ? Listify(pair.Value) : "(" + pair.Value?.Count + "), ")}";
-                    }
-                    ModEntry.Mon.Log(mis, lv.Info);
-                }
-            }
-        }
+            var qs = "Questions: ";
 
-        private static string Listify(List<RawMission> value)
-        {
-            string result = "\n";
-            foreach (var msn in value)
+            if (ModEntry.Questions == null || ModEntry.Questions?.Count == 0)
             {
-                result += $"ID: {msn.ID}, Text: \"{msn.Dialogue}\", Location: {msn.Location}, Time: {msn.From} - {msn.To}\n";
+                qs += "None";
+                ModEntry.Mon.Log(qs, lv.Info);
             }
-            return result;
+            else
+            {
+                // ReSharper disable once PossibleNullReferenceException
+                foreach (var pair in ModEntry.Dialogues)
+                {
+                    qs += pair.Key + $" ({pair.Value?.Count}), ";
+                }
+                ModEntry.Mon.Log(qs, lv.Info);
+            }
         }
 
         private static string Listify(List<string> value)
         {
-            string result = "\n";
+            var result = "\n";
             foreach(var text in value)
             {
                 result += $"\"{text}\"\n";
             }
             return result;
+        }
+
+        public static void SayHiTo(string arg1, string[] arg2)
+        {
+            try
+            {
+                if (arg2.Length != 2)
+                {
+                    ModEntry.Mon.Log("Format: sayHiTo <npc talking> <npc to greet>.\nExample: `sayHiTo Alex Evelyn`",lv.Warn);
+                    return;
+                }
+
+                var chara = arg2[0];
+                var who = Game1.getCharacterFromName(chara);
+                var pos = Game1.player.Position;
+                pos.X++;
+                
+                Game1.warpCharacter(who,Game1.player.currentLocation,pos);
+
+                var chara2 = arg2[1];
+                var greeted = Game1.getCharacterFromName(chara2);
+
+                who.sayHiTo(greeted);
+            }
+            catch (Exception e)
+            {
+                ModEntry.Mon.Log($"Error: {e}", lv.Error);
+                throw;
+            }
+        }
+
+        public static void GetQuestionsFor(string arg1, string[] arg2)
+        {
+            if (arg2 == null || !arg2.Any())
+                return;
+
+            try
+            {
+                var who = arg2[0];
+                if (string.IsNullOrWhiteSpace(who)) 
+                    return;
+
+                if (!ModEntry.Questions.ContainsKey(who))
+                    return;
+
+                var data = ModEntry.Questions[who];
+
+                var position = 0;
+                string result = null;
+                foreach (var rq in data)
+                {
+                    position++;
+                    var addition = $"\n[{position}]\nQuestion:{rq.Question}\nAnswer:{rq.Answer}\n";
+                    result += addition;
+                }
+                
+                ModEntry.Mon.Log(result ?? "No data was found.",lv.Info);
+            }
+            catch (Exception e)
+            {
+                ModEntry.Mon.Log($"Error: {e}", lv.Error);
+                throw;
+            }
         }
     }
 }

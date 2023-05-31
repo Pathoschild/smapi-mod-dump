@@ -10,6 +10,13 @@ for queries and analysis.**
 
 # Release notes
 
+## 2.0.0
+Released 30 May 2023.
+
+* Taking sprinklers that are furniture into consideration.
+* Refactored the code to allow sprinklers between tiles in the API (like [Immersive Sprinklers](https://www.nexusmods.com/stardewvalley/mods/15239)).
+* Removed deprecated "Flood-fill" family behaviors.
+
 ## 1.4.1
 Released 13 November 2022.
 

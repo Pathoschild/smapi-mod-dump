@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using StardewArchipelago.GameModifications.EntranceRandomizer;
-using StardewArchipelago.Locations.CodeInjections;
+using StardewArchipelago.Locations.CodeInjections.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -23,6 +23,7 @@ namespace StardewArchipelago.Archipelago
     {
         private const string GOAL_KEY = "goal";
         private const string STARTING_MONEY_KEY = "starting_money";
+        private const string PROFIT_MARGIN_KEY = "profit_margin";
         private const string ENTRANCE_RANDOMIZATION_KEY = "entrance_randomization";
         private const string SEASON_RANDOMIZATION_KEY = "season_randomization";
         private const string SEED_SHUFFLE_KEY = "seed_shuffle";
@@ -33,12 +34,14 @@ namespace StardewArchipelago.Archipelago
         private const string BUILDING_PROGRESSION_KEY = "building_progression";
         private const string FESTIVAL_OBJECTIVES_KEY = "festival_locations";
         private const string ARCADE_MACHINES_KEY = "arcade_machine_locations";
-        private const string SPECIAL_ORDERS_KEY = "special_orders_key";
+        private const string SPECIAL_ORDERS_KEY = "special_orders";
         private const string HELP_WANTED_LOCATIONS_KEY = "help_wanted_locations";
         private const string FISHSANITY_KEY = "fishsanity";
         private const string MUSEUMSANITY_KEY = "museumsanity";
         private const string FRIENDSANITY_KEY = "friendsanity";
+        private const string FRIENDSANITY_HEART_SIZE_KEY = "friendsanity_heart_size";
         private const string EXCLUDE_GINGER_ISLAND_KEY = "exclude_ginger_island";
+        private const string TRAP_ITEMS_KEY = "trap_items";
         private const string MULTI_SLEEP_ENABLED_KEY = "multiple_day_sleep_enabled";
         private const string MULTI_SLEEP_COST_KEY = "multiple_day_sleep_cost";
         private const string EXPERIENCE_MULTIPLIER_KEY = "experience_multiplier";
@@ -56,13 +59,15 @@ namespace StardewArchipelago.Archipelago
         private const string RANDOMIZE_NPC_APPEARANCES_KEY = "randomize_appearances";
         private const string RANDOMIZE_NPC_APPEARANCES_DAILY_KEY = "randomize_appearances_daily";
         private const string MULTIWORLD_VERSION_KEY = "client_version";
-
+        private const string MOD_LIST_KEY = "mod_versions";
+        
         private Dictionary<string, object> _slotDataFields;
         private IMonitor _console;
 
         public string SlotName { get; private set; }
         public Goal Goal { get; private set; }
         public int StartingMoney { get; private set; }
+        public double ProfitMargin { get; private set; }
         public EntranceRandomization EntranceRandomization { get; private set; }
         public SeasonRandomization SeasonRandomization { get; private set; }
         public SeedShuffle SeedShuffle { get; private set; }
@@ -78,7 +83,9 @@ namespace StardewArchipelago.Archipelago
         public Fishsanity Fishsanity { get; private set; }
         public Museumsanity Museumsanity { get; private set; }
         public Friendsanity Friendsanity { get; private set; }
+        public int FriendsanityHeartSize { get; private set; }
         public bool ExcludeGingerIsland { get; private set; }
+        public TrapItemsDifficulty TrapItemsDifficulty { get; private set; }
         public bool EnableMultiSleep { get; private set; }
         public int MultiSleepCostPerDay { get; private set; }
         public double ExperienceMultiplier { get; private set; }
@@ -96,6 +103,7 @@ namespace StardewArchipelago.Archipelago
         public Dictionary<string, string> ModifiedEntrances { get; set; }
         public AppearanceRandomization AppearanceRandomization { get; set; }
         public bool AppearanceRandomizationDaily { get; set; }
+        public ModsManager Mods { get; set; }
 
         public SlotData(string slotName, Dictionary<string, object> slotDataFields, IMonitor console)
         {
@@ -105,6 +113,7 @@ namespace StardewArchipelago.Archipelago
 
             Goal = GetSlotSetting(GOAL_KEY, Goal.CommunityCenter);
             StartingMoney = GetSlotSetting(STARTING_MONEY_KEY, 500);
+            ProfitMargin = GetSlotSetting(PROFIT_MARGIN_KEY, 100) / 100.0;
             EntranceRandomization = GetSlotSetting(ENTRANCE_RANDOMIZATION_KEY, EntranceRandomization.Disabled);
             SeasonRandomization = GetSlotSetting(SEASON_RANDOMIZATION_KEY, SeasonRandomization.Disabled);
             SeedShuffle = GetSlotSetting(SEED_SHUFFLE_KEY, SeedShuffle.Disabled);
@@ -120,7 +129,9 @@ namespace StardewArchipelago.Archipelago
             Fishsanity = GetSlotSetting(FISHSANITY_KEY, Fishsanity.None);
             Museumsanity = GetSlotSetting(MUSEUMSANITY_KEY, Museumsanity.None);
             Friendsanity = GetSlotSetting(FRIENDSANITY_KEY, Friendsanity.None);
+            FriendsanityHeartSize = GetSlotSetting(FRIENDSANITY_HEART_SIZE_KEY, 4);
             ExcludeGingerIsland = GetSlotSetting(EXCLUDE_GINGER_ISLAND_KEY, true);
+            TrapItemsDifficulty = GetSlotSetting(TRAP_ITEMS_KEY, TrapItemsDifficulty.Medium);
             EnableMultiSleep = GetSlotSetting(MULTI_SLEEP_ENABLED_KEY, true);
             MultiSleepCostPerDay = GetSlotSetting(MULTI_SLEEP_COST_KEY, 0);
             ExperienceMultiplier = GetSlotSetting(EXPERIENCE_MULTIPLIER_KEY, 100) / 100.0;
@@ -140,6 +151,9 @@ namespace StardewArchipelago.Archipelago
             ModifiedEntrances = JsonConvert.DeserializeObject<Dictionary<string, string>>(newEntrancesStringData);
             AppearanceRandomization = GetSlotSetting(RANDOMIZE_NPC_APPEARANCES_KEY, AppearanceRandomization.Disabled);
             AppearanceRandomizationDaily = GetSlotSetting(RANDOMIZE_NPC_APPEARANCES_DAILY_KEY, false);
+            var modsString = GetSlotSetting(MOD_LIST_KEY, "");
+            var modsAndVersions = JsonConvert.DeserializeObject<Dictionary<string, string>>(modsString);
+            Mods = new ModsManager(modsAndVersions);
         }
 
         private T GetSlotSetting<T>(string key, T defaultValue) where T : struct, Enum, IConvertible
@@ -187,69 +201,6 @@ namespace StardewArchipelago.Archipelago
                 Game1.netWorldState.Value.BundleData[key] = newBundle;
             }
         }
-
-        public void ReplaceEntrances()
-        {
-            if (EntranceRandomization == EntranceRandomization.Disabled)
-            {
-                return;
-            }
-
-            foreach (var (original, replacement) in ModifiedEntrances)
-            {
-                var originalExists = Entrances.TryGetEntrance(original, out var originalEntrance);
-                var replacementExists = Entrances.TryGetEntrance(replacement, out var replacementEntrance);
-                if (!originalExists || !replacementExists)
-                {
-                    if (!originalExists)
-                    {
-                        _console.Log($"Entrance \"{original}\" not found. Could not apply randomization provided by the AP server", LogLevel.Warn);
-                    }
-                    if (!replacementExists)
-                    {
-                        _console.Log($"Entrance \"{replacement}\" not found. Could not apply randomization provided by the AP server", LogLevel.Warn);
-                    }
-                    continue;
-                }
-
-                originalEntrance.ReplaceWith(replacementEntrance);
-                DoReplacementOnEquivalentAreasAsWell(originalEntrance, original, replacementEntrance);
-            }
-        }
-
-        private static void DoReplacementOnEquivalentAreasAsWell(OneWayEntrance originalEntrance, string original,
-            OneWayEntrance replacementEntrance)
-        {
-            foreach (var equivalentGroup in EquivalentWarps.EquivalentAreas)
-            {
-                ReplaceEquivalentEntrances(originalEntrance.OriginName, original, replacementEntrance, equivalentGroup);
-                ReplaceEquivalentEntrances(originalEntrance.DestinationName, original, replacementEntrance, equivalentGroup);
-            }
-        }
-
-        private static void ReplaceEquivalentEntrances(string locationName, string originalLocationName, OneWayEntrance replacementEntrance,
-            string[] equivalentAreasGroup)
-        {
-            if (!equivalentAreasGroup.Contains(locationName))
-            {
-                return;
-            }
-
-            foreach (var equivalentArea in equivalentAreasGroup)
-            {
-                if (locationName == equivalentArea)
-                {
-                    continue;
-                }
-
-                var newWarpName = originalLocationName.Replace(locationName, equivalentArea);
-                var newEntranceExists = Entrances.TryGetEntrance(newWarpName, out var newEntrance);
-                if (newEntranceExists)
-                {
-                    newEntrance.ReplaceWith(replacementEntrance);
-                }
-            }
-        }
     }
 
     public enum EntranceRandomization
@@ -259,7 +210,7 @@ namespace StardewArchipelago.Archipelago
         NonProgression = 2,
         Buildings = 3,
         Everything = 4,
-        Chaos = 4,
+        Chaos = 5,
     }
 
     public enum SeasonRandomization
@@ -356,6 +307,16 @@ namespace StardewArchipelago.Archipelago
         StartingNpcs = 3,
         All = 4,
         AllWithMarriage = 5,
+    }
+
+    public enum TrapItemsDifficulty
+    {
+        NoTraps = 0,
+        Easy = 1,
+        Medium = 2,
+        Hard = 3,
+        Hell = 4,
+        Nightmare = 5,
     }
 
     public enum Goal

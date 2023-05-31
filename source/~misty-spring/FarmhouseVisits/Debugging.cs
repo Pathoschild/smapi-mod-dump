@@ -18,7 +18,7 @@ namespace FarmVisitors
 {
     internal static class Debugging
     {
-        /*private static void ForceVisit(string command, string[] arg2)
+        public static void ForceVisit(string command, string[] arg2)
         {
             var farmHouse = Utility.getHomeOfFarmer(Game1.MasterPlayer);
 
@@ -26,43 +26,50 @@ namespace FarmVisitors
             {
                 if (Game1.MasterPlayer.currentLocation == farmHouse)
                 {
-                    if (arg2 is null)
+                    try
                     {
-                        ModEntry.ChooseRandom();
-                    }
-                    else if (NPCNames.Contains(arg2?[0]))
-                    {
-                        ModEntry.VisitorName = arg2[0];
-                        ModEntry.Log($"VisitorName= {VisitorName}", LogLevel.Trace);
-
-                        if (!TodaysVisitors.Contains(VisitorName))
+                        if (arg2 is null || arg2?.Length == 0)
                         {
-                            //save values
-                            NPC visit = Game1.getCharacterFromName(VisitorName);
-
-                            //add them to farmhouse
-                            Actions.AddToFarmHouse(visit, farmHouse, false);
-                            ModEntry.SetFromCommand(visit);
+                            ModEntry.ChooseRandom();
                         }
-                        else if (arg2[1] is "force")
+                        else if (NPCNames.Contains(arg2?[0]))
                         {
-                            //save values
-                            NPC visit = Game1.getCharacterFromName(VisitorName);
-                            VisitorData = new TempNPC(visit);
+                            ModEntry.VisitorName = arg2[0];
+                            ModEntry.Log($"VisitorName= {VisitorName}", LogLevel.Trace);
 
-                            //add them to farmhouse
-                            Actions.AddToFarmHouse(visit, farmHouse, false);
-                            
+                            if (!TodaysVisitors.Contains(VisitorName))
+                            {
+                                //save values
+                                NPC visit = Game1.getCharacterFromName(VisitorName);
+
+                                //add them to farmhouse
+                                Actions.AddToFarmHouse(visit, farmHouse, false);
+                                ModEntry.SetFromCommand(visit);
+                            }
+                            else if (arg2[1] is "force")
+                            {
+                                //save values
+                                NPC visit = Game1.getCharacterFromName(VisitorName);
+                                ModEntry.VisitorData = new TempNPC(visit);
+
+                                //add them to farmhouse
+                                Actions.AddToFarmHouse(visit, farmHouse, false);
+
+                            }
+                            else
+                            {
+                                ModEntry.VisitorName = null;
+                                ModEntry.Log($"{VisitorName} has already visited the Farm today!", LogLevel.Trace);
+                            }
                         }
                         else
                         {
-                            VisitorName = null;
-                            ModEntry.Log($"{VisitorName} has already visited the Farm today!", LogLevel.Trace);
+                            ModEntry.Log(ModEntry.TL.Get("error.InvalidValue"), LogLevel.Error);
                         }
                     }
-                    else
-                    {
-                        ModEntry.Log(ModEntry.TL.Get("error.InvalidValue"), LogLevel.Error);
+                    catch(Exception)
+                    { 
+
                     }
                 }
                 else
@@ -74,7 +81,7 @@ namespace FarmVisitors
             {
                 ModEntry.Log(ModEntry.TL.Get("error.WorldNotReady"), LogLevel.Error);
             }
-        }*/
+        }
 
         public static void Print(string command, string[] arg2)
         {

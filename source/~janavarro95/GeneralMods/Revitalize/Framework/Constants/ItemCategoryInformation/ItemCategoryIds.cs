@@ -23,8 +23,8 @@ namespace Omegasis.Revitalize.Framework.Constants.ItemCategoryInformation
         public static readonly string StardewValley_Resource = "StardewValley.Resource";
         public static readonly string StardewValley_Misc = "StardewValley.Misc";
 
-        public static readonly string Revitalize_Farming = "Revitalize.Farming";
-        public static readonly string Revitalize_Machine = "Revitalize.Machine";
+        public static readonly string Revitalize_Farming = "Omegasis.Revitalize.Farming";
+        public static readonly string Revitalize_Machine = "Omegasis.Revitalize.Machine";
 
     }
 }

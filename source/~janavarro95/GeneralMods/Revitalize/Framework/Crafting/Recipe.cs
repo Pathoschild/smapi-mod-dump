@@ -166,7 +166,7 @@ namespace Omegasis.Revitalize.Framework.Crafting
         public bool InventoryContainsIngredient(IList<Item> items, CraftingRecipeComponent pair)
         {
             foreach (Item i in items)
-                if (i != null && this.ItemEqualsOther(i, pair.item) && pair.requiredAmount <= i.Stack)
+                if (i != null && this.ItemEqualsOther(i, pair.item) && pair.getRequiredAmount() <= i.Stack)
                     return true;
             return false;
         }
@@ -196,10 +196,13 @@ namespace Omegasis.Revitalize.Framework.Crafting
                 {
                     if (item == null) continue;
                     if (this.ItemEqualsOther(item, pair.item))
-                        if (item.Stack == pair.requiredAmount)
+                    {
+                        int requiredAmount = pair.getRequiredAmount();
+                        if (item.Stack == requiredAmount)
                             removalList.Add(item); //remove the item
                         else
-                            item.Stack -= pair.requiredAmount; //or reduce the stack size.
+                            item.Stack -= requiredAmount; //or reduce the stack size.
+                    }
                 }
 
             foreach (var v in removalList)

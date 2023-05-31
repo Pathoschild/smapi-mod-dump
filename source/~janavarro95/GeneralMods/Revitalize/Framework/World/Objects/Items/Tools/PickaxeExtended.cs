@@ -27,7 +27,7 @@ using Omegasis.StardustCore.UIUtilities;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.Items.Tools
 {
-    [XmlType("Mods_Revitalize.Framework.World.Objects.Items.Tools.PickaxeExtended")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.Items.Tools.PickaxeExtended")]
     public class PickaxeExtended : Pickaxe, IBasicItemInfoProvider
     {
         public BasicItemInformation info;

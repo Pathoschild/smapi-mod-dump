@@ -1,7 +1,7 @@
 {
   "Name": "Solid Foundations",
   "Author": "PeacefulEnd",
-  "Version": "1.13.1",
+  "Version": "1.14.2",
   "Description": "Custom buildings framework for Stardew Valley.",
   "UniqueID": "PeacefulEnd.SolidFoundations",
   "EntryDll": "SolidFoundations.dll",

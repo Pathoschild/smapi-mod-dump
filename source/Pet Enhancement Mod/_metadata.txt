@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit d1df87a0d551b1a4dc259d2015990d69ad65f4cd
-   Merge: 26f6068 cb69815
    Author: jlfulmer <josh.l.fulmer@gmail.com>
    Date:   Wed Dec 13 15:46:28 2017 -0500
    

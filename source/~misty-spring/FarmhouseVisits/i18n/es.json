@@ -51,6 +51,8 @@
 	"config.RejectionDialogues.description": "Si no les dejas entrar, los PNJs comentarán sobre ello.",
 	"config.ReceiveGifts.name": "¿Recibir regalos?",
 	"config.ReceiveGifts.description": "Si se activa, Las visitas te traerán un regalo.",
+	"config.GiftChance.name": "Probabilidad de regalo",
+	"config.GiftChance.description": "La probabilidad de que las visitas te traigan algo.",
 	"Visit.AllowOrNot": "{0} está esperando afuera. ¿Abrir la puerta?",
 	"Visit.Yes": "Si",
 	"Visit.No": "No",

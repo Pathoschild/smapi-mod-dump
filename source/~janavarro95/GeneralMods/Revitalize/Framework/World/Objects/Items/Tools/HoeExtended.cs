@@ -27,7 +27,7 @@ using Omegasis.StardustCore.UIUtilities;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.Items.Tools
 {
-    [XmlType("Mods_Revitalize.Framework.World.Objects.Items.Tools.HoeExtended")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.Items.Tools.HoeExtended")]
     public class HoeExtended : Hoe, IBasicItemInfoProvider
     {
         public BasicItemInformation info;

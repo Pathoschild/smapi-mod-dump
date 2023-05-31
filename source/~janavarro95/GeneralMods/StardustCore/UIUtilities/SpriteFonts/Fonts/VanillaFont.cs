@@ -27,7 +27,7 @@ namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.Fonts
         }
 
         /// <summary> Takes a string and returns a textured string in it's place.</summary>
-        public TexturedString ParseString(string str)
+        public override TexturedString ParseString(string str)
         {
             List<TexturedCharacter> characters = new List<TexturedCharacter>();
             foreach (char chr in str)
@@ -36,7 +36,7 @@ namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.Fonts
         }
 
         /// <summary>Takes a string and returns a textured string in it's place. Also sets the new position.</summary>
-        public TexturedString ParseString(string str, Vector2 position)
+        public override TexturedString ParseString(string str, Vector2 position)
         {
             List<TexturedCharacter> characters = new List<TexturedCharacter>();
             foreach (char chr in str)
@@ -62,7 +62,7 @@ namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.Fonts
         /// <param name="str">The string that wil be parsed into textured characters.</param>
         /// <param name="position">The position to draw the textured string.</param>
         /// <param name="stringColor">The color of the textured string.</param>
-        public TexturedString ParseString(string label, string str, Vector2 position, Color stringColor, bool useRightPadding = true)
+        public override TexturedString ParseString(string label, string str, Vector2 position, Color stringColor, bool useRightPadding = true)
         {
             List<TexturedCharacter> characters = new List<TexturedCharacter>();
             foreach (char chr in str)
@@ -78,7 +78,7 @@ namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.Fonts
         /// <param name="str">The string that wil be parsed into textured characters.</param>
         /// <param name="position">The position to draw the textured string.</param>
         /// <param name="stringColor">The color for the individual characters.</param>
-        public TexturedString ParseString(string str, Vector2 position, List<Color> stringColor)
+        public override TexturedString ParseString(string str, Vector2 position, List<Color> stringColor)
         {
             List<TexturedCharacter> characters = new List<TexturedCharacter>();
             int index = 0;

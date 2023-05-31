@@ -1,4 +1,0 @@
-Find DailyPlanner/Plans/Checklist.txt.
-Open it in notepad.
-Add your tasks.
-Open this menu agian.

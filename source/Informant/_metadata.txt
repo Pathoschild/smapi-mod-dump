@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit 9c66704ac2be4de5fae03032985ec1de4898d31d
-   Merge: ee03a7b 1393513
    Author: Slothsoft <admin@slothsoft.de>
    Date:   Sun Dec 4 09:41:58 2022 +0100
    

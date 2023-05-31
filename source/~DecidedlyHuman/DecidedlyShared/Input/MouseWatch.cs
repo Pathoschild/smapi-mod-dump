@@ -14,4 +14,5 @@ using StardewModdingAPI;
 
 namespace DecidedlyShared.Input;
 
-public record struct MouseWatch(MouseButton button, KeyPressType Type, Action? Callback, Action<string, LogLevel>? LogCallback);
+public record struct MouseWatch(MouseButton button, KeyPressType Type, Action? Callback,
+    Action<string, LogLevel>? LogCallback);

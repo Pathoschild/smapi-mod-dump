@@ -40,6 +40,7 @@ namespace Custom_Farm_Loader.Lib
         public FishType Type = FishType.Any;
 
         //Whether each field was changed during parse
+        public bool ChangedType = false;
         public bool ChangedChance = false;
         public bool ChangedChancePerLevel = false;
         public bool ChangedOptimalDepth = false;
@@ -65,7 +66,7 @@ namespace Custom_Farm_Loader.Lib
             return ret;
         }
 
-        private static Fish parseFishJObject(JObject obj)
+        public static Fish parseFishJObject(JObject obj, bool forAll = false)
         {
             Fish fish = new Fish();
 
@@ -78,12 +79,16 @@ namespace Custom_Farm_Loader.Lib
                         fish.Name = value;
                         fish.Id = value; break;
                     case "type":
+                        fish.ChangedType = true;
                         fish.Type = UtilityMisc.parseEnum<FishType>(value); break;
                     case "chanceperlevel" or "chanceperlvl":
+                        fish.ChangedChancePerLevel = true;
                         fish.ChancePerLevel = float.Parse(value); break;
                     case "optimaldepth":
+                        fish.ChangedOptimalDepth = true;
                         fish.OptimalDepth = int.Parse(value); break;
                     case "depthdropoff":
+                        fish.ChangedDepthDropOff = true;
                         fish.DepthDropOff = float.Parse(value); break;
                     case "chance":
                         fish.ChangedChance = true;
@@ -98,8 +103,11 @@ namespace Custom_Farm_Loader.Lib
                         throw new ArgumentException($"Unknown Fish Attribute '{fish.Id}' -> '{name}'", name);
                 }
             }
-            fish.updateType();
-            fish.applyDefaultIfNotChanged();
+
+            if(!forAll) {
+                fish.updateType();
+                fish.applyDefaultIfNotChanged();
+            }
 
             return fish;
         }

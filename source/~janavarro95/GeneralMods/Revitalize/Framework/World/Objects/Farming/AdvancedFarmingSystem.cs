@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework;
 using Netcode;
 using Omegasis.Revitalize.Framework.Constants;
 using Omegasis.Revitalize.Framework.World.Objects.InformationFiles;
+using Omegasis.Revitalize.Framework.World.Objects.Resources;
 using Omegasis.Revitalize.Framework.World.Objects.SupportClasses;
 using Omegasis.Revitalize.Framework.World.WorldUtilities;
 using StardewValley;
@@ -27,7 +28,7 @@ using StardewValley.Objects;
 namespace Omegasis.Revitalize.Framework.World.Objects.Farming
 {
     //TODO: CREATE OBJECT GRAPHIC OBJECT IN OBJECTMANAGER, AND FINISH PLANTING LOGIC.
-    [XmlType("Mods_Revitalize.Framework.World.Objects.Farming.AdvancedFarmingSystem")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.Farming.AdvancedFarmingSystem")]
     /// <summary>
     /// Plants seeds, fertilizes, and harvests crops from irrigated watering pots that have the proper attachments!
     /// 
@@ -55,7 +56,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
         /// </summary>
         /// <param name="who"></param>
         /// <returns></returns>
-        public override bool rightClicked(Farmer who)
+        public override bool checkForAction(Farmer who, bool justCheckingForActivity = false)
         {
             this.doWorkOnIrrigatedWaterPots(who);
             SoundUtilities.PlaySound(Enums.StardewSound.Ship);
@@ -79,6 +80,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
 
 
             List<IrrigatedGardenPot> gardenPots = new List<IrrigatedGardenPot>();
+            List<ResourceBush> resourceBushes = new List<ResourceBush>();
             List<Chest> chests = new List<Chest>();
 
             foreach (KeyValuePair<Vector2, StardewValley.Object> tileToObject in connectedObjects)
@@ -94,9 +96,14 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 {
                     gardenPots.Add((IrrigatedGardenPot)tileToObject.Value);
                 }
+
+                if(tileToObject.Value is ResourceBush)
+                {
+                    resourceBushes.Add((ResourceBush)tileToObject.Value);
+                }
             }
 
-            Queue<Item> overflowItems = new Queue<Item>();
+            Queue<Item> itemsToPutIntoChestsOrDropToGround = new Queue<Item>();
 
             //This will only output to chests, it is up to the player to decide what to do from there, or if Automate is installed, then Automate will take over with it's processing system.
             foreach (IrrigatedGardenPot gardenPot in gardenPots)
@@ -115,7 +122,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
 
                     foreach (Item item2 in harvestedItems)
                     {
-                        overflowItems.Enqueue(item2);
+                        itemsToPutIntoChestsOrDropToGround.Enqueue(item2);
                     }
                 }
 
@@ -182,17 +189,23 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                         }
                     }
 
+                }
+            }
 
-
-
+            foreach(ResourceBush resourceBush in resourceBushes)
+            {
+                if (this.heldObject.Value != null)
+                {
+                    itemsToPutIntoChestsOrDropToGround.Enqueue(resourceBush.heldObject.Value);
+                    resourceBush.clearHeldObject();
                 }
             }
 
             //Try to put all harvest items into chests or drop them to the ground.
-            while (overflowItems.Count > 0)
+            while (itemsToPutIntoChestsOrDropToGround.Count > 0)
             {
 
-                Item item = overflowItems.Dequeue();
+                Item item = itemsToPutIntoChestsOrDropToGround.Dequeue();
                 bool added = false;
                 foreach (Chest chest in chests)
                 {

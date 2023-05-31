@@ -142,7 +142,6 @@ namespace Shockah.FlexibleSprinklers
 			{
 				return independent.GetSprinklerTiles(
 					new GameLocationMap(location, FlexibleSprinklers.Instance.CustomWaterableTileProviders),
-					new IntPoint((int)__instance.TileLocation.X, (int)__instance.TileLocation.Y),
 					FlexibleSprinklers.Instance.GetSprinklerInfo(__instance)
 				).Select(e => new Vector2(e.X, e.Y)).ToList();
 			}
@@ -186,7 +185,7 @@ namespace Shockah.FlexibleSprinklers
 			var wasVanillaQueryInProgress = IsVanillaQueryInProgress;
 			IsVanillaQueryInProgress = true;
 			var manhattanDistance = Math.Abs(target.X - __instance.TileLocation.X) + Math.Abs(target.Y - __instance.TileLocation.Y);
-			var result = manhattanDistance <= FlexibleSprinklers.Instance.GetSprinklerMaxRange(__instance) && FlexibleSprinklers.Instance.IsTileInRangeOfAnySprinkler(location, target);
+			var result = manhattanDistance <= FlexibleSprinklers.Instance.GetSprinklerMaxRange(__instance) && FlexibleSprinklers.Instance.IsTileInRangeOfAnySprinkler(location, new IntPoint((int)target.X, (int)target.Y));
 			IsVanillaQueryInProgress = wasVanillaQueryInProgress;
 			if (result)
 				SprinklerTileOverride = target;

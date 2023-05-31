@@ -71,14 +71,6 @@ namespace BNWCore
                 prefix: new(typeof(SObjectPatches), nameof(SObjectPatches.isPlaceablePrefix))
             );
             harmony.Patch(
-                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.performAction)),
-                prefix: new HarmonyMethod(typeof(Shop_Patches), nameof(Shop_Patches.GameLocation_performAction_Prefix))
-            );
-            harmony.Patch(
-               original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.openShopMenu)),
-               prefix: new HarmonyMethod(typeof(Shop_Patches), nameof(Shop_Patches.GameLocation_openShopMenu_Prefix))
-            );
-            harmony.Patch(
               original: AccessTools.Method(typeof(Farm), "resetLocalState"),
               postfix: new HarmonyMethod(typeof(Building_System_Changes), nameof(Building_System_Changes.Farm_resetLocalState_Postfix))
            );

@@ -15,34 +15,34 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace ExtraGingerIslandMaps
+namespace ExtraGingerIslandMaps.Patches
 {
     public class CustomElevatorMenu : IClickableMenu
     {
-        public List<ClickableComponent> elevators = new List<ClickableComponent>();
+        private List<ClickableComponent> Elevators = new List<ClickableComponent>();
 
         public CustomElevatorMenu()
             : base(0, 0, 0, 0, showUpperRightCloseButton: true)
         {
-            int numElevators = 2;
-            base.width = Math.Min(220 + IClickableMenu.borderWidth * 2, numElevators * 44 + IClickableMenu.borderWidth * 2); //((numElevators > 50) ? (484 + IClickableMenu.borderWidth * 2) : Math.Min(220 + IClickableMenu.borderWidth * 2, numElevators * 44 + IClickableMenu.borderWidth * 2))
-            base.height = Math.Max(64 + IClickableMenu.borderWidth * 3, numElevators * 44 / (base.width - IClickableMenu.borderWidth) * 44 + 64 + IClickableMenu.borderWidth * 3);
-            base.xPositionOnScreen = Game1.uiViewport.Width / 2 - base.width / 2;
-            base.yPositionOnScreen = Game1.uiViewport.Height / 2 - base.height / 2;
+            var numElevators = 2;
+            width = Math.Min(220 + borderWidth * 2, numElevators * 44 + borderWidth * 2); //((numElevators > 50) ? (484 + IClickableMenu.borderWidth * 2) : Math.Min(220 + IClickableMenu.borderWidth * 2, numElevators * 44 + IClickableMenu.borderWidth * 2))
+            height = Math.Max(64 + borderWidth * 3, numElevators * 44 / (width - borderWidth) * 44 + 64 + borderWidth * 3);
+            xPositionOnScreen = Game1.uiViewport.Width / 2 - width / 2;
+            yPositionOnScreen = Game1.uiViewport.Height / 2 - height / 2;
             Game1.playSound("crystal");
-            int buttonsPerRow = base.width / 44 - 1;
-            int x = base.xPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearSideBorder * 3 / 4;
-            int y = base.yPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.borderWidth / 3;
-            this.elevators.Add(new ClickableComponent(new Rectangle(x, y, 44, 44), 0.ToString() ?? "")
+            var buttonsPerRow = width / 44 - 1;
+            var x = xPositionOnScreen + borderWidth + spaceToClearSideBorder * 3 / 4;
+            var y = yPositionOnScreen + borderWidth + borderWidth / 3;
+            Elevators.Add(new ClickableComponent(new Rectangle(x, y, 44, 44), 0.ToString() ?? "")
             {
                 myID = 0,
                 rightNeighborID = 1,
                 downNeighborID = buttonsPerRow
             });
             x = x + 64 - 20;
-            if (x > base.xPositionOnScreen + base.width - IClickableMenu.borderWidth)
+            if (x > xPositionOnScreen + width - borderWidth)
             {
-                x = base.xPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearSideBorder * 3 / 4;
+                x = xPositionOnScreen + borderWidth + spaceToClearSideBorder * 3 / 4;
                 y += 44;
             }
             /*for (int i = 1; i <= numElevators; i++)
@@ -66,7 +66,7 @@ namespace ExtraGingerIslandMaps
             */
 
             //add elevator to "mystery zone"
-            this.elevators.Add(new ClickableComponent(new Rectangle(x, y, 44, 44), "999") //using "???" crashes the game so let's get creative
+            Elevators.Add(new ClickableComponent(new Rectangle(x, y, 44, 44), "999") //using "???" crashes the game so let's get creative
             {
                 myID = 1,
                 rightNeighborID = 2,
@@ -76,31 +76,29 @@ namespace ExtraGingerIslandMaps
             });
 
             x = x + 64 - 20;
-            if (x > base.xPositionOnScreen + base.width - IClickableMenu.borderWidth)
+            if (x > xPositionOnScreen + width - borderWidth)
             {
-                x = base.xPositionOnScreen + IClickableMenu.borderWidth + IClickableMenu.spaceToClearSideBorder * 3 / 4;
+                x = xPositionOnScreen + borderWidth + spaceToClearSideBorder * 3 / 4;
                 y += 44;
             }
 
-            base.initializeUpperRightCloseButton();
-            if (Game1.options.snappyMenus && Game1.options.gamepadControls)
-            {
-                base.populateClickableComponentList();
-                this.snapToDefaultClickableComponent();
-            }
+            initializeUpperRightCloseButton();
+            if (!Game1.options.snappyMenus || !Game1.options.gamepadControls) return;
+            base.populateClickableComponentList();
+            snapToDefaultClickableComponent();
         }
 
         public override void snapToDefaultClickableComponent()
         {
-            base.currentlySnappedComponent = base.getComponentWithID(0);
-            this.snapCursorToCurrentSnappedComponent();
+            currentlySnappedComponent = getComponentWithID(0);
+            snapCursorToCurrentSnappedComponent();
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
-            if (this.isWithinBounds(x, y))
+            if (isWithinBounds(x, y))
             {
-                foreach (ClickableComponent c in this.elevators)
+                foreach (var c in Elevators)
                 {
                     if (!c.containsPoint(x, y))
                     {
@@ -109,7 +107,7 @@ namespace ExtraGingerIslandMaps
                     Game1.playSound("smallSelect");
                     if (Convert.ToInt32(c.name) == 0)
                     {
-                        if (!(Game1.currentLocation.Name == "Custom_ExtinctLair"))
+                        if (Game1.currentLocation.Name != "Custom_ExtinctLair")
                         {
                             return;
                         }
@@ -146,26 +144,19 @@ namespace ExtraGingerIslandMaps
         public override void performHoverAction(int x, int y)
         {
             base.performHoverAction(x, y);
-            foreach (ClickableComponent c in this.elevators)
+            foreach (var c in Elevators)
             {
-                if (c.containsPoint(x, y))
-                {
-                    c.scale = 2f;
-                }
-                else
-                {
-                    c.scale = 1f;
-                }
+                c.scale = c.containsPoint(x, y) ? 2f : 1f;
             }
         }
 
         public override void draw(SpriteBatch b)
         {
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.4f);
-            Game1.drawDialogueBox(base.xPositionOnScreen, base.yPositionOnScreen - 64 + 8, base.width + 21, base.height + 64, speaker: false, drawOnlyBox: true);
-            foreach (ClickableComponent c in this.elevators)
+            Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen - 64 + 8, width + 21, height + 64, speaker: false, drawOnlyBox: true);
+            foreach (var c in Elevators)
             {
-                bool isCurrentFloor = (c.name == "0" && Game1.currentLocation.Name == "Custom_GiCave") || (c.name == "999" && Game1.currentLocation.Name == "Custom_ExtinctLair");
+                var isCurrentFloor = (c.name == "0" && Game1.currentLocation.Name == "Custom_GiCave") || (c.name == "999" && Game1.currentLocation.Name == "Custom_ExtinctLair");
 
                 b.Draw(Game1.mouseCursors, new Vector2(c.bounds.X - 4, c.bounds.Y + 4), new Rectangle((c.scale > 1f) ? 267 : 256, 256, 10, 10), Color.Black * 0.5f, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.865f);
 
@@ -174,7 +165,7 @@ namespace ExtraGingerIslandMaps
                 NumberSprite.draw(position: new Vector2(c.bounds.X + 16 + NumberSprite.numberOfDigits(Convert.ToInt32(c.name)) * 6, c.bounds.Y + 24 - NumberSprite.getHeight() / 4), number: Convert.ToInt32(c.name), b: b, c: isCurrentFloor ? (Color.Gray * 0.75f) : Color.Gold, scale: 0.5f, layerDepth: 0.86f, alpha: 1f, secondDigitOffset: 0);
             }
             base.draw(b);
-            base.drawMouse(b);
+            drawMouse(b);
         }
     }
 

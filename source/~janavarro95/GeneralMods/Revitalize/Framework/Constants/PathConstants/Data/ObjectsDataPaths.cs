@@ -22,13 +22,16 @@ namespace Omegasis.Revitalize.Framework.Constants.PathConstants.Data
     /// </summary>
     public class ObjectsDataPaths
     {
-        public static string ObjectsDataPath = Path.Combine(RelativePaths.Content_Data_Folder, "Objects");
+        public static string ObjectsDataPath = Path.Combine(RelativePaths.ModAssets_Data_Folder, "Objects");
 
 
         public static string CraftingBlueprintsPath = Path.Combine(ObjectsDataPath, "CraftingBlueprints");
 
         public static string ObjectsDataTemplatesPath = Path.Combine(ObjectsDataPath, RelativePaths.TemplatesFoldersName);
         public static string ObjectsDataDumpPath = Path.Combine(ObjectsDataPath, "DataDump");
+
+        public static string ProcessingRecipesPath = Path.Combine(ObjectsDataPath, "ProcessingRecipes");
+
 
     }
 }

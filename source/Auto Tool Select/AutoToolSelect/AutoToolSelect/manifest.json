@@ -11,11 +11,17 @@
 {
   "Name": "AutoToolSelect",
   "Author": "lolmaj",
-  "Version": "1.5",
+  "Version": "3.1",
   "Description": "Choose right tool from toolbox based on hovering tile",
   "UniqueID": "lolmaj.AutoToolSelect",
   "EntryDll": "AutoToolSelect.dll",
-  "MinimumApiVersion": "2.11",
-  "UpdateKeys": [ "Nexus:3883" ]
+  "MinimumApiVersion": "3.18",
+  "UpdateKeys": [ "Nexus:3883" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
 }
  

@@ -27,7 +27,7 @@ using Omegasis.Revitalize.Framework.World.Objects.InformationFiles.Json;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.InformationFiles
 {
-    [XmlType("Mods_Revitalize.Framework.World.Objects.InformationFiles.BasicItemInformation")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.InformationFiles.BasicItemInformation")]
     public class BasicItemInformation : NetObject
     {
 
@@ -82,14 +82,19 @@ namespace Omegasis.Revitalize.Framework.World.Objects.InformationFiles
                 if (this.dyedColor != null)
 
                     if (this.dyedColor.color.A != 0)
-                        return this.dyedColor.getBlendedColor(this._drawColorBase);
-                return this._drawColorBase;
+                        return this.dyedColor.getBlendedColor(this._drawColorBase.Value);
+                return this._drawColorBase.Value;
             }
             set
             {
                 this._drawColorBase.Value = value;
             }
         }
+
+        /// <summary>
+        /// The value for the number of the selection value for the <see cref="ObjectColorPicker"/> menu.
+        /// </summary>
+        public readonly NetInt colorPickerSelectionNumber=new NetInt();
 
         public readonly NetBool ignoreBoundingBox = new NetBool();
 
@@ -287,7 +292,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.InformationFiles
         /// <returns></returns>
         public int shakeTimerOffset()
         {
-            return this.shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0;
+            return this.shakeTimer.Value > 0 ? Game1.random.Next(-1, 2) : 0;
         }
 
         /// <summary>
@@ -296,28 +301,32 @@ namespace Omegasis.Revitalize.Framework.World.Objects.InformationFiles
         /// <returns></returns>
         public BasicItemInformation Copy()
         {
-            return new BasicItemInformation(
-                this.name,
-                this.id,
-                this.description,
-                this.categoryName,
-                this.categoryColor,
-                this.staminaRestoredOnEating,
-                this.healthRestoredOnEating,
-                this.fragility,
-                this.isLamp,
-                this.price,
-                this.canBeSetOutdoors,
-                this.canBeSetIndoors,
+            BasicItemInformation itemInformation= new BasicItemInformation(
+                this.name.Value,
+                this.id.Value,
+                this.description.Value,
+                this.categoryName.Value,
+                this.categoryColor.Value,
+                this.staminaRestoredOnEating.Value,
+                this.healthRestoredOnEating.Value,
+                this.fragility.Value,
+                this.isLamp.Value,
+                this.price.Value,
+                this.canBeSetOutdoors.Value,
+                this.canBeSetIndoors.Value,
                 this.animationManager.Copy(),
                 this.DrawColor,
-                this.ignoreBoundingBox,
-                this.boundingBoxTileDimensions,
-                this.drawOffset ,
+                this.ignoreBoundingBox.Value,
+                this.boundingBoxTileDimensions.Value,
+                this.drawOffset.Value ,
                 this.inventory.Copy(),
                 this.lightManager.Copy(),
-                this.alwaysDrawAbovePlayer,
+                this.alwaysDrawAbovePlayer.Value,
                 this.dyedColor.getCopy());
+
+            itemInformation.colorPickerSelectionNumber.Value= this.colorPickerSelectionNumber.Value;
+
+            return itemInformation;
         }
 
 
@@ -332,7 +341,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.InformationFiles
             if (this.dyedColor.color.A == 0)
                 return "";
             else
-                return this.dyedColor.name;
+                return this.dyedColor.name.Value;
         }
 
         /// <summary>
@@ -367,9 +376,11 @@ namespace Omegasis.Revitalize.Framework.World.Objects.InformationFiles
                 );
 
             this.NetFields.AddField(this.netAnimationManager);
-            this.NetFields.AddFields(this.netInventory);
+            this.NetFields.AddField(this.netInventory);
             this.NetFields.AddField(this.netLightManager);
-            this.NetFields.AddFields(this.netDyedColor);
+            this.NetFields.AddField(this.netDyedColor);
+
+            this.NetFields.AddField(this.colorPickerSelectionNumber);
         }
 
     }

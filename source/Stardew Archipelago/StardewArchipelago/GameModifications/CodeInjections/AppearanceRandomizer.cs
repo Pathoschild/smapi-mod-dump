@@ -71,38 +71,6 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             }
         }
 
-        //public void LoadTexture(string textureName)
-        public static bool LoadTexture_ShuffleAppearance_Prefix(AnimatedSprite __instance, ref string textureName)
-        {
-            try
-            {
-                var spritePool = GetSpritePool();
-
-                if (!spritePool.Any() || __instance.textureName.Value == null || textureName == null || !textureName.StartsWith(_characterTexturePrefix))
-                {
-                    return true; // run original logic
-                }
-
-                var spriteName = __instance.textureName.Value.Split("\\").Last();
-                var characterParsedName = spriteName.Split("_").First();
-                var character = Game1.getCharacterFromName(characterParsedName);
-
-                if (character != null && !character.isVillager() && _archipelago.SlotData.AppearanceRandomization == AppearanceRandomization.Villagers)
-                {
-                    return true; // run original logic
-                }
-
-                var chosenSprite = GetRandomAppearance(__instance, textureName, spritePool);
-                textureName = chosenSprite.Key;
-                return true; // run original logic
-            }
-            catch (Exception ex)
-            {
-                _monitor.Log($"Failed in {nameof(LoadTexture_ShuffleAppearance_Prefix)}:\n{ex}", LogLevel.Error);
-                return true; // run original logic
-            }
-        }
-
         private static List<KeyValuePair<string, Point>> GetSpritePool()
         {
             var spritePool = new List<KeyValuePair<string, Point>>();

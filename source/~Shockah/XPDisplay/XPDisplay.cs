@@ -49,6 +49,7 @@ namespace Shockah.XPDisplay
 		internal static XPDisplay Instance = null!;
 		private bool IsWalkOfLifeInstalled = false;
 		private bool IsMargoInstalled = false;
+		private bool DidSetupConfig = false;
 
 		private static readonly Dictionary<(int uiSkillIndex, string? spaceCoreSkillName), (Vector2?, Vector2?)> SkillBarCorners = new();
 		private static readonly List<(Vector2, Vector2)> SkillBarHoverExclusions = new();
@@ -88,8 +89,6 @@ namespace Shockah.XPDisplay
 
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
 		{
-			SetupConfig();
-
 			IsWalkOfLifeInstalled = Helper.ModRegistry.IsLoaded("DaLion.ImmersiveProfessions");
 			IsMargoInstalled = Helper.ModRegistry.IsLoaded("DaLion.Overhaul");
 			var harmony = new Harmony(ModManifest.UniqueID);
@@ -129,10 +128,15 @@ namespace Shockah.XPDisplay
 
 		private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
 		{
+			if (!DidSetupConfig)
+				SetupConfig();
+
 			foreach (var (skill, lastKnown) in SkillsToRecheck.Value)
 			{
 				float xpChangedDuration = Instance.Config.ToolbarSkillBar.XPChangedDurationInSeconds;
 				if (lastKnown.XP == skill.GetXP(Game1.player))
+					xpChangedDuration = 0f;
+				else if (Config.SkillsToExcludeFromToolbarOnXPGain.Contains(skill.UniqueID))
 					xpChangedDuration = 0f;
 
 				float levelChangedDuration = Instance.Config.ToolbarSkillBar.LevelChangedDurationInSeconds;
@@ -287,6 +291,23 @@ namespace Shockah.XPDisplay
 			helper.AddNumberOption("config.toolbar.toolUseDurationInSeconds", () => Config.ToolbarSkillBar.ToolUseDurationInSeconds, min: 0f, max: 15f, interval: 0.5f);
 			helper.AddNumberOption("config.toolbar.xpChangedDurationInSeconds", () => Config.ToolbarSkillBar.XPChangedDurationInSeconds, min: 0f, max: 15f, interval: 0.5f);
 			helper.AddNumberOption("config.toolbar.levelChangedDurationInSeconds", () => Config.ToolbarSkillBar.LevelChangedDurationInSeconds, min: 0f, max: 15f, interval: 0.5f);
+
+			helper.AddSectionTitle("config.toolbarExclusions.section");
+			foreach (var skill in SkillExt.GetAllSkills())
+				api.AddBoolOption(
+					ModManifest,
+					getValue: () => Config.SkillsToExcludeFromToolbarOnXPGain.Contains(skill.UniqueID),
+					setValue: value =>
+					{
+						if (value)
+							Config.SkillsToExcludeFromToolbarOnXPGain.Add(skill.UniqueID);
+						else
+							Config.SkillsToExcludeFromToolbarOnXPGain.Remove(skill.UniqueID);
+					},
+					name: () => skill.Name
+				);
+
+			DidSetupConfig = true;
 		}
 
 		private ISkill? GetSkillForItem(Item? item)
@@ -310,6 +331,7 @@ namespace Shockah.XPDisplay
 
 		private void DrawSkillBar(ISkill skill, SpriteBatch b, UIAnchorSide anchorSide, Vector2 position, float scale, float alpha)
 		{
+			int buffedLevel = skill.GetBuffedLevel(Game1.player);
 			int currentLevel = skill.GetBaseLevel(Game1.player);
 			int nextLevelXP = skill.GetLevelXP(currentLevel + 1);
 			int currentLevelXP = skill.GetLevelXP(currentLevel);
@@ -363,20 +385,20 @@ namespace Shockah.XPDisplay
 					}
 				}
 
-				UpdateExtendedLevelTextures(currentLevel);
+				UpdateExtendedLevelTextures(buffedLevel);
 
-				var backgroundBarTexture = currentLevel > levelIndex ? obtainedBarTexture : unobtainedBarTexture;
-				var backgroundBarTextureRectangle = currentLevel > levelIndex ? obtainedBarTextureRectangle : unobtainedBarTextureRectangle;
+				var backgroundBarTexture = buffedLevel > levelIndex ? obtainedBarTexture : unobtainedBarTexture;
+				var backgroundBarTextureRectangle = buffedLevel > levelIndex ? obtainedBarTextureRectangle : unobtainedBarTextureRectangle;
 
 				var topLeft = wholeToolbarTopLeft + new Vector2(xOffset * scale, 0);
 				b.Draw(backgroundBarTexture, topLeft + new Vector2(-1, 1) * scale, backgroundBarTextureRectangle, Color.Black * alpha * 0.3f, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 				b.Draw(backgroundBarTexture, topLeft, backgroundBarTextureRectangle, Color.White * alpha, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
 				xOffset += backgroundBarTextureRectangle.Width;
 
-				if (currentLevel % 10 != levelIndex)
+				if (buffedLevel % 10 != levelIndex)
 					continue;
 
-				UpdateExtendedLevelTextures(currentLevel + 1);
+				UpdateExtendedLevelTextures(buffedLevel + 1);
 
 				Vector2 partialBarPosition;
 				Rectangle partialBarTextureRectangle;
@@ -412,7 +434,6 @@ namespace Shockah.XPDisplay
 			if (Config.ToolbarSkillBar.ShowLevelNumber)
 			{
 				xOffset += LevelNumberToBarSpacing;
-				int buffedLevel = skill.GetBuffedLevel(Game1.player);
 				bool isModifiedSkill = buffedLevel != currentLevel;
 
 				Color textColor = Color.SandyBrown;
@@ -520,7 +541,7 @@ namespace Shockah.XPDisplay
 							.PointerMatcher(SequenceMatcherRelativeElement.First)
 							.ExtractLabels(out var labels)
 							.Insert(
-								SequenceMatcherPastBoundsDirection.Before, true,
+								SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
 
 								new CodeInstruction(OpCodes.Ldarg_1).WithLabels(labels), // `SpriteBatch`
 
@@ -551,7 +572,7 @@ namespace Shockah.XPDisplay
 							.PointerMatcher(SequenceMatcherRelativeElement.First)
 							.ExtractLabels(out var labels)
 							.Insert(
-								SequenceMatcherPastBoundsDirection.Before, true,
+								SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
 								new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_CallQueuedDelegates))).WithLabels(labels)
 							);
 					})
@@ -588,7 +609,7 @@ namespace Shockah.XPDisplay
 									.PointerMatcher(SequenceMatcherRelativeElement.First)
 									.ExtractLabels(out var labels)
 									.Insert(
-										SequenceMatcherPastBoundsDirection.Before, true,
+										SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
 
 										new CodeInstruction(OpCodes.Ldarg_1).WithLabels(labels), // `SpriteBatch`
 
@@ -614,7 +635,7 @@ namespace Shockah.XPDisplay
 									.PointerMatcher(SequenceMatcherRelativeElement.First)
 									.ExtractLabels(out var labels)
 									.Insert(
-										SequenceMatcherPastBoundsDirection.Before, true,
+										SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
 
 										new CodeInstruction(OpCodes.Ldarg_1).WithLabels(labels), // `SpriteBatch`
 
@@ -646,7 +667,7 @@ namespace Shockah.XPDisplay
 							.PointerMatcher(SequenceMatcherRelativeElement.First)
 							.ExtractLabels(out var labels)
 							.Insert(
-								SequenceMatcherPastBoundsDirection.Before, true,
+								SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
 								new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(XPDisplay), nameof(SkillsPage_draw_CallQueuedDelegates))).WithLabels(labels)
 							);
 					})
@@ -673,8 +694,9 @@ namespace Shockah.XPDisplay
 			Vector2 bottomRight = topLeft + new Vector2(barTextureRectangle.Width, barTextureRectangle.Height) * scale;
 
 			int currentLevel = skill.GetBaseLevel(Game1.player);
+			int buffedLevel = skill.GetBuffedLevel(Game1.player);
 			int nextLevelXP = skill.GetLevelXP(currentLevel + 1);
-			if (levelIndex is 4 or 9 && currentLevel >= levelIndex)
+			if (levelIndex is 4 or 9 && buffedLevel >= levelIndex)
 				SkillBarHoverExclusions.Add((topLeft, bottomRight));
 
 			if (nextLevelXP != int.MaxValue && levelIndex is 0 or 9)
@@ -688,7 +710,7 @@ namespace Shockah.XPDisplay
 					SkillBarCorners[key] = (SkillBarCorners[key].Item1, bottomRight);
 			}
 
-			if (currentLevel % 10 != levelIndex)
+			if (buffedLevel % 10 != levelIndex)
 				return;
 			int currentLevelXP = skill.GetLevelXP(currentLevel);
 			int currentXP = skill.GetXP(Game1.player);
@@ -696,7 +718,7 @@ namespace Shockah.XPDisplay
 
 			Orientation orientation = isBigLevel ? Instance.Config.BigBarOrientation : Instance.Config.SmallBarOrientation;
 
-			if (currentLevel >= 10)
+			if (buffedLevel >= 10)
 			{
 				if (Instance.IsWalkOfLifeInstalled && WalkOfLifeBridge.IsPrestigeEnabled())
 					(barTexture, barTextureRectangle) = isBigLevel ? WalkOfLifeBridge.GetExtendedBigBar()!.Value : WalkOfLifeBridge.GetExtendedSmallBar()!.Value;

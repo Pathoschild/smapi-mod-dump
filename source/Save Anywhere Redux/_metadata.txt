@@ -6,14 +6,9 @@ mods:
    Save Anywhere Redux
 
 latest commit:
-   commit 5bcef15c5a4bd7eb6f5f3e72539dbee6a468f052
-   Author: Sweet Panda <76555779+RealSweetPanda@users.noreply.github.com>
-   Date:   Sat Apr 29 20:59:58 2023 +0300
+   commit b2827664d1ee937e298d838f9ae6803306a73ede
+   Author: yuval <yuvalb588@gmail.com>
+   Date:   Thu May 25 14:34:39 2023 +0300
    
-       fixed schedules starting at default locations (#10)
-       
-       fixed npc start at default locations after reload
-       code cleanup
-       bump version to 3.2.0
-       fixed update keys
+       bump version to 3.2.5
    

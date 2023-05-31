@@ -39,5 +39,19 @@ namespace Shockah.Kokoro
 			}
 			return null;
 		}
+
+		public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> self) where T : class
+		{
+			foreach (var element in self)
+				if (element is not null)
+					yield return element;
+		}
+
+		public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> self) where T : struct
+		{
+			foreach (var element in self)
+				if (element is not null)
+					yield return element.Value;
+		}
 	}
 }

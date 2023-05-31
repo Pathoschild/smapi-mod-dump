@@ -1,24 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Build\SDV-1.5.6.targets"/>
+    <Import Project="..\Build\Common.csproj"/>
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared"/>
 
-	<PropertyGroup>
-		<AssemblyName>$(ProjectName)</AssemblyName>
-		<RootNamespace>$(ProjectName)</RootNamespace>
-		<DefaultNamespace>$(ProjectName)</DefaultNamespace>
-		<Version>1.1.0</Version>
-		<TargetFramework>net5.0</TargetFramework>
-	</PropertyGroup>
+    <PropertyGroup>
+        <Name>Better Return Scepter</Name>
+        <Description>Improves the return scepter, allowing you to warp back to where you came from.</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:11610</UpdateKeys>
+        <Version>1.1.1-dev</Version>
+    </PropertyGroup>
 
-	<!-- ModBuildConfig settings. -->
-	<Import Project="..\Build\Latest.targets" />
-
-	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
-	</ItemGroup>
-
-	<PropertyGroup>
-		<EnableHarmony>true</EnableHarmony>
-		<IgnoreModFilePatterns>\.aseprite$</IgnoreModFilePatterns>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
+    <PropertyGroup>
+        <EnableHarmony>true</EnableHarmony>
+    </PropertyGroup>
 
 </Project>

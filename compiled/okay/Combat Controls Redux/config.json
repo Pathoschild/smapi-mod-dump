@@ -1,6 +1,6 @@
 {
   "MouseFix": true,
-  "ControllerFix": false,
+  "ControllerCursorFix": false,
   "RegularToolsFix": false,
   "AutoSwing": false,
   "AutoSwingDagger": true,

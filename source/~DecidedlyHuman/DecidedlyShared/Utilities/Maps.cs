@@ -37,7 +37,6 @@ namespace DecidedlyShared.Utilities
             location = null;
 
 
-
             return false;
         }
 

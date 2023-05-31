@@ -1,0 +1,10 @@
+﻿{
+  "Name": "SleepWherever",
+  "Author": "Vexorth",
+  "Version": "1.0.0",
+  "Description": "This mod allow you to sleep wherever you want.",
+  "UniqueID": "Vexorth.SleepWherever",
+  "EntryDll": "SleepWherever.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

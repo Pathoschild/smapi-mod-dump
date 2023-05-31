@@ -13,12 +13,9 @@ mods:
    Smart Cursor
 
 latest commit:
-   commit 99fa29c57db30ace5d511b26e27dbc4a4e787822
-   Merge: 1630f4b 4f097ee
+   commit e605b8e1c77dd66845145f74f3301a4de49d866e
    Author: Alan <contact@decidedlyhuman.co.uk>
-   Date:   Fri Oct 14 14:44:22 2022 +0100
+   Date:   Sat May 13 09:51:04 2023 +0100
    
-       Merge pull request #12 from sketchbook22/master
-       
-       optimized and refactored getTileToTarget
+       Merge branch 'develop'
    

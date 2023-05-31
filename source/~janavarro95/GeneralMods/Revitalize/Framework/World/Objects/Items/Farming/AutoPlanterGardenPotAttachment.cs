@@ -19,7 +19,7 @@ using StardewValley;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.Items.Farming
 {
-    [XmlType("Mods_Revitalize.Framework.World.Objects.Items.Farming.AutoPlanterGardenPotAttachment")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.Items.Farming.AutoPlanterGardenPotAttachment")]
     public class AutoPlanterGardenPotAttachment:CustomItem
     {
 

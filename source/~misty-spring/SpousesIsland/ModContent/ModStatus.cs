@@ -8,17 +8,16 @@
 **
 *************************************************/
 
-using StardewValley;
 using System;
 using System.Collections.Generic;
-using static StardewValley.GameLocation;
+using StardewValley;
 
-namespace SpousesIsland
+namespace SpousesIsland.ModContent
 {
     internal class ModStatus
     {
-        public string Name { get; set; }
-        public bool DayVisit { get; set; } = false;
+        public string Name { get; }
+        public bool DayVisit { get; set; }
         public (bool, int) WeekVisit { get; set; } = (false, 0);
         public List<string> Who { get; set; } = new();
 
@@ -36,8 +35,8 @@ namespace SpousesIsland
         public ModStatus(Farmer player, bool includeSpouses)
         {
             Name = player.Name;
-            DayVisit = player?.mailReceived?.Contains("VisitTicket_day") ?? false;
-            WeekVisit = (player?.mailReceived?.Contains("VisitTicket_week") ?? false, 0);
+            DayVisit = player.mailReceived?.Contains("VisitTicket_day") ?? false;
+            WeekVisit = (player.mailReceived?.Contains("VisitTicket_week") ?? false, 0);
             Who = includeSpouses ? Information.PlayerSpouses(player) : new List<string>();
         }
     }
@@ -51,10 +50,8 @@ namespace SpousesIsland
         /// <param name="who">player</param>
         internal static bool tryToReceiveTicket(ref NPC __instance, Farmer who)
         {
-            //ModEntry.jsonAssets?.GetObjectId("Island ticket (day)") <- old one didnt work. we check name instead
-            bool isDay = who?.ActiveObject?.Name == "Island ticket (day)";
-            bool isWeek = who?.ActiveObject?.Name == "Island ticket (week)";
-
+            TryGetObjectId(who, out var isDay, out var isWeek);
+            
             if (who?.ActiveObject == null || (!isDay && !isWeek))
             {
                 return true;
@@ -86,6 +83,16 @@ namespace SpousesIsland
 
         }
 
+        private static void TryGetObjectId(Farmer who, out bool b, out bool b1)
+        {
+            /* 1.6 compat: 
+                b = who?.ActiveObject?.QualifiedItemId == "(O)mistyspring.spousesislandCP_ticketD"; //old: who?.ActiveObject?.Name == "Island ticket (day)";
+                b1 = who?.ActiveObject?.QualifiedItemId == "(O)mistyspring.spousesislandCP_ticketW"; //old: who?.ActiveObject?.Name == "Island ticket (week)";
+            */
+            b = who?.ActiveObject?.Name == "Island ticket (day)";
+            b1 = who?.ActiveObject?.Name == "Island ticket (week)";
+        }
+
         /// <summary>
         /// Handles NPC's reaction to ticket.
         /// </summary>
@@ -94,18 +101,18 @@ namespace SpousesIsland
         /// <param name="isDay">If it's a day invite.</param>
         /// <param name="isWeek">If it's a week invite.</param>
         /// <exception cref="ArgumentException">If there's any error with the item, this is sent (shouldn't happen but still added as preemptive measure).</exception>
-        internal static void TicketActions(NPC __instance, Farmer who, bool isDay, bool isWeek)
+        private static void TicketActions(NPC __instance, Farmer who, bool isDay, bool isWeek)
         {
-            who.Halt();
-            who.faceGeneralDirection(__instance.getStandingPosition(), 0, opposite: false, useTileCalculations: false);
+            __instance.Halt();
+            __instance.faceGeneralDirection(who.getStandingPosition(), 0, opposite: false, useTileCalculations: false);
 
             var npcdata = who.friendshipData[__instance.Name]; //to simplify text below and make more understandable
 
             if (npcdata.IsMarried() || npcdata.IsRoommate())
             {
                 //get invited list
-                var inviteds = ModEntry.Status[who.UniqueMultiplayerID.ToString()].Who;
-                bool hasInvites = inviteds.Count is not 0;
+                var inviteds = ModEntry.Status.Who;
+                var hasInvites = inviteds.Count != 0;
 
                 //if: already scheduled for a week
                 var scheduledWeek = isDay && who.mailbox.Contains("VisitTicket_week");
@@ -117,7 +124,7 @@ namespace SpousesIsland
                 if (hasInvites && inviteds.Contains(__instance.Name))
                 {
                     //tell player about it
-		            var alreadyinvited = String.Format(ModEntry.TL.Get("AlreadyInvited"), __instance.displayName);;
+		            var alreadyinvited = string.Format(ModEntry.TL.Get("AlreadyInvited"), __instance.displayName);
                     Game1.addHUDMessage(new HUDMessage(alreadyinvited, HUDMessage.error_type));
                 }
                 //if different than current invitation
@@ -127,7 +134,7 @@ namespace SpousesIsland
                     ModEntry.Mon.Log($"Player {who.displayName} has already scheduled a visit for {(scheduledDay ? "tomorow" : "next week")}. Can't use a different ticket (current one : {who.ActiveObject.Name})");
 
                     //inform day/week visit has already been scheduled.
-		    var scheduleType = scheduledDay ? ModEntry.TL.Get("AlreadyScheduled.Day") : ModEntry.TL.Get("AlreadyScheduled.Week");
+		            var scheduleType = scheduledDay ? ModEntry.TL.Get("AlreadyScheduled.Day") : ModEntry.TL.Get("AlreadyScheduled.Week");
                     Game1.drawDialogueBox(Game1.parseText(scheduleType));
                 }
                 //if none above apply, continue to inviting
@@ -135,20 +142,18 @@ namespace SpousesIsland
                 {
                     //add a reasonable amount of friendship - temporarily removed
                     //who.changeFriendship(100,__instance);
-                    
                     Game1.drawDialogue(__instance, GetInviteDialogue(__instance));
-                    var MP_ID = who.UniqueMultiplayerID.ToString();
 
                     //user will always have data in Status (created during SaveLoadedBasicInfo).
                     //so there's no worry about possible nulls
                     if (isDay)
                     {
-                        ModEntry.Status[MP_ID].DayVisit = true;
+                        ModEntry.Status.DayVisit = true;
                         who.mailbox.Add("VisitTicket_day");
                     }
                     else if (isWeek)
                     {
-                        ModEntry.Status[MP_ID].WeekVisit = (true, 0);
+                        ModEntry.Status.WeekVisit = (true, 0);
                         who.mailbox.Add("VisitTicket_week");
                     }
                     else
@@ -163,11 +168,11 @@ namespace SpousesIsland
             }
             else if (__instance.Name == "Willy" && (who.currentLocation.Name == "Beach" || who.currentLocation.Name == "FishShop"))
             {
-                string willytext = ModEntry.TL.Get("Willy.IslandTicket");
+                var willytext = ModEntry.TL.Get("Willy.IslandTicket");
                 Game1.drawDialogue(__instance, willytext);
                 
                 var yn = who.currentLocation.createYesNoResponses();
-                who.currentLocation.createQuestionDialogue(ModEntry.TL.Get("IslandVisit.Question"), yn, new afterQuestionBehavior(GetWarped));
+                who.currentLocation.createQuestionDialogue(ModEntry.TL.Get("IslandVisit.Question"), yn, GetWarped);
             }
             else
             {
@@ -187,7 +192,7 @@ namespace SpousesIsland
 
             if(answer == yn[0].responseText || answer == "Yes") //answer is Yes, but responseText is localized
             {
-                var willy = Game1.getCharacterFromName("Willy", false, false);
+                var willy = Game1.getCharacterFromName("Willy", false);
 
                 willy.showTextAboveHead(Game1.content.LoadString("Strings\\Locations:BoatTunnel_willyText_random" + Game1.random.Next(2)));
                 willy.jump();
@@ -210,7 +215,7 @@ namespace SpousesIsland
         /// <returns>The NPC's reply to being invited (to the island).</returns>
         private static string GetInviteDialogue(NPC who)
         {
-            bool vanilla = who.Name switch {
+            var vanilla = who.Name switch {
 
                 "Abigail" => true, 
                 "Alex" => true,
@@ -240,7 +245,7 @@ namespace SpousesIsland
             }
             else
             {
-                int r = Game1.random.Next(1, 4);
+                var r = Game1.random.Next(1, 4);
                 return ModEntry.TL.Get($"Invite_generic_{who.Optimism}_{r}"); //1 polite, 2 rude, 0 normal?
             }
         }

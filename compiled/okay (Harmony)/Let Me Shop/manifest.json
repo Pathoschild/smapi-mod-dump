@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Let Me Shop",
+  "Author": "MindMeltMax",
+  "Version": "1.0.0",
+  "Description": "Allows you to still process geodes and shop while upgrading tools",
+  "UniqueID": "MindMeltMax.LetMeShop",
+  "EntryDll": "LetMeShop.dll",
+  "MinimumApiVersion": "3.17.0",
+  "UpdateKeys": [ "nexus:16738" ]
+}

@@ -14,7 +14,6 @@ using StardewValley;
 using StardewValley.Minigames;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
-using SObject = StardewValley.Object;
 
 namespace DecidedlyShared.Models;
 
@@ -59,7 +58,7 @@ public class WorldTile
     }
 
     /// <summary>
-    ///
+    /// Try to get the <see cref="SObject"/> on the given tile.
     /// </summary>
     /// <param name="tile"></param>
     /// <param name="obj"></param>
@@ -74,6 +73,11 @@ public class WorldTile
             return false;
     }
 
+    /// <summary>
+    /// Try to get the <see cref="TerrainFeature"/> on the given tile.
+    /// </summary>
+    /// <param name="feature"></param>
+    /// <returns></returns>
     public bool TryGetTerrainFeature(out TerrainFeature feature)
     {
         feature = this.terrainFeatureOnTile;
@@ -84,6 +88,11 @@ public class WorldTile
             return false;
     }
 
+    /// <summary>
+    /// Try to get the <see cref="Furniture"/> on the given tile.
+    /// </summary>
+    /// <param name="furniture"></param>
+    /// <returns></returns>
     public bool TryGetFurniture(out Furniture? furniture)
     {
         furniture = this.furnitureOnTile;
@@ -94,6 +103,11 @@ public class WorldTile
             return true;
     }
 
+    /// <summary>
+    /// Try to get the <see cref="Crop"/> on a given tile.
+    /// </summary>
+    /// <param name="crop"></param>
+    /// <returns></returns>
     public bool TryGetCrop(out Crop crop)
     {
         crop = this.cropOnTile;
@@ -104,6 +118,11 @@ public class WorldTile
             return true;
     }
 
+    /// <summary>
+    /// Try to get the <see cref="Tree"/> on a given tile.
+    /// </summary>
+    /// <param name="tree"></param>
+    /// <returns></returns>
     public bool TryGetTree(out Tree tree)
     {
         tree = this.treeOnTile;
@@ -114,6 +133,11 @@ public class WorldTile
             return true;
     }
 
+    /// <summary>
+    /// Try to get the <see cref="FruitTree"/> on a given tile.
+    /// </summary>
+    /// <param name="tree"></param>
+    /// <returns></returns>
     public bool TryGetFruitTree(out FruitTree tree)
     {
         tree = this.fruitTreeOnTile;

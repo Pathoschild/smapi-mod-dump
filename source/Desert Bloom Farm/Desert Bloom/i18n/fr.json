@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/delixx/stardew-valley-desert-bloom-farm
+**
+*************************************************/
+
+{
+  "oasis_tunnel": "Il y avait ici un passage vers un endroit caché. Avec l'aide de quelques amis féroces, nous avons pu l'ouvrir à nouveau",
+  "oasis_1": "Pour l'instant, cette source est plutôt inerte, mais elle pourrait s'avérer être un excellent lieu de reproduction pour divers poissons d'eau douce. Apportez-moi quelques-uns de ces poissons et je m'occuperai du reste. Vous pourrez les pêcher ici indépendamment de la saison, de l'heure et du temps",
+  "oasis_2": "Les poissons sont bien vivants, mais ils ne se multiplient pas très vite. Le fourrage adéquat peut améliorer considérablement les chances de pêche",
+  "oasis_3": "Il y a quelques poissons qui sont uniques aux eaux autour de Stardew Valley. Ils sont voués à disparaître... à moins que nous ne leur donnions une nouvelle maison. Cet étang pourrait être la planche de salut de leur espèce. Les attraper dépendra de votre chance. Les membres de leur famille peuvent également servir de substitut",
+  "mill_tier1": "Nous pourrions vous aider à réparer cette vieille pompe à eau. Je pense qu'elle permettra d'irriguer environ 50% de toutes les plantes et de creuser un peu le canal",
+  "mill_tier2": "Les tuyaux souterrains sont vieux et bouchés. En les remplaçant et en réparant les fuites, on améliorera l'irrigation à 65 %.",
+  "mill_tier3": "Vous l'entendez ? Les roues dentées sont usées et doivent être remplacées. De nouvelles roues dentées permettraient d'améliorer l'irrigation à 80 %",
+  "mill_tier4": "Je viens d'avoir une idée géniale ! Je viens d'avoir une idée géniale ! Un moteur électrique d'assistance pourrait améliorer la puissance de pompage pour permettre une irrigation à 100 % !",
+  "mill_tier5": "Pouvez-vous deviner ce qui manque ? L'iridium ! Nous pourrions renforcer les fondations pour une irrigation de 125% ! Oh, et peut-être que nous pourrions remplacer nos voiles de fortune en fibre par de vraies voiles en tissu pendant que nous y sommes. J'estime que les nutriments supplémentaires aideront les cultures à prendre un jour de moins pour pousser",
+  "mine_1": "Ugh ! Regardez tous ces déchets... Je vais te dire, petit, aide-moi à nettoyer l'environnement et je ferai en sorte que ton temps en vaille la peine. N'importe quel type de déchet fera l'affaire",
+  "mine_2": "J'aime vraiment creuser pour trouver des trésors. C'est très amusant ! Mais le faire avec un estomac vide gâche tout le plaisir. Tu sais quoi, petit, prépare-moi quelque chose de bon et je ferai en sorte que ton temps en vaille la peine ! Non, pas de l'argent. Trésor !",
+  "mine_3": "Hé, petit, tu aimes les fruits du cactus ? Non ? Moi, je les aime et j'en veux beaucoup ! Aide un ami et je ferai en sorte que cela en vaille la peine ! Non, pas de l'argent... ou un trésor... Je ferai en sorte que l'herbe se répande plus vite dans cette vallée ! Quelle bonne affaire !"
+}

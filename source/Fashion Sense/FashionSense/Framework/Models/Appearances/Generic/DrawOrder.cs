@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using FashionSense.Framework.Interfaces.API;
+
 namespace FashionSense.Framework.Models.Appearances.Generic
 {
     public class DrawOrder
@@ -20,11 +22,11 @@ namespace FashionSense.Framework.Models.Appearances.Generic
         }
 
         public Order Preposition { get; set; }
-        public AppearanceContentPack.Type AppearanceType { get; set; }
+        public IApi.Type AppearanceType { get; set; }
 
         public bool IsValid()
         {
-            return Preposition is not Order.Unknown && AppearanceType is not AppearanceContentPack.Type.Unknown;
+            return Preposition is not Order.Unknown && AppearanceType is not IApi.Type.Unknown;
         }
     }
 }

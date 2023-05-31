@@ -85,7 +85,7 @@ namespace Omegasis.Revitalize.Framework.Illuminate
 
         public Color getColor()
         {
-            return this.color;
+            return this.color.Value;
         }
 
         public Color getInvertedColor()
@@ -111,25 +111,25 @@ namespace Omegasis.Revitalize.Framework.Illuminate
 
             //Used as reference.
             //https://stackoverflow.com/questions/3722307/is-there-an-easy-way-to-blend-two-system-drawing-color-values
-            if (this.colorMixMode == Enums.DyeBlendMode.Blend)
+            if (this.colorMixMode.Value == Enums.DyeBlendMode.Blend)
             {
-                int r = (int)(this.color.R * this.blendInfluence + other.R * (1 - this.blendInfluence));
-                int g = (int)(this.color.G * this.blendInfluence + other.G * (1 - this.blendInfluence));
-                int b = (int)(this.color.B * this.blendInfluence + other.B * (1 - this.blendInfluence));
+                int r = (int)(this.color.R * this.blendInfluence.Value + other.R * (1 - this.blendInfluence.Value));
+                int g = (int)(this.color.G * this.blendInfluence.Value + other.G * (1 - this.blendInfluence.Value));
+                int b = (int)(this.color.B * this.blendInfluence.Value + other.B * (1 - this.blendInfluence.Value));
                 return new Color(r, g, b, Alpha);
             }
-            if (this.colorMixMode == Enums.DyeBlendMode.Average)
+            if (this.colorMixMode.Value == Enums.DyeBlendMode.Average)
                 return new Color((this.color.R + other.R) / 2, (this.color.G + other.G) / 2, (this.color.B + other.B) / 2, Alpha);
 
-            if (this.colorMixMode == Enums.DyeBlendMode.Multiplier)
+            if (this.colorMixMode.Value == Enums.DyeBlendMode.Multiplier)
                 return new Color(this.color.R * other.R, this.color.G * other.G, this.color.B * other.B, Alpha);
 
-            return this.color;
+            return this.color.Value;
         }
 
         public NamedColor getCopy()
         {
-            return new NamedColor(this.name, this.color, this.colorMixMode, this.blendInfluence);
+            return new NamedColor(this.name.Value, this.color.Value, this.colorMixMode.Value, this.blendInfluence.Value);
         }
     }
 }

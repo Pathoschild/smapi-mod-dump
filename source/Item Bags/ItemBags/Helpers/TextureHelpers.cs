@@ -29,7 +29,7 @@ namespace ItemBags.Helpers
             {
                 if (_EmojiSpritesheet == null || _EmojiSpritesheet.IsDisposed)
                 {
-                    _EmojiSpritesheet = ItemBagsMod.ModInstance.Helper.Content.Load<Texture2D>("LooseSprites/emojis", ContentSource.GameContent);
+                    _EmojiSpritesheet = ItemBagsMod.ModInstance.Helper.GameContent.Load<Texture2D>("LooseSprites/emojis");
                 }
                 return _EmojiSpritesheet;
             }
@@ -42,7 +42,7 @@ namespace ItemBags.Helpers
             {
                 if (_JunimoNoteTexture == null || _JunimoNoteTexture.IsDisposed)
                 {
-                    _JunimoNoteTexture = ItemBagsMod.ModInstance.Helper.Content.Load<Texture2D>(JunimoNoteMenu.noteTextureName, ContentSource.GameContent);
+                    _JunimoNoteTexture = ItemBagsMod.ModInstance.Helper.GameContent.Load<Texture2D>(JunimoNoteMenu.noteTextureName);
                 }
                 return _JunimoNoteTexture;
             }
@@ -55,7 +55,7 @@ namespace ItemBags.Helpers
             {
                 if (_PlayerStatusList == null || _PlayerStatusList.IsDisposed)
                 {
-                    _PlayerStatusList = ItemBagsMod.ModInstance.Helper.Content.Load<Texture2D>("LooseSprites/PlayerStatusList", ContentSource.GameContent);
+                    _PlayerStatusList = ItemBagsMod.ModInstance.Helper.GameContent.Load<Texture2D>("LooseSprites/PlayerStatusList");
                 }
                 return _PlayerStatusList;
             }
@@ -68,7 +68,7 @@ namespace ItemBags.Helpers
             {
                 if (_JojaCDForm == null || _JojaCDForm.IsDisposed)
                 {
-                    _JojaCDForm = ItemBagsMod.ModInstance.Helper.Content.Load<Texture2D>("LooseSprites/JojaCDForm", ContentSource.GameContent);
+                    _JojaCDForm = ItemBagsMod.ModInstance.Helper.GameContent.Load<Texture2D>("LooseSprites/JojaCDForm");
                 }
                 return _JojaCDForm;
             }

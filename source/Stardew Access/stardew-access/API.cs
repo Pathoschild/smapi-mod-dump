@@ -11,14 +11,11 @@
 using Microsoft.Xna.Framework;
 using stardew_access.Features;
 
-namespace stardew_access.ScreenReader
+namespace stardew_access
 {
     public class API
     {
-
-        public API()
-        {
-        }
+        public API() { }
 
         /// <summary>
         /// Search the area using Breadth First Search algorithm(BFS).
@@ -26,11 +23,14 @@ namespace stardew_access.ScreenReader
         /// <param name="center">The starting point.</param>
         /// <param name="limit">The limiting factor or simply radius of the search area.</param>
         /// <returns>A dictionary with all the detected tiles along with the name of the object on it and it's category.</returns>
-        public Dictionary<Vector2, (string name, string category)> SearchNearbyTiles(Vector2 center, int limit)
+        public Dictionary<Vector2, (string name, string category)> SearchNearbyTiles(
+            Vector2 center,
+            int limit
+        )
         {
             /*
             * How to use the Dictionary to get the name and category of a tile:-
-            * 
+            *
             * string tileName = detectedTiles.GetValueOrDefault(tilePosition).name;
             * string tileCategory = detectedTiles.GetValueOrDefault(tilePosition).category;
             *
@@ -48,7 +48,7 @@ namespace stardew_access.ScreenReader
         {
             /*
             * How to use the Dictionary to get the name and category of a tile:-
-            * 
+            *
             * string tileName = detectedTiles.GetValueOrDefault(tilePosition).name;
             * string tileCategory = detectedTiles.GetValueOrDefault(tilePosition).category;
             *
@@ -141,6 +141,5 @@ namespace stardew_access.ScreenReader
 
             MainClass.ScreenReader.SayWithTileQuery(text, x, y, interrupt);
         }
-
     }
 }

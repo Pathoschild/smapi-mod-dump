@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DiogoAlbano/StardewValleyMods
+**
+*************************************************/
+
+{
+  "BNWCoreEnableWateringXP": false,
+  "BNWCoreToolLength": 7,
+  "BNWCoreToolWidth": 2,
+  "BNWCoreslimeHutch": true,
+  "BNWCoreharvestCrops": false,
+  "BNWCoreharvestCropsIndoorPots": true,
+  "BNWCoreartifactSpots": true,
+  "BNWCoreorePan": true,
+  "BNWCorefruitTrees": true,
+  "BNWCoreseedTrees": true,
+  "BNWCoreflowers": false,
+  "BNWCoregarbageCans": true,
+  "BNWCoresetSoundLoop": true
+}

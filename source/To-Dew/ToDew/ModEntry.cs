@@ -34,7 +34,26 @@ namespace ToDew {
     public class ModEntry : Mod {
         private readonly PerScreen<ToDoList?> list = new PerScreen<ToDoList?>();
         private readonly PerScreen<ToDoOverlay?> overlay = new PerScreen<ToDoOverlay?>();
+        internal readonly PerScreen<OverlayDataSources> overlayDataSources = new(() => new OverlayDataSources());
+        private readonly PerScreen<ToDoListOverlayDataSource> toDoListOverlayDataSource;
         internal ModConfig config = new(); // create (and throw away) a default value to keep nullability check happy
+
+        public ModEntry() {
+            toDoListOverlayDataSource = new(() => {
+                IToDewApi? api = Helper.ModRegistry.GetApi<IToDewApi>(ModManifest.UniqueID);
+                if (api is null) {
+                    // this really shouldn't happen
+                    api = new ToDoApiImpl(this, ModManifest);
+                }
+                ToDoListOverlayDataSource source = new(() => api.RefreshOverlay());
+                api.AddOverlayDataSource(source);
+                return source;
+            });
+        }
+
+        public override IToDewApi GetApi(IModInfo mod) {
+            return new ToDoApiImpl(this, mod.Manifest);
+        }
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
@@ -97,7 +116,7 @@ namespace ToDew {
                 originalTexture.GetData(0, sourceRectangle, data, 0, data.Length);
                 cropTexture.SetData(data);
 
-                phoneApi.AddApp(Helper.ModRegistry.ModID, "To-Dew", () => { Game1.activeClickableMenu = new ToDoMenu(this, this.list!.Value!); } , cropTexture);
+                phoneApi.AddApp(Helper.ModRegistry.ModID, "To-Dew", () => { Game1.activeClickableMenu = new ToDoMenu(this, this.list!.Value!); }, cropTexture);
             }
 
             // add console commands
@@ -127,8 +146,9 @@ namespace ToDew {
                 this.Monitor.Log($"My multiplayer ID: {Game1.player.UniqueMultiplayerID}", LogLevel.Debug);
             }
             list.Value = new ToDoList(this);
+            toDoListOverlayDataSource.Value.theList = list.Value;
             if (config.overlay.enabled) {
-                overlay.Value = new ToDoOverlay(this, list.Value);
+                overlay.Value = new ToDoOverlay(this, overlayDataSources.Value);
             }
         }
 
@@ -142,6 +162,7 @@ namespace ToDew {
 
         private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e) {
             list.Value = null;
+            toDoListOverlayDataSource.Value.theList = null;
             overlay.Value?.Dispose();
             overlay.Value = null;
         }
@@ -162,7 +183,7 @@ namespace ToDew {
                         overlay.Value.Dispose();
                         overlay.Value = null;
                     } else if (config.overlay.enabled) {
-                        overlay.Value = new ToDoOverlay(this, list.Value);
+                        overlay.Value = new ToDoOverlay(this, overlayDataSources.Value);
                     }
                 }
             }
@@ -287,7 +308,7 @@ Other flags:
             bool verbose = false;
             bool force = false;
             bool importTypeSet = false;
-            for(int i=0; i<args.Length; i++) {
+            for (int i = 0; i < args.Length; i++) {
                 ToDoList.ImportType importTypeOut;
                 if (args[i] == "-v" || args[i] == "--verbose") {
                     verbose = true;
@@ -345,5 +366,32 @@ Other flags:
     // See https://www.nexusmods.com/stardewvalley/articles/467
     public interface IMobilePhoneApi {
         bool AddApp(string id, string name, Action action, Texture2D icon);
+    }
+    public class ToDoApiImpl : IToDewApi {
+        private readonly ModEntry theMod;
+        private readonly IManifest clientMod;
+        private readonly Dictionary<uint, ulong> sourceMap = new();
+        private uint nextSourceId = 0;
+        internal ToDoApiImpl(ModEntry theMod, IManifest clientMod) {
+            this.theMod = theMod;
+            this.clientMod = clientMod;
+        }
+        public uint AddOverlayDataSource(IToDewOverlayDataSource src) {
+            sourceMap.Add(nextSourceId, theMod.overlayDataSources.Value.Add(src));
+            return nextSourceId++;
+        }
+
+        public void RefreshOverlay() {
+            theMod.overlayDataSources.Value.Refresh();
+        }
+
+        public void RemoveOverlayDataSource(uint handle) {
+            if (sourceMap.TryGetValue(handle, out ulong globalId)) {
+                theMod.overlayDataSources.Value.Remove(globalId);
+                sourceMap.Remove(handle);
+            } else {
+                theMod.Monitor.Log($"{clientMod.Name} tried to remove overlay datasource with ID {handle}, but there is no datasource with that ID.  Ignoring.", LogLevel.Warn);
+            }
+        }
     }
 }

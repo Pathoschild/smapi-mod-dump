@@ -47,7 +47,7 @@ namespace SmartBuilding.HarmonyPatches
         }
 
         public static bool StorageFurniture_DoAction_Prefix(StorageFurniture __instance, Farmer who,
-                                                            bool justCheckingForActivity)
+            bool justCheckingForActivity)
         {
             return ShouldPerformAction();
         }

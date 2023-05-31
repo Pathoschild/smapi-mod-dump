@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using Omegasis.Revitalize.Framework.Utilities;
 using Omegasis.Revitalize.Framework.Utilities.Extensions;
+using Omegasis.Revitalize.Framework.Utilities.JsonContentLoading;
 using Omegasis.Revitalize.Framework.World.Objects.InformationFiles;
 using Omegasis.Revitalize.Framework.World.Objects.Interfaces;
 using Omegasis.StardustCore.Animations;
@@ -26,7 +27,7 @@ using StardewValley;
 
 namespace Omegasis.Revitalize.Framework.World.Objects
 {
-    [XmlType("Mods_Revitalize.Framework.World.Objects.CustomItem")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.CustomItem")]
     public class CustomItem : StardewValley.Object, ICustomModObject
     {
         public readonly NetRef<BasicItemInformation> netBasicItemInformation = new NetRef<BasicItemInformation>();
@@ -90,31 +91,53 @@ namespace Omegasis.Revitalize.Framework.World.Objects
 
 
         }
+        /// <summary>
+        /// The name displayed to the player for the object.
+        /// </summary>
         public override string DisplayName
         {
             get
             {
                 if (this.basicItemInformation == null) return null;
+
+                //Potentially get an overriden display name for certain objects depending on if I ever implement the renaming feature.
+                string displayName = "";
+                if (string.IsNullOrEmpty(this.basicItemInformation.name.Value))
+                {
+                    displayName = JsonContentPackUtilities.LoadItemDisplayName(this.Id, false);
+                }
+                if (!string.IsNullOrEmpty(displayName))
+                {
+                    this.basicItemInformation.name.Value = displayName;
+                    return displayName;
+                }
+                if (string.IsNullOrEmpty(this.basicItemInformation.name.Value) && string.IsNullOrEmpty(displayName))
+                {
+                    throw new JsonContentLoadingException(string.Format("The given item id {0} does not have a registered value for display strings! A file can be created under the ModAssets/Strings/Objects/DisplayStrings directory with the given info.",this.Id));
+                }
+
                 return this.basicItemInformation.name.Value;
             }
             set
             {
                 if (this.basicItemInformation != null)
+                {
                     this.basicItemInformation.name.Value = value;
+                }
             }
         }
 
         public CustomItem()
         {
             this.basicItemInformation = new BasicItemInformation();
-            this.initNetFieldsPostConstructor();
+            this.initializeNetFieldsPostConstructor();
 
         }
 
         public CustomItem(BasicItemInformation info) : base(Vector2.Zero, 0)
         {
             this.basicItemInformation = info;
-            this.initNetFieldsPostConstructor();
+            this.initializeNetFieldsPostConstructor();
 
         }
 
@@ -190,7 +213,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects
         /// <summary>
         /// Initializes NetFields to send information for multiplayer after all of the constructor initialization for this object has taken place.
         /// </summary>
-        protected virtual void initNetFieldsPostConstructor()
+        protected virtual void initializeNetFieldsPostConstructor()
         {
             this.NetFields.AddFields(this.netBasicItemInformation);
 
@@ -206,9 +229,18 @@ namespace Omegasis.Revitalize.Framework.World.Objects
             return this.basicItemInformation.categoryName.Value;
         }
 
+        /// <summary>
+        /// Gets the decription to be displayed when hovering over an item.
+        /// </summary>
+        /// <returns></returns>
         public override string getDescription()
         {
-            return this.basicItemInformation.description.Value;
+            string description = JsonContentPackUtilities.LoadItemDescription(this.basicItemInformation.id.Value, false);
+            if (string.IsNullOrEmpty(description))
+            {
+                description = this.basicItemInformation.description.Value; //Get default set description.
+            }
+            return Game1.parseText(description, Game1.smallFont, this.getDescriptionWidth());
         }
 
 

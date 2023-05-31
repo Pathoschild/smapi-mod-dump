@@ -30,7 +30,7 @@ namespace FarmVisitors
             var x = ((int)(who.Position.X / 64));
             var y = ((int)(who.Position.Y / 64));
 
-            if (ModEntry.Debug)
+            if (ModEntry.Config.Debug)
             {
                 ModEntry.Log($"farm name = {farm.Name}, visitor position = ({x}, {y})", lv.Info);
             }
@@ -58,12 +58,12 @@ namespace FarmVisitors
             if (!isFarm && !isFarmHouse) //if its neither the farm nor the farmhouse
                 return;
 
-            if (!ModEntry.CanFollow || string.IsNullOrWhiteSpace(ModEntry.VisitorName))
+            if (!ModEntry.Config.WalkOnFarm || string.IsNullOrWhiteSpace(ModEntry.VisitorName))
                 return; //if npcs can't follow or there's no visit
 
-            if (ModEntry.Debug)
+            if (ModEntry.Config.Debug)
             {
-                ModEntry.Log($"Leaving {e.OldLocation.Name}...Warped to {e.NewLocation.Name}. isFarm = {e.NewLocation.IsFarm} , CanFollow = {ModEntry.CanFollow}, VisitorName = {ModEntry.VisitorName}", lv.Info);
+                ModEntry.Log($"Leaving {e.OldLocation.Name}...Warped to {e.NewLocation.Name}. isFarm = {e.NewLocation.IsFarm} , CanFollow = {ModEntry.Config.WalkOnFarm}, VisitorName = {ModEntry.VisitorName}", lv.Info);
             }
 
             string name = null;
@@ -108,13 +108,13 @@ namespace FarmVisitors
 
             var gameLocation = Game1.getFarm();
             //var newspot = getRandomOpenPointInFarm(gameLocation, Game1.random);
-            var newspot = getRandomFreeTile(gameLocation);
+            var newspot = getRandomOpenPointInFarm(gameLocation, Game1.random);
 
             try
             {
                 c.PathToOnFarm(newspot);
                 
-                if(ModEntry.Debug)
+                if(ModEntry.Config.Debug)
                 {
                     ModEntry.Log($"is the controller empty?: {c.controller == null}", lv.Debug);
                 }
@@ -173,102 +173,46 @@ namespace FarmVisitors
             }
         }
 
-        internal static Point getRandomOpenPointInFarm(GameLocation location,Random r, int buffer = 0, int tries = 30)
+        internal static Point getRandomOpenPointInFarm(GameLocation location,Random r, int tries = 30, int maxDistance = 10)
         {
-            var map = location.map;
-
-            Point zero = Point.Zero;
-            for (int i = 0; i < tries; i++)
-            {
-                zero = new Point(r.Next(map.Layers[0].LayerWidth), r.Next(map.Layers[0].LayerHeight));
-
-                Rectangle rectangle = new Rectangle(zero.X - buffer, zero.Y - buffer, 1 + buffer * 2, 1 + buffer * 2);
-
-                bool flag = false;
-
-                for (int j = rectangle.X; j < rectangle.Right; j++)
-                {
-                    for (int k = rectangle.Y; k < rectangle.Bottom; k++)
-                    {
-                        flag = (location.getTileIndexAt(j, k, "Back") == -1 || !location.isTileLocationTotallyClearAndPlaceable(j, k) || location.isWaterTile(j, k));
-                        /*
-                        if (location.isTilePlaceable(new Vector2(j,k)) && location.getTileSheetIDAt(j, k, "Back") == "untitled tile sheet")
-                        {
-                            flag = true;
-                        }*/
-
-                        if (flag)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (flag)
-                    {
-                        break;
-                    }
-                }
-
-                if (!flag)
-                {
-
-                    if (ModEntry.Debug)
-                    {
-                        ModEntry.Log($"New position for {ModEntry.VisitorName}: {zero.X},{zero.Y}", lv.Debug);
-                    }
-
-                    return zero;
-                }
-            }
-            
-            return Point.Zero;
-        }
-
-        internal static Point getRandomFreeTile(GameLocation location, int distance = 10, int tries = 30)
-        {
-            var map = location.map;
-            Point zero = Point.Zero;
             NPC who = Game1.getCharacterFromName(ModEntry.VisitorName);
 
-            var width = distance;
-            var height = distance;
+            var map = location.map;
 
-            /*if (map.DisplayWidth > 109) //if the map is bigger than 109 tiles(width), set new max. (to 10% of the map's width / height, respectively)
-            {
-                width = map.DisplayHeight / 10;
-                height = map.DisplayWidth / 10;
-            }*/
+            Point zero = Point.Zero;
+            bool CanGetHere = false;
 
             for (int i = 0; i < tries; i++)
             {
-                zero = location.getRandomTile().ToPoint();
-                var vector = location.getRandomTile();
+                //we get random position using width and height of map
+                zero = new Point(r.Next(map.Layers[0].LayerWidth), r.Next(map.Layers[0].LayerHeight));
 
-                bool iswater = location.isWaterTile(zero.X, zero.Y);
-                bool behindtree = location.isBehindTree(vector);
-                Warp warpOrDoor = location.isCollidingWithWarpOrDoor(new Rectangle(zero,new Point(1,1)));
-                bool nearScreen = false;
+                bool isFloorValid = location.isTileOnMap(zero.ToVector2()) && location.isTilePassable(new xTile.Dimensions.Location(zero.X, zero.Y), Game1.viewport) && !location.isWaterTile(zero.X, zero.Y);
+                bool IsBehindTree = location.isBehindTree(zero.ToVector2());
+                Warp WarpOrDoor = location.isCollidingWithWarpOrDoor(new Rectangle(zero, new Point(1, 1)));
 
-                var x = Math.Abs((who.Position.X / 64) - vector.X);
-                var y = Math.Abs((who.Position.Y / 64) - vector.Y);
+                //check that location is clear + not water tile + not behind tree + not a warp
+                CanGetHere = location.isTileLocationTotallyClearAndPlaceable(zero.X, zero.Y) && isFloorValid && !IsBehindTree && WarpOrDoor == null;
 
-                if (x <= width && y <= height) //if the difference isn't greater than 10
+                //if the new point is too far away
+                Point difference = new (Math.Abs(zero.X - (int)who.Position.X),Math.Abs(zero.Y - (int)who.Position.Y));
+                if(difference.X > maxDistance && difference.Y > maxDistance)
                 {
-                    nearScreen = true;
+                    CanGetHere = false;
                 }
 
-                if (!iswater && !behindtree && warpOrDoor == null && location.isTileLocationTotallyClearAndPlaceableIgnoreFloors(vector) && nearScreen)
+                if (CanGetHere)
                 {
-                    if (ModEntry.Debug)
-                    {
-                        ModEntry.Log($"New position for {ModEntry.VisitorName}: {zero.X},{zero.Y}", lv.Debug);
-                    }
-
-                    return zero;
+                    break;
                 }
             }
 
-            return Point.Zero;
+            if (ModEntry.Config.Debug)
+            {
+                ModEntry.Log($"New position for {ModEntry.VisitorName}: {zero.X},{zero.Y}", lv.Debug);
+            }
+           
+            return zero;
         }
     }
 }

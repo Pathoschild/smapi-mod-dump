@@ -1,18 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\Build\SDV-1.5.6_SMAPI-3.15.x.targets" />
-  <Import Project="..\Build\Common.csproj" />
-  <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared" />
+    <Import Project="..\Build\SDV-1.5.6.targets" />
+    <Import Project="..\Build\Common.csproj" />
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared" />
 
-  <PropertyGroup>
-    <Name>Carry Your Pet</Name>
-    <Description>Allows you to carry your pet around.</Description>
-    <MinimumApiVersion>3.15.0</MinimumApiVersion>
-    <UpdateKeys>Nexus:13009</UpdateKeys>
-    <Version>1.1.1</Version>
-  </PropertyGroup>
+    <PropertyGroup>
+        <Name>Carry Your Pet</Name>
+        <Description>Allows you to carry your pet around.</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:13009</UpdateKeys>
+        <Version>1.2.0</Version>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <EnableHarmony>true</EnableHarmony>
-  </PropertyGroup>
+    <PropertyGroup>
+        <EnableHarmony>true</EnableHarmony>
+    </PropertyGroup>
 
 </Project>

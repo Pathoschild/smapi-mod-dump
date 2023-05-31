@@ -258,7 +258,7 @@ namespace Omegasis.HappyBirthday.Framework.ContentPack
         /// <returns></returns>
         protected virtual Dictionary<string, string> loadStringDictionary(params string[] RelativePathToFile)
         {
-            return this.baseContentPack.LoadAsset<Dictionary<string, string>>(Path.Combine(RelativePathToFile));
+            return this.baseContentPack.ModContent.Load<Dictionary<string, string>>(Path.Combine(RelativePathToFile));
         }
 
         /// <summary>

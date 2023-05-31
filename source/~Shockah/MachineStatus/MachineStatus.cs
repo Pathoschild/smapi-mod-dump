@@ -14,7 +14,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Shockah.CommonModCode.GMCM;
 using Shockah.Kokoro;
 using Shockah.Kokoro.GMCM;
-using Shockah.Kokoro.SMAPI;
 using Shockah.Kokoro.Stardew;
 using Shockah.Kokoro.UI;
 using StardewModdingAPI;
@@ -143,7 +142,9 @@ namespace Shockah.MachineStatus
 			helper.Events.World.ObjectListChanged += OnObjectListChanged;
 			helper.Events.Display.RenderedHud += OnRenderedHud;
 			helper.Events.Multiplayer.PeerConnected += OnPeerConnected;
-			helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
+
+			RegisterModMessageHandler<NetMessage.MachineUpsert>(OnMachineUpsertMessageReceived);
+			RegisterModMessageHandler<NetMessage.MachineRemove>(OnMachineRemoveMessageReceived);
 		}
 
 		private void SetupConfig()
@@ -527,56 +528,41 @@ namespace Shockah.MachineStatus
 			if (e.Peer.GetMod(ModManifest.UniqueID) is null)
 				return;
 			foreach (var (location, machine, state) in HostMachines)
-				Helper.Multiplayer.SendMessage(
-					NetMessage.MachineUpsert.Create(location, machine, state),
-					new[] { ModManifest.UniqueID },
-					new[] { e.Peer.PlayerID }
-				);
+				SendModMessage(NetMessage.MachineUpsert.Create(location, machine, state), e.Peer);
 		}
 
-		private void OnModMessageReceived(object? sender, ModMessageReceivedEventArgs e)
+		private void OnMachineUpsertMessageReceived(NetMessage.MachineUpsert message)
 		{
-			if (e.FromModID != ModManifest.UniqueID)
-				return;
-
-			if (e.Type == typeof(NetMessage.MachineUpsert).FullName)
+			var existingEntry = ClientMachines.FirstOrNull(e => message.Location == e.location && message.MatchesMachine(e.machine));
+			if (existingEntry is not null)
 			{
-				var message = e.ReadAs<NetMessage.MachineUpsert>();
-				var existingEntry = ClientMachines.FirstOrNull(e => message.Location == e.location && message.MatchesMachine(e.machine));
-				if (existingEntry is not null)
+				static bool IsHeldObjectEqual(SObject? @object, NetMessage.Entity.SObject? message)
 				{
-					static bool IsHeldObjectEqual(SObject? @object, NetMessage.Entity.SObject? message)
-					{
-						if (@object is null && message is null)
-							return true;
-						if (@object is null != message is null)
-							return false;
-						return message!.Value.Matches(@object!);
-					}
-
-					if (existingEntry.Value.state == message.State && IsHeldObjectEqual(existingEntry.Value.machine.GetAnyHeldObject(), message.HeldObject))
-						return;
-					ClientMachines.Remove(existingEntry.Value);
-					AreVisibleMachinesDirty = true;
+					if (@object is null && message is null)
+						return true;
+					if (@object is null != message is null)
+						return false;
+					return message!.Value.Matches(@object!);
 				}
 
-				var recreatedMachine = message.RetrieveMachine();
-				ClientMachines.Add((message.Location, recreatedMachine, message.State));
+				if (existingEntry.Value.state == message.State && IsHeldObjectEqual(existingEntry.Value.machine.GetAnyHeldObject(), message.HeldObject))
+					return;
+				ClientMachines.Remove(existingEntry.Value);
 				AreVisibleMachinesDirty = true;
 			}
-			else if (e.Type == typeof(NetMessage.MachineRemove).FullName)
+
+			var recreatedMachine = message.RetrieveMachine();
+			ClientMachines.Add((message.Location, recreatedMachine, message.State));
+			AreVisibleMachinesDirty = true;
+		}
+
+		private void OnMachineRemoveMessageReceived(NetMessage.MachineRemove message)
+		{
+			var existingEntry = ClientMachines.FirstOrNull(e => message.Location == e.location && message.MatchesMachine(e.machine));
+			if (existingEntry is not null)
 			{
-				var message = e.ReadAs<NetMessage.MachineRemove>();
-				var existingEntry = ClientMachines.FirstOrNull(e => message.Location == e.location && message.MatchesMachine(e.machine));
-				if (existingEntry is not null)
-				{
-					ClientMachines.Remove(existingEntry.Value);
-					AreVisibleMachinesDirty = true;
-				}
-			}
-			else
-			{
-				Monitor.Log($"Received unknown message of type {e.Type}.", LogLevel.Warn);
+				ClientMachines.Remove(existingEntry.Value);
+				AreVisibleMachinesDirty = true;
 			}
 		}
 
@@ -925,10 +911,7 @@ namespace Shockah.MachineStatus
 			}
 			HostMachines.Add((locationDescriptor, machine, newState));
 			AreVisibleMachinesDirty = true;
-			Helper.Multiplayer.SendMessageInMultiplayer(
-				() => NetMessage.MachineUpsert.Create(locationDescriptor, machine, newState),
-				new[] { ModManifest.UniqueID }
-			);
+			SendModMessageToEveryone(NetMessage.MachineUpsert.Create(locationDescriptor, machine, newState));
 			return true;
 		}
 
@@ -939,10 +922,7 @@ namespace Shockah.MachineStatus
 			if (existingEntry is not null)
 			{
 				HostMachines.Remove(existingEntry.Value);
-				Helper.Multiplayer.SendMessageInMultiplayer(
-					() => NetMessage.MachineRemove.Create(location, machine),
-					new[] { ModManifest.UniqueID }
-				);
+				SendModMessageToEveryone(NetMessage.MachineRemove.Create(location, machine));
 				Monitor.Log($"Removed {existingEntry.Value.state} machine {{Name: {machine.Name}, DisplayName: {machine.DisplayName}, Type: {machine.GetType().GetBestName()}}} in location {locationDescriptor}", LogLevel.Trace);
 				AreVisibleMachinesDirty = true;
 			}

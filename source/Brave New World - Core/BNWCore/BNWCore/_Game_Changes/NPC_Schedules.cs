@@ -16,7 +16,7 @@ namespace BNWCore
     {
         public void GameLoop_DayStarted(StardewModdingAPI.Events.DayStartedEventArgs e)
         {
-            if (ModEntry.ModHelper.ModRegistry.IsLoaded("DiogoAlbano.BNWChapter1"))
+            if (ModEntry.ModHelper.ModRegistry.IsLoaded("DiogoAlbano.teste"))
             {
                 var robin = Game1.getCharacterFromName("Robin");
                 robin.shouldPlayRobinHammerAnimation.Value = false;
@@ -24,12 +24,6 @@ namespace BNWCore
                 robin.resetCurrentDialogue();
                 robin.reloadDefaultLocation();
                 Game1.warpCharacter(robin, robin.DefaultMap, robin.DefaultPosition / 64f);
-                var jas = Game1.getCharacterFromName("Jas");
-                Game1.warpCharacter(jas, jas.DefaultMap, jas.DefaultPosition / 64f);
-                var marnie = Game1.getCharacterFromName("Marnie");
-                Game1.warpCharacter(marnie, marnie.DefaultMap, marnie.DefaultPosition / 64f);
-                var shane = Game1.getCharacterFromName("Shane");
-                Game1.warpCharacter(shane, shane.DefaultMap, shane.DefaultPosition / 64f);
             }
         }
     }

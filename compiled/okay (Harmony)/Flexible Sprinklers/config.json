@@ -1,8 +1,7 @@
 {
-  "Version": "1.4.1",
+  "Version": "2.0.0",
   "SprinklerBehavior": "ClusterWithoutVanilla",
   "IgnoreRange": false,
-  "TileWaterBalanceMode": "Relaxed",
   "SplitDisconnectedClusters": true,
   "ClusterBehaviorClusterOrdering": "BiggerFirst",
   "ClusterBehaviorBetweenClusterBalanceMode": "Relaxed",

@@ -353,7 +353,7 @@ namespace ContentPatcher.Framework.Patches
                 }
                 catch (Exception ex)
                 {
-                    this.WarnForRecord(i, $"failed converting {fromType} value to the expected type '{targetType.FullName}'.");
+                    this.WarnForRecord(i, $"failed converting {(fromType == JTokenType.Object ? "entry" : $"{fromType} value")} to the expected type '{targetType.FullName}': {ex.Message}.");
                     continue;
                 }
 
@@ -364,7 +364,7 @@ namespace ContentPatcher.Framework.Patches
                 }
                 catch (Exception ex)
                 {
-                    this.WarnForRecord(i, $"failed setting {fromType} value: {ex.Message}");
+                    this.WarnForRecord(i, $"failed setting '{key}' entry: {ex.Message}");
                     continue;
                 }
             }

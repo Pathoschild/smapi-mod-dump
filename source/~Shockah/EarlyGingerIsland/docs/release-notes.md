@@ -10,6 +10,11 @@ for queries and analysis.**
 
 # Release notes
 
+## 1.1.1
+Released 30 May 2023.
+
+* Updated to Kokoro 2.0.0.
+
 ## 1.1.0
 Released 10 February 2023.
 

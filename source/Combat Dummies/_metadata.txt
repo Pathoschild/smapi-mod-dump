@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Floogen/CombatDummy
+   Git: https://github.com/Floogen/CombatDummy.git
+
+mods:
+   Combat Dummies
+
+latest commit:
+   commit 7c0dfe92dd27fded0da6b0ddb0072c9a65c0f343
+   Author: Floogen <31755155+Floogen@users.noreply.github.com>
+   Date:   Sat May 27 15:21:32 2023 -0500
+   
+       v1.1.1 released
+   

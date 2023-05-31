@@ -12,8 +12,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using System;
+using System.Text;
+using StardewModdingAPI;
 
-namespace DynamicDialogues
+// ReSharper disable PossibleLossOfFraction
+
+namespace DynamicDialogues.Framework
 {
 	internal class EventScene
 	{
@@ -42,85 +46,49 @@ namespace DynamicDialogues
 
             try
             {
+	            if (ModEntry.Config.Debug)
+	            {
+		            string splitdata = null;
+		            foreach (var text in split)
+		            {
+			            splitdata += text + "<>";
+		            }
+		            ModEntry.Mon.Log("split= " + splitdata,LogLevel.Info);
+	            }				
+                var tex = Game1.temporaryContent.Load<Texture2D>("mistyspring.dynamicdialogues\\Scenes\\" + split[1]);
 
-                Texture2D Tex = Game1.temporaryContent.Load<Texture2D>("mistyspring.dynamicdialogues\\Scenes\\" + split[1]);
+                var id = split.Length >= 3 ? float.Parse(split[2]) : 69420f;
 
-                float ID = split.Length >= 3 ? float.Parse(split[2]) : 69420f;
+                var frames = split.Length >= 4 ? int.Parse(split[3]) : 1;
+                var milliseconds = split.Length >= 5 ? float.Parse(split[4]) : 200f;
 
-                int Frames = split.Length >= 4 ? int.Parse(split[3]) : 1;
-                float milliseconds = split.Length >= 5 ? float.Parse(split[4]) : 200f;
+                //figuring out position
+                var posText = GetFixedString(split[5].ToLower());
+                var pos = GetPosition(posText, tex, frames);
 
+                var loops = split.Length == 7 ? int.Parse(split[6]) : 99999;
 
-                /*
-                 * these will be for a future update
-                 * 
-           
-                //figuring out position starts here
+                var width = tex.Width / frames;
+                var height = tex.Height;
 
-                var w = Game1.graphics.GraphicsDevice.Viewport.Width;
-                var h = Game1.graphics.GraphicsDevice.Viewport.Height;
-
-                var middle = Game1.viewportCenter.ToVector2();
-                int middleX = w / 2;
-                int middleY = h / 2;
-
-                var bounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
-
-                Vector2 pos = split[5] switch
-                {
-                    "middle" => middle,
-                    "middle-left" => new (0,middleY),
-                    "middle-right" => new (w,middleY),
-                    
-                    "mid" => Game1.viewportCenter.ToVector2(),
-                    "mid-left" => new (0,middleY),
-                    "mid-right" => new (w,middleY),
-
-                    "top" => new (middleX,0),
-                    "top-left" => new (0,0),
-                    "top-right" => new (w,0),
-
-                    "bottom" => new(middleX,h),
-                    "bottom-left" => new(0,h),
-                    "bottom-right"=> new(w,h),
-
-                    _ => new (0, 0)
-                };
-
-                if(pos.X is not 0)
-                {
-                    pos.X =- Tex.Width * 2;
-                }
-                if (pos.Y is not 0)
-                {
-                    pos.X =- Tex.Height * 4;
-                }
-
-                int loops = split.Length == 7 ? int.Parse(split[6]) : 99999;
-
-                */
-
-                int width = (int)(Tex.Width / Frames);
-                int height = Tex.Height;
-
-                Vector2 pos = new Vector2(Game1.graphics.GraphicsDevice.Viewport.Width / 2 - 264, Game1.graphics.GraphicsDevice.Viewport.Height / 3 - 264);
+                /*var pos = new Vector2(Game1.graphics.GraphicsDevice.Viewport.Width / 2 - 264, Game1.graphics.GraphicsDevice.Viewport.Height / 3 - 264);
 
                 if(height != 112)
                 {
-                    pos = new(0,0);
-                }
+                    pos = new Vector2(0,0);
+                }*/
 
 
                 //old: location.TemporarySprites.Add(
-                var Scene = new TemporaryAnimatedSprite
+                var scene = new TemporaryAnimatedSprite
                 {
-                    texture = Tex,
-                    sourceRect = new(0, 0, width, height), //sourcerect refers to the position in the file. since these are custom, it'll always be at the position (0,0)
-                    animationLength = Frames,
+                    texture = tex,
+                    sourceRect = new Rectangle(0, 0, width, height), //sourcerect refers to the position in the file. since these are custom, it'll always be at the position (0,0)
+                    animationLength = frames,
                     sourceRectStartingPos = new Vector2(0, 0), //orig 144f, 215f
                     interval = milliseconds,
-                    totalNumberOfLoops = 99999,
-                    id = ID,
+                    totalNumberOfLoops = loops,
+                    id = id,
                     position = pos,
                     local = true,
                     scale = 4f,
@@ -132,25 +100,132 @@ namespace DynamicDialogues
                 {
                     //log stuff
                     var text = "TemporaryAnimatedSprite: \n";
-                    text += $" texture = {Tex.Name},\r\n sourceRect = ({Scene.sourceRect.X}, {Scene.sourceRect.Y}, {Scene.sourceRect.Width}, {Scene.sourceRect.Height}),\r\n animationLength = {Frames},\r\n sourceRectStartingPos = (0,0),\r\n interval = {milliseconds},\r\n totalNumberOfLoops = 99999,\r\n id = {ID},\r\n position = ({pos.X},{pos.Y}),\r\n local = true,\r\n scale = 4f,\r\n  destroyable = false,\r\n overrideLocationDestroy = true";
+                    text += $" texture = {tex.Name},\r\n sourceRect = ({scene.sourceRect.X}, {scene.sourceRect.Y}, {scene.sourceRect.Width}, {scene.sourceRect.Height}),\r\n animationLength = {frames},\r\n sourceRectStartingPos = (0,0),\r\n interval = {milliseconds},\r\n totalNumberOfLoops = {loops},\r\n id = {id},\r\n position = ({pos.X},{pos.Y}),\r\n local = true,\r\n scale = 4f,\r\n  destroyable = false,\r\n overrideLocationDestroy = true";
+                    ModEntry.Mon.Log(text);
                 }
 
-                Scene.layerDepth = 99f; //ref: in carolineTea stars are 1f depth, elizabeth's fireworks are 99f
+                scene.layerDepth = 99f; //ref: in carolineTea stars are 1f depth, elizabeth's fireworks are 99f
 
                 //if it doesnt exist we create it
                 if (instance.aboveMapSprites == null || instance.aboveMapSprites?.Count == 0)
                 {
-                    instance.aboveMapSprites = new();
+                    instance.aboveMapSprites = new TemporaryAnimatedSpriteList();
                 }
 
-                instance.aboveMapSprites.Add(Scene);
-                instance.currentCommand++;
+                instance.aboveMapSprites?.Add(scene);
+                instance.CurrentCommand++;
 
             }
             catch (Exception ex)
             {
-                ModEntry.Mon.Log("Error: " + ex, StardewModdingAPI.LogLevel.Error);
+                ModEntry.Mon.Log("Error: " + ex, LogLevel.Error);
             }
+        }
+
+        private static Vector2 GetPosition(string text, Texture2D tex, int frames)
+        {
+	        try
+	        {
+		        var position = new Vector2();
+		        var textRaw = text.ToCharArray();
+		        string height;
+		        string alignment;
+
+		        //if true middle.
+		        //done this way because otherwise, string.Replace(height,null) would empty it
+		        if (text == "mid")
+		        {
+			        height = "mid";
+			        alignment = "mid";
+		        }
+		        else
+		        {
+			        height = $"{textRaw[0]}{textRaw[1]}{textRaw[2]}";
+			        alignment = text.Replace(height, null);
+		        }
+
+		        //var middle = Game1.viewportCenter.ToVector2();
+		        var w = Game1.viewport.Width;
+		        var h = Game1.viewport.Height;
+		        var middleX = w / 2;
+		        var middleY = h / 2;
+
+		        position.Y = height switch
+		        {
+			        "mid" => middleY - tex.Height * 2,
+
+			        "top" => 0,
+
+			        "bot" => h - tex.Height * 4,
+
+			        _ => throw new ArgumentException("height is neither mid, top, or bottom")
+		        };
+
+		        position.X = alignment switch
+		        {
+			        "mid" => middleX - (tex.Width / frames) * 2,
+
+			        "left" => 0,
+
+			        "right" => h - tex.Width * 4,
+
+			        _ => throw new ArgumentException("alignment is neither mid, left or right")
+		        };
+
+		        return position;
+	        }
+	        catch (Exception e)
+	        {
+		        ModEntry.Mon.Log("Error: " + e,LogLevel.Error);
+		        throw;
+	        }
+        }
+
+        /// <summary>
+        /// Removes special characters from a string, and corrects its wording.
+        /// </summary>
+        /// <param name="text">The string to check.</param>
+        /// <returns>An alignment string without (specific) special characters.</returns>
+        private static string GetFixedString(string text)
+        {
+	        try
+	        {
+		        var builder = new StringBuilder(text);
+	        
+		        //account for any char that could be put between zone(top,mid,bot) and alignment(left,right)
+		        var specialCharacters = new[] { "-", "_", "/", "\\", ";",":",",",".","*","+" };
+		        foreach(var character in specialCharacters)
+		        {
+			        builder.Replace(character, null);
+		        }
+
+		        //fix possible variations of words
+		        builder.Replace("middle", "mid");
+		        builder.Replace("bottom", "bot");
+		        builder.Replace("up", "top");
+		        builder.Replace("down", "bot");
+
+		        switch (builder.ToString())
+		        {
+			        //if "midmid" (true middle), replace for "mid"
+			        case "midmid":
+				        builder.Replace("midmid", "mid");
+				        break;
+			        case "topmid":
+				        builder.Replace("topmid", "top");
+				        break;
+			        case "botmid":
+				        builder.Replace("botmid", "bot");
+				        break;
+		        }
+
+		        return builder.ToString();
+	        }
+	        catch (Exception e)
+	        {
+		        ModEntry.Mon.Log("Error: " + e,LogLevel.Error);
+		        throw;
+	        }
         }
 
         /// <summary>
@@ -168,14 +243,14 @@ namespace DynamicDialogues
 
 			try
             {
-                var tempID = split.Length >= 2 ? float.Parse(split[1]) : 69420f;
+                var tempId = split.Length >= 2 ? float.Parse(split[1]) : 69420f;
 
-                location.removeTemporarySpritesWithIDLocal(tempID);
-                instance.currentCommand++;
+                location.removeTemporarySpritesWithIDLocal(tempId);
+                instance.CurrentCommand++;
             }
             catch (Exception ex)
             {
-                ModEntry.Mon.Log("Error: " + ex, StardewModdingAPI.LogLevel.Error);
+                ModEntry.Mon.Log("Error: " + ex, LogLevel.Error);
             }
 
         }
@@ -201,6 +276,5 @@ Texture2D tempTex = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\tempor
 			break;
 }
 */
-
-    }
+	}
 }

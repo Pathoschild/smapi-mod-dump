@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit 399df1172f4005cce70444c8b54188ab69a9458e
-   Merge: 2928f62 7e1411b
    Author: AdvizeGH <sinister-thoughts@hotmail.com>
    Date:   Sun May 6 02:57:00 2018 -0500
    

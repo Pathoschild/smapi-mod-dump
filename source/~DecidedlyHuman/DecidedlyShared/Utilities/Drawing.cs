@@ -28,7 +28,7 @@ namespace DecidedlyShared.Utilities
         /// <param name="textColour">The <see cref="Color" /> of the text.</param>
         /// <param name="shadowColour">The <see cref="Color" /> of the shadow.</param>
         public static void DrawStringWithShadow(SpriteBatch spriteBatch, SpriteFont font, string text, Vector2 position,
-                                                Color textColour, Color shadowColour, int xOffset = 2, int yOffset = 2)
+            Color textColour, Color shadowColour, int xOffset = 2, int yOffset = 2)
         {
             // Draw the shadow...
             spriteBatch.DrawString(

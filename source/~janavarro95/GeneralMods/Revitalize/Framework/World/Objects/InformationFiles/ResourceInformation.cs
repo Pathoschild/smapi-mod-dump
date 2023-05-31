@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Netcode;
-using Omegasis.Revitalize.Framework.World.Objects.Items;
+using Omegasis.Revitalize.Framework.World.Objects.Items.Utilities;
 using StardewValley;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.InformationFiles

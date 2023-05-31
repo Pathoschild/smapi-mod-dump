@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+	"mailTitle":"Omegasis.Revitalize.UnlockNewStuffWithoutNPCMail.ElectricGeodeCrusherUnlock",
+	"message":"@, ^Congratulations on cracking 500 geodes! We like to bestow upon you the iron tier membership. Here is an electric geode crusher blueprint which uses battery packs to run instead of coal. We enjoy your enthusiasm and hope you continue your endeavor. ^ -Geode Cracker's Association Gem Sea Branch",
+	"itemReference":{
+		"stardewValleyItemId": "NULL",
+		"stardewValleyBigCraftableId": "NULL",
+		"registeredObjectId": "Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Machines.GeodeCrushers.ElectricAdvancedGeodeCrusher",
+		"amount": 1
+	},
+}

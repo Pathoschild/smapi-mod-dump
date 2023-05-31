@@ -6,13 +6,9 @@ mods:
    Stardew Archipelago
 
 latest commit:
-   commit 2b8d680929785c25e8ae312ba4a7c778eb13b5e5
+   commit 3c303b34d22788beacd61f10893981b158200d03
    Author: Alex Gilbert <alexgilbert@yahoo.com>
-   Date:   Sun Apr 30 19:39:43 2023 -0400
+   Date:   Tue May 30 21:09:45 2023 -0400
    
-       - Cherry Pick the wss stuff from 2.x.x
-       - Fix !!help duplication
-       
-       # Conflicts:
-       #       StardewArchipelago/ModEntry.cs
+       - Fix beach bridge display
    

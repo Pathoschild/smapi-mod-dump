@@ -1,0 +1,74 @@
+{
+  // menu title
+  "title": "Daily Planner Menu",
+
+  // menu tabs
+  "tabs.daily": "Day",
+  "tabs.checklist": "Checklist",
+  "tabs.weekly": "Week",
+  "tabs.monthly": "Month",
+  "tabs.add": "Add Task",
+  "tabs.remove": "Remove Task",
+
+  // season names
+  "seasons.spring": "Spring",
+  "seasons.summer": "Summer",
+  "seasons.fall": "Fall",
+  "seasons.winter": "Winter",
+  "seasons.all_year": "All Year",
+
+  // weekday names
+  "week.monday": "Monday",
+  "week.tuesday": "Tuesday",
+  "week.wednesday": "Wednesday",
+  "week.thursday": "Thursday",
+  "week.friday": "Friday",
+  "week.saturday": "Saturday",
+  "week.sunday": "Sunday",
+
+  // word for year
+  "year.year": "Year",
+
+  // slider labels
+  "slider.season": "Season",
+  "slider.week": "Day of Week",
+  "slider.day": "Day",
+
+  // task types
+  "task.daily": "Daily",
+  "task.weekly": "Weekly",
+  "task.on_date": "On Date",
+
+  // instructions
+  "instructions.add_one_day": "Add task on specific date:",
+  "instructions.add_daily": "Add daily task:",
+  "instructions.add_weekly": "Add weekly task:",
+
+  // overlay
+  "overlay.planner": "Planner:",
+  "overlay.checklist": "Checklist:",
+
+  // mod config text
+  "config.keybind.name": "Open menu key",
+  "config.keybind.tooltip": "Button for opening the Daily Planner menu",
+  "config.controller_button.name": "Open menu controller button",
+  "config.controller_button.tooltip": "Controller button to open Daily Planner Menu",
+  "config.overlay_toggle.name": "Show overlay",
+  "config.overlay_toggle.tooltip": "Enable/disable HUD overlay",
+  "config.show_planner_tasks.name": "Planner tasks in overlay",
+  "config.show_planner_tasks.tooltip": "Enable/disable planner tasks on overlay",
+  "config.show_checklist_tasks.name": "Checklist tasks in overlay",
+  "config.show_checklist_tasks.tooltip": "Enable/disable checklist tasks in overlay",
+  "config.background_opacity.name": "Overlay background opacity",
+  "config.background_opacity.tooltip": "Transparency of the overlay background",
+  "config.text_opacity.name": "Overlay text opacity",
+  "config.text_opacity.tooltip": "Transparency of the overlay text",
+  "config.max_lines.name": "Overlay max line count",
+  "config.max_lines.tooltip": "Max number of lines of text on overlay",
+  "config.max_line_length.name": "Overlay max line length",
+  "config.max_line_length.tooltip": "Max length of text on overlay",
+  "config.x_position.name": "Overlay X position %",
+  "config.x_position.tooltip": "Moves the overlay left/right",
+  "config.y_position.name": "Overlay y position %",
+  "config.y_position.tooltip": "Moves the overlay up/down"
+}

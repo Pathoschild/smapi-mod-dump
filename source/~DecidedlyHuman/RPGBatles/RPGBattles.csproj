@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Build\SDV-1.5.6.targets" />
+    <Import Project="..\Build\Common.csproj" />
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared" />
+
+    <PropertyGroup>
+        <Name>RPG Battles</Name>
+        <Description>A mod which removes monsters from the world, in exchange for random encounters with them in a JRPG style battle engine..</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:00000</UpdateKeys>
+        <Version>1.0.0-alpha</Version>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <EnableHarmony>false</EnableHarmony>
+    </PropertyGroup>
+
+</Project>

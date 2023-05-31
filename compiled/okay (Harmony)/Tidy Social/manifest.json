@@ -1,7 +1,7 @@
 {
     "Name": "Tidy Social",
     "Author": "trashcan9",
-    "Version": "1.1.0",
+    "Version": "1.1.1",
     "Description": "Tidy up social pages",
     "UniqueID": "trashcan9.TidySocial",
     "EntryDll": "TidySocial.dll",

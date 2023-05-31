@@ -20,11 +20,14 @@ namespace Custom_Farm_Loader
     {
         public float LoadMenuIconScale { get; set; }
         public float CoopMenuIconScale { get; set; }
+        
+        public bool IncludeVanilla { get; set; }
 
         public ModConfig()
         {
             LoadMenuIconScale = 1f;
             CoopMenuIconScale = 1f;
+            IncludeVanilla = false;
         }
 
     }

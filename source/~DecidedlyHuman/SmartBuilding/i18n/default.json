@@ -61,12 +61,17 @@
     "smart-building.settings.optional-toggles.enable-replacing-floors": "Replaceable floors",
     "smart-building.settings.optional-toggles.enable-replacing-fences": "Replaceable fences",
     "smart-building.settings.optional-toggles.enable-replacing-fences.tooltip": "Also allows you to replace fences with gates, and vice-versa.",
+    "smart-building.settings.item-stowing.title": "Item Stowing",
+    "smart-building.settings.item-stowing.description": "There's a strange bug if you use item stowing, so Smart Building can optionally disable the setting while in build mode to alleviate it. Please note that if you experienced the item stowing bug earlier, you'll need to disable control item stowing, set item stowing to what you like, sleep, and then re-enable the setting. Sorry for the annoyance!",
+    "smart-building.settings.item-stowing.title-screen-only": "This setting can only be adjusted at the title screen.",
+    "smart-building.settings.item-stowing.control-item-stowing": "Control item stowing",
     "smart-building.settings.cheaty-options.title": "The Slightly Cheaty Zone",
     "smart-building.settings.cheaty-options.crab-pots-in-any-water-tile": "Place crab pots in any water tile",
     "smart-building.settings.cheaty-options.enable-planting-crops": "Allow planting crops",
     "smart-building.settings.cheaty-options.enable-fertilisers": "Allow the use of fertilisers",
     "smart-building.settings.cheaty-options.enable-tree-tappers": "Allow tree tappers",
     "smart-building.settings.cheaty-options.enable-inserting-items-into-machines": "Enable placing items into machines",
+    "smart-building.settings.cheaty-options.creative-mode": "Don't remove items from the inventory when placing with Smart Building",
     "smart-building.settings.debug.title": "Debug Settings",
     "smart-building.settings.debug.enable-debug-command": "Enable debug command",
     "smart-building.settings.debug.enable-debug-keybinds": "Enable debug keybinds",
@@ -130,5 +135,6 @@
     "smart-building.commands.debug.sb-test": "If you need to read this, it is not for you. Here be dragons.",
     "smart-building.commands.debug.sb-identify-items": "Identify all items in the player's inventory.",
     // Mod integrations
-    "smart-building.integrations.more-fertilizers.invalid-fertiliser-position": "MF-01: This fertiliser position may have been invalid"
+    "smart-building.integrations.more-fertilizers.invalid-fertiliser-position": "MF-01: This fertiliser position may have been invalid",
+    "smart-building.integrations.growable-bushes.invalid-bush-position": "MF-01: This bush position may have been invalid."
 }

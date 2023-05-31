@@ -60,6 +60,8 @@ namespace Custom_Farm_Loader.Lib
         public bool ChangedMiningLevel = false;
         public bool ChangedCombatLevel = false;
         public bool ChangedFarmingLevel = false;
+
+        public bool ChangedCPConditions = false;
         public static void Initialize(Mod mod)
         {
             Mod = mod;
@@ -121,6 +123,7 @@ namespace Custom_Farm_Loader.Lib
                     FarmingLevel = int.Parse(value); break;
 
                 case "when":
+                    ChangedCPConditions = true;
                     CPConditions = parseCPConditions(property); break;
 
                 default:

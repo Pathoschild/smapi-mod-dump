@@ -1,0 +1,61 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Format": "1.0.0-alpha",
+    "Priority": "0",
+    "Character": "Abigail",
+    "Voiceover": [
+        {
+            "Dialogue Path": "Characters/Dialogue/Abigail",
+            "VO Files": [
+                {
+                    "Key": "Introduction|Mon",
+                    "File": "Audio/{key}.wav"
+                }
+            ]
+        },
+        {
+            "Dialogue Path": "Characters/Dialogue/Rainy",
+            "VO Files": [
+                {
+                    "File": "Rainy Audio/Rainy.wav"
+                }
+            ]
+        },
+        {
+            "Dialogue Path": "Characters/Dialogue/Marriage",
+            "VO Files": [
+                {
+                    "Key": "Indoor_Day_Abigail",
+                    "File": "Marriage Audio/{key}.wav"
+                }
+            ]
+        },
+        {
+            "Dialogue Path": "Strings/StringsFromCSFiles",
+            "VO Files": [
+                {
+                    "Key": "NPC.cs.4500",
+                    "File": "Messy.wav"
+                }
+            ]
+        },
+        {
+            "Dialogue Path": "Strings/schedules/Abigail",
+            "VO Files": [
+                {
+                    "Key": "marriage_Mon.001",
+                    "File": "Schedule Audio/{key}"
+                }
+            ]
+        }
+    ]
+}

@@ -29,7 +29,7 @@ namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.Components
         {
             this.character = Character;
             this.pathToTexture = PathToTexture;
-            this.texture = ModCore.ModHelper.Content.Load<Texture2D>(PathToTexture + ".png");
+            this.texture = ModCore.ModHelper.ModContent.Load<Texture2D>(PathToTexture + ".png");
             this.spacing = new CharacterSpacing();
             this.drawColor = color;
             this.position = new Vector2();
@@ -49,7 +49,7 @@ namespace Omegasis.StardustCore.UIUtilities.SpriteFonts.Components
             this.character = Character;
             this.pathToTexture = PathToTexture;
             string text = this.pathToTexture.Remove(0, 1);
-            this.texture = ModCore.ModHelper.Content.Load<Texture2D>(text + ".png");
+            this.texture = ModCore.ModHelper.ModContent.Load<Texture2D>(text + ".png");
             this.spacing = new CharacterSpacing(left, right, top, bottom);
             this.drawColor = color;
             this.position = new Vector2();

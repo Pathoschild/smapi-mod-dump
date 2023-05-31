@@ -67,6 +67,13 @@ namespace Custom_Farm_Loader.API
                 min: 0.75f,
                 max: 1.25f
             );
+
+            configMenu.AddBoolOption(
+                mod: Mod.ModManifest,
+                name: () => "Incude Vanilla Farms in Selection",
+                getValue: () => Config.IncludeVanilla,
+                setValue: value => Config.IncludeVanilla = value
+                );
         }
     }
 }

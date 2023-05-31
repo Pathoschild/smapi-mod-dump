@@ -11,7 +11,7 @@
 {
   "Name": "Custom Gift Dialogue Utillity",
   "Author": "PurrplingCat",
-  "Version": "1.2.1",
+  "Version": "1.3.0",
   "Description": "Adds support for custom reactions to a gift for NPCs",
   "UniqueID": "PurrplingCat.CustomGiftDialogue",
   "EntryDll": "CustomGiftDialogue.dll",

@@ -41,9 +41,6 @@ namespace NapalmMummies
         {
             Config = Helper.ReadConfig<ModConfig>();
 
-            if (!Config.ModEnabled)
-                return;
-
             context = this;
 
             SMonitor = Monitor;

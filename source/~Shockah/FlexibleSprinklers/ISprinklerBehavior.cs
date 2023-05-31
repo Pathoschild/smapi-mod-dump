@@ -9,6 +9,7 @@
 *************************************************/
 
 using Shockah.Kokoro;
+using Shockah.Kokoro.Map;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,37 +21,31 @@ namespace Shockah.FlexibleSprinklers
 		{
 		}
 
-		void ClearCacheForMap(IMap map)
+		void ClearCacheForMap(IMap<SoilType>.WithKnownSize map)
 		{
 		}
 
-		IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map);
+		IReadOnlyList<WateringStep> GetSprinklerTilesWithSteps(IMap<SoilType>.WithKnownSize map, IReadOnlySet<SprinklerInfo> sprinklers);
 
-		IReadOnlySet<IntPoint> GetSprinklerTiles(IMap map)
-			=> GetSprinklerTilesWithSteps(map).SelectMany(step => step.Item1).ToHashSet();
+		IReadOnlySet<IntPoint> GetSprinklerTiles(IMap<SoilType>.WithKnownSize map, IReadOnlySet<SprinklerInfo> sprinklers)
+			=> GetSprinklerTilesWithSteps(map, sprinklers).SelectMany(step => step.Tiles).ToHashSet();
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Nested in another interface")]
 		public interface Independent : ISprinklerBehavior
 		{
-			IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map, IntPoint sprinklerPosition, SprinklerInfo info);
+			IReadOnlyList<WateringStep> GetSprinklerTilesWithSteps(IMap<SoilType>.WithKnownSize map, SprinklerInfo sprinkler);
 
-			IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map, IEnumerable<(IntPoint position, SprinklerInfo info)> sprinklers)
+			IReadOnlyList<WateringStep> ISprinklerBehavior.GetSprinklerTilesWithSteps(IMap<SoilType>.WithKnownSize map, IReadOnlySet<SprinklerInfo> sprinklers)
 			{
-				List<(IReadOnlySet<IntPoint>, float)> results = new();
-				foreach (var (sprinklerPosition, info) in sprinklers)
-					foreach (var step in GetSprinklerTilesWithSteps(map, sprinklerPosition, info))
+				List<WateringStep> results = new();
+				foreach (var sprinkler in sprinklers)
+					foreach (var step in GetSprinklerTilesWithSteps(map, sprinkler))
 						results.Add(step);
-				return results.OrderBy(step => step.Item2).ToList();
+				return results.OrderBy(step => step.Time).ToList();
 			}
 
-			IReadOnlyList<(IReadOnlySet<IntPoint>, float)> ISprinklerBehavior.GetSprinklerTilesWithSteps(IMap map)
-				=> GetSprinklerTilesWithSteps(map, map.GetAllSprinklers());
-
-			IReadOnlySet<IntPoint> GetSprinklerTiles(IMap map, IntPoint sprinklerPosition, SprinklerInfo info)
-				=> GetSprinklerTilesWithSteps(map, sprinklerPosition, info).SelectMany(step => step.Item1).ToHashSet();
-
-			IReadOnlySet<IntPoint> GetSprinklerTiles(IMap map, IEnumerable<(IntPoint position, SprinklerInfo info)> sprinklers)
-				=> GetSprinklerTilesWithSteps(map, sprinklers).SelectMany(step => step.Item1).ToHashSet();
+			IReadOnlySet<IntPoint> GetSprinklerTiles(IMap<SoilType>.WithKnownSize map, SprinklerInfo sprinkler)
+				=> GetSprinklerTilesWithSteps(map, sprinkler).SelectMany(step => step.Tiles).ToHashSet();
 		}
 	}
 }

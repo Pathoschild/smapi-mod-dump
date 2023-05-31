@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit 2202ea452b81636edc1edd46ff9634e432fca9ec
-   Merge: 9b0bb50 4ba1172
    Author: Daniel Escobedo <demiacle@gmail.com>
    Date:   Mon Oct 2 09:27:42 2017 -0700
    

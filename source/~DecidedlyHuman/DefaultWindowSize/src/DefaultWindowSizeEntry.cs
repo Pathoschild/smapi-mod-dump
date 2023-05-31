@@ -17,110 +17,107 @@ using StardewValley;
 
 namespace DefaultWindowSize
 {
-	public class DefaultWindowSizeEntry : Mod
-	{
-		private Logger _logger;
-		private ModConfig _config;
-		private IModHelper _helper;
+    public class DefaultWindowSizeEntry : Mod
+    {
+        private static readonly string _commandName = "set_resolution";
 
-		private static string _commandName = "set_resolution";
-		private static string _commandDescription = "\tSet the resolution of the Stardew Valley window. (Minimum 1280x720)";
-		private static string _commandUsage = $"\nUsage: \t\t\t{_commandName} <Resolution>\n";
+        private static readonly string _commandDescription =
+            "\tSet the resolution of the Stardew Valley window. (Minimum 1280x720)";
 
-		public override void Entry(IModHelper helper)
-		{
-			_logger = new Logger(Monitor);
-			_helper = helper;
-			_config = _helper.ReadConfig<ModConfig>();
+        private static readonly string _commandUsage = $"\nUsage: \t\t\t{_commandName} <Resolution>\n";
+        private ModConfig _config;
+        private IModHelper _helper;
+        private Logger _logger;
 
-			helper.ConsoleCommands.Add(_commandName,
-			   $"{_commandDescription}\n\n{_commandUsage}", SetResolutionCommand);
-			helper.Events.GameLoop.GameLaunched += GameLaunched;
+        public override void Entry(IModHelper helper)
+        {
+            this._logger = new Logger(this.Monitor);
+            this._helper = helper;
+            this._config = this._helper.ReadConfig<ModConfig>();
 
-			if (_config.SetOnStart)
-			{
-				Resolution newRes = new Resolution(_config.StartResolution);
+            helper.ConsoleCommands.Add(_commandName,
+                $"{_commandDescription}\n\n{_commandUsage}", this.SetResolutionCommand);
+            helper.Events.GameLoop.GameLaunched += this.GameLaunched;
 
-				SetResolution(newRes);
-			}
-		}
+            if (this._config.SetOnStart)
+            {
+                var newRes = new Resolution(this._config.StartResolution);
 
-		private void GameLaunched(object sender, GameLaunchedEventArgs e)
-		{
-			try
-			{
-				RegisterWithGmcm();
-			}
-			catch (Exception ex)
-			{
-				_logger.Log("User doesn't appear to have GMCM installed. This is not a bug.");
-			}
-		}
+                this.SetResolution(newRes);
+            }
+        }
 
-		private void SetResolutionCommand(string command, string[] args)
-		{
-			// We expect, and can have only one argument.
-			if (args.Length != 1)
-			{
-				PrintUsage("Incorrect amount of arguments.");
-				return;
-			}
-			else
-			{
-				// We pass in our one and only argument to have it sanitised, and parsed.
-				Resolution newRes = new Resolution(args[0]);
+        private void GameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            try
+            {
+                this.RegisterWithGmcm();
+            }
+            catch (Exception ex)
+            {
+                this._logger.Log("User doesn't appear to have GMCM installed. This is not a bug.");
+            }
+        }
 
-				// The game doesn't seem to let you set a resolution lower than 720p, so we want to warn if the user tries to do that.
-				if (newRes.X < 1280 || newRes.Y < 720)
-				{
-					PrintUsage("Minimum resolution is 1280x720. Setting to that.");
-				}
+        private void SetResolutionCommand(string command, string[] args)
+        {
+            // We expect, and can have only one argument.
+            if (args.Length != 1)
+            {
+                this.PrintUsage("Incorrect amount of arguments.");
+                return;
+            }
 
-				SetResolution(newRes);
-			}
-		}
+            // We pass in our one and only argument to have it sanitised, and parsed.
+            var newRes = new Resolution(args[0]);
 
-		private void SetResolution(Resolution res)
-		{
-			Game1.game1.SetWindowSize(res.X, res.Y);
-		}
+            // The game doesn't seem to let you set a resolution lower than 720p, so we want to warn if the user tries to do that.
+            if (newRes.X < 1280 || newRes.Y < 720) this.PrintUsage("Minimum resolution is 1280x720. Setting to that.");
 
-		private void PrintUsage(string error)
-		{
-			_logger.Log(error);
-			_logger.Log(_commandUsage);
-		}
+            this.SetResolution(newRes);
+        }
 
-		private void RegisterWithGmcm()
-		{
-			GenericModConfigMenuApi configMenuApi =
-				Helper.ModRegistry.GetApi<GenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+        private void SetResolution(Resolution res)
+        {
+            Game1.game1.SetWindowSize(res.X, res.Y);
+        }
 
-			configMenuApi.Register(ModManifest,
-				() => _config = new ModConfig(),
-				() => Helper.WriteConfig(_config));
+        private void PrintUsage(string error)
+        {
+            this._logger.Log(error);
+            this._logger.Log(_commandUsage);
+        }
 
-			configMenuApi.AddBoolOption(
-				mod: ModManifest,
-				name: () => "Set on Start",
-				getValue: () => _config.SetOnStart,
-				setValue: value => _config.SetOnStart = value);
+        private void RegisterWithGmcm()
+        {
+            var configMenuApi =
+                this.Helper.ModRegistry.GetApi<GenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
 
-			configMenuApi.AddParagraph(
-				mod: ModManifest,
-				text: () =>
-					"This setting will determine whether or not the resolution you specify here will be set on game launch.");
+            configMenuApi.Register(this.ModManifest,
+                () => this._config = new ModConfig(),
+                () => this.Helper.WriteConfig(this._config));
 
-			configMenuApi.AddTextOption(
-				mod: ModManifest,
-				name: () => "Start Resolution",
-				getValue: () => _config.StartResolution,
-				setValue: value => _config.StartResolution = value);
+            configMenuApi.AddBoolOption(
+                this.ModManifest,
+                name: () => "Set on Start",
+                getValue: () => this._config.SetOnStart,
+                setValue: value => this._config.SetOnStart = value);
 
-			configMenuApi.AddParagraph(
-				mod: ModManifest,
-				text: () =>
-					"This is the resolution that the game will start at if the above box is ticked.");
-		}
-	}
+            configMenuApi.AddParagraph(
+                this.ModManifest,
+                () =>
+                    "This setting will determine whether or not the resolution you specify here will be set on game launch.");
+
+            configMenuApi.AddTextOption(
+                this.ModManifest,
+                name: () => "Start Resolution",
+                getValue: () => this._config.StartResolution,
+                setValue: value => this._config.StartResolution = value);
+
+            configMenuApi.AddParagraph(
+                this.ModManifest,
+                () =>
+                    "This is the resolution that the game will start at if the above box is ticked.");
+        }
+    }
 }

@@ -75,7 +75,6 @@ namespace Omegasis.StardustCore.UIUtilities
         /// <summary>Draws a dialogue box background.</summary>
         public virtual void drawDialogueBoxBackground(int xPosition, int yPosition, int width, int height)
         {
-            if (this.dialogueBoxBackgroundColor == null) this.dialogueBoxBackgroundColor = Color.White;
             this.drawDialogueBoxBackground(xPosition, yPosition, width, height, false, true, this.dialogueBoxBackgroundColor);
         }
 

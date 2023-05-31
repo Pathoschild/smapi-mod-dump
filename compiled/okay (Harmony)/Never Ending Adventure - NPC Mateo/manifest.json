@@ -2,9 +2,19 @@
 	"Name": "Never Ending Adventure - Code",
 	"Author": "DestyNova",
 	"Description": "Adds C# components to NEA",
-	"Version": "1.9.0",
+	"Version": "1.9.2",
 	"UpdateKeys": [ "Nexus:???" ],
 	"UniqueID": "DestyNova.NEACode",
-	"EntryDll": "NeverEndingAdventure.dll"
+	"EntryDll": "NeverEndingAdventure.dll",
+	"Dependencies": [  
+		{
+		  "UniqueID": "spacechase0.JsonAssets",
+		  "IsRequired": true
+		},
+		{
+			"UniqueID": "spacechase0.SpaceCore",
+			"IsRequired": true
+		}
+	]
 }
   

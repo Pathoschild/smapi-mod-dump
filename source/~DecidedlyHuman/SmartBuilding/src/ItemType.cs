@@ -67,6 +67,11 @@ namespace SmartBuilding
         Tapper,
 
         /// <summary>
+        /// Bushes from GrowableBushes.
+        /// </summary>
+        atravitaBush,
+
+        /// <summary>
         ///     Stardew Valley Furniture. This is so we can apply special placement logic.
         /// </summary>
         GenericFurniture,

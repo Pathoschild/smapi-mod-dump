@@ -1,20 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Build\SDV-1.5.6.targets"/>
+    <Import Project="..\Build\Common.csproj"/>
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared"/>
 
-	<PropertyGroup>
-		<AssemblyName>DialogueTester</AssemblyName>
-		<RootNamespace>DialogueTester</RootNamespace>
-		<Version>0.0.1</Version>
-		<TargetFramework>net5.0</TargetFramework>
-
-		<EnableHarmony>true</EnableHarmony>
-	</PropertyGroup>
-
-	<!-- ModBuildConfig settings. -->
-	<Import Project="..\Build\Latest.targets" />
-
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
-	</ItemGroup>
+    <PropertyGroup>
+        <Name>Dialogue Tester</Name>
+        <Description>This mod will let you test your mod's dialogue in-game without needing to worry about finding the NPC, etc.</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:9887</UpdateKeys>
+        <Version>0.0.1</Version>
+    </PropertyGroup>
 
 </Project>

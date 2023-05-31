@@ -7,9 +7,9 @@ mods:
    Quest Essentials
 
 latest commit:
-   commit 23494a3dc6a5ab0538e0e4cbdb3bb5723b09aa2d
+   commit c8ae7610f03e28ea9462d4a5945b406c7d533b9f
    Author: Ellen Jana FawkesovÃ¡ <ellenfawkes@gmail.com>
-   Date:   Wed Feb 15 13:02:47 2023 +0100
+   Date:   Thu May 4 10:01:05 2023 +0200
    
-       CGDU version 1.2.1
+       CGDU 1.3.0
    

@@ -1,26 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\Configuration.props" />
 	<PropertyGroup>
 		<RootNamespace>Shockah.Hibernation</RootNamespace>
 		<Version>1.0.0</Version>
-		<TargetFramework>net5.0</TargetFramework>
-		<ImplicitUsings>disable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<WarningsAsErrors>Nullable</WarningsAsErrors>
-		<EnableHarmony>true</EnableHarmony>
-		<EnableModZip Condition="$(Configuration) != 'Release'">False</EnableModZip>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Include="..\.editorconfig" Link=".editorconfig" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Kokoro\Kokoro.csproj">
-			<Private>false</Private>
-		</ProjectReference>
-		<Reference Include="Newtonsoft.Json" HintPath="$(GamePath)/smapi-internal/Newtonsoft.Json.dll">
-			<Private>false</Private>
-		</Reference>
+		<ProjectReference Include="..\Kokoro\Kokoro.csproj" Private="false" />
+		<Reference Include="Newtonsoft.Json" HintPath="$(GamePath)/smapi-internal/Newtonsoft.Json.dll" Private="false" />
 	</ItemGroup>
 </Project>

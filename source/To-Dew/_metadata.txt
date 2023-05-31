@@ -6,9 +6,9 @@ mods:
    To-Dew
 
 latest commit:
-   commit b8f2bf2be9474ec7aaad37e1a959af551d4aa676
+   commit ba4bc97ad037db322f762f21e2e98e50c10db8b9
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Mon Jan 16 15:40:32 2023 -0500
+   Date:   Fri May 12 21:04:16 2023 -0400
    
-       update translations for click-to-mark-done config with Google Translate text
+       update README
    

@@ -15,7 +15,7 @@ using StardewValley.Monsters;
 using StardewValley.Projectiles;
 using comparison = System.StringComparison;
 
-namespace ExtraGingerIslandMaps
+namespace ExtraGingerIslandMaps.Patches
 {
 
     [HarmonyPatch(typeof(Monster))]
@@ -26,28 +26,26 @@ namespace ExtraGingerIslandMaps
             ModEntry.Mon.Log($"Applying Harmony patch \"{nameof(MonsterPatches)}\": postfixing SDV method \"Monster.behaviorAtGameTick\".");
             harmony.Patch(
                 original: AccessTools.Method(typeof(Monster), nameof(Monster.behaviorAtGameTick)),
-                postfix: new HarmonyMethod(typeof(MonsterPatches), nameof(MonsterPatches.PostGameTick))
+                postfix: new HarmonyMethod(typeof(MonsterPatches), nameof(PostGameTick))
                 );
         }
 
         [HarmonyPostfix]
         [HarmonyPatch(nameof(Monster.behaviorAtGameTick))]
-        internal static void PostGameTick(ref LavaLurk __instance, GameTime time)
+        internal static void PostGameTick(ref LavaLurk instance, GameTime time)
         {
-            if(Game1.player.currentLocation != __instance.currentLocation)
+            if(Game1.player.currentLocation != instance.currentLocation)
             {
                 return;
             }
 
-            if(__instance.Name.StartsWith("Fire", comparison.OrdinalIgnoreCase) || __instance.Name.StartsWith("Magma",comparison.OrdinalIgnoreCase))
+            if (!instance.Name.StartsWith("Fire", comparison.OrdinalIgnoreCase) &&
+                !instance.Name.StartsWith("Magma", comparison.OrdinalIgnoreCase)) return;
+            
+            if (!Game1.player.isWearingRing(ModEntry.FireRing)) return;
+            if(instance.DamageToFarmer != 0)
             {
-                if (Game1.player.isWearingRing(ModEntry.FireRing))
-                {
-                    if(__instance.DamageToFarmer != 0)
-                    {
-                        __instance.DamageToFarmer = 0;
-                    }
-                }
+                instance.DamageToFarmer = 0;
             }
         }
     }
@@ -58,24 +56,22 @@ namespace ExtraGingerIslandMaps
         internal static void Apply(Harmony harmony)
         {
             harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.Monsters.Bat), nameof(StardewValley.Monsters.Bat.onDealContactDamage)),
-                prefix: new HarmonyMethod(typeof(BatPatches), nameof(BatPatches.PrefixDealContactDamage))
+                original: AccessTools.Method(typeof(Bat), nameof(Bat.onDealContactDamage)),
+                prefix: new HarmonyMethod(typeof(BatPatches), nameof(PrefixDealContactDamage))
                 );
         }
 
         [HarmonyPrefix]
         [HarmonyPatch(nameof(Bat.onDealContactDamage))]
-        internal static bool PrefixDealContactDamage(ref Bat __instance, Farmer who)
+        internal static bool PrefixDealContactDamage(ref Bat instance, Farmer who)
         {
             //__instance.onDealContactDamage(who);
 
-            if (__instance.magmaSprite.Value && __instance.Name.Contains("Magma") && who.isWearingRing(ModEntry.FireRing))
-            {
-                __instance.DamageToFarmer = 0;
-                return false;
-            }
+            if (!instance.magmaSprite.Value || !instance.Name.Contains("Magma") ||
+                !who.isWearingRing(ModEntry.FireRing)) return true;
+            instance.DamageToFarmer = 0;
+            return false;
 
-            return true;
         }
     }
 
@@ -86,21 +82,17 @@ namespace ExtraGingerIslandMaps
         {
 
             harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.Projectiles.BasicProjectile), nameof(StardewValley.Projectiles.BasicProjectile.behaviorOnCollisionWithPlayer)),
-                prefix: new HarmonyMethod(typeof(ProjectilePatches), nameof(ProjectilePatches.PrefixbehaviorOnCollisionWithPlayer))
+                original: AccessTools.Method(typeof(BasicProjectile), nameof(BasicProjectile.behaviorOnCollisionWithPlayer)),
+                prefix: new HarmonyMethod(typeof(ProjectilePatches), nameof(PrefixbehaviorOnCollisionWithPlayer))
                 );
         }
     
         
         [HarmonyPrefix]
         [HarmonyPatch(nameof(BasicProjectile.behaviorOnCollisionWithPlayer))]
-        internal static bool PrefixbehaviorOnCollisionWithPlayer(BasicProjectile __instance, GameLocation location, Farmer player)
+        internal static bool PrefixbehaviorOnCollisionWithPlayer(BasicProjectile instance, GameLocation location, Farmer player)
         {
-            if(player.isWearingRing(ModEntry.FireRing))
-            {
-                return false;
-            }
-            return true;
+            return !player.isWearingRing(ModEntry.FireRing);
         }
     }
 }

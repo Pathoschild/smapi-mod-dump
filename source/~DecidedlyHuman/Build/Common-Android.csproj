@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>MonoAndroid</TargetFramework>
+        <TargetFrameworkVersion>v12.0</TargetFrameworkVersion>
+        <IgnoreModFilePatterns>\.aseprite$</IgnoreModFilePatterns>
+        <Nullable>enable</Nullable>
+        <Author>DecidedlyHuman</Author>
+        <UniqueId>$(Author).$(AssemblyName)</UniqueId>
+        <EntryDll>$(AssemblyName)</EntryDll>
+        <EnableModZip Condition="'$(Configuration)' == 'Debug' ">False</EnableModZip>
+        <LangVersion>10</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)'=='Android' ">
+        <DefineConstants>ANDROID</DefineConstants>
+        <GameModsPath>$(SolutionDir)Release\Android</GameModsPath>
+        <ModZipPath>$(SolutionDir)Release\Zip\Android</ModZipPath>
+
+        <PostBuildEvent>
+            echo Pushing to Android device: "$(GameModsPath)"
+        </PostBuildEvent>
+
+        <!-- This is very finnicky, and will sometimes need multiple builds to push correctly. I am not an Android developer, so I'unno. -->
+        <PostBuildEvent>
+            adb push "$(GameModsPath)\$(ProjectName)" /sdcard/Android/data/com.zane.stardewvalley/files/Mods
+        </PostBuildEvent>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Reference Include="Stardew Valley" HintPath="C:\Dev\Stardew Valley\Versions\1.5.6-Android\StardewValleyAndroid.dll" Private="$(_BundleExtraAssembliesForGame)"/>
+        <Reference Include="StardewValley.GameData" HintPath="C:\Dev\Stardew Valley\Versions\1.5.6-Android\StardewValley.GameData.dll" Private="$(_BundleExtraAssembliesForGame)"/>
+        <Reference Include="MonoGame.Framework" HintPath="C:\Dev\Stardew Valley\Versions\1.5.6-Android\MonoGame.Framework.dll" Private="$(_BundleExtraAssembliesForGame)"/>
+        <Reference Include="xTile" HintPath="C:\Dev\Stardew Valley\Versions\1.5.6-Android\xTile.dll" Private="$(_BundleExtraAssembliesForGame)"/>
+
+        <!-- SMAPI -->
+        <Reference Include="StardewModdingAPI" HintPath="C:\Dev\Stardew Valley\Versions\1.5.6-Android\StardewModdingAPI.dll" Private="$(_BundleExtraAssembliesForGame)"/>
+        <Reference Include="SMAPI.Toolkit.CoreInterfaces" HintPath="C:\Dev\Stardew Valley\Versions\1.5.6-Android\SMAPI.Toolkit.CoreInterfaces.dll" Private="$(_BundleExtraAssembliesForGame)"/>
+
+        <!-- Harmony -->
+        <Reference Include="0Harmony" Condition="'$(EnableHarmony)' == 'true'" HintPath="C:\Dev\Stardew Valley\Versions\1.5.6-Android\0Harmony.dll" Private="$(_BundleExtraAssembliesForGame)"/>
+<!--        <Reference Include="Mono.Android" Condition="'$(EnableHarmony)' == 'true'" HintPath="C:\Dev\Stardew Valley\Versions\1.5.6-Android\Mono.Android.dll" Private="$(_BundleExtraAssembliesForGame)"/>-->
+<!--        <Reference Include="System" Condition="'$(EnableHarmony)' == 'true'" HintPath="C:\Dev\Stardew Valley\Versions\1.5.6-Android\System.dll" Private="$(_BundleExtraAssembliesForGame)"/>-->
+    </ItemGroup>
+
+    <!--    <ItemGroup>-->
+    <!--        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0"/>-->
+    <!--        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.0"/>-->
+    <!--    </ItemGroup>-->
+
+</Project>

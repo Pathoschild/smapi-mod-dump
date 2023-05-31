@@ -81,6 +81,7 @@ Also you can add some alternate lines for gifted item by adding suffix `~<number
 Random suffix can be combined with reaction dialogue suffix like `_birthday` and etc.
 
 **NOTE:** Mod seeks for concrete gift object dialogue first, then for an object category. That means if you specify reaction for seeds category (id number -74, dialogue key `GiftReactionCategory_-74`) and for object *Parsnip Seeds* (`GiftReaction_Parsnip_Seeds`), then if you gift Parsnip Seeds to your concrete NPC, then you see dialogue for *Pasrsnip Seeds*. If you gift other seeds, you see dialogue for seeds category.
+**NOTE ABOUT REVEAL DIALOGUES:** If you have defined relatives for your NPCs in the NPC disposition file, often you can see original vanilla SDV reveal dialogue despite your custom reveal dialogue lines are defined. If you want to avoid the originals, don't define relatives in NPC disposition file.
 
 Most simple way how to add custom gift reaction dialogues is do it with [Content Patcher](https://github.com/Pathoschild/StardewMods/blob/stable/ContentPatcher/docs/author-guide.md):
 
@@ -114,11 +115,71 @@ Most simple way how to add custom gift reaction dialogues is do it with [Content
 }
 ```
 
+## Create custom NPC gifts
+
+Since CGDU version 1.3.0 you can define gifts, which can be gifted by NPC villager to farmer. 
+These gifts are defined per each NPC with Content Patcher (or a C# mod) by editing asset `Mods/PurrplingCat.CustomGiftDialogue/NpcGiftData`.
+If there is a defined gift collection for concrete NPC, they can give you a gift if you talk to them. 
+Gift giving by NPCs is random depends on a percentual chance.
+
+```json
+{
+  "Format": "1.24.0",
+  "Changes": [
+    {
+      // Custom NPC gifts given by a villager to farmer
+      "Action": "EditData",
+      "Target": "Mods/PurrplingCat.CustomGiftDialogue/NpcGiftData",
+      "Entries": {
+        "Abigail": {
+          "GiveChance": 0.66,
+          "Gifts": [
+            {
+              "Id": "Default",
+              "Items": "194, 216, 262, 304, 815",
+              "DialogueKey": "FarmerGift_Default",
+              "Condition": "PLAYER_HEARTS Current @npc 6"
+            }
+          ]
+        }
+      }
+    },
+    {
+      // Custom NPC gift dialogues given by Abigail to farmer
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Abigail",
+      "Entries": {
+        "FarmerGift_Default": "Hi @, I've something special for you I found in mines, take it.$h",
+      }
+    },
+  ]
+}
+```
+
+This asset is a dictionary where a key is an **NPC name** and value is a **data structure** described bellow.
+
+### NPC gift data
+
+| Field name | Type | Description
+| ---------- | ---- | -----------
+| GiveChance | `int` | A percentual chance (represented as decimal number) this NPC gives you a gift
+| Gifts | `NpcGift[]` | An array of possible gift collection to be gifted by this NPC
+
+### NPC Gift collection
+
+| Field name | Type | Description
+| ---------- | ---- | -----------
+| Id | `string` | **REQUIRED** An identifier of a gift collection
+| Condition | `string` | A [GameStateQuery](https://stardewvalleywiki.com/Modding:Migrate_to_Stardew_Valley_1.6#Game_state_queries) condition when an item can be gifted from this collection.
+| Items | `string` | A collection of item ids of items can be gifted by this NPC. Game picks on of these defined as a gift. Separate them with `,` (comma).
+| DialogueKey | `string` | A referred dialogue key to a gift dialogue defined in `Characters/Dialogue/<NPC>`. If the key not defined here or this dialogue doesn't exist a default gift dialogue is used.
+
+- You can use variable tag `@npc` in `Condition` field to refer current NPC who should give you a gift (the talked one).
+- Items conditions currently aren't supported by the `Condition` field. They will be supported since SDV 1.6
+- The `Items` field currently supports only standard objects. Since SDV 1.6 will be supported more (like weapons, wallpapers, furniture and etc).
+- DGA is not current supported for `Items` field.
+
 **Don't forget add `PurrplingCat.CustomGiftDialogue` as dependency for your content pack which adds custom gift reaction dialogues.**
-
-### A note about reveal dialogues
-
-If you have defined relatives for your NPCs in the NPC disposition file, often you can see original vanilla SDV reveal dialogue despite your custom reveal dialogue lines are defined. If you want to avoid the originals, don't define relatives in NPC disposition file.
 
 ---
 

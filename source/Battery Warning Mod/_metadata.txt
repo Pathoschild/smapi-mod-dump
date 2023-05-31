@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit 47597d42a1fa258388a3aefee51e24fa149467e8
-   Merge: 2927d11 9fcc12e
    Author: Lothar "Husky110" Hoffmann <Husky110@users.noreply.github.com>
    Date:   Sun Feb 24 09:35:01 2019 +0100
    

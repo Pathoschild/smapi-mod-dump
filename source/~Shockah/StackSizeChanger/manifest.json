@@ -21,7 +21,7 @@
         {
             "UniqueID": "Shockah.Kokoro",
             "IsRequired": true,
-            "MinimumVersion": "0.1.0"
+            "MinimumVersion": "2.0.0"
         }
     ]
 }

@@ -51,6 +51,8 @@
 	"config.RejectionDialogues.description": "If rejected, NPCs will comment on it.",
 	"config.ReceiveGifts.name": "Receive gifts?",
 	"config.ReceiveGifts.description": "If enabled, visits will bring you a gift.",
+	"config.GiftChance.name":"Gift chance",
+	"config.GiftChance.description":"The chance of receiving a gift.",
 	"Visit.AllowOrNot": "{0} is at the door. Open it?",
 	"Visit.Yes": "Yes",
 	"Visit.No": "No",
@@ -368,148 +370,148 @@
 	"NPCRetiring.Rude3": "It's pretty late already. I'll see you another day.",
 
 	//for vanilla NPCs
-	"NPCRetiring.Abigail.1":"",
-	"NPCRetiring.Abigail.2": "",
-	"NPCRetiring.Abigail.3": "",
+	"NPCRetiring.Abigail.1": "Hey...i'm kinda hungry. I'll look for some rock on the way.#$b#Bye!",
+	"NPCRetiring.Abigail.2": "I have to go...mom must be getting worried.",
+	"NPCRetiring.Abigail.3": "I have to go. show me your sword next time!$1",
+	
+	"NPCRetiring.Alex.1": "Grandma is making her special casserole tonight.#$b#Later, @.",
+	"NPCRetiring.Alex.2": "Look at the hour. I should be practicing gridball!#$b#Later, @.$1",
+	"NPCRetiring.Alex.3": "I almost forgot, it's my day for doing push-ups!#$b#I'll see you around.",
+	
+	"NPCRetiring.Caroline.1": "Hmm...Pierre will be cooking tonight.#$b#I have to go, @.",
+	"NPCRetiring.Caroline.2": "It's time to return. Show me your crops next time!",
+	"NPCRetiring.Caroline.3": "I have to go.#$b#I'll bring some tea for us next time.$1",
+	
+	"NPCRetiring.Clint.1": "I have work to do...Bye @.",
+	"NPCRetiring.Clint.2": "Erm...I have to go. Have fun, @.",
+	"NPCRetiring.Clint.3": "I have to work.#$b#One of my iridium hoes would do wonders here... think about it.",
+	
+	"NPCRetiring.Demetrius.1": "I have lab work to do.#$b#See you, @.",
+	"NPCRetiring.Demetrius.2": "It's good to take a break now and then...this was nice, @.#$b#I'll see the cave next time!",
+	"NPCRetiring.Demetrius.3": "Look at the hour.#$b#I'll have to walk faster to get home on time.",
+	
+	"NPCRetiring.Dwarf.1": "In dwarves' culture, staying past this time is rude.#$b#Goodbye, @.",
+	"NPCRetiring.Dwarf.2": "I'll go back to the mine.#$b#Your farm looked good.",
+	"NPCRetiring.Dwarf.3": "You should visit the mines sometime, @.",
 
-    "NPCRetiring.Caroline.1": "",
-    "NPCRetiring.Caroline.2": "",
-    "NPCRetiring.Caroline.3": "",
+	"NPCRetiring.Elliott.1": "I must get back to my work.#$b#A great idea passed through my head!",
+	"NPCRetiring.Elliott.2": "Your farm is a wonderful place, @.#$b#It gave me the inspiration to write s new novel.$1",
+	"NPCRetiring.Elliott.3": "I must leave now, @.#$b#Visit the cabin whenever you like.",
 
-    "NPCRetiring.Clint.1": "",
-    "NPCRetiring.Clint.2": "",
-    "NPCRetiring.Clint.3": "",
+	"NPCRetiring.Emily.1": "I have to go, @! But before that...#$b#The flowers are speaking to me. They say you treat them well!$1",
+	"NPCRetiring.Emily.2": "I have some clothes to make at home. See you!",
+	"NPCRetiring.Emily.3": "Look at the hour, it's getting late.#$b#I'll help you on the farm next time!",
+	
+	"NPCRetiring.Evelyn.1": "Ahh...the smell of the farm takes me back may years.#$b#It was nice seeing you, @.",
+	"NPCRetiring.Evelyn.2": "I'm baking cookies today.#$b#Be careful out there, @.",
+	"NPCRetiring.Evelyn.3": "Oh, my! It's getting so late.#$b#George must be worried.",
+	
+	"NPCRetiring.George.1": "Evelyn must be getting worried.#$b#Next time i'll show you a thing or two about farming.$1",
+	"NPCRetiring.George.2": "Evelyn is making cookies today.#$b#I wouldn't want to miss them.$1",
+	"NPCRetiring.George.3": "Hmmph...I have to go.#$b#Your farm isn't too bad, young man.$1^Your farm isn't too bad, young miss.$1",
+	
+	"NPCRetiring.Gus.1": "Hey, if you ever want to make a deal for those crops... just let me know.$1#$b#Okay, see you around.",
+	"NPCRetiring.Gus.2": "Business has been steady, I must return to work.#$b#If you're ever thirsty, the Saloon is the place to be.",
+	"NPCRetiring.Gus.3": "I asked Willy to get me some fish for the saloon.#$b#I'll see you later, @.",
+	
+	"NPCRetiring.Haley.1": "*sigh* Wow, look at the time.#$b#I'd stay here forever if I could!$1",
+	"NPCRetiring.Haley.2": "There are only two things I like about this town.#$b#One is the beach, and the other your farm.$1#$b#See you, @.",
+	"NPCRetiring.Haley.3": "I should take pictures of the farm next time.#$b#Bye, @!$1",
+	
+	"NPCRetiring.Harvey.1": "I have to return to the hospital.#$b#Take care.",
+	"NPCRetiring.Harvey.2": "Feel free to stop by the office if you're ever ill.#$b#Don't overwork yourself!",
+	"NPCRetiring.Harvey.3": "I have to leave now, @.#$b#If you want to hang out in my apartment, just let me know.",
+	
+	"NPCRetiring.Jas.1": "Marnie said to go home at this time.#$b#Bye bye.",
+	"NPCRetiring.Jas.2": "I'm gonna play with Vincent today.#$b#Bye!",
+	"NPCRetiring.Jas.3": "Aunt Marnie won't let me out after this hour.#$b#Bye...",
+	
+	"NPCRetiring.Jodi.1": "I wonder if Vincent is alright...I'll go check on him.#$b#See you later, @.",
+	"NPCRetiring.Jodi.2": "", // have to go. smth smth buy ur crops
+	"NPCRetiring.Jodi.3": "", //have to go. tea time later?
+	
+	"NPCRetiring.Kent.1": "", // time late, go home
+	"NPCRetiring.Kent.2": "", //check on vincent
+	"NPCRetiring.Kent.3": "Your farm is very peaceful.$1#$b#Good luck with it.", //have to go. farm peaceful. 
+	
+	"NPCRetiring.Krobus.1": "I have to go...$2#$b#Someone might find me if i stay too long.#$b#Goodbye, @.$1",
+	"NPCRetiring.Krobus.2": "Humans' homes are interesting...#$b#I had fun, @.$1",
+	"NPCRetiring.Krobus.3": "I have to go.#$b#See you soon, @.$1",
+	
+	"NPCRetiring.Leah.1": "I have a painting to finish.#$b#Bye, @.",
+	"NPCRetiring.Leah.2": "The sight in here...It's really inspiring.#$b#I have to go, @.",
+	"NPCRetiring.Leah.3": "You know, you should let me paint the farm someday.#$b#Maybe next time.$1",
+	
+	"NPCRetiring.Leo.1": "The birds in the farm were nice. I think they like your crops!$1#$b#Bye, @.",
+	"NPCRetiring.Leo.2": "Is that a parrot? They're looking for me.#$b#Bye bye, @!",
+	"NPCRetiring.Leo.3": "I have to go.#$b#Come to the island soon!$1",
+	
+	"NPCRetiring.Lewis.1": "You've been keeping your grandpa's farm well, @.#$b#I'll come another day.",
+	"NPCRetiring.Lewis.2": "I have to go, @. I have to see Mar...#$b#Major duties.$2",
+	"NPCRetiring.Lewis.3": "I have duties to take care of.#$b#I'll see you in town.", //ooc?
+	
+	"NPCRetiring.Linus.1": "I should gather some season forage. See you, @.$1",
+	"NPCRetiring.Linus.2": "I should get going. Pass by my tent some time, @!$1",
+	"NPCRetiring.Linus.3": "The farm looks great, @.#$b#",
+	
+	"NPCRetiring.Marlon.1": "Gil must be getting lonely.#$b#Bye, @.",
+	"NPCRetiring.Marlon.2": "I have to go. You never know when a monster will leave the cave.",
+	"NPCRetiring.Marlon.3": "I'm taking my leave now.#$b#Keep it up, @.",
+	
+	"NPCRetiring.Marnie.1": "Look at the hour! I should be waiting for Le...#$b#Little chicks to hatch!$4#$b#Goodbye,@.",
+	"NPCRetiring.Marnie.2": "I have to check on my animals.#$b#Farewell, @.",
+	"NPCRetiring.Marnie.3": "I'll go prepare Jas some food.#$b#Goodbye!",
+	
+	"NPCRetiring.Maru.1": "There's an experiment I have to finish.#$b#Take care, @.$1",
+	"NPCRetiring.Maru.2": "", //demetrius will get worried
+	"NPCRetiring.Maru.3": "I told dad I'd help him at the lab.#$b#See you later, @!",
+	
+	"NPCRetiring.Pam.1": "", // hungry 
+	"NPCRetiring.Pam.2": "", // fish show?
+	"NPCRetiring.Pam.3": "", // bye
+	
+	"NPCRetiring.Penny.1": "Um...I have to go, @. I have to check on mom.",
+	"NPCRetiring.Penny.2": "It's getting late.#$b#I have to prepare everything for Jas and Vincent's classes.#$b#Bye, @!",
+	"NPCRetiring.Penny.3": "Your farm looked lovely, @.#$b#Um..I'd love to come again.$1",
+	
+	"NPCRetiring.Pierre.1": "I'll get going. Pierre's won't run itself!",
+	"NPCRetiring.Pierre.2": "Nice farm, @. Your crops are coming along nicely.#$b#If you ever want to make a deal with Pierre's, just call.$1",
+	"NPCRetiring.Pierre.3": "Caroline convinced me to cook today.#$b#Goodbye, @.",
+	
+	"NPCRetiring.Robin.1": "I should go back to the store. I've been here for a while.#$b#See you later, @.",
+	"NPCRetiring.Robin.2": "Look at the time...I have to go.#$b#You know where to find me!$1",
+	"NPCRetiring.Robin.3": "Hey, your house looks really good.$1#$b#If you need another upgrade, you know who to call!",
+	
+	"NPCRetiring.Sam.1": "Vincent asked me to help with homework.#$b#See you later, @.",
+	"NPCRetiring.Sam.2": "Mom's making fish casserole today. I'll get going!$1",
+	"NPCRetiring.Sam.3": "Hmm, I just remembered. We have band practice today.#$b#See you later.",
+	
+	"NPCRetiring.Sandy.1": "I should get back to the store. Goodbye!",
+	"NPCRetiring.Sandy.2": "Aw, look at the time. I'll miss the bus if i stay longer!$2#$b#See you, @!",
+	"NPCRetiring.Sandy.3": "Your farm is lovely as always.$1#$b#I'll bring a souvenir next time!",
+	
+	"NPCRetiring.Sebastian.1": "I'll be going to the city later.#$b#See you, @.",
+	"NPCRetiring.Sebastian.2": "Sigh...I have work to do.#$b#See you later.",
+	"NPCRetiring.Sebastian.3": "I told Sam I'd go to band practice.#$b#Later, @.",
+	
+	"NPCRetiring.Shane.1": "Hm...it's late. Jas must be at home.",
+	"NPCRetiring.Shane.2": "I have to care for Marnie's chickens today.#$b#Goodbye.",
+	"NPCRetiring.Shane.3": "Uhg...I have to work now.#$b#I'll see you around.",
+	
+	"NPCRetiring.Vincent.1": "Jas is waiting for me!#$b#Bye.$1",
+	"NPCRetiring.Vincent.2": "Mom said to go home early. Bye, @.",
+	"NPCRetiring.Vincent.3": "Bye bye, @!#$b#I'll go meet my worm friends!$1",
+	
+	"NPCRetiring.Willy.1": "Tere's some rare fish in season...The sea's calling me!#$b#See ya later, @.",
+	"NPCRetiring.Willy.2": "Aye, the store won't run itself. Goodbye, @!",
+	"NPCRetiring.Willy.3": "I'll bring you some fish next time.",
 
-    "NPCRetiring.Demetrius.1": "",
-    "NPCRetiring.Demetrius.2": "",
-    "NPCRetiring.Demetrius.3": "",
-
-    "NPCRetiring.Willy.1": "",
-    "NPCRetiring.Willy.2": "",
-    "NPCRetiring.Willy.3": "",
-
-    "NPCRetiring.Elliott.1": "",
-    "NPCRetiring.Elliott.2": "",
-    "NPCRetiring.Elliott.3": "",
-
-    "NPCRetiring.Emily.1": "",
-    "NPCRetiring.Emily.2": "",
-    "NPCRetiring.Emily.3": "",
-
-    "NPCRetiring.Evelyn.1": "",
-    "NPCRetiring.Evelyn.2": "",
-    "NPCRetiring.Evelyn.3": "",
-
-    "NPCRetiring.George.1": "",
-    "NPCRetiring.George.2": "",
-    "NPCRetiring.George.3": "",
-
-    "NPCRetiring.Gus.1": "",
-    "NPCRetiring.Gus.2": "",
-    "NPCRetiring.Gus.3": "",
-
-    "NPCRetiring.Haley.1": "",
-    "NPCRetiring.Haley.2": "",
-    "NPCRetiring.Haley.3": "",
-
-    "NPCRetiring.Harvey.1": "",
-    "NPCRetiring.Harvey.2": "",
-    "NPCRetiring.Harvey.3": "",
-
-    "NPCRetiring.Jas.1": "",
-    "NPCRetiring.Jas.2": "",
-    "NPCRetiring.Jas.3": "",
-
-    "NPCRetiring.Jodi.1": "",
-    "NPCRetiring.Jodi.2": "",
-    "NPCRetiring.Jodi.3": "",
-
-    "NPCRetiring.Alex.1": "",
-    "NPCRetiring.Alex.2": "",
-    "NPCRetiring.Alex.3": "",
-
-    "NPCRetiring.Kent.1": "",
-    "NPCRetiring.Kent.2": "",
-    "NPCRetiring.Kent.3": "",
-
-    "NPCRetiring.Leah.1": "",
-    "NPCRetiring.Leah.2": "",
-    "NPCRetiring.Leah.3": "",
-
-    "NPCRetiring.Lewis.1": "",
-    "NPCRetiring.Lewis.2": "",
-    "NPCRetiring.Lewis.3": "",
-
-    "NPCRetiring.Linus.1": "",
-    "NPCRetiring.Linus.2": "",
-    "NPCRetiring.Linus.3": "",
-
-    "NPCRetiring.Marlon.1": "",
-    "NPCRetiring.Marlon.2": "",
-    "NPCRetiring.Marlon.3": "",
-
-    "NPCRetiring.Marnie.1": "",
-    "NPCRetiring.Marnie.2": "",
-    "NPCRetiring.Marnie.3": "",
-
-    "NPCRetiring.Maru.1": "",
-    "NPCRetiring.Maru.2": "",
-    "NPCRetiring.Maru.3": "",
-
-    "NPCRetiring.Pam.1": "",
-    "NPCRetiring.Pam.2": "",
-    "NPCRetiring.Pam.3": "",
-
-    "NPCRetiring.Penny.1": "",
-    "NPCRetiring.Penny.2": "",
-    "NPCRetiring.Penny.3": "",
-
-    "NPCRetiring.Pierre.1": "",
-    "NPCRetiring.Pierre.2": "",
-    "NPCRetiring.Pierre.3": "",
-
-    "NPCRetiring.Robin.1": "",
-    "NPCRetiring.Robin.2": "",
-    "NPCRetiring.Robin.3": "",
-
-    "NPCRetiring.Sam.1": "",
-    "NPCRetiring.Sam.2": "",
-    "NPCRetiring.Sam.3": "",
-
-    "NPCRetiring.Sebastian.1": "",
-    "NPCRetiring.Sebastian.2": "",
-    "NPCRetiring.Sebastian.3": "",
-
-    "NPCRetiring.Shane.1": "",
-    "NPCRetiring.Shane.2": "",
-    "NPCRetiring.Shane.3": "",
-
-    "NPCRetiring.Vincent.1": "",
-    "NPCRetiring.Vincent.2": "",
-    "NPCRetiring.Vincent.3": "",
-
-    "NPCRetiring.Wizard.1": "",
-    "NPCRetiring.Wizard.2": "",
-    "NPCRetiring.Wizard.3": "",
-
-    "NPCRetiring.Dwarf.1": "",
-    "NPCRetiring.Dwarf.2": "",
-    "NPCRetiring.Dwarf.3": "",
-
-    "NPCRetiring.Sandy.1": "",
-    "NPCRetiring.Sandy.2": "",
-    "NPCRetiring.Sandy.3": "",
-
-    "NPCRetiring.Krobus.1": "",
-    "NPCRetiring.Krobus.2": "",
-    "NPCRetiring.Krobus.3": "",
-
-    "NPCRetiring.Leo.1": "",
-    "NPCRetiring.Leo.2": "",
-    "NPCRetiring.Leo.3": "",
+	"NPCRetiring.Wizard.1": "The forest spirits are calling me...#$b#Goodbye.",
+	"NPCRetiring.Wizard.2": "I left a potion brewing back home.#$b#I must return to it. Goodbye, @.",
+	"NPCRetiring.Wizard.3": "It's time. I must go.#$b#Farewell, @.",
 	
 	/* TN: gone while outside */
-	"NPCGoneWhileOutside": "While you were outside, {0} took their leave.",
-	"NPCGone_Cellar": "While you were in the cellar, {0} took their leave.",
-	"NPCGone_Farm": "While you were in the farm, {0} took their leave."
+	"NPCGoneWhileOutside": "While you were outside, {0} left.",
+	"NPCGone_Cellar": "While you were in the cellar, {0} left.",
+	"NPCGone_Farm": "While you were in the farm, {0} left."
 }

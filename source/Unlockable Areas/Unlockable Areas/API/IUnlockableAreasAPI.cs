@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using StardewValley;
 
 namespace Unlockable_Areas.API
 {
@@ -29,5 +30,40 @@ namespace Unlockable_Areas.API
 
         /// <summary>Fires once for every player when a shop has been purchased before the ShopEvent</summary>
         event ShopPurchasedEvent shopPurchasedEvent;
+
+        // <summary>
+        // Fires once after daystart for every player after the UnlockableAreas/Unlockables asset has been read and processed.
+        // Also fires for joining players after they received and processed all unlockables.
+        // </summary>
+        event IsReadyEvent isReadyEvent;
+    }
+
+    public delegate void ShopPurchasedEvent(object sender, ShopPurchasedEventArgs e);
+    public class ShopPurchasedEventArgs : EventArgs
+    {
+        public Farmer who;
+        public string location;
+        public string locationOrUnique;
+        public string unlockableKey;
+        public bool isBuyer;
+
+        public ShopPurchasedEventArgs(Farmer who, string location, string locationOrUnique, string unlockableKey, bool isBuyer)
+        {
+            this.who = who;
+            this.location = location;
+            this.locationOrUnique = locationOrUnique;
+            this.unlockableKey = unlockableKey;
+            this.isBuyer = isBuyer;
+        }
+    }
+
+    public delegate void IsReadyEvent(object sender, IsReadyEventArgs e);
+    public class IsReadyEventArgs : EventArgs
+    {
+        public Farmer who;
+        public IsReadyEventArgs(Farmer who)
+        {
+            this.who = who;
+        }
     }
 }

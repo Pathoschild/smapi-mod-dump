@@ -20,6 +20,7 @@ using StardewValley.Tools;
 using SObject = StardewValley.Object;
 using Omegasis.Revitalize.Framework.Utilities;
 using Omegasis.Revitalize.Framework.World.Objects;
+using Omegasis.Revitalize.Framework.World.WorldUtilities;
 
 namespace Omegasis.Revitalize.Framework.Hacks
 {

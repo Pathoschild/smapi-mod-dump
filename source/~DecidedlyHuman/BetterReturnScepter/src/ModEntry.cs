@@ -11,71 +11,71 @@
 using System.Linq;
 using BetterReturnScepter.HarmonyPatches;
 using BetterReturnScepter.Helpers;
-using BetterReturnScepter.Utilities;
+using DecidedlyShared.Logging;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Tools;
-using SObject = StardewValley.Object;
 
 namespace BetterReturnScepter
 {
     public class ModEntry : Mod
     {
-        private Logger logger = null!;
-        private WandPatches patches = null!;
         private ModConfig config = null!;
-
-        private PreviousPoint previousPoint = new PreviousPoint();
-        private RodCooldown rodCooldown = null!;
+        private Logger logger = null!;
         private bool multiObeliskModInstalled;
+        private WandPatches patches = null!;
+
+        private readonly PreviousPoint previousPoint = new();
+        private RodCooldown rodCooldown = null!;
 
         public override void Entry(IModHelper helper)
         {
-            logger = new Logger(Monitor);
-            rodCooldown = new RodCooldown();
-            patches = new WandPatches(logger, previousPoint, rodCooldown);
-            config = helper.ReadConfig<ModConfig>();
+            I18n.Init(helper.Translation);
+            this.logger = new Logger(this.Monitor, helper.Translation);
+            this.rodCooldown = new RodCooldown();
+            this.patches = new WandPatches(this.logger, this.previousPoint, this.rodCooldown);
+            this.config = helper.ReadConfig<ModConfig>();
 
-            Harmony harmony = new Harmony(ModManifest.UniqueID);
+            var harmony = new Harmony(this.ModManifest.UniqueID);
 
             // This is where we check for the return sceptre being used.
             harmony.Patch(
-                original: AccessTools.Method(typeof(Wand), nameof(Wand.DoFunction)),
-                prefix: new HarmonyMethod(typeof(HarmonyPatches.WandPatches), nameof(HarmonyPatches.WandPatches.Wand_DoFunction_Prefix)));
+                AccessTools.Method(typeof(Wand), nameof(Wand.DoFunction)),
+                new HarmonyMethod(typeof(WandPatches), nameof(WandPatches.Wand_DoFunction_Prefix)));
 
-            logger.Log($"Wand.DoFunction patched with prefix {nameof(WandPatches.Wand_DoFunction_Prefix)}.");
+            this.logger.Log($"Wand.DoFunction patched with prefix {nameof(WandPatches.Wand_DoFunction_Prefix)}.");
 
             // This is where we'll register with GMCM.
             helper.Events.GameLoop.GameLaunched += (sender, args) =>
             {
-                multiObeliskModInstalled = this.Helper.ModRegistry.IsLoaded("PeacefulEnd.MultipleMiniObelisks");
-                RegisterWithGmcm();
+                this.multiObeliskModInstalled = this.Helper.ModRegistry.IsLoaded("PeacefulEnd.MultipleMiniObelisks");
+                this.RegisterWithGmcm();
             };
 
             // This is where we'll handle all of our input.
-            helper.Events.Input.ButtonsChanged += ButtonsChanged;
+            helper.Events.Input.ButtonsChanged += this.ButtonsChanged;
 
             // On day start, we'll reset the previous point to wherever the player spawns, in their bed.
-            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.DayStarted += this.OnDayStarted;
 
             // On every tick, we'll increment the wand usage countdown timer.
-            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
         }
 
         private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
             // Every tick, we increment our timer.
-            rodCooldown.IncrementTimer();
+            this.rodCooldown.IncrementTimer();
         }
 
         private void OnDayStarted(object? sender, DayStartedEventArgs e)
         {
             // On the start of the day, we set our previous locations to the player's spawn point.
-            previousPoint.Location = Game1.player.currentLocation;
-            previousPoint.Tile = Game1.player.getTileLocation();
+            this.previousPoint.Location = Game1.player.currentLocation;
+            this.previousPoint.Tile = Game1.player.getTileLocation();
         }
 
         private void ButtonsChanged(object? sender, ButtonsChangedEventArgs e)
@@ -92,33 +92,37 @@ namespace BetterReturnScepter
             if (Game1.eventUp)
                 return;
 
-            Farmer player = Game1.player;
+            var player = Game1.player;
 
             // If the return sceptre cooldown is over...
-            if (rodCooldown.CanWarp)
-            {
+            if (this.rodCooldown.CanWarp)
                 // And if the player is holding a return scepter...
                 if (player.CurrentItem is Wand && player.CurrentItem.Name.Equals("Return Scepter"))
                 {
-                    // The cooldown is over, and the player is holding a return sceptre. Now we check to see 
+                    // The cooldown is over, and the player is holding a return sceptre. Now we check to see
                     // whether they press the return to previous point bind, or the Multiple Mini-Obelisk menu bind.
-                    if (e.Pressed.Contains(SButton.MouseRight) || config.ReturnToLastPoint.JustPressed())
+                    if (e.Pressed.Contains(SButton.MouseRight) || this.config.ReturnToLastPoint.JustPressed())
                     {
                         // The player pressed the return to previous point bind.
                         if (!player.bathingClothes.Value && player.IsLocalPlayer && !player.onBridge.Value)
                         {
-                            logger.Log($"Warping farmer {player.Name} to {previousPoint.Location.Name} on tile {previousPoint.Tile}", LogLevel.Trace);
+                            this.logger.Log(
+                                $"Warping farmer {player.Name} to {this.previousPoint.Location.Name} on tile {this.previousPoint.Tile}",
+                                LogLevel.Trace);
 
                             // We reset our countdown timer and status to zero, because we want it to start from when the player last did a normal warp.
-                            rodCooldown.ResetCountdown();
+                            this.rodCooldown.ResetCountdown();
 
                             #region Modified decompile section
 
                             // Shamelessly taken from the decompile and modified slightly. Sorry, CA!
-
                             for (int i = 0; i < 12; i++)
                             {
-                                TemporaryAnimatedSprite zoomyDust = new TemporaryAnimatedSprite(354, Game1.random.Next(25, 75), 6, 1, new Vector2(Game1.random.Next((int)player.position.X - 256, (int)player.position.X + 192), Game1.random.Next((int)player.position.Y - 256, (int)player.position.Y + 192)), flicker: false, (Game1.random.NextDouble() < 0.5));
+                                var zoomyDust = new TemporaryAnimatedSprite(354, Game1.random.Next(25, 75), 6, 1,
+                                    new Vector2(
+                                        Game1.random.Next((int)player.position.X - 256, (int)player.position.X + 192),
+                                        Game1.random.Next((int)player.position.Y - 256, (int)player.position.Y + 192)),
+                                    false, Game1.random.NextDouble() < 0.5);
                                 Game1.currentLocation.TemporarySprites.Add(zoomyDust);
                             }
 
@@ -132,13 +136,14 @@ namespace BetterReturnScepter
                             player.CanMove = false;
                             player.freezePause = 2000;
                             Game1.flashAlpha = 1f;
-                            DelayedAction.fadeAfterDelay(DoWarp, 1000);
+                            DelayedAction.fadeAfterDelay(this.DoWarp, 1000);
 
                             int nextTileDelay = 0;
 
                             for (int xTile = player.getTileX() + 8; xTile >= player.getTileX() - 8; xTile--)
                             {
-                                TemporaryAnimatedSprite flash = new TemporaryAnimatedSprite(6, new Vector2(xTile, player.getTileY()) * 64f, Color.White, 8, flipped: false, 50f)
+                                var flash = new TemporaryAnimatedSprite(6, new Vector2(xTile, player.getTileY()) * 64f,
+                                    Color.White, 8, false, 50f)
                                 {
                                     layerDepth = 1f,
                                     delayBeforeAnimationStart = nextTileDelay * 25,
@@ -150,50 +155,47 @@ namespace BetterReturnScepter
                             }
 
                             #endregion
-
                         }
                     }
-                    else if (config.EnableMultiObeliskSupport)
-                    {
+                    else if (this.config.EnableMultiObeliskSupport)
                         // Support is enabled...
-                        if (config.OpenObeliskWarpMenuController.JustPressed() || config.OpenObeliskWarpMenuKbm.JustPressed())
+                        if (this.config.OpenObeliskWarpMenuController.JustPressed() ||
+                            this.config.OpenObeliskWarpMenuKbm.JustPressed())
                         {
                             // The button was pressed, so we want to check to see if the mod is installed.
-                            if (multiObeliskModInstalled)
+                            if (this.multiObeliskModInstalled)
                             {
                                 // The mod is installed, so we can continue.
-                                if (config.CountWarpMenuAsScepterUsage)
+                                if (this.config.CountWarpMenuAsScepterUsage)
                                 {
                                     // The setting to count warp menu usage as scepter usage is enabled, so we set our previous point.
-                                    previousPoint.Location = player.currentLocation;
-                                    previousPoint.Tile = player.getTileLocation();
+                                    this.previousPoint.Location = player.currentLocation;
+                                    this.previousPoint.Tile = player.getTileLocation();
                                 }
 
                                 // Reset our cooldown.
-                                rodCooldown.ResetCountdown();
+                                this.rodCooldown.ResetCountdown();
 
                                 // And create a temporary, dummy mini-obelisk, and "interact" with it to spawn the warp menu.
-                                SObject dummyObelisk = new SObject();
+                                var dummyObelisk = new SObject();
                                 dummyObelisk.ParentSheetIndex = 238;
                                 dummyObelisk.checkForAction(Game1.player);
                             }
                             else
-                            {
-                                Game1.showRedMessage("Multiple Mini-Obelisks support is enabled, but the mod itself isn't installed.");
-                            }
+                                Game1.showRedMessage(
+                                    "Multiple Mini-Obelisks support is enabled, but the mod itself isn't installed.");
                         }
-                    }
                 }
-            }
         }
 
         private void DoWarp()
         {
             // Cache our player for tidiness.
-            Farmer player = Game1.player;
+            var player = Game1.player;
 
             // Start the warp to the previous location.
-            Game1.warpFarmer(previousPoint.Location.Name, (int)previousPoint.Tile.X, (int)previousPoint.Tile.Y, 0, false);
+            Game1.warpFarmer(this.previousPoint.Location.Name, (int)this.previousPoint.Tile.X,
+                (int)this.previousPoint.Tile.Y, 0, false);
 
             // This is all taken from the game's code in order to replicate the way the regular warp works.
             Game1.fadeToBlackAlpha = 0.99f;
@@ -207,68 +209,70 @@ namespace BetterReturnScepter
         private void RegisterWithGmcm()
         {
             // Get our API reference.
-            IGenericModConfigMenuApi configMenuApi =
-                Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            var configMenuApi =
+                this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
 
             // If this is null, GMCM wasn't installed.
             if (configMenuApi == null)
             {
-                logger.Log("The user doesn't have GMCM installed. This is not an error.");
+                this.logger.Log("The user doesn't have GMCM installed. This is not an error.");
 
                 return;
             }
 
             // Register with GMCM
-            configMenuApi.Register(ModManifest,
-                reset: () => config = new ModConfig(),
-                save: () => Helper.WriteConfig(config));
+            configMenuApi.Register(this.ModManifest,
+                () => this.config = new ModConfig(),
+                () => this.Helper.WriteConfig(this.config));
 
             // The toggle for whether or not we want Multiple Mini-Obelisks support.
             configMenuApi.AddBoolOption(
-                mod: ModManifest,
+                this.ModManifest,
                 name: () => "Multiple Mini-Obelisks mod support",
-                tooltip: () => "If the Multiple Mini-Obelisks mod is installed, the keybind will work when the scepter is selected to open the warp menu.",
-                getValue: () => config.EnableMultiObeliskSupport,
-                setValue: value => config.EnableMultiObeliskSupport = value);
+                tooltip: () =>
+                    "If the Multiple Mini-Obelisks mod is installed, the keybind will work when the scepter is selected to open the warp menu.",
+                getValue: () => this.config.EnableMultiObeliskSupport,
+                setValue: value => this.config.EnableMultiObeliskSupport = value);
 
             // Whether or not to count using MMO's warp menu as using the return scepter.
             configMenuApi.AddBoolOption(
-                mod: ModManifest,
+                this.ModManifest,
                 name: () => "Count warp menu as using scepter",
-                tooltip: () => "Whether or not you want to be able to warp back to where you last used the scepter's integration with Multiple Mini-Obelisks's warp menu.",
-                getValue: () => config.CountWarpMenuAsScepterUsage,
-                setValue: value => config.CountWarpMenuAsScepterUsage = value);
+                tooltip: () =>
+                    "Whether or not you want to be able to warp back to where you last used the scepter's integration with Multiple Mini-Obelisks's warp menu.",
+                getValue: () => this.config.CountWarpMenuAsScepterUsage,
+                setValue: value => this.config.CountWarpMenuAsScepterUsage = value);
 
             // Add a nice title for prettiness.
             configMenuApi.AddSectionTitle(
-                mod: ModManifest,
-                text: () => "Keybinds");
+                this.ModManifest,
+                () => "Keybinds");
 
             // The bind for opening MMO's warp menu.
             configMenuApi.AddKeybindList(
-                mod: ModManifest,
+                this.ModManifest,
                 name: () => "Open warp menu",
-                getValue: () => config.OpenObeliskWarpMenuKbm,
-                setValue: value => config.OpenObeliskWarpMenuKbm = value);
+                getValue: () => this.config.OpenObeliskWarpMenuKbm,
+                setValue: value => this.config.OpenObeliskWarpMenuKbm = value);
 
             // Add a nice title for prettiness.
             configMenuApi.AddSectionTitle(
-                mod: ModManifest,
-                text: () => "Controller Keybinds");
+                this.ModManifest,
+                () => "Controller Keybinds");
 
             // The controller bind for warping to our last point.
             configMenuApi.AddKeybindList(
-                mod: ModManifest,
+                this.ModManifest,
                 name: () => "Warp to last point",
-                getValue: () => config.ReturnToLastPoint,
-                setValue: value => config.ReturnToLastPoint = value);
+                getValue: () => this.config.ReturnToLastPoint,
+                setValue: value => this.config.ReturnToLastPoint = value);
 
             // The controller bind for opening MMO's warp menu.
             configMenuApi.AddKeybindList(
-                mod: ModManifest,
+                this.ModManifest,
                 name: () => "Open warp menu",
-                getValue: () => config.OpenObeliskWarpMenuController,
-                setValue: value => config.OpenObeliskWarpMenuController = value);
+                getValue: () => this.config.OpenObeliskWarpMenuController,
+                setValue: value => this.config.OpenObeliskWarpMenuController = value);
         }
     }
 }

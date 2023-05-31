@@ -91,18 +91,18 @@ namespace Shockah.SafeLightning
 			try
 			{
 				return new SequenceBlockMatcher<CodeInstruction>(instructions)
-					.AsAnchorable<CodeInstruction, Guid, Guid, SequencePointerMatcher<CodeInstruction>, SequenceBlockMatcher<CodeInstruction>>()
+					.AsGuidAnchorable()
 
 					.Find(
 						ILMatches.Isinst<FruitTree>(),
 						ILMatches.Brtrue.WithAutoAnchor(out Guid branchAnchor)
 					)
 					.AnchorBlock(out Guid findBlock)
-					.MoveToPointerAnchor(branchAnchor)
+					.PointerMatcher(branchAnchor)
 					.ExtractBranchTarget(out Label branchTarget)
-					.MoveToBlockAnchor(findBlock)
+					.BlockMatcher(findBlock)
 					.Insert(
-						SequenceMatcherPastBoundsDirection.After, true,
+						SequenceMatcherPastBoundsDirection.After, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
 
 						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_ShouldContinueWithTile))),
 						new CodeInstruction(OpCodes.Brfalse, branchTarget)
@@ -113,11 +113,11 @@ namespace Shockah.SafeLightning
 						ILMatches.Brfalse.WithAutoAnchor(out branchAnchor)
 					)
 					.AnchorBlock(out findBlock)
-					.MoveToPointerAnchor(branchAnchor)
+					.PointerMatcher(branchAnchor)
 					.ExtractBranchTarget(out branchTarget)
-					.MoveToBlockAnchor(findBlock)
+					.BlockMatcher(findBlock)
 					.Insert(
-						SequenceMatcherPastBoundsDirection.After, true,
+						SequenceMatcherPastBoundsDirection.After, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
 
 						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_ShouldContinueWithFruitTree))),
 						new CodeInstruction(OpCodes.Brfalse, branchTarget)
@@ -137,7 +137,7 @@ namespace Shockah.SafeLightning
 								.PointerMatcher(SequenceMatcherRelativeElement.First)
 								.Advance()
 								.Insert(
-									SequenceMatcherPastBoundsDirection.Before, true,
+									SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.JustInsertion,
 
 									new CodeInstruction(OpCodes.Dup),
 									new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_ModifyStrikeEvent)))
@@ -150,7 +150,7 @@ namespace Shockah.SafeLightning
 									.PointerMatcher(SequenceMatcherRelativeElement.First)
 									.Advance()
 									.Insert(
-										SequenceMatcherPastBoundsDirection.Before, true,
+										SequenceMatcherPastBoundsDirection.Before, SequenceMatcherInsertionResultingBounds.JustInsertion,
 										new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(SafeLightning), nameof(Utility_performLightningUpdate_Transpiler_WillStrikeLightningRod)))
 									)
 									.BlockMatcher(SequenceMatcherRelativeBounds.WholeSequence);

@@ -11,7 +11,7 @@
 {
   "Name": "Farmhouse visits",
   "Author": "mistyspring",
-  "Version": "1.7.2",
+  "Version": "1.8.0",
   "Description": "Mod that allows villagers to visit you.",
   "UniqueID": "mistyspring.farmhousevisits",
   "EntryDll": "FarmVisitors.dll",

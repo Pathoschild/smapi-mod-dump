@@ -6,12 +6,9 @@ mods:
    Minecart Patcher
 
 latest commit:
-   commit 9ea3b2744fbe01192a5c8fdbbdc9c6e16214fe79
-   Merge: 422b349 754b44b
+   commit 4c89e2d1f3cea1fc3fb9bed8d97e3eccdf6180d5
    Author: bwdy <47769190+bwdy@users.noreply.github.com>
-   Date:   Wed Sep 21 15:31:45 2022 -0800
+   Date:   Sat May 20 11:33:38 2023 -0800
    
-       Merge pull request #3 from Locked15/main
-       
-       Translation support, cleanup, fixes
+       bump version for hotfix release
    

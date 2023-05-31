@@ -13,7 +13,6 @@ using DecidedlyShared.Constants;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using SObject = StardewValley.Object;
 
 namespace DecidedlyShared.Extensions;
 
@@ -21,20 +20,16 @@ public static class GameLocationExtensions
 {
     public static bool HasSObject(this GameLocation location, SObject obj, SearchType search)
     {
-
-
         return false;
     }
 
     public static bool HasTerrainFeature(this GameLocation location, TerrainFeature feature, SearchType search)
     {
-
         return false;
     }
 
     public static bool IsTileOccupied(this GameLocation location, Vector2 tile)
     {
-
         return false;
     }
 

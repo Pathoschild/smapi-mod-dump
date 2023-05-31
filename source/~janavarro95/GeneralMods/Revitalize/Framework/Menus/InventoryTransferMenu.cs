@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Omegasis.Revitalize.Framework.Constants;
+using Omegasis.Revitalize.Framework.Managers;
 using Omegasis.Revitalize.Framework.World.WorldUtilities;
 using Omegasis.StardustCore.Animations;
 using Omegasis.StardustCore.UIUtilities;
@@ -27,7 +28,11 @@ namespace Omegasis.Revitalize.Framework.Menus
 {
     /// <summary>
     /// Used with transfering items between two inventories.
+    /// 
     /// </summary>
+
+
+    [Obsolete("Please use InventoryDisplayMenu instead.")]
     public class InventoryTransferMenu : IClickableMenuExtended
     {
         public InventoryMenu playerInventory;
@@ -55,11 +60,20 @@ namespace Omegasis.Revitalize.Framework.Menus
             this.otherInventory = new InventoryMenu(this.playerInventory.xPositionOnScreen + this.playerInventory.width + 128, y, width, height, OtherRows, OtherCollumns, true, this.otherItems, OtherCapacity, Color.SandyBrown);
             this.isPlayerInventory = true;
             this.currentMode = CurrentMode.TransferItems;
-            this.transferButton = new AnimatedButton(new StardustCore.Animations.AnimatedSprite("Transfer Button", new Vector2(this.playerInventory.xPositionOnScreen + this.playerInventory.width + 64, this.playerInventory.yPositionOnScreen + this.playerInventory.height * .3f), new AnimationManager(TextureManager.GetExtendedTexture(RevitalizeModCore.Manifest, "InventoryMenu", "ItemTransferButton"), new Animation(0, 0, 32, 32)), Color.White), new Rectangle(0, 0, 32, 32), 2f);
-            this.trashButton = new AnimatedButton(new StardustCore.Animations.AnimatedSprite("Trash Button", new Vector2(this.playerInventory.xPositionOnScreen + this.playerInventory.width + 64, this.playerInventory.yPositionOnScreen + this.playerInventory.height * .3f + 96), new AnimationManager(TextureManager.GetExtendedTexture(RevitalizeModCore.Manifest, "InventoryMenu", "TrashButton"), new Animation(0, 0, 32, 32)), Color.White), new Rectangle(0, 0, 32, 32), 2f);
-            this.trashedItem = new ItemDisplayButton(null, new StardustCore.Animations.AnimatedSprite("ItemBackground", new Vector2(this.playerInventory.xPositionOnScreen + this.playerInventory.width + 64, this.playerInventory.yPositionOnScreen + this.playerInventory.height * .3f + 180), new AnimationManager(TextureManager.GetExtendedTexture(RevitalizeModCore.Manifest, "InventoryMenu", "ItemBackground"), new Animation(0, 0, 32, 32)), Color.White), new Vector2(this.playerInventory.xPositionOnScreen + this.playerInventory.width + 64, this.playerInventory.yPositionOnScreen + this.playerInventory.height * .3f + 180), new Rectangle(0, 0, 32, 32), 2f, true, Color.White);
+            this.transferButton = new AnimatedButton(new StardustCore.Animations.AnimatedSprite("Transfer Button", new Vector2(this.playerInventory.xPositionOnScreen + this.playerInventory.width + 64, this.playerInventory.yPositionOnScreen + this.playerInventory.height * .3f), new AnimationManager(TextureManagers.Menus_InventoryMenu.getExtendedTexture("ItemTransferButton"), new Animation(0, 0, 32, 32)), Color.White), new Rectangle(0, 0, 32, 32), 2f);
+            this.trashButton = new AnimatedButton(new StardustCore.Animations.AnimatedSprite("Trash Button", new Vector2(this.playerInventory.xPositionOnScreen + this.playerInventory.width + 64, this.playerInventory.yPositionOnScreen + this.playerInventory.height * .3f + 96), new AnimationManager(TextureManagers.Menus_InventoryMenu.getExtendedTexture("TrashButton"), new Animation(0, 0, 32, 32)), Color.White), new Rectangle(0, 0, 32, 32), 2f);
+            this.trashedItem = new ItemDisplayButton(null, new StardustCore.Animations.AnimatedSprite("ItemBackground", new Vector2(this.playerInventory.xPositionOnScreen + this.playerInventory.width + 64, this.playerInventory.yPositionOnScreen + this.playerInventory.height * .3f + 180), new AnimationManager(TextureManagers.Menus_InventoryMenu.getExtendedTexture("ItemBackground"), new Animation(0, 0, 32, 32)), Color.White), new Vector2(this.playerInventory.xPositionOnScreen + this.playerInventory.width + 64, this.playerInventory.yPositionOnScreen + this.playerInventory.height * .3f + 180), new Rectangle(0, 0, 32, 32), 2f, true, Color.White);
         }
 
+        public override bool readyToClose()
+        {
+            return Game1.input.GetGamePadState().IsButtonDown(Microsoft.Xna.Framework.Input.Buttons.B) || Game1.input.GetKeyboardState().IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape) || Game1.input.GetGamePadState().IsButtonDown(Microsoft.Xna.Framework.Input.Buttons.Start);
+        }
+
+        public override void exitMenu(bool playSound = true)
+        {
+            base.exitMenu(playSound);
+        }
 
         /// <summary>
         /// Handles what happens when the menu is left clicked.

@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Achtuur/StardewTravelSkill
+**
+*************************************************/
+
+{
+    /** Config Menu **/
+    "cfg_section.general": "General settings",
+    "cfg_section.professions": "Profession settings",
+
+    // water soil
+    "cfg_expperwatersoil.name": "Exp gain per watered soil",
+    "cfg_expperwatersoil.desc": "Amount of exp gained per soil that is watered",
+
+    // harvest exp multiplier
+    "cfg_harvestexpmultiplier.name": "Harvesting Exp multiplier",
+    "cfg_harvestexpmultiplier.desc":  "Multiplier applied to Exp gained from harvesting crops",
+}

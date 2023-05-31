@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Shockah.Kokoro;
+using Shockah.Kokoro.Map;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -23,14 +23,14 @@ namespace Shockah.FlexibleSprinklers
 			this.Wrapped = wrapped;
 		}
 
-		public IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map)
+		public IReadOnlyList<WateringStep> GetSprinklerTilesWithSteps(IMap<SoilType>.WithKnownSize map, IReadOnlySet<SprinklerInfo> sprinklers)
 		{
-			var results = new List<(IReadOnlySet<IntPoint>, float)>
+			var results = new List<WateringStep>
 			{
-				(map.GetAllSprinklers().Select(s => s.position).ToHashSet(), 0f)
+				new(sprinklers.SelectMany(s => s.OccupiedSpace.AllPointEnumerator()).ToHashSet(), 0f)
 			};
-			foreach (var wrappedResult in Wrapped.GetSprinklerTilesWithSteps(map))
-				results.Add((wrappedResult.Item1, 0.2f + wrappedResult.Item2 * 0.8f));
+			foreach (var wrappedResult in Wrapped.GetSprinklerTilesWithSteps(map, sprinklers))
+				results.Add(new(wrappedResult.Tiles, 0.2f + wrappedResult.Time * 0.8f));
 			return results;
 		}
 
@@ -43,14 +43,14 @@ namespace Shockah.FlexibleSprinklers
 				this.Wrapped = wrapped;
 			}
 
-			public IReadOnlyList<(IReadOnlySet<IntPoint>, float)> GetSprinklerTilesWithSteps(IMap map, IntPoint sprinklerPosition, SprinklerInfo info)
+			public IReadOnlyList<WateringStep> GetSprinklerTilesWithSteps(IMap<SoilType>.WithKnownSize map, SprinklerInfo sprinkler)
 			{
-				var results = new List<(IReadOnlySet<IntPoint>, float)>
+				var results = new List<WateringStep>
 				{
-					(new HashSet<IntPoint>() { sprinklerPosition }, 0f)
+					new(sprinkler.OccupiedSpace.AllPointEnumerator().ToHashSet(), 0f)
 				};
-				foreach (var wrappedResult in Wrapped.GetSprinklerTilesWithSteps(map, sprinklerPosition, info))
-					results.Add((wrappedResult.Item1, 0.2f + wrappedResult.Item2 * 0.8f));
+				foreach (var wrappedResult in Wrapped.GetSprinklerTilesWithSteps(map, sprinkler))
+					results.Add(new(wrappedResult.Tiles, 0.2f + wrappedResult.Time * 0.8f));
 				return results;
 			}
 		}

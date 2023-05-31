@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="3" height="3" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="234">
+ <properties>
+  <property name="Music" value="wavy"/>
+  <property name="Outdoors" value="T"/>
+  <property name="Spouse" value="3 22 2 11 11 2 4 5 0 1 12 2 17 11 2 23 3 2"/>
+ </properties>
+ <tileset firstgid="1" name="!desert" tilewidth="16" tileheight="16" tilecount="368" columns="16">
+  <image source="DesertTiles" width="256" height="368"/>
+  <tile id="0">
+   <properties>
+    <property name="Buildable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="Buildable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="Buildable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="Buildable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="16">
+   <properties>
+    <property name="Buildable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="17">
+   <properties>
+    <property name="Buildable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="Buildable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="32">
+   <properties>
+    <property name="Buildable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="33">
+   <properties>
+    <property name="Buildable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="34">
+   <properties>
+    <property name="Buildable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="35">
+   <properties>
+    <property name="Buildable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="36">
+   <properties>
+    <property name="Diggable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="52">
+   <properties>
+    <property name="Diggable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="64">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="65">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Spawnable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="66">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="67">
+   <properties>
+    <property name="Diggable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="68">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Spawnable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="91">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="92">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="93">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="94">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="95">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="96">
+   <properties>
+    <property name="Diggable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="97">
+   <properties>
+    <property name="Diggable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="98">
+   <properties>
+    <property name="Diggable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="107">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="108">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="109">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="110">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="111">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="123">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="124">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="125">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="126">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+   <animation>
+    <frame tileid="126" duration="1000"/>
+    <frame tileid="127" duration="1000"/>
+   </animation>
+  </tile>
+  <tile id="127">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="139">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="140">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="141">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="142">
+   <properties>
+    <property name="asfd" value="asdf"/>
+   </properties>
+  </tile>
+  <tile id="143">
+   <properties>
+    <property name="Type" value="Stone"/>
+   </properties>
+  </tile>
+  <tile id="155">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="156">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="171">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="172">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="174">
+   <properties>
+    <property name="Type" value="Stone"/>
+   </properties>
+  </tile>
+  <tile id="190">
+   <properties>
+    <property name="Type" value="Stone"/>
+   </properties>
+  </tile>
+  <tile id="206">
+   <properties>
+    <property name="Type" value="Stone"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="369" name="!custom_tiles" tilewidth="16" tileheight="16" tilecount="256" columns="16">
+  <image source="Desert_Bloom_Tiles.png" width="256" height="256"/>
+  <tile id="0" probability="0.05"/>
+  <tile id="1" probability="0.05"/>
+  <tile id="2" probability="0.05"/>
+  <tile id="3" probability="0.1"/>
+  <tile id="4" probability="100.05"/>
+  <tile id="5" probability="0.05"/>
+  <tile id="6" probability="0.05"/>
+  <tile id="7" probability="0.05"/>
+  <tile id="8" probability="0.05"/>
+  <tile id="9" probability="0.05"/>
+  <tile id="10" probability="0.05"/>
+  <tile id="11" probability="0.05"/>
+  <tile id="12" probability="0.05"/>
+  <tile id="13" probability="0.05"/>
+  <tile id="14" probability="0.05"/>
+  <tile id="15" probability="50"/>
+  <tile id="16" probability="0.05"/>
+  <tile id="17" probability="0.05"/>
+  <tile id="18" probability="0.05"/>
+  <tile id="19" probability="0.05"/>
+  <tile id="20" probability="0.05"/>
+  <tile id="21" probability="0.05"/>
+  <tile id="22" probability="0.05"/>
+  <tile id="23" probability="0.05"/>
+  <tile id="24" probability="0.05"/>
+  <tile id="25" probability="0.05"/>
+  <tile id="26" probability="0.05"/>
+  <tile id="27" probability="0.05"/>
+  <tile id="28" probability="0.05"/>
+  <tile id="29" probability="0.05"/>
+  <tile id="30" probability="0.05"/>
+  <tile id="31" probability="0.05"/>
+  <tile id="32" probability="0.05"/>
+  <tile id="33" probability="0.05"/>
+  <tile id="34" probability="0.05"/>
+  <tile id="35" probability="0.05"/>
+  <tile id="36" probability="0.05"/>
+  <tile id="37" probability="0.05"/>
+  <tile id="38" probability="0.05"/>
+  <tile id="39" probability="0.05"/>
+  <tile id="40" probability="0.05"/>
+  <tile id="41" probability="0.05"/>
+  <tile id="42" probability="0.05"/>
+  <tile id="43" probability="0.05"/>
+  <tile id="44" probability="0.05"/>
+  <tile id="45" probability="0.05"/>
+  <tile id="46" probability="0.05"/>
+  <tile id="47" probability="0.05"/>
+  <tile id="48" probability="0.05"/>
+  <tile id="49" probability="0.05"/>
+  <tile id="50" probability="0.05"/>
+  <tile id="51" probability="0.05"/>
+  <tile id="52" probability="0.05"/>
+  <tile id="53" probability="0.05"/>
+  <tile id="54" probability="0.05"/>
+  <tile id="55" probability="0.05"/>
+  <tile id="56" probability="0.05"/>
+  <tile id="57" probability="0.05"/>
+  <tile id="58" probability="0.05"/>
+  <tile id="59" probability="0.05"/>
+  <tile id="60" probability="0.05"/>
+  <tile id="61" probability="0.05"/>
+  <tile id="62" probability="0.05"/>
+  <tile id="63" probability="0.05"/>
+  <tile id="64" probability="0.05"/>
+  <tile id="65" probability="0.05"/>
+  <tile id="66" probability="0.05"/>
+  <tile id="67" probability="0.05"/>
+  <tile id="68" probability="0.05"/>
+  <tile id="69" probability="0.05"/>
+  <tile id="70" probability="0.05"/>
+  <tile id="71" probability="0.05"/>
+  <tile id="72" probability="0.05"/>
+  <tile id="73" probability="0.05"/>
+  <tile id="74" probability="0.05"/>
+  <tile id="75" probability="0.05"/>
+  <tile id="76" probability="0.05"/>
+  <tile id="77" probability="0.05"/>
+  <tile id="78" probability="0.05"/>
+  <tile id="79" probability="0.05"/>
+  <tile id="80" probability="0.05"/>
+  <tile id="81" probability="0.05"/>
+  <tile id="82" probability="0.05"/>
+  <tile id="83" probability="0.05"/>
+  <tile id="84" probability="0.05"/>
+  <tile id="85" probability="0.05"/>
+  <tile id="86" probability="0.05"/>
+  <tile id="87" probability="0.05"/>
+  <tile id="88" probability="0.05"/>
+  <tile id="89" probability="0.05"/>
+  <tile id="90" probability="0.05"/>
+  <tile id="91" probability="0.05"/>
+  <tile id="92" probability="0.05"/>
+  <tile id="93" probability="0.05"/>
+  <tile id="94" probability="0.05"/>
+  <tile id="95" probability="0.05"/>
+  <tile id="96" probability="0.05"/>
+  <tile id="97" probability="0.05"/>
+  <tile id="98" probability="0.05"/>
+  <tile id="99" probability="0.05"/>
+  <tile id="100" probability="0.05"/>
+  <tile id="101" probability="0.05"/>
+  <tile id="102" probability="0.05"/>
+  <tile id="103" probability="0.05"/>
+  <tile id="104" probability="0.05"/>
+  <tile id="105" probability="0.05"/>
+  <tile id="106" probability="0.05"/>
+  <tile id="107" probability="0.05"/>
+  <tile id="108" probability="0.05"/>
+  <tile id="109" probability="0.05"/>
+  <tile id="110" probability="0.05"/>
+  <tile id="111" probability="0.05"/>
+  <tile id="112" probability="0.05"/>
+  <tile id="113" probability="0.05"/>
+  <tile id="114" probability="0.05"/>
+  <tile id="115" probability="0.05"/>
+  <tile id="116" probability="0.05"/>
+  <tile id="117" probability="0.05"/>
+  <tile id="118" probability="0.05"/>
+  <tile id="119" probability="0.05"/>
+  <tile id="120" probability="0.05"/>
+  <tile id="121" probability="0.05"/>
+  <tile id="122" probability="0.05"/>
+  <tile id="123" probability="0.05"/>
+  <tile id="124" probability="0.05"/>
+  <tile id="125" probability="0.05"/>
+  <tile id="126" probability="0.05"/>
+  <tile id="127" probability="0.05"/>
+ </tileset>
+ <layer id="13" name="Back" width="3" height="3">
+  <data encoding="base64" compression="zlib">
+   eJxjYEAF/6G0EBDzM0JoABWvATQ=
+  </data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <layer id="3" name="Buildings" width="3" height="3">
+  <data encoding="base64" compression="zlib">
+   eJzrZICATiCeCWWD6JVQNogGAETcA5c=
+  </data>
+ </layer>
+ <layer id="16" name="Buildings1" width="3" height="3">
+  <data encoding="base64" compression="zlib">
+   eJxbxcjAsBqI1wDxLiAGgT1A+hQQnwbiM0AMAHEEBeE=
+  </data>
+ </layer>
+ <objectgroup id="4" name="Buildings"/>
+ <objectgroup id="6" name="Paths"/>
+ <objectgroup id="8" name="Front"/>
+ <layer id="9" name="AlwaysFront" width="3" height="3">
+  <data encoding="base64" compression="zlib">
+   eJxjYGBg6GLADwARZACL
+  </data>
+ </layer>
+ <layer id="22" name="AlwaysFront1" width="3" height="3">
+  <data encoding="base64" compression="zlib">
+   eJxjYGBgWM3IAAfvGTABAChPAZw=
+  </data>
+ </layer>
+</map>

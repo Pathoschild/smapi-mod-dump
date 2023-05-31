@@ -15,6 +15,7 @@ using StardewValley;
 using System;
 using System.Reflection;
 using Shockah.Kokoro.UI;
+using System.Collections.Generic;
 
 namespace Shockah.Kokoro.Stardew
 {
@@ -30,11 +31,21 @@ namespace Shockah.Kokoro.Stardew
 		int GetXP(Farmer player);
 
 		int GetLevelXP(int level);
+
+		void GrantXP(Farmer player, int xp);
 	}
 
 	public static class SkillExt
 	{
 		private static readonly int[] OrderedSkillIndexes = new[] { 0, 3, 2, 1, 4, 5 };
+
+		public static IEnumerable<ISkill> GetAllSkills()
+		{
+			foreach (var skill in VanillaSkill.GetAllSkills())
+				yield return skill;
+			foreach (var skill in SpaceCoreSkill.GetAllSkills())
+				yield return skill;
+		}
 
 		public static ISkill GetSkill(int? vanillaSkillIndex, string? spaceCoreSkillName)
 		{
@@ -64,9 +75,33 @@ namespace Shockah.Kokoro.Stardew
 		public static VanillaSkill Combat { get; private set; } = new(Farmer.combatSkill);
 		public static VanillaSkill Luck { get; private set; } = new(Farmer.luckSkill);
 
+		public static string CropsAspect { get; private set; } = $"{Farming.UniqueID}:Crops";
+		public static string AnimalsAspect { get; private set; } = $"{Farming.UniqueID}:Animals";
+		public static string FlowersAspect { get; private set; } = $"{Farming.UniqueID}:Flowers";
+		public static string MetalAspect { get; private set; } = $"{Mining.UniqueID}:Metal";
+		public static string GemAspect { get; private set; } = $"{Mining.UniqueID}:Gem";
+		public static string WoodcuttingAspect { get; private set; } = $"{Foraging.UniqueID}:Woodcutting";
+		public static string GatheringAspect { get; private set; } = $"{Foraging.UniqueID}:Gathering";
+		public static string TappingAspect { get; private set; } = $"{Foraging.UniqueID}:Tapping";
+		public static string FishingAspect { get; private set; } = $"{Fishing.UniqueID}:Fishing";
+		public static string TrappingAspect { get; private set; } = $"{Fishing.UniqueID}:Trapping";
+		public static string PondsAspect { get; private set; } = $"{Fishing.UniqueID}:Ponds";
+
 		private static int[]? XPValues;
 		private static DateTime? LastUpdateTime;
 		private static WeakReference<IClickableMenu>? LastMenu;
+
+		public static IEnumerable<ISkill> GetAllSkills()
+		{
+			yield return Farming;
+			yield return Mining;
+			yield return Foraging;
+			yield return Fishing;
+			yield return Combat;
+
+			if (Kokoro.Instance.Helper.ModRegistry.IsLoaded("spacechase0.LuckSkill"))
+				yield return Luck;
+		}
 
 		public string UniqueID
 			=> SkillIndex switch
@@ -139,6 +174,9 @@ namespace Shockah.Kokoro.Stardew
 		public int GetXP(Farmer player)
 			=> player.experiencePoints[SkillIndex];
 
+		public void GrantXP(Farmer player, int xp)
+			=> player.gainExperience(SkillIndex, xp);
+
 		private static void UpdateXPValuesIfNeeded()
 		{
 			static void UpdateXPValues()
@@ -204,12 +242,21 @@ namespace Shockah.Kokoro.Stardew
 		private static readonly string SpaceCoreSkillExtensionsQualifiedName = "SpaceCore.SkillExtensions, SpaceCore";
 
 		private static bool IsReflectionSetup = false;
+		private static Func<string[]> GetSkillListDelegate = null!;
 		private static Func<string, object? /* Skill */> GetSkillDelegate = null!;
 		private static Func<Farmer, object /* Skill */, int> GetCustomSkillLevelDelegate = null!;
 		private static Func<object /* Skill */, int[]> ExperienceCurveDelegate = null!;
 		private static Func<Farmer, object /* Skill */, int> GetCustomSkillExperienceDelegate = null!;
+		private static Action<Farmer, string, int> AddExperienceDelegate = null!;
 		private static Func<object /* Skill */, string> GetNameDelegate = null!;
 		private static Func<object /* Skill */, Texture2D?> GetSkillsPageIconDelegate = null!;
+
+		public static IEnumerable<ISkill> GetAllSkills()
+		{
+			SetupReflectionIfNeeded();
+			foreach (var skillName in GetSkillListDelegate())
+				yield return new SpaceCoreSkill(skillName);
+		}
 
 		public string UniqueID
 			=> SkillName;
@@ -281,6 +328,12 @@ namespace Shockah.Kokoro.Stardew
 			return GetCustomSkillExperienceDelegate(Game1.player, skill);
 		}
 
+		public void GrantXP(Farmer player, int xp)
+		{
+			SetupReflectionIfNeeded();
+			AddExperienceDelegate(player, SkillName, xp);
+		}
+
 		private static void SetupReflectionIfNeeded()
 		{
 			if (IsReflectionSetup)
@@ -289,6 +342,9 @@ namespace Shockah.Kokoro.Stardew
 			Type skillsType = AccessTools.TypeByName(SpaceCoreSkillsQualifiedName);
 			Type skillType = AccessTools.TypeByName(SpaceCoreSkillQualifiedName);
 			Type skillExtensionsType = AccessTools.TypeByName(SpaceCoreSkillExtensionsQualifiedName);
+
+			MethodInfo getSkillListMethod = AccessTools.Method(skillsType, "GetSkillList", Array.Empty<Type>());
+			GetSkillListDelegate = () => (string[])getSkillListMethod.Invoke(null, null)!;
 
 			MethodInfo getSkillMethod = AccessTools.Method(skillsType, "GetSkill", new Type[] { typeof(string) });
 			GetSkillDelegate = (skillName) => getSkillMethod.Invoke(null, new object[] { skillName });
@@ -301,6 +357,9 @@ namespace Shockah.Kokoro.Stardew
 
 			MethodInfo getCustomSkillExperienceMethod = AccessTools.Method(skillExtensionsType, "GetCustomSkillExperience", new Type[] { typeof(Farmer), skillType });
 			GetCustomSkillExperienceDelegate = (farmer, skill) => (int)getCustomSkillExperienceMethod.Invoke(null, new object[] { farmer, skill })!;
+
+			MethodInfo addExperienceMethod = AccessTools.Method(skillsType, "AddExperience", new Type[] { typeof(Farmer), typeof(string), typeof(int) });
+			AddExperienceDelegate = (farmer, skill, xp) => addExperienceMethod.Invoke(null, new object[] { farmer, skill, xp });
 
 			MethodInfo getNameMethod = AccessTools.Method(skillType, "GetName");
 			GetNameDelegate = (skill) => (string)getNameMethod.Invoke(skill, null)!;

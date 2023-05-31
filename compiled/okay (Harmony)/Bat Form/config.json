@@ -1,0 +1,9 @@
+{
+  "ModEnabled": true,
+  "NightOnly": false,
+  "OutdoorsOnly": true,
+  "TransformKey": "NumPad5",
+  "TransformSound": "cowboy_explosion",
+  "MoveSpeed": 10,
+  "StaminaUse": 0
+}

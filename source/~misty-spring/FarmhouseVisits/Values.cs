@@ -186,6 +186,16 @@ namespace FarmVisitors
             
             var r = Game1.random.Next(1, 4);
             int type = Game1.random.Next(0, 3);
+            
+            if(which == DialogueType.Retiring && ModEntry.Config.UniqueDialogue)
+            {
+                var r2 = Game1.random.Next(0,3);
+                if(r2 == 2)
+                {
+                    return ModEntry.TL.Get($"NPC{which}.{c.Name}.{r}");
+                }
+            }
+            
             if (type is 0)
             {
                 if (c.SocialAnxiety.Equals(0))
@@ -365,7 +375,7 @@ namespace FarmVisitors
                     {
                         int index = crop.rowInSpriteSheet.Value != Crop.rowOfWildSeeds ? crop.netSeedIndex.Value : crop.whichForageCrop.Value;
 
-                        if(ModEntry.Debug)
+                        if(ModEntry.Config.Debug)
                         {
                             ModEntry.Log($"crop index: {index}", lv.Info);
                         }
@@ -377,7 +387,7 @@ namespace FarmVisitors
                         CropData?.TryGetValue(index, out seedinfo);
                         if (seedinfo == null)
                         {
-                            if (ModEntry.Debug)
+                            if (ModEntry.Config.Debug)
                             {
                                 ModEntry.Log($"Key {index} not found in CropData.", lv.Warn);
                             }
@@ -394,7 +404,7 @@ namespace FarmVisitors
 
                         var objInd = seedSplit[3];
 
-                        if (ModEntry.Debug)
+                        if (ModEntry.Config.Debug)
                         {
                             ModEntry.Log($"CropData Key= {index}; string info = {seedinfo}; objInd= {objInd}", lv.Info);
                         }

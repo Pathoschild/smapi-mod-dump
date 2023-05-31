@@ -17,9 +17,13 @@ using System.Threading.Tasks;
 namespace Unlockable_Areas {
     public class ModConfig
     {
+        public int ScrollDelay { get; set; }
+        public int ScrollCharacterLength { get; set; }
 
         public ModConfig()
         {
+            ScrollDelay = 25;
+            ScrollCharacterLength = 10;
         }
     }
 }

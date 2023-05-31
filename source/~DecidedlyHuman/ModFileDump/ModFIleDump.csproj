@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Build\SDV-1.5.6.targets" />
+    <Import Project="..\Build\Common.csproj" />
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared" />
+
+    <PropertyGroup>
+        <Name>Mod File Dump</Name>
+        <Description>Dumps all mod files to help diagnose things.</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:00000</UpdateKeys>
+        <Version>1.0.0-alpha</Version>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <EnableHarmony>false</EnableHarmony>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MappingExtensionsAndExtraProperties\MappingExtensionsAndExtraProperties.csproj" />
+    </ItemGroup>
+
+</Project>

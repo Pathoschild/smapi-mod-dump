@@ -11,7 +11,9 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IDynamicGameAssetsApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IGenericModConfigMenuApi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APIs\IGrowableBushes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IMoreFertilizersAPI.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)APIs\ISaveAnywhereApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\ISpaceCoreApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\ITapGiantCropsApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IToolbarIconsApi.cs" />
@@ -22,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Constants\ToolToBreak.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constants\Translations.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\GameLocationExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GlobalUsings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ButtonHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ButtonType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Input\ButtonWatch.cs" />
@@ -32,14 +35,24 @@
     <Compile Include="$(MSBuildThisFileDirectory)Logging\Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\World.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\WorldTile.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ui\ClickableUiElement.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ui\DraggableUiElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\Alignment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\ContainerElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\DraggableElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\DrawableType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\HBoxElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\MenuBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\MenuPage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\Orientation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\PaginatedMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\TextElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ui\UiElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\ImageElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Ui\Utils.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Ui\VBoxUiElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Ui\VBoxElement.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Player.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\Sound.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\TilePropertyHandler.cs" />
     <Folder Include="$(MSBuildThisFileDirectory)Types" />
-    <Compile Include="$(MSBuildThisFileDirectory)UIOld\Alignment.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UIOld\Orientation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UIOld\UiElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UIOld\UiHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities\Drawing.cs" />

@@ -31,26 +31,28 @@ namespace BNWCore
                     data.Add(738, $"Magic Bootle/50/-300/Basic -81/{ModEntry.ModHelper.Translation.Get("translator_object_737_name")}/{ModEntry.ModHelper.Translation.Get("translator_object_737_description")}");
                 });
             }
-            else if (e.NameWithoutLocale.IsEquivalentTo("Strings/StringsFromCSFiles"))
-            {
-                e.Edit(asset => {
-                    var data = asset.AsDictionary<string, string>().Data;
-                    data["ShopMenu.cs.11474"] = ModEntry.ModHelper.Translation.Get("translator_ShopMenu.cs.11474");
-                    data["Tool.cs.14317"] = ModEntry.ModHelper.Translation.Get("translator_Tool.cs.14317");
-                });
-            }
             else if (e.NameWithoutLocale.IsEquivalentTo("Data/ExtraDialogue"))
             {
-                if (ModEntry.ModHelper.ModRegistry.IsLoaded("DiogoAlbano.BNWChapter1"))
+                if (ModEntry.ModHelper.ModRegistry.IsLoaded("DiogoAlbano.teste"))
                 {
                     e.Edit(asset => {
                         var data = asset.AsDictionary<string, string>().Data;
-                        data["Robin_UpgradeConstruction_Festival"] = ModEntry.ModHelper.Translation.Get("translator_Robin_UpgradeConstruction_Festival");
-                        data["Robin_UpgradeConstruction"] = ModEntry.ModHelper.Translation.Get("translator_Robin_UpgradeConstruction");
-                        data["Robin_NewConstruction_Festival"] = ModEntry.ModHelper.Translation.Get("translator_Robin_NewConstruction_Festival");
-                        data["Robin_NewConstruction"] = ModEntry.ModHelper.Translation.Get("translator_Robin_NewConstruction");
-                        data["Robin_Instant"] = ModEntry.ModHelper.Translation.Get("translator_Robin_Instant");
-                        data["Robin_HouseUpgrade_Accepted"] = ModEntry.ModHelper.Translation.Get("translator_Robin_HouseUpgrade_Accepted");
+                        data["Robin_UpgradeConstruction_Festival"] = ModEntry.ModHelper.Translation.Get("translator_dialog_box_start_construction");
+                        data["Robin_UpgradeConstruction"] = ModEntry.ModHelper.Translation.Get("translator_dialog_box_start_construction");
+                        data["Robin_NewConstruction_Festival"] = ModEntry.ModHelper.Translation.Get("translator_dialog_box_start_construction");
+                        data["Robin_NewConstruction"] = ModEntry.ModHelper.Translation.Get("translator_dialog_box_start_construction");
+                        data["Robin_Instant"] = ModEntry.ModHelper.Translation.Get("translator_dialog_box_instant_construction");
+                        data["Robin_HouseUpgrade_Accepted"] = ModEntry.ModHelper.Translation.Get("translator_dialog_box_ugrade_house");
+                    });
+                }
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo("Strings/Locations"))
+            {
+                if (ModEntry.ModHelper.ModRegistry.IsLoaded("DiogoAlbano.teste"))
+                {
+                    e.Edit(asset => {
+                        var data = asset.AsDictionary<string, string>().Data;
+                        data["ScienceHouse_CarpenterMenu"] = ModEntry.ModHelper.Translation.Get("translator_dialog_box_ScienceHouse_CarpenterMenu");
                     });
                 }
             }
@@ -75,7 +77,7 @@ namespace BNWCore
             }
             else if (e.NameWithoutLocale.IsEquivalentTo("LooseSprites/Cursors"))
             {
-                if (ModEntry.ModHelper.ModRegistry.IsLoaded("DiogoAlbano.BNWChapter1"))
+                if (ModEntry.ModHelper.ModRegistry.IsLoaded("DiogoAlbano.teste"))
                 {
                     e.Edit(asset => {
                         var editor = asset.AsImage();

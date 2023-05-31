@@ -18,6 +18,7 @@ You can do that either using Content Patcher or the OnAssetRequested event in C#
     * [Full Example in ContentPatcher](#full-example-in-contentpatcher)
 * [ContentPatcher  Token](#contentpatcher-token)
 * [C# API](#c-api)
+* [Custom Tile Properties](#custom-tile-properties)
 <br>
 
 # Manifest Dependency
@@ -132,8 +133,7 @@ Due to this UA currently only fully refreshes the Unlockable shops on daystart
 Unlockable Areas offers a simple API which you can use in your .NET based mods.<br>
 Being able to use the API requires embedding two classes in your project and calling `Helper.ModRegistry.GetApi` after the game has launched.<br>
 <br>
-[1. IUnlockableAreasAPI](https://gitlab.com/delixx/stardew-valley-unlockable-areas/-/blob/main/Unlockable%20Areas/API/IUnlockableAreasAPI.cs)<br>
-[2. ShopPurchasedEvent](https://gitlab.com/delixx/stardew-valley-unlockable-areas/-/blob/main/Unlockable%20Areas/API/ShopPurchasedEvent.cs)<br>
+[IUnlockableAreasAPI](https://gitlab.com/delixx/stardew-valley-unlockable-areas/-/blob/main/Unlockable%20Areas/API/IUnlockableAreasAPI.cs)<br>
 <br>
 Example:<br>
 ```cs
@@ -158,3 +158,9 @@ private void onShopPurchased(object source, ShopPurchasedEventArgs e)
   //My Code goes here
 }
 ```
+
+# Custom Tile Properties
+
+| Layer | Property     | Explanation                                                                                                     |
+|-------|--------------|-----------------------------------------------------------------------------------------------------------------|
+| Back  | UA_NoGrass T | Prevents the placement of Grass Starters, Paths/Floors and Torches that are ignored by the `Placeable` property |

@@ -18,7 +18,7 @@ namespace BNWCore
     {
         public static void Farm_resetLocalState_Postfix(Farm __instance)
         {
-            if(ModEntry.ModHelper.ModRegistry.IsLoaded("DiogoAlbano.BNWChapter1"))
+            if(ModEntry.ModHelper.ModRegistry.IsLoaded("DiogoAlbano.teste"))
             {
                 if (!__instance.isThereABuildingUnderConstruction() || __instance.getBuildingUnderConstruction().daysOfConstructionLeft.Value <= 0)
                     return;

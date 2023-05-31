@@ -10,15 +10,13 @@
 
 using System;
 using System.Collections.Generic;
-using GenericModConfigMenu;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Enums;
 using StardewValley;
-using System.Linq;
 using HarmonyLib;
-using JsonAssets;
-using xTile;
+using SpousesIsland.GenericModConfigMenu;
+using SpousesIsland.ModContent;
+using Patches = SpousesIsland.ModContent.Patches;
 
 namespace SpousesIsland
 {
@@ -30,7 +28,7 @@ namespace SpousesIsland
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
 
-            //changes mod info (and npcs)
+            //changes mod info (and NPCs)
             helper.Events.GameLoop.DayStarted += Changes.DayStart;
             helper.Events.GameLoop.DayEnding += this.OnDayEnding;
             helper.Events.GameLoop.ReturnedToTitle += this.TitleReturn;
@@ -40,35 +38,63 @@ namespace SpousesIsland
             helper.Events.GameLoop.UpdateTicked += Changes.UpdateTicked;
 
             //gets user data
-            helper.Events.Multiplayer.PeerContextReceived += PeerContextReceived;
-            helper.Events.Specialized.LoadStageChanged += LoadStageChanged;
+            helper.Events.GameLoop.SaveLoaded += SaveLoaded;
 
-            this.Config = this.Helper.ReadConfig<ModConfig>();
+            Config = Helper.ReadConfig<ModConfig>();
 
-            Mon = this.Monitor;
-            Help = this.Helper;
-            TL = this.Helper.Translation;
-            IsDebug = Config.Debug;
-            IslandAtt = Config.IslandClothes;
+            Mon = Monitor;
+            Help = Helper;
+            TL = Helper.Translation;
 
-#if DEBUG
-            Config.Debug = true;
-#endif
             //commands
-            if (Config.Debug is true)
-            {
-                helper.ConsoleCommands.Add("ichance", helper.Translation.Get("CLI.chance"), Debugging.Chance);
-                helper.ConsoleCommands.Add("getstat", "", Debugging.GetStatus);
-                helper.ConsoleCommands.Add("sgidata", "", Debugging.GeneralInfo);
-                helper.ConsoleCommands.Add("sgiprint", "", Debugging.Print);
-            }
+            helper.ConsoleCommands.Add("ichance", helper.Translation.Get("CLI.chance"), Debugging.Chance);
+            helper.ConsoleCommands.Add("getstat", "", Debugging.GetStatus);
+            helper.ConsoleCommands.Add("sgidata", "", Debugging.GeneralInfo);
+            helper.ConsoleCommands.Add("sgiprint", "", Debugging.Print);
 
             this.Monitor.Log($"Applying Harmony patch \"{nameof(Patches)}\": prefixing SDV method \"NPC.tryToReceiveActiveObject(Farmer who)\".");
             var harmony = new Harmony(this.ModManifest.UniqueID);
             harmony.Patch(
-                original: AccessTools.Method(typeof(StardewValley.NPC), nameof(StardewValley.NPC.tryToReceiveActiveObject)),
+                original: AccessTools.Method(typeof(NPC), nameof(NPC.tryToReceiveActiveObject)),
                 prefix: new HarmonyMethod(typeof(Patches), nameof(Patches.tryToReceiveTicket))
                 );
+        }
+
+        private void SaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            LoadedBasicData = true;
+
+            //try to read file from moddata. if empty, check mail
+            ReadModData(Game1.player);
+
+            //now get user data
+            var boatFix = Game1.player?.mailReceived?.Contains("willyBoatFixed");
+            BoatFixed = boatFix ?? false;
+            this.Monitor.Log($"BoatFixed = {BoatFixed};", LogLevel.Debug);
+
+            _islandHouse = Game1.player?.mailReceived?.Contains("Island_UpgradeHouse") ?? false;
+
+            var married = Values.GetAllSpouses(Game1.player);
+            foreach (var name in married)
+            {
+                this.Monitor.Log($"Checking NPC {name}...", Config.Debug ? LogLevel.Debug : LogLevel.Trace); //log to debug or trace depending on config
+
+                if (!Values.IntegratedAndEnabled(name)) continue;
+                
+                MarriedAndAllowed.Add(name);
+                this.Monitor.Log($"{name} is married to player.", LogLevel.Debug);
+            }
+            //e
+            Children = Information.PlayerChildren(Game1.player);
+            
+            PatchPathfind = Information.PlayerSpouses(Game1.player); //add all spouses
+            
+            if (!InstalledMods["C2N"] && !InstalledMods["LPNCs"])
+                return;
+            foreach(var kid in Children)
+            {
+                PatchPathfind.Add(kid.Name);
+            }
         }
 
         //these add and/or depend on config
@@ -77,19 +103,17 @@ namespace SpousesIsland
             ClearValues();
 
             //check for compatibility, log result
-            HasSVE = Information.HasMod("FlashShifter.StardewValleyExpandedCP");
-            HasC2N_Or_LNPCs = Information.HasMod("Loe2run.ChildToNPC") || Information.HasMod("Candidus42.LittleNPCs");
-            HasExGIM = Information.HasMod("mistyspring.extraGImaps");
-            notfurniture = Config.UseFurnitureBed == false;
+            InstalledMods["SVE"] = Information.HasMod("FlashShifter.StardewValleyExpandedCP");
+            InstalledMods["C2N"] = Information.HasMod("Loe2run.ChildToNPC");
+            InstalledMods["LNPCs"] = Information.HasMod("Candidus42.LittleNPCs");
+            InstalledMods["ExGIM"] = Information.HasMod("mistyspring.extraGImaps");
+            InstalledMods["Devan"] = Information.HasMod("mistyspring.NPCDevan");
 
-            this.Monitor.Log($"\n   HasSVE = {HasSVE}\n   HasC2N_Or_LNPCs = {HasC2N_Or_LNPCs}\n   HasExGIM = {HasExGIM}", LogLevel.Debug);
+            Monitor.Log($"\n   Mod info: {InstalledMods}", LogLevel.Debug);
 
             //choose random
             RandomizedInt = Random.Next(1, 101);
-            IslandToday = Config.CustomChance >= RandomizedInt;
-#if DEBUG
-            IslandToday = true;
-#endif
+            IslandToday = Config.CustomChance >= RandomizedInt || Config.Debug;
 
             // get CP's api and register token
             var api = this.Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
@@ -98,383 +122,358 @@ namespace SpousesIsland
                 api.RegisterToken(this.ModManifest, "CanVisitIsland", () =>
                 {
                     // is island day
-                    if (IslandToday)
-                        return new string[] { "true" }; 
-
-                    else
-                        return new string[] { "false" };
+                    return IslandToday ? new[] { "true" } : new[] { "false" };
                 });
 
                 api.RegisterToken(this.ModManifest, "Invited", () =>
                 {
                     // is island day NOT ticket
                     if (IslandToday && !IsFromTicket && LoadedBasicData)
-                        return Information.PlayerSpouses(Player_MP_ID);
+                        return Information.PlayerSpouses(Game1.player);
                     //if ticket island
                     else if (IsFromTicket && LoadedBasicData)
-                        return Status[Player_MP_ID].Who.ToArray();
+                        return Status.Who.ToArray();
                     else
-                        return new string[] { "none" };
+                        return new[] { "none" };
                 });
 
                 api.RegisterToken(this.ModManifest, "Devan", () =>
                 {
-                    // on, not seasonal
-                    if (Config.NPCDevan && Config.SeasonalDevan == false)
-                        return new string[] {"enabled"};
-                    // on, seasonal
-                    else if (Config.NPCDevan && Config.SeasonalDevan)
-                        return new string[] {"enabled","seasonal"};
-                    // off
-                    else
-                        return new string[] { "false" };
+                    return Config.NPCDevan switch
+                    {
+                        // on, not seasonal
+                        true when Config.SeasonalDevan == false => new[] { "enabled" },
+                        // on, seasonal
+                        true when Config.SeasonalDevan => new[] { "enabled", "seasonal" },
+                        _ => new[] { "false" }
+                    };
                 });
 
                 api.RegisterToken(this.ModManifest, "AllowChildren", () =>
                 {
-                    var CanGo = Config.UseFurnitureBed == false || (Config.UseFurnitureBed && BedCode.HasAnyKidBeds()) && Context.IsWorldReady;
-                
-                    // on, has bed
-                    if (Config.Allow_Children && CanGo)
-                        return new string[] {"true"};
-                    // doesnt
-                    else if (Config.Allow_Children && !CanGo)
-                        return new string[] {"false"};
-                    // off
-                    else
-                        return new string[] { "false" };
+                    var canGo = Config.UseFurnitureBed == false || (Config.UseFurnitureBed && BedCode.HasAnyKidBeds()) && Context.IsWorldReady;
+
+                    return Config.Allow_Children switch
+                    {
+                        // on, has bed
+                        true when canGo => new[] { "true" },
+                        // doesnt
+                        true when true => new[] { "false" },
+                        _ => new[] { "false" }
+                    };
                 });
 
                 api.RegisterToken(this.ModManifest, "HasChildren", () =>
                 {
-                    if (Context.IsWorldReady)
-                        return new string[] { $"{Game1.player.getChildrenCount() != 0}" };
-                    // off
-                    else
-                        return new string[] { "false" };
+                    return Context.IsWorldReady ? new[] { $"{Game1.player.getChildrenCount() != 0}" } : new[] { "false" };
                 });
 
                 api.RegisterToken(this.ModManifest, "IslandAtt", () =>
                 {
-                    if(IslandAtt)
-                        return new string[] {"true"};
-                    else
-                        return new string[] {"false"};
+                    return Config.IslandClothes ? new[] {"true"} : new[] {"false"};
                 });
             }
 
-            //InfoChildren = ChildrenData.GetInformation(Config.ChildSchedules);
-
-            jsonAssets = Helper.ModRegistry.GetApi<IApi>("spacechase0.JsonAssets");
-
             // get Generic Mod Config Menu's API (if it's installed)
             var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
-            if (configMenu is not null)
-            {
-                // register mod
-                configMenu.Register(
-                    mod: this.ModManifest,
-                    reset: () => this.Config = new ModConfig(),
-                    save: () => this.Helper.WriteConfig(this.Config)
-                );
+            if (configMenu is null) return;
+            // register mod
+            configMenu.Register(
+                mod: ModManifest,
+                reset: () => Config = new ModConfig(),
+                save: () => Helper.WriteConfig(Config)
+            );
 
-                // basic config options
-                configMenu.AddNumberOption(
-                    mod: this.ModManifest,
-                    name: () => this.Helper.Translation.Get("config.CustomChance.name"),
-                    tooltip: () => this.Helper.Translation.Get("config.CustomChance.description"),
-                    getValue: () => this.Config.CustomChance,
-                    setValue: value => this.Config.CustomChance = value,
-                    min: 0,
-                    max: 100,
-                    interval: 1
-                );/*
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => this.Helper.Translation.Get("config.CustomRoom.name"),
-                    tooltip: () => this.Helper.Translation.Get("config.CustomRoom.description"),
-                    getValue: () => this.Config.CustomRoom,
-                    setValue: value => this.Config.CustomRoom = value
-                );*/
+            #region basic config options
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.CustomChance.name"),
+                tooltip: () => Helper.Translation.Get("config.CustomChance.description"),
+                getValue: () => Config.CustomChance,
+                setValue: value => Config.CustomChance = value,
+                min: 0,
+                max: 100,
+                interval: 1
+            );
 
-                //random place
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => this.Helper.Translation.Get("config.ScheduleRandom.name"),
-                    tooltip: () => this.Helper.Translation.Get("config.ScheduleRandom.description"),
-                    getValue: () => this.Config.ScheduleRandom,
-                    setValue: value => this.Config.ScheduleRandom = value
-                );
+            //random place
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.ScheduleRandom.name"),
+                tooltip: () => Helper.Translation.Get("config.ScheduleRandom.description"),
+                getValue: () => Config.ScheduleRandom,
+                setValue: value => Config.ScheduleRandom = value
+            );
 
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => this.Helper.Translation.Get("config.UseIslandClothes.name"),
-                    getValue: () => this.Config.IslandClothes,
-                    setValue: value => this.Config.IslandClothes = value
-                );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.UseIslandClothes.name"),
+                getValue: () => Config.IslandClothes,
+                setValue: value => Config.IslandClothes = value
+            );
 
-                configMenu.AddPageLink(
-                    mod: this.ModManifest,
-                    pageId: "Devan",
-                    text: () => this.Helper.Translation.Get("config.Devan_Nosit.name")+ "..."
-                    //tooltip: () => this.Helper.Translation.Get("config.advancedConfig.description")
-                );
+            configMenu.AddPageLink(
+                mod: ModManifest,
+                pageId: "Devan",
+                text: () => Helper.Translation.Get("config.Devan_Nosit.name")+ "..."
+            );
                 
-                if (HasC2N_Or_LNPCs)
-                {
-                    configMenu.AddPageLink(
-                        mod: this.ModManifest,
-                        pageId: "C2Nconfig",
-                        text: () => "Child NPC...",
-                        tooltip: () => this.Helper.Translation.Get("config.Child2NPC.description")
-                    );
-                }
-
-                //links to config pages
+            if (InstalledMods["C2N"]||InstalledMods["LPNCs"])
+            {
                 configMenu.AddPageLink(
-                    mod: this.ModManifest,
-                    pageId: "advancedConfig",
-                    text: () => this.Helper.Translation.Get("config.advancedConfig.name"),
-                    tooltip: () => this.Helper.Translation.Get("config.advancedConfig.description")
+                    mod: ModManifest,
+                    pageId: "C2Nconfig",
+                    text: () => "Child NPC...",
+                    tooltip: () => Helper.Translation.Get("config.Child2NPC.description")
                 );
+            }
 
-                if (HasC2N_Or_LNPCs is true)
+            //links to config pages
+            configMenu.AddPageLink(
+                mod: ModManifest,
+                pageId: "advancedConfig",
+                text: () => Helper.Translation.Get("config.advancedConfig.name"),
+                tooltip: () => Helper.Translation.Get("config.advancedConfig.description")
+            );
+            #endregion
+
+            if (InstalledMods["C2N"]||InstalledMods["LPNCs"])
+            {
+                configMenu.AddPage(
+                    mod: ModManifest,
+                    pageId: "C2Nconfig",
+                    pageTitle: () => "Child NPC..."
+                );
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => Helper.Translation.Get("config.ChildVisitIsland.name"),
+                    tooltip: () => Helper.Translation.Get("config.ChildVisitIsland.description"),
+                    getValue: () => Config.Allow_Children,
+                    setValue: value => Config.Allow_Children = value
+                );
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => Helper.Translation.Get("config.UseFurnitureBed.name"),
+                    tooltip: () => Helper.Translation.Get("config.UseFurnitureBed.description"),
+                    getValue: () => Config.UseFurnitureBed,
+                    setValue: value => Config.UseFurnitureBed = value 
+                );
+                if (Config.UseFurnitureBed == false) //if it's not bed furniture: lets you decide the "mod bed" color.
                 {
-                    configMenu.AddPage(
-                        mod: this.ModManifest,
-                        pageId: "C2Nconfig",
-                        pageTitle: () => "Child NPC..."
+                    configMenu.AddTextOption(
+                        mod: ModManifest,
+                        name: () => Helper.Translation.Get("config.Childbedcolor.name"),
+                        tooltip: () => Helper.Translation.Get("config.Childbedcolor.description"),
+                        getValue: () => Config.Childbedcolor,
+                        setValue: value => Config.Childbedcolor = value,
+                        allowedValues: new[] { "1", "2", "3", "4", "5", "6" }
                     );
-                    configMenu.AddBoolOption(
-                        mod: this.ModManifest,
-                        name: () => this.Helper.Translation.Get("config.ChildVisitIsland.name"),
-                        tooltip: () => this.Helper.Translation.Get("config.ChildVisitIsland.description"),
-                        getValue: () => this.Config.Allow_Children,
-                        setValue: value => this.Config.Allow_Children = value
-                    );
-                    configMenu.AddBoolOption(
-                        mod: this.ModManifest,
-                        name: () => this.Helper.Translation.Get("config.UseFurnitureBed.name"),
-                        tooltip: () => this.Helper.Translation.Get("config.UseFurnitureBed.description"),
-                        getValue: () => this.Config.UseFurnitureBed,
-                        setValue: value => this.Config.UseFurnitureBed = value 
-                    );
-                    if (Config.UseFurnitureBed == false) //if it's not bed furniture: lets you decide the "mod bed" color.
-                    {
-                        configMenu.AddTextOption(
-                        mod: this.ModManifest,
-                        name: () => this.Helper.Translation.Get("config.Childbedcolor.name"),
-                        tooltip: () => this.Helper.Translation.Get("config.Childbedcolor.description"),
-                        getValue: () => this.Config.Childbedcolor,
-                        setValue: value => this.Config.Childbedcolor = value,
-                        allowedValues: new string[] { "1", "2", "3", "4", "5", "6" }
-                    );
-                        configMenu.AddImage(
-                        mod: this.ModManifest,
+                    configMenu.AddImage(
+                        mod: ModManifest,
                         texture: Integrated.KbcSamples,
                         texturePixelArea: null,
                         scale: 1
                     );
-                    }
                 }
+            }
                 
-                //devan
-                configMenu.AddPage(
-                    mod: this.ModManifest,
-                    pageId: "Devan",
-                    pageTitle: () => this.Helper.Translation.Get("config.Devan_Nosit.name")
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => this.Helper.Translation.Get("config.Enabled"),
-                    tooltip: () => this.Helper.Translation.Get("config.Devan_Nosit.description"),
-                    getValue: () => this.Config.NPCDevan,
-                    setValue: value => this.Config.NPCDevan = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => this.Helper.Translation.Get("config.SeasonalDevan.name"),
-                    tooltip: () => this.Helper.Translation.Get("config.SeasonalDevan.description"),
-                    getValue: () => this.Config.SeasonalDevan,
-                    setValue: value => this.Config.SeasonalDevan = value
-                );
+            #region devan
+            configMenu.AddPage(
+                mod: ModManifest,
+                pageId: "Devan",
+                pageTitle: () => Helper.Translation.Get("config.Devan_Nosit.name")
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.Enabled"),
+                tooltip: () => Helper.Translation.Get("config.Devan_Nosit.description"),
+                getValue: () => Config.NPCDevan,
+                setValue: value => Config.NPCDevan = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.SeasonalDevan.name"),
+                tooltip: () => Helper.Translation.Get("config.SeasonalDevan.description"),
+                getValue: () => Config.SeasonalDevan,
+                setValue: value => Config.SeasonalDevan = value
+            );
+#endregion
+            #region adv. config page
+            configMenu.AddPage(
+                mod: ModManifest,
+                pageId: "advancedConfig",
+                pageTitle: () => Helper.Translation.Get("config.advancedConfig.name")
+            );
+            configMenu.AddSectionTitle(
+                mod: ModManifest,
+                text: () => "SVE",
+                tooltip: () => ModEntry.Help.Translation.Get("config.Vanillas.description")
+            );
+            //all spouse bools below
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Abigail",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Abigail,
+                setValue: value => Config.Allow_Abigail = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Alex",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Alex,
+                setValue: value => Config.Allow_Alex = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Elliott",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Elliott,
+                setValue: value => Config.Allow_Elliott = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Emily",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Emily,
+                setValue: value => Config.Allow_Emily = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Haley",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Haley,
+                setValue: value => Config.Allow_Haley = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Harvey",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Harvey,
+                setValue: value => Config.Allow_Harvey = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Krobus",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Krobus,
+                setValue: value => Config.Allow_Krobus = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Leah",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Leah,
+                setValue: value => Config.Allow_Leah = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Maru",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Maru,
+                setValue: value => Config.Allow_Maru = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Penny",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Penny,
+                setValue: value => Config.Allow_Penny = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Sam",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Sam,
+                setValue: value => Config.Allow_Sam = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Sebastian",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Sebastian,
+                setValue: value => Config.Allow_Sebastian = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => "Shane",
+                tooltip: () => null,
+                getValue: () => Config.Allow_Shane,
+                setValue: value => Config.Allow_Shane = value
+            );
 
-                //adv. config page
-                configMenu.AddPage(
-                    mod: this.ModManifest,
-                    pageId: "advancedConfig",
-                    pageTitle: () => this.Helper.Translation.Get("config.advancedConfig.name")
-                );
+            if (InstalledMods["SVE"])
+            {
                 configMenu.AddSectionTitle(
-                    mod: this.ModManifest,
-                    text: Titles.SpouseT,
-                    tooltip: Integrated.SpouseD
-                );
-                //all spouse bools below
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Abigail",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Abigail,
-                    setValue: value => this.Config.Allow_Abigail = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Alex",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Alex,
-                    setValue: value => this.Config.Allow_Alex = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Elliott",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Elliott,
-                    setValue: value => this.Config.Allow_Elliott = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Emily",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Emily,
-                    setValue: value => this.Config.Allow_Emily = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Haley",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Haley,
-                    setValue: value => this.Config.Allow_Haley = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Harvey",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Harvey,
-                    setValue: value => this.Config.Allow_Harvey = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Krobus",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Krobus,
-                    setValue: value => this.Config.Allow_Krobus = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Leah",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Leah,
-                    setValue: value => this.Config.Allow_Leah = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Maru",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Maru,
-                    setValue: value => this.Config.Allow_Maru = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Penny",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Penny,
-                    setValue: value => this.Config.Allow_Penny = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Sam",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Sam,
-                    setValue: value => this.Config.Allow_Sam = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Sebastian",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Sebastian,
-                    setValue: value => this.Config.Allow_Sebastian = value
-                );
-                configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => "Shane",
-                    tooltip: () => null,
-                    getValue: () => this.Config.Allow_Shane,
-                    setValue: value => this.Config.Allow_Shane = value
-                );
-
-                if (HasSVE is true)
-                {
-                    configMenu.AddSectionTitle(
-                    mod: this.ModManifest,
-                    text: Titles.SVET,
+                    mod: ModManifest,
+                    text: () => "SVE",
                     tooltip: null
                 );
-                    configMenu.AddBoolOption(
-                        mod: this.ModManifest,
-                        name: () => "Claire",
-                        tooltip: () => this.Helper.Translation.Get("config.RequiresSVE"),
-                        getValue: () => this.Config.Allow_Claire,
-                        setValue: value => this.Config.Allow_Claire = value
-                    );
-                    configMenu.AddBoolOption(
-                        mod: this.ModManifest,
-                        name: () => "Lance",
-                        tooltip: () => this.Helper.Translation.Get("config.RequiresSVE"),
-                        getValue: () => this.Config.Allow_Lance,
-                        setValue: value => this.Config.Allow_Lance = value
-                    );
-                    configMenu.AddBoolOption(
-                        mod: this.ModManifest,
-                        name: () => "Magnus",
-                        tooltip: () => this.Helper.Translation.Get("config.RequiresSVE"),
-                        getValue: () => this.Config.Allow_Magnus,
-                        setValue: value => this.Config.Allow_Magnus = value
-                    );
-                    configMenu.AddBoolOption(
-                        mod: this.ModManifest,
-                        name: () => "Olivia",
-                        tooltip: () => this.Helper.Translation.Get("config.RequiresSVE"),
-                        getValue: () => this.Config.Allow_Olivia,
-                        setValue: value => this.Config.Allow_Olivia = value
-                    );
-                    configMenu.AddBoolOption(
-                        mod: this.ModManifest,
-                        name: () => "Sophia",
-                        tooltip: () => this.Helper.Translation.Get("config.RequiresSVE"),
-                        getValue: () => this.Config.Allow_Sophia,
-                        setValue: value => this.Config.Allow_Sophia = value
-                    );
-                    configMenu.AddBoolOption(
-                        mod: this.ModManifest,
-                        name: () => "Victor",
-                        tooltip: () => this.Helper.Translation.Get("config.RequiresSVE"),
-                        getValue: () => this.Config.Allow_Victor,
-                        setValue: value => this.Config.Allow_Victor = value
-                    );
-                }
-
-                configMenu.AddSectionTitle(
-                    mod: this.ModManifest,
-                    text: Titles.Debug,
-                    tooltip: null
-                );
-                //debug options
                 configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => this.Helper.Translation.Get("config.DebugComm.name"),
-                    tooltip: () => this.Helper.Translation.Get("config.DebugComm.description"),
-                    getValue: () => this.Config.Debug,
-                    setValue: value => this.Config.Debug = value
+                    mod: ModManifest,
+                    name: () => "Claire",
+                    tooltip: () => Helper.Translation.Get("config.RequiresSVE"),
+                    getValue: () => Config.Allow_Claire,
+                    setValue: value => Config.Allow_Claire = value
                 );
                 configMenu.AddBoolOption(
-                    mod: this.ModManifest,
-                    name: () => this.Helper.Translation.Get("config.Verbose.name"),
-                    tooltip: () => this.Helper.Translation.Get("config.Verbose.description"),
-                    getValue: () => this.Config.Verbose,
-                    setValue: value => this.Config.Verbose = value
+                    mod: ModManifest,
+                    name: () => "Lance",
+                    tooltip: () => Helper.Translation.Get("config.RequiresSVE"),
+                    getValue: () => Config.Allow_Lance,
+                    setValue: value => Config.Allow_Lance = value
+                );
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => "Magnus",
+                    tooltip: () => Helper.Translation.Get("config.RequiresSVE"),
+                    getValue: () => Config.Allow_Magnus,
+                    setValue: value => Config.Allow_Magnus = value
+                );
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => "Olivia",
+                    tooltip: () => Helper.Translation.Get("config.RequiresSVE"),
+                    getValue: () => Config.Allow_Olivia,
+                    setValue: value => Config.Allow_Olivia = value
+                );
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => "Sophia",
+                    tooltip: () => Helper.Translation.Get("config.RequiresSVE"),
+                    getValue: () => Config.Allow_Sophia,
+                    setValue: value => Config.Allow_Sophia = value
+                );
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => "Victor",
+                    tooltip: () => Helper.Translation.Get("config.RequiresSVE"),
+                    getValue: () => Config.Allow_Victor,
+                    setValue: value => Config.Allow_Victor = value
                 );
             }
+            #endregion
+            #region debugging
+            configMenu.AddSectionTitle(
+                mod: ModManifest,
+                text: () => Helper.Translation.Get("config.Debug"),
+                tooltip: null
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.DebugComm.name"),
+                tooltip: () => Helper.Translation.Get("config.DebugComm.description"),
+                getValue: () => Config.Debug,
+                setValue: value => Config.Debug = value
+            );
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("config.Verbose.name"),
+                tooltip: () => Helper.Translation.Get("config.Verbose.description"),
+                getValue: () => Config.Verbose,
+                setValue: value => Config.Verbose = value
+            );
+            #endregion
         }
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
@@ -485,7 +484,7 @@ namespace SpousesIsland
              */
 
             //dialogue is added regardless of conditions
-            if (e.Name.StartsWith("Characters/Dialogue/", false, true))
+            if (e.Name.StartsWith("Characters/Dialogue/", false))
             {
                 if (e.NameWithoutLocale.IsEquivalentTo("Characters/Dialogue/MarriageDialogueKrobus"))
                     e.Edit(asset =>
@@ -499,11 +498,11 @@ namespace SpousesIsland
             }
 
             //same with devan
-            if (Config.NPCDevan == true)
+            if (Config.NPCDevan && !InstalledMods["Devan"])
             {
                 this.Monitor.LogOnce("Adding Devan", LogLevel.Debug);
 
-                if (e.Name.StartsWith("Data/", false, true))
+                if (e.Name.StartsWith("Data/", false))
                 {
                     if (e.Name.StartsWith("Data/Festivals/", false, false))
                     {
@@ -517,15 +516,15 @@ namespace SpousesIsland
             }
 
             //and map edits
-            if (e.Name.StartsWith("Maps/", false, true))
+            if (e.Name.StartsWith("Maps/", false))
             {
-                Integrated.IslandMaps(e, Config);
+                Integrated.IslandMaps(e);
             }
 
             /* if hasnt unlocked island:
              * returns / doesnt apply these patches
              */
-            if (!IslandHouse || !IslandToday)
+            if (!_islandHouse || !IslandToday)
             {
                 return;
             }
@@ -535,59 +534,22 @@ namespace SpousesIsland
                 e.Edit(asset =>
                 {
                     var editor = asset.AsMap();
-                    Map map = editor.Data;
+                    var map = editor.Data;
                     map.Properties.Add("NPCWarp", "4 3 IslandSouth 19 43");
                 });
             }
 
-            if (e.Name.StartsWith("Characters/schedules/", false, true))
+            if (e.Name.StartsWith("Characters/schedules/", false))
             {
                 if (e.NameWithoutLocale.IsEquivalentTo("Characters/schedules/Krobus"))
                 {
                     e.LoadFrom(
                         () => new Dictionary<string, string>(),
                         AssetLoadPriority.Low);
-                }
-                    Integrated.KidSchedules(e);
+                } 
+                Integrated.KidSchedules(e);
             }
         }
-
-        //if SP, loadstagechanged will obtain required data. if MP, peercontext will.
-        private void LoadStageChanged(object sender, LoadStageChangedEventArgs e)
-        {
-            if (e.NewStage == LoadStage.SaveLoadedBasicInfo)
-            {
-                GetRequiredData(Game1.MasterPlayer);
-            }
-            if(e.NewStage == LoadStage.Ready)
-            {
-                //get kids
-                Children = Information.PlayerChildren(Game1.player);
-                //get for patching
-                MustPatchPF = Information.PlayerSpouses(Player_MP_ID); //add all spouses
-                if (!HasC2N_Or_LNPCs)
-                    return;
-                foreach(var kid in Children)
-                {
-                    MustPatchPF.Add(kid.Name);
-                }
-            }
-        }
-        private void PeerContextReceived(object sender, PeerContextReceivedEventArgs e)
-        {
-            var PID = e.Peer?.PlayerID ?? 0; //set in a variable just in case
-
-            var newFarmer = Game1.getFarmer(PID);
-
-            if (!newFarmer.IsLocalPlayer)
-            {
-                return;
-            }
-
-            GetRequiredData(newFarmer);
-        }
-
-        //these happen regardless of SP/MP
         private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
             //get new %
@@ -602,7 +564,7 @@ namespace SpousesIsland
              * if island yesterday AND not today (or viceversa).*/
             if (IslandToday && !hadYesterday || hadYesterday && RandomizedInt > Config.CustomChance)
             {
-                foreach (var spouse in Status[Player_MP_ID].Who)
+                foreach (var spouse in Status.Who)
                 {
                     //invalidate schedule, portrait AND dialogue
                     Helper.GameContent.InvalidateCache($"Characters/schedules/{spouse}");
@@ -613,19 +575,18 @@ namespace SpousesIsland
                         Helper.GameContent.InvalidateCache($"Characters/{spouse}");
                     }
 
-                    if (spouse == "Krobus")
-                    {
-                        NPC npc = Game1.getCharacterFromName(spouse,false);
-                        npc.Sprite.SpriteHeight = 24; //original size
-                        npc.Sprite.UpdateSourceRect();
-                        npc.reloadSprite();
-                    }
+                    if (spouse != "Krobus") continue;
+                    
+                    var npc = Game1.getCharacterFromName(spouse,false);
+                    npc.Sprite.SpriteHeight = 24; //original size
+                    npc.Sprite.UpdateSourceRect();
+                    npc.reloadSprite();
                 }
             }
 
             //if flag is set in status
-            var ticketday = Status[Player_MP_ID].DayVisit;
-            var ticketweek = Status[Player_MP_ID].WeekVisit.Item1;
+            var ticketday = Status.DayVisit;
+            var ticketweek = Status.WeekVisit.Item1;
 
             //if player used a visit ticket
             if (ticketday || ticketweek)
@@ -637,25 +598,23 @@ namespace SpousesIsland
                 //remove flags
                 Game1.player.RemoveMail("VisitTicket_day");
 
-                //get id + set them in mod file. ticketday set to true for future loading
-                var playerID = Game1.player.UniqueMultiplayerID.ToString();
-
-                Status[playerID].DayVisit = ticketday;
-                Status[playerID].WeekVisit = (ticketweek, Status[playerID]?.WeekVisit.Item2 ?? 0);
+                Status.DayVisit = ticketday;
+                Status.WeekVisit = (ticketweek, Status?.WeekVisit.Item2 ?? 0);
 
 
                 //if true, check int value. if 7, reset. else, add 1
-                var week = Status[playerID].WeekVisit;
+                // ReSharper disable once PossibleNullReferenceException
+                var week = Status.WeekVisit;
                 if (week.Item1)
                 {
                     if(week.Item2 == 7)
                     {
                         Game1.player.RemoveMail("VisitTicket_week");
-                        Status[playerID].WeekVisit = (false, 0);
+                        Status.WeekVisit = (false, 0);
                     }
                     else
                     {
-                        Status[playerID].WeekVisit = (true, week.Item2 + 1);
+                        Status.WeekVisit = (true, week.Item2 + 1);
                     }
                 }
             }
@@ -663,12 +622,12 @@ namespace SpousesIsland
             else
             {
                 //clear inviteds list
-                Status[Player_MP_ID].Who.Clear();
+                Status.Who.Clear();
 
                 //if still island
                 if (IslandToday)
                 {
-                    Status[Player_MP_ID].Who = Information.PlayerSpouses(Player_MP_ID);
+                    Status.Who = Information.PlayerSpouses(Game1.player);
                 }
             }
 
@@ -676,36 +635,21 @@ namespace SpousesIsland
 
              * check if theres other savedata(s), and include accordingly
              */
-            var file = Helper.Data.ReadJsonFile<Dictionary<string, ModStatus>>("moddata.json");
 
-            //remove user outdated info
-            file?.Remove(Player_MP_ID);
-            var allStatuses = Status;
-
-            //if theres data of other savefiles
-            if (file != null && file?.Count != 0)
-            {
-                //add each one
-                foreach (var data in file)
-                {
-                    allStatuses.TryAdd(data.Key, data.Value);
-                }
-            }
-
-            this.Helper.Data.WriteJsonFile("moddata.json", allStatuses);
+            this.Helper.Data.WriteJsonFile(Datapath, Status);
 
             //remove the values from status
             //(only do for day, week has its own thing).
-            Status[Player_MP_ID].DayVisit = false;
+            Status.DayVisit = false;
 
             Children = Information.PlayerChildren(Game1.player);
             //get for patching
-            MustPatchPF = Information.PlayerSpouses(Player_MP_ID); //add all spouses
-            if (!HasC2N_Or_LNPCs)
+            PatchPathfind = Information.PlayerSpouses(Game1.player); //add all spouses
+            if (!InstalledMods["C2N"] && !InstalledMods["LPNCs"])
                 return;
             foreach (var kid in Children)
             {
-                MustPatchPF.Add(kid.Name);
+                PatchPathfind.Add(kid.Name);
             }
         }
         private void TitleReturn(object sender, ReturnedToTitleEventArgs e)
@@ -721,7 +665,6 @@ namespace SpousesIsland
         private void ClearValues()
         {
             Status = new();
-            Player_MP_ID = null;
 
             this.Monitor.Log("Clearing Children...");
             Children?.Clear();
@@ -733,71 +676,40 @@ namespace SpousesIsland
 
             this.Monitor.Log("SawDevan4H = false; CCC = false; RandomizedInt = 0;");
         }
-        private void GetRequiredData(Farmer player)
-        {
-            CanRandomize = Config.ScheduleRandom;
 
-            IslandAtt = Config.IslandClothes;
-
-            //set for using in Integrated.cs
-            Player_MP_ID = player.UniqueMultiplayerID.ToString();
-            LoadedBasicData = true;
-
-            //try to read file from moddata. if empty, check mail
-            //read here. 
-            ReadModData(player);
-
-            //now get user data
-            var boatFix = player?.mailReceived?.Contains("willyBoatFixed");
-            BoatFixed = boatFix ?? false;
-            this.Monitor.Log($"BoatFixed = {BoatFixed};", LogLevel.Debug);
-
-            IslandHouse = player?.mailReceived?.Contains("Island_UpgradeHouse") ?? false;
-
-            var married = Values.GetAllSpouses(player);
-            foreach (var name in married)
-            {
-                this.Monitor.Log($"Checking NPC {name}...", IsDebug ? LogLevel.Debug : LogLevel.Trace); //log to debug or trace depending on config
-
-                if (Values.IntegratedAndEnabled(name, Config))
-                {
-                    MarriedAndAllowed.Add(name);
-                    this.Monitor.Log($"{name} is married to player.", LogLevel.Debug);
-                }
-            }
-        }
         private void ReadModData(Farmer player)
         {
-            var userID = player.UniqueMultiplayerID.ToString(); //userID causes a NRE, use MP id. 
-            var file = Helper.Data.ReadJsonFile<Dictionary<string, ModStatus>>("moddata.json");
+            DevanExists = Config.NPCDevan || InstalledMods["Devan"];
+
+            var file = Helper.Data.ReadJsonFile<ModStatus>(Datapath);
             if(file == null)
             {
-                Status.Add(userID, new ModStatus(player, IslandToday)); 
+                Status = new ModStatus(player, IslandToday); 
             }
-            else if (file.Keys.Any(id => id == userID))
+            else
             {
-                if (file[userID].DayVisit)
+                if (file.DayVisit)
                 {
                     //set to true n remove
                     IsFromTicket = true;
                     IslandToday = true;
                     RandomizedInt = 0;
-                    file[userID].DayVisit = false;
+                    file.DayVisit = false;
                 }
-                if (file[userID].WeekVisit.Item1)
+                if (file.WeekVisit.Item1)
                 {
-                    var wv = file[userID].WeekVisit;
+                    var wv = file.WeekVisit;
                     //check value
                     if (wv.Item2 == 7)
                     {
-                        file[userID].WeekVisit = (false, 0);
+                        file.WeekVisit = (false, 0);
                     }
                     else
                     {
                         IsFromTicket = true;
                         IslandToday = true;
                         RandomizedInt = 0;
-                        file[userID].WeekVisit = (true, wv.Item2 + 1);
+                        file.WeekVisit = (true, wv.Item2 + 1);
                     }
                 }
                 else
@@ -805,56 +717,53 @@ namespace SpousesIsland
                     Status = file;
                 }
             }
-            else
-            {
-                Status.Add(userID, new ModStatus(player, IslandToday));
-            }
         }
 
         /* Helpers + things the mod uses */
 
-        private ModConfig Config;
-        public static IApi jsonAssets;
-        private static Random random;
+        internal static ModConfig Config;
+        private static Random _random;
         internal static IModHelper Help { get; private set; }
+        // ReSharper disable once InconsistentNaming
         internal static ITranslationHelper TL { get; private set; }
         internal static IMonitor Mon { get; private set; }
         internal static Random Random
         {
             get
             {
-                random ??= new Random(((int)Game1.uniqueIDForThisGame * 26) + (int)(Game1.stats.DaysPlayed * 36));
-                return random;
+                _random ??= new Random(((int)Game1.uniqueIDForThisGame * 26) + (int)(Game1.stats.DaysPlayed * 36));
+                return _random;
             }
         }
 
         /* User-related starts here */
-
-        internal static bool IsDebug = false;
         internal static bool IslandToday { get; private set; }
-        internal static bool IsFromTicket { get; private set; } = false;
+        internal static bool IsFromTicket { get; private set; }
         internal static int RandomizedInt { get; private set; }
         internal static int PreviousDayRandom { get; private set; }
-        internal static bool LoadedBasicData {get; private set;} = false;
-        internal static bool IslandAtt { get; private set;} = false;
-        internal static bool CanRandomize { get; private set; } = false;
+        private static bool LoadedBasicData {get; set;}
 
         /* children related */
         internal static List<Character> Children { get; private set; } = new();
-        internal static Dictionary<string,string> InfoChildren = new(); //this refers to info in relation to the mod (ie, schedule data for island visit). not actual info
-        internal static bool MustPatchC2N = false;
 
         /* player data */
-        internal static string Player_MP_ID;
-        public static List<string> MarriedAndAllowed { get; private set; } = new();
+        public static List<string> MarriedAndAllowed { get; } = new();
         internal static bool BoatFixed;
-        internal static bool IslandHouse = false;
-        internal static bool HasSVE;
-        internal static bool HasC2N_Or_LNPCs;
-        internal static bool HasExGIM;
-        internal static bool notfurniture;
-        internal static List<string> MustPatchPF { get; set; } = new();
+        private static bool _islandHouse;
+        
+        internal static Dictionary<string,bool> InstalledMods = new(){
+            {"SVE",false},
+            {"C2N",false},
+            {"LPNCs",false},
+            {"ExGIM",false},
+            {"Devan",false}
+        };
 
-        internal static Dictionary<string, ModStatus> Status { get; private set; } = new();
+        private static string Datapath => Context.IsWorldReady ? $"{Constants.CurrentSavePath}/SGI/data.json" : null;
+
+        internal static bool DevanExists;
+        internal static List<string> PatchPathfind { get; private set; } = new();
+
+        internal static ModStatus Status { get; private set; }
     }
 }

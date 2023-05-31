@@ -11,7 +11,7 @@
 {
   "Name": "MultiSave",
   "Author": "aedenthorn",
-  "Version": "0.1.7",
+  "Version": "0.1.8",
   "Description": "MultiSave.",
   "UniqueID": "aedenthorn.MultiSave",
   "EntryDll": "MultiSave.dll",

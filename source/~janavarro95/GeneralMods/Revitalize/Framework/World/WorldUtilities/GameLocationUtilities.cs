@@ -46,6 +46,14 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
             }
         }
 
+        /// <summary>
+        /// Checks to see if the hard mines are currently enabled for special benefits.
+        /// </summary>
+        /// <returns></returns>
+        public static bool AreTheHardMinesEnabled()
+        {
+            return Game1.player.team.mineShrineActivated.Value == true;
+        }
 
         /// <summary>
         /// Checks to see if the player is in the regular mine.
@@ -53,7 +61,31 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
         /// <returns></returns>
         public static bool IsPlayerInMine()
         {
-            if (Game1.player.currentLocation.Name.StartsWith("UndergroundMine"))
+            return IsLocationInTheMines(Game1.player.currentLocation);
+        }
+
+        /// <summary>
+        /// Checks to see if a given game location is in the mines.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public static bool IsLocationInTheMines(GameLocation location)
+        {
+            if (location.Name.StartsWith("UndergroundMine"))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Checks to see if a given location is the enterance to the mines.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public static bool IsLocationTheEntranceToTheMines(GameLocation location)
+        {
+            if (location.Name.StartsWith("Mine") || location.Name.Equals("Mine"))
             {
                 return true;
             }
@@ -64,21 +96,74 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
         /// Checks to see if the player is in the enterance to the mine.
         /// </summary>
         /// <returns></returns>
-        public static bool IsPlayerInMineEnterance()
+        public static bool IsPlayerInTheEnteranceToTheMines()
         {
-            if (Game1.player.currentLocation.Name.StartsWith("Mine") || Game1.player.currentLocation.Name == "Mine")
+            return IsLocationTheEntranceToTheMines(Game1.player.currentLocation);
+        }
+
+        /// <summary>
+        /// Checks to see if a game location is in Skull Caves or not.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public static bool IsLocationInSkullCaves(GameLocation location)
+        {
+            if (location.Name.Equals("SkullCave") || location.Name.StartsWith("SkullCave"))
             {
                 return true;
             }
             return false;
         }
+
         /// <summary>
         /// Checks to see if the player is in skull cave.
         /// </summary>
         /// <returns></returns>
         public static bool IsPlayerInSkullCave()
         {
-            if (Game1.player.currentLocation.Name == "SkullCave" || Game1.player.currentLocation.Name.StartsWith("SkullCave"))
+            return IsLocationInSkullCaves(Game1.player.currentLocation);
+        }
+
+        /// <summary>
+        /// Checks to see if the player is in the volcano dungeon mine.
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsPlayerInTheVolcanoDungeon()
+        {
+            return IsLocationTheVolcanoDungeon(Game1.player.currentLocation);
+        }
+
+        /// <summary>
+        /// Checks to see if a given game location is in the volcano dungeon mine.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public static bool IsLocationTheVolcanoDungeon(GameLocation location)
+        {
+            if (location.Name.StartsWith("VolcanoDungeon"))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Checks to see if the player is in the caldera.
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsPlayerInTheCaldera()
+        {
+            return IsLocationTheCaldera(Game1.player.currentLocation);
+        }
+
+        /// <summary>
+        /// Checks to see if a given location is the caldera.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public static bool IsLocationTheCaldera(GameLocation location)
+        {
+            if (location.Name.StartsWith("Caldera"))
             {
                 return true;
             }
@@ -89,16 +174,30 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
         /// Gets the current mine level for the player. If the player is not in the mine this is -1.
         /// </summary>
         /// <returns></returns>
-        public static int CurrentMineLevel()
+        public static int GetPlayerCurrentMineLevel()
         {
             if (IsPlayerInMine())
             {
-                return (Game1.player.currentLocation as StardewValley.Locations.MineShaft).mineLevel;
+                return CurrentMineLevel(Game1.player.currentLocation);
             }
             else
             {
                 return -1;
             }
+        }
+
+        /// <summary>
+        /// Gets the current level of the the mines for a given game location, or returns -1 if the location is not in the mines.
+        /// </summary>
+        /// <param name="gameLocation"></param>
+        /// <returns></returns>
+        public static int CurrentMineLevel(GameLocation gameLocation)
+        {
+            if(gameLocation is StardewValley.Locations.MineShaft)
+            {
+                return (gameLocation as StardewValley.Locations.MineShaft).mineLevel;
+            }
+            return -1;
         }
 
         /// <summary>

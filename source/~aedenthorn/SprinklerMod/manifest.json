@@ -11,7 +11,7 @@
 {
   "Name": "Sprinkler Mod",
   "Author": "aedenthorn",
-  "Version": "0.1.3",
+  "Version": "0.1.5",
   "Description": "Sprinkler Mod.",
   "UniqueID": "aedenthorn.SprinklerMod",
   "EntryDll": "SprinklerMod.dll",

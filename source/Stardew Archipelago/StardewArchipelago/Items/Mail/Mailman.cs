@@ -82,7 +82,7 @@ namespace StardewArchipelago.Items.Mail
             GenerateMail(mailKey, mailContent);
         }
 
-        private void GenerateMail(string mailKey, string mailContent)
+        public void GenerateMail(string mailKey, string mailContent)
         {
             mailContent = mailContent.Replace("<3", "<");
             var mailData = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
@@ -142,7 +142,7 @@ namespace StardewArchipelago.Items.Mail
             return chosenString;
         }
 
-        private void SendMail(string mailTitle)
+        public void SendMail(string mailTitle)
         {
             if (_sendForTomorrow)
             {

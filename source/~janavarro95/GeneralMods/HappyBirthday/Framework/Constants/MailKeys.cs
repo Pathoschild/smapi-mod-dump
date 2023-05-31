@@ -75,12 +75,12 @@ namespace Omegasis.HappyBirthday.Framework.Constants
             {
                 string mailKey = CreateBelatedBirthdayWishMailKey(npc.Name);
 
-                if (npcNameToMailKey.ContainsKey(npc.name))
+                if (npcNameToMailKey.ContainsKey(npc.Name))
                 {
                     continue;
                 }
 
-                npcNameToMailKey.Add(npc.name,mailKey);
+                npcNameToMailKey.Add(npc.Name,mailKey);
             }
             return npcNameToMailKey;
 

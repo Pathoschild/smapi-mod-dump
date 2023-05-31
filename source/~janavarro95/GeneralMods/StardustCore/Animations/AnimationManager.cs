@@ -34,7 +34,7 @@ namespace Omegasis.StardustCore.Animations
         {
             get
             {
-                if (this.netObjectTexture == null) return null;
+                if (this.netObjectTexture.Value == null) return null;
                 return this.netObjectTexture.Value;
             }
             set
@@ -144,7 +144,7 @@ namespace Omegasis.StardustCore.Animations
         /// <summary>Update the animation frame once after drawing the object.</summary>
         public void tickAnimation()
         {
-            if (!this.enabled || this.currentAnimationName.Equals(this.defaultAnimationKey))
+            if (!this.enabled.Value || this.currentAnimationName.Equals(this.defaultAnimationKey))
                 return; //This is if this is a default animation or the animation stops here.
             this.getCurrentAnimation().tickAnimation();
 
@@ -180,11 +180,12 @@ namespace Omegasis.StardustCore.Animations
         /// <returns></returns>
         public bool playAnimation(string AnimationName, bool overrideSameAnimation = false, int StartingFrame = 0)
         {
+            if (overrideSameAnimation == false && AnimationName.Equals(this.currentAnimationName.Value)) return false;
             if (this.animations.ContainsKey(AnimationName))
             {
                 this.getCurrentAnimation().reset();
                 this.currentAnimationName.Value = AnimationName;
-                this.getCurrentAnimation().startAnimation();
+                this.getCurrentAnimation().startAnimation(StartingFrame);
                 return true;
 
             }
@@ -218,7 +219,7 @@ namespace Omegasis.StardustCore.Animations
         /// </summary>
         public void playDefaultAnimation()
         {
-            this.currentAnimationName.Value = this.defaultAnimationKey;
+            this.currentAnimationName.Value = this.defaultAnimationKey.Value;
         }
 
         /// <summary>Sets the animation manager to an on state, meaning that this animation will update on the draw frame.</summary>
@@ -247,7 +248,7 @@ namespace Omegasis.StardustCore.Animations
         public void draw(SpriteBatch spriteBatch, Texture2D texture, Vector2 Position, Rectangle? sourceRectangle, Color drawColor, float rotation, Vector2 origin, float scale, SpriteEffects spriteEffects, float LayerDepth)
         {
             //Log.AsyncC("Animation Manager is working!");
-            spriteBatch.Draw(texture, Position, sourceRectangle, drawColor, rotation, origin, scale, spriteEffects, LayerDepth);
+            spriteBatch.Draw(texture, Position, sourceRectangle, drawColor, rotation, origin, scale * this.getCurrentAnimation().getCurrentAnimationFrame().scale, spriteEffects, LayerDepth);
             this.tickAnimation();
         }
 
@@ -267,7 +268,7 @@ namespace Omegasis.StardustCore.Animations
         public void draw(SpriteBatch spriteBatch, Texture2D texture, Vector2 Position, Rectangle? sourceRectangle, Color drawColor, float rotation, Vector2 origin, Vector2 scale, SpriteEffects spriteEffects, float LayerDepth)
         {
             //Log.AsyncC("Animation Manager is working!");
-            spriteBatch.Draw(texture, Position, sourceRectangle, drawColor, rotation, origin, scale, spriteEffects, LayerDepth);
+            spriteBatch.Draw(texture, Position, sourceRectangle, drawColor, rotation, origin, scale * this.getCurrentAnimation().getCurrentAnimationFrame().scale, spriteEffects, LayerDepth);
             this.tickAnimation();
             // Log.AsyncC("Tick animation");
         }
@@ -283,13 +284,13 @@ namespace Omegasis.StardustCore.Animations
         /// <param name="depth"></param>
         public void draw(SpriteBatch b, Vector2 Position, Color drawColor, float scale, SpriteEffects flipped, float depth)
         {
-            b.Draw(this.objectTexture.texture, Position, this.getCurrentAnimation().getCurrentAnimationFrameRectangle(), drawColor, 0f, Vector2.Zero, scale, flipped, depth);
+            b.Draw(this.objectTexture.texture, Position, this.getCurrentAnimation().getCurrentAnimationFrameRectangle(), drawColor, 0f, Vector2.Zero, scale * this.getCurrentAnimation().getCurrentAnimationFrame().scale, flipped, depth);
             this.tickAnimation();
         }
 
         public void draw(SpriteBatch b, Vector2 Position, Color drawColor, float scale, float Rotation, SpriteEffects flipped, float depth)
         {
-            b.Draw(this.objectTexture.texture, Position, this.getCurrentAnimation().getCurrentAnimationFrameRectangle(), drawColor, Rotation, Vector2.Zero, scale, flipped, depth);
+            b.Draw(this.objectTexture.texture, Position, this.getCurrentAnimation().getCurrentAnimationFrameRectangle(), drawColor, Rotation, Vector2.Zero, scale * this.getCurrentAnimation().getCurrentAnimationFrame().scale, flipped, depth);
             this.tickAnimation();
         }
 
@@ -304,13 +305,13 @@ namespace Omegasis.StardustCore.Animations
         /// <param name="depth">The depth of the sprite.</param>
         public void draw(SpriteBatch b, Vector2 Position, Color drawColor, Vector2 scale, SpriteEffects flipped, float depth)
         {
-            b.Draw(this.objectTexture.texture, Position, this.getCurrentAnimation().getCurrentAnimationFrameRectangle(), drawColor, 0f, Vector2.Zero, scale, flipped, depth);
+            b.Draw(this.objectTexture.texture, Position, this.getCurrentAnimation().getCurrentAnimationFrameRectangle(), drawColor, 0f, Vector2.Zero, scale * this.getCurrentAnimation().getCurrentAnimationFrame().scale, flipped, depth);
             this.tickAnimation();
         }
 
         public void draw(SpriteBatch b, Vector2 Position, Color drawColor, Vector2 scale, float Rotation, SpriteEffects flipped, float depth)
         {
-            b.Draw(this.objectTexture.texture, Position, this.getCurrentAnimation().getCurrentAnimationFrameRectangle(), drawColor, Rotation, Vector2.Zero, scale, flipped, depth);
+            b.Draw(this.objectTexture.texture, Position, this.getCurrentAnimation().getCurrentAnimationFrameRectangle(), drawColor, Rotation, Vector2.Zero, scale * this.getCurrentAnimation().getCurrentAnimationFrame().scale, flipped, depth);
             this.tickAnimation();
         }
 
@@ -344,15 +345,15 @@ namespace Omegasis.StardustCore.Animations
         /// <returns></returns>
         public virtual Animation getCurrentAnimation()
         {
-            if (string.IsNullOrEmpty(this.currentAnimationName)) return null;
+            if (string.IsNullOrEmpty(this.currentAnimationName.Value)) return null;
 
-            if (this.animations.ContainsKey(this.currentAnimationName))
+            if (this.animations.ContainsKey(this.currentAnimationName.Value))
             {
-                return this.animations[this.currentAnimationName];
+                return this.animations[this.currentAnimationName.Value];
             }
-            else if (this.animations.ContainsKey(this.defaultAnimationKey))
+            else if (this.animations.ContainsKey(this.defaultAnimationKey.Value))
             {
-                return this.animations[this.defaultAnimationKey];
+                return this.animations[this.defaultAnimationKey.Value];
             }
             else
             {
@@ -366,9 +367,9 @@ namespace Omegasis.StardustCore.Animations
         /// <returns></returns>
         public virtual Animation getDefaultAnimation()
         {
-            if (this.animations.ContainsKey(this.defaultAnimationKey))
+            if (this.animations.ContainsKey(this.defaultAnimationKey.Value))
             {
-                return this.animations[this.defaultAnimationKey];
+                return this.animations[this.defaultAnimationKey.Value];
             }
             return null;
         }
@@ -389,7 +390,7 @@ namespace Omegasis.StardustCore.Animations
                 animations.Add(v.Key, v.Value.Copy());
             }
 
-            return new AnimationManager(this.objectTexture, animations, this.defaultAnimationKey, this.startingAnimationKey, 0, this.enabled);
+            return new AnimationManager(this.objectTexture, animations, this.defaultAnimationKey.Value, this.startingAnimationKey.Value, 0, this.enabled.Value);
         }
     }
 }

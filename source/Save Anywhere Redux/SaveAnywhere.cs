@@ -20,6 +20,8 @@ using StardewValley.Monsters;
 
 namespace SaveAnywhere
 {
+    // remove Resharper warning about class SaveAnywhere not being instantiated (it's done via SMAPI)
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class SaveAnywhere : Mod
     {
         public static SaveAnywhere Instance;

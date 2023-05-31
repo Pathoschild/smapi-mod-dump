@@ -11,7 +11,7 @@
 {
   "Name": "Item Bags",
   "Author": "SlayerDharok",
-  "Version": "2.0.3-beta1",
+  "Version": "2.0.4-beta1",
   "Description": "Adds bag items which can store multiple items in a single inventory space",
   "UniqueID": "SlayerDharok.Item_Bags",
   "EntryDll": "ItemBags.dll",

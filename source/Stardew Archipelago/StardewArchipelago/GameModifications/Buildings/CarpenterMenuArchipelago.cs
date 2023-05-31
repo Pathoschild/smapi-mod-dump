@@ -10,7 +10,8 @@
 
 using System.Collections.Generic;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Locations.CodeInjections;
+using StardewArchipelago.Constants;
+using StardewArchipelago.Locations.CodeInjections.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -18,9 +19,6 @@ namespace StardewArchipelago.GameModifications.Buildings
 {
     public class CarpenterMenuArchipelago : BuildingMenuArchipelago
     {
-        public CarpenterMenuArchipelago(ArchipelagoClient archipelago) : base(archipelago)
-        {
-        }
 
         public CarpenterMenuArchipelago(IModHelper modHelper, ArchipelagoClient archipelago) : base(modHelper, archipelago, false)
         {
@@ -29,24 +27,33 @@ namespace StardewArchipelago.GameModifications.Buildings
         public override List<BluePrint> GetAvailableBlueprints()
         {
             var blueprints = new List<BluePrint>();
+            var blueprintData = FullBlueprintData();
+            foreach (var blueprint in blueprintData)
+            {
+                var blueprintMagical = blueprint.magical;
+                var blueprintUpgrade = blueprint.nameOfBuildingToUpgrade;
 
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_COOP);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_BARN);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_WELL);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_SILO);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_MILL);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_SHED);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_FISH_POND);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_STABLE, true);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_SLIME_HUTCH);
+                if (blueprintMagical)
+                {
+                    continue;
+                }
+                if (blueprint.name == "Stable")
+                {
+                    AddBuildingBlueprintIfReceived(blueprints, blueprint.name, true);
+                    continue;
+                }
+                if (blueprintUpgrade == "none")
+                {
+                    AddBuildingBlueprintIfReceived(blueprints, blueprint.name, requiredBuilding: null);
+                    continue;
+                }
+                AddBuildingBlueprintIfReceived(blueprints, blueprint.name, requiredBuilding: blueprintUpgrade);
+            }
 
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_BIG_COOP, requiredBuilding: CarpenterInjections.BUILDING_COOP);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_DELUXE_COOP, requiredBuilding: CarpenterInjections.BUILDING_BIG_COOP);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_BIG_BARN, requiredBuilding: CarpenterInjections.BUILDING_BARN);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_DELUXE_BARN, requiredBuilding: CarpenterInjections.BUILDING_BIG_BARN);
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_BIG_SHED, requiredBuilding: CarpenterInjections.BUILDING_SHED);
-
-            AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_SHIPPING_BIN);
+            if (_archipelago.SlotData.Mods.HasMod(ModNames.TRACTOR))
+            {
+                AddBuildingBlueprintIfReceived(blueprints, CarpenterInjections.BUILDING_TRACTOR_GARAGE, true);
+            }
             return blueprints;
         }
 

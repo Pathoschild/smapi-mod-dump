@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit 153584360579aeda50cedac8bf7d9345dd00e052
-   Merge: 6eb92f4 fa2b168
    Author: yinam-research <17aj022@ymklab.net>
    Date:   Mon Jul 18 12:11:45 2022 +0900
    

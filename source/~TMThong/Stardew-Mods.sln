@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32804.467
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiplayerMod", "MultiplayerMod\MultiplayerMod.csproj", "{027B1574-F421-4B60-889B-5A28519821CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5DCCFBAE-9FA2-4904-BADB-05D187BCAC02}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\..\..\Tools\README.md = ..\..\..\..\..\..\Tools\README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniToolNPCMod", "MiniToolNPCMod\MiniToolNPCMod.csproj", "{957FBF59-174A-4D3F-9443-E4BCD0561CFD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{027B1574-F421-4B60-889B-5A28519821CE}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{027B1574-F421-4B60-889B-5A28519821CE}.Debug|Any CPU.Build.0 = Debug|x86
+		{027B1574-F421-4B60-889B-5A28519821CE}.Debug|x86.ActiveCfg = Debug|x86
+		{027B1574-F421-4B60-889B-5A28519821CE}.Debug|x86.Build.0 = Debug|x86
+		{027B1574-F421-4B60-889B-5A28519821CE}.Release|Any CPU.ActiveCfg = Release|x86
+		{027B1574-F421-4B60-889B-5A28519821CE}.Release|Any CPU.Build.0 = Release|x86
+		{027B1574-F421-4B60-889B-5A28519821CE}.Release|x86.ActiveCfg = Release|x86
+		{027B1574-F421-4B60-889B-5A28519821CE}.Release|x86.Build.0 = Release|x86
+		{957FBF59-174A-4D3F-9443-E4BCD0561CFD}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{957FBF59-174A-4D3F-9443-E4BCD0561CFD}.Debug|Any CPU.Build.0 = Debug|x86
+		{957FBF59-174A-4D3F-9443-E4BCD0561CFD}.Debug|x86.ActiveCfg = Debug|x86
+		{957FBF59-174A-4D3F-9443-E4BCD0561CFD}.Debug|x86.Build.0 = Debug|x86
+		{957FBF59-174A-4D3F-9443-E4BCD0561CFD}.Release|Any CPU.ActiveCfg = Release|x86
+		{957FBF59-174A-4D3F-9443-E4BCD0561CFD}.Release|Any CPU.Build.0 = Release|x86
+		{957FBF59-174A-4D3F-9443-E4BCD0561CFD}.Release|x86.ActiveCfg = Release|x86
+		{957FBF59-174A-4D3F-9443-E4BCD0561CFD}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {39C4C2DB-CE02-43D5-ACAC-FB18EE425100}
+	EndGlobalSection
+EndGlobal

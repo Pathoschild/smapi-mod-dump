@@ -61,3 +61,5 @@ public interface ICookingSkillApi
 
     bool RollForExtraPortion();
 }
+#pragma warning restore SA1602 // Enumeration items should be documented
+#pragma warning restore CS1591

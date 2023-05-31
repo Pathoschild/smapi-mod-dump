@@ -1,18 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\Build\SDV-1.5.6_SMAPI-3.15.x.targets" />
-  <Import Project="..\Build\Common.csproj" />
-  <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared" />
+    <Import Project="..\Build\SDV-1.5.6.targets"/>
+    <Import Project="..\Build\Common.csproj"/>
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared"/>
 
-  <PropertyGroup>
-    <Name>Smart Building</Name>
-    <Description>Allows you to build fences/walls/paths, etc. in a much more streamlined way.</Description>
-    <MinimumApiVersion>3.15.0</MinimumApiVersion>
-    <UpdateKeys>Nexus:11158</UpdateKeys>
-    <Version>1.7.6</Version>
-  </PropertyGroup>
+    <PropertyGroup>
+        <Name>Smart Building</Name>
+        <Description>Allows you to build fences/walls/paths, etc. in a much more streamlined way.</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:11158</UpdateKeys>
+        <Version>1.7.10</Version>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <EnableHarmony>true</EnableHarmony>
-  </PropertyGroup>
+    <PropertyGroup>
+        <EnableHarmony>true</EnableHarmony>
+    </PropertyGroup>
 
 </Project>

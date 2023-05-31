@@ -223,13 +223,13 @@ namespace WhatAreYouMissing
 
         public static void DrawHoverTextBox(SpriteBatch b, string text, int spaceBetweenLines)
         {
+            
             string[] lines = text.Split('\n');
             int lineHeight = (int)Game1.smallFont.MeasureString("ABC").Y;
-            Vector2 position = new Vector2(Game1.getOldMouseX() + 32, Game1.getOldMouseY() + 32);
-            Vector2 boxDimensions = new Vector2(Game1.smallFont.MeasureString(text).X, lines.Length * lineHeight);
-
-            boxDimensions.Y += 32 + (lines.Length - 1) * spaceBetweenLines + 4;
-            boxDimensions.X += 32;
+            int borderOffset = 16;
+            int mouseOffset = 32; //So that the text doesn't appear directly under their cursor
+            Vector2 position = new Vector2(Game1.getOldMouseX(), Game1.getOldMouseY()+mouseOffset);
+            Vector2 boxDimensions = new Vector2(Game1.smallFont.MeasureString(text).X + 2 * borderOffset, 2 * borderOffset + lines.Length * (lineHeight + spaceBetweenLines));
 
             if(IsGoingOutOfXRightView((int)position.X, (int)boxDimensions.X))
             {
@@ -237,9 +237,9 @@ namespace WhatAreYouMissing
             }
             if(IsGoingOutOfYDownView((int)position.Y, (int)boxDimensions.Y))
             {
-                if(IsGoingOutOfYUpView((int)position.Y, (int)boxDimensions.Y))
+                if(IsGoingOutOfYUpView((int)position.Y-mouseOffset, (int)boxDimensions.Y))
                 {
-                    position.Y = GetBestY((int)position.Y, (int)boxDimensions.Y);
+                    position.Y = 0;
                 }
                 else
                 {
@@ -249,21 +249,13 @@ namespace WhatAreYouMissing
 
             IClickableMenu.drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), (int)position.X, (int)position.Y, (int)boxDimensions.X, (int)boxDimensions.Y, Color.White);
 
-            position.X += 16;
-            position.Y += 16 + 4;
+            position.X += borderOffset;
+            position.Y += borderOffset + spaceBetweenLines;
             for (int i = 0; i < lines.Length; ++i)
             {
                 b.DrawString(Game1.smallFont, lines[i], position, Game1.textColor);
                 position.Y += lineHeight + spaceBetweenLines;
             }
-        }
-
-        private static int GetBestY(int y, int height)
-        {
-            int overDown = Math.Abs(y + height - Game1.uiViewport.Height);
-            int overUp = Math.Abs(y - (Game1.uiViewport.Height - height));
-
-            return overDown > overUp ? Game1.getOldMouseY() - height : y;
         }
 
         private static bool IsGoingOutOfXRightView(int x, int width)

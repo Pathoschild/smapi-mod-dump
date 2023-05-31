@@ -10,10 +10,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Shockah.Kokoro
 {
-	public record WeightedItem<T>(
+	public record struct WeightedItem<T>(
 		double Weight,
 		T Item
 	);
@@ -26,6 +27,16 @@ namespace Shockah.Kokoro
 		public double WeightSum { get; private set; } = 0;
 
 		private readonly List<WeightedItem<T>> ItemStorage = new();
+
+		public WeightedRandom()
+		{
+		}
+
+		public WeightedRandom(IEnumerable<WeightedItem<T>> items)
+		{
+			this.ItemStorage = items.ToList();
+			this.WeightSum = items.Sum(item => item.Weight);
+		}
 
 		public void Add(WeightedItem<T> item)
 		{
@@ -44,7 +55,7 @@ namespace Shockah.Kokoro
 				T result = ItemStorage[0].Item;
 				if (consume)
 				{
-					WeightSum -= ItemStorage[0].Weight;
+					WeightSum = 0;
 					ItemStorage.RemoveAt(0);
 				}
 				return result;
@@ -67,6 +78,39 @@ namespace Shockah.Kokoro
 				}
 			}
 			throw new InvalidOperationException("Invalid state.");
+		}
+
+		public IEnumerable<T> GetConsumingEnumerable(Random random)
+		{
+			int count;
+			while ((count = ItemStorage.Count) != 0)
+			{
+				if (count == 1)
+				{
+					var item = ItemStorage[0];
+					WeightSum = 0;
+					ItemStorage.RemoveAt(0);
+					yield return item.Item;
+					yield break;
+				}
+				else
+				{
+					double weightedRandom = random.NextDouble() * WeightSum;
+					for (int i = 0; i < ItemStorage.Count; i++)
+					{
+						var item = ItemStorage[i];
+						weightedRandom -= item.Weight;
+
+						if (weightedRandom <= 0)
+						{
+							WeightSum -= ItemStorage[i].Weight;
+							ItemStorage.RemoveAt(i);
+							yield return item.Item;
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 

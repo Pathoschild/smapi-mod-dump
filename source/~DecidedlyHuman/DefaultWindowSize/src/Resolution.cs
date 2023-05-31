@@ -12,40 +12,38 @@ using System.Text.RegularExpressions;
 
 namespace DefaultWindowSize
 {
-	public class Resolution
-	{
-		private int _x;
-		private int _y;
+    public class Resolution
+    {
+        public Resolution(string resolution)
+        {
+            this.ParseResolution(resolution);
+        }
 
-		public int X { get { return _x; } }
-		public int Y { get { return _y; } }
+        public int X { get; private set; }
+        public int Y { get; private set; }
 
-		public Resolution(string resolution)
-		{
-			ParseResolution(resolution);
-		}
+        // TODO: Consider refactoring this to be outside of the Resolution class?
+        private void ParseResolution(string resolution)
+        {
+            // We want to split our (potential) resolution string into two strings, and from there, parse to int.
+            string pattern = @"(\d+).*?(\d+)";
+            var regex = new Regex(pattern);
+            var matches = regex.Matches(resolution);
 
-		// TODO: Consider refactoring this to be outside of the Resolution class?
-		private void ParseResolution(string resolution)
-		{
-			// We want to split our (potential) resolution string into two strings, and from there, parse to int.
-			string pattern = @"(\d+).*?(\d+)";
-			Regex regex = new Regex(pattern);
-			MatchCollection matches = regex.Matches(resolution);
+            if (matches[0].Groups.Count !=
+                3) // At this point, the resolution was invalid, or not sensible, so we use plain old 720p.
+                this.SetResolution(1280, 720);
 
-			if (matches[0].Groups.Count != 3) // At this point, the resolution was invalid, or not sensible, so we use plain old 720p.
-				SetResolution(1280, 720);
+            int x = int.Parse(matches[0].Groups[1].Value);
+            int y = int.Parse(matches[0].Groups[2].Value);
 
-			int x = int.Parse(matches[0].Groups[1].Value);
-			int y = int.Parse(matches[0].Groups[2].Value);
+            this.SetResolution(x, y);
+        }
 
-			SetResolution(x, y);
-		}
-
-		private void SetResolution(int x, int y)
-		{
-			_x = x;
-			_y = y;
-		}
-	}
+        private void SetResolution(int x, int y)
+        {
+            this.X = x;
+            this.Y = y;
+        }
+    }
 }

@@ -163,10 +163,13 @@ namespace ForecasterText {
                     return null;
                 
                 if (
+                    // Create a new instance of the Channel
                     Type.GetType("AnimalHusbandryMod.recipes.MeatFridayChannel, AnimalHusbandryMod") is not Type type
                     || Activator.CreateInstance(type) is not object fridayChannel
+                    // Invoke the recipe number getter
                     || type.GetMethod("GetRecipeNumber", BindingFlags.NonPublic | BindingFlags.Static) is not MethodInfo getRecipeNumber
                     || getRecipeNumber.Invoke(null, Array.Empty<object>()) is not int recipeNumber
+                    // Read the private Recipes dictionary
                     || type.GetField("_recipes", BindingFlags.NonPublic | BindingFlags.Instance) is not FieldInfo recipeField
                     || recipeField.GetValue(fridayChannel) is not Dictionary<int, string> recipes
                 ) {
@@ -174,8 +177,12 @@ namespace ForecasterText {
                     return null;
                 }
                 
+                // Try reading the recipe number from the dictionary
+                if (!recipes.TryGetValue(recipeNumber, out string recipe))
+                    return null;
+                
                 // Split the translation info
-                string[] recipeInfo = recipes[recipeNumber].Split('/');
+                string[] recipeInfo = recipe.Split('/');
                 
                 // Get the recipe name
                 return recipeInfo.Length <= 0 ? null : recipeInfo[0];

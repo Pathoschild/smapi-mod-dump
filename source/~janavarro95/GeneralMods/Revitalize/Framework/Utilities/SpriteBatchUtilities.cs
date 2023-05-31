@@ -62,7 +62,7 @@ namespace Omegasis.Revitalize.Framework.Utilities
         /// <param name="TileLocation"></param>
         /// <param name="alpha"></param>
         /// <param name="addedDepth"></param>
-        public static void DrawHeldObject(SpriteBatch spriteBatch, Item itemToDraw, Vector2 TileLocation ,float alpha, float addedDepth)
+        public static void DrawHeldObject(SpriteBatch spriteBatch, Item itemToDraw, Vector2 TileLocation, float alpha, float addedDepth)
         {
             if (itemToDraw.GetType() == typeof(StardewValley.Object))
             {
@@ -70,11 +70,11 @@ namespace Omegasis.Revitalize.Framework.Utilities
                 return;
             }
             if (TypeUtilities.IsSameOrSubclass(typeof(CustomObject), itemToDraw.GetType()))
-                (itemToDraw as CustomObject).draw(spriteBatch, (int)TileLocation.X, (int)TileLocation.Y,alpha);
+                (itemToDraw as CustomObject).draw(spriteBatch, (int)TileLocation.X, (int)TileLocation.Y, alpha);
         }
 
         /// <summary>What happens when the object is drawn at a tile location.</summary>
-        public static void DrawICustomModObject<T>(this T obj,SpriteBatch spriteBatch, int x, int y, bool flipped ,float alpha = 1f, StardewValley.Object heldObject=null) where T: StardewValley.Object, ICustomModObject
+        public static void DrawICustomModObject<T>(this T obj, SpriteBatch spriteBatch, int x, int y, bool flipped, float alpha = 1f, StardewValley.Object heldObject = null) where T : StardewValley.Object, ICustomModObject
         {
             if (x <= -1)
             {
@@ -92,17 +92,22 @@ namespace Omegasis.Revitalize.Framework.Utilities
             }
             else
             {
-                obj.basicItemInformation.animationManager.draw(spriteBatch, obj.basicItemInformation.animationManager.getTexture(), Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize) + obj.basicItemInformation.shakeTimerOffset(), (y * Game1.tileSize) + obj.basicItemInformation.shakeTimerOffset())), new Rectangle?(obj.basicItemInformation.animationManager.getCurrentAnimation().getCurrentAnimationFrameRectangle()), obj.basicItemInformation.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom, flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, (float)((y) * Game1.tileSize) / 10000f) + .00001f);
+                obj.basicItemInformation.animationManager.draw(spriteBatch, obj.basicItemInformation.animationManager.getTexture(), Game1.GlobalToLocal(Game1.viewport, new Vector2((float)(x * Game1.tileSize) + obj.basicItemInformation.shakeTimerOffset(), (y * Game1.tileSize) + obj.basicItemInformation.shakeTimerOffset())), new Rectangle?(obj.basicItemInformation.animationManager.getCurrentAnimation().getCurrentAnimationFrameRectangle()), obj.basicItemInformation.DrawColor * alpha, 0f, Vector2.Zero, (float)Game1.pixelZoom * obj.AnimationManager.getCurrentAnimation().getCurrentAnimationFrame().scale, flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, (float)((y) * Game1.tileSize) / 10000f) + .00001f);
                 if (heldObject != null) SpriteBatchUtilities.Draw(spriteBatch, obj, heldObject, alpha, 0);
             }
         }
 
         public static void DrawICustomModObject<T>(this T obj, SpriteBatch spriteBatch, float alpha = 1f) where T : StardewValley.Object, ICustomModObject
         {
-            obj.DrawICustomModObject(spriteBatch, (int)obj.TileLocation.X + (int)obj.basicItemInformation.drawOffset.X, (int)obj.TileLocation.Y + (int)obj.basicItemInformation.drawOffset.Y, alpha,obj.heldObject, (int)obj.TileLocation.Y - (int)obj.basicItemInformation.drawOffset.Y);
+            obj.DrawICustomModObject(spriteBatch, (int)obj.TileLocation.X + (int)obj.basicItemInformation.drawOffset.X, (int)obj.TileLocation.Y + (int)obj.basicItemInformation.drawOffset.Y, alpha, obj.heldObject, (int)obj.TileLocation.Y - (int)obj.basicItemInformation.drawOffset.Y);
         }
 
-        public static void DrawICustomModObject<T>(this T obj, SpriteBatch spriteBatch, int x, int y, float alpha = 1f, StardewValley.Object heldObject = null, int YTileDepth=0) where T : StardewValley.Object, ICustomModObject
+        public static void DrawICustomModObject<T>(this T obj, SpriteBatch spriteBatch, float alpha = 1f, bool DrawHeldObject = true) where T : StardewValley.Object, ICustomModObject
+        {
+            obj.DrawICustomModObject(spriteBatch, (int)obj.TileLocation.X + (int)obj.basicItemInformation.drawOffset.X, (int)obj.TileLocation.Y + (int)obj.basicItemInformation.drawOffset.Y, alpha, DrawHeldObject ? obj.heldObject : null, (int)obj.TileLocation.Y - (int)obj.basicItemInformation.drawOffset.Y);
+        }
+
+        public static void DrawICustomModObject<T>(this T obj, SpriteBatch spriteBatch, int x, int y, float alpha = 1f, StardewValley.Object heldObject = null, int YTileDepth = 0) where T : StardewValley.Object, ICustomModObject
         {
             if (YTileDepth == 0)
             {
@@ -126,24 +131,20 @@ namespace Omegasis.Revitalize.Framework.Utilities
             DrawICustomModObjectWhenHeld(obj, spriteBatch, objectPosition, f, 1f, 1f);
         }
 
-        public static void DrawICustomModObjectWhenHeld<T>(this T obj, SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f, float transparency, float Scale ) where T : ICustomModObject
+        public static void DrawICustomModObjectWhenHeld<T>(this T obj, SpriteBatch spriteBatch, Vector2 objectPosition, Farmer f, float transparency, float Scale) where T : ICustomModObject
         {
-
-            int baseObjectTileHeight = 32 * Game1.pixelZoom;
-            int objHight = obj.AnimationManager.getCurrentAnimationFrameRectangle().Height * Game1.pixelZoom;
-
-            int hightOffset = baseObjectTileHeight - objHight;
+            int hightOffset = Game1.tileSize;
 
             if (f.ActiveObject.bigCraftable.Value)
             {
-                spriteBatch.Draw(obj.CurrentTextureToDisplay, objectPosition+new Vector2(0,hightOffset), obj.AnimationManager.getCurrentAnimationFrameRectangle(), obj.basicItemInformation.DrawColor * transparency, 0f, Vector2.Zero, (float)Game1.pixelZoom * Scale, SpriteEffects.None, Math.Max(0f, (float)(f.getStandingY() + 2) / 10000f));
+                spriteBatch.Draw(obj.CurrentTextureToDisplay, objectPosition + new Vector2(0, hightOffset), obj.AnimationManager.getCurrentAnimationFrameRectangle(), obj.basicItemInformation.DrawColor * transparency, 0f, Vector2.Zero, (float)Game1.pixelZoom * Scale * obj.AnimationManager.getCurrentAnimation().getCurrentAnimationFrame().scale, SpriteEffects.None, Math.Max(0f, (float)(f.getStandingY() + 2) / 10000f));
                 return;
             }
 
             spriteBatch.Draw(obj.CurrentTextureToDisplay, objectPosition, obj.AnimationManager.getCurrentAnimationFrameRectangle(), obj.basicItemInformation.DrawColor * transparency, 0f, Vector2.Zero, (float)Game1.pixelZoom * Scale, SpriteEffects.None, Math.Max(0f, (float)(f.getStandingY() + 2) / 10000f));
             if (f.ActiveObject != null && f.ActiveObject.Name.Contains("="))
             {
-                spriteBatch.Draw(obj.CurrentTextureToDisplay, objectPosition + new Vector2(0,hightOffset) + new Vector2((float)(Game1.tileSize / 2), (float)(Game1.tileSize / 2)), obj.AnimationManager.getCurrentAnimationFrameRectangle(), Color.White, 0f, new Vector2((float)(Game1.tileSize / 2), (float)(Game1.tileSize / 2)), (float)Game1.pixelZoom + Math.Abs(Game1.starCropShimmerPause) / 8f * Scale, SpriteEffects.None, Math.Max(0f, (float)(f.getStandingY() + 2) / 10000f));
+                spriteBatch.Draw(obj.CurrentTextureToDisplay, objectPosition + new Vector2(0, hightOffset) + new Vector2((float)(Game1.tileSize / 2), (float)(Game1.tileSize / 2)), obj.AnimationManager.getCurrentAnimationFrameRectangle(), Color.White, 0f, new Vector2((float)(Game1.tileSize / 2), (float)(Game1.tileSize / 2)), (float)Game1.pixelZoom + Math.Abs(Game1.starCropShimmerPause) / 8f * Scale * obj.AnimationManager.getCurrentAnimation().getCurrentAnimationFrame().scale, SpriteEffects.None, Math.Max(0f, (float)(f.getStandingY() + 2) / 10000f));
                 if (Math.Abs(Game1.starCropShimmerPause) <= 0.05f && Game1.random.NextDouble() < 0.97)
                 {
                     return;
@@ -157,7 +158,7 @@ namespace Omegasis.Revitalize.Framework.Utilities
             //base.drawWhenHeld(spriteBatch, objectPosition, f);
         }
 
-        public static void DrawICustomModObjectInMenu<T>(this T obj,SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow) where T : StardewValley.Object, ICustomModObject
+        public static void DrawICustomModObjectInMenu<T>(this T obj, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow) where T : StardewValley.Object, ICustomModObject
         {
 
             if (obj.basicItemInformation == null) return;

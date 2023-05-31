@@ -10,15 +10,19 @@
 
 {
   "itemToDraw": {
+    "amount": 1,
+    "registeredObjectId": "Omegasis.Revitalize.Objects.Crafting.CraftingStations.Anvil",
     "stardewValleyItemId": "NULL",
     "stardewValleyBigCraftableId": "NULL",
-    "registeredObjectId": "Revitalize.Objects.Crafting.CraftingStations.Anvil",
-    "amount": 1
+    "artisanGoodItemReference": null
   },
-  "recipesToUnlock": {
-    "Revitalize.Crafting.CraftingRecipeBooks.Workbench": "Revitalize.Anvil"
-  },
-  "id": "Revitalize.Objects.Crafting.Blueprint.Workbench.Revitalize.Anvil",
+  "recipesToUnlock": [
+    {
+      "CraftingBookId": "Omegasis.Revitalize.Crafting.CraftingRecipeBooks.Workbench",
+      "RecipeId": "Omegasis.Revitalize.Anvil"
+    }
+  ],
+  "id": "Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Revitalize.Anvil",
   "name": "Blueprint: Anvil",
   "description": "A blueprint used on how to craft an anvil at a workbench!",
   "categoryId": "StardewValley.Crafting",
@@ -39,7 +43,7 @@
   },
   "animationManager": {
     "modManifestId": "Omegasis.Revitalize",
-    "textureManagerId": "Revitalize.Items.Crafting",
+    "textureManagerId": "Omegasis.Revitalize.Items.Crafting",
     "textureId": "Blueprint",
     "defaultAnimationKey": "Default",
     "startingAnimationKey": "Default",

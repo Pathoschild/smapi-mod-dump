@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Build\SDV-1.5.6.targets"/>
+    <Import Project="..\Build\Common.csproj"/>
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared"/>
+
+    <PropertyGroup>
+        <Name>The SARDIS</Name>
+        <Description>Travel through time. Not so much space, though.</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:00000</UpdateKeys>
+        <Version>1.0.0-dev</Version>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <EnableHarmony>false</EnableHarmony>
+        <GameModsPath>$(GameModsPath)/$(AssemblyName)</GameModsPath>
+        <EnableModZip>false</EnableModZip>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Folder Include="src\UI"/>
+        <Folder Include="src\Utilities"/>
+    </ItemGroup>
+
+    <Target Name="DeployPack" AfterTargets="Build">
+        <Message Text="Running DeployPack target..."/>
+        <ItemGroup>
+            <_FilesToCopy Exclude="$(ProjectDir)pack/**/*.aseprite" Include="$(ProjectDir)pack/**/*"/>
+        </ItemGroup>
+
+        <Copy SourceFiles="@(_FilesToCopy)" DestinationFiles="@(_FilesToCopy->'$(GameModsPath)/%(RecursiveDir)%(Filename)%(Extension)')"/>
+        <!-- Use ZipDirectory after build. -->
+        <ZipDirectory DestinationFile="$(ModZipPath)/$(AssemblyName) $(Version).zip" SourceDirectory="$(GameModsPath)" Overwrite="True"/>
+    </Target>
+
+</Project>

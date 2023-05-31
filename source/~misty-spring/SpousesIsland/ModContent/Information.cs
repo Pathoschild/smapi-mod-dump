@@ -8,18 +8,17 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewValley;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using StardewValley;
 
-namespace SpousesIsland
+namespace SpousesIsland.ModContent
 {
-    internal class Information
+    internal static class Information
     {
         internal static Point GetReturnPoint(string npc)
         {
-            Point result = npc switch
+            var result = npc switch
             {
                 "Abigail" => new Point(16, 9),
                 "Alex" => new Point(19,6),
@@ -44,105 +43,71 @@ namespace SpousesIsland
             };
 
             //if custom npc
-            if (result == Point.Zero)
+            if (result != Point.Zero) return result;
+            var r = Game1.random;
+            result = r.Next(4) switch
             {
-                var r = Game1.random;
+                0 => new Point(r.Next(1, 11), r.Next(4, 14)),
+                1 => new Point(r.Next(12, 17), r.Next(9, 12)),
+                2 => new Point(r.Next(13, 29), r.Next(12, 15)),
+                3 => new Point(r.Next(18, 29), r.Next(4, 7)),
+                _ => Point.Zero
+            };
+
+            var fh = Game1.getLocationFromName("IslandFarmHouse");
+
+            //if not clear, try to get new location
+            if (fh.isTileLocationTotallyClearAndPlaceableIgnoreFloors(result.ToVector2())) return result;
+            for(var i=0; i<10 ; i++)
+            {
+                r = Game1.random;
+
+                //1-10 & 4-13, 12-16 & 9-11, 13-28 & 12-14, 18-28 & 4-6
+                //+1: last number isnt considered
+
                 result = r.Next(4) switch
                 {
-                    0 => new Point(r.Next(1, 11), r.Next(4, 14)),
-                    1 => new Point(r.Next(12, 17), r.Next(9, 12)),
-                    2 => new Point(r.Next(13, 29), r.Next(12, 15)),
-                    3 => new Point(r.Next(18, 29), r.Next(4, 7)),
+                    0 => new Point(r.Next(1,11),r.Next(4,14)),
+                    1 => new Point(r.Next(12,17),r.Next(9,12)),
+                    2 => new Point(r.Next(13,29),r.Next(12,15)),
+                    3 => new Point(r.Next(18,29),r.Next(4,7)),
                     _ => Point.Zero
                 };
 
-                var fh = Game1.getLocationFromName("IslandFarmHouse");
-
-                //if not clear, try to get new location
-                if(!fh.isTileLocationTotallyClearAndPlaceableIgnoreFloors(result.ToVector2()))
-                {
-                    for(int i=0; i<10 ; i++)
-                    {
-                        r = Game1.random;
-
-                        //1-10 & 4-13, 12-16 & 9-11, 13-28 & 12-14, 18-28 & 4-6
-                        //+1: last number isnt considered
-
-                        result = r.Next(4) switch
-                        {
-                            0 => new Point(r.Next(1,11),r.Next(4,14)),
-                            1 => new Point(r.Next(12,17),r.Next(9,12)),
-                            2 => new Point(r.Next(13,29),r.Next(12,15)),
-                            3 => new Point(r.Next(18,29),r.Next(4,7)),
-                            _ => Point.Zero
-                        };
-
-                        if (fh.isTileLocationTotallyClearAndPlaceableIgnoreFloors(result.ToVector2()))
-                            break;
-                    }
-                }
+                if (fh.isTileLocationTotallyClearAndPlaceableIgnoreFloors(result.ToVector2()))
+                    break;
             }
 
             return result;
         }
 
-        internal static bool HasMod(string ModID)
+        internal static bool HasMod(string modId)
         {
-            if (ModEntry.Help.ModRegistry.Get(ModID) is not null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        /// <summary>
-        /// Check if a mod's version is older OR equal.
-        /// </summary>
-        /// <param name="ModID">The UniqueID to check.</param>
-        /// <param name="version">The max version to account for.</param>
-        /// <returns>true or false depending on result.</returns>
-        internal static bool IsVersionOrLower(string ModID, string version)
-        {
-            //get both ISemanticVersions
-            var modversion = ModEntry.Help.ModRegistry.Get(ModID).Manifest.Version;
-            _ = SemanticVersion.TryParse(version, out ISemanticVersion max_version);
-
-            ModEntry.Mon.Log($"C2N version :{modversion.ToString()}, checking if it's newer than {version}...");
-
-            //Previously used "IsOlderThan() || modversion == max_version", but this is less bug-prone.
-            return !(modversion.IsNewerThan(max_version));
+            return ModEntry.Help.ModRegistry.Get(modId) is not null;
         }
 
         internal static List<Character> PlayerChildren(Farmer player)
         {
-            var Children = new List<Character>();
+            var children = new List<Character>();
 
             var asChild = player.getChildren();
 
             //get them from kid list if vanilla
-            if (asChild?.Count is not 0)
+            if (asChild?.Count is not 0 && asChild != null)
             {
                 foreach (var kid in asChild)
                 {
-                    Children.Add(kid as Character);
+                    children.Add(kid);
                 }
             }
             //if none, they must be in C2N's data. get it from there
-            if ((Children == null || Children?.Count == 0) && ModEntry.HasC2N_Or_LNPCs)
-            {
-                /* old method but we can do it without reflection*/
-                /*
-                var c2n_data = ModEntry.Help.ModRegistry.Get("Loe2Run.ChildToNPC").GetType(); //.GetProperty("copies")
-                var c2n_children = ModEntry.Help.Reflection.GetField<Dictionary<string, NPC>>(c2n_data, "copies");
-                var values = c2n_children.GetValue().Values;
+            if (children.Count != 0 || (!ModEntry.InstalledMods["C2N"] && !ModEntry.InstalledMods["LNPCs"]))
+                return children;
+            
+            var charas = Utility.getHomeOfFarmer(player)?.getCharacters();
+            var values = new List<NPC>();
 
-                */
-
-                var charas = Utility.getHomeOfFarmer(player)?.getCharacters();
-                var values = new List<NPC>();
-
+            if (charas != null)
                 foreach (var npc in charas)
                 {
                     //0 teen?, 1 adult, 2 child
@@ -150,23 +115,23 @@ namespace SpousesIsland
                     {
                         continue;
                     }
+
                     values.Add(npc);
                 }
 
-                //if theres still none
-                if (values?.Count is 0)
-                {
-                    return Children;
-                }
-
-                //add. we could do a .ToList() but i'd rather be safe
-                foreach (var child in values)
-                {
-                    Children.Add(child as Character);
-                }
+            //if theres still none
+            if (values.Count is 0)
+            {
+                return children;
             }
 
-            return Children;
+            //add. we could do a .ToList() but i'd rather be safe
+            foreach (var child in values)
+            {
+                children.Add(child);
+            }
+
+            return children;
         }
 
         internal static List<string> PlayerSpouses(string id)

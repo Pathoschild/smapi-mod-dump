@@ -14,7 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Archipelago.MultiClient.Net" Version="5.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.2" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +52,7 @@
 
   <ItemGroup>
     <Folder Include="GameModifications\CustomOptions\" />
+    <Folder Include="Test\" />
   </ItemGroup>
 
 </Project>

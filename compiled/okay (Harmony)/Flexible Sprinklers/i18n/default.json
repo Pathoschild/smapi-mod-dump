@@ -1,10 +1,8 @@
 ﻿{
 	"config.sprinklerBehavior.name": "Sprinkler behavior",
-	"config.sprinklerBehavior.tooltip": "> Cluster: Groups sprinklers by nearby clustered tiles and tries to water as much as possible.\n	 Note: Sprinklers will no longer be able to be activated manually.\n> Flood fill: OBSOLETE! Please use the Cluster-family behaviors instead!\n	 Custom-made algorithm. Tries to flood fill from the sprinkler/watered tiles.\n	 Will also change behavior if next to other sprinklers.\n> Vanilla: Uses the default game behavior.",
+	"config.sprinklerBehavior.tooltip": "> Cluster: Groups sprinklers by nearby clustered tiles and tries to water as much as possible.\n\t Note: Sprinklers will no longer be able to be activated manually.\n> Flood fill: OBSOLETE! Please use the Cluster-family behaviors instead!\n\t Custom-made algorithm. Tries to flood fill from the sprinkler/watered tiles.\n\t Will also change behavior if next to other sprinklers.\n> Vanilla: Uses the default game behavior.",
 	"config.sprinklerBehavior.value.Cluster": "Vanilla > Cluster",
 	"config.sprinklerBehavior.value.ClusterWithoutVanilla": "Cluster",
-	"config.sprinklerBehavior.value.Flexible": "Vanilla > Flood fill",
-	"config.sprinklerBehavior.value.FlexibleWithoutVanilla": "Flood fill",
 	"config.sprinklerBehavior.value.Vanilla": "Vanilla",
 	"config.ignoreRange.name": "Ignore range",
 	"config.ignoreRange.tooltip": "If enabled, custom sprinkler behaviors will ignore sprinklers' range (calculated basing on their power and coverage shape).",
@@ -34,13 +32,6 @@
 	"config.cluster.inClusterBalance.value.Relaxed": "Relaxed",
 	"config.cluster.inClusterBalance.value.Exact": "Exact",
 	"config.cluster.inClusterBalance.value.Restrictive": "Restrictive",
-
-	"config.floodFill.section.name": "Flood fill options",
-	"config.floodFill.balanceMode.name": "Balance mode",
-	"config.floodFill.balanceMode.tooltip": "Edge case handling for choosing which tiles to water.\n\n> Relaxed: May water more tiles\n> Exact: Will water exactly as many tiles as it should, but those may be semi-random\n> Restrictive: May water less tiles",
-	"config.floodFill.balanceMode.value.Relaxed": "Relaxed",
-	"config.floodFill.balanceMode.value.Exact": "Exact",
-	"config.floodFill.balanceMode.value.Restrictive": "Restrictive",
 
 	"config.activation.section.name": "Activation",
 	"config.activation.beforeSleep.name": "Activate before sleep",

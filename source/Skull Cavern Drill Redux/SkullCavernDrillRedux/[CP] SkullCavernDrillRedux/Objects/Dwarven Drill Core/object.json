@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/AndrewGraber/Skull-Cavern-Drill-Redux
+**
+*************************************************/
+
+{
+  "Name": "Dwarven Drill Core",
+  "Description": "A complex mechanism of dwarven design",
+  "Price": 1,
+  "Category": "Crafting",
+  "Edibility": -300,
+  "EdibleIsDrink": false,
+  "EdibleBuffs": null,
+  "Recipe": {
+    "ResultCount": 10,
+    "Ingredients": [
+      {
+        "Object": "Battery Pack",
+        "Count": 2
+      },
+      {
+        "Object": "Quartz",
+        "Count": 2
+      },
+      {
+        "Object": "Stone",
+        "Count": 10
+      }
+    ],
+    "SkillUnlockName": "Mining",
+    "SkillUnlockLevel": 8
+  },
+  "CanPurchase": true,
+  "PurchaseFrom": "Dwarf",
+  "PurchasePrice": 200,
+  "PurchaseRequirements": null
+}

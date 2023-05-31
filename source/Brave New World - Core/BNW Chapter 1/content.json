@@ -1,0 +1,61 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DiogoAlbano/StardewValleyMods
+**
+*************************************************/
+
+{
+  "Format": "1.28.3",
+  "DynamicTokens": [
+    {
+      "Name": "warp_leave_Adventureguild_to_area",
+      "Value": "6 20 Custom_AdventurerSummit 32 22",
+      "When": {
+        "HasMod | contains = FlashShifter.StardewValleyExpandedCP": true
+      }
+    },
+    {
+      "Name": "warp_leave_Adventureguild_to_area",
+      "Value": "6 20 Mountain 76 9",
+      "When": {
+        "HasMod | contains = FlashShifter.StardewValleyExpandedCP": false
+      }
+    },
+    {
+      "Name": "Adventureguild_Marlon_position",
+      "Value": "AdventureGuild 17 12",
+      "When": {
+        "HasMod | contains = FlashShifter.StardewValleyExpandedCP": false
+      }
+    },
+    {
+      "Name": "Adventureguild_Marlon_position",
+      "Value": "AdventureGuild -50 -50",
+      "When": {
+        "HasMod | contains = FlashShifter.StardewValleyExpandedCP": true
+      }
+    }
+  ],
+  "CustomLocations": [
+    {
+      "Name": "Custom_AdventureGuild_upper_floor",
+      "FromMapFile": "assets/maps_and_events/tmx/bnw_AdventureGuild_upper_floor.tmx"
+    }
+  ],
+  "Changes": [
+    {
+      "Logname": "Include_map_and_events_data",
+      "Action": "Include",
+      "FromFile": "assets/maps_and_events/AdventureGuild.json"
+    },
+    {
+      "Logname": "Include_npcs_data",
+      "Action": "Include",
+      "FromFile": "assets/npcs/load_data.json"
+    }
+  ]
+}

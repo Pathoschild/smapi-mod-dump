@@ -31,8 +31,6 @@ namespace CarryYourPet.Patches
 
         public static bool ShouldAlwaysDraw { get; }
 
-
-
         public static void PetCheckAction_Postfix(Pet __instance, Farmer who, GameLocation l, bool __result)
         {
             try

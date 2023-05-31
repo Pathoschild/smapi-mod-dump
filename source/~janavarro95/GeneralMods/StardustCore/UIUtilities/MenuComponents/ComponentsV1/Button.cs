@@ -93,7 +93,7 @@ namespace Omegasis.StardustCore.UIUtilities.MenuComponents.ComponentsV1
         }
 
         /// <summary>Draws the button and all of it's components.</summary>
-        public new void draw(SpriteBatch b, Color color, float layerDepth)
+        public void draw(SpriteBatch b, Color color, float layerDepth)
         {
             if (this.extraTextures != null)
             {
@@ -134,7 +134,7 @@ namespace Omegasis.StardustCore.UIUtilities.MenuComponents.ComponentsV1
         }
 
         /// <summary>Draw the button.</summary>
-        public virtual void draw(SpriteBatch b)
+        public new virtual void draw(SpriteBatch b)
         {
             if (!this.visible)
                 return;

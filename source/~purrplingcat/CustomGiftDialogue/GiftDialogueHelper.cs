@@ -74,7 +74,7 @@ namespace CustomGiftDialogue
             }
         }
 
-        internal static bool GetRevealDialogue(NPC npc, out string dialogue, string npcName = null)
+        public static bool GetRevealDialogue(NPC npc, out string dialogue, string npcName = null)
         {
             dialogue = null;
             var dispositionsData = Game1.content.Load<Dictionary<string, string>>("Data\\NPCDispositions");
@@ -110,6 +110,30 @@ namespace CustomGiftDialogue
                 return true;
             }
 
+            return false;
+        }
+
+        public static bool TryGetFriendshipDialogue(NPC n, string key, out string dialogue)
+        {
+            // With heart level
+            int heartLevel = Game1.player.friendshipData[n.Name].Points / 250;
+            foreach (int targetHeartLevel in heartLevels)
+            {
+                if (heartLevel >= targetHeartLevel && DialogueHelper.GetRawDialogue(n.Dialogue, $"{key}{targetHeartLevel}", out var dialoguePair))
+                {
+                    dialogue = dialoguePair.Value;
+                    return true;
+                }
+            }
+
+            // Without heart level
+            if (DialogueHelper.GetRawDialogue(n.Dialogue, key, out var dialoguePair2))
+            {
+                dialogue = dialoguePair2.Value;
+                return true;
+            }
+
+            dialogue = "";
             return false;
         }
 

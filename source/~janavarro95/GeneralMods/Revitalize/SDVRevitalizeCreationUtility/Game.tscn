@@ -1,0 +1,240 @@
+[gd_scene load_steps=6 format=3 uid="uid://db2ddn8abvef5"]
+
+[ext_resource type="Script" path="res://Scripts/BlueprintCreationSceneSaveButton.cs" id="1"]
+[ext_resource type="Script" path="res://Game.cs" id="2"]
+[ext_resource type="Script" path="res://Scripts/SelectFileDialog.cs" id="3"]
+[ext_resource type="Script" path="res://Scripts/ButtonOpenFileDiaog.cs" id="4"]
+[ext_resource type="Script" path="res://Scripts/IdFileSelectionButton.cs" id="5"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BlueprintObjectIdLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Blueprint Object Id:"
+
+[node name="BlueprintObjectIdText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "Omegasis.Revitalize.Objects.Crafting.Blueprint.<BlueprintIdHere>"
+
+[node name="DisplayNameLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Blueprint Display Name:"
+
+[node name="DisplayNameText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "<Blueprint Display Name>"
+
+[node name="DescriptionLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Blueprint Description:"
+
+[node name="DescriptionText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "<Blueprint Description>"
+
+[node name="RecipesToUnlockLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Recipes To Unlock:"
+
+[node name="RecipesToUnlockText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "    {
+      \"CraftingBookId\": \"Omegasis.Revitalize.Crafting.CraftingRecipeBooks.CraftingBookId\",
+      \"RecipeId\": \"Omegasis.Revitalize.CraftingStation.CraftingRecipeId\"
+    }"
+
+[node name="ItemToDrawIdLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Item To Draw for Display Id:"
+
+[node name="ItemToDrawIdText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "Omegasis.Revitalize.Objects.<ItemIdHere>"
+
+[node name="BlueprintObjectFilePathLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Blueprint Object File Path:"
+
+[node name="BlueprintObjectFilePathText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="BlueprintObjectFilePathButton" type="Button" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Select File Path For Blueprint Object .json file"
+script = ExtResource("4")
+startingDir = 3
+TextFieldToFind = "BlueprintObjectFilePathText"
+
+[node name="BlueprintDisplayStringFilePathLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Blueprint Display Strings File Path3D:"
+
+[node name="BlueprintDisplayStringFilePathText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="BlueprintDisplayStringFilePathButton" type="Button" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Select File Path For Blueprint Object Display Strings .json file."
+script = ExtResource("4")
+startingDir = 2
+TextFieldToFind = "BlueprintDisplayStringFilePathText"
+
+[node name="RecipeTabIdLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Recipe Tab Id:"
+
+[node name="RecipeTabIdText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "Default"
+
+[node name="RecipeInputsLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Recipe Inputs:"
+
+[node name="RecipeInputsText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 256)
+layout_mode = 2
+text = "	{
+			\"item\":{
+			\"stardewValleyItemId\": \"NULL\",
+			\"stardewValleyBigCraftableId\": \"NULL\",
+			\"registeredObjectId\": \"\",
+			\"amount\": 1
+			}
+	},"
+
+[node name="RecipeOutputsLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Recipe Outputs:"
+
+[node name="RecipeOutputsText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 256)
+layout_mode = 2
+text = "	{
+			\"item\":{
+			\"stardewValleyItemId\": \"NULL\",
+			\"stardewValleyBigCraftableId\": \"NULL\",
+			\"registeredObjectId\": \"\",
+			\"amount\": 1
+			}
+	},"
+
+[node name="RecipeFilePathLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Recipe File Path:"
+
+[node name="RecipeFilePathText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="RecipeFilePathButton" type="Button" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Select File Path For Recipe .json file"
+script = ExtResource("4")
+startingDir = 4
+TextFieldToFind = "RecipeFilePathText"
+
+[node name="NewItemDisplayNameLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "New Item Display Name:"
+
+[node name="NewItemDisplayNameText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "<New Item Display Name>"
+
+[node name="NewItemDescriptionLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "New Item Description:"
+
+[node name="NewItemDescriptionText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "<New Item Description>"
+
+[node name="NewItemCategoryLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "New Item Category:"
+
+[node name="NewItemCategoryText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+text = "<New Item Category>"
+
+[node name="NewItemDisplayStringFilePathLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "New Item Display Strings File Path3D:"
+
+[node name="NewItemDisplayStringFilePathText" type="TextEdit" parent="ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="NewItemDisplayStringFilePathButton" type="Button" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Select File Path3D For New Item Display Strings .json file."
+script = ExtResource("4")
+startingDir = 1
+TextFieldToFind = "NewItemDisplayStringFilePathText"
+
+[node name="BlueprintIdGenerationLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Blueprint item c# code generation file:"
+
+[node name="BlueprintIdGenerationSelectionList" type="OptionButton" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("5")
+relativePathForFileGeneration = "Ids\\Items\\BlueprintIds"
+
+[node name="ItemIdGenerationLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "New item c# code generation file:"
+
+[node name="ItemIdGenerationSelectionList" type="OptionButton" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("5")
+relativePathForFileGeneration = "Ids"
+
+[node name="RecipeIdGenerationLabel" type="Label" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "New recipe c# code generation file:"
+
+[node name="RecipeIdGenerationSelectionList" type="OptionButton" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+script = ExtResource("5")
+relativePathForFileGeneration = "CraftingIds\\RecipeIds"
+
+[node name="SaveButton" type="Button" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Save"
+script = ExtResource("1")
+
+[node name="SelectFileDialog" type="FileDialog" parent="."]
+size = Vector2i(1568, 972)
+script = ExtResource("3")

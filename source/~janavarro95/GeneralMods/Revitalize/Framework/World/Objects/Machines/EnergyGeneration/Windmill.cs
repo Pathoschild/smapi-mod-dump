@@ -22,10 +22,11 @@ using Netcode;
 using Omegasis.Revitalize.Framework.Constants;
 using Omegasis.Revitalize.Framework.Utilities;
 using Omegasis.Revitalize.Framework.World.Objects.InformationFiles;
+using Omegasis.Revitalize.Framework.World.WorldUtilities;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.Machines.EnergyGeneration
 {
-    [XmlType("Mods_Revitalize.Framework.World.Objects.Machines.EnergyGeneration.Windmill")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.Machines.EnergyGeneration.Windmill")]
     public class Windmill : Machine
     {
 
@@ -36,8 +37,8 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Machines.EnergyGeneration
 
         public Windmill(BasicItemInformation info, Vector2 TileLocation) : base(info, TileLocation)
         {
-            this.maxDaysToProduceBattery.Value = 12;
-            this.daysRemainingToProduceBattery.Value = this.maxDaysToProduceBattery;
+            this.maxDaysToProduceBattery.Value = 10;
+            this.daysRemainingToProduceBattery.Value = this.maxDaysToProduceBattery.Value;
         }
 
         public override void updateWhenCurrentLocation(GameTime time, GameLocation environment)
@@ -51,13 +52,14 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Machines.EnergyGeneration
             this.NetFields.AddFields(this.maxDaysToProduceBattery, this.daysRemainingToProduceBattery);
         }
 
+        public override bool canBePlacedHere(GameLocation l, Vector2 tile)
+        {
+            return l.IsOutdoors && base.canBePlacedHere(l,tile);
+        }
 
         public override Item getOne()
         {
-            Windmill component = new Windmill(this.getItemInformation().Copy(), this.TileLocation);
-            //component.containerObject = this.containerObject;
-            //component.offsetKey = this.offsetKey;
-            return component;
+            return new Windmill(this.getItemInformation().Copy(), this.TileLocation);
         }
 
         public override void doActualDayUpdateLogic(GameLocation location)
@@ -72,10 +74,10 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Machines.EnergyGeneration
                 this.daysRemainingToProduceBattery.Value -= 4;
             else
                 this.daysRemainingToProduceBattery.Value -= 1;
-            if (this.daysRemainingToProduceBattery <= 0)
+            if (this.daysRemainingToProduceBattery.Value <= 0)
             {
-                this.daysRemainingToProduceBattery.Value = this.maxDaysToProduceBattery;
-                this.heldObject.Value = ObjectUtilities.getStardewObjectFromEnum(Enums.SDVObject.BatteryPack, 1);
+                this.daysRemainingToProduceBattery.Value = this.maxDaysToProduceBattery.Value;
+                this.heldObject.Value = (StardewValley.Object)RevitalizeModCore.ModContentManager.objectManager.getItem(Enums.SDVObject.BatteryPack, 1);
             }
         }
     }

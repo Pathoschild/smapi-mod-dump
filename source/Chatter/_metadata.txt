@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/jbossjaslow/Chatter
+   Git: https://github.com/jbossjaslow/Chatter.git
+
+mods:
+   Chatter
+
+latest commit:
+   commit d2d3dc76a93c19f22f309810dbb2601f96346c67
+   Author: FREETIMEKILLER\JBOSS <jbossjaslow@gmail.com>
+   Date:   Wed May 24 19:31:46 2023 -0400
+   
+       Fixed indicators showing up erroneously during cutscenes
+   

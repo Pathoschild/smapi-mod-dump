@@ -34,6 +34,7 @@ namespace Unlockable_Areas.Lib
             ShopObject.Initialize();
             ShopPlacement.Initialize();
             UpdateHandler.Initialize();
+            UA_NoGrass.Initialize();
         }
     }
 }

@@ -6,6 +6,7 @@ mods:
    Better Shipping Bin
    Change Farm Caves
    Chest Displays
+   Crop Walker
    Fishing Nets
    Fishing Nets → Automate
    Joja's Hauntings
@@ -19,11 +20,9 @@ mods:
    Unbreakable Tackles
 
 latest commit:
-   commit 969e76c0b139b37a94edff4ff82874399559ea2f
+   commit a43c87df00e42e981e71d7f46a44814a4ed33ff8
    Author: MindMeltMax <mindmeltmax695@gmail.com>
-   Date:   Sun Apr 16 19:33:20 2023 +0200
+   Date:   Thu May 18 20:24:47 2023 +0200
    
-       Update Trading & MultiPlayer Info
-       
-       Also fixed version for Multi-User Chests manifest
+       upload source for Crop Walker & Let Me Shop
    

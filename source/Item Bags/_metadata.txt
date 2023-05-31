@@ -6,9 +6,9 @@ mods:
    Item Bags
 
 latest commit:
-   commit 3974c1c504d6be6c01810c1fa7f41cfc700806d8
+   commit fffed021df2217040dde7a67354d6a81f540e92a
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Thu Mar 3 15:04:33 2022 -0500
+   Date:   Fri May 26 01:58:18 2023 -0400
    
-       Add additional null-checks. Update hungarian translation.
+       Disable the ability to craft with items inside of bags when Better Crafting mod is installed.
    

@@ -13,14 +13,70 @@ using Newtonsoft.Json.Linq;
 using Shockah.Kokoro.SMAPI;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Shockah.Kokoro
 {
 	public abstract class BaseMod : Mod
 	{
+		private Dictionary<string, Action<ModMessageReceivedEventArgs>> ModMessageHandlers { get; init; } = new();
+
 		public override object? GetApi()
 			=> this;
+
+		public override void Entry(IModHelper helper)
+		{
+			helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
+		}
+
+		private void OnModMessageReceived(object? sender, ModMessageReceivedEventArgs e)
+		{
+			if (e.FromModID != ModManifest.UniqueID)
+				return;
+			if (!ModMessageHandlers.TryGetValue(e.Type, out var handler))
+			{
+				Monitor.Log($"Received a `{e.Type}` mod message, but there is no handler registered for it.", LogLevel.Error);
+				return;
+			}
+			handler(e);
+		}
+
+		public void RegisterModMessageHandler<T>(Action<Farmer, T> handler) where T : notnull
+		{
+			var key = typeof(T).GetBestName();
+			ModMessageHandlers[key] = e => handler(e.GetPlayer(), e.ReadAs<T>());
+		}
+
+		public void RegisterModMessageHandler<T>(Action<T> handler) where T : notnull
+			=> RegisterModMessageHandler<T>((_, message) => handler(message));
+
+		public void SendModMessageToEveryone<T>(T message) where T : notnull
+			=> SendModMessage(message, Game1.getAllFarmers().Where(p => p != Game1.player));
+
+		public void SendModMessage<T>(T message, Farmer recipient) where T : notnull
+			=> SendModMessage(message, new Farmer[] { recipient });
+
+		public void SendModMessage<T>(T message, IEnumerable<Farmer> recipients) where T : notnull
+		{
+			var key = typeof(T).GetBestName();
+			if (!ModMessageHandlers.ContainsKey(key))
+				throw new InvalidOperationException($"Tried to send a `{key}` mod message, but there is no handler registered for it.");
+			Helper.Multiplayer.SendMessage(message, key, new[] { ModManifest.UniqueID }, recipients.Select(p => p.UniqueMultiplayerID).ToArray());
+		}
+
+		public void SendModMessage<T>(T message, IMultiplayerPeer recipient) where T : notnull
+			=> SendModMessage(message, new IMultiplayerPeer[] { recipient });
+
+		public void SendModMessage<T>(T message, IEnumerable<IMultiplayerPeer> recipients) where T : notnull
+		{
+			var key = typeof(T).GetBestName();
+			if (!ModMessageHandlers.ContainsKey(key))
+				throw new InvalidOperationException($"Tried to send a `{key}` mod message, but there is no handler registered for it.");
+			Helper.Multiplayer.SendMessage(message, key, new[] { ModManifest.UniqueID }, recipients.Select(p => p.PlayerID).ToArray());
+		}
 	}
 
 	public interface IVersioned
@@ -81,6 +137,7 @@ namespace Shockah.Kokoro
 					helper.Events.GameLoop.GameLaunched += MigrateConfigOnGameLaunched;
 			}
 
+			base.Entry(helper);
 			OnEntry(helper);
 
 			if (isMigrationRequired && ConfigMigrationMode == BaseModConfigMigrationMode.AfterOnEntry)

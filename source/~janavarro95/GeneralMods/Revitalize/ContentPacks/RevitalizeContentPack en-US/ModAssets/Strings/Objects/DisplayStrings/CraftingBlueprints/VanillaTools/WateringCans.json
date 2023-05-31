@@ -1,0 +1,37 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+	"Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Tools.StardewValley.Tools.WateringCan":
+	{
+		"displayName":"Blueprint: Watering Can",
+		"description":"A blueprint used on how to craft a watering can!"
+	},
+	"Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Tools.StardewValley.Tools.CopperWateringCan":
+	{
+		"displayName":"Blueprint: Copper Watering Can",
+		"description":"A blueprint used on how to craft a copper watering can!"
+	},
+	"Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Tools.StardewValley.Tools.SteelWateringCan":
+	{
+		"displayName":"Blueprint: Steel Watering Can",
+		"description":"A blueprint used on how to craft a steel watering can!"
+	},
+	"Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Tools.StardewValley.Tools.GoldWateringCan":
+	{
+		"displayName":"Blueprint: Gold Watering Can",
+		"description":"A blueprint used on how to craft a gold watering can!"
+	},
+	"Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Tools.StardewValley.Tools.IridiumWateringCan":
+	{
+		"displayName":"Blueprint: Iridium Watering Can",
+		"description":"A blueprint used on how to craft an iridium watering can!"
+	},
+}

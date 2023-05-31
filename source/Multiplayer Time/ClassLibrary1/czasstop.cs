@@ -18,7 +18,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using StardewValley.Events;
-using StardewValley.Locations;
 using System.Linq;
 
 namespace MultiplayerTime
@@ -28,6 +27,25 @@ namespace MultiplayerTime
         public SButton ActivationKey { get; set; } = SButton.F3;
         public bool Active { get; set; } = true;
         public bool UiInfoSuite { get; set; } = false;
+        public bool InvisibleUI { get; set; } = false;
+    }
+
+    public class PlayerList
+    {
+        public long PlayerID;
+        public int message = -1;
+
+        public PlayerList(long ID)
+        {
+            PlayerID = ID;
+        }
+    }
+
+    public interface IGenericModConfigMenuAPI
+    {
+        void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
+        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
+        void AddKeybind(IManifest mod, Func<SButton> getValue, Action<SButton> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
     }
 
     class MultiplayerTimeMod : Mod
@@ -37,13 +55,10 @@ namespace MultiplayerTime
        *********/
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
-        int timeinterval=-1;
-        int orginal;
-        bool difference;
-        List<IMultiplayerPeer> peers = new List<IMultiplayerPeer>();
-        Vector2 PasekPosition = new Vector2(44, 240);
-        Vector2 PasekPositionColor = new Vector2(68, 264);
-        Vector2 PasekZoomPositionColor = new Vector2(68, 292);
+        int timeinterval = -1;
+        List<PlayerList> Gracze = new();
+        PlayerList Me = new(0);
+        Vector2 PasekPosition = new(44, 240);
         Color textColor=Game1.textColor;
         Texture2D Pasek;
         Texture2D PasekWithUIS;
@@ -55,13 +70,13 @@ namespace MultiplayerTime
         private ModConfig Config;
         public override void Entry(IModHelper helper)
         {
-            Pasek = helper.Content.Load<Texture2D>("assets/Pasek.png", ContentSource.ModFolder);
-            PasekWithUIS = helper.Content.Load<Texture2D>("assets/PasekWithUIS.png", ContentSource.ModFolder);
-            PasekZoom = helper.Content.Load<Texture2D>("assets/PasekZoom.png", ContentSource.ModFolder);
-            Black = helper.Content.Load<Texture2D>("assets/Black.png", ContentSource.ModFolder);
-            Blue = helper.Content.Load<Texture2D>("assets/Blue.png", ContentSource.ModFolder);
-            Green = helper.Content.Load<Texture2D>("assets/Green.png", ContentSource.ModFolder);
-            Red = helper.Content.Load<Texture2D>("assets/Red.png", ContentSource.ModFolder);
+            Pasek = helper.ModContent.Load<Texture2D>("assets/Pasek.png");
+            PasekWithUIS = helper.ModContent.Load<Texture2D>("assets/PasekWithUIS.png");
+            PasekZoom = helper.ModContent.Load<Texture2D>("assets/PasekZoom.png");
+            Black = helper.ModContent.Load<Texture2D>("assets/Black.png");
+            Blue = helper.ModContent.Load<Texture2D>("assets/Blue.png");
+            Green = helper.ModContent.Load<Texture2D>("assets/Green.png");
+            Red = helper.ModContent.Load<Texture2D>("assets/Red.png");
             this.Config = (ModConfig)helper.ReadConfig<ModConfig>();
             if (this.Config.Active)
             {
@@ -69,19 +84,56 @@ namespace MultiplayerTime
                 Helper.Events.Display.RenderingHud += this.PreRenderHud;
                 Helper.Events.Display.RenderedHud += this.PostRenderHud;
                 Helper.Events.Display.Rendered += this.RenderClock;
-                Helper.Events.GameLoop.Saved += this.Statement;
+                Helper.Events.GameLoop.DayStarted += this.Statement;
             }
+            Helper.Events.GameLoop.GameLaunched += OnLaunched;
             Helper.Events.Input.ButtonPressed += new EventHandler<ButtonPressedEventArgs>(this.ButtonPressed);
-            Helper.Events.GameLoop.Saving += this.Save;
-            Helper.Events.GameLoop.SaveLoaded += this.Save;
-            Helper.Events.Multiplayer.PeerContextReceived += this.PlayerConnected;
+            Helper.Events.Multiplayer.PeerConnected += this.PlayerConnected;
             Helper.Events.Multiplayer.PeerDisconnected += this.PlayerDisconnected;
-            if (this.Config.UiInfoSuite)
-            {
-                PasekPosition.Y += 42;
-                PasekPositionColor.Y += 42;
-                PasekZoomPositionColor.Y += 42;
-            }
+            Helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageRecieved;
+        }
+
+        private void OnLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            Config = Helper.ReadConfig<ModConfig>(); // This can also be done in your entry method if you want, but the rest needs to come in the GameLaunched event.
+            var api = Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+            api.Register(
+                mod: this.ModManifest,
+                reset: () => this.Config = new ModConfig(),
+                save: () => this.Helper.WriteConfig(Config)
+            );
+
+            api.AddKeybind(
+                mod: this.ModManifest,
+                name: () => "Activation Key",
+                tooltip: () => "Clicking this key during game will change state of \"Active\" checkbox below.",
+                getValue: () => this.Config.ActivationKey,
+                setValue: value => this.Config.ActivationKey = value
+            );
+            
+            api.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Active",
+                tooltip: () => "Mod works only if every player have this checked",
+                getValue: () => this.Config.Active,
+                setValue: value => this.Config.Active = value
+            );
+
+            api.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "UI Info Suite",
+                tooltip: () => "Check this if you use UI Info Suite mod",
+                getValue: () => this.Config.UiInfoSuite,
+                setValue: value => this.Config.UiInfoSuite = value
+            );
+
+            api.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Invisible UI",
+                tooltip: () => "UI of this mod will not appear",
+                getValue: () => this.Config.InvisibleUI,
+                setValue: value => this.Config.InvisibleUI = value
+            );
         }
 
         private void ButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -101,17 +153,8 @@ namespace MultiplayerTime
                         if (Context.IsWorldReady)
                         {
                             Game1.chatBox.addMessage("Multiplayer time Mod turned off", Color.White);
-                            if (difference)
-                            {
-
-                                orginal = Game1.player.MagneticRadius;
-                            }
-                            else
-                            {
-                                orginal = orginal + Game1.player.MagneticRadius;
-                            }
-                            Game1.player.MagneticRadius = orginal;
-                            difference = true;
+                            this.Helper.Multiplayer.SendMessage(-1, "pause?", modIDs: new[] { this.ModManifest.UniqueID });
+                            Me.message = -1;
                         }
                     }
                     else
@@ -125,61 +168,26 @@ namespace MultiplayerTime
                         if (Context.IsWorldReady)
                         {
                             Game1.chatBox.addMessage("Multiplayer time Mod turned on", Color.White);
-                            difference = true;
                             timeinterval = -1;
                         }
                     }
                 }
                 if(e.Button == SButton.MouseLeft && this.Config.Active && Context.IsMultiplayer)
                 {
-                    if (Game1.options.zoomButtons && new Rectangle((int)(Game1.dayTimeMoneyBox.position.X + PasekZoomPositionColor.X), (int)(Game1.dayTimeMoneyBox.position.Y + PasekZoomPositionColor.Y), 108, 24).Contains(Game1.getMouseX(), Game1.getMouseY()))
+                    if (new Rectangle((int)((Game1.dayTimeMoneyBox.position.X + PasekPosition.X + 24) * Game1.options.uiScale), (int) ((Game1.dayTimeMoneyBox.position.Y + PasekPosition.Y + (Game1.options.zoomButtons ? 52 : 24))*Game1.options.uiScale),(int) (108 * Game1.options.uiScale), (int) (24 * Game1.options.uiScale)).Contains(Game1.getMouseX(), Game1.getMouseY()))
                     {
-                        foreach (Farmer gracz in Game1.getOnlineFarmers())
+                        foreach (PlayerList gracz in Gracze)
                         {
-                            bool msg = false;
-                            if (Context.IsMainPlayer)
+                            foreach (Farmer farmer in Game1.getOnlineFarmers())
                             {
-                                foreach (IMultiplayerPeer peer in peers)
+                                if (gracz.message == -1 && gracz.PlayerID == farmer.UniqueMultiplayerID && Context.IsMainPlayer)
                                 {
-                                    if (peer.GetMod("lolmaj.MultiplayerTime") == null)
-                                    {
-                                        if (peer.PlayerID == gracz.UniqueMultiplayerID)
-                                        {
-                                            Game1.chatBox.addMessage(gracz.Name + " does not have Multiplayer Time mod", Color.Red);
-                                            msg = true;
-                                        }
-                                    }
+                                    Game1.chatBox.addMessage(farmer.Name + " does not have Multiplayer Time mod", Color.Red);
                                 }
-                            }
-                            if (gracz.MagneticRadius != 0 && !msg)
-                            {
-                                Game1.chatBox.addMessage("Time doesn't freeze because of " + gracz.Name, Color.White);
-                            }
-                        }
-                        this.Helper.Input.Suppress(SButton.MouseLeft);
-                    }
-                    if(!Game1.options.zoomButtons && new Rectangle((int) (Game1.dayTimeMoneyBox.position.X + PasekPositionColor.X),(int) (Game1.dayTimeMoneyBox.position.Y + PasekPositionColor.Y), 108, 24).Contains(Game1.getMouseX(), Game1.getMouseY()))
-                    {
-                        foreach (Farmer gracz in Game1.getOnlineFarmers())
-                        {
-                            bool msg = false;
-                            if (Context.IsMainPlayer)
-                            {
-                                foreach (IMultiplayerPeer peer in peers)
+                                else if(gracz.message != 1 && gracz.PlayerID == farmer.UniqueMultiplayerID)
                                 {
-                                    if (peer.GetMod("lolmaj.MultiplayerTime") == null)
-                                    {
-                                        if (peer.PlayerID == gracz.UniqueMultiplayerID)
-                                        {
-                                            Game1.chatBox.addMessage(gracz.Name + " does not have Multiplayer Time mod", Color.Red);
-                                            msg = true;
-                                        }
-                                    }
+                                    Game1.chatBox.addMessage("Time doesn't freeze because of " + farmer.Name, Color.White);
                                 }
-                            }
-                            if (gracz.MagneticRadius != 0 && !msg)
-                            {
-                                Game1.chatBox.addMessage("Time doesn't freeze because of " + gracz.Name, Color.White);
                             }
                         }
                         this.Helper.Input.Suppress(SButton.MouseLeft);
@@ -198,43 +206,25 @@ namespace MultiplayerTime
             {
                 Game1.chatBox.addMessage("Multiplayer time Mod turned off", Color.White);
             }
+            Gracze.Clear();
+            foreach (Farmer farmer in Game1.getOnlineFarmers())
+            {
+                if (Game1.player.UniqueMultiplayerID == farmer.UniqueMultiplayerID)
+                {
+                    Me.PlayerID = farmer.UniqueMultiplayerID;
+                    Gracze.Add(Me);
+                }
+                else
+                {
+                    Gracze.Add(new PlayerList(farmer.UniqueMultiplayerID));
+                }
+            }
         }
 
-        private void Save(object sender, EventArgs e)
-        {
-            Game1.player.MagneticRadius = 128;
-            if (Game1.player.rightRing != null && Game1.player.rightRing.Value != null && Game1.player.rightRing.Value.indexInTileSheet == 518)
-            {
-                Game1.player.MagneticRadius += 64;
-            }
-            if (Game1.player.leftRing != null && Game1.player.leftRing.Value != null && Game1.player.leftRing.Value.indexInTileSheet == 518)
-            {
-                Game1.player.MagneticRadius += 64;
-            }
-            if (Game1.player.rightRing != null && Game1.player.rightRing.Value != null && Game1.player.rightRing.Value.indexInTileSheet == 519)
-            {
-                Game1.player.MagneticRadius += 128;
-            }
-            if (Game1.player.leftRing != null && Game1.player.leftRing.Value != null && Game1.player.leftRing.Value.indexInTileSheet == 519)
-            {
-                Game1.player.MagneticRadius += 128;
-            }
-            if (Game1.player.rightRing != null && Game1.player.rightRing.Value != null && Game1.player.rightRing.Value.indexInTileSheet == 527)
-            {
-                Game1.player.MagneticRadius += 128;
-            }
-            if (Game1.player.leftRing != null && Game1.player.leftRing.Value != null && Game1.player.leftRing.Value.indexInTileSheet == 527)
-            {
-                Game1.player.MagneticRadius += 128;
-            }
-            difference = true;
-        }
-
-        private void PlayerConnected(object sender, PeerContextReceivedEventArgs e)
+        private void PlayerConnected(object sender, PeerConnectedEventArgs e)
         {
             if (Context.IsMainPlayer)
             {
-                peers.Add(e.Peer);
                 if (e.Peer.GetMod("lolmaj.MultiplayerTime") == null)
                 {
                     Game1.chatBox.addMessage(Game1.getOnlineFarmers().FirstOrDefault(p => p.UniqueMultiplayerID == e.Peer.PlayerID)?.Name ?? e.Peer.PlayerID.ToString() + " does not have Multiplayer Time mod",Color.Red);
@@ -244,37 +234,54 @@ namespace MultiplayerTime
 
         private void PlayerDisconnected(object sender, PeerDisconnectedEventArgs e)
         {
-            if (Context.IsMainPlayer)
+            for (int i = Gracze.Count-1; i >= 0; i--)
             {
-                peers.Remove(e.Peer);
+                if (Gracze[i].PlayerID == e.Peer.PlayerID)
+                {
+                    Gracze.RemoveAt(i);
+                }
+            }
+        }
+
+        public void OnModMessageRecieved(object sender, ModMessageReceivedEventArgs e)
+        {
+            if(e.FromModID == this.ModManifest.UniqueID && e.Type == "pause?")
+            {
+                foreach(PlayerList gracz in Gracze)
+                {
+                    if(gracz.PlayerID == e.FromPlayerID)
+                    {
+                        gracz.message = e.ReadAs<int>();
+                    }
+                }
             }
         }
 
         private void PreRenderHud(object sender, EventArgs e)
         {
-            if (!shouldTimePass())
+            if (!ShouldTimePass())
             {
                 Game1.textColor *= 0f;
                 Game1.dayTimeMoneyBox.timeShakeTimer = 0;
             }
-            if (Context.IsMultiplayer && !Game1.isFestival())
+            if (Context.IsMultiplayer && !Game1.isFestival() && !this.Config.InvisibleUI)
             {
-                drawPasek(Game1.spriteBatch);
+                DrawPasek(Game1.spriteBatch);
             }
         }
 
         private void PostRenderHud(object sender, EventArgs e)
         {
-            if (!shouldTimePass())
+            if (!ShouldTimePass())
             {
-                drawfade(Game1.spriteBatch);
+                DrawFade(Game1.spriteBatch);
             }
             Game1.textColor = textColor;
         }
 
         private void RenderClock(object sender, EventArgs e)
         {
-            if (Context.IsWorldReady)
+            if (Context.IsWorldReady && !this.Config.InvisibleUI)
             {
                 if (!Game1.isFestival() && !(Game1.farmEvent!=null && (Game1.farmEvent is FairyEvent || Game1.farmEvent is WitchEvent || Game1.farmEvent is SoundInTheNightEvent)) && (Game1.eventUp || Game1.currentMinigame != null || Game1.activeClickableMenu is AnimalQueryMenu || Game1.activeClickableMenu is PurchaseAnimalsMenu || Game1.activeClickableMenu is CarpenterMenu || Game1.freezeControls))
                 {
@@ -284,10 +291,10 @@ namespace MultiplayerTime
                     Game1.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
                     Game1.dayTimeMoneyBox.draw(Game1.spriteBatch);
                     Game1.textColor = textColor;
-                    drawfade(Game1.spriteBatch);
+                    DrawFade(Game1.spriteBatch);
                     if (Context.IsMultiplayer)
                     {
-                        drawPasek(Game1.spriteBatch);
+                        DrawPasek(Game1.spriteBatch);
                     }
                 }
             }
@@ -297,25 +304,24 @@ namespace MultiplayerTime
         {
             if (Context.IsWorldReady)
             {
-                if (difference)
+                if (Gracze.Count < Game1.getOnlineFarmers().Count)
                 {
-                    orginal = Game1.player.MagneticRadius;
+                    foreach(Farmer gracz in Game1.getOnlineFarmers().Where(x => !Gracze.Any(z => x.UniqueMultiplayerID == z.PlayerID)).ToList())
+                    {
+                        Gracze.Add(new PlayerList(gracz.UniqueMultiplayerID));
+                    }
                 }
-                else
+                if (Me.message != 1 && (!Context.IsPlayerFree || (Game1.currentMinigame != null && Game1.currentMinigame.minigameId() == "PrairieKing") || Game1.player.isEating || Game1.freezeControls || Game1.activeClickableMenu is BobberBar))
                 {
-                    orginal = orginal + Game1.player.MagneticRadius;
+                    this.Helper.Multiplayer.SendMessage(1, "pause?", modIDs: new[] { this.ModManifest.UniqueID});
+                    Me.message = 1;
                 }
-                if (!Context.IsPlayerFree || (Game1.currentMinigame != null && Game1.currentMinigame.minigameId() == "PrairieKing") || Game1.player.isEating || Game1.freezeControls || Game1.activeClickableMenu is BobberBar)
+                if (Me.message != 0 && Context.IsPlayerFree && !Game1.player.isEating && Game1.currentMinigame==null && !Game1.freezeControls)
                 {
-                    Game1.player.MagneticRadius = 0;
-                    difference = false;
+                    this.Helper.Multiplayer.SendMessage(0, "pause?", modIDs: new[] { this.ModManifest.UniqueID });
+                    Me.message = 0;
                 }
-                if (Context.IsPlayerFree && !Game1.player.isEating && Game1.currentMinigame==null && !Game1.freezeControls)
-                {
-                    Game1.player.MagneticRadius = orginal;
-                    difference = true;
-                }
-                if (Context.IsMainPlayer && !shouldTimePass())
+                if (Context.IsMainPlayer && !ShouldTimePass())
                 {
                     foreach (GameLocation location in Game1.locations)
                     {
@@ -349,7 +355,7 @@ namespace MultiplayerTime
                             {
                                 if (Monsters !=null && Monsters is NPC && Monsters is Monster)
                                 {
-                                    if(!(Monsters is Bug))
+                                    if(Monsters is not Bug)
                                     {
                                         (Monsters as Monster).Halt();
                                     }
@@ -377,7 +383,7 @@ namespace MultiplayerTime
                         }
                     }
                 }
-                if(Context.IsMainPlayer && shouldTimePass())
+                if(Context.IsMainPlayer && ShouldTimePass())
                 {
                     foreach (Farmer gracz in Game1.getOnlineFarmers())
                     {
@@ -385,10 +391,10 @@ namespace MultiplayerTime
                         {
                             if (Monsters is NPC && Monsters is Monster && (Monsters as Monster).Speed==0 )
                             {
-                                (Monsters as Monster).Speed=Convert.ToInt32(monsterInfo((Monsters as Monster).Name)[10]);
+                                (Monsters as Monster).Speed=Convert.ToInt32(MonsterInfo((Monsters as Monster).Name)[10]);
                                 if(Monsters is GreenSlime || Monsters is SquidKid)
                                 {
-                                    (Monsters as Monster).moveTowardPlayer(Convert.ToInt32(monsterInfo((Monsters as Monster).Name)[9]));
+                                    (Monsters as Monster).moveTowardPlayer(Convert.ToInt32(MonsterInfo((Monsters as Monster).Name)[9]));
                                 }
                             }
                         }
@@ -398,19 +404,23 @@ namespace MultiplayerTime
                 {
                     for (int k = Game1.currentLocation.TemporarySprites.Count - 1; k >= 0; k--)
                     {
-                        if (Game1.currentLocation.TemporarySprites[k].bombRadius > 0 && shouldTimePass())
+                        if (Game1.currentLocation.TemporarySprites[k].bombRadius > 0 && ShouldTimePass())
                         {
                             Game1.currentLocation.TemporarySprites[k].paused = false;
                         }
-                        if (Game1.currentLocation.TemporarySprites[k].bombRadius > 0 && !shouldTimePass())
+                        if (Game1.currentLocation.TemporarySprites[k].bombRadius > 0 && !ShouldTimePass())
                         {
                             Game1.currentLocation.TemporarySprites[k].paused = true;
                         }
                     }
                 }
+                if(Game1.player.swimming && !Game1.eventUp && !Game1.paused && !ShouldTimePass())
+                {
+                    Game1.player.swimTimer = 100;
+                }
                 if (Context.IsMainPlayer)
                 {
-                    if (shouldTimePass())
+                    if (ShouldTimePass())
                     {
                         timeinterval = -1;
                         return;
@@ -435,18 +445,18 @@ namespace MultiplayerTime
             }
         }
 
-        private string[] monsterInfo(string name) {
+        private static string[] MonsterInfo(string name) {
             return Game1.content.Load<Dictionary<string, string>>("Data\\Monsters")[name].Split(new char[]
             {
                 '/'
             });
         }
 
-        private bool shouldTimePass()
+        private bool ShouldTimePass()
         {
-            foreach (Farmer gracz in Game1.getOnlineFarmers())
+            foreach (PlayerList gracz in Gracze)
             {
-                if (gracz.MagneticRadius != 0)
+                if (gracz.message != 1)
                 {
                     return true;
                 }
@@ -454,10 +464,10 @@ namespace MultiplayerTime
             return false;
         }
 
-        private void drawfade(SpriteBatch b)
+        private void DrawFade(SpriteBatch b)
         {
             string text = Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth) + ". " + Game1.dayOfMonth;
-            Vector2 dayPosition = new Vector2((float)Math.Floor(183.5f - Game1.dialogueFont.MeasureString(text).X / 2), (float)18);
+            Vector2 dayPosition = new((float)Math.Floor(183.5f - Game1.dialogueFont.MeasureString(text).X / 2), (float)18);
             b.DrawString(Game1.dialogueFont, text, Game1.dayTimeMoneyBox.position + dayPosition, textColor);
             string timeofDay = (Game1.timeOfDay < 1200 || Game1.timeOfDay >= 2400) ? " am" : " pm";
             string zeroPad = (Game1.timeOfDay % 100 == 0) ? "0" : "";
@@ -470,84 +480,39 @@ namespace MultiplayerTime
                 zeroPad,
                 timeofDay
             });
-            Vector2 timePosition = new Vector2((float)Math.Floor(183.5 - Game1.dialogueFont.MeasureString(time).X/2), (float)108);
-            bool nofade = shouldTimePass() || Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 2000.0 > 1000.0;
+            Vector2 timePosition = new((float)Math.Floor(183.5 - Game1.dialogueFont.MeasureString(time).X/2), (float)108);
+            bool nofade = ShouldTimePass() || Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 2000.0 > 1000.0;
             b.DrawString(Game1.dialogueFont, time, Game1.dayTimeMoneyBox.position + timePosition, (Game1.timeOfDay >= 2400) ? Color.Red : (textColor * (nofade ? 1f : 0.5f)));
         }
 
-        private void drawPasek(SpriteBatch b)
+        private void DrawPasek(SpriteBatch b)
         {
             int width = (int)(108-(Game1.getOnlineFarmers().Count-1)*4)/ Game1.getOnlineFarmers().Count;
             int i = 0;
             if (this.Config.UiInfoSuite)
             {
-                b.Draw(PasekWithUIS, Game1.dayTimeMoneyBox.position + PasekPosition + new Vector2 (0,-42), null, Color.White, 0.0f, Vector2.Zero, 4, SpriteEffects.None, 0.99f);
+                b.Draw(PasekWithUIS, Game1.dayTimeMoneyBox.position + PasekPosition, null, Color.White, 0.0f, Vector2.Zero, 4, SpriteEffects.None, 0.99f);
             }
-            if (Game1.options.zoomButtons)
+            b.Draw(Game1.options.zoomButtons ? PasekZoom : Pasek, Game1.dayTimeMoneyBox.position + PasekPosition + new Vector2 (0, this.Config.UiInfoSuite ? 42 : 0), null, Color.White, 0.0f, Vector2.Zero, 4, SpriteEffects.None, 0.99f);
+            foreach (PlayerList gracz in Gracze)
             {
-                b.Draw(PasekZoom, Game1.dayTimeMoneyBox.position + PasekPosition, null, Color.White, 0.0f, Vector2.Zero, 4, SpriteEffects.None, 0.99f);
-                foreach (Farmer gracz in Game1.getOnlineFarmers())
+                if (gracz.message != 1)
                 {
-                    if (gracz.MagneticRadius != 0)
+                    b.Draw(Blue, Game1.dayTimeMoneyBox.position + PasekPosition + new Vector2(24,Game1.options.zoomButtons ? 52 : 24) + new Vector2(0, this.Config.UiInfoSuite ? 42 : 0) + new Vector2(i * (width + 4), 0), new Rectangle(0, 0, width, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
+                    if (Context.IsMainPlayer && gracz.message == -1)
                     {
-                        b.Draw(Blue, Game1.dayTimeMoneyBox.position + PasekZoomPositionColor + new Vector2(i * (width + 4), 0), new Rectangle(0, 0, width, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
-                        if (Context.IsMainPlayer)
-                        {
-                            foreach (IMultiplayerPeer peer in peers)
-                            {
-                                if (peer.GetMod("lolmaj.MultiplayerTime") == null)
-                                {
-                                    if (peer.PlayerID == gracz.UniqueMultiplayerID)
-                                    {
-                                        b.Draw(Red, Game1.dayTimeMoneyBox.position + PasekZoomPositionColor + new Vector2(i * (width + 4), 0), new Rectangle(0, 0, width, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
-                                    }
-                                }
-                            }
-                        }
+                        b.Draw(Red, Game1.dayTimeMoneyBox.position + PasekPosition + new Vector2(24, Game1.options.zoomButtons ? 52 : 24) + new Vector2(0, this.Config.UiInfoSuite ? 42 : 0) + new Vector2(i * (width + 4), 0), new Rectangle(0, 0, width, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
                     }
-                    else
-                    {
-                        b.Draw(Green, Game1.dayTimeMoneyBox.position + PasekZoomPositionColor + new Vector2(i * (width + 4), 0), new Rectangle(0, 0, width, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
-                    }
-                    if (i != Game1.getOnlineFarmers().Count - 1)
-                    {
-                        b.Draw(Black, Game1.dayTimeMoneyBox.position + PasekZoomPositionColor + new Vector2(i * (width + 4) + width, 0), new Rectangle(i * (width + 4) + width, 0, 4, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
-                    }
-                    i++;
                 }
-            }
-            else
-            {
-                b.Draw(Pasek, Game1.dayTimeMoneyBox.position + PasekPosition, null, Color.White, 0.0f, Vector2.Zero, 4, SpriteEffects.None, 0.99f);
-                foreach (Farmer gracz in Game1.getOnlineFarmers())
+                else
                 {
-                    if (gracz.MagneticRadius != 0)
-                    {
-                        b.Draw(Blue, Game1.dayTimeMoneyBox.position + PasekPositionColor + new Vector2(i * (width + 4), 0), new Rectangle(0, 0, width, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
-                        if (Context.IsMainPlayer)
-                        {
-                            foreach (IMultiplayerPeer peer in peers)
-                            {
-                                if (peer.GetMod("lolmaj.MultiplayerTime") == null)
-                                {
-                                    if (peer.PlayerID == gracz.UniqueMultiplayerID)
-                                    {
-                                        b.Draw(Red, Game1.dayTimeMoneyBox.position + PasekPositionColor + new Vector2(i * (width + 4), 0), new Rectangle(0, 0, width, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        b.Draw(Green, Game1.dayTimeMoneyBox.position + PasekPositionColor + new Vector2(i * (width + 4), 0), new Rectangle(0, 0, width, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
-                    }
-                    if (i != Game1.getOnlineFarmers().Count - 1)
-                    {
-                        b.Draw(Black, Game1.dayTimeMoneyBox.position + PasekPositionColor + new Vector2(i * (width + 4) + width, 0), new Rectangle(i * (width + 4) + width, 0, 4, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
-                    }
-                    i++;
+                    b.Draw(Green, Game1.dayTimeMoneyBox.position + PasekPosition + new Vector2(24, Game1.options.zoomButtons ? 52 : 24) + new Vector2(0, this.Config.UiInfoSuite ? 42 : 0) + new Vector2(i * (width + 4), 0), new Rectangle(0, 0, width, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
                 }
+                if (i != Game1.getOnlineFarmers().Count - 1)
+                {
+                    b.Draw(Black, Game1.dayTimeMoneyBox.position + PasekPosition + new Vector2(24, Game1.options.zoomButtons ? 52 : 24) + new Vector2(0, this.Config.UiInfoSuite ? 42 : 0) + new Vector2(i * (width + 4) + width, 0), new Rectangle(i * (width + 4) + width, 0, 4, 24), Color.White, 0.0f, Vector2.Zero, 1, SpriteEffects.None, 0.99f);
+                }
+                i++;
             }
         }
     }

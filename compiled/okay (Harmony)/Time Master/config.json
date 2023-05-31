@@ -3,10 +3,11 @@
   "TimeFlowChangeNotifications": false,
   "SecondsPerMinute": {
     "Indoors": 1.4,
-    "FarmHouse": 1.4,
-    "BathHouse": 1.4,
+    "FarmHouse": null,
+    "BathHouse": null,
     "Outdoors": 0.875,
-    "Farm": 0.875,
+    "Farm": null,
+    "TownExteriors": null,
     "Mines": 0.7,
     "SkullCavern": 0.9,
     "VolcanoDungeon": 0.7,
@@ -14,6 +15,7 @@
     "NightMarket": 0.875,
     "ByLocationName": {}
   },
+  "ObjectsPassTimeWhenTimeIsFrozen": false,
   "FreezeTime": {
     "AnywhereAtTime": null,
     "Indoors": false,
@@ -21,6 +23,7 @@
     "BathHouse": false,
     "Outdoors": false,
     "Farm": false,
+    "TownExteriors": false,
     "Mines": false,
     "SkullCavern": false,
     "VolcanoDungeon": false,

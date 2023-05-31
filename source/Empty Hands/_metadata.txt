@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit 1fa6052bfe9376fe3c2cc298936f8e7c6db37567
-   Merge: ef65fcf 7ce9d2c
    Author: Quicksilver Fox <QuicksilverFox@ignis.name>
    Date:   Sun Dec 27 13:47:39 2020 +0300
    

@@ -8,45 +8,32 @@
 **
 *************************************************/
 
-using System.Collections.Specialized;
-
 namespace BetterReturnScepter
 {
     public class RodCooldown
     {
-        private byte countdown;
-        private bool canWarp;
+        public byte Countdown { get; private set; }
+
+        public bool CanWarp { get; private set; }
 
         public void IncrementTimer()
         {
             // Increment our timer.
-            countdown++;
-            
+            this.Countdown++;
+
             // First, if the timer is above our threshold... 
-            if (countdown > 140)
+            if (this.Countdown > 140)
             {
                 // We mark that the player can return to the previous sceptre point, and reset the timer.
-                canWarp = true;
-                countdown = 0;
+                this.CanWarp = true;
+                this.Countdown = 0;
             }
         }
 
         public void ResetCountdown()
         {
-            canWarp = false;
-            countdown = 0;
-        }
-        
-        public byte Countdown
-        {
-
-            get { return countdown; }
-        }
-
-        public bool CanWarp
-        {
-
-            get { return canWarp; }
+            this.CanWarp = false;
+            this.Countdown = 0;
         }
     }
 }

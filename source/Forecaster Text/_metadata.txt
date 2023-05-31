@@ -6,12 +6,9 @@ mods:
    Forecaster Text
 
 latest commit:
-   commit 5e5a0f1c397ba1234b9f4beff04043fac66420ad
-   Merge: d3999d5 b62586d
-   Author: Greg <7873930+GStefanowich@users.noreply.github.com>
-   Date:   Mon Feb 13 11:30:02 2023 -0500
+   commit 6439e90881254d2eadb256faa3bb22b982bec026
+   Author: 7873930+GStefanowich <7873930+GStefanowich@users.noreply.github.com>
+   Date:   Sun May 28 20:33:01 2023 -0400
    
-       Merge pull request #2 from Shimaeba/patch-1
-       
-       Create fr.json
+       Fixed Dictionary out-of-bound issue with AnimalHusbandry mod
    

@@ -9,14 +9,13 @@
 *************************************************/
 
 using HarmonyLib;
-using Nanoray.Shrike.Harmony;
 using Nanoray.Shrike;
+using Nanoray.Shrike.Harmony;
 using Shockah.Kokoro;
 using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
 
 namespace Shockah.MaximizeFix
 {
@@ -42,10 +41,10 @@ namespace Shockah.MaximizeFix
 			{
 				return new SequenceBlockMatcher<CodeInstruction>(instructions)
 					.Find(
-						ILMatches.Instruction(OpCodes.Ldsfld, AccessTools.Field(typeof(Game1), nameof(Game1.graphics))),
+						ILMatches.Ldsfld(AccessTools.Field(typeof(Game1), nameof(Game1.graphics))),
 						ILMatches.Ldarg(1),
 						ILMatches.Call("set_PreferredBackBufferWidth"),
-						ILMatches.Instruction(OpCodes.Ldsfld, AccessTools.Field(typeof(Game1), nameof(Game1.graphics))),
+						ILMatches.Ldsfld(AccessTools.Field(typeof(Game1), nameof(Game1.graphics))),
 						ILMatches.Ldarg(2),
 						ILMatches.Call("set_PreferredBackBufferHeight")
 					)

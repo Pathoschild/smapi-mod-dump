@@ -353,7 +353,7 @@ namespace Shockah.DontStopMeNow
 						ILMatches.Brtrue
 					)
 					.PointerMatcher(SequenceMatcherRelativeElement.First)
-					.Encompass(SequenceMatcherPastBoundsDirection.After, 1)
+					.Encompass(SequenceMatcherEncompassDirection.After, 1)
 					.Replace(
 						new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(DontStopMeNow), nameof(Game1_UpdateControlInput_Transpiler_UsingToolReplacement)))
 					)

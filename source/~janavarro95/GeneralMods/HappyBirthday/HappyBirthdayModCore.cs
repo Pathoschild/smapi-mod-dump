@@ -32,7 +32,7 @@ using Omegasis.StardustCore.Events;
 namespace Omegasis.HappyBirthday
 {
     /// <summary>The mod entry point.</summary>
-    public class HappyBirthdayModCore : Mod, IAssetEditor
+    public class HappyBirthdayModCore : Mod
     {
         /*********
         ** Fields
@@ -103,6 +103,7 @@ namespace Omegasis.HappyBirthday
 
             this.Helper.Events.GameLoop.ReturnedToTitle += this.GameLoop_ReturnedToTitle;
 
+            this.Helper.Events.Content.AssetRequested += this.Content_AssetRequested;
 
             this.birthdayManager = new BirthdayManager();
 
@@ -112,6 +113,14 @@ namespace Omegasis.HappyBirthday
 
             LocalizedContentManager.OnLanguageChange += this.LocalizedContentManager_OnLanguageChange;
 
+        }
+
+        private void Content_AssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.BaseName.Equals(@"Data/mail"))
+            {
+                e.Edit(MailUtilities.EditMailAsset);
+            }
         }
 
         private void GameLoop_SaveCreated(object sender, SaveCreatedEventArgs e)
@@ -127,26 +136,6 @@ namespace Omegasis.HappyBirthday
         public override object GetApi()
         {
             return new HappyBirthday.Framework.API.HappyBirthdayAPI();
-        }
-
-
-
-
-        /// <summary>Get whether this instance can edit the given asset.</summary>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
-        public bool CanEdit<T>(IAssetInfo asset)
-        {
-            return asset.AssetNameEquals(@"Data\mail");
-        }
-
-        /// <summary>Edit a matched asset.</summary>
-        /// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
-        public void Edit<T>(IAssetData asset)
-        {
-            if (asset.AssetNameEquals(@"Data\mail"))
-            {
-                MailUtilities.EditMailAsset(asset);
-            }
         }
 
 

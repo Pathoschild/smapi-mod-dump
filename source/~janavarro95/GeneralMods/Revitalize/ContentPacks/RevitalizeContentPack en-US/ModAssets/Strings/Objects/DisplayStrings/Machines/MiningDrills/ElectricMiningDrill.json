@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+	"Omegasis.Revitalize.Objects.Machines.ElectricMiningDrill":
+	{
+		"displayName":"Electric Mining Drill",
+		"description":"Digs up different resources depending on where it is placed. Works best when placed in a place with many ores such as the mines. Requires battery packs to run."
+	},
+}

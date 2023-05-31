@@ -2330,7 +2330,7 @@ namespace ItemBags.Persistence
             List<int> HasQualitiesIds = new List<int>() { 346, 459, 303 }; // Beer, Mead, Pale Ale
 
             List<int> Ingredients = new List<int>() {
-                246, 245, 247, 419, 724, 814, 921 // Wheat Flour, Sugar, Oil, Vinegar, Rice, Maple Syrup, Squid Ink, Squid Ink Ravioli
+                246, 245, 247, 419, 423, 724, 814, 921 // Wheat Flour, Sugar, Oil, Vinegar, Rice, Maple Syrup, Squid Ink, Squid Ink Ravioli
             };
 
             List<int> CraftedFoods = new List<int>() {
@@ -2363,11 +2363,6 @@ namespace ItemBags.Persistence
 
             List<int> MiscFoods = new List<int>() {
                 78 // Cave Carrot
-            };
-
-            BagType bt = new BagType
-            {
-                Description = ""
             };
 
             return new BagType()

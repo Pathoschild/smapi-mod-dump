@@ -12,13 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DecidedlyShared.Logging;
+using DecidedlyShared.Ui;
 using DecidedlyShared.Utilities;
-using Microsoft.Build.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewValley;
-using StardewValley.GameData.HomeRenovations;
 using StardewValley.Menus;
 
 namespace DecidedlyShared.UIOld
@@ -56,6 +54,7 @@ namespace DecidedlyShared.UIOld
             get => this.clickAction;
             set => this.clickAction = value;
         }
+
         public bool ShowScrollBar
         {
             get => this.showScrollBar;
@@ -106,15 +105,13 @@ namespace DecidedlyShared.UIOld
         public string SearchString
         {
             get => this.searchString;
-            set
-            {
-                this.searchString = value;
-            }
+            set { this.searchString = value; }
         }
 
         public UiElement(string name, string label, string hoverText, int width = 0, int height = 0,
-                         Orientation orientation = Orientation.Vertical, Alignment childAlignment = Alignment.Middle,
-                         int elementSpacing = 0, Logger? logger = null, Action? onClick = null) : base(new Rectangle(0, 0, 0, 0), Game1.menuTexture,
+            Orientation orientation = Orientation.Vertical, Alignment childAlignment = Alignment.Middle,
+            int elementSpacing = 0, Logger? logger = null, Action? onClick = null) : base(new Rectangle(0, 0, 0, 0),
+            Game1.menuTexture,
             new Rectangle(0, 256, 60, 60), 1f)
         {
             this.name = name;
@@ -240,7 +237,7 @@ namespace DecidedlyShared.UIOld
             this.scrollBarHandle.bounds.Width = 48;
             this.scrollBarHandle.bounds.Height = 44;
             this.scrollBarHandle.bounds.X = this.bounds.Right + 16;
-                // new Rectangle(this.bounds.Right + 16, this.bounds.Top, 48, this.bounds.Height);
+            // new Rectangle(this.bounds.Right + 16, this.bounds.Top, 48, this.bounds.Height);
             // this.scrollUpArrow.bounds = new Rectangle(this.bounds.Right + 8, this.bounds.Top, 40, 44);
             // this.scrollDownArrow.bounds = new Rectangle(this.bounds.Right + 8, this.bounds.Bottom - 44, 40, 44);
 
@@ -279,7 +276,7 @@ namespace DecidedlyShared.UIOld
             // this.scrollBarHandle.bounds.Height = this.scrollBarArea.bounds.Height / this.CurrentTopIndex == 0 ? 1 : this.CurrentTopIndex;
 
             // TODO: REMOVE THIS OUT OF DEBUG.
-            #if DEBUG
+#if DEBUG
             if (this.logger != null)
             {
                 // this.logger.Log($"Current top index: {this.CurrentTopIndex}", LogLevel.Info);
@@ -296,7 +293,7 @@ namespace DecidedlyShared.UIOld
                 // this.logger.Log($"", LogLevel.Info);
                 // this.logger.Log($"", LogLevel.Info);
             }
-            #endif
+#endif
         }
 
         public void CalculateInitialSize()
@@ -527,8 +524,6 @@ namespace DecidedlyShared.UIOld
             // Now we draw our scroll arrows.
             if (this.showScrollBar)
             {
-
-
                 IClickableMenu.drawTextureBox(sb, Game1.mouseCursors, new Rectangle(403, 383, 6, 6),
                     this.scrollBarArea.bounds.X, this.scrollBarArea.bounds.Y, this.scrollBarArea.bounds.Width,
                     this.scrollBarArea.bounds.Height, Color.White, 4f, drawShadow: false);
@@ -618,7 +613,6 @@ namespace DecidedlyShared.UIOld
 
             if (this.ShowSearchBox)
             {
-
             }
 
             UiElement? hitChildElement = null;

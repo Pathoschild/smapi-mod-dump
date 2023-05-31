@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15886
+IDs: jltaylor-us.RainbowCursor
+update keys: Nexus:15886, GitHub:jltaylor-us/StardewRainbowCursor

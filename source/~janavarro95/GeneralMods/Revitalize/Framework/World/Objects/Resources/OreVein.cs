@@ -22,7 +22,7 @@ using StardewValley;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.Resources
 {
-    [XmlType("Mods_Revitalize.Framework.World.Objects.Resources.OreVeins.OreVein")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.Resources.OreVeins.OreVein")]
     public class OreVein : CustomObject
     {
         /// <summary>
@@ -67,7 +67,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Resources
         }
 
 
-        public override bool performObjectDropInAction(Item dropInItem, bool probe, Farmer who)
+        public override bool performItemDropInAction(Item dropInItem, bool probe, Farmer who)
         {
             return false; //this.pickUpItem()==PickUpState.DoNothing;
         }
@@ -197,7 +197,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Resources
             return false;
         }
 
-        public override bool rightClicked(Farmer who)
+        public override bool checkForAction(Farmer who, bool justCheckingForActivity = false)
         {
             return false;
         }

@@ -1,0 +1,10 @@
+{
+    "Name": "Stardew Twitch Tracker Mod",
+    "Author": "Cody",
+    "Version": "1.0.0", // fixed locally
+    "Description": "Add items from Twitch program",
+    "UniqueID": "cody.StardewTwitchTrackerMod",
+    "EntryDll": "StardewTwitchTrackerMod.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:16543" ]
+}

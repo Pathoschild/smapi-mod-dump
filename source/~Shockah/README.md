@@ -36,6 +36,10 @@ Machine ready/waiting/busy status at a glance.
 Fixes a problem with game window maximization on Windows.
 \[[source code](MaximizeFix)]
 
+[![Mine Tweaks](MineTweaks/Header.png)](https://www.nexusmods.com/stardewvalley/mods/16859)
+Tweaks for various things in the mines.
+\[[source code](MineTweaks)]
+
 [![Please Gift Me In Person](PleaseGiftMeInPerson/Header.png)](https://www.nexusmods.com/stardewvalley/mods/11217)
 Adds some more realism and life to the Gift Delivery Service. An extension to the [Mail Services Mod](https://www.nexusmods.com/stardewvalley/mods/7842).
 \[[source code](PleaseGiftMeInPerson)]

@@ -43,6 +43,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Events\Content\AssetsInvalidatedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\Content\LocaleChangedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\AlwaysEnabledEventAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\Custom\SecondSecondUpdateTickedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\Custom\FirstSecondUpdateTickedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\Input\ButtonReleasedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\Input\ButtonPressedEvent.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Reflection\StringExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Reflection\TypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SMAPI\AssetNameExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\SMAPI\ModExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SMAPI\GameContentHelperExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SMAPI\KeybindListExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\SMAPI\DataHelperExtensions.cs" />
@@ -149,6 +151,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Harmony\ILHelperExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Harmony\LabelNotFoundException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Harmony\PatternNotFoundException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Integrations\Archery\IArcheryApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\Automate\IAutomate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\Automate\IAutomateApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Integrations\CustomResourceNodes\ICustomResourceClumpsApi.cs" />

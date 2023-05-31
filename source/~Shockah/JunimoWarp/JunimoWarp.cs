@@ -13,7 +13,6 @@ using Microsoft.Xna.Framework;
 using Shockah.CommonModCode.GMCM;
 using Shockah.Kokoro;
 using Shockah.Kokoro.GMCM;
-using Shockah.Kokoro.SMAPI;
 using Shockah.Kokoro.Stardew;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -32,12 +31,19 @@ namespace Shockah.JunimoWarp
 
 		private readonly PerScreen<Dictionary<Guid, Action<GameLocation, IntPoint>>> AwaitingNextWarpResponse = new(() => new());
 
+		public override void MigrateConfig(ISemanticVersion? configVersion, ISemanticVersion modVersion)
+		{
+			// do nothing, for now
+		}
+
 		public override void OnEntry(IModHelper helper)
 		{
 			Instance = this;
 
 			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-			helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
+
+			RegisterModMessageHandler<NetMessage.NextWarpRequest>(OnNextWarpRequestMessageReceived);
+			RegisterModMessageHandler<NetMessage.NextWarpResponse>(OnNextWarpResponseMessageReceived);
 
 			var harmony = new Harmony(ModManifest.UniqueID);
 			ItemGrabMenuPatches.Apply(harmony);
@@ -68,42 +74,33 @@ namespace Shockah.JunimoWarp
 			SetupConfig();
 		}
 
-		private void OnModMessageReceived(object? sender, ModMessageReceivedEventArgs e)
+		private void OnNextWarpRequestMessageReceived(Farmer sender, NetMessage.NextWarpRequest message)
 		{
-			if (e.FromModID != ModManifest.UniqueID)
-				return;
-
 			if (GameExt.GetMultiplayerMode() == MultiplayerMode.Client)
 			{
-				if (e.Type == typeof(NetMessage.NextWarpResponse).FullName)
-				{
-					var message = e.ReadAs<NetMessage.NextWarpResponse>();
-					if (!AwaitingNextWarpResponse.Value.TryGetValue(message.ID, out var callback))
-					{
-						Monitor.Log($"Received message of type {e.Type}, but did not expect one - ignoring it.", LogLevel.Warn);
-						return;
-					}
-					AwaitingNextWarpResponse.Value.Remove(message.ID);
-					callback(Game1.getLocationFromName(message.LocationName), message.Point);
-					return;
-				}
-			}
-			else
-			{
-				if (e.Type == typeof(NetMessage.NextWarpRequest).FullName)
-				{
-					var message = e.ReadAs<NetMessage.NextWarpRequest>();
-					var (warpLocation, warpPoint) = GetNextWarp(Game1.getLocationFromName(message.LocationName), message.Point);
-					Helper.Multiplayer.SendMessage(
-						new NetMessage.NextWarpResponse(message.ID, warpLocation.NameOrUniqueName, warpPoint),
-						new[] { Instance.ModManifest.UniqueID },
-						new[] { e.FromPlayerID }
-					);
-					return;
-				}
+				Monitor.Log($"Received message of type {message.GetType()}, but did not expect one - ignoring it.", LogLevel.Warn);
+				return;
 			}
 
-			Monitor.Log($"Received message of type {e.Type}, but did not expect one - ignoring it.", LogLevel.Warn);
+			var (warpLocation, warpPoint) = GetNextWarp(Game1.getLocationFromName(message.LocationName), message.Point);
+			SendModMessage(new NetMessage.NextWarpResponse(message.ID, warpLocation.NameOrUniqueName, warpPoint), sender);
+		}
+
+		private void OnNextWarpResponseMessageReceived(NetMessage.NextWarpResponse message)
+		{
+			if (GameExt.GetMultiplayerMode() != MultiplayerMode.Client)
+			{
+				Monitor.Log($"Received message of type {message.GetType()}, but did not expect one - ignoring it.", LogLevel.Warn);
+				return;
+			}
+
+			if (!AwaitingNextWarpResponse.Value.TryGetValue(message.ID, out var callback))
+			{
+				Monitor.Log($"Received message of type {message.GetType()}, but did not expect one - ignoring it.", LogLevel.Warn);
+				return;
+			}
+			AwaitingNextWarpResponse.Value.Remove(message.ID);
+			callback(Game1.getLocationFromName(message.LocationName), message.Point);
 		}
 
 		private static IEnumerable<(GameLocation Location, IntPoint Point)> GetPossibleWarpLocations()
@@ -135,11 +132,7 @@ namespace Shockah.JunimoWarp
 			{
 				var messageID = Guid.NewGuid();
 				AwaitingNextWarpResponse.Value[messageID] = callback;
-				Helper.Multiplayer.SendMessage(
-					new NetMessage.NextWarpRequest(messageID, location.NameOrUniqueName, point),
-					new[] { Instance.ModManifest.UniqueID },
-					new[] { GameExt.GetHostPlayer().UniqueMultiplayerID }
-				);
+				SendModMessage(new NetMessage.NextWarpRequest(messageID, location.NameOrUniqueName, point), GameExt.GetHostPlayer());
 			}
 			else
 			{

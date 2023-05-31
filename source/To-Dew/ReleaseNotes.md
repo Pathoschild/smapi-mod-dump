@@ -9,6 +9,11 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.13.0
+
+* Add an API to allow other mods to use the overlay
+* increase minimum SMAPI version required to 3.17
+
 ## Version 1.12.0
 
 * Allow clicking in overlay to mark an item as done (configurable)

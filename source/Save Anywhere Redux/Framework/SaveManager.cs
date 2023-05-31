@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Force.DeepCloner;
 using Microsoft.Xna.Framework;
 using SaveAnywhere.Framework.Model;
 using StardewModdingAPI;
@@ -75,35 +74,24 @@ namespace SaveAnywhere.Framework
         {
             if (File.Exists(Path.Combine(_helper.DirectoryPath, RelativeDataPath)))
                 File.Delete(Path.Combine(_helper.DirectoryPath, RelativeDataPath));
+            _helper.Data.WriteSaveData<PlayerData>("midday-save", null);
             RemoveLegacyDataForThisPlayer();
         }
 
         public bool saveDataExists()
         {
-            return File.Exists(Path.Combine(_helper.DirectoryPath, RelativeDataPath));
+            return File.Exists(Path.Combine(_helper.DirectoryPath, RelativeDataPath)) || _helper.Data.ReadSaveData<PlayerData>("midday-save") != null;
         }
 
         public void BeginSaveData()
         {
+            
             if (BeforeSave != null)
                 BeforeSave(this, EventArgs.Empty);
             foreach (var customSavingBegin in BeforeCustomSavingBegins)
                 customSavingBegin.Value();
             SaveAnywhere.Instance.cleanMonsters();
             var farm = Game1.getFarm();
-            if (farm.getShippingBin(Game1.player) != null)
-            {
-                Game1.activeClickableMenu = new NewShippingMenuV2(farm.getShippingBin(Game1.player));
-                farm.lastItemShipped = null;
-                _waitingToSave = true;
-            }
-            else
-            {
-                _currentSaveMenu = new NewSaveGameMenuV2();
-                _currentSaveMenu.SaveComplete += CurrentSaveMenu_SaveComplete;
-                Game1.activeClickableMenu = _currentSaveMenu;
-            }
-
             var drink = Game1.buffsDisplay.drink;
             BuffData drinkdata = null;
 
@@ -123,7 +111,7 @@ namespace SaveAnywhere.Framework
                     food.millisecondsDuration,
                     food.buffAttributes
                 );
-            _helper.Data.WriteJsonFile(RelativeDataPath, new PlayerData
+            _helper.Data.WriteSaveData("midday-save", new PlayerData
             {
                 Time = Game1.timeOfDay,
                 OtherBuffs = GetotherBuffs().ToArray(),
@@ -132,14 +120,32 @@ namespace SaveAnywhere.Framework
                 Position = GetPosition().ToArray(),
                 IsCharacterSwimming = Game1.player.swimming.Value
             });
+            
+                Game1.activeClickableMenu = new NewShippingMenuV2(farm.getShippingBin(Game1.player));
+                farm.lastItemShipped = null;
+                _waitingToSave = true;
+                
+                _currentSaveMenu = new NewSaveGameMenuV2();
+                _currentSaveMenu.SaveComplete += CurrentSaveMenu_SaveComplete;
+                Game1.activeClickableMenu = _currentSaveMenu;
+            
+
+            
+
             RemoveLegacyDataForThisPlayer();
         }
 
         public void LoadData()
         {
-            var data = _helper.Data.ReadJsonFile<PlayerData>(RelativeDataPath);
+            var data = _helper.Data.ReadSaveData<PlayerData>("midday-save");
             if (data == null)
-                return;
+            {
+                data = _helper.Data.ReadJsonFile<PlayerData>(RelativeDataPath);
+                if (data == null)
+                    return;
+                ClearData();
+                _helper.Data.WriteSaveData("midday-save", data);
+            }
             SetPositions(data.Position, data.Time);
             if (data.OtherBuffs != null)
                 foreach (var buff in data.OtherBuffs)
@@ -264,6 +270,7 @@ namespace SaveAnywhere.Framework
             Game1.player.faceDirection(position[0].FacingDirection);
             foreach (var allCharacter in Utility.getAllCharacters())
             {
+                
                 allCharacter.dayUpdate(Game1.dayOfMonth);
                 if (allCharacter.isVillager())
                 {
@@ -275,7 +282,7 @@ namespace SaveAnywhere.Framework
                         Game1.facingDirectionAfterWarp = pos.FacingDirection;
                         Game1.warpCharacter(allCharacter, pos.Map, new Point(pos.X, pos.Y));
                         allCharacter.faceDirection(pos.FacingDirection);
-                        var newSchedule = allCharacter.getSchedule(Game1.dayOfMonth).DeepClone();
+                        var newSchedule = allCharacter.getSchedule(Game1.dayOfMonth);
                         if (newSchedule != null)
                         {
                             var dest = allCharacter.getSchedule(Game1.dayOfMonth)
@@ -292,7 +299,8 @@ namespace SaveAnywhere.Framework
                                 }
 
                                 newSchedule.Remove(dest.Key);
-                                newSchedule.Add(time,
+                                while (newSchedule.ContainsKey(dest.Key)){}
+                                newSchedule.TryAdd(time,
                                     allCharacter.pathfindToNextScheduleLocation(pos.Map, pos.X, pos.Y, destMap,
                                         dest.Value.route.Last().X, dest.Value.route.Last().Y,
                                         dest.Value.facingDirection,
@@ -312,6 +320,7 @@ namespace SaveAnywhere.Framework
             }
 
             SafelySetTime(time);
+            Utility.fixAllAnimals();
         }
 
 

@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+	"mailTitle":"Omegasis.Revitalize.Blacksmith.DeluxCharcoalKilnForSale",
+	"message":"Hi there @, ^I wanted to let you know I recently came across an upgraded version of a charcoal kiln blueprint on the market. It should help you get even more coal out of your wood. It cost uhh quite a bit, so it would umm really help me out if you came by and bought an extra copy from me. I promise I'll give you a good deal on it! ^ -Clint",
+  "itemReference": {
+    "stardewValleyItemId": "NULL",
+    "stardewValleyBigCraftableId": "NULL",
+    "registeredObjectId": "",
+    "amount": 1
+  },
+}

@@ -12,7 +12,7 @@
   "whichTab": "Default",
   "isUnlocked": false,
   "recipe": {
-	"craftingRecipeId": "Revitalize.Anvil",
+	"craftingRecipeId": "Omegasis.Revitalize.Workbench.CraftingStations.Anvil",
     "outputName": "",
     "outputDescription": "",
     "MinutesToCraft": 0,
@@ -22,7 +22,7 @@
 			"stardewValleyItemId": "IronBar",
 			"stardewValleyBigCraftableId": "NULL",
 			"registeredObjectId": "",
-			"amount": 10
+			"amount": 20
 			}
 		}
 	
@@ -32,7 +32,7 @@
 			"item":{
 			"stardewValleyItemId": "NULL",
 			"stardewValleyBigCraftableId": "NULL",
-			"registeredObjectId": "Revitalize.Objects.Crafting.CraftingStations.Anvil",
+			"registeredObjectId": "Omegasis.Revitalize.Objects.Crafting.CraftingStations.Anvil",
 			"amount": 1
 			}
 		},

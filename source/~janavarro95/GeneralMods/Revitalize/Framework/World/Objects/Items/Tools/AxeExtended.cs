@@ -27,7 +27,7 @@ using Omegasis.StardustCore.UIUtilities;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.Items.Tools
 {
-    [XmlType("Mods_Revitalize.Framework.World.Objects.Items.Tools.AxeExtended")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.Items.Tools.AxeExtended")]
     public class AxeExtended : Axe, IBasicItemInfoProvider
     {
         public BasicItemInformation info;

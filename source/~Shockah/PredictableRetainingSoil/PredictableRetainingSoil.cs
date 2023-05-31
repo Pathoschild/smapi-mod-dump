@@ -9,6 +9,7 @@
 *************************************************/
 
 using HarmonyLib;
+using Shockah.Kokoro;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -47,34 +48,32 @@ namespace Shockah.PredictableRetainingSoil
 			helper.Events.GameLoop.GameLaunched += OnGameLaunched;
 
 			var harmony = new Harmony(ModManifest.UniqueID);
-			try
-			{
-				harmony.Patch(
-					original: AccessTools.Constructor(typeof(HoeDirt)),
-					postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(HoeDirt_ctor_Postfix))
-				);
-				harmony.Patch(
-					original: AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.dayUpdate)),
-					prefix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(HoeDirt_dayUpdate_Prefix)),
-					postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(HoeDirt_dayUpdate_Postfix))
-				);
-				harmony.Patch(
-					original: AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.plant)),
-					postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(HoeDirt_plant_Postfix))
-				);
-				harmony.Patch(
-					original: AccessTools.Constructor(typeof(CraftingRecipe), new Type[] { typeof(string), typeof(bool) }),
-					postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(CraftingRecipe_Constructor_Postfix))
-				);
-				harmony.Patch(
-					original: AccessTools.Method(typeof(SObject), nameof(SObject.getDescription)),
-					postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(Object_getDescription_Postfix))
-				);
-			}
-			catch (Exception e)
-			{
-				Monitor.Log($"Could not patch methods - Predictable Retaining Soil probably won't work.\nReason: {e}", LogLevel.Error);
-			}
+			harmony.TryPatch(
+				monitor: Monitor,
+				original: () => AccessTools.Constructor(typeof(HoeDirt)),
+				postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(HoeDirt_ctor_Postfix))
+			);
+			harmony.TryPatch(
+				monitor: Monitor,
+				original: () => AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.dayUpdate)),
+				prefix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(HoeDirt_dayUpdate_Prefix)),
+				postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(HoeDirt_dayUpdate_Postfix))
+			);
+			harmony.TryPatch(
+				monitor: Monitor,
+				original: () => AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.plant)),
+				postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(HoeDirt_plant_Postfix))
+			);
+			harmony.TryPatch(
+				monitor: Monitor,
+				original: () => AccessTools.Constructor(typeof(CraftingRecipe), new Type[] { typeof(string), typeof(bool) }),
+				postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(CraftingRecipe_Constructor_Postfix))
+			);
+			harmony.TryPatch(
+				monitor: Monitor,
+				original: () => AccessTools.Method(typeof(SObject), nameof(SObject.getDescription)),
+				postfix: new HarmonyMethod(typeof(PredictableRetainingSoil), nameof(Object_getDescription_Postfix))
+			);
 		}
 
 		public override object GetApi()

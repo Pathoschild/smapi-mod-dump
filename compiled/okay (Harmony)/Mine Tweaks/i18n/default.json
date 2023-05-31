@@ -1,0 +1,12 @@
+{
+	"config.section.mine.name": "Mine",
+	"config.section.skullCavern.name": "Skull Cavern",
+	"config.section.volcano.name": "Volcano",
+
+	"config.stoneChanceMultiplier.name": "Stone chance multiplier",
+	"config.monsterChanceMultiplier.name": "Monster chance multiplier",
+	"config.itemChanceMultiplier.name": "Item chance multiplier",
+	"config.gemStoneChanceMultiplier.name": "Gem stone chance multiplier",
+	"config.monsterMuskChanceMultiplier.name": "Monster musk multiplier",
+	"config.monsterMuskChanceMultiplier.tooltip": "Monster musk monster chance multiplier"
+}

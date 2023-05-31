@@ -41,9 +41,6 @@ The NexusMods page shows the locations of the GMCM config button(s).
 
 ## Description
 
-This Mod is intended to be used with a mouse. That is it's reason for existence.  
-This Mod does support button remapping and thus other controller types. Control from other than a mouse has not been tested.
-
 ### Fixed Mouseclick. Character facing direction  
 Config setting = MouseFix.  
 Turns the character in the direction of your mouse click. This functions with Swords, Clubs, Daggers and Scythe. 
@@ -53,13 +50,9 @@ The game's normal functions for turning a character with mouse clicks check what
 requiring that the exact tile next to the character is clicked in order to turn the character towards it.
 This mod makes it so that clicking in the general direction of a tile is enough to turn the character.
 
-### Controler fix
-Config Setting = ControllerFix.  
-Like MouseFix but for controller inputs. Can be useful in split screen mode. For when the mouse user wants the MouseFix but the controller user does not what that fix.
-
 ### Regular Tools fix
 Config Setting = RegularToolsFix.  
-If Mouse or Controller fix are enabled then regular tools will get the facing direction fix. You may not be able to hit diagonal tiles with this enabled.
+If Mouse is enabled then regular tools will get the facing direction fix. You may not be able to hit diagonal tiles with this enabled.
 
 ### Auto Swing  
 Config setting = AutoSwing.  
@@ -69,12 +62,14 @@ Holding the Use Tool button down (left click) will continuously swing the weapon
 Config setting = AutoSwingDagger.  
 Holding the Use Tool button down (left click) will continuously attack with a dagger. Daggers attack very fast and auto swing can be very effective.
 
+### Club Ground Slam Spam Attack
+Config Setting = ClubSpecialSpamAttack
+This option will perform a spam attack of LeftClick/UseTool on the Club special ground slam attack. You must do the LeftClick/UseTool once to start the spam attack.
+
 ### Slick Moves!  
 Config setting = SlickMoves.  
-Slick Moves does not function unless Mouse Fix is also enabled (true).
 When running and attacking to the sides, the character will slide along the ground while swinging the weapon.
 For swords and clubs.
-
 
 > ### Sword Secondary Attack Dash  
 > Config setting = SwordSpecialSlickMove.  
@@ -95,6 +90,11 @@ For swords and clubs.
 > The movement velocity for special attack slick moves. Swords and clubs. Controls the speed and distance of the slide.
 
 ## Changlog
+v1.3.0
+* The controller fix option has been removed. This mod no longer looks at, uses, the controller cursor for facing direction changes during controller use.
+* Some features connected to the mouse cursor fix are now independent of that fix/feature being enabled. e.g. Slick moves.
+* With auto swing enabled, the character facing direction will now change with mouse movement during the auto swing.
+
 v.1.2.5
 * Fix for REALLY fast daggers and auto swing.
 * Added an auto spam attack for the Club special ground slam attack. After the ground slam, you immediately click LeftClick and/or UseTool button once and this mod will spam UseTool a number of additional times for you. Be quick the allowed timeframe is narrow.

@@ -35,6 +35,91 @@ namespace Omegasis.Revitalize.Framework.Constants
         }
 
         /// <summary>
+        /// The type of footstep that the player should make when walking about.
+        /// </summary>
+        public enum FootStepType
+        {
+            /// <summary>
+            /// Used for dirt and beaches.
+            /// </summary>
+            sandyStep,
+            /// <summary>
+            /// Used for walking on hard stone.
+            /// </summary>
+            stoneStep,
+            /// <summary>
+            /// Used when walking on the snow in the winter time.
+            /// </summary>
+            snowyStep,
+            /// <summary>
+            /// Used for grass.
+            /// </summary>
+            grassyStep,
+            /// <summary>
+            /// Used when walking on wooden floors.
+            /// </summary>
+            woodyStep,
+            /// <summary>
+            /// Default step, used indoors too.
+            /// </summary>
+            thudStep
+        }
+
+        /// <summary>
+        /// The type of footstep that the player should make when walking about.
+        /// </summary>
+        public enum FloorType
+        {
+            /// <summary>
+            /// No floor type could be set.
+            /// </summary>
+            NULL,
+            /// <summary>
+            /// Used for dirt and beaches. Equivalent to <see cref="FootStepType.sandyStep"/>
+            /// </summary>
+            SandOrDirt,
+            /// <summary>
+            /// Used for walking on hard stone. Equivalent to <see cref="FootStepType.snowyStep"/>
+            /// </summary>
+            Stone,
+            /// <summary>
+            /// Used for snow terrain. Equivalent to <see cref="FootStepType.snowyStep"/>
+            /// </summary>
+            Snow,
+            /// <summary>
+            /// Used for grass. Equivalent to <see cref="FootStepType.grassyStep"/>
+            /// </summary>
+            Grass,
+            /// <summary>
+            /// Used for wooden floors. Equivalent to <see cref="FootStepType.woodyStep"/>
+            /// </summary>
+            Wood,
+            /// <summary>
+            /// Default, Equivalent to <see cref="FootStepType.thudStep"/>
+            /// </summary>
+            Default
+        }
+
+        /// <summary>
+        /// Fragility enum for keeping track of how objects can be removed or not.
+        /// </summary>
+        public enum Fragility
+        {
+            /// <summary>
+            /// Normal removability permissions for objects.
+            /// </summary>
+            Removable= StardewValley.Object.fragility_Removable,
+            /// <summary>
+            /// Object is considered delicate and can be destroyed with things like swords.
+            /// </summary>
+            Delicate = StardewValley.Object.fragility_Delicate,
+            /// <summary>
+            /// Objects can't be removed or destroyed through normal means.
+            /// </summary>
+            Indestructable = StardewValley.Object.fragility_Indestructable,
+        }
+
+        /// <summary>
         /// The types of interaction for energy that exists.
         /// </summary>
         public enum EnergyInteractionType
@@ -404,6 +489,8 @@ namespace Omegasis.Revitalize.Framework.Constants
 
             Kale = 250,
 
+            TeaSappling = 251,
+
             Rhubarb = 252,
 
             Melon = 254,
@@ -431,6 +518,8 @@ namespace Omegasis.Revitalize.Framework.Constants
             Eggplant = 272,
 
             Artichoke = 274,
+
+            ArtifactTrove= 275,
 
             Pumpkin = 276,
 
@@ -683,6 +772,8 @@ namespace Omegasis.Revitalize.Framework.Constants
             DuckFeather = 444,
 
             RabbitsFoot = 446,
+
+            AgedRoe = 447,
 
             StoneBase = 449,
 
@@ -961,6 +1052,8 @@ namespace Omegasis.Revitalize.Framework.Constants
             CranberryCandy = 612,
 
             Apple = 613,
+
+            GreenTea = 614,
 
             Bruschetta = 618,
 
@@ -1476,6 +1569,11 @@ namespace Omegasis.Revitalize.Framework.Constants
             dwop,
 
             /// <summary>
+            /// Sound played when closing a door.
+            /// </summary>
+            doorClose,
+
+            /// <summary>
             /// The sound the furnace makes when it is smelting.
             /// </summary>
             furnace,
@@ -1508,7 +1606,42 @@ namespace Omegasis.Revitalize.Framework.Constants
             /// <summary>
             /// The sound when dropping down a piece of wooded type furniture but it's lighter pitched/normal.
             /// </summary>
-            woodyStep
+            woodyStep,
+
+            /// <summary>
+            /// Drum sound effect. Used with the geode crusher.
+            /// </summary>
+            drumkit4,
+
+            /// <summary>
+            /// Steam sound effect. Used with the geode crusher.
+            /// </summary>
+            steam,
+
+            /// <summary>
+            /// Used for the charcoal kiln.
+            /// </summary>
+            openBox,
+
+            /// <summary>
+            /// Fireball sound effect. Used for fireball casting and the charcoal kiln.
+            /// </summary>
+            fireball,
+
+            /// <summary>
+            /// The sound made when opening the statue of perfection or qi's walnut room shop.
+            /// </summary>
+            qi_shop,
+
+            /// <summary>
+            /// The sound of the Journey of the Pararie King gunshot. Also used when typing in characters into fields.
+            /// </summary>
+            Cowboy_gunshot,
+
+            /// <summary>
+            /// Sound played when throwing down an item. Also yes this is purposely misspelled as this is how it is in the game's code.
+            /// </summary>
+            throwDownITem
         }
 
         /// <summary>
@@ -1724,6 +1857,8 @@ namespace Omegasis.Revitalize.Framework.Constants
 
             IslandFarmCave,
 
+            VolcanoDungeon,
+
             Caldera,
 
             LeoTreeHouse,
@@ -1736,6 +1871,31 @@ namespace Omegasis.Revitalize.Framework.Constants
             Multiplier,
             Blend,
             Average
+        }
+        /// <summary>
+        /// The different types of preserves for the game.
+        /// </summary>
+        public enum SDVPreserveType
+        {
+            NULL=int.MinValue,
+            Wine=StardewValley.Object.PreserveType.Wine,
+            Jelly = StardewValley.Object.PreserveType.Jelly,
+            Pickle = StardewValley.Object.PreserveType.Pickle,
+            Juice = StardewValley.Object.PreserveType.Juice,
+            Roe = StardewValley.Object.PreserveType.Roe,
+            AgedRoe = StardewValley.Object.PreserveType.AgedRoe,
+            Honey = 6 //TODO: Update this once SDV 1.6 is released.
+        }
+
+        /// <summary>
+        /// The quality value for a given <see cref="StardewValley.Object"/>
+        /// </summary>
+        public enum SDVQuality
+        {
+            None = 0,
+            Silver = 1,
+            Gold= 2,
+            Iridium=3,
         }
     }
 }

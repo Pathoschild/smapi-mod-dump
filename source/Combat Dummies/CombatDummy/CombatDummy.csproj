@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Version>1.1.1</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<EnableHarmony>true</EnableHarmony>
+		<EnableModZip>false</EnableModZip>
+		<EnableModDeploy>false</EnableModDeploy>
+		<GameModsPath>E:\SteamLibrary\steamapps\common\Stardew Valley\Mods</GameModsPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="releases\**" />
+		<EmbeddedResource Remove="releases\**" />
+		<None Remove="releases\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Framework\Assets\PracticeDummy\content.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\PracticeDummy\i18n\default.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\PracticeDummy\i18n\tr.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\PracticeDummy\Sprites\max_hit_target_dummy.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\PracticeDummy\Sprites\knockback_target_dummy.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\PracticeDummy\Sprites\target_dummy.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="manifest.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PostBuildEventDependsOn>
+			$(PostBuildEventDependsOn);
+			PostBuildMacros;
+		</PostBuildEventDependsOn>
+		<PostBuildEvent>
+			powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
+
+			powershell Remove-Item -Path 'C:\Users\Floogen\Documents\GitHub Repos\CombatDummy\CombatDummy\releases\latest\CombatDummy"' -Recurse -Force
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\CombatDummy\CombatDummy\bin\Debug\net5.0" "C:\Users\Floogen\Documents\GitHub Repos\CombatDummy\CombatDummy\releases\latest\CombatDummy"
+			7z a -tzip "C:\Users\Floogen\Documents\GitHub Repos\CombatDummy\CombatDummy\releases\CombatDummy-$(Version).zip" "C:\Users\Floogen\Documents\GitHub Repos\CombatDummy\CombatDummy\releases\latest\CombatDummy"
+
+			powershell Remove-Item -Path '$(GameModsPath)\CombatDummy' -Recurse -Force
+
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\CombatDummy\CombatDummy\releases\latest\CombatDummy" "$(GameModsPath)\CombatDummy"
+		</PostBuildEvent>
+	</PropertyGroup>
+</Project>

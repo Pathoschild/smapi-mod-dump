@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit acec40e77fde1c078483f63ac7dbeb68d3cba1f1
-   Merge: 9810e12 80c5856
    Author: Andrew Zah <zah@andrewzah.com>
    Date:   Sun Mar 4 13:53:16 2018 -0500
    

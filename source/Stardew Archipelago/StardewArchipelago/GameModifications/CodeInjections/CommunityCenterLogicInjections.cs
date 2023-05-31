@@ -10,7 +10,7 @@
 
 using System;
 using StardewArchipelago.Locations;
-using StardewArchipelago.Locations.CodeInjections;
+using StardewArchipelago.Locations.CodeInjections.Vanilla;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -32,7 +32,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         {
             try
             {
-                var allAreasComplete =
+                var allAreasCompleteAccordingToAp =
                     _locationChecker.IsLocationChecked(CommunityCenterInjections.AP_LOCATION_PANTRY) &&
                     _locationChecker.IsLocationChecked(CommunityCenterInjections.AP_LOCATION_BOILER_ROOM) &&
                     _locationChecker.IsLocationChecked(CommunityCenterInjections.AP_LOCATION_BULLETIN_BOARD) &&
@@ -40,7 +40,15 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                     _locationChecker.IsLocationChecked(CommunityCenterInjections.AP_LOCATION_FISH_TANK) &&
                     _locationChecker.IsLocationChecked(CommunityCenterInjections.AP_LOCATION_VAULT);
 
-                __result = allAreasComplete;
+                var allAreasCompleteLocally =
+                    __instance.hasOrWillReceiveMail("apccPantry") &&
+                    __instance.hasOrWillReceiveMail("apccCraftsRoom") &&
+                    __instance.hasOrWillReceiveMail("apccFishTank") &&
+                    __instance.hasOrWillReceiveMail("apccBoilerRoom") &&
+                    __instance.hasOrWillReceiveMail("apccVault") &&
+                    __instance.hasOrWillReceiveMail("apccBulletin");
+
+                __result = allAreasCompleteAccordingToAp && allAreasCompleteLocally;
 
                 return false;// don't run original logic
 

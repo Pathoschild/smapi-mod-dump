@@ -20,7 +20,7 @@
   "scale": 2.0,
   "animationManager": {
     "modManifestId": "Omegasis.Revitalize",
-    "textureManagerId": "Revitalize.Menus",
+    "textureManagerId": "Omegasis.Revitalize.Menus",
     "textureId": "MenuTabHorizontal",
     "defaultAnimationKey": "Default",
     "startingAnimationKey": "Default",

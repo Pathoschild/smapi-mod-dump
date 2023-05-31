@@ -8,7 +8,6 @@ mods:
 
 latest commit:
    commit 2fc053638141221f5e68b98c185c83b3bb42fe88
-   Merge: 80a0a0d f52fa05
    Author: GrÃ©goire Chauvet <gchauvet.home@gmail.com>
    Date:   Wed Jan 30 18:04:25 2019 +0100
    

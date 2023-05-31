@@ -22,6 +22,11 @@ namespace Omegasis.Revitalize.Framework.Configs.ShopConfigs
     public class ShopsConfigManager
     {
         /// <summary>
+        /// Config file for maanging extra items added to Clint's shop.
+        /// </summary>
+        public AdventureGuildShopConfig adventureGuildShopConfig;
+
+        /// <summary>
         /// Config file for marnie's normal non-animal stock.
         /// </summary>
         public AnimalShopStockConfig animalShopStockConfig;
@@ -37,23 +42,37 @@ namespace Omegasis.Revitalize.Framework.Configs.ShopConfigs
         public DwarfShopConfig dwarfShopConfig;
 
         /// <summary>
-        /// Config file for the custom hay maker shop outside of Marnie's ranch.
-        /// </summary>
-        public HayMakerShopConfig hayMakerShopConfig;
-
-
-        /// <summary>
         /// Config file for things sold in robin's shop.
         /// </summary>
         public RobinsShopConfig robinsShopConfig;
 
+        /// <summary>
+        /// The config file for Qi's Walnut Room.
+        /// </summary>
+        public WalnutRoomShopConfig walnutRoomShopConfig;
+
+        /// <summary>
+        /// Config file for the custom hay maker shop outside of Marnie's ranch.
+        /// </summary>
+        public HayMakerShopConfig hayMakerShopConfig;
+
+        /// <summary>
+        /// Config file for handling movie theater sell prices.
+        /// </summary>
+        public MovieTheaterShopConfig movieTheaterShopConfig;
+
         public ShopsConfigManager()
         {
-            this.animalShopStockConfig = ConfigManager.initializeConfig<AnimalShopStockConfig>("Configs", "Shops", "AnimalShopConfig.json");
-            this.blacksmithShopsConfig = ConfigManager.initializeConfig<BlacksmithShopConfig>("Configs", "Shops", "BlacksmithShopConfig.json");
-            this.dwarfShopConfig = ConfigManager.initializeConfig<DwarfShopConfig>("Configs", "Shops", "DwarfShopConfig.json");
-            this.hayMakerShopConfig = ConfigManager.initializeConfig<HayMakerShopConfig>("Configs", "Shops", "HayMakerShopConfig.json");
-            this.robinsShopConfig = ConfigManager.initializeConfig<RobinsShopConfig>("Configs", "Shops", "RobinsShopConfig.json");
+            this.adventureGuildShopConfig = ConfigManager.InitializeConfig<AdventureGuildShopConfig>("Configs", "Shops", "AdventureGuildShopConfig.json");
+            this.animalShopStockConfig = ConfigManager.InitializeConfig<AnimalShopStockConfig>("Configs", "Shops", "AnimalShopConfig.json");
+            this.blacksmithShopsConfig = ConfigManager.InitializeConfig<BlacksmithShopConfig>("Configs", "Shops", "BlacksmithShopConfig.json");
+            this.dwarfShopConfig = ConfigManager.InitializeConfig<DwarfShopConfig>("Configs", "Shops", "DwarfShopConfig.json");
+            this.hayMakerShopConfig = ConfigManager.InitializeConfig<HayMakerShopConfig>("Configs", "Shops", "HayMakerShopConfig.json");
+            this.robinsShopConfig = ConfigManager.InitializeConfig<RobinsShopConfig>("Configs", "Shops", "RobinsShopConfig.json");
+
+            this.movieTheaterShopConfig = ConfigManager.InitializeConfig<MovieTheaterShopConfig>("Configs", "Shops", "MovieTheaterConfig.json");
+
+            this.walnutRoomShopConfig = ConfigManager.InitializeConfig<WalnutRoomShopConfig>("Configs", "Shops", "WalnutRoomShopConfig.json");
         }
 
 

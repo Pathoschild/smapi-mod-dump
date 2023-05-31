@@ -19,10 +19,12 @@ namespace Omegasis.Revitalize.Framework.Configs.ObjectsConfigs
 {
     public class ObjectsConfig
     {
-        public bool showDyedColorName;
+        public bool showDyedColorName = true;
+
+        public int maxQualityLevel = StardewValley.Object.bestQuality;
+
         public ObjectsConfig()
         {
-            this.showDyedColorName = true;
         }
 
         public static ObjectsConfig InitializeConfig()

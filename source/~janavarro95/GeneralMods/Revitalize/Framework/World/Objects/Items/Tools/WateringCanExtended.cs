@@ -27,7 +27,7 @@ using Omegasis.StardustCore.UIUtilities;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.Items.Tools
 {
-    [XmlType("Mods_Revitalize.Framework.World.Objects.Items.Tools.WateringCanExtended")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.Items.Tools.WateringCanExtended")]
     public class WateringCanExtended : WateringCan, IBasicItemInfoProvider
     {
         public BasicItemInformation info;

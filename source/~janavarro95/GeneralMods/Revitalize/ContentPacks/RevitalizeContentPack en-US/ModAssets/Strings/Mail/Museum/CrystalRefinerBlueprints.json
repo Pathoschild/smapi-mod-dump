@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+	"mailTitle":"Omegasis.Revitalize.Museum.Machines.CrystalRefiner",
+	"message":"@, ^I found something tucked between some geology books on the shelves in the archives. Hopefully you can get more use out of it here than it did at the museum. - Gunther",
+	"itemReference":{
+		"stardewValleyItemId": "NULL",
+		"stardewValleyBigCraftableId": "NULL",
+		"registeredObjectId": "Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Machines.CrystalRefiner",
+		"amount": 1
+	},
+}

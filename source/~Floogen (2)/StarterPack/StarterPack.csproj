@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Version>1.2.1</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<EnableHarmony>true</EnableHarmony>
+		<EnableModZip>false</EnableModZip>
+		<EnableModDeploy>false</EnableModDeploy>
+		<GameModsPath>E:\SteamLibrary\steamapps\common\Stardew Valley\Mods</GameModsPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="releases\**" />
+		<EmbeddedResource Remove="releases\**" />
+		<None Remove="releases\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="manifest.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="[Archery] Starter Pack\i18n\" />
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="&#xD;&#xA;   powershell -Command &quot;(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \&quot;$f\&quot;) -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \&quot;$f\&quot; })&quot;&#xD;&#xA;&#xD;&#xA;   powershell Remove-Item -Path '$(ProjectDir)releases\latest\*' -Recurse -Force&#xD;&#xA;   xcopy /s /y /i &quot;$(ProjectDir)bin\Debug\net5.0&quot; &quot;$(ProjectDir)releases\latest\Starter Pack Internals&quot;&#xD;&#xA;&#xD;&#xA;   :: Start of project specific copy logic block&#xD;&#xA;   mkdir &quot;$(ProjectDir)releases\latest\temp&quot;&#xD;&#xA;   move &quot;$(ProjectDir)releases\latest\Starter Pack Internals&quot; &quot;$(ProjectDir)releases\latest\temp&quot;&#xD;&#xA;   xcopy /s /y /i &quot;$(ProjectDir)[Archery] Starter Pack&quot; &quot;$(ProjectDir)releases\latest\temp\[Archery] Starter Pack&quot;&#xD;&#xA;   ren &quot;$(ProjectDir)releases\latest\temp&quot; &quot;Archery Starter Pack&quot;&#xD;&#xA;&#xD;&#xA;   powershell -Command &quot;(Get-ChildItem -LiteralPath \&quot;$(ProjectDir)releases\latest\Archery Starter Pack\&quot; -Filter &quot;*manifest.json&quot; -Recurse | ForEach-Object { (Get-Content -LiteralPath $_.FullName).Replace('REPLACE_ME_WITH_VERSION',  '$(Version)') | Set-Content -LiteralPath $_.FullName })&quot;&#xD;&#xA;   :: End of block&#xD;&#xA;&#xD;&#xA;   7z a -tzip &quot;$(ProjectDir)releases\Archery Starter Pack-$(Version).zip&quot; &quot;$(ProjectDir)releases\latest\Archery Starter Pack&quot;&#xD;&#xA;&#xD;&#xA;   powershell Remove-Item -Path '$(GameModsPath)\Archery Starter Pack' -Recurse -Force&#xD;&#xA;&#xD;&#xA;   xcopy /s /y /i &quot;$(ProjectDir)releases\latest\Archery Starter Pack&quot; &quot;$(GameModsPath)\Archery Starter Pack&quot;" />
+	</Target>
+</Project>

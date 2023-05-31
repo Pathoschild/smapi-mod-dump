@@ -33,7 +33,7 @@ namespace Omegasis.HappyBirthday.Framework
             if (HappyBirthdayModCore.Instance.birthdayManager.hasChosenBirthday() == false)
             {
                 HappyBirthdayModCore.Instance.Monitor.Log("Loading player's birthday on new day started.");
-                Load(Game1.player.uniqueMultiplayerID);
+                Load(Game1.player.UniqueMultiplayerID);
             }
         }
 
@@ -42,7 +42,7 @@ namespace Omegasis.HappyBirthday.Framework
         /// </summary>
         public static void OnDayEnded(object Sender, StardewModdingAPI.Events.DayEndingEventArgs args)
         {
-            Save(Game1.player.uniqueMultiplayerID);
+            Save(Game1.player.UniqueMultiplayerID);
         }
 
         /// <summary>
@@ -52,10 +52,11 @@ namespace Omegasis.HappyBirthday.Framework
         public static void Save(long UniqueMultiplayerId)
         {
             Farmer player = Game1.getFarmer(UniqueMultiplayerId);
-            string uniqueSaveName = $"{player.Name}_{player.UniqueMultiplayerID}";
+            //Use only the unique multiplayer id since the farmer's name can include special characters which cause the save file system to break.
+            string uniqueSaveName = $"{player.UniqueMultiplayerID}";
             string dataDirectory = Path.Combine("data", uniqueSaveName);
-            string dataFilePath = Path.Combine(dataDirectory,uniqueSaveName+".json");
-            string villagerQueuePath = Path.Combine(dataDirectory , uniqueSaveName + "_VillagerBirthdayGiftsQueue.json");
+            string dataFilePath = Path.Combine(dataDirectory, uniqueSaveName + ".json");
+            string villagerQueuePath = Path.Combine(dataDirectory, uniqueSaveName + "_VillagerBirthdayGiftsQueue.json");
 
             if (HappyBirthdayModCore.Instance.birthdayManager.hasChosenBirthday())
             {
@@ -73,18 +74,54 @@ namespace Omegasis.HappyBirthday.Framework
         /// <param name="UniqueMultiplayerId"></param>
         public static void Load(long UniqueMultiplayerId)
         {
-            Farmer player=Game1.getFarmer(UniqueMultiplayerId);
-            string uniqueSaveName = $"{player.Name}_{player.UniqueMultiplayerID}";
-            string dataDirectory = Path.Combine("data", uniqueSaveName);
-            string dataFilePath = Path.Combine(dataDirectory, uniqueSaveName + ".json");
-            string villagerQueuePath = Path.Combine(dataDirectory, uniqueSaveName + "_VillagerBirthdayGiftsQueue.json");
+            Farmer player = Game1.getFarmer(UniqueMultiplayerId);
+            string legacyUniqueSaveName = $"{player.Name}_{player.UniqueMultiplayerID}";
+            string uniqueSaveName = $"{player.UniqueMultiplayerID}";
+            string dataDirectory = Path.Combine("data", legacyUniqueSaveName);
+            string dataFilePath = Path.Combine(dataDirectory, legacyUniqueSaveName + ".json");
+            string villagerQueuePath = Path.Combine(dataDirectory, legacyUniqueSaveName + "_VillagerBirthdayGiftsQueue.json");
 
             HappyBirthdayModCore.Instance.Monitor.Log("Loading player's birthday from: " + dataFilePath);
             // reset state
             HappyBirthdayModCore.Instance.birthdayManager.setCheckedForBirthday(false);
 
             //Loads the player's birthday from disk.
-            HappyBirthdayModCore.Instance.birthdayManager.playerBirthdayData = HappyBirthdayModCore.Instance.Helper.Data.ReadJsonFile<PlayerData>(dataFilePath) ?? new PlayerData();
+
+            //Attempt to load legacy birthday data using the old farmer's name convention.
+            PlayerData playerData;
+            try
+            {
+                playerData = HappyBirthdayModCore.Instance.Helper.Data.ReadJsonFile<PlayerData>(dataFilePath);
+
+                //If loading the legacy way doesn't work, try to load the new way using just the unique multiplayer id.
+                if (playerData == null)
+                {
+                    dataDirectory = Path.Combine("data", uniqueSaveName);
+                    dataFilePath = Path.Combine(dataDirectory, uniqueSaveName + ".json");
+                    villagerQueuePath = Path.Combine(dataDirectory, uniqueSaveName + "_VillagerBirthdayGiftsQueue.json");
+                    playerData = HappyBirthdayModCore.Instance.Helper.Data.ReadJsonFile<PlayerData>(dataFilePath);
+                }
+                if (playerData == null)
+                {
+                    playerData = new PlayerData();
+                }
+            }
+            catch (IOException ex)
+            {
+                //If we can't load the data, use the new format.
+
+                dataDirectory = Path.Combine("data", uniqueSaveName);
+                dataFilePath = Path.Combine(dataDirectory, uniqueSaveName + ".json");
+                villagerQueuePath = Path.Combine(dataDirectory, uniqueSaveName + "_VillagerBirthdayGiftsQueue.json");
+                playerData = HappyBirthdayModCore.Instance.Helper.Data.ReadJsonFile<PlayerData>(dataFilePath);
+                //If the player's data is still null, just create it.
+                if (playerData == null)
+                {
+                    playerData = new PlayerData();
+                }
+            }
+
+            HappyBirthdayModCore.Instance.birthdayManager.playerBirthdayData = playerData;
             HappyBirthdayModCore.Instance.birthdayManager.villagerQueue = HappyBirthdayModCore.Instance.Helper.Data.ReadJsonFile<Dictionary<string, VillagerInfo>>(villagerQueuePath) ?? new Dictionary<string, VillagerInfo>();
 
             if (HappyBirthdayModCore.Instance.birthdayManager.playerBirthdayData != null)

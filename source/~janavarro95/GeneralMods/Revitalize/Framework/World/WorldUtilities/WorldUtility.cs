@@ -15,7 +15,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Omegasis.Revitalize.Framework.Constants;
-using Omegasis.Revitalize.Framework.Constants.ItemIds.Objects;
 using Omegasis.Revitalize.Framework.World.Debris;
 using Omegasis.Revitalize.Framework.World.Objects;
 using Omegasis.Revitalize.Framework.World.Objects.Farming;
@@ -29,12 +28,23 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
 
         public static void InitializeGameWorld()
         {
-            AddModdedMachinesToGameWorld();
+            CleanUpGameWorldOnLoad();
+        }
 
-            foreach(GameLocation location in Game1.locations)
+
+        //TODO: REDO???? THIS CODE TO SEE IF THERE IS DUPLICATE ENTRIES FOR OBJECTS PLACED INTO THE WORLD????
+
+        /// <summary>
+        /// Cleans up an object's references on loading a game save. Necessary due to the hack that CustomObjects are considered furniture and StardewValley.Objects...
+        /// </summary>
+        public static void CleanUpGameWorldOnLoad()
+        {
+
+            foreach (GameLocation location in Game1.locations)
             {
                 List<CustomObject> objectsToCleanUp = new List<CustomObject>();
-                foreach(StardewValley.Object obj in location.objects.Values)
+                List<CustomObject> furnitureToCleanUp = new List<CustomObject>();
+                foreach (StardewValley.Object obj in location.objects.Values)
                 {
 
                     if (obj is CustomObject)
@@ -44,17 +54,53 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
                         if (location.objects.ContainsKey(customObj.TileLocation))
                         {
                             //RevitalizeModCore.log("Clean up from loading: {0}", true, customObj.basicItemInformation.id);
-                            objectsToCleanUp.Add(customObj);
-                            customObj.removeFromGameWorld(customObj.TileLocation, location);
 
+                            objectsToCleanUp.Add(customObj);
+
+
+                            //customObj.removeFromGameWorld(customObj.TileLocation, location);
+
+                            //Furniture f = GetFurnitureEquivalentPieceAtLocation(location, customObj);
+                            //location.furniture.Remove(f);
                         }
                     }
                 }
-                foreach(CustomObject obj in objectsToCleanUp)
+                foreach (Furniture f in location.furniture)
+                {
+                    if (f is CustomObject)
+                    {
+                        furnitureToCleanUp.Add((f as CustomObject));
+                    }
+                }
+
+                foreach (CustomObject obj in objectsToCleanUp)
+                {
+                    location.objects.Remove(obj.TileLocation);
+                    //location.objects.Add(obj.TileLocation,obj);
+                }
+                foreach (CustomObject obj in furnitureToCleanUp)
+                {
+                    location.furniture.Remove(obj);
+                    //location.furniture.Add(obj);
+                }
+
+                foreach (CustomObject obj in furnitureToCleanUp)
+                {
+                    obj.reAddToGameWorld(obj.TileLocation, location);
+                }
+
+
+                //READD FURNITURE AND CUSTOM OBJECTS
+
+                /*
+
+
+
+                foreach (CustomObject obj in objectsToCleanUp)
                 {
                     Furniture f = GetFurnitureEquivalentPieceAtLocation(location, obj);
                     bool furnitureContains = f != null;
-                    if (location.objects.ContainsKey(obj.TileLocation) == false && furnitureContains==false)
+                    if (location.objects.ContainsKey(obj.TileLocation) == false && furnitureContains == false)
                     {
 
                         //RevitalizeModCore.log("Add object back to game world since it doesn't exist in object or furniture list: {0}", false, obj.basicItemInformation.id);
@@ -63,7 +109,7 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
                         continue;
                     }
 
-                    else if(location.objects.ContainsKey(obj.TileLocation)==false && furnitureContains==true)
+                    else if (location.objects.ContainsKey(obj.TileLocation) == false && furnitureContains == true)
                     {
                         //RevitalizeModCore.log("Add object back to game world since it doesn't exist in object list but it does exist in the furniture list: {0}", false, obj.basicItemInformation.id);
                         location.furniture.Remove(f);
@@ -72,25 +118,22 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
 
                     }
 
-                    else if (location.objects.ContainsKey(obj.TileLocation) == true && furnitureContains==false)
+                    else if (location.objects.ContainsKey(obj.TileLocation) == true && furnitureContains == false)
                     {
                         //RevitalizeModCore.log("Object was NOT removed, but DOES NOT exist in the furniture's database: {0}", true, obj.basicItemInformation.id);
                     }
-
-
-
                     else
                     {
                         //RevitalizeModCore.log("Unsure what should happen here", true, obj.basicItemInformation.id);
                         StardewValley.Object overlappedObject = location.objects[obj.TileLocation];
-                        if(overlappedObject is CustomObject)
+                        if (overlappedObject is CustomObject)
                         {
                             CustomObject overlappedCustomObject = (CustomObject)overlappedObject;
                             if (overlappedCustomObject.basicItemInformation.id.Equals(obj.basicItemInformation.id))
                             {
 
                                 //RevitalizeModCore.log("Purge due to duplication: {0}", true, obj.basicItemInformation.id);
-                                continue; 
+                                continue;
                             }
                             else
                             {
@@ -100,6 +143,7 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
 
                     }
                 }
+                */
             }
 
         }
@@ -142,7 +186,7 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
                 }
             }
 
-            foreach(Furniture f in furnitureToRemove)
+            foreach (Furniture f in furnitureToRemove)
             {
                 environment.furniture.Remove(f);
             }
@@ -158,7 +202,7 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
 
                     CustomObject customObject = (CustomObject)f;
 
-                   bool contains= customObject.boundingBox.Value.Contains(TileLocation * 64);
+                    bool contains = customObject.boundingBox.Value.Contains(TileLocation * 64);
 
                     if (contains)
                     {
@@ -172,21 +216,6 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
             {
                 environment.furniture.Remove(f);
             }
-        }
-
-        /// <summary>
-        /// Adds various machines and stuff to the game world.
-        /// </summary>
-        private static void AddModdedMachinesToGameWorld()
-        {
-            GameLocation cinderSapForestLocation = GameLocationUtilities.GetGameLocation(Enums.StardewLocation.Forest);
-            HayMaker hayMaker = (RevitalizeModCore.ModContentManager.objectManager.getObject<HayMaker>(MachineIds.HayMaker, 1).getOne(true) as HayMaker);
-            if (RevitalizeModCore.Configs.shopsConfigManager.hayMakerShopConfig.IsHayMakerShopSetUpOutsideOfMarniesRanch &&
-                cinderSapForestLocation.isObjectAtTile((int)RevitalizeModCore.Configs.shopsConfigManager.hayMakerShopConfig.HayMakerTileLocation.X, (int)RevitalizeModCore.Configs.shopsConfigManager.hayMakerShopConfig.HayMakerTileLocation.Y) == false)
-            {
-                hayMaker.placementActionAtTile(cinderSapForestLocation, (int)RevitalizeModCore.Configs.shopsConfigManager.hayMakerShopConfig.HayMakerTileLocation.X, (int)RevitalizeModCore.Configs.shopsConfigManager.hayMakerShopConfig.HayMakerTileLocation.Y);
-            }
-
         }
 
         /// <summary>
@@ -209,7 +238,46 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
         /// <param name="DestinationTile"></param>
         public static void CreateItemDebrisAtTileLocation(this GameLocation Location, Item item, Vector2 OriginTile, Vector2 DestinationTile)
         {
-            Location.debris.Add(new CustomObjectDebris(item, OriginTile *64, DestinationTile * 64));
+            Location.debris.Add(new CustomObjectDebris(item, OriginTile * 64, DestinationTile * 64));
+        }
+
+        /// <summary>
+        /// Checks to see if minecarts have been unlocked for the world.
+        /// </summary>
+        /// <returns></returns>
+        public static bool AreMinecartsUnlocked()
+        {
+            if (Game1.MasterPlayer.mailReceived.Contains("ccBoilerRoom"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of minerals donated to the museum.
+        /// </summary>
+        /// <returns></returns>
+        public static int GetNumberOfMineralsDonatedToMuseum()
+        {
+            return NumberOfMuseumItemsOfType("Minerals");
+        }
+
+        public static int NumberOfMuseumItemsOfType(string type)
+        {
+            int num = 0;
+            foreach (KeyValuePair<Vector2, int> pair in Game1.netWorldState.Value.MuseumPieces.Pairs)
+            {
+                if (Game1.objectInformation[pair.Value].Split('/')[3].Contains(type))
+                {
+                    num++;
+                }
+            }
+
+            return num;
         }
 
     }

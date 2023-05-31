@@ -8,31 +8,29 @@
 **
 *************************************************/
 
+using System.Linq;
 using StardewModdingAPI;
 using StardewValley;
-using System;
-using System.Linq;
 
-namespace SpousesIsland
+namespace SpousesIsland.ModContent
 {
-    public class Debugging
+    public static class Debugging
     {
         internal static void Chance(string arg1, string[] arg2)
         {
-            var IsDebug = arg2?.Contains<string>("debug") ?? false;
+            var isDebug = arg2?.Contains("debug") ?? false;
 
             ModEntry.Mon.Log($"{ModEntry.RandomizedInt}", LogLevel.Info);
 
-            if (IsDebug)
+            if (!isDebug) return;
+            
+            if (!Context.IsWorldReady)
             {
-                if (!Context.IsWorldReady)
-                {
-                    ModEntry.Mon.Log(ModEntry.Help.Translation.Get("CLI.nosaveloaded"), LogLevel.Error);
-                    return;
-                }
-
-                ModEntry.Mon.Log(ModEntry.Help.Translation.Get("CLI.Day0") + $": {ModEntry.PreviousDayRandom}", LogLevel.Info);
+                ModEntry.Mon.Log(ModEntry.Help.Translation.Get("CLI.nosaveloaded"), LogLevel.Error);
+                return;
             }
+
+            ModEntry.Mon.Log(ModEntry.Help.Translation.Get("CLI.Day0") + $": {ModEntry.PreviousDayRandom}", LogLevel.Info);
         }
 
         internal static void GeneralInfo(string arg1, string[] arg2)
@@ -42,21 +40,14 @@ namespace SpousesIsland
 
         internal static void GetStatus(string arg1, string[] arg2)
         {
-            string stats = null;
+            string spouses = null;
 
-            foreach(var pair in ModEntry.Status)
+            foreach (var spouse in ModEntry.Status.Who)
             {
-                string spouses = null;
-                var data = pair.Value;
-
-                foreach (var spouse in data.Who)
-                {
-                    spouses += spouse + "  ";
-                }
-
-                stats += data.Name + "\n      " + $" DayVisit = {data.DayVisit}, WeekVisit = {data.WeekVisit.Item1} {data.WeekVisit.Item2}, Who = {spouses}\n\n";
+                spouses += spouse + "  ";
             }
 
+            var stats = $" DayVisit = {ModEntry.Status.DayVisit}, WeekVisit = {ModEntry.Status.WeekVisit.Item1} {ModEntry.Status.WeekVisit.Item2}, Who = {spouses}\n\n";
             ModEntry.Mon.Log(stats, LogLevel.Info);
 
         }
@@ -69,7 +60,7 @@ namespace SpousesIsland
             }
             else
             {
-                string all= "\n";
+                var all= "\n";
                 foreach(var name in arg2)
                 {
                     NPC chara = Game1.getCharacterFromName(name);
@@ -82,7 +73,7 @@ namespace SpousesIsland
                     var schedule = "\n";
                     foreach(var point in chara.Schedule)
                     {
-                        string newline = $"{point.Key}: \n";
+                        var newline = $"{point.Key}: \n";
                         foreach(var coord in point.Value.route)
                         {
                             var linecoords = $"({coord.X}, {coord.Y}),";
@@ -95,25 +86,6 @@ namespace SpousesIsland
                 }
                 ModEntry.Mon.Log(all,LogLevel.Info);
             }
-        }
-    }
-
-    public class Titles
-    {
-        internal static string SpouseT()
-        {
-            var SpousesGrlTitle = "SDV";
-            return SpousesGrlTitle;
-        }
-        internal static string SVET()
-        {
-            var sve = "SVE";
-            return sve;
-        }
-        internal static string Debug()
-        {
-            var db = "Debug";
-            return db;
         }
     }
 }

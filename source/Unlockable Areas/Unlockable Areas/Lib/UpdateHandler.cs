@@ -45,6 +45,7 @@ namespace Unlockable_Areas.Lib
         private static void returnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
             AppliedUnlockables = new List<UnlockableModel>();
+            ModData.Instance = null;
         }
 
         private static void warped(object sender, WarpedEventArgs e)
@@ -78,6 +79,8 @@ namespace Unlockable_Areas.Lib
                         if (locationValue.Value == true)
                             ModEntry._Helper.Multiplayer.SendMessage(unlockable, "ApplyUnlockable", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID }, playerIDs: new[] { e.Peer.PlayerID });
                     }
+
+            ModEntry._Helper.Multiplayer.SendMessage(true, "UnlockablesReady", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID }, playerIDs: new[] { e.Peer.PlayerID });
         }
 
         public static void applyUnlockable(Unlockable unlockable, bool isNew = true)
@@ -99,6 +102,12 @@ namespace Unlockable_Areas.Lib
 
         private static void modMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
+            if (e.Type == "IsReady") {
+                API.UnlockableAreasAPI.clearCache();
+                Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("UnlockableAreas/Unlockables"));
+                ModEntry._API.raiseIsReady(new API.IsReadyEventArgs(Game1.player));
+            } 
+
             if (e.FromModID == Mod.ModManifest.UniqueID && e.Type.StartsWith("ApplyUnlockable")) {
                 var unlockable = new Unlockable(e.ReadAs<UnlockableModel>());
                 ModData.setUnlockablePurchased(unlockable.ID, unlockable.LocationUnique);

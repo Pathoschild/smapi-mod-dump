@@ -1,18 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\Configuration.props" />
 	<PropertyGroup>
 		<RootNamespace>Shockah.PredictableRetainingSoil</RootNamespace>
 		<Version>1.1.2</Version>
-		<TargetFramework>net5.0</TargetFramework>
-		<ImplicitUsings>disable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<WarningsAsErrors>Nullable</WarningsAsErrors>
-		<EnableHarmony>true</EnableHarmony>
-		<EnableModZip Condition="$(Configuration) != 'Release'">False</EnableModZip>
 	</PropertyGroup>
 	<ItemGroup>
-		<None Include="..\.editorconfig" Link=".editorconfig" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+		<ProjectReference Include="..\Kokoro\Kokoro.csproj" Private="false" />
 	</ItemGroup>
 </Project>

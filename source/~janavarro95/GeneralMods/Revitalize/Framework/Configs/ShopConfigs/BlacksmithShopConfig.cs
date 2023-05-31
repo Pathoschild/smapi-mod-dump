@@ -46,7 +46,30 @@ namespace Omegasis.Revitalize.Framework.Configs.ShopConfigs
         /// <summary>
         /// How much the anvil blueprints sell for in clint's shop.
         /// </summary>
-        public int anvilBlueprintsPrice;
+        public int anvilBlueprintsPrice = 2500;
+
+        public int coalMiningDrillBlueprintPrice = 5000;
+        public int electricMiningDrillBlueprintPrice = 20000;
+
+        public int advancedGeodeCrusherBlueprintPrice = 10_000;
+        public int electricGeodeCrusherBlueprintPrice = 25_000;
+        public int nuclearGeodeCrusherBlueprintPrice = 50_000;
+        public int magicalGeodeCrusherBlueprintPrice = 100_000;
+
+        public int advancedCharcoalKilnBlueprintPrice = 5_000;
+        public int deluxCharcoalKilnBlueprintPrice = 10_000;
+        public int superiorCharcoalKilnBlueprintPrice = 25_000;
+
+        public int burnerBatteryGeneratorBlueprintPrice = 5_000;
+        public int advancedBatteryGeneratorBlueprintPrice = 12_500;
+        public int nuclearBatteryGeneratorBlueprintPrice = 35_000;
+
+
+        public int itemVaultBlueprintPrice = 5_000;
+        public int bigItemVaultBlueprintPrice = 10_000;
+        public int largeItemVaultBlueprintPrice = 15_000;
+        public int hugeItemVaultBlueprintPrice = 20_000;
+
 
         /// <summary>
         /// How much a regular axe blueprint sells for in clint's shop.
@@ -85,8 +108,6 @@ namespace Omegasis.Revitalize.Framework.Configs.ShopConfigs
             this.leadOrePrice = 200;
             this.silverOrePrice = 250;
             this.titaniumOrePrice = 300;
-
-            this.anvilBlueprintsPrice = 2500;
 
             int defaultStoneToolBlueprintPrice = 500;
             int defaultCopperToolBlueprintPrice = 1000;

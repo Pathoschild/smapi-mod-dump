@@ -16,6 +16,9 @@
   <ItemGroup>
     <None Include="Content\**\*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ModAssets\**\*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\StardustCore\StardustCore.csproj">
@@ -24,13 +27,36 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Framework\Constants\ItemIds\Objects\Resources\" />
+    <Folder Include="ContentPacks\RevitalizeContentPack en-US\ModAssets\Strings\Objects\DisplayStrings\Storage\" />
+    <Folder Include="Framework\Constants\Ids\Objects\Resources\" />
   </ItemGroup>
   
   <ItemGroup>
 	<Content Include="ModAssets\\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="SDVRevitalizeCreationUtility\**" />
+    <EmbeddedResource Remove="SDVRevitalizeCreationUtility\**" />
+    <None Remove="SDVRevitalizeCreationUtility\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="ModAssets\Data\Crafting\CraftingStations\Workbench\Recipes\Machines\CharcoalKilns\AdvancedCharcoalKiln.json" />
+    <None Remove="ModAssets\Data\Crafting\CraftingStations\Workbench\Recipes\Machines\CharcoalKilns\DeluxCharcoalKiln.json" />
+    <None Remove="ModAssets\Data\Crafting\CraftingStations\Workbench\Recipes\Machines\CharcoalKilns\SuperiorCharcoalKiln.json" />
+    <None Remove="ModAssets\Data\Objects\CraftingBlueprints\Workbench\Machines\CharcoalKilns\AdvancedCharcoalKiln.json" />
+    <None Remove="ModAssets\Data\Objects\CraftingBlueprints\Workbench\Machines\CharcoalKilns\DeluxCharcoalKiln.json" />
+    <None Remove="ModAssets\Data\Objects\CraftingBlueprints\Workbench\Machines\CharcoalKilns\SuperiorCharcoalKiln.json" />
+    <None Remove="ModAssets\Data\Objects\CraftingBlueprints\Workbench\Storage\HugeItemVault.json" />
+    <None Remove="ModAssets\Data\Objects\CraftingBlueprints\Workbench\Storage\LargeItemVault.json" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="ContentPacks\RevitalizeContentPack en-US\ModAssets\Strings\Objects\DisplayStrings\CraftingBlueprints\Storage\HugeItemVault.json" />
+    <Content Include="ContentPacks\RevitalizeContentPack en-US\ModAssets\Strings\Objects\DisplayStrings\CraftingBlueprints\Storage\LargeItemVault.json" />
   </ItemGroup>
 
   <ItemGroup>

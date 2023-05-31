@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/Achtuur/StardewTravelSkill
+   Git: https://github.com/Achtuur/StardewTravelSkill.git
+
+mods:
+   AchtuurCore
+   Travelling Skill
+
+latest commit:
+   commit c6f8fee391641c4cef522c4b42332e2e5b6bf3c9
+   Author: Achtuur <arthurdegroot88@gmail.com>
+   Date:   Tue May 30 15:12:47 2023 +0200
+   
+       add gainexperience patch (untested)
+   

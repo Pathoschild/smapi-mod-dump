@@ -18,6 +18,10 @@ using Microsoft.Xna.Framework;
 using BNWCore.Grabbers;
 using System.Text;
 using System;
+using xTile.ObjectModel;
+using StardewValley.Menus;
+using StardewValley.Locations;
+using System.Collections.Generic;
 
 namespace BNWCore
 {
@@ -29,7 +33,7 @@ namespace BNWCore
         internal static GameLocation SourceLocation;   
         private Assets_Editor Assets_Editor;
         private Magic_Bootle Magic_Bootle;
-        private Shop_Mechanics Shop_Mechanics;
+        private Shop_Patches Shop_Patches;
         private Menu_Config Menu_Config;
         private Magic_Net_Events Magic_Net_Events;
         private NPC_Schedules_Changes NPC_Schedules_Changes;
@@ -37,6 +41,7 @@ namespace BNWCore
         public static ModConfig Config;
         public static Texture2D ObjectsTexture;
         public static Texture2D ConstructionTexture;
+
         public static string ModDataKey => $"{ModHelper.ModRegistry.ModID}.MagicNets";
         public static int BNWCoreMagicNetId { get; set; } = 735;
         public override void Entry(IModHelper helper)
@@ -56,7 +61,7 @@ namespace BNWCore
             Config = Helper.ReadConfig<ModConfig>();
             Assets_Editor = new Assets_Editor();
             Magic_Bootle = new Magic_Bootle();
-            Shop_Mechanics= new Shop_Mechanics();
+            Shop_Patches= new Shop_Patches();
             Menu_Config= new Menu_Config();
             Magic_Net_Events= new Magic_Net_Events();
             NPC_Schedules_Changes= new NPC_Schedules_Changes();
@@ -77,10 +82,10 @@ namespace BNWCore
             helper.Events.GameLoop.OneSecondUpdateTicking += CheckMusicNeedsRestarting;
             helper.Events.Player.Warped += ResetMusicSecretWoods;
             helper.Events.GameLoop.UpdateTicking += GameLoop_UpdateTicking;
-        }
+        }   
         private void GameLoop_UpdateTicking(object sender, UpdateTickingEventArgs e)
         {
-            Shop_Mechanics.GameLoop_UpdateTicking(e);
+            Shop_Patches.GameLoop_UpdateTicking(e);
         }
         public override object GetApi() => IApi ??= new Api();
         private void CheckMusicNeedsRestarting(object? sender, OneSecondUpdateTickingEventArgs e)
@@ -93,7 +98,7 @@ namespace BNWCore
         }
             private void Display_MenuChanged(object sender, MenuChangedEventArgs e)
         {
-            Shop_Mechanics.Display_MenuChanged(e);
+            Shop_Patches.Display_MenuChanged(e);
         }
         
         private void onAssetRequested(object sender, AssetRequestedEventArgs e)
@@ -103,11 +108,11 @@ namespace BNWCore
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             Magic_Bootle.OnButtonPressed(e);
-            Shop_Mechanics.Input_ButtonPressed(e);
+            Shop_Patches.Input_ButtonPressed(e);
         }
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            Shop_Mechanics.OnUpdateTicked(e);
+            Shop_Patches.OnUpdateTicked(e);
         }
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
         {

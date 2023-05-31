@@ -67,6 +67,7 @@ namespace CombatControlsRedux
             public bool IsHoldingAttack = false;
             public int MyFacingDirection = -1;
             public int ClubSpamAttack = 0;
+            public bool Controller;
         }
 
         public ModConfig Config;
@@ -141,11 +142,11 @@ namespace CombatControlsRedux
                                    (bool value) => Config.MouseFix = value,
                                    () => I18nGet("mouseFix.Label"),
                                    () => I18nGet("mouseFix.tooltip"));
-                gmcm.AddBoolOption(ModManifest,
-                                   () => Config.ControllerFix,
-                                   (bool value) => Config.ControllerFix = value,
-                                   () => I18nGet("controllerFix.Label"),
-                                   () => I18nGet("controllerFix.tooltip"));
+                //gmcm.AddBoolOption(ModManifest,
+                //                   () => Config.ControllerCursorFix,
+                //                   (bool value) => Config.ControllerFix = value,
+                //                   () => I18nGet("controllerFix.Label"),
+                //                   () => I18nGet("controllerFix.tooltip"));
                 gmcm.AddBoolOption(ModManifest,
                                    () => Config.RegularToolsFix,
                                    (bool value) => Config.RegularToolsFix = value,
@@ -222,6 +223,7 @@ namespace CombatControlsRedux
             screen.IsHoldingAttack = false;
             screen.MyFacingDirection = -1;
             screen.ClubSpamAttack = 0;
+            screen.Controller = false;
 
             //PerformFireTool = MyHelper.Reflection.GetMethod(Game1.player, "performFireTool");
 
@@ -276,6 +278,47 @@ namespace CombatControlsRedux
             return false;
         }
 
+        private void DoFacingDirection(Farmer who, PerScreenData screen, Vector2 cursor)
+        {
+            // .Cursor.AbsolutePixels are map relative coords
+            //  who.GetBoundingBox().Center.X/Y, who.Position.X/Y
+            //  should I use BoundingBox center?
+            //Log.Debug($"Pos.X,Y {(int) who.Position.X},{(int) who.Position.Y} " +
+            //                $"Center.X,Y {(int) who.GetBoundingBox().Center.X},{(int) who.GetBoundingBox().Center.Y} " +
+            //                $"Cursor.X,Y {(int) e.Cursor.AbsolutePixels.X},{(int) e.Cursor.AbsolutePixels.Y}");
+            //float mouseDirectionX = e.Cursor.AbsolutePixels.X - who.Position.X;
+            //float mouseDirectionY = e.Cursor.AbsolutePixels.Y - who.Position.Y;
+            Microsoft.Xna.Framework.Point pos = who.GetBoundingBox().Center;
+            float mouseDirectionX = cursor.X - pos.X;
+            float mouseDirectionY = cursor.Y - pos.Y;
+            float mouseDirectionXpower = mouseDirectionX * mouseDirectionX;
+            float mouseDirectionYpower = mouseDirectionY * mouseDirectionY;
+
+            if (mouseDirectionXpower > mouseDirectionYpower)
+            {
+                if (mouseDirectionX < 0f)
+                {
+                    who.FacingDirection = Game1.left;
+                    screen.MyFacingDirection = Game1.left;
+                }
+                else
+                {
+                    who.FacingDirection = Game1.right;
+                    screen.MyFacingDirection = Game1.right;
+                }
+            }
+            else if (mouseDirectionY < 0f)
+            {
+                who.FacingDirection = Game1.up;
+                screen.MyFacingDirection = Game1.up;
+            }
+            else
+            {
+                who.FacingDirection = Game1.down;
+                screen.MyFacingDirection = Game1.down;
+            }
+        }
+
         /// <summary>Raised after the player presses a button on the keyboard, controller, or mouse.
         /// This method implements the facing direction change and Slick moves of the Mod.
         /// </summary>
@@ -302,6 +345,7 @@ namespace CombatControlsRedux
                 MeleeWeapon tool = who.CurrentTool as MeleeWeapon;
 
                 bool controller = (e.Button == SButton.ControllerX) || (e.Button == SButton.ControllerA);
+                screen.Controller = controller;
                 bool scythe = false;
                 bool dagger = false;
                 bool club = false;
@@ -341,11 +385,12 @@ namespace CombatControlsRedux
                             {
                                 // really fast daggers.
                                 screen.TickCountdown -= 1;
-                            }
-                            else if (tool.speed.Value > 7)
-                            {
-                                // crazy fast daggers.
-                                screen.TickCountdown -= 1;
+
+                                if (tool.speed.Value > 7)
+                                {
+                                    // crazy fast daggers.
+                                    screen.TickCountdown -= 1;
+                                }
                             }
 
                             // speed buffs affect weapon speed.
@@ -361,104 +406,67 @@ namespace CombatControlsRedux
                     }
                 }
 
+                // change the player facing direction.
                 if (
-                    ((Config.MouseFix && !controller) || (controller && Config.ControllerFix)) &&
-                    ((tool != null) || Config.RegularToolsFix) &&
-                    ((who.CurrentTool is not FishingRod) || !(who.CurrentTool as FishingRod).isFishing)
+                    (useToolButtonPressed || (dagger && actionButtonPressed)) &&
+                    (!controller) &&
+                    (
+                     ((tool != null) && Config.MouseFix) ||
+                     (Config.RegularToolsFix && ((who.CurrentTool is not FishingRod) || !(who.CurrentTool as FishingRod).isFishing))
+                    )
                    )
                 {
+                    //Log.Debug($".doFacingDirection click");
+                    DoFacingDirection(who, screen, e.Cursor.AbsolutePixels);
+                }
 
-                    if (
-                        (tool != null) &&
-                        useToolButtonPressed &&
-                        (!dagger) &&
-                        (!scythe) &&
-                        (
-                          ((!special) && Config.SlickMoves) ||
-                          (swordSpecial && Config.SwordSpecialSlickMove) ||
-                          (clubSpecial && Config.ClubSpecialSlickMove)
-                        )
-                       )
+                // do slick moves
+
+                if (
+                    (tool != null) &&
+                    useToolButtonPressed &&
+                    (!dagger) &&
+                    (!scythe) &&
+                    (
+                     ((!special) && Config.SlickMoves) ||
+                     (swordSpecial && Config.SwordSpecialSlickMove) ||
+                     (clubSpecial && Config.ClubSpecialSlickMove)
+                    )
+                   )
+                {
+                    float newVelocity = (special ? Config.SpecialSlideVelocity : Config.SlideVelocity);
+
+                    // diagonal movement returns an up/down/left/right.
+                    // for now limit the velocity change to the cardinal directions. Count = 1
+                    // it still seems to work okay on the diagonal, with single velocity adjustment.
+                    // so maybe not limit
+
+                    //Log.Debug($".movementDirections.Count={who.movementDirections.Count}");
+                    if (who.movementDirections.Count == 1)
                     {
-                        float newVelocity = (special ? Config.SpecialSlideVelocity : Config.SlideVelocity);
-
-                        // diagonal movement returns an up/down/left/right.
-                        // for now limit the velocity change to the cardinal directions. Count = 1
-                        // it still seems to work okay on the diagonal, with single velocity adjustment.
-                        // so maybe not limit
-
-                        //Log.Debug($".movementDirections.Count={who.movementDirections.Count}");
-                        if (who.movementDirections.Count == 1)
+                        //Log.Debug($".xV={who.xVelocity}, .yV={who.yVelocity}");
+                        switch (who.getDirection())
                         {
-                            //Log.Debug($".xV={who.xVelocity}, .yV={who.yVelocity}");
-                            switch (who.getDirection())
-                            {
-                            case Game1.left:
-                                who.canMove = true;
-                                who.xVelocity = 0f - newVelocity;
-                                break;
-                            case Game1.right:
-                                who.canMove = true;
-                                who.xVelocity = newVelocity;
-                                break;
-                            case Game1.up:
-                                who.canMove = true;
-                                who.yVelocity = newVelocity;
-                                break;
-                            case Game1.down:
-                                who.canMove = true;
-                                who.yVelocity = 0f - newVelocity;
-                                break;
-                            default:
-                                break;
-                            }
+                        case Game1.left:
+                            who.canMove = true;
+                            who.xVelocity = 0f - newVelocity;
+                            break;
+                        case Game1.right:
+                            who.canMove = true;
+                            who.xVelocity = newVelocity;
+                            break;
+                        case Game1.up:
+                            who.canMove = true;
+                            who.yVelocity = newVelocity;
+                            break;
+                        case Game1.down:
+                            who.canMove = true;
+                            who.yVelocity = 0f - newVelocity;
+                            break;
+                        default:
+                            break;
                         }
                     }
-
-                    // change the player facing direction.
-
-                    if (useToolButtonPressed || (dagger && actionButtonPressed))
-                    {
-
-                        // .Cursor.AbsolutePixels are map relative coords
-                        //  who.GetBoundingBox().Center.X/Y, who.Position.X/Y
-                        //  should I use BoundingBox center?
-                        //Log.Debug($"Pos.X,Y {(int) who.Position.X},{(int) who.Position.Y} " +
-                        //                $"Center.X,Y {(int) who.GetBoundingBox().Center.X},{(int) who.GetBoundingBox().Center.Y} " +
-                        //                $"Cursor.X,Y {(int) e.Cursor.AbsolutePixels.X},{(int) e.Cursor.AbsolutePixels.Y}");
-                        //float mouseDirectionX = e.Cursor.AbsolutePixels.X - who.Position.X;
-                        //float mouseDirectionY = e.Cursor.AbsolutePixels.Y - who.Position.Y;
-                        Microsoft.Xna.Framework.Point pos = who.GetBoundingBox().Center;
-                        float mouseDirectionX = e.Cursor.AbsolutePixels.X - pos.X;
-                        float mouseDirectionY = e.Cursor.AbsolutePixels.Y - pos.Y;
-                        float mouseDirectionXpower = mouseDirectionX * mouseDirectionX;
-                        float mouseDirectionYpower = mouseDirectionY * mouseDirectionY;
-
-                        if (mouseDirectionXpower > mouseDirectionYpower)
-                        {
-                            if (mouseDirectionX < 0f)
-                            {
-                                who.FacingDirection = Game1.left;
-                                screen.MyFacingDirection = Game1.left;
-                            }
-                            else
-                            {
-                                who.FacingDirection = Game1.right;
-                                screen.MyFacingDirection = Game1.right;
-                            }
-                        }
-                        else if (mouseDirectionY < 0f)
-                        {
-                            who.FacingDirection = Game1.up;
-                            screen.MyFacingDirection = Game1.up;
-                        }
-                        else
-                        {
-                            who.FacingDirection = Game1.down;
-                            screen.MyFacingDirection = Game1.down;
-                        }
-                    }
-
                 }
 
                 if (club && actionButtonPressed && !special)
@@ -539,6 +547,15 @@ namespace CombatControlsRedux
                             }
                             else
                             {
+                                // I only do the held button facing change after we decide an autoswing can/will happen.
+                                // a little less overhead in the general use case.
+                                if ((!screen.Controller) && (Config.MouseFix || Config.RegularToolsFix))
+                                {
+                                    //Log.Debug($".doFacingDirection repeat");
+                                    Vector2 cursor = new Vector2(Game1.getOldMouseX(false) + Game1.viewport.X, Game1.getOldMouseY(false) + Game1.viewport.Y);
+                                    DoFacingDirection(who, screen, cursor);
+                                }
+
                                 // which is "better". FireTool or (private internal) PerformFireTool
                                 // Looking at the Stardew code, PerformFireTool seems to be the implementation of NetEvent.Fire.
                                 // Farmer.FireTool is just a call to NetEvent.Fire
@@ -564,10 +581,9 @@ namespace CombatControlsRedux
         {
             PerScreenData screen = ScreenData.Value;
             int facing = screen.MyFacingDirection;
+            screen.MyFacingDirection = -1;
             if ((facing >= 0) && (facing != Game1.player.FacingDirection))
             {
-                screen.MyFacingDirection = -1;
-
                 //the game changed the facing direction we selected. set it back.
                 //this disagreement only happens in the 8 tiles surrounding the player where the game code may set the facing direction.
                 //re-setting the direction here seems to work well enough. I've seen some animation quirks at times.

@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Omegasis.Revitalize.Framework.Constants.PathConstants;
 using Omegasis.Revitalize.Framework.Utilities;
+using Omegasis.Revitalize.Framework.Utilities.JsonContentLoading;
 using StardewValley;
 
 namespace Omegasis.Revitalize.Framework.Constants.ItemCategoryInformation
@@ -89,14 +90,25 @@ namespace Omegasis.Revitalize.Framework.Constants.ItemCategoryInformation
         }
 
         /// <summary>
+        /// The category name for resources.
+        /// </summary>
+        public static string Storage
+        {
+            get
+            {
+                return GetCategoryName("Storage", "Storage");
+            }
+        }
+
+        /// <summary>
         /// Gets a category name from a .json file.
         /// </summary>
-        /// <param name="Key"></param>
-        /// <param name="DefaultName"></param>
+        /// <param name="CategoryId">The id for the category to load the actual translated string from the file.</param>
+        /// <param name="DefaultName">The default name to use if none is found.</param>
         /// <returns></returns>
-        public static string GetCategoryName(string Key, string DefaultName)
+        public static string GetCategoryName(string CategoryId, string DefaultName)
         {
-            string catrgoryName= JsonUtilities.LoadStringFromDictionaryFile(Key, LocalizationUtilities.GetLocalizationFilePath(Path.Combine(StringsPaths.Objects, "CategoryNames.json")));
+            string catrgoryName = JsonContentPackUtilities.LoadCategory(CategoryId);
             if (string.IsNullOrEmpty(catrgoryName))
             {
                 return DefaultName;

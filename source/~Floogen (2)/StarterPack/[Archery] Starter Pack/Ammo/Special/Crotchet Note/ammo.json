@@ -1,0 +1,64 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/Archery
+**
+*************************************************/
+
+{
+  "Type": "Arrow",
+  "Name": "Crotchet Note",
+  "Description": "...",
+
+  "BreakChance": 1,
+  "Damage": 0,
+  "RotationVelocity": 0.05,
+
+  // The enchantment to use upon impact
+  "Enchantment": {
+    "Id": "PeacefulEnd.Archery/Shock",
+    "TriggerChance": 1.0,
+    "Arguments": [
+      1000
+    ]
+  },
+
+  // Sound properties
+  "ImpactSound": {
+    "Name": "toyPiano",
+    "Volume": 0.7,
+    "Pitch": 0,
+    "PitchRandomness": {
+      "Min": 1,
+      "Max": 100
+    }
+  },
+
+  "ProjectileSprite": {
+    "Source": {
+      "X": 5,
+      "Y": 3,
+      "Width": 6,
+      "Height": 8
+    }
+  },
+  "CollisionBox": {
+    "X": -4,
+    "Y": -2,
+    "Width": 4,
+    "Height": 4
+  },
+
+  "Debris": {
+    "Source": {
+      "X": 0,
+      "Y": 0,
+      "Width": 16,
+      "Height": 16
+    },
+    "Amount": 6
+  }
+}

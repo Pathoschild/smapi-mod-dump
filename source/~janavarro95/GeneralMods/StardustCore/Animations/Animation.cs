@@ -40,12 +40,12 @@ namespace Omegasis.StardustCore.Animations
             this.animationFrames = new List<AnimationFrame>();
         }
 
-        public Animation(int sourceRectX, int sourceRectY, int sourceRectWidth, int sourceRectHeight):this(new Rectangle(sourceRectX,sourceRectY,sourceRectWidth, sourceRectHeight))
+        public Animation(int sourceRectX, int sourceRectY, int sourceRectWidth, int sourceRectHeight, float scale=1f):this(new Rectangle(sourceRectX,sourceRectY,sourceRectWidth, sourceRectHeight),scale)
         {
 
         }
 
-        public Animation(Rectangle SourceRectangleForStaticAnimation):this(new AnimationFrame(SourceRectangleForStaticAnimation))
+        public Animation(Rectangle SourceRectangleForStaticAnimation, float scale=1f):this(new AnimationFrame(SourceRectangleForStaticAnimation,scale))
         {
 
         }
@@ -91,6 +91,12 @@ namespace Omegasis.StardustCore.Animations
             return this.getCurrentAnimationFrame().sourceRectangle;
         }
 
+        public virtual Animation appendAnimation(Animation other)
+        {
+            this.animationFrames.AddRange(other.animationFrames);
+            return this;
+        }
+
         public virtual void reset()
         {
             //Reset old animation frame.
@@ -122,9 +128,9 @@ namespace Omegasis.StardustCore.Animations
         }
 
         /// <summary>This sets the animation frame count to be the max duration. I.E restart the timer.</summary>
-        public void startAnimation()
+        public void startAnimation(int StartingFrameIndex=0)
         {
-            this.currentAnimationFrameIndex = 0;
+            this.currentAnimationFrameIndex = StartingFrameIndex;
         }
 
         /// <summary>
@@ -202,6 +208,20 @@ namespace Omegasis.StardustCore.Animations
                 frames.Add(frame);
             }
             return new Animation(frames,shouldLoop);
+        }
+
+        public static Animation CreateAnimationFromReverseTextureSequence(int startingPosX, int startingPosY, int FrameWidth, int FrameHeight, int NumberOfFrames, int ExistsForXFrames = -1, bool shouldLoop = true)
+        {
+            List<AnimationFrame> frames = new List<AnimationFrame>();
+
+            for (int i = 0; i < NumberOfFrames; i++)
+            {
+                AnimationFrame frame = new AnimationFrame(startingPosX + (FrameWidth * i), startingPosY, FrameWidth, FrameHeight, ExistsForXFrames);
+
+                frames.Add(frame);
+            }
+            frames.Reverse();
+            return new Animation(frames, shouldLoop);
         }
     }
 }

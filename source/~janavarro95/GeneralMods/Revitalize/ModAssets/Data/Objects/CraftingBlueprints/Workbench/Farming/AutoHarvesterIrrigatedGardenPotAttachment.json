@@ -10,15 +10,19 @@
 
 {
   "itemToDraw": {
+    "amount": 1,
+    "registeredObjectId": "Omegasis.Revitalize.Framework.World.Objects.Items.Farming.AutoHarvesterGardenPotAttachment",
     "stardewValleyItemId": "NULL",
     "stardewValleyBigCraftableId": "NULL",
-    "registeredObjectId": "Revitalize.Framework.World.Objects.Items.Farming.AutoHarvesterGardenPotAttachment",
-    "amount": 1
+    "artisanGoodItemReference": null
   },
-  "recipesToUnlock": {
-    "Revitalize.Crafting.CraftingRecipeBooks.Workbench": "Revitalize.Workbench.Farming.Revitalize.Framework.World.Objects.Items.Farming.AutoHarvesterGardenPotAttachment"
-  },
-  "id": "Revitalize.Objects.Crafting.Blueprint.Workbench.Farming.Revitalize.Framework.World.Objects.Items.Farming.AutoHarvesterGardenPotAttachment",
+  "recipesToUnlock": [
+    {
+      "CraftingBookId": "Omegasis.Revitalize.Crafting.CraftingRecipeBooks.Workbench",
+      "RecipeId": "Omegasis.Revitalize.Workbench.Farming.Revitalize.Framework.World.Objects.Items.Farming.AutoHarvesterGardenPotAttachment"
+    }
+  ],
+  "id": "Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Farming.Revitalize.Framework.World.Objects.Items.Farming.AutoHarvesterGardenPotAttachment",
   "name": "Blueprint: Auto Harvester Attachment",
   "description": "A blueprint used on how to craft an auto harvester attachment for irrigated garden pots at a workbench. When used with an automatic farming machine, these can allow for planting harvesting fully grown crops by putting them directly into chests attached to the automatic farming system!",
   "categoryId": "StardewValley.Crafting",
@@ -39,7 +43,7 @@
   },
   "animationManager": {
     "modManifestId": "Omegasis.Revitalize",
-    "textureManagerId": "Revitalize.Items.Crafting",
+    "textureManagerId": "Omegasis.Revitalize.Items.Crafting",
     "textureId": "Blueprint",
     "defaultAnimationKey": "Default",
     "startingAnimationKey": "Default",

@@ -8,16 +8,14 @@
 **
 *************************************************/
 
-using GrowableGiantCrops;
 using HarmonyLib;
-using JsonAssets;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
+using ExtraGingerIslandMaps.Patches;
 
 namespace ExtraGingerIslandMaps
 {
@@ -25,8 +23,8 @@ namespace ExtraGingerIslandMaps
     {
         public override void Entry(IModHelper helper)
         {
-            Mon = this.Monitor;
-            Help = this.Helper;
+            Mon = Monitor;
+            Help = Helper;
 
             helper.Events.GameLoop.GameLaunched += OnGameLaunch;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
@@ -34,52 +32,39 @@ namespace ExtraGingerIslandMaps
 
             helper.Events.Content.AssetRequested += Asset.Request;
 
-            var harmony = new Harmony(this.ModManifest.UniqueID);
+            var harmony = new Harmony(ModManifest.UniqueID);
 
-            harmony.PatchAll(typeof(ModEntry).Assembly);
-            harmony.PatchAll(typeof(NPCPatches).Assembly);
-
-            //monster related patches
-
-            this.Monitor.Log($"Applying Harmony patch \"{nameof(BatPatches)}\": prefixing SDV method \"Bat.onDealContactDamage\".");
-            harmony.PatchAll(typeof(BatPatches).Assembly);
-
-            this.Monitor.Log($"Applying Harmony patch \"{nameof(MonsterPatches)}\": postfixing SDV method \"Monster.behaviorAtGameTick\".");
-            harmony.PatchAll(typeof(MonsterPatches).Assembly);
-
-            this.Monitor.Log($"Applying Harmony patch \"{nameof(ProjectilePatches)}\": prefixing SDV method \"BasicProjectile.behaviorOnCollisionWithPlayer\".");
-            harmony.PatchAll(typeof(ProjectilePatches).Assembly);
-
+            GameLocationPatches.Apply(harmony);
+            NpcPatches.Apply(harmony);
+            MonsterPatches.Apply(harmony);
+            BatPatches.Apply(harmony);
+            ProjectilePatches.Apply(harmony);
         }
 
         private void OnGameLaunch(object sender, GameLaunchedEventArgs e)
         {
-            jsonAssets = Helper.ModRegistry.GetApi<IApi>("spacechase0.JsonAssets");
             //giantCrops = Helper.ModRegistry.GetApi<IGrowableGiantCropsAPI>("modname");
-            HasSGI = Helper.ModRegistry.Get("mistyspring.spousesisland") != null;
+            HasSgi = Helper.ModRegistry.Get("mistyspring.spousesisland") != null;
 
-            CloudyBG = this.Helper.GameContent.Load<Texture2D>("LooseSprites/Cloudy_Ocean_BG");
-            CloudyBG_night = this.Helper.GameContent.Load<Texture2D>("LooseSprites/Cloudy_Ocean_BG_Night");
-            Ostrich = this.Helper.GameContent.Load<Texture2D>("Animals/Ostrich");
+            CloudyBg = Helper.GameContent.Load<Texture2D>("LooseSprites/Cloudy_Ocean_BG");
+            Cursors = Helper.GameContent.Load<Texture2D>("LooseSprites/Cursors");
+            CloudyBgNight = Helper.GameContent.Load<Texture2D>("LooseSprites/Cloudy_Ocean_BG_Night");
+            Ostrich = Helper.GameContent.Load<Texture2D>("Animals/Ostrich");
         }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            
-            if(jsonAssets is not null)
-            {
-                FireRing = jsonAssets.GetObjectId("Fire Ring");
-            }
+            HasJackie = Game1.player.mailReceived.Contains("Island_Resort");
 
-            this.Monitor.Log("Fire Ring ID: " + FireRing);
+            Monitor.Log("Fire Ring ID: " + FireRing);
 
             //get text used for GiEX.RopeToWest
             var texts = Helper.GameContent.Load<Dictionary<string, string>>("Strings/Locations");
-            texts.TryGetValue("Mines_ShaftJumpIn",out string jump);
-            this.Monitor.Log("Mines_ShaftJumpIn string: " + jump, LogLevel.Trace);
+            texts.TryGetValue("Mines_ShaftJumpIn",out var jump);
+            Monitor.Log("Mines_ShaftJumpIn string: " + jump);
             
             //replace dot for question mark. if spanish, also add at start
-            jump = jump.Replace('.', '?');
+            jump = jump?.Replace('.', '?');
             if(LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.es)
             {
                 jump = "¿" + jump;
@@ -88,12 +73,17 @@ namespace ExtraGingerIslandMaps
             RopeQuestion = jump;
 
             //we null it so any ContentPatcher changes can be applied in the future
-            CloudyBG = null;
-            CloudyBG_night = null;
+            CloudyBg = null;
+            CloudyBgNight = null;
             Ostrich = null;
+            Cursors = null;
 
-            //get jackie text 
-            UpsetJackie = Game1.content.LoadString("Characters/Dialogue/Jackie:StoleMoney");
+            if(HasJackie)
+            {
+                //get jackie text 
+                UpsetJackie = Game1.content.LoadString("Characters/Dialogue/JackieGiex:StoleMoney");
+                UpdateJackieIfNeccesary();
+            }
 
             //get $ dialogue
             var coines = Game1.content.LoadString("Strings/StringsFromCSFiles:Debris.cs.625");
@@ -101,28 +91,47 @@ namespace ExtraGingerIslandMaps
 
             FoundG = $"({coines}) {found}$"; //format: "(Coins) Number found: x"
 
-            //reset terrain for 1.4upd
-            if (!Game1.player.mailReceived.Contains("GiEX_1.4update"))
+            /*//reset terrain for 1.4upd
+            if (Game1.player.mailReceived.Contains("GiEX_1.4update")) return;
+            
+            var rivermouth = Utility.fuzzyLocationSearch("Custom_GiRiver");
+            try
             {
-                var rivermouth = Utility.fuzzyLocationSearch("Custom_GiRiver");
-
-                try
-                {
-                    Terrain.Reset(rivermouth);
-                }
-                catch (Exception ex)
-                {
-                    this.Monitor.Log("Error: " + ex, LogLevel.Error);
-                    return;
-                }
-                Game1.player.mailReceived.Contains("GiEX_1.4update");
+                Terrain.Reset(rivermouth);
             }
+            catch (Exception ex)
+            {
+                Monitor.Log("Error: " + ex, LogLevel.Error);
+                return;
+            }
+            Game1.player.mailReceived.Add("GiEX_1.4update");*/
         }
 
-        private void OnDayStart(object sender, DayStartedEventArgs e)
+        private static void UpdateJackieIfNeccesary()
+        {
+            // ReSharper disable once InconsistentNaming
+            var hasUpdatedTo1_6 = Game1.player.mailReceived.Contains("GiEX_1.6Update");
+            if (hasUpdatedTo1_6)
+                return;
+
+            var hasPreviousJackie = Game1.player.friendshipData.ContainsKey("Jackie");
+            if (!hasPreviousJackie)
+            {
+                Game1.player.mailReceived.Add("GiEX_1.6Update");
+                return;
+            }
+
+            var jackie = Game1.player.friendshipData["Jackie"];
+            Game1.player.friendshipData["JackieGiex"] = jackie;
+            Game1.player.friendshipData.Remove("Jackie");
+            
+            Game1.player.mailReceived.Add("GiEX_1.6Update");
+        }
+
+        private static void OnDayStart(object sender, DayStartedEventArgs e)
         {
             //if player hasnt seen jackie's entry event: make invisible for the day
-            if(Game1.player.eventsSeen.Contains(121951) == false)
+            if(Game1.player.eventsSeen.Contains("121951") == false && HasJackie)
             {
                 var jackie = Game1.getCharacterFromName("Jackie",false);
                 jackie.IsInvisible = true;
@@ -131,24 +140,23 @@ namespace ExtraGingerIslandMaps
             }
 
             //reset daily variable
-            ModEntry.HasObtainedCashToday = false;
+            HasObtainedCashToday = false;
         }
 
-        internal IApi jsonAssets;
         //internal static IGrowableGiantCropsAPI giantCrops;
 
         internal static IMonitor Mon { get; private set; }
         internal static IModHelper Help { get; private set; }
-        
-        internal static Texture2D CloudyBG { get; set; }
-        internal static Texture2D CloudyBG_night { get; set; }
-        internal static Texture2D Ostrich { get; set; }
-        
-        internal static int FireRing { get; private set; }
+        internal static Texture2D Cursors { get; private set; }
+        internal static Texture2D CloudyBg { get; private set; }
+        internal static Texture2D CloudyBgNight { get; private set; }
+        internal static Texture2D Ostrich { get; private set; }
+        internal const string FireRing = "mistyspring.extraGImaps_fireRing";
         internal static string RopeQuestion { get; private set; }
         internal static string FoundG { get; private set; }
         internal static string UpsetJackie { get; private set; }
-        internal static bool HasSGI { get; private set; } = false;
-        internal static bool HasObtainedCashToday { get; set; } = false;
+        private static bool HasJackie { get; set; }
+        internal static bool HasSgi { get; private set; }
+        internal static bool HasObtainedCashToday { get; set; }
     }
 }

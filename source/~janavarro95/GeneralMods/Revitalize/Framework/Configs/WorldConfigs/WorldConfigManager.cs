@@ -28,7 +28,7 @@ namespace Omegasis.Revitalize.Framework.Configs.WorldConfigs
 
         public WorldConfigManager()
         {
-            this.darkerNightConfig = ConfigManager.initializeConfig<DarkerNightConfig>("Configs", "WorldConfigs", "DarkerNightConfig.json");
+            this.darkerNightConfig = ConfigManager.InitializeConfig<DarkerNightConfig>("Configs", "WorldConfigs", "DarkerNightConfig.json");
         }
     }
 }

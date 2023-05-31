@@ -42,9 +42,9 @@ namespace ContentPatcher.Framework.Migrations
         }
 
         /// <inheritdoc />
-        public override bool TryMigrate(ContentConfig content, [NotNullWhen(false)] out string? error)
+        public override bool TryMigrateMainContent(ContentConfig content, [NotNullWhen(false)] out string? error)
         {
-            if (!base.TryMigrate(content, out error))
+            if (!base.TryMigrateMainContent(content, out error))
                 return false;
 
             // 1.5 adds dynamic tokens
@@ -54,11 +54,20 @@ namespace ContentPatcher.Framework.Migrations
                 return false;
             }
 
+            return true;
+        }
+
+        /// <inheritdoc />
+        public override bool TryMigrate(ref PatchConfig[] patches, [NotNullWhen(false)] out string? error)
+        {
+            if (!base.TryMigrate(ref patches, out error))
+                return false;
+
             // check patch format
-            foreach (PatchConfig? patch in content.Changes)
+            foreach (PatchConfig patch in patches)
             {
                 // 1.5 adds multiple Target values
-                if (patch?.Target?.Contains(",") == true)
+                if (patch.Target?.Contains(",") == true)
                 {
                     error = this.GetNounPhraseError($"specifying multiple {nameof(PatchConfig.Target)} values");
                     return false;

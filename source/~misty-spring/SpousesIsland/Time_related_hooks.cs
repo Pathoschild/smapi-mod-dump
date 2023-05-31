@@ -14,39 +14,48 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using System;
 using Microsoft.Xna.Framework.Graphics;
+using SpousesIsland.ModContent;
 
 namespace SpousesIsland
 {
-    internal class Changes
+    internal static class Changes
     {
         internal static void DayStart(object sender, DayStartedEventArgs e)
         {
-            if(ModEntry.IslandToday)
+            if (!ModEntry.IslandToday) return;
+            
+            var inviteds = ModEntry.Status.Who;
+            if (inviteds?.Count == 0 || inviteds == null)
+                return;
+
+            foreach(var spouse in inviteds)
             {
-
-                var inviteds = ModEntry.Status[ModEntry.Player_MP_ID].Who;
-                
-                if (inviteds?.Count == 0 || inviteds == null)
-                    return;
-
-                foreach(var spouse in inviteds)
+                //if not allowed
+                if(Values.IsIntegrated(spouse) && !ModEntry.MarriedAndAllowed.Contains(spouse))
                 {
-                    //if not allowed
-                    if(Values.IsIntegrated(spouse) && !ModEntry.MarriedAndAllowed.Contains(spouse))
-                    {
-                        continue;
-                    }
-
-                    ChangeSchedule(spouse);
+                    continue;
                 }
 
-                if (ModEntry.Children?.Count == 0 || ModEntry.Children == null || ModEntry.HasC2N_Or_LNPCs == false)
-                    return;
+                ChangeSchedule(spouse);
+            }
 
-                foreach(var kid in ModEntry.Children)
-                {
-                    ChangeSchedule(kid.Name);
-                }
+            if (ModEntry.Children?.Count == 0 || ModEntry.Children == null)
+                return;
+
+            Devan.CorrectSchedule();
+
+            if(!ModEntry.InstalledMods["C2N"] && !ModEntry.InstalledMods["LNPCs"])
+                return;
+
+            if (!BedCode.HasAnyKidBeds() && ModEntry.Config.UseFurnitureBed)
+            {
+                ModEntry.Mon.Log("There's no child beds in island farmhouse. Farmer's kids won't visit.",LogLevel.Warn);
+                return;
+            }
+            
+            foreach(var kid in ModEntry.Children)
+            {
+                ChangeSchedule(kid.Name);
             }
         }
 
@@ -54,9 +63,9 @@ namespace SpousesIsland
         /// Changes a NPC's schedule to IslandVisit one.
         /// </summary>
         /// <param name="who">npc whose schedule to edit.</param>
-        internal static void ChangeSchedule(string who)
+        private static void ChangeSchedule(string who)
         {
-            var npc = Game1.getCharacterFromName(who);
+            var npc = Utility.fuzzyCharacterSearch(who,false);
 
             //stop any npc action
             npc.Halt();
@@ -93,100 +102,156 @@ namespace SpousesIsland
             if (ModEntry.IslandToday == false)
                 return;
 
-            if(e.NewTime >= 800 && e.NewTime <= 900)
+            switch (e.NewTime)
             {
-                if(ModEntry.IslandAtt)
+                case >= 800 and <= 900:
                 {
-                    foreach(var name in ModEntry.Status[ModEntry.Player_MP_ID].Who)
+                    if(ModEntry.Config.IslandClothes)
                     {
-                        var npc = Game1.getCharacterFromName(name);
-                        //npc.wearIslandAttire();
-                        ToggleIslandClothes(npc,true);
+                        foreach(var name in ModEntry.Status.Who)
+                        {
+                            var npc = Game1.getCharacterFromName(name);
+                            //npc.wearIslandAttire();
+                            ToggleIslandClothes(npc,true);
+                        }
                     }
+
+                    break;
+                }
+                //if 10pm or later. code for npcs to sleep
+                case >= 2200:
+                {
+                    var ifh = Game1.getLocationFromName("IslandFarmHouse");
+
+                    //first, correct any NOT in the farmhouse
+                    foreach(var spouse in ModEntry.Status.Who)
+                    {
+                        var s = Utility.fuzzyCharacterSearch(spouse, false);
+                        if (s.currentLocation.Equals(ifh)) continue;
+                        
+                        ModEntry.Mon.Log($"Correcting NPC location ({spouse}) to farmhouse.");
+                        Game1.warpCharacter(s, ifh.Name, new Point(14,14));
+                    }
+
+                    //then, path them to bed
+                    foreach (var c in ifh.characters)
+                    {
+                        if (c.isMarried())
+                        {
+                            ModEntry.Mon.Log($"Pathing {c.Name} to bed in {ifh.Name}...");
+                            try
+                            {
+                                BedCode.MakeSpouseGoToBed(c, ifh);
+                            }
+                            catch (Exception ex)
+                            {
+                                ModEntry.Mon.Log($"An error ocurred while pathing {c.Name} to bed: {ex}");
+                            }
+                        }
+
+                        else if (!c.isMarried() && !c.isRoommate() && (ModEntry.InstalledMods["C2N"] || ModEntry.InstalledMods["LNPCs"]))
+                        {
+                            ModEntry.Mon.Log($"Pathing {c.Name} to kid bed in {ifh.Name}...");
+                            try
+                            {
+                                BedCode.MakeKidGoToBed(c, ifh);
+                            }
+                            catch (Exception ex)
+                            {
+                                ModEntry.Mon.Log($"An error ocurred while pathing {c.Name} to bed: {ex}");
+                            }
+                        }
+                    }
+
+                    break;
                 }
             }
-            //if 10pm or later. code for npcs to sleep
-            if (e.NewTime >= 2200)
+
+            if (!ModEntry.DevanExists) return; //devan exists
+            switch (e.NewTime)
             {
-                var bc = new BedCode();
-                var ifh = Game1.getLocationFromName("IslandFarmHouse");
-
-                foreach (NPC c in ifh.characters)
+                //if >910 && <930, walk to baby
+                case > 910 and < 930:
+                    Devan.WalkTo(ModEntry.Children[0]);
+                    break;
+                case > 1300 and < 1400:
                 {
-                    if (c.isMarried())
+                    //walk to kid(s). use random to choose
+                    var whichkid = ModEntry.Random.Next(ModEntry.Children.Count);
+                    Devan.WalkTo(ModEntry.Children[whichkid]);
+                    break;
+                }
+                case > 1500 and < 1700:
+                    Devan.Wander(8);
+                    break;
+                case 2300:
+                {
+                    //warp out of house (if player present, door sound). once at bus stop pos, walk to saloon and then sleep (requires followschedule=false)
+                    var devan = Utility.fuzzyCharacterSearch("Devan", false);
+
+                    Game1.warpCharacter(devan, "BusStop", new Point(1,23));
+                    
+                    if (Game1.currentLocation.Equals(Utility.getHomeOfFarmer(Game1.player)))
                     {
-                        ModEntry.Mon.Log($"Pathing {c.Name} to bed in {ifh.Name}...");
-                        try
-                        {
-                            bc.MakeSpouseGoToBed(c, ifh);
-                        }
-                        catch (Exception ex)
-                        {
-                            ModEntry.Mon.Log($"An error ocurred while pathing {c.Name} to bed: {ex}");
-                        }
+                        Game1.currentLocation.playSound("doorClose", StardewValley.Network.NetAudio.SoundContext.NPC);
                     }
 
-                    else if (!c.isMarried() && !c.isRoommate() && ModEntry.HasC2N_Or_LNPCs == true)
-                    {
-                        ModEntry.Mon.Log($"Pathing {c.Name} to kid bed in {ifh.Name}...");
-                        try
-                        {
-                            bc.MakeKidGoToBed(c, ifh);
-                        }
-                        catch (Exception ex)
-                        {
-                            ModEntry.Mon.Log($"An error ocurred while pathing {c.Name} to bed: {ex}");
-                        }
-                    }
+                    devan.Halt();
+                    devan.followSchedule = false;
+                    devan.clearSchedule();
+
+                    devan.controller = new PathFindController(devan,Game1.getLocationFromName("Saloon"),new Point(44,5),2);
+                    break;
                 }
             }
         }
 
         private static void ToggleIslandClothes(NPC npc, bool islandClothes)
         {
-            string spritename = "Characters\\" + npc.Name;
-            int frame = npc.Sprite.CurrentFrame;
-            int w = npc.Sprite.getWidth();
-            int h = npc.Sprite.getHeight();
+            var spritename = "Characters\\" + npc.Name;
+            var frame = npc.Sprite.CurrentFrame;
+            var w = npc.Sprite.getWidth();
+            var h = npc.Sprite.getHeight();
 
-            if (islandClothes)
+            switch (islandClothes)
             {
-                //turn to beach clothes
-                try
-                {
-                    npc.Sprite.LoadTexture(spritename + "_Beach");
-                    npc.Sprite = new AnimatedSprite(spritename + "_Beach", frame, w, h);
+                case true:
+                    //turn to beach clothes
+                    try
+                    {
+                        npc.Sprite.LoadTexture(spritename + "_Beach");
+                        npc.Sprite = new AnimatedSprite(spritename + "_Beach", frame, w, h);
 
-                    var beach = Game1.content.Load<Texture2D>("Portraits\\" + npc.Name + "_Beach");
-                    npc.Portrait = beach;
-                }
-                catch (Exception ex)
-                {
-                    npc.Sprite.LoadTexture("Characters\\" + npc.Name);
-                    ModEntry.Mon.Log($"An error happened while loading beach sprite: {ex}", LogLevel.Error);
-                }
-            }
-            else if(islandClothes == false)
-            {
-                //turn to normal
-                try
-                {
-                    npc.Sprite.LoadTexture(spritename);
-                    npc.Sprite = new AnimatedSprite(spritename, frame, w, h);
+                        var beach = Game1.content.Load<Texture2D>("Portraits\\" + npc.Name + "_Beach");
+                        npc.Portrait = beach;
+                    }
+                    catch (Exception ex)
+                    {
+                        npc.Sprite.LoadTexture("Characters\\" + npc.Name);
+                        ModEntry.Mon.Log($"An error happened while loading beach sprite: {ex}", LogLevel.Error);
+                    }
 
-                    var normal = Game1.content.Load<Texture2D>("Portraits\\" + npc.Name);
-                    npc.Portrait = normal;
-                }
-                catch (Exception ex)
-                {
-                    npc.Sprite.LoadTexture("Characters\\" + npc.Name);
-                    ModEntry.Mon.Log($"An error happened while loading normal sprite: {ex}", LogLevel.Error);
-                }
-            }
-            else
-            {
-                //idk. log error
-                throw new ArgumentException();
+                    break;
+                case false:
+                    //turn to normal
+                    try
+                    {
+                        npc.Sprite.LoadTexture(spritename);
+                        npc.Sprite = new AnimatedSprite(spritename, frame, w, h);
+
+                        var normal = Game1.content.Load<Texture2D>("Portraits\\" + npc.Name);
+                        npc.Portrait = normal;
+                    }
+                    catch (Exception ex)
+                    {
+                        npc.Sprite.LoadTexture("Characters\\" + npc.Name);
+                        ModEntry.Mon.Log($"An error happened while loading normal sprite: {ex}", LogLevel.Error);
+                    }
+
+                    break;
+                default:
+                    //idk. log error
+                    throw new ArgumentException();
             }
         }
 
@@ -204,86 +269,79 @@ namespace SpousesIsland
             if (e.IsMultipleOf(120) == false)
                 return;
 
-            //dont run after 10pm
-            if (Game1.timeOfDay > 2210)
-                return;
-
-            if (Game1.timeOfDay >= 2000)
+            switch (Game1.timeOfDay)
             {
-                try
-                {
-                    var islandW = Game1.getLocationFromName("IslandWest");
-                    var islandS = Game1.getLocationFromName("IslandSouth");
-                    var supposedtilelocation = new Point(77, 41);
-
-                    foreach (var chara in ModEntry.MustPatchPF)
+                //dont run after 10pm
+                case > 2210:
+                    return;
+                case >= 2000:
+                    try
                     {
-                        var npc = Game1.getCharacterFromName(chara, false, false);
+                        var islandW = Game1.getLocationFromName("IslandWest");
+                        var islandS = Game1.getLocationFromName("IslandSouth");
+                        var supposedtilelocation = new Point(77, 41);
 
-                        //to avoid looping
-                        /*if (npc.isMoving())
+                        foreach (var chara in ModEntry.PatchPathfind)
+                        {
+                            var npc = Utility.fuzzyCharacterSearch(chara, false);
+
+                            //to avoid looping
+                            /*if (npc.isMoving())
                             continue;*/
 
-                        var inIsland = npc?.currentLocation?.GetLocationContext() == GameLocation.LocationContext.Island;
+                            var inIsland = npc?.currentLocation?.GetLocationContext() == GameLocation.LocationContext.Island;
 
-                        if (!inIsland)
-                        {
-                            continue;
-                        }
+                            if (!inIsland)
+                            {
+                                continue;
+                            }
 
-                        /* this didnt work rip
-                        bool positioned = npc?.getTileLocationPoint() == new Point(77, 41);
+                            if(npc?.getTileLocationPoint() != supposedtilelocation) // && npc?.currentLocation != islandW
+                            {
+                                continue;
+                            }
 
-                        if (!positioned && npc.currentLocation != islandW)
-                        {
-                            continue;
-                        }
-                        */
+                            ModEntry.Mon.Log("Attempting to fix null endpoint in schedule...", LogLevel.Debug);
 
-                        if(npc?.getTileLocationPoint() != supposedtilelocation) // && npc?.currentLocation != islandW
-                        {
-                            continue;
-                        }
+                            //clear everything just in case
+                            npc.followSchedule = false;
+                            npc.controller = null;
+                            npc.Schedule.Clear();
+                            npc.queuedSchedulePaths.Clear();
 
-                        ModEntry.Mon.Log("Attempting to fix null endpoint in schedule...", LogLevel.Debug);
+                            //warp to entrance
+                            Game1.warpCharacter(npc, "IslandFarmHouse", new Point(14, 15));
 
-                        //clear everything just in case
-                        npc.followSchedule = false;
-                        npc.controller = null;
-                        npc.Schedule.Clear();
-                        npc.queuedSchedulePaths.Clear();
+                            if (Game1.player.currentLocation.Equals(islandW) || Game1.player.currentLocation.Name == "IslandFarmHouse")
+                            {
+                                Game1.playSound("doorClose");
+                            }
+                            if(ModEntry.Config.IslandClothes)
+                            {
+                                //npc.wearNormalClothes(); //return to normal
+                                ToggleIslandClothes(npc, false);
+                            }
 
-                        //warp to entrance
-                        Game1.warpCharacter(npc, "IslandFarmHouse", new Point(14, 15));
+                            ModEntry.Mon.Log("Warped to islandFarmHouse.", LogLevel.Debug);
 
-                        if (Game1.player.currentLocation == islandW || Game1.player.currentLocation.Name == "IslandFarmHouse")
-                        {
-                            Game1.playSound("doorClose");
-                        }
-                        if(ModEntry.IslandAtt)
-                        {
-                            //npc.wearNormalClothes(); //return to normal
-                            ToggleIslandClothes(npc, false);
-                        }
-
-                        ModEntry.Mon.Log("Warped to islandFarmHouse.", LogLevel.Debug);
-
-                        npc.controller = new PathFindController
+                            npc.controller = new PathFindController
                             (npc,
-                            Game1.getLocationFromName("IslandFarmHouse"),
-                            Information.GetReturnPoint(npc.Name),
-                            0);
+                                Game1.getLocationFromName("IslandFarmHouse"),
+                                Information.GetReturnPoint(npc.Name),
+                                0);
 
-                        if (ModEntry.IsDebug)
-                        {
-                            ModEntry.Mon.Log($"Controller information: endpoint {npc.controller.endPoint}, location {npc.controller.location.Name}", LogLevel.Debug);
+                            if (ModEntry.Config.Debug)
+                            {
+                                ModEntry.Mon.Log($"Controller information: endpoint {npc.controller.endPoint}, location {npc.controller.location.Name}", LogLevel.Debug);
+                            }
                         }
                     }
-                }
-                catch(Exception ex)
-                {
-                    ModEntry.Mon.Log("Error: " + ex, LogLevel.Error);
-                }
+                    catch(Exception ex)
+                    {
+                        ModEntry.Mon.Log("Error: " + ex, LogLevel.Error);
+                    }
+
+                    break;
             }
         }
     }

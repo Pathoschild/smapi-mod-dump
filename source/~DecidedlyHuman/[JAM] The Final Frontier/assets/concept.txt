@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DecidedlyHuman/StardewValleyMods
+**
+*************************************************/
+
+Topics covered: voyage, constellation, boom
+
+Premise
+Boat from Willy's to a mysterious explosive launchpad in the middle of the ocean. 
+Here, you'll meet Marlon, who'll give you the intel that Joja has a space station
+in orbit, and nobody knows what they plan to do. 
+
+He tells you that it's up to you to head up there, and discover what plans they have.
+
+On the space station, you'll have to look around for signs of their plans. Once you've
+found all of their plans, Marlon will appear near the entrance of the station, and tell
+you that you have to destroy it.
+
+Requirements:
+Map patch outside Willy's shop for the new boat
+Joja launch pad map
+Fake Marlon NPC on a dock outside the Joja launch pad
+Decorations tilesheet for a Joja space station
+Tilesheet containing Joja tiles
+Lots of MEEP_CloseupInteraction images for interacting with evidence
+Lots of MEEP_SetMailFlag properties for the destruction route
+Conditional patches for siding with Joja

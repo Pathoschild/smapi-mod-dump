@@ -37,6 +37,7 @@ namespace Custom_Farm_Loader.Lib
         private static string CurrentCustomFarmId = "";
 
         private bool IsCFLMap = false;
+        public bool IsVanillaMap = false;
         private ModFarmType ModFarmType; //Only used for non CFL maps
         public IManifest Manifest;
 
@@ -74,6 +75,12 @@ namespace Custom_Farm_Loader.Lib
         public CustomFarm(ModFarmType modFarmType)
         {
             ModFarmType = modFarmType;
+        }
+
+        public CustomFarm(bool isVanilla, string iconValue, string worldMapOverlayValue) {
+            IsVanillaMap = isVanilla;
+            IconValue = iconValue;
+            WorldMapOverlayValue = worldMapOverlayValue;
         }
 
         public static void Initialize(Mod mod)
@@ -279,7 +286,7 @@ namespace Custom_Farm_Loader.Lib
             if (Icon == null)
                 Icon = Helper.GameContent.Load<Texture2D>(asModFarmType().IconTexture);
 
-            Helper.GameContent.InvalidateCache(asModFarmType().WorldMapTexture);
+            Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("asModFarmType().WorldMapTexture"));
             WorldMapOverlay = Helper.GameContent.Load<Texture2D>(asModFarmType().WorldMapTexture);
         }
 
@@ -450,6 +457,9 @@ namespace Custom_Farm_Loader.Lib
 
         public string getLocalizedDescription()
         {
+            if (IsVanillaMap)
+                return Description;
+
             var description = Game1.content.LoadString(asModFarmType().TooltipStringPath);
 
             if (IsCFLMap)

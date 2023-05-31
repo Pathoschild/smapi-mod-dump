@@ -149,7 +149,6 @@ namespace Custom_Farm_Loader.Lib
                 }
         }
 
-        private static List<string> test = new List<string>();
         public bool isValidTile(Vector2 v)
         {
             if (!Location.isTileLocationTotallyClearAndPlaceable(v))
@@ -158,9 +157,9 @@ namespace Custom_Farm_Loader.Lib
             if (Location.getTileIndexAt((int)v.X, (int)v.Y, "AlwaysFront") != -1)
                 return false;
 
-            string x = Location.doesTileHavePropertyNoNull((int)v.X, (int)v.Y, "BeachSpawn", "Back");
-            if (!test.Exists(e => e == x))
-                test.Add(x);
+            string noSpawn = Location.doesTileHaveProperty((int)v.X, (int)v.Y, "NoSpawn", "Back");
+            if (noSpawn != null && (noSpawn.Equals("All") || noSpawn.Equals("True")))
+                return false;
 
             if (BackgroundTypes.Contains(BackgroundType.Beach) && Location.doesTileHavePropertyNoNull((int)v.X, (int)v.Y, "BeachSpawn", "Back") != "")
                 return true;

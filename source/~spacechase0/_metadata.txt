@@ -75,12 +75,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 55336b1943ed997cf511f8dbd0f32191bd1079f3
-   Merge: e93f783b bdccaaa9
-   Author: Casey W <spacechase0@users.noreply.github.com>
-   Date:   Sat Apr 22 13:00:06 2023 -0400
+   commit 00f6fdcd1e60d6687efdd473a7dcf996e9e82a86
+   Author: Casey Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Sat May 20 15:02:48 2023 -0400
    
-       Merge pull request #355 from atravita-mods/patch-4
-       
-       add two more things to bigskip
+       Stuff I forgot
    

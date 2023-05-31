@@ -26,17 +26,12 @@ namespace Omegasis.Revitalize.Framework.Utilities
     /// <summary>
     /// Handles serialization of all objects in existence.
     /// </summary>
-    public class Serializer
+    public static class Serializer
     {
 
-
         /// <summary>
-        /// Constructor.
+        /// Automatically serialize all mod classes that have the XMLAttribute tag on them.
         /// </summary>
-        public Serializer()
-        {
-        }
-
         public static void SerializeTypesForXMLUsingSpaceCore()
         {
             SpaceCoreAPIUtil.RegisterTypesForMod(RevitalizeModCore.Instance);

@@ -57,7 +57,7 @@ namespace Omegasis.HappyBirthday.Framework.Utilities
             List<NPC> npcs = new List<NPC>();
             foreach (NPC npc in GetAllHumanNpcs())
             {
-                if (npc.Name.Equals("Mr. Qi") || npc.name.Equals("Mister Qi") || npc.Name.Equals("Birdie") || npc.Name.Equals("Henchman") || npc.Name.Equals("Gunther") || npc.Name.Equals("Bouncer") || npc.Name.Equals("Marlon"))
+                if (npc.Name.Equals("Mr. Qi") || npc.Name.Equals("Mister Qi") || npc.Name.Equals("Birdie") || npc.Name.Equals("Henchman") || npc.Name.Equals("Gunther") || npc.Name.Equals("Bouncer") || npc.Name.Equals("Marlon"))
                     continue;
                 npcs.Add(npc);
             }

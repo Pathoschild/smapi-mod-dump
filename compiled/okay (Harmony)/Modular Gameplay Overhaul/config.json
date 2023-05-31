@@ -12,6 +12,7 @@
   "Professions": {
     "ModKey": "LeftShift, LeftShoulder",
     "ShouldJunimosInheritProfessions": false,
+    "LaxOwnershipRequirements": false,
     "ArtisanGoodsAlwaysInputQuality": false,
     "CustomArtisanMachines": [
       "Alembic",
@@ -48,9 +49,8 @@
     "BeesAreAnimals": true,
     "ForagesNeededForBestQuality": 100,
     "MineralsNeededForBestQuality": 100,
-    "LaxOwnershipRequirements": false,
     "TrackingPointerScale": 1.2,
-    "TrackingPointerBobbingRate": 1.0,
+    "TrackingPointerBobRate": 1.0,
     "DisableAlwaysTrack": false,
     "ChanceToStartTreasureHunt": 0.1,
     "AllowScavengerHuntsOnFarm": false,
@@ -62,7 +62,7 @@
     "CrystalariumsUpgradeWithGemologist": true,
     "FishNeededForInstantCatch": 500,
     "AnglerPriceBonusCeiling": 1.0,
-    "AquaristFishPondCeiling": 12.0,
+    "AquaristFishPondCeiling": 12,
     "ShowFishCollectionMaxIcon": true,
     "LegendaryPondPopulationCeiling": 6,
     "TrashNeededPerTaxDeductionPct": 100,
@@ -76,11 +76,13 @@
     "LimitGainFactor": 1.0,
     "LimitDrainFactor": 1.0,
     "LimitRespecCost": 0,
-    "SkillResetCostMultiplier": 1.0,
+    "LimitGaugeXOffset": 0,
+    "LimitGaugeYOffset": 0,
     "EnablePrestige": true,
+    "SkillResetCostMultiplier": 1.0,
     "ForgetRecipes": true,
     "AllowMultiplePrestige": false,
-    "PrestigeExpFactor": 0.1,
+    "PrestigeExpMultiplier": 0.1,
     "RequiredExpPerExtendedLevel": 5000,
     "PrestigeRespecCost": 20000,
     "BaseSkillExpMultipliers": [
@@ -92,20 +94,21 @@
       1.0
     ],
     "CustomSkillExpMultipliers": {
-      "DaLion.Alchemy": 1.0,
-      "blueberry.Cooking": 1.0,
+      "blueberry.LoveOfCooking.CookingSkill": 1.0,
       "spacechase0.Cooking": 1.0,
-      "spacechase0.Luck": 1.0,
       "spacechase0.Magic": 1.0,
-      "drbirbdev.BinningSkill": 1.0,
-      "drbirbdev.SocializingSkill": 1.0,
-      "moonslime.ExcavationSkill": 1.0
+      "drbirbdev.Binning": 1.0,
+      "drbirbdev.Socializing": 1.0,
+      "moonslime.Excavation": 1.0,
+      "spacechase0.LuckSkill": 1.0,
+      "DaLion.Alchemy": 1.0
     },
     "ProgressionStyle": "StackedStars"
   },
   "Combat": {
     "EnableStatusConditions": true,
     "KnockbackDamage": true,
+    "ShadowyShooterProjectile": true,
     "OverhauledDefense": true,
     "CriticalBackAttacks": true,
     "MonsterHealthMultiplier": 1.0,
@@ -145,7 +148,7 @@
     "IridiumBarsPerGalaxyWeapon": 10,
     "RuinBladeDotMultiplier": 1.0,
     "CanStoreRuinBlade": false,
-    "VirtueTrialTrialDifficulty": "Medium",
+    "VirtueTrialDifficulty": "Medium",
     "DefenseImprovesParry": true,
     "GroundedClubSmash": true,
     "WoodyReplacesRusty": true,
@@ -179,7 +182,19 @@
       "R": 255,
       "A": 255
     },
-    "AutoSelectionRange": 4
+    "AutoSelectionRange": 4,
+    "SocketsPerBow": {
+      "PeacefulEnd.Archery.StarterPack/Bow/Copper Bow": 1,
+      "PeacefulEnd.Archery.StarterPack/Bow/Steel Bow": 1,
+      "PeacefulEnd.Archery.StarterPack/Bow/Gold Bow": 2,
+      "PeacefulEnd.Archery.StarterPack/Bow/Iridium Bow": 2,
+      "PeacefulEnd.Archery.StarterPack/Bow/Yoba's Divine Harp": 3,
+      "PeacefulEnd.Archery.StarterPack/Crossbow/Copper Crossbow": 1,
+      "PeacefulEnd.Archery.StarterPack/Crossbow/Steel Crossbow": 1,
+      "PeacefulEnd.Archery.StarterPack/Crossbow/Gold Crossbow": 2,
+      "PeacefulEnd.Archery.StarterPack/Crossbow/Iridium Crossbow": 2,
+      "PeacefulEnd.Archery.StarterPack/Crossbow/Dwarven Repeating Crossbow": 2
+    }
   },
   "Tools": {
     "Axe": {
@@ -301,7 +316,7 @@
       "AllowHaymakerEnchantment": true
     },
     "ModKey": "LeftShift, LeftShoulder",
-    "ChargingRequiresModKey": true,
+    "HoldToCharge": true,
     "HideAffectedTiles": false,
     "TicksBetweenWaves": 4,
     "FaceMouseCursor": true,

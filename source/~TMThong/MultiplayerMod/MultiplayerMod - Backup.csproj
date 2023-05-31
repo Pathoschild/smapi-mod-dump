@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>MultiplayerMod</AssemblyName>
+    <RootNamespace>MultiplayerMod</RootNamespace>
+    <Version>1.0.0</Version>
+    <TargetFramework>net5.0</TargetFramework>
+    <Platforms>x86</Platforms>
+    <PlatformTarget>x86</PlatformTarget>
+    <EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Lidgren.Network.Core">
+      <HintPath>..\..\..\LearnLidgrenNet\LidgrenNetClient\bin\Release\net5.0\Lidgren.Network.Core.dll</HintPath>
+      <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\..\..\..\..\..\..\GOG Games\Stardew Valley\smapi-internal\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>..\..\..\..\..\..\..\GOG Games\Stardew Valley\smapi-internal\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>..\..\..\..\..\..\..\GOG Games\Stardew Valley\smapi-internal\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Common">
+      <HintPath>..\..\..\..\..\..\..\GOG Games\Stardew Valley\smapi-internal\MonoMod.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Thong.Net">
+      <HintPath>..\..\..\Thong.Net\Thong.Net\Thong.Net\bin\Release\Thong.Net.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

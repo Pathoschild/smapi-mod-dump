@@ -739,7 +739,7 @@
 			"ItemNames": [
 				"Springtime Primetime",
 				],
-			"When": [ "!z spring/n RSV.PikaSpring" ]
+			"When": [ "n RSV.PikaSpring" ]
 		},
     {
 			"ItemType": "Object",
@@ -747,7 +747,7 @@
 			"ItemNames": [
 				"Summer Mountain Blessing",
 				],
-			"When": [ "!z summer/n RSV.PikaSummer" ]
+			"When": [ "n RSV.PikaSummer" ]
 		},
     {
 			"ItemType": "Object",
@@ -755,7 +755,7 @@
 			"ItemNames": [
 				"Autumnal Serenity",
 				],
-			"When": [ "!z fall/n RSV.PikaFall" ]
+			"When": [ "n RSV.PikaFall" ]
 		},
     {
 			"ItemType": "Object",
@@ -763,7 +763,7 @@
 			"ItemNames": [
 				"Winter Night Feast",
 				],
-			"When": [ "!z winter/n RSV.PikaWinter" ]
+			"When": [ "n RSV.PikaWinter" ]
 		},
 		//Normal food
 		{

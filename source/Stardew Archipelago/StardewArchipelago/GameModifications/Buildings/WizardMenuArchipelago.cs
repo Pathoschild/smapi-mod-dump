@@ -25,14 +25,16 @@ namespace StardewArchipelago.GameModifications.Buildings
         public override List<BluePrint> GetAvailableBlueprints()
         {
             var blueprints = new List<BluePrint>();
+            var blueprintData = FullBlueprintData();
+            foreach (var blueprint in blueprintData)
+            {
+                var blueprintMagical = blueprint.magical;
 
-            AddBuildingBlueprintIfReceived(blueprints, WizardInjections.BUILDING_EARTH_OBELISK);
-            AddBuildingBlueprintIfReceived(blueprints, WizardInjections.BUILDING_WATER_OBELISK);
-            AddBuildingBlueprintIfReceived(blueprints, WizardInjections.BUILDING_DESERT_OBELISK);
-            AddBuildingBlueprintIfReceived(blueprints, WizardInjections.BUILDING_ISLAND_OBELISK);
-            AddBuildingBlueprintIfReceived(blueprints, WizardInjections.BUILDING_JUNIMO_HUT);
-            AddBuildingBlueprintIfReceived(blueprints, WizardInjections.BUILDING_GOLD_CLOCK);
-
+                if (blueprintMagical)
+                {
+                    AddBuildingBlueprintIfReceived(blueprints, blueprint.name);
+                }
+            }
             return blueprints;
         }
 

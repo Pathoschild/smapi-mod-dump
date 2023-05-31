@@ -14,6 +14,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Omegasis.Revitalize.Framework.Constants;
+using Omegasis.Revitalize.Framework.Utilities;
+using Omegasis.Revitalize.Framework.World.Objects;
 using StardewValley;
 using StardewValley.Objects;
 
@@ -165,6 +168,103 @@ namespace Omegasis.Revitalize.Framework.World.WorldUtilities
 
         }
 
+        /// <summary>
+        /// Gets the type of footstep the player is making.
+        /// </summary>
+        /// <returns></returns>
+        public static Enums.FloorType GetFloorType(CustomObject customObject)
+        {
+            if (customObject.getCurrentLocation() == null) return Enums.FloorType.NULL;
+            GameLocation location = customObject.getCurrentLocation();
+            if (location.IsOutdoors || location.Name.ToLower().Contains("mine") || location.Name.ToLower().Contains("cave") || location.IsGreenhouse)
+            {
+                Vector2 tileLocationOfObject = customObject.TileLocation;
+                string stepType = location.doesTileHaveProperty((int)tileLocationOfObject.X, (int)tileLocationOfObject.Y, "Type", "Buildings");
+                if (stepType == null || stepType.Length < 1)
+                {
+                    stepType = location.doesTileHaveProperty((int)tileLocationOfObject.X, (int)tileLocationOfObject.Y, "Type", "Back");
+                }
+                switch (stepType)
+                {
+                    case "Dirt":
+                        return Enums.FloorType.SandOrDirt;
+                    case "Stone":
+                        return Enums.FloorType.Stone;
+                    case "Grass":
+                        return Enums.FloorType.Grass;
+                    case "Wood":
+                        return Enums.FloorType.Wood;
+                    default: return Enums.FloorType.Default;
+
+                }
+            }
+            else
+            {
+                return Enums.FloorType.Default;
+            }
+        }
+
+        /// <summary>
+        /// Gets a Stardew Valley object from the predefined enum.
+        /// </summary>
+        /// <param name="sdvObject"></param>
+        /// <param name="InitialStack"></param>
+        /// <returns></returns>
+        public static StardewValley.Object getStardewObjectFromEnum(Enums.SDVObject sdvObject, int InitialStack = 1)
+        {
+            return new StardewValley.Object((int)sdvObject, InitialStack);
+        }
+
+        public static bool IsObjectHoldingItem(StardewValley.Object obj)
+        {
+            if (obj.heldObject.Value != null) return true;
+            else return false;
+        }
+
+        /// <summary>
+        /// Checks to see if the given object is a SDV vanilla furnace.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static bool IsObjectFurnace(StardewValley.Object obj)
+        {
+            if (obj.ParentSheetIndex == 13 && obj.bigCraftable.Value && obj.Category == -9 && obj.Name == "Furnace")
+                return true;
+            else return false;
+        }
+
+        /// <summary>
+        /// Gets a dimension offset depending on the size of the object passed in.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static Vector2 GetDimensionOffsetFromItem(StardewValley.Object obj)
+        {
+            if (TypeUtilities.IsSameType(typeof(StardewValley.Object), obj.GetType()))
+                return new Vector2(64f, 64f);
+
+            return new Vector2(64f, 64f);
+        }
+
+        /// <summary>
+        /// Gets the height of an object.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static float GetHeightOffsetFromItem(StardewValley.Object obj)
+        {
+            return GetDimensionOffsetFromItem(obj).Y;
+        }
+
+        /// <summary>
+        /// Gets the width of an item.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static float GetWidthOffsetFromItem(StardewValley.Object obj)
+        {
+            return GetDimensionOffsetFromItem(obj).X;
+        }
 
     }
 }

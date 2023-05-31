@@ -52,7 +52,7 @@ namespace Omegasis.HappyBirthday.Framework
                 }
                 return "."+LocalizationUtilities.GetCurrentLanguageCodeString() + this.getFileExtensionForFileType(fileType);
             }
-            catch (Exception err)
+            catch (Exception)
             {
                 return ".xnb";
             }

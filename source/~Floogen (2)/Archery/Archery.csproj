@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<Version>2.2.1</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<EnableHarmony>true</EnableHarmony>
+		<EnableModZip>false</EnableModZip>
+		<EnableModDeploy>false</EnableModDeploy>
+		<GameModsPath>E:\SteamLibrary\steamapps\common\Stardew Valley\Mods</GameModsPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<Compile Remove="releases\**" />
+		<EmbeddedResource Remove="releases\**" />
+		<None Remove="releases\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Reference Include="Newtonsoft.Json">
+			<HintPath>E:\SteamLibrary\steamapps\common\Stardew Valley\smapi-internal\Newtonsoft.Json.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Framework\Assets\CrossbowArms.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\BowArms.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\BowIcon.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Framework\Assets\Maps\Arena.tmx">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="i18n\default.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="manifest.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<PropertyGroup>
+		<PostBuildEventDependsOn>
+			$(PostBuildEventDependsOn);
+			PostBuildMacros;
+		</PostBuildEventDependsOn>
+		<PostBuildEvent>
+			powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
+
+			powershell Remove-Item -Path 'C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\latest\Archery"' -Recurse -Force
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\bin\Debug\net5.0" "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\latest\Archery"
+			7z a -tzip "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\Archery-$(Version).zip" "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\latest\Archery"
+
+			powershell Remove-Item -Path '$(GameModsPath)\Archery' -Recurse -Force
+			powershell Remove-Item -Path '$(GameModsPath)\Archery Examples' -Recurse -Force
+
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\releases\latest\Archery" "$(GameModsPath)\Archery"
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\Archery\Archery\Examples\*" "$(GameModsPath)\Archery Examples"
+		</PostBuildEvent>
+	</PropertyGroup>
+</Project>

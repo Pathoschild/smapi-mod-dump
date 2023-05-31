@@ -32,7 +32,7 @@ namespace SaveAnywhere.Framework
         private bool _hasDrawn;
         private IEnumerator<int> _loader;
         private int _margin = 500;
-        public Multiplayer Multiplayer;
+        public Multiplayer multiplayer;
         private bool _quit;
 
         public NewSaveGameMenuV2()
@@ -41,8 +41,8 @@ namespace SaveAnywhere.Framework
                 Game1.content.LoadString("Strings\\StringsFromCSFiles:SaveGameMenu.cs.11378"), Color.LimeGreen,
                 Color.Black * 0.001F, false, 0.1, 1500, 32);
             _hasSentFarmhandData = false;
-            Multiplayer = (Multiplayer)typeof(Game1)
-                .GetField(nameof(Multiplayer), BindingFlags.Static | BindingFlags.NonPublic).GetValue(Program.gamePtr);
+            multiplayer = (Multiplayer)typeof(Game1)
+                .GetField(nameof(multiplayer), BindingFlags.Static | BindingFlags.NonPublic).GetValue(Program.gamePtr);
         }
 
         public event EventHandler SaveComplete;
@@ -118,14 +118,14 @@ namespace SaveAnywhere.Framework
                                 {
                                     if (Game1.newDaySync.readyForSave())
                                     {
-                                        Multiplayer.saveFarmhands();
+                                        multiplayer.saveFarmhands();
                                         Game1.game1.IsSaving = true;
                                         _loader = SaveGame.Save();
                                     }
                                 }
                                 else
                                 {
-                                    Multiplayer.saveFarmhands();
+                                    multiplayer.saveFarmhands();
                                     Game1.game1.IsSaving = true;
                                     _loader = SaveGame.Save();
                                 }
@@ -152,11 +152,11 @@ namespace SaveAnywhere.Framework
                             if (!_hasSentFarmhandData)
                             {
                                 _hasSentFarmhandData = true;
-                                Multiplayer.sendFarmhand();
+                                multiplayer.sendFarmhand();
                             }
 
-                            Multiplayer.UpdateLate();
-                            Multiplayer.UpdateEarly();
+                            multiplayer.UpdateLate();
+                            multiplayer.UpdateEarly();
                             if (Game1.newDaySync != null)
                                 Game1.newDaySync.readyForSave();
                             Game1.player.team.endOfNightStatus.UpdateState("ready");

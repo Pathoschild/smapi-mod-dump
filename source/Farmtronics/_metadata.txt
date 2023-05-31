@@ -6,13 +6,13 @@ mods:
    Farmtronics
 
 latest commit:
-   commit cf9dd6132f73e58ebb27dd8caf2899b1a4d7739c
+   commit 04702a2f02284ff57cd5e2c63c61b03b977cca7d
    Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
-   Date:   Wed Mar 22 18:06:12 2023 +0000
+   Date:   Thu May 25 18:02:47 2023 +0000
    
-       dep nuget: bump Miniscript from 1.5.1-fa86664 to 1.5.1 in /Farmtronics (#74)
+       dep nuget: bump Miniscript from 1.5.1-7ff7e28 to 1.5.1 in /Farmtronics (#76)
        
-       Bumps Miniscript from 1.5.1-fa86664 to 1.5.1.
+       Bumps Miniscript from 1.5.1-7ff7e28 to 1.5.1.
        
        ---
        updated-dependencies:

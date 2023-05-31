@@ -7,7 +7,6 @@ mods:
 
 latest commit:
    commit 6eaa58722eaa364de2c57587f41d4617be0fa058
-   Merge: eac9a5a 4ed693b
    Author: pomepome <punyoon03@gmail.com>
    Date:   Fri Feb 22 09:04:05 2019 +0900
    

@@ -6,6 +6,13 @@
     "config.msg.values.Box":"Box",
     "config.CoolDown.name": "Cooldown timer",
     "config.CoolDown.description": "If a sound is repetitive (e.g barking), the mod will wait this time before notifying again (doesn't affect other sounds).",
+    "config.XOffset.name": "X offset",
+    "config.XOffset.description": "Horizontal distance to add.",
+    "config.YOffset.name": "Y offset",
+    "config.YOffset.description": "Vertical distance to add.",
+
+    "config.Sounds.name": "Sounds",
+    "config.Sounds.description": "Sounds to be detected by mod.",
     "config.NPCs.name":"NPCs",
     "config.NPCs.description":"Includes NPC noises (e.g, cows mooing).",
     "config.Environment.name":"Environment",
@@ -16,7 +23,9 @@
     "config.Player.description": "Sounds made by player (e.g eating)",
     "config.Fishing.name": "Fishing-related",
     "config.Fishing.description": "Notifies when a fish bites the bait.",
-
+    "config.Minigames.name": "Minigames",
+    "config.Minigames.description": "Enables minigame-related sounds.",
+    
     /* Sound descriptions */
 	"axe":"A wooden, echoy sound",
 	"boulderCrack":"Boulder cracking",
@@ -135,5 +144,20 @@
     "Stadium_cheer": "Crowd cheer",
     "parrot": "Parrot squawk",
     "submarine_landing": "Thrum and bubbles.",
-    "serpentDie":"Serpent scream"
+    "serpentDie":"Serpent scream",
+    "batFlap": "Wings flapping",
+    
+    /* minigame */
+    "Cowboy_Secret": "Secret tune",
+    "Cowboy_monsterDie": "Monster died",
+    "Cowboy_gunshot": "Gunshot",
+    "cowboy_dead": "Player died",
+    "Cowboy_Footstep": "Footstep",
+    "Cowboy_undead": "Undead",
+    "cowboy_powerup": "Power-up item",
+    "cowboy_gunload": "Gun loaded",
+    "Pickup_Coin15": "Coins",
+    "cowboy_monsterhit": "Hit monster",
+    "cowboy_gopher": "Gopher",
+    "cowboy_explosion": "Explosion"
 }

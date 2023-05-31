@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="6" height="4" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="17">
+  <properties />
+  <tileset firstgid="1" name="untitled tile sheet" tilewidth="16" tileheight="16" tilecount="576" columns="16">
+    <image source="volcano_dungeon" width="256" height="576" />
+    <tile id="110">
+      <properties>
+        <property name="Water" type="string" value="T" />
+      </properties>
+    </tile>
+    <tile id="142">
+      <properties>
+        <property name="Water" type="string" value="T" />
+      </properties>
+    </tile>
+  </tileset>
+  <layer id="1" name="Back" width="6" height="4" opacity="1" offsetx="0" offsety="0">
+    <properties />
+    <data encoding="csv">
+0,0,127,127,127,127,
+189,0,143,142,143,142,
+189,0,159,158,159,158,
+0,0,173,174,175,176
+</data>
+  </layer>
+  <layer id="2" name="Buildings" width="6" height="4" opacity="1" offsetx="0" offsety="0">
+    <properties />
+    <data encoding="csv">
+0,0,125,126,126,128,
+124,189,141,0,0,144,
+124,189,157,0,0,160,
+0,0,173,174,175,176
+</data>
+  </layer>
+  <layer id="3" name="Front" width="6" height="4" opacity="1" offsetx="0" offsety="0">
+    <properties />
+    <data encoding="csv">
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0,
+0,0,0,0,0,0
+</data>
+  </layer>
+  <objectgroup id="4" name="Back" visible="false" locked="false">
+    <object id="1" name="TileData" x="32" y="0" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="2" name="TileData" x="48" y="0" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="3" name="TileData" x="64" y="0" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="4" name="TileData" x="80" y="0" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="5" name="TileData" x="32" y="16" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="6" name="TileData" x="48" y="16" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="7" name="TileData" x="64" y="16" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="8" name="TileData" x="80" y="16" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="9" name="TileData" x="32" y="32" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="10" name="TileData" x="48" y="32" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="11" name="TileData" x="64" y="32" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="12" name="TileData" x="80" y="32" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="13" name="TileData" x="32" y="48" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="14" name="TileData" x="48" y="48" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="15" name="TileData" x="64" y="48" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+    <object id="16" name="TileData" x="80" y="48" width="16" height="16" rotation="0">
+      <properties>
+        <property name="WaterSource" type="string" value="T" />
+      </properties>
+    </object>
+  </objectgroup>
+  <objectgroup id="5" name="Buildings" visible="false" locked="false" />
+  <objectgroup id="6" name="Front" visible="false" locked="false" />
+</map>

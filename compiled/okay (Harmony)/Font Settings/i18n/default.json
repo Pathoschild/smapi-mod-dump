@@ -9,7 +9,7 @@
 
   "ui.main-menu.title": "Font Settings",
   "ui.main-menu.font-type-help.paragraph": "There're mainly three types of fonts in Stardew Valley:\n- Small Font\n- Medium Font\n- Dialogue Font\nPress the left or right arrow to switch.\nYou may only set one or two, or all of them, based on your liking.",
-  "ui.main-menu.font-type-help.latin-lang.paragraph": "Latin Language:\nFor those languages (current {{locale}}) only contains latin characters, they just use game's default font as Dialogue Font, which is hardcoded in a spritesheet, so you might not set Dialogue Font for now.",
+  "ui.main-menu.font-type-help.latin-lang.paragraph": "Latin Language:\nYou're under a latin language ({{locale}}).\nTo edit the dialogue font, go to configuration and check the \"Enable custom dialogue font in latin languages\" box.",
   "ui.main-menu.section.general": "General",
   "ui.main-menu.enable": "Enabled",
   "ui.main-menu.font": "Font Family",
@@ -78,6 +78,8 @@
   "config.disable-text-shadow.description": "Whether to hide font shadow.",
   "config.simplified-drop-down": "Simplified Drop down Option",
   "config.simplified-drop-down.description": "Check if drop down options in UI cause glitches, low-performance.",
+  "config.enable-latin-dialogue-font": "Enable custom dialogue font in latin languages",
+  "config.enable-latin-dialogue-font.description": "Whether to enable custom dialogue font in latin languages. Latin Language: language that only contains latin characters. Current ({{locale}}) is a latin language: {{isLatinLanguage}}",
   "config.font-menu-key": "Open Font Menu",
   "config.font-menu-key.description": "Key-binding to open a font settings menu.",
   "config.font-settings-in-game-menu": "Font Page in Game Menu",

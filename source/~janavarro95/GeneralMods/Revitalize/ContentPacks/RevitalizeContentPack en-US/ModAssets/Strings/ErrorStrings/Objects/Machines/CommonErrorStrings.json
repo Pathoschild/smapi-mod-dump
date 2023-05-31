@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+	"NeedStamina":"Not enough stamina to operate! Need {0} to do so.",
+	"NeedCoal":"Needs coal to operate!",
+	"NeedBatteryPack":"Needs a battery pack to operate!",
+	"NeedNuclearFuel":"Needs nuclear fuel to operate!",
+	"MagicalFurnaceFuelError":"Magical furnace failure! Please contact Omegasis to address this issue!",
+	"NeedMoreInputItems":"Requires {0} {1}!",
+	"CantRunHere":"{0} can not run here!",
+	"NoValidRecipes":"{0} has no valid recipes using {1}!"
+}

@@ -89,6 +89,7 @@ namespace Shockah.Kokoro
 			LogLevel successLogLevel = LogLevel.Trace,
 			HarmonyMethod? prefix = null,
 			HarmonyMethod? postfix = null,
+			HarmonyMethod? transpiler = null,
 			HarmonyMethod? finalizer = null
 		)
 		{
@@ -143,7 +144,7 @@ namespace Shockah.Kokoro
 								throw new InvalidOperationException($"Method {declaringType.Name}.{original.Name} cannot be automatically patched for subtype {subtype.Name}, because argument #{i} has a mismatched name: `{originalParameters[i].Name}` vs `{subtypeOriginalParameters[i].Name}`.");
 					}
 
-					self.Patch(subtypeOriginal, prefix, subtypeOriginal.HasMethodBody() ? postfix : null, null, finalizer);
+					self.Patch(subtypeOriginal, prefix, subtypeOriginal.HasMethodBody() ? postfix : null, transpiler, finalizer);
 					monitor.Log($"Patched method {subtypeOriginal.FullDescription()}.", successLogLevel);
 				}
 			}
@@ -157,6 +158,7 @@ namespace Shockah.Kokoro
 			LogLevel successLogLevel = LogLevel.Trace,
 			HarmonyMethod? prefix = null,
 			HarmonyMethod? postfix = null,
+			HarmonyMethod? transpiler = null,
 			HarmonyMethod? finalizer = null
 		)
 		{
@@ -219,7 +221,7 @@ namespace Shockah.Kokoro
 										throw new InvalidOperationException($"Method {declaringType.Name}.{originalMethod.Name} cannot be automatically patched for subtype {subtype.Name}, because argument #{i} has a mismatched name: `{originalParameters[i].Name}` vs `{subtypeOriginalParameters[i].Name}`.");
 							}
 
-							self.Patch(subtypeOriginal, prefix, postfix, null, finalizer);
+							self.Patch(subtypeOriginal, prefix, postfix, transpiler, finalizer);
 							monitor.Log($"Patched method {subtypeOriginal.FullDescription()}.", successLogLevel);
 							patched++;
 						}

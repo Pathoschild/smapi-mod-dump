@@ -19,6 +19,7 @@ using StardewValley;
 using StardewValley.Network;
 using System.Reflection;
 using Unlockable_Areas.NetLib;
+using StardewModdingAPI;
 
 namespace Unlockable_Areas.Lib
 {
@@ -58,6 +59,8 @@ namespace Unlockable_Areas.Lib
         public Vector2 vUpdatePosition { get => new Vector2(float.Parse(UpdatePosition.Split(",").First()), float.Parse(UpdatePosition.Split(",").Last())); } //UpdatePosition as Vector2
         public Vector2 vShopPosition { get => new Vector2(float.Parse(ShopPosition.Split(",").First()), float.Parse(ShopPosition.Split(",").Last())); } //ShopPosition as Vector2
 
+
+        private string CachedLocalizedShopDescription = null;
         public Unlockable(UnlockableModel model)
         {
             this.ID = model.ID;
@@ -106,6 +109,27 @@ namespace Unlockable_Areas.Lib
         public GameLocation getGameLocation()
         {
             return Game1.getLocationFromName(LocationUnique, Location != LocationUnique);
+        }
+
+        public string getTranslatedShopDescription()
+        {
+            if (Context.IsOnHostComputer)
+                return ShopDescription;
+
+            if (CachedLocalizedShopDescription != null)
+                return CachedLocalizedShopDescription;
+
+            var unlockables = ModEntry._Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableAreas/Unlockables");
+            if (unlockables == null)
+                return ShopDescription;
+
+            if (unlockables.TryGetValue(ID, out var unlockable)) {
+                CachedLocalizedShopDescription = unlockable.ShopDescription;
+                return unlockable.ShopDescription;
+            }
+
+            CachedLocalizedShopDescription = ShopDescription;
+            return ShopDescription;
         }
     }
 }

@@ -32,6 +32,9 @@ using Omegasis.StardustCore.Animations;
 using Omegasis.Revitalize.Framework.Player;
 using Omegasis.Revitalize.Framework.World.Debris;
 using StardewValley.Menus;
+using Omegasis.Revitalize.Framework.Utilities.JsonContentLoading;
+using StardewValley.TerrainFeatures;
+using StardewValley.Locations;
 
 namespace Omegasis.Revitalize.Framework.World.Objects
 {
@@ -52,7 +55,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects
     /// Clicking to remove and click place are bound to the samething. Need to find a way to change that.
     /// Bounding boxes work, but not for clicking to remove. Why is that?
     /// </summary>
-    [XmlType("Mods_Revitalize.Framework.World.Objects.CustomObject")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.CustomObject")]
     public class CustomObject : StardewValley.Objects.Furniture, ICommonObjectInterface, ILightManagerProvider, ICustomModObject
     {
         public bool isCurrentLocationAStructure;
@@ -103,6 +106,9 @@ namespace Omegasis.Revitalize.Framework.World.Objects
             }
         }
 
+        /// <summary>
+        /// The internal name used to reference this item in code.
+        /// </summary>
         public override string Name
         {
             get
@@ -120,11 +126,32 @@ namespace Omegasis.Revitalize.Framework.World.Objects
 
 
         }
+
+        /// <summary>
+        /// The name displayed to the player for the object.
+        /// </summary>
         public override string DisplayName
         {
             get
             {
                 if (this.basicItemInformation == null) return null;
+
+                //Potentially get an overriden display name for certain objects depending on if I ever implement the renaming feature.
+                string displayName = "";
+                if (string.IsNullOrEmpty(this.basicItemInformation.name.Value))
+                {
+                   displayName = JsonContentPackUtilities.LoadItemDisplayName(this.Id, false);
+                }
+                if (!string.IsNullOrEmpty(displayName))
+                {
+                    this.basicItemInformation.name.Value = displayName;
+                    return displayName;
+                }
+                if(string.IsNullOrEmpty(this.basicItemInformation.name.Value) && string.IsNullOrEmpty(displayName))
+                {
+                    throw new JsonContentLoadingException(string.Format("The given item id {0} does not have a registered value for display strings! A file can be created under the ModAssets/Strings/Objects/DisplayStrings directory with the given info.",this.Id));
+                }
+
                 return this.basicItemInformation.name.Value;
             }
             set
@@ -136,6 +163,11 @@ namespace Omegasis.Revitalize.Framework.World.Objects
             }
         }
 
+        public LightManager LightManager { get => this.basicItemInformation.lightManager; set => this.basicItemInformation.lightManager=value; }
+
+        /// <summary>
+        /// Since objects are counted as both furniture and objects, 2 day update ticks happen for them, so we need to add a buffer for when the day updates trigger.
+        /// </summary>
         public NetInt dayUpdateCounter = new NetInt();
 
         public CustomObject()
@@ -238,6 +270,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects
         /// <returns></returns>
         public override bool performDropDownAction(Farmer who)
         {
+            Game1.showRedMessage("Drop object into game world?");
             return false;
         }
 
@@ -279,8 +312,153 @@ namespace Omegasis.Revitalize.Framework.World.Objects
 
         public override bool canBePlacedHere(GameLocation l, Vector2 tile)
         {
+            //Replace with SDV 1.6 code when that releases. I'll know because this method calling signiture WILL break.
 
-            return base.canBePlacedHere(l, tile);
+            if (!this.isGroundFurniture())
+            {
+                tile.Y = this.GetModifiedWallTilePosition(l, (int)tile.X, (int)tile.Y);
+            }
+            for (int x = 0; x < base.boundingBox.Width / 64; x++)
+            {
+                for (int y = 0; y < base.boundingBox.Height / 64; y++)
+                {
+                    Vector2 nonTile = tile * 64f + new Vector2(x, y) * 64f;
+                    nonTile.X += 32f;
+                    nonTile.Y += 32f;
+                    foreach (Furniture f in l.furniture)
+                    {
+                        if ((int)f.furniture_type == 11 && f.getBoundingBox(f.tileLocation).Contains((int)nonTile.X, (int)nonTile.Y) && f.heldObject.Value == null && this.getTilesWide() == 1 && this.getTilesHigh() == 1)
+                        {
+                            return true;
+                        }
+                        if (((int)f.furniture_type != 12 || (int)this.furniture_type == 12) && f.getBoundingBox(f.tileLocation).Contains((int)nonTile.X, (int)nonTile.Y) && !f.AllowPlacementOnThisTile((int)tile.X + x, (int)tile.Y + y))
+                        {
+                            return false;
+                        }
+                    }
+                    Vector2 currentTile = tile + new Vector2(x, y);
+                    if (l.Objects.ContainsKey(currentTile))
+                    {
+                        return false;
+                    }
+                    if (l.getLargeTerrainFeatureAt((int)currentTile.X, (int)currentTile.Y) != null)
+                    {
+                        return false;
+                    }
+                    if (l.terrainFeatures.ContainsKey(currentTile) && l.terrainFeatures[currentTile] is Tree)
+                    {
+                        return false;
+                    }
+                    if (l.isTerrainFeatureAt((int)currentTile.X, (int)currentTile.Y))
+                    {
+                        return false;
+                    }
+                }
+            }
+            Rectangle bounding_box = new Rectangle(base.boundingBox.Value.X, base.boundingBox.Value.Y, base.boundingBox.Value.Width, base.boundingBox.Value.Height);
+            bounding_box.X = (int)tile.X * 64;
+            bounding_box.Y = (int)tile.Y * 64;
+            if (!this.isPassable())
+            {
+                foreach (Farmer farmer in l.farmers)
+                {
+                    if (farmer.GetBoundingBox().Intersects(bounding_box))
+                    {
+                        return false;
+                    }
+                }
+                foreach (NPC character in l.characters)
+                {
+                    if (character.GetBoundingBox().Intersects(bounding_box))
+                    {
+                        return false;
+                    }
+                }
+            }
+            if (this.GetAdditionalFurniturePlacementStatus(l, (int)tile.X * 64, (int)tile.Y * 64) != 0)
+            {
+                return false;
+            }
+
+
+            if (l.getObjectAtTile((int)tile.X, (int)tile.Y) != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public override int GetAdditionalFurniturePlacementStatus(GameLocation location, int x, int y, Farmer who = null)
+        {
+            //Migrtae this code once SDV 1.6 is released.
+
+            Point point = new Point(x / 64, y / 64);
+            this.tileLocation.Value = new Vector2(point.X, point.Y);
+            bool flag = false;
+            if ((int)this.furniture_type == 6 || (int)this.furniture_type == 17 || (int)this.furniture_type == 13 || (int)this.parentSheetIndex == 1293)
+            {
+                int num = (((int)this.parentSheetIndex == 1293) ? 3 : 0);
+                bool flag2 = false;
+                if (location is DecoratableLocation)
+                {
+                    DecoratableLocation decoratableLocation = location as DecoratableLocation;
+                    if (((int)this.furniture_type == 6 || (int)this.furniture_type == 17 || (int)this.furniture_type == 13 || num != 0) && decoratableLocation.isTileOnWall(point.X, point.Y - num) && decoratableLocation.GetWallTopY(point.X, point.Y - num) + num == point.Y)
+                    {
+                        flag2 = true;
+                    }
+                    else if (!this.isGroundFurniture() && decoratableLocation.isTileOnWall(point.X, point.Y - 1) && decoratableLocation.GetWallTopY(point.X, point.Y) + 1 == point.Y)
+                    {
+                        flag2 = true;
+                    }
+                }
+
+                if (!flag2)
+                {
+                    return 1;
+                }
+
+                flag = true;
+            }
+
+            int num2 = this.getTilesHigh();
+            if ((int)this.furniture_type == 6 && num2 > 2)
+            {
+                num2 = 2;
+            }
+
+            for (int i = point.X; i < point.X + this.getTilesWide(); i++)
+            {
+                for (int j = point.Y; j < point.Y + num2; j++)
+                {
+                    if (location.doesTileHaveProperty(i, j, "NoFurniture", "Back") != null)
+                    {
+                        return 2;
+                    }
+
+                    if (!flag && location is DecoratableLocation && (location as DecoratableLocation).isTileOnWall(i, j))
+                    {
+                        if (!(this is BedFurniture) || j != point.Y)
+                        {
+                            return 3;
+                        }
+
+                        continue;
+                    }
+
+                    int tileIndexAt = location.getTileIndexAt(i, j, "Buildings");
+                    if (tileIndexAt != -1 && (!(location is IslandFarmHouse) || tileIndexAt < 192 || tileIndexAt > 194 || !(location.getTileSheetIDAt(i, j, "Buildings") == "untitled tile sheet")))
+                    {
+                        return -1;
+                    }
+
+                    if (location is BuildableGameLocation && (location as BuildableGameLocation).isTileOccupiedForPlacement(new Vector2(i, j), this))
+                    {
+                        return -1;
+                    }
+                }
+            }
+
+            return 0;
         }
 
         public override bool canBePlacedInWater()
@@ -308,6 +486,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects
             return base.CanBuyItem(who);
         }
 
+        
         /// <summary>
         /// Checks to see if the object is being interacted with. Seems to only happen when right clicked.
         /// </summary>
@@ -321,30 +500,12 @@ namespace Omegasis.Revitalize.Framework.World.Objects
                 //basically on item hover.
                 return true;
             }
-
-            MouseState mState = Mouse.GetState();
-            KeyboardState keyboardState = Game1.GetKeyboardState();
-
-            if (mState.RightButton == ButtonState.Pressed && keyboardState.IsKeyDown(Keys.LeftShift) == false && keyboardState.IsKeyDown(Keys.RightShift) == false)
-            {
-                return this.rightClicked(who);
-            }
-
-            if (mState.RightButton == ButtonState.Pressed && (keyboardState.IsKeyDown(Keys.LeftShift) == true || keyboardState.IsKeyDown(Keys.RightShift) == true))
-                return this.shiftRightClicked(who);
-
-            if (mState.LeftButton == ButtonState.Pressed)
-            {
-                return true;
-            }
-            else
-            {
-                return true;
-            }
+            return base.checkForAction(who, justCheckingForActivity);
 
             //True should be retruned when something meaningful has happened.
             //False should be returned when things like error messages have occurd.
         }
+        
 
         public override string checkForSpecialItemHoldUpMeessage()
         {
@@ -433,12 +594,17 @@ namespace Omegasis.Revitalize.Framework.World.Objects
         }
 
         /// <summary>
-        /// Description
+        /// Gets the decription to be displayed when hovering over an item.
         /// </summary>
         /// <returns></returns>
         public override string getDescription()
         {
-            return Game1.parseText(this.basicItemInformation.description, Game1.smallFont, this.getDescriptionWidth());
+            string description = JsonContentPackUtilities.LoadItemDescription(this.basicItemInformation.id.Value,false);
+            if (string.IsNullOrEmpty(description))
+            {
+                description = this.basicItemInformation.description.Value; //Get default set description.
+            }
+            return Game1.parseText(description, Game1.smallFont, this.getDescriptionWidth());
         }
 
         public override StardewValley.Object GetDeconstructorOutput(Item item)
@@ -468,7 +634,17 @@ namespace Omegasis.Revitalize.Framework.World.Objects
 
         public override void initializeLightSource(Vector2 tileLocation, bool mineShaft = false)
         {
-            base.initializeLightSource(tileLocation, mineShaft);
+            this.LightManager.regenerateRealLightsFromFakeLights(this.getCurrentLocation());
+        }
+
+        public virtual bool addLight(Vector2 IdKey, LightManager.LightIdentifier LightShape, Color DesiredColor, float Radius)
+        {
+            return this.LightManager.addLightToTileLocation(IdKey, this.getCurrentLocation(), LightShape, DesiredColor, this.TileLocation, Radius);
+        }
+
+        public virtual bool removeLight(Vector2 IdKey)
+        {
+            return this.LightManager.removeLight(IdKey, this.getCurrentLocation());
         }
 
         public override bool isActionable(Farmer who)
@@ -535,7 +711,9 @@ namespace Omegasis.Revitalize.Framework.World.Objects
         /// <returns></returns>
         public override bool minutesElapsed(int minutes, GameLocation environment)
         {
-            return base.minutesElapsed(minutes, environment);
+            this.MinutesUntilReady -= minutes/2;
+            if (this.MinutesUntilReady < 0) this.MinutesUntilReady = 0;
+            return false;
         }
 
         public override bool onExplosion(Farmer who, GameLocation location)
@@ -548,9 +726,8 @@ namespace Omegasis.Revitalize.Framework.World.Objects
             base.onReadyForHarvest(environment);
         }
 
-        /*
         /// <summary>
-        /// When the object is droped into (???) what happens?
+        /// Wraps Stardew valleys object dropin code. For actual mod implementation see <see cref="performItemDropInAction(Item, bool, Farmer)"/>
         /// </summary>
         /// <param name="dropInItem"></param>
         /// <param name="probe"></param>
@@ -558,10 +735,25 @@ namespace Omegasis.Revitalize.Framework.World.Objects
         /// <returns></returns>
         public override bool performObjectDropInAction(Item dropInItem, bool probe, Farmer who)
         {
+            bool success=this.performItemDropInAction(dropInItem, probe, who);
+            if (dropInItem == null) return false;
+            if(success && (dropInItem is StardewValley.Object) && (dropInItem as StardewValley.Object).Edibility!= StardewValley.Object.inedible)
+            {
+                dropInItem.Stack++;
+                return true;
+            }
+
             return false;
-            
         }
-        */
+
+        public virtual bool performItemDropInAction(Item dropInItem, bool probe, Farmer who)
+        {
+            if (probe == true) return false; //Just checking for action.
+            if (who != null && who.ActiveObject == null) return false;
+            if (dropInItem == null) return false;
+            if (this.heldObject.Value != null) return false;
+            return true;
+        }
 
         /// <summary>
         /// Performs cleanup that should happen related to an object's removal and removes it properly from the game world.
@@ -573,9 +765,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects
 
             if (environment == null) return;
 
-            this.cleanUpLights();
-
-
+            if (this.LightManager != null) this.LightManager.removeLights(this.getCurrentLocation());
 
             this.removeLights(environment);
             if ((int)this.furniture_type == 14 || (int)this.furniture_type == 16)
@@ -585,14 +775,14 @@ namespace Omegasis.Revitalize.Framework.World.Objects
             }
             this.RemoveLightGlow(environment);
 
-
-            this.TileLocation = Vector2.Zero;
             this.basicItemInformation.locationName.Value = "";
             this.boundingBox.Value = this.getBoundingBox(Vector2.Zero);
 
             this.sittingFarmers.Clear();
 
             this.removeFromGameWorld(tileLocation, environment);
+
+            this.TileLocation = Vector2.Zero;
         }
 
 
@@ -628,8 +818,8 @@ namespace Omegasis.Revitalize.Framework.World.Objects
 
             this.performRemoveAction(tileLocation, environment);
 
-
-            bool pickedUp=PlayerUtilities.AddItemToInventory(who, this);
+            bool pickedUp=Game1.player.addItemToInventoryBool(this);
+            //bool pickedUp=PlayerUtilities.AddItemToInventory(who, this);
 
             if (pickedUp && who!=null)
             {
@@ -647,6 +837,12 @@ namespace Omegasis.Revitalize.Framework.World.Objects
 
             if (environment != null)
             {
+
+                if (this.LightManager != null)
+                {
+                    this.LightManager.removeLights(environment);
+                }
+
                 environment.objects.Remove(TileLocation);
                 this.boundingBox.Value = new Rectangle(0, 0, 0, 0);
 
@@ -769,7 +965,6 @@ namespace Omegasis.Revitalize.Framework.World.Objects
         /// <returns></returns>
         public override bool performUseAction(GameLocation location)
         {
-            RevitalizeModCore.log("Perform use action");
             return base.performUseAction(location);
         }
 
@@ -814,9 +1009,16 @@ namespace Omegasis.Revitalize.Framework.World.Objects
             }
             obj.TileLocation = placementTile;
 
+            //HERE????
+
 
             location.furniture.Add(obj);
             location.objects.Add(placementTile, obj);
+
+            //location.setObject(placementTile, obj);
+            //location.fur
+
+
             if (who != null)
             {
                 SoundUtilities.PlaySound(location, Enums.StardewSound.woodyStep);
@@ -913,13 +1115,6 @@ namespace Omegasis.Revitalize.Framework.World.Objects
         }
 
 
-
-        /// <summary>What happens when the player right clicks the object.</summary>
-        public virtual bool rightClicked(Farmer who)
-        {
-            return false;
-        }
-
         /// <summary>What happens when the player shift-right clicks this object.</summary>
         public virtual bool shiftRightClicked(Farmer who)
         {
@@ -943,12 +1138,6 @@ namespace Omegasis.Revitalize.Framework.World.Objects
             {
                 return Game1.getLocationFromName(this.basicItemInformation.locationName.Value, this.isCurrentLocationAStructure);
             }
-        }
-
-
-        public virtual void cleanUpLights()
-        {
-            if (this.GetLightManager() != null) this.GetLightManager().removeForCleanUp(this.getCurrentLocation());
         }
 
         public virtual BasicItemInformation getItemInformation()
@@ -999,10 +1188,21 @@ namespace Omegasis.Revitalize.Framework.World.Objects
             return false;
         }
 
-
-        public virtual LightManager GetLightManager()
+        public override int addToStack(Item otherStack)
         {
-            return this.basicItemInformation.lightManager;
+            int maxStack = this.maximumStackSize();
+            if (maxStack != 1)
+            {
+                this.stack.Value += otherStack.Stack;
+                if ((int)this.stack > maxStack)
+                {
+                    int result = (int)this.stack - maxStack;
+                    this.stack.Value = maxStack;
+                    return result;
+                }
+                return 0;
+            }
+            return otherStack.Stack;
         }
 
         public override void AttemptRemoval(Action<Furniture> removal_action)
@@ -1041,6 +1241,27 @@ namespace Omegasis.Revitalize.Framework.World.Objects
             WorldUtilities.WorldUtility.CreateItemDebrisAtTileLocation(location,this ,origin / Game1.tileSize, destination / Game1.tileSize);
         }
 
+        /// <summary>
+        /// Drops the held object for this item to the ground.
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="origin"></param>
+        /// <param name="destination"></param>
+        public virtual void dropHeldObject(GameLocation location, Vector2 origin, Vector2 destination)
+        {
+            this.dropHeldObjectAtTileLocation(location, origin / Game1.tileSize, destination / Game1.tileSize);
+        }
+
+        public virtual void dropHeldObjectAtTileLocation(GameLocation location, Vector2 origin, Vector2 destination)
+        {
+            if (this.heldObject.Value != null)
+            {
+                WorldUtilities.WorldUtility.CreateItemDebrisAtTileLocation(location, this.heldObject.Value, origin, destination);
+                this.heldObject.Value = null;
+            }
+        }
+
+
 
         //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
         //                            Rendering code                   //
@@ -1075,6 +1296,17 @@ namespace Omegasis.Revitalize.Framework.World.Objects
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
         {
             this.DrawICustomModObject(spriteBatch, alpha);
+        }
+
+        public virtual void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1f, bool DrawHeldObject=true)
+        {
+            this.DrawICustomModObject(spriteBatch, alpha,DrawHeldObject);
+        }
+
+        public virtual void clearHeldObject()
+        {
+            this.heldObject.Value = null;
+            this.readyForHarvest.Value = false;
         }
 
         public override void drawPlacementBounds(SpriteBatch spriteBatch, GameLocation location)

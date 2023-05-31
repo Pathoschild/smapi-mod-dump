@@ -6,9 +6,9 @@ mods:
    Custom Farm Loader
 
 latest commit:
-   commit 889adc6ad0a5d4268a637dfce13965505e390163
+   commit 3c696e6f9ecb40171ae4f870ba53dbecea516c6f
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Mon Apr 24 15:49:25 2023 +0200
+   Date:   Wed May 31 02:51:21 2023 +0200
    
-       fixed weird fishing error in isFarm areas that aren't Farm type
+       increased FarmType seek character length from 15000 to 25000
    

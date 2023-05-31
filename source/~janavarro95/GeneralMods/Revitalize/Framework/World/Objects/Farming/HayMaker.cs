@@ -19,20 +19,27 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using Omegasis.Revitalize.Framework.Constants;
+using Omegasis.Revitalize.Framework.Constants.CraftingIds;
 using Omegasis.Revitalize.Framework.Constants.PathConstants;
+using Omegasis.Revitalize.Framework.Crafting;
+using Omegasis.Revitalize.Framework.Player;
 using Omegasis.Revitalize.Framework.Utilities;
+using Omegasis.Revitalize.Framework.Utilities.JsonContentLoading;
 using Omegasis.Revitalize.Framework.World.Objects.InformationFiles;
+using Omegasis.Revitalize.Framework.World.Objects.Items.Utilities;
 using Omegasis.Revitalize.Framework.World.Objects.Machines;
 using Omegasis.Revitalize.Framework.World.WorldUtilities;
+using Omegasis.Revitalize.Framework.World.WorldUtilities.Items;
+using Omegasis.Revitalize.Framework.World.WorldUtilities.Shops.RevitalizeShops;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.Farming
 {
-    [XmlType("Mods_Revitalize.Framework.World.Objects.Farming.HayMaker")]
-    public class HayMaker : Machine
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.Farming.HayMaker")]
+    public class HayMaker : ItemRecipeDropInMachine
     {
-        public NetEnum<Enums.SDVObject> feedType = new NetEnum<Enums.SDVObject>(Enums.SDVObject.NULL);
+        public readonly NetRef<ItemReference> feedType = new NetRef<ItemReference>(new ItemReference());
 
         public const string AmaranthAnimation = "Amaranth";
         public const string CornAnimation = "Corn";
@@ -40,7 +47,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
         public const string FiberAnimation = "Fiber";
         public const string WheatAnimation = "Wheat";
 
-        public NetBool isUsedForBuyingHayAtAnyTime = new NetBool();
+        public readonly NetBool isUsedForBuyingHayAtAnyTime = new NetBool();
 
         public HayMaker()
         {
@@ -50,11 +57,6 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
         public HayMaker(BasicItemInformation info, bool isUsedForBuyingHayAtAnyTime = false) : base(info)
         {
             this.isUsedForBuyingHayAtAnyTime.Value = isUsedForBuyingHayAtAnyTime;
-            if (this.isUsedForBuyingHayAtAnyTime.Value == true && RevitalizeModCore.Configs.shopsConfigManager.hayMakerShopConfig.IsHayMakerShopUpAgainstAWall)
-                this.basicItemInformation.boundingBoxTileDimensions.Value = new Vector2(1, 1);
-            if (this.isUsedForBuyingHayAtAnyTime.Value == true)
-                this.AnimationManager.playAnimation(HayAnimation);
-
         }
 
         protected override void initializeNetFieldsPostConstructor()
@@ -86,20 +88,6 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
         }
 
         /// <summary>
-        /// The collision box for this machine.
-        /// </summary>
-        /// <param name="tileLocation"></param>
-        /// <returns></returns>
-        public override Rectangle getBoundingBox(Vector2 tileLocation)
-        {
-            Rectangle rect = base.getBoundingBox(tileLocation);
-
-            if (this.isUsedForBuyingHayAtAnyTime && RevitalizeModCore.Configs.shopsConfigManager.hayMakerShopConfig.IsHayMakerShopUpAgainstAWall == true)
-                rect.Y += Game1.tileSize;
-            return rect;
-        }
-
-        /// <summary>
         /// Checks to see if this is special handling fopr the machine outside of marnies ranch.
         /// </summary>
         /// <param name="location"></param>
@@ -120,7 +108,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
             return base.canBeRemoved(who);
         }
 
-        public override bool rightClicked(Farmer who)
+        public override bool checkForAction(Farmer who, bool justCheckingForActivity)
         {
 
             if (this.isUsedForBuyingHayAtAnyTime.Value == true)
@@ -128,27 +116,20 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
                 if (Game1.activeClickableMenu == null)
                 {
 
-                    ShopMenu shopMenu = new ShopMenu(new Dictionary<ISalable, int[]>()
-                    {
-                        {RevitalizeModCore.ModContentManager.objectManager.getItem(Enums.SDVObject.Hay,-1), new int[]{RevitalizeModCore.Configs.shopsConfigManager.hayMakerShopConfig.HayMakerShopHaySellPrice,-1 } }
-                    });
-
-                    //Load the shop tetx file and select a random dialogue text from it.
-                    Dictionary<string, string> shopDialogue = JsonUtilities.LoadStringDictionaryFile(Path.Combine(StringsPaths.ShopDialogue, "HayMakerShopDialogue.json"));
-                    int random = Game1.random.Next(0, shopDialogue.Count);
-                    shopMenu.potraitPersonDialogue = shopDialogue.ElementAt(random).Value;
-
+                    ShopMenu shopMenu = new ShopMenu(new Dictionary<ISalable, int[]>());
+                    shopMenu.storeContext = HayMakerShopUtilities.StoreContext;
+                    shopMenu.potraitPersonDialogue = JsonContentPackUtilities.LoadShopDialogue("ShopText_1", "HayMakerShopDialogue.json");
                     Game1.activeClickableMenu = shopMenu;
                 }
 
                 return true;
             }
 
-            if (this.heldObject.Value != null)
+            if (this.heldObject.Value != null && this.MinutesUntilReady == 0)
                 if (who.IsLocalPlayer)
                     this.cleanOutHayMaker(true);
 
-            return base.rightClicked(who);
+            return base.checkForAction(who, justCheckingForActivity);
         }
 
         /// <summary>
@@ -165,7 +146,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
             }
             this.heldObject.Value = null;
             this.AnimationManager.playDefaultAnimation();
-            this.feedType.Value = Enums.SDVObject.NULL;
+            this.feedType.Value.clearItemReference();
 
         }
 
@@ -189,99 +170,90 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
         /// <param name="probe"></param>
         /// <param name="who"></param>
         /// <returns></returns>
-        public override bool performObjectDropInAction(Item dropInItem, bool probe, Farmer who)
+        public override bool performItemDropInAction(Item dropInItem, bool probe, Farmer who)
         {
             if (probe == true) return false; //Just checking for action.
             if (who.ActiveObject == null) return false;
             if (dropInItem == null) return false;
             if (this.MinutesUntilReady > 0) return false;
             if (this.isUsedForBuyingHayAtAnyTime.Value == true) return false;
-            if (this.heldObject.Value != null)
+            if (this.heldObject.Value != null && this.MinutesUntilReady == 0)
                 this.cleanOutHayMaker(true);
 
-            bool itemAcceptedForHayProduction = this.insertItemForHayProduction(dropInItem, who);
-            if (itemAcceptedForHayProduction) return itemAcceptedForHayProduction;
+            return base.performItemDropInAction(dropInItem, probe, who);
+        }
 
+        public override CraftingResult onSuccessfulRecipeFound(IList<Item> dropInItem, ProcessingRecipe craftingRecipe, Farmer who = null)
+        {
+            CraftingResult result = base.onSuccessfulRecipeFound(dropInItem, craftingRecipe, who);
 
-            return base.performObjectDropInAction(dropInItem, probe, who);
+            if (result.successful)
+            {
+                //Allow expensive crops such as amaranth and iridium quality corn to get a small bonus, since otherwise wheat would be the best item to process.
+                this.feedType.Value.setItemReference(dropInItem.ElementAt(0));
+                int additionalHayPieces = 0;
+                if (dropInItem is StardewValley.Object)
+                {
+                    long playerBonusId = -1;
+                    if (who == null)
+                    {
+                        playerBonusId = this.owner.Value;
+                    }
+                    else
+                    {
+                        playerBonusId = who.UniqueMultiplayerID;
+                    }
+                    additionalHayPieces += (dropInItem as StardewValley.Object).sellToStorePrice(playerBonusId) / 100;
+                }
+                this.heldObject.Value.Stack += additionalHayPieces;
+            }
+            return result;
+        }
+
+        public override void playDropInSound()
+        {
+            SoundUtilities.PlaySound(Enums.StardewSound.Ship);
         }
 
         /// <summary>
-        /// Handles all of the item conditions for accepting items to process hay.
+        /// Updates the animation for display for this machine.
         /// </summary>
-        /// <param name="dropInItem">The item used for hay production</param>
-        /// <param name="who">The <see cref="Farmer"/> who drops in the item.</param>
-        /// <returns></returns>
-        protected virtual bool insertItemForHayProduction(Item dropInItem, Farmer who)
+        public override void updateAnimation()
         {
-            if (dropInItem.parentSheetIndex == (int)Enums.SDVObject.Corn && who.ActiveObject.Stack >= RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.NumberOfCornRequired)
+            if (this.feedType.Value.StardewValleyItemId == Enums.SDVObject.Corn)
             {
                 this.AnimationManager.playAnimation(CornAnimation);
-                this.feedType.Value = Enums.SDVObject.Corn;
-                who.ActiveObject.Stack -= RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.NumberOfCornRequired;
-                this.MinutesUntilReady = RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.MinutesToProcess;
-                who.currentLocation.PlaySound(Enums.StardewSound.Ship);
-                if (who.ActiveObject.Stack == 0)
-                    who.removeItemFromInventory(who.ActiveObject);
-                return true;
             }
-            if (dropInItem.parentSheetIndex == (int)Enums.SDVObject.Fiber && who.ActiveObject.Stack >= RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.NumberOfFiberRequired)
+            else if (this.feedType.Value.StardewValleyItemId == Enums.SDVObject.Fiber)
             {
                 this.AnimationManager.playAnimation(FiberAnimation);
-                this.feedType.Value = Enums.SDVObject.Fiber;
-                who.ActiveObject.Stack -= RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.NumberOfFiberRequired;
-                this.MinutesUntilReady = RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.MinutesToProcess;
-                who.currentLocation.PlaySound(Enums.StardewSound.Ship);
-                if (who.ActiveObject.Stack == 0)
-                    who.removeItemFromInventory(who.ActiveObject);
-                return true;
             }
-            if (dropInItem.parentSheetIndex == (int)Enums.SDVObject.Wheat && who.ActiveObject.Stack >= RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.NumberOfWheatRequired)
-            {
-                this.AnimationManager.playAnimation(WheatAnimation);
-                this.feedType.Value = Enums.SDVObject.Hay;
-                who.ActiveObject.Stack -= RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.NumberOfWheatRequired;
-                this.MinutesUntilReady = RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.MinutesToProcess;
-                who.currentLocation.PlaySound(Enums.StardewSound.Ship);
-                if (who.ActiveObject.Stack == 0)
-                    who.removeItemFromInventory(who.ActiveObject);
-                return true;
-            }
-            if (dropInItem.parentSheetIndex == (int)Enums.SDVObject.Amaranth && who.ActiveObject.Stack >= RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.NumberOfAmaranthRequired)
+            else if (this.feedType.Value.StardewValleyItemId == Enums.SDVObject.Amaranth)
             {
                 this.AnimationManager.playAnimation(AmaranthAnimation);
-                this.feedType.Value = Enums.SDVObject.Amaranth;
-                who.ActiveObject.Stack -= RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.NumberOfAmaranthRequired;
-                this.MinutesUntilReady = RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.MinutesToProcess;
-                who.currentLocation.PlaySound(Enums.StardewSound.Ship);
-                if (who.ActiveObject.Stack == 0)
-                    who.removeItemFromInventory(who.ActiveObject);
-                return true;
             }
-            return false;
+            else if (this.feedType.Value.StardewValleyItemId == Enums.SDVObject.Wheat)
+            {
+                this.AnimationManager.playAnimation(WheatAnimation);
+            }
+            else
+            {
+                this.AnimationManager.playDefaultAnimation();
+            }
         }
 
         public override bool minutesElapsed(int minutes, GameLocation environment)
         {
-            if (this.heldObject.Value != null) return false;
+            if (this.heldObject.Value == null) return false;
             base.minutesElapsed(minutes, environment);
 
-            if (this.MinutesUntilReady == 0 && this.feedType.Value != Enums.SDVObject.NULL)
+            if (this.MinutesUntilReady == 0 && this.heldObject.Value != null)
             {
-                if (this.feedType.Value == Enums.SDVObject.Corn)
-                    this.heldObject.Value = RevitalizeModCore.ModContentManager.objectManager.getObject(Enums.SDVObject.Hay, RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.CornToHayOutput);
-                if (this.feedType.Value == Enums.SDVObject.Fiber)
-                    this.heldObject.Value = RevitalizeModCore.ModContentManager.objectManager.getObject(Enums.SDVObject.Hay, RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.FiberToHayOutput);
-                if (this.feedType.Value == Enums.SDVObject.Wheat)
-                    this.heldObject.Value = RevitalizeModCore.ModContentManager.objectManager.getObject(Enums.SDVObject.Hay, RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.WheatToHayOutput);
-                if (this.feedType.Value == Enums.SDVObject.Amaranth)
-                    this.heldObject.Value = RevitalizeModCore.ModContentManager.objectManager.getObject(Enums.SDVObject.Hay, RevitalizeModCore.Configs.objectConfigManager.hayMakerConfig.AmaranthToHayOutput);
                 this.AnimationManager.playAnimation(HayAnimation);
                 bool noHayRemainsInFeedMaker = this.attemptToFillFarmSilos();
                 if (noHayRemainsInFeedMaker == false)
                     //swip and coin are valid sounds too.
                     SoundUtilities.PlaySound(Enums.StardewSound.dwop);
-
             }
             return true;
         }
@@ -307,7 +279,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
 
         protected override void drawStatusBubble(SpriteBatch b, int x, int y, float Alpha)
         {
-            if (this.machineStatusBubbleBox == null || this.machineStatusBubbleBox.Value == null) this.createStatusBubble();
+            if (this.machineStatusBubbleBox.Value == null || this.machineStatusBubbleBox.Value == null) this.createStatusBubble();
             if (this.MinutesUntilReady == 0 && this.heldObject.Value != null)
             {
                 y--;
@@ -325,13 +297,13 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
         /// A simple method for calculating the scale size for showing a machine working.
         /// </summary>
         /// <returns></returns>
-        public virtual float getScaleSizeForWorkingMachine()
+        public override float getScaleSizeForWorkingMachine()
         {
             float zoomSpeed = 0.01f;
             if (this.Scale.X < Game1.pixelZoom)
                 this.Scale = new Vector2(Game1.pixelZoom, Game1.pixelZoom);
 
-            if (this.feedType.Value != Enums.SDVObject.NULL && this.MinutesUntilReady > 0)
+            if (this.feedType.Value.isNotNull() && this.MinutesUntilReady > 0)
             {
                 if (this.lerpScaleIncreasing.Value == true)
                 {
@@ -364,7 +336,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Farming
             y = (int)this.TileLocation.Y;
 
 
-            if (this.feedType.Value != Enums.SDVObject.NULL && this.MinutesUntilReady > 0)
+            if (this.feedType.Value.isNotNull() && this.MinutesUntilReady > 0)
             {
                 Vector2 origin = new Vector2(this.AnimationManager.getCurrentAnimationFrameRectangle().Width / 2, this.AnimationManager.getCurrentAnimationFrameRectangle().Height);
 

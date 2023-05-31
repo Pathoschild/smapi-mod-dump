@@ -1,0 +1,10 @@
+﻿{
+  "Name": "MultiplayerMod",
+  "Author": "Tran Minh Thong",
+  "Version": "1.0.9",
+  "Description": "It is a Mod that makes it possible for players to play together",
+  "UniqueID": "multiplayer.mod",
+  "EntryDll": "MultiplayerMod.dll",
+  "MinimumApiVersion": "3.0",
+  "UpdateKeys": [ "Nexus:16582" ]
+}

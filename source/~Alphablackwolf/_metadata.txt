@@ -10,7 +10,6 @@ mods:
 
 latest commit:
    commit 087861d4c73ef0d7b1321d73877062e64758b4fd
-   Merge: 80b7ca3 3933cbd
    Author: Chris <Christopher.r.couture@gmail.com>
    Date:   Tue May 21 15:24:08 2019 -0400
    

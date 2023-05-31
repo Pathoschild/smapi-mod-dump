@@ -1,0 +1,19 @@
+<Project>
+	<PropertyGroup>
+		<TargetFramework>net5.0</TargetFramework>
+		<LangVersion>11.0</LangVersion>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<WarningsAsErrors>Nullable</WarningsAsErrors>
+		<CheckEolTargetFramework>false</CheckEolTargetFramework>
+		<EnableHarmony>true</EnableHarmony>
+		<EnableModZip Condition="$(Configuration) != 'Release'">False</EnableModZip>
+		<IgnoreModFilePatterns>Mono\..*\.dll</IgnoreModFilePatterns>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+	</ItemGroup>
+</Project>

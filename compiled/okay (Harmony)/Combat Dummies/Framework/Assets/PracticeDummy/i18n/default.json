@@ -1,0 +1,8 @@
+{
+  "big-craftable.PracticeDummy.name": "Practice Dummy",
+  "big-craftable.PracticeDummy.description": "A practice dummy to test your weapons against.",
+  "big-craftable.KnockbackDummy.name": "Knockback Dummy",
+  "big-craftable.KnockbackDummy.description": "A practice dummy for testing how far you can knock it back.",
+  "big-craftable.MaxHitDummy.name": "Max Hit Dummy",
+  "big-craftable.MaxHitDummy.description": "A practice dummy for testing how hard you can hit."
+}

@@ -15,10 +15,29 @@ namespace DecidedlyShared.Ui;
 
 public class Utils
 {
-    public static void DrawBox(SpriteBatch batch, Texture2D texture, Rectangle sourceRect, int xPos, int yPos, int width,
+    public static void DrawBox(SpriteBatch batch, Texture2D texture, Rectangle sourceRect, Rectangle bounds,
+        int topEdgeHeight = 4, int leftEdgeWidth = 4, int rightEdgeWidth = 4, int bottomEdgeHeight = 4)
+    {
+        DrawBox(
+            batch,
+            texture,
+            sourceRect,
+            bounds.X,
+            bounds.Y,
+            bounds.Width,
+            bounds.Height,
+            topEdgeHeight,
+            leftEdgeWidth,
+            rightEdgeWidth,
+            bottomEdgeHeight
+        );
+    }
+
+    public static void DrawBox(SpriteBatch batch, Texture2D texture, Rectangle sourceRect, int xPos, int yPos,
+        int width,
         int height, int topEdgeHeight = 4, int leftEdgeWidth = 4, int rightEdgeWidth = 4, int bottomEdgeHeight = 4)
     {
-        int topEdgeWidth = width - (leftEdgeWidth + rightEdgeWidth);
+        int topEdgeWidth = (width - (leftEdgeWidth + rightEdgeWidth));
         int leftEdgeHeight = height - (topEdgeHeight + bottomEdgeHeight);
         // We don't need a bottomEdgeWidth or a rightEdgeHeight, because we're not doing bloody trapezoids.
 

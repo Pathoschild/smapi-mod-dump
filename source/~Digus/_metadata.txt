@@ -20,7 +20,6 @@ mods:
 
 latest commit:
    commit 34e7acd8db1bcf6fb6d19687a5cd476bcc847fba
-   Merge: 428ea99 4302ceb
    Author: Digus <32422267+Digus@users.noreply.github.com>
    Date:   Fri Feb 10 19:06:39 2023 -0300
    

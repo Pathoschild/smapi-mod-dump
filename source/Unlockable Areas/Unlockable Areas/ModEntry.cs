@@ -15,6 +15,7 @@ using StardewModdingAPI;
 using HarmonyLib;
 using System.Collections.Generic;
 using Unlockable_Areas.API;
+using Unlockable_Areas.Menus;
 
 namespace Unlockable_Areas
 {
@@ -38,12 +39,32 @@ namespace Unlockable_Areas
 
             ContentPatcherHandling.Initialize();
             UnlockableAreasAPI.Initialize();
+            GenericModConfigMenuHandler.Initialize();
             Lib.Main.Initialize();
             Menus.ShopObjectMenu.Initialize();
 
+            helper.ConsoleCommands.Add("ua", "Debug Breakpoint", this.commands);
             helper.ConsoleCommands.Add("ua_debug", "Debug Breakpoint", this.debug);
             helper.ConsoleCommands.Add("ua_apitest", "", this.apiTest);
             helper.ConsoleCommands.Add("ua_eventtest", "", this.eventTest);
+        }
+
+        private void commands(string command, string[] args)
+        {
+            if (args.Length == 0)
+                return;
+
+            if (args[0] == "ok")
+                debugPurchase();
+        }
+
+        private void debugPurchase()
+        {
+            if (Game1.activeClickableMenu is not ShopObjectMenu)
+                return;
+
+            ShopObjectMenu shopMenu = (ShopObjectMenu)Game1.activeClickableMenu;
+            shopMenu.processPurchase();
         }
 
         private void debug(string command, string[] args)

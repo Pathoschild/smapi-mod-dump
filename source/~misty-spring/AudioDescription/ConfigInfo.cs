@@ -12,10 +12,12 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System.Collections.Generic;
+using System.Linq;
+using StardewModdingAPI;
 
 namespace AudioDescription
 {
-    internal class ConfigInfo
+    internal static class ConfigInfo
     {
         internal static void SaveLoaded(object sender, SaveLoadedEventArgs e)
         {
@@ -31,7 +33,7 @@ namespace AudioDescription
                 {
                     "doorClose",
                     "cricketsAmbient",
-                    //"boulderCrack",
+                    "boulderCrack",
                     "dropItemInWater",
                     "explosion",
                     "crafting",
@@ -43,7 +45,7 @@ namespace AudioDescription
                     "thunder",
                     "crickets",
                     "cavedrip",
-                    //"treethud",
+                    "treethud",
                     "treecrack",
                     "leafrustle",
                     "crystal",
@@ -68,8 +70,8 @@ namespace AudioDescription
                     "cameraNoise",
                     "mouseClick",
                     "whistle",
-                    "barrelBreak"
-
+                    "barrelBreak",
+                    "cracklingFire"
                 });
             }
 
@@ -107,7 +109,7 @@ namespace AudioDescription
                     "monsterdead",
                     "rockGolemSpawn",
                     "shadowpeep",
-                    //"batFlap",
+                    "batFlap",
                     "dustMeep",
                     "serpentDie",
                     "cacklingWitch"
@@ -171,6 +173,54 @@ namespace AudioDescription
                     "discoverMineral"
                 });
             }
+
+            if (ModEntry.Config.Minigames)
+            {
+                ModEntry.AllowedCues?.AddRange(new List<string>
+                {
+                    "Cowboy_Secret",
+                    "Cowboy_monsterDie",
+                    "Cowboy_gunshot",
+                    "cowboy_dead",
+                    "Cowboy_Footstep",
+                    "Cowboy_undead",
+                    "cowboy_powerup",
+                    "cowboy_gunload",
+                    "Pickup_Coin15",
+                    "cowboy_monsterhit",
+                    "cowboy_gopher",
+                    "cowboy_explosion"
+
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(ModEntry.Config.Blacklist)) return;
+            
+            var cleanlist = ParseBlackList();
+            foreach (var sound in cleanlist)
+            {
+                ModEntry.AllowedCues?.Remove(sound);
+            }
+        }
+
+        private static List<string> ParseBlackList()
+        {
+            ModEntry.Mon.Log("Getting raw blacklist.");
+            var blacklistRaw = ModEntry.Config.Blacklist;
+            if (blacklistRaw is null)
+            {
+                ModEntry.Mon.Log("No characters in blacklist.");
+            }
+
+            var charsToRemove = new string[] { "-", ",", ".", ";", "\"", "\'", "/" };
+            foreach (var c in charsToRemove)
+            {
+                blacklistRaw = blacklistRaw?.Replace(c," "); //string.Empty erased them. this ensures they still have a separator
+            }
+            ModEntry.Mon.Log($"Raw blacklist: \n {blacklistRaw} \nWill be parsed to list now.", LogLevel.Debug);
+            var blacklistParsed = blacklistRaw?.Split(' ').ToList();
+
+            return blacklistParsed;
         }
     }
 }

@@ -1,18 +1,15 @@
 urls:
-   web: https://github.com/Floogen/MysticalBuildings
-   Git: https://github.com/Floogen/MysticalBuildings.git
+   web: https://github.com/Floogen/Archery
+   Git: https://github.com/Floogen/Archery.git
 
 mods:
-   Cave of Memories
-   Mystical Buildings
+   Archery
+   Archery - Starter Pack
 
 latest commit:
-   commit 6e7abc9364cf4325e777764256c3d335ac063439
-   Merge: 6b7673f ff7e574
+   commit cd210a8a77fd0ce3dc37f266b506952617877cb2
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Thu Jun 30 16:02:39 2022 -0500
+   Date:   Tue May 30 16:53:35 2023 -0500
    
-       Merge pull request #1 from KediDili/development
-       
-       Adding tr.json files
+       v2.2.1 released
    

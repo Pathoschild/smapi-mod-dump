@@ -25,6 +25,9 @@ namespace Omegasis.Revitalize.Framework.Managers
     {
         private static bool HasLoadedTextureManagers;
 
+
+        public static TextureManager Buildings;
+
         public static TextureManager HUD;
 
         public static TextureManager Items_Resources_Ore;
@@ -36,12 +39,15 @@ namespace Omegasis.Revitalize.Framework.Managers
         public static TextureManager Objects_Farming;
         public static TextureManager Objects_Furniture;
         public static TextureManager Objects_Machines;
+        public static TextureManager Objects_Misc;
         public static TextureManager Objects_Resources_ResourcePlants;
+        public static TextureManager Objects_Storage;
 
         public static TextureManager Menus_Misc;
         public static TextureManager Menus_CraftingMenu;
         public static TextureManager Menus_EnergyMenu;
         public static TextureManager Menus_InventoryMenu;
+        public static TextureManager Menus_DimensionalStorageMenu;
 
         public static TextureManager Resources_Misc;
         public static TextureManager Resources_Ore;
@@ -57,34 +63,39 @@ namespace Omegasis.Revitalize.Framework.Managers
 
             if (HasLoadedTextureManagers) return;
 
+            Buildings = InitializeTextureManager("Omegasis.Revitalize.Buildings", BuildingsGraphicsPaths.Buildings);
+
             //HUD
-            HUD = InitializeTextureManager("Revitalize.HUD", HudGraphicsPaths.HUD);
+            HUD = InitializeTextureManager("Omegasis.Revitalize.HUD", HudGraphicsPaths.HUD);
 
             //Items
-            Items_Resources_Ore = InitializeTextureManager("Revitalize.Items.Resources.Ore", ItemsGraphicsPaths.Resources_Ore);
-            Items_Crafting = InitializeTextureManager("Revitalize.Items.Crafting", ItemsGraphicsPaths.Crafting);
-            Items_Farming = InitializeTextureManager("Revitalize.Items.Farming", ItemsGraphicsPaths.Farming);
-            Items_Misc = InitializeTextureManager("Revitalize.Items.Misc", ItemsGraphicsPaths.Misc);
+            Items_Resources_Ore = InitializeTextureManager("Omegasis.Revitalize.Items.Resources.Ore", ItemsGraphicsPaths.Resources_Ore);
+            Items_Crafting = InitializeTextureManager("Omegasis.Revitalize.Items.Crafting", ItemsGraphicsPaths.Crafting);
+            Items_Farming = InitializeTextureManager("Omegasis.Revitalize.Items.Farming", ItemsGraphicsPaths.Farming);
+            Items_Misc = InitializeTextureManager("Omegasis.Revitalize.Items.Misc", ItemsGraphicsPaths.Misc);
 
             //World Objects
-            Objects_Crafting = InitializeTextureManager("Revitalize.Objects.Crafting", ObjectsGraphicsPaths.Crafting);
-            Objects_Farming = InitializeTextureManager("Revitalize.Objects.Farming", ObjectsGraphicsPaths.Farming);
-            Objects_Furniture = InitializeTextureManager("Revitalize.Objects.Furniture", ObjectsGraphicsPaths.Furniture);
-            Objects_Machines = InitializeTextureManager("Revitalize.Objects.Machines", ObjectsGraphicsPaths.Machines);
-            Objects_Resources_ResourcePlants = InitializeTextureManager("Revitalize.Objects.Resources.ResourcePlants", ObjectsGraphicsPaths.Resources_ResourcePlants);
+            Objects_Crafting = InitializeTextureManager("Omegasis.Revitalize.Objects.Crafting", ObjectsGraphicsPaths.Crafting);
+            Objects_Farming = InitializeTextureManager("Omegasis.Revitalize.Objects.Farming", ObjectsGraphicsPaths.Farming);
+            Objects_Furniture = InitializeTextureManager("Omegasis.Revitalize.Objects.Furniture", ObjectsGraphicsPaths.Furniture);
+            Objects_Machines = InitializeTextureManager("Omegasis.Revitalize.Objects.Machines", ObjectsGraphicsPaths.Machines);
+            Objects_Misc = InitializeTextureManager("Omegasis.Revitalize.Objects.Misc", ObjectsGraphicsPaths.Misc);
+            Objects_Resources_ResourcePlants = InitializeTextureManager("Omegasis.Revitalize.Objects.Resources.ResourcePlants", ObjectsGraphicsPaths.Resources_ResourcePlants);
+            Objects_Storage= InitializeTextureManager("Omegasis.Revitalize.Objects.Storage", ObjectsGraphicsPaths.Storage);
 
             //Menus
-            Menus_Misc = InitializeTextureManager("Revitalize.Menus", MenusGraphicPaths.Menus);
-            Menus_CraftingMenu = InitializeTextureManager("Revitalize.Menus.CraftingMenu", MenusGraphicPaths.CraftingMenu);
-            Menus_EnergyMenu = InitializeTextureManager("Revitalize.Menus.EnergyMenu", MenusGraphicPaths.EnergyMenu);
-            Menus_InventoryMenu = InitializeTextureManager("Revitalize.Menus.InventoryMenu", MenusGraphicPaths.InventoryMenu);
+            Menus_Misc = InitializeTextureManager("Omegasis.Revitalize.Menus", MenusGraphicPaths.Menus);
+            Menus_CraftingMenu = InitializeTextureManager("Omegasis.Revitalize.Menus.CraftingMenu", MenusGraphicPaths.CraftingMenu);
+            Menus_EnergyMenu = InitializeTextureManager("Omegasis.Revitalize.Menus.EnergyMenu", MenusGraphicPaths.EnergyMenu);
+            Menus_InventoryMenu = InitializeTextureManager("Omegasis.Revitalize.Menus.InventoryMenu", MenusGraphicPaths.InventoryMenu);
+            Menus_DimensionalStorageMenu = InitializeTextureManager("Omegasis.Revitalize.Menus.DimensionalStorageMenu", MenusGraphicPaths.DimensionalStorageMenu);
 
             //Resources
-            Resources_Ore = InitializeTextureManager("Revitalize.Resources.Ore", ObjectsGraphicsPaths.Resources_Ore);
-            Resources_Misc = InitializeTextureManager("Revitalize.Items.Resources.Misc", ItemsGraphicsPaths.Resources_Misc);
+            Resources_Ore = InitializeTextureManager("Omegasis.Revitalize.Resources.Ore", ObjectsGraphicsPaths.Resources_Ore);
+            Resources_Misc = InitializeTextureManager("Omegasis.Revitalize.Items.Resources.Misc", ItemsGraphicsPaths.Resources_Misc);
 
             //Tools
-            Tools = InitializeTextureManager("Revitalize.Tools", ItemsGraphicsPaths.Tools);
+            Tools = InitializeTextureManager("Omegasis.Revitalize.Tools", ItemsGraphicsPaths.Tools);
 
             HasLoadedTextureManagers = true;
         }

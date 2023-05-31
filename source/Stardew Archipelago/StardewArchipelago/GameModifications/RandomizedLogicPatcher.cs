@@ -17,16 +17,19 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.GameModifications.CodeInjections;
+using StardewArchipelago.GameModifications.EntranceRandomizer;
 using StardewArchipelago.GameModifications.Seasons;
 using StardewArchipelago.Locations;
 using StardewArchipelago.Serialization;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Events;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Network;
 using StardewValley.Objects;
+using Object = StardewValley.Object;
 
 namespace StardewArchipelago.GameModifications
 {
@@ -37,7 +40,7 @@ namespace StardewArchipelago.GameModifications
         private readonly StardewItemManager _stardewItemManager;
         private readonly StartingResources _startingResources;
 
-        public RandomizedLogicPatcher(IMonitor monitor, IModHelper helper, Harmony harmony, ArchipelagoClient archipelago, LocationChecker locationChecker, StardewItemManager stardewItemManager, ArchipelagoStateDto state)
+        public RandomizedLogicPatcher(IMonitor monitor, IModHelper helper, Harmony harmony, ArchipelagoClient archipelago, LocationChecker locationChecker, StardewItemManager stardewItemManager, EntranceManager entranceManager)
         {
             _harmony = harmony;
             _archipelago = archipelago;
@@ -47,11 +50,14 @@ namespace StardewArchipelago.GameModifications
             CommunityCenterLogicInjections.Initialize(monitor, locationChecker);
             FarmInjections.Initialize(monitor, _archipelago);
             AchievementInjections.Initialize(monitor, _archipelago);
-            EntranceInjections.Initialize(monitor, _archipelago);
+            EntranceInjections.Initialize(monitor, _archipelago, entranceManager);
             ForestInjections.Initialize(monitor, _archipelago);
             SeedShopsInjections.Initialize(monitor, helper, archipelago, locationChecker);
             LostAndFoundInjections.Initialize(monitor, archipelago);
             TVInjections.Initialize(monitor, archipelago);
+            ProfitInjections.Initialize(monitor, archipelago);
+            QuestLogInjections.Initialize(monitor, archipelago);
+            WorldChangeEventInjections.Initialize(monitor);
         }
 
         public void PatchAllGameLogic()
@@ -66,9 +72,12 @@ namespace StardewArchipelago.GameModifications
             PatchSeasons();
             PatchSeedShops();
             PatchJodiFishQuest();
+            PatchQuestLog();
+            PatchWorldChangedEvent();
             PatchLostAndFoundBox();
             PatchTvChannels();
-            // PatchAppearanceRandomization();
+            PatchCleanupBeforeSave();
+            PatchProfitMargin();
             _startingResources.GivePlayerStartingResources();
         }
 
@@ -217,17 +226,12 @@ namespace StardewArchipelago.GameModifications
         {
             _harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.openShopMenu)),
-                prefix: new HarmonyMethod(typeof(SeedShopsInjections), nameof(SeedShopsInjections.OpenShopMenu_PierrePersistentEvent_Prefix))
+                prefix: new HarmonyMethod(typeof(SeedShopsInjections), nameof(SeedShopsInjections.OpenShopMenu_PierreAndSandyPersistentEvent_Prefix))
             );
 
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), nameof(Utility.getJojaStock)),
                 prefix: new HarmonyMethod(typeof(SeedShopsInjections), nameof(SeedShopsInjections.GetJojaStock_FullCostco_Prefix))
-            );
-
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(GameLocation), "sandyShopStock"),
-                prefix: new HarmonyMethod(typeof(SeedShopsInjections), nameof(SeedShopsInjections.SandyShopStock_LimitedStock_Prefix))
             );
 
             var shopMenuParameterTypes = new[]
@@ -319,6 +323,22 @@ namespace StardewArchipelago.GameModifications
             );
         }
 
+        private void PatchQuestLog()
+        {
+            _harmony.Patch(
+                original: AccessTools.Constructor(typeof(QuestLog)),
+                postfix: new HarmonyMethod(typeof(QuestLogInjections), nameof(QuestLogInjections.Constructor_MakeQuestsNonCancellable_Postfix))
+            );
+        }
+
+        private void PatchWorldChangedEvent()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(WorldChangeEvent), nameof(WorldChangeEvent.setUp)),
+                prefix: new HarmonyMethod(typeof(WorldChangeEventInjections), nameof(WorldChangeEventInjections.SetUp_MakeSureEventsAreNotDuplicated_Prefix))
+            );
+        }
+
         private void PatchTvChannels()
         {
             _harmony.Patch(
@@ -327,11 +347,19 @@ namespace StardewArchipelago.GameModifications
             );
         }
 
-        private void PatchAppearanceRandomization()
+        private void PatchCleanupBeforeSave()
         {
             _harmony.Patch(
-                original: AccessTools.Method(typeof(AnimatedSprite), nameof(AnimatedSprite.LoadTexture)),
-                prefix: new HarmonyMethod(typeof(AppearanceRandomizer), nameof(AppearanceRandomizer.LoadTexture_ShuffleAppearance_Prefix))
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.cleanupBeforeSave)),
+                postfix: new HarmonyMethod(typeof(CleanupBeforeSaveInjections), nameof(CleanupBeforeSaveInjections.CleanupBeforeSave_RemoveIllegalMonsters_Postfix))
+            );
+        }
+
+        private void PatchProfitMargin()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Object), nameof(Object.sellToStorePrice)),
+                postfix: new HarmonyMethod(typeof(ProfitInjections), nameof(ProfitInjections.SellToStorePrice_ApplyProfitMargin_Postfix))
             );
         }
     }

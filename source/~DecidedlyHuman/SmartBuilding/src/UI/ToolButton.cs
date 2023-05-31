@@ -26,7 +26,7 @@ namespace SmartBuilding.UI
         /// </summary>
         /// <param name="button"></param>
         public ToolButton(ButtonId button, ButtonType type, Action action, string tooltip, Texture2D texture,
-                          ModState modState, TileFeature? layerToTarget = null)
+            ModState modState, TileFeature? layerToTarget = null)
 
         {
             var sourceRect = Ui.GetButtonSourceRect(button);

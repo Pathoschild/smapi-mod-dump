@@ -35,6 +35,7 @@ for queries and analysis.**
 * Ensure debug controls are disabled by default
 * Leftover debug gubbins
 * Version bump
+* "Creative mode", i.e., don't deduct items on placement
 
 ### I18n Translations
 

@@ -21,12 +21,12 @@ namespace Omegasis.Revitalize.Framework.Utilities
         public static bool IsSameOrSubclass(Type potentialBase, Type potentialDescendant)
         {
             return potentialDescendant.IsSubclassOf(potentialBase)
-                   || potentialDescendant == potentialBase;
+                   || potentialDescendant.Equals(potentialBase);
         }
 
         public static bool IsSameType(Type potentialBase, Type potentialDescendant)
         {
-            return potentialDescendant == potentialBase;
+            return potentialDescendant.Equals(potentialBase);
         }
 
         public static bool IsSubclass(Type potentialBase, Type potentialDescendant)

@@ -17,6 +17,9 @@ using Omegasis.Revitalize.Framework.World.Objects.InformationFiles;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.Interfaces
 {
+    /// <summary>
+    /// The base interface provided for all modded objects.
+    /// </summary>
     public interface IBasicItemInfoProvider
     {
         public BasicItemInformation basicItemInformation { get; set; }

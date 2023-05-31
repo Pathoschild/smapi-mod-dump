@@ -1,0 +1,36 @@
+{
+  "excludedItems": [
+    "Starfruit Wine",
+    "Ancient Fruit Wine",
+    "Starfruit Jelly",
+    "Ancient Fruit Jelly",
+    "Starfruit",
+    "Ancient Fruit",
+    "Truffle",
+    "Truffle Oil"
+  ],
+  "excludedCategories": [
+    "Furniture",
+    "Artifact",
+    "Mineral",
+    "Seed",
+    "Fertilizer",
+    "Bait",
+    "Fishing Tackle",
+    "Decor",
+    "Trash",
+    "Crafting",
+    "Monster Loot",
+    "Clothes",
+    "Footwear",
+    "Ring",
+    "Tool",
+    "Dagger",
+    "Club",
+    "Sword"
+  ],
+  "priceMultiplier": 2.0,
+  "stickerPrice": 5,
+  "minPrice": 0,
+  "maxPrice": 0
+}

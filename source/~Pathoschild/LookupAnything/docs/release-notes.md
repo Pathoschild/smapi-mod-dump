@@ -11,6 +11,7 @@ for queries and analysis.**
 # Release notes
 ## Upcoming release
 * Fixed untranslated NPC names in some lookups.
+* Improved translations. Thanks to MakinDay (updated Italian!).
 
 ## 1.39.0
 Released 30 March 2023 for SMAPI 3.14.0 or later.

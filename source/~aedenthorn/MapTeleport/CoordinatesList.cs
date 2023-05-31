@@ -19,9 +19,11 @@ namespace MapTeleport
     }
     public class Coordinates
     {
+        public string name;
         public string mapName;
         public int x;
         public int y;
         public int id;
+        public bool enabled = true;
     }
 }

@@ -52,6 +52,7 @@
   "TTS": true,
   "TrackDroppedItems": true,
   "DisableInventoryVerbosity": false,
+  "MacSpeechRate": 220.0,
   "MaximumFishingDifficulty": 999,
   "FixFishingMotionType": 999
 }

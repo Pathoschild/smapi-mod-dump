@@ -19,7 +19,6 @@ namespace Shockah.FlexibleSprinklers
 		[JsonProperty(NullValueHandling = NullValueHandling.Ignore)] public ISemanticVersion? Version { get; set; }
 		[JsonProperty] public SprinklerBehaviorEnum SprinklerBehavior { get; internal set; } = SprinklerBehaviorEnum.ClusterWithoutVanilla;
 		[JsonProperty] public bool IgnoreRange { get; internal set; } = false;
-		[JsonProperty] public FlexibleSprinklerBehaviorTileWaterBalanceMode TileWaterBalanceMode { get; internal set; } = FlexibleSprinklerBehaviorTileWaterBalanceMode.Relaxed;
 		[JsonProperty] public bool SplitDisconnectedClusters { get; internal set; } = true;
 		[JsonProperty] public ClusterSprinklerBehaviorClusterOrdering ClusterBehaviorClusterOrdering { get; internal set; } = ClusterSprinklerBehaviorClusterOrdering.BiggerFirst;
 		[JsonProperty] public ClusterSprinklerBehaviorBetweenClusterBalanceMode ClusterBehaviorBetweenClusterBalanceMode { get; internal set; } = ClusterSprinklerBehaviorBetweenClusterBalanceMode.Relaxed;

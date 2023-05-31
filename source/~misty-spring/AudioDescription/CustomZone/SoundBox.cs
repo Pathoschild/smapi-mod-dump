@@ -18,9 +18,9 @@ using System.Collections.Generic;
 
 namespace AudioDescription
 {
-    internal class SoundBox
+    internal static class SoundBox
     {
-        internal static void Update()
+        private static void Update()
         {
             try
             {
@@ -37,14 +37,13 @@ namespace AudioDescription
                     else
                     {
                         //update time left and transparency. if transp. is 0, remove
-                        sound.timeLeft--;
-                        if (sound.timeLeft < 0f)
+                        sound.TimeLeft--;
+                        if (!(sound.TimeLeft < 0f)) continue;
+                        
+                        sound.Transparency -= 0.02f;
+                        if (sound.Transparency < 0f)
                         {
-                            sound.transparency -= 0.02f;
-                            if (sound.transparency < 0f)
-                            {
-                                ModEntry.SoundMessages.RemoveAt(index);
-                            }
+                            ModEntry.SoundMessages.RemoveAt(index);
                         }
                     }
                 }
@@ -54,10 +53,10 @@ namespace AudioDescription
         }
 
         //in update ticked, if config isnt the one for custombox, return
-        public static void RenderedHUD(object sender, RenderedHudEventArgs e)
+        public static void RenderedHud(object sender, RenderedHudEventArgs e)
         {
-            //if any event is going on . could also use ' Game1.CurrentEvent != null '
-            if (Game1.eventUp) 
+            //if taking map screenshot, don't draw
+            if (Game1.game1.takingMapScreenshot) 
                 return;
 
             //if using HUDM instead
@@ -71,10 +70,10 @@ namespace AudioDescription
                 if (ModEntry.SafePositionTop == new Vector2(99f, 99f))
                 {
                     //
-                    int safeX = Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Left;
-                    int safeY = Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Top;
+                    var safeX = Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Left;
+                    var safeY = Game1.graphics.GraphicsDevice.Viewport.TitleSafeArea.Top;
 
-                    Vector2 pos = new(safeX + 30, safeY + 20);
+                    Vector2 pos = new(safeX + 30 + ModEntry.Config.XOffset, safeY + 20 + ModEntry.Config.YOffset);
                     ModEntry.SafePositionTop = pos;
 
                     var pos2 = Game1.smallFont.MeasureString("Liquid filling container");
@@ -111,8 +110,8 @@ namespace AudioDescription
             //draw box
             IClickableMenu.drawTextureBox(
                 spriteBatch,
-                x + 10,
-                y + 10, //IsToolbarAbove ? Bottom : 
+                x + 10 + ModEntry.Config.XOffset,
+                y + 10 + ModEntry.Config.YOffset, //IsToolbarAbove ? Bottom : 
                 w + 80, //add 80px just for good measure
                 h,
                 Color.White
@@ -124,7 +123,11 @@ namespace AudioDescription
                 spriteBatch,
                 ModEntry.SoundMessages,
                 (int)ModEntry.WidthandHeight.Y,
-                new Rectangle(x, y + 10, w, h)
+                new Rectangle(
+                    x + ModEntry.Config.XOffset, 
+                    y + 10 + ModEntry.Config.YOffset, 
+                    w, 
+                    h)
                 );
         }
 
@@ -141,10 +144,10 @@ namespace AudioDescription
                 //this but use transparency
                 Utility.drawTextWithShadow(
                     spriteBatch, 
-                    sound.message, 
+                    sound.Message, 
                     Game1.smallFont, 
                     pos, 
-                    sound.color * sound.transparency
+                    sound.Color * sound.Transparency
                     );
             }
         }

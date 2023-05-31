@@ -10,10 +10,15 @@
 
 using System;
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Goals;
+using StardewArchipelago.Items.Mail;
+using StardewArchipelago.Locations.CodeInjections;
+using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Characters;
 using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
 using xTile.Dimensions;
@@ -117,42 +122,43 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         {
             try
             {
-                var farm = Game1.getFarm();
-
-                if (Game1.Date.TotalDays < 1)
+                if (Game1.Date.TotalDays >= 1)
                 {
-                    var chanceOfStaying = GetChanceOfStaying();
-                    for (var i = farm.resourceClumps.Count - 1; i >= 0; i--)
+                    return;
+                }
+
+                var farm = Game1.getFarm();
+                var chanceOfStaying = GetChanceOfStaying();
+                for (var i = farm.resourceClumps.Count - 1; i >= 0; i--)
+                {
+                    var clump = farm.resourceClumps[i];
+                    if (Game1.random.NextDouble() > chanceOfStaying)
                     {
-                        var clump = farm.resourceClumps[i];
-                        if (Game1.random.NextDouble() > chanceOfStaying)
-                        {
-                            farm.removeEverythingFromThisTile((int)clump.tile.X, (int)clump.tile.Y);
-                        }
+                        farm.removeEverythingFromThisTile((int)clump.tile.X, (int)clump.tile.Y);
+                    }
+                }
+
+                foreach (var (tile, feature) in farm.terrainFeatures.Pairs)
+                {
+                    if (!(feature is Tree) && !(feature is Grass))
+                    {
+                        continue;
+                    }
+                    if (Game1.random.NextDouble() > chanceOfStaying)
+                    {
+                        farm.removeEverythingFromThisTile((int)tile.X, (int)tile.Y);
+                    }
+                }
+                foreach (var (tile, obj) in farm.Objects.Pairs)
+                {
+                    if (obj.name != "Stone" && !obj.name.StartsWith("Weed") && obj.name != "Twig")
+                    {
+                        continue;
                     }
 
-                    foreach (var (tile, feature) in farm.terrainFeatures.Pairs)
+                    if (Game1.random.NextDouble() > chanceOfStaying)
                     {
-                        if (!(feature is Tree) && !(feature is Grass))
-                        {
-                            continue;
-                        }
-                        if (Game1.random.NextDouble() > chanceOfStaying)
-                        {
-                            farm.removeEverythingFromThisTile((int)tile.X, (int)tile.Y);
-                        }
-                    }
-                    foreach (var (tile, obj) in farm.Objects.Pairs)
-                    {
-                        if (obj.name != "Stone" && !obj.name.StartsWith("Weed") && obj.name != "Twig")
-                        {
-                            continue;
-                        }
-
-                        if (Game1.random.NextDouble() > chanceOfStaying)
-                        {
-                            farm.removeEverythingFromThisTile((int)tile.X, (int)tile.Y);
-                        }
+                        farm.removeEverythingFromThisTile((int)tile.X, (int)tile.Y);
                     }
                 }
                 return;
@@ -185,6 +191,68 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public static void ForcePetIfNeeded(Mailman mailman)
+        {
+            try
+            {
+                if (!Game1.player.hasOrWillReceiveMail("rejectedPet") || !IsPetRequired())
+                {
+                    return;
+                }
+
+                const string forcedPetName = "alwaysintreble";
+                Pet pet = Game1.player.catPerson ? new Cat(68, 13, Game1.player.whichPetBreed) : new Dog(68, 13, Game1.player.whichPetBreed);
+                pet.warpToFarmHouse(Game1.player);
+                pet.Name = forcedPetName;
+                pet.displayName = pet.Name;
+                Game1.player.RemoveMail("rejectedPet");
+
+                const string forcedPetMailKey = "petOverride";
+                const string forcedPetMailTitle = "Don't dodge destiny";
+                var animalType = Game1.player.catPerson ? "cat" : "dog";
+                var scoutedInfo = GetScoutedInfoForPet();
+                var forcedPetMailContent = $"I heard you rejected this poor {animalType} that she brought you.^" + 
+                                                    "Look kid, you and I both know you'll need it down the line.^" +
+                                                    $"{scoutedInfo}^" +
+                                                    $"  Your friend, Mr. Qi[#]{forcedPetMailTitle}";
+
+                mailman.GenerateMail(forcedPetMailKey, forcedPetMailContent);
+                mailman.SendMail(forcedPetMailKey);
+
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(ForcePetIfNeeded)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+        }
+
+        private static string GetScoutedInfoForPet()
+        {
+            if (!IsPetFriendsanity())
+            {
+                return "What would your grandfather say if you abandoned this poor animal?";
+            }
+
+            var location = string.Format(FriendshipInjections.FRIENDSANITY_PATTERN, Friends.PET_NAME, 5);
+            var scouted = _archipelago.ScoutSingleLocation(location);
+            return $"After all, what would {scouted.PlayerName} do without their {scouted.ItemName}?";
+        }
+
+        private static bool IsPetRequired()
+        {
+            var isPetFriendsanity = IsPetFriendsanity();
+            var isPetNeededForGoal = _archipelago.SlotData.Goal == Goal.GrandpaEvaluation;
+
+            return isPetFriendsanity || isPetNeededForGoal;
+        }
+
+        private static bool IsPetFriendsanity()
+        {
+            return _archipelago.SlotData.Friendsanity != Friendsanity.None && _archipelago.SlotData.Friendsanity != Friendsanity.Bachelors;
         }
     }
 }

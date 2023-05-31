@@ -14,5 +14,8 @@
     "ToolUseDurationInSeconds": 3.0,
     "XPChangedDurationInSeconds": 3.0,
     "LevelChangedDurationInSeconds": 5.0
-  }
+  },
+  "SkillsToExcludeFromToolbarOnXPGain": [
+    "Achtuur.Travelling"
+  ]
 }

@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Achtuur/StardewTravelSkill
+**
+*************************************************/
+
+{
+    "cfg_general":  "General settings",
+    "cfg_nearbyplayertilerange.name": "Nearby player tile range",
+    "cfg_nearbyplayertilerange.desc": "Range of tiles around you where other players will share exp",
+    "cfg_exptoactor.Name": "Percentage of exp to actor",
+    "cfg_exptoactor.Desc": "Percentage of exp that goes to the player performing the action giving exp"
+}

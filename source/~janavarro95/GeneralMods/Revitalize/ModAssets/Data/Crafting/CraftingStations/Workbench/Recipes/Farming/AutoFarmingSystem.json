@@ -12,7 +12,7 @@
   "whichTab": "Default",
   "isUnlocked": false,
   "recipe": {
-	"craftingRecipeId": "Revitalize.Workbench.Farming.Revitalize.Framework.World.Objects.Farming.AdvancedFarmingSystem",
+	"craftingRecipeId": "Omegasis.Revitalize.Workbench.Farming.Revitalize.Framework.World.Objects.Farming.AdvancedFarmingSystem",
     "outputName": "",
     "outputDescription": "",
     "MinutesToCraft": 0,
@@ -56,7 +56,7 @@
 			"item":{
 			"stardewValleyItemId": "NULL",
 			"stardewValleyBigCraftableId": "NULL",
-			"registeredObjectId": "Revitalize.Framework.World.Objects.Farming.AdvancedFarmingSystem",
+			"registeredObjectId": "Omegasis.Revitalize.Framework.World.Objects.Farming.AdvancedFarmingSystem",
 			"amount": 1
 			}
 		},

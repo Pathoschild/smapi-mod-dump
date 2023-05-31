@@ -1,0 +1,6 @@
+﻿{
+  "title": "Mini Tool Npc Mod",
+  "warpfarmer": " Teleport player {{f}} to character {{npcname}} !",
+  "warpnpc": " Teleport {{npcname}} character to the player {{f}} !",
+  "swimming": " Turn on or off character swim !"
+}

@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+  "Title":"Dimensional Storage Unit",
+  "Capacity":"Dimensional Storage Unit Capacity: {0} / {1}",
+  "UpgradePrompt":"Upgrade Max Capacity to {0} for {1} {2}?",
+  "MissingUpgradeItem":"Found {0} {1} need {2}",
+}

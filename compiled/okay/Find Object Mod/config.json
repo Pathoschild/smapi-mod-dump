@@ -5,7 +5,7 @@
   "FindAllNPC": false,
   "FindAllObject": false,
   "SearchMode": true,
-  "KeyOpenMenu": "F",
+  "KeyOpenMenu": "L",
   "KeySelectObject": "MouseRight",
   "NPC": {
     "B": 87,
@@ -32,9 +32,9 @@
     "A": 255
   },
   "ObjectToFind": {
-    "Alex_180579228": {}
+    "156_341954558": {}
   },
   "FindCharacter": {
-    "Alex_180579228": {}
+    "156_341954558": {}
   }
 }

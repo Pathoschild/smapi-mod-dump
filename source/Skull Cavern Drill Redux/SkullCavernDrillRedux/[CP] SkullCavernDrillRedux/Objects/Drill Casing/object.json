@@ -1,0 +1,46 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/AndrewGraber/Skull-Cavern-Drill-Redux
+**
+*************************************************/
+
+{
+  "Name": "Drill Casing",
+  "Description": "An assembly for a complex drill, cast in a special alloy made to withstand the spatial flux between cavern floors. All it needs is a Dwarven Drill Core!",
+  "Price": 1,
+  "Category": "Crafting",
+  "Edibility": -300,
+  "EdibleIsDrink": false,
+  "EdibleBuffs": null,
+  "Recipe": {
+    "ResultCount": 10,
+    "Ingredients": [
+      {
+        "Object": "Diamond",
+        "Count": 2
+      },
+      {
+        "Object": "Void Essence",
+        "Count": 2
+      },
+      {
+        "Object": "Copper Bar",
+        "Count": 10
+      },
+      {
+        "Object": "Gold Bar",
+        "Count": 5
+      }
+    ],
+    "SkillUnlockName": "Mining",
+    "SkillUnlockLevel": 8
+  },
+  "CanPurchase": true,
+  "PurchaseFrom": "Dwarf",
+  "PurchasePrice": 3000,
+  "PurchaseRequirements": null
+}

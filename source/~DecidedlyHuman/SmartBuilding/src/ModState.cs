@@ -16,12 +16,12 @@ using SmartBuilding.HarmonyPatches;
 using SmartBuilding.UI;
 using SmartBuilding.Utilities;
 using StardewValley;
-using SObject = StardewValley.Object;
 
 namespace SmartBuilding
 {
     public class ModState
     {
+        private readonly ModConfig config;
         private readonly IdentificationUtils identificationUtils;
         private readonly Logger logger;
         private readonly PlacementUtils placementUtils;
@@ -33,9 +33,10 @@ namespace SmartBuilding
         // All of our drawing variables.
         private Dictionary<Vector2, ItemInfo> tilesSelected = new();
 
-        public ModState(Logger logger, PlayerUtils playerUtils, IdentificationUtils identificationUtils,
-                        WorldUtils worldUtils, PlacementUtils placementUtils)
+        public ModState(Logger logger, ModConfig config, PlayerUtils playerUtils, IdentificationUtils identificationUtils,
+            WorldUtils worldUtils, PlacementUtils placementUtils)
         {
+            this.config = config;
             this.logger = logger;
             this.playerUtils = playerUtils;
             this.identificationUtils = identificationUtils;
@@ -169,13 +170,16 @@ namespace SmartBuilding
 
             var itemInfo = this.identificationUtils.GetItemInfo((SObject)item);
 
-            // We only want to add the tile if the Dictionary doesn't already contain it. 
+            // We only want to add the tile if the Dictionary doesn't already contain it.
             if (!this.tilesSelected.ContainsKey(v))
                 // We then want to check if the item can even be placed in this spot.
                 if (this.placementUtils.CanBePlacedHere(v, item))
                 {
                     this.tilesSelected.Add(v, itemInfo);
-                    Game1.player.reduceActiveItemByOne();
+
+                    // If we're not in creative mode, we reduce the item by one.
+                    if (!this.config.CreativeMode)
+                        Game1.player.reduceActiveItemByOne();
                 }
         }
 

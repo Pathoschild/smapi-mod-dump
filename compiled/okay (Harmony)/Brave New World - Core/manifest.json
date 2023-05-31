@@ -1,13 +1,15 @@
 {
   "Name": "> Brave New World: Core",
   "Author": "DiogoAlbano",
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "Description": "Code Core for Brave New World Mods.",
   "UniqueID": "DiogoAlbano.BNWCore",
   "EntryDll": "BNWCore.dll",
-  "UpdateKeys": [ "Nexus:15871" ],
-
+  "UpdateKeys": [ "Nexus: ???" ],
   "Dependencies": [
-    { "UniqueID": "Pathoschild.Automate" } // added locally
+    {
+      "UniqueID": "Pathoschild.Automate",
+      "IsRequired": false
+    }
   ]
 }

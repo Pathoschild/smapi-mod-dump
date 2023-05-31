@@ -76,6 +76,12 @@ namespace StardewArchipelago.Archipelago
                 DisconnectPermanently();
                 return;
             }
+
+            if (!SlotData.Mods.IsModStateCorrect(_modHelper, out errorMessage))
+            {
+                DisconnectPermanently();
+                return;
+            }
         }
 
         private bool TryConnect(ArchipelagoConnectionInfo connectionInfo, out string errorMessage)
@@ -450,7 +456,9 @@ namespace StardewArchipelago.Archipelago
                 return Array.Empty<Hint>();
             }
 
-            return _session.DataStorage.GetHints();
+            var hintTask = _session.DataStorage.GetHintsAsync();
+            hintTask.Wait();
+            return hintTask.Result;
         }
 
         public void ReportGoalCompletion()

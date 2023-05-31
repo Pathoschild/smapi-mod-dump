@@ -35,6 +35,9 @@ namespace Custom_Farm_Loader.Menus
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
+        private static bool IncludeVanilla = false;
+        private static bool ChangeWhichFarm = true;
+
         public static void Initialize(Mod mod)
         {
             Mod = mod;
@@ -70,8 +73,11 @@ namespace Custom_Farm_Loader.Menus
         protected string[] SplitPreviewDescription = new string[] { };
         public ClickableTextureComponent DescriptionUpArrow;
         public ClickableTextureComponent DescriptionDownArrow;
-        public CustomFarmSelection() : base(Game1.uiViewport.Width / 2 - 320, Game1.uiViewport.Height - 64 - 192, 640, 192)
+        public CustomFarmSelection(bool includeVanilla = false, bool changeWhichFarm = true) : base(Game1.uiViewport.Width / 2 - 320, Game1.uiViewport.Height - 64 - 192, 640, 192)
         {
+            IncludeVanilla = includeVanilla || ModEntry.Config.IncludeVanilla;
+            ChangeWhichFarm = changeWhichFarm;
+
             updatePosition();
             initializeUpperRightCloseButton();
 
@@ -172,10 +178,11 @@ namespace Custom_Farm_Loader.Menus
             Game1.playSound("shwip");
             this.CustomFarms = CustomFarm.getAll();
             CustomFarm.getAll().ForEach(farm => farm.reloadTextures());
+            loadVanillaFarms();
             loadModFarms();
 
-            if (Game1.whichFarm == 7)
-                CurrentCustomFarm = CustomFarms.Find(e => e.ID == Game1.whichModFarm.ID);
+            if (Game1.whichFarm == 7 || IncludeVanilla)
+                CurrentCustomFarm = CustomFarms.Find(e => e.ID == Game1.GetFarmTypeID());
             DescriptionScrollIndex = 0;
             SplitPreviewDescription = new string[] { };
             assignCurrentFarmPreview();
@@ -183,6 +190,44 @@ namespace Custom_Farm_Loader.Menus
             currentItemIndex = 0;
             setScrollBarToCurrentIndex();
             updateCustomFarmButtonNeighbors();
+        }
+
+        private void loadVanillaFarms()
+        {
+            CustomFarms.RemoveAll(el => new List<string>() { "0", "1", "2", "3", "4", "5", "6" }.Contains(el.ID));
+
+            if (!IncludeVanilla)
+                return;
+
+            var v = new string[][] {
+                new string[] { "Standard", "FarmStandard" },
+                new string[] { "Riverland", "FarmFishing" },
+                new string[] { "Forest", "FarmForaging" },
+                new string[] { "Hills", "FarmMining" },
+                new string[] { "Wilderness", "FarmCombat" },
+                new string[] { "Four Corners", "FarmFourCorners" },
+                new string[] { "Beach", "FarmBeach" },
+            };
+
+            for (int i = 0; i < v.Length; i++) {
+                var label = Game1.content.LoadString($"Strings\\UI:Character_{v[i][1]}");
+
+                var f = new CustomFarm(true, v[i][0], v[i][0]) {
+                    ID = i + "",
+                    Name = label.Split("_").First(),
+                    Author = "ConcernedApe",
+                    Description = label.Substring(label.IndexOf('_') + 1),
+                };
+
+                if (i == 4)
+                    f.Properties.SpawnMonstersAtNight = true;
+
+                f.Icon = f.loadIconTexture();
+                f.WorldMapOverlay = f.loadWorldMapTexture();
+
+                CustomFarms.Add(f);
+            }
+
         }
 
         private void loadModFarms()
@@ -203,7 +248,7 @@ namespace Custom_Farm_Loader.Menus
                     newCustomFarm.Name = farm.MapName.Replace("_", " ");
 
                 if (farm.TooltipStringPath != "")
-                    try { newCustomFarm.Description = Game1.content.LoadString(farm.TooltipStringPath);} catch (Exception) {
+                    try { newCustomFarm.Description = Game1.content.LoadString(farm.TooltipStringPath); } catch (Exception) {
                         Monitor.LogOnce($"Unable to load tooltip asset '{farm.TooltipStringPath}' for {farm.ID}; Resorting to default", LogLevel.Warn);
                     }
                 if (farm.IconTexture != "") {
@@ -293,8 +338,8 @@ namespace Custom_Farm_Loader.Menus
         {
             Dictionary<string, string[]> knownWorldMapExceptions
              = new Dictionary<string, string[]> {
-                 { "A_TK.FarmProjectForaging/WaFF", new[] { "A_TK.FarmProjectForaging", "assets/world_map/_default_SV/all_WaFF.png" } },
-                 { "A_TK.FarmProjectForaging/WaFFLE", new[] { "A_TK.FarmProjectForaging", "assets/world_map/_default_SV/all_WaFFLE.png" } }
+                 { "A_TK.FarmProjectForaging/WaFF", new[] { "A_TK.FarmProjectForaging", "../[CP] - Waterfall Forest - Xtra Content/assets/world_map/_default_SV/all_WaFF.png" } },
+                 { "A_TK.FarmProjectForaging/WaFFLE", new[] { "A_TK.FarmProjectForaging", "../[CP] - Waterfall Forest - Xtra Content/assets/world_map/_default_SV/all_WaFFLE.png" } }
              };
 
             if (!knownWorldMapExceptions.ContainsKey(modFarm.ID))
@@ -389,13 +434,24 @@ namespace Custom_Farm_Loader.Menus
             DescriptionScrollIndex = 0;
             SplitPreviewDescription = new string[] { };
 
-            Game1.whichFarm = 7;
-            if (ModFarms.Exists(e => e.ID == customFarm.ID))
-                Game1.whichModFarm = ModFarms.Find(e => e.ID == customFarm.ID);
-            else
-                Game1.whichModFarm = customFarm.asModFarmType();
+            if (ChangeWhichFarm)
+                setWhichFarm(customFarm);
+
             Game1.spawnMonstersAtNight = customFarm.Properties.SpawnMonstersAtNight;
             assignCurrentFarmPreview();
+        }
+
+        public static void setWhichFarm(CustomFarm customFarm)
+        {
+            if (customFarm.IsVanillaMap) {
+                Game1.whichFarm = int.Parse(customFarm.ID);
+            } else {
+                Game1.whichFarm = 7;
+                if (ModFarms.Exists(e => e.ID == customFarm.ID))
+                    Game1.whichModFarm = ModFarms.Find(e => e.ID == customFarm.ID);
+                else
+                    Game1.whichModFarm = customFarm.asModFarmType();
+            }
         }
 
         public override void receiveRightClick(int x, int y, bool playSound = true)
@@ -482,7 +538,7 @@ namespace Custom_Farm_Loader.Menus
 
         public override void receiveGamePadButton(Buttons b)
         {
-            if ((b == Buttons.LeftShoulder || b == Buttons.LeftTrigger ) && DescriptionScrollIndex != 0) {
+            if ((b == Buttons.LeftShoulder || b == Buttons.LeftTrigger) && DescriptionScrollIndex != 0) {
                 DescriptionScrollIndex--;
                 Game1.playSound("shwip");
             } else if ((b == Buttons.RightShoulder || b == Buttons.RightTrigger) && SplitPreviewDescription.Length > DescriptionScrollIndex + DescriptionRowsPerPage) {

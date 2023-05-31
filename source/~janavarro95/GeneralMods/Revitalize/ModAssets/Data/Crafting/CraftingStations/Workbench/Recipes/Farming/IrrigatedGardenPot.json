@@ -12,7 +12,7 @@
   "whichTab": "Default",
   "isUnlocked": false,
   "recipe": {
-	"craftingRecipeId": "Revitalize.Workbench.Farming.Revitalize.Framework.World.Objects.Farming.IrrigatedGardenPot",
+	"craftingRecipeId": "Omegasis.Revitalize.Workbench.Farming.Revitalize.Framework.World.Objects.Farming.IrrigatedGardenPot",
     "outputName": "",
     "outputDescription": "",
     "MinutesToCraft": 0,
@@ -40,7 +40,7 @@
 			"item":{
 			"stardewValleyItemId": "NULL",
 			"stardewValleyBigCraftableId": "NULL",
-			"registeredObjectId": "Revitalize.Framework.World.Objects.Farming.IrrigatedGardenPot",
+			"registeredObjectId": "Omegasis.Revitalize.Framework.World.Objects.Farming.IrrigatedGardenPot",
 			"amount": 1
 			}
 		},

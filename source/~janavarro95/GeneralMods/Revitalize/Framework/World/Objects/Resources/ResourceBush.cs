@@ -25,7 +25,7 @@ using StardewValley;
 
 namespace Omegasis.Revitalize.Framework.World.Objects.Resources
 {
-    [XmlType("Mods_Revitalize.Framework.World.Objects.Resources.OreResourceBush")]
+    [XmlType("Mods_Omegasis.Revitalize.Framework.World.Objects.Resources.OreResourceBush")]
     public class ResourceBush:CustomObject
     {
 
@@ -77,20 +77,32 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Resources
                 if (this.itemToDraw.Value == null)
                 {
                     this.itemToDraw.Value = new Drawable(this.itemToGrow.Value.getOne());
+                    this.heldObject.Value = (StardewValley.Object) this.itemToGrow.Value.getOne();
                     return;
                 }
                 if (this.itemToDraw2.Value == null)
                 {
                     this.itemToDraw2.Value = new Drawable(this.itemToGrow.Value.getOne());
+                    this.heldObject.Value.Stack++;
                     return;
                 }
                 if (this.itemToDraw3.Value == null)
                 {
                     this.itemToDraw3.Value = new Drawable(this.itemToGrow.Value.getOne());
+                    this.heldObject.Value.Stack++;
                     return;
                 }
             }
 
+        }
+
+        /// <summary>
+        /// Since <see cref="Furniture"/> and <see cref="StardewValley.Object"/> each do a seperate day update tick, we need to actually not do a day update for one of them.
+        /// </summary>
+        /// <returns></returns>
+        public override bool shouldDoDayUpdate()
+        {
+            return this.dayUpdateCounter.Value >= 2;
         }
 
         /// <summary>
@@ -102,48 +114,31 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Resources
             return this.itemToDraw.Value != null && this.itemToDraw2.Value != null && this.itemToDraw3.Value != null;
         }
 
-        public override bool rightClicked(Farmer who)
+        public override bool checkForAction(Farmer who, bool justCheckingForActivity)
         {
 
             if (this.isReadyForHarvest())
                 if (who.IsLocalPlayer)
                     this.harvest(true);
 
-            return base.rightClicked(who);
+            return base.checkForAction(who,justCheckingForActivity);
         }
 
 
         public virtual void harvest(bool AddToPlayersInventory)
         {
 
-            Item item = this.itemToGrow.Value.getOne();
-            int amountToAdd = 0;
-
-            if (this.itemToDraw.Value != null)
-            {
-                amountToAdd++;
-            }
-            if (this.itemToDraw2.Value != null)
-            {
-                amountToAdd++;
-            }
-            if (this.itemToDraw3.Value != null)
-            {
-                amountToAdd++;
-            }
-            item.Stack = amountToAdd;
-            if (item.Stack == 0) return;
+            Item item = this.heldObject.Value;
+            if (this.heldObject.Value == null) return;
 
             if (AddToPlayersInventory)
             {
                 SoundUtilities.PlaySound(Enums.StardewSound.coin);
-                bool added = Game1.player.addItemToInventoryBool(item);
+                bool added = Game1.player.addItemToInventoryBool(this.heldObject.Value);
+                this.heldObject.Value = null;
                 if (added == false)
                 {
                     WorldUtility.CreateItemDebrisAtTileLocation(this.getCurrentLocation(), item, this.TileLocation);
-                    this.itemToDraw.Value = null;
-                    this.itemToDraw2.Value = null;
-                    this.itemToDraw3.Value = null;
                     return;
                 }
             }
@@ -152,6 +147,12 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Resources
                 WorldUtility.CreateItemDebrisAtTileLocation(this.getCurrentLocation(), item, this.TileLocation);
             }
 
+
+        }
+
+        public override void clearHeldObject()
+        {
+            base.clearHeldObject();
             this.itemToDraw.Value = null;
             this.itemToDraw2.Value = null;
             this.itemToDraw3.Value = null;
@@ -164,7 +165,7 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Resources
 
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1)
         {
-            base.draw(spriteBatch, x, y, alpha);
+            base.draw(spriteBatch, x, y, alpha,false);
 
             Vector2 drawPosition1 = new Vector2(x  - this.basicItemInformation.drawOffset.X, y + .25f + this.basicItemInformation.drawOffset.Y);
             Vector2 drawPosition2 = new Vector2(x - .25f - this.basicItemInformation.drawOffset.X, y + .75f + this.basicItemInformation.drawOffset.Y);
@@ -172,16 +173,31 @@ namespace Omegasis.Revitalize.Framework.World.Objects.Resources
 
             if (this.itemToDraw.Value != null)
             {
+                //For some reason some of the drawing logic is a bit off for displays, so we want to skip drawing items in the incorrect positions.
+                if (drawPosition1.X<0 || drawPosition1.Y<0)
+                {
+                    return;
+                }
                 this.itemToDraw.Value.drawAsHeldObject(spriteBatch,drawPosition1 , alpha, -this.basicItemInformation.drawOffset.Y);
             }
             if (this.itemToDraw2.Value != null)
             {
-                this.itemToDraw2.Value.drawAsHeldObject(spriteBatch,drawPosition2 , alpha, -this.basicItemInformation.drawOffset.Y);
+                if (drawPosition2.X < 0 || drawPosition2.Y < 0)
+                {
+                    return;
+                }
+                //Change the depth value a bit so that it doesn't draw on top of the player as well.
+                this.itemToDraw2.Value.drawAsHeldObject(spriteBatch,drawPosition2 , alpha, -this.basicItemInformation.drawOffset.Y-.75f);
             }
             if (this.itemToDraw3.Value != null)
             {
-                this.itemToDraw3.Value.drawAsHeldObject(spriteBatch,drawPosition3 , alpha, -this.basicItemInformation.drawOffset.Y);
+                if (drawPosition3.X < 0 || drawPosition3.Y < 0)
+                {
+                    return;
+                }
+                this.itemToDraw3.Value.drawAsHeldObject(spriteBatch,drawPosition3 , alpha, -this.basicItemInformation.drawOffset.Y-.75f);
             }
+            
         }
 
         public override void performRemoveAction(Vector2 tileLocation, GameLocation environment)

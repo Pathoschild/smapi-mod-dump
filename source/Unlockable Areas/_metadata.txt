@@ -6,9 +6,9 @@ mods:
    Unlockable Areas
 
 latest commit:
-   commit 85eee4d9fa10ada8c2f048e0aca5704b375bf926
+   commit 57de455ba7479fe1bb85abf4ae5219ea64a932cf
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Thu Apr 20 02:46:40 2023 +0200
+   Date:   Sat May 20 21:55:39 2023 +0200
    
-       fixed outdated comment
+       Merge branch 'main' of gitlab.com:delixx/stardew-valley-unlockable-areas
    

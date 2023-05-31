@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+	"mailTitle":"Omegasis.Revitalize.Blacksmith.AdvancedCharcoalKilnBlueprint",
+	"message":"Um hi @, ^I wanted to share one of my blueprints with you that help me get a lot of coal when I don't want to have to go to the mines for it. It should help you get more value out of your wood, but please don't foget you can come see me if you ever need more coal as well ok? ^ -Clint",
+  "itemReference": {
+    "stardewValleyItemId": "NULL",
+    "stardewValleyBigCraftableId": "NULL",
+    "registeredObjectId": "Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Machines.CharcoalKilns.AdvancedCharcoalKiln",
+    "amount": 1
+  },
+}

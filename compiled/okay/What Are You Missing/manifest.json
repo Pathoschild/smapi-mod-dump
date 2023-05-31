@@ -1,7 +1,7 @@
 {
   "Name": "What Are You Missing",
   "Author": "PrivateButtface",
-  "Version": "2.6.4",
+  "Version": "2.6.6",
   "Description": "Tells you what items you're missing that are specific to the day/season (and how to get it if it's a fish!) as well as what you're missing from the community center that is available (broken down into items specific to the current season and common in all seasons).",
   "UniqueID": "PrivateButtface.WhatAreYouMissing",
   "EntryDll": "WhatAreYouMissing.dll",

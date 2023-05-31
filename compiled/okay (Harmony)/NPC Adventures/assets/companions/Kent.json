@@ -17,7 +17,7 @@
   "UnlockMail": "na_kent_companion", // Unlocked by NA's Kent 5 heart event (it adds this mail flag)
   "Rules": {
     // He accepts adventure only if you have at least 2 hearts and 6 combat level
-    "f 500/SkillLevel combat 6": "accept"
+    "f Kent 500/SkillLevel combat 5": "accept"
   },
   "Price": 3000,
   "Sales": {

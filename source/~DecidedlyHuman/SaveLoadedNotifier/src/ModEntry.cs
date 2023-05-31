@@ -21,8 +21,8 @@ namespace SaveLoadedNotifier
         {
             // It helps to initialise the i18n stuff.
             I18n.Init(helper.Translation);
-            
-            helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+
+            helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
         }
 
         [EventPriority((EventPriority)int.MinValue)]
@@ -35,9 +35,9 @@ namespace SaveLoadedNotifier
             }
             catch (Exception ex)
             {
-                Monitor.Log("The \"whistle\" sound cue doesn't appear to exist.");
+                this.Monitor.Log("The \"whistle\" sound cue doesn't appear to exist.");
             }
-                
+
             // If we've reached here, we're fine to play the sound, and display our dialogue.
             Game1.soundBank.PlayCue("whistle");
             Game1.drawDialogueNoTyping(I18n.IntoTheGame_SaveLoaded());

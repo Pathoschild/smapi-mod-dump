@@ -9,9 +9,13 @@ mods:
    Longer Fence Life
 
 latest commit:
-   commit ffd1647fd66dcb1a9142dfddc2a3264389404faa
+   commit 25b320f0558df3dd80f8dc1e1dae5934eb4c67e8
    Author: NormanPCN <91967509+NormanPCN@users.noreply.github.com>
-   Date:   Tue Dec 27 18:00:42 2022 -0800
+   Date:   Fri May 26 10:34:09 2023 -0700
    
-       Fix typo
+       Combat Controls. Controller, facing direction
+       
+       Better controller use. Not cursor facing direction feature.
+       Facing direction now works during auto swing.
+       Disconnected slick moves from the mouse cursor fix feature. Helps controller.
    

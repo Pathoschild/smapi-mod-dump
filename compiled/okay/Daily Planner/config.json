@@ -1,0 +1,14 @@
+{
+  "OpenMenuKey": "OemOpenBrackets",
+  "SecondaryControllerKey": "None",
+  "DefaultTab": "Daily",
+  "ShowOverlay": true,
+  "ShowPlannerTasks": true,
+  "ShowChecklistTasks": false,
+  "OverlayBackgroundOpacity": 0.7,
+  "OverlayTextOpacity": 1.0,
+  "OverlayMaxLength": 25,
+  "OverlayMaxLines": 10,
+  "OverlayXBufferPercent": 0,
+  "OverlayYBufferPercent": 0
+}

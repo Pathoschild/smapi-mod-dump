@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit e23fbb0846c4920aeb388a467be2089534977967
-   Author: shekurika <shekurika.gmail.com>
-   Date:   Sat Apr 15 00:58:50 2023 +0200
+   commit 5a90d4ad16861b0f85c79e10c4514882a5c87252
+   Author: shekurika <shekurika@gmail.com>
+   Date:   Thu May 18 21:07:15 2023 +0200
    
-       nullcheck birthday menu NPCs
+       test :p
    

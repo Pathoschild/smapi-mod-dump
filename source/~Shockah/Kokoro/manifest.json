@@ -11,7 +11,7 @@
 {
     "Name": "Kokoro - Shockah's core mod",
     "Author": "Shockah",
-    "Version": "1.0.0",
+    "Version": "2.0.1",
     "Description": "A core mod for Shockah's mods.",
     "UniqueID": "Shockah.Kokoro",
     "EntryDll": "Kokoro.dll",

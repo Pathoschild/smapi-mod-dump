@@ -1,0 +1,37 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/janavarro95/Stardew_Valley_Mods
+**
+*************************************************/
+
+{
+	"Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Tools.StardewValley.Tools.Pickaxe":
+	{
+		"displayName":"Blueprint: Pickaxe",
+		"description":"A blueprint used on how to craft a pickaxe!"
+	},
+	"Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Tools.StardewValley.Tools.CopperPickaxe":
+	{
+		"displayName":"Blueprint: Copper Pickaxe",
+		"description":"A blueprint used on how to craft a copper pickaxe!"
+	},
+	"Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Tools.StardewValley.Tools.SteelPickaxe":
+	{
+		"displayName":"Blueprint: Steel Pickaxe",
+		"description":"A blueprint used on how to craft a steel pickaxe!"
+	},
+	"Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Tools.StardewValley.Tools.GoldPickaxe":
+	{
+		"displayName":"Blueprint: Gold Pickaxe",
+		"description":"A blueprint used on how to craft a gold pickaxe!"
+	},
+	"Omegasis.Revitalize.Objects.Crafting.Blueprint.Workbench.Tools.StardewValley.Tools.IridiumPickaxe":
+	{
+		"displayName":"Blueprint: Iridium Pickaxe",
+		"description":"A blueprint used on how to craft an iridium pickaxe!"
+	},
+}

@@ -39,6 +39,7 @@ namespace Custom_Farm_Loader.Lib
         public Area Area = new Area();
 
         public List<Fish> Fish = new List<Fish>();
+        public Fish ForAll = null;
         public bool CatchOceanCrabPotFish = false;
         public GameLocation Location = null;
         public string LocationName = "Farm";
@@ -79,6 +80,9 @@ namespace Custom_Farm_Loader.Lib
                             fishingRule.ChangedCatchOceanCrabPotFish = true;
                             fishingRule.CatchOceanCrabPotFish = Boolean.Parse(value);
                             break;
+                        case "forall":
+                            fishingRule.ForAll = Lib.Fish.parseFishJObject((JObject)property.First());
+                            break;
                         default:
                             if (fishingRule.Filter.parseAttribute(property))
                                 break;
@@ -88,6 +92,11 @@ namespace Custom_Farm_Loader.Lib
                             throw new ArgumentException($"Unknown FishingRule Attribute", name);
                     }
 
+                }
+
+                if (fishingRule.ForAll != null) {
+                    name = "ForAll (Parse)";
+                    fishingRule.parseForAll();
                 }
             } catch (Exception ex) {
                 Monitor.Log($"At FishingRules[{i}] -> '{name}'", LogLevel.Error);
@@ -154,6 +163,55 @@ namespace Custom_Farm_Loader.Lib
 
             Monitor.LogOnce($"Item not found: {whichFish}", LogLevel.Warn);
             return new StardewValley.Object(Game1.random.Next(167, 173), 1);
+        }
+
+        //Yes, this is very hard coded. Don't judge
+        private void parseForAll()
+        {
+            var fishProperties = new Dictionary<string, string>() {
+                { nameof(ForAll.ChangedType), nameof(ForAll.Type) },
+                { nameof(ForAll.ChangedChance), nameof(ForAll.Chance) },
+                { nameof(ForAll.ChangedChancePerLevel), nameof(ForAll.ChancePerLevel) },
+                { nameof(ForAll.ChangedOptimalDepth), nameof(ForAll.OptimalDepth) },
+                { nameof(ForAll.ChangedDepthDropOff), nameof(ForAll.DepthDropOff) },
+                { nameof(ForAll.ChangedChanceModifiedByLuck), nameof(ForAll.ChanceModifiedByLuck) },
+            };
+
+            var filterProperties = new Dictionary<string, string>() {
+                { nameof(ForAll.Filter.ChangedSeasons), nameof(ForAll.Filter.Seasons) },
+                { nameof(ForAll.Filter.ChangedWeather), nameof(ForAll.Filter.Weather) },
+                { nameof(ForAll.Filter.ChangedAfterDay), nameof(ForAll.Filter.AfterDay) },
+                { nameof(ForAll.Filter.ChangedBeforeDay), nameof(ForAll.Filter.BeforeDay) },
+                { nameof(ForAll.Filter.ChangedStartTime), nameof(ForAll.Filter.StartTime) },
+                { nameof(ForAll.Filter.ChangedEndTime), nameof(ForAll.Filter.EndTime) },
+                { nameof(ForAll.Filter.ChangedFishingLevel), nameof(ForAll.Filter.FishingLevel) },
+                { nameof(ForAll.Filter.ChangedForagingLevel), nameof(ForAll.Filter.ForagingLevel) },
+                { nameof(ForAll.Filter.ChangedMiningLevel), nameof(ForAll.Filter.MiningLevel) },
+                { nameof(ForAll.Filter.ChangedCombatLevel), nameof(ForAll.Filter.CombatLevel) },
+                { nameof(ForAll.Filter.ChangedFarmingLevel), nameof(ForAll.Filter.FarmingLevel) },
+                { nameof(ForAll.Filter.ChangedCPConditions), nameof(ForAll.Filter.CPConditions) },
+            };
+
+            foreach (var fish in Fish) {
+                foreach (var prop in fishProperties)
+                    compareChangedProperties(prop, ForAll, fish);
+
+                foreach (var prop in filterProperties)
+                    compareChangedProperties(prop, ForAll.Filter, fish.Filter);
+            }
+
+        }
+
+        private void compareChangedProperties(KeyValuePair<string, string> kvp, System.Object source, System.Object target)
+        {
+            var type = source.GetType();
+            var cProperty = type.GetField(kvp.Key);
+            var vProperty = type.GetField(kvp.Value);
+
+            if (!(bool)cProperty.GetValue(target) && (bool)cProperty.GetValue(source)) {
+                cProperty.SetValue(target, true);
+                vProperty.SetValue(target, vProperty.GetValue(source));
+            }
         }
     }
 }

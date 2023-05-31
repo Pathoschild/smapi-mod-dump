@@ -1,20 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="..\Build\SDV-1.5.6.targets"/>
+    <Import Project="..\Build\Common.csproj"/>
+    <Import Project="..\DecidedlyShared\DecidedlyShared.projitems" Label="Shared"/>
 
-	<PropertyGroup>
-		<AssemblyName>BetterCrystalariums</AssemblyName>
-		<RootNamespace>BetterCrystalariums</RootNamespace>
-		<Version>1.0.0</Version>
-		<TargetFramework>net5.0</TargetFramework>
+    <PropertyGroup>
+        <Name>Better Crystalariums</Name>
+        <Description>With this mod installed, you won't be able to accidentally replace the mineral inside a crystalarium..</Description>
+        <MinimumApiVersion>3.15.0</MinimumApiVersion>
+        <UpdateKeys>Nexus:10907</UpdateKeys>
+        <Version>1.0.0</Version>
 
-		<EnableHarmony>true</EnableHarmony>
-	</PropertyGroup>
-
-	<!-- ModBuildConfig settings. -->
-	<Import Project="..\Build\Latest.targets" />
-	
-	<ItemGroup>
-	  <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-	  <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
-	</ItemGroup>
+        <EnableHarmony>true</EnableHarmony>
+    </PropertyGroup>
 
 </Project>

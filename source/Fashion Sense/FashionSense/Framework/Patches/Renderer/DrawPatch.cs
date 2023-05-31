@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using FashionSense.Framework.Interfaces.API;
 using FashionSense.Framework.Managers;
 using FashionSense.Framework.Models.Appearances;
 using FashionSense.Framework.Models.Appearances.Accessory;
@@ -68,7 +69,7 @@ namespace FashionSense.Framework.Patches.Renderer
                 }
             }
 
-            var shoeColorKey = AppearanceModel.GetColorKey(AppearanceContentPack.Type.Shoes);
+            var shoeColorKey = AppearanceModel.GetColorKey(IApi.Type.Shoes);
             if (!who.modData.ContainsKey(shoeColorKey) || !who.modData.ContainsKey(ModDataKeys.CUSTOM_SHOES_ID) || who.modData[ModDataKeys.CUSTOM_SHOES_ID] is null || who.modData[ModDataKeys.CUSTOM_SHOES_ID] == "None")
             {
                 return true;
@@ -127,7 +128,7 @@ namespace FashionSense.Framework.Patches.Renderer
             }
             else
             {
-                var shirtColor = new Color() { PackedValue = who.modData.ContainsKey(ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR) ? uint.Parse(who.modData[ModDataKeys.UI_HAND_MIRROR_SHIRT_COLOR]) : who.hairstyleColor.Value.PackedValue };
+                var shirtColor = FashionSense.colorManager.GetColor(who, AppearanceModel.GetColorKey(IApi.Type.Shirt));
                 if (shirtModel.DisableGrayscale)
                 {
                     shirtColor = Color.White;
@@ -256,7 +257,7 @@ namespace FashionSense.Framework.Patches.Renderer
             AppearanceHelpers.OffsetSourceRectangles(who, facingDirection, rotation, ref ___shirtSourceRect, ref dyedShirtSourceRect, ref ___accessorySourceRect, ref ___hatSourceRect, ref ___rotationAdjustment);
 
             // Prepare the DrawManager
-            DrawManager drawManager = new DrawManager(b, __instance, skinTone, baseTexture, sourceRect, ___shirtSourceRect, dyedShirtSourceRect, ___accessorySourceRect, ___hatSourceRect, appearanceTypeToAnimationModels, animationFrame, overrideColor, position, origin, ___positionOffset, ___rotationAdjustment, facingDirection, currentFrame, scale, rotation, FarmerRendererPatch.AreColorMasksPendingRefresh, FarmerRenderer.isDrawingForUI, AppearanceHelpers.AreSleevesForcedHidden(equippedModels))
+            DrawManager drawManager = new DrawManager(b, who, __instance, skinTone, baseTexture, sourceRect, ___shirtSourceRect, dyedShirtSourceRect, ___accessorySourceRect, ___hatSourceRect, appearanceTypeToAnimationModels, animationFrame, overrideColor, position, origin, ___positionOffset, ___rotationAdjustment, facingDirection, currentFrame, scale, rotation, FarmerRendererPatch.AreColorMasksPendingRefresh, FarmerRenderer.isDrawingForUI, AppearanceHelpers.AreSleevesForcedHidden(equippedModels))
             {
                 LayerDepth = layerDepth
             };

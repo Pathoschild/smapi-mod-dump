@@ -28,6 +28,11 @@ namespace SmartBuilding
         TerrainFeature,
 
         /// <summary>
+        ///     A <see cref="StardewValley.TerrainFeatures.LargeTerrainFeature" />.
+        /// </summary>
+        LargeTerrainFeature,
+
+        /// <summary>
         ///     A <see cref="StardewValley.Objects.Furniture" />
         /// </summary>
         Furniture,

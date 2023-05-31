@@ -1,0 +1,31 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jltaylor-us/StardewRainbowCursor
+**
+*************************************************/
+
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "jltaylor-us.RainbowCursor",
+  "Name": "Rainbow Cursor",
+  "Author": "Jamie Taylor",
+  "Version": "1.0.1",
+  "Description": "Makes the cursor cycle through a rainbow of colors",
+  "MinimumApiVersion": "3.17",
+  "EntryDll": "RainbowCursor.dll",
+  "UpdateKeys": [
+    "Nexus:15886",
+    "GitHub:jltaylor-us/StardewRainbowCursor"
+  ]
+}

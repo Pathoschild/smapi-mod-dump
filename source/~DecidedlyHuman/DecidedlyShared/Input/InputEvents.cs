@@ -10,9 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using DecidedlyShared.Logging;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;

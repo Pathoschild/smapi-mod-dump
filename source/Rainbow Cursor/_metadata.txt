@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/jltaylor-us/StardewRainbowCursor
+   Git: https://github.com/jltaylor-us/StardewRainbowCursor.git
+
+mods:
+   Rainbow Cursor
+
+latest commit:
+   commit f3bc8732bf3ba652eec7b55740eadc5dbcbf2152
+   Author: Jamie Taylor <Jamie.Taylor@pobox.com>
+   Date:   Sat May 27 18:23:28 2023 -0400
+   
+       v1.0.1; update release notes
+   

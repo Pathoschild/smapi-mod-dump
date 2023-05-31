@@ -25,11 +25,14 @@ namespace Unlockable_Areas.API
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
-        public List<string> purchasedUnlockables => getPurchasedUnlockables().ToList();
+        private static List<string> CachedPurchasedUnlockables = null;
+        private static Dictionary<string, List<string>> CachedPurchasedUnlockablesByLocation = null;
+        public List<string> purchasedUnlockables => getPurchasedUnlockables();
 
         public Dictionary<string, List<string>> purchasedUnlockablesByLocation => getPurchasedUnlockablesByLocation();
 
         public event ShopPurchasedEvent shopPurchasedEvent;
+        public event IsReadyEvent isReadyEvent;
 
         public static void Initialize()
         {
@@ -38,15 +41,22 @@ namespace Unlockable_Areas.API
             Helper = Mod.Helper;
         }
 
-        public static IEnumerable<string> getPurchasedUnlockables()
+        public static List<string> getPurchasedUnlockables()
         {
-            if (!Context.IsWorldReady)
-                yield break;
+            if (!Context.IsWorldReady || ModData.Instance is null)
+                return null;
 
-            if (ModData.Instance != null)
-                foreach (var e in ModData.Instance.UnlockablePurchased)
-                    if (e.Value.Any(el => el.Value == true))
-                        yield return e.Key;
+            if (CachedPurchasedUnlockables != null)
+                return CachedPurchasedUnlockables;
+
+            var ret = new List<string>();
+
+            foreach (var e in ModData.Instance.UnlockablePurchased)
+                if (e.Value.Any(el => el.Value == true))
+                    ret.Add(e.Key);
+
+            CachedPurchasedUnlockables = ret;
+            return ret;
         }
 
         public static Dictionary<string, List<string>> getPurchasedUnlockablesByLocation()
@@ -54,24 +64,33 @@ namespace Unlockable_Areas.API
             if (ModData.Instance is null)
                 return null;
 
+            if (CachedPurchasedUnlockablesByLocation != null)
+                return CachedPurchasedUnlockablesByLocation;
+
             var result = new Dictionary<string, List<string>>();
 
             foreach (var keyLocationPair in ModData.Instance.UnlockablePurchased) {
                 var list = new List<string>();
 
                 foreach (var locationStatePair in keyLocationPair.Value.Where(el => el.Value == true))
-                        list.Add(locationStatePair.Key);
+                    list.Add(locationStatePair.Key);
 
                 if (list.Count > 0)
                     result.Add(keyLocationPair.Key, list);
             }
 
+            CachedPurchasedUnlockablesByLocation = result;
+
             return result;
         }
 
-        public void raiseShopPurchased(ShopPurchasedEventArgs args)
+        public void raiseShopPurchased(ShopPurchasedEventArgs args) => shopPurchasedEvent?.Invoke(this, args);
+        public void raiseIsReady(IsReadyEventArgs args) => isReadyEvent?.Invoke(this, args);
+
+        public static void clearCache()
         {
-            shopPurchasedEvent?.Invoke(this, args);
+            CachedPurchasedUnlockables = null;
+            CachedPurchasedUnlockablesByLocation = null;
         }
     }
 }

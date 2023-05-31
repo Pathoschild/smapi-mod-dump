@@ -1,7 +1,7 @@
 {
   "Name": "[SMAPI] Dusty Overhaul",
   "Author": "CyanFire",
-  "Version": "2.3.3",
+  "Version": "2.4.1",
   "Description": "Code for Dusty Overhaul",
   "UniqueID": "CF.SMAPI.DustyOverhaul",
   "EntryDll": "DustyOverhaul.dll",
@@ -11,9 +11,6 @@
     {
       "UniqueID": "Pathoschild.ContentPatcher",
       "IsRequired": false
-    },
-
-    // added locally
-    { "UniqueID": "PeacefulEnd.CustomCompanions" }
+    }
   ]
 }

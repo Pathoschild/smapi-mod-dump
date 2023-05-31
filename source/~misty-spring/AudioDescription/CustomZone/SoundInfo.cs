@@ -15,17 +15,17 @@ namespace AudioDescription
     public class SoundInfo
     {
 
-        public string message;
+        public string Message;
 
-        public string type;
+        public string Type;
 
-        public Color color;
+        public Color Color;
 
-        public int timeLeft;
+        public int TimeLeft;
 
-        public float transparency = 1f;
+        public float Transparency = 1f;
 
-        public int position = 0;
+        public int Position = 0;
 
         public SoundInfo()
         {
@@ -33,46 +33,46 @@ namespace AudioDescription
 
         public SoundInfo(SoundInfo si)
         {
-            message = si.message;
-            timeLeft = si.timeLeft;
-            color = si.color;
-            transparency = si.transparency;
-            position = si.position;
+            Message = si.Message;
+            TimeLeft = si.TimeLeft;
+            Color = si.Color;
+            Transparency = si.Transparency;
+            Position = si.Position;
         }
 
         public SoundInfo(string sound)
         {
-            this.message = sound;
-            this.timeLeft = 350; //3500f
-            this.color = Color.Black;
-            this.transparency = 1f;
-            this.position = ModEntry.SoundMessages.Count + 1;
+            this.Message = sound;
+            this.TimeLeft = 350; //3500f
+            this.Color = Color.Black;
+            this.Transparency = 1f;
+            this.Position = ModEntry.SoundMessages.Count + 1;
         }
         public SoundInfo(string sound, Color whichColor)
         {
-            this.message = sound;
-            this.timeLeft = 350;
-            this.color = whichColor;
-            this.transparency = 1f;
-            this.position = ModEntry.SoundMessages.Count + 1;
+            this.Message = sound;
+            this.TimeLeft = 350;
+            this.Color = whichColor;
+            this.Transparency = 1f;
+            this.Position = ModEntry.SoundMessages.Count + 1;
         }
 
         public SoundInfo(string sound, Color whichColor, int time)
         {
-            this.message = sound;
-            this.timeLeft = time;
-            this.color = whichColor;
-            this.transparency = 1f;
-            this.position = ModEntry.SoundMessages.Count + 1;
+            this.Message = sound;
+            this.TimeLeft = time;
+            this.Color = whichColor;
+            this.Transparency = 1f;
+            this.Position = ModEntry.SoundMessages.Count + 1;
         }
 
         public SoundInfo(string sound, Color whichColor, int time, float transp)
         {
-            this.message = sound;
-            this.timeLeft = time;
-            this.color = whichColor;
-            this.transparency = transp;
-            this.position = ModEntry.SoundMessages.Count + 1;
+            this.Message = sound;
+            this.TimeLeft = time;
+            this.Color = whichColor;
+            this.Transparency = transp;
+            this.Position = ModEntry.SoundMessages.Count + 1;
         }
     }
 

@@ -20,6 +20,7 @@ namespace AudioDescription
     {
         internal static void PostFix_playSound(string cueName)
         {
+            // ReSharper disable once PossibleInvalidOperationException
             if (!(bool)(ModEntry.AllowedCues?.Contains(cueName)))
             {
                 return;
@@ -39,7 +40,7 @@ namespace AudioDescription
             //depending on chosen type: either send as HUDm, or to the sounds box.
             if(ModEntry.Config.Type == ModEntry.NotifType[0])
             {
-                Game1.addHUDMessage(new HUDMessage(desc, ModEntry.NexusID));
+                Game1.addHUDMessage(new HUDMessage(desc, ModEntry.NexusId));
             }
             else
             {
@@ -60,21 +61,22 @@ namespace AudioDescription
             }
         }
 
-        internal static bool PrefixHUDdraw(ref HUDMessage __instance, SpriteBatch b, int i)
+        internal static bool PrefixHuDdraw(ref HUDMessage __instance, SpriteBatch b, int i)
         {
-            if (__instance.whatType != ModEntry.NexusID)
+            if (__instance.whatType != ModEntry.NexusId)
                 return true;
             else
             {
-                Rectangle titleSafeArea = Game1.graphics.GraphicsDevice.Viewport.GetTitleSafeArea();
+                var titleSafeArea = Game1.graphics.GraphicsDevice.Viewport.GetTitleSafeArea();
                 if (__instance.noIcon)
                 {
-                    int overrideX = titleSafeArea.Left + 16;
-                    int overrideY = ((Game1.uiViewport.Width < 1400) ? (-64) : 0) + titleSafeArea.Bottom - (i + 1) * 64 * 7 / 4 - 21 - (int)Game1.dialogueFont.MeasureString(__instance.message).Y;
+                    var overrideX = titleSafeArea.Left + 16;
+                    var overrideY = ((Game1.uiViewport.Width < 1400) ? (-64) : 0) + titleSafeArea.Bottom - (i + 1) * 64 * 7 / 4 - 21 - (int)Game1.dialogueFont.MeasureString(__instance.message).Y;
                     IClickableMenu.drawHoverText(b, __instance.message, Game1.dialogueFont, 0, 0, -1, null, -1, null, null, 0, -1, -1, overrideX, overrideY, __instance.transparency);
                     return false;
                 }
 
+                // ReSharper disable once PossibleLossOfFraction
                 Vector2 vector = new(titleSafeArea.Left + 16, titleSafeArea.Bottom - (i + 1) * 64 * 7 / 4 - 64);
                 if (Game1.isOutdoorMapSmallerThanViewport())
                 {
@@ -87,7 +89,7 @@ namespace AudioDescription
                 }
 
                 b.Draw(Game1.mouseCursors, vector, new Rectangle(293, 360, 26, 24), Color.White * __instance.transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
-                float x = Game1.smallFont.MeasureString((__instance.message == null) ? "" : __instance.message).X;
+                var x = Game1.smallFont.MeasureString(__instance.message ?? "").X;
                 b.Draw(Game1.mouseCursors, new Vector2(vector.X + 104f, vector.Y), new Rectangle(319, 360, 1, 24), Color.White * __instance.transparency, 0f, Vector2.Zero, new Vector2(x, 4f), SpriteEffects.None, 1f);
                 b.Draw(Game1.mouseCursors, new Vector2(vector.X + 104f + x, vector.Y), new Rectangle(323, 360, 6, 24), Color.White * __instance.transparency, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
                 vector.X += 16f;

@@ -8,9 +8,11 @@
 **
 *************************************************/
 
+using System;
 using CarryYourPet.Patches;
 using DecidedlyShared.APIs;
 using DecidedlyShared.Logging;
+using DecidedlyShared.Utilities;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,7 +20,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Characters;
-using SObject = StardewValley.Object;
+using StardewValley.GameData.HomeRenovations;
 
 namespace CarryYourPet
 {
@@ -87,6 +89,16 @@ namespace CarryYourPet
             helper.Events.Display.RenderedWorld += this.DisplayOnRenderedWorld;
             helper.Events.Player.Warped += this.PlayerOnWarped;
             helper.Events.GameLoop.GameLaunched += (sender, args) => { this.RegisterWithGmcm(); };
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+        }
+
+        private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
+        {
+            if (!Context.IsWorldReady)
+                return;
+
+            if (config.HoldToCarryNpc.JustPressed())
+                this.DropCarriedCharacter();
         }
 
         private void RegisterWithGmcm()
@@ -111,11 +123,22 @@ namespace CarryYourPet
                 tooltip: () => I18n.CarryYourPet_Keybind_HoldToCarry_Tooltip(),
                 getValue: () => config.HoldToCarryNpc,
                 setValue: bind => config.HoldToCarryNpc = bind);
+
+            configMenuApi.AddBoolOption(mod: this.ModManifest,
+                name: () => I18n.CarryYourPet_Toggles_AnimalsAfraid(),
+                getValue: () => config.AnimalsScaredOfBeingCarried,
+                setValue: scared => config.AnimalsScaredOfBeingCarried = scared);
         }
 
         private void PlayerOnWarped(object sender, WarpedEventArgs e)
         {
             // On warp, we want to "drop" the NPC, which is to say, set the carried property to null.
+            this.DropCarriedCharacter();
+        }
+
+        private void DropCarriedCharacter()
+        {
+
             this.carriedCharacter.Npc = null;
         }
 
@@ -136,7 +159,7 @@ namespace CarryYourPet
                 else if (this.carriedCharacter.Npc is FarmAnimal)
                 {
                     var animal = (FarmAnimal)this.carriedCharacter.Npc;
-                    this.carriedCharacter.Npc.collidesWithOtherCharacters.Value = false;
+                    // this.carriedCharacter.Npc.collidesWithOtherCharacters.Value = false;
                     this.LockCharacterToPlayer(animal);
 
                     this.carriedCharacter.ShouldDraw = true;
@@ -148,10 +171,40 @@ namespace CarryYourPet
 
         private void LockCharacterToPlayer(Character character)
         {
+            // It should be impossible for this to be anything but a Pet or FarmAnimal.
+            if (character is not FarmAnimal && character is not Pet)
+                return;
+
+            Vector2 characterOffset = new Vector2();
+
+            Vector2 boundsPosition = new Vector2(character.GetBoundingBox().X, character.GetBoundingBox().Y);
+
             if (character is Pet)
-                character.position.Value = Game1.player.position.Value + new Vector2(-32f, -112f);
-            else if (character is FarmAnimal)
-                character.position.Value = Game1.player.position.Value + new Vector2(-32f, -168f);
+            {
+                characterOffset = character.Position - boundsPosition + new Vector2(-16, 32f);
+            }
+            else
+                characterOffset = character.Position - boundsPosition + new Vector2(8, 32f);
+
+            if (!config.AnimalsScaredOfBeingCarried)
+            {
+                characterOffset.X = MathF.Floor(characterOffset.X);
+                characterOffset.Y = MathF.Floor(characterOffset.Y);
+            }
+
+            character.position.Value = new Vector2(Game1.player.Position.X,
+                Game1.player.Position.Y - Game1.player.Sprite.SpriteHeight * 4) + characterOffset;
+
+            // character.position.Value.
+
+            // character.position.Value = Game1.player.position.Value + new Vector2(
+            //     -character.sprite.Value.SpriteWidth / 2,
+            //     (-character.sprite.Value.SpriteHeight * 4) - Game1.player.Sprite.SpriteHeight);
+
+            // if (character is Pet)
+            //     character.position.Value = Game1.player.position.Value + new Vector2(-32f, -112f);
+            // else if (character is FarmAnimal)
+            //     character.position.Value = Game1.player.position.Value + new Vector2(-32f, -168f);
         }
     }
 }

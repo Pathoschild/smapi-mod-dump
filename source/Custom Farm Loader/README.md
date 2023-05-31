@@ -22,7 +22,9 @@ for queries and analysis.**
   * [Recommended Folder Structure](#recommended-folder-structure)
   * [Documentation](#documentation)
   * [Migrating existing maps to CFL](#migrating-existing-maps-to-cfl)
-  * [Content Patcher Token](#content-patcher-token)
+  * [Custom Farm Type](#custom-farm-type)
+    * [Custom Assets](#custom_assets)
+    * [Content Patcher Token Conditions](#content_patcher_token_conditions)
   * [Creating New Maps](#creating-new-maps)
 # For Players
 
@@ -94,24 +96,44 @@ Why migrate?
 Farms that replace vanilla maps instead of appending the Data/AdditionalFarms asset lack flexibility and mod compatibility.
 Nothing beats being able to quickly swap between maps in terms of user experience.
 
-## Content Patcher Token
+## Custom Farm Type
 
-Sometimes you might want try things that aren't (yet) supported by CFL directly like loading a custom Tilesheet.<br>
-In cases where other mods like Content Patcher provide what you're looking for you will want to limit the changes you make to whenever your custom farm is played.<br>
-You can usually do that by providing the farms unique ID in a condition.
-
-Every CFL farm will have its own unique ID in the following format:
+Every CFL farm will have its own unique FarmType ID in the following format:
 <pre>
-&lt;Mod UniqueID&gt;/&lt;Map Name&gt;
+<b>&lt;Mod UniqueID&gt;/&lt;Map Name&gt;</b>
 eg. DeLiXx.Sunny_Farm/Sunny Farm
 </pre>
 The manifest.json Unique ID, a slash and your cfl_map.json name.
 
 Use the command "set_farm_type list" to obtain a list of all currently installed modded farm types.
 
-If you have Content Patcher installed you can use the [<b>FarmType</b> Token](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide/tokens.md#world) in your WHEN conditions to change specific assets, like a tileset whenever your custom farm is loaded.
+If you have Content Patcher installed you can use the [<b>FarmType</b> Token](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide/tokens.md#world) in your WHEN conditions to change specific assets, like a custom FarmCave load, only when your custom farm is loaded to avoid interference with other Farms. 
 
-Alternatively use <b>Game1.whichModFarm.ID</b> in your code.
+Alternatively use <b>Game1.GetFarmTypeID()</b> in your code.
+
+### Custom Assets
+CFL will create the following assets for each custom Farm.<br>
+The map asset in particular is very useful as it allows [configurable edits to your map using Content Patcher](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide/action-editmap.md).
+
+<pre>
+//Map asset
+<b>Maps/CFL_Map/&lt;Farmtype&gt;</b>
+eg. Maps/CFL_Map/DeLiXx.Sunny_Farm/Sunny Farm
+
+//Farm Preview Icon
+<b>CFL_Icon/&lt;Farmtype&gt;</b>
+eg. CFL_Icon/DeLiXx.Sunny_Farm/Sunny Farm
+
+//Worldmap Overlay
+<b>CFL_WorldMap/&lt;Farmtype&gt;</b>
+eg. CFL_WorldMap/DeLiXx.Sunny_Farm/Sunny Farm
+</pre>
+
+### Content Patcher Token Conditions
+
+Amidst its own set of conditions Custom Farm Loader supports Content Patcher Token Conditions for any DailyUpdate or FishingRule.
+<br>
+Read more about it [here](https://gitlab.com/delixx/stardew-valley-custom-farm-loader/-/wikis/home#universal-conditions)
 
 ## Creating new Maps
 

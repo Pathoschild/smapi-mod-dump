@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/CombatDummy
+**
+*************************************************/
+
+{
+  "big-craftable.PracticeDummy.name": "Pratik Mankeni",
+  "big-craftable.PracticeDummy.description": "Silah test etmek için bir pratik mankeni.",
+  "big-craftable.KnockbackDummy.name": "Geri Tepen Manken",
+  "big-craftable.KnockbackDummy.description": "Onu ne kadar geriye savurabileceğini test etmek için bir pratik mankeni.",
+  "big-craftable.MaxHitDummy.name": "Maksimum Hasar Mankeni",
+  "big-craftable.MaxHitDummy.description": "Ne kadar sert vurabileceğini test etmek için bir pratik mankeni."
+}
