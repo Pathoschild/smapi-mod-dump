@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Jaksha6472/WitchTower
+   Git: https://github.com/Jaksha6472/WitchTower.git
+
+mods:
+   Alvadea's Farm Maps - Walpurgisnacht
+
+latest commit:
+   commit c8e1b4076e0587a9ceccaff03d55ef033be656e9
+   Author: Jaksha6472 <freaky_chick@gmx.de>
+   Date:   Wed Jun 7 20:03:39 2023 +0200
+   
+       first release
+   

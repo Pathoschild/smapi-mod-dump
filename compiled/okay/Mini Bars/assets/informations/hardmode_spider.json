@@ -1,0 +1,25 @@
+{
+  "monsterName": "Spider",
+  "monsterType": "Spider",
+  "editableInGame": false,
+  "texture": null,
+  "barColor": {
+    "B": 169,
+    "G": 209,
+    "R": 102,
+    "A": 255
+  },
+  "borderColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "hpColor": {
+    "B": 0,
+    "G": 0,
+    "R": 0,
+    "A": 200
+  },
+  "heigth": 3
+}

@@ -1,0 +1,105 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/GStefanowich/SDV-Forecaster
+**
+*************************************************/
+
+{
+	"source.tv": "TV: {{content}}",
+	"source.calendar": "Kalender: {{content}}",
+	
+	"tv.spirits": "Die {{spirit}} sind heute {{mood}}",
+	"tv.recipe": "{{icon}}Lerne wie man \"{{recipe}}\" macht.",
+	"tv.birthday": "{{icon}}{{...}}",
+	
+	"tv.weather.pelican_town": "Pelikan Stadt Wettervorhersage: {{...}}",
+	"tv.weather.ginger_island": "Ingwerinsel Wettervorhersage: {{...}}",
+	
+	"config.weather": "Wetter anzeigen",
+	"config.weather.desc": "Entscheide, wann die Wettermeldungen angezeigt werden sollen.",
+	
+	"config.weather.pelican_town": "Pelikan Stadt",
+	"config.weather.pelican_town.desc": "Wann soll das Wetter für Pelikan Stadt angezeigt werden?",
+	"config.weather.ginger_island": "Ingwerinsel",
+	"config.weather.ginger_island.desc": "Wann soll das Wetter für die Ingwerinsel angezeigt werden?",
+	
+	"config.weather.show.always": "Immer",
+	"config.weather.show.raining": "Bei Regen",
+	"config.weather.show.not_raining": "Bei keinem Regen",
+	"config.weather.show.never": "Nie",
+	
+	"config.birthdays": "Geburtstage anzeigen",
+	"config.birthdays.desc": "Entscheide, ob Meldungen über Geburtstage angezeigt werden sollen.",
+	"config.birthdays.desc2": "Wenn Geburtstage angezeigt werden",
+	
+	"config.birthdays.use_names": "Namen benutzen",
+	"config.birthdays.use_names.desc": "Namen von Dorfbewohnern anstelle des Icons anzeigen.",
+	
+	"config.luck": "Glück anzeigen",
+	"config.luck.desc": "Entscheide, ob Meldungen über tägliches Glück angezeigt werden sollen.",
+	
+	"config.luck.good": "Positives Glück zeigen",
+	"config.luck.good.desc": "Entscheide, ob Meldungen für positives Glück angezeigt werden sollen.",
+	"config.luck.neutral": "Neutrales Glück zeigen",
+	"config.luck.neutral.desc": "Entscheide, ob Meldungen für neutrales Glück angezeigt werden sollen.",
+	"config.luck.bad": "Negatives Glück zeigen",
+	"config.luck.bad.desc": "Entscheide, ob Meldungen für negatives Glück angezeigt werden sollen.",
+	
+	"config.recipes": "Rezepte anzeigen",
+	"config.recipes.desc": "Entscheide, ob Meldungen über Rezepte angezeigt werden sollen.",
+	
+	"config.recipes.new": "Neue Rezepte anzeigen",
+	"config.recipes.new.desc": "Meldungen über nicht bekannte Rezepte anzeigen.",
+	"config.recipes.learned": "Gelernte Rezepte anzeigen",
+	"config.recipes.learned.desc": "Meldungen über bereits bekannte Rezepte anzeigen.",
+	
+	"config.multiplayer": "Multiplayer",
+	"config.multiplayer.desc": "Ändere die Einstellungen die für andere Spieler genutzt werden.",
+	
+	"config.multiplayer.share": "Mit anderen Spielern teilen",
+	"config.multiplayer.share.desc": "Sendet die Meldungen auch an den Chat der Spieler, die den Mod nicht haben.",
+	"config.multiplayer.config": "Gleiche Einstellungen verwenden",
+	"config.multiplayer.config.desc": "Entscheide, ob die Einstellungene hier auch für andere Spieler verwendet werden sollen. Beim Senden von Meldungen an andere Spieler können auch andere Einstellungen als die hier festgelegten verwendet werden. Zum Anpassen der Optionen klicke die Überschrift Multiplayer.",
+	
+	"config.icons.spirits": "Geistericons",
+	"config.icons.spirits.desc": "Die Icons, die in den Meldungen für die Geister verwendet werden.",
+	
+	"config.icons.spirit": "Geister",
+	"config.icons.spirits.very_happy": "Sehr glücklich",
+	"config.icons.spirits.good_humor": "Gut gelaunt",
+	"config.icons.spirits.neutral": "Neutral",
+	"config.icons.spirits.somewhat_annoyed": "Absolut neutral",
+	"config.icons.spirits.mildly_perturbed": "Etwas genervt",
+	"config.icons.spirits.very_displeased": "Sehr unzufrieden",
+	
+	"config.icons.recipes": "Rezepticons",
+	"config.icons.recipes.desc": "Die Icons, die in den Meldungen für die Rezepte verwendet werden.",
+	
+	"config.icons.recipes.new": "Neues Rezept",
+	"config.icons.recipes.learned": "Gelerntes Rezepte",
+	
+	"config.icons.birthdays": "Geburtstagsicons",
+	"config.icons.birthdays.desc": "Die Icons, die in den Meldungen für Geburtstage verwendet werden.",
+	
+	"config.icons.birthdays.today": "Heutiger Geburtstag",
+	
+	"config.icons.weather": "Wettericons",
+	"config.icons.weather.desc": "Die Icons, die in den Meldungen für das Wetter verwendet werden.",
+	
+	"config.icons.weather.sunny": "Sonnig",
+	"config.icons.weather.sunny.desc": "Zeigt an, ob es am nächsten Tag sonnig sein wird.",
+	"config.icons.weather.rain": "Regen",
+	"config.icons.weather.rain.desc": "Zeigt an, ob es am nächsten Tag regnen wird.",
+	"config.icons.weather.thunder": "Gewitter",
+	"config.icons.weather.thunder.desc": "Zeigt an, ob es am nächsten Tag gewittern wird.",
+	"config.icons.weather.snow": "Schnee",
+	"config.icons.weather.snow.desc": "Zeigt an, ob es am nächsten Tag schneien wird.",
+	"config.icons.weather.festival": "Festival",
+	"config.icons.weather.festival.desc": "Wird zusammen mit dem Wetter angezeigt, wenn am nächsten Tag ein Festival ist.",
+	"config.icons.weather.wedding": "Hochzeit",
+	"config.icons.weather.wedding.desc": "Wird zusammen mit dem Wetter angezeigt, wenn am nächsten Tag eine Hochzeit ist."
+}

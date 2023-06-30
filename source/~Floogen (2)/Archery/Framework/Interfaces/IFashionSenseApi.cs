@@ -61,6 +61,7 @@ namespace Archery.Framework.Interfaces
         }
         KeyValuePair<bool, string> RegisterAppearanceDrawOverride(Type appearanceType, IManifest callerManifest, Func<IDrawTool, bool> appearanceDrawOverride);
         KeyValuePair<bool, string> UnregisterAppearanceDrawOverride(Type appearanceType, IManifest callerManifest);
+        KeyValuePair<bool, string> IsDrawOverrideActive(Type appearanceType, IManifest callerManifest);
 
         KeyValuePair<bool, Color> GetAppearanceColor(Type appearanceType, Farmer target = null);
     }

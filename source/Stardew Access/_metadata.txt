@@ -6,11 +6,11 @@ mods:
    Stardew Access
 
 latest commit:
-   commit e45268c4eaacd613a18244a03111644de36483c0
+   commit dd14eb9af61a0ba4166b85ce479241b4a3253ca1
    Author: Mohammad Shoaib Khan <shoaib.khan20@outlook.com>
-   Date:   Tue May 30 23:27:35 2023 +0530
+   Date:   Sat Jun 3 07:47:53 2023 +0530
    
-       Merge pull request #118 from khanshoaib3/Issue86
+       Merge pull request #119 from khanshoaib3/witchhut
        
-       Movie Ticket Counter
+       WitchHut
    

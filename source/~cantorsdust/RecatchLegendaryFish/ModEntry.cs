@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using cantorsdust.Common;
 using RecatchLegendaryFish.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -40,6 +41,7 @@ namespace RecatchLegendaryFish
         public override void Entry(IModHelper helper)
         {
             I18n.Init(helper.Translation);
+            CommonHelper.RemoveObsoleteFiles(this, "RecatchLegendaryFish.pdb");
 
             this.Config = helper.ReadConfig<ModConfig>();
 

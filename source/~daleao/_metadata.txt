@@ -14,9 +14,9 @@ mods:
    Walk of Life
 
 latest commit:
-   commit e11a46e3b11efc0edb8ae67f827e15f76c2367ec
+   commit 7f2ae764410f28cb9d89b3cad3299a4f58a90a9a
    Author: DaLion <daleao.matheus@gmail.com>
-   Date:   Tue May 30 13:30:34 2023 -0400
+   Date:   Sat Jun 24 23:44:30 2023 -0400
    
-       2.4.0
+       2.5.4
    

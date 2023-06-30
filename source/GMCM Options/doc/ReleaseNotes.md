@@ -9,6 +9,12 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.6.0
+
+Add dynamic paragraph option.  (Also supports styled text.)
+
+Minimum SMAPI version is now 3.17.0.
+
 ## Version 1.5.0
 
 The image picker now allows specification of a tooltip to show over

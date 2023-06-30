@@ -38,7 +38,7 @@ namespace StardewArchipelago.Locations.Festival
         public const string LUPINI_YEAR_2_PAINTING_2 = "Lupini: 1000 Years From Now";
         public const string LUPINI_YEAR_2_PAINTING_3 = "Lupini: Three Trees";
         public const string LUPINI_YEAR_3_PAINTING_1 = "Lupini: The Serpent";
-        public const string LUPINI_YEAR_3_PAINTING_2 = "Lupini: Tropical Fish #173";
+        public const string LUPINI_YEAR_3_PAINTING_2 = "Lupini: 'Tropical Fish #173'";
         public const string LUPINI_YEAR_3_PAINTING_3 = "Lupini: Land Of Clay";
         public const string SECRET_SANTA = "Secret Santa";
     }

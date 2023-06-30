@@ -1,0 +1,4 @@
+﻿{
+  "farm_confirmation": "Are you sure you want to switch the Farm Type to '{{name}}'?\nMake sure to create a Backup before saving!",
+  "change_farm": "Change Farmtype",
+}

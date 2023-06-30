@@ -17,6 +17,15 @@ namespace Shockah.FlexibleSprinklers
 {
 	public readonly struct SprinklerInfo : IEquatable<SprinklerInfo>
 	{
+		public static readonly Lazy<IReadOnlySet<IntPoint>> DefaultTier1Coverage = new(() => IntPoint.Zero.GetSpiralingTiles().Distinct().Take(4).ToHashSet());
+		public static readonly Lazy<IReadOnlySet<IntPoint>> DefaultTier2Coverage = new(() => IntPoint.Zero.GetSpiralingTiles().Distinct().Take(3 * 3 - 1).ToHashSet());
+		public static readonly Lazy<IReadOnlySet<IntPoint>> DefaultTier3Coverage = new(() => IntPoint.Zero.GetSpiralingTiles().Distinct().Take(5 * 5 - 1).ToHashSet());
+		public static readonly Lazy<IReadOnlySet<IntPoint>> DefaultTier4Coverage = new(() => IntPoint.Zero.GetSpiralingTiles().Distinct().Take(7 * 7 - 1).ToHashSet());
+		public static readonly Lazy<IReadOnlySet<IntPoint>> DefaultTier5Coverage = new(() => IntPoint.Zero.GetSpiralingTiles().Distinct().Take(9 * 9 - 1).ToHashSet());
+		public static readonly Lazy<IReadOnlySet<IntPoint>> DefaultTier6Coverage = new(() => IntPoint.Zero.GetSpiralingTiles().Distinct().Take(11 * 11 - 1).ToHashSet());
+		public static readonly Lazy<IReadOnlySet<IntPoint>> DefaultTier7Coverage = new(() => IntPoint.Zero.GetSpiralingTiles().Distinct().Take(13 * 13 - 1).ToHashSet());
+		public static readonly Lazy<IReadOnlySet<IntPoint>> DefaultTier8Coverage = new(() => IntPoint.Zero.GetSpiralingTiles().Distinct().Take(15 * 15 - 1).ToHashSet());
+
 		public readonly object Owner { get; init; }
 		public readonly IntRectangle OccupiedSpace { get; init; }
 		public readonly IReadOnlySet<IntPoint> Coverage { get; init; }

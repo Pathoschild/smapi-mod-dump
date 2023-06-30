@@ -11,7 +11,7 @@
 {
     "Name": "Recatch Legendary Fish",
     "Author": "cantorsdust and Pathoschild",
-    "Version": "1.8.3",
+    "Version": "1.8.4",
     "Description": "Lets you catch legendary fish again and again.",
     "UniqueID": "cantorsdust.RecatchLegendaryFish",
     "EntryDll": "RecatchLegendaryFish.dll",

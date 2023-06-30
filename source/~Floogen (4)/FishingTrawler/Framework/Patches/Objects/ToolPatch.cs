@@ -104,19 +104,19 @@ namespace FishingTrawler.Framework.Patches.Objects
             if (__instance.modData.ContainsKey(ModDataKeys.BAILING_BUCKET_KEY) && new BailingBucket(__instance) is BailingBucket bucket && bucket.IsValid)
             {
                 int spriteOffset = bucket.ContainsWater ? 16 : 0;
-                spriteBatch.Draw(FishingTrawler.assetManager.bucketTexture, location + new Vector2(32f, 32f), new Rectangle(spriteOffset, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f), 4f * (scaleSize + bucket.Scale), SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(FishingTrawler.assetManager.BucketTexture, location + new Vector2(32f, 32f), new Rectangle(spriteOffset, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f), 4f * (scaleSize + bucket.Scale), SpriteEffects.None, layerDepth);
 
                 return false;
             }
             else if (LostFishingCharm.IsValid(__instance))
             {
-                spriteBatch.Draw(FishingTrawler.assetManager.lostFishingCharmTexture, location + new Vector2(34f, 32f) * scaleSize, new Rectangle(0, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 4f, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(FishingTrawler.assetManager.LostFishingCharmTexture, location + new Vector2(34f, 32f) * scaleSize, new Rectangle(0, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 4f, SpriteEffects.None, layerDepth);
 
                 return false;
             }
             else if (Trident.IsValid(__instance))
             {
-                spriteBatch.Draw(FishingTrawler.assetManager.tridentTexture, location + new Vector2(34f, 32f) * scaleSize, new Rectangle(0, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 4f, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(FishingTrawler.assetManager.TridentTexture, location + new Vector2(34f, 32f) * scaleSize, new Rectangle(0, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 4f, SpriteEffects.None, layerDepth);
 
                 return false;
             }

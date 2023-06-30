@@ -25,7 +25,7 @@ using StardewValley.TerrainFeatures;
 #endregion using directives
 
 [UsedImplicitly]
-[IgnoreWithMod("aedenthorn.FruitTreeTweaks")]
+[ModConflict("aedenthorn.FruitTreeTweaks")]
 internal sealed class FruitTreeShakePatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="FruitTreeShakePatcher"/> class.</summary>
@@ -63,11 +63,11 @@ internal sealed class FruitTreeShakePatcher : HarmonyPatcher
                     new[] { new CodeInstruction(OpCodes.Ldarg_0) },
                     labels)
                 .Match(new[] { new CodeInstruction(OpCodes.Ldarg_0) })
-                .Count(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out var count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out var count)
                 .Remove(count)
-                .Count(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out count)
                 .Remove(count)
-                .Count(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Stloc_0) }, out count)
                 .Remove(count)
                 .StripLabels();
         }

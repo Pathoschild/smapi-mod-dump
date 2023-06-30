@@ -1,0 +1,25 @@
+{
+  "monsterName": "Shadow Brute",
+  "monsterType": "ShadowBrute",
+  "editableInGame": false,
+  "texture": null,
+  "barColor": {
+    "B": 52,
+    "G": 52,
+    "R": 52,
+    "A": 255
+  },
+  "borderColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "hpColor": {
+    "B": 0,
+    "G": 0,
+    "R": 0,
+    "A": 200
+  },
+  "heigth": 3
+}

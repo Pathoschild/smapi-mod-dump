@@ -63,6 +63,31 @@
   },
   "CollisionMap": "XXX\nXXX\nXXX\nXOX",
 
+  "DrawLayers": [
+    {
+      "SourceRect": "48 0 16 16",
+      "DrawPosition": {
+        "X": 16,
+        "Y": 48
+      },
+      "DrawInBackground": false,
+      "SortTileOffset": 0,
+      "Sequences": [
+        {
+          "Frame": 0,
+          "Duration": 100
+        },
+        {
+          "Frame": 1,
+          "Duration": 1000
+        }
+      ],
+      "SkinFilter": [
+        "Monster"
+      ]
+    }
+  ],
+
   "IndoorMap": "CustomTent",
   "TunnelDoors": [
     {

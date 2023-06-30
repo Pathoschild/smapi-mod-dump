@@ -201,7 +201,7 @@ namespace FishingTrawler.GameLocations
                     else
                     {
                         base.playSound("cancel");
-                    }    
+                    }
                 }
                 else if (actionProperty == "RefillEngine" && base.IsWithinRangeOfTile(tileLocation.X, tileLocation.Y, 1, 1, who) is true)
                 {

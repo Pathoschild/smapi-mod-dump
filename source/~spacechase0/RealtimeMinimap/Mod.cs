@@ -44,6 +44,8 @@ namespace RealtimeMinimap
 
         private static Timer timer;
 
+        private static Timer DelayTimer;
+
         public override void Entry(IModHelper helper)
         {
             I18n.Init(helper.Translation);
@@ -60,6 +62,13 @@ namespace RealtimeMinimap
             Mod.timer = new Timer();
             Mod.timer.Elapsed += (s, e) => { foreach (var state in Mod._state.GetActiveValues()) state.Value.DoRenderThisTick = true; };
             Mod.timer.AutoReset = true;
+
+            Mod.DelayTimer = new Timer
+            {
+                Interval = 1000
+            };
+            Mod.DelayTimer.Elapsed += (s, e) => { foreach (var state in Mod._state.GetActiveValues()) state.Value.DoRenderThisTick = true; };
+            Mod.DelayTimer.AutoReset = false;
             this.ResetTimer();
         }
 
@@ -203,7 +212,9 @@ namespace RealtimeMinimap
         {
             if (!Mod.State.ShowMinimap)
                 return;
-            Mod.State.DoRenderThisTick = true;
+            //Mod.State.DoRenderThisTick = true;
+            Mod.DelayTimer.Stop();
+            Mod.DelayTimer.Start();
         }
 
         private void OnUpdateTicking(object sender, UpdateTickingEventArgs e)

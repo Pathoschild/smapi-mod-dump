@@ -34,7 +34,7 @@ internal sealed class EnchantmentAssetRequestedEvent : AssetRequestedEvent
             new ModTextureProvider(ProvideGemSockets));
         //this.Provide(
         //    $"{Manifest.UniqueID}/QuincyCollisionAnimation",
-        //    new ModTextureProvider(() => "assets/vfx/quincy.png"));
+        //    new ModTextureProvider(() => "assets/sprites/quincy.png"));
     }
 
     #region editor callbacks
@@ -65,7 +65,7 @@ internal sealed class EnchantmentAssetRequestedEvent : AssetRequestedEvent
     /// <summary>Provides the correct gemstone socket texture path.</summary>
     private static string ProvideGemSockets()
     {
-        var path = "assets/menus/GemSocket_" + EnchantmentsModule.Config.SocketStyle;
+        var path = "assets/sprites/GemSocket_" + EnchantmentsModule.Config.SocketStyle;
         if (ModHelper.ModRegistry.IsLoaded("ManaKirel.VMI") ||
             ModHelper.ModRegistry.IsLoaded("ManaKirel.VintageInterface2"))
         {

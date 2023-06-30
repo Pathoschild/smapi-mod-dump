@@ -9,5 +9,14 @@
 *************************************************/
 
 {
-"NightMarket.001": "This here free coffee is great!$1"
+    "Changes": [
+      {
+        "Action": "EditData",
+        "Target": "Strings/schedules/Andy",
+        "Entries": 
+        {
+"NightMarket.001": "{{i18n:Andy.NightMarket.001}}",
+},
+      },
+    ]
 }

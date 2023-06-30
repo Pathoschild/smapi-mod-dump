@@ -93,7 +93,7 @@ internal sealed class TreeTickUpdatePatcher : HarmonyPatcher
             helper
                 .MatchProfessionCheck(Profession.Arborist.Value)
                 .Match(new[] { new CodeInstruction(OpCodes.Ldarg_0) }, ILHelper.SearchOption.Previous)
-                .Count(
+                .CountUntil(
                     new[]
                     {
                         new CodeInstruction(

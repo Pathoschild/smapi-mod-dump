@@ -1,0 +1,17 @@
+{
+  "ExpShareType": "Tile",
+  "OverlayButton": "K",
+  "OverlayOpacity": 0.5,
+  "ShareAllExpAtMaxLevel": true,
+  "NearbyPlayerTileRange": 25,
+  "ExpPercentageToActor": 0.75,
+  "VanillaSkillEnabled": [
+    true,
+    false,
+    true,
+    true,
+    true
+  ],
+  "SpaceCoreSkillEnabled": {},
+  "ExpPerParticle": 3
+}

@@ -38,11 +38,11 @@ All modules should be fully multiplayer and splitscreen-ready so long as all pla
 
 - **[SLNGS](Modules/Slingshots)** is the analogous module for Slingshots. Among other things, it provides Slingshots with the amenities neglected to them in Vanilla, including critical hits, enchantments and a special move.
 
-- **[TOLS](Modules/Tools)** is a one-stop-shop for tool customization and quality-of-life. It enables resource-tool charging, farming-tool customization, intelligent tool auto-selection, and even extends the enchantment pool, among other things.
+- **[TOLS](Modules/Tools)** is a one-stop-shop for tool customization and quality-of-life. It enables resource-tool charging, farming-tool customization, intelligent tool auto-selection, and even adds Radioactive tool upgrades, among other things.
 
 - **[ENCH](Modules/Enchantments)** is near-total rework of boring Vanilla enchantments, providing rebalanced gemstone enchantments and objectively improved replacements for Prismatic Shard enchantments, for both Melee Weapons and Slingshots.
 
-- **[RNGS](Modules/Rings)** overhauls underwhelming rings, with a large emphasis being on the Iridium Band. It introduces Gemstone Music Theory, which draws inspiration from real-life Music Theory, to provide a more interesting and balanced form of combining many rings. It also adds new crafting mechanics to create a more natural ring progression. **This module adds new items via Json Assets, and thus may cause Json Shuffle on existing saves.** 
+- **[RNGS](Modules/Rings)** overhauls underwhelming rings, with a major emphasis being on the Iridium Band. It introduces Gemstone Music Theory, which draws inspiration from real-life Music Theory, to provide a more interesting and balanced form of combining many rings. **This module adds new items via Json Assets, and thus may cause Json Shuffle on existing saves.** 
 
 - **[PNDS](Modules/Ponds)** is a complement to the new Aquarist profession. It allows Fish Ponds to produce Roe with scaling quantities and qualities, spontaneously grow algae, and even enrich the nuclei of metals.
 

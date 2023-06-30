@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <CheckEolTargetFramework>false</CheckEolTargetFramework>
     <EnableHarmony>true</EnableHarmony>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

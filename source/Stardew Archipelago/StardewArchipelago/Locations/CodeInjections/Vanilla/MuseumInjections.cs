@@ -31,6 +31,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         public const string MUSEUMSANITY_SKELETON_FRONT = "Skeleton Front";
         public const string MUSEUMSANITY_SKELETON_MIDDLE = "Skeleton Middle";
         public const string MUSEUMSANITY_SKELETON_BACK = "Skeleton Back";
+        private const string ARCHAEOLOGY_QUEST = "Archaeology";
 
         private static IMonitor _monitor;
         private static IModHelper _modHelper;
@@ -64,6 +65,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 CheckMilestones(numberOfArtifactsDonated, numberOfMineralsDonated, totalNumberDonated);
                 CheckSpecialCollections(museumItems);
                 CheckSpecificItems(museumItems);
+
+                if (totalNumberDonated > 0)
+                {
+                    _locationChecker.AddCheckedLocation(ARCHAEOLOGY_QUEST);
+                }
 
                 __result = rewards;
                 GoalCodeInjection.CheckCompleteCollectionGoalCompletion();

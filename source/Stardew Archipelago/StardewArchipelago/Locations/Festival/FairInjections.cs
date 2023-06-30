@@ -84,27 +84,32 @@ namespace StardewArchipelago.Locations.Festival
             }
         }
 
-        // public ShopMenu(Dictionary<ISalable, int[]> itemPriceAndStock, int currency = 0, string who = null, Func<ISalable, Farmer, int, bool> on_purchase = null, Func<ISalable, bool> on_sell = null, string context = null)
-        public static bool ShopMenu_HandleFairItems_Prefix(ShopMenu __instance, ref Dictionary<ISalable, int[]> itemPriceAndStock, int currency = 0, string who = null, Func<ISalable, Farmer, int, bool> on_purchase = null, Func<ISalable, bool> on_sell = null, string context = null)
+        private static ShopMenu _lastShopMenuUpdated = null;
+        // public override void update(GameTime time)
+        public static void Update_HandleFairItemsFirstTimeOnly_Postfix(ShopMenu __instance, GameTime time)
         {
             try
             {
-                if (currency != 1)
+                // We only run this once for each menu
+                if (_lastShopMenuUpdated == __instance || __instance.currency != 1)
                 {
-                    return true; //  run original logic
+                    return;
                 }
 
-                foreach (var salableItem in itemPriceAndStock.Keys.ToArray())
+                _lastShopMenuUpdated = __instance;
+                foreach (var salableItem in __instance.itemPriceAndStock.Keys.ToArray())
                 {
-                    _shopReplacer.ReplaceShopItem(itemPriceAndStock, salableItem, FestivalLocationNames.RARECROW_1, item => _shopReplacer.IsRarecrow(item, 1));
-                    _shopReplacer.ReplaceShopItem(itemPriceAndStock, salableItem, FestivalLocationNames.FAIR_STARDROP, (Object item) => item.ParentSheetIndex == 434);
+                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.RARECROW_1, item => _shopReplacer.IsRarecrow(item, 1));
+                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.FAIR_STARDROP, (Object item) => item.ParentSheetIndex == 434);
                 }
-                return true; //  run original logic
+
+                __instance.forSale = __instance.itemPriceAndStock.Keys.ToList();
+                return;
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(ShopMenu_HandleFairItems_Prefix)}:\n{ex}", LogLevel.Error);
-                return true; // run original logic
+                _monitor.Log($"Failed in {nameof(Update_HandleFairItemsFirstTimeOnly_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
             }
         }
     }

@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework;
 
 namespace Survivalistic.Framework.Bars
 {
-    public class BarsPosition
+    public static class BarsPosition
     {
         public static Vector2 barPosition;
 
@@ -31,8 +31,7 @@ namespace Survivalistic.Framework.Bars
             switch (ModEntry.config.bars_position)
             {
                 case "bottom-right":
-                    if (current_location.Contains("UndergroundMine") || current_location.Contains("VolcanoDungeon") || Game1.player.health < Game1.player.maxHealth) barPosition.X = sizeUI.X - 171;
-                    else barPosition.X = sizeUI.X - 116;
+                    barPosition.X = GetPositionInRightBottomCorner();
                     barPosition.Y = sizeUI.Y;
                     BarsDatabase.right_side = true;
                     break;
@@ -64,8 +63,7 @@ namespace Survivalistic.Framework.Bars
 
                 case "top-left":
                     barPosition.X = 70;
-                    if (current_location.Contains("UndergroundMine")) barPosition.Y = 320;
-                    else if (current_location.Contains("VolcanoDungeon") && current_location != "VolcanoDungeon0") barPosition.Y = 320;
+                    if (CheckCavernLevelIsVisible(current_location)) barPosition.Y = 320;
                     else barPosition.Y = 260;
                     BarsDatabase.right_side = false;
                     break;
@@ -78,5 +76,46 @@ namespace Survivalistic.Framework.Bars
                     break;
             }
         }
+
+        /// <summary>
+        /// Cause right bottom corner contains a lot of dynamic bars, so I moved this logic to this function.
+        /// </summary>
+        /// <returns>Position on 'X' axis.</returns>
+        private static float GetPositionInRightBottomCorner()
+        {
+            #region Used variables.
+
+            float position;
+
+            bool inDangerous = CheckToDangerous();
+            bool ultimateIsVisible = false;
+            #endregion
+
+            // Player is Safe, Ultimate isn't Visible.
+            if (!inDangerous && !ultimateIsVisible)
+                position = sizeUI.X - 116;
+
+            // Player is Safe, Ultimate is Visible.
+            else if (!inDangerous && ultimateIsVisible)
+                position = sizeUI.X - 171;
+
+            // Player isn't Safe, Ultimate isn't Visible.
+            else if (inDangerous && !ultimateIsVisible)
+                position = sizeUI.X - 171;
+
+            // Player isn't Safe, Ultimate is Visible.
+            else
+                position = sizeUI.X - 226;
+
+            return position;
+
+        }
+
+        private static bool CheckToDangerous() =>
+                            Game1.showingHealth;
+
+        private static bool CheckCavernLevelIsVisible(string locationName) =>
+                            current_location.Contains("UndergroundMine") || current_location.Contains("SkullCavern") || 
+                            (current_location.Contains("VolcanoDungeon") && current_location != "VolcanoDungeon0");
     }
 }

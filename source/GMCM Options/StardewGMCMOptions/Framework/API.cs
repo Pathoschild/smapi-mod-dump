@@ -24,11 +24,13 @@ namespace GMCMOptions.Framework {
     public class API : IGMCMOptionsAPI, IObsoleteApiMethods {
         private readonly IModHelper Helper;
         private readonly IMonitor Monitor;
+        private readonly IModInfo ClientMod;
         private readonly IModRegistry modRegistry;
         private bool fixedHeight;
-        public API(IModHelper helper, IMonitor monitor) {
+        public API(IModHelper helper, IMonitor monitor, IModInfo clientMod) {
             Helper = helper;
             this.Monitor = monitor;
+            this.ClientMod = clientMod;
             this.modRegistry = helper.ModRegistry;
             IModInfo? gmcm = modRegistry.Get("spacechase0.GenericModConfigMenu");
             if (gmcm is null) {
@@ -233,6 +235,23 @@ namespace GMCMOptions.Framework {
                 getColor: getColor,
                 getShadowColor: getShadowColor
             );
+            gmcm.AddComplexOption(
+                mod: mod,
+                name: () => "",
+                draw: option.Draw,
+                height: option.OptionHeight);
+        }
+
+        /// <inheritdoc/>
+        public void AddDynamicParagraph(IManifest mod, string logName, Func<string> text, bool isStyledText) {
+            var gmcm = modRegistry.GetApi<GMCMAPI>("spacechase0.GenericModConfigMenu");
+            if (gmcm == null) return;
+            var log = (string err, LogLevel level) => {
+                Monitor.Log($"[{ClientMod.Manifest.Name}] dynamic paragraph \"{logName}\": {err}", level);
+            };
+            DynamicParagraphOption option = new DynamicParagraphOption(
+                getText: text,
+                textLayoutEngine: isStyledText ? new StyledTextLayoutEngine(log) : new GameTextLayoutEngine());
             gmcm.AddComplexOption(
                 mod: mod,
                 name: () => "",

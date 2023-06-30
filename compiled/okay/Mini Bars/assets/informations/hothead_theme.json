@@ -1,0 +1,25 @@
+{
+  "monsterName": "Hot Head",
+  "monsterType": "MetalHead",
+  "editableInGame": false,
+  "texture": null,
+  "barColor": {
+    "B": 43,
+    "G": 93,
+    "R": 255,
+    "A": 255
+  },
+  "borderColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "hpColor": {
+    "B": 0,
+    "G": 0,
+    "R": 255,
+    "A": 200
+  },
+  "heigth": 3
+}

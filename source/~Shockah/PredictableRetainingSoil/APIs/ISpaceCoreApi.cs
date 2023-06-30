@@ -11,10 +11,9 @@
 using System;
 using System.Reflection;
 
-namespace Shockah.PredictableRetainingSoil
+namespace Shockah.PredictableRetainingSoil;
+
+public interface ISpaceCoreApi
 {
-	public interface ISpaceCoreApi
-	{
-		void RegisterCustomProperty(Type declaringType, string name, Type propType, MethodInfo getter, MethodInfo setter);
-	}
+	void RegisterCustomProperty(Type declaringType, string name, Type propType, MethodInfo getter, MethodInfo setter);
 }

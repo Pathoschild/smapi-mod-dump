@@ -7,11 +7,9 @@ mods:
    Mushroom Propagator Automation
 
 latest commit:
-   commit 7f6990238b241f8e48bad2c3165aa95e7acbf4a7
-   Author: blueberry <dearbblueberry@gmail.com>
-   Date:   Thu Nov 24 22:59:19 2022 +1100
+   commit af93dcbbb2c2da131d28e44049557208b953fd78
+   Author: b-b-blueberry <dearbblueberry@gmail.com>
+   Date:   Mon Jun 26 01:42:42 2023 +1000
    
-       Merge pull request #1 from atravita-mods/master
-       
-       Update for latest dependencies, deshuffle held items, refactoring.
+       Update project versioning.
    

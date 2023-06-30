@@ -6,9 +6,9 @@ mods:
    Stardew Archipelago
 
 latest commit:
-   commit 3c303b34d22788beacd61f10893981b158200d03
+   commit 42cf8ffc925b42cac9ec6de06998a12db82663c9
    Author: Alex Gilbert <alexgilbert@yahoo.com>
-   Date:   Tue May 30 21:09:45 2023 -0400
+   Date:   Tue Jun 27 14:32:48 2023 -0400
    
-       - Fix beach bridge display
+       - Fixed fishsanity letters and stardrop stuff
    

@@ -40,6 +40,11 @@ namespace Archery.Framework.Managers
             return _fashionSenseApi is not null;
         }
 
+        internal bool IsFashionSenseDrawOverrideActive()
+        {
+            return IsFashionSenseLoaded() is true && _fashionSenseApi.IsDrawOverrideActive(Interfaces.IFashionSenseApi.Type.Sleeves, Archery.manifest).Key is true;
+        }
+
         internal bool HookIntoFashionSense(IModHelper helper)
         {
             _fashionSenseApi = helper.ModRegistry.GetApi<IFashionSenseApi>("PeacefulEnd.FashionSense");

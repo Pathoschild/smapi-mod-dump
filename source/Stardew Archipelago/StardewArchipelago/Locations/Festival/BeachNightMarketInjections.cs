@@ -47,7 +47,7 @@ namespace StardewArchipelago.Locations.Festival
             {
                 foreach (var salableItem in __result.Keys.ToArray())
                 {
-                    if (salableItem is not Object salableObject)
+                    if (salableItem is not Item)
                     {
                         continue;
                     }
@@ -92,10 +92,10 @@ namespace StardewArchipelago.Locations.Festival
 
                 __result = true;
                 var paintingLocations = GetPaintingLocations();
-                var year = (Game1.year % 3) + 1;
+                var month = (int)((Game1.stats.daysPlayed / 28) % 3) + 1;
                 var day = __instance.getDayOfNightMarket();
-                var paintingLocationSoldToday = paintingLocations[year][day];
-                var paintingMailKey = $"NightMarketYear{Game1.year}Day{__instance.getDayOfNightMarket()}_paintingSold";
+                var paintingLocationSoldToday = paintingLocations[month][day];
+                // var paintingMailKey = $"NightMarketYear{Game1.year}Day{__instance.getDayOfNightMarket()}_paintingSold";
                 if (_locationChecker.IsLocationChecked(paintingLocationSoldToday))
                 {
                     Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:BeachNightMarket_PainterSold"));
@@ -110,11 +110,12 @@ namespace StardewArchipelago.Locations.Festival
                 Game1.player.Money -= 1200;
                 Game1.activeClickableMenu = (IClickableMenu)null;
                 _locationChecker.AddCheckedLocation(paintingLocationSoldToday);
+                Game1.player.CanMove = true;
                 return false; // don't run original logic
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(GetMagicShopStock_UniqueItemsAndSeeds_Postfix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(AnswerDialogueAction_LupiniPainting_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
         }

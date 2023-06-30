@@ -25,7 +25,7 @@ using HarmonyLib;
 #endregion using directives
 
 [UsedImplicitly]
-[RequiresMod("Pathoschild.Automate")]
+[ModRequirement("Pathoschild.Automate")]
 [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch specifies the mod in file name but not class to avoid breaking pattern.")]
 internal sealed class FruitTreeMachineGetOutputPatcher : HarmonyPatcher
 {
@@ -71,11 +71,11 @@ internal sealed class FruitTreeMachineGetOutputPatcher : HarmonyPatcher
                     new[] { new CodeInstruction(OpCodes.Ldloc_0) },
                     labels)
                 .Match(new[] { new CodeInstruction(OpCodes.Ldloc_0) })
-                .Count(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out var count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out var count)
                 .Remove(count)
-                .Count(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out count)
                 .Remove(count)
-                .Count(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Stloc_1) }, out count)
                 .Remove(count)
                 .StripLabels();
         }

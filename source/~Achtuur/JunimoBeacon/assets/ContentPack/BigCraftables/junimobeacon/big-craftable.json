@@ -1,0 +1,45 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Achtuur/StardewTravelSkill
+**
+*************************************************/
+
+{
+    "Name": "Junimo Beacon",
+    "Price": 0,
+    "Description": "Beacon that can be used to extend the range of Junimos in the Junimo Huts.",
+    "ProvidesLight": true,
+    "Recipe": {
+        "ResultCount": 1,
+        "IsDefault":  false,
+        //"CanPurchase": false,
+        //"PurchaseFrom": "Wizard",
+        //"PurchasePrice": 10000,
+        //"PurchaseRequirements": [
+        //    //"n Achtuur.PrismaticStatue.StatueRecipeMail"
+        //    "n Achtuur.JunimoBeacon.BeaconRecipeMail"
+        //],
+        "Ingredients": [
+            {
+                "Object": 268, // Star fruit
+                "Count": 1
+            },
+            {
+                "Object": 771, // 10 Fiber
+                "Count": 10
+            },
+            {
+                "Object": 330, // 5 Clay
+                "Count": 5
+            },
+            {
+                "Object": 768, // 1 solar essence
+                "Count": 1
+            }
+        ]
+    }
+}

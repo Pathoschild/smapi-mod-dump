@@ -10,6 +10,11 @@ for queries and analysis.**
 
 # Release notes
 
+## 1.1.1
+Released 15 June 2023.
+
+* Excluded item pedestals, torches and scarecrows from being treated as machines.
+
 ## 1.1.0
 Released 10 February 2023.
 

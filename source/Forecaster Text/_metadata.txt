@@ -6,9 +6,9 @@ mods:
    Forecaster Text
 
 latest commit:
-   commit 6439e90881254d2eadb256faa3bb22b982bec026
+   commit 9c5db8ccc8cd3d50a7fab74965520ce5ae1634d3
    Author: 7873930+GStefanowich <7873930+GStefanowich@users.noreply.github.com>
-   Date:   Sun May 28 20:33:01 2023 -0400
+   Date:   Fri Jun 16 03:22:15 2023 -0400
    
-       Fixed Dictionary out-of-bound issue with AnimalHusbandry mod
+       Russian tweaks from @fixn0ll
    

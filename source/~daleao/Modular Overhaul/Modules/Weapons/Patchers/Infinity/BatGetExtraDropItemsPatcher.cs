@@ -51,7 +51,7 @@ internal sealed class BatGetExtraDropItemsPatcher : HarmonyPatcher
                         new CodeInstruction(OpCodes.Newobj, typeof(MeleeWeapon).RequireConstructor(typeof(int))),
                     })
                 .StripLabels(out var labels)
-                .Count(
+                .CountUntil(
                     new[]
                     {
                         new CodeInstruction(

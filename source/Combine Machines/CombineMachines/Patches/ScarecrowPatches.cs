@@ -11,6 +11,7 @@
 using CombineMachines.Helpers;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Network;
 using System;
@@ -19,19 +20,43 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using SObject = StardewValley.Object;
 
 namespace CombineMachines.Patches
 {
+#if NEVER // Legacy Code
     [HarmonyPatch(typeof(Farm), nameof(Farm.addCrows))]
     public static class ScarecrowPatches
     {
         public static int GetScarecrowBaseRadius(this SObject Obj)
         {
+#if NEVER // Legacy Code
             if (Obj.IsScarecrow())
                 return Obj.ParentSheetIndex == 167 ? 17 : 9;
             else
                 return 9;
+#else // Copied from decompiled source code: StardewValley.Object.GetRadiusForScarecrow (as of Game version: 1.5.6 Hotfix #3)
+            foreach (string contextTag in Obj.GetContextTags())
+            {
+                if (contextTag != null && contextTag.StartsWith("crow_scare_radius_"))
+                {
+                    string s = contextTag.Substring("crow_scare_radius".Length + 1);
+                    int result = 0;
+                    if (int.TryParse(s, out result))
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            if (Obj.Name.Contains("Deluxe"))
+            {
+                return 17;
+            }
+
+            return 9;
+#endif
         }
 
         public static int GetScarecrowRadius(this SObject Obj)
@@ -180,6 +205,41 @@ namespace CombineMachines.Patches
             }
 
             return patched.AsEnumerable();
+        }
+    }
+#endif
+
+    [HarmonyPatch(typeof(SObject), nameof(SObject.GetRadiusForScarecrow))]
+    public static class ScarecrowPatchesV2
+    {
+        public static double GetScarecrowRadiusMultiplier(this SObject Obj)
+        {
+            if (Obj.IsScarecrow() && Obj.IsCombinedMachine())
+            {
+                double TilesMultiplier = Obj.GetProcessingPower();
+                double RadiusMultiplier = Math.Sqrt(TilesMultiplier);
+                return RadiusMultiplier;
+            }
+            else
+                return 1.0;
+        }
+
+        public static void Postfix(SObject __instance, ref int __result)
+        {
+            try
+            {
+                if (__instance.TryGetCombinedQuantity(out int Qty))
+                {
+                    int BaseRadius = __result;
+                    double RadiusMultiplier = __instance.GetScarecrowRadiusMultiplier();
+                    double Result = BaseRadius * RadiusMultiplier;
+                    __result = (int)Math.Round(Result, MidpointRounding.AwayFromZero);
+                }
+            }
+            catch (Exception ex)
+            {
+                ModEntry.Logger.Log($"Unhandled Error in {nameof(ScarecrowPatchesV2)}.{nameof(Postfix)}:\n{ex}", LogLevel.Error);
+            }
         }
     }
 }

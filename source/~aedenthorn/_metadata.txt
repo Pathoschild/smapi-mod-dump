@@ -11,6 +11,7 @@ mods:
    Advanced Menu Positioning
    AFK Pause
    All Chests Menu
+   Animal Dialogue Framework
    Animated Parrot and Perch
    Another Jump Mod
    April Bug Fix Suite
@@ -25,6 +26,7 @@ mods:
    Chess Boards
    Coin Collector
    Connected Garden Pots
+   Cooperative Egg Hunt
    Craft and Build from Containers
    Craftable Butterfly Hutches
    Craftable Terrarium
@@ -82,6 +84,7 @@ mods:
    Food on the Table
    Free Love
    Friendly Divorce
+   Friendship Tweaks
    Fruit Tree Shaker
    Fruit Tree Tweaks
    Furniture Adjustment
@@ -113,6 +116,7 @@ mods:
    Mailbox Menu
    Map Editor
    Map Teleport
+   Mayo Mart
    Meteor Defence
    Mobile Arcade
    Mobile Audio Player
@@ -156,6 +160,7 @@ mods:
    Planter Trees
    Play Prairie King With NPCs
    Playground Mod
+   Poop Framework
    Prismatic Fire
    Prismatic Furniture
    Purist Mod
@@ -163,6 +168,7 @@ mods:
    Quick Load
    Quick Responses
    Quotes
+   Rainbow Trail
    Random NPCs
    Realistic Random Names
    Restauranteer
@@ -213,9 +219,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 8ef8cc8afc104cb08b74df23908eb1b3037b88df
+   commit 50f6a56e751fb92c643aa5f89f61b570ab810b4f
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sun May 28 13:35:29 2023 -0400
+   Date:   Sun Jun 25 16:36:01 2023 -0400
    
        etc
    

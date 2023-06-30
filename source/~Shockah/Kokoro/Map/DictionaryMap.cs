@@ -12,52 +12,51 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Shockah.Kokoro.Map
+namespace Shockah.Kokoro.Map;
+
+public sealed class DictionaryMap<TTile> : IMap<TTile>.Writable
 {
-	public sealed class DictionaryMap<TTile> : IMap<TTile>.Writable
+	public TTile this[IntPoint point]
 	{
-		public TTile this[IntPoint point]
+		get
 		{
-			get
-			{
-				if (Dictionary.TryGetValue(point, out var value))
-					return value;
-				return DefaultTile(point);
-			}
-			set
-			{
-				Dictionary[point] = value;
-			}
+			if (Dictionary.TryGetValue(point, out var value))
+				return value;
+			return DefaultTile(point);
 		}
-
-		private readonly Dictionary<IntPoint, TTile> Dictionary = new();
-		private readonly Func<IntPoint, TTile> DefaultTile;
-
-		public DictionaryMap(TTile defaultTile) : this(_ => defaultTile) { }
-
-		public DictionaryMap(Func<IntPoint, TTile> defaultTile)
+		set
 		{
-			this.DefaultTile = defaultTile;
+			Dictionary[point] = value;
 		}
+	}
 
-		public override bool Equals(object? obj)
-		{
-			if (obj is not DictionaryMap<TTile> other)
-				return false;
-			if (!other.Dictionary.ToHashSet().SequenceEqual(Dictionary.ToHashSet()))
-				return false;
-			return true;
-		}
+	private readonly Dictionary<IntPoint, TTile> Dictionary = new();
+	private readonly Func<IntPoint, TTile> DefaultTile;
 
-		public override int GetHashCode()
-			=> base.GetHashCode();
+	public DictionaryMap(TTile defaultTile) : this(_ => defaultTile) { }
 
-		public DictionaryMap<TTile> Clone()
-		{
-			DictionaryMap<TTile> clone = new(DefaultTile);
-			foreach (var (point, tile) in Dictionary)
-				clone.Dictionary[point] = tile;
-			return clone;
-		}
+	public DictionaryMap(Func<IntPoint, TTile> defaultTile)
+	{
+		this.DefaultTile = defaultTile;
+	}
+
+	public override bool Equals(object? obj)
+	{
+		if (obj is not DictionaryMap<TTile> other)
+			return false;
+		if (!other.Dictionary.ToHashSet().SequenceEqual(Dictionary.ToHashSet()))
+			return false;
+		return true;
+	}
+
+	public override int GetHashCode()
+		=> base.GetHashCode();
+
+	public DictionaryMap<TTile> Clone()
+	{
+		DictionaryMap<TTile> clone = new(DefaultTile);
+		foreach (var (point, tile) in Dictionary)
+			clone.Dictionary[point] = tile;
+		return clone;
 	}
 }

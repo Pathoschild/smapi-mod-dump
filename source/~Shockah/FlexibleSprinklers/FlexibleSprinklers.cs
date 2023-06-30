@@ -94,12 +94,38 @@ namespace Shockah.FlexibleSprinklers
 
 		public override void MigrateConfig(ISemanticVersion? configVersion, ISemanticVersion modVersion)
 		{
-			if (configVersion is not null && configVersion.IsOlderThan("2.0.0"))
+			if (configVersion is null)
+				return;
+
+			if (configVersion.IsOlderThan("2.0.0"))
 			{
 				if (Config.SprinklerBehavior == SprinklerBehaviorEnum.Flexible)
 					Config.SprinklerBehavior = SprinklerBehaviorEnum.Cluster;
 				else if (Config.SprinklerBehavior == SprinklerBehaviorEnum.FlexibleWithoutVanilla)
 					Config.SprinklerBehavior = SprinklerBehaviorEnum.ClusterWithoutVanilla;
+			}
+
+			if (configVersion.IsOlderThan("2.1.0"))
+			{
+				if (Config.ExtensionData.TryGetValue("Tier1Power", out var powerToken))
+					Config.Tier1Coverage = IntPoint.Zero.GetSpiralingTiles().Distinct().Take((int)powerToken).ToHashSet();
+				if (Config.ExtensionData.TryGetValue("Tier2Power", out powerToken))
+					Config.Tier2Coverage = IntPoint.Zero.GetSpiralingTiles().Distinct().Take((int)powerToken).ToHashSet();
+				if (Config.ExtensionData.TryGetValue("Tier3Power", out powerToken))
+					Config.Tier3Coverage = IntPoint.Zero.GetSpiralingTiles().Distinct().Take((int)powerToken).ToHashSet();
+				if (Config.ExtensionData.TryGetValue("Tier4Power", out powerToken))
+					Config.Tier4Coverage = IntPoint.Zero.GetSpiralingTiles().Distinct().Take((int)powerToken).ToHashSet();
+				if (Config.ExtensionData.TryGetValue("Tier5Power", out powerToken))
+					Config.Tier5Coverage = IntPoint.Zero.GetSpiralingTiles().Distinct().Take((int)powerToken).ToHashSet();
+				if (Config.ExtensionData.TryGetValue("Tier6Power", out powerToken))
+					Config.Tier6Coverage = IntPoint.Zero.GetSpiralingTiles().Distinct().Take((int)powerToken).ToHashSet();
+				if (Config.ExtensionData.TryGetValue("Tier7Power", out powerToken))
+					Config.Tier7Coverage = IntPoint.Zero.GetSpiralingTiles().Distinct().Take((int)powerToken).ToHashSet();
+				if (Config.ExtensionData.TryGetValue("Tier8Power", out powerToken))
+					Config.Tier8Coverage = IntPoint.Zero.GetSpiralingTiles().Distinct().Take((int)powerToken).ToHashSet();
+
+				for (int i = 1; i <= 8; i++)
+					Config.ExtensionData.Remove($"Tier{i}Power");
 			}
 		}
 
@@ -299,15 +325,15 @@ namespace Shockah.FlexibleSprinklers
 			helper.AddBoolOption("config.coverage.onPlacement", () => Config.ShowCoverageOnPlacement);
 			helper.AddBoolOption("config.coverage.onAction", () => Config.ShowCoverageOnAction);
 
-			helper.AddSectionTitle("config.sprinklerPower.section");
-			helper.AddNumberOption("config.sprinklerPower.tier1", () => Config.Tier1Power, min: 0);
-			helper.AddNumberOption("config.sprinklerPower.tier2", () => Config.Tier2Power, min: 0);
-			helper.AddNumberOption("config.sprinklerPower.tier3", () => Config.Tier3Power, min: 0);
-			helper.AddNumberOption("config.sprinklerPower.tier4", () => Config.Tier4Power, min: 0);
-			helper.AddNumberOption("config.sprinklerPower.tier5", () => Config.Tier5Power, min: 0);
-			helper.AddNumberOption("config.sprinklerPower.tier6", () => Config.Tier6Power, min: 0);
-			helper.AddNumberOption("config.sprinklerPower.tier7", () => Config.Tier7Power, min: 0);
-			helper.AddNumberOption("config.sprinklerPower.tier8", () => Config.Tier8Power, min: 0);
+			helper.AddSectionTitle("config.sprinklerCoverage.section");
+			helper.AddSelectableGridOption("config.sprinklerCoverage.tier1", () => (IReadOnlySet<IntPoint>)Config.Tier1Coverage, value => Config.Tier1Coverage = value.ToHashSet());
+			helper.AddSelectableGridOption("config.sprinklerCoverage.tier2", () => (IReadOnlySet<IntPoint>)Config.Tier2Coverage, value => Config.Tier2Coverage = value.ToHashSet());
+			helper.AddSelectableGridOption("config.sprinklerCoverage.tier3", () => (IReadOnlySet<IntPoint>)Config.Tier3Coverage, value => Config.Tier3Coverage = value.ToHashSet());
+			helper.AddSelectableGridOption("config.sprinklerCoverage.tier4", () => (IReadOnlySet<IntPoint>)Config.Tier4Coverage, value => Config.Tier4Coverage = value.ToHashSet());
+			helper.AddSelectableGridOption("config.sprinklerCoverage.tier5", () => (IReadOnlySet<IntPoint>)Config.Tier5Coverage, value => Config.Tier5Coverage = value.ToHashSet());
+			helper.AddSelectableGridOption("config.sprinklerCoverage.tier6", () => (IReadOnlySet<IntPoint>)Config.Tier6Coverage, value => Config.Tier6Coverage = value.ToHashSet());
+			helper.AddSelectableGridOption("config.sprinklerCoverage.tier7", () => (IReadOnlySet<IntPoint>)Config.Tier7Coverage, value => Config.Tier7Coverage = value.ToHashSet());
+			helper.AddSelectableGridOption("config.sprinklerCoverage.tier8", () => (IReadOnlySet<IntPoint>)Config.Tier8Coverage, value => Config.Tier8Coverage = value.ToHashSet());
 		}
 
 		private void SetupSprinklerBehavior()
@@ -392,8 +418,29 @@ namespace Shockah.FlexibleSprinklers
 
 		internal SprinklerInfo GetSprinklerInfo(SObject sprinkler)
 		{
+			IntPoint sprinklerLocation = new((int)sprinkler.TileLocation.X, (int)sprinkler.TileLocation.Y);
 			var layout = GetUnmodifiedSprinklerCoverage(sprinkler);
-			return new SprinklerInfo(sprinkler, new(new((int)sprinkler.TileLocation.X, (int)sprinkler.TileLocation.Y)), layout);
+			var offsetLayout = layout.Select(t => t - sprinklerLocation).ToHashSet();
+
+			if (offsetLayout.SetEquals(SprinklerInfo.DefaultTier1Coverage.Value))
+				offsetLayout = Config.Tier1Coverage.ToHashSet();
+			else if (offsetLayout.SetEquals(SprinklerInfo.DefaultTier2Coverage.Value))
+				offsetLayout = Config.Tier2Coverage.ToHashSet();
+			else if (offsetLayout.SetEquals(SprinklerInfo.DefaultTier3Coverage.Value))
+				offsetLayout = Config.Tier3Coverage.ToHashSet();
+			else if (offsetLayout.SetEquals(SprinklerInfo.DefaultTier4Coverage.Value))
+				offsetLayout = Config.Tier4Coverage.ToHashSet();
+			else if (offsetLayout.SetEquals(SprinklerInfo.DefaultTier5Coverage.Value))
+				offsetLayout = Config.Tier5Coverage.ToHashSet();
+			else if (offsetLayout.SetEquals(SprinklerInfo.DefaultTier6Coverage.Value))
+				offsetLayout = Config.Tier6Coverage.ToHashSet();
+			else if (offsetLayout.SetEquals(SprinklerInfo.DefaultTier7Coverage.Value))
+				offsetLayout = Config.Tier7Coverage.ToHashSet();
+			else if (offsetLayout.SetEquals(SprinklerInfo.DefaultTier8Coverage.Value))
+				offsetLayout = Config.Tier8Coverage.ToHashSet();
+
+			layout = offsetLayout.Select(t => t + sprinklerLocation).ToHashSet();
+			return new SprinklerInfo(sprinkler, new(sprinklerLocation), layout);
 		}
 
 		public int GetSprinklerPower(SObject sprinkler)

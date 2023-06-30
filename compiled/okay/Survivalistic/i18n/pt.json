@@ -1,0 +1,70 @@
+{
+  // Info warnings.
+  "hunger-warning": "Voce esta com fome! Coma algo!",
+  "hunger-source": "Fome",
+
+  "thirsty-warning": "Voce esta com sede! Beba algo!",
+  "thirsty-source": "Sede",
+
+  // Info debuffs.
+  "pass-out": "Voce desmaiou. Coma ou beba algo!",
+  "pass-out-source": "Exaustao corporal",
+
+  // Info buffs.
+  "buff.fullness.description": "Voce esta cheio e se sentindo muito poderoso!",
+  "buff.fullness.source": "Comer demais",
+
+  "buff.hydrated.description": "Voce bebeu demais",
+  "buff.hydrated.source": "Beber demais",
+
+  // Info messages.
+  "info-fullness": "+{0} cheio.",
+  "info-thirsty": "+{0} sedento.",
+
+  // Settings.
+  "multiplier-settings": "Configuracoes do Multiplayer",
+  "multiplier-settings-des": "Multiplicadores de fome e sede afetam a velocidade que voce perde os mesmos.",
+
+  "main-hunger-setting": "Multiplicador de Fome Passiva",
+  "main-hunger-setting-des": "Afeta a perda passiva de fome (todo segundo).",
+
+  "main-thirst-setting": "Multiplicador de Sede Passiva",
+  "main-thirst-setting-des": "Afeta a perda passiva de sede (todo segundo).",
+
+  "action-hunger-setting": "Fome ao realizar acao",
+  "action-hunger-setting-des": "Afeta o ganho de fome ao usar uma ferramenta (ex. Machado ou Picareta).",
+
+  "action-thirst-setting": "Sede ao realizar acao",
+  "action-thirst-setting-des": "Afeta o ganho de fome ao usar uma ferramenta (ex. Machado ou Picareta).\nNormalmente, voce perde o dobro de sede ao usar ferramentas.",
+
+
+  "bars-position-settings": "Configuracoes de Barras",
+  "bars-position-settings-des": "Seta os valores que determina a posicao das barras.",
+
+  "bars-position-variant": "Posicionamento de Barras",
+  "bars-position-variant-des": "Seta a posicao das barras, precisa ser UM destes:\n 'custom';\n 'bottom-right';\n 'bottom-left';\n 'middle-right';\n 'middle-left';\n 'top-left';\n 'top-right'.",
+
+  "bars-position-x": "Posicao 'X' das Barras",
+  "bars-position-x-des": "Adiciona distancia horizontal para as barras, calculado com base na posicao atual.\nFunciona apenas se 'Posicionamento de Barras' estiver definida para 'custom'.",
+
+  "bars-position-y": "Posicao 'Y' das Barras",
+  "bars-position-y-des": "Adiciona distancia vertical para as barras, calculado com base na posicao atual.\nFunciona apenas se 'Posicionamento de Barras' estiver definida para 'custom'.",
+
+
+  "compatibility-settings": "Compatibilidade",
+  "compatibility-settings-des": "Ativa ou Desativa a compatibilidade com alguns mods.",
+
+  "non-supported-food": "Ativar 'Comidas nao-suportadas'.",
+  "non-supported-food-des": "Se estiver ativo, o mod ira criar valores para fome e sede para as comidas nao-suportadas.",
+
+  "sleep-options": "Opcoes de Dormir",
+
+  "sleep-decrease": "Dormir Diminui os Status",
+  "sleep-decrease-des": "Se estiver ativo, dormir ira diminuir seus status.",
+
+  "hunger-increase-after-sleep": "Aumento de fome",
+  "hunger-increase-after-sleep-des": "Ira aumentar sua fome apos dormir.\nRequer 'Dormir Diminui os Status' para funcionar.",
+
+  "thirst-increase-after-sleep": "Aumento de sede",
+  "thirst-increase-after-sleep-des": "Ira aumentar sua sede apos dormir.\nRequer 'Dormir Diminui os Status' para funcionar."
+}

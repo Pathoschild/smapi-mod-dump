@@ -10,12 +10,18 @@
   },
   "ProgressionMode": false,
   "HighlightUnrevealedGiftTastes": false,
-  "ShowAllGiftTastes": false,
+  "ShowGiftTastes": {
+    "Loved": true,
+    "Liked": true,
+    "Neutral": false,
+    "Disliked": false,
+    "Hated": false
+  },
+  "ShowUnownedGifts": true,
   "HideOnKeyUp": false,
   "EnableTargetRedirection": true,
   "EnableTileLookups": false,
   "ForceFullScreen": false,
   "ScrollAmount": 160,
-  "ShowDataMiningFields": false,
-  "ShowUnownedGifts": true
+  "ShowDataMiningFields": false
 }

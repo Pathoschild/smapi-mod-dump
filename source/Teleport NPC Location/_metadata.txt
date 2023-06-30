@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/chencrstu/TeleportNPCLocation
+   Git: https://github.com/chencrstu/TeleportNPCLocation.git
+
+mods:
+   Teleport NPC Location
+
+latest commit:
+   commit 2362838174d088d5bbe1fe9e9c8721d891ed952a
+   Author: ccr <chencrstu@163.com>
+   Date:   Fri Jun 30 11:07:44 2023 +0800
+   
+       EDIT:only esc button exist menu
+   

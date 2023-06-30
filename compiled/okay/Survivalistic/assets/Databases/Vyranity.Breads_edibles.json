@@ -1,0 +1,324 @@
+{
+    "edibles": [
+        [
+            "Algae Bread",
+            "35/0"
+        ],
+        [
+            "Bahn Mi",
+            "35/0"
+        ],
+        [
+            "Brazilian Cheese Bread",
+            "35/0"
+        ],
+        [
+            "Cactus Bread",
+            "35/0"
+        ],
+        [
+            "Coffee Bun",
+            "35/0"
+        ],
+        [
+            "Corn Loaf",
+            "35/0"
+        ],
+        [
+            "Dwarven Bread",
+            "35/0"
+        ],
+        [
+            "Holly Bread",
+            "35/0"
+        ],
+        [
+            "Jelly Bread",
+            "35/0"
+        ],
+        [
+            "Kale Bread",
+            "35/0"
+        ],
+        [
+            "Magma Cap Bread",
+            "35/0"
+        ],
+        [
+            "Maple Syrup Bun",
+            "35/0"
+        ],
+        [
+            "Melon Pan",
+            "35/0"
+        ],
+        [
+            "Naan Bread",
+            "35/0"
+        ],
+        [
+            "Onion Bread",
+            "35/0"
+        ],
+        [
+            "Prismatic Bread",
+            "35/0"
+        ],
+        [
+            "Shokupan",
+            "35/0"
+        ],
+        [
+            "Solar Bread",
+            "35/0"
+        ],
+        [
+            "Stone Bread",
+            "35/0"
+        ],
+        [
+            "Loaf Bread",
+            "35/0"
+        ],
+        [
+            "Amaranth Bread",
+            "35/0"
+        ],
+        [
+            "Amaranth Flour",
+            "35/0"
+        ],
+        [
+            "Bagel",
+            "35/0"
+        ],
+        [
+            "Banana Bread",
+            "35/0"
+        ],
+        [
+            "Barley",
+            "35/0"
+        ],
+        [
+            "Barley Bread",
+            "35/0"
+        ],
+        [
+            "Barley Flour",
+            "35/0"
+        ],
+        [
+            "Bread Juice",
+            "35/0"
+        ],
+        [
+            "Brioche",
+            "35/0"
+        ],
+        [
+            "Brown Bun",
+            "35/0"
+        ],
+        [
+            "Brown Loaf",
+            "35/0"
+        ],
+        [
+            "Burned Bread",
+            "35/0"
+        ],
+        [
+            "Cauliflower Bread",
+            "35/0"
+        ],
+        [
+            "Cheese Bread",
+            "35/0"
+        ],
+        [
+            "Coconut Bread",
+            "35/0"
+        ],
+        [
+            "Coffee Bread",
+            "35/0"
+        ],
+        [
+            "Cornbread",
+            "35/0"
+        ],
+        [
+            "Croissant",
+            "35/0"
+        ],
+        [
+            "Dinosaur Bread",
+            "35/0"
+        ],
+        [
+            "Duck Bread",
+            "35/0"
+        ],
+        [
+            "Durum",
+            "35/0"
+        ],
+        [
+            "Durum Bread",
+            "35/0"
+        ],
+        [
+            "Durum Flour",
+            "35/0"
+        ],
+        [
+            "Focaccia",
+            "35/0"
+        ],
+        [
+            "Garlic Bread",
+            "35/0"
+        ],
+        [
+            "Gingerbread Loaf",
+            "35/0"
+        ],
+        [
+            "Goat Cheese Bread",
+            "35/0"
+        ],
+        [
+            "Golden Bread",
+            "35/0"
+        ],
+        [
+            "Hazelnut Bread",
+            "35/0"
+        ],
+        [
+            "Honey Bread",
+            "35/0"
+        ],
+        [
+            "Huge Bread",
+            "35/0"
+        ],
+        [
+            "Meat Loaf",
+            "35/0"
+        ],
+        [
+            "Mint Bread",
+            "35/0"
+        ],
+        [
+            "Mushroom Bread",
+            "35/0"
+        ],
+        [
+            "Parsnip Bread",
+            "35/0"
+        ],
+        [
+            "Pepper Spicebread",
+            "35/0"
+        ],
+        [
+            "Potato Bread",
+            "35/0"
+        ],
+        [
+            "Pretzel",
+            "35/0"
+        ],
+        [
+            "Pufferfish Bread",
+            "35/0"
+        ],
+        [
+            "Pumpkin Bread",
+            "35/0"
+        ],
+        [
+            "Quality Baguette",
+            "35/0"
+        ],
+        [
+            "Radish Bread",
+            "35/0"
+        ],
+        [
+            "Rhubarb Bread",
+            "35/0"
+        ],
+        [
+            "Rice Bread",
+            "35/0"
+        ],
+        [
+            "Rice Bun",
+            "35/0"
+        ],
+        [
+            "Rye",
+            "35/0"
+        ],
+        [
+            "Rye Bread",
+            "35/0"
+        ],
+        [
+            "Rye Flour",
+            "35/0"
+        ],
+        [
+            "Sourdough Bread",
+            "35/0"
+        ],
+        [
+            "Spelt",
+            "35/0"
+        ],
+        [
+            "Spelt Bread",
+            "35/0"
+        ],
+        [
+            "Spelt Flour",
+            "35/0"
+        ],
+        [
+            "Sweet Beet Bread",
+            "35/0"
+        ],
+        [
+            "Tigerbread",
+            "35/0"
+        ],
+        [
+            "Truffle Bread",
+            "35/0"
+        ],
+        [
+            "Urchin Bread",
+            "35/0"
+        ],
+        [
+            "Void Bread",
+            "35/0"
+        ],
+        [
+            "Void Essence Bread",
+            "35/0"
+        ],
+        [
+            "White Bun",
+            "35/0"
+        ],
+        [
+            "White Loaf",
+            "35/0"
+        ]
+    ]
+}

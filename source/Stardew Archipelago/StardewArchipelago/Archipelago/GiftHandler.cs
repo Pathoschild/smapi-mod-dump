@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Items.Mail;
 using StardewArchipelago.Stardew;
@@ -104,7 +105,7 @@ namespace StardewArchipelago.Archipelago
             var itemName = giftObject.Name;
             var value = $"{_random.Next(int.MaxValue)} {sender} {receiverSlotName.Replace(" ", "")} {amount} {itemType} {itemQuality} {itemName}";
 
-            _archipelago.AddToStringDataStorage(key, value);
+            _archipelago.AddToStringDataStorage(Scope.Game, key, value);
             Game1.player.ActiveObject = null;
             Game1.player.Money -= tax;
 
@@ -133,19 +134,19 @@ namespace StardewArchipelago.Archipelago
 
         private void ReceiveGiftsTomorrow(string giftKey)
         {
-            if (!_archipelago.StringExistsInDataStorage(giftKey))
+            if (!_archipelago.StringExistsInDataStorage(Scope.Game, giftKey))
             {
                 return;
             }
 
-            var newGifts = _archipelago.ReadStringFromDataStorage(giftKey)
+            var newGifts = _archipelago.ReadStringFromDataStorage(Scope.Game, giftKey)
                 .Split(ArchipelagoClient.STRING_DATA_STORAGE_DELIMITER);
             foreach (var newGift in newGifts)
             {
                 ReceiveGiftTomorrow(newGift);
             }
 
-            _archipelago.RemoveStringFromDataStorage(giftKey);
+            _archipelago.RemoveStringFromDataStorage(Scope.Game, giftKey);
         }
 
         private void ReceiveGiftTomorrow(string giftString)

@@ -16,13 +16,14 @@ mods:
    Predictable Retaining Soil
    Project Fluent
    Safe Lightning Redux
+   Season Affixes
    Stack Size Changer
    XP Display
 
 latest commit:
-   commit a8e06eac7070a2d6e277555eb55b02a79d574e3a
+   commit 7f58fc86ec4e08317c347101b7464e79d10d08de
    Author: MichaÅ‚ DolaÅ› <me@shockah.pl>
-   Date:   Tue May 30 15:04:30 2023 +0200
+   Date:   Sun Jun 25 17:21:05 2023 +0200
    
-       All-around project changes
+       SeasonAffixes: Version 1.1.3
    

@@ -103,7 +103,17 @@ namespace StardewArchipelago.Items.Traps
 
         private static IEnumerable<Chest> FindAllChests()
         {
-            foreach (var gameLocation in Game1.locations)
+            var locations = Game1.locations.ToList();
+            foreach (var building in Game1.getFarm().buildings)
+            {
+                if (building?.indoors.Value == null)
+                {
+                    continue;
+                }
+                locations.Add(building.indoors.Value);
+            }
+
+            foreach (var gameLocation in locations)
             {
                 foreach (var (tile, gameObject) in gameLocation.Objects.Pairs)
                 {

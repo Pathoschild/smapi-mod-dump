@@ -11,7 +11,7 @@
 {
 	"Name": "XP Display",
 	"Author": "Shockah",
-	"Version": "1.3.0",
+	"Version": "1.4.0",
 	"Description": "Displays the progress to reach the next level of each skill.",
 	"UniqueID": "Shockah.XPDisplay",
 	"EntryDll": "XPDisplay.dll",

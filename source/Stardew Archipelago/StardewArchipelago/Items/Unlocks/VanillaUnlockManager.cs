@@ -30,6 +30,7 @@ namespace StardewArchipelago.Items.Unlocks
         public const string SPECIAL_ORDER_BOARD_AP_NAME = "Special Order Board";
         public const string QI_WALNUT_ROOM = "Qi Walnut Room";
         public const string PIERRE_STOCKLIST = "Pierre's Missing Stocklist";
+        public const string ADVENTURE_GUILD = "Adventurer's Guild";
         private Dictionary<string, Func<ReceivedItem, LetterAttachment>> _unlockables;
 
         public VanillaUnlockManager()
@@ -73,10 +74,12 @@ namespace StardewArchipelago.Items.Unlocks
             _unlockables.Add("Skull Key", SendSkullKeyLetter);
             _unlockables.Add("Rusty Key", SendRustyKeyLetter);
 
-            _unlockables.Add("Adventurer's Guild", SendAdventurerGuildLetter);
+            _unlockables.Add(ADVENTURE_GUILD, SendAdventurerGuildLetter);
             _unlockables.Add("Club Card", SendClubCardLetter);
             _unlockables.Add("Magnifying Glass", SendMagnifyingGlassLetter);
             _unlockables.Add("Iridium Snake Milk", SendIridiumSnakeMilkLetter);
+            _unlockables.Add("Dark Talisman", SendDarkTalismanLetter);
+            _unlockables.Add("Key To The Town", SendKeyToTheTownLetter);
         }
 
         private void RegisterPlayerSkills()
@@ -102,7 +105,7 @@ namespace StardewArchipelago.Items.Unlocks
         private void RegisterUniqueItems()
         {
             _unlockables.Add(GOLDEN_SCYTHE_AP_NAME, SendGoldenScytheLetter);
-            // _unlockables.Add(PIERRE_STOCKLIST, SendPierreStocklistLetter);
+            _unlockables.Add(PIERRE_STOCKLIST, SendPierreStocklistLetter);
         }
 
         private void RegisterIsolatedEventsItems()
@@ -113,14 +116,13 @@ namespace StardewArchipelago.Items.Unlocks
         private void RegisterGingerIslandRepairs()
         {
             _unlockables.Add("Boat Repair", RepairBoat);
-            _unlockables.Add("Leo's Trust", GetLeoTrust);
-            _unlockables.Add("Island North Turtle", RemoveNorthernTurtle);
+            _unlockables.Add("Island North Turtle", GetLeoTrustAndRemoveNorthernTurtle);
             _unlockables.Add("Island West Turtle", RemoveWesternTurtle);
             _unlockables.Add("Dig Site Bridge", RepairDigSiteBridge);
             _unlockables.Add("Island Trader", RestoreIslandTrader);
             _unlockables.Add("Island Resort", RepairResort);
             _unlockables.Add("Farm Obelisk", CreateFarmObelisk);
-            _unlockables.Add("Island Farmhouse Mailbox", RepairIslandMailbox);
+            _unlockables.Add("Island Mailbox", RepairIslandMailbox);
             _unlockables.Add("Island Farmhouse", RepairIslandFarmhouse);
             _unlockables.Add("Parrot Express", RepairParrotExpress);
             _unlockables.Add("Volcano Bridge", ConstructVolcanoBridge);
@@ -163,14 +165,9 @@ namespace StardewArchipelago.Items.Unlocks
             return new LetterVanillaAttachment(receivedItem, vanillaMails, true);
         }
 
-        private LetterActionAttachment GetLeoTrust(ReceivedItem receivedItem)
+        private LetterActionAttachment GetLeoTrustAndRemoveNorthernTurtle(ReceivedItem receivedItem)
         {
             return new LetterActionAttachment(receivedItem, LetterActionsKeys.IslandUnlock, "Hut");
-        }
-
-        private LetterVanillaAttachment RemoveNorthernTurtle(ReceivedItem receivedItem)
-        {
-            return new LetterVanillaAttachment(receivedItem, "Island_FirstParrot", true);
         }
 
         private LetterActionAttachment RemoveWesternTurtle(ReceivedItem receivedItem)
@@ -273,16 +270,26 @@ namespace StardewArchipelago.Items.Unlocks
             return new LetterActionAttachment(receivedItem, LetterActionsKeys.IridiumSnakeMilk);
         }
 
+        private LetterActionAttachment SendDarkTalismanLetter(ReceivedItem receivedItem)
+        {
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.DarkTalisman);
+        }
+
+        private LetterActionAttachment SendKeyToTheTownLetter(ReceivedItem receivedItem)
+        {
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.KeyToTheTown);
+        }
+
         private LetterActionAttachment SendGoldenScytheLetter(ReceivedItem receivedItem)
         {
             Game1.player.mailReceived.Add("gotGoldenScythe");
             return new LetterActionAttachment(receivedItem, LetterActionsKeys.GoldenScythe);
         }
 
-        /*private LetterVanillaAttachment SendGoldenScytheLetter(ReceivedItem receivedItem)
+        private LetterActionAttachment SendPierreStocklistLetter(ReceivedItem receivedItem)
         {
-            return new LetterVanillaAttachment(receivedItem, "PierreStocklist", );
-        }*/
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.PierreStocklist);
+        }
 
         private LetterActionAttachment SendBeachBridgeLetter(ReceivedItem receivedItem)
         {

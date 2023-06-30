@@ -6,9 +6,9 @@ mods:
    Multiplayer Time
 
 latest commit:
-   commit 87720ec7cede1dbbc2a75038900bec4d8441a3b1
+   commit 2760fc4816afff426aaed6afc696a4bc1f36db41
    Author: MaciejMarkuszewski <maciej.markuszewski1998@gmail.com>
-   Date:   Fri May 26 11:56:33 2023 +0200
+   Date:   Sat Jun 3 22:23:27 2023 +0200
    
-       4.1 Update
+       4.2 Update
    

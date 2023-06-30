@@ -133,7 +133,7 @@ Due to this UA currently only fully refreshes the Unlockable shops on daystart
 Unlockable Areas offers a simple API which you can use in your .NET based mods.<br>
 Being able to use the API requires embedding two classes in your project and calling `Helper.ModRegistry.GetApi` after the game has launched.<br>
 <br>
-[IUnlockableAreasAPI](https://gitlab.com/delixx/stardew-valley-unlockable-areas/-/blob/main/Unlockable%20Areas/API/IUnlockableAreasAPI.cs)<br>
+[IUnlockableAreasAPI](https://gitlab.com/delixx/stardew-valley-unlockable-bundles/-/blob/ebeeb3c1d6cb10b81a9939cef67d18110bb84583/Unlockable%20Areas/API/IUnlockableAreasAPI.cs)<br>
 <br>
 Example:<br>
 ```cs

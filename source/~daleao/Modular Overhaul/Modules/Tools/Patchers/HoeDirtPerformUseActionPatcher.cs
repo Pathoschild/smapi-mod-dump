@@ -27,7 +27,7 @@ using StardewValley.TerrainFeatures;
 #endregion using directives
 
 [UsedImplicitly]
-[IgnoreWithMod("bcmpinc.HarvestWithScythe")]
+[ModConflict("bcmpinc.HarvestWithScythe")]
 internal sealed class HoeDirtPerformUseActionPatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="HoeDirtPerformUseActionPatcher"/> class.</summary>
@@ -92,7 +92,7 @@ internal sealed class HoeDirtPerformUseActionPatcher : HarmonyPatcher
                     })
                 .Match(new[] { new CodeInstruction(OpCodes.Ldarg_0) }, ILHelper.SearchOption.Previous)
                 .GetLabels(out var labels)
-                .Count(new[] { new CodeInstruction(OpCodes.Bne_Un) }, out var count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Bne_Un) }, out var count)
                 .Remove(count)
                 .AddLabels(labels.Take(1).ToArray())
                 .Match(

@@ -25,6 +25,7 @@ using FishingTrawler.Patches.Locations;
 using FishingTrawler.UI;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -142,6 +143,7 @@ namespace FishingTrawler
 
             // Hook into Content related events
             helper.Events.Content.AssetRequested += OnAssetRequested;
+            helper.Events.Content.AssetsInvalidated += OnAssetsInvalidated;
 
             // Hook into GameLoops related events
             helper.Events.GameLoop.UpdateTicking += OnUpdateTicking;
@@ -375,6 +377,25 @@ namespace FishingTrawler
                     data["TrawlerCabin/12/5"] = "1/1/down/default/-1/-1/false";
                 });
             }
+            else if (e.DataType == typeof(Texture2D))
+            {
+                var asset = e.Name;
+                if (assetManager.Textures.ContainsKey(asset.Name))
+                {
+                    e.LoadFrom(() => assetManager.Textures[asset.Name], AssetLoadPriority.Low);
+                }
+            }
+        }
+
+        private void OnAssetsInvalidated(object sender, AssetsInvalidatedEventArgs e)
+        {
+            foreach (var asset in e.Names)
+            {
+                if (assetManager.Textures.ContainsKey(asset.Name))
+                {
+                    assetManager.Textures[asset.Name] = Helper.GameContent.Load<Texture2D>(asset);
+                }
+            }
         }
 
         private void OnUpdateTicking(object sender, UpdateTickingEventArgs e)
@@ -537,6 +558,13 @@ namespace FishingTrawler
             if (Helper.ModRegistry.IsLoaded("PeacefulEnd.DynamicReflections") && apiManager.HookIntoDynamicReflections(Helper))
             {
                 // Do nothing here
+            }
+
+            // Make our internal textures available to the game
+            foreach (var textureName in assetManager.Textures.Keys)
+            {
+                var loadedTexture = Helper.GameContent.Load<Texture2D>(textureName);
+                assetManager.Textures[textureName] = loadedTexture;
             }
         }
 
@@ -733,11 +761,13 @@ namespace FishingTrawler
         {
             if (location is IslandSouthEast)
             {
-                murphyNPC = new Murphy(new AnimatedSprite(assetManager.murphyTexturePath, 0, 16, 32), new Vector2(12.05f, 39.5f) * 64f, 2, i18n.Get("etc.murphy_name"), assetManager.murphyPortraitTexture);
+                murphyNPC = new Murphy(new AnimatedSprite(assetManager.murphyTexturePath, 0, 16, 32), new Vector2(12.05f, 39.5f) * 64f, 2, i18n.Get("etc.murphy_name"), assetManager.MurphyPortraitTexture);
+                murphyNPC.Sprite.spriteTexture = assetManager.MurphyTexture;
             }
             else
             {
-                murphyNPC = new Murphy(new AnimatedSprite(assetManager.murphyTexturePath, 0, 16, 32), new Vector2(89f, 38.5f) * 64f, 2, i18n.Get("etc.murphy_name"), assetManager.murphyPortraitTexture);
+                murphyNPC = new Murphy(new AnimatedSprite(assetManager.murphyTexturePath, 0, 16, 32), new Vector2(89f, 38.5f) * 64f, 2, i18n.Get("etc.murphy_name"), assetManager.MurphyPortraitTexture);
+                murphyNPC.Sprite.spriteTexture = assetManager.MurphyTexture;
             }
         }
 

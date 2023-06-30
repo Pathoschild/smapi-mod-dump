@@ -44,6 +44,14 @@ Tweaks for various things in the mines.
 Adds some more realism and life to the Gift Delivery Service. An extension to the [Mail Services Mod](https://www.nexusmods.com/stardewvalley/mods/7842).
 \[[source code](PleaseGiftMeInPerson)]
 
+[![Predictable Retaining Soil](PredictableRetainingSoil/Header.png)](https://www.nexusmods.com/stardewvalley/mods/10956)
+No more RNG on Retaining Soil. Upgrade your watering can even on sunny days! 
+\[[source code](PredictableRetainingSoil)]
+
+[![Season Affixes](SeasonAffixes/Header.png)](https://www.nexusmods.com/stardewvalley/mods/16297)
+Adds seasonal "affixes", making every season unique in its own way.
+\[[source code](SeasonAffixes)]
+
 [![XP Display](XPDisplay/Header.png)](https://www.nexusmods.com/stardewvalley/mods/11089)
 Displays the progress to reach the next level of each skill. 
 \[[source code](XPDisplay)]

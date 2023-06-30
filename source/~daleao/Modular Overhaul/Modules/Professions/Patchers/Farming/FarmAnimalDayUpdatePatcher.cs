@@ -78,7 +78,7 @@ internal sealed class FarmAnimalDayUpdatePatcher : HarmonyPatcher
                 .Remove()
                 .SetOpCode(OpCodes.Blt_S) // was Brfalse_S
                 .Move()
-                .Count(
+                .CountUntil(
                     new[]
                     {
                         new CodeInstruction(

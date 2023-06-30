@@ -75,9 +75,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 00f6fdcd1e60d6687efdd473a7dcf996e9e82a86
+   commit 5494b2755296e0eb84bc7319a3223abec5d5bb2a
    Author: Casey Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Sat May 20 15:02:48 2023 -0400
+   Date:   Wed Jun 28 22:01:27 2023 -0400
    
-       Stuff I forgot
+       Update manifest
    

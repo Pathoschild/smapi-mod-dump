@@ -1,7 +1,7 @@
 {
   "Name": "Change Horse Sounds",
   "Author": "CyanFire",
-  "Version": "1.1.0",
+  "Version": "1.2.0",
   "Description": "Makes it possible for horse, tractor/motorcycle and footstep sounds to exist without issues",
   "UniqueID": "CF.ChangeHorseSounds",
   "EntryDll": "ChangeHorseSounds.dll",

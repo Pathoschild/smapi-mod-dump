@@ -14,6 +14,7 @@ using StardewArchipelago.Constants;
 using StardewArchipelago.Locations.CodeInjections.Modded;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
 using StardewArchipelago.Locations.GingerIsland;
+using StardewModdingAPI;
 
 namespace StardewArchipelago.Locations.Patcher
 {
@@ -21,13 +22,15 @@ namespace StardewArchipelago.Locations.Patcher
     {
         private readonly ArchipelagoClient _archipelago;
         private readonly Harmony _harmony;
+        private readonly IModHelper _modHelper;
         private readonly GingerIslandPatcher _gingerIslandPatcher;
         private ModsManager _modsManager;
 
-        public ModLocationPatcher(Harmony harmony, ArchipelagoClient archipelago)
+        public ModLocationPatcher(Harmony harmony, IModHelper modHelper, ArchipelagoClient archipelago)
         {
             _archipelago = archipelago;
             _harmony = harmony;
+            _modHelper = modHelper;
             _modsManager = archipelago.SlotData.Mods;
         }
 
@@ -40,15 +43,36 @@ namespace StardewArchipelago.Locations.Patcher
 
         private void AddModSkillInjections()
         {
-            if ((!_modsManager.HasModdedSkill() || _archipelago.SlotData.SkillProgression == SkillsProgression.Vanilla))
+            InjectSpaceCoreSkillsPage();
+
+            if (!_modsManager.HasModdedSkill() || _archipelago.SlotData.SkillProgression == SkillsProgression.Vanilla)
             {
                 return;
             }
-            var _spaceCoreType = AccessTools.TypeByName("SpaceCore.Skills");
-                _harmony.Patch(
-                    original: AccessTools.Method(_spaceCoreType, "AddExperience"),
-                    prefix: new HarmonyMethod(typeof(SkillInjections), nameof(SkillInjections.AddExperience_ArchipelagoModExperience_Prefix))
-                );
+
+            var spaceCoreType = AccessTools.TypeByName("SpaceCore.Skills");
+            _harmony.Patch(
+                original: AccessTools.Method(spaceCoreType, "AddExperience"),
+                prefix: new HarmonyMethod(typeof(SkillInjections), nameof(SkillInjections.AddExperience_ArchipelagoModExperience_Prefix))
+            );
+        }
+
+        private void InjectSpaceCoreSkillsPage()
+        {
+            if (!_modsManager.ModIsInstalledAndLoaded(_modHelper, "SpaceCore"))
+            {
+                return;
+            }
+
+            var spaceCoreSkillsPageType = AccessTools.TypeByName("SpaceCore.Interface.NewSkillsPage");
+            var desiredNewSkillsPageCtorParameters = new[] { typeof(int), typeof(int), typeof(int), typeof(int) };
+            _harmony.Patch(
+                original: AccessTools.Constructor(spaceCoreSkillsPageType, desiredNewSkillsPageCtorParameters),
+                prefix: new HarmonyMethod(typeof(NewSkillsPageInjections),
+                    nameof(NewSkillsPageInjections.NewSkillsPageCtor_BearKnowledgeEvent_Prefix)),
+                postfix: new HarmonyMethod(typeof(NewSkillsPageInjections),
+                    nameof(NewSkillsPageInjections.NewSkillsPageCtor_BearKnowledgeEvent_Postfix))
+            );
         }
 
         private void AddDeepWoodsModInjections()

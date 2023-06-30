@@ -1,7 +1,7 @@
 {
   "Name": "AutoShaker",
   "Author": "Jag3Dagster",
-  "Version": "1.5.1",
+  "Version": "1.5.2",
   "Description": "Automatically shake bushes and trees as you walk by.",
   "UniqueID": "Jag3Dagster.AutoShaker",
   "EntryDll": "AutoShaker.dll",

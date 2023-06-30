@@ -70,19 +70,8 @@ namespace MultiplayerMod.Framework.Patch.Mobile
 
         public void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.PropertySetter(typeof(Game1), "currentLocation"), postfix: new HarmonyMethod(this.GetType(), nameof(postfix_SetLocation)));
+             
         }
-
-        private static void postfix_SetLocation(GameLocation __instance)
-        {
-
-            if (__instance != null)
-            {
-                var property = __instance.GetType().GetProperty("tapToMove");
-                object TapToMove = typeof(IClickableMenu).Assembly.GetType("StardewValley.Mobile.TapToMove").CreateInstance<object>(new object[] { __instance });
-                property.SetValue(__instance, TapToMove);
-            }
-
-        }
+        
     }
 }

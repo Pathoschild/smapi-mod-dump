@@ -65,7 +65,7 @@ namespace FishingTrawler.Framework.Patches.Objects
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ANGLER_RING_KEY))
             {
-                spriteBatch.Draw(FishingTrawler.assetManager.anglerRingTexture, location + new Vector2(32f, 32f) * scaleSize, new Rectangle(0, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 3f, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(FishingTrawler.assetManager.AnglerRingTexture, location + new Vector2(32f, 32f) * scaleSize, new Rectangle(0, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 3f, SpriteEffects.None, layerDepth);
 
                 return false;
             }

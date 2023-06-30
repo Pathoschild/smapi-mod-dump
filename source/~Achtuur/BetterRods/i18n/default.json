@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Achtuur/StardewTravelSkill
+**
+*************************************************/
+
+{
+    "cfg_section.general": "General settings",
+
+    "cfg_section.BambooPole": "Bamboo Pole / Training Rod Multipliers",
+    "cfg_section.Fiberglass": "Fiberglass Rod Multipliers",
+    "cfg_section.Iridium": "Iridium Rod Multipliers",
+
+    "cfg_EnableNibbleTimeMultiplier.name": "Enable nibble time multiplier",
+    "cfg_EnableNibbleTimeMultiplier.desc": "Enable multiplier for nibble time, which is how long it takes for a fish to bite.",
+
+    "cfg_EnableSpeedMultiplier.name": "Enable bar speed multiplier",
+    "cfg_EnableSpeedMultiplier.desc": "Enable speed multiplier for the green bar when fishing. Affects rise and fall speed equally.",
+
+    "cfg_EnableDistanceGainMultiplier.name": "Enable catch speed multiplier",
+    "cfg_EnableDistanceGainMultiplier.desc": "Enable speed multiplier for catching fish, when the green bar is on top of the fish.",
+
+    "cfg_EnableDistanceLossMultiplier.name": "Enable loss speed multiplier",
+    "cfg_EnableDistanceLossMultiplier.desc": "Enable speed multiplier for losing fish, when the green bar is not on top of the fish.",
+
+    "Cfg_NibbleTimeMultiplier.name": "Nibble time multiplier",
+    "Cfg_NibbleTimeMultiplier.desc": "Multiplier for nibble time. A Value below 1 means fish bite faster, above 1 means fish bite slower.",
+
+    "cfg_SpeedMultiplier.name": "Bar speed multiplier",
+    "cfg_SpeedMultiplier.desc": "Speed multiplier for green bar you control while fishing. A value below 1 means the bar is slower, a value above 1 mean it's faster.",
+
+    "cfg_DistanceGainMultiplier.name": "Catch speed multiplier",
+    "cfg_DistanceGainMultiplier.desc": "Speed multiplier for catching a fish in the minigame, when the green bar is on the fish. A value below 1 means you catch fish slower, a value above 1 means you catch fish faster.",
+
+    "cfg_DistanceLossMultiplier.name": "Loss speed multiplier",
+    "cfg_DistanceLossMultiplier.desc": "Speed multiplier for losing a fish in the minigame, when the green bar is not on the fish. A value below 1 means you lose fish slower (fishing becomes easier), a value above 1 means you lose fish faster (fishing is harder)."
+
+}

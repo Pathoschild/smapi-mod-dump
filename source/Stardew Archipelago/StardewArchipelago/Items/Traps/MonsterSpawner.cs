@@ -45,6 +45,7 @@ namespace StardewArchipelago.Items.Traps
         private Monster ChooseRandomMonster(GameLocation map)
         {
             var spawnPosition = _tileChooser.GetRandomTileInboundsOffScreen(map);
+
             var chosenMonsterType = _monsterTypes[Game1.random.Next(0, _monsterTypes.Length)];
             switch (chosenMonsterType)
             {

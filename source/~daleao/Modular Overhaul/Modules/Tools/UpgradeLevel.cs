@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Tools;
 
 #region using directives
 
-using DaLion.Overhaul.Modules.Tools.Integrations;
 using DaLion.Shared.Extensions.Xna;
 using Microsoft.Xna.Framework;
 using NetEscapades.EnumGenerators;
@@ -62,10 +61,8 @@ public static partial class UpgradeLevelExtensions
             UpgradeLevel.Steel => Color.LightSteelBlue,
             UpgradeLevel.Gold => Color.Gold,
             UpgradeLevel.Iridium => Color.Violet,
-            UpgradeLevel.Radioactive when MoonMisadventuresIntegration.Instance?.IsLoaded == true => Color.Chartreuse,
-            UpgradeLevel.Radioactive when MoonMisadventuresIntegration.Instance?.IsLoaded != true => Color.BlueViolet,
-            UpgradeLevel.Mythicite => Color.LightCyan,
-            UpgradeLevel.Enchanted => Color.BlueViolet,
+            UpgradeLevel.Radioactive => Color.Chartreuse,
+            >= UpgradeLevel.Mythicite => Color.Cyan,
             _ => Color.White,
         };
     }

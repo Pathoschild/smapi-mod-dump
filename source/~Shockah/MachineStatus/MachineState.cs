@@ -8,12 +8,11 @@
 **
 *************************************************/
 
-namespace Shockah.MachineStatus
+namespace Shockah.MachineStatus;
+
+internal enum MachineState
 {
-	internal enum MachineState
-	{
-		Ready,
-		Waiting,
-		Busy
-	}
+	Ready,
+	Waiting,
+	Busy
 }

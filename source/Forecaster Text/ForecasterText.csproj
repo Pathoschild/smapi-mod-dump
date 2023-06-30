@@ -3,7 +3,7 @@
     <PropertyGroup>
         <AssemblyName>ForecasterText</AssemblyName>
         <RootNamespace>ForecasterText</RootNamespace>
-        <Version>1.1.1</Version>
+        <Version>1.2.2</Version>
         <TargetFramework>net5.0</TargetFramework>
         <GamePath>/mnt/gaming/Steam/steamapps/common/Stardew Valley/</GamePath>
     </PropertyGroup>
@@ -11,7 +11,6 @@
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Objects\Addons" />
       <Folder Include="Properties" />
     </ItemGroup>
 </Project>

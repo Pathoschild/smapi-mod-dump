@@ -23,7 +23,7 @@ using HarmonyLib;
 #endregion using directives
 
 [UsedImplicitly]
-[RequiresMod("Pathoschild.Automate")]
+[ModRequirement("Pathoschild.Automate")]
 internal sealed class CrabPotMachineGetStatePatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="CrabPotMachineGetStatePatcher"/> class.</summary>
@@ -48,7 +48,7 @@ internal sealed class CrabPotMachineGetStatePatcher : HarmonyPatcher
         {
             helper
                 .Match(new[] { new CodeInstruction(OpCodes.Brtrue_S) })
-                .Count(
+                .CountUntil(
                     new[]
                     {
                         new CodeInstruction(OpCodes.Call, "CrabPotMachine"

@@ -14,7 +14,7 @@
     <ItemGroup>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1"/>
         <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.0"/>
-        <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="1.0.3"/>
+        <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0"/>
     </ItemGroup>
 
 </Project>

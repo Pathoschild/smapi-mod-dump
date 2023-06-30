@@ -46,6 +46,37 @@ This mod features some custom tokens for content pack creators that can tell you
 
 # Changelog
 
+## 1.1.7
+* New/Changed
+  * Added Simplified Chinese translation, thanks to Andrewxu 
+
+## 1.1.6
+* Fixes
+ * Movespeed buff now only applied when manually moving, should no longer break cutscenes
+ * Fix content patcher dependency requirement
+
+## 1.1.5
+* New/Changed content
+  * Updated compatibility with AchtuurCore 1.0.7 
+
+## 1.1.4
+* New/Changed content
+  * Updated compatiblity with AchtuurCore 1.0.4
+
+## 1.1.3
+* New/Changed content
+    * Korean translation, thanks to poosha7375
+    
+* Fixes
+  * Fix exp gain in splitscreen mode
+
+## 1.1.2
+* Fixes
+  * Fix config saving properly
+## 1.1.1
+* New/Changed content
+    * Added controller support
+
 ## 1.1.0
 * New/Changed content
     * Added option for very fast exp gain (every 5 steps)
@@ -55,6 +86,7 @@ This mod features some custom tokens for content pack creators that can tell you
     * Remove movespeed per level and movespeed profession bonus console commands, as those are handled by settings
     * Changed color of experience bar to a blue-ish green
 * Fixes
+    * Fixed stamina restore going over stamina cap   
     * Rework mod to use AssetRequested event, so `[CP] StardewTravelSkill` is now obsolete.
     * Fixed error showing in console when placing furniture
     * Removed config.json from archive

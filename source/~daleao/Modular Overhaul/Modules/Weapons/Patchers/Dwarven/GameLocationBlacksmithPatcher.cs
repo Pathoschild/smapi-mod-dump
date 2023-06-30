@@ -64,7 +64,7 @@ internal sealed class GameLocationBlacksmithPatcher : HarmonyPatcher
                 .Move(2)
                 .SetOpCode(OpCodes.Brtrue_S)
                 .Move()
-                .Count(
+                .CountUntil(
                     new[]
                     {
                         new CodeInstruction(

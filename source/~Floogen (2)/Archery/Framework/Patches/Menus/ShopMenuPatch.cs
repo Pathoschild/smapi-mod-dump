@@ -64,21 +64,31 @@ namespace Archery.Framework.Patches.Objects
             if (___forSale is not null)
             {
                 // Handle ___itemPriceAndStock being overriden via itemPriceAndStock by grabbing our items from ___forSale and re-adding them
-                foreach (Item item in ___forSale.Where(i => i is not null))
+                foreach (Item item in ___forSale.Where(i => i is not null && i is Item))
                 {
                     if (InstancedObject.IsValid(item) && InstancedObject.GetModel<BaseModel>(item) is BaseModel model && model.Shop is not null)
                     {
-                        var stock = model.Shop.HasInfiniteStock() ? int.MaxValue : model.Shop.GetActualStock();
-                        if (InstancedObject.IsRecipe(item))
+                        int? stock = null;
+                        int? price = null;
+                        if (InstancedObject.IsRecipe(item) && model.Recipe is not null && model.Recipe.Shop is not null)
                         {
                             stock = 1;
+                            price = model.Recipe.Shop.Price;
+                        }
+                        else if (model.Shop is not null)
+                        {
+                            stock = model.Shop.HasInfiniteStock() ? int.MaxValue : model.Shop.GetActualStock();
+                            price = model.Shop.Price;
                         }
 
-                        ___itemPriceAndStock[item] = new int[2]
+                        if (stock is not null)
                         {
-                            model.Shop.Price,
-                            stock
-                        };
+                            ___itemPriceAndStock[item] = new int[2]
+                            {
+                                price.Value,
+                                stock.Value
+                            };
+                        }
                     }
                 }
             }

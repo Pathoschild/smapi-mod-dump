@@ -19,7 +19,7 @@ _Ongoing maintenance for the original UI Info Suite mod for Stardew Valley._
 
 UI Info Suite provides helpful information about things around you designed to help you be aware of what's going on without feeling like you're cheating.
 
-This mod is a rewrite of cdaragorn's UIInfoSuite mod (which is baced on Demiacle's UiModSuite), so 99% of the credit goes to those guys. My contribution started after the December of 2019, when the original project became abandoned. As this is a very useful mod, I wanted to continue providing support for newer game verions, fixing bugs and adding new requested features, so here we are!
+This mod is a rewrite of cdaragorn's UIInfoSuite mod (which is based on Demiacle's UiModSuite), so 99% of the credit goes to those guys. My contribution started after the December of 2019, when the original project became abandoned. As this is a very useful mod, I wanted to continue providing support for newer game versions, fixing bugs and adding new requested features, so here we are!
 
 The current features include:
 - Display an icon that represents the current days luck

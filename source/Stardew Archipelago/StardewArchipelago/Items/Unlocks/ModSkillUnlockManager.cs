@@ -66,46 +66,31 @@ namespace StardewArchipelago.Items.Unlocks
 
         private LetterAttachment SendProgressiveMagicLevel(ReceivedItem receivedItem)
         {
-            foreach (var farmer in Game1.getAllFarmers())
-            {
-                ReceiveAPLevel("spacechase0.Magic");
-            }
+            ReceiveAPLevel("spacechase0.Magic");
             return new LetterInformationAttachment(receivedItem);
         }
 
         private LetterAttachment SendProgressiveBinningLevel(ReceivedItem receivedItem)
         {
-            foreach (var farmer in Game1.getAllFarmers())
-            {
-                ReceiveAPLevel("drbirbdev.Binning");
-            }
+            ReceiveAPLevel("drbirbdev.Binning");
             return new LetterInformationAttachment(receivedItem);
         }
 
         private LetterAttachment SendProgressiveCookingLevel(ReceivedItem receivedItem)
         {
-            foreach (var farmer in Game1.getAllFarmers())
-            {
-                ReceiveAPLevel("spacechase0.Cooking");
-            }
+            ReceiveAPLevel("spacechase0.Cooking");
             return new LetterInformationAttachment(receivedItem);
         }
 
         private LetterAttachment SendProgressiveSocializingLevel(ReceivedItem receivedItem)
         {
-            foreach (var farmer in Game1.getAllFarmers())
-            {
-                ReceiveAPLevel("drbirbdev.Socializing");
-            }
+            ReceiveAPLevel("drbirbdev.Socializing");
             return new LetterInformationAttachment(receivedItem);
         }
 
         private LetterAttachment SendProgressiveArchaeologyLevel(ReceivedItem receivedItem)
         {
-            foreach (var farmer in Game1.getAllFarmers())
-            {
-                ReceiveAPLevel("moonslime.ExcavationSkill");
-            }
+            ReceiveAPLevel("moonslime.Excavation");
             return new LetterInformationAttachment(receivedItem);
         }
 

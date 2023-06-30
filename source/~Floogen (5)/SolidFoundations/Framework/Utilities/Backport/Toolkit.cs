@@ -28,7 +28,7 @@ namespace SolidFoundations.Framework.Utilities.Backport
             if (int.TryParse(parsedId, out itemId) is false && parsedId.StartsWith('('))
             {
                 string key = parsedId.Substring(0, parsedId.IndexOf(')') + 1);
-                parsedId = new System.String(parsedId.Where(System.Char.IsDigit).ToArray());
+                parsedId = id.Substring(id.IndexOf(')') + 1);
 
                 if (int.TryParse(parsedId, out itemId))
                 {
@@ -41,6 +41,12 @@ namespace SolidFoundations.Framework.Utilities.Backport
                         case "(F)":
                             return CreateItemFurniture(itemId, amount, quality);
                     }
+                }
+
+                var jsonApi = SolidFoundations.apiManager.GetJsonAssetsApi();
+                if (jsonApi is not null && key.ToUpper() == "(O)")
+                {
+                    itemId = jsonApi.GetObjectId(parsedId);
                 }
             }
 

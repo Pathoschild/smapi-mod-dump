@@ -188,6 +188,10 @@ namespace SolidFoundations
                 saveAnywhereApi.BeforeSave += delegate { SafelyCacheCustomBuildings(); };
                 saveAnywhereApi.AfterLoad += delegate { LoadCachedCustomBuildings(); };
             }
+            if (Helper.ModRegistry.IsLoaded("spacechase0.JsonAssets") && apiManager.HookIntoJsonAssets(Helper))
+            {
+                // Do nothing
+            }
 
             // Load any owned content packs
             LoadContentPacks();
@@ -1054,7 +1058,7 @@ namespace SolidFoundations
                 targetTile = new Vector2(xTile, yTile);
             }
 
-            monitor.Log(api.PlaceBuilding(args[0], Game1.getFarm(), targetTile).Value.ToString(), LogLevel.Debug);
+            monitor.Log(api.ConstructBuildingImmediately(args[0], Game1.getFarm(), targetTile).Value.ToString(), LogLevel.Debug);
         }
     }
 }

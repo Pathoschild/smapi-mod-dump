@@ -34,12 +34,13 @@ namespace GMCMOptions {
             public uint i2 = 1;
             public uint i3 = 2;
             public uint i4 = 0;
+            public bool showParaText = true;
         }
 
         /// <summary>
         /// The current configuration value.
         /// </summary>
-        private Config config;
+        internal Config config;
 
         private IManifest ModManifest;
         private IModHelper Helper;
@@ -64,11 +65,28 @@ namespace GMCMOptions {
             if (configMenu is null || configMenuExt is null || configMenuExtObsolete is null) {
                 return;
             }
+            Config uncommittedConfig = new Config();
+
             // register the mod
             configMenu.Register(
                 mod: ModManifest,
-                reset: () => config = new Config(),
+                reset: () => {
+                    config = new Config();
+                    uncommittedConfig = new Config();
+                },
                 save: SaveConfig);
+            configMenu.OnFieldChanged(
+                mod: ModManifest,
+                onChange: (string str, object obj) => {
+                    // All of the config options that you want to use for dynamic updates need to be included here.
+                    switch (str) {
+                        case "showPara":
+                            uncommittedConfig.showParaText = (bool)obj;
+                            break;
+                        default:
+                            break;
+                    }
+                });
             // register some complex config options
             // Color options
             configMenuExt.AddColorOption(
@@ -156,7 +174,7 @@ namespace GMCMOptions {
                 setValue: (v) => config.i3 = v,
                 name: () => "Simplified image picker",
                 tooltip: () => "With default layout",
-                choices: () => testImageData) ;
+                choices: () => testImageData);
 #pragma warning restore CS0618 // Type or member is obsolete
             // Image option test with a complicated draw function
             configMenuExt.AddImageOption(
@@ -178,7 +196,7 @@ namespace GMCMOptions {
                         farmer.changePantStyle(0);
                         farmer.changePants(new Color(49, 49, 49));
 
-                    } else if (v==2) {
+                    } else if (v == 2) {
                         farmer.changeShirt(265);
                         farmer.changePantStyle(2);
                         farmer.changePants(new Color(255, 255, 255));
@@ -195,6 +213,48 @@ namespace GMCMOptions {
                 arrowLocation: (int)IGMCMOptionsAPI.ImageOptionArrowLocation.Sides,
                 labelLocation: (int)IGMCMOptionsAPI.ImageOptionLabelLocation.Bottom);
 
+            int paraCounter = 0;
+            configMenu.AddBoolOption(
+                mod: ModManifest,
+                getValue: () => config.showParaText,
+                setValue: (bool v) => config.showParaText = v,
+                name: () => "show paragraph text",
+                fieldId: "showPara");
+            configMenuExt.AddDynamicParagraph(
+                mod: ModManifest,
+                logName: "counter",
+                text: () => uncommittedConfig.showParaText ? $"Paragraph text - called {paraCounter++ / 100} x100 times.  More text to show that it does in fact eventually word wrap.  (And that word wrapping happens at somewhere at least vaguely close to the correct width.)" : "",
+                isStyledText: false
+                );
+            configMenu.AddParagraph(ModManifest, () => "the next paragraph (so you can tell the height of the previous item)");
+            string styledText =
+                "A Dynamic Paragraph that passes <b><color name=\"blue\">true</color></b> for the <b>isStyledText</b>"
+                + " argument when it is registered can use simple html-like formatting directives in the text.  Text"
+                + " must be valid xml (if it were to be wrapped in a single xml tag).  Currently supported format"
+                + " options are <b>bold</b> and <color name=\"blue\">color</color>.";
+            configMenuExt.AddDynamicParagraph(
+                mod: ModManifest,
+                logName: "styled text",
+                text: () => styledText,
+                isStyledText: true
+                );
+            configMenu.AddParagraph(ModManifest, () => "Raw text of above paragraph: " + styledText);
+            configMenuExt.AddDynamicParagraph(
+                mod: ModManifest,
+                logName: "dynamic styled",
+                text: () => {
+                    Color c = Utility.GetPrismaticColor(speedMultiplier: 2);
+                    return $"Styled text can also be <color r=\"{c.R}\" g=\"{c.G}\" b=\"{c.B}\" >dynamic</color>.";
+                },
+                isStyledText: true
+                );
+            configMenuExt.AddDynamicParagraph(
+                mod: ModManifest,
+                logName: "error test",
+                text: () => "Error testing:  <qqq atr=\"xyz\">unknown element</qqq>.  <color>no color specified</color>."
+                            + "<color r=\"abc\">bad color attr</color> </b>invalid xml",
+                isStyledText: true
+                );
         }
 
         public void RemoveFromGMCM() {
@@ -205,5 +265,8 @@ namespace GMCMOptions {
     public interface IGenericModConfigMenuApi {
         void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
         void Unregister(IManifest mod);
+        void OnFieldChanged(IManifest mod, Action<string, object> onChange);
+        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string>? tooltip = null, string? fieldId = null);
+        void AddParagraph(IManifest mod, Func<string> text);
     }
 }

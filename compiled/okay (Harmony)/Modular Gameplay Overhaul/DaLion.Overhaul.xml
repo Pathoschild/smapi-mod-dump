@@ -1061,7 +1061,7 @@
         <member name="M:DaLion.Overhaul.Modules.Core.Debug.DebugPatcher.DebugPrefix(System.Object)">
             <summary>Placeholder patch for debugging.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Core.Debug.DebugPatcher.DebugPostfix(System.Object)">
+        <member name="M:DaLion.Overhaul.Modules.Core.Debug.DebugPatcher.DebugPostfix(System.Object,System.Collections.Generic.Dictionary{StardewValley.Item,System.Boolean})">
             <summary>Placeholder patch for debugging.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Core.Debug.DebugRenderedActiveMenuEvent.#ctor(DaLion.Shared.Events.EventManager)">
@@ -2359,9 +2359,6 @@
         <member name="P:DaLion.Overhaul.Modules.OverhaulModule.TaxesModule.Config">
             <summary>Gets the config instance for the <see cref="T:DaLion.Overhaul.Modules.OverhaulModule.TaxesModule"/>.</summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.OverhaulModule.TaxesModule.State">
-            <summary>Gets the ephemeral runtime state for the <see cref="T:DaLion.Overhaul.Modules.OverhaulModule.TaxesModule"/>.</summary>
-        </member>
         <member name="P:DaLion.Overhaul.Modules.OverhaulModule.TaxesModule._ShouldEnable">
             <inheritdoc />
         </member>
@@ -2477,6 +2474,13 @@
         <member name="M:DaLion.Overhaul.Modules.Ponds.Events.PondDayStartedEvent.OnDayStartedImpl(System.Object,StardewModdingAPI.Events.DayStartedEventArgs)">
             <inheritdoc />
         </member>
+        <member name="M:DaLion.Overhaul.Modules.Ponds.Events.PondSaveLoadedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Ponds.Events.PondSaveLoadedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Ponds.Events.PondSaveLoadedEvent.OnSaveLoadedImpl(System.Object,StardewModdingAPI.Events.SaveLoadedEventArgs)">
+            <inheritdoc />
+        </member>
         <member name="T:DaLion.Overhaul.Modules.Ponds.Extensions.FishPondExtensions">
             <summary>Extensions for the <see cref="T:StardewValley.Buildings.FishPond"/> class.</summary>
         </member>
@@ -2563,7 +2567,7 @@
         <member name="M:DaLion.Overhaul.Modules.Ponds.Patchers.FishPondAddFishToPondPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Ponds.Patchers.FishPondAddFishToPondPatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Ponds.Patchers.FishPondAddFishToPondPatcher.FishPondAddFishToPondPostfix(StardewValley.Buildings.FishPond,StardewValley.Object)">
+        <member name="M:DaLion.Overhaul.Modules.Ponds.Patchers.FishPondAddFishToPondPatcher.FishPondAddFishToPondPostfix(StardewValley.Buildings.FishPond,StardewValley.GameData.FishPond.FishPondData,StardewValley.Object)">
             <summary>Distinguish extended family pairs + increment total Fish Pond quality ratings.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Ponds.Patchers.FishPondCtorPatcher.#ctor">
@@ -2805,6 +2809,19 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Commands.ResetSkillLevelsCommand.Callback(System.String,System.String[])">
             <inheritdoc />
         </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Commands.SetFishingRodMemoryCommand.#ctor(DaLion.Shared.Commands.CommandHandler)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Commands.SetFishingRodMemoryCommand"/> class.</summary>
+            <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Professions.Commands.SetFishingRodMemoryCommand.Triggers">
+            <inheritdoc />
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Professions.Commands.SetFishingRodMemoryCommand.Documentation">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Commands.SetFishingRodMemoryCommand.Callback(System.String,System.String[])">
+            <inheritdoc />
+        </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Commands.SetModDataCommand.#ctor(DaLion.Shared.Commands.CommandHandler)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Commands.SetModDataCommand"/> class.</summary>
             <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
@@ -2965,9 +2982,6 @@
                 Gets a value indicating whether to display the MAX icon below fish in the Collections Menu which have been caught at the
                 maximum size.
             </summary>
-        </member>
-        <member name="P:DaLion.Overhaul.Modules.Professions.Config.LegendaryPondPopulationCeiling">
-            <summary>Gets the maximum population of Aquarist Fish Ponds with legendary fish.</summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Professions.Config.TrashNeededPerTaxDeductionPct">
             <summary>Gets you must collect this many junk items from crab pots for every 1% of tax deduction the following season.</summary>
@@ -3176,6 +3190,13 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.AchievementUnlockedDayStartedEvent.OnDayStartedImpl(System.Object,StardewModdingAPI.Events.DayStartedEventArgs)">
             <inheritdoc />
         </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.MonitorLuremastersDayStartedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Events.GameLoop.MonitorLuremastersDayStartedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.MonitorLuremastersDayStartedEvent.OnDayStartedImpl(System.Object,StardewModdingAPI.Events.DayStartedEventArgs)">
+            <inheritdoc />
+        </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.PrestigeDayStartedEvent.#ctor(DaLion.Shared.Events.EventManager)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Events.GameLoop.PrestigeDayStartedEvent"/> class.</summary>
             <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
@@ -3251,6 +3272,16 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.ProfessionSaveLoadedEvent.OnProfessionRemoved(System.Int32)">
             <summary>Invoked when a profession is removed from the local player.</summary>
             <param name="which">The index of the removed profession.</param>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.LuremasterTimeChangedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Events.GameLoop.LuremasterTimeChangedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.LuremasterTimeChangedEvent.OnEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.LuremasterTimeChangedEvent.OnTimeChangedImpl(System.Object,StardewModdingAPI.Events.TimeChangedEventArgs)">
+            <inheritdoc />
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.AmbushUpdateTickedEvent.#ctor(DaLion.Shared.Events.EventManager)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Events.GameLoop.AmbushUpdateTickedEvent"/> class.</summary>
@@ -3962,7 +3993,7 @@
             <summary>Extensions for the <see cref="T:StardewValley.Farmer"/> class.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.FarmerExtensions.HasProfession(StardewValley.Farmer,DaLion.Overhaul.Modules.Professions.IProfession,System.Boolean)">
-            <summary>Determines whether the <paramref name="farmer"/> has a particular <paramref name="profession"/>.</summary>
+            <summary>Determines whether the <paramref name="farmer"/> has the specified <paramref name="profession"/>.</summary>
             <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
             <param name="profession">The <see cref="T:DaLion.Overhaul.Modules.Professions.IProfession"/> to check.</param>
             <param name="prestiged">Whether to check for the prestiged variant.</param>
@@ -3991,6 +4022,13 @@
             <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
             <param name="includeCustom">Whether to include <see cref="T:DaLion.Overhaul.Modules.Professions.SCProfession"/>s in the count.</param>
             <returns><see langword="true"/> only if the <paramref name="farmer"/> has all 30 vanilla professions, otherwise <see langword="false"/>.</returns>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.FarmerExtensions.HasProfessionOrLax(StardewValley.Farmer,DaLion.Overhaul.Modules.Professions.IProfession,System.Boolean)">
+            <summary>Determines whether this or, if allowed by the module's settings, any <see cref="T:StardewValley.Farmer"/> instance in the current game session has the specified <paramref name="profession"/>.</summary>
+            <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
+            <param name="profession">The <see cref="T:DaLion.Overhaul.Modules.Professions.IProfession"/> to check.</param>
+            <param name="prestiged">Whether to check for the prestiged variant.</param>
+            <returns><see langword="true"/> if either <paramref name="farmer"/> has the specified <paramref name="profession"/>, or <see cref="P:DaLion.Overhaul.Modules.Professions.Config.LaxOwnershipRequirements"/> is enabled and at least one player in the game session has the <paramref name="profession"/>, otherwise <see langword="false"/>.</returns>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.FarmerExtensions.GetCurrentBranchForSkill(StardewValley.Farmer,DaLion.Overhaul.Modules.Professions.ISkill)">
             <summary>
@@ -4062,20 +4100,13 @@
             <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
             <returns>A <see cref="T:System.Single"/> multiplier for animal products.</returns>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.FarmerExtensions.GetFisherBonusCatchingBarSpeed(StardewValley.Farmer,System.Int32)">
-            <summary>Gets the bonus catching bar speed for prestiged <see cref="F:DaLion.Overhaul.Modules.Professions.Profession.Fisher"/>.</summary>
-            <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
-            <param name="whichFish">The fish index.</param>
-            <returns>A <see cref="T:System.Single"/> catching bar height.</returns>
-            <remarks>UNUSED.</remarks>
-        </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.FarmerExtensions.GetAnglerPriceBonus(StardewValley.Farmer)">
             <summary>Gets the price bonus applied to fish sold by <see cref="F:DaLion.Overhaul.Modules.Professions.Profession.Angler"/>.</summary>
             <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
             <returns>A <see cref="T:System.Single"/> multiplier for fish prices.</returns>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.FarmerExtensions.GetAquaristCatchingBarCompensation(StardewValley.Farmer)">
-            <summary>Gets the amount of "catching" bar to compensate for <see cref="F:DaLion.Overhaul.Modules.Professions.Profession.Aquarist"/>.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.FarmerExtensions.GetAquaristCatchingBonus(StardewValley.Farmer)">
+            <summary>Gets the bonus "catching" bar build rate for <see cref="F:DaLion.Overhaul.Modules.Professions.Profession.Aquarist"/>.</summary>
             <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
             <returns>A <see cref="T:System.Single"/> catching height.</returns>
         </member>
@@ -4111,6 +4142,15 @@
             <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
             <returns><see langword="true"/> if <see cref="F:DaLion.Overhaul.Modules.Professions.Ultimates.Ultimate.PoacherAmbush"/> is active.</returns>
         </member>
+        <member name="T:DaLion.Overhaul.Modules.Professions.Extensions.FishingRodExtensions">
+            <summary>Extensions for the <see cref="T:StardewValley.Buildings.FishPond"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.FishingRodExtensions.HasBobberEffect(StardewValley.Tools.FishingRod,System.Int32)">
+            <summary>Determines whether the specified bobber's effect should be applied.</summary>
+            <param name="rod">The <see cref="T:StardewValley.Tools.FishingRod"/>.</param>
+            <param name="which">The index of the bobber.</param>
+            <returns><see langword="true"/> if the specified bobber is either directly equipped, or has been recorded in the <paramref name="rod"/>'s "memory".</returns>
+        </member>
         <member name="T:DaLion.Overhaul.Modules.Professions.Extensions.FishPondExtensions">
             <summary>Extensions for the <see cref="T:StardewValley.Buildings.FishPond"/> class.</summary>
         </member>
@@ -4127,11 +4167,12 @@
         <member name="T:DaLion.Overhaul.Modules.Professions.Extensions.Game1Extensions">
             <summary>Extensions for the <see cref="T:StardewValley.Game1"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.Game1Extensions.DoesAnyPlayerHaveProfession(StardewValley.Game1,DaLion.Overhaul.Modules.Professions.IProfession,System.Int32@)">
-            <summary>Determines whether any farmer in the current game session has the specified <paramref name="profession"/>.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.Game1Extensions.DoesAnyPlayerHaveProfession(StardewValley.Game1,DaLion.Overhaul.Modules.Professions.IProfession,System.Int32@,System.Boolean)">
+            <summary>Determines whether any <see cref="T:StardewValley.Farmer"/> in the current game session has the specified <paramref name="profession"/>.</summary>
             <param name="game1">The <see cref="T:StardewValley.Game1"/> instance.</param>
             <param name="profession">The <see cref="T:DaLion.Overhaul.Modules.Professions.IProfession"/> to check.</param>
             <param name="count">How many players have this profession.</param>
+            <param name="prestiged">Whether to check for the prestiged variant.</param>
             <returns><see langword="true"/> is at least one player in the game session has the <paramref name="profession"/>, otherwise <see langword="false"/>.</returns>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.Game1Extensions.RevalidateFishPondPopulations(StardewValley.Game1)">
@@ -4800,23 +4841,17 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Farming.QuestionEventSetUpPatcher.QuestionEventSetUpTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
             <summary>Patch for Breeder to increase barn animal pregnancy chance.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.BeachGetFishPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.BeachGetFishPatcher"/> class.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.BobberBarCtorPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.BobberBarCtorPatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.BeachGetFishPatcher.BeachGetFishTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
-            <summary>Patch for prestiged Angler to recatch Crimsonfish.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.BobberBarCtorPatcher.BobberBarCtorTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Patch for Angler rod memory.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.BobberBarUpdatePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.BobberBarUpdatePatcher"/> class.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.BobberBarUpdatePatcher.BobberBarUpdateTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
             <summary>Patch to slow-down catching bar decrease for Aquarist.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.CalderaGetFishPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.CalderaGetFishPatcher"/> class.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.CalderaGetFishPatcher.GameLocationGetFishTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
-            <summary>Patch for Fisher to reroll reeled fish if first roll resulted in trash.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.CollectionsPageDrawPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.CollectionsPageDrawPatcher"/> class.</summary>
@@ -4863,17 +4898,20 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodCalculateTimeUntilFishingBitePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodCalculateTimeUntilFishingBitePatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodCalculateTimeUntilFishingBitePatcher.FishingRodCalculateTimeUntilFishingBitePrefix(StardewValley.Tools.FishingRod,System.Single@)">
-            <summary>Patch to reduce prestiged Fisher nibble delay.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodCalculateTimeUntilFishingBitePatcher.FishingRodCalculateTimeUntilFishingBiteTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Patch to double Fisher bait effects + Angler rod memory.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodCalculateTimeUntilFishingBitePatcher.FishingRodCalculateTimeUntilFishingBitePostfix(StardewValley.Tools.FishingRod,System.Single@)">
-            <summary>Patch to reduce Fisher nibble delay.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodDoDoneFishingPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodDoDoneFishingPatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodPlayerCaughtFishEndFunctionPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodPlayerCaughtFishEndFunctionPatcher"/> class.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodDoDoneFishingPatcher.FishingRodDoDoneFishingTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
+            <summary>Patch to record Angler tackle uses.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodPlayerCaughtFishEndFunctionPatcher.FishingRodPlayerCaughtFishEndFunctionTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
-            <summary>Patch for remove annoying repeated message for recatching legendary fish.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodDrawAttachmentsPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodDrawAttachmentsPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodDrawAttachmentsPatcher.FishingRodDrawAttachmentsPostfix(StardewValley.Tool,Microsoft.Xna.Framework.Graphics.SpriteBatch,System.Int32@,System.Int32@)">
+            <summary>Draw tackle memory.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodPullFishFromWaterPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodPullFishFromWaterPatcher"/> class.</summary>
@@ -4884,8 +4922,8 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodStartMinigameEndFunctionPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodStartMinigameEndFunctionPatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodStartMinigameEndFunctionPatcher.FishingRodStartMinigameEndFunctionTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
-            <summary>Patch to remove Pirate bonus treasure chance.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishingRodStartMinigameEndFunctionPatcher.FishingRodStartMinigameEndFunctionTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Patch to remove Pirate bonus treasure chance + double Fisher bait effect + Angler rod memory.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishPondIsLegalFishForPondsPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishPondIsLegalFishForPondsPatcher"/> class.</summary>
@@ -4899,17 +4937,17 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.FishPondUpdateMaximumOccupancyPatcher.FishPondUpdateMaximumOccupancyPostfix(StardewValley.Buildings.FishPond,StardewValley.GameData.FishPond.FishPondData)">
             <summary>Patch for Aquarist increased max fish pond capacity.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.ForestGetFishPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.ForestGetFishPatcher"/> class.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.ForestGetFishPatcher.ForestGetFishTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
-            <summary>Patch for prestiged Angler to recatch Glacierfish.</summary>
-        </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.GameLocationGetFishPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.GameLocationGetFishPatcher"/> class.</summary>
         </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.GameLocationGetFishPatcher.ApplyImpl(HarmonyLib.Harmony)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.GameLocationGetFishPatcher.UnapplyImpl(HarmonyLib.Harmony)">
+            <inheritdoc />
+        </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.GameLocationGetFishPatcher.GameLocationGetFishTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
-            <summary>Patch for Fisher to re-roll reeled fish if first roll resulted in trash.</summary>
+            <summary>Patch for Angler rod memory.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.ItemPopulateContextTagsPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.ItemPopulateContextTagsPatcher"/> class.</summary>
@@ -4920,35 +4958,11 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.ItemPopulateContextTagsPatcher.ItemPopulateContextTagsPostfix(StardewValley.Item,System.Collections.Generic.HashSet{System.String})">
             <summary>Patch to add pair context tag to extended family fish.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.MineShaftGetFishPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.MineShaftGetFishPatcher"/> class.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.PondQueryMenuCtorPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.PondQueryMenuCtorPatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.MineShaftGetFishPatcher.GameLocationGetFishTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
-            <summary>Patch for Fisher to reroll reeled fish if first roll resulted in trash.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.MountainGetFishPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.MountainGetFishPatcher"/> class.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.MountainGetFishPatcher.MountainGetFishTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
-            <summary>Patch for prestiged Angler to recatch Legend.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.PondQueryMenuDrawPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.PondQueryMenuDrawPatcher"/> class.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.PondQueryMenuDrawPatcher.PondQueryMenuDrawPrefix(StardewValley.Menus.PondQueryMenu,System.Single,Microsoft.Xna.Framework.Rectangle,System.String,System.Boolean,System.String,StardewValley.Object,StardewValley.Buildings.FishPond,Microsoft.Xna.Framework.Graphics.SpriteBatch)">
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.PondQueryMenuCtorPatcher.PondQueryMenuDrawPostfix(StardewValley.Menus.PondQueryMenu,StardewValley.Buildings.FishPond)">
             <summary>Patch to adjust fish pond query menu for Aquarist increased max capacity.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.SewerGetFishPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.SewerGetFishPatcher"/> class.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.SewerGetFishPatcher.SewerGetFishTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
-            <summary>Patch for prestiged Angler to recatch Mutant Carp.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.TownGetFishPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.TownGetFishPatcher"/> class.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Fishing.TownGetFishPatcher.TownGetFishTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
-            <summary>Patch for prestiged Angler to recatch Angler.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Foraging.BushShakePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Foraging.BushShakePatcher"/> class.</summary>
@@ -5088,10 +5102,10 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.BowPerformFirePatcher.BowPerformFirePrefix(StardewValley.Projectiles.BasicProjectile,StardewValley.Tools.Slingshot,StardewValley.Farmer)">
             <summary>Adds Rascal ammo recovery + apply Desperado overcharge effects + cache projectile properties.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.ChargeTimeRequiredMillisecondsGetterPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Integration.ChargeTimeRequiredMillisecondsGetterPatcher"/> class.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.GetSlingshotChargeTimePatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Integration.GetSlingshotChargeTimePatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.ChargeTimeRequiredMillisecondsGetterPatcher.ChargeTimeRequiredMillisecondsGetterPatcherPostfix(System.Single@)">
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.GetSlingshotChargeTimePatcher.GetSlingshotChargeTimeTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
             <summary>Patch to reduce Bow charge time for Desperado.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.BeeHouseMachineResetPatcher.#ctor">
@@ -5255,6 +5269,12 @@
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Mining.GameLocationOnStoneDestroyedPatcher.GameLocationOnStoneDestroyedTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
             <summary>Patch to remove Prospector double coal chance.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Mining.GameLocationPerformOrePanTenMinuteUpdatePatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Mining.GameLocationPerformOrePanTenMinuteUpdatePatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Mining.GameLocationPerformOrePanTenMinuteUpdatePatcher.GameLocationPerformOrePanTenMinuteUpdateTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Patch to add bonus panning point spawn attempts to Prospector.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Mining.MineShaftCheckActionPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Mining.MineShaftCheckActionPatcher"/> class.</summary>
@@ -6457,7 +6477,7 @@
             <summary>Raised when the local player's ultimate charge value returns to zero.</summary>
         </member>
         <member name="T:DaLion.Overhaul.Modules.Professions.Ultimates.UltimateEventAttribute">
-            <summary>Specifies that a class is deprecated and should not be available.</summary>
+            <summary>Qualifies a <see cref="T:DaLion.Shared.Events.ManagedEvent"/> class related to ultimate abilities / limit breaks.</summary>
         </member>
         <member name="T:DaLion.Overhaul.Modules.Professions.Ultimates.UltimateHud">
             <summary>HUD component to show the player their current Ultimate charge value.</summary>
@@ -7768,9 +7788,6 @@
         <member name="P:DaLion.Overhaul.Modules.Slingshots.Config.DisableGracePeriod">
             <summary>Gets a value indicating whether projectiles should not be useless for the first 100ms.</summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Slingshots.Config.BullseyeReplacesCursor">
-            <summary>Gets a value indicating whether to replace the mouse cursor with a bulls-eye while firing.</summary>
-        </member>
         <member name="P:DaLion.Overhaul.Modules.Slingshots.Config.FaceMouseCursor">
             <summary>Gets a value indicating whether face the current cursor position before swinging your slingshot (for special moves).</summary>
         </member>
@@ -7789,8 +7806,14 @@
         <member name="P:DaLion.Overhaul.Modules.Slingshots.Config.AutoSelectionRange">
             <summary>Gets a value indicating how close an enemy must be to auto-select a slingshot, in tiles.</summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Slingshots.Config.SocketsPerBow">
-            <summary>Gets the number of allowed Gemstone sockets for a given Bow or Crossbow. Requires the Archery mod and the EnableEnchantments setting.</summary>
+        <member name="P:DaLion.Overhaul.Modules.Slingshots.Config.ColorCodedForYourConvenience">
+            <summary>Gets a value indicating whether to color-code slingshot names, <see href="https://tvtropes.org/pmwiki/pmwiki.php/Main/ColourCodedForYourConvenience"> for your convenience</see>.</summary>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Slingshots.Config.DrawCurrentAmmo">
+            <summary>Gets a value indicating whether to override the draw method to include the currently-equipped ammo.</summary>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Slingshots.Config.BullseyeReplacesCursor">
+            <summary>Gets a value indicating whether to replace the mouse cursor with a bulls-eye while firing.</summary>
         </member>
         <member name="T:DaLion.Overhaul.Modules.Slingshots.DataKeys">
             <summary>Holds the string keys of mod data fields used by <see cref="F:DaLion.Overhaul.Modules.OverhaulModule.Slingshots"/>.</summary>
@@ -7972,6 +7995,12 @@
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.FarmerShowToolSwipeEffectPatcher.FarmerShowToolSwipeEffectPrefix(StardewValley.Farmer)">
             <summary>Adjust swipe effect during slingshot special.</summary>
         </member>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.FarmerTakeDamagePatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.FarmerTakeDamagePatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.FarmerTakeDamagePatcher.FarmerTakeDamageTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Add Slingshot resiliencce.</summary>
+        </member>
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.ForgeMenuIsValidUnforgePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.ForgeMenuIsValidUnforgePatcher"/> class.</summary>
         </member>
@@ -8017,20 +8046,20 @@
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.BowPerformFirePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.BowPerformFirePatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.BowPerformFirePatcher.BowPerformFirePrefix(StardewValley.Projectiles.BasicProjectile,StardewValley.Tools.Slingshot)">
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.BowPerformFirePatcher.BowPerformFirePrefix(StardewValley.Projectiles.BasicProjectile,StardewValley.Tools.Slingshot,StardewValley.Farmer)">
             <summary>Apply projectile stat modifiers.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.BowRefreshSpecialAttackCooldownPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.BowRefreshSpecialAttackCooldownPatcher"/> class.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.BowRefreshSpecialAttackCooldownPatcher.BowRefreshSpecialAttackCooldownPrefix(StardewValley.Tool,System.Object)">
-            <summary>Apply Emerald Ring and Enchantment effects to Slingshot.</summary>
+            <summary>Apply Garnet Ring and Enchantment effects to Bows.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.ChargeTimeRequiredMillisecondsGetterPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.ChargeTimeRequiredMillisecondsGetterPatcher"/> class.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.GetSlingshotChargeTimePatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.GetSlingshotChargeTimePatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.ChargeTimeRequiredMillisecondsGetterPatcher.ChargeTimeRequiredMillisecondsGetterPatcherPostfix(System.Single@)">
-            <summary>Patch to reduce Bow charge time for Desperado.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.GetSlingshotChargeTimePatcher.GetSlingshotChargeTimeTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
+            <summary>Add Emerald Ring and Emerald Enchantment bonuses to Bows.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.NewForgeMenuIsValidUnforgePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.NewForgeMenuIsValidUnforgePatcher"/> class.</summary>
@@ -8043,6 +8072,18 @@
         </member>
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.NewForgeMenuUpdatePatcher.NewForgeMenuUpdateTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
             <summary>Modify unforge behavior of Holy Blade.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.SlingshotPatchDrawInMenuPrefixPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.SlingshotPatchDrawInMenuPrefixPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.SlingshotPatchDrawInMenuPrefixPatcher.SlingshotPatchDrawInMenuPrefixTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Draw current ammo.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.ToolPatchDrawTooltipPostfixPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.ToolPatchDrawTooltipPostfixPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.Integration.ToolPatchDrawTooltipPostfixPatcher.ToolPatchDrawTooltipPostfixPrefix">
+            <summary>Override tooltip damage.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.InventoryPageDrawPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.InventoryPageDrawPatcher"/> class.</summary>
@@ -8075,17 +8116,32 @@
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.ProjectileIsCollidingPatcher.ProjectileIsCollidingPostfix(System.Boolean@,StardewValley.Network.NetPosition,StardewValley.GameLocation)">
             <summary>Allows projectiles to keep traveling over water.</summary>
         </member>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotAttachPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotAttachPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotAttachPatcher.SlingshotAttachPostfix(StardewValley.Tools.Slingshot,StardewValley.Object)">
+            <summary>Recalculate bonuses when arrows are attached.</summary>
+        </member>
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotCanThisBeAttachedPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotCanThisBeAttachedPatcher"/> class.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotCanThisBeAttachedPatcher.SlingshotCanThisBeAttachedPostfix(System.Boolean@,StardewValley.Object)">
             <summary>Patch to allow equipping radioactive ore.</summary>
         </member>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotDrawAttachmentsPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotDrawAttachmentsPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotDrawAttachmentsPatcher.SlingshotDrawAttachmentsPrefix(StardewValley.Tools.Slingshot,System.Int32@)">
+            <summary>Add small buffer space between stats and ammo slots.</summary>
+        </member>
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotDrawInMenuPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotDrawInMenuPatcher"/> class.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotDrawInMenuPatcher.SlingshotDrawInMenuPostfix(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Vector2,System.Single,StardewValley.StackDrawType,System.Boolean)">
             <summary>Draw slingshot cooldown.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotDrawInMenuPatcher.SlingshotPatchDrawInMenuPrefixTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Draw current ammo.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotDrawPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Patchers.SlingshotDrawPatcher"/> class.</summary>
@@ -8448,9 +8504,6 @@
             <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
             <returns>The amount of income tax due in gold, along with other relevant stats.</returns>
         </member>
-        <member name="T:DaLion.Overhaul.Modules.Taxes.State">
-            <summary>The runtime state variables for TXS.</summary>
-        </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Commands.GetToolsCommand.#ctor(DaLion.Shared.Commands.CommandHandler)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Commands.GetToolsCommand"/> class.</summary>
             <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
@@ -8464,20 +8517,20 @@
         <member name="M:DaLion.Overhaul.Modules.Tools.Commands.GetToolsCommand.Callback(System.String,System.String[])">
             <inheritdoc />
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolsCommand.#ctor(DaLion.Shared.Commands.CommandHandler)">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolsCommand"/> class.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolCommand.#ctor(DaLion.Shared.Commands.CommandHandler)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolCommand"/> class.</summary>
             <param name="handler">The <see cref="T:DaLion.Shared.Commands.CommandHandler"/> instance that handles this command.</param>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolsCommand.Triggers">
+        <member name="P:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolCommand.Triggers">
             <inheritdoc />
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolsCommand.Documentation">
+        <member name="P:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolCommand.Documentation">
             <inheritdoc />
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolsCommand.Callback(System.String,System.String[])">
+        <member name="M:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolCommand.Callback(System.String,System.String[])">
             <inheritdoc />
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolsCommand.GetUsage">
+        <member name="M:DaLion.Overhaul.Modules.Tools.Commands.UpgradeToolCommand.GetUsage">
             <summary>Tell the dummies how to use the console command.</summary>
         </member>
         <member name="T:DaLion.Overhaul.Modules.Tools.Config">
@@ -8521,6 +8574,9 @@
         </member>
         <member name="P:DaLion.Overhaul.Modules.Tools.Config.ColorCodedForYourConvenience">
             <summary>Gets a value indicating whether to color the title text of upgraded tools.</summary>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Tools.Config.EnableForgeUpgrading">
+            <summary>Gets a value indicating whether to allow upgrading tools at the Volcano Forge.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Config.Validate">
             <inheritdoc />
@@ -8593,12 +8649,6 @@
         </member>
         <member name="P:DaLion.Overhaul.Modules.Tools.Configs.HoeConfig.BaseStaminaMultiplier">
             <summary>Gets the multiplier to base stamina consumed by the <see cref="T:StardewValley.Tools.Axe"/>.</summary>
-        </member>
-        <member name="P:DaLion.Overhaul.Modules.Tools.Configs.HoeConfig.OverrideAffectedTiles">
-            <summary>
-                Gets a value indicating whether to apply custom tile area for the Hoe. Keep this at false if using defaults to improve
-                performance.
-            </summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Tools.Configs.HoeConfig.AffectedTilesAtEachPowerLevel">
             <summary>Gets the area of affected tiles at each power level for the Hoe, in units lengths x units radius.</summary>
@@ -8694,9 +8744,6 @@
         <member name="P:DaLion.Overhaul.Modules.Tools.Configs.WateringCanConfig.BaseStaminaMultiplier">
             <summary>Gets the multiplier to base stamina consumed by the <see cref="T:StardewValley.Tools.Axe"/>.</summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Tools.Configs.WateringCanConfig.OverrideAffectedTiles">
-            <summary>Gets a value indicating whether use custom tile area for the Watering Can. Keep this at false if using defaults to improve performance.</summary>
-        </member>
         <member name="P:DaLion.Overhaul.Modules.Tools.Configs.WateringCanConfig.AffectedTilesAtEachPowerLevel">
             <summary>Gets the area of affected tiles at each power level for the Can, in units lengths x units radius.</summary>
             <remarks>Note that radius extends to both sides of the farmer.</remarks>
@@ -8706,6 +8753,15 @@
         </member>
         <member name="P:DaLion.Overhaul.Modules.Tools.Configs.WateringCanConfig.AllowSwiftEnchantment">
             <summary>Gets a value indicating whether the Watering Can can be enchanted with Swift.</summary>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Tools.Configs.WateringCanConfig.ExpRewardChance">
+            <summary>Gets the chance to reward farming experience when watering a cropped tile.</summary>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Tools.Configs.WateringCanConfig.ExpRewardAmount">
+            <summary>Gets the amount of farming experience rewarded for watering a cropped tile.</summary>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Tools.Configs.WateringCanConfig.PreventRefillWithSaltWater">
+            <summary>Gets a value indicating whether to prevent refilling the can with salt or ocean water.</summary>
         </member>
         <member name="T:DaLion.Overhaul.Modules.Tools.DataKeys">
             <summary>Holds the string keys of mod data fields used by <see cref="F:DaLion.Overhaul.Modules.OverhaulModule.Tools"/>.</summary>
@@ -8784,6 +8840,13 @@
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Events.ShockwaveUpdateTickedEvent.OnUpdateTickedImpl(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
             <inheritdoc />
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Events.ToolAssetRequestedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Events.ToolAssetRequestedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Events.ToolAssetRequestedEvent.ProvideRadioactiveTools">
+            <summary>Provides the texture for Radioactive Tools.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Events.ToolButtonPressedEvent.#ctor(DaLion.Shared.Events.EventManager)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Events.ToolButtonPressedEvent"/> class.</summary>
@@ -8943,17 +9006,56 @@
         <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.FarmerToolPowerIncreasePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.FarmerToolPowerIncreasePatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.FarmerToolPowerIncreasePatcher.FarmerToolPowerIncreaseTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction})">
-            <summary>Allow first two power levels on Pick.</summary>
-        </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.FishingRodEnchantmentCanApplyToPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.FishingRodEnchantmentCanApplyToPatcher"/> class.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.FishingRodEnchantmentCanApplyToPatcher.FishingRodEnchantmentCanApplyTo(StardewValley.FishingRodEnchantment,System.Boolean@,StardewValley.Item)">
             <summary>Allow apply Master enchantment to other tools.</summary>
         </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuCraftItemPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuCraftItemPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuCraftItemPatcher.ForgeMenuCraftItemPostfix(StardewValley.Item@,StardewValley.Item,StardewValley.Item)">
+            <summary>Allow forge upgrades.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuIsValidCraftIngredientPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuIsValidCraftIngredientPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuIsValidCraftIngredientPatcher.ForgeMenuIsValidCraftIngredientPostfix(System.Boolean@,StardewValley.Item)">
+            <summary>Allow forge upgrades.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuIsValidCraftPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuIsValidCraftPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuIsValidCraftPatcher.ForgeMenuIsValidCraftPostfix(System.Boolean@,StardewValley.Item,StardewValley.Item)">
+            <summary>Allow forge upgrades.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuSpendRightItemPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuSpendRightItemPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ForgeMenuSpendRightItemPatcher.ForgeMenuSpendRightItemPrefix(StardewValley.Menus.ForgeMenu)">
+            <summary>Allow forge upgrades.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.Game1DrawToolPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.Game1DrawToolPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.Game1DrawToolPatcher.ToolDrawInMenuPrefix(StardewValley.Farmer,System.Nullable{System.ValueTuple{System.Int32,Microsoft.Xna.Framework.Graphics.Texture2D}}@)">
+            <summary>Replace tool texture.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.Game1DrawToolPatcher.ToolDrawInMenuPostfix(StardewValley.Farmer,System.Nullable{System.ValueTuple{System.Int32,Microsoft.Xna.Framework.Graphics.Texture2D}})">
+            <summary>Restore tool texture.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.GameLocationCanRefillWateringCanOnTilePatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.GameLocationCanRefillWateringCanOnTilePatcher"/> class.</summary>
+        </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.HoeDirtPerformToolActionPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.HoeDirtPerformToolActionPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.HoeDirtPerformToolActionPatcher.HoeDirtPerformToolActionPrefix(StardewValley.TerrainFeatures.HoeDirt,System.Int32@)">
+            <summary>Patch to reward Watering Can exp.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.HoeDirtPerformToolActionPatcher.HoeDirtPerformToolActionPostfix(StardewValley.TerrainFeatures.HoeDirt,System.Int32,StardewValley.Tool)">
+            <summary>Patch to reward Watering Can exp.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.HoeDirtPerformToolActionPatcher.HoeDirtPerformToolActionTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
             <summary>Patch to allow harvest with scythe.</summary>
@@ -8975,6 +9077,30 @@
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.IClickableMenuDrawHoverTextPatcher.IClickableMenuDrawHoverTextTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
             <summary>Set hover text color for upgraded tools weapons.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuCraftItemPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuCraftItemPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuCraftItemPatcher.NewForgeMenuCraftItemPostfix(StardewValley.Item@,StardewValley.Item,StardewValley.Item)">
+            <summary>Allow forge upgrades.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuIsValidCraftIngredientPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuIsValidCraftIngredientPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuIsValidCraftIngredientPatcher.NewForgeMenuIsValidCraftIngredientPostfix(System.Boolean@,StardewValley.Item)">
+            <summary>Allow forge upgrades.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuIsValidCraftPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuIsValidCraftPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuIsValidCraftPatcher.NewForgeMenuIsValidCraftPostfix(System.Boolean@,StardewValley.Item,StardewValley.Item)">
+            <summary>Allow forge upgrades.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuSpendRightItemPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuSpendRightItemPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.Integration.NewForgeMenuSpendRightItemPatcher.ForgeMenuSpendRightItemPrefix(SpaceCore.Interface.NewForgeMenu)">
+            <summary>Allow forge upgrades.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.InventoryPageDrawPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.InventoryPageDrawPatcher"/> class.</summary>
@@ -9072,11 +9198,41 @@
         <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolbarReceiveClickPatcher.ToolbarReceiveClickPrefix(StardewValley.Item,System.Boolean)">
             <summary>Toggle selectable tool.</summary>
         </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolDisplayNameGetterPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.ToolDisplayNameGetterPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolDisplayNameGetterPatcher.ToolSetNewTileIndexForUpgradeLevelPrefix(StardewValley.Tool,System.String@)">
+            <summary>Don't change tile index. We will simply patch over it.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolDrawInMenuPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.ToolDrawInMenuPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolDrawInMenuPatcher.ToolDrawInMenuPrefix(StardewValley.Tool,System.Nullable{System.ValueTuple{System.Int32,Microsoft.Xna.Framework.Graphics.Texture2D}}@)">
+            <summary>Replace tool texture.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolDrawInMenuPatcher.ToolDrawInMenuPostfix(StardewValley.Tool,System.Nullable{System.ValueTuple{System.Int32,Microsoft.Xna.Framework.Graphics.Texture2D}})">
+            <summary>Restore tool texture.</summary>
+        </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolEndUsingPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.ToolEndUsingPatcher"/> class.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolEndUsingPatcher.ToolEndUsingPostfix(StardewValley.Farmer)">
             <summary>Do shockwave.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolNameGetterPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.ToolNameGetterPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolNameGetterPatcher.ToolSetNewTileIndexForUpgradeLevelPrefix(StardewValley.Tool,System.String@)">
+            <summary>Don't change tile index. We will simply patch over it.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolSetNewTileIndexForUpgradeLevelPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.ToolSetNewTileIndexForUpgradeLevelPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolSetNewTileIndexForUpgradeLevelPatcher.ToolSetNewTileIndexForUpgradeLevelPrefix(StardewValley.Tool,System.Nullable{System.Int32}@)">
+            <summary>Don't change tile index. We will simply patch over it.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolSetNewTileIndexForUpgradeLevelPatcher.ToolTilesAffectedPostfix(StardewValley.Tool,System.Nullable{System.Int32}@)">
+            <summary>Don't change tile index. We will simply patch over it.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tools.Patchers.ToolTilesAffectedPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tools.Patchers.ToolTilesAffectedPatcher"/> class.</summary>
@@ -9127,6 +9283,9 @@
         </member>
         <member name="T:DaLion.Overhaul.Modules.Tools.State">
             <summary>The runtime state variables for TOLS.</summary>
+        </member>
+        <member name="T:DaLion.Overhaul.Modules.Tools.Textures">
+            <summary>Caches custom mod textures and related functions.</summary>
         </member>
         <member name="T:DaLion.Overhaul.Modules.Tools.ToolSelector">
             <summary>Smart <see cref="T:StardewValley.Tool"/> selector.</summary>
@@ -9213,9 +9372,6 @@
         <member name="P:DaLion.Overhaul.Modules.Tweex.Config.DeterministicAgeQuality">
             <summary>Gets a value indicating whether determines whether age-dependent qualities should be deterministic (true) or stochastic/random (false).</summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Tweex.Config.MillsPreserveQuality">
-            <summary>Gets a value indicating whether the Mill's output should consider the quality of the ingredient.</summary>
-        </member>
         <member name="P:DaLion.Overhaul.Modules.Tweex.Config.BerryBushExpReward">
             <summary>Gets the amount of Foraging experience rewarded for harvesting berry bushes. Set to zero to disable.</summary>
         </member>
@@ -9225,29 +9381,42 @@
         <member name="P:DaLion.Overhaul.Modules.Tweex.Config.TapperExpReward">
             <summary>Gets the amount of Foraging experience rewarded for harvesting Tappers. Set to zero to disable.</summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Tweex.Config.PreventFruitTreeWinterGrowth">
-            <summary>Gets a value indicating whether if regular trees can't grow in winter, neither should fruit trees.</summary>
+        <member name="P:DaLion.Overhaul.Modules.Tweex.Config.CropWitherChance">
+            <summary>Gets the chance a crop may wither per day left un-watered.</summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Tweex.Config.LargeProducsYieldQuantityOverQuality">
-            <summary>Gets a value indicating whether large input products should yield more processed output instead of higher quality.</summary>
+        <member name="P:DaLion.Overhaul.Modules.Tweex.Config.PreventFruitTreeWinterGrowth">
+            <summary>Gets a value indicating whether fruit trees should be prevented from growing in winter, as for regular trees.</summary>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Tweex.Config.LargeDairyYieldsQuantityOverQuality">
+            <summary>Gets a value indicating whether large eggs and milk should yield twice the output stack instead of higher quality.</summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Tweex.Config.DairyArtisanMachines">
             <summary>
                 Gets a list of Artisan machines which should be compatible with
-                LargeProductsYieldQuantityOverQuality.
+                LargeDairyYieldsQuantityOverQuality.
             </summary>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Tweex.Config.TrashDoesNotConsumeBait">
+            <summary>Gets a value indicating whether to preserve the bait when a Crab Pot produces trash.</summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Tweex.Config.ExplosionTriggeredBombs">
             <summary>Gets a value indicating whether bombs within any explosion radius are immediately triggered.</summary>
-        </member>
-        <member name="P:DaLion.Overhaul.Modules.Tweex.Config.LegendaryFishAlwaysBestQuality">
-            <summary>Gets a value indicating whether to set the quality of legendary fish at best.</summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Tweex.Config.SpawnCrowsOnTheseMaps">
             <summary>Gets a set of maps in which to attempt to spawn crows.</summary>
         </member>
         <member name="T:DaLion.Overhaul.Modules.Tweex.DataKeys">
             <summary>Holds the string keys of mod data fields used by <see cref="F:DaLion.Overhaul.Modules.OverhaulModule.Tweex"/>.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tweex.Events.CropWitherDayEndingEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tweex.Events.CropWitherDayEndingEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Tweex.Events.CropWitherDayEndingEvent.IsEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Tweex.Events.CropWitherDayEndingEvent.OnDayEndingImpl(System.Object,StardewModdingAPI.Events.DayEndingEventArgs)">
+            <inheritdoc />
         </member>
         <member name="T:DaLion.Overhaul.Modules.Tweex.Extensions.BushExtensions">
             <summary>Extensions for the <see cref="T:StardewValley.TerrainFeatures.Tree"/> class.</summary>
@@ -9303,11 +9472,11 @@
         <member name="M:DaLion.Overhaul.Modules.Tweex.Patchers.BushShakePatcher.BushShakeTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
             <summary>Adds quality tea bushes.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Tweex.Patchers.FishingRodPullFishFromWaterPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tweex.Patchers.FishingRodPullFishFromWaterPatcher"/> class.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Tweex.Patchers.Fishing.CrabPotCheckForActionPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tweex.Patchers.Fishing.CrabPotCheckForActionPatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Tweex.Patchers.FishingRodPullFishFromWaterPatcher.FishingRodPullFishFromWaterPrefix(System.Int32,System.Int32@)">
-            <summary>Legendary fish always best quality.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Tweex.Patchers.Fishing.CrabPotCheckForActionPatcher.PCrabPotCheckForActionTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Trash does not consume bait.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tweex.Patchers.FruitTreeDayUpdatePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tweex.Patchers.FruitTreeDayUpdatePatcher"/> class.</summary>
@@ -9383,12 +9552,6 @@
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tweex.Patchers.Integration.ProducerRuleControllerProduceOutputPatcher.ProducerRuleControllerProduceOutputPostfix(StardewValley.Object,StardewValley.Object,System.Boolean)">
             <summary>Replaces large egg and milk output quality with quantity for PFM machines.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Tweex.Patchers.MillDayUpdatePatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tweex.Patchers.MillDayUpdatePatcher"/> class.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Tweex.Patchers.MillDayUpdatePatcher.MillDayUpdateTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
-            <summary>Mills preserve quality.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Tweex.Patchers.ObjectCheckForActionPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Tweex.Patchers.ObjectCheckForActionPatcher"/> class.</summary>
@@ -9546,6 +9709,9 @@
         <member name="F:DaLion.Overhaul.Modules.Weapons.Config.TooltipStyle.Relative">
             <summary>Display the relative value of the stat, with respect to the default value for the weapon type.</summary>
         </member>
+        <member name="F:DaLion.Overhaul.Modules.Weapons.Config.TooltipStyle.Vanilla">
+            <summary>The vanilla confusing nonsense.</summary>
+        </member>
         <member name="T:DaLion.Overhaul.Modules.Weapons.Config.TrialDifficulty">
             <summary>The difficulty level of the proven conditions for the virtue trials.</summary>
         </member>
@@ -9565,7 +9731,7 @@
             <summary>Gets the style of the tooltips for displaying stat bonuses for weapons.</summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Weapons.Config.ColorCodedForYourConvenience">
-            <summary>Gets a value indicating whether to color-code weapon and slingshot names, <see href="https://tvtropes.org/pmwiki/pmwiki.php/Main/ColourCodedForYourConvenience">for your convenience</see>.</summary>
+            <summary>Gets a value indicating whether to color-code tool names, <see href="https://tvtropes.org/pmwiki/pmwiki.php/Main/ColourCodedForYourConvenience"> for your convenience</see>.</summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Weapons.Config.EnableComboHits">
             <summary>Gets a value indicating whether to replace vanilla weapon spam with a more strategic combo system.</summary>
@@ -10030,6 +10196,9 @@
             <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
             <returns>The number of completed Monster Eradication goals.</returns>
         </member>
+        <member name="T:DaLion.Overhaul.Modules.Weapons.Extensions.ItemExtensions">
+            <summary>Extensions for the <see cref="T:StardewValley.Item"/> class.</summary>
+        </member>
         <member name="T:DaLion.Overhaul.Modules.Weapons.Extensions.MeleeWeaponExtensions">
             <summary>Extensions for the <see cref="T:StardewValley.Tools.MeleeWeapon"/> class.</summary>
         </member>
@@ -10378,12 +10547,6 @@
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.ChestAddItemPatcher.ChestAddItemPrefix(StardewValley.Item@,StardewValley.Item)">
             <summary>Prevent depositing Dark Sword.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.CommunityUpgradeAcceptPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.CommunityUpgradeAcceptPatcher"/> class.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.CommunityUpgradeAcceptPatcher.CommunityUpgradeAcceptTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
-            <summary>Complete Generosity quest.</summary>
-        </member>
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.DialogueChooseResponsePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.DialogueChooseResponsePatcher"/> class.</summary>
         </member>
@@ -10437,6 +10600,12 @@
         </member>
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.GameLocationAnswerDialogueActionPatcher.GameLocationAnswerDialogueActionPrefix(System.Boolean@,System.String)">
             <summary>Respond to grab Dark Sword proposition + blacksmith forge.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.GameLocationCommunityUpgradeAcceptPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.GameLocationCommunityUpgradeAcceptPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.GameLocationCommunityUpgradeAcceptPatcher.CommunityUpgradeAcceptTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
+            <summary>Complete Generosity quest.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.GameLocationGetGalaxySwordPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.GameLocationGetGalaxySwordPatcher"/> class.</summary>
@@ -11628,10 +11797,10 @@
             <summary>Get a translation equivalent to "Fisher".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Fisher_Desc">
-            <summary>Get a translation equivalent to "Fish bite faster. Reduced chance to fish junk.".</summary>
+            <summary>Get a translation equivalent to "Baits are 2x more effective when fishing.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Fisher_Desc_Prestiged">
-            <summary>Get a translation equivalent to "Fish always bite instantly.".</summary>
+            <summary>Get a translation equivalent to "Baits are 2x &gt;&gt; 3x more effective when fishing.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Angler_Title_Male">
             <summary>Get a translation equivalent to "Angler".</summary>
@@ -11640,10 +11809,10 @@
             <summary>Get a translation equivalent to "Angler".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Angler_Desc">
-            <summary>Get a translation equivalent to "Fish worth 1% more for every unique max-sized fish caught and 5% more for every legendary fish.".</summary>
+            <summary>Get a translation equivalent to "Fish are 0.5% more valuable for every unique species caught. Fully-expending a tackle causes it's effects to linger on the fishing rod.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Angler_Desc_Prestiged">
-            <summary>Get a translation equivalent to "Can re-catch legendary fish.".</summary>
+            <summary>Get a translation equivalent to "Fish are again 0.5% more valuable for every unique max-sized species caught.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Aquarist_Title_Male">
             <summary>Get a translation equivalent to "Aquarist".</summary>
@@ -11652,10 +11821,10 @@
             <summary>Get a translation equivalent to "Aquarist".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Aquarist_Desc">
-            <summary>Get a translation equivalent to "Fish pond max capacity +2. Catching bar decreases slower for every unique fish species raised in a fish pond.".</summary>
+            <summary>Get a translation equivalent to "Fish pond max capacity +2. Catching bar increases faster for every unique fish species raised in a Fish Pond.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Aquarist_Desc_Prestiged">
-            <summary>Get a translation equivalent to "Can raise legendary fish in fish ponds.".</summary>
+            <summary>Get a translation equivalent to "Fish pond max capacity +2 &gt;&gt; +4.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Trapper_Title_Male">
             <summary>Get a translation equivalent to "Trapper".</summary>
@@ -11676,10 +11845,10 @@
             <summary>Get a translation equivalent to "Luremaster".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Luremaster_Desc">
-            <summary>Get a translation equivalent to "Crab pots no longer produce junk. Use different baits to attract different catch.".</summary>
+            <summary>Get a translation equivalent to "Crab pots with bait can trap 2x per day. Unlock new bait effects.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Luremaster_Desc_Prestiged">
-            <summary>Get a translation equivalent to "60% chance to preserve crab pot bait.".</summary>
+            <summary>Get a translation equivalent to "Crab pots with bait can trap 2x &gt;&gt; 3x per day.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Conservationist_Title_Male">
             <summary>Get a translation equivalent to "Conservationist".</summary>
@@ -11688,10 +11857,10 @@
             <summary>Get a translation equivalent to "Conservationist".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Conservationist_Desc">
-            <summary>Get a translation equivalent to "Crab pots without bait can trap junk. Clean the Valley's waters to merit tax deductions.".</summary>
+            <summary>Get a translation equivalent to "Crab pots without bait can trap junk. Clean the Valley's waters earn village favor and merit tax deductions.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Conservationist_Desc_Prestiged">
-            <summary>Get a translation equivalent to "Cleaning the Valley's waters also merits favor with the villagers.".</summary>
+            <summary>Get a translation equivalent to "Tax deductions accumulate 50% more quickly.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Conservationist_Mail(System.Object,System.Object,System.Object,System.Object)">
             <summary>Get a translation equivalent to "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^We are pleased to inform you that, upon review of your environmentalist activities, we have determined that you qualify for an income tax deduction of {{taxBonus}} as per section 501(c)(3) of the Ferngill Revenue Code. As such, all taxable income for {{farm}} farm will be increased by the aforementioned amount, effective until the 28th of {{season}}.^^Please keep this letter in your permanent records should you nee...".</summary>
@@ -12069,7 +12238,7 @@
             <summary>Get a translation equivalent to "A Hero's Journey".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Quests_Hero_Journey_Desc">
-            <summary>Get a translation equivalent to "Prove that you live by the Five Heroic Virtues.".</summary>
+            <summary>Get a translation equivalent to "Prove the Five Heroic Virtues.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Yoba_Question">
             <summary>Get a translation equivalent to "There are additional inscriptions on the altar...".</summary>
@@ -12105,7 +12274,7 @@
             <summary>Get a translation equivalent to ""Valor does not make one good, yet how many good men have you met in your life's journey who were cowards? Those who posses valor do not hesitate to stand against the majority, no matter the consequences."".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Virtues_Trial">
-            <summary>Get a translation equivalent to "Trial of ".</summary>
+            <summary>Get a translation equivalent to "Proof of ".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Objects_Dwarvishblueprint_Name">
             <summary>Get a translation equivalent to "Old Dwarvish Blueprint".</summary>
@@ -12355,9 +12524,24 @@
         <member name="M:DaLion.Overhaul.I18n.Algae">
             <summary>Get a translation equivalent to "Algae".</summary>
         </member>
+        <member name="M:DaLion.Overhaul.I18n.Radioactive_Axe">
+            <summary>Get a translation equivalent to "Radioactive Axe".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Radioactive_Hoe">
+            <summary>Get a translation equivalent to "Radioactive Hoe".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Radioactive_Pick">
+            <summary>Get a translation equivalent to "Radioactive Pickaxe".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Radioactive_Can">
+            <summary>Get a translation equivalent to "Radioactive Watering Can".</summary>
+        </member>
         <!-- Badly formed XML comment ignored for member "M:DaLion.Overhaul.I18n.Gmcm_Core_Initial" -->
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Core_Choose">
             <summary>Get a translation equivalent to "Choose the modules to enable. You must save and exit this menu after enabling or disabling a module for those changes to take effect. Links to specific module settings pages will appear below for enabled modules.\n\nNote that certain modules may cause a JSON shuffle or other side-effects if enabled or disabled mid-playthrough.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Core_Available">
+            <summary>Get a translation equivalent to "Available modules:".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Core_Modules">
             <summary>Get a translation equivalent to "Module settings:".</summary>
@@ -12550,12 +12734,6 @@
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Aquaristfishpondceiling_Desc">
             <summary>Get a translation equivalent to "The maximum number of Fish Ponds that will be counted for Aquarist's fishing bonus. If you like raising dozens of fish species, you may use this to limit how easy the fishing minigame will become.".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Legendarypondpopulationceiling_Title">
-            <summary>Get a translation equivalent to "Legendary Pond Population Ceiling".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Legendarypondpopulationceiling_Desc">
-            <summary>Get a translation equivalent to "The maximum population of Aquarist Fish Ponds with legendary fish.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Trashpertaxdeduction_Title">
             <summary>Get a translation equivalent to "Trash Per Tax Deduction %".</summary>
@@ -12922,91 +13100,97 @@
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Heading">
             <summary>Get a translation equivalent to "Quality Settings".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Treeagingfactor_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Treeagingfactor_Title">
             <summary>Get a translation equivalent to "Tree Aging Factor".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Treeagingfactor_Desc">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Treeagingfactor_Desc">
             <summary>Get a translation equivalent to "The degree to which Tree age improves sap quality. Lower values mean that more time is needed for sap to improve. Set to zero to disable quality sap.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Fruittreeagingfactor_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Fruittreeagingfactor_Title">
             <summary>Get a translation equivalent to "Fruit Tree Aging Factor".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Fruittreeagingfactor_Desc">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Fruittreeagingfactor_Desc">
             <summary>Get a translation equivalent to "The degree to which Fruit Tree age improves fruit quality. Lower values mean that more time is needed for fruits to improve. Set to zero to disable quality fruits.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Beehouseagingfactor_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Beehouseagingfactor_Title">
             <summary>Get a translation equivalent to "Bee House Aging Factor".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Beehouseagingfactor_Desc">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Beehouseagingfactor_Desc">
             <summary>Get a translation equivalent to "The degree to which Bee House age improves honey quality. Lower values mean that more time is needed for honey to improve. Set to zero to disable quality honey.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Mushroomboxagingfactor_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Mushroomboxagingfactor_Title">
             <summary>Get a translation equivalent to "Mushroom Box Aging Factor".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Mushroomboxagingfactor_Desc">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Mushroomboxagingfactor_Desc">
             <summary>Get a translation equivalent to "The degree to which Mushroom Box age improves mushroom quality. Lower values mean that more time is needed for mushrooms to improve. Set to zero to disable quality mushrooms.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Teabushagingfactor_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Teabushagingfactor_Title">
             <summary>Get a translation equivalent to "Tea Bush Aging Factor".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Teabushagingfactor_Desc">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Teabushagingfactor_Desc">
             <summary>Get a translation equivalent to "The degree to which Tea Bush age improves tea leaf quality. Lower values mean that more time is needed for tea leaves to improve. Set to zero to disable quality tea leaves.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Deterministicagequality_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Deterministicagequality_Title">
             <summary>Get a translation equivalent to "Deterministic Age Quality".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Deterministicagequality_Desc">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Quality_Deterministicagequality_Desc">
             <summary>Get a translation equivalent to "Whether age-dependent qualities should be deterministic (true) or stochastic (false).".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Millspreservequality_Title">
-            <summary>Get a translation equivalent to "Mills Preserve Quality".</summary>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Experience_Heading">
+            <summary>Get a translation equivalent to "Experience Settings".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Millspreservequality_Desc">
-            <summary>Get a translation equivalent to "Whether the Mill's output should consider the quality of the ingredient.".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Berrybushexpreward_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Experience_Berrybushexpreward_Title">
             <summary>Get a translation equivalent to "Berry Bush Exp Reward".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Berrybushexpreward_Desc">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Experience_Berrybushexpreward_Desc">
             <summary>Get a translation equivalent to "The amount of Foraging experience rewarded when a berry bush is harvested. Set to zero to disable.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Mushroomboxexpreward_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Experience_Mushroomboxexpreward_Title">
             <summary>Get a translation equivalent to "Mushroom Box Exp Reward".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Mushroomboxexpreward_Desc">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Experience_Mushroomboxexpreward_Desc">
             <summary>Get a translation equivalent to "The amount of Foraging experience rewarded when a Mushroom Box is harvested. Set to zero to disable.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Tapperexpreward_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Experience_Tapperexpreward_Title">
             <summary>Get a translation equivalent to "Tapper Exp Reward".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Tapperexpreward_Desc">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Experience_Tapperexpreward_Desc">
             <summary>Get a translation equivalent to "The amount of Foraging experience rewarded when a Tapper is harvested. Set to zero to disable.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Preventfruittreewintergrowth_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Heading">
+            <summary>Get a translation equivalent to "Gameplay Settings".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Cropwitherchance_Title">
+            <summary>Get a translation equivalent to "Crop Wither Chance".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Cropwitherchance_Desc">
+            <summary>Get a translation equivalent to "The chance for a crop to wither per day left un-watered.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Preventfruittreewintergrowth_Title">
             <summary>Get a translation equivalent to "Prevent Fruit Tree Winter Growth".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Preventfruittreewintergrowth_Desc">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Preventfruittreewintergrowth_Desc">
             <summary>Get a translation equivalent to "Regular trees can't grow in winter. Why should fruit trees be any different?".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Largeproductsyieldquantityoverquality_Title">
-            <summary>Get a translation equivalent to "Large Products Yield Quantity Over Quality".</summary>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Largedairyyieldsquantityoverquality_Title">
+            <summary>Get a translation equivalent to "Large Dairy Yields Quantity Over Quality".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Largeproductsyieldquantityoverquality_Desc">
-            <summary>Get a translation equivalent to "Causes one large egg or milk to produce two mayonnaise / cheese but at regular quality, instead of one at gold quality.".</summary>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Largedairyyieldsquantityoverquality_Desc">
+            <summary>Get a translation equivalent to "Causes one large egg or milk to produce two mayonnaise or cheese but at regular quality, instead of one at gold quality.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Explosiontriggeredbombs_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Trashdoesnotconsumebait_Title">
+            <summary>Get a translation equivalent to "Trash Does Not Consume Bait".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Trashdoesnotconsumebait_Desc">
+            <summary>Get a translation equivalent to "Prevents bait consumption when a Crab Pot produces trash.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Explosiontriggeredbombs_Title">
             <summary>Get a translation equivalent to "Explosion-Triggered Bombs".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Explosiontriggeredbombs_Desc">
-            <summary>Get a translation equivalent to "Bombs within any explosion radius are immediately triggered.".</summary>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Explosiontriggeredbombs_Desc">
+            <summary>Get a translation equivalent to "Bombs within any explosion radius immediately explode themselves.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Legendaryfishalwaysbestquality_Title">
-            <summary>Get a translation equivalent to "Legendary Fish Always Best Quality".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Legendaryfishalwaysbestquality_Desc">
-            <summary>Get a translation equivalent to "Legendary fish are always iridium-quality when caught.".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Spawncrowsonthesemaps_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Spawncrowsonthesemaps_Title">
             <summary>Get a translation equivalent to "Spawn Crows On These Maps:".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Maps_Islandwest">
@@ -13063,20 +13247,17 @@
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Upgrades_Mythicite">
             <summary>Get a translation equivalent to "Mythicite".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Colorcodedforyourconvenience_Desc">
-            <summary>Get a translation equivalent to "Whether to colorize tool names according to upgrade level.".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Hideaffectedtiles_Title">
-            <summary>Get a translation equivalent to "Hide Affected Tiles".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Hideaffectedtiles_Desc">
-            <summary>Get a translation equivalent to "Whether to hide the affected tiles overlay while charging tools.".</summary>
-        </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Ticksbetweenwaves_Title">
             <summary>Get a translation equivalent to "Shockwave Delay".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Ticksbetweenwaves_Desc">
             <summary>Get a translation equivalent to "Affects the speed of the shockwave for charged resource tools. Lower is faster. Set to 0 for instant.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Enableforgeupgrading_Title">
+            <summary>Get a translation equivalent to "Enable Forge Upgrading".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Enableforgeupgrading_Desc">
+            <summary>Get a translation equivalent to "Whether to enable upgrading tools at the Volcano Forge.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Controls_Holdtocharge_Title">
             <summary>Get a translation equivalent to "Hold-To-Charge".</summary>
@@ -13087,22 +13268,31 @@
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Controls_Modkey_Desc">
             <summary>Get a translation equivalent to "The key used for indicating auto-selectable tools, as well as for charging resource tools, if either of those options is enabled.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specifictools">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Interface_Colorcodedforyourconvenience_Desc">
+            <summary>Get a translation equivalent to "Whether to colorize tool names according to upgrade level.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Interface_Hideaffectedtiles_Title">
+            <summary>Get a translation equivalent to "Hide Affected Tiles".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Interface_Hideaffectedtiles_Desc">
+            <summary>Get a translation equivalent to "Whether to hide the affected tiles overlay while charging tools.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specificsettings">
             <summary>Get a translation equivalent to "Specific tool settings:".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specifictools_Axe">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specificsettings_Axe">
             <summary>Get a translation equivalent to "Axe Settings".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specifictools_Pickaxe">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specificsettings_Pickaxe">
             <summary>Get a translation equivalent to "Pickaxe Settings".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specifictools_Hoe">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specificsettings_Hoe">
             <summary>Get a translation equivalent to "Hoe Settings".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specifictools_Wateringcan">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specificsettings_Wateringcan">
             <summary>Get a translation equivalent to "Watering Can Settings".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specifictools_Scythe">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Specificsettings_Scythe">
             <summary>Get a translation equivalent to "Scythe Settings".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Back">
@@ -13386,33 +13576,6 @@
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Shockwave_Playanimation_Desc">
             <summary>Get a translation equivalent to "Whether to play the shockwave animation when the charge is released.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Heading">
-            <summary>Get a translation equivalent to "Harvesting Settings".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Crops_Title">
-            <summary>Get a translation equivalent to "Harvest Crops".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Crops_Desc">
-            <summary>Get a translation equivalent to "Whether to harvest crops with the Scythe.".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Flowers_Title">
-            <summary>Get a translation equivalent to "Harvest Flowers".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Flowers_Desc">
-            <summary>Get a translation equivalent to "Whether to harvest crops with the Scythe.".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Forage_Title">
-            <summary>Get a translation equivalent to "Harvest Forage".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Forage_Desc">
-            <summary>Get a translation equivalent to "Whether to harvest forage with the Scythe.".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Goldonly_Title">
-            <summary>Get a translation equivalent to "Golden Scythe Only".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Goldonly_Desc">
-            <summary>Get a translation equivalent to "Whether to limit crop and flower harvesting to the Golden Scythe.".</summary>
-        </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Allowenchantment_Heading">
             <summary>Get a translation equivalent to "Enchantment Settings".</summary>
         </member>
@@ -13442,6 +13605,51 @@
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Allowenchantment_Haymaker_Desc">
             <summary>Get a translation equivalent to "Whether the scythe can be enchanted with Haymaker.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Can_Exprewardchance_Title">
+            <summary>Get a translation equivalent to "Chance to Reward Experience".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Can_Exprewardchance_Desc">
+            <summary>Get a translation equivalent to "The chance to reward farming experience when watering a cropped tile.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Can_Exprewardamount_Title">
+            <summary>Get a translation equivalent to "Amount of Experience Reward".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Can_Exprewardamount_Desc">
+            <summary>Get a translation equivalent to "The amount of farming experience rewarded for watering a cropped tile.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Can_Preventsaltwaterrefill_Title">
+            <summary>Get a translation equivalent to "Prevent Refill With Salt Water".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Can_Preventsaltwaterrefill_Desc">
+            <summary>Get a translation equivalent to "Prevents refilling the Watering Can with salt or ocean water.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Heading">
+            <summary>Get a translation equivalent to "Harvesting Settings".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Crops_Title">
+            <summary>Get a translation equivalent to "Harvest Crops".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Crops_Desc">
+            <summary>Get a translation equivalent to "Whether to harvest crops with the Scythe.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Flowers_Title">
+            <summary>Get a translation equivalent to "Harvest Flowers".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Flowers_Desc">
+            <summary>Get a translation equivalent to "Whether to harvest crops with the Scythe.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Forage_Title">
+            <summary>Get a translation equivalent to "Harvest Forage".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Forage_Desc">
+            <summary>Get a translation equivalent to "Whether to harvest forage with the Scythe.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Goldonly_Title">
+            <summary>Get a translation equivalent to "Golden Scythe Only".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Scythe_Harvesting_Goldonly_Desc">
+            <summary>Get a translation equivalent to "Whether to limit crop and flower harvesting to the Golden Scythe.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Cmbt_Heading">
             <summary>Get a translation equivalent to "CMBT Settings".</summary>
@@ -13506,6 +13714,9 @@
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Slngs_Slingshot">
             <summary>Get a translation equivalent to "Slingshot".</summary>
         </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Slngs_Features_Heading">
+            <summary>Get a translation equivalent to "Feature Selection".</summary>
+        </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Slngs_Enablerebalance_Title">
             <summary>Get a translation equivalent to "Enable Rebalance".</summary>
         </member>
@@ -13548,6 +13759,15 @@
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Slngs_Enableinfinityslingshot_Desc">
             <summary>Get a translation equivalent to "Allows creating the Infinity Slingshot at the Forge.".</summary>
         </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Slngs_Interface_Colorcodedforyourconvenience_Desc">
+            <summary>Get a translation equivalent to "Whether to colorize slingshot names according to tiers.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Slngs_Interface_Drawcurrentammo_Title">
+            <summary>Get a translation equivalent to "Display Current Ammo".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Slngs_Interface_Drawcurrentammo_Desc">
+            <summary>Get a translation equivalent to "Displays the currently-selected ammo. Useful when equipping multiple ammo.".</summary>
+        </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Heading">
             <summary>Get a translation equivalent to "WPNZ Settings".</summary>
         </member>
@@ -13562,21 +13782,6 @@
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Rebalance_Enable_Desc">
             <summary>Get a translation equivalent to "Rebalances every melee weapon, in addition to Mine chests, monster and container drops, weapon shops and many other features.".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Rebalance_Tooltipstyle_Title">
-            <summary>Get a translation equivalent to "Tooltip Style".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Rebalance_Tooltipstyle_Desc">
-            <summary>Get a translation equivalent to "Whether to display weapon stats as their absolute values or as relative to other weapons of the same type.".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Rebalance_Tooltipstyle_Absolute">
-            <summary>Get a translation equivalent to "Absolute".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Rebalance_Tooltipstyle_Relative">
-            <summary>Get a translation equivalent to "Relative".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Rebalance_Colorcodedforyourconvenience_Desc">
-            <summary>Get a translation equivalent to "Whether to colorize weapon names according to the weapon's assigned tier.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Rebalance_Defenseimprovesparry_Title">
             <summary>Get a translation equivalent to "Defense Improves Parry".</summary>
@@ -13686,11 +13891,29 @@
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Quests_Virtuetrialdifficulty_Hard">
             <summary>Get a translation equivalent to "Hard".</summary>
         </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Interface_Colorcodedforyourconvenience_Desc">
+            <summary>Get a translation equivalent to "Whether to colorize weapon names according to the weapon's assigned tier or unique status.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Interface_Tooltipstyle_Title">
+            <summary>Get a translation equivalent to "Tooltip Style".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Interface_Tooltipstyle_Desc">
+            <summary>Get a translation equivalent to "Whether to display weapon stats as their absolute values or as relative to other weapons of the same type.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Interface_Tooltipstyle_Vanilla">
+            <summary>Get a translation equivalent to "Vanilla".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Interface_Tooltipstyle_Absolute">
+            <summary>Get a translation equivalent to "Absolute".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Interface_Tooltipstyle_Relative">
+            <summary>Get a translation equivalent to "Relative".</summary>
+        </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Enableretexture_Title">
-            <summary>Get a translation equivalent to "Enable Retexture".</summary>
+            <summary>Get a translation equivalent to "Retexture".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Enableretexture_Desc">
-            <summary>Get a translation equivalent to "Applies a Vanilla-friendly retexture that better reflects a weapon`s overhauled type or unique status.".</summary>
+            <summary>Get a translation equivalent to "Applies a Vanilla-friendly retexture that better reflects a weapon's overhauled type or unique status.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Controls_Heading">
             <summary>Get a translation equivalent to "Control Settings".</summary>
@@ -13732,25 +13955,22 @@
             <summary>Get a translation equivalent to "The chosen {{tool}} will be automatically selected when a monster enters this range in tiles.".</summary>
             <param name="tool">The value to inject for the <c>{{tool}}</c> token.</param>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Movement_Heading">
-            <summary>Get a translation equivalent to "Movement Settings".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Movement_Slickmoves_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Controls_Slickmoves_Title">
             <summary>Get a translation equivalent to "Slick Moves".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Movement_Slickmoves_Desc">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Controls_Slickmoves_Desc">
             <summary>Get a translation equivalent to "Drift in the current running direction when swinging a weapon.".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Ui_Colorcodedforyourconvenience_Title">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Interface_Heading">
+            <summary>Get a translation equivalent to "Interface Settings".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Interface_Colorcodedforyourconvenience_Title">
             <summary>Get a translation equivalent to "Color-Coded For Convenience".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_General_Heading">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Headings_General">
             <summary>Get a translation equivalent to "General Settings".</summary>
         </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Ui_Heading">
-            <summary>Get a translation equivalent to "UI Settings".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Other_Heading">
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Headings_Other">
             <summary>Get a translation equivalent to "Other Settings".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.GetByKey(System.String,System.Object)">
@@ -13764,37 +13984,37 @@
         <member name="T:DaLion.Shared.Attributes.ImplicitIgnoreAttribute">
             <summary>Indicates that an implicitly-used marked symbol should be ignored unless explicitly instantiated.</summary>
         </member>
-        <member name="T:DaLion.Shared.Attributes.IgnoreWithModAttribute">
-            <summary>Indicates to a factory that an implicitly-used marked symbol should only be instantiated when a third-party mod is installed, or adds third-party mod metadata to an explicitly-instantiated class.</summary>
+        <member name="T:DaLion.Shared.Attributes.ModConflictAttribute">
+            <summary>Indicates to a factory that the implicitly-used marked symbol should not be instantiated when a third-party mod is installed.</summary>
         </member>
-        <member name="M:DaLion.Shared.Attributes.IgnoreWithModAttribute.#ctor(System.String,System.String,System.String)">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Shared.Attributes.IgnoreWithModAttribute"/> class.</summary>
+        <member name="M:DaLion.Shared.Attributes.ModConflictAttribute.#ctor(System.String,System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Shared.Attributes.ModConflictAttribute"/> class.</summary>
             <param name="uniqueId">The required mod's unique ID.</param>
             <param name="name">A human-readable name for the mod.</param>
             <param name="version">The minimum required version.</param>
         </member>
-        <member name="P:DaLion.Shared.Attributes.IgnoreWithModAttribute.UniqueId">
+        <member name="P:DaLion.Shared.Attributes.ModConflictAttribute.UniqueId">
             <summary>Gets the required mod's unique ID.</summary>
         </member>
-        <member name="P:DaLion.Shared.Attributes.IgnoreWithModAttribute.Name">
+        <member name="P:DaLion.Shared.Attributes.ModConflictAttribute.Name">
             <summary>Gets the human-readable name of the mod.</summary>
         </member>
-        <member name="T:DaLion.Shared.Attributes.RequiresModAttribute">
-            <summary>Indicates to a factory that an implicitly-used marked symbol should only be instantiated when a third-party mod is installed, or adds third-party mod metadata to an explicitly-instantiated class.</summary>
+        <member name="T:DaLion.Shared.Attributes.ModRequirementAttribute">
+            <summary>Indicates to a factory that the implicitly-used marked symbol should only be instantiated when a third-party mod is installed, or adds third-party mod metadata to an explicitly-instantiated class.</summary>
         </member>
-        <member name="M:DaLion.Shared.Attributes.RequiresModAttribute.#ctor(System.String,System.String,System.String)">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Shared.Attributes.RequiresModAttribute"/> class.</summary>
+        <member name="M:DaLion.Shared.Attributes.ModRequirementAttribute.#ctor(System.String,System.String,System.String)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Shared.Attributes.ModRequirementAttribute"/> class.</summary>
             <param name="uniqueId">The required mod's unique ID.</param>
             <param name="name">A human-readable name for the mod.</param>
             <param name="version">The minimum required version.</param>
         </member>
-        <member name="P:DaLion.Shared.Attributes.RequiresModAttribute.UniqueId">
+        <member name="P:DaLion.Shared.Attributes.ModRequirementAttribute.UniqueId">
             <summary>Gets the required mod's unique ID.</summary>
         </member>
-        <member name="P:DaLion.Shared.Attributes.RequiresModAttribute.Name">
+        <member name="P:DaLion.Shared.Attributes.ModRequirementAttribute.Name">
             <summary>Gets the human-readable name of the mod.</summary>
         </member>
-        <member name="P:DaLion.Shared.Attributes.RequiresModAttribute.Version">
+        <member name="P:DaLion.Shared.Attributes.ModRequirementAttribute.Version">
             <summary>Gets the minimum required version.</summary>
         </member>
         <member name="T:DaLion.Shared.Classes.BiMap`2">
@@ -17463,24 +17683,31 @@
         </member>
         <member name="M:DaLion.Shared.Extensions.Stardew.Game1Extensions.IsCommunityCenterComplete(StardewValley.Game1)">
             <summary>Determines whether the Community Center has been completed in the current save.</summary>
-            <param name="game1">The <see cref="T:StardewValley.Game1"/> instance.</param>
+            <param name="game1">The current <see cref="T:StardewValley.Game1"/> session.</param>
             <returns><see langword="true"/> if the Community Center is complete, otherwise <see langword="false"/>.</returns>
         </member>
         <member name="M:DaLion.Shared.Extensions.Stardew.Game1Extensions.ShouldTimePass(StardewValley.Game1)">
             <summary>Determines whether the game is active and time should pass.</summary>
-            <param name="game1">The <see cref="T:StardewValley.Game1"/> instance.</param>
+            <param name="game1">The current <see cref="T:StardewValley.Game1"/> session.</param>
             <returns><see langword="true"/> if the game is active and time should pass, otherwise <see langword="false"/>.</returns>
         </member>
         <member name="M:DaLion.Shared.Extensions.Stardew.Game1Extensions.GetTotalSoldByPlayer(StardewValley.Game1,StardewValley.Farmer)">
             <summary>Gets the total value of shipped items by the specified <paramref name="farmer"/> during the current game day.</summary>
-            <param name="game1">The <see cref="T:StardewValley.Game1"/> instance.</param>
+            <param name="game1">The current <see cref="T:StardewValley.Game1"/> session.</param>
             <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
             <returns>The total value of shipped items by the <paramref name="farmer"/>.</returns>
         </member>
-        <member name="M:DaLion.Shared.Extensions.Stardew.Game1Extensions.IterateAllChests(StardewValley.Game1)">
-            <summary>Enumerates all chests in the game instance.</summary>
-            <param name="game1">The <see cref="T:StardewValley.Game1"/> instance.</param>
-            <returns>A <see cref="T:System.Collections.Generic.IEnumerable`1"/> of all <see cref="T:StardewValley.Objects.Chest"/> instances in the <paramref name="game1"/> instance.</returns>
+        <member name="M:DaLion.Shared.Extensions.Stardew.Game1Extensions.IterateAll``1(StardewValley.Game1)">
+            <summary>Enumerates all <see cref="T:StardewValley.Object"/> of the specified <typeparamref name="TObject"/> in the current game session.</summary>
+            <typeparam name="TObject">A type derived from <see cref="T:StardewValley.Object"/>.</typeparam>
+            <param name="game1">The current <see cref="T:StardewValley.Game1"/> session.</param>
+            <returns>A <see cref="T:System.Collections.Generic.IEnumerable`1"/> of all <typeparamref name="TObject"/> instances in the current game session.</returns>
+        </member>
+        <member name="M:DaLion.Shared.Extensions.Stardew.Game1Extensions.IterateAllWithLocation``1(StardewValley.Game1)">
+            <summary>Enumerates all <see cref="T:StardewValley.Object"/> of the specified <typeparamref name="TObject"/> in the current game session, that are actually placed within a <see cref="T:StardewValley.GameLocation"/>.</summary>
+            <typeparam name="TObject">A type derived from <see cref="T:StardewValley.Object"/>.</typeparam>
+            <param name="game1">The current <see cref="T:StardewValley.Game1"/> session.</param>
+            <returns>A <see cref="T:System.Collections.Generic.IEnumerable`1"/> of all <typeparamref name="TObject"/> instances in the current game session, along with their respective <see cref="T:StardewValley.GameLocation"/>.</returns>
         </member>
         <member name="T:DaLion.Shared.Extensions.Stardew.GameLocationExtensions">
             <summary>Extensions for the <see cref="T:StardewValley.Object"/> class.</summary>
@@ -18327,7 +18554,7 @@
         <member name="T:DaLion.Shared.Extensions.StringExtensions">
             <summary>Extensions for the <see cref="T:System.String"/> primitive type.</summary>
         </member>
-        <member name="M:DaLion.Shared.Extensions.StringExtensions.ContainsAnyOf(System.String,System.String[])">
+        <member name="M:DaLion.Shared.Extensions.StringExtensions.ContainsAny(System.String,System.String[])">
             <summary>Determines whether the string contains any of the specified sub-strings.</summary>
             <param name="str">The <see cref="T:System.String"/>.</param>
             <param name="candidates">The sub-strings to search for.</param>
@@ -18787,7 +19014,7 @@
             <param name="nth">Match the nth occurrence of this <paramref name="pattern"/>.</param>
             <returns>The <see cref="T:DaLion.Shared.Harmony.ILHelper"/> instance.</returns>
         </member>
-        <member name="M:DaLion.Shared.Harmony.ILHelper.Count(HarmonyLib.CodeInstruction[],System.Int32@,DaLion.Shared.Harmony.ILHelper.SearchOption)">
+        <member name="M:DaLion.Shared.Harmony.ILHelper.CountUntil(HarmonyLib.CodeInstruction[],System.Int32@,DaLion.Shared.Harmony.ILHelper.SearchOption)">
             <summary>
                 Finds and returns the number of instruction until the first occurrence of the specified
                 <paramref name="pattern"/> in the active <see cref="T:HarmonyLib.CodeInstruction"/> list according to
@@ -18821,7 +19048,7 @@
             <summary>Moves the stack pointer an integer number of <paramref name="steps"/>.</summary>
             <param name="steps">Number of steps by which to move the stack pointer.</param>
             <returns>The <see cref="T:DaLion.Shared.Harmony.ILHelper"/> instance.</returns>
-            <remarks>Positive means down.</remarks>
+            <remarks>Positive means down; negative means up.</remarks>
         </member>
         <member name="M:DaLion.Shared.Harmony.ILHelper.GoTo(System.Int32)">
             <summary>Moves the stack pointer to the specific <paramref name="index"/>.</summary>

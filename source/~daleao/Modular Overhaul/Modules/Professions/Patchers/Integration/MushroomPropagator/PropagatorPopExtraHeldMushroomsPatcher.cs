@@ -25,7 +25,7 @@ using HarmonyLib;
 #endregion using directives
 
 [UsedImplicitly]
-[RequiresMod("blueberry.MushroomPropagator")]
+[ModRequirement("blueberry.MushroomPropagator")]
 internal sealed class PropagatorPopExtraHeldMushroomsPatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="PropagatorPopExtraHeldMushroomsPatcher"/> class.</summary>
@@ -87,7 +87,7 @@ internal sealed class PropagatorPopExtraHeldMushroomsPatcher : HarmonyPatcher
                 .MatchProfessionCheck(Profession.Ecologist.Value) // find index of ecologist check
                 .Move(-1)
                 .GetLabels(out var labels)
-                .Count(new[] { new CodeInstruction(OpCodes.Ldc_I4_4) }, out var count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Ldc_I4_4) }, out var count)
                 .Remove(count)
                 .Insert(
                     new[]

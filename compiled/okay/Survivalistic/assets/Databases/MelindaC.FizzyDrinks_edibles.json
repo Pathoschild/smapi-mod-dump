@@ -1,0 +1,344 @@
+{
+  "edibles": [
+    [
+      "Apple Beer",
+      "0/50"
+    ],
+    [
+      "Banana Marble Soda",
+      "0/50"
+    ],
+    [
+      "Birch Bark",
+      "0/50"
+    ],
+    [
+      "Birch Beer",
+      "0/50"
+    ],
+    [
+      "Birch Extract",
+      "0/50"
+    ],
+    [
+      "Bitter Orange",
+      "0/50"
+    ],
+    [
+      "Blue Bubblegum Soda",
+      "0/50"
+    ],
+    [
+      "Blueberry Marble Soda",
+      "0/50"
+    ],
+    [
+      "Burdock Root",
+      "0/50"
+    ],
+    [
+      "Butterscotch Soda",
+      "0/50"
+    ],
+    [
+      "Cane Sugar Soda",
+      "0/50"
+    ],
+    [
+      "Cappuccino Soda",
+      "0/50"
+    ],
+    [
+      "Champagne Soda",
+      "0/50"
+    ],
+    [
+      "Chili Oil Marble Soda",
+      "0/50"
+    ],
+    [
+      "Chinotto Extract",
+      "0/50"
+    ],
+    [
+      "Chinotto Soda",
+      "0/50"
+    ],
+    [
+      "Clear Joja Syrup",
+      "0/50"
+    ],
+    [
+      "Coconut Marble Soda",
+      "0/50"
+    ],
+    [
+      "Cucumber Soda",
+      "0/50"
+    ],
+    [
+      "Dandelion And Burdock Infusion",
+      "0/50"
+    ],
+    [
+      "Dandelion And Burdock Soda",
+      "0/50"
+    ],
+    [
+      "Dreamsicle Float",
+      "0/50"
+    ],
+    [
+      "Espresso Soda",
+      "0/50"
+    ],
+    [
+      "Fize Blackberry Ginger Ale",
+      "0/50"
+    ],
+    [
+      "Fize Cranberry Ginger Ale",
+      "0/50"
+    ],
+    [
+      "Fize Green Tea Ginger Ale",
+      "0/50"
+    ],
+    [
+      "Ginger Brew",
+      "0/50"
+    ],
+    [
+      "Ginger Extract",
+      "0/50"
+    ],
+    [
+      "Ginseng Soda",
+      "0/50"
+    ],
+    [
+      "Grape Marble Soda",
+      "0/50"
+    ],
+    [
+      "Green Tea Soda",
+      "0/50"
+    ],
+    [
+      "Guarana",
+      "0/50"
+    ],
+    [
+      "Guarana Extract",
+      "0/50"
+    ],
+    [
+      "Guarana Soda",
+      "0/50"
+    ],
+    [
+      "Hard Chinotto Soda",
+      "0/50"
+    ],
+    [
+      "Hard Ginger Brew",
+      "0/50"
+    ],
+    [
+      "Hard Root Beer",
+      "0/50"
+    ],
+    [
+      "Jamaican Ginger Brew",
+      "0/50"
+    ],
+    [
+      "Joja Cherry",
+      "0/50"
+    ],
+    [
+      "Joja Gold",
+      "0/50"
+    ],
+    [
+      "Joja Mate",
+      "0/50"
+    ],
+    [
+      "Joja Peach",
+      "0/50"
+    ],
+    [
+      "Joja Red",
+      "0/50"
+    ],
+    [
+      "Joja Strawberry",
+      "0/50"
+    ],
+    [
+      "Joja Syrup",
+      "0/50"
+    ],
+    [
+      "Joja Tackleberry",
+      "0/50"
+    ],
+    [
+      "Jojanana Soda",
+      "0/50"
+    ],
+    [
+      "Jojango Soda",
+      "0/50"
+    ],
+    [
+      "Julmust Soda",
+      "0/50"
+    ],
+    [
+      "Mango Marble Soda",
+      "0/50"
+    ],
+    [
+      "Maple Cream Soda",
+      "0/50"
+    ],
+    [
+      "Maple Soda",
+      "0/50"
+    ],
+    [
+      "Matcha Marble Soda",
+      "0/50"
+    ],
+    [
+      "Melon Marble Soda",
+      "0/50"
+    ],
+    [
+      "Muscat Grape",
+      "0/50"
+    ],
+    [
+      "Muscat Marble Soda",
+      "0/50"
+    ],
+    [
+      "Old Fashioned Sarsaparilla",
+      "0/50"
+    ],
+    [
+      "Orange Marble Soda",
+      "0/50"
+    ],
+    [
+      "Original Marble Soda",
+      "0/50"
+    ],
+    [
+      "Peach Marble Soda",
+      "0/50"
+    ],
+    [
+      "Pineapple Marble Soda",
+      "0/50"
+    ],
+    [
+      "Plum Marble Soda",
+      "0/50"
+    ],
+    [
+      "Pomegranate Marble Soda",
+      "0/50"
+    ],
+    [
+      "Red Sorrel Leaf",
+      "0/50"
+    ],
+    [
+      "Red Sorrel Soda",
+      "0/50"
+    ],
+    [
+      "Red Sorrel Syrup",
+      "0/50"
+    ],
+    [
+      "Root Beer",
+      "0/50"
+    ],
+    [
+      "Root Beer Float",
+      "0/50"
+    ],
+    [
+      "Root Beer Ice Cream",
+      "0/50"
+    ],
+    [
+      "Sarsaparilla",
+      "0/50"
+    ],
+    [
+      "Sassafras Root",
+      "0/50"
+    ],
+    [
+      "Spruce Beer",
+      "0/50"
+    ],
+    [
+      "Spruce Essence",
+      "0/50"
+    ],
+    [
+      "Spruce Tips",
+      "0/50"
+    ],
+    [
+      "Stevia Extract",
+      "0/50"
+    ],
+    [
+      "Stevia Plant",
+      "0/50"
+    ],
+    [
+      "Stevia Soda",
+      "0/50"
+    ],
+    [
+      "Strawberry Marble Soda",
+      "0/50"
+    ],
+    [
+      "Tackleberry Syrup",
+      "0/50"
+    ],
+    [
+      "Yerba Mate Extract",
+      "0/50"
+    ],
+    [
+      "Yerba Mate Leaves",
+      "0/50"
+    ],
+    [
+      "Yerba Mate Soda",
+      "0/50"
+    ],
+    [
+      "Yerba Mate Tea",
+      "0/50"
+    ],
+    [
+      "Yogurt Marble Soda",
+      "0/50"
+    ],
+    [
+      "Yuzu Marble Soda",
+      "0/50"
+    ]
+  ]
+}

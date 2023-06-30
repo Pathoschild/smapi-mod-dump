@@ -6,9 +6,9 @@ mods:
    Combine Machines
 
 latest commit:
-   commit 2680563338cb85f615162c41531c266cb0e4095e
+   commit 241ed0fb34a3858666f72896a5b94d7162a69ddb
    Author: Kevin Augustino <kevinaugustino@hotmail.com>
-   Date:   Thu Sep 23 20:07:43 2021 -0400
+   Date:   Sun Jun 4 19:23:06 2023 -0400
    
-       Update for beta 64-bit game version ("Stardew Valley [monogame64bit]". Migrated to .net 5.0 and updated Harmony references to HarmonyLib.
+       Re-do Scarecrow radius patching logic which had been broken by a prior game update. Update germany de localization.
    

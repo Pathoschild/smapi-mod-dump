@@ -138,5 +138,29 @@ namespace Fishnets
 
             return false;
         }
+
+        internal static Object? GetObjectFromSerializable(FishNet.FishNetSerializable serializable)
+        {
+            Object? o = null;
+            if (serializable.IsJAObject)
+            {
+                int id = ModEntry.IJsonAssetsApi.GetObjectId(serializable.ObjectName);
+                if (id != -1)
+                    o = new(id, serializable.ObjectStack) { Quality = serializable.ObjectQuality };
+            }
+            else if (serializable.IsDGAObject)
+            {
+                object spawned = ModEntry.IDynamicGameAssetsApi.SpawnDGAItem(serializable.ObjectName);
+                if (spawned is not null and Object dgaObject)
+                {
+                    o = dgaObject;
+                    o.Stack = serializable.ObjectStack;
+                    o.Quality = serializable.ObjectQuality;
+                }
+            }
+            else if (serializable.ObjectId >= 0)
+                o = new(serializable.ObjectId, serializable.ObjectStack) { Quality = serializable.ObjectQuality };
+            return o;
+        }
     }
 }

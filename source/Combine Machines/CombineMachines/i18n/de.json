@@ -9,12 +9,12 @@
 *************************************************/
 
 {
-  "ToolTipQuantityLabel": "Mengenaufnahme:",
-  "ToolTipPowerLabel": "Geschwindigkeit:",
-  "ToolTipCaskAgingRateLabel": "Aging Rate:",
-  "ToolTipCaskDaysUntilIridiumLabel": "Days Until Iridium:",
-  "ToolTipMinutesRemainingLabel": "Minutes Remaining:",
-  "ToolTipProducedQuantityLabel": "Produced Quantity:",
-  "ToolTipCrabPotProcessingIntervalLabel": "Interval (Minutes):",
+  "ToolTipQuantityLabel": "Menge:",
+  "ToolTipPowerLabel": "Leistung:",
+  "ToolTipCaskAgingRateLabel": "Reifungsrate:",
+  "ToolTipCaskDaysUntilIridiumLabel": "Tage bis Iridium:",
+  "ToolTipMinutesRemainingLabel": "Minuten verbleibend:",
+  "ToolTipProducedQuantityLabel": "Produzierte Menge:",
+  "ToolTipCrabPotProcessingIntervalLabel": "Intervall (Minuten):",
   "ToolTipScarecrowRadiusLabel": "Radius:"
 }

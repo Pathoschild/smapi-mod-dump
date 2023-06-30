@@ -51,15 +51,15 @@ namespace StardewArchipelago.Items.Traps
         };
 
         // TODO: Figure out a way to have different difficulties to random teleports
-        //public Dictionary<TrapItemsDifficulty, > TeleportDestinations = new()
-        //{
-        //    {TrapItemsDifficulty.NoTraps, },
-        //    {TrapItemsDifficulty.Easy, },
-        //    {TrapItemsDifficulty.Medium, },
-        //    {TrapItemsDifficulty.Hard, },
-        //    {TrapItemsDifficulty.Hell, },
-        //    {TrapItemsDifficulty.Nightmare, },
-        //};
+        public Dictionary<TrapItemsDifficulty, TeleportDestination> TeleportDestinations = new()
+        {
+            {TrapItemsDifficulty.NoTraps, TeleportDestination.None},
+            {TrapItemsDifficulty.Easy, TeleportDestination.Nearby},
+            {TrapItemsDifficulty.Medium, TeleportDestination.SameMap},
+            {TrapItemsDifficulty.Hard, TeleportDestination.SameMapOrHome},
+            {TrapItemsDifficulty.Hell, TeleportDestination.PelicanTown},
+            {TrapItemsDifficulty.Nightmare, TeleportDestination.Anywhere},
+        };
 
 
         public Dictionary<TrapItemsDifficulty, double> CrowAttackRate = new()
@@ -157,6 +157,16 @@ namespace StardewArchipelago.Items.Traps
             {TrapItemsDifficulty.Hell, DroughtTarget.CropsIncludingInside},
             {TrapItemsDifficulty.Nightmare, DroughtTarget.CropsIncludingWateringCan},
         };
+    }
+
+    public enum TeleportDestination
+    {
+        None,
+        Nearby,
+        SameMap,
+        SameMapOrHome,
+        PelicanTown,
+        Anywhere
     }
 
     public enum CrowTargets

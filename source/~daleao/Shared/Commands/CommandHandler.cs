@@ -198,8 +198,8 @@ internal sealed class CommandHandler
                 }
 #endif
 
-                var implicitIgnoreAttribute = commandType.GetCustomAttribute<ImplicitIgnoreAttribute>();
-                if (implicitIgnoreAttribute is not null)
+                var ignoreAttribute = commandType.GetCustomAttribute<ImplicitIgnoreAttribute>();
+                if (ignoreAttribute is not null)
                 {
                     continue;
                 }

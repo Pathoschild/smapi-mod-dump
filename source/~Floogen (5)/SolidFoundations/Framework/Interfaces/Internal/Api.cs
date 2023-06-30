@@ -44,6 +44,7 @@ namespace SolidFoundations.Framework.Interfaces.Internal
         public void RemoveBuildingFlags(Building building, List<string> flags);
         public bool DoesBuildingHaveFlag(Building building, string flag);
         public KeyValuePair<bool, string> PlaceBuilding(string modelIdCaseSensitive, BuildableGameLocation location, Vector2 tileLocation);
+        public KeyValuePair<bool, string> ConstructBuildingImmediately(string modelIdCaseSensitive, BuildableGameLocation location, Vector2 tileLocation);
         public KeyValuePair<bool, ExtendedBuildingModel> GetBuildingModel(Building building);
         public KeyValuePair<bool, ExtendedBuildingModel> GetBuildingModel(string modelId);
         public bool UpdateModel(ExtendedBuildingModel buildingModel);
@@ -139,6 +140,27 @@ namespace SolidFoundations.Framework.Interfaces.Internal
             }
 
             return new KeyValuePair<bool, string>(true, $"Succesfully placed {modelIdCaseSensitive} at {location.Name} on tile {tileLocation}!");
+        }
+
+        public KeyValuePair<bool, string> ConstructBuildingImmediately(string modelIdCaseSensitive, BuildableGameLocation location, Vector2 tileLocation)
+        {
+            if (String.IsNullOrEmpty(modelIdCaseSensitive) || SolidFoundations.buildingManager.DoesBuildingModelExist(modelIdCaseSensitive) is false)
+            {
+                return new KeyValuePair<bool, string>(false, $"No match for model {modelIdCaseSensitive}");
+            }
+            else if (location is null)
+            {
+                return new KeyValuePair<bool, string>(false, "BuildableGameLocation is null!");
+            }
+
+            var blueprint = new BluePrint(modelIdCaseSensitive);
+            blueprint.daysToConstruct = 0;
+            if (GameLocationPatch.AttemptToBuildStructure(location, blueprint, null, tileLocation, skipFarmerCheck: true) is false)
+            {
+                return new KeyValuePair<bool, string>(false, "Failed to construct structure, see log for details.");
+            }
+
+            return new KeyValuePair<bool, string>(true, $"Succesfully constructed {modelIdCaseSensitive} at {location.Name} on tile {tileLocation}!");
         }
 
         public KeyValuePair<bool, ExtendedBuildingModel> GetBuildingModel(Building building)

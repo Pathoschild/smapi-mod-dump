@@ -15,6 +15,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using Teban100.Common;
 using SObject = StardewValley.Object;
 
 namespace AutoGate
@@ -25,10 +26,13 @@ namespace AutoGate
         /*********
         ** Fields
         *********/
+        /// <summary>The non-gate fences in the current location.</summary>
+        private readonly PerScreen<Dictionary<Vector2, Fence>> Fences = new(() => new());
+
         /// <summary>The gates in the current location.</summary>
         private readonly PerScreen<Dictionary<Vector2, Fence>> Gates = new(() => new());
 
-        /// <summary>The last player tile position for which we checked for gates.</summary>
+        /// <summary>The last player tile position for which we checked for gates that need to be opened or closed.</summary>
         private readonly PerScreen<Vector2> LastPlayerTile = new(() => new Vector2(-1));
 
 
@@ -38,8 +42,11 @@ namespace AutoGate
         /// <inheritdoc />
         public override void Entry(IModHelper helper)
         {
+            CommonHelper.RemoveObsoleteFiles(this, "AutoGate.pdb");
+
             helper.Events.Player.Warped += this.OnWarped;
             helper.Events.World.ObjectListChanged += this.OnObjectListChanged;
+            helper.Events.GameLoop.OneSecondUpdateTicked += this.OnOneSecondUpdateTicked;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
         }
 
@@ -53,7 +60,7 @@ namespace AutoGate
         private void OnWarped(object sender, WarpedEventArgs e)
         {
             if (e.IsLocalPlayer)
-                this.ResetGateList();
+                this.ResetFenceCache();
         }
 
         /// <inheritdoc cref="IWorldEvents.ObjectListChanged"/>
@@ -61,7 +68,30 @@ namespace AutoGate
         /// <param name="e">The event data.</param>
         private void OnObjectListChanged(object sender, ObjectListChangedEventArgs e)
         {
-            this.ResetGateList();
+            this.ResetFenceCache();
+        }
+
+        /// <inheritdoc cref="IGameLoopEvents.OneSecondUpdateTicked"/>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event data.</param>
+        private void OnOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
+        {
+            Dictionary<Vector2, Fence> fences = this.Fences.Value;
+
+            // skip if nothing to do
+            if (!Context.IsWorldReady || !fences.Any())
+                return;
+
+            // Placing a gate on top of a fence doesn't raise ObjectListChanged, so recheck fences to detect gate
+            // changes. We don't need to check if a gate-on-fence was removed, since the gate + fence break together.
+            foreach (Fence fence in fences.Values)
+            {
+                if (fence.isGate.Value)
+                {
+                    this.ResetFenceCache();
+                    return;
+                }
+            }
         }
 
         /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
@@ -69,8 +99,10 @@ namespace AutoGate
         /// <param name="e">The event data.</param>
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
+            Dictionary<Vector2, Fence> gates = this.Gates.Value;
+
             // skip if nothing to do
-            if (!Context.IsWorldReady || !this.Gates.Value.Any())
+            if (!Context.IsWorldReady || !gates.Any())
                 return;
 
             // skip if we already handled gates from this tile
@@ -79,24 +111,24 @@ namespace AutoGate
                 return;
             this.LastPlayerTile.Value = playerTile;
 
-            // get gates that should be open
+            // step 1: get gates that should be open
             // (We need to do this before applying changes, so we don't close a double-gate when one side is out of range.)
             HashSet<Vector2> shouldBeOpen = new();
             foreach (Vector2 tile in this.GetSearchTiles(playerTile))
             {
-                if (!this.Gates.Value.ContainsKey(tile))
+                if (!gates.ContainsKey(tile))
                     continue;
 
                 shouldBeOpen.Add(tile);
                 foreach (Vector2 connectedTile in Utility.getAdjacentTileLocations(tile))
                 {
-                    if (this.Gates.Value.ContainsKey(connectedTile))
+                    if (gates.ContainsKey(connectedTile))
                         shouldBeOpen.Add(connectedTile);
                 }
             }
 
             // step 2: update gates
-            foreach ((Vector2 tile, Fence gate) in this.Gates.Value)
+            foreach ((Vector2 tile, Fence gate) in gates)
             {
                 bool open = shouldBeOpen.Contains(tile);
                 int expectedPosition = open
@@ -109,17 +141,26 @@ namespace AutoGate
         }
 
         /// <summary>Reset the gate cache for the current location.</summary>
-        private void ResetGateList()
+        private void ResetFenceCache()
         {
-            this.Gates.Value.Clear();
+            Dictionary<Vector2, Fence> fences = this.Fences.Value;
+            Dictionary<Vector2, Fence> gates = this.Gates.Value;
+
+            fences.Clear();
+            gates.Clear();
             this.LastPlayerTile.Value = new Vector2(-1);
 
             if (Game1.currentLocation?.objects != null)
             {
                 foreach ((Vector2 tile, SObject obj) in Game1.currentLocation.objects.Pairs)
                 {
-                    if (obj is Fence fence && fence.isGate.Value)
-                        this.Gates.Value[tile] = fence;
+                    if (obj is Fence fence)
+                    {
+                        if (fence.isGate.Value)
+                            gates[tile] = fence;
+                        else
+                            fences[tile] = fence;
+                    }
                 }
             }
         }

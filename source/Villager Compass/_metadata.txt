@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/jbossjaslow/Stardew_Mods
+   Git: https://github.com/jbossjaslow/Stardew_Mods.git
+
+mods:
+   Villager Compass
+
+latest commit:
+   commit 0755981860a5f246e07b98b0b92e5353b6fd8372
+   Author: FREETIMEKILLER\JBOSS <jbossjaslow@gmail.com>
+   Date:   Sat Jun 3 15:48:06 2023 -0400
+   
+       Excluded more non-interactable festival npcs
+   

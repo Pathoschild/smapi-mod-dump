@@ -24,6 +24,8 @@
     "config.toolbar.showIcon.tooltip": "Whether to show the skill icon on the left side of the toolbar.",
     "config.toolbar.showLevelNumber.name": "Show level numbers",
     "config.toolbar.showLevelNumber.tooltip": "Whether to show the current level on the right side of the toolbar.",
+    "config.toolbar.excludeSkillsAtMaxLevel.name": "Exclude skills at max level",
+    "config.toolbar.excludeSkillsAtMaxLevel.tooltip": "Don't show the toolbar experience bar for skills at max level.\nThis may not work correctly if you are running mods extending past the original 10 levels.",
     "config.toolbar.alwaysShowCurrentTool.name": "Always show current tool",
     "config.toolbar.alwaysShowCurrentTool.tooltip": "If enabled, the toolbar will never hide when a tool with a related skill is selected.",
     "config.toolbar.toolSwitchDurationInSeconds.name": "Duration: tool switch",
@@ -35,8 +37,13 @@
     "config.toolbar.levelChangedDurationInSeconds.name": "Duration: level up",
     "config.toolbar.levelChangedDurationInSeconds.tooltip": "How long in seconds to display the toolbar for afetr levelling up a skill.",
 
-    "config.toolbarExclusions.section.name": "Toolbar exclusions",
-    "config.toolbarExclusions.section.tooltip": "Skills to exclude from showing up on experience gain.",
+    "config.toolbar.skillExclusion.section.name": "{{Skill}} on toolbar",
+    "config.toolbar.skillExclusion.showOnXPGain.name": "Show on XP gain",
+    "config.toolbar.skillExclusion.showOnLevelUp.name": "Show on level up",
+    "config.toolbar.skillExclusion.showOnToolHeld.name": "Show on tool held",
+    "config.toolbar.skillExclusion.showOnToolHeld.tooltip": "Relates to the \"Always show current tool\" option.",
+    "config.toolbar.skillExclusion.showOnToolSwitch.name": "Show on tool switch",
+    "config.toolbar.skillExclusion.showOnToolUse.name": "Show on tool use",
 
     "tooltip.text": "{{CurrentXP}} / {{NextLevelXP}} XP ({{LevelPercent}}%)"
 }

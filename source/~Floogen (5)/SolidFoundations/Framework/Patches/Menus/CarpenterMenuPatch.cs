@@ -143,7 +143,7 @@ namespace SolidFoundations.Framework.Patches.Buildings
                 };
             }
 
-            else if (_appearanceButton.containsPoint(x, y))
+            else if (_appearanceButton is not null && _appearanceButton.containsPoint(x, y))
             {
                 if (___currentBuilding is GenericBuilding genericBuilding && genericBuilding.Model is not null && genericBuilding.Model.Skins is not null && genericBuilding.Model.Skins.Count > 0)
                 {

@@ -11,10 +11,16 @@
 {
     "Name": "Kokoro - Shockah's core mod",
     "Author": "Shockah",
-    "Version": "2.0.1",
+    "Version": "2.1.2",
     "Description": "A core mod for Shockah's mods.",
     "UniqueID": "Shockah.Kokoro",
     "EntryDll": "Kokoro.dll",
     "MinimumApiVersion": "3.0.0",
-    "UpdateKeys": [ "Nexus:15682" ]
+    "UpdateKeys": [ "Nexus:15682" ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.SpaceCore",
+            "IsRequired": false
+        }
+    ]
 }

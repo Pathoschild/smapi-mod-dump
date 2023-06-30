@@ -14,12 +14,16 @@ This repository contains all mods I have made for Stardew Valley. For mod specif
 ## Released Mods
 
 * [AchtuurCore](./AchtuurCore)
-* [StardewTravelSkill](./StardewTravelSkill)
+* [Better Rods](./BetterRods/)
+* [Multiplayer Exp Share](./MultiplayerExpShare/)
+* [Prismatic Statue](./PrismaticStatue/)
+* [Stardew Travel Skill](./StardewTravelSkill)
+* [Watering Can Give Exp](./WateringCanGiveExp)
 
 
-## WIP Mods
+## WIP / Idea Mods
 
-* [FarmingExpRebalance](./FarmingExpRebalance)
-* [MultiplayerExpShare](./MultiplayerExpShare/)
 <!-- lets you cross breed seeds to get better crops that grow faster, produce more -->
-* [CrossBreedingSeeds]() 
+* [CrossBreeding Seeds]()
+* [Junimo Beacon](./JunimoBeacon/)
+* [LGreenhouseBTQPlus](./LGreenhouseBTQPlus/)

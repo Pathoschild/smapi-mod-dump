@@ -54,7 +54,7 @@ internal sealed class GameLocationCheckActionPatcher : HarmonyPatcher
             helper
                 .MatchProfessionCheck(Farmer.botanist, ILHelper.SearchOption.First) // find index of botanist check
                 .Match(new[] { new CodeInstruction(OpCodes.Ldarg_0) }) // start of objects[key].isForage() check
-                .Count(
+                .CountUntil(
                     new[]
                     {
                         new CodeInstruction(
@@ -103,7 +103,7 @@ internal sealed class GameLocationCheckActionPatcher : HarmonyPatcher
             helper
                 .MatchProfessionCheck(Farmer.botanist, ILHelper.SearchOption.First) // return to botanist check
                 .Move(-1) // retreat to start of check
-                .Count(new[] { new CodeInstruction(OpCodes.Br_S) }, out var count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Br_S) }, out var count)
                 .Copy(// copy entire section until done setting quality
                     out copy,
                     count,
@@ -136,7 +136,7 @@ internal sealed class GameLocationCheckActionPatcher : HarmonyPatcher
                     new[] { new CodeInstruction(OpCodes.Ldarg_0) },
                     ILHelper.SearchOption.Previous) // start of call to isForage()
 
-                .Count(
+                .CountUntil(
                     new[]
                     {
                         // right before call to IsForagedMineral()
@@ -214,7 +214,7 @@ internal sealed class GameLocationCheckActionPatcher : HarmonyPatcher
             helper
                 .MatchProfessionCheck(Profession.Forager.Value)
                 .Move(-1)
-                .Count(new[] { new CodeInstruction(OpCodes.Brfalse_S) }, out var steps)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Brfalse_S) }, out var steps)
                 .Copy(out copy, steps, true, true)
                 .Match(new[] { new CodeInstruction(OpCodes.Ldc_R8, 0.2) })
                 .AddLabels(isNotPrestiged)

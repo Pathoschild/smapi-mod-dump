@@ -71,7 +71,7 @@ namespace FishingTrawler.Framework.Patches.Objects
                 }
 
                 var flagType = AncientFlag.GetFlagType(__instance);
-                var flagTexture = FishingTrawler.assetManager.ancientFlagsTexture;
+                var flagTexture = FishingTrawler.assetManager.AncientFlagsTexture;
                 var sourceRectangle = new Rectangle(32 * (int)flagType % flagTexture.Width, 32 * (int)flagType / flagTexture.Width * 32, 32, 32); ;
                 if (Furniture.isDrawingLocationFurniture)
                 {
@@ -93,7 +93,7 @@ namespace FishingTrawler.Framework.Patches.Objects
             if (__instance.modData.ContainsKey(ModDataKeys.ANCIENT_FLAG_KEY))
             {
                 var flagType = AncientFlag.GetFlagType(__instance);
-                var flagTexture = FishingTrawler.assetManager.ancientFlagsTexture;
+                var flagTexture = FishingTrawler.assetManager.AncientFlagsTexture;
                 var sourceRectangle = new Rectangle(32 * (int)flagType % flagTexture.Width, 32 * (int)flagType / flagTexture.Width * 32, 32, 32); ;
 
                 spriteBatch.Draw(flagTexture, location + new Vector2(32f, 32f), sourceRectangle, color * transparency, 0f, new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2), 2f * scaleSize, SpriteEffects.None, layerDepth);

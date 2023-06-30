@@ -1,0 +1,61 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Achtuur/StardewTravelSkill
+**
+*************************************************/
+
+{
+    /// Made by poosha7375 on the Nexusmods forums
+    /** Skill **/
+    "travelskill.name": "여행",
+    "travelskill.level-up-perk": "+{{bonus}}% 이동 속도",
+
+
+    /** Professions **/
+    "movespeed.name": "노련한 달리기 선수",
+    "movespeed.desc": "추가 이동 속도를 얻습니다",
+    "restorestamine.name": "마라톤 선수",
+    "restorestamina.desc": "기력을 회복합니다",
+    "sprint.name": "달리기 챔피언",
+    "sprint.desc": "몇 걸음을 걸은 후 더욱더 빠르게 걸을 수 있습니다",
+
+    "cheapwarptotem.name": "워프 애호가",
+    "cheapwarptotem.desc": "워프 토템 제작 비용이 저렴해집니다",
+    "cheapobelisk.name": "오벨리스크 건축가",
+    "cheapobelisk.desc": "오벨리스크를 50% 저렴한 골드로 건설할 수 있습니다",
+    "totemreuse.name": "토템 전문가",
+    "totemreuse.desc": "일정 확률로 토템이 소모되지 않습니다",
+
+    /** Console commands **/
+    // Set level
+    "cmd_setlvl.name": "travelskill_setlevel",
+    "cmd_setlevel.desc": "Sets the player's level in the Travelling skill.\n\nUsage: travelskill_setlevel <level>\n- level: level between 1 and 10",
+    "cmd_setlevel.errormsg": "'{{input}}' is an invalid input, please input a number between 1 and 10",
+
+    /** Config Menu **/
+    "cfg_section.travelskill": "일반 스킬 설정",
+    "cfg_section.professions": "직업 설정",
+
+    "cfg_expgain.name": "경험치를 얻기 위한 걸음 수",
+    "cfg_expgain.desc": "경험치 1포인트를 얻기 위한 걸음 수",
+
+    "cfg_levelmovespeed.name": "레벨당 이동 속도 보너스",
+    "cfg_levelmovespeed.desc": "여행 스킬 레벨당 이동 속도 보너스",
+
+    "cfg_movespeedbonus.name": "노련한 달리기 선수 이동 속도 보너스",
+    "cfg_movespeedbonus.desc": "노련한 달리기 선수로 얻는 이동 속도",
+
+    "cfg_sprintbonus.name": "달리기 챔피언 이동 속도 보너스",
+    "cfg_sprintbonus.desc": "달리기 챔피언 이동 속도 보너스",
+
+    "cfg_restorestamina.name": "기력 회복",
+    "cfg_restorestamina.desc": "마라톤 선수의 게임 내 10분마다의 전체 기력 회복 퍼센트",
+
+    "cfg_totemreuse.name": "토템 사용 확률",
+    "cfg_totemreuse.desc": "토템을 사용할 확률"
+
+}

@@ -1,7 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="34" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="24" nextobjectid="40">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="24" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="27" nextobjectid="71">
+ <editorsettings>
+  <export target="bnw_AdventureGuild_shop_1.tmx" format="tmx"/>
+ </editorsettings>
  <tileset firstgid="1" name="untitled tile sheet" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
   <image source="townInterior" width="512" height="1088"/>
+  <tile id="1259">
+   <animation>
+    <frame tileid="1259" duration="500"/>
+    <frame tileid="1323" duration="500"/>
+    <frame tileid="1259" duration="500"/>
+    <frame tileid="1325" duration="500"/>
+    <frame tileid="1259" duration="500"/>
+   </animation>
+  </tile>
+  <tile id="1260">
+   <animation>
+    <frame tileid="1260" duration="500"/>
+    <frame tileid="1324" duration="500"/>
+    <frame tileid="1260" duration="500"/>
+    <frame tileid="1326" duration="500"/>
+    <frame tileid="1260" duration="500"/>
+   </animation>
+  </tile>
+  <tile id="1291">
+   <animation>
+    <frame tileid="1291" duration="500"/>
+    <frame tileid="1355" duration="500"/>
+    <frame tileid="1291" duration="500"/>
+    <frame tileid="1357" duration="500"/>
+    <frame tileid="1291" duration="500"/>
+   </animation>
+  </tile>
+  <tile id="1292">
+   <animation>
+    <frame tileid="1292" duration="500"/>
+    <frame tileid="1356" duration="500"/>
+    <frame tileid="1292" duration="500"/>
+    <frame tileid="1358" duration="500"/>
+    <frame tileid="1292" duration="500"/>
+   </animation>
+  </tile>
  </tileset>
  <tileset firstgid="2177" name="z_bnw" tilewidth="16" tileheight="16" tilecount="1975" columns="25">
   <image source="spring_1_bnw_tilesheet.png" width="400" height="1264"/>
@@ -15,96 +54,118 @@
  <tileset firstgid="7688" name="z_bnw4" tilewidth="16" tileheight="16" tilecount="36" columns="4">
   <image source="paths.png" width="64" height="144"/>
  </tileset>
- <layer id="1" name="Back" width="34" height="20">
+ <tileset firstgid="7724" name="z_bnw5" tilewidth="16" tileheight="16" tilecount="72" columns="8">
+  <image source="bnw_vanilla_weapons.png" width="128" height="144"/>
+ </tileset>
+ <layer id="1" name="Back" width="24" height="20">
   <data encoding="base64" compression="zlib">
-   eJzNk80NwjAMhX1INii/YowCai+wQS/8iDE4sgkwCTAJMAlw4kUiaqii1C6phKVPbiXXdV6eif4nZqOSVNHcfffR5hzFhwRzFM57lTbnKJzeZg5ubex4KKIXeDJyX7c3R4beueZnG3U+kt7hAL2Hmp/dOWJ6qakedV6ReilB7w7ogp7ma218FdJN6qUU9WMwAVPN15qjnyQWqF+CFViDLX3jntPVmuMnSVTPwd3b2HpI98X6hFNvazOq32XpvlivcOpt7YbK51h6+LJ7fz5/7Bj3EjrPHn0P4KjC/uH6y9BEjxO+O4OLiqNbaIdCelzx/xu4K7mPfDm0QzHOGUMPX+TC+l/jDbZRdOk=
+   eJztlFEKwjAQREsQ7AH8FDyIoLlBb1B7E3sM9ctjqF89hnoap5ClYbtrQtxPB4aBUCZDHrSq/kppv5Zt2d8wW/Y3Qpd0Vqqdw17Yh7zCrbPr79B1cFMOIa3Uo+vo5mnFne+n5MxLuWv7JZVw1/bHzP0P3LX9/M4hJHFYLeZcJE7afunOPuIy9sds6P04p3Y5eVPr+ylJY7+mmNMJ353hC7yt0/s5lxSnG3rv8CP0p/ankjiRnuh9we/M/bkZvb8n57x/bn6T1f/nA1Q6WmA=
   </data>
  </layer>
- <layer id="3" name="Back2" width="34" height="20">
+ <layer id="3" name="Back2" width="24" height="20">
   <properties>
    <property name="Draw" value="Back"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjILBA6JZIfSkgXUGTUDhQDtgmALLgXYAFERSoFeeg4FBAQmD+OSCSgrcYc2BwW+gwLhRd1AJQNOHAwxTkj6GCgAAIoYHzQ==
+   eJxjYBgFo2AUDFdQONAOoCOwpLH5kTQ2v5IKZrhzMzB4ALEnEHtxU8FANJAANDMRiJOAOJlM86V5GBhkgFiWB1OuEmhmFRBXA3ENmeabAM01BWIzLOYPNgAANV0Hzg==
   </data>
  </layer>
- <layer id="5" name="Back3" width="34" height="20">
+ <layer id="5" name="Back3" width="24" height="20">
   <properties>
    <property name="Draw" value="Back"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMAqGLrAcaAdAQeRAOwAKKgfaAaNgFFABAABdPQEM
+   eJxjYBgFo2AUjIKhDyxpbH4kjc2vpLH5o2DwAQBdOgEM
   </data>
  </layer>
- <layer id="7" name="Buildings" width="34" height="20">
+ <layer id="24" name="Back4" width="24" height="20">
+  <properties>
+   <property name="Draw" value="Back"/>
+  </properties>
   <data encoding="base64" compression="zlib">
-   eJy1lbtKA0EUho8bA26IikpKBQubJC8hGhBEvDRqqYWIgrdGF0XRKMRORLRIGru8g1YqPoDa6Ut46/2HPcNO1tndySZ74GNnz8zs/Jz8J0NEZIEUQ8pYRyclE8Mgz+MaP6sh64tgJAEdo2AGzIJ7zt3xu445UAIdMYjSsQW2wQfn3vldx06COi58uU9s+gLf4Af88kcWYJBLRYfqqyAvNaPDNPbwcSfl6lB9FRTSS+3WscsNVadGX5l6qVkdDxRda9VXpl5qVofat/N245ystfTVBuY3wUsX0St4AxWIPYV5zqzWdKh9S6Svtdg3YWs2+6IVHSZ9a+qrsB6P0tGNevaAXst9H4QxhoBtuX0r/PPo2zPFtZn21UjntayhjqDIpqEx7fpH3AHLypkrPF5Vcmu2t1bUUvpO1iiuDhnCP+IO2Mc5B+AQHAEHuWM8Tzhftr21i+T5rl06hH/EHXCFc67Bje+3qHK+ZntrHWVfmI6+DFE/GMhE65A9aRIVrDvntU85oudcuI48zi+AooGOuFFgPWE6xnD+OCglqGMyRMdtcsf+i3XWUdfo0P2/LPFcOWC+XajxB4qIWXE=
+   eJxjYBgFo2AUjIKhDyxpbH4kjc2vpLH5o2DwAQBdOgEM
   </data>
  </layer>
- <layer id="21" name="Buildings2" width="34" height="20">
+ <layer id="7" name="Buildings" width="24" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFowA/yGEkTl0EMwNDJDNt3TIKhhYI5xxoF0BAwSBxRyeSO14Sma9GAWFgOdAOgILIgXYAFFQOtANGwSigAgAAogwEhQ==
+   eJxjZGBgYBzimAmImdEwC5XMVgRiLQZMoAPEqlQw3xGIA4A4EA0HAbErlcwvAOJCNFxERfMnAPFODgaGXUC8mwMSPpOoaH4HMDIvAc29DMRXoOYzMjM0HGKgPN4dMaMWDBSB5s8G0uGcqOKkxjsu8x2B5u+GsimJd1zmJwLNv81AebzDzI9nwrSjHho2ssCAlwNiTiZIvMPihYEBM37Q4wlk/hSgOZVAehqQno6EZ6CFPQ8rAwMvEIPiZQ5UbDaUngP1H4wPiydc4YMPgOJlDxI7EMqPROLD4okc80HxcgeJXQjlVyLxYfFEyHxBLgYGISAW5sIuf0QUEi/HRFHFYfmTkPlaQHO1gVgHh/nYgDbQPh0m4sx3BprrAsSuJJjvDTTbB2r+QuK1EQ2ygWbnAPEKBux5IhGqrhmHPCkYAP6XOr4=
   </data>
  </layer>
- <layer id="22" name="Buildings3" width="34" height="20">
+ <layer id="21" name="Buildings2" width="24" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMAqGLrAcaAdAQeRAOwAKKgfaAaNgFFABAABdPQEM
+   eJxjYBgFo2AU4AJruGhr/lEam38PyfyXjLS1a7iDSBqZC4uXSjL0nuZkYDgDxGc5SdPnQaT6J0B1T4H4GYnmjwLiAAAV1Aqu
   </data>
  </layer>
- <layer id="23" name="Buildings4" width="34" height="20">
+ <layer id="22" name="Buildings3" width="24" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMAqGLrAcaAdAQeRAOwAKKgfaAaNgFFABAABdPQEM
+   eJxjYBgFo2AUjIJRQAhE0tj8ShqbPwoGHwAAwxcA0w==
   </data>
  </layer>
- <layer id="9" name="Front" width="34" height="20">
+ <layer id="23" name="Buildings4" width="24" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYEAFzAwDCzrEUPmHxQiroQVYgWbHYyh/CyMDw1ZG7GqoDXwYUfkXgfxLQHwZiK8A8VVG7PoGCvQwDbQLGBjK8SRgULpp5wDSQNzJQb10tASIj+LAy7GoB6WbBUD7FwLxIg4I3wUYdq40Dj/k5BLKycAQBsQ7gfbvAuLdHBDxFKAbUqngDiNWBgZjVgh7L9C8fVjM1Oek3B5CIAjohmCoO+4C3XBvANLoW2DAvwPi99AI+At0wz8gZhwE+QUE3rAA3ciC4HuixYslmvpAJPmZHDRzFhgkA+1KhdoXCRXL5ISIg4AtMO/YAfEmoDuqgXQNFctkUvJkLNDeOKjds4H0HALu+AF0/08g/kVEHiAlT2YA1WVC1S4RZWBYJopf/Wmg/WeA+Cwd8iI+8ARo/1MgfkZjd+gMkjzng8cdixhQ65DFUHF89Qy5OIfE8DhKmnKKAQBBxFEC
+   eJxjYBgFo2AUjIJRMApGAb0BAAeAAAE=
   </data>
  </layer>
- <layer id="11" name="Front2" width="34" height="20">
+ <layer id="9" name="Front" width="24" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFpIIOMeqb2c4BNBeIO4F4BQ3MXwA0dyEQL+KgvtnYwEMmhgb62IQJGKls3mRWCKZ2vN+A0neZGBjuMZEf70mcDAyWQDqFE1XcF8r/CzT7HxAzMpFnfjXQnEggXQuk65AwOnjDwsDwlgW3OTOplPYExRkYhMQRfG8oexPUfErjyRBonhHUzBtY5EmJpx/AcPoJxL+whBcILBFlYHAExssyUVRxfRzqsQEDOeLVDkewCIiPIuHFUPElaOKk4OUE7DxKJbcDAEq7LlE=
+  </data>
+ </layer>
+ <layer id="11" name="Front2" width="24" height="20">
   <properties>
    <property name="Draw" value="Front"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjALagcmsEDwKRsEogIBNnAwMm4F4C+dAu2QUjGSwfKAdQAAAAMPVBAw=
+   eJxjYBgFo2AUjALiwFouBoZjXAPtCuzAcqAdgAVs4mRg2AzEWzgH2iWjYDACAFOTA/U=
   </data>
  </layer>
- <layer id="13" name="Paths" width="34" height="20">
+ <layer id="25" name="Front3" width="24" height="20">
+  <properties>
+   <property name="Draw" value="Front"/>
+  </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo4B4ICA30C4YBaOA+gA5XaOn8dE0PwroAUhNd9RKl+SYg0vPaN6hnZ+pHbZDIW4AjgYCsw==
+   eJxjYBgFo2AUjIKhDywH2gGjYBSQCAChlAA6
   </data>
  </layer>
- <layer id="15" name="AlwaysFront" width="34" height="20">
+ <layer id="26" name="Front4" width="24" height="20">
+  <properties>
+   <property name="Draw" value="Front"/>
+  </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYEAFzAyEASMNMAhMY2VgmEwknspKG7fQE4y6gz7uIJSuYGmJ1u4gFVDiDmLyMa3cgRy24Zyo4uhhTUt30AqMuoO2AJZ2SFGLjEfBKBgFwwMAAEaNFHM=
+   eJxjYBgFo2AUjIKhDywH2gGjYBSQCAChlAA6
   </data>
  </layer>
- <layer id="17" name="AlwaysFront2" width="34" height="20">
+ <layer id="13" name="Paths" width="24" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApGAb0BAAeAAAE=
+  </data>
+ </layer>
+ <layer id="15" name="AlwaysFront" width="24" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFhMA0VgaGyWh4Kiv1zN+GxaytVDR/uIO5TAwM85ioby4srvcCzd7HRP14xwaGU7wz08hcWLwgs2mZP7GB4RRPo2DgAAA86BD8
+  </data>
+ </layer>
+ <layer id="17" name="AlwaysFront2" width="24" height="20">
   <properties>
    <property name="Draw" value="AlwaysFront"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20ND6AAAODHAAqgAAE=
+   eJxjYBgFo2AUjIJRMApGAb0BAAeAAAE=
   </data>
  </layer>
- <layer id="19" name="AlwaysFront3" width="34" height="20">
+ <layer id="19" name="AlwaysFront3" width="24" height="20">
   <properties>
    <property name="Draw" value="AlwaysFront"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20ND6AAAODHAAqgAAE=
+   eJxjYBgFo2AUjIJRMApGAb0BAAeAAAE=
   </data>
  </layer>
  <objectgroup id="2" name="Back"/>
  <objectgroup id="8" name="Buildings">
-  <object id="3" name="TileData" x="240" y="144" width="16" height="16">
+  <object id="3" name="TileData" x="352" y="240" width="16" height="16">
    <properties>
     <property name="Action" value="DropBox MarlonChest"/>
-   </properties>
-  </object>
-  <object id="34" name="TileData" x="304" y="208" width="16" height="16">
-   <properties>
-    <property name="Action" value="Door"/>
    </properties>
   </object>
   <object id="35" name="TileData" x="128" y="160" width="16" height="16">
@@ -113,16 +174,91 @@
     <property name="Shop" value="bnw_EradicationList"/>
    </properties>
   </object>
-  <object id="36" name="TileData" x="128" y="144" width="16" height="16">
+  <object id="48" name="TileData" x="32" y="192" width="16" height="16">
    <properties>
-    <property name="Action" value=""/>
-    <property name="Shop" value="bnw_EradicationList"/>
+    <property name="Action" value="Door"/>
    </properties>
   </object>
-  <object id="39" name="TileData" x="256" y="224" width="16" height="16">
+  <object id="52" name="TileData" x="16" y="112" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_002"/>
+   </properties>
+  </object>
+  <object id="53" name="TileData" x="48" y="112" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_003"/>
+   </properties>
+  </object>
+  <object id="54" name="TileData" x="64" y="112" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_003"/>
+   </properties>
+  </object>
+  <object id="55" name="TileData" x="96" y="144" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_004"/>
+   </properties>
+  </object>
+  <object id="56" name="TileData" x="96" y="128" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_004"/>
+   </properties>
+  </object>
+  <object id="57" name="TileData" x="96" y="112" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_004"/>
+   </properties>
+  </object>
+  <object id="58" name="TileData" x="128" y="272" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_005"/>
+   </properties>
+  </object>
+  <object id="59" name="TileData" x="144" y="272" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_005"/>
+   </properties>
+  </object>
+  <object id="60" name="TileData" x="160" y="272" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_005"/>
+   </properties>
+  </object>
+  <object id="61" name="TileData" x="160" y="256" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_005"/>
+   </properties>
+  </object>
+  <object id="62" name="TileData" x="128" y="256" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_005"/>
+   </properties>
+  </object>
+  <object id="63" name="TileData" x="160" y="240" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_005"/>
+   </properties>
+  </object>
+  <object id="64" name="TileData" x="128" y="240" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_005"/>
+   </properties>
+  </object>
+  <object id="65" name="TileData" x="304" y="224" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AdventureGuild_main_room_006"/>
+   </properties>
+  </object>
+  <object id="69" name="TileData" x="64" y="192" width="16" height="16">
    <properties>
     <property name="Action" value=""/>
-    <property name="Shop" value="bnw_AdventureGuildChoices"/>
+    <property name="Shop" value="bnw_AdventureGuildChoices_no_npc"/>
+   </properties>
+  </object>
+  <object id="70" name="TileData" x="80" y="192" width="16" height="16">
+   <properties>
+    <property name="Action" value=""/>
+    <property name="Shop" value="bnw_AdventureGuildChoices_no_npc"/>
    </properties>
   </object>
  </objectgroup>

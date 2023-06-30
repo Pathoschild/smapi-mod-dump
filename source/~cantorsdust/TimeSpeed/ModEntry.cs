@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using cantorsdust.Common;
 using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -64,6 +65,7 @@ namespace TimeSpeed
         public override void Entry(IModHelper helper)
         {
             I18n.Init(helper.Translation);
+            CommonHelper.RemoveObsoleteFiles(this, "TimeSpeed.pdb");
 
             // read config
             this.Config = helper.ReadConfig<ModConfig>();

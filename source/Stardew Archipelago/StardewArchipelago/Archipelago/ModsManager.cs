@@ -45,6 +45,23 @@ namespace StardewArchipelago.Archipelago
                    HasMod(ModNames.MAGIC) || HasMod(ModNames.SOCIALIZING) || HasMod(ModNames.ARCHAEOLOGY);
         }
 
+        public bool ModIsInstalledAndLoaded(IModHelper modHelper, string desiredModName)
+        {
+            var loadedModData = modHelper.ModRegistry.GetAll().ToList();
+            var normalizedDesiredModName = GetNormalizedModName(desiredModName);
+            foreach (var modInfo in loadedModData)
+            {
+                var modName = GetNormalizedModName(modInfo.Manifest.Name);
+                if (!modName.Equals(normalizedDesiredModName, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                return true;
+            }
+            return false;
+        }
+
         public bool IsModStateCorrect(IModHelper modHelper, out string errorMessage)
         {
             var loadedModData = modHelper.ModRegistry.GetAll().ToList();

@@ -16,6 +16,7 @@ using StardewArchipelago.Archipelago;
 using StardewArchipelago.GameModifications.EntranceRandomizer;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 
 namespace StardewArchipelago.GameModifications.CodeInjections
 {
@@ -37,7 +38,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         {
             try
             {
-                if (Game1.currentLocation.Name.ToLower() == locationRequest.Name.ToLower())
+                if (Game1.currentLocation.Name.ToLower() == locationRequest.Name.ToLower() || Game1.player.passedOut || Game1.player.FarmerSprite.isPassingOut() || Game1.player.isInBed)
                 {
                     return true; // run original logic
                 }
@@ -55,12 +56,51 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 tileX = replacedWarp.TileX;
                 tileY = replacedWarp.TileY;
                 facingDirectionAfterWarp = (int)replacedWarp.FacingDirectionAfterWarp;
+
+                SetCorrectSwimsuitState(locationRequest, tileX, tileY);
+
                 return true; // run original logic
             }
             catch (Exception ex)
             {
                 _monitor.Log($"Failed in {nameof(PerformWarpFarmer_EntranceRandomization_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
+            }
+        }
+
+        private static void SetCorrectSwimsuitState(LocationRequest locationRequest, int tileX, int tileY)
+        {
+            var shouldBeInSwimsuit = GetCorrectSwimsuitState(locationRequest, tileX, tileY);
+            if (shouldBeInSwimsuit)
+            {
+                Game1.player.changeIntoSwimsuit();
+            }
+            else
+            {
+                Game1.player.changeOutOfSwimSuit();
+            }
+        }
+
+        private static bool GetCorrectSwimsuitState(LocationRequest locationRequest, int tileX, int tileY)
+        {
+            if (locationRequest.Location.Name.Equals("BathHouse_Pool"))
+            {
+                return true;
+            }
+
+            if (!locationRequest.Location.Name.StartsWith("BathHouse_", StringComparison.OrdinalIgnoreCase) ||
+                 !locationRequest.Location.Name.EndsWith("Locker", StringComparison.OrdinalIgnoreCase))
+            {
+                return false;
+            }
+
+            if (locationRequest.Name.Contains("Women", StringComparison.OrdinalIgnoreCase))
+            {
+                return tileX < 5;
+            }
+            else
+            {
+                return tileX > 12;
             }
         }
     }

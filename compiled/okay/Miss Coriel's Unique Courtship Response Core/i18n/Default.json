@@ -70,16 +70,16 @@
   "NPC.cs.4280": "$q 10001 birthdayNeutralA#...#$r 10001 0 birthdayNeutralA# [Happy Birthday]", //neutral
   "NPC.cs.4281": "$q 10001 birthdayNeutralB#...#$r 10001 0 birthdayNeutralB# [Happy Birthday]", //neutral
   "NPC.cs.3985": "@, I heard that you gave {0} a gift today...#$b#$q 798999999 giftquestion_yes#Is this true?#$r 798999999 50 giftquestion_yes#Yes, I gave a friendly gift.#$r 798999998 0 giftquestion_lie#What? Me? No...(Lie)",
-  "NPC.cs.4439": "$q 10001 baby_anxiety#...#r 10001 0 baby_anxiety#What's wrong dear?",
-  "NPC.cs.4440": "$q 10001 adopt_excitedA#...#r 10001 0 adopt_excitedA#What's wrong dear?",
-  "NPC.cs.4441": "$q 10001 adopt_excitedB#...#r 10001 0 adopt_excitedB#What's wrong dear?",
-  "NPC.cs.4442": "$q 10001 morningsick#...#r 10001 0 morningsick#What's wrong dear?",
-  "NPC.cs.4443": "$q 10001 moodyPregnant#...#r 10001 0 moodyPregnant#What's wrong dear?",
-  "NPC.cs.4444": "$q 10001 informPregnancyA#...#r 10001 0 informPregnancyA#What's wrong dear?",
-  "NPC.cs.4445": "$q 10001 informPregnancyB#...#r 10001 0 informPregnancyB#What's wrong dear?",
-  "NPC.cs.4447": "$q 10001 yourePregnantA#...#r 10001 0 yourePregnantA#What's wrong dear?",
-  "NPC.cs.4448": "$q 10001 yourePregnantB#...#r 10001 0 yourePregnantB#What's wrong dear?",
-  "NPC.cs.4449": "$q 10001 annoyedParent#...#r 10001 0 annoyedParent#What's wrong dear?",
-  "NPC.cs.4452": "$q 10001 aloneTime#...#r 10001 0 aloneTime#What's wrong dear?"
+  "NPC.cs.4439": "$q 10001 baby_anxiety#...#$r 10001 0 baby_anxiety#What's wrong dear?",
+  "NPC.cs.4440": "$q 10001 adopt_excitedA#...#$r 10001 0 adopt_excitedA#What's wrong dear?",
+  "NPC.cs.4441": "$q 10001 adopt_excitedB#...#$r 10001 0 adopt_excitedB#What's wrong dear?",
+  "NPC.cs.4442": "$q 10001 morningsick#...#$r 10001 0 morningsick#What's wrong dear?",
+  "NPC.cs.4443": "$q 10001 moodyPregnant#...#$r 10001 0 moodyPregnant#What's wrong dear?",
+  "NPC.cs.4444": "$q 10001 informPregnancyA#...#$r 10001 0 informPregnancyA#What's wrong dear?",
+  "NPC.cs.4445": "$q 10001 informPregnancyB#...#$r 10001 0 informPregnancyB#What's wrong dear?",
+  "NPC.cs.4447": "$q 10001 yourePregnantA#...#$r 10001 0 yourePregnantA#What's wrong dear?",
+  "NPC.cs.4448": "$q 10001 yourePregnantB#...#$r 10001 0 yourePregnantB#What's wrong dear?",
+  "NPC.cs.4449": "$q 10001 annoyedParent#...#$r 10001 0 annoyedParent#What's wrong dear?",
+  "NPC.cs.4452": "$q 10001 aloneTime#...#$r 10001 0 aloneTime#What's wrong dear?"
 
 }

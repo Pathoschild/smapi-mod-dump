@@ -17,6 +17,21 @@ using System.Threading.Tasks;
 
 namespace Fishnets
 {
+    public interface IApi
+    {
+        /// <summary>
+        /// Remove a fish from being able to be caught by a fish net
+        /// </summary>
+        /// <param name="name">The name of the fish to exclude</param>
+        /// <returns>True if the fish was excluded, false if it wasn't (check trace logs)</returns>
+        bool AddExclusion(string name);
+
+        /// <summary>
+        /// Get the ParentSheetIndex of the fish net object
+        /// </summary>
+        int GetFishNetId();
+    }
+
     public class Api : IApi
     {
         /// <inheritdoc cref="IApi.AddExclusion(string)"/>
@@ -34,20 +49,5 @@ namespace Fishnets
 
         /// <inheritdoc cref="IApi.GetFishNetId"/>
         public int GetFishNetId() => ModEntry.FishNetId;
-    }
-
-    public interface IApi
-    {
-        /// <summary>
-        /// Remove a fish from being able to be caught by a fish net
-        /// </summary>
-        /// <param name="name">The name of the fish to exclude</param>
-        /// <returns>True if the fish was excluded, false if it wasn't (check trace logs)</returns>
-        bool AddExclusion(string name);
-
-        /// <summary>
-        /// Get the ParentSheetIndex of the fish net object
-        /// </summary>
-        int GetFishNetId();
     }
 }

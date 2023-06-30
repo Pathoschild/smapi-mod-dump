@@ -1,0 +1,60 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Achtuur/StardewMods
+**
+*************************************************/
+
+{
+    /** Skill **/
+    "travelskill.name": "Travelling",
+    "travelskill.level-up-perk": "+{{bonus}}% Leg proficiency",
+
+
+    /** Professions **/
+    "movespeed.name": "Seasoned Runner",
+    "movespeed.desc": "Gain additional movespeed",
+    "restorestamine.name": "Marathon Runner",
+    "restorestamina.desc": "Restore stamina passively",
+    "sprint.name": "Champion Runner",
+    "sprint.desc": "Walking for a longer period of time causes you to run even faster",
+
+    "cheapwarptotem.name": "Warp Enjoyer",
+    "cheapwarptotem.desc": "Warp totems are cheaper to craft",
+    "cheapobelisk.name": "Obelisk Builder",
+    "cheapobelisk.desc": "Obelisks cost 50% less gold",
+    "totemreuse.name": "Totem Preserver",
+    "totemreuse.desc": "Warp totems have a chance of not being used",
+
+    /** Console commands **/
+    // Set level
+    "cmd_setlvl.name": "travelskill_setlevel",
+    "cmd_setlevel.desc": "Sets the player's level in the Travelling skill.\n\nUsage: travelskill_setlevel <level>\n- level: level between 1 and 10",
+    "cmd_setlevel.errormsg": "'{{input}}' is an invalid input, please input a number between 1 and 10",
+
+    /** Config Menu **/
+    "cfg_section.travelskill": "General Skill settings",
+    "cfg_section.professions": "Profession settings",
+
+    "cfg_expgain.name": "Number of steps per XP",
+    "cfg_expgain.desc": "Number of steps to walk before gaining 1 xp point in Travelling",
+
+    "cfg_levelmovespeed.name": "% Movespeed bonus per level",
+    "cfg_levelmovespeed.desc": "% Movespeed bonus in percentage per level of Travelling skill",
+
+    "cfg_movespeedbonus.name": "% Movespeed profession bonus",
+    "cfg_movespeedbonus.desc": "% Movespeed gained from movespeed profession",
+
+    "cfg_sprintbonus.name": "Sprint movespeed bonus",
+    "cfg_sprintbonus.desc": "Set movespeed bonus gained from sprinting profession",
+
+    "cfg_restorestamina.name": "Stamina restoration",
+    "cfg_restorestamina.desc": "% Total Stamina recovered every 10 in game min by profession",
+
+    "cfg_totemreuse.name": "Totem use chance",
+    "cfg_totemreuse.desc": "Use chance of totem in % for profession"
+
+}

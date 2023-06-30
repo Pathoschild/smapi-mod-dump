@@ -1,0 +1,9 @@
+{
+    "Name": "Inworld",
+    "Author": "PogDerson",
+    "Version": "1.1.1",
+    "Description": "Talk to inworld.ai powered Stardew Valley Characters!",
+    "UniqueId": "PogDerson.Inworld",
+    "EntryDll": "Inworld.dll",
+    "UpdateKeys": [ "Nexus:16816" ]
+}

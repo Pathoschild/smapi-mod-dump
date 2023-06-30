@@ -34,7 +34,7 @@ namespace MultiplayerMod.Framework.Patch
             Manifest = manifest;
             Config = config;
             Harmony = new Harmony(Manifest.UniqueID);
-            Patches.Add(new GameServerPatch());
+
             if (Constants.TargetPlatform == GamePlatform.Android)
             {
                 Patches.Add(new TitleMenuPatch());
@@ -44,13 +44,16 @@ namespace MultiplayerMod.Framework.Patch
                 Patches.Add(new MobileCustomizerPatch());
                 Patches.Add(new MobileFarmChooserPatch());
                 Patches.Add(new SaveGamePatch());
+                Patches.Add(new SMultiplayerPatch());
+                Patches.Add(new GameLocationPatch());
+                Patches.Add(new GameServerPatch());
+                Patches.Add(new CarpenterMenuPatch());
             }
             else
             {
                 Patches.Add(new CoopMenuPatch());
             }
-            // Patches.Add(new SGamePatch());
-            
+
         }
         public void Apply()
         {

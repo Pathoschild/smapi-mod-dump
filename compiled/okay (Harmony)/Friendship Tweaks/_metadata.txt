@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17055
+IDs: aedenthorn.FriendshipTweaks
+update keys: Nexus:17055, GitHub:aedenthorn/StardewValleyMods

@@ -14,72 +14,71 @@ using StardewValley;
 using System;
 using SObject = StardewValley.Object;
 
-namespace Shockah.Kokoro.UI
+namespace Shockah.Kokoro.UI;
+
+public class ItemRenderer
 {
-	public class ItemRenderer
+	private static RenderTarget2D? DrawInMenuRenderTarget { get; set; }
+
+	private static void DrawItemViaGameImplementation(SpriteBatch b, SObject @object, Vector2 rectLocation, Vector2 rectSize, Color color, StackDrawType drawStackNumber, UIAnchorSide rectAnchorSide, float layerDepth)
 	{
-		private static RenderTarget2D? DrawInMenuRenderTarget { get; set; }
+		Vector2 realRectSize = rectSize;
+		Vector2 realRectLocation = rectLocation;
 
-		private static void DrawItemViaGameImplementation(SpriteBatch b, SObject @object, Vector2 rectLocation, Vector2 rectSize, Color color, StackDrawType drawStackNumber, UIAnchorSide rectAnchorSide, float layerDepth)
+		if (realRectSize.X != realRectSize.Y)
 		{
-			Vector2 realRectSize = rectSize;
-			Vector2 realRectLocation = rectLocation;
-
-			if (realRectSize.X != realRectSize.Y)
-			{
-				var minLength = Math.Min(rectSize.X, rectSize.Y);
-				realRectSize = new(minLength);
-				realRectLocation -= (rectSize - realRectSize) / 2;
-			}
-
-			float scale = Math.Min(realRectSize.X, realRectSize.Y) / 64f;
-			realRectLocation = rectAnchorSide.GetAnchorPoint(realRectLocation, realRectSize);
-			@object.drawInMenu(b, realRectLocation, scale, 1f, layerDepth, drawStackNumber, color, drawShadow: true);
+			var minLength = Math.Min(rectSize.X, rectSize.Y);
+			realRectSize = new(minLength);
+			realRectLocation -= (rectSize - realRectSize) / 2;
 		}
 
-		private static void DrawItemViaRenderTargetGameImplementation(SpriteBatch b, SObject @object, Vector2 rectLocation, Vector2 rectSize, Color color, StackDrawType drawStackNumber, UIAnchorSide rectAnchorSide, float layerDepth)
+		float scale = Math.Min(realRectSize.X, realRectSize.Y) / 64f;
+		realRectLocation = rectAnchorSide.GetAnchorPoint(realRectLocation, realRectSize);
+		@object.drawInMenu(b, realRectLocation, scale, 1f, layerDepth, drawStackNumber, color, drawShadow: true);
+	}
+
+	private static void DrawItemViaRenderTargetGameImplementation(SpriteBatch b, SObject @object, Vector2 rectLocation, Vector2 rectSize, Color color, StackDrawType drawStackNumber, UIAnchorSide rectAnchorSide, float layerDepth)
+	{
+		if (DrawInMenuRenderTarget is null || DrawInMenuRenderTarget.IsDisposed)
 		{
-			if (DrawInMenuRenderTarget is null || DrawInMenuRenderTarget.IsDisposed)
+			DrawInMenuRenderTarget?.Dispose();
+			DrawInMenuRenderTarget = new RenderTarget2D(b.GraphicsDevice, 80, 80); // a bit bigger to fit the text
+		}
+
+		static bool TryEnd(SpriteBatch b)
+		{
+			try
 			{
-				DrawInMenuRenderTarget?.Dispose();
-				DrawInMenuRenderTarget = new RenderTarget2D(b.GraphicsDevice, 80, 80); // a bit bigger to fit the text
+				b.End();
+				return true;
 			}
-
-			static bool TryEnd(SpriteBatch b)
+			catch
 			{
-				try
-				{
-					b.End();
-					return true;
-				}
-				catch
-				{
-					return false;
-				}
+				return false;
 			}
+		}
 
-			bool wasInProgress = TryEnd(b);
-			var oldRenderTarget = b.GraphicsDevice.GetRenderTargets().FirstOrNull()?.RenderTarget as RenderTarget2D;
+		bool wasInProgress = TryEnd(b);
+		var oldRenderTarget = b.GraphicsDevice.GetRenderTargets().FirstOrNull()?.RenderTarget as RenderTarget2D;
 
-			b.GraphicsDevice.SetRenderTarget(DrawInMenuRenderTarget);
+		b.GraphicsDevice.SetRenderTarget(DrawInMenuRenderTarget);
+		b.Begin(blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp);
+		b.GraphicsDevice.Clear(Color.Transparent);
+
+		DrawItemViaGameImplementation(b, @object, Vector2.Zero, new Vector2(64), Color.White, drawStackNumber, UIAnchorSide.TopLeft, 0f);
+
+		b.End();
+		b.GraphicsDevice.SetRenderTarget(oldRenderTarget);
+
+		if (wasInProgress)
 			b.Begin(blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp);
-			b.GraphicsDevice.Clear(Color.Transparent);
 
-			DrawItemViaGameImplementation(b, @object, Vector2.Zero, new Vector2(64), Color.White, drawStackNumber, UIAnchorSide.TopLeft, 0f);
+		var actualScale = Math.Min(rectSize.X, rectSize.Y) / 64f;
+		b.Draw(DrawInMenuRenderTarget, rectLocation - rectAnchorSide.GetAnchorPoint(Vector2.Zero, new Vector2(Math.Min(rectSize.X, rectSize.Y))), null, color, 0f, Vector2.Zero, actualScale, SpriteEffects.None, layerDepth);
+	}
 
-			b.End();
-			b.GraphicsDevice.SetRenderTarget(oldRenderTarget);
-
-			if (wasInProgress)
-				b.Begin(blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp);
-
-			var actualScale = Math.Min(rectSize.X, rectSize.Y) / 64f;
-			b.Draw(DrawInMenuRenderTarget, rectLocation - rectAnchorSide.GetAnchorPoint(Vector2.Zero, new Vector2(Math.Min(rectSize.X, rectSize.Y))), null, color, 0f, Vector2.Zero, actualScale, SpriteEffects.None, layerDepth);
-		}
-
-		public void DrawItem(SpriteBatch b, SObject @object, Vector2 rectLocation, Vector2 rectSize, Color color, StackDrawType drawStackNumber, UIAnchorSide rectAnchorSide = UIAnchorSide.TopLeft, float layerDepth = 0f)
-		{
-			DrawItemViaRenderTargetGameImplementation(b, @object, rectLocation, rectSize, color, drawStackNumber, rectAnchorSide, layerDepth);
-		}
+	public void DrawItem(SpriteBatch b, SObject @object, Vector2 rectLocation, Vector2 rectSize, Color color, StackDrawType drawStackNumber, UIAnchorSide rectAnchorSide = UIAnchorSide.TopLeft, float layerDepth = 0f)
+	{
+		DrawItemViaRenderTargetGameImplementation(b, @object, rectLocation, rectSize, color, drawStackNumber, rectAnchorSide, layerDepth);
 	}
 }

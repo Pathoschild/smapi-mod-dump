@@ -28,12 +28,12 @@ namespace Shockah.FlexibleSprinklers
 			results.UnionWith(
 				location.Objects.Values
 					.Where(o => o.IsSprinkler())
-					.Select(s => FlexibleSprinklers.Instance.GetSprinklerInfo(s))
+					.Select(FlexibleSprinklers.Instance.GetSprinklerInfo)
 			);
 			results.UnionWith(
 				location.furniture
 					.Where(o => o.IsSprinkler())
-					.Select(s => FlexibleSprinklers.Instance.GetSprinklerInfo(s))
+					.Select(FlexibleSprinklers.Instance.GetSprinklerInfo)
 			);
 			return results;
 		}

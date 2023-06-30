@@ -6,9 +6,9 @@ mods:
    Brave New World - Core
 
 latest commit:
-   commit a7610371f69d7d30099f4ed25936f1991c1c0dc6
+   commit b8981e66777977f103d7fa00787904a80d4e0a84
    Author: Diogo Albano do Nascimento <diogoalbanodonascimento@gmail.com>
-   Date:   Tue May 30 17:25:55 2023 -0300
+   Date:   Thu Jun 29 16:01:42 2023 -0300
    
        Add files via upload
    

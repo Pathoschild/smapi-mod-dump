@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using GenericModConfigMenu;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -22,11 +23,13 @@ namespace CasualLife
     public class ModEntry : Mod
     {
         private ModConfig Config;
+
         public override void Entry(IModHelper helper)
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
-            Game1Patches.DoLighting = Config.ControlDayLightLevels;
-            DayTimeMoneyBoxPatch.Is24Hour = Config.Is24HourDefault;
+
+            Game1Patches.Config = Config;
+            DayTimeMoneyBoxPatch.Config = Config;
 
             Harmony harmony = new Harmony(this.ModManifest.UniqueID);
             harmony.Patch(
@@ -54,14 +57,63 @@ namespace CasualLife
                 original: AccessTools.Method(typeof(MineShaft), "getExtraMillisecondsPerInGameMinuteForThisLocation"),
                 prefix: new HarmonyMethod(typeof(Game1Patches), nameof(Game1Patches.getExtraMillisecondsPerInGameMinuteForThisLocation))
             );
-            if (Config.ControlDayWithKeys)
-            {
-                helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-            }
+
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+
         }
+
+        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+           var configMenu = this.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is null)
+                return;
+
+           configMenu.Register(
+                mod: this.ModManifest,
+                reset: () => this.Config = new ModConfig(),
+                save: () => this.Helper.WriteConfig(this.Config)
+            );
+
+            configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "24 Hour Clock",
+                tooltip: () => "Sets clock to 24 hours.",
+                getValue: () => this.Config.Is24HourDefault,
+                setValue: value => this.Config.Is24HourDefault = value
+            );
+           configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Enable custom lighting",
+                tooltip: () => "Use the mods lighting rebuild.",
+                getValue: () => this.Config.ControlDayLightLevels,
+                setValue: value => this.Config.ControlDayLightLevels = value
+            );
+           configMenu.AddBoolOption(
+                mod: this.ModManifest,
+                name: () => "Enable debug time controls",
+                tooltip: () => "Using arrows on the keyboard you can change time/day/seasons",
+                getValue: () => this.Config.ControlDayWithKeys,
+                setValue: value => this.Config.ControlDayWithKeys = value
+            );
+            configMenu.AddBoolOption(
+                 mod: this.ModManifest,
+                 name: () => "Show Sun rise/set times",
+                 tooltip: () => "Print out the sun rise and sunset times, when custom lighting is on",
+                 getValue: () => this.Config.DisplaySunTimes,
+                 setValue: value => this.Config.DisplaySunTimes = value
+             );
+            configMenu.AddNumberOption(
+                mod: this.ModManifest,
+                name: () => "Milliseconds per clock tick",
+                getValue: () => this.Config.MillisecondsPerSecond,
+                setValue: value => this.Config.MillisecondsPerSecond = value
+            );
+        }
+
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (!Context.IsWorldReady)
+            if (!Context.IsWorldReady || !Config.ControlDayWithKeys)
                 return;
 
 
@@ -232,8 +284,6 @@ namespace CasualLife
                         break;
                 }
             }
-
-            this.Monitor.Log($"{Game1.currentSeason}", LogLevel.Debug);
         }
 
         private void ShiftSeasonUp()

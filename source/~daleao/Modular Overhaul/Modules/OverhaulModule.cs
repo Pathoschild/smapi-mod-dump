@@ -25,6 +25,7 @@ using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using DaLion.Shared.Integrations;
 using HarmonyLib;
+using StardewValley.Objects;
 using StardewValley.Tools;
 
 #endregion using directives
@@ -79,7 +80,7 @@ public abstract class OverhaulModule
     {
         this.Name = name;
         this.Namespace = "DaLion.Overhaul.Modules." + name;
-        this.DisplayName = "MARGO :: " + _I18n.Get("gmcm.modules." + entry + ".name");
+        this.DisplayName = _I18n.Get("gmcm.modules." + entry + ".name");
         this.Description = _I18n.Get("gmcm.modules." + entry + ".desc");
         this.Ticker = entry;
     }
@@ -137,7 +138,8 @@ public abstract class OverhaulModule
         }
 
         EventManager.ManageNamespace(this.Namespace + ".Events");
-        this._harmonizer = Harmonizer.ApplyFromNamespace(helper.ModRegistry, this.Namespace + ".Patchers");
+        this._harmonizer =
+            Harmonizer.ApplyFromNamespace(helper.ModRegistry, this.Namespace + ".Patchers", this.Namespace);
         this._commandHandler ??= CommandHandler.HandleFromNamespace(
             helper.ConsoleCommands,
             this.Namespace + ".Commands",
@@ -584,7 +586,7 @@ public abstract class OverhaulModule
             {
                 if (Config.CanStoreRuinBlade)
                 {
-                    foreach (var chest in Game1.game1.IterateAllChests())
+                    foreach (var chest in Game1.game1.IterateAll<Chest>())
                     {
                         darkSword = chest.items.FirstOrDefault(item => item is MeleeWeapon { InitialParentTileIndex: ItemIDs.DarkSword });
                         if (darkSword is not null)
@@ -1015,9 +1017,6 @@ public abstract class OverhaulModule
 
         /// <summary>Gets the config instance for the <see cref="OverhaulModule.TaxesModule"/>.</summary>
         internal static Taxes.Config Config => ModEntry.Config.Taxes;
-
-        /// <summary>Gets the ephemeral runtime state for the <see cref="OverhaulModule.TaxesModule"/>.</summary>
-        internal static Taxes.State State => ModEntry.State.Taxes;
 
         /// <inheritdoc />
         internal override bool _ShouldEnable

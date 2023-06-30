@@ -108,10 +108,10 @@ namespace FishingTrawler.Patches.Locations
                 return;
             }
 
-            Texture2D boatTexture = FishingTrawler.assetManager.boatTexture;
+            Texture2D boatTexture = FishingTrawler.assetManager.BoatTexture;
             if (FishingTrawler.config.useOldTrawlerSprite)
             {
-                boatTexture = FishingTrawler.assetManager.oldBoatTexture;
+                boatTexture = FishingTrawler.assetManager.OldBoatTexture;
                 if (boatTexture != null)
                 {
                     b.Draw(boatTexture, Game1.GlobalToLocal(FishingTrawler.trawlerObject.GetTrawlerPosition()), new Rectangle(0, 16, 224, 160), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);

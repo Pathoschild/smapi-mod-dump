@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31005.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survivalistic", "Survivalistic\Survivalistic.csproj", "{C8C0195A-2291-454E-A66D-8FF396CB0622}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Survivalistic", "Survivalistic\Survivalistic.csproj", "{32257F49-6F9D-4E48-B77F-57E9CDFBA2DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C8C0195A-2291-454E-A66D-8FF396CB0622}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C8C0195A-2291-454E-A66D-8FF396CB0622}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C8C0195A-2291-454E-A66D-8FF396CB0622}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C8C0195A-2291-454E-A66D-8FF396CB0622}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32257F49-6F9D-4E48-B77F-57E9CDFBA2DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32257F49-6F9D-4E48-B77F-57E9CDFBA2DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32257F49-6F9D-4E48-B77F-57E9CDFBA2DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32257F49-6F9D-4E48-B77F-57E9CDFBA2DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {851944A9-F493-47D5-82B6-AF52092B58C6}
+		SolutionGuid = {E0ED6289-8648-4FC8-A2CF-2F2B690325FA}
 	EndGlobalSection
 EndGlobal

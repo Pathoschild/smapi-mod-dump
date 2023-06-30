@@ -11,7 +11,7 @@
 {
   "Name": "MultiplayerMod",
   "Author": "Tran Minh Thong",
-  "Version": "1.0.7",
+  "Version": "1.1.0",
   "Description": "It is a Mod that makes it possible for players to play together",
   "UniqueID": "multiplayer.mod",
   "EntryDll": "MultiplayerMod.dll",

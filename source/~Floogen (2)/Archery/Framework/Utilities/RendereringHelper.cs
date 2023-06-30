@@ -52,7 +52,7 @@ namespace Archery.Framework.Utilities
             bool isSleevesShirt = farmer.GetShirtExtraData().Contains("Sleeveless");
 
             Color shirtColor = farmer.GetShirtColor();
-            if (isSleevesShirt is false && Archery.apiManager.IsFashionSenseLoaded())
+            if (isSleevesShirt is false && Archery.apiManager.IsFashionSenseDrawOverrideActive())
             {
                 var responseToColor = Archery.apiManager.GetFashionSenseApi().GetAppearanceColor(Interfaces.IFashionSenseApi.Type.Sleeves, farmer);
                 if (responseToColor.Key is true)
@@ -68,7 +68,7 @@ namespace Archery.Framework.Utilities
                     }
                 }
             }
-            else if (Archery.apiManager.IsFashionSenseLoaded() is false)
+            else if (Archery.apiManager.IsFashionSenseDrawOverrideActive() is false)
             {
                 Color[] shirtData = new Color[FarmerRenderer.shirtsTexture.Bounds.Width * FarmerRenderer.shirtsTexture.Bounds.Height];
                 FarmerRenderer.shirtsTexture.GetData(shirtData);

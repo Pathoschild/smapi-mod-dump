@@ -1,7 +1,7 @@
 ﻿#### MevNav's Daily Planner Mod ####
 
-Current version: 1.2.1
-Last Update: May 26th, 2023
+Current version: 1.2.2
+Last Update: June 12th, 2023
 * Fixed crash related to opening checklist menu on new saves.
 
 

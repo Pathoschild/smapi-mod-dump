@@ -8,16 +8,8 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 using StardewValley;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Survivalistic.Framework.Bars
 {
@@ -35,7 +27,7 @@ namespace Survivalistic.Framework.Bars
                 if (!active_hunger_warning)
                 {
                     active_hunger_warning = true;
-                    Game1.addHUDMessage(new HUDMessage($"You're hunger!", 2));
+                    Game1.addHUDMessage(new HUDMessage(ModEntry.instance.Helper.Translation.Get("hunger-warning"), 2));
                 }
             }
             else active_hunger_warning = false;
@@ -45,7 +37,7 @@ namespace Survivalistic.Framework.Bars
                 if (!active_thirst_warning)
                 {
                     active_thirst_warning = true;
-                    Game1.addHUDMessage(new HUDMessage($"You're thirsty!", 2));
+                    Game1.addHUDMessage(new HUDMessage(ModEntry.instance.Helper.Translation.Get("thirsty-warning"), 2));
                 }
             }
             else active_thirst_warning = false;

@@ -1,0 +1,10 @@
+{
+  "Name": "OpenHearts",
+  "Author": "MedievalAI",
+  "Version": "2.0.0", // fixed locally
+  "Description": "best friends at the start.",
+  "UniqueID": "MedievalAI.OpenHearts",
+  "EntryDll": "OpenHearts.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

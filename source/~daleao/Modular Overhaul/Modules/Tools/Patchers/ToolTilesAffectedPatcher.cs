@@ -29,8 +29,8 @@ internal sealed class ToolTilesAffectedPatcher : HarmonyPatcher
     internal ToolTilesAffectedPatcher()
     {
         this.Target = this.RequireMethod<Tool>("tilesAffected");
-        this.Prefix!.priority = Priority.HigherThanNormal;
-        this.Postfix!.priority = Priority.LowerThanNormal;
+        this.Prefix!.priority = Priority.First;
+        this.Postfix!.priority = Priority.Last;
     }
 
     private static uint[] AxeAffectedTilesRadii => ToolsModule.Config.Axe.RadiusAtEachPowerLevel;
@@ -45,17 +45,11 @@ internal sealed class ToolTilesAffectedPatcher : HarmonyPatcher
 
     /// <summary>Override affected tiles for farming tools.</summary>
     [HarmonyPrefix]
-    [HarmonyPriority(Priority.HigherThanNormal)]
+    [HarmonyPriority(Priority.First)]
     private static bool ToolTilesAffectedPrefix(
         Tool __instance, ref List<Vector2> __result, Vector2 tileLocation, ref int power, Farmer who)
     {
         if (__instance is not (Hoe or WateringCan) || power < 1)
-        {
-            return true; // run original logic
-        }
-
-        if ((__instance is Hoe && !ToolsModule.Config.Hoe.OverrideAffectedTiles) || (__instance is WateringCan &&
-                !ToolsModule.Config.Can.OverrideAffectedTiles))
         {
             return true; // run original logic
         }
@@ -88,7 +82,7 @@ internal sealed class ToolTilesAffectedPatcher : HarmonyPatcher
 
     /// <summary>Override affected tiles for resource tools.</summary>
     [HarmonyPostfix]
-    [HarmonyPriority(Priority.LowerThanNormal)]
+    [HarmonyPriority(Priority.Last)]
     private static void ToolTilesAffectedPostfix(
         Tool __instance, List<Vector2> __result, Vector2 tileLocation, int power)
     {
@@ -99,8 +93,8 @@ internal sealed class ToolTilesAffectedPatcher : HarmonyPatcher
 
         __result.Clear();
         var radius = __instance is Axe
-            ? AxeAffectedTilesRadii[Math.Min(power - 2, 4)]
-            : PickaxeAffectedTilesRadii[Math.Min(power - 2, 4)];
+            ? AxeAffectedTilesRadii[power - 2]
+            : PickaxeAffectedTilesRadii[power - 2];
         if (radius == 0)
         {
             return;

@@ -11,7 +11,7 @@
 {
 	"Name": "Mushroom Propagator",
 	"Author": "blueberry",
-	"Version": "2.0.1",
+	"Version": "2.1.0",
 	"Description": "Mushroom Propagator for the Farmhouse cellar and elsewhere.",
 	"UniqueID": "blueberry.MushroomPropagator",
 	"EntryDll": "BlueberryMushroomMachine.dll",

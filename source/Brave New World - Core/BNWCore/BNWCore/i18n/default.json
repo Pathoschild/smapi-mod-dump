@@ -83,16 +83,21 @@
   "translator_dialog_box_choice_bnw_QiShop": "Qi's Walnut Room.",
   "translator_dialog_box_services": "Which option should I choose?",
   "translator_dialog_box_stockpiles": "Which Inventory should I choose?",
-  "translator_dialog_box_request_fulfilled": "Thank you.^Your request has been successfully^fulfilled.",
-  "translator_dialog_box_tool_upgraded": "Thank you.^Your tool has been successfully^upgraded.",
-  "translator_dialog_box_building_requested": "Thank you. The requested building has send to the local carpenter.",
-  "translator_dialog_box_animal_delivered": "Thank you.^Your animal will be^delivered soon.",
+  "translator_dialog_box_request_registered": "Request registered.^Soon someone will recover the itens.",
+  "translator_dialog_box_request_fulfilled": "The request has been successfully^fulfilled.",
+  "translator_dialog_box_tool_upgraded": "The tool has been successfully^upgraded.",
+  "translator_dialog_box_building_requested": "The requested building has send to^the local carpenter.",
+  "translator_dialog_box_animal_delivered": "The requested animal will be^delivered soon.",
   "translator_dialog_box_ScienceHouse_CarpenterMenu": "What service you will request?",
   "translator_dialog_box_choice_bnw_EradicationList": "Monster Erradication Goals?",
   "translator_dialog_box_choice_yes": "Yes.",
   "translator_dialog_box_choice_no": "No.",
   "translator_dialog_box_buy_weapons_and_equipments": "Buy Weapons and Equipments.",
   "translator_dialog_box_choice_bnw_EradicationList_option": "Monster Erradication Goals.",
-  "translator_dialog_box_choice_closedShop": "I must return when the owner is working."
+  "translator_dialog_box_choice_closedShop": "I must return when the owner is working.",
+  "translator_dialog_box_choice_inventory": "See this shop inventory.",
+  "translator_dialog_box_choice_animalshop": "Buy animals.",
+  "translator_dialog_box_choice_break_geodes": "Break geodes.",
+  "translator_dialog_box_choice_cant_break_geodes": "Clint must be nearby to break geodes for you."
 
 }

@@ -27,7 +27,7 @@ using StardewValley.TerrainFeatures;
 #endregion using directives
 
 [UsedImplicitly]
-[RequiresMod("Pathoschild.Automate")]
+[ModRequirement("Pathoschild.Automate")]
 internal sealed class BushMachineGetOutputPatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="BushMachineGetOutputPatcher"/> class.</summary>
@@ -67,7 +67,7 @@ internal sealed class BushMachineGetOutputPatcher : HarmonyPatcher
                             OpCodes.Call,
                             typeof(BushMachineGetOutputPatcher).RequireMethod(nameof(GetOutputSubroutine))),
                     })
-                .Count(new[] { new CodeInstruction(OpCodes.Ldc_I4_4) }, out var count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Ldc_I4_4) }, out var count)
                 .Remove(count)
                 .StripLabels();
         }

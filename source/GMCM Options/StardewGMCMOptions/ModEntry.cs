@@ -25,8 +25,8 @@ namespace GMCMOptions {
             helper.ConsoleCommands.Add("gmcmoptions-example", "Control the GMCMOptions example config menu.\n\nUsage: gmcmoptions-example [help|enable|disable]", this.ExampleCLI);
         }
 
-        public override object GetApi() {
-            return new API(Helper, Monitor);
+        public override object GetApi(IModInfo mod) {
+            return new API(Helper, Monitor, mod);
         }
 
         private void ExampleCLI(string command, string[] args) {

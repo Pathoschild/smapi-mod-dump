@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>MultiplayerTime</AssemblyName>
     <RootNamespace>MultiplayerTime</RootNamespace>
-    <Version>4.1</Version>
+    <Version>4.2</Version>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 

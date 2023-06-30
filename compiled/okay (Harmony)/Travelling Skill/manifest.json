@@ -1,7 +1,7 @@
 {
-    "Name": "StardewTravelSkill",
+    "Name": "Stardew Travel Skill",
     "Author": "Achtuur",
-    "Version": "1.1.0",
+    "Version": "1.1.7",
     "Description": "Adds a new travel skill that makes all the moving you do more rewarding.",
     "UniqueID": "Achtuur.StardewTravelSkill",
     "EntryDll": "StardewTravelSkill.dll",
@@ -9,11 +9,18 @@
     "dependencies": [
         {
             "UniqueID": "spacechase0.SpaceCore",
-            "MinimumVersion": "1.13.0"
+            "MinimumVersion": "1.13.0",
+            "isRequired": true
         },
         {
             "UniqueID": "Pathoschild.ContentPatcher",
             "MinimumVersion": "1.29.0",
+            "isRequired":  false
+        },
+        {
+            "UniqueID": "Achtuur.AchtuurCore",
+            "MinimumVersion": "1.1.0",
+            "isRequired": true
         }
     ],
     "UpdateKeys": ["Nexus:16820", "GitHub:Achtuur/StardewTravelSkill"]

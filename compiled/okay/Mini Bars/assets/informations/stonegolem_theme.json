@@ -1,0 +1,25 @@
+{
+  "monsterName": "Stone Golem",
+  "monsterType": "RockGolem",
+  "editableInGame": true,
+  "texture": null,
+  "barColor": {
+    "B": 121,
+    "G": 121,
+    "R": 121,
+    "A": 255
+  },
+  "borderColor": {
+    "B": 255,
+    "G": 255,
+    "R": 255,
+    "A": 255
+  },
+  "hpColor": {
+    "B": 0,
+    "G": 0,
+    "R": 0,
+    "A": 200
+  },
+  "heigth": 3
+}

@@ -18,18 +18,27 @@ using System.Collections.Generic;
 using System.Linq;
 using Object = StardewValley.Object;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace Fishnets
 {
     public class ModEntry : Mod
     {
-        public static int FishNetId { get; private set; } = -1;
+        public static int FishNetId { get; private set; } = -1; //931; - For TexturePatch
         public static string ModDataKey => $"{IHelper.ModRegistry.ModID}.FishNets";
+        internal static bool HasQualityBait => IHelper.ModRegistry.IsLoaded("MindMeltMax.QualityBait");
+        internal static bool HasAlternativeTextures => IHelper.ModRegistry.IsLoaded("PeacefulEnd.AlternativeTextures");
+        internal static bool HasJsonAssets => IHelper.ModRegistry.IsLoaded("spacechase0.JsonAssets");
+        internal static bool HasDynamicGameAssets => IHelper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets");
 
         internal static IModHelper IHelper;
         internal static IMonitor IMonitor;
         internal static ITranslationHelper i18n;
         internal static IApi IApi;
+        internal static IQualityBaitApi IQualityBaitApi;
+        internal static IAlternativeTexturesApi IAlternativeTexturesApi;
+        internal static IJsonAssetsApi IJsonAssetsApi;
+        internal static IDynamicGameAssetsApi IDynamicGameAssetsApi;
 
         private int lastObjectId;
         private Rectangle? fishNetTextureLocation;
@@ -40,17 +49,30 @@ namespace Fishnets
             IMonitor = Monitor;
             i18n = Helper.Translation;
 
-            Helper.Events.GameLoop.GameLaunched += (s, e) => Patcher.Patch(helper);
+            Helper.Events.GameLoop.GameLaunched += onGameLaunched;
             Helper.Events.Content.AssetRequested += onAssetRequested;
             Helper.Events.GameLoop.DayStarted += onDayStarted;
             Helper.Events.GameLoop.DayEnding += onDayEnding;
 
-            Game1.content.Load<Dictionary<int, string>>("Data\\ObjectInformation");
-            Game1.content.Load<Texture2D>("Maps\\springobjects");
-            Game1.content.Load<Dictionary<string, string>>("Data\\CraftingRecipes");
+            _ = Game1.content.Load<Dictionary<int, string>>("Data\\ObjectInformation");
+            _ = Game1.content.Load<Dictionary<string, string>>("Data\\CraftingRecipes");
+            _ = Game1.content.Load<Texture2D>("Maps\\springobjects");
         }
 
         public override object GetApi() => IApi ??= new Api();
+
+        private void onGameLaunched(object sender, GameLaunchedEventArgs e)
+        {
+            Patcher.Patch(Helper);
+            if (HasQualityBait)
+                IQualityBaitApi = Helper.ModRegistry.GetApi<IQualityBaitApi>("MindMeltMax.QualityBait");
+            if (HasAlternativeTextures)
+                IAlternativeTexturesApi = Helper.ModRegistry.GetApi<IAlternativeTexturesApi>("PeacefulEnd.AlternativeTextures");
+            if (HasJsonAssets)
+                IJsonAssetsApi = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
+            if (HasDynamicGameAssets)
+                IDynamicGameAssetsApi = Helper.ModRegistry.GetApi<IDynamicGameAssetsApi>("spacechase0.DynamicGameAssets");
+        }
 
         private void onDayEnding(object sender, DayEndingEventArgs e)
         {
@@ -105,15 +127,16 @@ namespace Fishnets
                     var fishNet = new FishNet(f.Tile);
                     fishNet.owner.Value = f.Owner;
                     if (f.Bait >= 0)
-                        fishNet.bait.Value = new Object(f.Bait, 1);
-                    if (f.ObjectId >= 0)
-                        fishNet.heldObject.Value = new Object(f.ObjectId, 1);
+                        fishNet.bait.Value = new Object(f.Bait, 1) { Quality = f.BaitQuality };
+                    fishNet.heldObject.Value = Statics.GetObjectFromSerializable(f);
                     if (!l.Objects.ContainsKey(f.Tile))
                         l.Objects.Add(f.Tile, fishNet);
 
                     //If fishnet failed to update previously, try again
                     fishNet.DayUpdate(l);
                 }
+
+                l.modData.Remove(ModDataKey);
             }
         }
 
@@ -123,13 +146,17 @@ namespace Fishnets
             {
                 e.Edit(asset =>
                 {
+                    Monitor.VerboseLog("Entered patch for Data/ObjectInformation");
                     var data = asset.AsDictionary<int, string>().Data;
-                    if (FishNetId == -1) 
-                    { 
+                    if (FishNetId == -1)
+                    {
                         lastObjectId = data.Keys.Last();
                         FishNetId = data.Keys.Last() + 1;
+                        Monitor.Log($"Loaded Fishing Nets with id : {FishNetId}");
                     }
+                    Monitor.VerboseLog($"FishNetId : {FishNetId}");
                     data[FishNetId] = $"Fish Net/50/-300/Crafting/{i18n.Get("Name")}/{i18n.Get("Description")}";
+                    Monitor.VerboseLog("Exiting patch for Data/ObjectInformation");
                 }, AssetEditPriority.Early);
             }
 
@@ -137,8 +164,23 @@ namespace Fishnets
             {
                 e.Edit(asset =>
                 {
-                    var data = asset.AsDictionary<string, string>().Data;
-                    data["Fish Net"] = $"335 3 771 30/Field/{FishNetId}/false/Fishing 6";
+                    try
+                    {
+                        if (FishNetId == -1)
+                        {
+                            Monitor.VerboseLog("Tried to apply texture to fishnet before it was added to object information, Exiting");
+                            return;
+                        }
+                        Monitor.VerboseLog("Entered patch for Data/CraftingRecipes");
+                        var data = asset.AsDictionary<string, string>().Data;
+                        data["Fish Net"] = $"335 3 771 30/Field/{FishNetId}/false/Fishing 6";
+                        Monitor.VerboseLog("Exiting patch for Data/CraftingRecipes");
+                    }
+                    catch (Exception ex)
+                    {
+                        Monitor.Log("Error thrown in early patch for Data/CraftingRecipes", LogLevel.Error);
+                        Monitor.Log($"{ex.GetType().Name} : {ex.Message} - {ex.StackTrace}");
+                    }
                 }, AssetEditPriority.Early);
             }
 
@@ -146,28 +188,81 @@ namespace Fishnets
             {
                 e.Edit(asset =>
                 {
-                    var img = asset.AsImage();
-                    var fishNetTexture = Helper.ModContent.Load<Texture2D>("assets/FishNet.png");
-                    int columnPosition = lastObjectId % 24;
-                    bool shouldExtend = columnPosition == 0;
-                    if (shouldExtend)
-                        img.ExtendImage(img.Data.Width, img.Data.Height + 16);
-                    fishNetTextureLocation ??= new(img.Data.Bounds.X + (16 * columnPosition) + 16, img.Data.Bounds.Y + img.Data.Height - 16, 16, 16);
-                    img.PatchImage(fishNetTexture, targetArea: fishNetTextureLocation);
+                    if (FishNetId <= -1)
+                    {
+                        Monitor.VerboseLog("Tried to apply texture to fishnet before it was added to object information, Exiting");
+                        return;
+                    }
+                    Monitor.VerboseLog("Entered early patch for Maps/springobjects");
+                    try
+                    {
+                        var img = asset.AsImage();
+                        var fishNetTexture = Helper.ModContent.Load<Texture2D>("assets/FishNet.png");
+                        int columnPosition = lastObjectId % 24;
+                        if (columnPosition == 0)
+                            img.ExtendImage(img.Data.Width, img.Data.Height + 16);
+                        fishNetTextureLocation ??= new(img.Data.Bounds.X + (16 * columnPosition) + 16, img.Data.Bounds.Y + img.Data.Height - 16, 16, 16);
+                        //fishNetTextureLocation ??= new(304, 608, 16, 16);
+                        Monitor.VerboseLog($"Texture Area : (X:{fishNetTextureLocation.Value.X}-Y:{fishNetTextureLocation.Value.Y}-Width:{fishNetTextureLocation.Value.Width}-Height:{fishNetTextureLocation.Value.Height})\nSource Area : (X:{img.Data.Bounds.X}-Y:{img.Data.Bounds.Y}-Width:{img.Data.Bounds.Width}-Height:{img.Data.Bounds.Height})");
+                        img.PatchImage(fishNetTexture, targetArea: fishNetTextureLocation.Value);
+                    }
+                    catch (Exception ex) 
+                    { 
+                        Monitor.Log("Error thrown in early patch for Maps/springobjects", LogLevel.Error); 
+                        Monitor.Log($"{ex.GetType().Name} : {ex.Message} - {ex.StackTrace}"); 
+                    }
+                    Monitor.VerboseLog("Exiting early patch for Maps/springobjects");
                 }, AssetEditPriority.Early);
 
                 e.Edit(asset =>
                 {
-                    var img = asset.AsImage();
-                    var fishNetTexture = Helper.ModContent.Load<Texture2D>("assets/FishNet.png");
-                    int columnPosition = lastObjectId % 24;
-                    bool shouldExtend = columnPosition == 0;
-                    if (shouldExtend)
-                        img.ExtendImage(img.Data.Width, img.Data.Height + 16);
-                    fishNetTextureLocation ??= new(img.Data.Bounds.X + (16 * columnPosition) + 16, img.Data.Bounds.Y + img.Data.Height - 16, 16, 16);
-                    img.PatchImage(fishNetTexture, targetArea: fishNetTextureLocation);
+                    if (FishNetId <= -1)
+                    {
+                        Monitor.VerboseLog("Tried to apply texture to fishnet before it was added to object information, Exiting");
+                        return;
+                    }
+                    Monitor.VerboseLog("Entered late patch for Maps/springobjects");
+                    try
+                    {
+                        var img = asset.AsImage();
+                        var fishNetTexture = Helper.ModContent.Load<Texture2D>("assets/FishNet.png");
+                        int columnPosition = lastObjectId % 24;
+                        if (columnPosition == 0)
+                            img.ExtendImage(img.Data.Width, img.Data.Height + 16);
+                        fishNetTextureLocation ??= new(img.Data.Bounds.X + (16 * columnPosition) + 16, img.Data.Bounds.Y + img.Data.Height - 16, 16, 16);
+                        //fishNetTextureLocation ??= new(304, 608, 16, 16);
+                        Monitor.VerboseLog($"Texture Area : (X:{fishNetTextureLocation.Value.X}-Y:{fishNetTextureLocation.Value.Y}-Width:{fishNetTextureLocation.Value.Width}-Height:{fishNetTextureLocation.Value.Height})\nSource Area : (X:{img.Data.Bounds.X}-Y:{img.Data.Bounds.Y}-Width:{img.Data.Bounds.Width}-Height:{img.Data.Bounds.Height})");
+                        img.PatchImage(fishNetTexture, targetArea: fishNetTextureLocation.Value);
+                    }
+                    catch (Exception ex)
+                    {
+                        Monitor.Log("Error thrown in late patch for Maps/springobjects", LogLevel.Error);
+                        Monitor.Log($"{ex.GetType().Name} : {ex.Message} - {ex.StackTrace}");
+                    }
+                    Monitor.VerboseLog("Exiting late patch for Maps/springobjects");
                 }, AssetEditPriority.Late);
             }
         }
+    }
+
+    public interface IQualityBaitApi
+    {
+        int GetQuality(int currentQuality, int baitQuality);
+    }
+
+    public interface IAlternativeTexturesApi
+    {
+        Texture2D GetTextureForObject(Object obj, out Rectangle sourceRect);
+    }
+
+    public interface IJsonAssetsApi
+    {
+        int GetObjectId(string name);
+    }
+
+    public interface IDynamicGameAssetsApi
+    {
+        string GetDGAItemId(object item);
+        object SpawnDGAItem(string fullId);
     }
 }

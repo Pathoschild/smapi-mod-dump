@@ -17,11 +17,18 @@ When releasing a format change, don't forget to update the smapi.io/json schema!
 
 
 -->
-## Upcoming release
-* Improved error when an `EditData` patch can't convert the data to the asset type.
-* Fixed setting map/tile properties to null no longer removing them.
+## 1.29.3
+Released 26 June 2023 for SMAPI 3.18.1 or later.
 
-## Upcoming release
+* Fixed error migrating some older content packs after 1.29.2.
+
+## 1.29.2
+Released 25 June 2023 for SMAPI 3.18.1 or later.
+
+* Using `TargetField` to add an entry to a null list or dictionary now auto-creates it.
+* Improved errors when an `EditData` patch can't convert the data to the asset type or a target field doesn't exist.
+* Embedded `.pdb` data into the DLL, which fixes error line numbers in Linux/macOS logs.
+* Fixed setting map/tile properties to null no longer removing them.
 * Fixed some migrations not applied to files loaded via `Action: Include`.
 
 ## 1.29.1

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
@@ -19,6 +20,7 @@ using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using StardewArchipelago.Extensions;
 using StardewModdingAPI;
 using StardewValley;
@@ -77,11 +79,13 @@ namespace StardewArchipelago.Archipelago
                 return;
             }
 
+#if RELEASE
             if (!SlotData.Mods.IsModStateCorrect(_modHelper, out errorMessage))
             {
                 DisconnectPermanently();
                 return;
             }
+#endif
         }
 
         private bool TryConnect(ArchipelagoConnectionInfo connectionInfo, out string errorMessage)
@@ -227,7 +231,20 @@ namespace StardewArchipelago.Archipelago
                     {
                         return;
                     }
+
                     var color = Color.Gold;
+                    Game1.chatBox?.addMessage(fullMessage, color);
+                    return;
+                }
+                case CommandResultLogMessage:
+                {
+                    var color = Color.Gray;
+                    Game1.chatBox?.addMessage(fullMessage, color);
+                    return;
+                }
+                case GoalLogMessage:
+                {
+                    var color = Color.Green;
                     Game1.chatBox?.addMessage(fullMessage, color);
                     return;
                 }
@@ -276,6 +293,11 @@ namespace StardewArchipelago.Archipelago
 
         public string GetPlayerAlias(string playerName)
         {
+            if (!MakeSureConnected())
+            {
+                return null;
+            }
+
             var player = _session.Players.AllPlayers.FirstOrDefault(x => x.Name == playerName);
             if (player == null)
             {
@@ -297,53 +319,53 @@ namespace StardewArchipelago.Archipelago
         }
 
         public const string STRING_DATA_STORAGE_DELIMITER = "|||";
-        public void AddToStringDataStorage(string key, string value)
+        public void AddToStringDataStorage(Scope scope, string key, string value)
         {
             if (!MakeSureConnected())
             {
                 return;
             }
 
-            var existingValue = ReadStringFromDataStorage(key);
+            var existingValue = ReadStringFromDataStorage(scope, key);
             if (string.IsNullOrWhiteSpace(existingValue))
             {
-                _session.DataStorage[Scope.Game, key] = value;
+                _session.DataStorage[scope, key] = value;
             }
             else
             {
-                _session.DataStorage[Scope.Game, key] = existingValue + STRING_DATA_STORAGE_DELIMITER + value;
+                _session.DataStorage[scope, key] = existingValue + STRING_DATA_STORAGE_DELIMITER + value;
             }
         }
 
-        public void SetStringDataStorage(string key, string value)
+        public void SetStringDataStorage(Scope scope, string key, string value)
         {
             if (!MakeSureConnected())
             {
                 return;
             }
 
-            _session.DataStorage[Scope.Game, key] = value;
+            _session.DataStorage[scope, key] = value;
         }
 
-        public bool StringExistsInDataStorage(string key)
+        public bool StringExistsInDataStorage(Scope scope, string key)
         {
             if (!MakeSureConnected())
             {
                 return false;
             }
 
-            var value = _session.DataStorage[Scope.Game, key];
+            var value = _session.DataStorage[scope, key];
             return !string.IsNullOrWhiteSpace(value.To<string>());
         }
 
-        public string ReadStringFromDataStorage(string key)
+        public string ReadStringFromDataStorage(Scope scope, string key)
         {
             if (!MakeSureConnected())
             {
                 return null;
             }
 
-            var value = _session.DataStorage[Scope.Game, key];
+            var value = _session.DataStorage[scope, key];
             var stringValue = value.To<string>();
             if (string.IsNullOrWhiteSpace(stringValue))
             {
@@ -353,14 +375,45 @@ namespace StardewArchipelago.Archipelago
             return stringValue;
         }
 
-        public void RemoveStringFromDataStorage(string key)
+        public void RemoveStringFromDataStorage(Scope scope, string key)
         {
             if (!MakeSureConnected())
             {
                 return;
             }
 
-            _session.DataStorage[Scope.Game, key] = "";
+            _session.DataStorage[scope, key] = "";
+        }
+
+        public void SetBigIntegerDataStorage(Scope scope, string key, BigInteger value)
+        {
+            if (!MakeSureConnected())
+            {
+                return;
+            }
+
+            var token = JToken.FromObject(value);
+            _session.DataStorage[scope, key] = token;
+        }
+
+        public BigInteger? ReadBigIntegerFromDataStorage(Scope scope, string key)
+        {
+            if (!MakeSureConnected())
+            {
+                return null;
+            }
+
+            var value = _session.DataStorage[scope, key];
+            try
+            {
+                var integerValue = value.To<BigInteger>();
+                return integerValue;
+            }
+            catch (Exception ex)
+            {
+                _console.Log($"Error Reading BigInteger from DataStorage key [{key}]. Value: {value}");
+                return null;
+            }
         }
 
         public Dictionary<string, long> GetAllCheckedLocations()

@@ -36,13 +36,15 @@ namespace StardewArchipelago.Locations.Patcher
     {
         private readonly ArchipelagoClient _archipelago;
         private readonly Harmony _harmony;
+        private readonly IModHelper _modHelper;
         private readonly GingerIslandPatcher _gingerIslandPatcher;
 
         public VanillaLocationPatcher(IMonitor monitor, IModHelper modHelper, Harmony harmony, ArchipelagoClient archipelago, LocationChecker locationChecker)
         {
             _archipelago = archipelago;
             _harmony = harmony;
-            _gingerIslandPatcher = new GingerIslandPatcher(monitor, modHelper, harmony, archipelago, locationChecker);
+            _modHelper = modHelper;
+            _gingerIslandPatcher = new GingerIslandPatcher(monitor, _modHelper, _harmony, _archipelago, locationChecker);
         }
 
         public void ReplaceAllLocationsRewardsWithChecks()
@@ -241,11 +243,7 @@ namespace StardewArchipelago.Locations.Patcher
                 prefix: new HarmonyMethod(typeof(QuestInjections), nameof(QuestInjections.MgThief_AfterSpeech_WinterMysteryFinished_Prefix))
             );
 
-            var desiredSkillsPageCtorParameters = new[] { typeof(int), typeof(int), typeof(int), typeof(int) };
-            _harmony.Patch(
-                original: AccessTools.Constructor(typeof(SkillsPage), desiredSkillsPageCtorParameters),
-                postfix: new HarmonyMethod(typeof(QuestInjections), nameof(QuestInjections.SkillsPageCtor_BearKnowledge_Postfix))
-            );
+            PatchSkillsPage();
 
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Object), "getPriceAfterMultipliers"),
@@ -255,6 +253,16 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Event), nameof(Event.command_awardFestivalPrize)),
                 prefix: new HarmonyMethod(typeof(QuestInjections), nameof(QuestInjections.Command_AwardFestivalPrize_QiMilk_Prefix))
+            );
+        }
+
+        private void PatchSkillsPage()
+        {
+            var desiredSkillsPageCtorParameters = new[] { typeof(int), typeof(int), typeof(int), typeof(int) };
+            _harmony.Patch(
+                original: AccessTools.Constructor(typeof(SkillsPage), desiredSkillsPageCtorParameters),
+                postfix: new HarmonyMethod(typeof(QuestInjections),
+                    nameof(QuestInjections.SkillsPageCtor_BearKnowledge_Postfix))
             );
         }
 
@@ -356,7 +364,12 @@ namespace StardewArchipelago.Locations.Patcher
                 prefix: new HarmonyMethod(typeof(IsolatedEventInjections), nameof(IsolatedEventInjections.CheckAction_BeachBridge_Prefix))
             );
             _harmony.Patch(
+                original: AccessTools.Method(typeof(Beach), nameof(Beach.fixBridge)),
+                prefix: new HarmonyMethod(typeof(IsolatedEventInjections), nameof(IsolatedEventInjections.FixBridge_DontFixDuringDraw_Prefix))
+            );
+            _harmony.Patch(
                 original: AccessTools.Method(typeof(Beach), nameof(Beach.draw)),
+                prefix: new HarmonyMethod(typeof(IsolatedEventInjections), nameof(IsolatedEventInjections.Draw_BeachBridgeQuestionMark_Prefix)),
                 postfix: new HarmonyMethod(typeof(IsolatedEventInjections), nameof(IsolatedEventInjections.Draw_BeachBridgeQuestionMark_Postfix))
             );
             _harmony.Patch(
@@ -367,6 +380,11 @@ namespace StardewArchipelago.Locations.Patcher
 
         private void PatchAdventurerGuildShop()
         {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(AdventureGuild), "resetLocalState"),
+                postfix: new HarmonyMethod(typeof(AdventurerGuildInjections), nameof(AdventurerGuildInjections.ResetLocalState_GuildMemberOnlyIfReceived_Postfix))
+            );
+
             _harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.answerDialogueAction)),
                 prefix: new HarmonyMethod(typeof(AdventurerGuildInjections), nameof(AdventurerGuildInjections.TelephoneAdventureGuild_AddReceivedWeapons_Prefix))
@@ -510,6 +528,11 @@ namespace StardewArchipelago.Locations.Patcher
                 original: AccessTools.Method(typeof(Farmer), nameof(Farmer.changeFriendship)),
                 prefix: new HarmonyMethod(typeof(FriendshipInjections), nameof(FriendshipInjections.ChangeFriendship_ArchipelagoPoints_Prefix))
             );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.resetFriendshipsForNewDay)),
+                prefix: new HarmonyMethod(typeof(FriendshipInjections), nameof(FriendshipInjections.ResetFriendshipsForNewDay_AutopetHumans_Prefix))
+            );
         }
 
         private void AddFestivalLocations()
@@ -534,14 +557,9 @@ namespace StardewArchipelago.Locations.Patcher
                 postfix: new HarmonyMethod(typeof(FlowerDanceInjections), nameof(FlowerDanceInjections.SetUpFestivalMainEvent_FlowerDance_Postfix))
             );
 
-            var shopMenuParameterTypes = new[]
-            {
-                typeof(Dictionary<ISalable, int[]>), typeof(int), typeof(string),
-                typeof(Func<ISalable, Farmer, int, bool>), typeof(Func<ISalable, bool>), typeof(string)
-            };
             _harmony.Patch(
-                original: AccessTools.Constructor(typeof(ShopMenu), shopMenuParameterTypes),
-                prefix: new HarmonyMethod(typeof(FlowerDanceInjections), nameof(FlowerDanceInjections.ShopMenu_HandleRarecrow5_Prefix))
+                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.update)),
+                postfix: new HarmonyMethod(typeof(FlowerDanceInjections), nameof(FlowerDanceInjections.Update_HandleRarecrow5FirstTimeOnly_Postfix))
             );
 
             _harmony.Patch(
@@ -565,8 +583,8 @@ namespace StardewArchipelago.Locations.Patcher
             );
 
             _harmony.Patch(
-                original: AccessTools.Constructor(typeof(ShopMenu), shopMenuParameterTypes),
-                prefix: new HarmonyMethod(typeof(FairInjections), nameof(FairInjections.ShopMenu_HandleFairItems_Prefix))
+                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.update)),
+                postfix: new HarmonyMethod(typeof(FairInjections), nameof(FairInjections.Update_HandleFairItemsFirstTimeOnly_Postfix))
             );
 
             _harmony.Patch(
@@ -575,8 +593,9 @@ namespace StardewArchipelago.Locations.Patcher
             );
 
             _harmony.Patch(
-                original: AccessTools.Constructor(typeof(ShopMenu), shopMenuParameterTypes),
-                prefix: new HarmonyMethod(typeof(SpiritEveInjections), nameof(SpiritEveInjections.ShopMenu_HandleRarecrow2_Prefix))
+                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.update)),
+                postfix: new HarmonyMethod(typeof(SpiritEveInjections),
+                    nameof(SpiritEveInjections.Update_HandleRarecrow2FirstTimeOnly_Postfix))
             );
 
             _harmony.Patch(
@@ -585,8 +604,9 @@ namespace StardewArchipelago.Locations.Patcher
             );
 
             _harmony.Patch(
-                original: AccessTools.Constructor(typeof(ShopMenu), shopMenuParameterTypes),
-                prefix: new HarmonyMethod(typeof(IceFestivalInjections), nameof(IceFestivalInjections.ShopMenu_HandleRarecrow4_Prefix))
+                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.update)),
+                postfix: new HarmonyMethod(typeof(IceFestivalInjections),
+                    nameof(IceFestivalInjections.Update_HandleRarecrow4FirstTimeOnly_Postfix))
             );
 
             _harmony.Patch(
@@ -597,6 +617,11 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.Method(typeof(BeachNightMarket), nameof(BeachNightMarket.answerDialogueAction)),
                 prefix: new HarmonyMethod(typeof(BeachNightMarketInjections), nameof(BeachNightMarketInjections.AnswerDialogueAction_LupiniPainting_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Dialogue), nameof(Dialogue.chooseResponse)),
+                prefix: new HarmonyMethod(typeof(WinterStarInjections), nameof(WinterStarInjections.ChooseResponse_LegendOfTheWinterStar_Postfix))
             );
 
             _harmony.Patch(

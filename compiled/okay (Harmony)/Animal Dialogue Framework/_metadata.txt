@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/16881
+IDs: aedenthorn.AnimalDialogueFramework
+update keys: Nexus:16881, GitHub:aedenthorn/StardewValleyMods

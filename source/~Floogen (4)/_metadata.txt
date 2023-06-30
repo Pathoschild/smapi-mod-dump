@@ -7,9 +7,9 @@ mods:
    Fishing Trawler - New Horizons
 
 latest commit:
-   commit 04cd0d1d61bf3f46cee2729910d2461df77e10f1
+   commit 5e6b8330b12da6f92fab6e0767be9be27573c4f7
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Sun Mar 26 16:10:54 2023 -0500
+   Date:   Thu Jun 1 07:44:22 2023 -0500
    
-       v1.1.2 released
+       v1.2.2 released
    

@@ -110,6 +110,8 @@ namespace AutoShaker
 								continue;
 							case Bush bushFeature when !bushFeature.inBloom(Game1.currentSeason, Game1.dayOfMonth):
 								continue;
+							case Bush bushFeature when _shakenBushes.Contains(bushFeature):
+								continue;
 							case Bush bushFeature:
 								bushFeature.performUseAction(featureTileLocation, Game1.player.currentLocation);
 								_shakenBushes.Add(bushFeature);

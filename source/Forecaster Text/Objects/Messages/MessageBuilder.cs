@@ -38,6 +38,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using ForecasterText.Objects.Addons;
 using ForecasterText.Objects.Enums;
 using StardewModdingAPI;
 using StardewValley;
@@ -86,44 +87,7 @@ namespace ForecasterText.Objects.Messages {
             NPC npc => this.AddNpcEmoji(key, npc.getName()),
             _ => this
         };
-        public MessageBuilder AddNpcEmoji(string key, string name) => this.AddEmoji(key, name.ToLower(CultureInfo.InvariantCulture) switch {
-            "abigail" => 154u,
-            "penny" => 155u,
-            "maru" => 156u,
-            "leah" => 157u,
-            "haley" => 158u,
-            "emily" => 159u,
-            "alex" => 160u,
-            "shane" => 161u,
-            "sebastian" => 162u,
-            "sam" => 163u,
-            "harvey" => 164u,
-            "elliot" => 165u,
-            "sandy" => 166u,
-            "evelyn" => 167u,
-            "marnie" => 168u,
-            "caroline" => 169u,
-            "robin" => 170u,
-            "pierre" => 171u,
-            "pam" => 172u,
-            "jodi" => 173u,
-            "lewis" => 174u,
-            "linus" => 175u,
-            "marlon" => 176u,
-            "willy" => 177u,
-            "wizard" => 178u,
-            "morris" => 179u,
-            "jas" => 180u,
-            "vincent" => 181u,
-            "krobus" => 182u,
-            "dwarf" => 183u,
-            "gus" => 184u,
-            "gunther" => 185u,
-            "george" => 186u,
-            "demetrius" => 187u,
-            "clint" => 188u,
-            _ => null
-        });
+        public MessageBuilder AddNpcEmoji(string key, string name) => this.AddEmoji(key, CharacterEmoji.GetEmoji(name));
         
         private MessageBuilder Add(string key, object value) {
             if (!this.Values.TryGetValue(key, out IList<object> list)) {

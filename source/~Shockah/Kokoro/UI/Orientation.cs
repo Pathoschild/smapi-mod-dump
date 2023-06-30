@@ -8,11 +8,10 @@
 **
 *************************************************/
 
-namespace Shockah.Kokoro.UI
+namespace Shockah.Kokoro.UI;
+
+public enum Orientation
 {
-	public enum Orientation
-	{
-		Horizontal,
-		Vertical
-	}
+	Horizontal,
+	Vertical
 }

@@ -6,9 +6,9 @@ mods:
    Casual Life
 
 latest commit:
-   commit 85c024f2863f987c0b3a9a3d69a50860437b92ec
-   Author: David Rath <adverserath@gmail.com>
-   Date:   Mon May 16 16:18:28 2022 +0100
+   commit ba9d71442b89e56015ef0db77b09d1ca456cc8a4
+   Author: adverserath <adverserath@gmail.com>
+   Date:   Tue Jun 13 16:50:43 2023 +0100
    
-       Update manifest
+       Remove debug log
    

@@ -29,9 +29,11 @@ namespace Fishnets
     {
         private float yBob;
         [XmlElement("directionOffset")]
-        public readonly NetVector2 directionOffset = new NetVector2();
+        public readonly NetVector2 directionOffset = new();
         [XmlElement("bait")]
-        public readonly NetRef<Object> bait = new NetRef<Object>();
+        public readonly NetRef<Object> bait = new();
+
+        private readonly int[] Qualities = new[] { lowQuality, medQuality, highQuality, bestQuality };
 
         public class FishNetSerializable
         {
@@ -39,9 +41,19 @@ namespace Fishnets
 
             public int Bait { get; set; } = -1;
 
+            public int BaitQuality { get; set; } = 0;
+
+            public string ObjectName { get; set; } = "";
+
             public int ObjectId { get; set; } = -1;
 
             public int ObjectStack { get; set; } = -1;
+
+            public int ObjectQuality { get; set; } = 0;
+
+            public bool IsJAObject { get; set; } = false;
+
+            public bool IsDGAObject { get; set; } = false;
 
             public Vector2 Tile { get; set; }
 
@@ -51,11 +63,24 @@ namespace Fishnets
             {
                 Owner = f.owner.Value;
                 if (f.bait.Value is not null)
+                {
                     Bait = f.bait.Value.ParentSheetIndex;
+                    BaitQuality = f.bait.Value.Quality;
+                }
                 if (f.heldObject.Value is not null)
                 {
+                    ObjectName = f.heldObject.Value.Name;
                     ObjectId = f.heldObject.Value.ParentSheetIndex;
                     ObjectStack = f.heldObject.Value.Stack;
+                    ObjectQuality = f.heldObject.Value.Quality;
+                    //Don't know if this works, hope so ¯\_(ツ)_/¯
+                    if (ModEntry.HasJsonAssets)
+                        IsJAObject = ModEntry.IJsonAssetsApi.GetObjectId(ObjectName) != -1;
+                    if (ModEntry.HasDynamicGameAssets)
+                        IsDGAObject = ModEntry.IDynamicGameAssetsApi.GetDGAItemId(f.heldObject.Value) is not null;
+
+                    if (IsDGAObject)
+                        ObjectName = ModEntry.IDynamicGameAssetsApi.GetDGAItemId(f.heldObject.Value);
                 }
                 Tile = f.TileLocation;
             }
@@ -88,7 +113,7 @@ namespace Fishnets
 
         public List<Vector2> getOverlayTiles(GameLocation location)
         {
-            List<Vector2> tiles = new List<Vector2>();
+            List<Vector2> tiles = new();
             if ((double)directionOffset.Y < 0.0)
                 addOverlayTilesIfNecessary(location, (int)TileLocation.X, (int)TileLocation.Y, tiles);
             addOverlayTilesIfNecessary(location, (int)TileLocation.X, (int)TileLocation.Y + 1, tiles);
@@ -144,7 +169,7 @@ namespace Fishnets
 
         public static bool IsValidPlacementLocation(GameLocation location, int x, int y)
         {
-            Vector2 tile = new Vector2(x, y);
+            Vector2 tile = new(x, y);
             bool flag = location.doesTileHaveProperty(x + 1, y, "Water", "Back") != null && location.doesTileHaveProperty(x - 1, y, "Water", "Back") != null || location.doesTileHaveProperty(x, y + 1, "Water", "Back") != null && location.doesTileHaveProperty(x, y - 1, "Water", "Back") != null;
             return !location.Objects.ContainsKey(tile) && !location.Objects.ContainsKey(new Vector2(tile.X + .5f, tile.Y + .5f)) && flag && (location.doesTileHaveProperty(x, y, "Water", "Back") != null && location.doesTileHaveProperty(x, y, "Passable", "Buildings") == null);
         }
@@ -153,7 +178,7 @@ namespace Fishnets
 
         public override Item getOne()
         {
-            Object o = new Object(ParentSheetIndex, 1);
+            Object o = new(ParentSheetIndex, 1);
             o._GetOneFrom(this);
             return o;
         }
@@ -262,9 +287,9 @@ namespace Fishnets
             if ((bait.Value == null && !flag1) || heldObject.Value != null)
                 return;
             readyForHarvest.Value = true;
-            Random r = new Random((int)Game1.stats.DaysPlayed + (int)(Game1.uniqueIDForThisGame / 2 + TileLocation.X * 1000 + TileLocation.Y));
+            Random r = new ((int)Game1.stats.DaysPlayed + (int)(Game1.uniqueIDForThisGame / 2 + TileLocation.X * 1000 + TileLocation.Y));
             Dictionary<int, string> fishData = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
-            List<int> nums = new List<int>();
+            List<int> nums = new();
             double chance = flag2 ? 0.0 : 0.2;
             if (!flag2)
                 chance += location.getExtraTrashChanceForCrabPot((int)TileLocation.X, (int)TileLocation.Y);
@@ -279,7 +304,9 @@ namespace Fishnets
                     {
                         if (r.NextDouble() <= .15)
                         {
-                            heldObject.Value = Statics.GetRandomFishForLocation(bait.Value?.ParentSheetIndex ?? -1, Game1.player, location.Name);
+                            heldObject.Value = Statics.GetRandomFishForLocation(bait.Value?.ParentSheetIndex ?? -1, Game1.player, location.Name); 
+                            if (ModEntry.HasQualityBait)
+                                heldObject.Value.Quality = ModEntry.IQualityBaitApi.GetQuality(heldObject.Value.Quality, bait.Value?.Quality ?? (flag1 ? Qualities[Game1.random.Next(4)] : lowQuality));
                             break;
                         }
                     }
@@ -288,7 +315,11 @@ namespace Fishnets
             if (heldObject.Value != null)
                 return;
             if (flag2 && nums.Count > 0)
+            {
                 heldObject.Value = new Object(nums[r.Next(nums.Count)], bait.Value?.ParentSheetIndex == 774 && r.NextDouble() <= .15 ? 2 : 1);
+                if (ModEntry.HasQualityBait)
+                    heldObject.Value.Quality = ModEntry.IQualityBaitApi.GetQuality(heldObject.Value.Quality, bait.Value?.Quality ?? (flag1 ? Qualities[Game1.random.Next(4)] : lowQuality));
+            }
             else
                 heldObject.Value = new Object(r.Next(168, 173), 1);
         }
@@ -296,11 +327,41 @@ namespace Fishnets
         public override void draw(SpriteBatch spriteBatch, int x, int y, float alpha = 1)
         {
             yBob = (float)Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 500.0f + (x * 64f)) * 8.0f + 8.0f;
-            spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64f, y * 64f + yBob)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, ModEntry.FishNetId, 16, 16), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((y * 64f) + directionOffset.Y + (x % 4)) / 10000.0f);
+            if (ModEntry.HasAlternativeTextures)
+            {
+                Rectangle sourceRect = Rectangle.Empty;
+                Texture2D? texture = ModEntry.IAlternativeTexturesApi?.GetTextureForObject(this, out sourceRect);
+                if (texture is not null && sourceRect != Rectangle.Empty)
+                    spriteBatch.Draw(texture, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64f, y * 64f + yBob)), sourceRect, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((y * 64f) + directionOffset.Y + (x % 4)) / 10000.0f);
+                else
+                    drawDefault(spriteBatch, x, y, alpha);
+            }
+            else
+                drawDefault(spriteBatch, x, y, alpha);
             if (!readyForHarvest.Value || heldObject.Value is null) return;
             float num = 4.0f * (float)Math.Round(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 250.0), 2);
             spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, directionOffset.Value + new Vector2(x * 64f - 8, y * 64f - 112 + num)), new Rectangle(141, 465, 20, 24), Color.White * .75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, (float)((y + 1) * 64f / 10000.0f + 9.99999997475243E-07 + TileLocation.X / 10000.0f));
             spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, directionOffset.Value + new Vector2(x * 64f + 32, y * 64f - 72 + num)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, heldObject.Value.ParentSheetIndex, 16, 16), Color.White * .75f, 0.0f, new Vector2(8f, 8f), 4f, SpriteEffects.None, (float)((y + 1) * 64f / 10000.0f + 9.99999974737875E-06 + TileLocation.X / 10000.0f));
+            if (heldObject.Value.Stack > 1)
+                NumberSprite.draw(heldObject.Value.Stack, spriteBatch, Game1.GlobalToLocal(Game1.viewport, directionOffset.Value + new Vector2(x * 64f + 32 + 20, y * 64f - 72 + num + 20)), Color.White, .5f, (float)((y + 1) * 64f / 10000.0f + 9.99999974737875E-06 + TileLocation.X / 10000.0f) + 0.001f, 1f, 0);
+            if (heldObject.Value.Quality > 0) 
+            {
+                float num2 = quality < 4 ? 0.0f : (float)((Math.Cos(Game1.currentGameTime.TotalGameTime.Milliseconds * Math.PI / 512.0) + 1.0) * 0.0500000007450581);
+                spriteBatch.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, directionOffset.Value + new Vector2(x * 64f + 32 - 20, y * 64f - 72 + num + 20)), GetSourceRectForQuality(heldObject.Value.Quality), Color.White, 0.0f, new(4f), (float)(2.0 * 1.0 * (1.0 + num2)), SpriteEffects.None, (float)((y + 1) * 64f / 10000.0f + 9.99999974737875E-06 + TileLocation.X / 10000.0f) + 0.001f);
+            }
+        }
+
+        private void drawDefault(SpriteBatch spriteBatch, int x, int y, float alpha = 1) => spriteBatch.Draw(Game1.objectSpriteSheet, Game1.GlobalToLocal(Game1.viewport, directionOffset + new Vector2(x * 64f, y * 64f + yBob)), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, ModEntry.FishNetId, 16, 16), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, ((y * 64f) + directionOffset.Y + (x % 4)) / 10000.0f);
+
+        private Rectangle GetSourceRectForQuality(int quality)
+        {
+            return quality switch
+            {
+                medQuality => new(338, 400, 8, 8),
+                highQuality => new(346, 400, 8, 8),
+                bestQuality => new(346, 392, 8, 8),
+                _ => new(338, 392, 8, 8)
+            };
         }
     }
 }

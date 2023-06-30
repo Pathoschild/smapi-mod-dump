@@ -10,31 +10,30 @@
 
 using StardewModdingAPI;
 
-namespace Shockah.Kokoro.SMAPI
+namespace Shockah.Kokoro.SMAPI;
+
+public interface ITranslationSet<Key>
 {
-	public interface ITranslationSet<Key>
+	bool ContainsKey(Key key);
+	string Get(Key key);
+	string Get(Key key, object? tokens);
+}
+
+public sealed class SMAPITranslationSetWrapper : ITranslationSet<string>
+{
+	private ITranslationHelper Helper { get; set; }
+
+	public SMAPITranslationSetWrapper(ITranslationHelper helper)
 	{
-		bool ContainsKey(Key key);
-		string Get(Key key);
-		string Get(Key key, object? tokens);
+		this.Helper = helper;
 	}
 
-	public sealed class SMAPITranslationSetWrapper : ITranslationSet<string>
-	{
-		private ITranslationHelper Helper { get; set; }
+	public bool ContainsKey(string key)
+		=> Helper.Get(key).HasValue();
 
-		public SMAPITranslationSetWrapper(ITranslationHelper helper)
-		{
-			this.Helper = helper;
-		}
+	public string Get(string key)
+		=> Helper.Get(key);
 
-		public bool ContainsKey(string key)
-			=> Helper.Get(key).HasValue();
-
-		public string Get(string key)
-			=> Helper.Get(key);
-
-		public string Get(string key, object? tokens)
-			=> Helper.Get(key, tokens);
-	}
+	public string Get(string key, object? tokens)
+		=> Helper.Get(key, tokens);
 }

@@ -1,7 +1,7 @@
 {
   "Name": "Farmhouse Fixes",
   "Author": "CyanFire",
-  "Version": "1.2.0",
+  "Version": "1.5.0",
   "Description": "Various fixes/QOL improvements for farmhouse/cabins",
   "UniqueID": "CF.FarmhouseFixes",
   "EntryDll": "FarmhouseFixes.dll",

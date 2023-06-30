@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Version>1.1.2</Version>
+		<Version>1.2.2</Version>
 		<TargetFramework>net5.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<EnableHarmony>true</EnableHarmony>
@@ -54,6 +54,21 @@
 		<None Update="manifest.json">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="[CP] FishingTrawler\assets\Murphy.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="[CP] FishingTrawler\assets\SurfaceTiles.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="[CP] FishingTrawler\assets\TrawlerCabin.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="[CP] FishingTrawler\assets\TrawlerHull.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
+		<None Update="[CP] FishingTrawler\assets\TrawlerTiles.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -68,6 +83,7 @@
 		<None Remove="Framework\Assets\Objects\LostFishingCharm.png" />
 		<None Remove="Framework\Assets\Objects\TrawlerOld.png" />
 		<None Remove="Framework\Assets\Objects\Trident.png" />
+		<None Remove="[CP] FishingTrawler\assets\Trident.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -96,6 +112,9 @@
 		</Content>
 		<Content Include="Framework\Assets\Objects\Trident.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="[CP] FishingTrawler\assets\Trident.png">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
 

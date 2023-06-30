@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Items.Mail;
@@ -23,6 +24,14 @@ namespace StardewArchipelago.Stardew
         public string Rotations { get; }
         public string PlacementRestriction { get; }
 
+        public bool IsBed => Type.Equals("bed", StringComparison.OrdinalIgnoreCase) ||
+                             Type.Equals("double bed", StringComparison.OrdinalIgnoreCase);
+
+        public bool IsFishTank => Type.Equals("fishtank", StringComparison.OrdinalIgnoreCase);
+
+        public bool IsTV => Type.Contains("TV", StringComparison.OrdinalIgnoreCase) ||
+                             Name.Contains("TV", StringComparison.OrdinalIgnoreCase);
+
         public StardewFurniture(int id, string name, string type, string tilesheetSize, string boundingBoxSize, string rotations, string price, string displayName, string placementRestriction): base(id, name, 0, displayName, "")
         {
             Type = type;
@@ -34,6 +43,21 @@ namespace StardewArchipelago.Stardew
 
         public override Item PrepareForGivingToFarmer(int amount = 1)
         {
+            if (IsBed)
+            {
+                return new StardewValley.Objects.BedFurniture(Id, Vector2.Zero);
+            }
+
+            if (IsFishTank)
+            {
+                return new StardewValley.Objects.FishTankFurniture(Id, Vector2.Zero);
+            }
+
+            if (IsTV)
+            {
+                return new StardewValley.Objects.TV(Id, Vector2.Zero);
+            }
+
             return new StardewValley.Objects.Furniture(Id, Vector2.Zero);
         }
 
@@ -45,6 +69,21 @@ namespace StardewArchipelago.Stardew
 
         public override LetterAttachment GetAsLetter(ReceivedItem receivedItem, int amount = 1)
         {
+            if (IsBed)
+            {
+                return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveBed, Id.ToString());
+            }
+
+            if (IsFishTank)
+            {
+                return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveFishTank, Id.ToString());
+            }
+
+            if (IsTV)
+            {
+                return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveTV, Id.ToString());
+            }
+            
             return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveFurniture, Id.ToString());
         }
     }

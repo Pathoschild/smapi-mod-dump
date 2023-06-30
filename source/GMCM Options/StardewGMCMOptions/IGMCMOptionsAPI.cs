@@ -271,6 +271,32 @@ namespace GMCMOptions {
             Center = 0,
             Right = 1
         }
+
+        /// <summary>
+        ///   Add a dynamic paragraph.  A dynamic paragraph reflects changes in the text returned by
+        ///   <paramref name="text"/> even while the GMCM window is open.  It also supports styled text.
+        ///   <para>
+        ///     Styled text supports simple HTML-like markup for specifying text formatting.  The text must
+        ///     be valid XML fragment(s).  (I.e., if the text were enclosed in an XML tag, the result must be
+        ///     a valid XML document.)  See https://github.com/jltaylor-us/StardewGMCMOptions/blob/default/README.md#dynamic-paragraph
+        ///     for details about the tags supported.
+        ///   </para>
+        /// </summary>
+        /// <param name="mod">The mod's manifest.</param>
+        /// <param name="logName">
+        ///   A name to identify <em>this</em> dynamic paragraph in the SMAPI log, should there be any errors in
+        ///   the text returned by <paramref name="text"/>.  This string may appear in the log, but will not appear
+        ///   in-game.
+        /// </param>
+        /// <param name="text">The paragraph text.</param>
+        /// <param name="isStyledText">
+        ///   If <c>true</c>, then the text returned by <paramref name="text"/> will be treated as styled text.
+        /// </param>
+        void AddDynamicParagraph(IManifest mod,
+                                 string logName,
+                                 Func<string> text,
+                                 bool isStyledText);
+
     }
 
 }

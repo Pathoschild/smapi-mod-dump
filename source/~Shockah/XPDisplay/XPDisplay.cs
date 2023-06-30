@@ -67,8 +67,10 @@ namespace Shockah.XPDisplay
 			o => o is Sword or Slingshot || (o is MeleeWeapon && !o.Name.Contains("Scythe")) ? (Farmer.combatSkill, null) : null,
 		};
 
-		private readonly PerScreen<ISkill?> ToolbarCurrentSkill = new(() => null);
-		private readonly PerScreen<float> ToolbarActiveDuration = new(() => 0f);
+		private readonly PerScreen<ISkill?> ToolbarCurrentPermanentSkill = new(() => null);
+		private readonly PerScreen<bool> ToolbarCurrentPermanentSkillActive = new(() => false);
+		private readonly PerScreen<ISkill?> ToolbarCurrentTemporarySkill = new(() => null);
+		private readonly PerScreen<float> ToolbarCurrentTemporarySkillDuration = new(() => 0f);
 		private readonly PerScreen<float> ToolbarAlpha = new(() => 0f);
 		private readonly PerScreen<Item?> LastCurrentItem = new(() => null);
 		private readonly PerScreen<string?> ToolbarTooltip = new(() => null);
@@ -84,7 +86,20 @@ namespace Shockah.XPDisplay
 
 		public override void MigrateConfig(ISemanticVersion? configVersion, ISemanticVersion modVersion)
 		{
-			// do nothing, for now
+			if (configVersion is null && Config.ExtensionData.TryGetValue("SkillsToExcludeFromToolbarOnXPGain", out var skillsToExcludeFromToolbarOnXPGainToken))
+			{
+				// the previous configs weren't versioned
+
+				Config.ExtensionData.Remove("SkillsToExcludeFromToolbarOnXPGain");
+				var skillsToExcludeFromToolbarOnXPGain = skillsToExcludeFromToolbarOnXPGainToken.ToObject<HashSet<string>>();
+				if (skillsToExcludeFromToolbarOnXPGain is null)
+				{
+					Monitor.Log("There was an issue migrating the `SkillsToExcludeFromToolbarOnXPGain` config value.", LogLevel.Error);
+					return;
+				}
+
+				Config.ToolbarSkillBar.SkillsToExcludeOnXPGain = skillsToExcludeFromToolbarOnXPGain;
+			}
 		}
 
 		private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
@@ -133,80 +148,77 @@ namespace Shockah.XPDisplay
 
 			foreach (var (skill, lastKnown) in SkillsToRecheck.Value)
 			{
+				int baseLevel = skill.GetBaseLevel(Game1.player);
+				if (baseLevel > lastKnown.Level && !string.IsNullOrEmpty(Instance.Config.LevelUpSoundName))
+					Game1.playSound(Instance.Config.LevelUpSoundName);
+
+				if (!Config.ToolbarSkillBar.IsEnabled)
+					continue;
+				if (Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel && baseLevel >= skill.MaxLevel)
+					continue;
+
 				float xpChangedDuration = Instance.Config.ToolbarSkillBar.XPChangedDurationInSeconds;
 				if (lastKnown.XP == skill.GetXP(Game1.player))
 					xpChangedDuration = 0f;
-				else if (Config.SkillsToExcludeFromToolbarOnXPGain.Contains(skill.UniqueID))
+				else if (Config.ToolbarSkillBar.SkillsToExcludeOnXPGain.Contains(skill.UniqueID))
 					xpChangedDuration = 0f;
 
 				float levelChangedDuration = Instance.Config.ToolbarSkillBar.LevelChangedDurationInSeconds;
-				if (lastKnown.Level >= skill.GetBaseLevel(Game1.player))
+				if (lastKnown.Level >= baseLevel)
 					levelChangedDuration = 0f;
-				else if (!string.IsNullOrEmpty(Instance.Config.LevelUpSoundName))
-					Game1.playSound(Instance.Config.LevelUpSoundName);
-
-				if (!Instance.Config.ToolbarSkillBar.IsEnabled)
-					continue;
+				else if (Config.ToolbarSkillBar.SkillsToExcludeOnLevelUp.Contains(skill.UniqueID))
+					levelChangedDuration = 0f;
 
 				var maxDuration = Math.Max(xpChangedDuration, levelChangedDuration);
 				if (maxDuration > 0f)
 				{
-					Instance.ToolbarCurrentSkill.Value = skill;
-					Instance.ToolbarActiveDuration.Value = maxDuration;
+					Instance.ToolbarCurrentTemporarySkill.Value = skill;
+					Instance.ToolbarCurrentTemporarySkillDuration.Value = maxDuration;
 				}
 			}
 			SkillsToRecheck.Value.Clear();
 
-			if (Config.ToolbarSkillBar.IsEnabled)
+			if (!Config.ToolbarSkillBar.IsEnabled)
+				return;
+
+			if (Config.ToolbarSkillBar.AlwaysShowCurrentTool)
 			{
-				if (ToolbarActiveDuration.Value > 0f)
-				{
-					bool shouldCountDown = !Config.ToolbarSkillBar.AlwaysShowCurrentTool;
-					if (!shouldCountDown)
-					{
-						var skill = GetSkillForItem(Game1.player.CurrentItem);
-						if (skill != ToolbarCurrentSkill.Value)
-							shouldCountDown = true;
-					}
-
-					if (shouldCountDown)
-						ToolbarActiveDuration.Value = Math.Max(ToolbarActiveDuration.Value - 1f / FPS, 0f);
-					if (ToolbarActiveDuration.Value <= 0f && Config.ToolbarSkillBar.AlwaysShowCurrentTool)
-					{
-						var skill = GetSkillForItem(Game1.player.CurrentItem);
-						if (skill is not null)
-						{
-							ToolbarCurrentSkill.Value = skill;
-							ToolbarActiveDuration.Value = 0.1f;
-						}
-					}
-				}
-
-				var targetAlpha = ToolbarActiveDuration.Value > 0f ? 1f : 0f;
-				ToolbarAlpha.Value += (targetAlpha - ToolbarAlpha.Value) * 0.15f;
-				if (ToolbarAlpha.Value <= 0.01f)
-					ToolbarAlpha.Value = 0f;
-				else if (ToolbarAlpha.Value >= 0.99f)
-					ToolbarAlpha.Value = 1f;
+				var skill = GetSkillForItem(Game1.player.CurrentItem);
+				if (skill is not null && skill.GetBaseLevel(Game1.player) >= skill.MaxLevel && Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel)
+					skill = null;
+				if (skill is not null)
+					Instance.ToolbarCurrentPermanentSkill.Value = skill;
+				Instance.ToolbarCurrentPermanentSkillActive.Value = skill is not null;
 			}
+			else
+			{
+				Instance.ToolbarCurrentPermanentSkillActive.Value = false;
+			}
+
+			var targetAlpha = ToolbarCurrentTemporarySkillDuration.Value > 0f || (ToolbarCurrentPermanentSkill.Value is not null && ToolbarCurrentPermanentSkillActive.Value) ? 1f : 0f;
+			ToolbarAlpha.Value += (targetAlpha - ToolbarAlpha.Value) * 0.15f;
+			if (ToolbarAlpha.Value <= 0.01f)
+				ToolbarAlpha.Value = 0f;
+			else if (ToolbarAlpha.Value >= 0.99f)
+				ToolbarAlpha.Value = 1f;
 
 			if (!ReferenceEquals(Game1.player.CurrentItem, LastCurrentItem.Value))
 			{
-				if (Config.ToolbarSkillBar.IsEnabled && (Config.ToolbarSkillBar.AlwaysShowCurrentTool || Config.ToolbarSkillBar.ToolSwitchDurationInSeconds > 0f))
+				if (!Config.ToolbarSkillBar.AlwaysShowCurrentTool && Config.ToolbarSkillBar.ToolSwitchDurationInSeconds > 0f)
 				{
 					var skill = GetSkillForItem(Game1.player.CurrentItem);
-					if (skill is not null)
+					if (skill is not null && (!Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel || skill.GetBaseLevel(Game1.player) < skill.MaxLevel) && !Config.ToolbarSkillBar.SkillsToExcludeOnToolSwitch.Contains(skill.UniqueID))
 					{
-						ToolbarCurrentSkill.Value = skill;
-						ToolbarActiveDuration.Value = Config.ToolbarSkillBar.AlwaysShowCurrentTool ? 0.1f : Config.ToolbarSkillBar.ToolSwitchDurationInSeconds;
-					}
-					else
-					{
-						ToolbarActiveDuration.Value = 0f;
+						Instance.ToolbarCurrentTemporarySkill.Value = skill;
+						Instance.ToolbarCurrentTemporarySkillDuration.Value = Config.ToolbarSkillBar.ToolSwitchDurationInSeconds;
 					}
 				}
 				LastCurrentItem.Value = Game1.player.CurrentItem;
 			}
+
+			ToolbarCurrentTemporarySkillDuration.Value = Math.Max(ToolbarCurrentTemporarySkillDuration.Value - 1f / FPS, 0f);
+			if (ToolbarCurrentTemporarySkillDuration.Value <= 0f)
+				ToolbarCurrentTemporarySkill.Value = null;
 		}
 
 		private void OnRenderingHud(object? sender, RenderingHudEventArgs e)
@@ -216,10 +228,10 @@ namespace Shockah.XPDisplay
 				return;
 			if (ToolbarAlpha.Value <= 0f)
 				return;
-			if (Game1.activeClickableMenu is not null)
+			if (!Context.IsPlayerFree)
 				return;
 
-			var skill = ToolbarCurrentSkill.Value;
+			var skill = ToolbarCurrentTemporarySkill.Value ?? ToolbarCurrentPermanentSkill.Value;
 			if (skill is null)
 				return;
 
@@ -283,29 +295,89 @@ namespace Shockah.XPDisplay
 			helper.AddSectionTitle("config.toolbar.section");
 			helper.AddBoolOption("config.toolbar.enabled", () => Config.ToolbarSkillBar.IsEnabled);
 			helper.AddNumberOption("config.toolbar.scale", () => Config.ToolbarSkillBar.Scale, min: 0.2f, max: 12f, interval: 0.05f);
-			helper.AddNumberOption("config.toolbar.spacingFromToolbar", () => Config.ToolbarSkillBar.SpacingFromToolbar, min: -32f, max: 128, interval: 1f);
+			helper.AddNumberOption("config.toolbar.spacingFromToolbar", () => Config.ToolbarSkillBar.SpacingFromToolbar);
 			helper.AddBoolOption("config.toolbar.showIcon", () => Config.ToolbarSkillBar.ShowIcon);
 			helper.AddBoolOption("config.toolbar.showLevelNumber", () => Config.ToolbarSkillBar.ShowLevelNumber);
+			helper.AddBoolOption("config.toolbar.excludeSkillsAtMaxLevel", () => Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel);
 			helper.AddBoolOption("config.toolbar.alwaysShowCurrentTool", () => Config.ToolbarSkillBar.AlwaysShowCurrentTool);
 			helper.AddNumberOption("config.toolbar.toolSwitchDurationInSeconds", () => Config.ToolbarSkillBar.ToolSwitchDurationInSeconds, min: 0f, max: 15f, interval: 0.5f);
 			helper.AddNumberOption("config.toolbar.toolUseDurationInSeconds", () => Config.ToolbarSkillBar.ToolUseDurationInSeconds, min: 0f, max: 15f, interval: 0.5f);
 			helper.AddNumberOption("config.toolbar.xpChangedDurationInSeconds", () => Config.ToolbarSkillBar.XPChangedDurationInSeconds, min: 0f, max: 15f, interval: 0.5f);
 			helper.AddNumberOption("config.toolbar.levelChangedDurationInSeconds", () => Config.ToolbarSkillBar.LevelChangedDurationInSeconds, min: 0f, max: 15f, interval: 0.5f);
 
-			helper.AddSectionTitle("config.toolbarExclusions.section");
 			foreach (var skill in SkillExt.GetAllSkills())
+			{
+				api.AddSectionTitle(
+					ModManifest,
+					text: () => Helper.Translation.Get("config.toolbar.skillExclusion.section.name", new { Skill = skill.Name })
+				);
+
 				api.AddBoolOption(
 					ModManifest,
-					getValue: () => Config.SkillsToExcludeFromToolbarOnXPGain.Contains(skill.UniqueID),
+					getValue: () => !Config.ToolbarSkillBar.SkillsToExcludeOnXPGain.Contains(skill.UniqueID),
 					setValue: value =>
 					{
 						if (value)
-							Config.SkillsToExcludeFromToolbarOnXPGain.Add(skill.UniqueID);
+							Config.ToolbarSkillBar.SkillsToExcludeOnXPGain.Remove(skill.UniqueID);
 						else
-							Config.SkillsToExcludeFromToolbarOnXPGain.Remove(skill.UniqueID);
+							Config.ToolbarSkillBar.SkillsToExcludeOnXPGain.Add(skill.UniqueID);
 					},
-					name: () => skill.Name
+					name: () => Helper.Translation.Get("config.toolbar.skillExclusion.showOnXPGain.name")
 				);
+
+				api.AddBoolOption(
+					ModManifest,
+					getValue: () => !Config.ToolbarSkillBar.SkillsToExcludeOnLevelUp.Contains(skill.UniqueID),
+					setValue: value =>
+					{
+						if (value)
+							Config.ToolbarSkillBar.SkillsToExcludeOnLevelUp.Remove(skill.UniqueID);
+						else
+							Config.ToolbarSkillBar.SkillsToExcludeOnLevelUp.Add(skill.UniqueID);
+					},
+					name: () => Helper.Translation.Get("config.toolbar.skillExclusion.showOnLevelUp.name")
+				);
+
+				api.AddBoolOption(
+					ModManifest,
+					getValue: () => !Config.ToolbarSkillBar.SkillsToExcludeOnToolHeld.Contains(skill.UniqueID),
+					setValue: value =>
+					{
+						if (value)
+							Config.ToolbarSkillBar.SkillsToExcludeOnToolHeld.Remove(skill.UniqueID);
+						else
+							Config.ToolbarSkillBar.SkillsToExcludeOnToolHeld.Add(skill.UniqueID);
+					},
+					name: () => Helper.Translation.Get("config.toolbar.skillExclusion.showOnToolHeld.name"),
+					tooltip: () => Helper.Translation.Get("config.toolbar.skillExclusion.showOnToolHeld.tooltip")
+				);
+
+				api.AddBoolOption(
+					ModManifest,
+					getValue: () => !Config.ToolbarSkillBar.SkillsToExcludeOnToolSwitch.Contains(skill.UniqueID),
+					setValue: value =>
+					{
+						if (value)
+							Config.ToolbarSkillBar.SkillsToExcludeOnToolSwitch.Remove(skill.UniqueID);
+						else
+							Config.ToolbarSkillBar.SkillsToExcludeOnToolSwitch.Add(skill.UniqueID);
+					},
+					name: () => Helper.Translation.Get("config.toolbar.skillExclusion.showOnToolSwitch.name")
+				);
+
+				api.AddBoolOption(
+					ModManifest,
+					getValue: () => !Config.ToolbarSkillBar.SkillsToExcludeOnToolUse.Contains(skill.UniqueID),
+					setValue: value =>
+					{
+						if (value)
+							Config.ToolbarSkillBar.SkillsToExcludeOnToolUse.Remove(skill.UniqueID);
+						else
+							Config.ToolbarSkillBar.SkillsToExcludeOnToolUse.Add(skill.UniqueID);
+					},
+					name: () => Helper.Translation.Get("config.toolbar.skillExclusion.showOnToolUse.name")
+				);
+			}
 
 			DidSetupConfig = true;
 		}
@@ -455,7 +527,8 @@ namespace Shockah.XPDisplay
 				if (mouse.X >= wholeToolbarTopLeft.X && mouse.Y >= wholeToolbarTopLeft.Y && mouse.X < wholeToolbarTopLeft.X + barSize.X && mouse.Y < wholeToolbarTopLeft.Y + barSize.Y)
 				{
 					ToolbarTooltip.Value = GetSkillTooltip(skill);
-					ToolbarActiveDuration.Value = Math.Max(ToolbarActiveDuration.Value, 1f);
+					ToolbarCurrentTemporarySkill.Value = skill;
+					ToolbarCurrentTemporarySkillDuration.Value = Math.Max(ToolbarCurrentTemporarySkillDuration.Value, 1f);
 				}
 			}
 		}
@@ -492,14 +565,10 @@ namespace Shockah.XPDisplay
 			if (Instance.Config.ToolbarSkillBar.ToolUseDurationInSeconds > 0f)
 			{
 				var skill = Instance.GetSkillForItem(Game1.player.CurrentItem);
-				if (skill is null)
+				if (skill is not null && (!Instance.Config.ToolbarSkillBar.ExcludeSkillsAtMaxLevel || skill.GetBaseLevel(Game1.player) < skill.MaxLevel) && !Instance.Config.ToolbarSkillBar.SkillsToExcludeOnToolUse.Contains(skill.UniqueID))
 				{
-					Instance.ToolbarActiveDuration.Value = 0f;
-				}
-				else
-				{
-					Instance.ToolbarCurrentSkill.Value = skill;
-					Instance.ToolbarActiveDuration.Value = Instance.Config.ToolbarSkillBar.ToolUseDurationInSeconds;
+					Instance.ToolbarCurrentTemporarySkill.Value = skill;
+					Instance.ToolbarCurrentTemporarySkillDuration.Value = Instance.Config.ToolbarSkillBar.ToolUseDurationInSeconds;
 				}
 			}
 		}

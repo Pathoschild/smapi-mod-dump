@@ -6,17 +6,17 @@ mods:
    Farmtronics
 
 latest commit:
-   commit 04702a2f02284ff57cd5e2c63c61b03b977cca7d
+   commit ffaa136ad1c8588ecc2bf0dfceb1caa123f716cb
    Author: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>
-   Date:   Thu May 25 18:02:47 2023 +0000
+   Date:   Mon Jun 26 18:08:01 2023 +0000
    
-       dep nuget: bump Miniscript from 1.5.1-7ff7e28 to 1.5.1 in /Farmtronics (#76)
+       dep nuget: bump Pathoschild.Stardew.ModBuildConfig in /Farmtronics (#77)
        
-       Bumps Miniscript from 1.5.1-7ff7e28 to 1.5.1.
+       Bumps Pathoschild.Stardew.ModBuildConfig from 4.1.0 to 4.1.1.
        
        ---
        updated-dependencies:
-       - dependency-name: Miniscript
+       - dependency-name: Pathoschild.Stardew.ModBuildConfig
          dependency-type: direct:production
          update-type: version-update:semver-patch
        ...

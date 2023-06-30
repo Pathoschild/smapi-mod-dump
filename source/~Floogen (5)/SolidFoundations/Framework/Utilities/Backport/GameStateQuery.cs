@@ -911,5 +911,213 @@ namespace SolidFoundations.Framework.Utilities.Backport
         {
             return false;
         }
+
+        public static bool query_SEASON_DAY(string[] condition_split)
+        {
+            for (int i = 1; i < condition_split.Length; i += 2)
+            {
+                string season = condition_split[i];
+                int day = int.Parse(condition_split[i + 1]);
+
+                if (string.Equals(Game1.currentSeason, season, StringComparison.OrdinalIgnoreCase) && Game1.dayOfMonth == day)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool query_FOUND_ALL_LOST_BOOKS(string[] condition_split)
+        {
+            return Game1.netWorldState.Value.LostBooksFound.Value >= 21;
+        }
+
+        public static bool query_IS_ISLAND_NORTH_BRIDGE_FIXED(string[] condition_split)
+        {
+            return ((IslandNorth)Game1.getLocationFromName("IslandNorth"))?.bridgeFixed.Value ?? false;
+        }
+
+        public static bool query_IS_MULTIPLAYER(string[] condition_split)
+        {
+            return Game1.IsMultiplayer;
+        }
+
+        public static bool query_IS_VISITING_ISLAND(string[] condition_split)
+        {
+            string npcName = condition_split[1];
+            if (npcName != null)
+            {
+                return Game1.IsVisitingIslandToday(npcName);
+            }
+            return false;
+        }
+        public static bool query_MUSEUM_DONATIONS(string[] condition_split)
+        {
+            if (condition_split.Length < 2 || !int.TryParse(condition_split[1], out var minCount))
+            {
+                SolidFoundations.monitor.Log(condition_split + "must specify the minimum number required");
+                return false;
+            }
+
+            bool filtered = condition_split.Length > 2;
+            int count = 0;
+            foreach (var itemId in Game1.netWorldState.Value.MuseumPieces.Values)
+            {
+                if (filtered)
+                {
+                    string objectType = Game1.objectInformation.ContainsKey(itemId) ? Game1.objectInformation[itemId].Split('/')[3] : String.Empty;
+                    for (int i = 2; i < condition_split.Length; i++)
+                    {
+                        if (objectType == condition_split[i])
+                        {
+                            count++;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    count++;
+                }
+            }
+
+            return count >= minCount;
+        }
+
+        public static bool query_WORLD_STATE_FIELD(string[] condition_split)
+        {
+            string name = condition_split[1];
+            string expectedValue = condition_split[2];
+            PropertyInfo property = typeof(NetWorldState).GetProperty(name, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public);
+            if ((object)property == null)
+            {
+                return false;
+            }
+            object actualValue = property.GetValue(Game1.netWorldState.Value, null);
+            if (actualValue != null)
+            {
+                if (actualValue is bool)
+                {
+                    bool actual3 = (bool)actualValue;
+                    if (bool.TryParse(expectedValue, out var expectedBool))
+                    {
+                        return actual3 == expectedBool;
+                    }
+                    return false;
+                }
+                if (actualValue is int)
+                {
+                    int actual2 = (int)actualValue;
+                    if (int.TryParse(expectedValue, out var expectedInt))
+                    {
+                        return actual2 == expectedInt;
+                    }
+                    return false;
+                }
+                string actual = actualValue as string;
+                if (actual != null)
+                {
+                    return string.Equals(actual, expectedValue, StringComparison.OrdinalIgnoreCase);
+                }
+                return string.Equals(actualValue.ToString(), expectedValue, StringComparison.OrdinalIgnoreCase);
+            }
+            return string.Equals(expectedValue, "null", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static bool query_WORLD_STATE_ID(string[] condition_split)
+        {
+            return NetWorldState.checkAnywhereForWorldStateID(condition_split[1]);
+        }
+
+        public static bool query_PLAYER_LUCK_LEVEL(string[] condition_split)
+        {
+            string playerKey = condition_split[1];
+            int level = int.Parse(condition_split[2]);
+            return GameStateQuery.WithPlayer(playerKey, (Farmer target) => target.LuckLevel >= level);
+        }
+
+        public static bool query_PLAYER_HAS_TOWN_KEY(string[] condition_split)
+        {
+            string playerKey = condition_split[1];
+            return GameStateQuery.WithPlayer(playerKey, (Farmer target) => target.HasTownKey);
+        }
+
+        public static bool query_PLAYER_HAS_TRASH_CAN_LEVEL(string[] condition_split)
+        {
+            string playerKey = condition_split[1];
+            int requiredLevel = int.Parse(condition_split[2]);
+            return GameStateQuery.WithPlayer(playerKey, (Farmer target) => target.trashCanLevel == requiredLevel);
+        }
+
+        public static bool query_PLAYER_SHIPPED_BASIC_ITEM(string[] condition_split)
+        {
+            string playerKey = condition_split[1];
+            int itemId = int.Parse(condition_split[2]);
+            string rawCount = condition_split[3];
+            int count = 1;
+            if (rawCount != null && !int.TryParse(rawCount, out count))
+            {
+                SolidFoundations.monitor.Log(condition_split + " can't parse '" + rawCount + "' as an integer count");
+                return false;
+            }
+
+            int value;
+            return GameStateQuery.WithPlayer(playerKey, (Farmer target) => target.basicShipped.TryGetValue(itemId, out value) && value >= count);
+        }
+
+        public static bool query_PLAYER_SPECIAL_ORDER_ACTIVE(string[] condition_split)
+        {
+            string playerKey = condition_split[1];
+            string orderId = condition_split[2];
+            return GameStateQuery.WithPlayer(playerKey, (Farmer target) => target.team.SpecialOrderActive(orderId));
+        }
+
+        public static bool query_PLAYER_SPECIAL_ORDER_RULE_ACTIVE(string[] condition_split)
+        {
+            string playerKey = condition_split[1];
+            string ruleId = condition_split[2];
+            return GameStateQuery.WithPlayer(playerKey, (Farmer target) => target.team.SpecialOrderRuleActive(ruleId));
+        }
+
+        public static bool query_PLAYER_STAT(string[] condition_split)
+        {
+            string playerKey = condition_split[1];
+            string name = condition_split[2];
+            string rawMinValue = condition_split[3];
+            if (string.IsNullOrEmpty(playerKey) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(rawMinValue))
+            {
+                SolidFoundations.monitor.Log(condition_split + "must specify three query (player key, stat name, and minimum value)");
+                return false;
+            }
+            if (!uint.TryParse(rawMinValue, out var minValue))
+            {
+                SolidFoundations.monitor.Log(condition_split + "invalid minimum value '" + rawMinValue + "', must be an integer");
+                return false;
+            }
+
+            return GameStateQuery.WithPlayer(playerKey, delegate (Farmer target)
+            {
+                Stats stats = target.stats;
+                if (stats.stat_dictionary.TryGetValue(name, out var value))
+                {
+                    return value >= minValue;
+                }
+                object obj = stats.GetType().GetField(name, BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.Public)?.GetValue(stats);
+                if (obj is uint)
+                {
+                    uint num = (uint)obj;
+                    return num >= minValue;
+                }
+                return false;
+            });
+        }
+
+        // Unable to backport the following queries due to additional requirements of SDV v1.6
+        /* 
+            query_SYNCED_CHOICE
+            query_SYNCED_RANDOM
+            query_SYNCED_SUMMER_RAIN_RANDOM
+            query_ITEM_TYPE
+        */
     }
 }

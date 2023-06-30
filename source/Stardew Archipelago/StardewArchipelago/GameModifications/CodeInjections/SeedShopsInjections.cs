@@ -581,45 +581,62 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             stock.Add(key2, numArray2);
         }
 
-        // public ShopMenu(Dictionary<ISalable, int[]> itemPriceAndStock, int currency = 0, string who = null, Func<ISalable, Farmer, int, bool> on_purchase = null, Func<ISalable, bool> on_sell = null, string context = null)
-        public static bool ShopMenu_SeedShuffle_Prefix(ShopMenu __instance, ref Dictionary<ISalable, int[]> itemPriceAndStock, int currency = 0, string who = null, Func<ISalable, Farmer, int, bool> on_purchase = null, Func<ISalable, bool> on_sell = null, string context = null)
+        private static ShopMenu _lastShopMenuUpdated = null;
+        // public override void update(GameTime time)
+        public static void Update_SeedShuffleFirstTimeOnly_Postfix(ShopMenu __instance, GameTime time)
         {
             try
             {
-                if (_archipelago.SlotData.SeedShuffle != SeedShuffle.Shuffled)
+                // We only run this once for each menu
+                if (_lastShopMenuUpdated == __instance)
                 {
-                    return true; // run original logic
+                    return;
                 }
-                foreach (var salableItem in itemPriceAndStock.Keys.ToArray())
-                {
-                    if (salableItem is not Object salableObject || salableObject.Category != CATEGORY_SEEDS)
-                    {
-                        continue;
-                    }
 
-                    if (!_archipelago.HasReceivedItem(salableObject.Name))
-                    {
-                        itemPriceAndStock.Remove(salableItem);
-                    }
-
-                    if (salableObject.ParentSheetIndex != STRAWBERRY_SEEDS)
-                    {
-                        continue;
-                    }
-
-                    if (_locationChecker.IsLocationMissingAndExists(FestivalLocationNames.STRAWBERRY_SEEDS))
-                    {
-                        var strawberrySeedsApItem =
-                            new PurchaseableArchipelagoLocation(salableObject.Name, FestivalLocationNames.STRAWBERRY_SEEDS, _modHelper, _locationChecker, _archipelago);
-                        itemPriceAndStock.Add(strawberrySeedsApItem, new[] { 1000, 1 });
-                    }
-                }
-                return true; //  run original logic
+                _lastShopMenuUpdated = __instance;
+                DisableSeedsIfNeeded(__instance);
+                return;
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(ShopMenu_SeedShuffle_Prefix)}:\n{ex}", LogLevel.Error);
-                return true; // run original logic
+                _monitor.Log($"Failed in {nameof(Update_SeedShuffleFirstTimeOnly_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+        }
+
+        private static void DisableSeedsIfNeeded(ShopMenu __instance)
+        {
+            if (_archipelago.SlotData.SeedShuffle != SeedShuffle.Shuffled)
+            {
+                return;
+            }
+
+            foreach (var salableItem in __instance.itemPriceAndStock.Keys.ToArray())
+            {
+                if (salableItem is not Object salableObject || salableObject.Category != CATEGORY_SEEDS || salableObject.ParentSheetIndex == MIXED_SEEDS)
+                {
+                    continue;
+                }
+
+                if (!_archipelago.HasReceivedItem(salableObject.Name))
+                {
+                    __instance.itemPriceAndStock.Remove(salableItem);
+                    __instance.forSale.Remove(salableItem);
+                }
+
+                if (salableObject.ParentSheetIndex != STRAWBERRY_SEEDS)
+                {
+                    continue;
+                }
+
+                if (_locationChecker.IsLocationMissingAndExists(FestivalLocationNames.STRAWBERRY_SEEDS))
+                {
+                    var strawberrySeedsApItem =
+                        new PurchaseableArchipelagoLocation(salableObject.Name, FestivalLocationNames.STRAWBERRY_SEEDS,
+                            _modHelper, _locationChecker, _archipelago);
+                    __instance.itemPriceAndStock.Add(strawberrySeedsApItem, new[] { 1000, 1 });
+                    __instance.forSale.Add(strawberrySeedsApItem);
+                }
             }
         }
 

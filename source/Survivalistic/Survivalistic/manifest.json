@@ -10,8 +10,8 @@
 
 {
     "Name": "Survivalistic",
-    "Author": "Ophaneom",
-    "Version": "1.0.2",
+    "Author": "Ophaneom and Locked15",
+    "Version": "1.0.4",
     "Description": "Adds some survival odds to the game.",
     "UniqueID": "Ophaneom.Survivalistic",
     "EntryDll": "Survivalistic.dll",

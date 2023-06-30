@@ -136,7 +136,7 @@ internal abstract class ModIntegration<TIntegration> : IModIntegration
 
     private static TIntegration? CreateInstance()
     {
-        var requiresModAttribute = typeof(TIntegration).GetCustomAttribute<RequiresModAttribute>();
+        var requiresModAttribute = typeof(TIntegration).GetCustomAttribute<ModRequirementAttribute>();
         if (requiresModAttribute is null)
         {
             return null;

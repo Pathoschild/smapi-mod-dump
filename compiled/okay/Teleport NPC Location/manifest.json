@@ -1,0 +1,11 @@
+﻿{
+  "Name": "Teleport NPC Location",
+  "Author": "ccr",
+  "Version": "1.0.3",
+  "Description": "teleport to NPC Location",
+  "UniqueID": "ccr.TeleportNPCLocation",
+  "EntryDll": "TeleportNPCLocation.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:17190" ]
+}
+

@@ -6,9 +6,9 @@ mods:
    Desert Bloom Farm
 
 latest commit:
-   commit 7bc472689c42979fe80d2b5d17a9fc9014808bdb
+   commit 3ba423bda05b465348b97df43a4d97f024fec445
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Wed May 31 02:31:43 2023 +0200
+   Date:   Mon Jun 26 13:38:54 2023 +0200
    
-       fixed errors when switching farm type
+       added gmcm option
    

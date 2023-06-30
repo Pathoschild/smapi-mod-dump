@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bouhm.Shared;
 using Bouhm.Shared.Locations;
 using LocationCompass.Framework;
 using Microsoft.Xna.Framework;
@@ -52,6 +53,8 @@ namespace LocationCompass
         *********/
         public override void Entry(IModHelper helper)
         {
+            CommonHelper.RemoveObsoleteFiles(this, "LocationCompass.pdb");
+
             this.Config = helper.ReadConfig<ModConfig>();
             this.Pointer = helper.ModContent.Load<Texture2D>("assets/locator.png"); // Load pointer tex
             this.Constants = helper.Data.ReadJsonFile<ModData>("assets/constants.json") ?? new ModData();

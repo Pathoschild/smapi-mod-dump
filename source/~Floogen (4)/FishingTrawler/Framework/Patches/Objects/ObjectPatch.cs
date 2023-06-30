@@ -104,14 +104,14 @@ namespace FishingTrawler.Framework.Patches.Objects
                         xOffset = 32;
                         break;
                 }
-                spriteBatch.Draw(FishingTrawler.assetManager.coalClumpTexture, location + new Vector2(32f, 32f) * scaleSize, new Rectangle(xOffset, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 3f, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(FishingTrawler.assetManager.CoalClumpTexture, location + new Vector2(32f, 32f) * scaleSize, new Rectangle(xOffset, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 3f, SpriteEffects.None, layerDepth);
 
                 return false;
             }
             else if (SeaborneTackle.IsValid(__instance))
             {
                 var xOffset = 16 * ((int)SeaborneTackle.GetTackleType(__instance) - 1);
-                spriteBatch.Draw(FishingTrawler.assetManager.fishingTacklesTexture, location + new Vector2(32f, 32f) * scaleSize, new Rectangle(xOffset, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 4f, SpriteEffects.None, layerDepth);
+                spriteBatch.Draw(FishingTrawler.assetManager.FishingTacklesTexture, location + new Vector2(32f, 32f) * scaleSize, new Rectangle(xOffset, 0, 16, 16), color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 4f, SpriteEffects.None, layerDepth);
 
                 return false;
             }

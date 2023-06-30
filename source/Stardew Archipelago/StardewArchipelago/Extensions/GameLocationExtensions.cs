@@ -25,7 +25,13 @@ namespace StardewArchipelago.Extensions
     {
         private static readonly Dictionary<WarpRequest, WarpRequest> ExtraWarps = new()
         {
+            {new WarpRequest(Game1.getLocationRequest("Town"), 96, 51, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("AbandonedJojaMart"), 9, 13, FacingDirection.Up)},
+            {new WarpRequest(Game1.getLocationRequest("Town"), 96, 51, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("MovieTheater"), 13, 15, FacingDirection.Up)},
+            // {new WarpRequest(Game1.getLocationRequest("Town"), , , FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Trailer_Big"), , , FacingDirection.Up)},
             {new WarpRequest(Game1.getLocationRequest("Town"), 35, 97, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("Sewer"), 16, 11, FacingDirection.Down)},
+            {new WarpRequest(Game1.getLocationRequest("BeachNightMarket"), 49, 11, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("ElliottHouse"), 3, 9, FacingDirection.Down)},
+            {new WarpRequest(Game1.getLocationRequest("BeachNightMarket"), 30, 34, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("FishShop"), 5, 9, FacingDirection.Down)},
+            {new WarpRequest(Game1.getLocationRequest("FishShop"), 4, 3, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("BoatTunnel"), 6, 12, FacingDirection.Up)},
             {new WarpRequest(Game1.getLocationRequest("IslandWest"), 20, 23, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("QiNutRoom"), 7, 8, FacingDirection.Up)},
             {new WarpRequest(Game1.getLocationRequest("WizardHouse"), 4, 5, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("WizardHouseBasement"), 4, 4, FacingDirection.Down)},
             {new WarpRequest(Game1.getLocationRequest("IslandWest"), 77, 40, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("IslandFarmhouse"), 14, 17, FacingDirection.Down)},
@@ -96,12 +102,23 @@ namespace StardewArchipelago.Extensions
                 }
                 else if (warp.TargetName == "VolcanoEntrance" && destinationName == "VolcanoDungeon0")
                 {
-                    warps.Add(warp);
+                    var realTargetPoint = new Point(warp.TargetX, warp.TargetY).CheckSpecialVolcanoEdgeCaseWarp(destinationName);
+                    warps.Add(new Warp(warp.X, warp.Y, warp.TargetName, realTargetPoint.X, realTargetPoint.Y, warp.flipFarmer.Value));
                 }
             }
 
             warps.AddRange(GetSpecialTouchWarps(origin));
             return warps;
+        }
+
+        public static Point CheckSpecialVolcanoEdgeCaseWarp(this Point targetPoint, string destinationName)
+        {
+            if (destinationName == "VolcanoDungeon0" && targetPoint.X == 1 && targetPoint.Y == 1)
+            {
+                return new Point(31, 53);
+            }
+
+            return targetPoint;
         }
 
         private static Dictionary<string, Dictionary<Point, Point>> _touchActionWarpCache = new();
@@ -347,7 +364,7 @@ namespace StardewArchipelago.Extensions
 
                 var loc = originLocation;
                 var dest = destinationName;
-                closestWarpPoint = allWarpPoints.OrderBy(x => loc.GetWarpPointTarget(x, dest).GetTotalDistance(referencePoint)).First();
+                closestWarpPoint = allWarpPoints.OrderBy(warpPoint => loc.GetWarpPointTarget(warpPoint, dest).GetTotalDistance(referencePoint)).First();
                 return true;
             }
 

@@ -1,0 +1,44 @@
+{
+    "edibles": [
+        [
+            "Coriander",
+            "20/0"
+        ],
+        [
+            "Cumin",
+            "20/0"
+        ],
+        [
+            "Curried bread",
+            "35/20"
+        ],
+        [
+            "Curried rice",
+            "35/20"
+        ],
+        [
+            "Curried soup",
+            "35/25"
+        ],
+        [
+            "Curried udon",
+            "53/25"
+        ],
+        [
+            "Curry",
+            "25/20"
+        ],
+        [
+            "Curry powder",
+            "0/20"
+        ],
+        [
+            "Naan",
+            "15/0"
+        ],
+        [
+            "Turmeric",
+            "15/0"
+        ]
+    ]
+}

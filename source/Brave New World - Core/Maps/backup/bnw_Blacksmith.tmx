@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="36">
+ <editorsettings>
+  <export target="bnw_Blacksmith_upper_floor.tmx" format="tmx"/>
+ </editorsettings>
+ <tileset firstgid="1" name="1" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior" width="512" height="1088"/>
+  <tile id="936">
+   <animation>
+    <frame tileid="936" duration="100"/>
+    <frame tileid="1864" duration="100"/>
+    <frame tileid="1866" duration="100"/>
+    <frame tileid="1868" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="937">
+   <animation>
+    <frame tileid="937" duration="100"/>
+    <frame tileid="1865" duration="100"/>
+    <frame tileid="1867" duration="100"/>
+    <frame tileid="1869" duration="100"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="2177" name="Paths" tilewidth="16" tileheight="16" tilecount="36" columns="4">
+  <image source="paths" width="64" height="144"/>
+ </tileset>
+ <tileset firstgid="2213" name="z_bnw" tilewidth="16" tileheight="16" tilecount="1975" columns="25">
+  <image source="spring_1_bnw_tilesheet.png" width="400" height="1264"/>
+ </tileset>
+ <tileset firstgid="4188" name="z_bnw2" tilewidth="16" tileheight="16" tilecount="2976" columns="32">
+  <image source="bnw_vanilla_furniture.png" width="512" height="1488"/>
+ </tileset>
+ <layer id="1" name="Back" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA+0GVkYNAjAuszDpx5xABizTsOxCeA+CQB+jlxxjG8AOKXRNLEAA6gPzgZiaMHi/vwxTM57qPEPHLDCRdATxv7WYBpgxk3JgTQ/XsfybwXSPpfE2keun//o7kPZOZrJD56eIqwoIYrPvdhw+jmmaCZR8h9hMLPEy3+0N0nz8rAoMqIG+PK47jcB6JJyTPoeQebHCl5Gl+apTQ9AwCmxXN8
+  </data>
+ </layer>
+ <layer id="3" name="Back2" width="20" height="20">
+  <properties>
+   <property name="Draw" value="Back"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AU0BNM4GZgmAjEk7ipY95KoDmrgHg1lcwbBaOAWAAAWKwD9A==
+  </data>
+ </layer>
+ <layer id="5" name="Buildings" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJyt0zFOAkEUxvG3jrtC5BIUNsbWA1DQq4mJrTdQOlorwcbYamLQBvUIWlEIC95ALiAt2vufDBMmxmXfbnjJL7Pzkv0ymzcbicgGjMImohx17Iqu9rCTk9fAAQ4VjtBU5J3hXKGlzLvGvCLyjR8MMUKKMSb4wI0yT1sn8frz+iXzBpJ9b2ol8m5XnHPVN/+X162KvIq7I5ccqIMurozr5eXd836btcf6gEd8sp+iT8YTnvFi3L0pej5bF7w7wAgpxphgPymXF9YXOTPjno8TN6vtgCzWmjLvb4Wzugt6TWXeO2cbmuXez8p6C3o+LzJSqOys/D9tZ9Ze9HxevWBezPwTbKFSXfZ9XqNgXlbZvB5O15SX9W9LRl/jF0pCPWU=
+  </data>
+ </layer>
+ <layer id="7" name="Buildings2" width="20" height="20">
+  <properties>
+   <property name="Draw" value="Buildings"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApIBwAGQAAB
+  </data>
+ </layer>
+ <layer id="9" name="Front" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAdWCNGmE0KOCNGmE0suMXBwHAbiO8A8TogXg/EG4B4IxBvAuLNHOS5ER+wYB085i0B4qNoeDlVXMXAMJeJgWEeEFuwEac+l5OBwRJI5wPpAiAu5ISIH2WG0HuBZu0D4ggizWsD6o8E0h1AupMTIf6UmVgfEAZJQLMWUdG8oQSWAf29HM3vh4H8I1AxSzT1D5kosy+SMu0Mb4B5+S0QvwPi9zTI17QGixgQeXQxVAyUf5fhwOj5Gl/eToTqaSbTbQDk8TCH
+  </data>
+ </layer>
+ <layer id="15" name="Front2" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2D4gotcA+2CUTAKhi8AAOl0ANw=
+  </data>
+ </layer>
+ <layer id="11" name="AlwaysFront" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYCAdMEIxtcCoecPbvFEwuAH3QDtgFAwKQE6eBwBmdAAb
+  </data>
+ </layer>
+ <layer id="13" name="Paths" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApIBwAGQAAB
+  </data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <objectgroup id="6" name="Buildings"/>
+ <objectgroup id="10" name="Front"/>
+ <objectgroup id="12" name="AlwaysFront"/>
+</map>

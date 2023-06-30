@@ -28,11 +28,11 @@ namespace StardewArchipelago.Items
         private UnlockManager _unlockManager;
         private TrapManager _trapManager;
 
-        public ItemParser(IModHelper helper, ArchipelagoClient archipelago, StardewItemManager itemManager)
+        public ItemParser(IModHelper helper, ArchipelagoClient archipelago, StardewItemManager itemManager, TileChooser tileChooser)
         {
             _itemManager = itemManager;
             _unlockManager = new UnlockManager(archipelago);
-            _trapManager = new TrapManager(helper, archipelago);
+            _trapManager = new TrapManager(helper, archipelago, tileChooser);
         }
 
         public TrapManager TrapManager => _trapManager;

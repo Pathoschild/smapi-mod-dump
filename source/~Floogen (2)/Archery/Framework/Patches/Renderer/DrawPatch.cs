@@ -41,7 +41,7 @@ namespace Archery.Framework.Patches.Renderer
 
         private static void DrawPostfix(FarmerRenderer __instance, LocalizedContentManager ___farmerTextureManager, Texture2D ___baseTexture, NetInt ___skin, ref Rectangle ___hairstyleSourceRect, ref Rectangle ___shirtSourceRect, ref Rectangle ___accessorySourceRect, ref Rectangle ___hatSourceRect, ref Vector2 ___positionOffset, ref Vector2 ___rotationAdjustment, ref bool ____sickFrame, ref bool ____shirtDirty, ref bool ____spriteDirty, SpriteBatch b, FarmerSprite.AnimationFrame animationFrame, int currentFrame, Rectangle sourceRect, Vector2 position, Vector2 origin, float layerDepth, int facingDirection, Color overrideColor, float rotation, float scale, Farmer who)
         {
-            if (Archery.apiManager.IsFashionSenseLoaded() is true)
+            if (Archery.apiManager.IsFashionSenseDrawOverrideActive() is true)
             {
                 return;
             }
@@ -54,7 +54,7 @@ namespace Archery.Framework.Patches.Renderer
 
         private static bool ExecuteRecolorActionsPrefix(FarmerRenderer __instance, bool ____spriteDirty, Farmer farmer)
         {
-            if (Archery.apiManager.IsFashionSenseLoaded() is false && ____spriteDirty)
+            if (Archery.apiManager.IsFashionSenseDrawOverrideActive() is true)
             {
                 Archery.RecolorSleeves();
             }
@@ -100,7 +100,7 @@ namespace Archery.Framework.Patches.Renderer
 
         private static bool ShouldHideSleeves()
         {
-            if (Archery.apiManager.IsFashionSenseLoaded() is true || Game1.player.UsingTool is false || Bow.IsValid(Game1.player.CurrentTool) is false)
+            if (Archery.apiManager.IsFashionSenseDrawOverrideActive() is true || Game1.player.UsingTool is false || Bow.IsValid(Game1.player.CurrentTool) is false)
             {
                 return false;
             }

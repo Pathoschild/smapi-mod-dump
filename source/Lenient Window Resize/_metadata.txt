@@ -6,9 +6,9 @@ mods:
    Lenient Window Resize
 
 latest commit:
-   commit 0a0dc544964cb123b87bdbe247736b325d4e717a
+   commit e35b3db7688d1f5ab91ef9ee1120fc40ea0a650e
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Fri Jun 3 14:59:08 2022 +0200
+   Date:   Sat Jun 3 17:17:08 2023 +0200
    
-       Initial commit
+       refactored code + added config
    

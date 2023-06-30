@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Items.Unlocks;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -123,25 +124,71 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
+        private static bool? _realBridgeFixed = null;
+
+        // public static void fixBridge(GameLocation location)
+
+        public static bool FixBridge_DontFixDuringDraw_Prefix(GameLocation location)
+        {
+            try
+            {
+                if (_realBridgeFixed != null)
+                {
+                    return false; // don't run original logic
+                }
+
+                if (_archipelago.HasReceivedItem(VanillaUnlockManager.BEACH_BRIDGE_AP_NAME))
+                {
+                    return true;
+                }
+
+                return false; // don't run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(FixBridge_DontFixDuringDraw_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
+            }
+        }
+
+        // public override void draw(SpriteBatch b)
+
+        public static bool Draw_BeachBridgeQuestionMark_Prefix(Beach __instance, SpriteBatch b)
+        {
+            try
+            {
+                if (_realBridgeFixed == null)
+                {
+                    _realBridgeFixed = __instance.bridgeFixed.Value;
+                }
+
+                __instance.bridgeFixed.Value = _locationChecker.IsLocationChecked(BEACH_BRIDGE_AP_LOCATION);
+                return true; // run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(Draw_BeachBridgeQuestionMark_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
+            }
+        }
+
         // public override void draw(SpriteBatch b)
 
         public static void Draw_BeachBridgeQuestionMark_Postfix(Beach __instance, SpriteBatch b)
         {
             try
             {
-                if (!__instance.bridgeFixed.Value || _locationChecker.IsLocationChecked(BEACH_BRIDGE_AP_LOCATION))
+                if (_realBridgeFixed != null)
                 {
-                    return;
+                    __instance.bridgeFixed.Value = _realBridgeFixed.Value;
                 }
 
-                var frame = (float)(4.0 * Math.Round(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 250.0), 2));
-                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(3704f, 720f + frame)), new Microsoft.Xna.Framework.Rectangle(141, 465, 20, 24), Color.White * 0.75f, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.095401f);
-                b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(3744f, 760f + frame)), new Microsoft.Xna.Framework.Rectangle(175, 425, 12, 12), Color.White * 0.75f, 0.0f, new Vector2(6f, 6f), 4f, SpriteEffects.None, 0.09541f);
+                _realBridgeFixed = null;
                 return;
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(CheckAction_BeachBridge_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(Draw_BeachBridgeQuestionMark_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
         }

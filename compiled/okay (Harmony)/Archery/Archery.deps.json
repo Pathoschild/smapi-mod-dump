@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "Archery/2.2.1": {
+      "Archery/2.2.5": {
         "dependencies": {
           "Pathoschild.Stardew.ModBuildConfig": "4.1.0"
         },
@@ -18,7 +18,7 @@
     }
   },
   "libraries": {
-    "Archery/2.2.1": {
+    "Archery/2.2.5": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

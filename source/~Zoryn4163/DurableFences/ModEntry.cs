@@ -11,6 +11,7 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using Zoryn.Common;
 
 namespace DurableFences
 {
@@ -24,6 +25,8 @@ namespace DurableFences
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            CommonHelper.RemoveObsoleteFiles(this, "DurableFences.pdb");
+
             helper.Events.GameLoop.OneSecondUpdateTicked += this.OnOneSecondUpdateTicked;
         }
 

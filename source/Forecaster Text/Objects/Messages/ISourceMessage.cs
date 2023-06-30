@@ -34,6 +34,7 @@
  */
 
 using System.Collections.Generic;
+using ForecasterText.Objects.Addons;
 using ForecasterText.Objects.Enums;
 using StardewModdingAPI;
 using StardewValley;
@@ -62,12 +63,21 @@ namespace ForecasterText.Objects.Messages {
                 builder ??= new MessageBuilder("tv.birthday")
                     .AddEmoji("icon", MiscEmoji.BIRTHDAY);
                 
-                if (!config.UseVillagerNames)
-                    _ = obj is Character character ? builder.AddEmoji("...", character) : builder.AddNpcEmoji("...", obj as string);
-                else {
-                    builder.PadText("...", ' ') // Add a space between names
-                        .AddText("...", obj as string);
+                // If using Emojis
+                if (!config.UseVillagerNames) {
+                    // Try adding an emoji
+                    if(obj switch {
+                        Character character when character.HasEmoji()
+                            => builder.AddEmoji("...", character),
+                        string name when CharacterEmoji.HasEmoji(name)
+                            => builder.AddNpcEmoji("...", name),
+                        _ => null
+                    } is not null)
+                        continue; // Continue to next to skip fallback to name (For custom NPCs)
                 }
+                
+                builder.PadText("...", ' ') // Add a space between names
+                    .AddText("...", (obj as Character)?.GetName() ?? obj as string);
             }
             
             return MessageSource.Calendar(builder);

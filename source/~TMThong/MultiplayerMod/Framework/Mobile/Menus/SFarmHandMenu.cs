@@ -154,10 +154,7 @@ namespace MultiplayerMod.Framework.Mobile.Menus
                     {
                         Game1.exitActiveMenu();
                     }
-                    var property = Game1.currentLocation.GetType().GetProperty("tapToMove");
-                    object TapToMove = typeof(IClickableMenu).Assembly.GetType("StardewValley.Mobile.TapToMove").CreateInstance<object>(new object[] { Game1.currentLocation });
-                    property.SetValue(Game1.currentLocation, TapToMove);
-                    Game1.multiplayerMode = Game1.multiplayerClient;
+                    
                 }
                 else if (this.client.timedOut)
                 {

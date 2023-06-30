@@ -1,4 +1,5 @@
 {
+  "Version": "1.4.0",
   "SmallBarOrientation": "Vertical",
   "BigBarOrientation": "Horizontal",
   "Alpha": 0.6,
@@ -9,13 +10,18 @@
     "SpacingFromToolbar": 24.0,
     "ShowIcon": true,
     "ShowLevelNumber": true,
+    "ExcludeSkillsAtMaxLevel": true,
     "AlwaysShowCurrentTool": false,
     "ToolSwitchDurationInSeconds": 3.0,
     "ToolUseDurationInSeconds": 3.0,
     "XPChangedDurationInSeconds": 3.0,
-    "LevelChangedDurationInSeconds": 5.0
-  },
-  "SkillsToExcludeFromToolbarOnXPGain": [
-    "Achtuur.Travelling"
-  ]
+    "LevelChangedDurationInSeconds": 5.0,
+    "SkillsToExcludeOnXPGain": [
+      "Achtuur.Travelling"
+    ],
+    "SkillsToExcludeOnLevelUp": [],
+    "SkillsToExcludeOnToolHeld": [],
+    "SkillsToExcludeOnToolSwitch": [],
+    "SkillsToExcludeOnToolUse": []
+  }
 }

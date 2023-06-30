@@ -30,6 +30,11 @@ namespace BNWCore
         private Vector2 _playerPos;
         public static string bnw_EradicationList { get; set; } = "bnw_EradicationList";
         public static string bnw_AdventureGuildChoices { get; set; } = "bnw_AdventureGuildChoices";
+        public static string bnw_AnimalShopChoices { get; set; } = "bnw_AnimalShopChoices";
+        public static string bnw_BlacksmithChoices { get; set; } = "bnw_BlacksmithChoices";
+        public static string bnw_BlacksmithChoices_no_npc { get; set; } = "bnw_BlacksmithChoices_no_npc";
+        public static string bnw_FishShopChoices { get; set; } = "bnw_FishShopChoices";
+        public static string bnw_HospitalChoices { get; set; } = "bnw_HospitalChoices";
         public void Eradication_List()
         {
             List<Response> choices = new List<Response>()
@@ -43,9 +48,57 @@ namespace BNWCore
         {
             List<Response> choices = new List<Response>()
             {
-                new Response("bnw_MarlonShop", ModEntry.ModHelper.Translation.Get("translator_dialog_box_buy_weapons_and_equipments")),
-                new Response("bnw_AdventureRecovery", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_bnw_AdventureRecovery")),
+                new Response("bnw_MarlonShop_no_npc", ModEntry.ModHelper.Translation.Get("translator_dialog_box_buy_weapons_and_equipments")),
+                new Response("bnw_AdventureRecovery_no_npc", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_bnw_AdventureRecovery")),
                 new Response("Eradicator_List", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_bnw_EradicationList_option")),
+                new Response("Leave", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_close")),
+            };
+            Game1.currentLocation.createQuestionDialogue($"{ModEntry.ModHelper.Translation.Get("translator_dialog_box_services")}", choices.ToArray(), new GameLocation.afterQuestionBehavior(List_Output));
+        }
+        public void Animal_Shop_Choices()
+        {
+            List<Response> choices = new List<Response>()
+            {
+                new Response("bnw_MarnieShop_no_npc", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_inventory")),
+                new Response("bnw_MarnieAnimalShop", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_animalshop")),
+                new Response("Leave", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_close")),
+            };
+            Game1.currentLocation.createQuestionDialogue($"{ModEntry.ModHelper.Translation.Get("translator_dialog_box_services")}", choices.ToArray(), new GameLocation.afterQuestionBehavior(List_Output));
+        }
+        public void Blacksmith_Choices()
+        {
+            List<Response> choices = new List<Response>()
+            {
+                new Response("bnw_ClintShop_no_npc", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_inventory")),
+                new Response("bnw_ClintGeodes", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_break_geodes")),
+                new Response("Leave", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_close")),
+            };
+            Game1.currentLocation.createQuestionDialogue($"{ModEntry.ModHelper.Translation.Get("translator_dialog_box_services")}", choices.ToArray(), new GameLocation.afterQuestionBehavior(List_Output));
+        }
+        public void Blacksmith_Choices_no_npc()
+        {
+            List<Response> choices = new List<Response>()
+            {
+               new Response("bnw_ClintShop_no_npc", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_inventory")),
+                new Response("Cant_break_geodes", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_break_geodes")),
+                new Response("Leave", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_close")),
+            };
+            Game1.currentLocation.createQuestionDialogue($"{ModEntry.ModHelper.Translation.Get("translator_dialog_box_services")}", choices.ToArray(), new GameLocation.afterQuestionBehavior(List_Output));
+        }
+        public void FishShop_Choices()
+        {
+            List<Response> choices = new List<Response>()
+            {
+                new Response("bnw_WillyShop_no_npc", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_inventory")),
+                new Response("Leave", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_close")),
+            };
+            Game1.currentLocation.createQuestionDialogue($"{ModEntry.ModHelper.Translation.Get("translator_dialog_box_services")}", choices.ToArray(), new GameLocation.afterQuestionBehavior(List_Output));
+        }
+        public void Hospital_Choices()
+        {
+            List<Response> choices = new List<Response>()
+            {
+                new Response("bnw_HarveyShop", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_inventory")),
                 new Response("Leave", ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_close")),
             };
             Game1.currentLocation.createQuestionDialogue($"{ModEntry.ModHelper.Translation.Get("translator_dialog_box_services")}", choices.ToArray(), new GameLocation.afterQuestionBehavior(List_Output));
@@ -70,6 +123,26 @@ namespace BNWCore
                 else if (shopProperty == bnw_AdventureGuildChoices)
                 {
                     Adventure_Guild_Choices();
+                }
+                else if (shopProperty == bnw_AnimalShopChoices)
+                {
+                    Animal_Shop_Choices();
+                }
+                else if (shopProperty == bnw_BlacksmithChoices)
+                {
+                    Blacksmith_Choices();
+                }
+                else if (shopProperty == bnw_BlacksmithChoices_no_npc)
+                {
+                    Blacksmith_Choices_no_npc();
+                }
+                else if (shopProperty == bnw_FishShopChoices)
+                {
+                    FishShop_Choices();
+                }
+                else if (shopProperty == bnw_HospitalChoices)
+                {
+                    Hospital_Choices();
                 }
                 else
                 {
@@ -202,6 +275,9 @@ namespace BNWCore
                 case "bnw_QiShop":
                     Game1.activeClickableMenu = new ShopMenu(Utility.getQiShopStock(), 2);
                     break;
+                case "bnw_QiWallnutShop":
+                    Game1.activeClickableMenu = new ShopMenu(Utility.GetQiChallengeRewardStock(Game1.player));
+                    break;
                 case "bnw_IceCreamStand":
                     return new ShopMenu(new Dictionary<ISalable, int[]>
                     {
@@ -249,18 +325,17 @@ namespace BNWCore
                 Game1.activeClickableMenu = new DialogueBox(ModEntry.ModHelper.Translation.Get("translator_dialog_box_animal_delivered"));
             }
             if (e.OldMenu is ShopMenu && e.NewMenu is DialogueBox)
-            {
-                if (Game1.currentLocation.Equals("Blacksmith") || Game1.currentLocation.Equals("AbandonedJojaMart"))
+                if(Game1.player.currentLocation == Game1.getLocationFromName("Blacksmith"))
                 {
                     Game1.exitActiveMenu();
                     Game1.activeClickableMenu = new DialogueBox(ModEntry.ModHelper.Translation.Get("translator_dialog_box_tool_upgraded"));
                 }
-                else if (Game1.currentLocation.Equals("AdventureGuild") || Game1.currentLocation.Equals("AbandonedJojaMart"))
+                else
                 {
                     Game1.exitActiveMenu();
                     Game1.activeClickableMenu = new DialogueBox(ModEntry.ModHelper.Translation.Get("translator_dialog_box_request_fulfilled"));
-                }   
-            }
+                }
+            
         }
         public void Input_ButtonPressed(ButtonPressedEventArgs e)
         {
@@ -281,8 +356,6 @@ namespace BNWCore
                 return;
             CheckForShopToOpen(tileProperty, e);         
         }
- 
-
         public void List_Output(Farmer who, string dialogue_id)
         {
             if (dialogue_id == "UpgradeOrRenovate")
@@ -320,10 +393,14 @@ namespace BNWCore
                     Game1.activeClickableMenu = new DialogueBox(ModEntry.ModHelper.Translation.Get("translator_dialog_box_robin_busy"));
                 }
             }
-            if (dialogue_id == "Eradicator_List")
+            else if (dialogue_id == "Eradicator_List")
             {
                 var adventureguild = new AdventureGuild();
                 adventureguild.showMonsterKillList();
+            }
+            else if (dialogue_id == "Cant_break_geodes")
+            {
+                Game1.activeClickableMenu = new DialogueBox(ModEntry.ModHelper.Translation.Get("translator_dialog_box_choice_cant_break_geodes"));
             }
             else
             {

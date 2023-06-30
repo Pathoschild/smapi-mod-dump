@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17190
+IDs: ccr.TeleportNPCLocation
+update keys: Nexus:17190, GitHub:chencrstu/TeleportNPCLocation

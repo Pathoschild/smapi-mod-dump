@@ -10,6 +10,14 @@ for queries and analysis.**
 
 # Release notes
 
+## 1.4.0
+Released 02 June 2023.
+
+* Added an option to stop showing maxed out skills in the toolbar.
+* Added per-skill options to exclude showing their toolbar experience bar on XP gain / level up / tool being held / tool switch / tool use.
+* Removed toolbar spacing setting limits (it's no longer a slider).
+* Fixed toolbar experience bar showing up in cutscenes.
+
 ## 1.3.0
 Released 30 May 2023.
 

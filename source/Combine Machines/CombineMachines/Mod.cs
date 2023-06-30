@@ -170,7 +170,7 @@ namespace CombineMachines
                             float LabelTextScale = 0.75f;
                             float ValueTextScale = 1.0f;
 
-                            bool ShowDurationInfo = UserConfig.ToolTipShowDuration && UserConfig.ShouldModifyProcessingSpeed(HoveredObject);
+                            bool ShowDurationInfo = UserConfig.ToolTipShowDuration; // && UserConfig.ShouldModifyProcessingSpeed(HoveredObject);
                             bool ShowQuantityInfo = UserConfig.ToolTipShowQuantity && UserConfig.ShouldModifyInputsAndOutputs(HoveredObject);
 
                             //  Compute row headers
@@ -237,9 +237,13 @@ namespace CombineMachines
                             {
                                 //  Subtract 1 because the game internally counts the scarecrow's occupied tile as part of its radius, but users usually would be confused by that
                                 //  So a typical user expects radius=8 for a regular scarecrow, even though the game does its calculations with radius=9
+#if NEVER // Legacy Code
                                 int OriginalRadius = HoveredObject.GetScarecrowBaseRadius() - 1;
                                 int AlteredRadius = HoveredObject.GetScarecrowRadius() - 1;
                                 //RowValues.Add(string.Format("{0}-->{1}", OriginalRadius, AlteredRadius));
+#else
+                                int AlteredRadius = HoveredObject.GetRadiusForScarecrow() - 1;
+#endif
                                 RowValues.Add(AlteredRadius.ToString());
                             }
                             List<Vector2> RowValueSizes = RowValues.Select(x => DrawHelpers.MeasureStringWithSpecialNumbers(x, ValueTextScale, 0.0f)).ToList();

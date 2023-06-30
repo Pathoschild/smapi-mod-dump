@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17059
+IDs: DSV.Core
+update keys: Nexus:???, Nexus:17059

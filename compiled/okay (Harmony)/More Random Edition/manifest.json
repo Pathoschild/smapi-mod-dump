@@ -1,0 +1,10 @@
+{
+  "Name": "More Random Edition",
+  "Author": "Chikakoo; doomdonuts; SlyryD; certifiableGrimalkin",
+  "Version": "0.5.4",
+  "Description": "Randomizes many gameplay and visual aspects of the game, see the readme for more info.",
+  "UniqueID": "Chikakoo.Randomizer",
+  "EntryDll": "Randomizer.dll",
+  "MinimumApiVersion": "3.8.3",
+  "UpdateKeys": [ "Nexus:16921" ]
+}

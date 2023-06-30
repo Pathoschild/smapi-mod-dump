@@ -1,0 +1,17 @@
+urls:
+   web: https://github.com/Achtuur/StardewMods
+   Git: https://github.com/Achtuur/StardewMods.git
+
+mods:
+   Better Rods
+   Multiplayer Exp Share
+   Prismatic Statue
+   Watering Can Give Exp
+
+latest commit:
+   commit 2e68662500134aa773a9691f54adf72ee6c9eeba
+   Author: Arthur de Groot <68847937+Achtuur@users.noreply.github.com>
+   Date:   Tue Jun 27 16:08:42 2023 +0200
+   
+       Update README.md
+   

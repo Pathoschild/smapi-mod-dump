@@ -8,36 +8,26 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AchtuurCore.Events;
 using AchtuurCore.Patches;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
 
-namespace AchtuurCore
+namespace AchtuurCore;
+
+internal class ModEntry : Mod
 {
-    internal class ModEntry : Mod
+    internal static ModEntry Instance;
+    public override void Entry(IModHelper helper)
     {
-        public static ModEntry Instance;
-        public override void Entry(IModHelper helper)
-        {
-            ModEntry.Instance = this;
+        ModEntry.Instance = this;
 
-            HarmonyPatcher.ApplyPatches(this,
-                new WateringPatcher()
-            );
+        HarmonyPatcher.ApplyPatches(this,
+            new WateringPatcher()
+        );
+        Events.EventPublisher.FinishedWateringSoil += this.OnWateredSoil;
+    }
 
-            EventPublisher.onFinishedWateringSoil += this.test_wateringevent;
-        }
-
-        private void test_wateringevent(object sender, WateringFinishedArgs e)
-        {
-            Instance.Monitor.Log($"{e.farmer} just watered {e.target}", LogLevel.Trace);
-        }
-        
+    private void OnWateredSoil(object sender, WateringFinishedArgs e)
+    {
     }
 }

@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/delixx/stardew-valley-custom-farm-loader
+**
+*************************************************/
+
+{
+  "Name": "Custom Farm Loader",
+  "Author": "DeLiXx",
+  "Version": "1.1.4",
+  "Description": "Improves farm related UI, loads custom farms, manages farm specific features and fixes vanilla bugs.",
+  "UniqueID": "DeLiXx.Custom_Farm_Loader",
+  "EntryDll": "Custom Farm Loader.dll",
+  "MinimumApiVersion": "3.14.1",
+  "UpdateKeys": [ "Nexus:13804@Main" ],
+  "Dependencies": [
+  ]
+}

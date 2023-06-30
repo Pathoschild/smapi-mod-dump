@@ -9,54 +9,56 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AchtuurCore.Events
+namespace AchtuurCore.Events;
+
+public static class EventPublisher
 {
-    public static class EventPublisher
+    /// <summary>
+    /// This event fires when a player waters an unwatered hoe'd tile.
+    /// </summary>
+    public static event EventHandler<WateringFinishedArgs> FinishedWateringSoil;
+
+    private static void InvokeEvent(EventHandler handler, object sender)
     {
-        /// <summary>
-        /// This event fires when a player waters an unwatered hoe'd tile.
-        /// </summary>
-        public static event EventHandler<WateringFinishedArgs> onFinishedWateringSoil;
+        if (handler is null)
+            return;
 
-        private static void InvokeEvent(EventHandler handler, object sender)
+        foreach (var handle in handler.GetInvocationList().Cast<EventHandler>())
         {
-            foreach(var handle in handler.GetInvocationList().Cast<EventHandler>())
+            try
             {
-                try
-                {
-                    handle.Invoke(sender, new EventArgs());
-                }
-                catch (Exception e)
-                {
-                    ModEntry.Instance.Monitor.Log($"Something went wrong when handling event {handle} ({sender}):\n{e}", StardewModdingAPI.LogLevel.Error);
-                }
+                handle.Invoke(sender, new EventArgs());
+            }
+            catch (Exception e)
+            {
+                ModEntry.Instance.Monitor.Log($"Something went wrong when handling event {handle} ({sender}):\n{e}", StardewModdingAPI.LogLevel.Error);
             }
         }
+    }
 
-        private static void InvokeEvent<T>(EventHandler<T> handler, object sender, T eventArg) 
+    private static void InvokeEvent<T>(EventHandler<T> handler, object sender, T eventArg)
+    {
+        if (handler is null)
+            return;
+
+        foreach (var handle in handler.GetInvocationList().Cast<EventHandler<T>>())
         {
-            foreach(var handle in handler.GetInvocationList().Cast<EventHandler<T>>())
+            try
             {
-                try
-                {
-                    handle.Invoke(sender, eventArg);
-                }
-                catch (Exception e)
-                {
-                    ModEntry.Instance.Monitor.Log($"Something went wrong when handling event {handle} ({sender}):\n{e}", StardewModdingAPI.LogLevel.Error);
-                }
+                handle.Invoke(sender, eventArg);
+            }
+            catch (Exception e)
+            {
+                ModEntry.Instance.Monitor.Log($"Something went wrong when handling event {handle} ({sender}):\n{e}", StardewModdingAPI.LogLevel.Error);
             }
         }
+    }
 
 
-        internal static void InvokeFinishedWateringSoil(object sender, WateringFinishedArgs e)
-        {
-            EventPublisher.InvokeEvent<WateringFinishedArgs>(onFinishedWateringSoil, sender, e);
-        }
+    internal static void InvokeFinishedWateringSoil(object sender, WateringFinishedArgs e)
+    {
+        EventPublisher.InvokeEvent<WateringFinishedArgs>(FinishedWateringSoil, sender, e);
     }
 }

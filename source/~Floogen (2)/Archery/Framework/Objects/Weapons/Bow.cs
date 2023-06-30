@@ -179,7 +179,7 @@ namespace Archery.Framework.Objects.Weapons
 
         internal static float GetSlingshotChargeTime(Tool tool)
         {
-            if (Bow.IsValid(tool) is true && tool is Slingshot slingshot && Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
+            if (Bow.IsValid(tool) is true && tool is Slingshot slingshot && slingshot.getLastFarmerToUse() is Farmer farmer && farmer.usingSlingshot && Bow.GetModel<WeaponModel>(tool) is WeaponModel weaponModel)
             {
                 if (Bow.IsLoaded(tool))
                 {
@@ -485,9 +485,7 @@ namespace Archery.Framework.Objects.Weapons
             if (Archery.internalApi.HandleSpecialAttack(weaponModel.Type, weaponModel.SpecialAttack.Id, weaponModel.SpecialAttack.Generate(slingshot, time, currentLocation, who)) is false)
             {
                 // Reset the required farmer flags
-                who.usingSlingshot = false;
-                who.UsingTool = false;
-                who.CanMove = true;
+                who.forceCanMove();
 
                 Bow.SetUsingSpecialAttack(slingshot, false);
             }

@@ -21,6 +21,8 @@ namespace StardewArchipelago.Goals
 {
     internal class GoalCodeInjection
     {
+        public const string MASTER_ANGLER_LETTER = "CF_Fish";
+
         private static IMonitor _monitor;
         private static IModHelper _modHelper;
         private static ArchipelagoClient _archipelago;
@@ -114,7 +116,7 @@ namespace StardewArchipelago.Goals
             }
 
             CheckMasterAnglerWithoutIslandFish();
-            if (!Game1.player.hasOrWillReceiveMail("CF_Fish"))
+            if (!Game1.player.hasOrWillReceiveMail(MASTER_ANGLER_LETTER))
             {
                 return;
             }
@@ -124,7 +126,7 @@ namespace StardewArchipelago.Goals
 
         private static void CheckMasterAnglerWithoutIslandFish()
         {
-            if (!_archipelago.SlotData.ExcludeGingerIsland || Game1.player.hasOrWillReceiveMail("CF_Fish"))
+            if (!_archipelago.SlotData.ExcludeGingerIsland || Game1.player.hasOrWillReceiveMail(MASTER_ANGLER_LETTER))
             {
                 return;
             }
@@ -154,9 +156,9 @@ namespace StardewArchipelago.Goals
                 return;
             }
 
-            if (!Game1.player.hasOrWillReceiveMail("CF_Fish"))
+            if (!Game1.player.hasOrWillReceiveMail(MASTER_ANGLER_LETTER))
             {
-                Game1.addMailForTomorrow("CF_Fish");
+                Game1.addMailForTomorrow(MASTER_ANGLER_LETTER);
             }
         }
 

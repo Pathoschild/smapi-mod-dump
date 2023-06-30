@@ -151,6 +151,26 @@
           "Condition": null
         }
       ]
+    },
+    {
+      "RequiredTags": [
+        "id_o_771"
+      ],
+      "RequiredCount": 1,
+      "MaxDailyConversions": 10,
+      "MinutesPerConversion": 10,
+      "RefreshMaxDailyConversions": true,
+      "SourceChest": "Input",
+      "DestinationChest": "Output",
+      "ProducedItems": [
+        {
+          "ItemID": "(O)ExampleAuthor.Objects.TestObject",
+          "MinCount": 1,
+          "MaxCount": 1,
+          "Chance": 1.0,
+          "Condition": null
+        }
+      ]
     }
   ]
 }

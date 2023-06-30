@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using cantorsdust.Common;
 using InstantGrowTrees.Framework;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
@@ -41,6 +42,7 @@ namespace InstantGrowTrees
         public override void Entry(IModHelper helper)
         {
             I18n.Init(helper.Translation);
+            CommonHelper.RemoveObsoleteFiles(this, "InstantGrowTrees.pdb");
 
             this.Config = helper.ReadConfig<ModConfig>();
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;

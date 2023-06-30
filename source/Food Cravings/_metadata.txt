@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Enteligenz/FoodCravings
+   Git: https://github.com/Enteligenz/FoodCravings.git
+
+mods:
+   Food Cravings
+
+latest commit:
+   commit 3c00de3f965634533fb11eceef1c3f5d76c47cda
+   Author: Enteligenz <s8frdrie@stud.uni-saarland.de>
+   Date:   Thu Jun 22 21:50:47 2023 +0200
+   
+       Added Nexus update key
+   

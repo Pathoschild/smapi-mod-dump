@@ -1,7 +1,7 @@
 {
   "Name": "Archery",
   "Author": "PeacefulEnd",
-  "Version": "2.2.1",
+  "Version": "2.2.5",
   "Description": "Bows, crossbows and more for Stardew Valley.",
   "UniqueID": "PeacefulEnd.Archery",
   "EntryDll": "Archery.dll",
@@ -11,7 +11,7 @@
     {
       "UniqueID": "PeacefulEnd.FashionSense",
       "IsRequired": false,
-      "MinimumVersion": "5.6.0"
+      "MinimumVersion": "5.7.0"
     },
     {
       "UniqueID": "spacechase0.DynamicGameAssets",

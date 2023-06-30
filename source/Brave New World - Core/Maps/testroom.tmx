@@ -3,9 +3,12 @@
  <tileset firstgid="1" name="z_bnw" tilewidth="16" tileheight="16" tilecount="1975" columns="25">
   <image source="spring_1_bnw_tilesheet.png" width="400" height="1264"/>
  </tileset>
+ <tileset firstgid="1976" name="z_bnw2" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior.png" width="512" height="1088"/>
+ </tileset>
  <layer id="1" name="Back" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApIBwAGQAAB
+   eJztzNkNglAQRuF5dheiFgAKilELUBY3tADEfem/CU/iPHor4J7ke5hM8tdEpI6G/GqihTY66MKBq/8e+hjI/zz4GOo9QoAQY0wQYar/GeZYGPaWWCHWO0GKDGtssMUOe+Q44GjYK3BCqfcZF1xxwx0PPPHCGx/Dls1ms1W5L1m/Cy4=
   </data>
  </layer>
  <layer id="3" name="Back2" width="20" height="20">
@@ -26,7 +29,7 @@
  </layer>
  <layer id="7" name="Buildings" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJw7yQAB56H0RSh9GUqfJCCPDh4B8VMgfgHlvwLiZ0D8Bkn+OZr8ayR5dPAbiP8BMSMjhM8MpP8DaVZGhDwDI6o8CyNCHh2IAMXF0eQkgHw5RoS8JJq8LJI8rQEsvM8xEB/m+AAovB8zkBbm+AAovP+AGCSEOT4ACm9RaJhLIemnZ5jTE1xgpq55L6lsHhMLMD5ZqGeeNNAsGSqaZwI0y5SK5o0CygAAcSMluQ==
+   eJztz9kJQjEQheHJk4kNqKDg0oDahdqFWoQVuWML7liGVuDypqDgD45wub7FPObAx8CQHBIRv+SQR8Hzfjp1NNAM1NdCG51AfV300McSq0C9Q4wwxiQxp5jpmblaqBOOqZ6Bzu/b1tgk5hY7PbNXB/XA/Y8/nHHBFTfdPa3Iy/r1ZYyIhUPWfHZFJ1Jyfn1lOiqoomb8OmJiYn7zBlbqIGg=
   </data>
  </layer>
  <layer id="21" name="Buildings2" width="20" height="20">
@@ -36,7 +39,7 @@
  </layer>
  <layer id="9" name="Front" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApIBwAGQAAB
+   eJxjYBgFo2DwAzlOBgZ5TuqZZwc0y56K5v3gYGD4yUE980bBKBgKAADk2ALg
   </data>
  </layer>
  <layer id="11" name="Front2" width="20" height="20">
@@ -44,7 +47,7 @@
    <property name="Draw" value="Front"/>
   </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApIBwAGQAAB
+   eJxjYBgFo2AUUAqsmBkYrJkH2hWjYBTQFwAAcnkAfA==
   </data>
  </layer>
  <layer id="13" name="Paths" width="20" height="20">

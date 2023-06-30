@@ -32,7 +32,7 @@ namespace MultiplayerMod.Framework.Patch
         {
             List<Server> servers = ModUtilities.Helper.Reflection.GetField<List<Server>>(__instance, "servers").GetValue();           
             LidgrenServer lidgrenServer = new LidgrenServer(__instance);
-            servers.Add(lidgrenServer);
+            servers.Add(ModUtilities.multiplayer.InitServer(lidgrenServer));
         }
     }
 }

@@ -21,6 +21,7 @@ using StardewArchipelago.GameModifications.Seasons;
 using StardewArchipelago.Goals;
 using StardewArchipelago.Items;
 using StardewArchipelago.Items.Mail;
+using StardewArchipelago.Items.Traps;
 using StardewArchipelago.Locations;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
@@ -111,7 +112,7 @@ namespace StardewArchipelago
             //_helper.ConsoleCommands.Add("test_sendalllocations", "Tests if every AP item in the stardew_valley_location_table json file are supported by the mod", _tester.TestSendAllLocations);
             // _helper.ConsoleCommands.Add("load_entrances", "Loads the entrances file", (_, _) => _entranceRandomizer.LoadTransports());
             // _helper.ConsoleCommands.Add("save_entrances", "Saves the entrances file", (_, _) => EntranceInjections.SaveNewEntrancesToFile());
-            _helper.ConsoleCommands.Add("debugMethod", "Runs whatever is currently in the debug method", this.DebugMethod);
+            _helper.ConsoleCommands.Add("teleport", "Runs whatever is currently in the debug method", this.DebugMethod);
 #endif
         }
 
@@ -201,7 +202,8 @@ namespace StardewArchipelago
             _jojaDisabler = new JojaDisabler(Monitor, _helper, _harmony);
             _seasonsRandomizer = new SeasonsRandomizer(Monitor, _helper, _archipelago, State);
             _appearanceRandomizer = new AppearanceRandomizer(Monitor, _archipelago);
-            _chatForwarder = new ChatForwarder(Monitor, _helper, _harmony, _archipelago, _giftHandler);
+            var tileChooser = new TileChooser();
+            _chatForwarder = new ChatForwarder(Monitor, _helper, _harmony, _archipelago, _giftHandler, tileChooser);
             _questCleaner = new QuestCleaner();
 
 
@@ -227,14 +229,14 @@ namespace StardewArchipelago
                 }
             }
 
-            _itemManager = new ItemManager(_helper, _archipelago, _stardewItemManager, _mail, State.ItemsReceived);
-            _mailPatcher = new MailPatcher(Monitor, _harmony, new LetterActions(_helper, _mail, _archipelago, _itemManager.TrapManager));
+            _itemManager = new ItemManager(_helper, _archipelago, _stardewItemManager, _mail, tileChooser, State.ItemsReceived);
+            _mailPatcher = new MailPatcher(Monitor, _harmony, _archipelago, new LetterActions(_helper, _mail, _archipelago, _itemManager.TrapManager));
             _locationsPatcher = new LocationPatcher(Monitor, _helper, _harmony, _archipelago, _locationChecker, _bundleReader, _stardewItemManager);
             _chatForwarder.ListenToChatMessages();
             _giftHandler.Initialize(_stardewItemManager, _mail, _archipelago);
             _logicPatcher.PatchAllGameLogic();
             _mailPatcher.PatchMailBoxForApItems();
-            _archipelago.SlotData.ReplaceAllBundles();
+            _archipelago.SlotData.Bundles.ReplaceAllBundles();
             _entranceManager.SetEntranceRandomizerSettings(_archipelago.SlotData);
             _locationsPatcher.ReplaceAllLocationsRewardsWithChecks();
             _itemPatcher.PatchApItems();
@@ -304,6 +306,21 @@ namespace StardewArchipelago
             }
             _appearanceRandomizer.ShuffleCharacterAppearances();
             _entranceManager.ResetCheckedEntrancesToday(_archipelago.SlotData);
+
+            DoBugsCleanup();
+        }
+
+        private void DoBugsCleanup()
+        {
+            if (_archipelago.HasReceivedItem("Dark Talisman"))
+            {
+                Game1.player.hasDarkTalisman = true;
+            }
+
+            if (_archipelago.HasReceivedItem("Key To The Town"))
+            {
+                Game1.player.HasTownKey = true;
+            }
         }
 
         private void OnDayEnding(object sender, DayEndingEventArgs e)
@@ -318,6 +335,7 @@ namespace StardewArchipelago
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             _archipelago.APUpdate();
+            // var methods = _harmony.GetPatchedMethods().ToList();
             // _entranceManager.RegisterAllEntrances();
             // _entranceManager.SetEntranceRandomizerSettings(_archipelago.SlotData);
         }
@@ -361,7 +379,7 @@ namespace StardewArchipelago
 
         private void DebugMethod(string arg1, string[] arg2)
         {
-
+            _itemManager.ItemParser.TrapManager.TeleportRandomly();
         }
 
         public bool ArchipelagoConnect(string ip, int port, string slot, string password, out string errorMessage)

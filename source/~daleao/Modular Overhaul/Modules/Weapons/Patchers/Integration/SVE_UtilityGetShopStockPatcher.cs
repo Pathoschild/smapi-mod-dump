@@ -25,7 +25,7 @@ using StardewValley.Tools;
 #endregion using directives
 
 [UsedImplicitly]
-[RequiresMod("FlashShifter.StardewValleyExpandedALL")]
+[ModRequirement("FlashShifter.StardewValleyExpandedALL")]
 [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch specifies the mod in file name but not class to avoid breaking pattern.")]
 internal sealed class UtilityGetShopStockPatcher : HarmonyPatcher
 {
@@ -55,7 +55,7 @@ internal sealed class UtilityGetShopStockPatcher : HarmonyPatcher
         for (var i = __result.Count - 1; i >= 0; i--)
         {
             var salable = __result.ElementAt(i).Key;
-            if (salable is MeleeWeapon or Slingshot && salable.Name.ContainsAnyOf("Galaxy", "Infinity"))
+            if (salable is MeleeWeapon or Slingshot && salable.Name.ContainsAny("Galaxy", "Infinity"))
             {
                 __result.Remove(salable);
             }

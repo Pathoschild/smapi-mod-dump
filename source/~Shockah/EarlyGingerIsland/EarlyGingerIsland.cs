@@ -23,6 +23,7 @@ using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -56,17 +57,17 @@ namespace Shockah.EarlyGingerIsland
 			harmony.TryPatch(
 				monitor: Monitor,
 				original: () => AccessTools.Method(typeof(BoatTunnel), nameof(BoatTunnel.checkAction)),
-				transpiler: new HarmonyMethod(AccessTools.Method(typeof(EarlyGingerIsland), nameof(BoatTunnel_checkAction_Transpiler)))
+				transpiler: new HarmonyMethod(AccessTools.Method(typeof(EarlyGingerIsland), nameof(BoatTunnel_checkAction_Transpiler)), priority: Priority.VeryLow)
 			);
 			harmony.TryPatch(
 				monitor: Monitor,
 				original: () => AccessTools.Method(typeof(BoatTunnel), nameof(BoatTunnel.answerDialogue)),
-				transpiler: new HarmonyMethod(AccessTools.Method(typeof(EarlyGingerIsland), nameof(BoatTunnel_answerDialogue_Transpiler)))
+				transpiler: new HarmonyMethod(AccessTools.Method(typeof(EarlyGingerIsland), nameof(BoatTunnel_answerDialogue_Transpiler)), priority: Priority.VeryLow)
 			);
 			harmony.TryPatch(
 				monitor: Monitor,
 				original: () => AccessTools.Method(typeof(BoatTunnel), nameof(BoatTunnel.GetTicketPrice)),
-				postfix: new HarmonyMethod(AccessTools.Method(typeof(EarlyGingerIsland), nameof(BoatTunnel_GetTicketPrice_Postfix)))
+				postfix: new HarmonyMethod(AccessTools.Method(typeof(EarlyGingerIsland), nameof(BoatTunnel_GetTicketPrice_Postfix)), priority: Priority.VeryLow)
 			);
 			harmony.TryPatch(
 				monitor: Monitor,
@@ -453,6 +454,10 @@ namespace Shockah.EarlyGingerIsland
 			} while (changedAny);
 		}
 
+		[SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Used in transpiled code")]
+		public static int ModifyTicketPrice(int price)
+			=> Instance.Config.BoatTicketPrice;
+
 		private static IEnumerable<CodeInstruction> BoatTunnel_checkAction_Transpiler(IEnumerable<CodeInstruction> instructions)
 		{
 			try
@@ -474,7 +479,10 @@ namespace Shockah.EarlyGingerIsland
 								matcher =>
 								{
 									return matcher
-										.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatTicketPrice));
+										.Insert(
+											SequenceMatcherPastBoundsDirection.After, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
+											new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(EarlyGingerIsland), nameof(ModifyTicketPrice)))
+										);
 								},
 								minExpectedOccurences: 2,
 								maxExpectedOccurences: 2
@@ -543,7 +551,10 @@ namespace Shockah.EarlyGingerIsland
 								ILMatches.Ldarg(0),
 								ILMatches.Call(AccessTools.Method(typeof(BoatTunnel), nameof(BoatTunnel.GetTicketPrice)))
 							)
-							.Replace(CodeInstruction.CallClosure<Func<int>>(() => Instance.Config.BoatTicketPrice));
+							.Insert(
+								SequenceMatcherPastBoundsDirection.After, SequenceMatcherInsertionResultingBounds.IncludingInsertion,
+								new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(EarlyGingerIsland), nameof(ModifyTicketPrice)))
+							);
 					})
 
 					// replacing material costs

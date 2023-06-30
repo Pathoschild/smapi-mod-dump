@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/SolidFoundations
+**
+*************************************************/
+
+{
+  "Name": "Json Assets Examples For Solid Foundations",
+  "Author": "PeacefulEnd",
+  "Version": "1.0.0",
+  "Description": "Tests for using Json Assets to modify Solid Foundations packs.",
+  "UniqueID": "PeacefulEnd.JsonAssetsForSolidFoundations",
+  "UpdateKeys": [ "Nexus:???" ],
+  "ContentPackFor": {
+    "UniqueID": "spacechase0.JsonAssets"
+  },
+  "Dependencies": [
+    {
+      "UniqueID": "PeacefulEnd.SolidFoundations",
+      "IsRequired": true
+    }
+  ]
+}

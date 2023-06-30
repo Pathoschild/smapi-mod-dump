@@ -22,9 +22,12 @@ namespace Desert_Bloom
         public static Mod Mod;
         public static IMonitor _Monitor;
         public static IModHelper _Helper;
+        public static ModConfig Config;
 
         public override void Entry(IModHelper helper)
         {
+            Config = helper.ReadConfig<ModConfig>();
+
             Mod = this;
             _Monitor = Monitor;
             _Helper = Helper;
@@ -33,6 +36,7 @@ namespace Desert_Bloom
             Lib.AssetsRequested.main();
             Lib.CustomTerrainSpawns.main();
             API.UnlockableAreas.main();
+            API.GenericModConfigMenuHandler.main();
         }
 
         public static bool IsMyFarm() => Game1.GetFarmTypeID() == "DeLiXx.Desert_Bloom_Farm_CFL/Desert Bloom";

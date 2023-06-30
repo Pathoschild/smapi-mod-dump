@@ -23,23 +23,19 @@ namespace MultiplayerMod.Framework.Patch.Mobile
     internal class GameLocationPatch : IPatch
     {
         private static readonly Type PATCH_TYPE = typeof(GameLocation);
-        public static PropertyInfo tapToMoveProperty;
-         
-        
-
         public void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.PropertyGetter(PATCH_TYPE, "tapToMove"), prefix: new HarmonyMethod(this.GetType(), nameof(prefix_get_tapToMove)));
+            harmony.Patch(AccessTools.PropertyGetter(PATCH_TYPE, "tapToMove"), postfix: new HarmonyMethod(this.GetType(), nameof(postfix_get_tapToMove)));
         }
 
-        private static bool prefix_get_tapToMove(GameLocation __instance)
+        private static void postfix_get_tapToMove(GameLocation __instance, ref object __result)
         {
-            if (tapToMoveProperty.GetValue(__instance) == null)
+            if (__result == null)
             {
                 object TapToMove = typeof(IClickableMenu).Assembly.GetType("StardewValley.Mobile.TapToMove").CreateInstance<object>(new object[] { __instance });
-                tapToMoveProperty.SetValue(__instance, TapToMove);
+                ModEntry.tapToMoveProperty.SetValue(__instance, TapToMove);
+                __result = TapToMove;
             }
-            return true;
         }
     }
 }

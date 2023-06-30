@@ -1,0 +1,16 @@
+{
+    "Name": "BetterRods",
+    "Author": "Achtuur",
+    "Version": "1.0.0",
+    "Description": "Improves higher tier fishing rods",
+    "UniqueID": "Achtuur.BetterRods",
+    "EntryDll": "BetterRods.dll",
+    "MinimumApiVersion": "3.0.0",
+    "dependencies": [
+        {
+            "UniqueID": "Achtuur.AchtuurCore",
+            "MinimumVersion": "1.0.7"
+        }
+    ],
+    "UpdateKeys": [ "Nexus:17026" ]
+}

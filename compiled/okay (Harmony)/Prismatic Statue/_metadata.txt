@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17013
+IDs: Achtuur.PrismaticStatue
+update keys: Nexus:17013, GitHub:Achtuur/StardewMods

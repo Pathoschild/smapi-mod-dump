@@ -1,7 +1,7 @@
 {
   "Name": "Fishing Trawler - New Horizons",
   "Author": "PeacefulEnd",
-  "Version": "1.1.2",
+  "Version": "1.2.2",
   "Description": "A fast-paced and heavily inspired minigame for fishing in bulk.",
   "UniqueID": "PeacefulEnd.FishingTrawler.NewHorizons",
   "EntryDll": "FishingTrawler.dll",

@@ -252,7 +252,7 @@
     },
     "Bamboo Pole Cutscene": {
       "code": 717124,
-      "region": "Stardew Valley"
+      "region": "Beach"
     },
     "Purchase Fiberglass Rod": {
       "code": 717125,
@@ -776,7 +776,7 @@
     },
     "The Mysterious Qi": {
       "code": 717524,
-      "region": "The Desert"
+      "region": "Desert"
     },
     "Carving Pumpkins": {
       "code": 717525,
@@ -857,6 +857,10 @@
     "Catch a Lingcod": {
       "code": 717544,
       "region": "Town"
+    },
+    "The Pirate's Wife": {
+      "code": 717545,
+      "region": "Island West"
     },
     "JotPK: Boots 1": {
       "code": 717601,
@@ -952,7 +956,7 @@
     },
     "Galaxy Sword Shrine": {
       "code": 717703,
-      "region": "The Desert"
+      "region": "Desert"
     },
     "Help Wanted: Gathering 1": {
       "code": 717801,
@@ -1352,7 +1356,7 @@
     },
     "Fishsanity: Lionfish": {
       "code": 718023,
-      "region": "Ginger Island"
+      "region": "Island West"
     },
     "Fishsanity: Slimejack": {
       "code": 718024,
@@ -1376,7 +1380,7 @@
     },
     "Fishsanity: Blue Discus": {
       "code": 718029,
-      "region": "Ginger Island"
+      "region": "Island West"
     },
     "Fishsanity: Albacore": {
       "code": 718030,
@@ -1384,7 +1388,7 @@
     },
     "Fishsanity: Sandfish": {
       "code": 718031,
-      "region": "The Desert"
+      "region": "Desert"
     },
     "Fishsanity: Stonefish": {
       "code": 718032,
@@ -1428,7 +1432,7 @@
     },
     "Fishsanity: Stingray": {
       "code": 718042,
-      "region": "Ginger Island"
+      "region": "Pirate Cove"
     },
     "Fishsanity: Ice Pip": {
       "code": 718043,
@@ -1440,7 +1444,7 @@
     },
     "Fishsanity: Scorpion Carp": {
       "code": 718045,
-      "region": "The Desert"
+      "region": "Desert"
     },
     "Fishsanity: Lava Eel": {
       "code": 718046,
@@ -1748,11 +1752,11 @@
     },
     "Museumsanity: Golden Mask": {
       "code": 718228,
-      "region": "The Desert"
+      "region": "Desert"
     },
     "Museumsanity: Golden Relic": {
       "code": 718229,
-      "region": "The Desert"
+      "region": "Desert"
     },
     "Museumsanity: Strange Doll (Green)": {
       "code": 718230,
@@ -1760,7 +1764,7 @@
     },
     "Museumsanity: Strange Doll": {
       "code": 718231,
-      "region": "The Desert"
+      "region": "Desert"
     },
     "Museumsanity: Prehistoric Scapula": {
       "code": 718232,
@@ -1772,27 +1776,27 @@
     },
     "Museumsanity: Prehistoric Skull": {
       "code": 718234,
-      "region": "Ginger Island"
+      "region": "Dig Site"
     },
     "Museumsanity: Skeletal Hand": {
       "code": 718235,
-      "region": "Ginger Island"
+      "region": "Dig Site"
     },
     "Museumsanity: Prehistoric Rib": {
       "code": 718236,
-      "region": "Ginger Island"
+      "region": "Dig Site"
     },
     "Museumsanity: Prehistoric Vertebra": {
       "code": 718237,
-      "region": "Ginger Island"
+      "region": "Dig Site"
     },
     "Museumsanity: Skeletal Tail": {
       "code": 718238,
-      "region": "Ginger Island"
+      "region": "Dig Site"
     },
     "Museumsanity: Nautilus Fossil": {
       "code": 718239,
-      "region": "Ginger Island"
+      "region": "Dig Site"
     },
     "Museumsanity: Amphibian Fossil": {
       "code": 718240,
@@ -3132,43 +3136,43 @@
     },
     "Friendsanity: Leo 1 <3": {
       "code": 718590,
-      "region": "Ginger Island"
+      "region": "Leo's Hut"
     },
     "Friendsanity: Leo 2 <3": {
       "code": 718591,
-      "region": "Ginger Island"
+      "region": "Leo's Hut"
     },
     "Friendsanity: Leo 3 <3": {
       "code": 718592,
-      "region": "Ginger Island"
+      "region": "Leo's Hut"
     },
     "Friendsanity: Leo 4 <3": {
       "code": 718593,
-      "region": "Ginger Island"
+      "region": "Leo's Hut"
     },
     "Friendsanity: Leo 5 <3": {
       "code": 718594,
-      "region": "Ginger Island"
+      "region": "Leo's Hut"
     },
     "Friendsanity: Leo 6 <3": {
       "code": 718595,
-      "region": "Ginger Island"
+      "region": "Leo's Hut"
     },
     "Friendsanity: Leo 7 <3": {
       "code": 718596,
-      "region": "Ginger Island"
+      "region": "Leo's Hut"
     },
     "Friendsanity: Leo 8 <3": {
       "code": 718597,
-      "region": "Ginger Island"
+      "region": "Leo's Hut"
     },
     "Friendsanity: Leo 9 <3": {
       "code": 718598,
-      "region": "Ginger Island"
+      "region": "Leo's Hut"
     },
     "Friendsanity: Leo 10 <3": {
       "code": 718599,
-      "region": "Ginger Island"
+      "region": "Leo's Hut"
     },
     "Friendsanity: Lewis 1 <3": {
       "code": 718601,
@@ -3412,43 +3416,43 @@
     },
     "Friendsanity: Sandy 1 <3": {
       "code": 718667,
-      "region": "The Desert"
+      "region": "Oasis"
     },
     "Friendsanity: Sandy 2 <3": {
       "code": 718668,
-      "region": "The Desert"
+      "region": "Oasis"
     },
     "Friendsanity: Sandy 3 <3": {
       "code": 718669,
-      "region": "The Desert"
+      "region": "Oasis"
     },
     "Friendsanity: Sandy 4 <3": {
       "code": 718670,
-      "region": "The Desert"
+      "region": "Oasis"
     },
     "Friendsanity: Sandy 5 <3": {
       "code": 718671,
-      "region": "The Desert"
+      "region": "Oasis"
     },
     "Friendsanity: Sandy 6 <3": {
       "code": 718672,
-      "region": "The Desert"
+      "region": "Oasis"
     },
     "Friendsanity: Sandy 7 <3": {
       "code": 718673,
-      "region": "The Desert"
+      "region": "Oasis"
     },
     "Friendsanity: Sandy 8 <3": {
       "code": 718674,
-      "region": "The Desert"
+      "region": "Oasis"
     },
     "Friendsanity: Sandy 9 <3": {
       "code": 718675,
-      "region": "The Desert"
+      "region": "Oasis"
     },
     "Friendsanity: Sandy 10 <3": {
       "code": 718676,
-      "region": "The Desert"
+      "region": "Oasis"
     },
     "Friendsanity: Vincent 1 <3": {
       "code": 718678,
@@ -3645,6 +3649,1142 @@
     "Friendsanity: Spouse 14 <3": {
       "code": 718728,
       "region": "Farm"
+    },
+    "Egg Hunt Victory": {
+      "code": 719001,
+      "region": "Town"
+    },
+    "Egg Festival: Strawberry Seeds": {
+      "code": 719002,
+      "region": "Town"
+    },
+    "Dance with someone": {
+      "code": 719003,
+      "region": "Forest"
+    },
+    "Rarecrow #5 (Woman)": {
+      "code": 719004,
+      "region": "Forest"
+    },
+    "Luau Soup": {
+      "code": 719005,
+      "region": "Beach"
+    },
+    "Dance of the Moonlight Jellies": {
+      "code": 719006,
+      "region": "Beach"
+    },
+    "Smashing Stone": {
+      "code": 719007,
+      "region": "Town"
+    },
+    "Grange Display": {
+      "code": 719008,
+      "region": "Town"
+    },
+    "Rarecrow #1 (Turnip Head)": {
+      "code": 719009,
+      "region": "Town"
+    },
+    "Fair Stardrop": {
+      "code": 719010,
+      "region": "Town"
+    },
+    "Spirit's Eve Maze": {
+      "code": 719011,
+      "region": "Town"
+    },
+    "Rarecrow #2 (Witch)": {
+      "code": 719012,
+      "region": "Town"
+    },
+    "Win Fishing Competition": {
+      "code": 719013,
+      "region": "Forest"
+    },
+    "Rarecrow #4 (Snowman)": {
+      "code": 719014,
+      "region": "Forest"
+    },
+    "Mermaid Pearl": {
+      "code": 719015,
+      "region": "Beach"
+    },
+    "Cone Hat": {
+      "code": 719016,
+      "region": "Beach"
+    },
+    "Iridium Fireplace": {
+      "code": 719017,
+      "region": "Beach"
+    },
+    "Rarecrow #7 (Tanuki)": {
+      "code": 719018,
+      "region": "Beach"
+    },
+    "Rarecrow #8 (Tribal Mask)": {
+      "code": 719019,
+      "region": "Beach"
+    },
+    "Lupini: Red Eagle": {
+      "code": 719020,
+      "region": "Beach"
+    },
+    "Lupini: Portrait Of A Mermaid": {
+      "code": 719021,
+      "region": "Beach"
+    },
+    "Lupini: Solar Kingdom": {
+      "code": 719022,
+      "region": "Beach"
+    },
+    "Lupini: Clouds": {
+      "code": 719023,
+      "region": "Beach"
+    },
+    "Lupini: 1000 Years From Now": {
+      "code": 719024,
+      "region": "Beach"
+    },
+    "Lupini: Three Trees": {
+      "code": 719025,
+      "region": "Beach"
+    },
+    "Lupini: The Serpent": {
+      "code": 719026,
+      "region": "Beach"
+    },
+    "Lupini: 'Tropical Fish #173'": {
+      "code": 719027,
+      "region": "Beach"
+    },
+    "Lupini: Land Of Clay": {
+      "code": 719028,
+      "region": "Beach"
+    },
+    "Secret Santa": {
+      "code": 719029,
+      "region": "Town"
+    },
+    "Island Ingredients": {
+      "code": 719101,
+      "region": "Town"
+    },
+    "Cave Patrol": {
+      "code": 719102,
+      "region": "Town"
+    },
+    "Aquatic Overpopulation": {
+      "code": 719103,
+      "region": "Town"
+    },
+    "Biome Balance": {
+      "code": 719104,
+      "region": "Town"
+    },
+    "Rock Rejuvenation": {
+      "code": 719105,
+      "region": "Town"
+    },
+    "Gifts for George": {
+      "code": 719106,
+      "region": "Town"
+    },
+    "Fragments of the past": {
+      "code": 719107,
+      "region": "Town"
+    },
+    "Gus' Famous Omelet": {
+      "code": 719108,
+      "region": "Town"
+    },
+    "Crop Order": {
+      "code": 719109,
+      "region": "Town"
+    },
+    "Community Cleanup": {
+      "code": 719110,
+      "region": "Town"
+    },
+    "The Strong Stuff": {
+      "code": 719111,
+      "region": "Town"
+    },
+    "Pierre's Prime Produce": {
+      "code": 719112,
+      "region": "Town"
+    },
+    "Robin's Project": {
+      "code": 719113,
+      "region": "Town"
+    },
+    "Robin's Resource Rush": {
+      "code": 719114,
+      "region": "Town"
+    },
+    "Juicy Bugs Wanted!": {
+      "code": 719115,
+      "region": "Town"
+    },
+    "Tropical Fish": {
+      "code": 719116,
+      "region": "Town"
+    },
+    "A Curious Substance": {
+      "code": 719117,
+      "region": "Town"
+    },
+    "Prismatic Jelly": {
+      "code": 719118,
+      "region": "Town"
+    },
+    "Qi's Crop": {
+      "code": 719151,
+      "region": "Qi's Walnut Room"
+    },
+    "Let's Play A Game": {
+      "code": 719152,
+      "region": "Qi's Walnut Room"
+    },
+    "Four Precious Stones": {
+      "code": 719153,
+      "region": "Qi's Walnut Room"
+    },
+    "Qi's Hungry Challenge": {
+      "code": 719154,
+      "region": "Qi's Walnut Room"
+    },
+    "Qi's Cuisine": {
+      "code": 719155,
+      "region": "Qi's Walnut Room"
+    },
+    "Qi's Kindness": {
+      "code": 719156,
+      "region": "Qi's Walnut Room"
+    },
+    "Extended Family": {
+      "code": 719157,
+      "region": "Qi's Walnut Room"
+    },
+    "Danger In The Deep": {
+      "code": 719158,
+      "region": "Qi's Walnut Room"
+    },
+    "Skull Cavern Invasion": {
+      "code": 719159,
+      "region": "Qi's Walnut Room"
+    },
+    "Qi's Prismatic Grange": {
+      "code": 719160,
+      "region": "Qi's Walnut Room"
+    },
+    "Repair Ticket Machine": {
+      "code": 719201,
+      "region": "Boat Tunnel"
+    },
+    "Repair Boat Hull": {
+      "code": 719202,
+      "region": "Boat Tunnel"
+    },
+    "Repair Boat Anchor": {
+      "code": 719203,
+      "region": "Boat Tunnel"
+    },
+    "Leo's Parrot": {
+      "code": 719204,
+      "region": "Leo's Hut"
+    },
+    "Island West Turtle": {
+      "code": 719205,
+      "region": "Island South"
+    },
+    "Island Farmhouse": {
+      "code": 719206,
+      "region": "Island West"
+    },
+    "Island Mailbox": {
+      "code": 719207,
+      "region": "Island Farmhouse"
+    },
+    "Farm Obelisk": {
+      "code": 719208,
+      "region": "Island Farmhouse"
+    },
+    "Dig Site Bridge": {
+      "code": 719209,
+      "region": "Island North"
+    },
+    "Island Trader": {
+      "code": 719210,
+      "region": "Island North"
+    },
+    "Volcano Bridge": {
+      "code": 719211,
+      "region": "Volcano Entrance"
+    },
+    "Volcano Exit Shortcut": {
+      "code": 719212,
+      "region": "Volcano - Floor 5"
+    },
+    "Island Resort": {
+      "code": 719213,
+      "region": "Island South"
+    },
+    "Parrot Express": {
+      "code": 719214,
+      "region": "Island West"
+    },
+    "Level 1 Luck": {
+      "code": 722001,
+      "region": "Stardew Valley"
+    },
+    "Level 2 Luck": {
+      "code": 722002,
+      "region": "Stardew Valley"
+    },
+    "Level 3 Luck": {
+      "code": 722003,
+      "region": "Stardew Valley"
+    },
+    "Level 4 Luck": {
+      "code": 722004,
+      "region": "Stardew Valley"
+    },
+    "Level 5 Luck": {
+      "code": 722005,
+      "region": "Stardew Valley"
+    },
+    "Level 6 Luck": {
+      "code": 722006,
+      "region": "Stardew Valley"
+    },
+    "Level 7 Luck": {
+      "code": 722007,
+      "region": "Stardew Valley"
+    },
+    "Level 8 Luck": {
+      "code": 722008,
+      "region": "Stardew Valley"
+    },
+    "Level 9 Luck": {
+      "code": 722009,
+      "region": "Stardew Valley"
+    },
+    "Level 10 Luck": {
+      "code": 722010,
+      "region": "Stardew Valley"
+    },
+    "Level 1 Socializing": {
+      "code": 722011,
+      "region": "Stardew Valley"
+    },
+    "Level 2 Socializing": {
+      "code": 722012,
+      "region": "Stardew Valley"
+    },
+    "Level 3 Socializing": {
+      "code": 722013,
+      "region": "Stardew Valley"
+    },
+    "Level 4 Socializing": {
+      "code": 722014,
+      "region": "Stardew Valley"
+    },
+    "Level 5 Socializing": {
+      "code": 722015,
+      "region": "Stardew Valley"
+    },
+    "Level 6 Socializing": {
+      "code": 722016,
+      "region": "Stardew Valley"
+    },
+    "Level 7 Socializing": {
+      "code": 722017,
+      "region": "Stardew Valley"
+    },
+    "Level 8 Socializing": {
+      "code": 722018,
+      "region": "Stardew Valley"
+    },
+    "Level 9 Socializing": {
+      "code": 722019,
+      "region": "Stardew Valley"
+    },
+    "Level 10 Socializing": {
+      "code": 722020,
+      "region": "Stardew Valley"
+    },
+    "Level 1 Magic": {
+      "code": 722021,
+      "region": "Stardew Valley"
+    },
+    "Level 2 Magic": {
+      "code": 722022,
+      "region": "Stardew Valley"
+    },
+    "Level 3 Magic": {
+      "code": 722023,
+      "region": "Stardew Valley"
+    },
+    "Level 4 Magic": {
+      "code": 722024,
+      "region": "Stardew Valley"
+    },
+    "Level 5 Magic": {
+      "code": 722025,
+      "region": "Stardew Valley"
+    },
+    "Level 6 Magic": {
+      "code": 722026,
+      "region": "Stardew Valley"
+    },
+    "Level 7 Magic": {
+      "code": 722027,
+      "region": "Stardew Valley"
+    },
+    "Level 8 Magic": {
+      "code": 722028,
+      "region": "Stardew Valley"
+    },
+    "Level 9 Magic": {
+      "code": 722029,
+      "region": "Stardew Valley"
+    },
+    "Level 10 Magic": {
+      "code": 722030,
+      "region": "Stardew Valley"
+    },
+    "Level 1 Binning": {
+      "code": 722031,
+      "region": "Stardew Valley"
+    },
+    "Level 2 Binning": {
+      "code": 722032,
+      "region": "Stardew Valley"
+    },
+    "Level 3 Binning": {
+      "code": 722033,
+      "region": "Stardew Valley"
+    },
+    "Level 4 Binning": {
+      "code": 722034,
+      "region": "Stardew Valley"
+    },
+    "Level 5 Binning": {
+      "code": 722035,
+      "region": "Stardew Valley"
+    },
+    "Level 6 Binning": {
+      "code": 722036,
+      "region": "Stardew Valley"
+    },
+    "Level 7 Binning": {
+      "code": 722037,
+      "region": "Stardew Valley"
+    },
+    "Level 8 Binning": {
+      "code": 722038,
+      "region": "Stardew Valley"
+    },
+    "Level 9 Binning": {
+      "code": 722039,
+      "region": "Stardew Valley"
+    },
+    "Level 10 Binning": {
+      "code": 722040,
+      "region": "Stardew Valley"
+    },
+    "Level 1 Archaeology": {
+      "code": 722041,
+      "region": "Stardew Valley"
+    },
+    "Level 2 Archaeology": {
+      "code": 722042,
+      "region": "Stardew Valley"
+    },
+    "Level 3 Archaeology": {
+      "code": 722043,
+      "region": "Stardew Valley"
+    },
+    "Level 4 Archaeology": {
+      "code": 722044,
+      "region": "Stardew Valley"
+    },
+    "Level 5 Archaeology": {
+      "code": 722045,
+      "region": "Stardew Valley"
+    },
+    "Level 6 Archaeology": {
+      "code": 722046,
+      "region": "Stardew Valley"
+    },
+    "Level 7 Archaeology": {
+      "code": 722047,
+      "region": "Stardew Valley"
+    },
+    "Level 8 Archaeology": {
+      "code": 722048,
+      "region": "Stardew Valley"
+    },
+    "Level 9 Archaeology": {
+      "code": 722049,
+      "region": "Stardew Valley"
+    },
+    "Level 10 Archaeology": {
+      "code": 722050,
+      "region": "Stardew Valley"
+    },
+    "Level 1 Cooking": {
+      "code": 722051,
+      "region": "Stardew Valley"
+    },
+    "Level 2 Cooking": {
+      "code": 722052,
+      "region": "Stardew Valley"
+    },
+    "Level 3 Cooking": {
+      "code": 722053,
+      "region": "Stardew Valley"
+    },
+    "Level 4 Cooking": {
+      "code": 722054,
+      "region": "Stardew Valley"
+    },
+    "Level 5 Cooking": {
+      "code": 722055,
+      "region": "Stardew Valley"
+    },
+    "Level 6 Cooking": {
+      "code": 722056,
+      "region": "Stardew Valley"
+    },
+    "Level 7 Cooking": {
+      "code": 722057,
+      "region": "Stardew Valley"
+    },
+    "Level 8 Cooking": {
+      "code": 722058,
+      "region": "Stardew Valley"
+    },
+    "Level 9 Cooking": {
+      "code": 722059,
+      "region": "Stardew Valley"
+    },
+    "Level 10 Cooking": {
+      "code": 722060,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Clear Debris": {
+      "code": 722501,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Till": {
+      "code": 722502,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Water": {
+      "code": 722503,
+      "region": "Stardew Valley"
+    },
+    "Analyze All Toil School Locations": {
+      "code": 722504,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Evac": {
+      "code": 722505,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Haste": {
+      "code": 722506,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Heal": {
+      "code": 722507,
+      "region": "Stardew Valley"
+    },
+    "Analyze All Life School Locations": {
+      "code": 722508,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Descend": {
+      "code": 722509,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Fireball": {
+      "code": 722510,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Frostbite": {
+      "code": 722511,
+      "region": "Stardew Valley"
+    },
+    "Analyze All Elemental School Locations": {
+      "code": 722512,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Lantern": {
+      "code": 722513,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Tendrils": {
+      "code": 722514,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Shockwave": {
+      "code": 722515,
+      "region": "Stardew Valley"
+    },
+    "Analyze All Nature School Locations": {
+      "code": 722516,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Meteor": {
+      "code": 722517,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Lucksteal": {
+      "code": 722518,
+      "region": "Stardew Valley"
+    },
+    "Analyze: Bloodmana": {
+      "code": 722519,
+      "region": "Stardew Valley"
+    },
+    "Analyze all Eldritch School Locations": {
+      "code": 722520,
+      "region": "Stardew Valley"
+    },
+    "Analyze Every Magic School Location": {
+      "code": 722521,
+      "region": "Stardew Valley"
+    },
+    "Friendsanity: Jasper 1 <3": {
+      "code": 723001,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 2 <3": {
+      "code": 723002,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 3 <3": {
+      "code": 723003,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 4 <3": {
+      "code": 723004,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 5 <3": {
+      "code": 723005,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 6 <3": {
+      "code": 723006,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 7 <3": {
+      "code": 723007,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 8 <3": {
+      "code": 723008,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 9 <3": {
+      "code": 723009,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 10 <3": {
+      "code": 723010,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 11 <3": {
+      "code": 723011,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 12 <3": {
+      "code": 723012,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 13 <3": {
+      "code": 723013,
+      "region": "Town"
+    },
+    "Friendsanity: Jasper 14 <3": {
+      "code": 723014,
+      "region": "Town"
+    },
+    "Friendsanity: Yoba 1 <3": {
+      "code": 723015,
+      "region": "Secret Woods"
+    },
+    "Friendsanity: Yoba 2 <3": {
+      "code": 723016,
+      "region": "Secret Woods"
+    },
+    "Friendsanity: Yoba 3 <3": {
+      "code": 723017,
+      "region": "Secret Woods"
+    },
+    "Friendsanity: Yoba 4 <3": {
+      "code": 723018,
+      "region": "Secret Woods"
+    },
+    "Friendsanity: Yoba 5 <3": {
+      "code": 723019,
+      "region": "Secret Woods"
+    },
+    "Friendsanity: Yoba 6 <3": {
+      "code": 723020,
+      "region": "Secret Woods"
+    },
+    "Friendsanity: Yoba 7 <3": {
+      "code": 723021,
+      "region": "Secret Woods"
+    },
+    "Friendsanity: Yoba 8 <3": {
+      "code": 723022,
+      "region": "Secret Woods"
+    },
+    "Friendsanity: Yoba 9 <3": {
+      "code": 723023,
+      "region": "Secret Woods"
+    },
+    "Friendsanity: Yoba 10 <3": {
+      "code": 723024,
+      "region": "Secret Woods"
+    },
+    "Friendsanity: Mr. Ginger 1 <3": {
+      "code": 723025,
+      "region": "Forest"
+    },
+    "Friendsanity: Mr. Ginger 2 <3": {
+      "code": 723026,
+      "region": "Forest"
+    },
+    "Friendsanity: Mr. Ginger 3 <3": {
+      "code": 723027,
+      "region": "Forest"
+    },
+    "Friendsanity: Mr. Ginger 4 <3": {
+      "code": 723028,
+      "region": "Forest"
+    },
+    "Friendsanity: Mr. Ginger 5 <3": {
+      "code": 723029,
+      "region": "Forest"
+    },
+    "Friendsanity: Mr. Ginger 6 <3": {
+      "code": 723030,
+      "region": "Forest"
+    },
+    "Friendsanity: Mr. Ginger 7 <3": {
+      "code": 723031,
+      "region": "Forest"
+    },
+    "Friendsanity: Mr. Ginger 8 <3": {
+      "code": 723032,
+      "region": "Forest"
+    },
+    "Friendsanity: Mr. Ginger 9 <3": {
+      "code": 723033,
+      "region": "Forest"
+    },
+    "Friendsanity: Mr. Ginger 10 <3": {
+      "code": 723034,
+      "region": "Forest"
+    },
+    "Friendsanity: Ayeisha 1 <3": {
+      "code": 723035,
+      "region": "Town"
+    },
+    "Friendsanity: Ayeisha 2 <3": {
+      "code": 723036,
+      "region": "Town"
+    },
+    "Friendsanity: Ayeisha 3 <3": {
+      "code": 723037,
+      "region": "Town"
+    },
+    "Friendsanity: Ayeisha 4 <3": {
+      "code": 723038,
+      "region": "Town"
+    },
+    "Friendsanity: Ayeisha 5 <3": {
+      "code": 723039,
+      "region": "Town"
+    },
+    "Friendsanity: Ayeisha 6 <3": {
+      "code": 723040,
+      "region": "Town"
+    },
+    "Friendsanity: Ayeisha 7 <3": {
+      "code": 723041,
+      "region": "Town"
+    },
+    "Friendsanity: Ayeisha 8 <3": {
+      "code": 723042,
+      "region": "Town"
+    },
+    "Friendsanity: Ayeisha 9 <3": {
+      "code": 723043,
+      "region": "Town"
+    },
+    "Friendsanity: Ayeisha 10 <3": {
+      "code": 723044,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 1 <3": {
+      "code": 723045,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 2 <3": {
+      "code": 723046,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 3 <3": {
+      "code": 723047,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 4 <3": {
+      "code": 723048,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 5 <3": {
+      "code": 723049,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 6 <3": {
+      "code": 723050,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 7 <3": {
+      "code": 723051,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 8 <3": {
+      "code": 723052,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 9 <3": {
+      "code": 723053,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 10 <3": {
+      "code": 723054,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 11 <3": {
+      "code": 723055,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 12 <3": {
+      "code": 723056,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 13 <3": {
+      "code": 723057,
+      "region": "Town"
+    },
+    "Friendsanity: Shiko 14 <3": {
+      "code": 723058,
+      "region": "Town"
+    },
+    "Friendsanity: Wellwick 1 <3": {
+      "code": 723059,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 2 <3": {
+      "code": 723060,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 3 <3": {
+      "code": 723061,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 4 <3": {
+      "code": 723062,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 5 <3": {
+      "code": 723063,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 6 <3": {
+      "code": 723064,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 7 <3": {
+      "code": 723065,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 8 <3": {
+      "code": 723066,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 9 <3": {
+      "code": 723067,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 10 <3": {
+      "code": 723068,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 11 <3": {
+      "code": 723069,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 12 <3": {
+      "code": 723070,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 13 <3": {
+      "code": 723071,
+      "region": "Forest"
+    },
+    "Friendsanity: Wellwick 14 <3": {
+      "code": 723072,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 1 <3": {
+      "code": 723073,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 2 <3": {
+      "code": 723074,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 3 <3": {
+      "code": 723075,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 4 <3": {
+      "code": 723076,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 5 <3": {
+      "code": 723077,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 6 <3": {
+      "code": 723078,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 7 <3": {
+      "code": 723079,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 8 <3": {
+      "code": 723080,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 9 <3": {
+      "code": 723081,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 10 <3": {
+      "code": 723082,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 11 <3": {
+      "code": 723083,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 12 <3": {
+      "code": 723084,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 13 <3": {
+      "code": 723085,
+      "region": "Forest"
+    },
+    "Friendsanity: Delores 14 <3": {
+      "code": 723086,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 1 <3": {
+      "code": 723087,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 2 <3": {
+      "code": 723088,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 3 <3": {
+      "code": 723089,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 4 <3": {
+      "code": 723090,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 5 <3": {
+      "code": 723091,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 6 <3": {
+      "code": 723092,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 7 <3": {
+      "code": 723093,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 8 <3": {
+      "code": 723094,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 9 <3": {
+      "code": 723095,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 10 <3": {
+      "code": 723096,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 11 <3": {
+      "code": 723097,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 12 <3": {
+      "code": 723098,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 13 <3": {
+      "code": 723099,
+      "region": "Forest"
+    },
+    "Friendsanity: Alec 14 <3": {
+      "code": 723100,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 1 <3": {
+      "code": 723101,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 2 <3": {
+      "code": 723102,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 3 <3": {
+      "code": 723103,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 4 <3": {
+      "code": 723104,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 5 <3": {
+      "code": 723105,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 6 <3": {
+      "code": 723106,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 7 <3": {
+      "code": 723107,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 8 <3": {
+      "code": 723108,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 9 <3": {
+      "code": 723109,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 10 <3": {
+      "code": 723110,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 11 <3": {
+      "code": 723111,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 12 <3": {
+      "code": 723112,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 13 <3": {
+      "code": 723113,
+      "region": "Forest"
+    },
+    "Friendsanity: Eugene 14 <3": {
+      "code": 723114,
+      "region": "Forest"
+    },
+    "Friendsanity: Juna 1 <3": {
+      "code": 723115,
+      "region": "Forest"
+    },
+    "Friendsanity: Juna 2 <3": {
+      "code": 723116,
+      "region": "Forest"
+    },
+    "Friendsanity: Juna 3 <3": {
+      "code": 723117,
+      "region": "Forest"
+    },
+    "Friendsanity: Juna 4 <3": {
+      "code": 723118,
+      "region": "Forest"
+    },
+    "Friendsanity: Juna 5 <3": {
+      "code": 723119,
+      "region": "Forest"
+    },
+    "Friendsanity: Juna 6 <3": {
+      "code": 723120,
+      "region": "Forest"
+    },
+    "Friendsanity: Juna 7 <3": {
+      "code": 724001,
+      "region": "Forest"
+    },
+    "Friendsanity: Juna 8 <3": {
+      "code": 724002,
+      "region": "Forest"
+    },
+    "Friendsanity: Juna 9 <3": {
+      "code": 724003,
+      "region": "Forest"
+    },
+    "Friendsanity: Juna 10 <3": {
+      "code": 724004,
+      "region": "Forest"
+    },
+    "Premium Pack": {
+      "code": 724005,
+      "region": "Pierre's General Store"
+    },
+    "Tractor Garage Blueprint": {
+      "code": 724006,
+      "region": "Carpenter Shop"
+    },
+    "Pet the Deep Woods Unicorn": {
+      "code": 724007,
+      "region": "The Deep Woods Depth 100"
+    },
+    "Breaking Up Deep Woods Gingerbread House": {
+      "code": 724008,
+      "region": "The Deep Woods Depth 50"
+    },
+    "Drinking From Deep Woods Fountain": {
+      "code": 724009,
+      "region": "The Deep Woods Depth 50"
+    },
+    "Deep Woods Treasure Chest": {
+      "code": 724010,
+      "region": "The Deep Woods Depth 100"
+    },
+    "Deep Woods Trash Bin": {
+      "code": 724011,
+      "region": "The Deep Woods Depth 100"
+    },
+    "Chop Down a Deep Woods Iridium Tree": {
+      "code": 724012,
+      "region": "The Deep Woods Depth 50"
     }
   }
 }

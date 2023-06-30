@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Rope Bridge",
     "Author": "Teban100",
-    "Version": "1.0.1-unofficial.3-pathoschild",
+    "Version": "1.0.1-unofficial.4-pathoschild",
     "Description": "Lets you walk over stairs in the mines and Skull Cavern.",
     "UniqueID": "RopeBridge",
     "EntryDll": "RopeBridge.dll",

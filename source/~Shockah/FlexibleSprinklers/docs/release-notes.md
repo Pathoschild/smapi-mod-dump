@@ -10,6 +10,12 @@ for queries and analysis.**
 
 # Release notes
 
+## 2.1.0
+Released 20 June 2023.
+
+* Replaced sprinkler tier power with new sprinkler tier coverage options.
+* Added an easter egg.
+
 ## 2.0.0
 Released 30 May 2023.
 

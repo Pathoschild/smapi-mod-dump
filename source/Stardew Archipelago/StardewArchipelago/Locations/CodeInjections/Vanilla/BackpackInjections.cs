@@ -47,15 +47,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         private static void UpdateMaxItemsForBackpackDisplay()
         {
+            var numReceivedBackpacks = _archipelago.GetReceivedItemCount(PROGRESSIVE_BACKPACK);
             if (_locationChecker.IsLocationMissingAndExists(LARGE_PACK))
             {
                 _maxItemsForBackpackDisplay = 12;
             }
-            else if (_locationChecker.IsLocationMissingAndExists(DELUXE_PACK))
+            else if (_locationChecker.IsLocationMissingAndExists(DELUXE_PACK) && numReceivedBackpacks >= 1)
             {
                 _maxItemsForBackpackDisplay = 24;
             }
-            else if (_locationChecker.IsLocationMissingAndExists(PREMIUM_PACK))
+            else if (_locationChecker.IsLocationMissingAndExists(PREMIUM_PACK) && numReceivedBackpacks >= 2)
             {
                 _maxItemsForBackpackDisplay = 36;
             }
@@ -141,6 +142,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static void BuyBackPackArchipelago(GameLocation __instance, out bool __result)
         {
             __result = true;
+            var numReceivedBackpacks = _archipelago.GetReceivedItemCount(PROGRESSIVE_BACKPACK);
 
             var responsePurchaseLevel1 = new Response("Purchase",
                 Game1.content.LoadString("Strings\\Locations:SeedShop_BuyBackpack_Response2000"));
@@ -158,7 +160,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                         responseDontPurchase
                     }, "Backpack");
             }
-            else if (_locationChecker.IsLocationNotChecked(DELUXE_PACK) && _archipelago.HasReceivedItem("Progressive Backpack"))
+            else if (_locationChecker.IsLocationNotChecked(DELUXE_PACK) && numReceivedBackpacks >= 1)
             {
                 __instance.createQuestionDialogue(
                     Game1.content.LoadString("Strings\\Locations:SeedShop_BuyBackpack_Question36"),
@@ -168,8 +170,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                         responseDontPurchase
                     }, "Backpack");
             }
-            else if (_archipelago.SlotData.Mods.HasMod(ModNames.BIGGER_BACKPACK) && _locationChecker.IsLocationMissingAndExists(PREMIUM_PACK)
-            && _archipelago.GetReceivedItemCount("Progressive Backpack") >= 2)
+            else if (_archipelago.SlotData.Mods.HasMod(ModNames.BIGGER_BACKPACK) && _locationChecker.IsLocationMissingAndExists(PREMIUM_PACK) && numReceivedBackpacks >= 2)
             {
                 Response yes = new Response("Purchase", "Purchase (50,000g)");
                 Response no = new Response("Not", Game1.content.LoadString("Strings\\Locations:SeedShop_BuyBackpack_ResponseNo"));

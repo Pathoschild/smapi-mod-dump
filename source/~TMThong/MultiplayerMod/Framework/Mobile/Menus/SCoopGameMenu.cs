@@ -21,6 +21,7 @@ using StardewValley.Menus;
 using StardewValley;
 using MultiplayerMod.Framework.Patch.Mobile;
 using MultiplayerMod.Framework.Network;
+using MultiplayerMod.Framework.Mobile.Menus;
 using LidgrenClient = MultiplayerMod.Framework.Network.LidgrenClient;
 
 namespace MultiplayerMod.Framework.Mobile.Menus
@@ -40,7 +41,7 @@ namespace MultiplayerMod.Framework.Mobile.Menus
         // Token: 0x0600267C RID: 9852 RVA: 0x002C9C2F File Offset: 0x002C7E2F
         public override bool readyToClose()
         {
-            return  base.readyToClose();
+            return base.readyToClose();
         }
 
         // Token: 0x0600267D RID: 9853 RVA: 0x00002DD5 File Offset: 0x00000FD5
@@ -80,7 +81,7 @@ namespace MultiplayerMod.Framework.Mobile.Menus
             this.connectionFinished();
 
         }
-         
+
 
         // Token: 0x06002681 RID: 9857 RVA: 0x002C9C88 File Offset: 0x002C7E88
         protected virtual void connectionFinished()
@@ -191,7 +192,7 @@ namespace MultiplayerMod.Framework.Mobile.Menus
             setMenu(new SFarmhandMenu(ModUtilities.multiplayer.InitClient(new LidgrenClient(address))));
         }
 
-        
+
 
         // Token: 0x0600268B RID: 9867 RVA: 0x002CA1E4 File Offset: 0x002C83E4
         private void enterInviteCodePressed()
@@ -419,17 +420,21 @@ namespace MultiplayerMod.Framework.Mobile.Menus
             // Token: 0x060035AB RID: 13739 RVA: 0x003B4AE6 File Offset: 0x003B2CE6
             public HostNewFarmSlot(SCoopGameMenu menu) : base(menu, Game1.content.LoadString("Strings\\UI:CoopMenu_HostNewFarm"))
             {
-                
+
             }
 
             // Token: 0x060035AC RID: 13740 RVA: 0x003B4B09 File Offset: 0x003B2D09
             public override void Activate()
             {
                 Game1.resetPlayer();
-                TitleMenu.subMenu = new CharacterCustomization(CharacterCustomization.Source.HostNewFarm);
+
+                TitleMenu.subMenu = new SCharacterCustomization(source: CharacterCustomization.Source.HostNewFarm);
                 Game1.changeMusicTrack("CloudCountry", false, Game1.MusicContext.Default);
+
             }
         }
+
+        
 
         // Token: 0x02000475 RID: 1141
         public class HostFileSlot : SLoadGameMenu.SaveFileSlot

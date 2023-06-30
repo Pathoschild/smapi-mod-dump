@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Netcode;
@@ -49,7 +50,10 @@ namespace StardewArchipelago.Items.Mail
             _letterActions.Add(LetterActionsKeys.ClubCard, (_) => ReceiveClubCard());
             _letterActions.Add(LetterActionsKeys.MagnifyingGlass, (_) => ReceiveMagnifyingGlass());
             _letterActions.Add(LetterActionsKeys.IridiumSnakeMilk, (_) => ReceiveIridiumSnakeMilk());
+            _letterActions.Add(LetterActionsKeys.DarkTalisman, (_) => ReceiveDarkTalisman());
+            _letterActions.Add(LetterActionsKeys.KeyToTheTown, (_) => ReceiveKeyToTheTown());
             _letterActions.Add(LetterActionsKeys.GoldenScythe, (_) => ReceiveGoldenScythe());
+            _letterActions.Add(LetterActionsKeys.PierreStocklist, (_) => ReceivePierreStocklist());
             _letterActions.Add(LetterActionsKeys.BeachBridge, (_) => RepairBeachBridge());
             _letterActions.Add(LetterActionsKeys.ProgressiveTool, ReceiveProgressiveTool);
             _letterActions.Add(LetterActionsKeys.FishingRod, (_) => GetFishingRodOfNextLevel());
@@ -59,6 +63,9 @@ namespace StardewArchipelago.Items.Mail
             _letterActions.Add(LetterActionsKeys.GiveBoots, ReceiveBoots);
             _letterActions.Add(LetterActionsKeys.GiveMeleeWeapon, ReceiveMeleeWeapon);
             _letterActions.Add(LetterActionsKeys.GiveSlingshot, ReceiveSlingshot);
+            _letterActions.Add(LetterActionsKeys.GiveBed, ReceiveBed);
+            _letterActions.Add(LetterActionsKeys.GiveFishTank, ReceiveFishTank);
+            _letterActions.Add(LetterActionsKeys.GiveTV, ReceiveTV);
             _letterActions.Add(LetterActionsKeys.GiveFurniture, ReceiveFurniture);
             _letterActions.Add(LetterActionsKeys.GiveHat, ReceiveHat);
             _letterActions.Add(LetterActionsKeys.IslandUnlock, PerformParrotUpgrade);
@@ -155,6 +162,16 @@ namespace StardewArchipelago.Items.Mail
             Game1.player.maxHealth += 25;
         }
 
+        public void ReceiveDarkTalisman()
+        {
+            Game1.player.hasDarkTalisman = true;
+        }
+
+        public void ReceiveKeyToTheTown()
+        {
+            Game1.player.HasTownKey = true;
+        }
+
         private void ReceiveAdventurerGuild()
         {
             Game1.player.mailReceived.Add("guildMember");
@@ -166,6 +183,15 @@ namespace StardewArchipelago.Items.Mail
             var goldenScythe = new MeleeWeapon(53);
             Game1.player.holdUpItemThenMessage(goldenScythe);
             Game1.player.addItemByMenuIfNecessary(goldenScythe);
+        }
+
+        private void ReceivePierreStocklist()
+        {
+            Game1.addMailForTomorrow("gotMissingStocklist", true, true);
+            var stocklist = new Object(897, 1);
+            stocklist.questItem.Value = true;
+            Game1.player.holdUpItemThenMessage(stocklist);
+            Game1.player.addItemByMenuIfNecessary(stocklist);
         }
 
         private void RepairBeachBridge()
@@ -231,7 +257,18 @@ namespace StardewArchipelago.Items.Mail
 
         private static bool TryUpgradeToolInChests(string toolName, out Tool upgradedTool)
         {
-            foreach (var gameLocation in Game1.locations)
+            var locations = Game1.locations.ToList();
+
+            foreach (var building in Game1.getFarm().buildings)
+            {
+                if (building?.indoors.Value == null)
+                {
+                    continue;
+                }
+                locations.Add(building.indoors.Value);
+            }
+
+            foreach (var gameLocation in locations)
             {
                 foreach (var (tile, gameObject) in gameLocation.Objects.Pairs)
                 {
@@ -301,7 +338,13 @@ namespace StardewArchipelago.Items.Mail
 
         private void GetFishingRodOfNextLevel()
         {
+            // This includes the current letter due to the timing of this patch
             var numberOfPreviousFishingRodLetters = _mail.OpenedMailsContainingKey(VanillaUnlockManager.PROGRESSIVE_FISHING_ROD_AP_NAME);
+
+            // received 1 -> training rod [1]
+            // received 2 -> bamboo [0]
+            // received 3 -> fiberglass [2]
+            // received 4 -> iridium [3]
 
             numberOfPreviousFishingRodLetters = Math.Max(1, Math.Min(4, numberOfPreviousFishingRodLetters));
             var upgradeLevel = numberOfPreviousFishingRodLetters - 1;
@@ -329,49 +372,75 @@ namespace StardewArchipelago.Items.Mail
             var id = int.Parse(bigCraftableId);
             var bigCraftable = new Object(Vector2.Zero, id);
             bigCraftable.Stack = 1;
-            Game1.player.addItemByMenuIfNecessaryElseHoldUp(bigCraftable);
+            ReceiveItem(bigCraftable);
         }
 
         private void ReceiveRing(string ringId)
         {
             var id = int.Parse(ringId);
             var ring = new Ring(id);
-            Game1.player.addItemByMenuIfNecessaryElseHoldUp(ring);
+            ReceiveItem(ring);
         }
 
         private void ReceiveBoots(string bootsId)
         {
             var id = int.Parse(bootsId);
             var boots = new Boots(id);
-            Game1.player.addItemByMenuIfNecessaryElseHoldUp(boots);
+            ReceiveItem(boots);
         }
 
         private void ReceiveMeleeWeapon(string weaponId)
         {
             var id = int.Parse(weaponId);
             var weapon = new MeleeWeapon(id);
-            Game1.player.addItemByMenuIfNecessaryElseHoldUp(weapon);
+            ReceiveItem(weapon);
         }
 
         private void ReceiveSlingshot(string slingshotId)
         {
             var id = int.Parse(slingshotId);
             var slingshot = new Slingshot(id);
-            Game1.player.addItemByMenuIfNecessaryElseHoldUp(slingshot);
+            ReceiveItem(slingshot);
+        }
+
+        private void ReceiveBed(string furnitureId)
+        {
+            var id = int.Parse(furnitureId);
+            var furniture = new BedFurniture(id, Vector2.Zero);
+            ReceiveItem(furniture);
+        }
+
+        private void ReceiveFishTank(string furnitureId)
+        {
+            var id = int.Parse(furnitureId);
+            var furniture = new FishTankFurniture(id, Vector2.Zero);
+            ReceiveItem(furniture);
+        }
+
+        private void ReceiveTV(string furnitureId)
+        {
+            var id = int.Parse(furnitureId);
+            var furniture = new TV(id, Vector2.Zero);
+            ReceiveItem(furniture);
         }
 
         private void ReceiveFurniture(string furnitureId)
         {
             var id = int.Parse(furnitureId);
             var furniture = new Furniture(id, Vector2.Zero);
-            Game1.player.addItemByMenuIfNecessaryElseHoldUp(furniture);
+            ReceiveItem(furniture);
+        }
+
+        private void ReceiveItem(Item item)
+        {
+            Game1.player.addItemByMenuIfNecessaryElseHoldUp(item);
         }
 
         private void ReceiveHat(string hatId)
         {
             var id = int.Parse(hatId);
             var hat = new Hat(id);
-            Game1.player.addItemByMenuIfNecessaryElseHoldUp(hat);
+            ReceiveItem(hat);
         }
 
         private void PerformParrotUpgrade(string whichUpgrade)
@@ -385,7 +454,7 @@ namespace StardewArchipelago.Items.Mail
                     RestoreIslandResort();
                     return;
                 case "Hut":
-                    GainLeoTrust();
+                    GainLeoTrustAndRemoveNorthernTurtle();
                     return;
                 case "Bridge":
                     RepairDigSiteBridge();
@@ -418,7 +487,7 @@ namespace StardewArchipelago.Items.Mail
         private const string _islandSouth = "IslandSouth";
         private const string _islandNorth = "IslandNorth";
         private const string _islandWest = "IslandWest";
-        private const string _volcanoDungeon = "VolcanoDungeon";
+        private const string _volcanoDungeon = "VolcanoDungeon0";
 
         private static T FindLocation<T>(string locationName)
         {
@@ -431,9 +500,14 @@ namespace StardewArchipelago.Items.Mail
             return locationOfDesiredType;
         }
 
-        private static void GainLeoTrust()
+        private static void GainLeoTrustAndRemoveNorthernTurtle()
         {
             var islandHut = FindLocation<IslandHut>(_islandHut);
+            const string vanillaLetter = "Island_FirstParrot";
+            if (!Game1.player.mailReceived.Contains(vanillaLetter))
+            {
+                Game1.player.mailReceived.Add(vanillaLetter);
+            }
 
             islandHut.firstParrotDone.Value = true;
             islandHut.parrotBoyEvent.Fire();

@@ -60,5 +60,28 @@ namespace StardewArchipelago.Locations.Festival
                 return true; // run original logic
             }
         }
+
+        // public bool chooseResponse(Response response)
+        public static void ChooseResponse_LegendOfTheWinterStar_Postfix(Dialogue __instance, Response response,
+            bool result)
+        {
+            try
+            {
+                if (__instance.speaker.Name != "Willy" || !Game1.CurrentEvent.isFestival || Game1.currentSeason != "winter" || Game1.dayOfMonth != 25)
+                {
+                    return;
+                }
+
+                if (response.responseKey == "quickResponse1")
+                {
+                    _locationChecker.AddCheckedLocation("The Legend of the Winter Star");
+                }
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(ChooseResponse_LegendOfTheWinterStar_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+        }
     }
 }

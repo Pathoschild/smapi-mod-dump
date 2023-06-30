@@ -32,7 +32,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
     {
         private static readonly string[] _ignoredQuests = {
             "To The Beach", "Explore The Mine", "Deeper In The Mine", "To The Bottom?", "The Mysterious Qi",
-            "A Winter Mystery", "Cryptic Note", "Dark Talisman", "Goblin Problem", "The Pirate's Wife"
+            "A Winter Mystery", "Cryptic Note", "Dark Talisman", "Goblin Problem"
         };
 
         private static IMonitor _monitor;

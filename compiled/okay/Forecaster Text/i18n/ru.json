@@ -1,0 +1,95 @@
+{
+	"source.tv": "ТВ: {{content}}",
+	"source.calendar": "Календарь: {{content}}",
+	
+	"tv.spirits": "{{spirit}} сегодня {{mood}}",
+	"tv.recipe": "{{icon}} Научитесь делать \"{{recipe}}\"",
+	"tv.birthday": "{{icon}}{{...}}",
+	
+	"tv.weather.pelican_town": "Завтра в Городе Пеликан {{...}}",
+	"tv.weather.ginger_island": "Завтра на Имбирном Острове {{...}}",
+	
+	"config.weather": "Показывать погоду",
+	"config.weather.desc": "Когда показывать сообщения о погоде",
+	
+	"config.weather.pelican_town": "Город Пеликан",
+	"config.weather.pelican_town.desc": "Когда показывать погоду для Города Пеликан",
+	"config.weather.ginger_island": "Имбирный Остров",
+	"config.weather.ginger_island.desc": "Когда показывать погоду на Имбирном Острове",
+	
+	"config.weather.show.always": "Всегда",
+	"config.weather.show.raining": "В дождь",
+	"config.weather.show.not_raining": "Не в дождь",
+	"config.weather.show.never": "Никогда",
+	
+	"config.birthdays": "Показывать дни рождения",
+	"config.birthdays.desc": "Показывать ли сообщения о днях рождения",
+	"config.birthdays.desc2": "Если есть дни рождения",
+	
+	"config.birthdays.use_names": "Использовать имена",
+	"config.birthdays.use_names.desc": "Показывать имена жителей вместо иконки их лица",
+	
+	"config.luck": "Показывать удачу",
+	"config.luck.desc": "Показывать ли сообщения об удаче",
+	
+	"config.luck.good": "Показывать удачу",
+	"config.luck.good.desc": "Отображать сообщения об удаче",
+	"config.luck.neutral": "Показывать нейтральную удачу",
+	"config.luck.neutral.desc": "Отображать сообщения о нейтральной удаче",
+	"config.luck.bad": "Показывать плохую удачу",
+	"config.luck.bad.desc": "Отображать сообщения о плохой удаче",
+	
+	"config.recipes": "Показывать рецепты",
+	"config.recipes.desc": "Показывать ли сообщения о рецептах",
+	
+	"config.recipes.new": "Показывать новые рецепты",
+	"config.recipes.new.desc": "Показывать сообщения для неизвестных рецептов",
+	"config.recipes.learned": "Показывайте выученные рецепты",
+	"config.recipes.learned.desc": "Показывать сообщения для рецептов, которые уже известны",
+	
+	"config.multiplayer": "Мультиплеер",
+	"config.multiplayer.desc": "Настройте параметры мода, которые используются для других игроков",
+	
+	"config.multiplayer.share": "Делитесь с другими игроками",
+	"config.multiplayer.share.desc": "Будет отправлять текстовые оповещения в чат для игроков, у которых нет мода",
+	"config.multiplayer.config": "Используйте те же параметры",
+	"config.multiplayer.config.desc": "Если приведенные здесь опции следует использовать и для других игроков. При отправке оповещений другим игрокам можно использовать параметры, отличные от ваших предпочтений. Выберите заголовок многопользовательской игры, чтобы настроить параметры",
+	
+	"config.icons.spirits": "Иконки духов",
+	"config.icons.spirits.desc": "Иконки используемые в сообщениях для отображения настроения духов",
+	
+	"config.icons.spirit": "Духи",
+	"config.icons.spirits.very_happy": "Очень счасливы",
+	"config.icons.spirits.good_humor": "В хорошем настроении",
+	"config.icons.spirits.neutral": "Нейтральны",
+	"config.icons.spirits.somewhat_annoyed": "Несколько раздраженны",
+	"config.icons.spirits.mildly_perturbed": "Слегка возмущены",
+	"config.icons.spirits.very_displeased": "Очень недовольны",
+	
+	"config.icons.recipes": "Иконки рецептов",
+	"config.icons.recipes.desc": "Иконки используемые в сообщениях о рецептах",
+	
+	"config.icons.recipes.new": "Новый рецепт",
+	"config.icons.recipes.learned": "Известный рецепт",
+	
+	"config.icons.birthdays": "Иконки дня рождения",
+	"config.icons.birthdays.desc": "Иконки, используемые для отображения дней рождения",
+	
+	"config.icons.birthdays.today": "День рождения сегодня",
+	
+	"config.icons.weather": "Иконки погоды",
+	"config.icons.weather.desc": "Иконки используемые в сообщениях о погоде",
+	
+	"config.icons.weather.sunny": "Солнечно",
+	"config.icons.weather.sunny.desc": "Показывает, будет ли солнечно на следующий день.",
+	"config.icons.weather.rain": "Дождь",
+	"config.icons.weather.rain.desc": "Показывает, будет ли дождь на следующий день",
+	"config.icons.weather.thunder": "Гроза",
+	"config.icons.weather.thunder.desc": "Показывает, будет ли гроза на следующий день",
+	"config.icons.weather.snow": "Снег",
+	"config.icons.weather.snow.desc": "Показывает, будет ли снег на следующий день",
+	"config.icons.weather.festival": "Праздник",
+	"config.icons.weather.festival.desc": "Показывает рядом с погодой, будет ли праздник на следующий день",
+	"config.icons.weather.wedding": "Свадьба",
+	"config.icons.weather.wedding.desc": "Показывает рядом с погодой, будет ли свадьба на следующий день"
+}

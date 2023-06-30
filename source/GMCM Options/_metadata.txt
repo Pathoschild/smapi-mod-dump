@@ -6,9 +6,9 @@ mods:
    GMCM Options
 
 latest commit:
-   commit b440c0dbcb8b24e70039c88aa93c7a0b67567430
+   commit e249b899b9843be86085d75d3ede6e4ad8880bc0
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sat Apr 1 20:07:43 2023 -0400
+   Date:   Sun Jun 25 12:23:21 2023 -0400
    
-       Add ability to show a tooltip over the image option; release 1.5.0
+       fix typo in readme
    

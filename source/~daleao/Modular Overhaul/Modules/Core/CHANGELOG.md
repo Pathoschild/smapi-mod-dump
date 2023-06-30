@@ -8,6 +8,26 @@ for queries and analysis.**
 
 # Core Change Log
 
+## 2.5.1 <sup><sub><sup>[🔼](#core-change-log)</sup></sub></sup>
+
+### Changed
+
+* Lowered log level of mod conflicts to Debug.
+
+### Fixed
+
+* Fixed patching order of IClickableMenu.drawHoverText.
+
+## 2.5.0 <sup><sub><sup>[🔼](#core-change-log)</sup></sub></sup>
+
+### Changed
+
+* Simplified the subfolders within assets. All textures are now consolidated under "sprites".
+
+### Fixed
+
+* Fixed an issue with patchers not obaying priority, which caused, for example, Automated Cheese Press to ignore Artisan bonuses when processing Large Milk, among most likely several other unidentified bugs.
+
 ## 2.4.0 <sup><sub><sup>[🔼](#core-change-log)</sup></sub></sup>
 
 ### Added
@@ -17,6 +37,7 @@ for queries and analysis.**
 ### Fixed
 
 * Moved Textures out of Core and to each individual module, preventing a possible error when initializing if certain modules are disabled.
+* Fixed core menu text not using correct translation keys for module selection option.
 
 ## 2.3.0 <sup><sub><sup>[🔼](#core-change-log)</sup></sub></sup>
 

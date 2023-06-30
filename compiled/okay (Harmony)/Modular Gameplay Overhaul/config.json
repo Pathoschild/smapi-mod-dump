@@ -64,7 +64,6 @@
     "AnglerPriceBonusCeiling": 1.0,
     "AquaristFishPondCeiling": 12,
     "ShowFishCollectionMaxIcon": true,
-    "LegendaryPondPopulationCeiling": 6,
     "TrashNeededPerTaxDeductionPct": 100,
     "TrashNeededPerFriendshipPoint": 100,
     "ConservationistTaxBonusCeiling": 0.37,
@@ -171,7 +170,6 @@
     "EnableSpecialMove": true,
     "EnableInfinitySlingshot": true,
     "DisableGracePeriod": true,
-    "BullseyeReplacesCursor": true,
     "FaceMouseCursor": true,
     "SlickMoves": true,
     "EnableAutoSelection": true,
@@ -183,18 +181,9 @@
       "A": 255
     },
     "AutoSelectionRange": 4,
-    "SocketsPerBow": {
-      "PeacefulEnd.Archery.StarterPack/Bow/Copper Bow": 1,
-      "PeacefulEnd.Archery.StarterPack/Bow/Steel Bow": 1,
-      "PeacefulEnd.Archery.StarterPack/Bow/Gold Bow": 2,
-      "PeacefulEnd.Archery.StarterPack/Bow/Iridium Bow": 2,
-      "PeacefulEnd.Archery.StarterPack/Bow/Yoba's Divine Harp": 3,
-      "PeacefulEnd.Archery.StarterPack/Crossbow/Copper Crossbow": 1,
-      "PeacefulEnd.Archery.StarterPack/Crossbow/Steel Crossbow": 1,
-      "PeacefulEnd.Archery.StarterPack/Crossbow/Gold Crossbow": 2,
-      "PeacefulEnd.Archery.StarterPack/Crossbow/Iridium Crossbow": 2,
-      "PeacefulEnd.Archery.StarterPack/Crossbow/Dwarven Repeating Crossbow": 2
-    }
+    "ColorCodedForYourConvenience": true,
+    "DrawCurrentAmmo": true,
+    "BullseyeReplacesCursor": true
   },
   "Tools": {
     "Axe": {
@@ -206,7 +195,8 @@
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
       "ChargedStaminaMultiplier": 1.0,
       "ClearFruitTreeSeeds": false,
@@ -234,7 +224,8 @@
         2,
         3,
         4,
-        5
+        5,
+        6
       ],
       "ChargedStaminaMultiplier": 1.0,
       "BreakBouldersAndMeteorites": true,
@@ -252,7 +243,6 @@
     },
     "Hoe": {
       "BaseStaminaMultiplier": 1.0,
-      "OverrideAffectedTiles": false,
       "AffectedTilesAtEachPowerLevel": [
         {
           "Item1": 3,
@@ -273,13 +263,16 @@
         {
           "Item1": 5,
           "Item2": 2
+        },
+        {
+          "Item1": 7,
+          "Item2": 3
         }
       ],
       "AllowMasterEnchantment": true
     },
     "Can": {
       "BaseStaminaMultiplier": 1.0,
-      "OverrideAffectedTiles": false,
       "AffectedTilesAtEachPowerLevel": [
         {
           "Item1": 3,
@@ -300,10 +293,17 @@
         {
           "Item1": 5,
           "Item2": 2
+        },
+        {
+          "Item1": 7,
+          "Item2": 3
         }
       ],
       "AllowMasterEnchantment": true,
-      "AllowSwiftEnchantment": true
+      "AllowSwiftEnchantment": true,
+      "ExpRewardChance": 0.5,
+      "ExpRewardAmount": 1,
+      "PreventRefillWithSaltWater": true
     },
     "Scythe": {
       "RegularRadius": 2,
@@ -327,7 +327,8 @@
       "R": 255,
       "A": 255
     },
-    "ColorCodedForYourConvenience": false
+    "ColorCodedForYourConvenience": false,
+    "EnableForgeUpgrading": true
   },
   "Enchantments": {
     "MeleeEnchantments": true,
@@ -389,20 +390,20 @@
     "FruitTreeAgingFactor": 1.0,
     "TeaBushAgingFactor": 1.0,
     "DeterministicAgeQuality": true,
-    "MillsPreserveQuality": true,
     "BerryBushExpReward": 5,
     "MushroomBoxExpReward": 1,
     "TapperExpReward": 2,
+    "CropWitherChance": 0.1,
     "PreventFruitTreeWinterGrowth": true,
-    "LargeProducsYieldQuantityOverQuality": true,
+    "LargeDairyYieldsQuantityOverQuality": true,
     "DairyArtisanMachines": [
       "Butter Churn",
       "Ice Cream Machine",
       "Keg",
       "Yogurt Jar"
     ],
+    "TrashDoesNotConsumeBait": true,
     "ExplosionTriggeredBombs": true,
-    "LegendaryFishAlwaysBestQuality": true,
     "SpawnCrowsOnTheseMaps": [
       "IslandWest",
       "Custom_Garden",

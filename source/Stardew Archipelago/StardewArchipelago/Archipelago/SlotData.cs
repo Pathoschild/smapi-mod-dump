@@ -34,7 +34,7 @@ namespace StardewArchipelago.Archipelago
         private const string BUILDING_PROGRESSION_KEY = "building_progression";
         private const string FESTIVAL_OBJECTIVES_KEY = "festival_locations";
         private const string ARCADE_MACHINES_KEY = "arcade_machine_locations";
-        private const string SPECIAL_ORDERS_KEY = "special_orders";
+        private const string SPECIAL_ORDERS_KEY = "special_order_locations";
         private const string HELP_WANTED_LOCATIONS_KEY = "help_wanted_locations";
         private const string FISHSANITY_KEY = "fishsanity";
         private const string MUSEUMSANITY_KEY = "museumsanity";
@@ -56,8 +56,8 @@ namespace StardewArchipelago.Archipelago
         private const string SEED_KEY = "seed";
         private const string MODIFIED_BUNDLES_KEY = "modified_bundles";
         private const string MODIFIED_ENTRANCES_KEY = "randomized_entrances";
-        private const string RANDOMIZE_NPC_APPEARANCES_KEY = "randomize_appearances";
-        private const string RANDOMIZE_NPC_APPEARANCES_DAILY_KEY = "randomize_appearances_daily";
+        // private const string RANDOMIZE_NPC_APPEARANCES_KEY = "randomize_appearances";
+        // private const string RANDOMIZE_NPC_APPEARANCES_DAILY_KEY = "randomize_appearances_daily";
         private const string MULTIWORLD_VERSION_KEY = "client_version";
         private const string MOD_LIST_KEY = "mod_versions";
         
@@ -99,7 +99,7 @@ namespace StardewArchipelago.Archipelago
         public bool DeathLink { get; private set; }
         public string Seed { get; private set; }
         public string MultiworldVersion { get; private set; }
-        private Dictionary<string, string> ModifiedBundles { get; set; }
+        public BundlesManager Bundles { get; set; }
         public Dictionary<string, string> ModifiedEntrances { get; set; }
         public AppearanceRandomization AppearanceRandomization { get; set; }
         public bool AppearanceRandomizationDaily { get; set; }
@@ -146,11 +146,12 @@ namespace StardewArchipelago.Archipelago
             Seed = GetSlotSetting(SEED_KEY, "");
             MultiworldVersion = GetSlotSetting(MULTIWORLD_VERSION_KEY, "");
             var newBundleStringData = GetSlotSetting(MODIFIED_BUNDLES_KEY, "");
-            ModifiedBundles = JsonConvert.DeserializeObject<Dictionary<string, string>>(newBundleStringData);
+            var bundlesData = JsonConvert.DeserializeObject<Dictionary<string, string>>(newBundleStringData);
+            Bundles = new BundlesManager(bundlesData);
             var newEntrancesStringData = GetSlotSetting(MODIFIED_ENTRANCES_KEY, "");
             ModifiedEntrances = JsonConvert.DeserializeObject<Dictionary<string, string>>(newEntrancesStringData);
-            AppearanceRandomization = GetSlotSetting(RANDOMIZE_NPC_APPEARANCES_KEY, AppearanceRandomization.Disabled);
-            AppearanceRandomizationDaily = GetSlotSetting(RANDOMIZE_NPC_APPEARANCES_DAILY_KEY, false);
+            AppearanceRandomization = AppearanceRandomization.Disabled; // GetSlotSetting(RANDOMIZE_NPC_APPEARANCES_KEY, AppearanceRandomization.Disabled);
+            AppearanceRandomizationDaily = false; // GetSlotSetting(RANDOMIZE_NPC_APPEARANCES_DAILY_KEY, false);
             var modsString = GetSlotSetting(MOD_LIST_KEY, "");
             var modsAndVersions = JsonConvert.DeserializeObject<Dictionary<string, string>>(modsString);
             Mods = new ModsManager(modsAndVersions);
@@ -180,26 +181,6 @@ namespace StardewArchipelago.Archipelago
         {
             _console.Log($"SlotData did not contain expected key: \"{key}\"", LogLevel.Warn);
             return defaultValue;
-        }
-
-        private static Dictionary<string, string> vanillaBundleData = null;
-
-        public void ReplaceAllBundles()
-        {
-            if (vanillaBundleData == null)
-            {
-                vanillaBundleData = Game1.content.LoadBase<Dictionary<string, string>>("Data\\Bundles");
-            }
-            Game1.netWorldState.Value.SetBundleData(vanillaBundleData);
-            foreach (var key in ModifiedBundles.Keys)
-            {
-                var oldBundle = Game1.netWorldState.Value.BundleData[key];
-                var newBundle = ModifiedBundles[key];
-                var oldBundleName = oldBundle.Split("/")[0];
-                var newBundleName = newBundle.Split("/")[0];
-                CommunityCenterInjections.BundleNames.Add(newBundleName, oldBundleName);
-                Game1.netWorldState.Value.BundleData[key] = newBundle;
-            }
         }
     }
 
@@ -289,6 +270,9 @@ namespace StardewArchipelago.Archipelago
         Special = 2,
         RandomSelection = 3,
         All = 4,
+        ExcludeLegendaries = 5,
+        ExcludeHardFish = 6,
+        OnlyEasyFish = 7,
     }
 
     public enum Museumsanity

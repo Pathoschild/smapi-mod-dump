@@ -120,14 +120,14 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 {
                     case SpecialOrder.QuestDuration.Week:
                         // worldDate = new WorldDate(Game1.year, Game1.currentSeason, (Game1.dayOfMonth - 1) / 7 * 7);
-                        __instance.dueDate.Value = today + (7 - Game1.dayOfMonth % 7);
+                        __instance.dueDate.Value = today + (7 - Game1.dayOfMonth % 7) + 1;
                         break;
                     case SpecialOrder.QuestDuration.Month:
-                        __instance.dueDate.Value = today + (28 - Game1.dayOfMonth);
+                        __instance.dueDate.Value = today + (28 - Game1.dayOfMonth) + 1;
                         break;
                     case SpecialOrder.QuestDuration.TwoWeeks:
                         // worldDate = new WorldDate(Game1.year, Game1.currentSeason, (Game1.dayOfMonth - 1) / 7 * 7);
-                        __instance.dueDate.Value = today + (14 - Game1.dayOfMonth % 7);
+                        __instance.dueDate.Value = today + (14 - Game1.dayOfMonth % 7) + 1;
                         break;
                     case SpecialOrder.QuestDuration.TwoDays:
                         __instance.dueDate.Value = today + 2;
@@ -141,7 +141,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(IsSpecialOrdersBoardUnlocked_UnlockBasedOnApItem_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(SetDuration_UseCorrectDateWithSeasonRandomizer_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic;
             }
         }

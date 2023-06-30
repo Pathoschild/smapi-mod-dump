@@ -6,9 +6,9 @@ mods:
    Unlockable Areas
 
 latest commit:
-   commit 57de455ba7479fe1bb85abf4ae5219ea64a932cf
+   commit eeeb9e53c0b4fd6846d4487d06b93aa5640ae8df
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Sat May 20 21:55:39 2023 +0200
+   Date:   Thu Jun 29 22:12:16 2023 +0200
    
-       Merge branch 'main' of gitlab.com:delixx/stardew-valley-unlockable-areas
+       removed chest menu
    

@@ -96,6 +96,37 @@
                 {"R":128, "G":0, "B":128},
             ]
         },
+        // https://prideflags.info/flag/mlm
+        // https://www.lgbtqnation.com/2022/06/mlm-pride-flag/
+        // https://en.m.wikipedia.org/wiki/File:New_Gay_Pride_Flag.svg
+        {
+            "Id": "mlm",
+            "Name": "MLM Pride",
+            "Colors": [
+                {"R":4, "G":141, "B":111},
+                {"R":38, "G":206, "B":170},
+                {"R":152, "G":232, "B":192},
+                {"R":255, "G":255, "B":255},
+                {"R":122, "G":173, "B":226},
+                {"R":79, "G":73, "B":203},
+                {"R":61, "G":26, "B":120},
+            ]
+        },
+        // https://www.queerty.com/wlw-pride-flag-20220626
+        // https://www.sexualdiversity.org/edu/flags/1095.php
+        {
+            "Id": "wlw",
+            "Name": "WLW (Lesbian) Pride",
+            "Colors": [
+                {"R":213, "G":45, "B":0},
+                {"R":239, "G":118, "B":39},
+                {"R":255, "G":154, "B":86},
+                {"R":255, "G":255, "B":255},
+                {"R":209, "G":98, "B":164},
+                {"R":181, "G":86, "B":144},
+                {"R":163, "G":2, "B":98},
+            ]
+        },
         // https://www.sexualdiversity.org/edu/flags/1067.php
         {
             "Id": "bi",

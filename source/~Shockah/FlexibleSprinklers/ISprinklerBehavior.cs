@@ -30,7 +30,6 @@ namespace Shockah.FlexibleSprinklers
 		IReadOnlySet<IntPoint> GetSprinklerTiles(IMap<SoilType>.WithKnownSize map, IReadOnlySet<SprinklerInfo> sprinklers)
 			=> GetSprinklerTilesWithSteps(map, sprinklers).SelectMany(step => step.Tiles).ToHashSet();
 
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Nested in another interface")]
 		public interface Independent : ISprinklerBehavior
 		{
 			IReadOnlyList<WateringStep> GetSprinklerTilesWithSteps(IMap<SoilType>.WithKnownSize map, SprinklerInfo sprinkler);

@@ -24,7 +24,7 @@ using HarmonyLib;
 #endregion using directives
 
 [UsedImplicitly]
-[RequiresMod("DIGUS.ANIMALHUSBANDRYMOD")]
+[ModRequirement("DIGUS.ANIMALHUSBANDRYMOD")]
 internal sealed class FeedingBasketOverridesDoFunctionPatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="FeedingBasketOverridesDoFunctionPatcher"/> class.</summary>
@@ -70,12 +70,12 @@ internal sealed class FeedingBasketOverridesDoFunctionPatcher : HarmonyPatcher
                 .Match(new[] { new CodeInstruction(OpCodes.Brfalse_S) }, ILHelper.SearchOption.Previous)
                 .GetOperand(out var isNotRancher)
                 .Return(2)
-                .Count(new[] { new CodeInstruction(OpCodes.Nop) }, out var count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Nop) }, out var count)
                 .Remove(count)
                 .Insert(new[] { new CodeInstruction(OpCodes.Ldarg_S, (byte)5) }) // arg 5 = Farmer who
                 .InsertProfessionCheck(Profession.Rancher.Value, forLocalPlayer: false)
                 .Insert(new[] { new CodeInstruction(OpCodes.Brfalse_S, isNotRancher) })
-                .Count(new[] { new CodeInstruction(OpCodes.Stloc_S, helper.Locals[7]) }, out count)
+                .CountUntil(new[] { new CodeInstruction(OpCodes.Stloc_S, helper.Locals[7]) }, out count)
                 .Copy(out var copy, count)
                 .Insert(copy)
                 .Insert(new[] { new CodeInstruction(OpCodes.Ldarg_S, (byte)5) })

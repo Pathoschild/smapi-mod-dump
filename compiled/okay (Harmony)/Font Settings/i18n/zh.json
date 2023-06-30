@@ -46,6 +46,12 @@
   "ui.invalid-preset-name.invalid-char": "不可包含非法字符，如：/、\\、*、\"、|、<、>、? 等。",
   "ui.invalid-preset-name.duplicated": "该名称已被占用。",
 
+  "ui.preset-info-menu.name": "预设名",
+  "ui.preset-info-menu.notes": "说明",
+  "ui.preset-info-menu.cp-name": "字体包",
+  "ui.preset-info-menu.cp-author": "作者",
+  "ui.preset-info-menu.cp-ver": "版本",
+
   "config.example-text": "示例文本",
   "config.example-text.description": "设置自定义的文本。将覆盖内置文本，所以一般留空即可。",
   "config.min-font-size": "最小字体大小",
@@ -74,8 +80,6 @@
   "config.min-pixel-zoom.description": "字符的缩放比例 最小值（仅对话字体）",
   "config.disable-text-shadow": "禁用字体阴影",
   "config.disable-text-shadow.description": "禁用字体阴影。",
-  "config.simplified-drop-down": "减少下拉框卡顿",
-  "config.simplified-drop-down.description": "在大量数据下，减少下拉框卡顿，代价是选中时不再显示高亮。",
   "config.font-menu-key": "字体菜单",
   "config.font-menu-key.description": "绑定打开字体菜单的按键。",
   "config.font-settings-in-game-menu": "在游戏内置菜单中设置字体",

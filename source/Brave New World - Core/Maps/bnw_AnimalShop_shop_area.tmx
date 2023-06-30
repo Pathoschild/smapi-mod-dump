@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="11" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="20" nextobjectid="40">
+ <tileset firstgid="1" name="1" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior" width="512" height="1088"/>
+  <tile id="581">
+   <animation>
+    <frame tileid="581" duration="500"/>
+    <frame tileid="582" duration="500"/>
+    <frame tileid="581" duration="500"/>
+    <frame tileid="550" duration="500"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="2177" name="Paths" tilewidth="16" tileheight="16" tilecount="36" columns="4">
+  <image source="paths" width="64" height="144"/>
+ </tileset>
+ <tileset firstgid="2213" name="z_bnw" tilewidth="16" tileheight="16" tilecount="1975" columns="25">
+  <image source="spring_1_bnw_tilesheet.png" width="400" height="1264"/>
+ </tileset>
+ <tileset firstgid="4188" name="z_bnw2" tilewidth="16" tileheight="16" tilecount="2976" columns="32">
+  <image source="bnw_vanilla_furniture.png" width="512" height="1488"/>
+ </tileset>
+ <layer id="1" name="Back" width="11" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYCANBDJhx8hy5KrFBhyYMOXtgGx7JogcNjoOSW0CkB3PhJ+GgQYgu54JP02OubjcSqm5pLgXHSTgkSMWAABGeB9Z
+  </data>
+ </layer>
+ <layer id="3" name="Back2" width="11" height="13">
+  <properties>
+   <property name="Draw" value="Back"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYKAOsCRBbSQJaitJdQgQ9JChZzCCCdwMDBOBeBI3YbUrgWpWAfFqItRSCwAAol4Fiw==
+  </data>
+ </layer>
+ <layer id="15" name="Back3" width="11" height="13">
+  <properties>
+   <property name="Draw" value="Back"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYKAOsCRBbSQJaitJdcgooBsAANLjAQw=
+  </data>
+ </layer>
+ <layer id="16" name="Back4" width="11" height="13">
+  <properties>
+   <property name="Draw" value="Back"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYKAOsCRBbSQJaitJdcgooBsAANLjAQw=
+  </data>
+ </layer>
+ <layer id="5" name="Buildings" width="11" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYAJiZjyYBYgZgVgRiLUYMIEFEGcDsTkQ6wCxKhA7ArEXEHuj4QionnAg9gFiV6jaLKgZyLgCiCuBuByIc5DUdgHxJw4Ghs8cCLqLE+EeNyaEWmwAWS0DA361i3Go3cEJcdsuIL0bivcgqbUTxm8uMogjUq030F8+UL8tJKA2G6guB4hXMEDiDhknQtU0Y5EjBQMAqf4bbw==
+  </data>
+ </layer>
+ <layer id="17" name="Buildings2" width="11" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAOsCRBbSQJaitJdcgooBsAANLjAQw=
+  </data>
+ </layer>
+ <layer id="18" name="Buildings3" width="11" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAOsCRBbSQJaitJdcgooBsAANLjAQw=
+  </data>
+ </layer>
+ <layer id="19" name="Buildings4" width="11" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAOsCRBbSSV7BwFAwsAECcAkw==
+  </data>
+ </layer>
+ <layer id="7" name="Front" width="11" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYCAdfALiz1D2HEb8aoWA8sJY1NzAovYmBwPDLQ4EXchJhuPQQBvQDEsg3UGEWfOBaiKB9EIgvQiKkYGcMOXuQQfaTAwMOkzk6V0ExEeheDFUbAmS2HI8eo+SZyUKAADh9hLR
+  </data>
+ </layer>
+ <layer id="9" name="Front2" width="11" height="13">
+  <properties>
+   <property name="Draw" value="Front"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYCANTGNlYJiMB09lRajdxorbHBDYSkAeGagxkehQCkEBJwNDJyd97RxqAAC44wgG
+  </data>
+ </layer>
+ <layer id="11" name="AlwaysFront" width="11" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo4A8AAACPAAB
+  </data>
+ </layer>
+ <layer id="13" name="Paths" width="11" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo4A8AAACPAAB
+  </data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <objectgroup id="6" name="Buildings">
+  <object id="29" name="TileData" x="32" y="112" width="16" height="16">
+   <properties>
+    <property name="Action" value="Door"/>
+   </properties>
+  </object>
+  <object id="30" name="TileData" x="32" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_shop_area_001"/>
+   </properties>
+  </object>
+  <object id="31" name="TileData" x="144" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_shop_area_002"/>
+   </properties>
+  </object>
+  <object id="32" name="TileData" x="48" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_shop_area_001"/>
+   </properties>
+  </object>
+  <object id="33" name="TileData" x="64" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_shop_area_001"/>
+   </properties>
+  </object>
+  <object id="34" name="TileData" x="80" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_shop_area_001"/>
+   </properties>
+  </object>
+  <object id="35" name="TileData" x="144" y="112" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_shop_area_003"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="8" name="Front"/>
+ <objectgroup id="12" name="AlwaysFront"/>
+ <objectgroup id="14" name="Paths"/>
+</map>

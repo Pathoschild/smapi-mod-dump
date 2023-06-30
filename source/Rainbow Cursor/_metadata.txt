@@ -6,9 +6,9 @@ mods:
    Rainbow Cursor
 
 latest commit:
-   commit f3bc8732bf3ba652eec7b55740eadc5dbcbf2152
+   commit 3f42c1c4e96b16cf246d011f8f5492de3945b024
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sat May 27 18:23:28 2023 -0400
+   Date:   Sat Jun 10 15:19:28 2023 -0400
    
-       v1.0.1; update release notes
+       Add mlm and wlw palettes to Pride content pack; up its version to 1.1.0
    

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Startup Volume Config",
+  "Author": "certifiableGrimalkin",
+  "Version": "1.0.3",
+  "Description": "Lets you configure and save the volume Stardew will have, on launching the game.",
+  "UniqueID": "certifiableGrimalkin.StartupVolumeConfig",
+  "EntryDll": "StartupVolumeConfig.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:15846" ]
+}

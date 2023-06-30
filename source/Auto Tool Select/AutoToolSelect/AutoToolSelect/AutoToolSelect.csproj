@@ -2,7 +2,7 @@
   <PropertyGroup>
     <AssemblyName>AutoToolSelect</AssemblyName>
     <RootNamespace>AutoToolSelect</RootNamespace>
-    <Version>3.1</Version>
+    <Version>3.3</Version>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/thespbgamer/LovedLabelsRedux
+   Git: https://github.com/thespbgamer/LovedLabelsRedux.git
+
+mods:
+   Loved Labels Redux
+
+latest commit:
+   commit b33ad1fb3f2c648fb1104671116d94f34493d1fb
+   Author: thespbgamer <thespbgamer@outlook.com>
+   Date:   Sun Jan 22 16:45:01 2023 +0000
+   
+       Finished update 1.2.0
+   

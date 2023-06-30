@@ -6,9 +6,9 @@ mods:
    Survivalistic
 
 latest commit:
-   commit cde826ea446e63650267724c03401d8f004a3fde
-   Author: Gustavo Hinkel <gustavopradahinkel@gmail.com>
-   Date:   Sun Jun 5 15:51:58 2022 -0300
+   commit e633e285761cd785bf77501bc009990721639910
+   Author: Gustavo Hinkel <78951385+Ophaneom@users.noreply.github.com>
+   Date:   Sat Jun 10 03:01:36 2023 -0300
    
-       Changed the version
+       Adjusted version
    

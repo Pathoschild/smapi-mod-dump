@@ -27,7 +27,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         private const string AP_FORTUNE_TELLER = " Fortune Teller";
         private const string AP_LIVING_OFF_THE_LAND = "Livin' Off The Land";
         private const string AP_QUEEN_OF_SAUCE = "The Queen of Sauce";
-        private const string AP_FISHING = " Fishing Information Broadcasting Service";
+        private const string AP_FISHING = "Fishing Information Broadcasting Service";
         private const string AP_SINISTER_SIGNAL = "Sinister Signal";
 
         private static IMonitor _monitor;

@@ -1,0 +1,76 @@
+{
+  // Info warnings.
+  "hunger-warning": "You're hunger. Eat something!",
+  "hunger-source": "Hunger",
+
+  "thirsty-warning": "You're thirsty. Drink something!",
+  "thirsty-source": "Thirsty",
+
+  // Info debuffs.
+  "pass-out": "You're pass out. You need to eat and/or drink.",
+  "pass-out-source": "Body Exhaustion",
+
+  // Info buffs.
+  "buff.fullness.description": "You're fullness. You are so powerful now!",
+  "buff.fullness.source": "Eaten Food",
+
+  "buff.hydrated.description": "You're don't want to drink.",
+  "buff.hydrated.source": "Drunk drink",
+
+  // Info messages.
+  "info-fullness": "+{0} fullness.",
+  "info-thirsty": "+{0} thirst.",
+
+  // Settings.
+  "multiplier-settings": "Multiplier Settings",
+  "multiplier-settings-des": "Hunger and Thirst multiplier values affects speed of losing hunger and/or thirst value.",
+
+  "main-hunger-setting": "Passive Hunger Multiplier",
+  "main-hunger-setting-des": "Affects passive losing of hunger value (every second).",
+
+  "main-thirst-setting": "Passive Thirst Multiplier",
+  "main-thirst-setting-des": "Affects passive losing of thirst value (every second).",
+
+  "action-hunger-setting": "Hunger on Action",
+  "action-hunger-setting-des": "Affects penalty to hunger value, when you're using tools (e.g. Axe or Pickaxe).",
+
+  "action-thirst-setting": "Thirst on Action",
+  "action-thirst-setting-des": "Affects penalty to thirst value, when you're using tools (e.g. Axe or Pickaxe).\nCommonly, you're losing twice more thirst, when using tools, than hunger.",
+
+
+  "bars-position-settings": "Bars Settings",
+  "bars-position-settings-des": "Sets values, that determine place of bars.",
+
+  "bars-position-variant": "Bars Positioning",
+  "bars-position-variant-des": "Sets bars position place. Value must be one of:\n 'custom';\n 'bottom-right';\n 'bottom-left';\n 'middle-right';\n 'middle-left';\n 'top-left';\n 'top-right'.",
+
+  "bars-position-x": "Bars 'X' position",
+  "bars-position-x-des": "Adds 'X' axis offset to bars, calculates on current bars position.\nWork only if 'Bars Positioning' is set to 'custom'.",
+
+  "bars-position-y": "Bars 'Y' position",
+  "bars-position-y-des": "Adds 'Y' axis offset to bars, calculates on current bars position.\nWork only if 'Bars Positioning' is set to 'custom'.",
+
+
+  "compatibility-settings": "Compatibility Features",
+  "compatibility-settings-des": "Enables or Disables compatibility mode for some mods.",
+
+  "walk-of-life-support": "Walk Of Life Compatibility",
+  "walk-of-life-support-des": "Enables or Disables compatibility features with 'Walk Of Life' mod.",
+
+  "wof-colored-special": "Colored Special Ability",
+  "wof-colored-special-des": "Enables or Disables colored hover text in 'Walk Of Life' integration.",
+
+  "non-supported-food": "Allow Non-Supported Food",
+  "non-supported-food-des": "If sets true, mod will automatically create values to eaten food if it doesn't presented in databases.",
+
+  "sleep-options": "Sleep Options",
+
+  "sleep-decrease": "Sleep Decreases Status",
+  "sleep-decrease-des": "If sets enabled, after sleep you're statuses will be decreased (hunger and thirst will extend).",
+
+  "hunger-increase-after-sleep": "Hunger Increase",
+  "hunger-increase-after-sleep-des": "Accurate value, what will added to hunger value after sleep.\nRequire 'Sleep Decrease' to work.",
+
+  "thirst-increase-after-sleep": "Thirst Increase",
+  "thirst-increase-after-sleep-des": "Accurate value, what will added to thirst value after sleep.\nRequire 'Sleep Decrease' to work."
+}

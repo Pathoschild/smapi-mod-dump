@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Characters;
@@ -25,6 +26,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
 {
     public static class FriendshipInjections
     {
+        private const int AUTO_PETTER = 272;
+        private const int DECAY_SPOUSE = -20;
+        private const int DECAY_PARTNER = -8;
+        private const int DECAY_OTHER = -2;
+        private const int AUTOPET_POINTS = 5;
         private const int POINTS_PER_HEART = 250;
         private const int POINTS_PER_PET_HEART = 200;
         private const string HEARTS_PATTERN = "{0} <3";
@@ -65,6 +71,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
         public static Dictionary<string, int> GetArchipelagoFriendshipPoints()
         {
             return _friendshipPoints.ToDictionary(x => x.Key, x => (int)Math.Round(x.Value));
+        }
+
+        public static string GetArchipelagoFriendshipPointsForPrinting(string characterName)
+        {
+            var points = GetFriendshipPoints(characterName);
+            if (points <= 0)
+            {
+                return $"You have never met someone named {characterName}";
+            }
+            return $"{characterName}: {points} ({GetHearts(points)} <)";
         }
 
         public static void SetArchipelagoFriendshipPoints(Dictionary<string, int> values)
@@ -274,12 +290,17 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
         {
             try
             {
+                var isValidTarget = n != null && (n is Child || n.isVillager());
+                if (!isValidTarget)
+                {
+                    return false; // don't run original logic
+                }
+
                 //  Checks if actual name is a value in the dictionary and updates if necessary.
                 var name = n.Name;
                 var friend = _friends.GetFriend(name);
-                var isValidTarget = n != null && (n is Child || n.isVillager());
                 var canCommunicateWithNpc = !friend.RequiresDwarfLanguage || __instance.canUnderstandDwarves;
-                if (!isValidTarget || amount > 0 && !canCommunicateWithNpc)
+                if (amount > 0 && !canCommunicateWithNpc)
                 {
                     return false; // don't run original logic
                 }
@@ -325,8 +346,97 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
             catch (Exception ex)
             {
                 _monitor.Log($"Failed in {nameof(ChangeFriendship_ArchipelagoPoints_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"NPC: {n?.Name ?? "null"}", LogLevel.Error);
                 return true; // run original logic
             }
+        }
+
+        // public void resetFriendshipsForNewDay()
+        public static bool ResetFriendshipsForNewDay_AutopetHumans_Prefix(Farmer __instance)
+        {
+            try
+            {
+                foreach (var npcName in __instance.friendshipData.Keys)
+                {
+                    PerformFriendshipDecay(__instance, npcName);
+                }
+
+                var date = new WorldDate(Game1.Date);
+                ++date.TotalDays;
+                __instance.updateFriendshipGifts(date);
+                return false; // don't run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(ResetFriendshipsForNewDay_AutopetHumans_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
+            }
+        }
+
+        private static void PerformFriendshipDecay(Farmer farmer, string npcName)
+        {
+            var isSingleBachelor = false;
+            var npc = Game1.getCharacterFromName(npcName) ?? Game1.getCharacterFromName<Child>(npcName, false);
+            if (npc == null)
+            {
+                return;
+            }
+
+            if (npc.datable.Value && !farmer.friendshipData[npcName].IsDating() && !npc.isMarried())
+            {
+                isSingleBachelor = true;
+            }
+
+            AutoPetNpc(farmer, npcName, npc);
+
+            if (farmer.hasPlayerTalkedToNPC(npcName))
+            {
+                farmer.friendshipData[npcName].TalkedToToday = false;
+                return;
+            }
+
+            const int bachelorNoDecayThreshold = 2000;
+            const int nonBachelorNoDecayThreshold = 2500;
+            var earnedPoints = GetFriendshipPoints(npcName);
+
+            if (NpcIsSpouse(farmer, npcName))
+            {
+                farmer.changeFriendship(DECAY_SPOUSE, npc);
+            }
+            else if (NpcIsUnmaxedPartner(farmer, npcName))
+            {
+                farmer.changeFriendship(DECAY_PARTNER, npc);
+            }
+            else if ((!isSingleBachelor && farmer.friendshipData[npcName].Points < nonBachelorNoDecayThreshold && earnedPoints < nonBachelorNoDecayThreshold) ||
+                     (isSingleBachelor && farmer.friendshipData[npcName].Points < bachelorNoDecayThreshold && earnedPoints < bachelorNoDecayThreshold))
+            {
+                farmer.changeFriendship(DECAY_OTHER, npc);
+            }
+        }
+
+        private static void AutoPetNpc(Farmer farmer, string npcName, NPC npc)
+        {
+            var npcLocation = npc.currentLocation;
+            foreach (var (_, objectInSameRoom) in npcLocation.Objects.Pairs)
+            {
+                if (!objectInSameRoom.bigCraftable.Value || objectInSameRoom.ParentSheetIndex != AUTO_PETTER)
+                {
+                    continue;
+                }
+
+                farmer.friendshipData[npcName].TalkedToToday = true;
+                farmer.changeFriendship(AUTOPET_POINTS, npc);
+            }
+        }
+
+        private static bool NpcIsUnmaxedPartner(Farmer farmer, string npcName)
+        {
+            return farmer.friendshipData[npcName].IsDating() && farmer.friendshipData[npcName].Points < 2500;
+        }
+
+        private static bool NpcIsSpouse(Farmer farmer, string npcName)
+        {
+            return farmer.spouse != null && npcName.Equals(farmer.spouse);
         }
 
         private static int ShuffledUpTo(ArchipelagoFriend friend)

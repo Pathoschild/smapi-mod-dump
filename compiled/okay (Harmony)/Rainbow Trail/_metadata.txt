@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/16914
+IDs: aedenthorn.RainbowTrail
+update keys: Nexus:16914, GitHub:aedenthorn/StardewValleyMods

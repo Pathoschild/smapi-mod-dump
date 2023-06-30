@@ -7,9 +7,9 @@ mods:
    Travelling Skill
 
 latest commit:
-   commit c6f8fee391641c4cef522c4b42332e2e5b6bf3c9
-   Author: Achtuur <arthurdegroot88@gmail.com>
-   Date:   Tue May 30 15:12:47 2023 +0200
+   commit 2e68662500134aa773a9691f54adf72ee6c9eeba
+   Author: Arthur de Groot <68847937+Achtuur@users.noreply.github.com>
+   Date:   Tue Jun 27 16:08:42 2023 +0200
    
-       add gainexperience patch (untested)
+       Update README.md
    

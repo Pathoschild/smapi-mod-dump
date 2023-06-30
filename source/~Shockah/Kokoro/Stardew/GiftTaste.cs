@@ -11,49 +11,48 @@
 using StardewValley;
 using System;
 
-namespace Shockah.Kokoro.Stardew
+namespace Shockah.Kokoro.Stardew;
+
+public enum GiftTaste
 {
-	public enum GiftTaste
+	Hate = -2,
+	Dislike = -1,
+	Neutral = 0,
+	Like = 1,
+	Love = 2
+}
+
+public static class GiftTasteExt
+{
+	public static GiftTaste From(int taste)
 	{
-		Hate = -2,
-		Dislike = -1,
-		Neutral = 0,
-		Like = 1,
-		Love = 2
+		return taste switch
+		{
+			NPC.gift_taste_hate => GiftTaste.Hate,
+			NPC.gift_taste_dislike => GiftTaste.Dislike,
+			NPC.gift_taste_neutral => GiftTaste.Neutral,
+			NPC.gift_taste_like => GiftTaste.Like,
+			NPC.gift_taste_love => GiftTaste.Love,
+			_ => throw new ArgumentException($"{nameof(taste)} has an invalid value."),
+		};
 	}
 
-	public static class GiftTasteExt
+	public static int GetStardewValue(this GiftTaste self)
 	{
-		public static GiftTaste From(int taste)
+		return self switch
 		{
-			return taste switch
-			{
-				NPC.gift_taste_hate => GiftTaste.Hate,
-				NPC.gift_taste_dislike => GiftTaste.Dislike,
-				NPC.gift_taste_neutral => GiftTaste.Neutral,
-				NPC.gift_taste_like => GiftTaste.Like,
-				NPC.gift_taste_love => GiftTaste.Love,
-				_ => throw new ArgumentException($"{nameof(taste)} has an invalid value."),
-			};
-		}
+			GiftTaste.Hate => NPC.gift_taste_hate,
+			GiftTaste.Dislike => NPC.gift_taste_dislike,
+			GiftTaste.Neutral => NPC.gift_taste_neutral,
+			GiftTaste.Like => NPC.gift_taste_like,
+			GiftTaste.Love => NPC.gift_taste_love,
+			_ => throw new ArgumentException($"{nameof(GiftTaste)} has an invalid value."),
+		};
+	}
 
-		public static int GetStardewValue(this GiftTaste self)
-		{
-			return self switch
-			{
-				GiftTaste.Hate => NPC.gift_taste_hate,
-				GiftTaste.Dislike => NPC.gift_taste_dislike,
-				GiftTaste.Neutral => NPC.gift_taste_neutral,
-				GiftTaste.Like => NPC.gift_taste_like,
-				GiftTaste.Love => NPC.gift_taste_love,
-				_ => throw new ArgumentException($"{nameof(GiftTaste)} has an invalid value."),
-			};
-		}
-
-		public static GiftTaste GetModified(this GiftTaste self, int levels)
-		{
-			int newValue = (int)self + levels;
-			return (GiftTaste)Math.Clamp(newValue, (int)GiftTaste.Hate, (int)GiftTaste.Love);
-		}
+	public static GiftTaste GetModified(this GiftTaste self, int levels)
+	{
+		int newValue = (int)self + levels;
+		return (GiftTaste)Math.Clamp(newValue, (int)GiftTaste.Hate, (int)GiftTaste.Love);
 	}
 }

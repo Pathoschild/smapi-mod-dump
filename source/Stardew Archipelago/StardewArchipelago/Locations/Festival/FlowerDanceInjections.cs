@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
@@ -60,21 +61,31 @@ namespace StardewArchipelago.Locations.Festival
             }
         }
 
-        // public ShopMenu(Dictionary<ISalable, int[]> itemPriceAndStock, int currency = 0, string who = null, Func<ISalable, Farmer, int, bool> on_purchase = null, Func<ISalable, bool> on_sell = null, string context = null)
-        public static bool ShopMenu_HandleRarecrow5_Prefix(ShopMenu __instance, ref Dictionary<ISalable, int[]> itemPriceAndStock, int currency = 0, string who = null, Func<ISalable, Farmer, int, bool> on_purchase = null, Func<ISalable, bool> on_sell = null, string context = null)
+        private static ShopMenu _lastShopMenuUpdated = null;
+        // public override void update(GameTime time)
+        public static void Update_HandleRarecrow5FirstTimeOnly_Postfix(ShopMenu __instance, GameTime time)
         {
             try
             {
-                foreach (var salableItem in itemPriceAndStock.Keys.ToArray())
+                // We only run this once for each menu
+                if (_lastShopMenuUpdated == __instance)
                 {
-                    _shopReplacer.ReplaceShopItem(itemPriceAndStock, salableItem, FestivalLocationNames.RARECROW_5, item => _shopReplacer.IsRarecrow(item, 5));
+                    return;
                 }
-                return true; //  run original logic
+
+                _lastShopMenuUpdated = __instance;
+                foreach (var salableItem in __instance.itemPriceAndStock.Keys.ToArray())
+                {
+                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.RARECROW_5, item => _shopReplacer.IsRarecrow(item, 5));
+                }
+
+                __instance.forSale = __instance.itemPriceAndStock.Keys.ToList();
+                return;
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(ShopMenu_HandleRarecrow5_Prefix)}:\n{ex}", LogLevel.Error);
-                return true; // run original logic
+                _monitor.Log($"Failed in {nameof(Update_HandleRarecrow5FirstTimeOnly_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
             }
         }
     }

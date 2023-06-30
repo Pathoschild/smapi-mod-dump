@@ -14,15 +14,19 @@ mods:
    Multi-User Chests
    Multiplayer Info
    Piggy Bank Mod
+   Quality Bait
    Single-Player Regen
    Sounds Patcher
    Trading
    Unbreakable Tackles
+   Winter Pigs
 
 latest commit:
-   commit a43c87df00e42e981e71d7f46a44814a4ed33ff8
+   commit 4c0e09587bd6fcc2478e69b978a51d018b9f6dc9
    Author: MindMeltMax <mindmeltmax695@gmail.com>
-   Date:   Thu May 18 20:24:47 2023 +0200
+   Date:   Fri Jun 2 19:03:56 2023 +0200
    
-       upload source for Crop Walker & Let Me Shop
+       Added source code for Quality Bait and Winter Pigs
+       
+       Also updated Fishnets
    

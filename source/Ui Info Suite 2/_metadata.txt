@@ -6,11 +6,11 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit 8c89a8ab0756a46c98864a1b433491919559bf69
+   commit a919ed563966eb819c1c562f63d17353739b29d2
    Author: TÃ³th ÃdÃ¡m <adam_toth4@epam.com>
-   Date:   Wed May 3 21:57:57 2023 +0200
+   Date:   Wed Jun 28 11:17:50 2023 +0200
    
-       Merge pull request #310 from AdrianICH/patch-1
+       Merge pull request #319 from TashanDuncan/patch-1
        
-       Spanish Translation Changes
+       fix typos in README.md
    

@@ -7,9 +7,9 @@ mods:
    Archery - Starter Pack
 
 latest commit:
-   commit cd210a8a77fd0ce3dc37f266b506952617877cb2
+   commit 91459c104d9bec69cdbf68b44f399b4e86a3f141
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Tue May 30 16:53:35 2023 -0500
+   Date:   Sat Jun 17 14:53:52 2023 -0500
    
-       v2.2.1 released
+       v2.2.5 released
    

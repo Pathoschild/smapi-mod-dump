@@ -24,7 +24,7 @@ using StardewValley.Tools;
 #endregion using directives
 
 [UsedImplicitly]
-[RequiresMod("PeacefulEnd.Archery", "Archery", "2.1.0")]
+[ModRequirement("PeacefulEnd.Archery", "Archery", "2.1.0")]
 internal sealed class BowRefreshSpecialAttackCooldownPatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="BowRefreshSpecialAttackCooldownPatcher"/> class.</summary>
@@ -37,7 +37,7 @@ internal sealed class BowRefreshSpecialAttackCooldownPatcher : HarmonyPatcher
 
     #region harmony patches
 
-    /// <summary>Apply Emerald Ring and Enchantment effects to Slingshot.</summary>
+    /// <summary>Apply Garnet Ring and Enchantment effects to Bows.</summary>
     [HarmonyPrefix]
     private static void BowRefreshSpecialAttackCooldownPrefix(Tool tool, object specialAttack)
     {
@@ -58,13 +58,13 @@ internal sealed class BowRefreshSpecialAttackCooldownPatcher : HarmonyPatcher
             return;
         }
 
-        var cooldown = ArcheryIntegration.Instance!.ModApi!.GetSpecialAttackCooldown(Manifest, slingshot);
+        var cooldown = ArcheryIntegration.Instance.ModApi!.GetSpecialAttackCooldown(Manifest, slingshot);
         if (!cooldown.HasValue)
         {
             return;
         }
 
-        cooldown = (int)(cooldown * slingshot.Get_GarnetCooldownReduction() * Game1.player.Get_CooldownReduction());
+        cooldown = (int)(cooldown * slingshot.Get_EffectiveCooldownReduction() * Game1.player.Get_CooldownReduction());
         Reflector.GetStaticFieldSetter<int>("Archery.Framework.Objects.Weapons.Bow", "ActiveCooldown").Invoke(cooldown.Value);
     }
 

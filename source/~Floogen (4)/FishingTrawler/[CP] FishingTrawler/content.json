@@ -12,6 +12,54 @@
   "Format": "1.28.4",
   "Changes": [
     {
+      "Action": "Load",
+      "Target": "PeacefulEnd/FishingTrawler/Framework/Assets/TrawlerCabin",
+      "FromFile": "assets/TrawlerCabin.png",
+      "When": {
+        "Query: false": true // Remove or change the "When" block to enable this patch
+      }
+    },
+    {
+      "Action": "Load",
+      "Target": "PeacefulEnd/FishingTrawler/Framework/Assets/TrawlerHull",
+      "FromFile": "assets/TrawlerHull.png",
+      "When": {
+        "Query: false": true // Remove or change the "When" block to enable this patch
+      }
+    },
+    {
+      "Action": "Load",
+      "Target": "PeacefulEnd/FishingTrawler/Framework/Assets/SurfaceTiles",
+      "FromFile": "assets/SurfaceTiles.png",
+      "When": {
+        "Query: false": true // Remove or change the "When" block to enable this patch
+      }
+    },
+    {
+      "Action": "Load",
+      "Target": "PeacefulEnd/FishingTrawler/Framework/Assets/TrawlerTiles",
+      "FromFile": "assets/TrawlerTiles.png",
+      "When": {
+        "Query: false": true // Remove or change the "When" block to enable this patch
+      }
+    },
+    {
+      "Action": "Load",
+      "Target": "PeacefulEnd/FishingTrawler/Framework/Assets/Trident",
+      "FromFile": "assets/Trident.png",
+      "When": {
+        "Query: false": true // Remove or change the "When" block to enable this patch
+      }
+    },
+    {
+      "Action": "Load",
+      "Target": "PeacefulEnd/FishingTrawler/Framework/Assets/Murphy",
+      "FromFile": "assets/Murphy.png",
+      "When": {
+        "Query: false": true // Remove or change the "When" block to enable this patch
+      }
+    },
+    {
       "Action": "EditMap",
       "Target": "Maps/Beach",
       "FromFile": "assets/BeachPatchMurphy.tmx",
@@ -176,6 +224,6 @@
       "When": {
         "DayOfWeek |contains={{PeacefulEnd.FishingTrawler.NewHorizons/MurphyAppearanceDayIsland}}": "false"
       }
-    },
+    }
   ]
 }

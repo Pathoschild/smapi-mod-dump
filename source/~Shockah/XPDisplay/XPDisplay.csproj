@@ -2,7 +2,7 @@
 	<Import Project="..\Configuration.props" />
 	<PropertyGroup>
 		<RootNamespace>Shockah.XPDisplay</RootNamespace>
-		<Version>1.3.0</Version>
+		<Version>1.4.0</Version>
 	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Kokoro\Kokoro.csproj" Private="false" />

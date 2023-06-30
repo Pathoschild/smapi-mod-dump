@@ -21,7 +21,7 @@
     {
       "UniqueID": "PeacefulEnd.FashionSense",
       "IsRequired": false,
-      "MinimumVersion": "5.6.0"
+      "MinimumVersion": "5.7.0"
     },
     {
       "UniqueID": "spacechase0.DynamicGameAssets",

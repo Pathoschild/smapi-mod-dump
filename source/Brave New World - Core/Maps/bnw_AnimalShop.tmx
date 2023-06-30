@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="36" height="21" tilewidth="16" tileheight="16" infinite="0" nextlayerid="20" nextobjectid="65">
+ <editorsettings>
+  <export target="bnw_AnimalShop_shop_area.tmx" format="tmx"/>
+ </editorsettings>
+ <tileset firstgid="1" name="1" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior" width="512" height="1088"/>
+ </tileset>
+ <tileset firstgid="2177" name="Paths" tilewidth="16" tileheight="16" tilecount="36" columns="4">
+  <image source="paths" width="64" height="144"/>
+ </tileset>
+ <tileset firstgid="2213" name="z_bnw" tilewidth="16" tileheight="16" tilecount="1975" columns="25">
+  <image source="spring_1_bnw_tilesheet.png" width="400" height="1264"/>
+ </tileset>
+ <tileset firstgid="4188" name="z_bnw3" tilewidth="16" tileheight="16" tilecount="2976" columns="32">
+  <image source="bnw_vanilla_furniture.png" width="512" height="1488"/>
+ </tileset>
+ <tileset firstgid="7164" name="z_bnw2" tilewidth="16" tileheight="16" tilecount="560" columns="16">
+  <image source="walls_and_floors.png" width="256" height="560"/>
+ </tileset>
+ <layer id="1" name="Back" width="36" height="21">
+  <data encoding="base64" compression="zlib">
+   eJzVlU9OwlAQxueVNoBHUJ52Y9QQD2AI0J0m3bh1I3XNyhPoTfQmEl0op9DEDcYbuMGZ0JcO719baEyc5Jd5r53O93UKrQAAUZG/CNJ5DgFeQndWfn56flRcBn6a8EOxI/006aeDi65Y5SkUe+5nV/rhflTcalTxM0JkTszWxD4UfkbYa4wkeX5k+2umU7XO5WcPGeYkbE30mJ8Me02CIs+0PdSsq+JHh/u5x153gTtDzbpt/ej3rWfXfFx1Lj9JBHAo7Iwjcz6uOdiOZ9p8yoK0MtScCjuTyP0uzBz9dQ8q33TK/bhioXnuSxPS6Evz2ipz8IVNi94/XGsgTWgOA2n2oeNSlnMG63ufFj0rrpVKk4cAktTSh+ZzKsu5gvW9T4vmk7J5vWHdHOxZ1ahrY7x2KP1QHAnzGMUr8hQW+1n+/Zize6bf0xfYs6o5FiuNunxijxP2p6G+S/SwaAF8Ix9hocfnpb5velY157hub0ALuWB+qO8BewfFUaGnnotvPvN8vpv6aWt+XDo8++ZD598b9OPS4dnnl84vG/RTN7pbXPvf4hcOpqv/
+  </data>
+ </layer>
+ <layer id="3" name="Back2" width="36" height="21">
+  <properties>
+   <property name="Draw" value="Back"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo4Ay0IVHroeG6kbBKBgFIwdYDrQD0EAkAflsKCYGHOJmYDgMxEe4yXdPJQ5x9PJUB2iHLhDr4bHrNlDuDhDfRVPTC+T3AXE/Be5EB65As9yA2J0MM5cB9SwH4hVUdM9gAX8ZB9oFo2CoAQDpKBFH
+  </data>
+ </layer>
+ <layer id="15" name="Back3" width="36" height="21">
+  <properties>
+   <property name="Draw" value="Back"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzjEBADAIAzBsIQUpc78fA+VIFKQKAG7rdGCZdGB56QAQ9QGuaAEM
+  </data>
+ </layer>
+ <layer id="16" name="Back4" width="36" height="21">
+  <properties>
+   <property name="Draw" value="Back"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzjEBADAIAzBsIQUpc78fA+VIFKQKAG7rdGCZdGB56QAQ9QGuaAEM
+  </data>
+ </layer>
+ <layer id="5" name="Buildings" width="36" height="21">
+  <data encoding="base64" compression="zlib">
+   eJzdVT1LAzEAzeXu5Kpu4qB1qR8I4lBd6iRUcKnu5yQKtoO61w9QwcWKf8Ktq+Av0EG7Cf6COhdx1Tr4YhOSxiR3Yrv44NHr9SXvJZe+8wghFPQtDECPdJBG5/1CZ2IOnCN2zIMzfdDZ8hTBErhm4Tq42gedK88uuGfhvuLTS50rTxkXFXFIgAscgBo4HWJvQ+kT4ACE4IAvtQ8RIY9gI5I6hhPMdwpmqNQKn6Q8OqbC7u+rFp2KFyXPDq7zvl2blKeIixXPPf7bBx5lsGLwakc/c8/Rbo3wScqTw35ManvC0IKgGUif5RFyZk+dbh8ZzhPyMASDhNyCs8HP8XXwGtzkeeoG39fQfF+gBrNW5N4bj/vYoI7VO+6ea+7AYcP6GNg5YhTXYaaT2ZUnjZep45b4Z0HJTbWxto529XYaL7Zmvdc2uCbmGjGPOtYFpttTdKK3TX3KvA651x1fs95rB1xTVTQlLaeto4VHrOjUfhd92saGf9KOF+FeBb6WPO4vgIu0u+OIotnVcrI5YyrX8OSZ16P3+w3/T2XxICe0bomVNdsgNJeG36psfeAheAQeg2+GrrtS8jxH9l6pErlff9EkoUllnpYjT68wSN2/e77Mg17oa553PJ8PsO14J237sjcYhhLyt0YJ2XLMZwPr5THMPQ5mwYZjjjRdqXObj3W9g/4TvwCYyXP/
+  </data>
+ </layer>
+ <layer id="17" name="Buildings2" width="36" height="21">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjDTwmnOgXYAJWLkG2gWjYDADy4F2ABqIHGgHoIHKgXbAKBgFo2BAAQCVqQIP
+  </data>
+ </layer>
+ <layer id="18" name="Buildings3" width="36" height="21">
+  <data encoding="base64" compression="zlib">
+   eJztzjEBADAIAzBsIQUpc78fA+VIFKQKAG7rdGCZdGB56QAQ9QGuaAEM
+  </data>
+ </layer>
+ <layer id="19" name="Buildings4" width="36" height="21">
+  <data encoding="base64" compression="zlib">
+   eJztzkERAAAEADC1RNG/iK9TgMeWYBEA8FteB5a6DgAMDchmAJM=
+  </data>
+ </layer>
+ <layer id="7" name="Front" width="36" height="21">
+  <data encoding="base64" compression="zlib">
+   eJzllb1Lw0AYxt+kDaSb2o/RSf0HFERdHNqujloFHW0HBf8DN10ddbJVFEGsLn5NdnArUqlK1c0v8GtTdPQ5miNpeknOBETxgR+9vH3u7unleEv0e3UONhP18YeDpwJOjTHzXuAznxB7Py0+ph3JHLsaUa9CVMO4bMy9CRPdhp3nWL0lhzxczFeTzMKUQpa0Yj5nVaIcCCOnppn1O9TuwYNq1rZ0oiLY1hvXHMd6E+DRsq59HydNwpOV8HWEiDpBV8jdl9TFddl95uCZl/AlkSMF0h55gu6j4J2ooBohOos0fley3KH2KM36S+JPL8jyGvH2rYIVW+1EEzlN5XAuVb0+16/Y3HXLc8H2zD1rgjoTu0f8LjndKZEKxpoc+2+XkWJgz2lFlFlWfYLaG3gHywlnj6z2vnFeTBlBLYYDiIOjhOkR9TmecxEsgSj6VUxt9lWQaZ/M/s0149CHrXu1YL1W0KY29jiReM4DcAi6MacH9IMBQa6yLc+Cy/9CUA1j/xGQAaNgDFQketB/05PHmWzFfyYH0yWyXIFrl0xFW55nj/xl+Ad9vHfWl6fBEJgCGx5r5Km5H7rBe6Wo3wUhSK88DjD3r+kLDchppA==
+  </data>
+ </layer>
+ <layer id="9" name="Front2" width="36" height="21">
+  <properties>
+   <property name="Draw" value="Front"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBh8YBorA8NkHHgqK3nqcIGpeORgYBseNVtZaaduIIA+M+l6NnAzMGzkpr5b0MEaoB1ribDnJFDNKTq45yjQjmNE2nOJk7ZuIQdYMA60C0YBtQC2shAEJtOgPCHGLnxlHLo5ML34MLqaqSTahQwYmbCLk2oOMiC23Eb2Dzlq2FlIc9coGJ5gi+hAu2AUDEYAAN/gLDI=
+  </data>
+ </layer>
+ <layer id="11" name="AlwaysFront" width="36" height="21">
+  <data encoding="base64" compression="zlib">
+   eJztzkERACAMA8FM/TugTsAJiKG/OoA8bhWsBABwN0LK+L1osy7L6LPrcow+APDSBYKYBHI=
+  </data>
+ </layer>
+ <layer id="13" name="Paths" width="36" height="21">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20ON6AAAIBXAwvQAAE=
+  </data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <objectgroup id="6" name="Buildings">
+  <object id="29" name="TileData" x="16" y="112" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_001"/>
+   </properties>
+  </object>
+  <object id="30" name="TileData" x="48" y="128" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_002"/>
+   </properties>
+  </object>
+  <object id="31" name="TileData" x="112" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_003"/>
+   </properties>
+  </object>
+  <object id="33" name="TileData" x="128" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_003"/>
+   </properties>
+  </object>
+  <object id="34" name="TileData" x="80" y="80" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_004"/>
+   </properties>
+  </object>
+  <object id="35" name="TileData" x="176" y="112" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_005"/>
+   </properties>
+  </object>
+  <object id="36" name="TileData" x="256" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_006"/>
+   </properties>
+  </object>
+  <object id="37" name="TileData" x="272" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_006"/>
+   </properties>
+  </object>
+  <object id="38" name="TileData" x="288" y="80" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_006"/>
+   </properties>
+  </object>
+  <object id="40" name="TileData" x="368" y="144" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_007"/>
+   </properties>
+  </object>
+  <object id="42" name="TileData" x="384" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_008"/>
+   </properties>
+  </object>
+  <object id="43" name="TileData" x="432" y="128" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_010"/>
+   </properties>
+  </object>
+  <object id="44" name="TileData" x="16" y="256" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_011"/>
+   </properties>
+  </object>
+  <object id="45" name="TileData" x="384" y="224" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_012"/>
+   </properties>
+  </object>
+  <object id="46" name="TileData" x="464" y="224" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_013"/>
+   </properties>
+  </object>
+  <object id="48" name="TileData" x="496" y="208" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_014"/>
+   </properties>
+  </object>
+  <object id="49" name="TileData" x="176" y="288" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_015"/>
+   </properties>
+  </object>
+  <object id="50" name="TileData" x="352" y="80" width="16" height="16">
+   <properties>
+    <property name="Action" value="Message AnimalShop_main_room_016"/>
+   </properties>
+  </object>
+  <object id="51" name="TileData" x="432" y="64" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="52" name="TileData" x="448" y="64" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="53" name="TileData" x="432" y="96" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="54" name="TileData" x="448" y="96" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="55" name="TileData" x="176" y="64" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="56" name="TileData" x="192" y="64" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="57" name="TileData" x="208" y="64" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="58" name="TileData" x="176" y="96" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="59" name="TileData" x="192" y="96" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="60" name="TileData" x="208" y="96" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="61" name="TileData" x="16" y="64" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="62" name="TileData" x="32" y="64" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="63" name="TileData" x="16" y="96" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+  <object id="64" name="TileData" x="32" y="96" width="16" height="16">
+   <properties>
+    <property name="NPCPassable" value="T"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="8" name="Front"/>
+ <objectgroup id="12" name="AlwaysFront"/>
+ <objectgroup id="14" name="Paths"/>
+</map>

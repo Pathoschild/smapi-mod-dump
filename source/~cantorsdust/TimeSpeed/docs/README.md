@@ -97,7 +97,7 @@ For each location, the first match is applied in this order:
    and [`VolcanoDungeon`](https://stardewvalleywiki.com/Volcano_Dungeon).
 3. Else `Indoors` or `Outdoors`.
 
-See [default times](https://stardewvalleywiki.com/Day_Cycle#Game_clock) on the wiki.
+See [default times](https://stardewvalleywiki.com/Day_Cycle#Passage_of_time) on the wiki.
 
 </td>
 </tr>
@@ -138,3 +138,4 @@ keys](https://stardewvalleywiki.com/Modding:Key_bindings#Available_bindings). Se
 ## See also
 * [Release notes](release-notes.md)
 * [Nexus mod](https://www.nexusmods.com/stardewvalley/mods/169)
+* [_Passage of time_ on the wiki](https://stardewvalleywiki.com/Day_Cycle#Passage_of_time) for the vanilla time speed info
