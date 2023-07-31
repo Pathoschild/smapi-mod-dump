@@ -2,7 +2,7 @@
     "cfg_section.general": "General settings",
 
     "cfg_section.BambooPole": "Bamboo Pole / Training Rod Multipliers",
-    "cfg_section.Fiberglass": "Fiberglass Rod multipliers",
+    "cfg_section.Fiberglass": "Fiberglass Rod Multipliers",
     "cfg_section.Iridium": "Iridium Rod Multipliers",
 
     "cfg_EnableNibbleTimeMultiplier.name": "Enable nibble time multiplier",

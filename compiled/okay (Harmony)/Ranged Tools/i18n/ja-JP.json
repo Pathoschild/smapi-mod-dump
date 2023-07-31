@@ -72,8 +72,11 @@
 	"optionAttacksIgnoreObstaclesName": "攻撃は支障無視",
 	"optionAttacksIgnoreObstaclesTooltip": "邪魔があってもモンスターをどこでも攻撃できるようになる。",
 	
-	"optionDontCutGrassName": "拡張範囲で草を刈らない",
+	"optionDontCutGrassName": "拡張範囲で草は刈らない",
 	"optionDontCutGrassTooltip": "鎌やブキはカスタム範囲を使っていても、草は普通の範囲の中だけで刈るようにする。（雑草とかはまだ拡張範囲で刈れる）",
+	
+	"optionMultigrabCrabPotsInRangeName": "拡張範囲のカニかご全て取る",
+	"optionMultigrabCrabPotsInRangeTooltip": "カニかごを取る時、「置物の置く範囲」内のカニかごも取る。大体勧めないが、遠くに置いてしまったカニかごは取り戻せる。",
 	
 	"optionOnClickOnlyName": "範囲設定はクリック時のみ",
 	"optionOnClickOnlyTooltip": "オン時、カスタム範囲設定はクリックのみで有効。オフ時、どんなどうぐ使用ボタンでも有効。",

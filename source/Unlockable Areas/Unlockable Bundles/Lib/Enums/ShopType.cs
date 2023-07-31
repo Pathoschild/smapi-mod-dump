@@ -20,9 +20,8 @@ namespace Unlockable_Bundles.Lib.Enums
     {
         Dialogue = 0,
         SpeechBubble = 1,
-        YesNoSpeechBubble = 2,
-        ParrotPerch = 3,
-        CCBundle = 4,
-        AltCCBundle = 5,
+        ParrotPerch = 2,
+        CCBundle = 3,
+        AltCCBundle = 4,
     }
 }

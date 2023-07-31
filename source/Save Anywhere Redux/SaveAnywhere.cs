@@ -25,23 +25,19 @@ namespace SaveAnywhere
     public class SaveAnywhere : Mod
     {
         public static SaveAnywhere Instance;
-        private ModConfig _config;
-        private Dictionary<GameLocation, List<Monster>> _monsters;
         public SaveManager SaveManager;
 
-        
-
+        private ModConfig _config;
+        private Dictionary<GameLocation, List<Monster>> _monsters;
 
         public override void Entry(IModHelper helper)
         {
             _config = helper.ReadConfig<ModConfig>();
-            SaveManager = new SaveManager(Helper, null);
+            SaveManager = new(Helper, null);
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.GameLoop.DayEnding += OnDayEnded;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
-            helper.Events.GameLoop.ReturnedToTitle += GameLoop_ReturnedToTitle;
-            helper.Events.GameLoop.TimeChanged += GameLoop_TimeChanged;
             Helper.Events.GameLoop.GameLaunched += BuildConfigMenu;
             Instance = this;
         }
@@ -68,47 +64,36 @@ namespace SaveAnywhere
             );
         }
 
-        private void GameLoop_TimeChanged(object sender, TimeChangedEventArgs e)
-        {
-        }
-
-        private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
-        {
-        }
-
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             // ShouldResetSchedules = true;
-            if (SaveManager.saveDataExists()) SaveManager.LoadData();
+            if (SaveManager.saveDataExists()) 
+                SaveManager.LoadData();
         }
 
-        private void OnDayEnded(object sender, DayEndingEventArgs e)
-        {
-            SaveManager.ClearData();
-        }
+        private void OnDayEnded(object sender, DayEndingEventArgs e) => SaveManager.ClearData();
 
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (Context.IsWorldReady)
-            {
-                if (!Game1.player.IsMainPlayer)
-                    return;
-                SaveManager.Update();
-            }
+            if (!Context.IsWorldReady || !Game1.player.IsMainPlayer)
+                return;
+            SaveManager.Update();
         }
 
         public void cleanMonsters()
         {
-            _monsters = new Dictionary<GameLocation, List<Monster>>();
+            _monsters = new();
             foreach (var location in Game1.locations)
             {
-                _monsters.Add(location, new List<Monster>());
+                _monsters.Add(location, new());
                 foreach (var character in location.characters)
+                {
                     if (character is Monster monster)
                     {
                         Monitor.Log(character.Name);
                         _monsters[location].Add(monster);
                     }
+                }
 
                 foreach (var monster in _monsters[location])
                     location.characters.Remove(monster);
@@ -118,8 +103,8 @@ namespace SaveAnywhere
         public static void RestoreMonsters()
         {
             foreach (var monster1 in Instance._monsters)
-            foreach (var monster2 in monster1.Value)
-                monster1.Key.addCharacter(monster2);
+                foreach (var monster2 in monster1.Value)
+                    monster1.Key.addCharacter(monster2);
             Instance._monsters.Clear();
         }
 
@@ -129,25 +114,16 @@ namespace SaveAnywhere
                 return;
             if (Game1.client == null)
             {
-                if (Game1.player.currentLocation.getCharacters().OfType<Junimo>().Any())
-                {
-                    Game1.addHUDMessage(new HUDMessage("The spirits don't want you to save here.", 3));
-                }
+                if (Game1.player.currentLocation.getCharacters().Any(x => x is Junimo))
+                    Game1.addHUDMessage(new("The spirits don't want you to save here.", 3));
                 else
-                {
                     SaveManager.BeginSaveData();
-                }
             }
             else
-            {
-                Game1.addHUDMessage(new HUDMessage("Only server hosts can save anywhere.", 3));
-            }
+                Game1.addHUDMessage(new("Only server hosts can save anywhere.", 3));
         }
 
 
-        public override object GetApi()
-        {
-            return new SaveAnywhereApi();
-        }
+        public override object GetApi() => new SaveAnywhereApi();
     }
 }

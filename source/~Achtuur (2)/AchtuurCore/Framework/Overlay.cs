@@ -19,6 +19,20 @@ namespace AchtuurCore.Framework;
 
 public abstract class Overlay
 {
+
+    /// <summary>
+    /// Green tile placement texture, same one that is used when player is trying to place objects or charges up tools
+    /// </summary>
+    public static Texture2D GreenTilePlacementTexture;
+    /// <summary>
+    /// Red tile placement texture, same on that is used when player is trying to place object but is unable to
+    /// </summary>
+    public static Texture2D RedTilePlacementTexture;
+    /// <summary>
+    /// Grayscale version of green tile placement texture.
+    /// </summary>
+    public static Texture2D TilePlacementTexture;
+
     /// <summary>
     /// Size of each tile (in pixels?)
     /// </summary>
@@ -30,7 +44,7 @@ public abstract class Overlay
     protected int tileGap;
 
 
-    internal bool Enabled;
+    public bool Enabled { get; set; }
 
 
     public Overlay()
@@ -40,12 +54,12 @@ public abstract class Overlay
         this.tileSize = Game1.tileSize;
     }
 
-    public void Enable()
+    public virtual void Enable()
     {
         this.Enabled = true;
     }
 
-    public void Disable()
+    public virtual void Disable()
     {
         this.Enabled = false;
     }
@@ -73,6 +87,19 @@ public abstract class Overlay
 
         // Update tilesize
         this.tileSize = Game1.tileSize;
+
+        Debug.DebugOnlyExecute(() =>
+        {
+            float textHeight = Game1.dialogueFont.MeasureString("a").Y;
+
+            Rectangle visibleTiles = Drawing.GetVisibleArea();
+            Vector2 visibleCoords = new(visibleTiles.Width - visibleTiles.X, visibleTiles.Height + visibleTiles.Y);
+
+            spriteBatch.DrawString(Game1.dialogueFont, visibleCoords.ToString(), new Vector2(0, 0), Color.White);
+            spriteBatch.DrawString(Game1.dialogueFont, Game1.currentLocation.ToString(), new Vector2(0, textHeight), Color.White);
+        });
+
+
         DrawOverlayToScreen(spriteBatch);
     }
 
@@ -197,5 +224,60 @@ public abstract class Overlay
         // right
         if (tile.X >= center.X && !tileGroup.Contains(new Vector2(tile.X + 1, tile.Y)))
             spriteBatch.DrawLine(screenCoord.X + tileSize, screenCoord.Y, new Vector2(borderSize, tileSize), color); // right
+    }
+
+    public static void DrawPoint(SpriteBatch spriteBatch, Point point, Color? color = null, Texture2D tileTexture = null, float? tileSizePercentage = null)
+    {
+        DrawTile(spriteBatch, point.ToVector2(), color: color, tileTexture: tileTexture, tileSizePercentage: tileSizePercentage);
+    }
+
+    public static void DrawTile(SpriteBatch spriteBatch, Vector2 tile, Color? color = null, Texture2D tileTexture = null, float? tileSizePercentage = null, Vector2? offset = null, float? layerDepth = null)
+    {
+        int tilesize_offset = (tileSizePercentage is null) ? 0 : (int)((1 - tileSizePercentage.Value) * Game1.tileSize);
+
+        tile = new Vector2(tile.X + tilesize_offset, tile.Y + tilesize_offset);
+
+        Vector2 coords = Tiles.GetTileScreenCoords(tile) + (offset ?? Vector2.Zero);
+        Vector2 size = Vector2.One * Game1.tileSize
+            * ((tileSizePercentage is null) ? 1 : tileSizePercentage.Value);
+
+        spriteBatch.DrawTexture(tileTexture ?? TilePlacementTexture, coords, size, color ?? Color.White, layerDepth: layerDepth);
+    }
+
+    public static void DrawTiles(SpriteBatch spriteBatch, IEnumerable<Vector2> tiles, Color? color = null, Texture2D tileTexture = null, float? tileSizePercentage = null)
+    {
+        foreach (Vector2 tile in tiles)
+            DrawTile(spriteBatch, tile, color: color, tileTexture: tileTexture, tileSizePercentage: tileSizePercentage);
+    }
+
+    internal static void LoadPlacementTileTexture()
+    {
+        // Full asset is five 64x64 pixel tiles in a row, we only want the leftmost one of these tiles
+        Texture2D fullAsset = ModEntry.Instance.Helper.GameContent.Load<Texture2D>("LooseSprites/buildingPlacementTiles");
+
+        // Get color data of entire asset
+        Color[] fullAssetColors = new Color[fullAsset.Width * fullAsset.Height];
+        fullAsset.GetData<Color>(fullAssetColors);
+
+        // Copy only leftmost tile to smaller array
+        Color[] greenSliceAssetColors = new Color[64 * fullAsset.Height];
+        Color[] redSliceAssetColors = new Color[64 * fullAsset.Height];
+        Color[] grayScaleAssetColors = new Color[64 * fullAsset.Height];
+
+        for (int y = 0; y < 64; y++)
+        {
+            for (int x = 0; x < 64; x++)
+            {
+                greenSliceAssetColors[x + y * 64] = fullAssetColors[x + y * fullAsset.Width];
+                redSliceAssetColors[x + y * 64] = fullAssetColors[(64 + x) + y * fullAsset.Width];
+                grayScaleAssetColors[x + y * 64] = fullAssetColors[x + y * fullAsset.Width].ToGrayScale();
+            }
+        }
+
+        GreenTilePlacementTexture = new Texture2D(Game1.graphics.GraphicsDevice, 64, 64);
+        GreenTilePlacementTexture.SetData<Color>(greenSliceAssetColors);
+
+        TilePlacementTexture = new Texture2D(Game1.graphics.GraphicsDevice, 64, 64);
+        TilePlacementTexture.SetData<Color>(grayScaleAssetColors);
     }
 }

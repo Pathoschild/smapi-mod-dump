@@ -1,0 +1,8 @@
+{
+  "ub_not_enough1": "Non c'è abbastanza '{{displayName}}'",
+  "ub_not_enough2": "Servono più '{{displayName}}'",
+  "ub_parrot_ask": "*Gac*... {{item}}! *Gac*... Dare?",
+  "ub_parrot_money": "Il lucido",
+  "ub_speech_ask": "{{item}}? Che bello! Posso averlo?",
+  "ub_speech_money": "Il denaro",
+}

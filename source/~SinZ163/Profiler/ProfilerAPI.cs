@@ -36,6 +36,12 @@ namespace Profiler
         public IDisposable RecordSection(string ModId, string EventType, string Details);
 
         public MethodBase AddGenericDurationPatch(string type, string method, string detailsType = null);
+
+        public HarmonyMethod GenericDurationPrefix { get; }
+        public HarmonyMethod GenericDurationPrefixWithArgs { get; }
+        public HarmonyMethod GenericDurationPostfix { get; }
+        public HarmonyMethod GenericTraceFinalizer { get; }
+        public HarmonyMethod GenericTraceFinalizerWithArgs { get; }
     }
 
     internal record ProfileLoggerRow(double OccuredAt, object Metadata);
@@ -86,6 +92,11 @@ namespace Profiler
             EventMetadata = new();
             EventHasImportance = false;
         }
+        public HarmonyMethod GenericDurationPrefix => new HarmonyMethod(typeof(PublicPatches).GetMethod(nameof(PublicPatches.GenericDurationPrefix)));
+        public HarmonyMethod GenericDurationPrefixWithArgs => new HarmonyMethod(typeof(PublicPatches).GetMethod(nameof(PublicPatches.GenericDurationPrefixWithArgs)));
+        public HarmonyMethod GenericDurationPostfix => new HarmonyMethod(typeof(PublicPatches).GetMethod(nameof(PublicPatches.GenericDurationPostfix)));
+        public HarmonyMethod GenericTraceFinalizer => new HarmonyMethod(typeof(PublicPatches).GetMethod(nameof(PublicPatches.GenericTraceFinalizer)));
+        public HarmonyMethod GenericTraceFinalizerWithArgs => new HarmonyMethod(typeof(PublicPatches).GetMethod(nameof(PublicPatches.GenericTraceFinalizerWithArgs)));
 
         public void Write(EventMetadata eventDetails)
         {

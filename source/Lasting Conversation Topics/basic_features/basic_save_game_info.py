@@ -2,11 +2,11 @@
 
 import sys
 from pathlib import Path
-from typing import Callable, List, Optional
+from typing import Callable
 
-from PyQt5.QtCore import QDateTime, Qt
-from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QLabel, QVBoxLayout, QWidget
+from PyQt6.QtCore import QDateTime, Qt
+from PyQt6.QtGui import QImage, QPixmap
+from PyQt6.QtWidgets import QLabel, QVBoxLayout, QWidget
 
 import mobase
 
@@ -28,12 +28,12 @@ class BasicGameSaveGame(mobase.ISaveGame):
     def getSaveGroupIdentifier(self) -> str:
         return ""
 
-    def allFiles(self) -> List[str]:
+    def allFiles(self) -> list[str]:
         return [self.getFilepath()]
 
 
 class BasicGameSaveGameInfoWidget(mobase.ISaveGameInfoWidget):
-    def __init__(self, parent: QWidget, get_preview: Callable[[str], str]):
+    def __init__(self, parent: QWidget, get_preview: Callable[[Path], Path | None]):
         super().__init__(parent)
 
         self._get_preview = get_preview
@@ -41,24 +41,26 @@ class BasicGameSaveGameInfoWidget(mobase.ISaveGameInfoWidget):
         layout = QVBoxLayout()
         self._label = QLabel()
         palette = self._label.palette()
-        palette.setColor(self._label.foregroundRole(), Qt.white)
+        palette.setColor(self._label.foregroundRole(), Qt.GlobalColor.white)
         self._label.setPalette(palette)
         layout.addWidget(self._label)
         self.setLayout(layout)
 
         palette = self.palette()
-        palette.setColor(self.backgroundRole(), Qt.black)
+        palette.setColor(self.backgroundRole(), Qt.GlobalColor.black)
         self.setAutoFillBackground(True)
         self.setPalette(palette)
 
-        self.setWindowFlags(Qt.ToolTip | Qt.BypassGraphicsProxyWidget)  # type: ignore
+        self.setWindowFlags(
+            Qt.WindowType.ToolTip | Qt.WindowType.BypassGraphicsProxyWidget
+        )
 
     def setSave(self, save: mobase.ISaveGame):
         # Resize the label to (0, 0) to hide it:
         self.resize(0, 0)
 
         # Retrieve the pixmap:
-        value = self._get_preview(save.getFilepath())
+        value = self._get_preview(Path(save.getFilepath()))
 
         if value is None:
             return
@@ -87,7 +89,7 @@ class BasicGameSaveGameInfoWidget(mobase.ISaveGameInfoWidget):
 
 
 class BasicGameSaveGameInfo(mobase.SaveGameInfo):
-    def __init__(self, get_preview: Optional[Callable[[str], str]] = None):
+    def __init__(self, get_preview: Callable[[Path], Path | None] | None = None):
         super().__init__()
         self._get_preview = get_preview
 

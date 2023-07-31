@@ -19,18 +19,18 @@
     "Ingredients": [
         {
             "Object": 338,
-            "Count": 20,
+            "Count": 20
         },
         {
             "Object": 390,
-            "Count": 10,
+            "Count": 10
         },
         {
             "Object": 771,
-            "Count": 10,
-        },
+            "Count": 10
+        }
     ],
-    "IsDefault": true,
+    "IsDefault": true
   },
   "NameLocalization":
   {
@@ -42,7 +42,7 @@
     // "it": "",
     // "ja": "",
     // "pt": "",
-    // "ru": "",
+    "ru": "Террариум",
     // "tr": "",
     // "zh":"",
   },
@@ -56,7 +56,7 @@
     // "it": "",
     // "ja": "",
     // "pt": "",
-    // "ru": "",
+    "ru": "Террариум для лягушек.",
     // "tr": "",
     // "zh":"",
   },

@@ -21,7 +21,7 @@ namespace AFKTimePause
         {
             public static bool Prefix()
             {
-                if (!Config.ModEnabled || !Game1.IsMasterGame || Game1.eventUp || Game1.isFestival() || elapsedSeconds < Config.SecondsTilAFK)
+                if (!Config.ModEnabled || !Game1.IsMasterGame || Game1.eventUp || Game1.isFestival() || elapsedTicks < Config.ticksTilAFK)
                     return true;
                 return false;
             }

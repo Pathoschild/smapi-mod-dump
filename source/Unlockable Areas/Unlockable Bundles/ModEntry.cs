@@ -16,6 +16,8 @@ using HarmonyLib;
 using System.Collections.Generic;
 using Unlockable_Bundles.API;
 using Unlockable_Bundles.Lib.ShopTypes;
+using StardewValley.BellsAndWhistles;
+using Unlockable_Bundles.Lib;
 
 namespace Unlockable_Bundles
 {
@@ -43,9 +45,6 @@ namespace Unlockable_Bundles
             Lib.Main.Initialize();
 
             helper.ConsoleCommands.Add("ub", "Debug Breakpoint", this.commands);
-            helper.ConsoleCommands.Add("ub_debug", "Debug Breakpoint", this.debug);
-            helper.ConsoleCommands.Add("ub_apitest", "", this.apiTest);
-            helper.ConsoleCommands.Add("ub_eventtest", "", this.eventTest);
         }
 
         private void commands(string command, string[] args)
@@ -55,44 +54,67 @@ namespace Unlockable_Bundles
 
             if (args[0] == "ok")
                 debugPurchase();
+            else if (args[0] == "apitest")
+                apiTest();
+            else if (args[0] == "eventtest")
+                eventTest();
+            else if (args[0] == "debug" && System.Diagnostics.Debugger.IsAttached)
+                debug();
+            else if (args[0] == "event")
+                playEventScript(args[1]);
+        }
+
+        private void debug()
+        {
+            System.Diagnostics.Debugger.Break();
+        }
+
+        private void playEventScript(string key)
+        {
+            var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
+            Game1.globalFadeToBlack(() => Game1.currentLocation.startEvent(new UBEvent(new Unlockable(unlockables[key]), unlockables[key].ShopEvent, -1, Game1.player)));
         }
 
         private void debugPurchase()
         {
-            if (Game1.activeClickableMenu is not DialogueShopMenu)
-                return;
+            if (Game1.activeClickableMenu is DialogueShopMenu menu) {
+                menu.Unlockable.processPurchase();
+                menu.ScreenSwipe = new ScreenSwipe(0);
+                menu.CompletionTimer = 800;
+                menu.Complete = true;
+                menu.CanClick = false;
 
-            DialogueShopMenu shopMenu = (DialogueShopMenu)Game1.activeClickableMenu;
-            shopMenu.processPurchase();
+            } else if (Game1.activeClickableMenu is BundleMenu ccMenu) {
+                ccMenu.Unlockable.processPurchase();
+                ccMenu.ScreenSwipe = new ScreenSwipe(0);
+                ccMenu.CompletionTimer = 800;
+                ccMenu.Complete = true;
+                ccMenu.CanClick = false;
+            }
         }
 
-        private void debug(string command, string[] args)
-        {
-            if (System.Diagnostics.Debugger.IsAttached)
-                System.Diagnostics.Debugger.Break();
-        }
-
-        private void apiTest(string command, string[] args)
-        {
-            if (System.Diagnostics.Debugger.IsAttached)
-                System.Diagnostics.Debugger.Break();
-
-            IUnlockableBundlesAPI testAPI = Helper.ModRegistry.GetApi<IUnlockableBundlesAPI>(Mod.ModManifest.UniqueID);
-
-            var res = testAPI.purchasedUnlockables;
-            var res2 = testAPI.purchasedUnlockablesByLocation;
-        }
-
-        private void eventTest(string command, string[] args)
+        private void apiTest()
         {
             if (System.Diagnostics.Debugger.IsAttached)
                 System.Diagnostics.Debugger.Break();
 
-            IUnlockableBundlesAPI unlockableAreasAPI = Helper.ModRegistry.GetApi<IUnlockableBundlesAPI>("DLX.Bundles");
-            unlockableAreasAPI.shopPurchasedEvent += evenTestMethod;
+            IUnlockableBundlesAPI api = Helper.ModRegistry.GetApi<IUnlockableBundlesAPI>(Mod.ModManifest.UniqueID);
+
+            var bundles = api.getBundles();
+            var purchased = api.PurchasedBundles;
+            var purchasedSince = api.PurchaseBundlesByLocation;
         }
 
-        private void evenTestMethod(object source, ShopPurchasedEventArgs e)
+        private void eventTest()
+        {
+            if (System.Diagnostics.Debugger.IsAttached)
+                System.Diagnostics.Debugger.Break();
+
+            IUnlockableBundlesAPI api = Helper.ModRegistry.GetApi<IUnlockableBundlesAPI>(Mod.ModManifest.UniqueID);
+            api.BundlePurchasedEvent += evenTestMethod;
+        }
+
+        private void evenTestMethod(object source, BundlePurchasedEventArgs e)
         {
             if (System.Diagnostics.Debugger.IsAttached)
                 System.Diagnostics.Debugger.Break();

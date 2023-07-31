@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-from PyQt5.QtCore import QFileInfo
+from PyQt6.QtCore import QFileInfo
 
 import mobase
 
@@ -39,6 +39,10 @@ class StardewValleyGame(BasicGame):
     GameDataPath = "mods"
     GameDocumentsDirectory = "%DOCUMENTS%/StardewValley"
     GameSavesDirectory = "%GAME_DOCUMENTS%/Saves"
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-Stardew-Valley"
+    )
 
     def init(self, organizer: mobase.IOrganizer):
         super().init(organizer)

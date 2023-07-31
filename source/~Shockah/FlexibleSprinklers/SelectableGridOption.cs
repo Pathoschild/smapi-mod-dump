@@ -151,8 +151,8 @@ internal partial class SelectableGridOption
 	{
 		bool mouseLeftPressed = Game1.input.GetMouseState().LeftButton == ButtonState.Pressed;
 		bool mouseRightPressed = Game1.input.GetMouseState().RightButton == ButtonState.Pressed;
-		bool didClickLeft = mouseLeftPressed && LastMouseLeftPressed == false;
-		bool didClickRight = mouseRightPressed && LastMouseRightPressed == false;
+		bool didReleaseLeft = !mouseLeftPressed && LastMouseLeftPressed == true;
+		bool didReleaseRight = !mouseRightPressed && LastMouseRightPressed == true;
 		LastMouseLeftPressed = mouseLeftPressed;
 		LastMouseRightPressed = mouseRightPressed;
 		int mouseX = Constants.TargetPlatform == GamePlatform.Android ? Game1.getMouseX() : Game1.getOldMouseX();
@@ -224,62 +224,87 @@ internal partial class SelectableGridOption
 				if (hoverGMCM)
 				{
 					bool hoverTexture = mouseX >= texturePosition.X && mouseY >= texturePosition.Y && mouseX < texturePosition.X + cellLength && mouseY < texturePosition.Y + cellLength;
-					if (hoverTexture)
-					{
-						if (MinesweeperGame is null)
-						{
-							if (!didClickLeft)
-								continue;
+					if (!hoverTexture)
+						continue;
 
-							if (valueX == 0 && valueY == 0)
-							{
-								ClicksUntilMinesweeper--;
-								if (ClicksUntilMinesweeper == 0)
-									StartMinesweeper();
-							}
-							else
-							{
-								CurrentValues.Toggle(new(valueX, valueY));
-								UpdateLength();
-							}
-							Game1.playSound(ClickSoundName);
+					if (MinesweeperGame is null)
+					{
+						if (!didReleaseLeft)
+							continue;
+
+						if (valueX == 0 && valueY == 0)
+						{
+							ClicksUntilMinesweeper--;
+							if (ClicksUntilMinesweeper == 0)
+								StartMinesweeper();
 						}
 						else
 						{
-							if (didClickLeft)
+							CurrentValues.Toggle(new(valueX, valueY));
+							UpdateLength();
+						}
+						Game1.playSound(ClickSoundName);
+					}
+					else
+					{
+						IntPoint gridPoint = new(drawX, drawY);
+						if ((didReleaseLeft && mouseRightPressed) || (didReleaseRight && mouseLeftPressed) || (didReleaseLeft && didReleaseRight))
+						{
+							if (IsMinesweeperGameOver)
+								continue;
+
+							if (MinesweeperGame.Markings[gridPoint] == Minesweeper.Marking.Check && MinesweeperGame.GetFlagCount(gridPoint) == MinesweeperGame.GetBombCount(gridPoint))
 							{
-								if (IsMinesweeperGameOver)
+								var result = MinesweeperGame.CheckAround(gridPoint);
+								switch (result)
 								{
-									IsMinesweeperGameOver = false;
-									MinesweeperGame.RegenerateWithAGoodStart((int)(Length * Length * 0.17), new Random(), new(drawX, drawY));
-									Game1.playSound(ClickSoundName);
-								}
-								else
-								{
-									var result = MinesweeperGame.Check(new(drawX, drawY));
-									switch (result)
-									{
-										case Minesweeper.CheckResult.KeepGoing:
-											Game1.playSound(ClickSoundName);
-											break;
-										case Minesweeper.CheckResult.GameOver:
-											Game1.playSound(BombSoundName);
-											IsMinesweeperGameOver = true;
-											break;
-										case Minesweeper.CheckResult.Win:
-											Game1.playSound(WinSoundName);
-											IsMinesweeperGameOver = true;
-											break;
-									}
+									case Minesweeper.CheckResult.KeepGoing:
+										Game1.playSound(ClickSoundName);
+										break;
+									case Minesweeper.CheckResult.GameOver:
+										Game1.playSound(BombSoundName);
+										IsMinesweeperGameOver = true;
+										break;
+									case Minesweeper.CheckResult.Win:
+										Game1.playSound(WinSoundName);
+										IsMinesweeperGameOver = true;
+										break;
 								}
 							}
-							else if (didClickRight)
+						}
+						else if (didReleaseLeft)
+						{
+							if (IsMinesweeperGameOver)
 							{
-								if (IsMinesweeperGameOver)
-									continue;
-								MinesweeperGame.ToggleFlag(new(drawX, drawY));
+								IsMinesweeperGameOver = false;
+								MinesweeperGame.RegenerateWithAGoodStart((int)(Length * Length * 0.17), new Random(), new(drawX, drawY));
 								Game1.playSound(ClickSoundName);
 							}
+							else
+							{
+								var result = MinesweeperGame.Check(new(drawX, drawY));
+								switch (result)
+								{
+									case Minesweeper.CheckResult.KeepGoing:
+										Game1.playSound(ClickSoundName);
+										break;
+									case Minesweeper.CheckResult.GameOver:
+										Game1.playSound(BombSoundName);
+										IsMinesweeperGameOver = true;
+										break;
+									case Minesweeper.CheckResult.Win:
+										Game1.playSound(WinSoundName);
+										IsMinesweeperGameOver = true;
+										break;
+								}
+							}
+						}
+						else if (didReleaseRight)
+						{
+							if (IsMinesweeperGameOver)
+								continue;
+							MinesweeperGame.ToggleFlag(new(drawX, drawY));
+							Game1.playSound(ClickSoundName);
 						}
 					}
 				}
@@ -346,6 +371,8 @@ partial class SelectableGridOption
 		public ArrayMap<Marking> Markings { get; private set; }
 		public ArrayMap<int> BombCountCache { get; private set; }
 
+		private static readonly IntPoint[] NeighborOffsets = new IntPoint[] { new(-1, -1), new(0, -1), new(1, -1), new(-1, 0), new(1, 0), new(-1, 1), new(0, 1), new(1, 1) };
+
 		public Minesweeper(int width, int height)
 		{
 			Tiles = new(Tile.Empty, width, height);
@@ -389,36 +416,26 @@ partial class SelectableGridOption
 
 		private void RegenerateBombCountCache()
 		{
-			OutOfBoundsValuesMap<Tile> outOfBoundsValuesMap = new(Tiles, Tile.Empty);
 			for (int y = Tiles.Bounds.Min.Y; y <= Tiles.Bounds.Max.Y; y++)
-			{
 				for (int x = Tiles.Bounds.Min.X; x <= Tiles.Bounds.Max.X; x++)
-				{
-					int count = 0;
-					if (outOfBoundsValuesMap[new(x - 1, y - 1)] == Tile.Bomb)
-						count++;
-					if (outOfBoundsValuesMap[new(x, y - 1)] == Tile.Bomb)
-						count++;
-					if (outOfBoundsValuesMap[new(x + 1, y - 1)] == Tile.Bomb)
-						count++;
-					if (outOfBoundsValuesMap[new(x - 1, y)] == Tile.Bomb)
-						count++;
-					if (outOfBoundsValuesMap[new(x + 1, y)] == Tile.Bomb)
-						count++;
-					if (outOfBoundsValuesMap[new(x - 1, y + 1)] == Tile.Bomb)
-						count++;
-					if (outOfBoundsValuesMap[new(x, y + 1)] == Tile.Bomb)
-						count++;
-					if (outOfBoundsValuesMap[new(x + 1, y + 1)] == Tile.Bomb)
-						count++;
-					BombCountCache[new(x, y)] = count;
-				}
-			}
+					BombCountCache[new(x, y)] = GetBombCount(new(x, y));
+		}
+
+		public int GetBombCount(IntPoint point)
+		{
+			OutOfBoundsValuesMap<Tile> outOfBoundsValuesMap = new(Tiles, Tile.Empty);
+			return NeighborOffsets.Select(o => point + o).Count(p => outOfBoundsValuesMap[p] == Tile.Bomb);
+		}
+
+		public int GetFlagCount(IntPoint point)
+		{
+			OutOfBoundsValuesMap<Marking> outOfBoundsValuesMap = new(Markings, Marking.None);
+			return NeighborOffsets.Select(o => point + o).Count(p => outOfBoundsValuesMap[p] == Marking.Flag);
 		}
 
 		public CheckResult Check(IntPoint point)
 		{
-			if (Markings[point] == Marking.Check)
+			if (Markings[point] != Marking.None)
 				return CheckResult.KeepGoing;
 			Markings[point] = Marking.Check;
 			if (Tiles[point] == Tile.Bomb)
@@ -426,6 +443,20 @@ partial class SelectableGridOption
 
 			FloodFillZeroBombs(point);
 			return Tiles.Bounds.AllPointEnumerator().Any(p => Tiles[p] == Tile.Empty && Markings[p] != Marking.Check) ? CheckResult.KeepGoing : CheckResult.Win;
+		}
+
+		public CheckResult CheckAround(IntPoint point)
+		{
+			foreach (var offset in NeighborOffsets)
+			{
+				var neighbor = point + offset;
+				if (!Tiles.Bounds.Contains(neighbor))
+					continue;
+				var result = Check(neighbor);
+				if (result != CheckResult.KeepGoing)
+					return result;
+			}
+			return CheckResult.KeepGoing;
 		}
 
 		private void FloodFillZeroBombs(IntPoint point)

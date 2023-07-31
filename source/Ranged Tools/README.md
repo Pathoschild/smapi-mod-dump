@@ -91,6 +91,10 @@ Whether to let attacks ignore obstacles. Normally, you cannot hit monsters if th
 
 This prevents grass from being cut by the scythe or melee weapons beyond their normal ranges, while still using extended range for things like weeds. You can enable this to avoid accidentally cutting grass you want to keep.
 
+**MultigrabCrabPotsInRange (true or false)**
+
+This is mainly intended as a hacky fix for those affected by older versions that let you place Crab Pots too far out into the water to pick back up. Grabbing a Crab Pot with this enabled will simultaneously act upon any other Crab Pot within Object Place Range.
+
 **CustomRangeOnClickOnly (true or false)**
 
 By default (true), this mod only takes effect when pressing a "use tool" button that is a mouse button. If you want it to work even when pressing a keyboard or controller "use tool" button, set this option to false. This will cause it to try and target the current cursor position always, so it's not recommended if you aren't actively moving the mouse around.

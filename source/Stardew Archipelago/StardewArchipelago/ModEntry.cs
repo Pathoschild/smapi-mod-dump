@@ -33,6 +33,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using StardewArchipelago.GameModifications.Modded;
 
 namespace StardewArchipelago
 {
@@ -67,6 +68,8 @@ namespace StardewArchipelago
         private AppearanceRandomizer _appearanceRandomizer;
         private QuestCleaner _questCleaner;
         private EntranceManager _entranceManager;
+
+        private ModifiedVillagerEventChecker _villagerEvents;
 
         public ArchipelagoStateDto State { get; set; }
         private ArchipelagoConnectionInfo _apConnectionOverride;
@@ -112,6 +115,7 @@ namespace StardewArchipelago
             //_helper.ConsoleCommands.Add("test_sendalllocations", "Tests if every AP item in the stardew_valley_location_table json file are supported by the mod", _tester.TestSendAllLocations);
             // _helper.ConsoleCommands.Add("load_entrances", "Loads the entrances file", (_, _) => _entranceRandomizer.LoadTransports());
             // _helper.ConsoleCommands.Add("save_entrances", "Saves the entrances file", (_, _) => EntranceInjections.SaveNewEntrancesToFile());
+            _helper.ConsoleCommands.Add("export_shippables", "Export all currently loaded shippable items", this.ExportShippables);
             _helper.ConsoleCommands.Add("teleport", "Runs whatever is currently in the debug method", this.DebugMethod);
 #endif
         }
@@ -205,6 +209,7 @@ namespace StardewArchipelago
             var tileChooser = new TileChooser();
             _chatForwarder = new ChatForwarder(Monitor, _helper, _harmony, _archipelago, _giftHandler, tileChooser);
             _questCleaner = new QuestCleaner();
+            _villagerEvents = new ModifiedVillagerEventChecker();
 
 
             if (State.APConnectionInfo == null)
@@ -230,7 +235,7 @@ namespace StardewArchipelago
             }
 
             _itemManager = new ItemManager(_helper, _archipelago, _stardewItemManager, _mail, tileChooser, State.ItemsReceived);
-            _mailPatcher = new MailPatcher(Monitor, _harmony, _archipelago, new LetterActions(_helper, _mail, _archipelago, _itemManager.TrapManager));
+            _mailPatcher = new MailPatcher(Monitor, _harmony, _archipelago, _locationChecker, new LetterActions(_helper, _mail, _archipelago, _itemManager.TrapManager));
             _locationsPatcher = new LocationPatcher(Monitor, _helper, _harmony, _archipelago, _locationChecker, _bundleReader, _stardewItemManager);
             _chatForwarder.ListenToChatMessages();
             _giftHandler.Initialize(_stardewItemManager, _mail, _archipelago);
@@ -326,6 +331,7 @@ namespace StardewArchipelago
         private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
             _giftHandler.ReceiveAllGiftsTomorrow();
+            _villagerEvents.CheckJunaHearts(_archipelago);
         }
 
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
@@ -420,6 +426,11 @@ namespace StardewArchipelago
             {
                 State.SeasonsOrder[currentSeasonNumber] = season;
             }
+        }
+
+        private void ExportShippables(string arg1, string[] arg2)
+        {
+            _stardewItemManager.ExportAllItemsMatching(x => x.canBeShipped(), "shippables.json");
         }
     }
 }

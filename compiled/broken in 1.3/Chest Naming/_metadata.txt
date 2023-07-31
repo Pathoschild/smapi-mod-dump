@@ -1,3 +1,3 @@
-page URL: https://stardewvalley.curseforge.com/projects/chest-naming
+page URL: https://github.com/M3ales/ChestNaming
 IDs: ChestNaming
 update keys: GitHub:M3ales/ChestNaming

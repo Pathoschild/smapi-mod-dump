@@ -18,10 +18,13 @@ using StardewArchipelago.Archipelago;
 using StardewArchipelago.Locations.CodeInjections;
 using StardewArchipelago.Locations.GingerIsland.Boat;
 using StardewArchipelago.Locations.GingerIsland.Parrots;
+using StardewArchipelago.Locations.GingerIsland.VolcanoForge;
 using StardewArchipelago.Locations.GingerIsland.WalnutRoom;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
+using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Objects;
 
 namespace StardewArchipelago.Locations.GingerIsland
 {
@@ -53,7 +56,8 @@ namespace StardewArchipelago.Locations.GingerIsland
             UnlockWalnutRoomBasedOnApItem();
             ReplaceBoatRepairWithChecks();
             ReplaceParrotsWithChecks();
-
+            ReplaceFieldOfficeWithChecks();
+            ReplaceCalderaWithChecks();
         }
 
         private void UnlockWalnutRoomBasedOnApItem()
@@ -92,6 +96,27 @@ namespace StardewArchipelago.Locations.GingerIsland
             _harmony.Patch(
                 original: AccessTools.Method(typeof(IslandWest), nameof(IslandWest.ApplyFarmHouseRestore)),
                 prefix: new HarmonyMethod(typeof(IslandWestInjections), nameof(IslandWestInjections.ApplyFarmHouseRestore_RestoreOnlyCorrectParts_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(IslandNorth), nameof(IslandNorth.explosionAt)),
+                prefix: new HarmonyMethod(typeof(IslandNorthInjections), nameof(IslandNorthInjections.ExplosionAt_CheckProfessorSnailLocation_Prefix))
+            );
+        }
+
+        private void ReplaceFieldOfficeWithChecks()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Event), nameof(Event.command_addCraftingRecipe)),
+                prefix: new HarmonyMethod(typeof(FieldOfficeInjections), nameof(FieldOfficeInjections.CommandAddCraftingRecipe_OstrichIncubator_Prefix))
+            );
+        }
+
+        private void ReplaceCalderaWithChecks()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Chest), nameof(Chest.checkForAction)),
+                prefix: new HarmonyMethod(typeof(CalderaInjections), nameof(CalderaInjections.CheckForAction_CalderaChest_Prefix))
             );
         }
     }

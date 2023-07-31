@@ -58,7 +58,7 @@ internal class TravelSkill : SpaceCore.Skills.Skill
         this.Icon = ModEntry.Instance.Helper.ModContent.Load<Texture2D>("assets/skillicon.png");
         this.SkillsPageIcon = ModEntry.Instance.Helper.ModContent.Load<Texture2D>("assets/skillpageicon.png");
 
-        this.ExperienceCurve = new[] { 100, 380, 770, 1300, 2150, 3300, 4800, 6900, 10000, 15000 };
+        this.ExperienceCurve = new[] { 100, 380, 770, 1300, 2150, (int)(3300*0.9), (int)(4800*0.75), (int)(6900*0.66), (int)(10000*0.66), (int)(15000*0.66) };
         this.ExperienceBarColor = new Microsoft.Xna.Framework.Color(100, 189, 132); // blueish green from skill icon
 
         // Level 5 professions

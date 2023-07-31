@@ -31,5 +31,6 @@
   "msg.payment.remaining": "你还欠债: {{Balance}}g。还钱时间还剩 {{Duration}} 天。 一天需要还 {{DailyAmount}}g。",
   "msg.startborrow-1": "想借多少钱？",
   "msg.startborrow-2": "请选择还钱时间",
-  "msg.startrepay": "How much money would you like to repay?"
+  "msg.startrepay": "How much money would you like to repay?",
+  "app.name": "Loans"
 }

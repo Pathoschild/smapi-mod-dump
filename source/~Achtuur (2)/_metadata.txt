@@ -3,15 +3,18 @@ urls:
    Git: https://github.com/Achtuur/StardewMods.git
 
 mods:
+   Better Planting
    Better Rods
+   Hover Labels
+   Junimo Beacon
    Multiplayer Exp Share
    Prismatic Statue
    Watering Can Give Exp
 
 latest commit:
-   commit 2e68662500134aa773a9691f54adf72ee6c9eeba
-   Author: Arthur de Groot <68847937+Achtuur@users.noreply.github.com>
-   Date:   Tue Jun 27 16:08:42 2023 +0200
+   commit aa5593f0c491fc2bef5234a62f01b6bc4b238b6b
+   Author: Achtuur <arthurdegroot88@gmail.com>
+   Date:   Thu Jul 27 17:35:20 2023 +0200
    
-       Update README.md
+       hoverlabels 1.1.0
    

@@ -80,6 +80,10 @@ class DivinityOriginalSinEnhancedEditionGame(BasicGame, mobase.IPluginFileMapper
         "%USERPROFILE%/Documents/Larian Studios/"
         "Divinity Original Sin Enhanced Edition/PlayerProfiles"
     )
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-Divinity:-Original-Sin"
+    )
 
     DOCS_MOD_SPECIAL_NAME = "DOCS_MOD"
 
@@ -90,7 +94,7 @@ class DivinityOriginalSinEnhancedEditionGame(BasicGame, mobase.IPluginFileMapper
     def init(self, organizer: mobase.IOrganizer):
         super().init(organizer)
         self._featureMap[mobase.SaveGameInfo] = BasicGameSaveGameInfo(
-            lambda s: s.replace(".lsv", ".png")
+            lambda s: s.with_suffix(".png")
         )
         self._featureMap[
             mobase.ModDataChecker

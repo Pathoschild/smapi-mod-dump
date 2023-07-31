@@ -6,6 +6,8 @@
   "options-page.font-header": "字体",
   "hud-message.success-set-font": "{{fontType}}设置成功！",
   "hud-message.failed-set-font": "{{fontType}}设置失败，详见SMAPI窗口。",
+  "hud-message.export-success": "导出成功！保存至 {{path}}",
+  "hud-message.export-fail": "导出失败，详见SMAPI窗口。",
 
   "ui.main-menu.title": "字体设置",
   "ui.main-menu.font-type-help.paragraph": "星露谷物语的字体大致分为三类：\n- 小字体\n- 中字体\n- 对话字体\n点击左右箭头切换当前设置的字体类型。\n根据喜好，你可以全部设置，也可以只设置其中的几个。",
@@ -14,6 +16,7 @@
   "ui.main-menu.font": "字体",
   "ui.main-menu.font.keep-orig": "保持原版",
   "ui.main-menu.refresh-fonts": "刷新字体列表",
+  "ui.main-menu.font-from-pack": "(‘{{packName}}’字体包)",
   "ui.main-menu.font-size": "大小",
 
   "ui.main-menu.section.advanced": "高级",
@@ -34,6 +37,9 @@
 
   "ui.main-menu.reset-font": "恢复为原版字体",
 
+  "ui.main-menu.ok": "应用",
+  "ui.main-menu.export": "导出设置",
+
   "ui.main-menu.merge-examples": "合并示例",
   "ui.main-menu.show-example-bounds": "显示边框",
   "ui.main-menu.show-example-text": "显示文字",
@@ -51,6 +57,16 @@
   "ui.preset-info-menu.cp-name": "字体包",
   "ui.preset-info-menu.cp-author": "作者",
   "ui.preset-info-menu.cp-ver": "版本",
+
+  "ui.export-menu.title": "导出设置",
+  "ui.export-menu.out-in-xnb": "XNB格式",
+  "ui.export-menu.out-dir": "导出路径",
+  "ui.export-menu.out-name": "文件名",
+  "ui.export-menu.section.xnb": "XNB设置",
+  "ui.export-menu.profile": "图形配置",
+  "ui.export-menu.compress": "压缩",
+  "ui.export-menu.export": "导出",
+  "ui.export-menu.cancel": "返回",
 
   "config.example-text": "示例文本",
   "config.example-text.description": "设置自定义的文本。将覆盖内置文本，所以一般留空即可。",
@@ -84,6 +100,17 @@
   "config.font-menu-key.description": "绑定打开字体菜单的按键。",
   "config.font-settings-in-game-menu": "在游戏内置菜单中设置字体",
   "config.font-settings-in-game-menu.description": "是否在游戏内置菜单（点E或Esc）中添加一栏，用以设置字体。",
+  "config.hex-format": "\n\n输入十六进制颜色值：\nAABBGGRR\n例：靛蓝色 (R=63, G=72, B=204, A=255)\n => FFCC483F",
+  "config.text-color": "文本颜色",
+  "config.text-color.description": "设置默认文本颜色。",
+  "config.text-color-dialogue": "文本颜色（对话）",
+  "config.text-color-dialogue.description": "设置对话字体的默认文本颜色。",
+  "config.shadow-color": "文本阴影颜色",
+  "config.shadow-color.description": "设置默认文本阴影颜色。",
+  "config.edit-mode": "编辑模式",
+  "config.edit-mode.description": "勾选进入编辑（Edit）模式，否则加载（Load）模式。\n编辑模式能提高兼容性，尤其在多个模组同时修改字体的时候。",
+  "config.edit-prio": "编辑优先级",
+  "config.edit-prio.description": "值越大，越晚编辑。晚的将覆盖早的编辑结果。\n取值范围：[{{minValue}}, {{maxValue}}]\n默认值：0",
 
   "misc.mod-file-not-found": "未能找到指定的模组文件\"{{filePath}}\"，请重新下载此模组以找回。"
 }

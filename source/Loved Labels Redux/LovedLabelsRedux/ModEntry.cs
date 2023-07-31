@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.IO;
 using System.Linq;
 using LovedLabels.Framework;
 using LovedLabelsRedux.GenericModConfigMenu;
@@ -33,6 +34,8 @@ namespace LovedLabelsRedux
 
         public override void Entry(IModHelper helper)
         {
+            CommonHelper.RemoveObsoleteFiles(this, "LovedLabelsRedux.pdb");
+
             configsForTheMod = helper.ReadConfig<ModConfig>();
             _hearts = helper.ModContent.Load<Texture2D>("assets/hearts.png");
 
@@ -168,6 +171,31 @@ namespace LovedLabelsRedux
             var sourceY = (hoverText == configsForTheMod.AlreadyPettedMessage) ? 0 : 32;
             var heartpos = new Vector2(x + textSize.X + halfHeartSize, y + halfHeartSize);
             b.Draw(_hearts, heartpos, new Rectangle(0, sourceY, 32, 32), Color.White);
+        }
+
+        private class CommonHelper
+        {
+            internal static void RemoveObsoleteFiles(IMod mod, params string[] relativePaths)
+            {
+                string basePath = mod.Helper.DirectoryPath;
+
+                foreach (string relativePath in relativePaths)
+                {
+                    string fullPath = Path.Combine(basePath, relativePath);
+                    if (File.Exists(fullPath))
+                    {
+                        try
+                        {
+                            File.Delete(fullPath);
+                            mod.Monitor.Log($"Removed obsolete file '{relativePath}'.");
+                        }
+                        catch (Exception ex)
+                        {
+                            mod.Monitor.Log($"Failed deleting obsolete file '{relativePath}':\n{ex}");
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "MoveBetweenBuildings",
+  "Author": "Vilaboa",
+  "Version": "1.0.0",
+  "Description": "Cisutas",
+  "UniqueID": "Vilaboa.MoveBetweenBuildings",
+  "EntryDll": "MoveBetweenBuildings.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

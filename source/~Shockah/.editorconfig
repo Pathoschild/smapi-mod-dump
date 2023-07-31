@@ -1,7 +1,8 @@
 ﻿[*.{cs,vb}]
 
 # IDE0037: Use inferred member name
-dotnet_style_prefer_inferred_tuple_names = false:suggestion
+dotnet_style_prefer_inferred_tuple_names = false:silent
+dotnet_style_prefer_inferred_anonymous_types_member_names = false:silent
 
 [*.{cs,vb}]
 #### Naming styles ####

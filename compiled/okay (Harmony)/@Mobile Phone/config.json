@@ -1,5 +1,4 @@
 {
-  "$id": "1",
   "EnableMod": true,
   "EnableOpenPhoneKey": true,
   "OpenPhoneKey": "End",
@@ -53,21 +52,18 @@
   "UseRealNamesInPhoneBook": true,
   "UncallableNPCAlpha": 255,
   "PhoneBookBackgroundColor": {
-    "$id": "2",
     "B": 255,
     "G": 255,
     "R": 255,
     "A": 255
   },
   "PhoneBookHeaderColor": {
-    "$id": "3",
     "B": 255,
     "G": 191,
     "R": 0,
     "A": 255
   },
   "PhoneBookHeaderTextColor": {
-    "$id": "4",
     "B": 255,
     "G": 255,
     "R": 255,
@@ -91,73 +87,64 @@
   "RingListItemScale": 0.5,
   "TabTextScale": 0.5,
   "RingListItemColor": {
-    "$id": "5",
     "B": 0,
     "G": 0,
     "R": 0,
     "A": 255
   },
   "RingListBackgroundColor": {
-    "$id": "6",
     "B": 255,
     "G": 255,
     "R": 255,
     "A": 255
   },
   "RingListHighlightColor": {
-    "$id": "7",
     "B": 200,
     "G": 200,
     "R": 200,
     "A": 255
   },
   "ThemesHeaderColor": {
-    "$id": "8",
     "B": 255,
     "G": 191,
     "R": 0,
     "A": 255
   },
   "ThemesFooterHighlightColor": {
-    "$id": "9",
     "B": 255,
     "G": 248,
     "R": 240,
     "A": 255
   },
   "ThemesHeaderTextColor": {
-    "$id": "10",
     "B": 255,
     "G": 255,
     "R": 255,
     "A": 255
   },
   "ThemesHeaderHighlightedTextColor": {
-    "$id": "11",
     "B": 139,
     "G": 61,
     "R": 72,
     "A": 255
   },
   "EnableIncomingCalls": true,
+  "ToggleIncomingCallsKey": "None",
   "ReceiveCallsUnderground": false,
   "FriendCallChance": 0.01,
   "CallTextColor": {
-    "$id": "12",
     "B": 255,
     "G": 255,
     "R": 255,
     "A": 255
   },
   "AnswerColor": {
-    "$id": "13",
     "B": 34,
     "G": 139,
     "R": 34,
     "A": 255
   },
   "DeclineColor": {
-    "$id": "14",
     "B": 0,
     "G": 0,
     "R": 139,

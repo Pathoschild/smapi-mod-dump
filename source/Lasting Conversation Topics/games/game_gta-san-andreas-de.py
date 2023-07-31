@@ -1,7 +1,7 @@
 import os
-
 from pathlib import Path
-from PyQt5.QtCore import QDir, QFileInfo
+
+from PyQt6.QtCore import QDir, QFileInfo
 
 import mobase
 
@@ -39,6 +39,10 @@ class GTASanAndreasDefinitiveEditionGame(BasicGame):
     )
     GameSavesDirectory = "%GAME_DOCUMENTS%/../../SaveGames"
     GameSaveExtension = "sav"
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-Grand-Theft-Auto:-The-Trilogy-%E2%80%90-The-Definitive-Edition"
+    )
 
     def init(self, organizer: mobase.IOrganizer) -> bool:
         super().init(organizer)
@@ -62,7 +66,7 @@ class GTASanAndreasDefinitiveEditionGame(BasicGame):
     def iniFiles(self):
         return ["GameUserSettings.ini", "CustomSettings.ini"]
 
-    def initializeProfile(self, path: QDir, settings: int):
+    def initializeProfile(self, path: QDir, settings: mobase.ProfileSetting):
         # Create the mods directory if it doesn't exist
         modsPath = self.dataDirectory().absolutePath()
         if not os.path.exists(modsPath):

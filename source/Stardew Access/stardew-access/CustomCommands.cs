@@ -9,7 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using stardew_access.Features;
+using stardew_access.Utils;
 using stardew_access.Patches;
 using StardewModdingAPI;
 using StardewValley;
@@ -92,9 +92,8 @@ namespace stardew_access
                 {
                     delayInString = args[0];
 
-                    int delay;
 
-                    bool isParsable = int.TryParse(delayInString, out delay);
+                    bool isParsable = int.TryParse(delayInString, out int delay);
 
                     if (isParsable)
                     {
@@ -125,9 +124,8 @@ namespace stardew_access
                 {
                     rangeInString = args[0];
 
-                    int range;
 
-                    bool isParsable = int.TryParse(rangeInString, out range);
+                    bool isParsable = int.TryParse(rangeInString, out int range);
 
                     if (isParsable)
                     {
@@ -156,7 +154,7 @@ namespace stardew_access
                 {
                     string? keyToAdd = null;
 
-                    for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
+                    for (int i = 0; i < args.Length; i++) { keyToAdd += " " + args[i]; }
 
                     if (keyToAdd != null)
                     {
@@ -181,7 +179,7 @@ namespace stardew_access
             {
                 string? keyToAdd = null;
 
-                for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
+                for (int i = 0; i < args.Length; i++) { keyToAdd += " " + args[i]; }
 
                 if (keyToAdd != null)
                 {
@@ -236,7 +234,7 @@ namespace stardew_access
                 {
                     string? keyToAdd = null;
 
-                    for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
+                    for (int i = 0; i < args.Length; i++) { keyToAdd += " " + args[i]; }
 
                     if (keyToAdd != null)
                     {
@@ -261,7 +259,7 @@ namespace stardew_access
             {
                 string? keyToAdd = null;
 
-                for (int i = 0; i < args.Count(); i++) { keyToAdd += " " + args[i]; }
+                for (int i = 0; i < args.Length; i++) { keyToAdd += " " + args[i]; }
 
                 if (keyToAdd != null)
                 {
@@ -329,8 +327,7 @@ namespace stardew_access
                     return;
                 }
 
-                int index;
-                bool isParsable = int.TryParse(indexInString, out index);
+                bool isParsable = int.TryParse(indexInString, out int index);
 
                 if (!isParsable || !(index >= 0 && index <= 9))
                 {
@@ -361,7 +358,7 @@ namespace stardew_access
 
             helper.ConsoleCommands.Add("buildlist", "List all buildings for selection for upgrading/demolishing/painting", (string command, string[] args) =>
             {
-                onBuildListCalled();
+                OnBuildListCalled();
             });
 
             helper.ConsoleCommands.Add("buildsel", "Select the building index which you want to upgrade/demolish/paint", (string command, string[] args) =>
@@ -379,8 +376,7 @@ namespace stardew_access
                     return;
                 }
 
-                int index;
-                bool isParsable = int.TryParse(indexInString, out index);
+                bool isParsable = int.TryParse(indexInString, out int index);
 
                 if (!isParsable)
                 {
@@ -446,7 +442,7 @@ namespace stardew_access
                 }
                 else
                 {
-                    if (CarpenterMenuPatch.isConstructing && !CarpenterMenuPatch.isUpgrading) { response = BuildingOperations.Contstruct(BuildingOperations.marked[index]); }
+                    if (CarpenterMenuPatch.isConstructing && !CarpenterMenuPatch.isUpgrading) { response = BuildingOperations.Construct(BuildingOperations.marked[index]); }
                     else if (CarpenterMenuPatch.isMoving) { response = BuildingOperations.Move(BuildingOperations.availableBuildings[index], BuildingOperations.marked[positionIndex]); }
                     else if (CarpenterMenuPatch.isDemolishing) { response = BuildingOperations.Demolish(BuildingOperations.availableBuildings[index]); }
                     else if (CarpenterMenuPatch.isUpgrading) { response = BuildingOperations.Upgrade(BuildingOperations.availableBuildings[index]); }
@@ -517,7 +513,7 @@ namespace stardew_access
             #endregion
         }
 
-        internal static void onBuildListCalled()
+        internal static void OnBuildListCalled()
         {
             string toPrint = "";
             Farm farm = (Farm)Game1.getLocationFromName("Farm");

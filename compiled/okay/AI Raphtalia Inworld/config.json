@@ -1,0 +1,19 @@
+{
+  "brains": {
+    "Raphtalia": {
+      "character": "raphtalia",
+      "workspace": "default-i3vnwm5qgaprz_zrhpw73q",
+      "api": {
+        "key": "H8QmL2XozscBMI8nBx9Q5XOB6qdGSbm7",
+        "secret": "aSDxu34xzxPHWQNlKxL5MQ7jCaWQ0VdbZUoGmfC30Q8q13AWtIXTpoHG4JfR1aWx"
+      }
+    }
+  },
+  "settings": {
+    "interact_distance": 5.0,
+    "interact_glow": false,
+    "max_display_length": 75,
+    "min_display_time": 1.0,
+    "max_display_time": 3.0
+  }
+}

@@ -1,0 +1,50 @@
+{
+    /** Skill **/
+    "travelskill.name": "Marche",
+    "travelskill.level-up-perk": "+{{bonus}}% de force dans la jambe",
+
+
+    /** Professions **/
+    "movespeed.name": "Fan de grandes vitesses",
+    "movespeed.desc": "Avoir une meilleure rapidité",
+    "restorestamine.name": "Coureur de marathon",
+    "restorestamina.desc": "Restaure de l'endurance sans rien faire",
+    "sprint.name": "Champion de course à pied",
+    "sprint.desc": "Marcher longtemps vous fait courir encore plus vite",
+
+    "cheapwarptotem.name": "Fan de téléportation",
+    "cheapwarptotem.desc": "Les totems de téléportation coûtent moins cher",
+    "cheapobelisk.name": "Bâtisseur d'Obélisque",
+    "cheapobelisk.desc": "Fabriquer une obélisque coûte 50% moins cher",
+    "totemreuse.name": "Conservateur de totem",
+    "totemreuse.desc": "Les totems de téléportation ont une chance de ne pas être consommés",
+
+    /** Console commands **/
+    // Set level
+    "cmd_setlvl.name": "travelskill_setlevel",
+    "cmd_setlevel.desc": "Fixe le niveau du joueur vis-à-vis de la marche.\n\nUtilisation : travelskill_setlevel <level>\n- level: Niveau entre 1 et 10",
+    "cmd_setlevel.errormsg": "'{{input}}' n'est pas correct, merci de mettre un nombre entre 1 et 10",
+
+    /** Config Menu **/
+    "cfg_section.travelskill": "Paramètres de la marche",
+    "cfg_section.professions": "Paramètres des professions",
+
+    "cfg_expgain.name": "Nombre de pas par XP",
+    "cfg_expgain.desc": "Nombre de pas nécessaires avant d'obtenir un point d'expérience",
+
+    "cfg_levelmovespeed.name": "% de vitesse bonus par niveau",
+    "cfg_levelmovespeed.desc": "% de vitesse bonus en pourcentage, par niveau de marche",
+
+    "cfg_movespeedbonus.name": "% de vitesse bonus grâce à la profession",
+    "cfg_movespeedbonus.desc": "% de vitesse bonus grâce à la profession 'Fan de Grandes Vitesses'",
+
+    "cfg_sprintbonus.name": "Vitesse bonus grâce à la profession",
+    "cfg_sprintbonus.desc": "Fixe la vitesse bonus grâce à la profession 'Champion de Course à Pied'",
+
+    "cfg_restorestamina.name": "Récupération d'endurance",
+    "cfg_restorestamina.desc": "% d'endurance récupéré toutes les 10 minutes grâce à la profession 'Champion de course à pied'",
+
+    "cfg_totemreuse.name": "Chances d'utiliser un totem",
+    "cfg_totemreuse.desc": "Fixe la chance d'utiliser un totem, grâce à la profession : 'Conservateur de totem'"
+
+}

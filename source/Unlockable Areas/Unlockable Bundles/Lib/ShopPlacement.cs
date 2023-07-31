@@ -21,6 +21,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Text.RegularExpressions;
 using StardewModdingAPI.Events;
 using StardewValley.Objects;
+using Unlockable_Bundles.Lib.Enums;
+using Unlockable_Bundles.API;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -57,52 +59,78 @@ namespace Unlockable_Bundles.Lib
                 }
         }
 
+        public static void resetDay()
+        {
+            Unlockable.CachedJsonAssetIDs.Clear();
+            Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("UnlockableBundles/Bundles"));
+            UnlockableBundlesAPI.clearCache();
+            ModData.Instance = new ModData();
+            ContentPatcherHandling.DaysSincePurchaseToken.Ready = false;
+        }
+
+
         public static void dayStarted(object sender, DayStartedEventArgs e)
         {
-            if (!Context.IsMainPlayer) {
-                if (ModData.Instance == null)
-                    ModData.Instance = new ModData();
+            if (!Context.IsMainPlayer)
                 return;
-            }
 
+            resetDay();
             SaveDataEvents.LoadModData();
-            Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("UnlockableBundles/Bundles"));
-            API.UnlockableBundlesAPI.clearCache();
             var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
             modifiedLocations = new List<GameLocation>();
+            List<UnlockableModel> applyList = new List<UnlockableModel>();
+            AssetRequested.MailData = new Dictionary<string, string>();
 
             foreach (KeyValuePair<string, UnlockableModel> entry in unlockables) {
                 entry.Value.ID = entry.Key;
                 entry.Value.applyDefaultValues();
                 validateUnlockable(entry.Value);
+
                 var locations = getLocationsFromName(entry.Value.Location);
                 foreach (var location in locations) {
                     entry.Value.LocationUnique = location.NameOrUniqueName;
                     ModData.applySaveData(entry.Value);
 
                     if (ModData.isUnlockablePurchased(entry.Key, location.NameOrUniqueName)) {
-                        ModEntry._Helper.Multiplayer.SendMessage(entry.Value, "ApplyUnlockable", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
+                        applyList.Add(entry.Value);
                         UpdateHandler.applyUnlockable(new Unlockable(entry.Value));
                     } else
                         placeShop(new Unlockable(entry.Value));
 
+                    if (entry.Value.BundleCompletedMail != "")
+                        AssetRequested.MailData.Add(Unlockable.getMailKey(entry.Key), entry.Value.BundleCompletedMail);
+
                 }
             }
 
-            ModEntry._Helper.Multiplayer.SendMessage(true, "UnlockablesReady", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
-            ModEntry._API.raiseIsReady(new API.IsReadyEventArgs(Game1.player));
+            ModEntry._Helper.Multiplayer.SendMessage(new KeyValuePair<List<UnlockableModel>, ModData>(applyList, ModData.Instance), "UnlockablesReady", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
+            ModEntry._Helper.Multiplayer.SendMessage(AssetRequested.MailData, "UpdateMailData", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
+            Helper.GameContent.InvalidateCache("Data/Mail"); //I kind of wish I could just append my mail data instead of reloading the entire asset
+            ModEntry._API.raiseIsReady(new IsReadyEventArgs(Game1.player));
         }
 
         private static void validateUnlockable(UnlockableModel u)
         {
-            try {
-                Helper.GameContent.Load<Texture2D>(u.ShopTexture);
-            } catch (Exception e) { Monitor.LogOnce($"Invalid ShopTexture for '{u.ID}':\n {e.Message}", LogLevel.Error); }
+            if (u.ShopTexture.ToLower() != "none")
+                try {
+                    Helper.GameContent.Load<Texture2D>(u.ShopTexture);
+                } catch (Exception e) { Monitor.LogOnce($"Invalid ShopTexture for '{u.ID}':\n {e.Message}", LogLevel.Error); }
 
-            if (u.ShopAnimation != "" && !new Regex("\\s*[0-9]+\\s*@\\s*[0-9]+\\s*").IsMatch(u.ShopAnimation))
-                Monitor.LogOnce($"Invalid ShopAnimation format for '{u.ID}'. Expected: \"Frames@Milliseconds\". eg. \"5@100\"", LogLevel.Error);
+            if (u.ShopAnimation != "" && !new Regex("^\\s*(?:(?:\\d+|\\d+\\s*-\\s*\\d+)(?:@\\d+){0,1})\\s*(?:,\\s*(?:(?:\\d+|\\d+\\s*-\\s*\\d+)(?:@\\d+){0,1})\\s*)*$").IsMatch(u.ShopAnimation))
+                Monitor.LogOnce($"Invalid ShopAnimation format for '{u.ID}'. Expected comma seperated \"<From>-<To>@<Interval>\". eg. \"0-2@300, 3, 5-4@600\"", LogLevel.Error);
 
-            foreach (var el in u.Price) {
+            validatePrice(u, u.Price);
+            validatePrice(u, u.BundleReward);
+
+            if (u.EditMap.ToLower() != "none")
+                try {
+                    Helper.GameContent.Load<xTile.Map>(u.EditMap);
+                } catch (Exception e) { Monitor.LogOnce($"Invalid EditMap for '{u.ID}':\n {e.Message}", LogLevel.Error); };
+        }
+
+        private static void validatePrice(UnlockableModel u, Dictionary<string, int> price)
+        {
+            foreach (var el in price) {
                 if (el.Key.ToLower() == "money")
                     continue;
 
@@ -113,21 +141,11 @@ namespace Unlockable_Bundles.Lib
                     if (quality == -1)
                         Monitor.LogOnce($"Invalid quality '{entry.Split(":").Last()}' for item '{u.ID}': '{id}'", LogLevel.Error);
 
-                    if (int.TryParse(id, out int result)) {
-                        if (new StardewValley.Object(result, el.Value).Name == "Error Item")
-                            Monitor.LogOnce($"Invalid price item ID for '{u.ID}': '{id}'", LogLevel.Error);
-                    } else
-                        Monitor.LogOnce($"Price item ID not numeric for '{u.ID}': '{id}'", LogLevel.Error);
+                    if (new StardewValley.Object(Unlockable.intParseID(id), el.Value).Name == "Error Item")
+                        Monitor.LogOnce($"Invalid item ID for '{u.ID}': '{id}'", LogLevel.Error);
                 }
 
             }
-            if (u.UpdateMap.ToLower() != "none")
-                try {
-                    Helper.GameContent.Load<xTile.Map>(u.UpdateMap);
-                } catch (Exception e) { Monitor.LogOnce($"Invalid UpdateMap for '{u.ID}':\n {e.Message}", LogLevel.Error); };
-
-            if (u.UpdateType.ToLower() != "overlay" && u.UpdateType.ToLower() != "replace")
-                Monitor.LogOnce($"UpdateType for '{u.ID}' is neither 'Overlay', nor 'Replace'. Will default to 'Overlay' ", LogLevel.Warn);
         }
 
         public static void placeShop(Unlockable unlockable)
@@ -137,9 +155,10 @@ namespace Unlockable_Bundles.Lib
 
             var shopObject = new ShopObject(unlockable.ShopPosition, unlockable);
 
-            if (!location.isTileOccupiedIgnoreFloors(unlockable.ShopPosition))
+            if (!location.isTileOccupiedIgnoreFloors(unlockable.ShopPosition)) {
                 location.setObject(unlockable.ShopPosition, shopObject);
-            else
+                Monitor.Log($"Placed Shop Object for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}'");
+            } else
                 Monitor.Log($"Failed to place Shop Object for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}' as it is occupied", LogLevel.Warn);
         }
 
@@ -154,8 +173,12 @@ namespace Unlockable_Bundles.Lib
 
         public static void removeShop(Unlockable unlockable)
         {
-            if (shopExists(unlockable))
-                unlockable.getGameLocation().removeObject(unlockable.ShopPosition, false);
+            if (shopExists(unlockable)) {
+                var location = unlockable.getGameLocation();
+                location.removeObject(unlockable.ShopPosition, false);
+                Monitor.Log($"Removed Shop Object for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}'");
+            }
+
         }
 
         //Returns a list of all GameLocations with the same Name.

@@ -111,6 +111,9 @@ namespace RangedTools
                 
                 patchPrefix(harmonyInstance, typeof(GameLocation), "isMonsterDamageApplicable",
                             typeof(ModEntry), nameof(ModEntry.Prefix_isMonsterDamageApplicable));
+               
+                patchPrefix(harmonyInstance, typeof(GameLocation), nameof(GameLocation.checkAction),
+                            typeof(ModEntry), nameof(ModEntry.Prefix_checkAction));
                 
                 if (helper.ModRegistry.IsLoaded("Thor.HoeWaterDirection"))
                 {
@@ -409,6 +412,14 @@ namespace RangedTools
                     tooltip: () => str.Get("optionDontCutGrassTooltip"),
                     getValue: () => Config.DontCutGrassPastNormalRange,
                     setValue: value => Config.DontCutGrassPastNormalRange = value
+                );
+                
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => str.Get("optionMultigrabCrabPotsInRangeName"),
+                    tooltip: () => str.Get("optionMultigrabCrabPotsInRangeTooltip"),
+                    getValue: () => Config.MultigrabCrabPotsInRange,
+                    setValue: value => Config.MultigrabCrabPotsInRange = value
                 );
                 
                 configMenu.AddBoolOption(
@@ -831,6 +842,15 @@ namespace RangedTools
         {
             try
             {
+                bool bigCraftable = (item as StardewValley.Object).bigCraftable.Value;
+                
+                // Base game relies on short range to prevent placing Crab Pots in unreachable places, so always use default range.
+                if (!bigCraftable && item.ParentSheetIndex == 710) // Crab Pot
+                {
+                    tileRadiusOverride = 0;
+                    return true; // Go to original function
+                }
+                
                 tileRadiusOverride = item.Category == StardewValley.Object.SeedsCategory
                                   || item.Category == StardewValley.Object.fertilizerCategory? Config.SeedRange
                                                                                              : Config.ObjectPlaceRange;
@@ -989,6 +1009,7 @@ namespace RangedTools
         
         /// <summary>Prefix to GameLocation.isMonsterDamageApplicable that overrides it if the setting to ignore obstacles is enabled.</summary>
         /// <param name="__instance">The current GameLocation.</param>
+        /// <param name="__result">The result of the function.</param>
         /// <param name="who">The attacking Farmer.</param>
         /// <param name="monster">The monster in question.</param>
         /// <param name="horizontalBias">Whether attack is more horizontal than vertical.</param>
@@ -1006,6 +1027,44 @@ namespace RangedTools
             catch (Exception ex)
             {
                 Log("Error in isMonsterDamageApplicable: " + ex.Message + Environment.NewLine + ex.StackTrace);
+                return true; // Go to original function
+            }
+        }
+        
+        /// <summary>Prefix to GameLocation.checkAction that makes additional checks for Crab Pots at a distance.</summary>
+        /// <param name="__instance">The current GameLocation.</param>
+        /// <param name="tileLocation">The tile being acted upon.</param>
+        /// <param name="viewport">The viewport of the screen.</param>
+        /// <param name="who">The acting Farmer.</param>
+        public static bool Prefix_checkAction(GameLocation __instance, xTile.Dimensions.Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who)
+        {
+            try
+            {
+                if (!Config.MultigrabCrabPotsInRange)
+                    return true; // Go to original function
+                
+                // Go through all keys in objects looking for Crab Pots, and check if the tile is within range to be acted upon.
+                int objectRadius = Config.ObjectPlaceRange;
+                Vector2 playerLocation = who.getTileLocation();
+                foreach (Vector2 objectKey in __instance.objects.Keys)
+                {
+                    StardewValley.Object obj = __instance.objects[objectKey];
+                    if (obj.ParentSheetIndex == 710) // Crab Pot
+                    {
+                        if (objectKey.X == tileLocation.X && objectKey.Y == tileLocation.Y)
+                            continue;
+                        
+                        if (objectRadius == -1
+                         || (Math.Abs(objectKey.X - playerLocation.X) <= objectRadius
+                          && Math.Abs(objectKey.Y - playerLocation.Y) <= objectRadius))
+                            obj.checkForAction(who);
+                    }
+                }
+                return true; // Go to original function
+            }
+            catch (Exception ex)
+            {
+                Log("Error in checkAction: " + ex.Message + Environment.NewLine + ex.StackTrace);
                 return true; // Go to original function
             }
         }

@@ -18,14 +18,14 @@ using StardewValley;
 using StardewValley.Network;
 using StardewValley.Objects;
 using StardewModdingAPI;
-using Harmony;
+using HarmonyLib;
 
 namespace FlowerDanceFix
 {
     public class ModConfig
     {
         public ModConfig Config;
-        
+
         //WIP- Changes number of pairs dancing- not tested for more than 6 pairs, hypothetically up to 15 pairs?
         public int MaxDancePairs { get; set; } = 6;
 
@@ -33,18 +33,21 @@ namespace FlowerDanceFix
         public bool NPCsHaveRandomPartners { get; set; } = false;
 
         //WIP- Pairs of NPCs dancing are random pairs of random genders- will require additional sprites
-        public bool ForceHeteroPartners { get; set; } = true;
+        //public bool ForceHeteroPartners { get; set; } = true;
 
         //WIP- Code to select datables that are not male of female (ie undefined; gender = 2)- will require additional sprites
-        public bool AllowNonBinaryPartners { get; set; } = false;
+        //public bool AllowNonBinaryPartners { get; set; } = false;
 
         //Can select datables living outside the valley (ie not town; homeRegion != 2)
         public bool AllowTouristPartners { get; set; } = false;
+
+        //Manually match pairs
+        //public string CustomMatchPairs { get; set; } = "";
 
         //Configureable blacklist of datables to be removed from genderedList pools- enclose NPC base name in quotes, deliniate forward slash
         public string DancerBlackList { get; set; } = "";
 
         //WIP- Allow custom crowd animations
-        public bool AllowCrowdAnimation { get; set; } = false;
+        //public bool AllowCrowdAnimation { get; set; } = false;
     }
 }

@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using StardewValley;
 using StardewModdingAPI;
+using StardewValley.Menus;
 
 namespace Unlockable_Bundles.Lib.ShopTypes
 {
@@ -77,7 +78,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             if (key.ToLower() == "money")
                 return who.Money;
 
-            int id = int.Parse(Unlockable.getIDFromReqSplit(key));
+            int id = Unlockable.intParseID(Unlockable.getIDFromReqSplit(key));
             int quality = Unlockable.getQualityFromReqSplit(key);
             if (id == 858)
                 return who.QiGems;
@@ -100,7 +101,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 return;
             }
 
-            int id = int.Parse(Unlockable.getIDFromReqSplit(key));
+            int id = Unlockable.intParseID(Unlockable.getIDFromReqSplit(key));
             int quality = Unlockable.getQualityFromReqSplit(key);
 
             if (id == 858) {
@@ -135,6 +136,24 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 if (amount <= 0)
                     return;
             }
+        }
+
+        public static bool addExceptionItem(Farmer who, string id, int value)
+        {
+            if (id.ToLower() == "money") {
+                who.Money += value;
+                return true;
+            }
+
+            if (id == "858") {
+                who.QiGems += value;
+                return true;
+            } else if (id == "73") {
+                Game1.netWorldState.Value.GoldenWalnuts.Value += value;
+                return true; ;
+            }
+
+            return false;
         }
     }
 }

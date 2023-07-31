@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 
-from PyQt5.QtCore import QFileInfo
+from PyQt6.QtCore import QFileInfo
 
 import mobase
 
@@ -21,6 +21,10 @@ class NoMansSkyGame(BasicGame):
     GameGogId = 1446213994
     GameBinary = "Binaries/NMS.exe"
     GameDataPath = "GAMEDATA/PCBANKS/MODS"
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-No-Man's-Sky"
+    )
 
     def executables(self):
         return [

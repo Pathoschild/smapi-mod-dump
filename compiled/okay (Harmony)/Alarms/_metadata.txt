@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17607
+IDs: aedenthorn.Alarms
+update keys: Nexus:17607, GitHub:aedenthorn/StardewValleyMods

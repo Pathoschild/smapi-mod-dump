@@ -21,5 +21,6 @@
   "msg.payment.remaining": "Ihr Restschuldbetrag beträgt: {{Balance}}g. Sie haben noch {{Duration}} Tage Zeit. Sie zahlen pro Tag {{DailyAmount}}g.",
   "msg.startborrow-1": "Wie viel Geld möchten Sie ausleihen?",
   "msg.startborrow-2": "Für wie lange möchten Sie ausleihen?",
-  "msg.startrepay": "Wie viel Geld würden Sie gerne zurückzahlen?"
+  "msg.startrepay": "Wie viel Geld würden Sie gerne zurückzahlen?",
+  "app.name": "Loans"
 }

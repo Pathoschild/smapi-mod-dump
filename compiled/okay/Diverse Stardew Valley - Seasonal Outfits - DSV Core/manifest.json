@@ -1,7 +1,7 @@
 {
   "Name": "DSV Core",
   "Author": "DSV Team",
-  "Version": "4.0.3",
+  "Version": "4.0.5",
   "Description": "Core mod for Diverse Stardew Valley that manages config options and C# Content Patcher tokens.",
   "UniqueID": "DSV.Core",
   "UpdateKeys": [ "Nexus:???"],
@@ -15,7 +15,8 @@
     },
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
-      "MinimumVersion": "1.8.2"
+      "MinimumVersion": "1.8.2",
+      "IsRequired": false
     }
   ]
 }

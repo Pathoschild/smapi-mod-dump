@@ -47,9 +47,9 @@ public static class Drawing
         batch.Draw(Drawing.Pixel, new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y), color ?? Color.White);
     }
 
-    public static void DrawTexture(this SpriteBatch batch, Texture2D texture, Vector2 pos, in Vector2 size, in Color? color = null)
+    public static void DrawTexture(this SpriteBatch batch, Texture2D texture, Vector2 pos, in Vector2 size, in Color? color = null, float? layerDepth = null)
     {
-        batch.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y), color ?? Color.White);
+        batch.Draw(texture, new Rectangle((int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y), null, color ?? Color.White, 0f, Vector2.Zero, SpriteEffects.None, layerDepth ?? 0f);
     }
 
     public static void DrawBorder(this SpriteBatch batch, Vector2 pos, in Vector2 size, in Color? color = null, int bordersize = 2)
@@ -88,6 +88,22 @@ public static class Drawing
         (
             position.X - Game1.viewport.X,
             position.Y - Game1.viewport.Y
+        );
+    }
+
+    /// <summary>
+    /// <para>Get visible tiles, taken from Pathoschild's Tilehelper.GetVisibleTiles</para>
+    /// 
+    /// <see href="https://github.com/Pathoschild/StardewMods/blob/stable/Common/TileHelper.cs#L95"/>
+    /// </summary>
+    /// <returns></returns>
+    public static Rectangle GetVisibleArea()
+    {
+        return new Rectangle(
+            x: (Game1.viewport.X),
+            y: (Game1.viewport.Y),
+            width: Game1.viewport.Width,
+            height: Game1.viewport.Height
         );
     }
 }

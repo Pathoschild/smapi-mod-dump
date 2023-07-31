@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ArenKDesai/Murder-Mod
+   Git: https://github.com/ArenKDesai/Murder-Mod.git
+
+mods:
+   Murder Mod
+
+latest commit:
+   commit b311d004228768afaaa037476848f8bb313a0db9
+   Author: Aren Desai <126343458+ArenKDesai@users.noreply.github.com>
+   Date:   Mon Jul 17 15:13:35 2023 -0500
+   
+       Add files via upload
+   

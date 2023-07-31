@@ -6,6 +6,7 @@ mods:
    Don't Stop Me Now
    Early Ginger Island
    Flexible Sprinklers
+   Hats on Hats
    Hibernation
    Junimo Warp
    Kokoro
@@ -21,9 +22,9 @@ mods:
    XP Display
 
 latest commit:
-   commit 7f58fc86ec4e08317c347101b7464e79d10d08de
+   commit 592d832d96ea00ede2f9a327db7d76c7d2cb8377
    Author: MichaÅ‚ DolaÅ› <me@shockah.pl>
-   Date:   Sun Jun 25 17:21:05 2023 +0200
+   Date:   Sat Jul 29 14:49:37 2023 +0200
    
-       SeasonAffixes: Version 1.1.3
+       Improved common configuration path
    

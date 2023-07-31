@@ -12,5 +12,7 @@
   "ub_not_enough1": "Pas assez de '{{displayName}}'",
   "ub_not_enough2": "Tu as besoin de plus de '{{displayName}}'",
   "ub_parrot_ask": "*Coco*... {{item}} ! *Coco*... Donne ?",
-  "ub_parrot_money": "Le brillant"
+  "ub_parrot_money": "Le brillant",
+  "ub_speech_ask": "{{item}} ? C'est très bien ! Je peux l'avoir ?",
+  "ub_speech_money": "L'argent",
 }

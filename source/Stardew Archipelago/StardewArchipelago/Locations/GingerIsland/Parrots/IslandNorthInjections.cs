@@ -22,6 +22,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
     {
         private const string AP_BRIDGE_PARROT = "Dig Site Bridge";
         private const string AP_TRADER_PARROT = "Island Trader";
+        private const string AP_PROF_SNAIL_CAVE = "Open Professor Snail Cave";
 
         private static IMonitor _monitor;
         private static IModHelper _modHelper;
@@ -84,6 +85,27 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
         private static bool IsTraderParrotPurchased()
         {
             return _locationChecker.IsLocationChecked(AP_TRADER_PARROT);
+        }
+
+        // public override void explosionAt(float x, float y)
+        public static bool ExplosionAt_CheckProfessorSnailLocation_Prefix(IslandNorth __instance, float x, float y)
+        {
+            try
+            {
+                var totalDistance = Math.Abs(y - 47) + Math.Abs(x - 21.5);
+                if (totalDistance > 2)
+                {
+                    return false; // don't run original logic
+                }
+
+                _locationChecker.AddCheckedLocation(AP_PROF_SNAIL_CAVE);
+                return false; // don't run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(ExplosionAt_CheckProfessorSnailLocation_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
+            }
         }
     }
 }

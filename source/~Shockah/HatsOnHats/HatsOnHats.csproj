@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="..\Configuration.props" />
+	<PropertyGroup>
+		<RootNamespace>Shockah.HatsOnHats</RootNamespace>
+		<Version>1.0.0</Version>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Kokoro\Kokoro.csproj" Private="false" />
+	</ItemGroup>
+</Project>

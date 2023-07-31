@@ -63,7 +63,7 @@ internal class ModConfig
         this.RestoreStaminaPercentage = 0.01f;
         this.SprintMovespeedBonus = 0.15f;
         this.TotemUseChance = 0.5f;
-        this.StepsPerExp = 25;
+        this.StepsPerExp = 20;
 
         // Unchangable by player via in game menu
         this.SprintSteps = 5;
@@ -101,7 +101,7 @@ internal class ModConfig
             tooltip: I18n.CfgExpgain_Desc,
             getValue: () => StepsPerExp.ToString(),
             setValue: value => StepsPerExp = int.Parse(value),
-            allowedValues: new string[] { "5", "10", "25", "50", "100" },
+            allowedValues: new string[] { "5", "10", "20", "50", "100" },
             formatAllowedValue: displayExpGainValues
          );
 
@@ -186,7 +186,7 @@ internal class ModConfig
         {
             case "5": return "5 (Very Fast)";
             case "10": return "10 (Fast)";
-            case "25": return "25 (Normal)";
+            case "20": return "20 (Normal)";
             case "50": return "50 (Slow)";
             case "100": return "100 (Very Slow)";
         }

@@ -11,11 +11,11 @@
 {
   "Name": "Flower Dance Fix",
   "Author": "elfuun",
-  "Version": "1.1.0",
+  "Version": "2.0.0",
   "Description": "Replaces existing Flower Dance code with flexible, dynamic code allowing for altered NPC genders, custom NPCs, and expanded dance participants.",
   "UniqueID": "FlowerDanceFix.elfuun",
   "EntryDll": "FlowerDanceFix.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "3.18.0",
   "UpdateKeys": ["Nexus:8535"],
   "Dependencies":
     [

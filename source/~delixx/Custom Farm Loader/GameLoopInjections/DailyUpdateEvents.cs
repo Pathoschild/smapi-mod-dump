@@ -64,6 +64,8 @@ namespace Custom_Farm_Loader.GameLoopInjections
                     continue;
                 }
 
+
+                Monitor.Log($"Running daily update of type {dailyUpdate.Type} at {dailyUpdate.Area.LocationName}");
                 if (dailyUpdate.Type == DailyUpdateType.TransformWeeds)
                     updateTransformWeeds(dailyUpdate);
                 else
@@ -72,7 +74,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
         }
 
-        private static void updateArea(DailyUpdate dailyUpdate)
+        public static void updateArea(DailyUpdate dailyUpdate)
         {
             var validTiles = dailyUpdate.validTiles();
 
@@ -255,7 +257,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
         }
 
 
-        private static void updateTransformWeeds(DailyUpdate dailyUpdate)
+        public static void updateTransformWeeds(DailyUpdate dailyUpdate)
         {
             var viableObjects = dailyUpdate.Location.objects.Pairs.Where(
                 obj => dailyUpdate.Area.isTileIncluded(new Vector2(obj.Value.TileLocation.X, obj.Value.TileLocation.Y))

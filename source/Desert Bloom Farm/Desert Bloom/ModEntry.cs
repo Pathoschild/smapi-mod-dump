@@ -35,7 +35,7 @@ namespace Desert_Bloom
             Lib.Mill.main();
             Lib.AssetsRequested.main();
             Lib.CustomTerrainSpawns.main();
-            API.UnlockableAreas.main();
+            API.UnlockableBundlesHandler.main();
             API.GenericModConfigMenuHandler.main();
         }
 

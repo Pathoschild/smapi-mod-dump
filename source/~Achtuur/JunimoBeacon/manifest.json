@@ -11,16 +11,19 @@
 {
     "Name": "Junimo Beacon",
     "Author": "Achtuur",
-    "Version": "1.0.0",
-    "Description": "mod_desc",
+    "Version": "1.1.0",
+    "Description": "Adds Junimo Beacon to the game",
     "UniqueID": "Achtuur.JunimoBeacon",
     "EntryDll": "JunimoBeacon.dll",
     "MinimumApiVersion": "3.0.0",
     "dependencies": [
         {
             "UniqueID": "Achtuur.AchtuurCore",
-            "MinimumVersion": "1.1.0"
+            "MinimumVersion": "1.1.1"
+        },
+        {
+            "UniqueID": "spacechase0.SpaceCore"
         }
     ],
-    "UpdateKeys": [ "" ]
+    "UpdateKeys": [ "Nexus: 17135" ]
 }

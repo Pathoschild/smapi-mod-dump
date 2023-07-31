@@ -48,7 +48,7 @@
     },
     "Stardrop": {
       "code": 717023,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Progressive Backpack": {
       "code": 717024,
@@ -268,11 +268,11 @@
     },
     "Earth Obelisk": {
       "code": 717078,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Water Obelisk": {
       "code": 717079,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Desert Obelisk": {
       "code": 717080,
@@ -288,7 +288,7 @@
     },
     "Gold Clock": {
       "code": 717083,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Progressive Coop": {
       "code": 717084,
@@ -764,35 +764,35 @@
     },
     "Rarecrow #1": {
       "code": 717202,
-      "classification": "filler"
+      "classification": "progression"
     },
     "Rarecrow #2": {
       "code": 717203,
-      "classification": "filler"
+      "classification": "progression"
     },
     "Rarecrow #3": {
       "code": 717204,
-      "classification": "filler"
+      "classification": "progression"
     },
     "Rarecrow #4": {
       "code": 717205,
-      "classification": "filler"
+      "classification": "progression"
     },
     "Rarecrow #5": {
       "code": 717206,
-      "classification": "filler"
+      "classification": "progression"
     },
     "Rarecrow #6": {
       "code": 717207,
-      "classification": "filler"
+      "classification": "progression"
     },
     "Rarecrow #7": {
       "code": 717208,
-      "classification": "filler"
+      "classification": "progression"
     },
     "Rarecrow #8": {
       "code": 717209,
-      "classification": "filler"
+      "classification": "progression"
     },
     "Straw Hat": {
       "code": 717210,
@@ -914,7 +914,7 @@
       "code": 717240,
       "classification": "progression"
     },
-    "Mini Fridge": {
+    "Mini-Fridge": {
       "code": 717241,
       "classification": "useful"
     },
@@ -994,7 +994,7 @@
       "code": 717260,
       "classification": "progression"
     },
-    "Leo's Trust": {
+    "Open Professor Snail Cave": {
       "code": 717261,
       "classification": "progression"
     },
@@ -1068,7 +1068,7 @@
     },
     "The Queen of Sauce": {
       "code": 717279,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Fishing Information Broadcasting Service": {
       "code": 717280,
@@ -1080,6 +1080,22 @@
     },
     "Dark Talisman": {
       "code": 717282,
+      "classification": "progression"
+    },
+    "Ostrich Incubator Recipe": {
+      "code": 717283,
+      "classification": "progression"
+    },
+    "Cute Baby": {
+      "code": 717284,
+      "classification": "progression"
+    },
+    "Ugly Baby": {
+      "code": 717285,
+      "classification": "progression"
+    },
+    "Deluxe Scarecrow Recipe": {
+      "code": 717286,
       "classification": "progression"
     },
     "Burnt": {
@@ -1960,7 +1976,7 @@
     },
     "30 Qi Gems": {
       "code": 722202,
-      "classification": "filler"
+      "classification": "useful"
     },
     "Solar Panel": {
       "code": 722203,
@@ -2210,6 +2226,10 @@
       "code": 722264,
       "classification": "useful"
     },
+    "Ostrich Incubator": {
+      "code": 722265,
+      "classification": "useful"
+    },
     "Luck Level": {
       "code": 727001,
       "classification": "progression"
@@ -2364,6 +2384,18 @@
     },
     "Ayeisha <3": {
       "code": 727110,
+      "classification": "progression"
+    },
+    "Riley <3": {
+      "code": 727111,
+      "classification": "progression"
+    },
+    "Progressive Wood Obelisk Sigils": {
+      "code": 727301,
+      "classification": "progression"
+    },
+    "Progressive Skull Cavern Elevator": {
+      "code": 727302,
       "classification": "progression"
     }
   }

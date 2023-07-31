@@ -46,6 +46,22 @@ This mod features some custom tokens for content pack creators that can tell you
 
 # Changelog
 
+## 1.2.1
+* New/Changed
+  * Added Russian translation, thanks to 8Efreet8
+
+## 1.2.0
+* New/Changed
+  * Updated exp curve to require about 33% less exp overall in levels 6-10
+  * Updated default exp gain to 1 exp per 20 steps instead of 25.
+
+## 1.1.8
+* New/Changed
+  * Added French translation, thanks to RockingChair1196
+
+* Fixes
+  * Sprinting in splitscreen now does not sprint both players
+
 ## 1.1.7
 * New/Changed
   * Added Simplified Chinese translation, thanks to Andrewxu 

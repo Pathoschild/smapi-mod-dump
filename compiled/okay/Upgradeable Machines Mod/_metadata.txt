@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17234
+IDs: Miihau.MiihauUpgradeableMachines
+update keys: Nexus:17234

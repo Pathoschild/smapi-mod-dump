@@ -36,7 +36,7 @@ namespace Unlockable_Bundles.Lib
             ShopObject.Initialize();
             ShopPlacement.Initialize();
             UpdateHandler.Initialize();
-            UA_NoGrass.Initialize();
+            UB_NoGrass.Initialize();
             UtilityMisc.Initialize();
         }
     }

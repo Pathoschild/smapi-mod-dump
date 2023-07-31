@@ -13,6 +13,7 @@
     "Price": 0,
     "Description": "Statue imbued with Prismatic Magic. Speeds up machines around it.",
     "ProvidesLight": true,
+    "ReserveExtraIndexCount": 7,
     "Recipe": {
         "ResultCount": 1,
         "CanPurchase": true,

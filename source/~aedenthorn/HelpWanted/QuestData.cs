@@ -29,5 +29,6 @@ namespace HelpWanted
         public float iconScale { get; set; } = 1f;
         public Point iconOffset { get; set; } = new Point(0, 0);
         public Quest quest{ get; set; }
+        public bool acceptable { get; set; } = true;
     }
 }

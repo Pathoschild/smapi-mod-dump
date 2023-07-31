@@ -13,6 +13,7 @@ using StardewArchipelago.Locations.Festival;
 using StardewModdingAPI;
 using StardewArchipelago.Stardew;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
+using StardewArchipelago.Locations.CodeInjections.Vanilla.Quests;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
 
 namespace StardewArchipelago.Locations.CodeInjections.Initializers
@@ -26,10 +27,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             ToolInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             ScytheInjections.Initialize(monitor, locationChecker);
             FishingRodInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
-            CommunityCenterInjections.Initialize(monitor, bundleReader, locationChecker);
+            CommunityCenterInjections.Initialize(monitor, archipelago, bundleReader, locationChecker);
             MineshaftInjections.Initialize(monitor, archipelago, locationChecker);
             SkillInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             QuestInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
+            DarkTalismanInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             CarpenterInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             WizardInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             IsolatedEventInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
@@ -40,6 +42,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             MuseumInjections.Initialize(monitor, modHelper, archipelago, locationChecker, itemManager);
             FriendshipInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             SpecialOrderInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
+            PregnancyInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
+            CropsanityInjections.Initialize(monitor, archipelago, locationChecker, itemManager);
             InitializeFestivalPatches(monitor, modHelper, archipelago, locationChecker, shopReplacer);
         }
 

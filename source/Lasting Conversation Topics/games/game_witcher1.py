@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
-from typing import List
 from pathlib import Path
+from typing import List
 
-from PyQt5.QtCore import QFileInfo, QDir
+from PyQt6.QtCore import QDir, QFileInfo
 
 import mobase
 
@@ -74,6 +74,10 @@ class Witcher1Game(BasicGame):
     GameSaveExtension = "TheWitcherSave"
     GameDocumentsDirectory = "%DOCUMENTS%/The Witcher"
     GameSavesDirectory = "%GAME_DOCUMENTS%/saves"
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-The-Witcher"
+    )
 
     def init(self, organizer: mobase.IOrganizer) -> bool:
         super().init(organizer)

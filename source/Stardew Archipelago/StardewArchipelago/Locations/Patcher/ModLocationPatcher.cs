@@ -11,10 +11,12 @@
 using HarmonyLib;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Constants;
+using StardewArchipelago.GameModifications.CodeInjections.Modded;
 using StardewArchipelago.Locations.CodeInjections.Modded;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
 using StardewArchipelago.Locations.GingerIsland;
 using StardewModdingAPI;
+using StardewValley;
 
 namespace StardewArchipelago.Locations.Patcher
 {
@@ -39,6 +41,7 @@ namespace StardewArchipelago.Locations.Patcher
             AddModSkillInjections();
             AddDeepWoodsModInjections();
             AddMagicModInjections();
+            AddSkullCavernElevatorModInjections();
         }
 
         private void AddModSkillInjections()
@@ -55,6 +58,8 @@ namespace StardewArchipelago.Locations.Patcher
                 original: AccessTools.Method(spaceCoreType, "AddExperience"),
                 prefix: new HarmonyMethod(typeof(SkillInjections), nameof(SkillInjections.AddExperience_ArchipelagoModExperience_Prefix))
             );
+
+            InjectSocializingExperienceMultiplier();
         }
 
         private void InjectSpaceCoreSkillsPage()
@@ -75,18 +80,56 @@ namespace StardewArchipelago.Locations.Patcher
             );
         }
 
+        private void InjectSocializingExperienceMultiplier()
+        {
+            if (!_archipelago.SlotData.Mods.HasMod(ModNames.SOCIALIZING))
+            {
+                return;
+            }
+
+            var socializingConfigType = AccessTools.TypeByName("SocializingSkill.Config");
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(socializingConfigType, "ExperienceFromTalking"),
+                postfix: new HarmonyMethod(typeof(SocializingConfigCodeInjections), nameof(SocializingConfigCodeInjections.ExperienceFromTalking_APMultiplier_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(socializingConfigType, "ExperienceFromGifts"),
+                postfix: new HarmonyMethod(typeof(SocializingConfigCodeInjections), nameof(SocializingConfigCodeInjections.ExperienceFromGifts_APMultiplier_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(socializingConfigType, "ExperienceFromEvents"),
+                postfix: new HarmonyMethod(typeof(SocializingConfigCodeInjections), nameof(SocializingConfigCodeInjections.ExperienceFromEvents_APMultiplier_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(socializingConfigType, "ExperienceFromQuests"),
+                postfix: new HarmonyMethod(typeof(SocializingConfigCodeInjections), nameof(SocializingConfigCodeInjections.ExperienceFromQuests_APMultiplier_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(socializingConfigType, "LovedGiftExpMultiplier"),
+                postfix: new HarmonyMethod(typeof(SocializingConfigCodeInjections), nameof(SocializingConfigCodeInjections.LovedGiftExpMultiplier_APMultiplier_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(socializingConfigType, "BirthdayGiftExpMultiplier"),
+                postfix: new HarmonyMethod(typeof(SocializingConfigCodeInjections), nameof(SocializingConfigCodeInjections.BirthdayGiftExpMultiplier_APMultiplier_Postfix))
+            );
+        }
+
         private void AddDeepWoodsModInjections()
         {
             if (!_archipelago.SlotData.Mods.HasMod(ModNames.DEEP_WOODS))
             {
                 return;
             }
+
             var _deepWoodsType = AccessTools.TypeByName("DeepWoodsMod.DeepWoods");
+            var _enterDirectionType = AccessTools.TypeByName("DeepWoodsMod.DeepWoodsEnterExit+EnterDirection");
+            var constructorParameterTypes = new[] { _deepWoodsType, typeof(int), _enterDirectionType };
             var _unicornType = AccessTools.TypeByName("DeepWoodsMod.Unicorn");
             var _gingerbreadType = AccessTools.TypeByName("DeepWoodsMod.GingerBreadHouse");
             var _iridiumtreeType = AccessTools.TypeByName("DeepWoodsMod.IridiumTree");
             var _treasureType = AccessTools.TypeByName("DeepWoodsMod.TreasureChest");
             var _fountainType = AccessTools.TypeByName("DeepWoodsMod.HealingFountain");
+            var _infestedType = AccessTools.TypeByName("DeepWoodsMod.InfestedTree");
 
             _harmony.Patch(
                 original: AccessTools.Method(_unicornType, "checkAction"),
@@ -112,6 +155,17 @@ namespace StardewArchipelago.Locations.Patcher
                 original: AccessTools.Method(_fountainType, "performUseAction"),
                 prefix: new HarmonyMethod(typeof(DeepWoodsModInjections), nameof(DeepWoodsModInjections.PerformUseAction_HealingFountainLocation_Prefix))
             );
+            _harmony.Patch(
+                original: AccessTools.Method(_infestedType, "DeInfest"),
+                postfix: new HarmonyMethod(typeof(DeepWoodsModInjections), nameof(DeepWoodsModInjections.Deinfest_DeinfestLocation_Postfix))
+            );
+            if (_archipelago.SlotData.ElevatorProgression != ElevatorProgression.Vanilla)
+            {
+                _harmony.Patch(
+                    original: AccessTools.Constructor(_deepWoodsType, constructorParameterTypes),
+                    postfix: new HarmonyMethod(typeof(DeepWoodsModInjections), nameof(DeepWoodsModInjections.Constructor_WoodsDepthChecker_Postfix))
+                );
+            }
         }
 
         private void AddMagicModInjections()
@@ -126,6 +180,41 @@ namespace StardewArchipelago.Locations.Patcher
                 original: AccessTools.Method(_analyzeSpellType, "OnCast"),
                 prefix: new HarmonyMethod(typeof(MagicModInjections),
                     nameof(MagicModInjections.OnCast_AnalyzeGivesLocations_Prefix))
+            );
+        }
+
+        private void AddSkullCavernElevatorModInjections()
+        {
+            if (!_archipelago.SlotData.Mods.HasMod(ModNames.SKULL_CAVERN_ELEVATOR))
+            {
+                return;
+            }
+
+            if (_archipelago.SlotData.ElevatorProgression == ElevatorProgression.Vanilla)
+            {
+                return;
+            }
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), nameof(Game1.enterMine)),
+                postfix: new HarmonyMethod(typeof(SkullCavernInjections), nameof(SkullCavernInjections.EnterMine_SendSkullCavernElevatorCheck_PostFix))
+            );
+
+            var constructorParameterTypes = new[] { typeof(int), typeof(double), typeof(int) };
+            var myElevatorMenuType = AccessTools.TypeByName("MyElevatorMenu");
+            var myElevatorMenuConstructor = AccessTools.Constructor(myElevatorMenuType, constructorParameterTypes);
+            _harmony.Patch(
+                original: myElevatorMenuConstructor,
+                prefix: new HarmonyMethod(typeof(SkullCavernInjections), nameof(SkullCavernInjections.MyElevatorMenuConstructor_SkullCavernElevator_Prefix)),
+                postfix: new HarmonyMethod(typeof(SkullCavernInjections), nameof(SkullCavernInjections.MyElevatorMenuConstructor_SkullCavernElevator_Postfix))
+            );
+
+            var myElevatorMenuWithScrollBarType = AccessTools.TypeByName("MyElevatorMenuWithScrollbar");
+            var myElevatorMenuWithScrollBarConstructor = AccessTools.Constructor(myElevatorMenuWithScrollBarType, constructorParameterTypes);
+            _harmony.Patch(
+                original: myElevatorMenuWithScrollBarConstructor,
+                prefix: new HarmonyMethod(typeof(SkullCavernInjections), nameof(SkullCavernInjections.MyElevatorMenuConstructor_SkullCavernElevator_Prefix)),
+                postfix: new HarmonyMethod(typeof(SkullCavernInjections), nameof(SkullCavernInjections.MyElevatorMenuConstructor_SkullCavernElevator_Postfix))
             );
         }
     }

@@ -184,7 +184,8 @@ namespace HelpWanted
                         tries = 0;
                         npcs.Add(npc.Name);
                         Texture2D icon = npc.Portrait;
-                        questList.Add(new QuestData() { padTexture = GetPadTexture(npc.Name, questType.ToString()), pinTexture = GetPinTexture(npc.Name, questType.ToString()), padTextureSource = new Rectangle(0, 0, 64, 64), pinTextureSource = new Rectangle(0, 0, 64, 64), icon = icon, iconSource = iconRect, quest = Game1.questOfTheDay, pinColor = GetRandomColor(), padColor = GetRandomColor(), iconColor = new Color(Config.PortraitTintR, Config.PortraitTintG, Config.PortraitTintB, Config.PortraitTintA), iconOffset = iconOffset, iconScale = Config.PortraitScale });
+                        AddQuest(Game1.questOfTheDay, questType, icon, iconRect, iconOffset);
+
                     }
                 }
                 catch(Exception ex) 
@@ -196,6 +197,7 @@ namespace HelpWanted
             modQuestList.Clear();
             Helper.Events.GameLoop.UpdateTicked -= GameLoop_UpdateTicked;
         }
+
 
         private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
         {

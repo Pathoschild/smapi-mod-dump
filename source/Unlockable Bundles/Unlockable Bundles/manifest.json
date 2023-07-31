@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/delixx/stardew-valley-unlockable-bundles
+**
+*************************************************/
+
+{
+  "Name": "Unlockable Bundles",
+  "Author": "DeLiXx",
+  "Version": "2.0.5",
+  "Description": "Framework for custom bundles",
+  "UniqueID": "DLX.Bundles",
+  "EntryDll": "Unlockable Bundles.dll",
+  "MinimumApiVersion": "3.14.1",
+  "UpdateKeys": [ "Nexus:17265@MAIN" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.28.0",
+      "IsRequired": false
+    }
+  ]
+}

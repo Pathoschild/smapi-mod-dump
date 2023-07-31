@@ -27,8 +27,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
     public static class MineshaftInjections
     {
-        public const string RECEIVED_MINE_ELEVATOR_KEY = "MineElevator_Received_Level_Key";
-
         private static IMonitor _monitor;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
@@ -107,6 +105,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
+        // public static void enterMine(int whatLevel)
         public static void EnterMine_SendElevatorCheck_PostFix(int whatLevel)
         {
             try

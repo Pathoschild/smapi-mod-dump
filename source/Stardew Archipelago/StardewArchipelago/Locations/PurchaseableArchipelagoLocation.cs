@@ -15,6 +15,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Textures;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -44,7 +45,10 @@ namespace StardewArchipelago.Locations
             _extraMaterialsRequired = new List<Item>();
             _purchaseCallBack = purchaseCallback;
 
-            _archipelagoTexture = ArchipelagoTextures.GetColoredLogo(modHelper, 48, "color");
+            var hints = archipelago.GetHints().Where(x => !x.Found && archipelago.GetPlayerName(x.FindingPlayer) == archipelago.SlotData.SlotName);
+            var isHinted = hints.Any(hint => archipelago.GetLocationName(hint.LocationId).Equals(apLocationName, StringComparison.OrdinalIgnoreCase));
+            var desiredTextureName = isHinted ? ArchipelagoTextures.PLEADING : ArchipelagoTextures.COLOR;
+            _archipelagoTexture = ArchipelagoTextures.GetColoredLogo(modHelper, 48, desiredTextureName);
         }
 
         public void AddMaterialRequirement(Item requiredItem)

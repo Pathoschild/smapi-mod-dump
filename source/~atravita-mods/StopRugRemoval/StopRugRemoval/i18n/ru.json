@@ -24,35 +24,57 @@
   "PreventPlantingOnRugs.description": "Предотвращает рыхление ковров и посадку саженцев на ковры.",
   "PlaceGrassUnder.title": "Помещать траву под объектами",
   "PlaceGrassUnder.description": "Разрешить или нет размещение травы под другими объектами.",
-  "BombsInSafeAreas.title": "Бомбы в безопасных зонах",
-  "BombsInSafeAreas.description": "Нужно ли уведомление с запуском бомбы в безопасной зоне или нет.",
-  "BombsInDangerousAreas.title": "Бомбы в опасных зонах",
-  "BombsInDangerousAreas.description": "Нужно ли подтверждать запуск бомбы в опасных зонах или нет.",
-  "WarpsInSafeAreas.title": "Телепорт в безопасных зонах",
-  "WarpsInSafeAreas.description": "Нужно ли подтверждение телепорта в безопасных зонах или нет.",
-  "WarpsInDangerousAreas.title": "Телепорт в опасных зонах",
-  "WarpsInDangerousAreas.description": "Нужно ли подтверждать телепорт в опасных зонах или нет.",
-  "JukeboxesEverywhere.title": "Музыкал. автомат везде",
-  "JukeboxesEverywhere.description": "Позволяет проигрывать музыкальные автоматы в любом месте!",
-  "GoldenCoconutsOffIsland.title": "Золотые кокосы у острова",
-  "GoldenCoconutsOffIsland.description": "Золотые кокосы могут падать и с пальм на острове! Хотя это довольно редкое явление.",
+  "JukeboxesEverywhere.title": "Музыкальный автомат везде",
+  "JukeboxesEverywhere.description": "Разрешает играть музыкальному автомату везде!",
+  "GoldenCoconutsOffIsland.title": "Золотые кокосы за пределами острова",
+  "GoldenCoconutsOffIsland.description": "С пальм вне острова тоже могут падать золотые кокосы! Правда, это довольно редкое явление.",
+  "AlertChanges.title": "Изменения в предупреждениях",
+  "AlertChanges.description": "Добавляет незначительные изменения в предупреждениях",
 
   "FurniturePlacementKey.title": "Клавиша расстановки мебели",
-  "FurniturePlacementKey.description": "Комбинация клавиш, используемая для разрешения снятия объектов со столов.",
+  "FurniturePlacementKey.description": "Горячая клавиша, позволяющая удаление предметов со стола.",
 
-  "HideCrabPots.title": "Спрятать крабовые ловушки",
+  "HideCrabPots.title": "Скрывать крабовые ловушки",
   "HideCrabPots.description": "Скрывает крабовые ловушки во время событий.",
 
   "SaveBombedForage.title": "Сохранить разбомблённые ресурсы",
   "SaveBombedForage.description": "Разбомблённые ресурсы автоматически собираются.",
 
-  "BombLocationDetailed": "Потверждение бомб и телепорта для каждой локации",
+  "FilterJukeboxSongs.title": "Фильтр песен музыкального автомата",
+  "FilterJukeboxSongs.description": "Если установлено значение true, то песни, которые в данный момент недоступны для воспроизведения, будут удалены. (Наиболее распространенной причиной отсутствия песни является то, что она принадлежала какому-либо моду, который впоследствии был удален).",
 
+  "PhoneSpeedUpFactor.title": "Фактор ускорения звонка телефона",
+  "PhoneSpeedUpFactor.description": "На сколько можно ускорить телефонный звонок.",
+
+  "EditElliottEvent.title": "Изменения события с Эллиотом",
+  "EditElliottEvent.description": "Нужно ли изменить событие Эллиотта, чтобы добавить возможность выбора сока вместо алкоголя.",
+
+  "BetIcons.title": "Иконки Поставить 1т./10т.",
+  "BetIcons.description": "Показывать или нет иконки Пос.1000/Пос.10000",
+
+  // secret notes gmmc
+  "SecretNotesOverride.title": "Настройка секретных заметок",
+  "SecretNotesOverride.descriptions": "Управляет тем, как этот мод обрабатывает секретные заметки.",
+
+  "OverrideSecretNotes.title": "Изменение спавна секретных записок",
+  "OverrideSecretNotes.description": "Этот мод позволяет изменить то, как игра обрабатывает спавн секретных записок.",
+
+  "MaxNoteChance.title": "Макс. шанс появление записки",
+  "MaxNoteChance.description": "Наибольшая вероятность того, что записка появиться.",
+
+  "MinNoteChance.title": "Мин. шанс появление записки",
+  "MinNoteChance.description": "Этот шанс используется для появления последней записки.",
+
+  // Handle the confirmation GMCM stuff....
+  "NapalmInSafeAreas.title": "Напалм в безопасных зонах",
+  "NapalmInSafeAreas.description": "Если этот параметр отключен, то напалмовые кольца не будут действовать в зонах, помеченных как безопасные (по умолчанию это ферма).",
+
+  "BombLocationDetailed": "Подтверждение бомб и телепорта для каждой локации",
   "BombLocationDetailed.description": "Устанавливает, следует ли считать локацию безопасной или опасной в случае с подтверждением бомбы. Динамическая локация считается опасной, если на ней есть хоть один враг.",
 
   "config.IsSafeLocationEnum.Safe": "Безопасно",
   "config.IsSafeLocationEnum.Dangerous": "Опасно",
-  "config.IsSafeLocationEnum.Dynamic": "Динамика",
+  "config.IsSafeLocationEnum.Dynamic": "Динамично",
 
   "config.ConfirmationEnum.Off": "Выкл.",
   "config.ConfirmationEnum.NotInMultiplayer": "Не в мультиплеере",
@@ -62,35 +84,64 @@
   "ConfirmBomb.title": "Настройки уведомления с подтверждением бомбы",
   "ConfirmBomb.description": "Запрашивать ли подтверждение перед использованием бомбы или нет.",
 
-  "ConfirmWarps.title": "Настройки уведомления с подтверждением телепорта",
-  "ConfirmWarps.description": "Запрашивать ли подтверждение перед использованием телепорта или нет.",
+  "BombsInSafeAreas.title": "Бомбы в безопасных зонах",
+  "BombsInSafeAreas.description": "Нужно ли подтверждать запуск бомбы в безопасной зоне или нет.",
+  "BombsInDangerousAreas.title": "Бомбы в опасных зонах",
+  "BombsInDangerousAreas.description": "Нужно ли подтверждать запуск бомбы в опасных зонах или нет.",
 
+  "ConfirmWarps.title": "Настройки подтверждения телепорта",
+  "ConfirmWarps.description": "Запрашивать или нет подтверждение перед использованием телепорта.",
+
+  "WarpsInSafeAreas.title": "Телепорт в безопасных зонах",
+  "WarpsInSafeAreas.description": "Нужно ли подтверждение телепорта в безопасных зонах или нет.",
+  "WarpsInDangerousAreas.title": "Телепорт в опасных зонах",
+  "WarpsInDangerousAreas.description": "Нужно ли подтверждать телепорт в опасных зонах или нет.",
+
+  "ConfirmScepter.title": "Настройки подтверждения Жезла Возврата",
+  "ConfirmScepter.description": "Нужно ли запрашивать подтверждение перед использованием Жезла Возврата.",
+
+  "BetterReturnScepter": "Поскольку у вас установлен Better Return Scepter, настройки Жезла Возврата для этого мода были отключены.",
+
+  "ReturnScepterInSafeAreas.title": "Жезл Возврата\nВ безопасных зонах",
+  "ReturnScepterInSafeAreas.description": "Следует ли включать подтверждение Жезла Возврата в безопасных зонах.",
+  "ReturnScepterInDangerousAreas.title": "Жезл Возврата\nВ опасных зонах",
+  "ReturnScepterInDangerousAreas.description": "Следует ли включать подтверждение Жезла Возврата в опасных зонах.",
+
+  "CraneGameDifficulty.title": "Сложность игрового автомата в кинотеатре",
+  "CraneGameDifficulty.description": "Сложность для игры с краном. Установите **выше** для более легкой игры с краном.",
+
+  "RemoveDuplicateNPCs.title": "Удаление дубликатов NPC",
+  "RemoveDuplicateNPCs.description": "Удалять дубликаты NPC, если таковые обнаружены.",
+
+  // Messages to the player.
   "rug-removal-message": "Перед снятием ковра уберите все предметы, находящиеся на ковре!",
-  "table-removal-message": "Удерживайте {{keybind}}, чтобы убрать объект со стола.",
+  "table-removal-message": "Удерживайте {{keybind}}, чтобы убрать предмет со стола.",
   "rug-planting-message": "Посадка растений на ковры не разрешена!",
   "gate-removal-message": "Удерживайте {{keybind}}, чтобы легко удалить ворота.",
+  "invalid-special-order": "Особый заказ {{order}} кажется недействительным; не был добавлен в журнал заданий.",
+  "rain-totem.message": "Мэр Льюис не оценит завтрашний дождь...",
 
   // Config errors and messages
   "IllFormatedConfig": "Конфигурационный файл кажется неправильно составленным, используются настройки по умолчанию. Пожалуйста, воспользуйтесь Generic Mod Config Menu для настройки.",
   "GmcmNotFound": "Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) не найден, интеграция отключена.",
-  "GmcmVersionMessage": "Пожалуйста, обновите Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) до последней версии {{version}} (текущая версия: {{currentversion}}). Интеграция с GMCM отключена.",
+  "GmcmVersionMessage": "Пожалуйста, обновите Generic Mod Config Menu (https://www.nexusmods.com/stardewvalley/mods/5098) до последней версии {{version}} (Текущая версия: {{currentversion}}). Интеграция с GMCM отключена.",
 
   // Confirm bombs?
   "ConfirmBombs": "Разместить бомбу?",
-  "YesOne": "Да (одну)",
+  "YesOne": "Да (один раз)",
   "YesArea": "Да (для этой локации)",
   "No": "Нет",
 
   // Confirm warps:
-  "ConfirmWarps": "Потвердить телепорт?",
+  "ConfirmWarps": "Подтвердить телепорт?",
   "Yes": "Да",
 
   // For editing Elliott's event
   "drink": "О, я с удовольствием выпью!",
-  "nondrink": "Вообще-то, можно мне немного сока?",
+  "nondrink": "Вообще-то можно мне немного сока?",
 
   // Casino!
   "bet1k": "Пос.1000",
   "bet10k": "Пос.10000",
-  "BuyCasino":  "Купить клубные монеты? 10 г каждая!"
+  "BuyCasino": "Купить клубные монеты? 10з. за каждую монету!"
 }

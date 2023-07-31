@@ -41,7 +41,7 @@ namespace Custom_Farm_Loader.Lib
         public FurnitureType Type = FurnitureType.Furniture;
         public int Rotations;
         public Vector2 Position = new Vector2(0, 0);
-        public HeldObject heldObject = null;
+        public HeldObject HeldObject = null;
         public List<ItemObject> Items = new List<ItemObject>();
         public string LocationName = "FarmHouse";
 
@@ -95,7 +95,7 @@ namespace Custom_Farm_Loader.Lib
                             furniture.Position = new Vector2(int.Parse(value.Split(",")[0]), int.Parse(value.Split(",")[1]));
                             break;
                         case "heldobject":
-                            furniture.heldObject = HeldObject.parseHeldObject((JObject)property.First());
+                            furniture.HeldObject = HeldObject.parseHeldObject((JObject)property.First());
                             break;
                         case "items":
                             furniture.Items = parseChestItems(property);
@@ -279,15 +279,15 @@ namespace Custom_Farm_Loader.Lib
                         location.furniture.Add(new BedFurniture(int.Parse(ID), Position));
                     else {
                         location.furniture.Add(new StardewValley.Objects.Furniture(int.Parse(ID), Position, Rotations));
-                        if (heldObject != null)
-                            location.furniture.Last().heldObject.Value = heldObject.objectFactory(Position);
+                        if (HeldObject != null)
+                            location.furniture.Last().heldObject.Value = HeldObject.objectFactory(Position);
                     }
                     break;
 
                 case FurnitureType.Purple_Giftbox or FurnitureType.Giftbox or FurnitureType.Chest or FurnitureType.Dungeon_Chest:
                     Chest chest = null;
                     var items = new List<Item>();
-                    Items.ForEach(item => { items.Add(new StardewValley.Object(int.Parse(item.Id), item.Amount, quality: item.Quality)); });
+                    Items.ForEach(item => { items.Add(new StardewValley.Object(int.Parse(item.Id), item.Amount, quality: item.Quality) { HasBeenInInventory = false }); });
 
                     if (Type == FurnitureType.Giftbox || Type == FurnitureType.Purple_Giftbox) {
                         int giftboxIndex = Type == FurnitureType.Purple_Giftbox ? 1 : 0;

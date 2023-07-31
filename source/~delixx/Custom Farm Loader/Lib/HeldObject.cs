@@ -55,7 +55,7 @@ namespace Custom_Farm_Loader.Lib
                             case "gold":
                                 held.Quality = 2; break;
                             case "iridium":
-                                held.Quality = 3; break;
+                                held.Quality = 4; break;
                         }
                         break;
                 }

@@ -21,11 +21,12 @@ namespace SaveAnywhere.Framework
 {
     public class SaveManager
     {
-        private readonly IModHelper _helper;
-        private readonly Action _onLoaded;
         public readonly Dictionary<string, Action> AfterCustomSavingCompleted;
         public readonly Dictionary<string, Action> AfterSaveLoaded;
         public readonly Dictionary<string, Action> BeforeCustomSavingBegins;
+
+        private readonly IModHelper _helper;
+        private readonly Action _onLoaded;
         private NewSaveGameMenuV2 _currentSaveMenu;
         private bool _waitingToSave;
 
@@ -33,10 +34,9 @@ namespace SaveAnywhere.Framework
         {
             _helper = helper;
             _onLoaded = onLoaded;
-            // OnLoaded = onLoaded;
-            BeforeCustomSavingBegins = new Dictionary<string, Action>();
-            AfterCustomSavingCompleted = new Dictionary<string, Action>();
-            AfterSaveLoaded = new Dictionary<string, Action>();
+            BeforeCustomSavingBegins = new();
+            AfterCustomSavingCompleted = new();
+            AfterSaveLoaded = new();
         }
 
         private string RelativeDataPath => Path.Combine("data", Constants.SaveFolderName + ".json");
@@ -53,6 +53,7 @@ namespace SaveAnywhere.Framework
         {
             if (!_waitingToSave || Game1.activeClickableMenu != null)
                 return;
+            Game1.newDaySync = new(); //SaveComplete was never called because newDaySync was never assigned, causing AfterSave event to never fire
             _currentSaveMenu = new NewSaveGameMenuV2();
             _currentSaveMenu.SaveComplete += CurrentSaveMenu_SaveComplete;
             Game1.activeClickableMenu = _currentSaveMenu;
@@ -64,10 +65,9 @@ namespace SaveAnywhere.Framework
             _currentSaveMenu.SaveComplete -= CurrentSaveMenu_SaveComplete;
             _currentSaveMenu = null;
             SaveAnywhere.RestoreMonsters();
-            if (AfterSave != null)
-                AfterSave(this, EventArgs.Empty);
+            AfterSave?.Invoke(this, EventArgs.Empty);
             foreach (var keyValuePair in AfterCustomSavingCompleted)
-                keyValuePair.Value();
+                keyValuePair.Value?.Invoke();
         }
 
         public void ClearData()
@@ -78,39 +78,26 @@ namespace SaveAnywhere.Framework
             RemoveLegacyDataForThisPlayer();
         }
 
-        public bool saveDataExists()
-        {
-            return File.Exists(Path.Combine(_helper.DirectoryPath, RelativeDataPath)) || _helper.Data.ReadSaveData<PlayerData>("midday-save") != null;
-        }
+        public bool saveDataExists() => File.Exists(Path.Combine(_helper.DirectoryPath, RelativeDataPath)) || _helper.Data.ReadSaveData<PlayerData>("midday-save") != null;
 
         public void BeginSaveData()
         {
-            
-            if (BeforeSave != null)
-                BeforeSave(this, EventArgs.Empty);
+            BeforeSave?.Invoke(this, EventArgs.Empty);
             foreach (var customSavingBegin in BeforeCustomSavingBegins)
-                customSavingBegin.Value();
+                customSavingBegin.Value?.Invoke();
             SaveAnywhere.Instance.cleanMonsters();
             var farm = Game1.getFarm();
             var drink = Game1.buffsDisplay.drink;
             BuffData drinkdata = null;
 
             if (drink != null)
-                drinkdata = new BuffData(
-                    drink.displaySource,
-                    drink.source,
-                    drink.millisecondsDuration,
-                    drink.buffAttributes
-                );
+                drinkdata = new BuffData(drink.displaySource, drink.source, drink.millisecondsDuration, drink.buffAttributes);
+
             var food = Game1.buffsDisplay.food;
             BuffData fooddata = null;
             if (food != null)
-                fooddata = new BuffData(
-                    food.displaySource,
-                    food.source,
-                    food.millisecondsDuration,
-                    food.buffAttributes
-                );
+                fooddata = new BuffData(food.displaySource, food.source, food.millisecondsDuration, food.buffAttributes);
+
             _helper.Data.WriteSaveData("midday-save", new PlayerData
             {
                 Time = Game1.timeOfDay,
@@ -121,33 +108,24 @@ namespace SaveAnywhere.Framework
                 IsCharacterSwimming = Game1.player.swimming.Value
             });
             
-                Game1.activeClickableMenu = new NewShippingMenuV2(farm.getShippingBin(Game1.player));
-                farm.lastItemShipped = null;
-                _waitingToSave = true;
-                
-                _currentSaveMenu = new NewSaveGameMenuV2();
-                _currentSaveMenu.SaveComplete += CurrentSaveMenu_SaveComplete;
-                Game1.activeClickableMenu = _currentSaveMenu;
-            
-
-            
+            Game1.activeClickableMenu = new NewShippingMenuV2(farm.getShippingBin(Game1.player));
+            farm.lastItemShipped = null;
+            _waitingToSave = true;
 
             RemoveLegacyDataForThisPlayer();
         }
 
         public void LoadData()
         {
-            var data = _helper.Data.ReadSaveData<PlayerData>("midday-save");
+            var data = _helper.Data.ReadSaveData<PlayerData>("midday-save") ?? _helper.Data.ReadJsonFile<PlayerData>(RelativeDataPath);
             if (data == null)
             {
-                data = _helper.Data.ReadJsonFile<PlayerData>(RelativeDataPath);
-                if (data == null)
-                    return;
                 ClearData();
                 _helper.Data.WriteSaveData("midday-save", data);
             }
             SetPositions(data.Position, data.Time);
             if (data.OtherBuffs != null)
+            {
                 foreach (var buff in data.OtherBuffs)
                 {
                     var atts = buff.Attributes;
@@ -167,6 +145,7 @@ namespace SaveAnywhere.Framework
                         buff.Source,
                         buff.DisplaySource));
                 }
+            }
 
             var datadrink = data.DrinkBuff;
             var datafood = data.FoodBuff;
@@ -212,13 +191,10 @@ namespace SaveAnywhere.Framework
             }
 
             ResumeSwimming(data);
-            var onLoaded = _onLoaded;
-            if (onLoaded != null)
-                onLoaded();
-            if (AfterLoad != null)
-                AfterLoad(this, EventArgs.Empty);
+            _onLoaded?.Invoke();
+            AfterLoad?.Invoke(this, EventArgs.Empty);
             foreach (var keyValuePair in AfterSaveLoaded)
-                keyValuePair.Value();
+                keyValuePair.Value?.Invoke();
         }
 
         private void ResumeSwimming(PlayerData data)
@@ -239,12 +215,7 @@ namespace SaveAnywhere.Framework
         private IEnumerable<BuffData> GetotherBuffs()
         {
             foreach (var buff in Game1.buffsDisplay.otherBuffs)
-                yield return new BuffData(
-                    buff.displaySource,
-                    buff.source,
-                    buff.millisecondsDuration,
-                    buff.buffAttributes
-                );
+                yield return new BuffData(buff.displaySource, buff.source, buff.millisecondsDuration, buff.buffAttributes);
         }
 
         private IEnumerable<PositionData> GetPosition()
@@ -270,7 +241,6 @@ namespace SaveAnywhere.Framework
             Game1.player.faceDirection(position[0].FacingDirection);
             foreach (var allCharacter in Utility.getAllCharacters())
             {
-                
                 allCharacter.dayUpdate(Game1.dayOfMonth);
                 if (allCharacter.isVillager())
                 {
@@ -285,8 +255,7 @@ namespace SaveAnywhere.Framework
                         var newSchedule = allCharacter.getSchedule(Game1.dayOfMonth);
                         if (newSchedule != null)
                         {
-                            var dest = allCharacter.getSchedule(Game1.dayOfMonth)
-                                .LastOrDefault(data => data.Key < time);
+                            var dest = allCharacter.getSchedule(Game1.dayOfMonth).LastOrDefault(data => data.Key < time);
 
                             if (dest.Key != 0)
                             {
@@ -343,12 +312,13 @@ namespace SaveAnywhere.Framework
                 for (var i = 0; i < intervals; i++)
                     Game1.performTenMinuteClockUpdate();
             else if (intervals < 0)
+            {
                 for (var i = 0; i > intervals; i--)
                 {
-                    Game1.timeOfDay =
-                        Utility.ModifyTime(Game1.timeOfDay, -20); // offset 20 mins so game updates to next interval
+                    Game1.timeOfDay = Utility.ModifyTime(Game1.timeOfDay, -20); // offset 20 mins so game updates to next interval
                     Game1.performTenMinuteClockUpdate();
                 }
+            }
 
             // reset ambient light
             // White is the default non-raining color. If it's raining or dark out, UpdateGameClock

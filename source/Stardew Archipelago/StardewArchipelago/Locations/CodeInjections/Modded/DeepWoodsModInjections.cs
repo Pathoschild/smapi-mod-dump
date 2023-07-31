@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Netcode;
 using HarmonyLib;
@@ -29,10 +30,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         private const string MEET_UNICORN_AP_LOCATION = "Pet the Deep Woods Unicorn";
         private const string DESTROY_HOUSE_AP_LOCATION = "Breaking Up Deep Woods Gingerbread House";
         private const string DESTROY_TREE_AP_LOCATION = "Chop Down a Deep Woods Iridium Tree";
-        private const string WOODS_OBELISK_PROGRESSION = "Progressive Woods Obelisk";
         private const string FOUNTAIN_DRINK_LOCATION = "Drinking From Deep Woods Fountain";
         private const string TREASURE1_AP_LOCATION = "Deep Woods Trash Bin";
         private const string TREASURE2_AP_LOCATION = "Deep Woods Treasure Chest";
+        private const string DEINFEST_AP_LOCATION = "Purify an Infested Lichtung";
+        private const string WOODS_OBELISK_SIGILS = "Progressive Woods Obelisk Sigils";
+        private const string WOODS_DEPTH_LOCATION = "The Deep Woods: Depth {0}";
+        private const int LEVEL_STEP = 10;
         private static IMonitor _monitor;
         private static IModHelper _helper;
         private static ArchipelagoClient _archipelago;
@@ -91,6 +95,44 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 return true; //run original logic
             }
         }*/
+
+        //public class DeepWoods
+        //public DeepWoods(DeepWoods parent, int level, EnterDirection enterDir)
+        public static void Constructor_WoodsDepthChecker_Postfix(GameLocation __instance, int level, Enum enterDir)
+        {
+            try
+            {
+                var deepWoodsSettingsType = AccessTools.TypeByName("DeepWoodsMod.DeepWoodsSettings");
+                var deepWoodsStateDataType = AccessTools.TypeByName("DeepWoodsMod.DeepWoodsStateData");
+
+                var deepWoodsStateProperty = deepWoodsSettingsType.GetProperty("DeepWoodsState", BindingFlags.Public | BindingFlags.Static);
+                var deepWoodsState = deepWoodsStateProperty.GetValue(null);
+                var lowestLevelReachedField = _helper.Reflection.GetField<int>(deepWoodsState, "lowestLevelReached");
+                
+                lowestLevelReachedField.SetValue(10 * _archipelago.GetReceivedItemCount(WOODS_OBELISK_SIGILS));
+                var levelIndexedAt1 = level - 1;
+
+                if (levelIndexedAt1 % LEVEL_STEP != 0)
+                {
+                    return;
+                }
+
+                if (_archipelago.SlotData.ElevatorProgression == ElevatorProgression.ProgressiveFromPreviousFloor &&
+                    __instance == null)
+                {
+                    return;
+                }
+
+                _locationChecker.AddCheckedLocation(string.Format(WOODS_DEPTH_LOCATION, levelIndexedAt1));
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(Constructor_WoodsDepthChecker_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+}
+
 
         //It makes the chime if you pet after reload, but not really a problem.  Also patches out being scared
         //since its highly likely by the time you check unicorn, you'll be moving too fast naturally from buffs. - Albrekka
@@ -215,11 +257,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         {
             try
             {
-                if (!_locationChecker.IsLocationChecked(DESTROY_HOUSE_AP_LOCATION))
-                {
-                    _locationChecker.AddCheckedLocation(DESTROY_HOUSE_AP_LOCATION);
-                    return;
-                }
+                _locationChecker.AddCheckedLocation(DESTROY_HOUSE_AP_LOCATION);
+                return;
             }
             catch (Exception ex)
             {
@@ -235,15 +274,29 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         {
             try
             {
-                if (!_locationChecker.IsLocationChecked(DESTROY_TREE_AP_LOCATION))
-                {
-                    _locationChecker.AddCheckedLocation(DESTROY_TREE_AP_LOCATION);
-                    return;
-                }
+                _locationChecker.AddCheckedLocation(DESTROY_TREE_AP_LOCATION);
+                return;
             }
             catch (Exception ex)
             {
                 _monitor.Log($"Failed in {nameof(PlayDestroyedSounds_IridiumTreeLocation_Postfix)}:\n{ex}",
+                    LogLevel.Error);
+                return;
+            }
+        }
+
+        // public class InfestedTree: FruitTree
+        // public void DeInfest()
+        public static void Deinfest_DeinfestLocation_Postfix()
+        {
+            try
+            {
+                _locationChecker.AddCheckedLocation(DEINFEST_AP_LOCATION);
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(Deinfest_DeinfestLocation_Postfix)}:\n{ex}",
                     LogLevel.Error);
                 return;
             }

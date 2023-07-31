@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StardewArchipelago.Archipelago;
 using StardewArchipelago.Goals;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
@@ -31,14 +32,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         public const string AP_LOCATION_BULLETIN_BOARD = "Complete Bulletin Board";
 
         private static IMonitor _monitor;
+        private static ArchipelagoClient _archipelago;
         private static BundleReader _bundleReader;
         private static LocationChecker _locationChecker;
 
         public static Dictionary<string, string> BundleNames;
 
-        public static void Initialize(IMonitor monitor, BundleReader bundleReader, LocationChecker locationChecker)
+        public static void Initialize(IMonitor monitor, ArchipelagoClient archipelago, BundleReader bundleReader, LocationChecker locationChecker)
         {
             _monitor = monitor;
+            _archipelago = archipelago;
             _bundleReader = bundleReader;
             _locationChecker = locationChecker;
             BundleNames = new Dictionary<string, string>();
@@ -184,6 +187,49 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             catch (Exception ex)
             {
                 _monitor.Log($"Failed in {nameof(CheckAction_BulletinBoardNoRequirements_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
+            }
+        }
+
+        // public string getRewardNameForArea(int whichArea)
+        public static bool GetRewardNameForArea_ScoutRoomRewards_Prefix(JunimoNoteMenu __instance, int whichArea, ref string __result)
+        {
+            try
+            {
+                var apAreaToScout = "???";
+                switch ((Area)whichArea)
+                {
+                    case Area.Pantry:
+                        apAreaToScout = AP_LOCATION_PANTRY;
+                        break;
+                    case Area.CraftsRoom:
+                        apAreaToScout = AP_LOCATION_CRAFTS_ROOM;
+                        break;
+                    case Area.FishTank:
+                        apAreaToScout = AP_LOCATION_FISH_TANK;
+                        break;
+                    case Area.BoilerRoom:
+                        apAreaToScout = AP_LOCATION_BOILER_ROOM;
+                        break;
+                    case Area.Vault:
+                        apAreaToScout = AP_LOCATION_VAULT;
+                        break;
+                    case Area.Bulletin:
+                        apAreaToScout = AP_LOCATION_BULLETIN_BOARD;
+                        break;
+                    default:
+                        __result = "???";
+                        return false; // don't run original logic
+                }
+
+                var scoutedItem = _archipelago.ScoutSingleLocation(apAreaToScout);
+                var rewardText = $"Reward: {scoutedItem.PlayerName}'s {scoutedItem.ItemName}";
+                __result = rewardText;
+                return false; // don't run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(GetRewardNameForArea_ScoutRoomRewards_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
         }

@@ -18,7 +18,7 @@ using StardewValley;
 using Microsoft.Xna.Framework;
 using System.Reflection.Emit;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley.Locations;
+using System.Runtime.CompilerServices;
 
 namespace AeroCore.Patches
 {
@@ -28,16 +28,26 @@ namespace AeroCore.Patches
 		internal static event Action<LightingEventArgs> LightingEvent;
 		private static Vector2 offset;
 		private static Vector2 v_offset;
+		private static bool isForced = false;
 
 		internal static MethodBase TargetMethod() => AccessTools.TypeByName("StardewModdingAPI.Framework.SGame").MethodNamed("DrawImpl");
-		internal static void Prefix(ref bool __state)
+		internal static void Prefix(ref (bool, Color, Color) __state)
 		{
-			__state = Game1.drawLighting;
+			isForced = !Game1.drawLighting;
+			__state = (Game1.drawLighting, Game1.outdoorLight, Game1.ambientLight);
+			if (isForced)
+			{
+				fix(ref Game1.outdoorLight);
+				fix(ref Game1.ambientLight);
+			}
 			Game1.drawLighting = Game1.hasLoadedGame;
 		}
-		internal static void Postfix(bool __state)
+		internal static void Postfix((bool, Color, Color) __state)
 		{
-			Game1.drawLighting = __state;
+			Game1.drawLighting = __state.Item1;
+			Game1.outdoorLight = __state.Item2;
+			Game1.ambientLight = __state.Item3;
+			isForced = false;
 		}
 		internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator gen)
 			=> patcher.Run(instructions, gen);
@@ -47,36 +57,6 @@ namespace AeroCore.Patches
 			.SkipTo(new CodeInstruction[] {
 				new(OpCodes.Ldsfld, typeof(Game1).FieldNamed(nameof(Game1.drawLighting))),
 				new(OpCodes.Brfalse)
-			})
-			// fix dark mines
-			.SkipTo(new CodeInstruction[]
-			{
-				new(OpCodes.Callvirt, typeof(MineShaft).FieldNamed(nameof(MineShaft.getLightingColor)))
-			})
-			.Skip(1)
-			.Add(new CodeInstruction[]
-			{
-				new(OpCodes.Call, typeof(Lighting).MethodNamed(nameof(fix)))
-			})
-			// fix dark indoors
-			.SkipTo(new CodeInstruction[]
-			{
-				new(OpCodes.Ldsfld, typeof(Game1).FieldNamed(nameof(Game1.ambientLight)))
-			})
-			.Skip(1)
-			.Add(new CodeInstruction[]
-			{
-				new(OpCodes.Call, typeof(Lighting).MethodNamed(nameof(fix)))
-			})
-			// fix dark outdoors
-			.SkipTo(new CodeInstruction[]
-			{
-				new(OpCodes.Ldsfld, typeof(Game1).FieldNamed(nameof(Game1.outdoorLight)))
-			})
-			.Skip(1)
-			.Add(new CodeInstruction[]
-			{
-				new(OpCodes.Call, typeof(Lighting).MethodNamed(nameof(fix)))
 			})
 			// skip to after bg lighting setup
 			.SkipTo(new CodeInstruction[]
@@ -125,6 +105,8 @@ namespace AeroCore.Patches
 		}
 		internal static void EmitEvent(Color ambient, float intensity)
 		{
+			if (isForced)
+				fix(ref ambient);
 			GetOffset();
 			LightingEvent?.Invoke(new(intensity, ambient, v_offset, offset));
 		}
@@ -135,9 +117,9 @@ namespace AeroCore.Patches
 			// lightmap draw offset
 			offset = new(-(pos.X % pixsize), -(pos.Y % pixsize));
 			// lighting subpixel offset
-			v_offset = new(-offset.X / (float)pixsize, -offset.Y / (float)pixsize);
+			v_offset = new(-offset.X / pixsize, -offset.Y / pixsize);
 		}
-		private static Color fix(Color c)
-			=> c == Color.White ? Color.Black : c;
+		private static void fix(ref Color c)
+			=> c = c == Color.White ? Color.Black : c;
 	}
 }

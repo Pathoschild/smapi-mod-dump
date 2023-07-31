@@ -39,14 +39,14 @@ namespace Desert_Bloom.API
 
         private static void dayStarted(object sender, DayStartedEventArgs e)
         {
-            if (!ModEntry.IsMyFarm())
-                return;
-
             checkFieldsChanges();
         }
 
         private static void checkFieldsChanges()
         {
+            if (!ModEntry.IsMyFarm())
+                return;
+
             var farm = Game1.getFarm();
             var props = farm.Map.Properties;
 

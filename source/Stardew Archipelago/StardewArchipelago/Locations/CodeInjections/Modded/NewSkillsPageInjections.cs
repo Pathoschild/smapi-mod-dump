@@ -9,22 +9,9 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Menus;
-using StardewValley.Objects;
-using StardewValley.Quests;
-using StardewValley.TerrainFeatures;
-using xTile.Dimensions;
-using xTile.ObjectModel;
-using Object = StardewValley.Object;
-using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace StardewArchipelago.Locations.CodeInjections.Modded
 {

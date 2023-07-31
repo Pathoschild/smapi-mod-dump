@@ -147,10 +147,9 @@ internal class ModEntry : Mod
         return dx * dx + dy * dy <= Instance.Config.NearbyPlayerTileRange * Instance.Config.NearbyPlayerTileRange;
     }
 
-    public static Farmer[] GetNearbyPlayers()
+    public static IEnumerable<Farmer> GetNearbyPlayers()
     {
         // return all players that are close to the main player
-        List<Farmer> nearbyFarmers = new List<Farmer>();
         foreach (Farmer online_farmer in Game1.getOnlineFarmers())
         {
             // Skip if player is current player
@@ -160,11 +159,9 @@ internal class ModEntry : Mod
             // Add other player to list if they are close enough to main player
             if (FarmerIsNearby(online_farmer))
             {
-                nearbyFarmers.Add(online_farmer);
+                yield return online_farmer;
             }
         }
-
-        return nearbyFarmers.ToArray();
     }
 
     /// <summary>
@@ -174,7 +171,7 @@ internal class ModEntry : Mod
     /// <returns></returns>
     public static float GetActorExpPercentage(int level, string skill_id)
     {
-        if (Instance.Config.ShareAllExpAtMaxLevel && level == Instance.skillMaxLevels.Value[skill_id])
+        if (Instance.Config.ShareAllExpAtMaxLevel && level >= Instance.skillMaxLevels.Value[skill_id])
         {
             return 0f;
         }
@@ -184,7 +181,7 @@ internal class ModEntry : Mod
 
     public static float GetSharedExpPercentage(int actor_level, string skill_id)
     {
-        if (Instance.Config.ShareAllExpAtMaxLevel && actor_level == Instance.skillMaxLevels.Value[skill_id])
+        if (Instance.Config.ShareAllExpAtMaxLevel && actor_level >= Instance.skillMaxLevels.Value[skill_id])
         {
             return 1f;
         }
@@ -349,7 +346,7 @@ internal class ModEntry : Mod
     private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
     {
         // Check if overlay button is pressed
-        if (e.Button == this.Config.OverlayButton)
+        if (e.Button == this.Config.OverlayButton && Context.IsPlayerFree)
         {
             this.TileUIOverlay.Toggle();
         }

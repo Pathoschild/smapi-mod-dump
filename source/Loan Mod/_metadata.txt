@@ -6,11 +6,11 @@ mods:
    Loan Mod
 
 latest commit:
-   commit 62905fdf81b53d6f3d0ab2f92c62e5d9693a3a4f
+   commit 4c1b4e40be0a99e9724a38372b3f7ae6a64c0a74
    Author: Dominik <dcdominoes@gmail.com>
-   Date:   Thu Jun 30 19:02:27 2022 +0100
+   Date:   Wed Jul 12 17:00:13 2023 +0100
    
-       dev > master
+       Merge pull request #36 from legovader09/dev
        
-       Update README.md
+       Dev > Master
    

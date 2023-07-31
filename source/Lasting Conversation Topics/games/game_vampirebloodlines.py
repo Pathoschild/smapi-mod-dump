@@ -1,11 +1,11 @@
 # -*- encoding: utf-8 -*-
 import os
-import mobase
-
-from PyQt5.QtCore import QDir
-
-from typing import List
 from pathlib import Path
+from typing import List
+
+from PyQt6.QtCore import QDir
+
+import mobase
 
 from ..basic_game import BasicGame, BasicGameSaveGame
 
@@ -86,6 +86,10 @@ class VampireTheMasqueradeBloodlinesGame(BasicGame):
     GameDocumentsDirectory = "%GAME_PATH%/vampire/cfg"
     GameSavesDirectory = "%GAME_PATH%/vampire/SAVE"
     GameSaveExtension = "sav"
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-Vampire:-The-Masquerade-%E2%80%90-Bloodlines"
+    )
 
     def init(self, organizer: mobase.IOrganizer) -> bool:
         super().init(organizer)
@@ -98,7 +102,7 @@ class VampireTheMasqueradeBloodlinesGame(BasicGame):
         )
         return True
 
-    def initializeProfile(self, path: QDir, settings: int):
+    def initializeProfile(self, path: QDir, settings: mobase.ProfileSetting):
         # Create .cfg files if they don't exist
         for iniFile in self.iniFiles():
             iniPath = self.documentsDirectory().absoluteFilePath(iniFile)

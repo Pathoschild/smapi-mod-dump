@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "FishingTrawler/1.2.2": {
+      "FishingTrawler/1.2.3": {
         "dependencies": {
           "Newtonsoft.Json": "13.0.2",
           "Pathoschild.Stardew.ModBuildConfig": "4.1.0"
@@ -27,7 +27,7 @@
     }
   },
   "libraries": {
-    "FishingTrawler/1.2.2": {
+    "FishingTrawler/1.2.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -14,6 +14,7 @@ using HarmonyLib;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Locations.CodeInjections.Initializers;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
+using StardewArchipelago.Locations.CodeInjections.Vanilla.Quests;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
 using StardewArchipelago.Locations.Festival;
 using StardewArchipelago.Locations.GingerIsland;
@@ -22,6 +23,7 @@ using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Characters;
+using StardewValley.Events;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Minigames;
@@ -67,8 +69,10 @@ namespace StardewArchipelago.Locations.Patcher
             AddFishsanityLocations();
             AddMuseumsanityLocations();
             AddFestivalLocations();
+            AddCropSanityLocations();
             ReplaceFriendshipsWithChecks();
             ReplaceSpecialOrdersWithChecks();
+            ReplaceChildrenWithChecks();
             _gingerIslandPatcher.PatchGingerIslandLocations();
         }
 
@@ -85,6 +89,10 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.Method(typeof(CommunityCenter), nameof(CommunityCenter.checkAction)),
                 prefix: new HarmonyMethod(typeof(CommunityCenterInjections), nameof(CommunityCenterInjections.CheckAction_BulletinBoardNoRequirements_Prefix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.getRewardNameForArea)),
+                prefix: new HarmonyMethod(typeof(CommunityCenterInjections), nameof(CommunityCenterInjections.GetRewardNameForArea_ScoutRoomRewards_Prefix))
             );
         }
 
@@ -254,6 +262,32 @@ namespace StardewArchipelago.Locations.Patcher
                 original: AccessTools.Method(typeof(Event), nameof(Event.command_awardFestivalPrize)),
                 prefix: new HarmonyMethod(typeof(QuestInjections), nameof(QuestInjections.Command_AwardFestivalPrize_QiMilk_Prefix))
             );
+
+            ReplaceDarkTalismanQuestsWithChecks();
+        }
+
+        private void ReplaceDarkTalismanQuestsWithChecks()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), nameof(NPC.checkAction)),
+                prefix: new HarmonyMethod(typeof(DarkTalismanInjections),
+                    nameof(DarkTalismanInjections.CheckAction_ShowWizardMagicInk_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Chest), nameof(Chest.checkForAction)),
+                prefix: new HarmonyMethod(typeof(DarkTalismanInjections),
+                    nameof(DarkTalismanInjections.CheckForAction_BuglandChest_Prefix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), "performRemoveHenchman"),
+                prefix: new HarmonyMethod(typeof(DarkTalismanInjections),
+                    nameof(DarkTalismanInjections.PerformRemoveHenchman_CheckGoblinProblemLocation_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Railroad), "resetLocalState"),
+                prefix: new HarmonyMethod(typeof(DarkTalismanInjections),
+                    nameof(DarkTalismanInjections.ResetLocalState_PlayCutsceneIfConditionsAreMet_Postfix))
+            );
         }
 
         private void PatchSkillsPage()
@@ -296,6 +330,29 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.Method(typeof(SpecialOrder), nameof(SpecialOrder.UpdateAvailableSpecialOrders)),
                 prefix: new HarmonyMethod(typeof(SpecialOrderInjections), nameof(SpecialOrderInjections.UpdateAvailableSpecialOrders_ChangeFrequencyToBeLessRng_Prefix))
+            );
+        }
+
+        private void ReplaceChildrenWithChecks()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), nameof(NPC.canGetPregnant)),
+                prefix: new HarmonyMethod(typeof(PregnancyInjections), nameof(PregnancyInjections.CanGetPregnant_ShuffledPregnancies_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(QuestionEvent), nameof(QuestionEvent.setUp)),
+                prefix: new HarmonyMethod(typeof(PregnancyInjections), nameof(PregnancyInjections.Setup_PregnancyQuestionEvent_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(QuestionEvent), "answerPregnancyQuestion"),
+                prefix: new HarmonyMethod(typeof(PregnancyInjections), nameof(PregnancyInjections.AnswerPregnancyQuestion_CorrectDate_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(BirthingEvent), nameof(BirthingEvent.tickUpdate)),
+                prefix: new HarmonyMethod(typeof(PregnancyInjections), nameof(PregnancyInjections.TickUpdate_BirthingEvent_Prefix))
             );
         }
 
@@ -621,12 +678,30 @@ namespace StardewArchipelago.Locations.Patcher
 
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Dialogue), nameof(Dialogue.chooseResponse)),
-                prefix: new HarmonyMethod(typeof(WinterStarInjections), nameof(WinterStarInjections.ChooseResponse_LegendOfTheWinterStar_Postfix))
+                postfix: new HarmonyMethod(typeof(WinterStarInjections), nameof(WinterStarInjections.ChooseResponse_LegendOfTheWinterStar_Postfix))
             );
 
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Event), nameof(Event.chooseSecretSantaGift)),
                 prefix: new HarmonyMethod(typeof(WinterStarInjections), nameof(WinterStarInjections.ChooseSecretSantaGift_SuccessfulGift_Prefix))
+            );
+        }
+
+        private void AddCropSanityLocations()
+        {
+            if (_archipelago.SlotData.Cropsanity == Cropsanity.Disabled)
+            {
+                return;
+            }
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Crop), nameof(Crop.harvest)),
+                postfix: new HarmonyMethod(typeof(CropsanityInjections), nameof(CropsanityInjections.Harvest_CheckCropsanityLocation_Postfix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(FruitTree), nameof(FruitTree.shake)),
+                prefix: new HarmonyMethod(typeof(CropsanityInjections), nameof(CropsanityInjections.Shake_CheckCropsanityFruitTreeLocation_Prefix))
             );
         }
 

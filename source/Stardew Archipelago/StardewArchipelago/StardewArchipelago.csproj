@@ -23,6 +23,27 @@
     <None Update="IdTables\stardew_valley_location_table.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Textures\Archipelago\115x115 pleading icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Archipelago\12x12 black icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Archipelago\12x12 blue icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Archipelago\12x12 color icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Archipelago\12x12 pleading icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Archipelago\12x12 red icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Archipelago\12x12 white icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Textures\Archipelago\24x24 black icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -30,6 +51,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Textures\Archipelago\24x24 color icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Archipelago\24x24 pleading icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Archipelago\24x24 red icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Textures\Archipelago\24x24 white icon.png">
@@ -44,6 +71,12 @@
     <None Update="Textures\Archipelago\48x48 color icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Textures\Archipelago\48x48 pleading icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Textures\Archipelago\48x48 red icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Textures\Archipelago\48x48 white icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -52,6 +85,18 @@
   <ItemGroup>
     <Folder Include="GameModifications\CustomOptions\" />
     <Folder Include="Test\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ContentPatcher">
+      <HintPath>..\..\..\..\Programs\Steam\steamapps\common\Stardew Valley\Mods - AP fully modded\ContentPatcher\ContentPatcher.dll</HintPath>
+    </Reference>
+    <Reference Include="DeepWoodsMod">
+      <HintPath>..\..\..\..\Programs\Steam\steamapps\common\Stardew Valley\Mods - AP fully modded\DeepWoodsMod\DeepWoodsMod.dll</HintPath>
+    </Reference>
+    <Reference Include="SocializingSkill">
+      <HintPath>..\..\..\..\Programs\Steam\steamapps\common\Stardew Valley\Mods - AP fully modded\SocializingSkill\SocializingSkill.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

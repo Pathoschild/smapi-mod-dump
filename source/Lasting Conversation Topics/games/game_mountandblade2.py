@@ -2,7 +2,7 @@
 
 from typing import List
 
-from PyQt5.QtCore import QFileInfo
+from PyQt6.QtCore import QFileInfo
 
 import mobase
 
@@ -45,6 +45,10 @@ class MountAndBladeIIGame(BasicGame):
     GameName = "Mount & Blade II: Bannerlord"
     GameShortName = "mountandblade2bannerlord"
     GameDataPath = "Modules"
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-Mount-&-Blade-II:-Bannerlord"
+    )
 
     GameBinary = "bin/Win64_Shipping_Client/TaleWorlds.MountAndBlade.Launcher.exe"
 

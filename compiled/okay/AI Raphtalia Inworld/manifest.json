@@ -1,0 +1,9 @@
+{
+    "Name": "AI Raphtalia Inworld",
+    "Author": "Fippsie",
+    "Version": "1.0.0",
+    "Description": "Talk to inworld.ai powered Raphtalia!",
+    "UniqueId": "Fippsie.AIRaphtalia",
+    "EntryDll": "Inworld.dll",
+    "UpdateKeys": [ "Nexus:17273" ]
+}

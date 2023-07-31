@@ -47,26 +47,20 @@ namespace SaveAnywhere.Framework
 
         public event EventHandler SaveComplete;
 
-        public override void receiveRightClick(int x, int y, bool playSound = true)
-        {
-        }
-
         private void complete()
         {
             Game1.playSound("money");
             _completePause = 1500;
             _loader = null;
             Game1.game1.IsSaving = false;
-            if (!Game1.IsMasterGame || Game1.newDaySync == null || Game1.newDaySync.hasSaved())
+            if (!Game1.IsMasterGame || (Game1.newDaySync?.hasSaved() ?? false))
                 return;
             Game1.newDaySync.flagSaved();
-            SaveComplete(this, EventArgs.Empty);
+            SaveComplete?.Invoke(this, EventArgs.Empty);
+            _quit = true;
         }
 
-        public override bool readyToClose()
-        {
-            return false;
-        }
+        public override bool readyToClose() => false;
 
         public override void update(GameTime time)
         {
@@ -75,118 +69,85 @@ namespace SaveAnywhere.Framework
                 if (!Game1.activeClickableMenu.Equals(this) || !Game1.PollForEndOfNewDaySync())
                     return;
                 Game1.exitActiveMenu();
+                return;
             }
-            else
+
+            base.update(time);
+            if (Game1.client is { timedOut: true })
             {
-                base.update(time);
-                if (Game1.client is { timedOut: true })
+                _quit = true;
+                if (!Game1.activeClickableMenu.Equals(this))
+                    return;
+                Game1.exitActiveMenu();
+                return;
+            }
+            _ellipsisDelay -= (float)time.ElapsedGameTime.TotalSeconds;
+            if (_ellipsisDelay <= 0.0)
+            {
+                _ellipsisDelay += 0.75f;
+                ++_ellipsisCount;
+                if (_ellipsisCount > 3)
+                    _ellipsisCount = 1;
+            }
+
+            if (_loader != null)
+            {
+                _loader.MoveNext();
+                if (_loader.Current >= 100)
                 {
-                    _quit = true;
-                    if (!Game1.activeClickableMenu.Equals(this))
-                        return;
-                    Game1.exitActiveMenu();
+                    _margin -= time.ElapsedGameTime.Milliseconds;
+                    if (_margin <= 0)
+                        complete();
+                }
+            }
+            else if (_hasDrawn && _completePause == -1)
+            {
+                if (Game1.IsMasterGame)
+                {
+                    if (Game1.saveOnNewDay)
+                    {
+                        Game1.player.team.endOfNightStatus.UpdateState("ready");
+                        multiplayer.saveFarmhands();
+                        Game1.game1.IsSaving = true;
+                        _loader = SaveGame.Save();
+                    }
+                    else
+                    {
+                        _margin = -1;
+                        if (Game1.newDaySync?.readyForSave() ?? false) 
+                            Game1.game1.IsSaving = true;
+                        complete();
+                    }
                 }
                 else
                 {
-                    _ellipsisDelay -= (float)time.ElapsedGameTime.TotalSeconds;
-                    if (_ellipsisDelay <= 0.0)
+                    if (!_hasSentFarmhandData)
                     {
-                        _ellipsisDelay += 0.75f;
-                        ++_ellipsisCount;
-                        if (_ellipsisCount > 3)
-                            _ellipsisCount = 1;
+                        _hasSentFarmhandData = true;
+                        multiplayer.sendFarmhand();
                     }
 
-                    if (_loader != null)
-                    {
-                        _loader.MoveNext();
-                        if (_loader.Current >= 100)
-                        {
-                            _margin -= time.ElapsedGameTime.Milliseconds;
-                            if (_margin <= 0)
-                                complete();
-                        }
-                    }
-                    else if (_hasDrawn && _completePause == -1)
-                    {
-                        if (Game1.IsMasterGame)
-                        {
-                            if (Game1.saveOnNewDay)
-                            {
-                                Game1.player.team.endOfNightStatus.UpdateState("ready");
-                                if (Game1.newDaySync != null)
-                                {
-                                    if (Game1.newDaySync.readyForSave())
-                                    {
-                                        multiplayer.saveFarmhands();
-                                        Game1.game1.IsSaving = true;
-                                        _loader = SaveGame.Save();
-                                    }
-                                }
-                                else
-                                {
-                                    multiplayer.saveFarmhands();
-                                    Game1.game1.IsSaving = true;
-                                    _loader = SaveGame.Save();
-                                }
-                            }
-                            else
-                            {
-                                _margin = -1;
-                                if (Game1.newDaySync != null)
-                                {
-                                    if (Game1.newDaySync.readyForSave())
-                                    {
-                                        Game1.game1.IsSaving = true;
-                                        complete();
-                                    }
-                                }
-                                else
-                                {
-                                    complete();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (!_hasSentFarmhandData)
-                            {
-                                _hasSentFarmhandData = true;
-                                multiplayer.sendFarmhand();
-                            }
-
-                            multiplayer.UpdateLate();
-                            multiplayer.UpdateEarly();
-                            if (Game1.newDaySync != null)
-                                Game1.newDaySync.readyForSave();
-                            Game1.player.team.endOfNightStatus.UpdateState("ready");
-                            if (Game1.newDaySync != null)
-                            {
-                                if (Game1.newDaySync.hasSaved())
-                                    complete();
-                            }
-                            else
-                            {
-                                complete();
-                            }
-                        }
-                    }
-
-                    if (_completePause < 0)
-                        return;
-                    _completePause -= time.ElapsedGameTime.Milliseconds;
-                    _saveText.update(time);
-                    if (_completePause >= 0)
-                        return;
-                    _quit = true;
-                    _completePause = -9999;
+                    multiplayer.UpdateLate();
+                    multiplayer.UpdateEarly();
+                    Game1.newDaySync?.readyForSave();
+                    Game1.player.team.endOfNightStatus.UpdateState("ready");
+                    complete();
                 }
             }
+
+            if (_completePause < 0)
+                return;
+            _completePause -= time.ElapsedGameTime.Milliseconds;
+            _saveText.update(time);
+            if (_completePause >= 0)
+                return;
+            _quit = true;
+            _completePause = -9999;
         }
 
         public static void saveClientOptions()
         {
-            var startupPreferences = new StartupPreferences();
+            StartupPreferences startupPreferences = new();
             startupPreferences.loadPreferences(false, true);
             startupPreferences.clientOptions = Game1.options;
             startupPreferences.savePreferences(false);
@@ -208,9 +169,9 @@ namespace SaveAnywhere.Framework
                 {
                     _stringBuilder.Clear();
                     _stringBuilder.Append(Game1.content.LoadString("Strings\\UI:ReadyCheck",
-                        Game1.newDaySync.numReadyForSave(), Game1.getOnlineFarmers().Count()));
+                        Game1.newDaySync.numReadyForSave(), Game1.getOnlineFarmers().Count));
                     for (var index = 0; index < _ellipsisCount; ++index)
-                        _stringBuilder.Append(".");
+                        _stringBuilder.Append('.');
                     b.DrawString(Game1.dialogueFont, _stringBuilder, vector2, Color.White);
                     flag = true;
                 }
@@ -220,33 +181,29 @@ namespace SaveAnywhere.Framework
                 _stringBuilder.Clear();
                 _stringBuilder.Append(Game1.content.LoadString("Strings\\StringsFromCSFiles:SaveGameMenu.cs.11381"));
                 for (var index = 0; index < _ellipsisCount; ++index)
-                    _stringBuilder.Append(".");
+                    _stringBuilder.Append('.');
                 b.DrawString(Game1.dialogueFont, _stringBuilder, vector2, Color.White);
             }
             else
             {
                 _stringBuilder.Clear();
                 _stringBuilder.Append(Game1.content.LoadString("Strings\\UI:ReadyCheck",
-                    Game1.newDaySync.numReadyForSave(), Game1.getOnlineFarmers().Count()));
+                    Game1.newDaySync.numReadyForSave(), Game1.getOnlineFarmers().Count));
                 for (var index = 0; index < _ellipsisCount; ++index)
-                    _stringBuilder.Append(".");
+                    _stringBuilder.Append('.');
                 b.DrawString(Game1.dialogueFont, _stringBuilder, vector2, Color.White);
                 flag = true;
             }
 
             if (_completePause > 0)
                 flag = false;
-            if (Game1.newDaySync != null && Game1.newDaySync.hasSaved())
+            if (Game1.newDaySync?.hasSaved() ?? false)
                 flag = false;
             if (Game1.IsMultiplayer & flag && Game1.options.showMPEndOfNightReadyStatus)
-                Game1.player.team.endOfNightStatus.Draw(b, vector2 + new Vector2(0.0f, -32f), 4f, 0.99f, 0,
-                    (PlayerStatusList.VerticalAlignment)1);
+                Game1.player.team.endOfNightStatus.Draw(b, vector2 + new Vector2(0.0f, -32f), 4f, 0.99f, 0, (PlayerStatusList.VerticalAlignment)1);
             _hasDrawn = true;
         }
 
-        public void Dispose()
-        {
-            Game1.game1.IsSaving = false;
-        }
+        public void Dispose() => Game1.game1.IsSaving = false;
     }
 }

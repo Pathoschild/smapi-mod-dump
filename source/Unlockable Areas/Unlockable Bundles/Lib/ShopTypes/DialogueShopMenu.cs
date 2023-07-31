@@ -57,6 +57,10 @@ namespace Unlockable_Bundles.Lib.ShopTypes
         ClickableTextureComponent CostDownArrow;
 
         Farmer who;
+        public ScreenSwipe ScreenSwipe;
+        public bool CanClick = true;
+        public bool Complete = false;
+        public int CompletionTimer;
 
         public DialogueShopMenu(Farmer who, Unlockable unlockable)
         {
@@ -99,7 +103,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 if (lackingItem.Key.ToLower() == "money")
                     text = Game1.content.LoadString("Strings\\UI:NotEnoughMoney" + new Random().Next(1, 4));
                 else {
-                    var displayName = new StardewValley.Object(int.Parse(Unlockable.getIDFromReqSplit(lackingItem.Key.Split(',').First())), lackingItem.Value).DisplayName;
+                    var displayName = new StardewValley.Object(Unlockable.intParseID(Unlockable.getIDFromReqSplit(lackingItem.Key.Split(',').First())), lackingItem.Value).DisplayName;
                     text = Helper.Translation.Get("ub_not_enough" + new Random().Next(1, 3), new { displayName = displayName });
                 }
 
@@ -108,22 +112,12 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             }
 
             Inventory.removeAllRequiredItems(who, Unlockable._price.Pairs);
-            processPurchase();
-        }
-        public void processPurchase()
-        {
-            ModData.setPurchased(Unlockable.ID, Unlockable.LocationUnique);
-            ModEntry._API.raiseShopPurchased(new API.ShopPurchasedEventArgs(who, Unlockable.Location, Unlockable.LocationUnique, Unlockable.ID, true));
-            Helper.Multiplayer.SendMessage((UnlockableModel)Unlockable, "ApplyUnlockable/Purchased", modIDs: new[] { Mod.ModManifest.UniqueID });
-            exitThisMenu();
-            Task.Delay(800).ContinueWith(t => ShopPlacement.removeShop(Unlockable));
-            who.completelyStopAnimatingOrDoingAction();
-            if (Unlockable.ShopEvent == "")
-                Game1.globalFadeToBlack(playPurchasedEvent);
-            else if (Unlockable.ShopEvent.ToLower() == "none")
-                return;
-            else
-                Game1.globalFadeToBlack(() => who.currentLocation.startEvent(new Event(Unlockable.ShopEvent, -1, who)));
+
+            Unlockable.processPurchase();
+            ScreenSwipe = new ScreenSwipe(0);
+            CompletionTimer = 800;
+            Complete = true;
+            CanClick = false;
         }
 
         public void resetUI()
@@ -169,62 +163,45 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 snapCursorToCurrentSnappedComponent();
         }
 
-        public void playPurchasedEvent()
-        {
-            Game1.freezeControls = true;
-            DelayedAction.playSoundAfterDelay("crafting", 1000);
-            DelayedAction.playSoundAfterDelay("crafting", 1500);
-            DelayedAction.playSoundAfterDelay("crafting", 2000);
-            DelayedAction.playSoundAfterDelay("crafting", 2500);
-            DelayedAction.playSoundAfterDelay("axchop", 3000);
-            DelayedAction.playSoundAfterDelay("Ship", 3200);
-            Game1.viewportFreeze = true;
-            Game1.viewport.X = -10000;
-            Game1.pauseThenDoFunction(4000, doneWithPurchasedEvent);
-        }
-
-        public void doneWithPurchasedEvent()
-        {
-            UpdateHandler.applyUnlockable(Unlockable);
-            Game1.globalFadeToClear();
-            Game1.viewportFreeze = false;
-            Game1.freezeControls = false;
-        }
-
         public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds) => resetUI();
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
-            base.receiveLeftClick(x, y, playSound);
+            if (!CanClick)
+                return;
 
-            if (YesButton.containsPoint(x, y)) {
+            if (YesButton.containsPoint(x, y))
                 attemptPurchase();
-            } else if (NoButton.containsPoint(x, y))
+            else if (NoButton.containsPoint(x, y))
                 exitThisMenu();
             else if (upperRightCloseButton.containsPoint(x, y))
                 exitThisMenu();
             else if (CostUpArrow.containsPoint(x, y) && costPageIndex != 0) {
                 costPageIndex--;
                 Game1.playSound("shwip");
-            } else if (CostDownArrow.containsPoint(x, y) && Unlockable.Price.Count > (costPageIndex + 1) * 4) {
+            } else if (CostDownArrow.containsPoint(x, y) && Unlockable._price.Count() > (costPageIndex + 1) * 4) {
                 costPageIndex++;
                 Game1.playSound("shwip");
-            } else if (upperRightCloseButton.containsPoint(x, y)) {
-
             }
         }
 
         public override void receiveRightClick(int x, int y, bool playSound = true)
         {
+            if (!CanClick)
+                return;
+
             exitThisMenu();
         }
 
         public override void receiveGamePadButton(Buttons b)
         {
+            if (!CanClick)
+                return;
+
             if ((b == Buttons.LeftShoulder || b == Buttons.LeftTrigger) && costPageIndex != 0) {
                 costPageIndex--;
                 Game1.playSound("shwip");
-            } else if ((b == Buttons.RightShoulder || b == Buttons.RightTrigger) && Unlockable.Price.Count > (costPageIndex + 1) * 4) {
+            } else if ((b == Buttons.RightShoulder || b == Buttons.RightTrigger) && Unlockable._price.Count() > (costPageIndex + 1) * 4) {
                 costPageIndex++;
                 Game1.playSound("shwip");
             } else if (b == Buttons.LeftThumbstickUp || b == Buttons.DPadUp)
@@ -240,7 +217,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             if (direction > 0 && costPageIndex != 0) {
                 costPageIndex--;
                 Game1.playSound("shiny4");
-            } else if (direction < 0 && Unlockable.Price.Count > (costPageIndex + 1) * 4) {
+            } else if (direction < 0 && Unlockable._price.Count() > (costPageIndex + 1) * 4) {
                 costPageIndex++;
                 Game1.playSound("shiny4");
             }
@@ -280,6 +257,9 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public override bool readyToClose()
         {
+            if (!CanClick)
+                return false;
+
             GamePadState currentPadState = Game1.input.GetGamePadState();
             KeyboardState keyState = Game1.GetKeyboardState();
 
@@ -314,11 +294,39 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
             if (costPageIndex != 0)
                 CostUpArrow.draw(b);
-            if (Unlockable.Price.Count > (costPageIndex + 1) * 4)
+            if (Unlockable._price.Count() > (costPageIndex + 1) * 4)
                 CostDownArrow.draw(b);
 
             base.draw(b);
-            base.drawMouse(b, true);
+
+            if (CanClick)
+                drawMouse(b, true);
+
+            updateScreenWipe(b);
+        }
+
+        public void updateScreenWipe(SpriteBatch b)
+        {
+            var time = Game1.currentGameTime;
+
+            if (CompletionTimer > 0 && ScreenSwipe == null) {
+                CompletionTimer -= time.ElapsedGameTime.Milliseconds;
+                if (CompletionTimer <= 0) {
+                    CanClick = true;
+                    Game1.dialogueUp = false;
+                    Game1.player.CanMove = true;
+                    Unlockable.processShopEvent();
+                }
+            }
+
+            if (ScreenSwipe != null) {
+                CanClick = false;
+                if (ScreenSwipe.update(time))
+                    ScreenSwipe = null;
+            }
+
+            if (ScreenSwipe != null)
+                ScreenSwipe.draw(b);
         }
 
         public void drawDescription(SpriteBatch b)
@@ -341,14 +349,14 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             b.Draw(Game1.mouseCursors, new Vector2(xPositionOfCostArea - 40, y + base.height), new Rectangle(278, 328, 10, 8), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.88f);
 
             //Required items of the current cost page index
-            for (int i = costPageIndex * 4; i < Unlockable.Price.Count && i != (costPageIndex + 1) * 4; i++) {
+            for (int i = costPageIndex * 4; i < Unlockable._price.Count() && i != (costPageIndex + 1) * 4; i++) {
                 int xPos = i % 2 == 0 ? xPositionOfCostArea : xPositionOfCostArea + (int)(widthOfCostArea / 2);
                 int yPos = i % 4 < 2 ? yPositionOfCostArea : yPositionOfCostArea + (int)(heightOfCostArea / 2);
 
                 var requirement = Unlockable._price.Pairs.ElementAt(i);
 
                 if (requirement.Key.ToLower() == "money") {
-                    b.Draw(Game1.mouseCursors, new Rectangle(xPos, yPos, 64, 64), new Rectangle(280, 412, 15, 14), Color.White);
+                    b.Draw(Game1.mouseCursors, new Rectangle(xPos, yPos +8, 54, 54), new Rectangle(280, 412, 15, 14), Color.White);
                     Utility.drawTextWithShadow(b, "x " + requirement.Value.ToString("# ### ##0") + "g", Game1.dialogueFont, new Vector2(xPos + 64f + 12f, yPos + 12f), who.Money >= requirement.Value ? Game1.textColor : Color.Red);
                     continue;
                 }
@@ -358,8 +366,8 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 var firstEntry = requirement.Key.Split(",").First();
                 var id = Unlockable.getIDFromReqSplit(firstEntry);
                 var quality = Unlockable.getQualityFromReqSplit(firstEntry);
-                var obj = new StardewValley.Object(int.Parse(id), requirement.Value, quality: quality);
-                obj.drawInMenu(b, new Vector2(xPos, yPos), 1f, 1f, 1f, StackDrawType.HideButShowQuality, color: Color.White, false);
+                var obj = new StardewValley.Object(Unlockable.intParseID(id), requirement.Value, quality: quality);
+                obj.drawInMenu(b, new Vector2(xPos, yPos), 0.9f, 1f, 1f, StackDrawType.HideButShowQuality, color: Color.White, false);
                 if (requirement.Value > 1)
                     Utility.drawTinyDigits(requirement.Value, b, new Vector2(xPos, yPos) + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(requirement.Value, 3f)) + 3f, 64f - 18f + 1f), 3f, 1f, hasItems ? Color.White : Color.Red);
                 Utility.drawTextWithShadow(b, shortenCostName(obj.DisplayName), Game1.dialogueFont, new Vector2(xPos + 64f + 12f, yPos + 12f), hasItems ? Game1.textColor : Color.Red);

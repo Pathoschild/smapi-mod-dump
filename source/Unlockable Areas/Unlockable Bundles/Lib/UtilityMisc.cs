@@ -54,25 +54,23 @@ namespace Unlockable_Bundles.Lib
                 MoneyTexture = createSubTexture(Game1.mouseCursors, new Rectangle(280, 412, 15, 14));
 
             b.Draw(MoneyTexture, new Vector2(x, y), new Rectangle(0, 0, 15, 14), Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0.9f);
-            UtilityMisc.drawKiloFormat(b, num, x, y, color, scale * 0.75f);
+            drawKiloFormat(b, num, x, y, color, scale * 0.75f);
         }
 
         public static void drawKiloFormat(SpriteBatch b, int num, int x, int y, Color color, float scale = 3f)
         {
-            int offset = 0;
+            string text = num switch {
+                >= 1000000 => num / 1000000 + "M",
+                >= 1000 => num / 1000 + "K",
+                _ => num.ToString()
+            };
 
-            if (num >= 1000000) {
-                num = num / 1000000;
-                offset = 7;
-            } else if (num >= 1000) {
-                num = num / 1000;
-                offset = 5;
+            for (int i = 0; i < text.Length; i++) {
+                if ((byte)text[i] < 65)
+                    b.Draw(Game1.mouseCursors, new Vector2(x + (21 * scale) - ((text.Length - i) * 5 * scale), y + 15 * scale), new Rectangle(368 + ((byte)text[i] - 48) * 5, 56, 5, 7), color, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
+                else
+                    b.Draw(TinyLetters, new Vector2(x, y) + new Vector2(16f * scale, 15f * scale), text[i] == 'K' ? new Rectangle(0,0,5,7) : new Rectangle(5,0,7,7), color, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
             }
-
-            Utility.drawTinyDigits(num, b, new Vector2(x, y) + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(num, scale)) + 3f - offset * 3f, 64f - 18f + 1f), scale, 1f, color);
-
-            if (offset != 0)
-                b.Draw(TinyLetters, new Vector2(x, y) + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(num, scale)) + 3f + offset * 3f, 64f - 18f + 1f), new Rectangle(offset == 5 ? 0 : 5, 0, offset, 7), color, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
         }
     }
 }

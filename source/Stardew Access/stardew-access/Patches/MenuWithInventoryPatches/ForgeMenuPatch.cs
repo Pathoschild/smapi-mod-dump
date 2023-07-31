@@ -8,7 +8,8 @@
 **
 *************************************************/
 
-using stardew_access.Features;
+using stardew_access.Translation;
+using stardew_access.Utils;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -24,9 +25,9 @@ namespace stardew_access.Patches
             {
                 int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
 
-                if (narrateHoveredButton(__instance, x, y)) return;
+                if (NarrateHoveredButton(__instance, x, y)) return;
 
-                if (InventoryUtils.narrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
+                if (InventoryUtils.NarrateHoveredSlot(__instance.inventory, __instance.inventory.inventory, __instance.inventory.actualInventory, x, y))
                 {
                     Cleanup();
                 }
@@ -34,11 +35,11 @@ namespace stardew_access.Patches
             }
             catch (System.Exception e)
             {
-                MainClass.ErrorLog($"An error occured in forge menu patch:\n{e.Message}\n{e.StackTrace}");
+                MainClass.ErrorLog($"An error occurred in forge menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
-        private static bool narrateHoveredButton(ForgeMenu __instance, int x, int y)
+        private static bool NarrateHoveredButton(ForgeMenu __instance, int x, int y)
         {
             string toSpeak = "";
             bool isDropItemButton = false;
@@ -52,7 +53,7 @@ namespace stardew_access.Patches
                 else
                 {
                     Item item = __instance.leftIngredientSpot.item;
-                    toSpeak = $"Weapon slot: {item.Stack} {item.DisplayName}";
+                    toSpeak = $"Weapon slot: {Translator.Instance.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
                 }
             }
             else if (__instance.rightIngredientSpot != null && __instance.rightIngredientSpot.containsPoint(x, y))
@@ -64,7 +65,7 @@ namespace stardew_access.Patches
                 else
                 {
                     Item item = __instance.rightIngredientSpot.item;
-                    toSpeak = $"Gemstone slot: {item.Stack} {item.DisplayName}";
+                    toSpeak = $"Gemstone slot: {Translator.Instance.Translate("common-util-pluralize_name", new {item_count = item.Stack, name = item.DisplayName})}";
                 }
             }
             else if (__instance.startTailoringButton != null && __instance.startTailoringButton.containsPoint(x, y))

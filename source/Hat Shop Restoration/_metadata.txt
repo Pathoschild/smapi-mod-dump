@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Floogen/StardewSandbox
+   Git: https://github.com/Floogen/StardewSandbox.git
+
+mods:
+   Hat Shop Restoration
+
+latest commit:
+   commit 2c7f523439723333cba36b28cebf26ca609c1dbc
+   Author: Floogen <31755155+Floogen@users.noreply.github.com>
+   Date:   Sat Jul 15 13:37:08 2023 -0500
+   
+       v1.1.2 released
+   

@@ -28,26 +28,19 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 {
     public class SpeechBubble : INetObject<NetFields>
     {
-        public enum UpgradeState
-        {
-            Idle,
-            PerformingAnimation,
-            StartBuilding,
-            Building,
-            Complete
-        }
+        public NetFields NetFields { get; } = new NetFields();
 
         public static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
-        private ShopObject Shop;
-        private Unlockable Unlockable;
-        private bool ShowYesNoMenu { get => Shop.ShopType == ShopType.YesNoSpeechBubble || Shop.ShopType == ShopType.ParrotPerch; }
-        public bool IsPlayerNearby;
+        private NetRef<ParrotUpgradePerch> _parrotPerch = new NetRef<ParrotUpgradePerch>();
+        public NetEnum<UpgradeState> CurrentState = new NetEnum<UpgradeState>(UpgradeState.Idle);
 
-        //TODO: Assing NetFields
-        public NetFields NetFields => new NetFields();
+        public ShopObject Shop;
+        public Unlockable Unlockable { get => Shop.Unlockable; }
+
+        public bool IsPlayerNearby;
 
         public float StateTimer;
         public float ShakeTime;
@@ -55,16 +48,16 @@ namespace Unlockable_Bundles.Lib.ShopTypes
         public float SquawkTime;
         public float TimeUntilChomp;
         public float TimeUntilSqwawk;
+        public float NextParrotSpawn;
 
-        public NetEnum<UpgradeState> CurrentState = new NetEnum<UpgradeState>(UpgradeState.Idle);
-
-        public ParrotUpgradePerch ParrotPerch = null;
+        public ParrotUpgradePerch ParrotPerch { get => _parrotPerch.Value; set => _parrotPerch.Value = value; }
         public List<Parrot> Parrots = new List<Parrot>();
         public bool ParrotPresent = true;
         public const int PARROT_COUNT = 24;
 
         public NetEvent0 AnimationEvent = new NetEvent0();
         public NetEvent0 UpgradeCompleteEvent = new NetEvent0();
+        public bool WaitingForProcessShopEvent = false;
 
         public KeyValuePair<string, int> NextRequirement;
         public string NextId;
@@ -77,30 +70,43 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             Monitor = Mod.Monitor;
             Helper = Mod.Helper;
         }
+        private void addNetFieldsAndEvents()
+        {
+            NetFields.AddFields(CurrentState, AnimationEvent, UpgradeCompleteEvent, _parrotPerch);
+
+            Helper.Events.GameLoop.ReturnedToTitle += returnedToTitle;
+            Helper.Events.GameLoop.DayEnding += dayEnding;
+            Helper.Events.GameLoop.UpdateTicked += updateTicked;
+
+            AnimationEvent.onEvent += PerformAnimation;
+            UpgradeCompleteEvent.onEvent += PerformCompleteAnimation;
+        }
+
+        private void updateTicked(object sender, UpdateTickedEventArgs e)
+        {
+            if (Shop != null)
+                UpdateEvenIfFarmerIsntHere(Game1.currentGameTime);
+        }
+
+        public SpeechBubble() => addNetFieldsAndEvents();
 
         public SpeechBubble(ShopObject shop)
         {
             Shop = shop;
-            Unlockable = shop.Unlockable;
 
-            if (Shop.ShopType == ShopType.ParrotPerch)
-                ParrotPerch = new ParrotUpgradePerch(Unlockable.getGameLocation(), Shop.TileLocation.ToPoint(), Unlockable.ParrotTarget, 1, null, null); ;
+            addNetFieldsAndEvents();
+            NetFields.Parent = shop.NetFields;
+
+            if (shop.ShopType == ShopType.ParrotPerch) {
+                ParrotPerch = new ParrotUpgradePerch(shop.Unlockable.getGameLocation(), shop.TileLocation.ToPoint(), shop.Unlockable.ParrotTarget, 1, null, null);
+
+                if(Unlockable.ParrotTexture != "")
+                    ParrotPerch.texture = Helper.GameContent.Load<Texture2D>(Unlockable.ParrotTexture);
+            }
+                
+
 
             assignNextItem();
-
-            NetFields.AddFields(CurrentState, AnimationEvent.NetFields, UpgradeCompleteEvent.NetFields);
-            AnimationEvent.onEvent += PerformAnimation;
-            UpgradeCompleteEvent.onEvent += PerformCompleteAnimation;
-
-            Helper.Events.GameLoop.ReturnedToTitle += returnedToTitle;
-            Helper.Events.GameLoop.DayEnding += dayEnding;
-            Helper.Events.GameLoop.OneSecondUpdateTicked += oneSecondUpdateTicked;
-        }
-
-        private void oneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
-        {
-            if (Game1.currentLocation.NameOrUniqueName == Unlockable.LocationUnique)
-                UpdateEvenIfFarmerIsntHere();
         }
 
         private void dayEnding(object sender, DayEndingEventArgs e) => unsubscribeFromAllEvents();
@@ -110,22 +116,21 @@ namespace Unlockable_Bundles.Lib.ShopTypes
         { //If events aren't unsubscribed this object and associates will probably not be properly garbage collected. This is to prevent a expected memory leak
             Helper.Events.GameLoop.ReturnedToTitle -= returnedToTitle;
             Helper.Events.GameLoop.DayEnding -= dayEnding;
-            Helper.Events.GameLoop.OneSecondUpdateTicked -= oneSecondUpdateTicked;
+            Helper.Events.GameLoop.UpdateTicked -= updateTicked;
         }
 
-        private void assignNextItem()
+        public void assignNextItem()
         {
-            foreach (var req in Unlockable.Price)
+            foreach (var req in Unlockable._price.Pairs)
                 if (!Unlockable._alreadyPaid.ContainsKey(req.Key)) {
                     NextRequirement = req;
                     NextId = Unlockable.getFirstIDFromReqKey(req.Key);
                     NextQuality = Unlockable.getFirstQualityFromReqKey(req.Key);
-                    NextObject = NextId == "money" ? null : new StardewValley.Object(int.Parse(NextId), req.Value, quality: NextQuality);
+                    NextObject = NextId == "money" ? null : new StardewValley.Object(Unlockable.intParseID(NextId), req.Value, quality: NextQuality);
                     return;
                 }
 
             ModData.setPurchased(Unlockable.ID, Unlockable.LocationUnique);
-            //TODO: All requirements paid up
         }
 
         public bool IsAtTile(int x, int y)
@@ -135,32 +140,69 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
             return false;
         }
-        public virtual void UpdateEvenIfFarmerIsntHere()
+        public virtual void UpdateEvenIfFarmerIsntHere(GameTime time)
         {
             AnimationEvent.Poll();
             UpgradeCompleteEvent.Poll();
-            if (!Game1.IsMasterGame)
-                return;
 
+            if (Game1.IsMasterGame)
+                UpdateState(time);
+
+            if (WaitingForProcessShopEvent && CurrentState.Value == UpgradeState.Complete) {
+                WaitingForProcessShopEvent = false;
+                Unlockable.processShopEvent();
+
+                Shop.Mutex.ReleaseLock();
+                UpgradeCompleteEvent.Fire();
+            }
+        }
+
+        private void UpdateState(GameTime time)
+        {
             if (StateTimer > 0f)
-                StateTimer--;
+                StateTimer -= (float)time.ElapsedGameTime.TotalSeconds;
 
             if (CurrentState.Value == UpgradeState.StartBuilding && StateTimer <= 0f) {
                 CurrentState.Value = UpgradeState.Building;
-                StateTimer = 5f;
+                StateTimer = Unlockable.ShopType == ShopType.ParrotPerch ? 5f : 0f;
             }
-            if (CurrentState.Value == UpgradeState.Building && this.StateTimer <= 0f) {
-                //this.ApplyUpgrade();
-                //TODO: Apply Map Patch Here
+
+            if (CurrentState.Value == UpgradeState.Building && StateTimer <= 0f) {
+                if (ParrotPerch != null)
+                    ParrotPerch.currentState.Value = UpgradeState.Complete;
+
                 CurrentState.Value = UpgradeState.Complete;
-                Shop.Mutex.ReleaseLock();
-                UpgradeCompleteEvent.Fire();
             }
         }
 
         public void updateWhenCurrentLocation(GameTime time, GameLocation environment)
         {
             updateTimers(time);
+            updateParrots(time);
+        }
+
+        public void updateParrots(GameTime time)
+        {
+            if (Unlockable.ShopType != ShopType.ParrotPerch)
+                return;
+
+            if (CurrentState == UpgradeState.Building && Parrots.Count < 24) {
+                if (NextParrotSpawn > 0f)
+                    NextParrotSpawn -= (float)time.ElapsedGameTime.TotalSeconds;
+
+                if (NextParrotSpawn <= 0f) {
+                    NextParrotSpawn = 0.05f;
+                    Rectangle spawn_rectangle = Unlockable.ParrotTarget;
+                    spawn_rectangle.Inflate(5, 0);
+                    Parrots.Add(new Parrot(ParrotPerch, Utility.getRandomPositionInThisRectangle(spawn_rectangle, Game1.random), Parrots.Count % 10 == 0));
+                }
+            }
+            for (int i = 0; i < Parrots.Count; i++)
+                if (Parrots[i].Update(time))
+                    Parrots.RemoveAt(i--);
+                else if (Parrots[i].isPerchedParrot)
+                    //The game resets the birdType to 0 at every update for no reason
+                    Helper.Reflection.GetField<int>(Parrots[i], "birdType").SetValue(Unlockable.ParrotIndex);
         }
 
         public void updateTimers(GameTime time)
@@ -220,12 +262,13 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public void transformParrot()
         {
-            if (!ParrotPresent || CurrentState.Value <= UpgradeState.StartBuilding)
+            if (Unlockable.ShopType != ShopType.ParrotPerch || !ParrotPresent || CurrentState.Value <= UpgradeState.StartBuilding)
                 return;
 
             if (CurrentState.Value == UpgradeState.Building) {
                 Parrot flying_parrot = new Parrot(ParrotPerch, Shop.TileLocation);
                 flying_parrot.isPerchedParrot = true;
+                Helper.Reflection.GetField<int>(flying_parrot, "birdType").SetValue(Unlockable.ParrotIndex);
                 Parrots.Add(flying_parrot);
             }
             ParrotPresent = false;
@@ -241,7 +284,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
             ShakeTime = 0.25f;
             if (ParrotPerch == null)
-                Shop.shakeTimer = 500;
+                Shop.shakeTimer = 250;
 
             if (Game1.currentLocation.getTemporarySpriteByID(98765) != null) {
                 for (int j = 0; j < 6; j++) {
@@ -267,8 +310,20 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             if (TimeUntilSqwawk > 0)
                 return;
 
-            //TODO: Check if all items were paid and the CurrentState needs to be changed to StartBuilding
             CurrentState.Value = UpgradeState.Idle;
+
+            var allRequirementsPaid = Unlockable.allRequirementsPaid();
+
+            if (allRequirementsPaid && Shop.Mutex.IsLockHeld()) {
+                Unlockable.processPurchase();
+                WaitingForProcessShopEvent = true;
+            }
+
+            if (Shop.Mutex.IsLockHeld())
+                prepareExit();
+
+            if (allRequirementsPaid)
+                CurrentState.Value = UpgradeState.StartBuilding;
 
             TimeUntilSqwawk = 0f;
             if (Unlockable.InteractionSound != "")
@@ -282,48 +337,19 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public void interact(Farmer who)
         {
-            if (StateTimer > 0)
-                return; //The game seems to fire this event twice, it won't happen later with the MuteX, but I'll use this workaround for now while developing
+            if (Unlockable.allRequirementsPaid())
+                return;
 
-            if (Unlockable._price.Pairs.All(e => Unlockable._alreadyPaid.ContainsKey(e.Key)))
-                return; //This shop is already completed //TODO: Maybe add shake and NOPE sound?
-
-            //TODO: Handle Mutex stuff, use second requestlock action parameter to set canMove true
-            //Game1.player.canMove = false;
-            //if (Shop.Mutex.RequestLock())
-
-            if (ShowYesNoMenu)
-                showYesNo(who);
-            else //TODO: Check if the relevant item is being held
-                tryDonate(who);
-
-            //if (this.IsAtTile(tile_location.X, tile_location.Y) && this.IsAvailable()) {
-            //    string request_text = Game1.content.LoadStringReturnNullIfNotFound("Strings\\UI:UpgradePerch_" + this.upgradeName.Value);
-            //    GameLocation location = this.locationRef.Value;
-            //    if (request_text != null && location != null) {
-            //        request_text = string.Format(request_text, this.requiredNuts.Value);
-            //        this.costShakeTime = 0.5f;
-            //        this.squawkTime = 0.5f;
-            //        this.shakeTime = 0.5f;
-            //        if (this.locationRef.Value == Game1.currentLocation) {
-            //            Game1.playSound("parrot_squawk");
-            //        }
-            //        if ((int)Game1.netWorldState.Value.GoldenWalnuts >= this.requiredNuts.Value) {
-            //            location.createQuestionDialogue(request_text, location.createYesNoResponses(), "UpgradePerch_" + this.upgradeName.Value);
-            //        } else {
-            //            Game1.drawDialogueNoTyping(request_text);
-            //        }
-            //    } else if ((int)Game1.netWorldState.Value.GoldenWalnuts >= this.requiredNuts.Value) {
-            //        this.AttemptConstruction();
-            //    } else {
-            //        this.ShowInsufficientNuts();
-            //    }
-            //    return true;
-            //}
-            //return false;
-
-            Shop.Mutex.ReleaseLock();
+            Game1.player.canMove = false;
+            showYesNo(who);
         }
+
+        public void prepareExit()
+        {
+            Shop.Mutex.ReleaseLock();
+            Game1.player.canMove = true;
+        }
+
         public bool tryDonate(Farmer who)
         {
             if (!Inventory.hasEnoughItems(who, NextRequirement)) {
@@ -335,20 +361,25 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
                 if (Unlockable.InteractionSound != "")
                     Game1.playSound(Unlockable.InteractionSound);
+
+                prepareExit();
                 return false;
             }
 
             Inventory.removeItemsOfRequirement(who, NextRequirement);
-            Unlockable._alreadyPaid.Add(NextRequirement.Key, NextRequirement.Value);
+            Unlockable.processContribution(NextRequirement);
+            var displayName = NextId == "money" ? NextRequirement.Value.ToString("# ### ##0").TrimStart() + "g" : NextObject.DisplayName;
+            Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue().globalChatInfoMessage("BundleDonate", Game1.player.displayName, displayName);
             AnimationEvent.Fire();
-            assignNextItem(); //TODO: Race condition if animationevent is async
             return true;
         }
 
         public void showYesNo(Farmer who)
         {
             var question = Unlockable.getTranslatedShopDescription();
-            question = question.Replace("{{item}}", NextId == "money" ? Helper.Translation.Get("ub_parrot_money") : NextObject.DisplayName);
+            var moneyString = Unlockable.ShopType == ShopType.ParrotPerch ? Helper.Translation.Get("ub_parrot_money") : Helper.Translation.Get("ub_speech_money");
+
+            question = question.Replace("{{item}}", NextId == "money" ? moneyString : NextObject.DisplayName);
 
             Game1.currentLocation.afterQuestion = exitYesNo;
             var yesNo = Game1.currentLocation.createYesNoResponses();
@@ -357,136 +388,54 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public void exitYesNo(Farmer who, string whichAnswer)
         {
-            if (whichAnswer == "No")
-                return; //TODO: Maybe sqwawk here and release mutex
+            if (whichAnswer == "No") {
+                prepareExit();
+                return;
+            }
 
             tryDonate(who);
         }
 
         public virtual void PerformAnimation()
         {
-            CurrentState.Value = UpgradeState.PerformingAnimation;
             StateTimer = 3f;
-            if (Game1.currentLocation.NameOrUniqueName == Unlockable.LocationUnique) {
-                if (Unlockable.InteractionSound != "")
-                    Game1.playSound(Unlockable.InteractionSound);
 
-                Parrots.Clear();
-                ParrotPresent = true;
-                var textureName = NextId == "money" ? "LooseSprites\\Cursors" : "Maps\\springobjects";
-                var sourceRectangle = NextId == "money" ? new Rectangle(280, 412, 15, 14) : Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, int.Parse(NextId), 16, 16);
+            PerformAnimationLocal();
+            assignNextItem();
+        }
 
-                Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(textureName, sourceRectangle, 2000f, 1, 0, (Shop.TileLocation + new Vector2(0.25f, -2.5f)) * 64f, flicker: false, flipped: false, (float)(Shop.TileLocation.Y * 64 + 1) / 10000f, 0f, Color.White, 4f, -0.015f, 0f, 0f) {
-                    motion = new Vector2(-0.1f, -7f),
-                    acceleration = new Vector2(0f, 0.25f),
-                    id = 98765f,
-                    drawAboveAlwaysFront = true
-                });
-                Game1.playSound("dwop");
-                if (Shop.Mutex.IsLockHeld())
-                    Game1.player.freezePause = 3000;
+        private void PerformAnimationLocal()
+        {
+            if (Game1.currentLocation.NameOrUniqueName != Unlockable.LocationUnique)
+                return;
 
-                TimeUntilChomp = Unlockable.TimeUntilChomp;
-                SquawkTime = Unlockable.TimeUntilChomp;
-            }
+            if (Unlockable.InteractionSound != "")
+                Game1.playSound(Unlockable.InteractionSound);
+
+            Parrots.Clear();
+            ParrotPresent = true;
+            var textureName = NextId == "money" ? "LooseSprites\\Cursors" : "Maps\\springobjects";
+            var sourceRectangle = NextId == "money" ? new Rectangle(280, 412, 15, 14) : Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, Unlockable.intParseID(NextId), 16, 16);
+
+            Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(textureName, sourceRectangle, 2000f, 1, 0, (Shop.TileLocation + new Vector2(0.25f, -2.5f)) * 64f, flicker: false, flipped: false, (float)(Shop.TileLocation.Y * 64 + 1) / 10000f, 0f, Color.White, 4f, -0.015f, 0f, 0f) {
+                motion = new Vector2(-0.1f, -7f),
+                acceleration = new Vector2(0f, 0.25f),
+                id = 98765f,
+                drawAboveAlwaysFront = true
+            });
+            Game1.playSound("dwop");
+            if (Shop.Mutex.IsLockHeld())
+                Game1.player.freezePause = 3000;
+
+            TimeUntilChomp = Unlockable.TimeUntilChomp;
+            SquawkTime = Unlockable.TimeUntilChomp;
         }
 
         public virtual void PerformCompleteAnimation()
         {
-            //TODO: ?
-
-            /*
-            if (this.upgradeName.Contains("Volcano")) {
-                for (int j = 0; j < 16; j++) {
-                    this.locationRef.Value.temporarySprites.Add(new TemporaryAnimatedSprite(5, Utility.getRandomPositionInThisRectangle(this.upgradeRect, Game1.random) * 64f, Color.White) {
-                        motion = new Vector2(Game1.random.Next(-1, 2), -1f),
-                        scale = 1f,
-                        layerDepth = 1f,
-                        drawAboveAlwaysFront = true,
-                        delayBeforeAnimationStart = j * 15
-                    });
-                    TemporaryAnimatedSprite t2 = new TemporaryAnimatedSprite("LooseSprites\\Cursors2", new Microsoft.Xna.Framework.Rectangle(65, 229, 16, 6), Utility.getRandomPositionInThisRectangle(this.upgradeRect, Game1.random) * 64f, Game1.random.NextDouble() < 0.5, 0f, Color.White) {
-                        motion = new Vector2(Game1.random.Next(-2, 3), -16f),
-                        acceleration = new Vector2(0f, 0.5f),
-                        rotationChange = (float)Game1.random.Next(-4, 5) * 0.05f,
-                        scale = 4f,
-                        animationLength = 1,
-                        totalNumberOfLoops = 1,
-                        interval = 1000 + Game1.random.Next(500),
-                        layerDepth = 1f,
-                        drawAboveAlwaysFront = true,
-                        yStopCoordinate = (this.upgradeRect.Bottom + 1) * 64
-                    };
-                    t2.reachedStopCoordinate = t2.bounce;
-                    this.locationRef.Value.TemporarySprites.Add(t2);
-                    t2 = new TemporaryAnimatedSprite("LooseSprites\\Cursors2", new Microsoft.Xna.Framework.Rectangle(65, 229, 16, 6), Utility.getRandomPositionInThisRectangle(this.upgradeRect, Game1.random) * 64f, Game1.random.NextDouble() < 0.5, 0f, Color.White) {
-                        motion = new Vector2(Game1.random.Next(-2, 3), -16f),
-                        acceleration = new Vector2(0f, 0.5f),
-                        rotationChange = (float)Game1.random.Next(-4, 5) * 0.05f,
-                        scale = 4f,
-                        animationLength = 1,
-                        totalNumberOfLoops = 1,
-                        interval = 1000 + Game1.random.Next(500),
-                        layerDepth = 1f,
-                        drawAboveAlwaysFront = true,
-                        yStopCoordinate = (this.upgradeRect.Bottom + 1) * 64
-                    };
-                    t2.reachedStopCoordinate = t2.bounce;
-                    this.locationRef.Value.TemporarySprites.Add(t2);
-                }
-                if (this.locationRef.Value == Game1.currentLocation) {
-                    Game1.flashAlpha = 1f;
-                    Game1.playSound("boulderBreak");
-                }
-            } else if (this.upgradeName == "House") {
-                for (int i = 0; i < 16; i++) {
-                    this.locationRef.Value.temporarySprites.Add(new TemporaryAnimatedSprite(5, Utility.getRandomPositionInThisRectangle(this.upgradeRect, Game1.random) * 64f, Color.White) {
-                        motion = new Vector2(Game1.random.Next(-1, 2), -1f),
-                        scale = 1f,
-                        layerDepth = 1f,
-                        drawAboveAlwaysFront = true,
-                        delayBeforeAnimationStart = i * 15
-                    });
-                    TemporaryAnimatedSprite t = new TemporaryAnimatedSprite("LooseSprites\\Cursors2", new Microsoft.Xna.Framework.Rectangle(49 + 16 * Game1.random.Next(3), 229, 16, 6), Utility.getRandomPositionInThisRectangle(this.upgradeRect, Game1.random) * 64f, Game1.random.NextDouble() < 0.5, 0f, Color.White) {
-                        motion = new Vector2(Game1.random.Next(-2, 3), -16f),
-                        acceleration = new Vector2(0f, 0.5f),
-                        rotationChange = (float)Game1.random.Next(-4, 5) * 0.05f,
-                        scale = 4f,
-                        animationLength = 1,
-                        totalNumberOfLoops = 1,
-                        interval = 1000 + Game1.random.Next(500),
-                        layerDepth = 1f,
-                        drawAboveAlwaysFront = true,
-                        yStopCoordinate = (this.upgradeRect.Bottom + 1) * 64
-                    };
-                    t.reachedStopCoordinate = t.bounce;
-                    this.locationRef.Value.TemporarySprites.Add(t);
-                    t = new TemporaryAnimatedSprite("LooseSprites\\Cursors2", new Microsoft.Xna.Framework.Rectangle(49 + 16 * Game1.random.Next(3), 229, 16, 6), Utility.getRandomPositionInThisRectangle(this.upgradeRect, Game1.random) * 64f, Game1.random.NextDouble() < 0.5, 0f, Color.White) {
-                        motion = new Vector2(Game1.random.Next(-2, 3), -16f),
-                        acceleration = new Vector2(0f, 0.5f),
-                        rotationChange = (float)Game1.random.Next(-4, 5) * 0.05f,
-                        scale = 4f,
-                        animationLength = 1,
-                        totalNumberOfLoops = 1,
-                        interval = 1000 + Game1.random.Next(500),
-                        layerDepth = 1f,
-                        drawAboveAlwaysFront = true,
-                        yStopCoordinate = (this.upgradeRect.Bottom + 1) * 64
-                    };
-                    t.reachedStopCoordinate = t.bounce;
-                    this.locationRef.Value.TemporarySprites.Add(t);
-                }
-                if (this.locationRef.Value == Game1.currentLocation) {
-                    Game1.flashAlpha = 1f;
-                    Game1.playSound("boulderBreak");
-                }
-            } else if ((this.upgradeName == "Resort" || this.upgradeName == "Trader" || this.upgradeName == "Obelisk") && this.locationRef.Value == Game1.currentLocation) {
-                Game1.flashAlpha = 1f;
-            }
-            if (this.locationRef.Value == Game1.currentLocation && this.upgradeName != "Hut") {
+            //No flash, because, honestly, it is just annoying
+            if (Unlockable.LocationUnique == Game1.currentLocation.NameOrUniqueName)
                 DelayedAction.playSoundAfterDelay("secret1", 800);
-            }
-            */
         }
 
         public void draw(SpriteBatch b)
@@ -511,7 +460,10 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             float yOffset = 4f * (float)Math.Round(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 250.0), 2) - 72f;
             Vector2 draw_position = Shop.TileLocation;
             float draw_layer = draw_position.Y * 64f / 10000f;
+
+            //Speechbubble
             b.Draw(Game1.mouseCursors, Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_position.X * 64f, draw_position.Y * 64f - 96f - 48f + yOffset)) + offset, new Rectangle(141, 465, 20, 24), Color.White * 0.75f, 0f, Vector2.Zero, 4f, SpriteEffects.None, draw_layer + 1E-06f);
+
             Vector2 item_draw_position = Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_position.X * 64f + 8f, draw_position.Y * 64f - 64f - 62f - 8f + yOffset)) + offset;
             if (NextId == "money")
                 UtilityMisc.drawMoneyKiloFormat(b, NextRequirement.Value, (int)item_draw_position.X, (int)item_draw_position.Y, Color.White);
@@ -522,7 +474,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public void drawPerchParrot(SpriteBatch b)
         {
-            if (ParrotPerch == null)
+            if (ParrotPerch == null || !ParrotPresent || CurrentState == UpgradeState.Complete)
                 return;
 
             int num = 0;
@@ -533,7 +485,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             if (ShakeTime > 0f)
                 zero = new Vector2(Utility.RandomFloat(-0.5f, 0.5f) * 4f);
 
-            b.Draw(ParrotPerch.texture, Game1.GlobalToLocal(Game1.viewport, (Shop.TileLocation + new Vector2(0.5f, -1f)) * 64f) + zero, new Rectangle(num * 24, 0, 24, 24), Color.White, 0f, new Vector2(12f, 16f), 4f, SpriteEffects.None, ((Shop.TileLocation.Y + 1f) * 64f - 1f) / 10000f);
+            b.Draw(ParrotPerch.texture, Game1.GlobalToLocal(Game1.viewport, (Shop.TileLocation + new Vector2(0.5f, -1f)) * 64f) + zero, new Rectangle(num * 24, 24 * Unlockable.ParrotIndex, 24, 24), Color.White, 0f, new Vector2(12f, 16f), 4f, SpriteEffects.None, ((Shop.TileLocation.Y + 1f) * 64f - 1f) / 10000f);
         }
     }
 

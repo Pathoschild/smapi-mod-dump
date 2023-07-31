@@ -236,15 +236,16 @@ namespace StardewArchipelago.Archipelago
                     Game1.chatBox?.addMessage(fullMessage, color);
                     return;
                 }
-                case CommandResultLogMessage:
-                {
-                    var color = Color.Gray;
-                    Game1.chatBox?.addMessage(fullMessage, color);
-                    return;
-                }
                 case GoalLogMessage:
                 {
                     var color = Color.Green;
+                    Game1.chatBox?.addMessage(fullMessage, color);
+                    return;
+                }
+                case CommandResultLogMessage:
+                case LogMessage:
+                {
+                    var color = Color.Gray;
                     Game1.chatBox?.addMessage(fullMessage, color);
                     return;
                 }
@@ -635,9 +636,10 @@ namespace StardewArchipelago.Archipelago
                 var firstLocationInfo = locationInfo.Locations[0];
                 var itemName = GetItemName(firstLocationInfo.Item);
                 var playerSlotName = _session.Players.GetPlayerName(firstLocationInfo.Player);
+                var classification = GetItemClassification(firstLocationInfo.Flags);
 
                 var scoutedLocation = new ScoutedLocation(locationName, itemName, playerSlotName, locationId,
-                    firstLocationInfo.Item, firstLocationInfo.Player);
+                    firstLocationInfo.Item, firstLocationInfo.Player, classification);
 
                 ScoutedLocations.Add(locationName, scoutedLocation);
                 return scoutedLocation;
@@ -647,6 +649,24 @@ namespace StardewArchipelago.Archipelago
                 _console.Log($"Could not scout location \"{locationName}\". Message: {e.Message}");
                 return null;
             }
+        }
+
+        private string GetItemClassification(ItemFlags itemFlags)
+        {
+            if (itemFlags.HasFlag(ItemFlags.Advancement))
+            {
+                return "Progression";
+            }
+            if (itemFlags.HasFlag(ItemFlags.NeverExclude))
+            {
+                return "Useful";
+            }
+            if (itemFlags.HasFlag(ItemFlags.Trap))
+            {
+                return "Trap";
+            }
+
+            return "Filler";
         }
 
         private LocationInfoPacket ScoutLocation(long locationId, bool createAsHint)

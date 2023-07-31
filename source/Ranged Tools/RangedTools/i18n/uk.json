@@ -85,6 +85,9 @@
 	"optionDontCutGrassName": "Не косити траву на відстані",
 	"optionDontCutGrassTooltip": "Перешкоджає косам і зброї косити траву за межами нормальної дальності (але все одно дозволяє скошувати бур'яни й т.п.)",
 	
+	"optionMultigrabCrabPotsInRangeName": "Multigrab Crab Pots In Range", // TODO
+	"optionMultigrabCrabPotsInRangeTooltip": "When acting on a Crab Pot, acts upon all pots within Object Place Range. Not recommended, but can rescue pots placed too far out.", // TODO
+	
 	"optionOnClickOnlyName": "Користувацька дальність при натисканні",
 	"optionOnClickOnlyTooltip": "Якщо ввімкнено, розширені дальності застосовуються лише під час використання інструментів за допомогою натискання. Якщо вимкнено, вони застосовуватимуться для всіх типів використання інструментів.",
 }

@@ -9,7 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using stardew_access.Features;
+using stardew_access.Utils;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -23,7 +23,7 @@ namespace stardew_access.Patches
         {
             try
             {
-                MainClass.DebugLog($"Closing {Game1.activeClickableMenu.GetType().ToString()} menu, performing cleanup...");
+                MainClass.DebugLog($"Closing {Game1.activeClickableMenu.GetType()} menu, performing cleanup...");
                 IClickableMenuPatch.Cleanup(Game1.activeClickableMenu);
             }
             catch (Exception e)

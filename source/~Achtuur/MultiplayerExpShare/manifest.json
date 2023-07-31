@@ -11,7 +11,7 @@
 {
     "Name": "Multiplayer Exp Share",
     "Author": "Achtuur",
-    "Version": "1.1.0",
+    "Version": "1.1.2",
     "Description": "Lets you share experience with nearby players in multiplayer!",
     "UniqueID": "Achtuur.MultiplayerExpShare",
     "EntryDll": "MultiplayerExpShare.dll",

@@ -9,6 +9,7 @@
 *************************************************/
 
 using AchtuurCore.Events;
+using AchtuurCore.Framework;
 using AchtuurCore.Patches;
 using StardewModdingAPI;
 
@@ -24,10 +25,7 @@ internal class ModEntry : Mod
         HarmonyPatcher.ApplyPatches(this,
             new WateringPatcher()
         );
-        Events.EventPublisher.FinishedWateringSoil += this.OnWateredSoil;
-    }
 
-    private void OnWateredSoil(object sender, WateringFinishedArgs e)
-    {
+        Overlay.LoadPlacementTileTexture();
     }
 }

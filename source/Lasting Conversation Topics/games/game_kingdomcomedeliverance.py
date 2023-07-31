@@ -2,7 +2,9 @@
 
 import os
 
-from PyQt5.QtCore import QDir
+from PyQt6.QtCore import QDir
+
+import mobase
 
 from ..basic_game import BasicGame
 
@@ -18,16 +20,21 @@ class KingdomComeDeliveranceGame(BasicGame):
     GameNexusId = 2298
     GameSteamId = [379430]
     GameGogId = [1719198803]
+    GameEpicId = "Eel"
     GameBinary = "bin/Win64/KingdomCome.exe"
     GameDataPath = "mods"
     GameSaveExtension = "whs"
     GameDocumentsDirectory = "%GAME_PATH%"
     GameSavesDirectory = "%USERPROFILE%/Saved Games/kingdomcome/saves"
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-Kingdom-Come:-Deliverance"
+    )
 
     def iniFiles(self):
         return ["custom.cfg", "system.cfg", "user.cfg"]
 
-    def initializeProfile(self, path: QDir, settings: int):
+    def initializeProfile(self, path: QDir, settings: mobase.ProfileSetting):
         # Create .cfg files if they don't exist
         for iniFile in self.iniFiles():
             iniPath = self.documentsDirectory().absoluteFilePath(iniFile)

@@ -23,113 +23,98 @@ using System.Linq;
 namespace JunimoBeacon;
 internal class PlaceBeaconOverlay : Overlay
 {
-    public static Texture2D GreenPlacementTile { get; set; }
-    public static Texture2D PlacementTile { get; set; }
     protected override void DrawOverlayToScreen(SpriteBatch spriteBatch)
     {
 
         // Draw last known crop coord
-        Debug.DebugOnlyExecute(() => {
+        Debug.DebugOnlyExecute(() =>
+        {
             DrawLastKnownCropPoint(spriteBatch);
             DrawJunimoHarvesters(spriteBatch);
         });
 
 
-        if (Game1.player.ActiveObject is null || Game1.player.ActiveObject.ParentSheetIndex != JunimoBeacon.ID)
+        if (Game1.player.ActiveObject is null
+            || Game1.player.ActiveObject.ParentSheetIndex != JunimoBeacon.ID
+            || !TypeChecker.isType<StardewValley.Farm>(Game1.player.currentLocation))
             return;
 
-        // Draw tiles around held beacon
+        Vector2 size = Vector2.One * tileSize;
+
+        /// Draw tiles around held beacon
         Vector2 cursorTile = Game1.currentCursorTile;
         bool beaconWouldBeInRange = ModEntry.Instance.IsInRangeOfAnyGroup(cursorTile);
 
         Color beacon_color = (beaconWouldBeInRange)
-            ? Color.White
-            : Color.Yellow * 0.7f;
-
-        Color hut_range_color = (beaconWouldBeInRange)
-            ? Color.ForestGreen
-            : Color.DarkGreen * 0.85f;
-
-        beacon_color.A = 255;
-        hut_range_color.A = 255;
+            ? Color.Lime
+            : ColorHelper.MultiplyColor(Color.Green, 0.7f);
 
         IEnumerable<Vector2> tiles = Tiles.GetVisibleTiles(expand: 1)
             .Intersect(JunimoBeacon.GetBeaconRangeTiles(cursorTile, expand: 0));
 
-        foreach (Vector2 tile in tiles)
+        DrawTiles(spriteBatch, tiles, beacon_color);
+
+
+        /// Draw tiles around groups range
+        foreach (JunimoGroup group in ModEntry.Instance.JunimoGroups)
         {
-            Vector2 screenCoords = Tiles.GetTileScreenCoords(tile);
-            spriteBatch.DrawTexture(GreenPlacementTile, screenCoords, new Vector2(tileSize, tileSize), beacon_color);
+            Color hut_range_color = (group.IsInRange(cursorTile))
+                ? group.Color
+                : ColorHelper.MultiplyColor(group.Color, 0.85f);
+
+
+            IEnumerable<Vector2> groupTiles = group.GetTiles().Intersect(Tiles.GetVisibleTiles());
+            DrawTiles(spriteBatch, groupTiles, hut_range_color);
         }
 
+        /// Draw beacons that are not in range of anything
+        IEnumerable<JunimoBeacon> groupBeacons = ModEntry.Instance.JunimoGroups.SelectMany(group => group.Beacons);
 
-        // Draw tiles around junimo huts
-        IEnumerable<Vector2> HutTiles = ModEntry.Instance.JunimoGroups
-            .SelectMany(group => group.GetTiles())
-            .Intersect(Tiles.GetVisibleTiles());
+        // get tiles that are in range of beacons that are not in range of a hut
+        IEnumerable<Vector2> out_of_range_beacon_tiles = JunimoBeacon.GetBeaconsOnFarm()
+            .Where(b => !groupBeacons.Contains(b))
+            .SelectMany(b => b.GetTilesInRange());
 
-        foreach (Vector2 tile in HutTiles)
-        {
-            Vector2 screenCoords = Tiles.GetTileScreenCoords(tile);
-            Vector2 size = Vector2.One * tileSize;
-            spriteBatch.DrawTexture(GreenPlacementTile, screenCoords, size, hut_range_color);
-        }
+        Color out_of_range_color = Color.ForestGreen * 0.75f;
+        DrawTiles(spriteBatch, out_of_range_beacon_tiles, out_of_range_color);
     }
+
 
     private static void DrawLastKnownCropPoint(SpriteBatch spriteBatch)
     {
-        Vector2 lastKnownCropCoords = Tiles.GetTileScreenCoords(MatureCropsWithinRadiusPatcher.lastKnownCropLocationTile);
-        Vector2 size = Vector2.One * Game1.tileSize;
-        spriteBatch.DrawTexture(PlacementTile, lastKnownCropCoords, size, Color.OrangeRed);
+        DrawTile(spriteBatch, MatureCropsWithinRadiusPatcher.lastKnownCropLocationTile, Color.OrangeRed);
     }
 
     private static void DrawJunimoHarvesters(SpriteBatch spriteBatch)
     {
-        Vector2 size = Vector2.One * Game1.tileSize;
-        foreach(JunimoHarvester junimo in MatureCropsWithinRadiusPatcher.JunimoHarvesters)
+        foreach (JunimoHarvester junimo in MatureCropsWithinRadiusPatcher.JunimoHarvesters)
         {
-            NetColor color = (NetColor) AccessTools.Field(typeof(JunimoHarvester), "color").GetValue(junimo);
-
-            Vector2 location = junimo.getTileLocation();
-            Vector2 locationCoords = Tiles.GetTileScreenCoords(location);
-            spriteBatch.DrawTexture(PlacementTile, locationCoords, size, color.Value);
+            NetColor color = (NetColor)AccessTools.Field(typeof(JunimoHarvester), "color").GetValue(junimo);
 
             if (junimo.controller is not null)
             {
-                Vector2 target = junimo.controller.endPoint.ToVector2();
-                Vector2 targetCoords = Tiles.GetTileScreenCoords(target);
-                spriteBatch.DrawTexture(PlacementTile, targetCoords, size, color.Value);
+                DrawPathfinding(spriteBatch, junimo.controller, color.Value);
             }
-
         }
     }
 
-    public static void LoadPlacementTileTexture()
+    protected static void DrawPathfinding(SpriteBatch spriteBatch, PathFindController pathfindcontroller, Color? color = null, Color? pathColor = null)
     {
-        // Full asset is five 64x64 pixel tiles in a row, we only want the leftmost one of these tiles
-        Texture2D fullAsset = ModEntry.Instance.Helper.GameContent.Load<Texture2D>("LooseSprites/buildingPlacementTiles");
+        IEnumerable<Point> pathPoints = pathfindcontroller.pathToEndPoint.AsEnumerable();
 
-        // Get color data of entire asset
-        Color[] fullAssetColors = new Color[fullAsset.Width * fullAsset.Height];
-        fullAsset.GetData<Color>(fullAssetColors);
+        if (pathPoints is null || pathPoints.Count() == 0)
+            return;
 
-        // Copy only leftmost tile to smaller array
-        Color[] sliceAssetColors = new Color[64 * fullAsset.Height];
-        Color[] grayScaleAssetColors = new Color[64 * fullAsset.Height];
+        // Draw start point
+        DrawPoint(spriteBatch, pathPoints.First(), color, null);
+        // Draw end point
+        DrawPoint(spriteBatch, pathPoints.Last(), color, null);
 
-        for (int y = 0; y < 64; y++)
+        // Loop through middle part and draw path
+        pathColor ??= color * 0.75f;
+        foreach (Point point in pathPoints.Skip(1).SkipLast(1))
         {
-            for (int x = 0; x < 64; x++)
-            {
-                sliceAssetColors[x + y * 64] = fullAssetColors[x + y * fullAsset.Width];
-                grayScaleAssetColors[x + y * 64] = fullAssetColors[x + y * fullAsset.Width].ToGrayScale();
-            }
+            DrawPoint(spriteBatch, point, color: pathColor, tileSizePercentage: 0.5f);
         }
-
-        GreenPlacementTile = new Texture2D(Game1.graphics.GraphicsDevice, 64, 64);
-        GreenPlacementTile.SetData<Color>(sliceAssetColors);
-
-        PlacementTile = new Texture2D(Game1.graphics.GraphicsDevice, 64, 64);
-        PlacementTile.SetData<Color>(grayScaleAssetColors);
     }
 }

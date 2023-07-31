@@ -10,6 +10,13 @@ for queries and analysis.**
 
 # Release notes
 
+## 2.2.0
+Released 2 July 2023.
+
+* Added a system to keep track of and display additional save file information, which includes the SMAPI version and the list of mods and their versions. Clicking the button copies the mod list to the clipboard.
+* Implemented displaying HUD messages in the main menu.
+* Fixed the [Farm Type Manager](https://www.nexusmods.com/stardewvalley/mods/3231) patch, which broke when trying to make it work both for debug and release configurations.
+
 ## 2.1.2
 Released 19 June 2023.
 

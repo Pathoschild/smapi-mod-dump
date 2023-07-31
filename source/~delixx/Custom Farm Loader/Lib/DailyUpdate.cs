@@ -161,9 +161,6 @@ namespace Custom_Farm_Loader.Lib
 
         public bool isValidTile(Vector2 v)
         {
-            if (v.X == 55 && v.Y == 9)
-                System.Diagnostics.Debugger.Break();
-
             if (!Location.isTileLocationTotallyClearAndPlaceable(v) && !wildCropsException(v))
                 return false;
 

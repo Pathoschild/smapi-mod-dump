@@ -1,12 +1,14 @@
 {
-  "enable": true,
-  "textPos": "5, 30",
-  "textColor": {
-    "B": 48,
-    "G": 48,
-    "R": 255,
+  "TextPos": "0.02, 0.15",
+  "TextColor": {
+    "B": 34,
+    "G": 17,
+    "R": 34,
     "A": 255
   },
-  "textSize": 0.6,
-  "drawShadow": true
+  "Enable": true,
+  "TextSize": 1.0,
+  "DrawShadow": true,
+  "DrawBackground": true,
+  "EnableKey": "V"
 }

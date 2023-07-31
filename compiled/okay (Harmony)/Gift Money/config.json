@@ -1,0 +1,7 @@
+{
+  "minLovedGiftAmount": 10000,
+  "minLikedGiftAmount": 7500,
+  "minNeutralGiftAmount": 5000,
+  "minDislikedGiftAmount": 2500,
+  "sendMoneyKey": "F5"
+}

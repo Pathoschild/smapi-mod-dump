@@ -1,0 +1,74 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Companion dialogues for Kiwi",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Kiwi",
+      "Entries": {
+        "companionAccepted": "{{i18n:Kiwi.Dialogue.companionAccepted}}",
+        "companionRejected": "{{i18n:Kiwi.Dialogue.companionRejected}}",
+        "companionRejectedNight": "{{i18n:Kiwi.Dialogue.companionRejectedNight}}",
+        "companionDismiss": "{{i18n:Kiwi.Dialogue.companionDismiss}}",
+        "companionDismissAuto": "{{i18n:Kiwi.Dialogue.companionDismissAuto}}",
+        "companionRecruited": "{{i18n:Kiwi.Dialogue.companionRecruited}}",
+
+        "farmerRunAway": "{{i18n:Kiwi.Dialogue.farmerRunAway}}",
+        "giveForages": "{{i18n:Kiwi.Dialogue.giveForages}}",
+
+      //Locations (Farm)
+        //Friends
+        //General
+        "companion_Farm": "{{i18n:Kiwi.Dialogue.companion_Farm}}",
+        "companion_Farm~1": "{{i18n:Kiwi.Dialogue.companion_Farm~1}}",
+        //Weather
+        "companion_Farm_Rainy": "{{i18n:Kiwi.Dialogue.companion_Farm_Rainy}}",
+        "companion_Farm_Snowy": "{{i18n:Kiwi.Dialogue.companion_Farm_Snowy}}",
+        //Season
+        "companion_Farm_Spring": "{{i18n:Kiwi.Dialogue.companion_Farm_Spring}}",
+        "companion_Farm_Summer": "{{i18n:Kiwi.Dialogue.companion_Farm_Summer}}",
+        "companion_Farm_Fall": "{{i18n:Kiwi.Dialogue.companion_Farm_Fall}}",
+        "companion_Farm_Winter": "{{i18n:Kiwi.Dialogue.companion_Farm_Winter}}",
+        //Entering
+        "companionEnter_Farm": "{{i18n:Kiwi.Dialogue.companionEnter_Farm}}",
+        "companionEnter_Farm_Night": "{{i18n:Kiwi.Dialogue.companionEnter_Farm_Night}}",
+        //Night
+        "companion_Farm_Night": "{{i18n:Kiwi.Dialogue.companion_Farm_Night}}",
+
+      //Locations (Others)
+      //Format: "companion_(location name)" https://www.npcadventures.dev/docs/modding/dialogues
+      //Feel free to change/remove/add! (During editing)
+        "companion_Town_Rainy": "{{i18n:Kiwi.Dialogue.companion_Town_Rainy}}",
+        "companion_Town_Night": "{{i18n:Kiwi.Dialogue.companion_Town_Night}}",
+        "companion_Town": "{{i18n:Kiwi.Dialogue.companion_Town}}",
+        "companion_Custom_Ridgeside_RidgesideVillage": "{{i18n:Kiwi.Dialogue.companion_Custom_Ridgeside_RidgesideVillage}}",
+        "companion_Custom_Ridgeside_RidgesideVillage~1": "{{i18n:Kiwi.Dialogue.companion_Custom_Ridgeside_RidgesideVillage~1}}",
+        "companion_Custom_Ridgeside_RidgeFalls": "{{i18n:Kiwi.Dialogue.companion_Custom_Ridgeside_RidgeFalls}}",
+        "companion_Custom_Ridgeside_RSVTheHike": "{{i18n:Kiwi.Dialogue.companion_Custom_Ridgeside_RSVTheHike}}",
+        "companion_Custom_Ridgeside_Ridge": "{{i18n:Kiwi.Dialogue.companion_Custom_Ridgeside_Ridge}}",
+        "companion_Custom_Ridgeside_SummitFarm": "{{i18n:Kiwi.Dialogue.companion_Custom_Ridgeside_SummitFarm}}",
+        "companion_Custom_Ridgeside_RidgeForest": "{{i18n:Kiwi.Dialogue.companion_Custom_Ridgeside_RidgeForest}}",
+        "companion_Custom_Ridgeside_RSVCliff": "{{i18n:Kiwi.Dialogue.companion_Custom_Ridgeside_RSVCliff}}",
+        "companion_Custom_Ridgeside_RSVCableCar": "{{i18n:Kiwi.Dialogue.companion_Custom_Ridgeside_RSVCableCar}}",
+        "companion_Custom_Ridgeside_NinjaHouse": "{{i18n:Kiwi.Dialogue.companion_Custom_Ridgeside_NinjaHouse}}",
+        "companion_Beach": "{{i18n:Kiwi.Dialogue.companion_Beach}}",
+        "companion_ArchaeologyHouse": "{{i18n:Kiwi.Dialogue.companion_ArchaeologyHouse}}",
+
+      //Suggestion
+        "companionSuggest": "{{i18n:Kiwi.Dialogue.companionSuggest}}",
+
+        "companionSuggest_Yes": "{{i18n:Kiwi.Dialogue.companionSuggest_Yes}}",
+        "companionSuggest_No": "{{i18n:Kiwi.Dialogue.companionSuggest_No}}",
+      }
+    }
+  ]
+}

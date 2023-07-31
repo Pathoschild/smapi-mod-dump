@@ -16,6 +16,11 @@ using HarmonyLib;
 using Custom_Farm_Loader.Menus;
 using System.Collections.Generic;
 using Custom_Farm_Loader.API;
+using Custom_Farm_Loader.Lib;
+using Custom_Farm_Loader.Lib.Enums;
+using Custom_Farm_Loader.GameLoopInjections;
+using StardewValley.Locations;
+using Microsoft.Xna.Framework;
 
 namespace Custom_Farm_Loader
 {
@@ -41,9 +46,63 @@ namespace Custom_Farm_Loader
             Menus.Main.Initialize(this);
             GenericModConfigMenuHandler.Initialize(this);
 
-
+            helper.ConsoleCommands.Add("cfl", "CFL Commands", commands);
             helper.ConsoleCommands.Add("cfl_debug", "Debug Breakpoint", this.debug);
-            helper.ConsoleCommands.Add("cfl_furniture", "Debug Breakpoint", this.printFurniture);
+        }
+
+        private void commands(string command, string[] args)
+        {
+            if (args.Length == 0)
+                return;
+
+            if (args[0] == "dayupdate" || args[0] == "du")
+                dayupdateCommand(int.Parse(args[1]));
+
+            if (args[0] == "furniture")
+                printFurniture();
+
+            if (args[0] == "reload")
+                reloadCFL();
+        }
+
+        private void reloadCFL()
+        {
+            CustomFarm.CachedCustomFarms.Clear();
+            Helper.Reflection.GetField<string>(typeof(CustomFarm), "CurrentCustomFarmId").SetValue(null);
+            CustomFarm.getAll();
+            Helper.GameContent.InvalidateCache("Data/AdditionalFarms");
+            CustomFarm.getCurrentCustomFarm();
+            Monitor.Log("Done!", LogLevel.Debug);
+        }
+
+        private void dayupdateCommand(int times)
+        {
+            if (!CustomFarm.IsCFLMapSelected()) {
+                Monitor.Log("No CFL map selected", LogLevel.Warn);
+                return;
+            }
+
+            var customFarm = CustomFarm.getCurrentCustomFarm();
+
+            for (int i = 0; i < times; i++) {
+                foreach (var dailyUpdate in customFarm.DailyUpdates) {
+                    if (dailyUpdate.Area.LocationName != Game1.currentLocation.Name)
+                        continue;
+
+                    if (!dailyUpdate.Filter.isValid(who: Game1.player))
+                        continue;
+
+                    dailyUpdate.Location = Game1.currentLocation;
+
+
+                    if (dailyUpdate.Type == DailyUpdateType.TransformWeeds)
+                        DailyUpdateEvents.updateTransformWeeds(dailyUpdate);
+                    else
+                        DailyUpdateEvents.updateArea(dailyUpdate);
+                }
+
+            }
+
         }
 
         private void debug(string command, string[] args)
@@ -52,31 +111,56 @@ namespace Custom_Farm_Loader
                 System.Diagnostics.Debugger.Break();
         }
 
-        private void printFurniture(string command, string[] args)
+        private void printFurniture()
         {
             var player = Game1.player;
             var loc = player.currentLocation;
-            string res = "\"StartFurniture\": [" + System.Environment.NewLine;
-            if (loc.Name == "FarmHouse") {
-                StardewValley.Locations.FarmHouse fh = (loc as StardewValley.Locations.FarmHouse);
+            string res = Environment.NewLine + "\"StartFurniture\": [" + Environment.NewLine;
+            string map = $", \"Map\": \"{loc.Name}\"";
+            if (loc is FarmHouse fh) {
                 if (fh.wallpaperIDs.Contains("Bedroom"))
-                    res += $@"{{ ""Type"": ""Wallpaper"", ""ID"":""{fh.appliedWallpaper["Bedroom"]}""," + Environment.NewLine;
+                    res += "\t" + $@"{{ ""Type"": ""Wallpaper"", ""ID"":""{fh.appliedWallpaper["Bedroom"]}"" }}," + Environment.NewLine;
                 if (fh.floorIDs.Contains("Bedroom"))
-                    res += $@"{{ ""Type"": ""Floor"", ""ID"":""{fh.appliedFloor["Bedroom"]}""," + Environment.NewLine;
+                    res += "\t" + $@"{{ ""Type"": ""Floor"", ""ID"":""{fh.appliedFloor["Bedroom"]}"" }}," + Environment.NewLine;
+
+                map = "";
             }
 
             foreach (var furniture in loc.furniture) {
-                if (furniture.parentSheetIndex != 0)
-                    res += $"{{ /*{furniture.Name}*/ \"ID\": {furniture.ParentSheetIndex}, " +
-                           $"\"Position\": \"{furniture.TileLocation.X}, {furniture.TileLocation.Y}\", " +
-                           (furniture.rotations > 1 ? $"\"Rotations\": {furniture.rotations - 1} " : "") +
-                             "}," + Environment.NewLine;
-                else
-                    loc = loc;
+                if (furniture.ParentSheetIndex == 2048 && furniture.TileLocation == new Vector2(9, 8)) //Start Location of bed that gets placed anyway
+                    continue;
+
+                string heldObject = "";
+                if(furniture.heldObject.Value is StardewValley.Object h) {
+                    heldObject = ", \"HeldObject\": {" +
+                        $" /*{h.Name}*/ \"ID\": {h.ParentSheetIndex}" +
+                        (h is not StardewValley.Objects.Furniture ? ", \"Type\": \"Item\"" : "") +
+                        (h is StardewValley.Objects.Furniture f && f.currentRotation.Value > 0 ? $", \"Rotations\": {totalRotations(f)}" : "") +
+                        (h.Quality > 0 ? ", \"Quality\": \"" + h.Quality switch { 1 => "Silver", 2 => "Gold", 4 => "Iridium", _ => "" } + "\"" : "") +
+                        " }";
+                }
+
+                res += "\t" + $"{{ /*{furniture.Name}*/ \"ID\": {furniture.ParentSheetIndex}" +
+                       $", \"Position\": \"{furniture.TileLocation.X}, {furniture.TileLocation.Y}\"" +
+                       map +
+                       (furniture.currentRotation.Value > 0 ? $", \"Rotations\": {totalRotations(furniture)}" : "") +
+                       heldObject +
+                         " }," + Environment.NewLine;
             }
-            res += "]";
+            res += "],";
 
             Monitor.Log(res, LogLevel.Info);
+        }
+
+        private int totalRotations(StardewValley.Objects.Furniture f)
+        {
+            //Furniture can have 0, 2 or 4 rotations
+            //When it can only be rotated twice the currentRotation jumps between 0 and 2
+            //CFL doesn't care about the technical "currentRotation" value, CFL rotates once per rotation
+            if (f.currentRotation.Value == 0 || f.rotations.Value == 4)
+                return f.currentRotation.Value;
+
+            return 1;
         }
     }
 

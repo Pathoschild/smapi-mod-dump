@@ -13,7 +13,33 @@
   "MinPixelZoom": 0.5,
   "MaxPixelZoom": 5.0,
   "DisableTextShadow": false,
+  "TextColor": {
+    "B": 34,
+    "G": 17,
+    "R": 34,
+    "A": 255
+  },
+  "TextColorDialogue": {
+    "B": 12,
+    "G": 22,
+    "R": 86,
+    "A": 255
+  },
+  "ShadowColorGame1": {
+    "B": 95,
+    "G": 156,
+    "R": 206,
+    "A": 255
+  },
+  "ShadowColorUtility": {
+    "B": 84,
+    "G": 148,
+    "R": 221,
+    "A": 255
+  },
   "EnableLatinDialogueFont": true,
   "OpenFontSettingsMenu": "LeftAlt + F",
-  "CustomFontFolders": []
+  "CustomFontFolders": [],
+  "EditMode": false,
+  "EditPriority": 0
 }

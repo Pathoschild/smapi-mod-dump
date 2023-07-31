@@ -14,6 +14,7 @@ using System.Linq;
 using HarmonyLib;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Goals;
+using StardewArchipelago.Locations;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -24,14 +25,16 @@ namespace StardewArchipelago.Items.Mail
     {
         private static IMonitor _monitor;
         private readonly Harmony _harmony;
-        private readonly ArchipelagoClient _archipelago;
+        private static ArchipelagoClient _archipelago;
+        private static LocationChecker _locationChecker;
         private static LetterActions _letterActions;
 
-        public MailPatcher(IMonitor monitor, Harmony harmony, ArchipelagoClient archipelago, LetterActions letterActions)
+        public MailPatcher(IMonitor monitor, Harmony harmony, ArchipelagoClient archipelago, LocationChecker locationChecker, LetterActions letterActions)
         {
             _monitor = monitor;
             _harmony = harmony;
             _archipelago = archipelago;
+            _locationChecker = locationChecker;
             _letterActions = letterActions;
         }
 
@@ -47,15 +50,21 @@ namespace StardewArchipelago.Items.Mail
                 prefix: new HarmonyMethod(typeof(MailPatcher), nameof(MailPatcher.Mailbox_HideEmptyApLetters_Prefix))
             );
 
-            if (_archipelago.SlotData.Fishsanity == Fishsanity.None)
+            if (_archipelago.SlotData.Fishsanity != Fishsanity.None)
             {
-                return;
+                _harmony.Patch(
+                    original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
+                    prefix: new HarmonyMethod(typeof(MailPatcher), nameof(MailPatcher.Mailbox_RemoveMasterAnglerStardropOnFishsanity_Prefix))
+                );
             }
 
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
-                prefix: new HarmonyMethod(typeof(MailPatcher), nameof(MailPatcher.Mailbox_RemoveMasterAnglerStardropOnFishsanity_Prefix))
-            );
+            if (_archipelago.SlotData.FestivalLocations != FestivalLocations.Vanilla)
+            {
+                _harmony.Patch(
+                    original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
+                    prefix: new HarmonyMethod(typeof(MailPatcher), nameof(MailPatcher.Mailbox_RemoveRarecrowSocietyRecipeOnFestivals_Prefix))
+                );
+            }
         }
 
         public static void ExitThisMenu_ApplyLetterAction_Postfix(IClickableMenu __instance, bool playSound)
@@ -187,6 +196,55 @@ namespace StardewArchipelago.Items.Mail
             mailContent[GoalCodeInjection.MASTER_ANGLER_LETTER] = masterAnglerLetterContent
                 .Replace(stardropItemText, seafoamPuddingItemText)
                 .Replace(stardropText, puddingText);
+        }
+
+        private const string RARECROW_SOCIETY_LETTER = "RarecrowSociety";
+        private const string RARECROW_SOCIETY_AP_LOCATION = "Collect All Rarecrows";
+
+        // public void mailbox()
+        public static bool Mailbox_RemoveRarecrowSocietyRecipeOnFestivals_Prefix(GameLocation __instance)
+        {
+            try
+            {
+                var mailbox = Game1.mailbox;
+                if (mailbox == null || !mailbox.Any())
+                {
+                    return true; // run original logic
+                }
+
+                var nextLetter = mailbox.First();
+                if (!nextLetter.Equals(RARECROW_SOCIETY_LETTER))
+                {
+                    return true; // run original logic
+                }
+
+                RemoveDeluxeScarecrowRecipe();
+                _locationChecker.AddCheckedLocation(RARECROW_SOCIETY_AP_LOCATION);
+                return true; // run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(Mailbox_RemoveRarecrowSocietyRecipeOnFestivals_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
+            }
+        }
+
+        private static void RemoveDeluxeScarecrowRecipe()
+        {
+            const string deluxeScarecrowRecipeText = "Please accept this blueprint to commemorate your achievement.";
+            const string deluxeScarecrowRecipeItemText = "%item craftingRecipe Deluxe_Scarecrow %%";
+
+            var scoutedLocation = _archipelago.ScoutSingleLocation(RARECROW_SOCIETY_AP_LOCATION);
+            var scoutedItemName = scoutedLocation.ItemName;
+            var scoutedPlayer = scoutedLocation.PlayerName;
+            var replacementText = $"We will send {scoutedItemName} to {scoutedPlayer} to commemorate your achievement.";
+            const string recipeReplacementText = "";
+
+            var mailContent = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+            var masterAnglerLetterContent = mailContent[RARECROW_SOCIETY_LETTER];
+            mailContent[RARECROW_SOCIETY_LETTER] = masterAnglerLetterContent
+                .Replace(deluxeScarecrowRecipeItemText, recipeReplacementText)
+                .Replace(deluxeScarecrowRecipeText, replacementText);
         }
     }
 }

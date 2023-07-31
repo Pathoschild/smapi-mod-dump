@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import List
 
-from PyQt5.QtCore import QDir
+from PyQt6.QtCore import QDir
 
 import mobase
 
@@ -34,11 +34,15 @@ class Witcher3Game(BasicGame):
     GameSaveExtension = "sav"
     GameDocumentsDirectory = "%DOCUMENTS%/The Witcher 3"
     GameSavesDirectory = "%GAME_DOCUMENTS%/gamesaves"
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-The-Witcher-3"
+    )
 
     def init(self, organizer: mobase.IOrganizer):
         super().init(organizer)
         self._featureMap[mobase.SaveGameInfo] = BasicGameSaveGameInfo(
-            lambda s: s.replace(".sav", ".png")
+            lambda s: s.with_suffix(".png")
         )
         return True
 

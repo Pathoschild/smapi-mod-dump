@@ -1,8 +1,4 @@
 {
-  "Cat_Allowed": true,
-  "Cat_Coordinates": "Default",
-  "Dog_Allowed": true,
-  "Dog_Coordinates": "Default",
   "Player_Walk_Through_Allowed": false,
   "Pets_Collide_With_Others_Allowed": true,
   "Player_Walk_Through_ToggleKey": "PageUp",

@@ -8,8 +8,10 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Quests;
@@ -24,8 +26,15 @@ namespace HelpWanted
 {
     public partial class ModEntry
     {
-
-        private Texture2D GetTexture(string path)
+        public static void AddQuest(Quest quest, QuestType questType, Texture2D icon, Rectangle iconRect, Point iconOffset)
+        {
+            var fi = AccessTools.Field(quest.GetType(), "target");
+            if (fi is null)
+                return;
+            var name = (NetString)fi.GetValue(quest);
+            questList.Add(new QuestData() { padTexture = GetPadTexture(name, questType.ToString()), pinTexture = GetPinTexture(name, questType.ToString()), padTextureSource = new Rectangle(0, 0, 64, 64), pinTextureSource = new Rectangle(0, 0, 64, 64), icon = icon, iconSource = iconRect, quest = Game1.questOfTheDay, pinColor = GetRandomColor(), padColor = GetRandomColor(), iconColor = new Color(Config.PortraitTintR, Config.PortraitTintG, Config.PortraitTintB, Config.PortraitTintA), iconOffset = iconOffset, iconScale = Config.PortraitScale });
+        }
+        private static Texture2D GetTexture(string path)
         {
             List<Texture2D> list = new List<Texture2D>();
             try
@@ -33,7 +42,7 @@ namespace HelpWanted
                 int i = 1;
                 for ( ; ; )
                 {
-                    list.Add(Helper.GameContent.Load<Texture2D>(path + "/" + i));
+                    list.Add(SHelper.GameContent.Load<Texture2D>(path + "/" + i));
                     i++;
                 }
             }
@@ -45,7 +54,7 @@ namespace HelpWanted
 
             try
             {
-                return Helper.GameContent.Load<Texture2D>(path);
+                return SHelper.GameContent.Load<Texture2D>(path);
             }
             catch
             {
@@ -53,7 +62,7 @@ namespace HelpWanted
             return null;
         }
 
-        private Texture2D GetPadTexture(string target, string questType)
+        private static Texture2D GetPadTexture(string target, string questType)
         {
             var texture = GetTexture(padTexturePath + "/" + target + "/" + questType);
             if (texture is not null)
@@ -75,10 +84,10 @@ namespace HelpWanted
             {
                 return texture;
             }
-            return Helper.ModContent.Load<Texture2D>("assets/pad.png");
+            return SHelper.ModContent.Load<Texture2D>("assets/pad.png");
         }
 
-        private Texture2D GetPinTexture(string target, string questType)
+        private static Texture2D GetPinTexture(string target, string questType)
         {
             var texture = GetTexture(pinTexturePath + "/" + target + "/" + questType);
             if (texture is not null)
@@ -100,7 +109,7 @@ namespace HelpWanted
             {
                 return texture;
             }
-            return Helper.ModContent.Load<Texture2D>("assets/pin.png");
+            return SHelper.ModContent.Load<Texture2D>("assets/pin.png");
         }
 
 

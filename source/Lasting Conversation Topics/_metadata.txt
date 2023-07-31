@@ -6,11 +6,11 @@ mods:
    Lasting Conversation Topics
 
 latest commit:
-   commit 16939ac6c737c5b136801f869f9b52c6e2feb515
-   Author: Al <26797547+Al12rs@users.noreply.github.com>
-   Date:   Sun Mar 20 16:47:34 2022 +0100
+   commit 6a9a9bbd301db8909e14d6d99f6e0714e4b69404
+   Author: MikaÃ«l Capelle <capelle.mikael@gmail.com>
+   Date:   Sat Oct 22 14:54:29 2022 +0200
    
-       Merge pull request #88 from ZashIn/fix_linters
+       Merge pull request #92 from ZashIn/subnautica/feat/checker+root
        
-       linter fix: mypy --platform win32 for tox check on github (linux)
+       Subnautica: feature update v2.1
    

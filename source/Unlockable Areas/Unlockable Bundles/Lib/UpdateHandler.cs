@@ -14,6 +14,7 @@ using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unlockable_Bundles.Lib.Enums;
 using Unlockable_Bundles.Lib.ShopTypes;
 using xTile;
 using xTile.Layers;
@@ -22,13 +23,14 @@ using xTile.Tiles;
 namespace Unlockable_Bundles.Lib
 {
     //This class handles applying purchased bundles
-    public class UpdateHandler
+    public sealed class UpdateHandler
     {
         private static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
-        public static List<UnlockableModel> AppliedUnlockables = new List<UnlockableModel>();
+        public static List<UnlockableModel> AppliedUnlockables = new();
+        private static Dictionary<string, TileSheet> CachedTilesheets = new();
 
         public static void Initialize()
         {
@@ -54,7 +56,7 @@ namespace Unlockable_Bundles.Lib
                 return;
 
             if (e.NewLocation.mapPath.Value != null && AppliedUnlockables.Any(el => el.Location == e.NewLocation.Name)) {
-                //Buildings share the same map, so when entering a building we hard reload it before applying our unlockables
+                //Buildings share the same map, so when entering a building we hard reload it before applying our map patches
                 e.NewLocation.loadMap(e.NewLocation.mapPath.Value, true);
 
                 foreach (var unlockable in AppliedUnlockables.Where(el => el.LocationUnique == e.NewLocation.NameOrUniqueName))
@@ -69,18 +71,21 @@ namespace Unlockable_Bundles.Lib
 
             var saveData = ModData.Instance.UnlockableSaveData;
             var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
+            List<UnlockableModel> applyList = new List<UnlockableModel>();
 
             foreach (var keyDicPairs in saveData)
                 foreach (var locationValue in keyDicPairs.Value)
                     if (unlockables.TryGetValue(keyDicPairs.Key, out UnlockableModel unlockable)) {
                         unlockable.ID = keyDicPairs.Key;
                         unlockable.LocationUnique = locationValue.Key;
+                        unlockable.applyDefaultValues();
 
                         if (locationValue.Value.Purchased)
-                            ModEntry._Helper.Multiplayer.SendMessage(unlockable, "ApplyUnlockable", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID }, playerIDs: new[] { e.Peer.PlayerID });
+                            applyList.Add(unlockable);
                     }
 
-            ModEntry._Helper.Multiplayer.SendMessage(true, "UnlockablesReady", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID }, playerIDs: new[] { e.Peer.PlayerID });
+            ModEntry._Helper.Multiplayer.SendMessage(new KeyValuePair<List<UnlockableModel>, ModData>(applyList, ModData.Instance), "UnlockablesReady", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID }, playerIDs: new[] { e.Peer.PlayerID });
+            ModEntry._Helper.Multiplayer.SendMessage(AssetRequested.MailData, "UpdateMailData", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
         }
 
         public static void applyUnlockable(Unlockable unlockable, bool isNew = true)
@@ -88,11 +93,11 @@ namespace Unlockable_Bundles.Lib
             if (isNew)
                 AppliedUnlockables.Add((UnlockableModel)unlockable);
 
-            if (unlockable.UpdateMap.ToLower() == "none")
+            if (unlockable.EditMap.ToLower() == "none")
                 return;
 
-            var map = Helper.GameContent.Load<Map>(unlockable.UpdateMap);
-            var location = unlockable.getGameLocation();
+            var map = Helper.GameContent.Load<Map>(unlockable.EditMap);
+            var location = unlockable.EditMapLocation == "" ? unlockable.getGameLocation() : Game1.getLocationFromName(unlockable.EditMapLocation);
 
             applyOverlay(location, unlockable, map);
 
@@ -102,18 +107,28 @@ namespace Unlockable_Bundles.Lib
 
         private static void modMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
-            if (e.Type == "IsReady") {
-                API.UnlockableBundlesAPI.clearCache();
-                Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("UnlockableBundles/Bundles"));
+            if (e.FromModID != Mod.ModManifest.UniqueID)
+                return;
+
+            if (e.Type == "UnlockablesReady") {
+                ShopPlacement.resetDay();
+
+                //I have 0 control over when this is run and whether my bundles asset is loaded at this point or not
+                //So instead of reading the bundles asset and using ModData for Unlockable data, I transfer all unlockables that need to be applied
+                //While mighty unfortunate, I'd rather have lots of redundancy than unreliable and finicky architecture
+                var transferData = e.ReadAs<KeyValuePair<List<UnlockableModel>, ModData>>();
+                ModData.Instance = transferData.Value;
+                var applyList = transferData.Key;
+
+                foreach (var model in applyList)
+                    applyUnlockable(new Unlockable(model));
+
                 ModEntry._API.raiseIsReady(new API.IsReadyEventArgs(Game1.player));
-            } 
-
-            if (e.FromModID == Mod.ModManifest.UniqueID && e.Type.StartsWith("ApplyUnlockable")) {
+            } else if (e.Type == "BundlePurchased") {
                 var unlockable = new Unlockable(e.ReadAs<UnlockableModel>());
-                ModData.setPurchased(unlockable.ID, unlockable.LocationUnique);
 
-                if (e.Type == "ApplyUnlockable/Purchased")
-                    ModEntry._API.raiseShopPurchased(new API.ShopPurchasedEventArgs(Game1.player, unlockable.Location, unlockable.LocationUnique, unlockable.ID, false));
+                ModData.setPurchased(unlockable.ID, unlockable.LocationUnique);
+                ModEntry._API.raiseShopPurchased(new API.BundlePurchasedEventArgs(Game1.player, unlockable.Location, unlockable.LocationUnique, unlockable.ID, false));
 
                 applyUnlockable(unlockable);
 
@@ -121,6 +136,16 @@ namespace Unlockable_Bundles.Lib
                     && Game1.activeClickableMenu.GetType() == typeof(DialogueShopMenu)
                     && (Game1.activeClickableMenu as DialogueShopMenu).Unlockable.ID == unlockable.ID)
                     Game1.activeClickableMenu.exitThisMenu();
+            } else if (e.Type == "BundleContributed") {
+                var unlockable = new Unlockable(e.ReadAs<UnlockableModel>());
+
+                var last = unlockable._alreadyPaid.Pairs.Last();
+                var index = unlockable._alreadyPaidIndex.ContainsKey(last.Key) ? unlockable._alreadyPaidIndex[last.Key] : -1;
+                ModData.setPartiallyPurchased(unlockable.ID, unlockable.LocationUnique, last.Key, last.Value, index);
+                ModEntry._API.raiseShopContributed(new API.BundlePurchasedEventArgs(Game1.player, unlockable.Location, unlockable.LocationUnique, unlockable.ID, false));
+            } else if (e.Type == "UpdateMailData") {
+                AssetRequested.MailData = e.ReadAs<Dictionary<string, string>>();
+                Helper.GameContent.InvalidateCache("Data/Mail");
             }
 
         }
@@ -128,16 +153,16 @@ namespace Unlockable_Bundles.Lib
         public static void applyOverlay(GameLocation location, Unlockable unlockable, Map overlayMap)
         {
             addTilesheetsAndLayers(location, unlockable, overlayMap);
-            bool isReplaceOverlay = unlockable.UpdateType.ToLower().Equals("replace");
+            bool isReplaceOverlay = unlockable.EditMapMode is EditMapMode.Replace or EditMapMode.ReplaceByLayer;
 
             foreach (var overlayLayer in overlayMap.Layers) {
-                int locationX = (int)unlockable.UpdatePosition.X;
+                int locationX = (int)unlockable.EditMapPosition.X;
 
                 var locationLayer = location.map.GetLayer(overlayLayer.Id);
                 bool isBackLayer = overlayLayer.Id.ToLower().Equals("back");
 
                 for (int overlayX = 0; overlayX < overlayLayer.LayerSize.Width && locationX < locationLayer.LayerSize.Width; overlayX++, locationX++) {
-                    int locationY = (int)unlockable.UpdatePosition.Y;
+                    int locationY = (int)unlockable.EditMapPosition.Y;
 
                     for (int overlayY = 0; overlayY < overlayLayer.LayerSize.Height && locationY < locationLayer.LayerSize.Height; overlayY++, locationY++) {
                         var copyFrom = overlayLayer.Tiles[overlayX, overlayY];
@@ -162,6 +187,33 @@ namespace Unlockable_Bundles.Lib
 
                         if (isBackLayer)
                             addWaterTiles(location, locationX, locationY);
+                    }
+                }
+            }
+
+            if (unlockable.EditMapMode == EditMapMode.Replace)
+                clearNonOverlappingLayers(location, unlockable, overlayMap);
+
+            CachedTilesheets.Clear();
+        }
+
+        private static void clearNonOverlappingLayers(GameLocation location, Unlockable unlockable, Map overlayMap)
+        {
+            var nonOverlapping = location.Map.Layers.Where(e => overlayMap.GetLayer(e.Id) == null);
+
+            int width = overlayMap.DisplayWidth / 64;
+            int height = overlayMap.DisplayHeight / 64;
+
+            foreach (var locationLayer in nonOverlapping) {
+                int locationX = (int)unlockable.EditMapPosition.X;
+
+                for (int overlayX = 0; overlayX < width && locationX < locationLayer.LayerSize.Width; overlayX++, locationX++) {
+                    int locationY = (int)unlockable.EditMapPosition.Y;
+
+                    for (int overlayY = 0; overlayY < height && locationY < locationLayer.LayerSize.Height; overlayY++, locationY++) {
+
+                        clearWaterTiles(location, locationX, locationY);
+                        locationLayer.Tiles[locationX, locationY] = null;
                     }
                 }
             }
@@ -204,24 +256,35 @@ namespace Unlockable_Bundles.Lib
 
         private static StaticTile copyStaticTile(StaticTile copyFrom, Layer layer, GameLocation location, Unlockable unlockable)
         {
-            return new StaticTile(layer, location.map.GetTileSheet($"zz_{unlockable.ID}_{copyFrom.TileSheet.Id}"), copyFrom.BlendMode, copyFrom.TileIndex);
+            var key = $"zz_{unlockable.ID}_{copyFrom.TileSheet.Id}";
+            TileSheet tilesheet;
+
+            if (CachedTilesheets.TryGetValue(key, out var cachedTilesheet)) {
+                tilesheet = cachedTilesheet;
+            } else {
+                tilesheet = location.map.GetTileSheet(key);
+                CachedTilesheets.Add(key, tilesheet);
+            }
+
+            return new StaticTile(layer, tilesheet, copyFrom.BlendMode, copyFrom.TileIndex);
         }
 
-        public static void addTilesheetsAndLayers(GameLocation location, Unlockable unlockable, Map map)
+        public static void addTilesheetsAndLayers(GameLocation location, Unlockable unlockable, Map overlayMap)
         {
-            if (map == null)
+            if (overlayMap == null)
                 location.reloadMap();
 
-            foreach (var tileSheet in map.TileSheets) {
+            foreach (var tileSheet in overlayMap.TileSheets) {
                 if (location.Map.TileSheets.Any(el => el.Id == $"zz_{unlockable.ID}_{tileSheet.Id}"))
                     continue;
 
                 var newTileSheet = new TileSheet($"zz_{unlockable.ID}_{tileSheet.Id}", location.map, tileSheet.ImageSource, tileSheet.SheetSize, tileSheet.TileSize);
                 newTileSheet.Properties.CopyFrom(tileSheet.Properties);
                 location.Map.AddTileSheet(newTileSheet);
+                CachedTilesheets.Add(newTileSheet.Id, newTileSheet);
             }
 
-            foreach (var layer in map.Layers)
+            foreach (var layer in overlayMap.Layers)
                 if (!location.map.Layers.Any(el => el.Id == layer.Id)) {
                     var newLayer = new Layer(layer.Id, location.Map, location.map.Layers.First().LayerSize, layer.TileSize);
                     location.map.AddLayer(newLayer);

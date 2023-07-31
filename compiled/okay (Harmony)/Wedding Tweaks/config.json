@@ -2,6 +2,7 @@
   "EnableMod": true,
   "DaysUntilMarriage": 3,
   "AllSpousesJoinWeddings": true,
+  "FixWeddingStart": true,
   "AllSpousesWearMarriageClothesAtWeddings": true,
   "AllowWitnesses": true,
   "WitnessMinHearts": 6,

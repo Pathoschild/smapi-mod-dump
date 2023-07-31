@@ -24,6 +24,8 @@ namespace Unlockable_Bundles.Lib
         public static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
+
+        public static Dictionary<string, string> MailData = new Dictionary<string, string>();
         public static void Initialize()
         {
             Mod = ModEntry.Mod;
@@ -40,28 +42,21 @@ namespace Unlockable_Bundles.Lib
                 e.LoadFrom(delegate () {
                     return new Dictionary<string, UnlockableModel>() { };
                 }, AssetLoadPriority.Medium);
-                return;
 
-            } else if (e.NameWithoutLocale.IsEquivalentTo("UnlockableBundles/ShopTextures/Sign")) {
+            } else if (e.NameWithoutLocale.StartsWith("UnlockableBundles/ShopTextures/")) {
+                var asset = e.NameWithoutLocale.BaseName[31..];
                 e.LoadFrom(delegate () {
-                    return Helper.ModContent.Load<Texture2D>($"assets/Sign.png");
+                    return Helper.ModContent.Load<Texture2D>($"assets/{asset}.png");
                 }, AssetLoadPriority.Low);
-            } else if (e.NameWithoutLocale.IsEquivalentTo("UnlockableBundles/ShopTextures/CCBundle")) {
-                e.LoadFrom(delegate () {
-                    return Helper.ModContent.Load<Texture2D>($"assets/CCBundle.png");
-                }, AssetLoadPriority.Low);
-            } else if (e.NameWithoutLocale.IsEquivalentTo("UnlockableBundles/ShopTextures/Scroll")) {
-                e.LoadFrom(delegate () {
-                    return Helper.ModContent.Load<Texture2D>($"assets/Scroll.png");
-                }, AssetLoadPriority.Low);
-            } else if (e.NameWithoutLocale.IsEquivalentTo("UnlockableBundles/ShopTextures/Blue_Junimo")) {
-                e.LoadFrom(delegate () {
-                    return Helper.ModContent.Load<Texture2D>($"assets/Blue_Junimo.png");
-                }, AssetLoadPriority.Low);
-            } else if (e.NameWithoutLocale.IsEquivalentTo("UnlockableBundles/ShopTextures/ParrotPerch")) {
-                e.LoadFrom(delegate () {
-                    return Helper.ModContent.Load<Texture2D>($"assets/ParrotPerch.png");
-                }, AssetLoadPriority.Low);
+
+            } else if(e.NameWithoutLocale.IsEquivalentTo("Data/Mail")) {
+                e.Edit(asset => {
+                    var data = asset.AsDictionary<string, string>().Data;
+
+                    foreach (var entry in MailData)
+                        data.TryAdd(entry.Key, entry.Value);
+                });
+
             }
         }
     }

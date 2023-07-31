@@ -62,8 +62,7 @@ namespace StardewArchipelago.Locations.Festival
         }
 
         // public bool chooseResponse(Response response)
-        public static void ChooseResponse_LegendOfTheWinterStar_Postfix(Dialogue __instance, Response response,
-            bool result)
+        public static void ChooseResponse_LegendOfTheWinterStar_Postfix(Dialogue __instance, Response response, ref bool __result)
         {
             try
             {

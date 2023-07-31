@@ -14,8 +14,7 @@ namespace stardew_access.Patches
     {
         internal static void ExitPatch()
         {
-            if (MainClass.ScreenReader != null)
-                MainClass.ScreenReader.CloseScreenReader();
+            MainClass.ScreenReader?.CloseScreenReader();
         }
     }
 }

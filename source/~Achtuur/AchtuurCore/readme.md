@@ -17,7 +17,30 @@ Core mod required for most of my other mods, available on [Nexus Mods](https://w
 
 # Changelog
 
-## 1.1.1 (unreleased)
+
+## 1.1.5
+* New/Changed
+  * `Overlay.Enable/Disable` are now virtual methods
+  * Add Building extensions
+
+## 1.1.4
+* New/Changed
+  * Decaying text now properly decays
+  * Add extension methods for gamelocation
+
+## 1.1.3
+* New/Changed
+  * Added red tile placement texture to overlay
+
+## 1.1.2
+* New/Changed
+  * Add VectorHelper class
+
+## 1.1.1
+* New/Changed
+  * Added placement Tile to overlay
+  * Added more helper functions to overlay
+  * Added random/unique colors to colorhelper
 * Fixes
   * Particles now despawn when changing location
 

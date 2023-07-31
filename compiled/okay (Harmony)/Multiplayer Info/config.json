@@ -3,5 +3,8 @@
   "ShowSelf": false,
   "ShowHostCrown": true,
   "HideHealthBars": false,
-  "Position": "BottomLeft"
+  "Position": "BottomLeft",
+  "XOffset": 0,
+  "YOffset": 0,
+  "SpaceBetween": 112
 }

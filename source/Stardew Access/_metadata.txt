@@ -6,11 +6,11 @@ mods:
    Stardew Access
 
 latest commit:
-   commit dd14eb9af61a0ba4166b85ce479241b4a3253ca1
+   commit 56e4cb073e1ee4f6d7035205221fc01576bcadc5
    Author: Mohammad Shoaib Khan <shoaib.khan20@outlook.com>
-   Date:   Sat Jun 3 07:47:53 2023 +0530
+   Date:   Sat Jul 29 20:02:31 2023 +0530
    
-       Merge pull request #119 from khanshoaib3/witchhut
+       Merge pull request #140 from khanshoaib3/AccessibleTilesMerge
        
-       WitchHut
+       Minor improvements to auto walking in object tracker
    

@@ -8,52 +8,83 @@
 **
 *************************************************/
 
+using StardewValley;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StardewValley;
+using System.Collections.Immutable;
 
 namespace Unlockable_Bundles.API
 {
     public interface IUnlockableBundlesAPI
     {
-        /// <summary>Returns all Unlockables as Keys that have been purchased</summary>
-        List<string> purchasedUnlockables { get; }
+        /// <summary>Returns all Bundles as Keys that have been purchased</summary>
+        List<string> PurchasedBundles { get; }
 
         /// <summary>
-        /// Returns all Unlockables as Keys that have been purchased including a list of all GameLocations as NameOrUniqueName where they have been purchased
-        /// This makes sense when your unlockable is in a building for example
+        /// Returns all Bundles as Keys that have been purchased including a list of all GameLocations as NameOrUniqueName where they have been purchased
+        /// This makes sense when your bundle is in a building for example
         /// </summary>
-        Dictionary<string, List<string>> purchasedUnlockablesByLocation { get; }
+        Dictionary<string, List<string>> PurchaseBundlesByLocation { get; }
 
-        /// <summary>Fires once for every player when a shop has been purchased before the ShopEvent</summary>
-        event ShopPurchasedEvent shopPurchasedEvent;
+        /// <summary>
+        /// Returns all bundle states as Dictionar<BundleKey, List<Bundle>>
+        /// A bundle key can contain multiple bundles, if the location is a building
+        /// </summary>
+        Dictionary<string, List<Bundle>> getBundles();
+
+        /// <summary>Fires once for every player when a bundle contribution has been made</summary>
+        event BundlesPurchasedEvent BundleContributedEvent;
+
+        /// <summary>Fires once for every player when a bundle has been purchased before the ShopEvent</summary>
+        event BundlesPurchasedEvent BundlePurchasedEvent;
 
         // <summary>
         // Fires once after daystart for every player after the UnlockableBundles/Bundles asset has been read and processed.
         // Also fires for joining players after they received and processed all unlockables.
         // </summary>
-        event IsReadyEvent isReadyEvent;
+        event IsReadyEvent IsReadyEvent;
     }
 
-    public delegate void ShopPurchasedEvent(object sender, ShopPurchasedEventArgs e);
-    public class ShopPurchasedEventArgs : EventArgs
+    public class Bundle
     {
-        public Farmer who;
-        public string location;
-        public string locationOrUnique;
-        public string unlockableKey;
-        public bool isBuyer;
+        public string Key { get; }
+        public string Location { get; }
+        public string LocationOrUnique { get; }
+        public Dictionary<string, int> Price { get; }
+        public Dictionary<string, int> AlreadyPaid { get; }
+        public bool Purchased { get; }
+        public int DaysSincePurchase { get; }
+        public bool AssetLoaded { get; }
 
-        public ShopPurchasedEventArgs(Farmer who, string location, string locationOrUnique, string unlockableKey, bool isBuyer)
+        public Bundle(string key, string loc, string unique, Dictionary<string, int>  price, Dictionary<string, int> paid, bool purchased, int daysSincePurchase, bool assetLoaded)
         {
-            this.who = who;
-            this.location = location;
-            this.locationOrUnique = locationOrUnique;
-            this.unlockableKey = unlockableKey;
-            this.isBuyer = isBuyer;
+            Key = key;
+            Location = loc;
+            LocationOrUnique = loc;
+            Price = price;
+            AlreadyPaid = paid;
+            Purchased = purchased;
+            DaysSincePurchase = daysSincePurchase;
+            AssetLoaded = assetLoaded;
+        }
+    }
+
+    public delegate void BundlesPurchasedEvent(object sender, BundlePurchasedEventArgs e);
+    public class BundlePurchasedEventArgs : EventArgs
+    {
+        public Farmer Who;
+        public string Location;
+        public string LocationOrUnique;
+        public string BundleKey;
+        public bool IsBuyer;
+
+        public BundlePurchasedEventArgs(Farmer who, string location, string locationOrUnique, string bundleKey, bool isBuyer)
+        {
+            this.Who = who;
+            this.Location = location;
+            this.LocationOrUnique = locationOrUnique;
+            this.BundleKey = bundleKey;
+            this.IsBuyer = isBuyer;
         }
     }
 

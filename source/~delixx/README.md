@@ -22,9 +22,10 @@ for queries and analysis.**
   * [Recommended Folder Structure](#recommended-folder-structure)
   * [Creating a Content Pack](#creating-a-content-pack)
   * [Documentation](#documentation)
-  * [Custom Farm Type](#custom-farm-type)
+    * [Custom Farm Type](#custom-farm-type)
     * [Custom Assets](#custom_assets)
     * [Content Patcher Token Conditions](#content-patcher-token-conditions)
+    * [Custom Debug Commands](#custom-debug-commands)
 # For Players
 
 ## Setup
@@ -93,7 +94,7 @@ The SDV Wiki provides a [great guide](https://stardewvalleywiki.com/Modding:Maps
 
 Check out the cfl_map.json documentation in [the gitlab wiki](https://gitlab.com/delixx/stardew-valley-custom-farm-loader/-/wikis/home#table-of-contents).
 
-## Custom Farm Type
+### Custom Farm Type
 
 Every CFL farm will have its own unique FarmType ID in the following format:
 <pre>
@@ -131,3 +132,13 @@ eg. CFL_WorldMap/DeLiXx.Sunny_Farm/Sunny Farm
 Amidst its own set of conditions Custom Farm Loader supports Content Patcher Token Conditions for any DailyUpdate or FishingRule.
 <br>
 Read more about it [here](https://gitlab.com/delixx/stardew-valley-custom-farm-loader/-/wikis/home#universal-conditions)
+
+### Custom Debug Commands
+
+These debug commands can be written directly into the SMAPI console.<br>They are intended to make mod creation easier.<br>
+
+| <div style="width:600px">Command</div> |  |
+| ------ | ------ |
+| cfl reload       | Reloads all cached cfl_map.json data       |
+| cfl dayupdate `num`,<br> cfl du `num`       | Performs all valid daily updates of the players location `num` times       |
+| cfl furniture       | Prints out all furniture of the current location as json so it can be directly copied into StartFurniture        |

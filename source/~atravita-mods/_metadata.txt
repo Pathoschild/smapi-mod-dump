@@ -35,11 +35,11 @@ mods:
    Trash Does Not Consume Bait
 
 latest commit:
-   commit d284cfcd4ed374e68983a5290af3e89ef201df88
+   commit c5f31f15f460f2ac9b12adb5b7dcec99e68d284f
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Wed Jun 7 08:23:51 2023 -0400
+   Date:   Thu Jul 27 18:13:22 2023 -0400
    
-       Merge pull request #34 from atravita-mods/dependabot/nuget/NetEscapades.EnumGenerators-1.0.0-beta08
+       Merge pull request #38 from angel4killer/patch-1
        
-       Bump NetEscapades.EnumGenerators from 1.0.0-beta07 to 1.0.0-beta08
+       Update ru.json
    

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
@@ -40,7 +41,13 @@ namespace StardewArchipelago.Locations
                 return;
             }
 
-            ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, salableObject);
+            var shouldRemoveOriginal = true;
+            if (IsRarecrow(salableObject))
+            {
+                var apName = BigCraftable.ConvertToRarecrowAPName(salableObject.Name, salableObject.getDescription());
+                shouldRemoveOriginal = !_archipelago.HasReceivedItem(apName);
+            }
+            ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, shouldRemoveOriginal);
         }
 
         public void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, ISalable itemOnSale, string apLocation, Func<Furniture, bool> conditionToMeet)
@@ -50,7 +57,7 @@ namespace StardewArchipelago.Locations
                 return;
             }
 
-            ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, itemOnSale);
+            ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, true);
         }
 
         public void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, ISalable itemOnSale, string apLocation, Func<Hat, bool> conditionToMeet)
@@ -60,13 +67,16 @@ namespace StardewArchipelago.Locations
                 return;
             }
 
-            ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, itemOnSale);
+            ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, true);
         }
 
-        private void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, ISalable itemOnSale, string apLocation, ISalable salableObject)
+        private void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, ISalable itemOnSale, string apLocation, bool removeOriginal)
         {
             var itemPrice = itemPriceAndStock[itemOnSale][0];
-            itemPriceAndStock.Remove(itemOnSale);
+            if (removeOriginal)
+            {
+                itemPriceAndStock.Remove(itemOnSale);
+            }
             if (_locationChecker.IsLocationChecked(apLocation))
             {
                 return;
@@ -78,10 +88,15 @@ namespace StardewArchipelago.Locations
             itemPriceAndStock.Add(purchaseableLocation, new[] { itemPrice, 1 });
         }
 
-        public bool IsRarecrow(Object item, int rarecrowNumber)
+        private bool IsRarecrow(Object item)
         {
             return item.IsScarecrow() &&
-                   item.Name == "Rarecrow" &&
+                   item.Name == "Rarecrow";
+        }
+
+        public bool IsRarecrow(Object item, int rarecrowNumber)
+        {
+            return IsRarecrow(item) &&
                    item.getDescription().Contains($"{rarecrowNumber} of");
         }
     }

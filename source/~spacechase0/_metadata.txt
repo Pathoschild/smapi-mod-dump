@@ -11,6 +11,7 @@ mods:
    Better Meteorites
    Better Shop Menu
    Bigger Craftables
+   Blahaj Blast
    Bug Net
    Capstone Professions
    Carry Chest
@@ -75,9 +76,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 5494b2755296e0eb84bc7319a3223abec5d5bb2a
+   commit 88b07cbe0317df0edebf4ce6b59c9e146303d39c
    Author: Casey Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Wed Jun 28 22:01:27 2023 -0400
+   Date:   Thu Jul 20 19:50:57 2023 -0400
    
-       Update manifest
+       Mobile works now I think
    

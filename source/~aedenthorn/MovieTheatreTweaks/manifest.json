@@ -11,7 +11,7 @@
 {
   "Name": "Movie Theatre Tweaks",
   "Author": "aedenthorn",
-  "Version": "0.1.0",
+  "Version": "0.2.0",
   "Description": "Movie Theatre Tweaks.",
   "UniqueID": "aedenthorn.MovieTheatreTweaks",
   "EntryDll": "MovieTheatreTweaks.dll",

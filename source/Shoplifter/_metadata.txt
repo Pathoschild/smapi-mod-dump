@@ -6,9 +6,9 @@ mods:
    Shoplifter
 
 latest commit:
-   commit d2daf75c16cd2abf55b657a5f8c35d0a6d286e9c
+   commit 9ba32455e40b956d4901c373b56e0450db726b2d
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Mon Apr 24 16:33:50 2023 +1000
+   Date:   Fri Jul 28 12:29:20 2023 +1000
    
        update manifest
    

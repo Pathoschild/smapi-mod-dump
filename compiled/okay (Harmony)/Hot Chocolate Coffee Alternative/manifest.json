@@ -1,12 +1,12 @@
 ﻿{
   "Name": "Hot Chocolate Coffee Alternative",
   "Author": "certifiableGrimalkin",
-  "Version": "1.0.1",
+  "Version": "1.1.0",
   "Description": "Adds Cocoa beans as an alternative coffee source, for people who don't like coffee.",
   "UniqueID": "certifiableGrimalkin.HotChocolateCoffeeAlternative",
   "EntryDll": "HotChocolateCoffeeAlternative.dll",
   "MinimumApiVersion": "3.8.0",
-  "UpdateKeys": ["Nexus:16159"],
+  "UpdateKeys": [ "Nexus:16159" ],
   "Dependencies": [
     {
       "UniqueID": "DIGUS.MailFrameworkMod",
@@ -17,6 +17,9 @@
     },
     {
       "UniqueID": "Pathoschild.ContentPatcher"
+    },
+    {
+      "UniqueID": "Digus.ProducerFrameworkMod"
     }
   ]
 }

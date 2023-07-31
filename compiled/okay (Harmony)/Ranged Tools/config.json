@@ -19,5 +19,6 @@
   "AllowRangedChargeEffects": false,
   "AttacksIgnoreObstacles": false,
   "DontCutGrassPastNormalRange": false,
+  "MultigrabCrabPotsInRange": false,
   "CustomRangeOnClickOnly": true
 }

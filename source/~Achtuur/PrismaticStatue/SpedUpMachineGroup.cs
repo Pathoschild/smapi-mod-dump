@@ -50,7 +50,8 @@ internal class SpedUpMachineGroup
     /// <returns></returns>
     internal bool TilesMatchNStatues()
     {
-        return this.Tiles is not null && this.Tiles.Count(tile => tile.ContainsObject(ModEntry.Instance.SpeedupStatueID, Location)) == n_statues;
+        int placedStatueCount = this.Tiles.Count(tile => ModEntry.GetPossibleStatueIDs().Any(id => tile.ContainsObject(id, Location)));
+        return this.Tiles is not null && placedStatueCount == n_statues;
     }
 
     internal bool IsMachineGroup(IReadOnlySet<Vector2> GroupTiles, GameLocation GroupLocation)

@@ -11,7 +11,7 @@
 {
   "Name": "Loan Mod",
   "Author": "Doomnik",
-  "Version": "1.4.2",
+  "Version": "1.4.4",
   "Description": "Borrow money and repay in daily installments.",
   "UniqueID": "Doomnik.LoanMod",
   "EntryDll": "LoanMod.dll",

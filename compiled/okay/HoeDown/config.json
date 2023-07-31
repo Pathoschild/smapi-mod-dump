@@ -6,5 +6,10 @@
   "HalfTill": true,
   "Countdown": 3000,
   "GameTimer": 60000,
-  "EncloseTiles": true
+  "EncloseTiles": true,
+  "uiX": 8,
+  "uiY": 8,
+  "ObjectBlockFill": true,
+  "ClearEntireFarm": false,
+  "ResetInventory": false
 }

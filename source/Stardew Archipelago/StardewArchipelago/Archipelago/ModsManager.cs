@@ -11,8 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewArchipelago.Constants;
 using StardewModdingAPI;
 
@@ -20,9 +18,9 @@ namespace StardewArchipelago.Archipelago
 {
     public class ModsManager
     {
-        private Dictionary<string, string> _activeMods;
+        private List<string> _activeMods;
 
-        public ModsManager(Dictionary<string, string> activeMods)
+        public ModsManager(List<string> activeMods)
         {
             _activeMods = activeMods;
         }
@@ -31,12 +29,12 @@ namespace StardewArchipelago.Archipelago
 
         public bool HasMod(string modName)
         {
-            return _activeMods.ContainsKey(modName);
+            return _activeMods.Contains(modName);
         }
 
-        public string GetVersion(string modName)
+        public string GetRequiredVersion(string modName)
         {
-            return _activeMods[modName];
+            return ModVersions.Versions[modName];
         }
 
         public bool HasModdedSkill()
@@ -67,14 +65,15 @@ namespace StardewArchipelago.Archipelago
             var loadedModData = modHelper.ModRegistry.GetAll().ToList();
             errorMessage = $"The slot you are connecting to has been created expecting modded content,\r\nbut not all expected mods are installed and active.";
             var valid = true;
-            foreach (var (mod, version) in _activeMods)
+            foreach (var modName in _activeMods)
             {
-                if (!IsModActiveAndCorrectVersion(loadedModData, mod, version, out var existingVersion))
+                var desiredVersion = ModVersions.Versions[modName];
+                if (IsModActiveAndCorrectVersion(loadedModData, modName, desiredVersion, out var existingVersion))
                 {
-                    valid = false;
-                    errorMessage +=
-                        $"{Environment.NewLine}\tMod: {mod}, expected version: {version}, current Version: {existingVersion}";
+                    continue;
                 }
+                valid = false;
+                errorMessage += $"{Environment.NewLine}\tMod: {modName}, expected version: {desiredVersion}, current Version: {existingVersion}";
             }
 
             return valid;

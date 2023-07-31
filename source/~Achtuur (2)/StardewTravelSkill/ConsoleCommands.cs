@@ -27,12 +27,12 @@ internal static class ConsoleCommands
         {
             int lvl = int.Parse(args[0]);
             // Reduce xp to 0
-            Game1.player.AddCustomSkillExperience(ModEntry.TravelSkill, -Game1.player.GetCustomSkillExperience(ModEntry.TravelSkill));
+            Game1.player.AddCustomSkillExperience(ModEntry.Instance.travelSkill, -Game1.player.GetCustomSkillExperience(ModEntry.Instance.travelSkill));
 
             // Add xp equivalent to level
             if (lvl != 0)
             {
-                Game1.player.AddCustomSkillExperience(ModEntry.TravelSkill, ModEntry.TravelSkill.ExperienceCurve[lvl - 1]);
+                Game1.player.AddCustomSkillExperience(ModEntry.Instance.travelSkill, ModEntry.Instance.travelSkill.ExperienceCurve[lvl - 1]);
             }
 
             ModEntry.Instance.Monitor.Log($"{Game1.player.Name}'s Travelling skill set to level {lvl}", LogLevel.Debug);

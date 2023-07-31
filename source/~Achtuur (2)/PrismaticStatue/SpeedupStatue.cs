@@ -20,6 +20,7 @@ public class SpeedupStatue : IMachine
 {
 
     public static readonly string TypeId = "Achtuur/SpeedupStatue";
+    public static int? ID = null;
 
     /*********
     ** Fields

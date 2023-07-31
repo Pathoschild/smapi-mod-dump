@@ -7,9 +7,9 @@ mods:
    Profiler
 
 latest commit:
-   commit 8d25fb6d2b5a4f3aae91ef3145b04e48ad73ad0d
+   commit de5b2ccf7ad97d76e2ffe25adae251685d8fe795
    Author: SinZ <github@361zn.is>
-   Date:   Thu Feb 23 01:18:01 2023 +1100
+   Date:   Wed Jul 19 13:06:50 2023 +1000
    
-       Add an FTM integration into Lookup Anything
+       Misc remaining changes
    

@@ -1208,7 +1208,7 @@
 	},
 	{
 		"Name": "WizardLightweightConfig",
-		"AllowedValues": "Full,Light,Ultralight",
+		"AllowedValues": "Full,Light",
 		"Type": "string",
 		"ToolTipKey": "GMCM.Options.Lightweights.ToolTip",
 		"Default": "Full"

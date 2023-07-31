@@ -12,205 +12,172 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using System.Collections.Generic;
+using LoanMod.Common.Constants;
+using LoanMod.Common.Enums;
 
 namespace LoanMod
 {
     public partial class ModEntry
     {
-        private List<Response> menuItems, repayMenuItems, durationMenu, menuYesNo;
-        private void InitMenus()
-        {
-            menuItems = new List<Response>
-            {
-                new Response("money_500", $"{Config.MoneyAmount1}g"),
-                new Response("money_1k", $"{Config.MoneyAmount2}g"),
-                new Response("money_5k", $"{Config.MoneyAmount3}g"),
-                new Response("money_10k", $"{Config.MoneyAmount4}g"),
-                new Response("money_Cancel", I18n.Menu_Cancel())
-            };
-
-            durationMenu = new List<Response>
-            {
-                new Response("time_3D", $"{Config.DayLength1} {I18n.Menu_Days()} @ {Config.InterestModifier1 * 100}%"),
-                new Response("time_7D", $"{Config.DayLength2} {I18n.Menu_Days()} @ {Config.InterestModifier2 * 100}%"),
-                new Response("time_14D", $"{Config.DayLength3} {I18n.Menu_Days()} @ {Config.InterestModifier3 * 100}%"),
-                new Response("time_28D", $"{Config.DayLength4} {I18n.Menu_Days()} @ {Config.InterestModifier4 * 100}%"),
-                new Response("time_Cancel", I18n.Menu_Cancel())
-            };
-
-            repayMenuItems = new List<Response>
-            {
-                new Response("repay_show_Balance", I18n.Menu_Showbalance()),
-                new Response("repay_Custom", I18n.Menu_Repaycustom()),
-                new Response("repay_Full", I18n.Menu_Repayfull()),
-                new Response("repay_Leave", I18n.Menu_Leave())
-            };
-
-            menuYesNo = new List<Response>
-            {
-                new Response("menu_Yes", I18n.Menu_Yes()),
-                new Response("menu_No", I18n.Menu_No()),
-                new Response("menu_Leave", I18n.Menu_Leave())
-            };
-        }
-
-        //private void StartMobileBorrow()
-        //{
-        //    mobileApi.SetAppRunning(true);
-        //    mobileApi.SetRunningApp(Helper.ModRegistry.ModID);
-        //    StartBorrow(1, "Key_Amount");
-        //}
+        private List<Response> _menuItems, _repayMenuItems, _durationMenu, _menuYesNo;
 
         private void StartBorrow(int stage, string key)
         {
-            var Gamer = Game1.currentLocation;
-            //check if player isnt already borrowing
-            if (!loanManager.IsBorrowing)
+            var context = Game1.currentLocation;
+            if (!_loanManager.IsBorrowing)
             {
                 switch (stage)
                 {
                     case 1:
-                        if (Config.CustomMoneyInput)
-                            Game1.activeClickableMenu = new NumberSelectionMenu(I18n.Msg_Startborrow1(), (val, cost, farmer) => ProcessBorrowing(val, key), -1, 100, Config.MaxBorrowAmount, 500);
+                        if (_config.CustomMoneyInput)
+                            Game1.activeClickableMenu = new NumberSelectionMenu(I18n.Msg_Startborrow1(), (val, cost, farmer) => ProcessBorrowing(val, key), -1, 100, _config.MaxBorrowAmount, 500);
                         else
-                            Gamer.createQuestionDialogue(I18n.Msg_Startborrow1(), menuItems.ToArray(), BorrowMenu);
+                            context.createQuestionDialogue(I18n.Msg_Startborrow1(), _menuItems.ToArray(), BorrowMenu);
                         break;
                     case 2:
-                        //Game1.activeClickableMenu = new NumberSelectionMenu(i18n.Get("msg.startborrow-2"), (val, cost, farmer) => ProcessBorrowing(val, cost, farmer, key), -1, 1);
-                        Gamer.createQuestionDialogue(I18n.Msg_Startborrow2(), durationMenu.ToArray(), BorrowDuration);
+                        context.createQuestionDialogue(I18n.Msg_Startborrow2(), _durationMenu.ToArray(), BorrowDuration);
                         break;
                 }
-            }
-            else
-            {
-                switch (stage)
-                {
-                    case 1:
-                        Gamer.createQuestionDialogue(I18n.Msg_Menu1(), repayMenuItems.ToArray(), RepayMenu);
-                        break;
-                    case 3:
-                        Gamer.createQuestionDialogue(I18n.Msg_Menu2(loanManager.Balance.ToString("N0")), menuYesNo.ToArray(), RepayFullMenu);
-                        break;
-                }
+                return;
             }
 
-            //if (mobileApi?.GetRunningApp() == Helper.ModRegistry.ModID)
-            //    mobileApi.SetAppRunning(false);
+            switch (stage)
+            {
+                case 1:
+                    context.createQuestionDialogue(I18n.Msg_Menu1(), _repayMenuItems.ToArray(), RepayMenu);
+                    break;
+                case 3:
+                    context.createQuestionDialogue(I18n.Msg_Menu2(_loanManager.Balance.ToString("N0")), _menuYesNo.ToArray(), RepayFullMenu);
+                    break;
+            }
+        }
+
+        private void InitMenus()
+        {
+            _menuItems = new List<Response>
+            {
+                new(MenuConstants.MoneyOptionOne, $"{_config.MoneyAmount1}g"),
+                new(MenuConstants.MoneyOptionTwo, $"{_config.MoneyAmount2}g"),
+                new(MenuConstants.MoneyOptionThree, $"{_config.MoneyAmount3}g"),
+                new(MenuConstants.MoneyOptionFour, $"{_config.MoneyAmount4}g"),
+                new(MenuConstants.OptionCancel, I18n.Menu_Cancel())
+            };
+
+            _durationMenu = new List<Response>
+            {
+                new(MenuConstants.DurationOptionOne, $"{_config.DayLength1} {I18n.Menu_Days()} @ {_config.InterestModifier1 * 100}%"),
+                new(MenuConstants.DurationOptionTwo, $"{_config.DayLength2} {I18n.Menu_Days()} @ {_config.InterestModifier2 * 100}%"),
+                new(MenuConstants.DurationOptionThree, $"{_config.DayLength3} {I18n.Menu_Days()} @ {_config.InterestModifier3 * 100}%"),
+                new(MenuConstants.DurationOptionFour, $"{_config.DayLength4} {I18n.Menu_Days()} @ {_config.InterestModifier4 * 100}%"),
+                new(MenuConstants.OptionCancel, I18n.Menu_Cancel())
+            };
+
+            _repayMenuItems = new List<Response>
+            {
+                new(MenuConstants.ShowBalance, I18n.Menu_Showbalance()),
+                new(MenuConstants.RepayCustom, I18n.Menu_Repaycustom()),
+                new(MenuConstants.RepayFull, I18n.Menu_Repayfull()),
+                new(MenuConstants.OptionCancel, I18n.Menu_Leave())
+            };
+
+            _menuYesNo = new List<Response>
+            {
+                new(MenuConstants.OptionYes, I18n.Menu_Yes()),
+                new(MenuConstants.OptionNo, I18n.Menu_No()),
+                new(MenuConstants.OptionCancel, I18n.Menu_Leave())
+            };
         }
 
         private void ProcessBorrowing(int val, string key)
         {
-            switch (key)
-            {
-                case "Key_Amount":
-                    amount = val;
-                    borrowProcess = true;
-                    this.Monitor.Log($"Selected {amount}g", LogLevel.Info);
-                    Game1.activeClickableMenu = null;
-                    StartBorrow(2, "Key_Duration");
-                    break;
-            }
+            if (key != ModConstants.BorrowAmountKey) return;
+            _amount = val;
+            _loanManager.CurrentStage = Stages.Borrowing;
+            Monitor.Log($"Selected {_amount}g", LogLevel.Info);
+            Game1.activeClickableMenu = null;
+            StartBorrow(2, ModConstants.BorrowDurationKey);
         }
-
+        
         private void BorrowMenu(Farmer who, string menu)
         {
             switch (menu)
             {
-                case "money_500":
-                    amount = Config.MoneyAmount1;
-                    borrowProcess = true;
-                    this.Monitor.Log("Selected 500g.", LogLevel.Info);
+                case MenuConstants.MoneyOptionOne:
+                    SetAmount(_config.MoneyAmount1);
                     break;
-                case "money_1k":
-                    amount = Config.MoneyAmount2;
-                    borrowProcess = true;
-                    this.Monitor.Log("Selected 1,000g.", LogLevel.Info);
+                case MenuConstants.MoneyOptionTwo:
+                    SetAmount(_config.MoneyAmount2);
                     break;
-                case "money_5k":
-                    amount = Config.MoneyAmount3;
-                    borrowProcess = true;
-                    this.Monitor.Log("Selected 5,000g.", LogLevel.Info);
+                case MenuConstants.MoneyOptionThree:
+                    SetAmount(_config.MoneyAmount3);
                     break;
-                case "money_10k":
-                    amount = Config.MoneyAmount4;
-                    borrowProcess = true;
-                    this.Monitor.Log("Selected 10,000g.", LogLevel.Info);
+                case MenuConstants.MoneyOptionFour:
+                    SetAmount(_config.MoneyAmount4);
                     break;
-                case "money_Cancel":
-                    borrowProcess = false;
-                    this.Monitor.Log("Option Cancel");
+                case MenuConstants.OptionCancel:
+                    _loanManager.CurrentStage = Stages.None;
                     break;
             }
         }
 
+        private void SetAmount(int amount)
+        {
+            _amount = amount;
+            _loanManager.CurrentStage = Stages.Borrowing;
+            Monitor.Log($"Selected {amount}.", LogLevel.Info);
+        }
+        
         private void BorrowDuration(Farmer who, string dur)
         {
             switch (dur)
             {
-                case "time_3D":
-                    duration = Config.DayLength1;
-                    interest = Config.InterestModifier1;
-                    this.Monitor.Log($"Selected {Config.DayLength1} days.");
+                case MenuConstants.DurationOptionOne:
+                    SetDurationAndInterest(_config.DayLength1, _config.InterestModifier1);
                     break;
-                case "time_7D":
-                    duration = Config.DayLength2;
-                    interest = Config.InterestModifier2;
-                    this.Monitor.Log($"Selected {Config.DayLength2} days.");
+                case MenuConstants.DurationOptionTwo:
+                    SetDurationAndInterest(_config.DayLength2, _config.InterestModifier2);
                     break;
-                case "time_14D":
-                    duration = Config.DayLength3;
-                    interest = Config.InterestModifier3;
-                    this.Monitor.Log($"Selected {Config.DayLength3} days.");
+                case MenuConstants.DurationOptionThree:
+                    SetDurationAndInterest(_config.DayLength3, _config.InterestModifier3);
                     break;
-                case "time_28D":
-                    duration = Config.DayLength4;
-                    interest = Config.InterestModifier4;
-                    this.Monitor.Log($"Selected {Config.DayLength4} days.");
+                case MenuConstants.DurationOptionFour:
+                    SetDurationAndInterest(_config.DayLength4, _config.InterestModifier4);
                     break;
-                case "time_Cancel":
-                    borrowProcess = false;
-                    Monitor.Log("Option Cancel");
+                case MenuConstants.OptionCancel:
+                    _loanManager.CurrentStage = Stages.Borrowing;
                     break;
             }
         }
+
+        private void SetDurationAndInterest(int duration, float interest)
+        {
+            _duration = duration;
+            _interest = interest;
+            Monitor.Log($"Selected {duration} days.");
+        }
+
         private void RepayMenu(Farmer who, string option)
         {
             switch (option)
             {
-                case "repay_show_Balance":
-                    Monitor.Log("Option show balance", LogLevel.Debug);
-                    AddMessage(I18n.Msg_Payment_Remaining(loanManager.Balance.ToString("N0"), loanManager.Duration, loanManager.CalculateAmountToPayToday.ToString("N0")), HUDMessage.newQuest_type);
+                case MenuConstants.ShowBalance:
+                    ExtensionHelper.AddMessage(I18n.Msg_Payment_Remaining(_loanManager.Balance.ToString("N0"), _loanManager.Duration, _loanManager.DailyAmount.ToString("N0")), HUDMessage.newQuest_type);
                     break;
-                case "repay_Custom":
-                    Monitor.Log("Option repay custom", LogLevel.Debug);
+                case MenuConstants.RepayCustom:
                     InitiateRepayment(false, true);
                     break;
-                case "repay_Full":
-                    Monitor.Log("Option repay Full", LogLevel.Debug);
-                    repayProcess = true;
-                    break;
-                case "repay_Leave":
-                    Monitor.Log("Option Leave", LogLevel.Debug);
+                case MenuConstants.RepayFull:
+                    _loanManager.CurrentStage = Stages.Repayment;
                     break;
             }
         }
+        
         private void RepayFullMenu(Farmer who, string option)
         {
-            switch (option)
-            {
-                case "menu_Yes":
-                    Monitor.Log("Option Yes", LogLevel.Debug);
-                    InitiateRepayment(true);
-                    break;
-                case "menu_No":
-                    Monitor.Log("Option No", LogLevel.Debug);
-                    repayProcess = false;
-                    break;
-                case "menu_Leave":
-                    Monitor.Log("Option Leave", LogLevel.Debug);
-                    repayProcess = false;
-                    break;
-            }
+            if (option == MenuConstants.OptionYes)
+                InitiateRepayment(true);
+            else
+                _loanManager.CurrentStage = Stages.None;
         }
     }
 }

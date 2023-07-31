@@ -74,6 +74,13 @@ namespace Custom_Farm_Loader.API
                 getValue: () => Config.IncludeVanilla,
                 setValue: value => Config.IncludeVanilla = value
                 );
+
+            configMenu.AddBoolOption(
+                mod: Mod.ModManifest,
+                name: () => "Disable FarmHouse StartFurniture",
+                getValue: () => Config.DisableStartFurniture,
+                setValue: value => Config.DisableStartFurniture = value
+                );
         }
     }
 }

@@ -1,0 +1,13 @@
+[
+  { // All lines that have a default value can be removed and that value will be used.
+    "ProducerName": "Keg", //Name of the producer. Required.
+    "InputIdentifier": "Cocoa Bean", //The identifier of the input. Can be the Index of the object, the category of the object if it's a negative value. Can be the name of the object, or a context_tag of the object. Can be null only if there is a NoInputStartMode for the producer. Default is null.
+    "InputStack": 5, //The required stack of the input. Default value is 1.
+    "MinutesUntilReady": 120, //The amount of minutes it takes to produce. Stardew days have 1600 minutes. 1200 minutes from 6 am to 2am and 400 minutes from 2am to 6am. Should be divisible by 10. Required.
+    "SubtractTimeOfDay": false, //If MinutesUntilReady should be subtracted by the current time of day. It always add 360 to the formula, since the day start at 6 am. So if you set MinutesUntilReady to 1600, it will always produce at 6 am of the next day. Never set to true if MinutesUntilReady is smaller than 1600.
+    "OutputIdentifier": "Hot Chocolate", //The identifier of the output. Can be the Index or the Name of the object. Required.
+    "Sounds": [ "Ship", "bubbles" ], //List of sound to make when an input is placed. Default is an empty list.
+    "PlacingAnimation": "Bubbles", //[Bubbles|Fire|CharcoalKilnSmoke] //Animation to make when placing the input. Default is null.
+    "PlacingAnimationColorName": "Brown", //The color of the animation.[http://www.foszor.com/blog/xna-color-chart/] Default White.
+  }
+]

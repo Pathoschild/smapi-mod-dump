@@ -88,12 +88,13 @@ namespace StardewArchipelago.Archipelago
             }
 
             var itemValue = giftObject.Price * giftObject.Stack;
-            var tax = (int)Math.Round(_archipelago.SlotData.GiftTax * itemValue);
+            const double taxRate = 0.25;
+            var tax = (int)Math.Round(taxRate * itemValue);
 
             if (Game1.player.Money < tax)
             {
                 Game1.chatBox?.addMessage($"You cannot afford Joja Prime for this item", Color.Gold);
-                Game1.chatBox?.addMessage($"The tax is {_archipelago.SlotData.GiftTax * 100}% of the item's value of {itemValue}g, so you must pay {tax}g to gift it", Color.Gold);
+                Game1.chatBox?.addMessage($"The tax is {taxRate * 100}% of the item's value of {itemValue}g, so you must pay {tax}g to gift it", Color.Gold);
                 return true;
             }
 

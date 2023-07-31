@@ -2,7 +2,7 @@
 	<Import Project="..\Configuration.props" />
 	<PropertyGroup>
 		<RootNamespace>Shockah.Kokoro</RootNamespace>
-		<Version>2.1.2</Version>
+		<Version>2.2.0</Version>
 		<BundleExtraAssemblies>ThirdParty</BundleExtraAssemblies>
 	</PropertyGroup>
 	<ItemGroup>

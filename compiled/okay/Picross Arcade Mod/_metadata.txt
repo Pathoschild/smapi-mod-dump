@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17530
+IDs: KediDili.ThePicrosser
+update keys: Nexus:17530

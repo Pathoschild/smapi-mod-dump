@@ -56,7 +56,7 @@ public enum ILCodeReplaceMethod
     /// Replace only the instruction 1 before the last in the match sequence
     /// </summary>
     ReplaceBeforeEnd,
-    
+
     /// <summary>
     /// Start replacing starting with the last instruction in the sequence match
     /// </summary>

@@ -3234,7 +3234,7 @@
     <property name="NoFurniture" value="T"/>
     <property name="NoSpawn" value="All"/>
     <property name="Placeable" value="T"/>
-    <property name="UA_NoGrass" value="T"/>
+    <property name="UB_NoGrass" value="T"/>
    </properties>
   </object>
   <object id="165" name="TileData" x="1072" y="704" width="128" height="16">
@@ -3242,7 +3242,7 @@
     <property name="NoFurniture" value="T"/>
     <property name="NoSpawn" value="All"/>
     <property name="Placeable" value="T"/>
-    <property name="UA_NoGrass" value="T"/>
+    <property name="UB_NoGrass" value="T"/>
    </properties>
   </object>
   <object id="166" name="TileData" x="1072" y="720" width="160" height="16">
@@ -3250,7 +3250,7 @@
     <property name="NoFurniture" value="T"/>
     <property name="NoSpawn" value="All"/>
     <property name="Placeable" value="T"/>
-    <property name="UA_NoGrass" value="T"/>
+    <property name="UB_NoGrass" value="T"/>
    </properties>
   </object>
   <object id="167" name="TileData" x="1040" y="736" width="224" height="16">
@@ -3258,7 +3258,7 @@
     <property name="NoFurniture" value="T"/>
     <property name="NoSpawn" value="All"/>
     <property name="Placeable" value="T"/>
-    <property name="UA_NoGrass" value="T"/>
+    <property name="UB_NoGrass" value="T"/>
    </properties>
   </object>
   <object id="168" name="TileData" x="1040" y="752" width="240" height="16">
@@ -3266,7 +3266,7 @@
     <property name="NoFurniture" value="T"/>
     <property name="NoSpawn" value="All"/>
     <property name="Placeable" value="T"/>
-    <property name="UA_NoGrass" value="T"/>
+    <property name="UB_NoGrass" value="T"/>
    </properties>
   </object>
   <object id="169" name="TileData" x="1088" y="768" width="224" height="16">
@@ -3274,7 +3274,7 @@
     <property name="NoFurniture" value="T"/>
     <property name="NoSpawn" value="All"/>
     <property name="Placeable" value="T"/>
-    <property name="UA_NoGrass" value="T"/>
+    <property name="UB_NoGrass" value="T"/>
    </properties>
   </object>
   <object id="170" name="TileData" x="1136" y="784" width="192" height="16">
@@ -3282,7 +3282,7 @@
     <property name="NoFurniture" value="T"/>
     <property name="NoSpawn" value="All"/>
     <property name="Placeable" value="T"/>
-    <property name="UA_NoGrass" value="T"/>
+    <property name="UB_NoGrass" value="T"/>
    </properties>
   </object>
   <object id="171" name="TileData" x="1136" y="800" width="224" height="16">
@@ -3290,7 +3290,7 @@
     <property name="NoFurniture" value="T"/>
     <property name="NoSpawn" value="All"/>
     <property name="Placeable" value="T"/>
-    <property name="UA_NoGrass" value="T"/>
+    <property name="UB_NoGrass" value="T"/>
    </properties>
   </object>
   <object id="172" name="TileData" x="1184" y="816" width="192" height="16">
@@ -3298,7 +3298,7 @@
     <property name="NoFurniture" value="T"/>
     <property name="NoSpawn" value="All"/>
     <property name="Placeable" value="T"/>
-    <property name="UA_NoGrass" value="T"/>
+    <property name="UB_NoGrass" value="T"/>
    </properties>
   </object>
   <object id="188" name="TileData" x="576" y="32" width="16" height="16">
@@ -3420,7 +3420,7 @@
     <property name="NoFurniture" value="T"/>
     <property name="NoSpawn" value="All"/>
     <property name="Placeable" value="T"/>
-    <property name="UA_NoGrass" value="T"/>
+    <property name="UB_NoGrass" value="T"/>
    </properties>
   </object>
   <object id="253" name="TileData" x="736" y="608" width="16" height="16">

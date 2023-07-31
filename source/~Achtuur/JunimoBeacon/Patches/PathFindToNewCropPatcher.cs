@@ -10,15 +10,12 @@
 
 using AchtuurCore.Patches;
 using HarmonyLib;
+using Microsoft.Xna.Framework;
+using StardewValley.Characters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using StardewValley.Characters;
-using System.Threading;
 using System.Reflection.Emit;
-using Microsoft.Xna.Framework;
 
 namespace JunimoBeacon.Patches;
 internal class PathFindToNewCropPatcher : GenericPatcher
@@ -44,6 +41,9 @@ internal class PathFindToNewCropPatcher : GenericPatcher
         /// right after first part of if statement, call custom range check function
         /// then branch to IL_00F3 if out of range, or IL_0181 if in range
 
+
+        // TODO: rewrite using codematcher
+
         List<CodeInstruction> instructions_list = new List<CodeInstruction>(instructions);
 
         List<CodeInstruction> controllerNullCheck = new List<CodeInstruction>()
@@ -68,9 +68,9 @@ internal class PathFindToNewCropPatcher : GenericPatcher
             return instructions_list.AsEnumerable();
 
         // label to jump to when outside of range
-        Label FalseLabel = (Label) instructions_list[controllerNullCheckRange.Value.End].operand;
+        Label FalseLabel = (Label)instructions_list[controllerNullCheckRange.Value.End].operand;
         // label to jump to when inside range
-        Label TrueLabel = (Label) instructions_list[ifTrueBranchRange.Value.End].operand;
+        Label TrueLabel = (Label)instructions_list[ifTrueBranchRange.Value.End].operand;
 
         List<CodeInstruction> insertSequence = new List<CodeInstruction>()
         {
@@ -78,7 +78,7 @@ internal class PathFindToNewCropPatcher : GenericPatcher
             new CodeInstruction(OpCodes.Ldarg_0),
             //new CodeInstruction(OpCodes.p)
             new CodeInstruction(OpCodes.Call, AccessTools.Method(
-                typeof(PathFindToNewCropPatcher), 
+                typeof(PathFindToNewCropPatcher),
                 nameof(JunimoEndpointInRangeOfHut),
                 new Type[] {typeof(JunimoHarvester)}
                 )

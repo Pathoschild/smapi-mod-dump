@@ -6,9 +6,9 @@ mods:
    Stardew Archipelago
 
 latest commit:
-   commit 42cf8ffc925b42cac9ec6de06998a12db82663c9
+   commit d79652d544b643d9bd488ba5c5eb25d85aea884c
    Author: Alex Gilbert <alexgilbert@yahoo.com>
-   Date:   Tue Jun 27 14:32:48 2023 -0400
+   Date:   Wed Jul 26 21:32:37 2023 -0400
    
-       - Fixed fishsanity letters and stardrop stuff
+       - Added mod documentation
    

@@ -8,29 +8,35 @@ for queries and analysis.**
 
 # Full Changelog
 
+## [2.2.0] - 2023-07-30
+
+### Improvements
+
+- Updated dependencies and removed deprecated files
+- Embedded `.pdb` data into the DLL, which fixes error line numbers in Linux/macOS logs (thanks to [Pathoschild](https://github.com/Pathoschild))
+
 ## [2.1.0] - 2023-02-14
 
 ### Added
 
-- Toggle Any Key Reset Camera 
+- Toggle Any Key Reset Camera
 - Toggle Auto Zoom
 - Console commands in some functions
-    - toggle_Auto_Zoom_Map
-    - toggle_Press_Any_Key_To_Reset_Camera
-    - toggle_Hide_With_UI_With_Certain_Zoom
-    - toggle_Preset_On_Load_Save_File
-    - reset_UI_and_Zoom (has optional parameters)
-    - reset_UI (has optional parameters)
-    - reset_Zoom (has optional parameters)
+  - toggle_Auto_Zoom_Map
+  - toggle_Press_Any_Key_To_Reset_Camera
+  - toggle_Hide_With_UI_With_Certain_Zoom
+  - toggle_Preset_On_Load_Save_File
+  - reset_UI_and_Zoom (has optional parameters)
+  - reset_UI (has optional parameters)
+  - reset_Zoom (has optional parameters)
 - Preset
-     - Option to load a preset of UI Scale and Zoom Level
-         - Option to toggle the preset when the file is loaded
-         - Option to change the values of the UI Scale and Zoom Level
-        
+  - Option to load a preset of UI Scale and Zoom Level
+    - Option to toggle the preset when the file is loaded
+    - Option to change the values of the UI Scale and Zoom Level
+
 ### Improvements
 
 - Pages in the optional [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
-
 
 ### Changed
 
@@ -49,7 +55,6 @@ for queries and analysis.**
 
 - Camera movement issues with some mods
 
-
 ## [2.0.0] - 2023-02-01
 
 ### Added
@@ -65,7 +70,6 @@ for queries and analysis.**
 
 - UI not showing up when using the 'Reset UI' option with the option 'Hide UI at a certain zoom level' enabled
 
-
 ## [1.14.0] - 2023-01-21
 
 ### Added
@@ -76,20 +80,19 @@ for queries and analysis.**
 
 - Minimum SMAPI version to 3.18.1
 
-
 ## [1.13.0] - 2022-07-24
 
 ### Added
 
-- Chinese simplified translations (thanks to Becks723)
+- Chinese simplified translations (thanks to [Becks723](https://github.com/Becks723))
 
 ### Improvements
 
-- Display values for the optional [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) (thanks to Becks723)
+- Display values for the optional [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) (thanks to [Becks723](https://github.com/Becks723))
 
 ### Fixed
 
-- Some text typos (thanks to Becks723)
+- Some text typos (thanks to [Becks723](https://github.com/Becks723))
 
 ## [1.12.0] - 2022-07-20
 
@@ -100,7 +103,6 @@ for queries and analysis.**
 ### Improvements
 
 - Major code optimizations
-
 
 ## [1.11.0] - 2022-02-23
 
@@ -128,7 +130,7 @@ for queries and analysis.**
 
 - Config variable names
 
-### Improvements 
+### Improvements
 
 - Updated API for the optional Generic Mod Config Menu → [Here](https://www.nexusmods.com/stardewvalley/mods/5098)
 - README file
@@ -139,7 +141,7 @@ for queries and analysis.**
 
 ## [1.8.0] - 2022-01-25
 
-### Improvements 
+### Improvements
 
 - Added support for the new API version
 
@@ -229,6 +231,7 @@ for queries and analysis.**
 - Initial release
 
 [Unreleased]: https://github.com/thespbgamer/ZoomLevel/compare/2.1.0...HEAD
+[2.2.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/2.2.0
 [2.1.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/2.1.0
 [2.0.1]: https://github.com/thespbgamer/ZoomLevel/releases/tag/2.0.1
 [2.0.0]: https://github.com/thespbgamer/ZoomLevel/releases/tag/2.0.0

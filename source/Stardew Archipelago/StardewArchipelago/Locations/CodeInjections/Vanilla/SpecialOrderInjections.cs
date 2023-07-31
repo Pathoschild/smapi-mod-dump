@@ -181,7 +181,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 return;
             }
 
-
             Game1.player.team.availableSpecialOrders.Clear();
             Game1.player.team.acceptedSpecialOrderTypes.Clear();
             var random = new Random((int)Game1.uniqueIDForThisGame + (int)(Game1.stats.DaysPlayed * 1.2999999523162842));
@@ -202,9 +201,31 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 .Where(order => !Game1.player.team.completedSpecialOrders.ContainsKey(order.Key) ||
                                 order.Value.Repeatable == "True")
                 .Where(order => order.Value.Duration != "Month" || Game1.dayOfMonth <= 16)
-                .Where(order => SpecialOrder.CheckTags(order.Value.RequiredTags))
+                .Where(order => CheckTags(order.Value.RequiredTags))
                 .Where(order => Game1.player.team.specialOrders.All(x => x.questKey.Value != order.Key));
             return specialOrdersThatCanBeStartedToday;
+        }
+
+        private static bool CheckTags(string requiredTags)
+        {
+            var splitTags = requiredTags.Split(",");
+            var allowed = true;
+            foreach (var tag in splitTags)
+            {
+                allowed = allowed & CheckTag(tag.Trim());
+            }
+
+            return allowed;
+        }
+
+        private static bool CheckTag(string requiredTag)
+        {
+            if (requiredTag.Equals("island", StringComparison.OrdinalIgnoreCase))
+            {
+                return _archipelago.HasReceivedItem("Island Obelisk") || _archipelago.HasReceivedItem("Boat Repair");
+            }
+
+            return SpecialOrder.CheckTags(requiredTag);
         }
 
         private static Dictionary<string, SpecialOrder> CreateSpecialOrderInstancesForType(IEnumerable<KeyValuePair<string, SpecialOrderData>> specialOrdersThatCanBeStartedToday, string orderType, Random random)

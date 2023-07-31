@@ -1,5 +1,9 @@
 ﻿# Smart Cursor Changelog
 
+## 1.2.0
+#### Additions
+* Now the mod will work with large rocks in the mines, and stumps in the Secret Woods.
+
 ## 1.1.4
 #### Fixes
 * Fixed the mod not actually loading its configuration values internally at launch. They were previously applied to GMCM, but not the mod's data itself.

@@ -24,9 +24,9 @@ namespace stardew_access.Patches
             {
                 if (__instance.transitioning) return;
 
-                if (narrateCharacterDialogue(__instance)) return;
-                if (narrateQuestionDialogue(__instance)) return;
-                narrateBasicDialogue(__instance.getCurrentString());
+                if (NarrateCharacterDialogue(__instance)) return;
+                if (NarrateQuestionDialogue(__instance)) return;
+                NarrateBasicDialogue(__instance.getCurrentString());
             }
             catch (Exception e)
             {
@@ -40,7 +40,7 @@ namespace stardew_access.Patches
             Cleanup();
         }
 
-        private static bool narrateCharacterDialogue(DialogueBox __instance)
+        private static bool NarrateCharacterDialogue(DialogueBox __instance)
         {
             if (__instance.characterDialogue == null) return false;
 
@@ -55,7 +55,7 @@ namespace stardew_access.Patches
 
             if (hasResponses)
             {
-                responseText = getCurrentResponseText(__instance);
+                responseText = GetCurrentResponseText(__instance);
 
                 CheckAndSpeak(isDialogueAppearingFirstTime ? $"{dialogueText} \n\t {responseText}" : responseText, responseText);
                 if (isDialogueAppearingFirstTime) isDialogueAppearingFirstTime = false;
@@ -68,7 +68,7 @@ namespace stardew_access.Patches
             return true;
         }
 
-        private static bool narrateQuestionDialogue(DialogueBox __instance)
+        private static bool NarrateQuestionDialogue(DialogueBox __instance)
         {
             if (!__instance.isQuestion) return false;
 
@@ -82,7 +82,7 @@ namespace stardew_access.Patches
 
             questionText = __instance.getCurrentString();
 
-            responseText = getCurrentResponseText(__instance);
+            responseText = GetCurrentResponseText(__instance);
 
             CheckAndSpeak(isDialogueAppearingFirstTime ? $"{questionText} \n\t {responseText}" : responseText, responseText);
             if (isDialogueAppearingFirstTime) isDialogueAppearingFirstTime = false;
@@ -90,14 +90,14 @@ namespace stardew_access.Patches
             return true;
         }
 
-        private static void narrateBasicDialogue(string dialogue)
+        private static void NarrateBasicDialogue(string dialogue)
         {
             // Basic dialogues like `No mails in the mail box`
             if (Game1.activeClickableMenu is not DialogueBox) return;
             CheckAndSpeak(dialogue);
         }
 
-        private static string getCurrentResponseText(DialogueBox __instance)
+        private static string GetCurrentResponseText(DialogueBox __instance)
         {
             List<Response> responses = __instance.responses;
             if (__instance.selectedResponse >= 0 && __instance.selectedResponse < responses.Count)

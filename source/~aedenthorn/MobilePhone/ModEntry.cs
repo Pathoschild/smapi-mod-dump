@@ -29,6 +29,7 @@ namespace MobilePhone
 
         public static ModConfig Config;
         public static IModHelper SHelper;
+        public static IMonitor SMonitor;
 
         public static bool phoneOpen;
         public static bool phoneRotated;
@@ -69,6 +70,8 @@ namespace MobilePhone
 
         public static Texture2D phoneBookTexture;
         public static Texture2D phoneBookHeaderTexture;
+
+        public static string npcDictPath = "aedenthorn.MobilePhone/npcs";
 
         public static Dictionary<string, MobileApp> apps = new Dictionary<string, MobileApp>();
         public static List<string> appOrder;
@@ -132,6 +135,7 @@ namespace MobilePhone
             context = this;
             Config = helper.ReadConfig<ModConfig>();
             SHelper = helper;
+            SMonitor = Monitor;
             if (!Config.EnableMod)
                 return;
 
@@ -265,8 +269,11 @@ namespace MobilePhone
 
         private void Content_AssetRequested(object sender, StardewModdingAPI.Events.AssetRequestedEventArgs e)
         {
-
-            if (e.NameWithoutLocale.BaseName.Contains("Events") && isInviting && invitedNPC is not null)
+            if (e.NameWithoutLocale.IsEquivalentTo(npcDictPath))
+            {
+                e.LoadFrom(() => new Dictionary<string, CustomNPCData>(), StardewModdingAPI.Events.AssetLoadPriority.Exclusive);
+            }
+            else if (e.NameWithoutLocale.BaseName.Contains("Events") && isInviting && invitedNPC is not null)
             {
                 foreach (EventInvite invite in MobilePhoneCall.eventInvites)
                 {
@@ -285,6 +292,7 @@ namespace MobilePhone
                 }
             }
         }
+
         public override object GetApi()
         {
             return new MobilePhoneApi();

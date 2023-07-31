@@ -1,0 +1,8 @@
+{
+  "ub_not_enough1": "'{{displayName}}' が足りない",
+  "ub_not_enough2": "もっと'{{displayName}}'が必要です。",
+  "ub_parrot_ask": "（オウ）{{item}}！（オウ）くれる？",
+  "ub_parrot_money": "シャイニー",
+  "ub_speech_ask": "{{item}}？ いいね！もらってもいい？",
+  "ub_speech_money": "お金",
+}

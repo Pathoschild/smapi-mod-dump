@@ -121,12 +121,21 @@ namespace MobilePhone
             callableList.Clear();
             string[] blackList = Config.CallBlockList.Length > 0 ? Config.CallBlockList.Split(',') : null;
             string[] whiteList = Config.CallAllowList.Length > 0 ? Config.CallAllowList.Split(',') : null;
-            foreach(KeyValuePair<string,Netcode.NetRef<Friendship>> kvp in Game1.player.friendshipData.FieldDict)
+            var npcDict = Helper.GameContent.Load<Dictionary<string, CustomNPCData>>(ModEntry.npcDictPath);
+
+            foreach(var kvp in Game1.player.friendshipData.Pairs)
             {
                 try
                 {
-                    if (kvp.Value.Value.Points >= Config.MinPointsToCall && blackList?.Contains(kvp.Key) != true && whiteList?.Contains(kvp.Key) != false)
+                    if (blackList?.Contains(kvp.Key) != true && whiteList?.Contains(kvp.Key) != false)
                     {
+                        if (!npcDict.TryGetValue(kvp.Key, out var data))
+                        {
+                            if (kvp.Value.Points < Config.MinPointsToCall)
+                                continue;
+                        }
+                        else if (!data.canCall || data.minPointsToCall > kvp.Value.Points)
+                            continue;
                         Monitor.Log($"Adding {kvp.Key} to callable list");
                         NPC npc = Game1.getCharacterFromName(kvp.Key);
                         Texture2D portrait = npc.Sprite.Texture;

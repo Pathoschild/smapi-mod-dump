@@ -21,5 +21,6 @@
   "msg.payment.remaining": "당신의 남은 잔액은: {{Balance}}g.이며,{{Duration}}일 남으셨습니다.하루에{{DailyAmount}}g을 지불하고 있습니다.",
   "msg.startborrow-1": "얼마를 대출 할까요?",
   "msg.startborrow-2": "어느정도의 기간으로 대출할까요?",
-  "msg.startrepay": "얼마를 상환 할까요?"
+  "msg.startrepay": "얼마를 상환 할까요?",
+  "app.name": "Loans"
 }

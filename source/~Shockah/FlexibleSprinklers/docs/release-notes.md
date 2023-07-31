@@ -10,6 +10,13 @@ for queries and analysis.**
 
 # Release notes
 
+## 2.1.1
+Released 4 July 2023.
+
+* Fixed a potential out of bounds error in the Cluster family behaviors.
+* Added a missing feature to the easter egg.
+* Switched to a more compressed configuration format for the `TierXCoverage` options.
+
 ## 2.1.0
 Released 20 June 2023.
 

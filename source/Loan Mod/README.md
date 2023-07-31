@@ -15,7 +15,7 @@ Loan Mod is a mod that lets you loan money for a period of time, with daily repa
 
 ### Installation
 -   [Install the latest version of SMAPI](https://smapi.io/).
--   Install Loan Mod [from Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/3882).
+-   Install Loan Mod [from Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/3882).
 -   Run the game using `SMAPI`.
 
 ### Using the Mod
@@ -24,6 +24,7 @@ Loan Mod is a mod that lets you loan money for a period of time, with daily repa
 
 ### Config File
 Here is a list of config options and their purpose:
+
 | Key | Default Value | Purpose |
 | :- | :--: | - |
 | LoanButton | L | This is the keyboard key to press to open the menu. |
@@ -34,6 +35,7 @@ Here is a list of config options and their purpose:
 | DayLength1-4 | 3, 7, 14, 28 | Sets the duration options of the loan. These values can be anything, but at minimum must be `1`. |
 | MoneyAmount1-4 | 500, 1000, 5000, 10000 | Sets multiple choice option for amount of money to borrow. **Note:** these values are only relevant if `CustomMoneyInput` is set to `false`, this setting is obsolete, and should not be used unless preferred over a number input dialog. |
 | Reset | false | Should the mod be bugged in any way with your save file, set this to `true`, then load the save again, and the mod should create a new Loan Profile. |
+| AddMobileApp | true | If true, will add an app icon to the mobile phone. (if [Mobile Phone](https://www.nexusmods.com/stardewvalley/mods/6523) is installed.) |
 
 Note: By default, the shorter the loan is the higher the interest rate will be, however some people prefer this the other way around. If this is the case for you, I'd recommend changing the interest rate values accordingly. The interest value corresponds to the DayLength setting, so *DayLength1* matches with *InterestModifier1*, and so on.
 
@@ -45,14 +47,14 @@ Note: By default, the shorter the loan is the higher the interest rate will be, 
 | Chinese    | Credit to [Puffeeydii](https://www.nexusmods.com/stardewvalley/users/122749553)   | [X](LoanMod/i18n/zh.json) |
 | German    | Credit to [legovader09](https://github.com/legovader09)   | [X](LoanMod/i18n/de.json) |
 | Russian    | Credit to [Sharaj](https://steamcommunity.com/id/Sharaj/myworkshopfiles)   | [X](LoanMod/i18n/ru.json) |
+| Japanese    | Credit to Machina_Ex   | [X](LoanMod/i18n/ja.json) |
 
 ### Contributing
 - If you would like to contribute with language translations, please follow the steps below:
 1. Fork this repository.
-2. Create a new branch, ideally called `translations/{language code}` (e.g. translations/th for Thai), or switch to the branch if it already exists and you would like to make improvements.
-3. If creating a new branch, duplicate the [default.json](LoanMod/i18n/default.json) file, rename this to [your language code](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation#File_structure)`.json` (e.g. de.json for German)
-4. If switching to an existing branch, please double check that it is up to date with the origin. This is irrelevant if you are editing the file directly on GitHub.
-5. Make the relevant translations, please ensure to leave {{tokens}} untouched, they can be moved around but must not be changed.
-6. Push the branch and then create a pull request into the `dev`  branch for approval.
+2. Create a new branch (based off `dev` for the latest changes), ideally called `translations/{language code}` (e.g. translations/th for Thai).
+3. If adding a new language, duplicate the [default.json](LoanMod/i18n/default.json) file, rename this to [your language code](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Translation#File_structure)`.json` (e.g. de.json for German)
+4. Make the relevant translations, please ensure to leave {{tokens}} untouched, they can be moved around but must not be changed. As they are what the game swaps out for values.
+6. Push up your work and then create a pull request into the `dev`  branch for approval.
 - If you don't like using git, or GitHub, feel free to [email](mailto:dcdominoes@gmail.com) me with the translation file!
-- You will be credited and added to the table above, as a thanks for your contribution.
+- You will be credited and added to the table above, as a thanks for your contribution. Only if you want to be, of course.

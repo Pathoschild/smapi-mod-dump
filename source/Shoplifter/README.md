@@ -61,7 +61,7 @@ Compatibile with shop tile framework in that altered stock will be considered wh
 Shoplifter fully supports translation! In game translations currently available in:
 - Chinese, thanks to 20080618 and XinJiDA!
 - Korean, thanks to Aromay7!
-- Italian, thanks to peanutbatteries!
+- Italian, thanks to peanutbatteries and AlixNauts!
 - French, thanks to Breeis!
 - Portuguese, thanks to Kadomine!
 - German, thanks to NotErikWasTaken!
@@ -71,6 +71,7 @@ Shoplifter fully supports translation! In game translations currently available 
 
 Generic Mod Config Menu config menu translations currently avaliable in:
 - Chinese, thanks to XinJiDA!
+- Italian, thanks to AlixNauts!
 
 Other Generic Mod Config Menu translations done using DeepL and Google Translate. Improved translations are welcome.
 

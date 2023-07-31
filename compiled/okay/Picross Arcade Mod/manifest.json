@@ -1,0 +1,10 @@
+{
+  "Name": "Picrosser",
+  "Author": "KediDili",
+  "Version": "1.0.1",
+  "Description": "Allows you to play picross in Qi's casino and Gus' saloon.",
+  "UniqueID": "KediDili.ThePicrosser",
+  "EntryDLL": "Picrosser.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:17530" ]
+}

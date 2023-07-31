@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17404
+IDs: UNA.FashionFestivalSMAPI
+update keys: Nexus:17404

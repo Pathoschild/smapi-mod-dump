@@ -6,9 +6,9 @@ mods:
    Unlockable Areas
 
 latest commit:
-   commit eeeb9e53c0b4fd6846d4487d06b93aa5640ae8df
+   commit b3424aeb5d10357711c6a3503622bf28200eb9a7
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Thu Jun 29 22:12:16 2023 +0200
+   Date:   Sat Jul 29 15:57:52 2023 +0200
    
-       removed chest menu
+       ""
    

@@ -93,7 +93,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
                 _modHelper.Reflection.GetField<Point>(typeof(VolcanoDungeon), "shortcutOutPosition");
             var shortcutOutPosition = shortcutOutPositionField.GetValue();
             __instance.parrotUpgradePerches.Add(new ParrotUpgradePerch(__instance,
-                new Point(shortcutOutPosition.X, shortcutOutPosition.Y),
+                new Point(shortcutOutPosition.X + 1, shortcutOutPosition.Y),
                 new Rectangle(shortcutOutPosition.X - 1, shortcutOutPosition.Y - 1, 3, 3),
                 5,
                 PurchaseVolcanoExitShortcutParrot,

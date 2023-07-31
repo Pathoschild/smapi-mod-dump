@@ -45,7 +45,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
             _HoeDirt.Initialize(mod);
             DailyUpdateEvents.Initialize(mod);
             AssetsRequested.Initialize(mod);
-
+            VisibleFishPatches.Initialize(mod);
 
             Helper.Events.GameLoop.DayStarted += DayStarted;
         }

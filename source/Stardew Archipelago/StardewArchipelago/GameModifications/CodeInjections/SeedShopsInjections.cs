@@ -606,7 +606,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
 
         private static void DisableSeedsIfNeeded(ShopMenu __instance)
         {
-            if (_archipelago.SlotData.SeedShuffle != SeedShuffle.Shuffled)
+            if (_archipelago.SlotData.Cropsanity != Cropsanity.Shuffled)
             {
                 return;
             }

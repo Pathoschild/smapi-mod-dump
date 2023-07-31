@@ -419,8 +419,8 @@ namespace Pathoschild.Stardew.TractorMod.Framework
                 : new Random((int)(Game1.uniqueIDForThisGame + tile.X * 1000.0 + tile.Y * 11.0));
             if (random.NextDouble() < (this.FoundGoldenScythe.Value ? 0.75 : 0.5))
             {
-                if (Game1.getFarm().tryToAddHay(1) == 0) // returns number left
-                    Game1.addHUDMessage(new HUDMessage("Hay", HUDMessage.achievement_type, true, Color.LightGoldenrodYellow, new SObject(178, 1)));
+                if (GameLocation.StoreHayInAnySilo(1, location) == 0) // returns number left
+                    Game1.addHUDMessage(HUDMessage.ForItemGained(ItemRegistry.Create("(O)178"), 1));
             }
 
             return true;

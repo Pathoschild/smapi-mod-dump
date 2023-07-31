@@ -6,6 +6,8 @@
   "options-page.font-header": "Font",
   "hud-message.success-set-font": "{{fontType}} set ok!",
   "hud-message.failed-set-font": "{{fontType}} set failed. See SMAPI console for details.",
+  "hud-message.export-success": "Successfully export font!\nSaved to {{path}}",
+  "hud-message.export-fail": "Failed to export font! See SMAPI window for details.",
 
   "ui.main-menu.title": "Font Settings",
   "ui.main-menu.font-type-help.paragraph": "There're mainly three types of fonts in Stardew Valley:\n- Small Font\n- Medium Font\n- Dialogue Font\nPress the left or right arrow to switch.\nYou may only set one or two, or all of them, based on your liking.",
@@ -15,6 +17,7 @@
   "ui.main-menu.font": "Font Family",
   "ui.main-menu.font.keep-orig": "Keep Original",
   "ui.main-menu.refresh-fonts": "Refresh Font List",
+  "ui.main-menu.font-from-pack": "(from '{{packName}}' pack)",
   "ui.main-menu.font-size": "Font Size",
 
   "ui.main-menu.section.advanced": "Advanced",
@@ -35,6 +38,9 @@
 
   "ui.main-menu.reset-font": "Reset Current Font",
 
+  "ui.main-menu.ok": "Apply",
+  "ui.main-menu.export": "Export Settings",
+
   "ui.main-menu.merge-examples": "Compare",
   "ui.main-menu.show-example-bounds": "Show Bounds",
   "ui.main-menu.show-example-text": "Show Text",
@@ -53,6 +59,16 @@
   "ui.preset-info-menu.cp-name": "Font Pack",
   "ui.preset-info-menu.cp-author": "Author",
   "ui.preset-info-menu.cp-ver": "Version",
+
+  "ui.export-menu.title": "Export Settings",
+  "ui.export-menu.out-in-xnb": "XNB format",
+  "ui.export-menu.out-dir": "Output folder",
+  "ui.export-menu.out-name": "Output name",
+  "ui.export-menu.section.xnb": "XNB Settings",
+  "ui.export-menu.profile": "Graphics Profile",
+  "ui.export-menu.compress": "Compressed",
+  "ui.export-menu.export": "Export",
+  "ui.export-menu.cancel": "Cancel",
 
   "config.example-text": "Example Text",
   "config.example-text.description": "Custom sample text. Keep this unset unless you really want yours, the mod has its built-in one.",
@@ -88,6 +104,17 @@
   "config.font-menu-key.description": "Key-binding to open a font settings menu.",
   "config.font-settings-in-game-menu": "Font Page in Game Menu",
   "config.font-settings-in-game-menu.description": "Whether to add a tab into the game menu to configure fonts.",
+  "config.hex-format": "\n\nEnter a hexadecimal value:\nAABBGGRR\ne.g. Indigo Blue (R=63, G=72, B=204, A=255)\n => FFCC483F",
+  "config.text-color": "Text color",
+  "config.text-color.description": "Configues game default text color.",
+  "config.text-color-dialogue": "Text color Dialogue",
+  "config.text-color-dialogue.description": "Configues game default dialogue text color.",
+  "config.shadow-color": "Text shadow color",
+  "config.shadow-color.description": "Configues game default text shadow color.",
+  "config.edit-mode": "Edit mode",
+  "config.edit-mode.description": "Edit mode if checked, or load mode.\nEdit mode enhances mod compatibility, avoids conflicts when multiple mods load same font.",
+  "config.edit-prio": "Edit priority",
+  "config.edit-prio.description": "Priority to edit fonts. The large the value, the later fonts get edited.\nRange: [{{minValue}}, {{maxValue}}]\nDefault: 0",
 
   "misc.mod-file-not-found": "Cannot find \"{{filePath}}\", which is a part of mod files. Download this mod again may fix the problem."
 }

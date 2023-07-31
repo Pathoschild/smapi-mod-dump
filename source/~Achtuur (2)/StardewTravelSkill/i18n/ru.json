@@ -1,0 +1,60 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Achtuur/StardewMods
+**
+*************************************************/
+
+{
+    /** Skill **/
+    "travelskill.name": "Путешествие",
+    "travelskill.level-up-perk": "+{{bonus}}% к скорости",
+
+
+    /** Professions **/
+    "movespeed.name": "Легкая атлетика",
+    "movespeed.desc": "Передвигаетесь быстрей",
+    "restorestamine.name": "Марафонец",
+    "restorestamina.desc": "Постояное восстанавление выносливость",
+    "sprint.name": "Спринтер",
+    "sprint.desc": "Во время передвижения вы ускоряетесь",
+
+    "cheapwarptotem.name": "Мастер тотемов",
+    "cheapwarptotem.desc": "Тотемы дешевле в изготовлении",
+    "cheapobelisk.name": "Строитель обелисков",
+    "cheapobelisk.desc": "Обелиски стоят на 50% дешевле золота",
+    "totemreuse.name": "Хранитель тотема",
+    "totemreuse.desc": "Шанс не потратить тотем, во время использования",
+
+    /** Console commands **/
+    // Set level
+    "cmd_setlvl.name": "travelskill_setlevel",
+    "cmd_setlevel.desc": "Sets the player's level in the Travelling skill.\n\nUsage: travelskill_setlevel <level>\n- level: level between 1 and 10",
+    "cmd_setlevel.errormsg": "'{{input}}' is an invalid input, please input a number between 1 and 10",
+
+    /** Config Menu **/
+    "cfg_section.travelskill": "Общие настройки навыков",
+    "cfg_section.professions": "Настройки профессии",
+
+    "cfg_expgain.name": "Количество шагов для XP",
+    "cfg_expgain.desc": "Количество шагов, которые нужно пройти, прежде чем получить 1 XP в путешествии",
+
+    "cfg_levelmovespeed.name": "% Бонус к скорости за уровень",
+    "cfg_levelmovespeed.desc": "% Бонус к скорости в процентах за уровень навыка Путешествие",
+
+    "cfg_movespeedbonus.name": "% Профессиональный бонус за профессию Легкая атлетика",
+    "cfg_movespeedbonus.desc": "% Скорость передвижения, получаемая благодаря профессии Легкая атлетика",
+
+    "cfg_sprintbonus.name": "Бонус к скорости передвижения в спринте",
+    "cfg_sprintbonus.desc": "Установите бонус к скорости передвижения, от профессии Спринтер",
+
+    "cfg_restorestamina.name": "Восстановление выносливости",
+    "cfg_restorestamina.desc": "% Общая выносливость, восстанавливаемая каждые 10 минут в зависимости от профессии Марафонец",
+
+    "cfg_totemreuse.name": "Шанс не использования тотема",
+    "cfg_totemreuse.desc": "Шанс не использовать тотема в % для профессии Хранитель тотема"
+
+}

@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/delixx/stardew-valley-unlockable-bundles
+   Git: https://gitlab.com/delixx/stardew-valley-unlockable-bundles.git
+
+mods:
+   Unlockable Bundles
+
+latest commit:
+   commit b3424aeb5d10357711c6a3503622bf28200eb9a7
+   Author: DeLiXx <fake122344@gmail.com>
+   Date:   Sat Jul 29 15:57:52 2023 +0200
+   
+       ""
+   

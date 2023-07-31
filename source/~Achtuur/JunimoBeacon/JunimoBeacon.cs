@@ -99,8 +99,12 @@ internal class JunimoBeacon
         }
     }
 
-    internal bool SObjectEquals(SObject beacon_object)
+    public bool SObjectEquals(SObject beacon_object)
     {
         return beacon_object == this._object;
+    }
+    public bool SObjectEquals(JunimoBeacon beacon)
+    {
+        return beacon._object == this._object;
     }
 }

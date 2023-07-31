@@ -11,7 +11,7 @@
 {
     "Name": "Prismatic Statue",
     "Author": "Achtuur",
-    "Version": "1.2.2",
+    "Version": "1.3.2",
     "Description": "Adds the Prismatic Statue to the game, which can speed up nearby machines",
     "UniqueID": "Achtuur.PrismaticStatue",
     "EntryDll": "PrismaticStatue.dll",
@@ -19,7 +19,7 @@
     "dependencies": [
         {
             "UniqueID": "Achtuur.AchtuurCore",
-            "MinimumVersion": "1.0.7",
+            "MinimumVersion": "1.1.3",
             "isRequired": true
         },
         {

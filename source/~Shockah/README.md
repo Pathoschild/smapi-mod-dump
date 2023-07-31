@@ -20,6 +20,10 @@ Access the Ginger Island early, depending on your friendship with Willy. Optiona
 Ever hated having to put a sprinkler in the middle of your crops? Ever wanted to make a layout that isn't 5x5? Now you can!
 \[[source code](FlexibleSprinklers)]
 
+[![Hats on Hats](HatsOnHats/Header.png)](https://www.nexusmods.com/stardewvalley/mods/17280)
+Hats on hats.
+\[[source code](HatsOnHats)]
+
 [![Junimo Warp](JunimoWarp/Header.png)](https://www.nexusmods.com/stardewvalley/mods/15676)
 Place yourself inside a Junimo Chest and warp to another chest.
 \[[source code](JunimoWarp)]

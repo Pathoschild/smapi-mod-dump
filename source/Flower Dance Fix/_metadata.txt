@@ -6,9 +6,9 @@ mods:
    Flower Dance Fix
 
 latest commit:
-   commit 342c4e6daa361b8d252ebc8b50020671eaddbfd3
-   Author: elfuun <82302724+elfuun1@users.noreply.github.com>
-   Date:   Fri Jul 2 20:33:36 2021 -0400
+   commit 5e4bd2aabbd06f4a88a0e6f3182b86cb4afcc2a6
+   Author: Meghan <meghan.griffiths@live.ca>
+   Date:   Thu Jul 20 20:55:07 2023 -0400
    
-       Update README.md
+       Update to .NET 5.0, refactoring
    

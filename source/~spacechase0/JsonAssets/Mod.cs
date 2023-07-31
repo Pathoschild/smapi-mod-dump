@@ -730,7 +730,7 @@ namespace JsonAssets
             {
                 this.shopData.Add(new ShopDataEntry
                 {
-                    PurchaseFrom = "HatMouse",
+                    PurchaseFrom = hat.PurchaseFrom,
                     Price = hat.PurchasePrice,
                     PurchaseRequirements = ParsedConditions.AlwaysTrue,
                     Object = () => new Hat(hat.Id)

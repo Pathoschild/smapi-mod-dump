@@ -1,0 +1,25 @@
+{
+    // Keybinds
+    "settings.keybinds.title": "Привязка клавиш",
+    "settings.keybinds.hold-to-activate": "Удерживайте, чтобы активировать",
+    // Tier ranges
+    "settings.ranges.tier-ranges.title": "Диапазон работы инструментов",
+    "settings.ranges.tier-amount-notice": "Здесь вы можете установить диапазон работы для каждого уровня инструмента. Уровни 5 и выше не будут использоваться, если у вас нет модов, которые добавляют их в качестве обновлений.",
+    "settings.ranges.tier-1-range": "Базовый",
+    "settings.ranges.tier-2-range": "Медь",
+    "settings.ranges.tier-3-range": "Железо",
+    "settings.ranges.tier-4-range": "Золото",
+    "settings.ranges.tier-5-range": "Идидиум",
+    "settings.ranges.tier-6-range": "Тир 6",
+    "settings.ranges.tier-7-range": "Тир 7",
+    // Toggles
+    "settings.toggles.title": "Дополнительные настройки",
+    "settings.toggles.allow-targeting-baby-trees": "Разрешить нацеливание на саженцы деревьев",
+    "settings.toggles.allow-targeting-baby-trees.tooltip": "Это позволит интеллектуальному курсору нацеливаться на деревья, которые не полностью выросли.",
+    "settings.toggles.allow-targeting-tapped-trees": "Разрешить нацеливание на деревья с подсочниками",
+    "settings.toggles.allow-targeting-tapped-trees.tooltip": "Это позволит интеллектуальному курсору нацеливаться на деревья, к которым прикреплена подсочники.",
+    "settings.toggles.allow-targeting-giant-crops": "Разрешить нацеливание на гигантские культуры",
+    "settings.toggles.allow-targeting-giant-crops.tooltip": "Это позволит умному курсору нацеливаться на гигантские культуры.",
+    // Messages
+    "messages.gmcm-not-installed": "GMCM не установлен. Это не обязательное требование, но настоятельно рекомендуется."
+}

@@ -1,0 +1,99 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Companion dialogues for Trinnie",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Trinnie",
+      "Entries": {
+        "companionAccepted": "{{i18n:Trinnie.Dialogue.companionAccepted}}",
+        "companionRejected": "{{i18n:Trinnie.Dialogue.companionRejected}}",
+        "companionRejectedNight": "{{i18n:Trinnie.Dialogue.companionRejectedNight}}",
+        "companionDismiss": "{{i18n:Trinnie.Dialogue.companionDismiss}}",
+        "companionDismissAuto": "{{i18n:Trinnie.Dialogue.companionDismissAuto}}",
+        "companionRecruited": "{{i18n:Trinnie.Dialogue.companionRecruited}}",
+
+        "farmerRunAway": "{{i18n:Trinnie.Dialogue.farmerRunAway}}",
+        "heal": "{{i18n:Trinnie.Dialogue.heal}}",
+        "nomedkits": "{{i18n:Trinnie.Dialogue.nomedkits}}",
+
+      //Locations (Farm)
+        //Friends
+        //General
+        "companion_Farm": "{{i18n:Trinnie.Dialogue.companion_Farm}}",
+        "companion_Farm~1": "{{i18n:Trinnie.Dialogue.companion_Farm~1}}",
+        //Weather
+        "companion_Farm_Rainy": "{{i18n:Trinnie.Dialogue.companion_Farm_Rainy}}",
+        "companion_Farm_Snowy": "{{i18n:Trinnie.Dialogue.companion_Farm_Snowy}}",
+        //Season
+        "companion_Farm_Spring": "{{i18n:Trinnie.Dialogue.companion_Farm_Spring}}",
+        "companion_Farm_Summer": "{{i18n:Trinnie.Dialogue.companion_Farm_Summer}}",
+        "companion_Farm_Fall": "{{i18n:Trinnie.Dialogue.companion_Farm_Fall}}",
+        "companion_Farm_Winter": "{{i18n:Trinnie.Dialogue.companion_Farm_Winter}}",
+        //Entering
+        "companionEnter_Farm": "{{i18n:Trinnie.Dialogue.companionEnter_Farm}}",
+        "companionEnter_Farm_Night": "{{i18n:Trinnie.Dialogue.companionEnter_Farm_Night}}",
+        //Night
+        "companion_Farm_Night": "{{i18n:Trinnie.Dialogue.companion_Farm_Night}}",
+
+      //Locations (Others)
+      //Format: "companion_(location name)" https://www.npcadventures.dev/docs/modding/dialogues
+      //Feel free to change/remove/add! (During editing)
+        "companion_Town_Rainy": "{{i18n:Trinnie.Dialogue.companion_Town_Rainy}}",
+        "companion_Town_Night": "{{i18n:Trinnie.Dialogue.companion_Town_Night}}",
+        "companion_Town": "{{i18n:Trinnie.Dialogue.companion_Town}}",
+        "companion_Custom_Ridgeside_RidgesideVillage": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_RidgesideVillage}}",
+        "companion_Custom_Ridgeside_RidgesideVillage~1": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_RidgesideVillage~1}}",
+        "companion_Custom_Ridgeside_RidgeFalls": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_RidgeFalls}}",
+        "companion_Custom_Ridgeside_RSVTheHike": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_RSVTheHike}}",
+        "companion_Custom_Ridgeside_Ridge": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_Ridge}}",
+        "companion_Custom_Ridgeside_SummitFarm": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_SummitFarm}}",
+        "companion_Custom_Ridgeside_RidgeForest": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_RidgeForest}}",
+        "companion_Custom_Ridgeside_RSVCliff": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_RSVCliff}}",
+        "companion_Custom_Ridgeside_RSVCableCar": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_RSVCableCar}}",
+        "companion_Custom_Ridgeside_3Bros": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_3Bros}}",
+        "companion_Custom_Ridgeside_3Bros2ndFloor": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_3Bros2ndFloor}}",
+        "companion_Custom_Ridgeside_AguarLab": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_AguarLab}}",
+        "companion_Custom_Ridgeside_AlissaShed": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_AlissaShed}}",
+        "companion_Custom_Ridgeside_AlissaHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_AlissaHouse}}",
+        "companion_Custom_Ridgeside_BertHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_BertHouse}}",
+        "companion_Custom_Ridgeside_BertHouse2ndFloor": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_BertHouse2ndFloor}}",
+        "companion_Custom_Ridgeside_BlairHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_BlairHouse}}",
+        "companion_Custom_Ridgeside_EzekielHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_EzekielHouse}}",
+        "companion_Custom_Ridgeside_FayeHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_FayeHouse}}",
+        "companion_Custom_Ridgeside_FreddieHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_FreddieHouse}}",
+        "companion_Custom_Ridgeside_IanHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_IanHouse}}",
+        "companion_Custom_Ridgeside_JericHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_JericHouse}}",
+        "companion_Custom_Ridgeside_KennethHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_KennethHouse}}",
+        "companion_Custom_Ridgeside_LennyHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_LennyHouse}}",
+        "companion_Custom_Ridgeside_LogCabinHotelEventHall": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_LogCabinHotelEventHall}}",
+        "companion_Custom_Ridgeside_LogCabinHotelLobby": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_LogCabinHotelLobby}}",
+        "companion_Custom_Ridgeside_LogCabinHotel2ndFloor": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_LogCabinHotel2ndFloor}}",
+        "companion_Custom_Ridgeside_LogCabinHotel3rdFloor": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_LogCabinHotel3rdFloor}}",
+        "companion_Custom_Ridgeside_MaddieHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_MaddieHouse}}",
+        "companion_Custom_Ridgeside_PaulaClinic": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_PaulaClinic}}",
+        "companion_Custom_Ridgeside_PikaHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_PikaHouse}}",
+        "companion_Custom_Ridgeside_PurpleMansion": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_PurpleMansion}}",
+        "companion_Custom_Ridgeside_PurpleMansion2ndFloor": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_PurpleMansion2ndFloor}}",
+        "companion_Custom_Ridgeside_RSVSewers": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_RSVSewers}}",
+        "companion_Custom_Ridgeside_RSVSummitHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_RSVSummitHouse}}",
+        "companion_Custom_Ridgeside_ShiroHouse": "{{i18n:Trinnie.Dialogue.companion_Custom_Ridgeside_ShiroHouse}}",
+
+      //Suggestion
+        "companionSuggest": "{{i18n:Trinnie.Dialogue.companionSuggest}}",
+
+        "companionSuggest_Yes":"Yay!#$h#$b#We're going to have so much fun today!$h#$b#We'll be going off on exciting adventures!$h",
+        "companionSuggest_No": "{{i18n:Trinnie.Dialogue.companionSuggest_No}}",
+      }
+    }
+  ]
+}

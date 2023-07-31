@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceShared;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -76,8 +77,17 @@ namespace SpaceShared.UI
 
             if (this.Clicked)
                 this.Dragging = true;
-            if (Mouse.GetState().LeftButton == ButtonState.Released && Game1.input.GetGamePadState().Buttons.A == ButtonState.Released)
-                this.Dragging = false;
+            if (Constants.TargetPlatform != GamePlatform.Android)
+            {
+                if (Mouse.GetState().LeftButton == ButtonState.Released && Game1.input.GetGamePadState().Buttons.A == ButtonState.Released)
+                    this.Dragging = false;
+            }
+            else
+            {
+                if (Game1.input.GetMouseState().LeftButton == ButtonState.Released && Game1.input.GetGamePadState().Buttons.A == ButtonState.Released)
+                    this.Dragging = false;
+            }
+
 
             if (this.Dragging)
             {

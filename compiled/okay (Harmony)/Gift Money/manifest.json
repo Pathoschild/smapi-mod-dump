@@ -1,0 +1,10 @@
+{
+  "Name": "Gift Money",
+  "Author": "AvalonMFX",
+  "Version": "1.1.1",
+  "Description": "Allows the user to gift money to NPCs.",
+  "UniqueID": "AvalonMFX.GiftMoney",
+  "EntryDll": "GiftMoney.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:17564" ]
+}

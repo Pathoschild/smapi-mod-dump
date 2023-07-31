@@ -18,8 +18,9 @@ using StardewValley;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
-using Unlockable_Areas.Lib;
-using Unlockable_Areas.API;
+using Unlockable_Bundles.Lib;
+using Unlockable_Bundles.API;
+using Unlockable_Bundles.Lib.Enums;
 
 namespace Desert_Bloom.Lib
 {
@@ -52,7 +53,7 @@ namespace Desert_Bloom.Lib
 
         private static void load_unlockables(object sender, AssetRequestedEventArgs e)
         {
-            if (!e.NameWithoutLocale.IsEquivalentTo("UnlockableAreas/Unlockables"))
+            if (!e.NameWithoutLocale.IsEquivalentTo("UnlockableBundles/Bundles"))
                 return;
 
             var list = new List<UnlockableModel>();
@@ -79,30 +80,34 @@ namespace Desert_Bloom.Lib
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Oasis_Tunnel",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("oasis_tunnel"),
-                ShopPosition = "121, 51",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("oasis_tunnel"),
+                ShopPosition = new Vector2(121, 51),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Blue",
-                ShopAnimation = "12@100",
+                ShopAnimation = "0-11@100",
                 Price = {
                     { "322", 50 }, //Wooden Fence
                     { "286", 10 }, //Cherry Bomb
                     { "287", 5 }, //Bomb
                     },
-                UpdateMap = "DLX.Desert_Bloom.Oasis_Tunnel.Overlay",
-                UpdatePosition = "120, 48",
-                UpdateType = "Replace"
+                EditMap = "DLX.Desert_Bloom.Oasis_Tunnel.Overlay",
+                EditMapPosition = new Vector2(120, 48),
+                EditMapMode = EditMapMode.ReplaceByLayer
             });
 
-            if (!API.UnlockableAreas.unlocked("DLX.Desert_Bloom.Oasis_Tunnel"))
+            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Oasis_Tunnel"))
                 return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Oasis_1",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("oasis_1"),
-                ShopPosition = "123, 21",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("oasis_1"),
+                ShopPosition = new Vector2(123, 21),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Blue",
-                ShopAnimation = "12@100",
+                ShopAnimation = "0-11@100",
                 Price = {
                     { "140", 2 }, //Walleye
                     { "143", 2 }, //Catfish
@@ -112,19 +117,21 @@ namespace Desert_Bloom.Lib
                     { "164", 2 }, //Sandfish
                     { "165", 2 }, //Scorpion Carp 
                 },
-                UpdateMap = "NONE",
+                EditMap = "NONE",
             });
 
-            if (!API.UnlockableAreas.unlocked("DLX.Desert_Bloom.Oasis_1"))
+            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Oasis_1"))
                 return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Oasis_2",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("oasis_2"),
-                ShopPosition = "123, 21",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("oasis_2"),
+                ShopPosition = new Vector2(123, 21),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Blue",
-                ShopAnimation = "12@100",
+                ShopAnimation = "0-11@100",
                 Price = {
                     { "766", 50 }, //Slime
                     { "684", 50 }, //Bug Meat
@@ -133,19 +140,21 @@ namespace Desert_Bloom.Lib
                     { "685", 999 }, //Bait
                     { "774", 5 }, //Wild Bait
                 },
-                UpdateMap = "NONE",
+                EditMap = "NONE",
             });
 
-            if (!API.UnlockableAreas.unlocked("DLX.Desert_Bloom.Oasis_2"))
+            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Oasis_2"))
                 return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Oasis_3",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("oasis_3"),
-                ShopPosition = "123, 21",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("oasis_3"),
+                ShopPosition = new Vector2(123, 21),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Blue",
-                ShopAnimation = "12@100",
+                ShopAnimation = "0-11@100",
                 Price = {
                     { "160, 899", 1 }, //Angler / Ms. Angler
                     { "159, 898", 1 }, //Crimsonfish / Son of Crimsonfish
@@ -153,7 +162,7 @@ namespace Desert_Bloom.Lib
                     { "163, 900", 1 }, //Legend Fish / Legend II
                     { "682, 901", 1 }  //Mutant Carp / Radioactive Carp
                 },
-                UpdateMap = "NONE",
+                EditMap = "NONE",
             });
         }
 
@@ -162,93 +171,103 @@ namespace Desert_Bloom.Lib
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mill_Tier1",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("mill_tier1"),
-                ShopPosition = "47, 16",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("mill_tier1"),
+                ShopPosition = new Vector2(47, 16),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
-                ShopAnimation = "12@100",
+                ShopAnimation = "0-11@100",
                 Price = { 
                     { "Money", 1000 },
                     { "388", 100 }, //Wood
                     { "771", 50 } //Fiber
 
                 },
-                UpdateMap = "DLX.Desert_Bloom.Mill_1",
-                UpdatePosition = "33, 16",
-                UpdateType = "Replace"
+                EditMap = "DLX.Desert_Bloom.Mill_1",
+                EditMapPosition = new Vector2(33, 16),
+                EditMapMode = EditMapMode.ReplaceByLayer
             });
 
-            if (!API.UnlockableAreas.unlocked("DLX.Desert_Bloom.Mill_Tier1"))
+            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier1"))
                 return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mill_Tier2",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("mill_tier2"),
-                ShopPosition = "47, 16",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("mill_tier2"),
+                ShopPosition = new Vector2(47, 16),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
-                ShopAnimation = "12@100",
+                ShopAnimation = "0-11@100",
                 Price = { 
                     { "Money", 5000 },
                     { "334", 5 }, //Copper Bar
                     { "92", 50 }, //Sap
                     { "388", 25 } //Wood
                 },
-                UpdateMap = "DLX.Desert_Bloom.Mill_2",
-                UpdatePosition = "31, 11",
-                UpdateType = "Replace"
+                EditMap = "DLX.Desert_Bloom.Mill_2",
+                EditMapPosition = new Vector2(31, 11),
+                EditMapMode = EditMapMode.ReplaceByLayer
             });
 
-            if (!API.UnlockableAreas.unlocked("DLX.Desert_Bloom.Mill_Tier2"))
+            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier2"))
                 return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mill_Tier3",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("mill_tier3"),
-                ShopPosition = "60, 9",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("mill_tier3"),
+                ShopPosition = new Vector2(60, 9),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
-                ShopAnimation = "12@100",
+                ShopAnimation = "0-11@100",
                 Price = { 
                     { "Money", 15000 },
                     { "335", 5 }, //Iron Bar
                     { "324", 20 } //Iron Fence
                 },
-                UpdateMap = "DLX.Desert_Bloom.Mill_3",
-                UpdatePosition = "24, 7",
-                UpdateType = "Replace"
+                EditMap = "DLX.Desert_Bloom.Mill_3",
+                EditMapPosition = new Vector2(24, 7),
+                EditMapMode = EditMapMode.ReplaceByLayer
             });
 
-            if (!API.UnlockableAreas.unlocked("DLX.Desert_Bloom.Mill_Tier3"))
+            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier3"))
                 return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mill_Tier4",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("mill_tier4"),
-                ShopPosition = "60, 9",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("mill_tier4"),
+                ShopPosition = new Vector2(60, 9),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
-                ShopAnimation = "12@100",
+                ShopAnimation = "0-11@100",
                 Price = {
                     { "Money", 25000 },
                     { "336", 5 }, //Gold Bar
                     { "787", 4 }, //Battery Pack
                     { "709", 50 } //Hardwood
                 },
-                UpdateMap = "DLX.Desert_Bloom.Mill_4",
-                UpdatePosition = "86, 42",
-                UpdateType = "Replace"
+                EditMap = "DLX.Desert_Bloom.Mill_4",
+                EditMapPosition = new Vector2(86, 42),
+                EditMapMode = EditMapMode.ReplaceByLayer
             });
 
-            if (!API.UnlockableAreas.unlocked("DLX.Desert_Bloom.Mill_Tier4"))
+            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier4"))
                 return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mill_Tier5",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("mill_tier5"),
-                ShopPosition = "60, 9",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("mill_tier5"),
+                ShopPosition = new Vector2(60, 9),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
-                ShopAnimation = "12@100",
+                ShopAnimation = "0-11@100",
                 Price = {
                     { "Money", 100000 },
                     { "337", 5 }, //Iridium Bar
@@ -259,7 +278,7 @@ namespace Desert_Bloom.Lib
                     { "466", 99 }, //Speed-Gro
                     { "805", 99 } //Tree Fertilizer
                 },
-                UpdateMap = "NONE",
+                EditMap = "NONE",
             });
         }
 
@@ -268,28 +287,37 @@ namespace Desert_Bloom.Lib
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mining_Area_1",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("mine_1"),
-                ShopPosition = "5, 56",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("mine_1"),
+                ShopPosition = new Vector2(5, 56),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Orange",
-                ShopAnimation = "12@100",
+                ShopType = ShopType.SpeechBubble,
+                ShopAnimation = "0-11@100",
                 Price = {
                     { "172, 168, 169, 170, 171, 167", 40 } //Soggy Newspaper, Trash, Driftwood, Broken Glasses, Broken CD, Joja Cola
                 },
-                UpdateMap = "DLX.Desert_Bloom.Mine_Area_Clean",
-                UpdatePosition = "3, 53",
-                UpdateType = "Replace"
+                BundleReward = {
+                    { "money", 5000 },
+                    { "72", 1 } //Diamond
+                },
+                EditMap = "DLX.Desert_Bloom.Mine_Area_Clean",
+                EditMapPosition = new Vector2(3, 53),
+                EditMapMode = EditMapMode.ReplaceByLayer
             });
 
-            if (!API.UnlockableAreas.unlocked("DLX.Desert_Bloom.Mining_Area_1"))
+            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mining_Area_1"))
                 return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mining_Area_2",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("mine_2"),
-                ShopPosition = "5, 56",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("mine_2"),
+                ShopPosition = new Vector2(5, 56),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Orange",
-                ShopAnimation = "12@100",
+                ShopAnimation = "0-11@100",
                 Price = {
                     { "243", 1 }, //Miner's Treat
                     { "240", 1 }, //Farmer's Lunch
@@ -298,24 +326,26 @@ namespace Desert_Bloom.Lib
                     { "233", 1 }, //Ice Cream
                     { "227", 1 }, //Sashimi
                 },
-                UpdateMap = "NONE",
+                EditMap = "NONE",
             });
 
-            if (!API.UnlockableAreas.unlocked("DLX.Desert_Bloom.Mining_Area_2"))
+            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mining_Area_2"))
                 return;
 
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Mining_Area_3",
                 Location = "Farm",
-                ShopDescription = Helper.Translation.Get("mine_3"),
-                ShopPosition = "5, 56",
+                InteractionSound = "junimoMeep1",
+                InteractionShake = true,
+                BundleDescription = Helper.Translation.Get("mine_3"),
+                ShopPosition = new Vector2(5, 56),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Orange",
-                ShopAnimation = "12@100",
+                ShopAnimation = "0-11@100",
                 Price = {
                     { "90", 30 }, //Cactus Fruit
                     { "88", 30 }, //Cocnut
                 },
-                UpdateMap = "NONE",
+                EditMap = "NONE",
             });
         }
 

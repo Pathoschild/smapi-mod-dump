@@ -184,7 +184,7 @@ namespace StardewArchipelago.Goals
                 return;
             }
 
-            if (Game1.player.getChildrenCount() < 2)
+            if (Game1.player.getChildrenCount() < 2 || !Game1.player.isMarried() || Game1.player.HouseUpgradeLevel < 2)
             {
                 return;
             }

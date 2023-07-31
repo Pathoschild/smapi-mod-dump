@@ -22,12 +22,14 @@ namespace Custom_Farm_Loader
         public float CoopMenuIconScale { get; set; }
         
         public bool IncludeVanilla { get; set; }
+        public bool DisableStartFurniture { get; set; }
 
         public ModConfig()
         {
             LoadMenuIconScale = 1f;
             CoopMenuIconScale = 1f;
             IncludeVanilla = false;
+            DisableStartFurniture = false;
         }
 
     }

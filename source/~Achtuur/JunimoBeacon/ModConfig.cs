@@ -16,7 +16,7 @@ namespace JunimoBeacon;
 
 internal class ModConfig
 {
-    private readonly static SliderRange BeaconRangeSlider = new SliderRange(3, 16, 1);
+    private readonly static SliderRange BeaconRangeSlider = new SliderRange(3, 8, 1);
     private readonly static SliderRange ExtraJunimoPerBeaconSlider = new SliderRange(0, 2, 1);
 
     /// <summary>
@@ -28,7 +28,7 @@ internal class ModConfig
 
     public ModConfig()
     {
-        BeaconRange = 8;
+        BeaconRange = 4;
         ExtraJunimoPerBeacon = 1;
     }
 

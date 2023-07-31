@@ -37,6 +37,7 @@ namespace RangedTools
         public bool AllowRangedChargeEffects { get; set; } = false;
         public bool AttacksIgnoreObstacles { get; set; } = false;
         public bool DontCutGrassPastNormalRange { get; set; } = false;
+        public bool MultigrabCrabPotsInRange { get; set; } = false;
         public bool CustomRangeOnClickOnly { get; set; } = true;
     }
 }

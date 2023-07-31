@@ -27,7 +27,7 @@ public class StatueFactory : IAutomationFactory
     /// <returns>Returns an instance or <c>null</c>.</returns>
     public IAutomatable GetFor(SObject obj, GameLocation location, in Vector2 tile)
     {
-        if (obj.ParentSheetIndex == ModEntry.Instance.SpeedupStatueID)
+        if (ModEntry.IsStatueID(obj.ParentSheetIndex))
             return new SpeedupStatue(obj, location, tile);
 
         return null;

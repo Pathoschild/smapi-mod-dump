@@ -1,0 +1,6 @@
+{
+  "LabelPopupDelayTicks": 30,
+  "LabelListMaxSize": 5,
+  "ShowDetailsButton": "LeftControl",
+  "AlternativeSortButton": "LeftShift"
+}

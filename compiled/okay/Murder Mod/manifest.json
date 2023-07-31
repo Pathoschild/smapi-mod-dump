@@ -1,0 +1,16 @@
+{
+  "Name": "Murder Mod",
+  "Author": "Aren",
+  "Version": "1.0.0",
+  "Description": "A mod that allows murder in Stardew Valley",
+  "UniqueID": "Aren.MurderMod",
+  "EntryDll": "MurderMod.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "MinimumVersion": "1.29.0"
+    }
+  ]
+}

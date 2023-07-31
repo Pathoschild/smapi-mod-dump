@@ -13,15 +13,18 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
-namespace MPInfo 
+namespace MPInfo
 {
     public enum Position
     {
         TopLeft,
         BottomLeft,
+        BottomRight,
+        CenterRight,
     }
 
     internal class ModEntry : Mod 
@@ -52,22 +55,20 @@ namespace MPInfo
 
         internal void ForceUpdate()
         {
-            Helper.Multiplayer.SendMessage("", "MPInfo.ForceUpdate", new[] { ModManifest.UniqueID });
+            var ids = JsonConvert.SerializeObject(Helper.Multiplayer.GetConnectedPlayers().Select(x => x.PlayerID));
+            Helper.Multiplayer.SendMessage(ids, "MPInfo.ForceUpdate", new[] { ModManifest.UniqueID });
             ResetDisplays();
         }
 
-        private void ResetDisplays() 
+        private void ResetDisplays(IEnumerable<long>? playerIds = null) 
         {
-            var displays = Game1.onScreenMenus.Where(x => x is PlayerInfoBox).OfType<PlayerInfoBox>().ToArray();
-            var reportedHealthList = new List<int>(displays.Select(x => x.Who.health));
+            var displays = Game1.onScreenMenus.OfType<PlayerInfoBox>().ToArray();
             for (int i = 0; i < displays.Length; i++)
                 Game1.onScreenMenus.Remove(displays[i]);
-            PlayerInfoBox display = null!;
-            foreach (var player in Game1.getOnlineFarmers()) 
-            {
-                display = new(player);
-                Game1.onScreenMenus.Add(display);
-            }
+            if (Config.ShowSelf)
+                Game1.onScreenMenus.Add(new PlayerInfoBox(Game1.player));
+            foreach (var player in playerIds ?? Helper.Multiplayer.GetConnectedPlayers().Select(x => x.PlayerID))
+                Game1.onScreenMenus.Add(new PlayerInfoBox(Game1.getFarmer(player)));
             PlayerInfoBox.RedrawAll();
         }
 
@@ -131,6 +132,39 @@ namespace MPInfo
                 },
                 allowedValues: Enum.GetNames<Position>()
             );
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => "X Offset",
+                tooltip: () => "Offset the boxes horizontally",
+                getValue: () => Config.XOffset,
+                setValue: value =>
+                {
+                    Config.XOffset = value;
+                    PlayerInfoBox.RedrawAll();
+                }
+            );
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Y Offset",
+                tooltip: () => "Offset the boxes vertically",
+                getValue: () => Config.YOffset,
+                setValue: value =>
+                {
+                    Config.YOffset = value;
+                    PlayerInfoBox.RedrawAll();
+                }
+            );
+            configMenu.AddNumberOption(
+                mod: ModManifest,
+                name: () => "Space Between",
+                tooltip: () => "The distance between displays",
+                getValue: () => Config.SpaceBetween,
+                setValue: value =>
+                {
+                    Config.SpaceBetween = value;
+                    PlayerInfoBox.RedrawAll();
+                }
+             );
         }
 
         private void OnSaveLoaded(object? sender, SaveLoadedEventArgs e) 
@@ -151,9 +185,19 @@ namespace MPInfo
                 Helper.Multiplayer.SendMessage(Game1.player.maxHealth, "MPInfo.MaxHealth", new[] { ModManifest.UniqueID });
         }
 
-        private void OnPlayerJoin(object? sender, PeerConnectedEventArgs e) => ForceUpdate();
+        private void OnPlayerJoin(object? sender, PeerConnectedEventArgs e)
+        {
+            if (!Context.IsMainPlayer)
+                return;
+            ForceUpdate();
+        }
 
-        private void OnPlayerLeave(object? sender, PeerDisconnectedEventArgs e) => ForceUpdate();
+        private void OnPlayerLeave(object? sender, PeerDisconnectedEventArgs e)
+        {
+            if (!Context.IsMainPlayer)
+                return;
+            ForceUpdate();
+        }
 
         private void OnMultiplayerDataReceived(object? sender, ModMessageReceivedEventArgs e) 
         {
@@ -161,21 +205,21 @@ namespace MPInfo
                 return;
 
             var display = (PlayerInfoBox?)Game1.onScreenMenus.FirstOrDefault(x => x is PlayerInfoBox pib && pib.Who.UniqueMultiplayerID == e.FromPlayerID);
-            if (display is null)
+            if (display is null && e.Type != "MPInfo.ForceUpdate")
                 return;
 
             switch (e.Type)
             {
                 case "MPInfo.Health":
-                    display.Who.health = lastHealth = e.ReadAs<int>();
+                    display!.Who.health = lastHealth = e.ReadAs<int>();
                     break;
                 case "MPInfo.MaxHealth":
-                    display.Who.maxHealth = lastMaxHealth = e.ReadAs<int>();
+                    display!.Who.maxHealth = lastMaxHealth = e.ReadAs<int>();
                     break;
                 case "MPInfo.ForceUpdate": //Let updateticked handle the messages
                     lastHealth = -1;
                     lastMaxHealth = -1;
-                    ResetDisplays();
+                    ResetDisplays(JsonConvert.DeserializeObject<IEnumerable<long>>(e.ReadAs<string>())?.Where(x => x != Game1.player.UniqueMultiplayerID)?.Append(e.FromPlayerID));
                     break;
             }
         }

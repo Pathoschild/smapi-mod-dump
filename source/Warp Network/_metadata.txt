@@ -6,9 +6,11 @@ mods:
    Warp Network
 
 latest commit:
-   commit d7bb7fd545c64ead12097631930ea89b35a50009
+   commit e977a391cd0ab509cf4055d87da3849c579cd386
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Wed Jan 25 12:45:01 2023 -0500
+   Date:   Thu Jul 6 15:07:34 2023 -0400
    
-       add german
+       Merge pull request #7 from DanielleTlumach/patch-3
+       
+       Update Ukrainian translation
    

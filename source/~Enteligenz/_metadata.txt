@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/Enteligenz/StardewMods
+   Git: https://github.com/Enteligenz/StardewMods.git
+
+mods:
+   Food Cravings
+   Twitch Chat Integration
+
+latest commit:
+   commit f03a5cbee4a846ed81c9af9c6abc7bb249cf46ed
+   Author: Enteligenz <s8frdrie@stud.uni-saarland.de>
+   Date:   Tue Jul 11 19:39:16 2023 +0200
+   
+       Merge branch 'master' of https://github.com/Enteligenz/StardewMods
+   

@@ -6,9 +6,10 @@ mods:
    AeroCore
 
 latest commit:
-   commit e2bf48b74e13720cda728507da2ab746094c20aa
+   commit 6f59b7aef1b191ff1d6c1e9db0f97038b63fae12
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Sun Apr 30 19:47:30 2023 -0400
+   Date:   Tue Jul 18 13:45:49 2023 -0400
    
-       fix volcano darkness
+       lighting improvements
+       region bugfix
    

@@ -1,0 +1,28 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/StardewSandbox
+**
+*************************************************/
+
+{
+  "Name": "[FS] Hat Shop Restoration",
+  "Author": "PeacefulEnd",
+  "Version": "1.1.2",
+  "Description": "...",
+  "UniqueID": "PeacefulEnd.AMouseWithAHat.FS",
+  "UpdateKeys": [],
+  "Dependencies": [
+    {
+      "UniqueID": "PeacefulEnd.AMouseWithAHat.Core",
+      "IsRequired": true
+    }
+  ],
+  "ContentPackFor": {
+    "UniqueID": "PeacefulEnd.FashionSense",
+    "MinimumVersion": "5.8.0"
+  }
+}

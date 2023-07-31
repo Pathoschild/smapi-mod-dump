@@ -1,0 +1,9 @@
+{
+  "Name": "File Replacer",
+  "Author": "certifiableGrimalkin",
+  "Version": "1.0.0",
+  "Description": "Replaces xnb files for you, for organising modloads.",
+  "UniqueID": "certifiableGrimalkin.FileReplacer",
+  "EntryDll": "File Replacer.dll",
+  "UpdateKeys": [ "Nexus: 17553" ]
+}

@@ -32,14 +32,15 @@ namespace Unlockable_Bundles.Lib
         protected override void initNetFields()
         {
             base.initNetFields();
-            base.NetFields.AddFields(this._unlockable, this.Mutex.NetFields);
+            NetFields.AddFields(_unlockable, Mutex.NetFields, _speechBubble);
         }
 
         public readonly NetRef<Unlockable> _unlockable = new NetRef<Unlockable>();
         public readonly NetMutex Mutex = new NetMutex();
         public Unlockable Unlockable { get => _unlockable.Value; }
         public ShopType ShopType { get => _unlockable.Value.ShopType; }
-        public SpeechBubble SpeechBubble = null;
+        private NetRef<SpeechBubble> _speechBubble = new NetRef<SpeechBubble>();
+        public SpeechBubble SpeechBubble { get => _speechBubble.Value; set => _speechBubble.Value = value; }
         public static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
@@ -49,6 +50,7 @@ namespace Unlockable_Bundles.Lib
         private long AnimationTimer = 0;
         private List<KeyValuePair<int, int>> AnimationSequence = new List<KeyValuePair<int, int>>();  //ImageIndex, Tempo
 
+        public bool IsPlayerNearby;
 
         public static void Initialize()
         {
@@ -58,24 +60,35 @@ namespace Unlockable_Bundles.Lib
         }
 
         public ShopObject() { }
+
         public ShopObject(Vector2 tileLocation, Unlockable unlockable)
         {
             _unlockable.Set(unlockable);
-            if (ShopType == ShopType.SpeechBubble || ShopType == ShopType.YesNoSpeechBubble || ShopType == ShopType.ParrotPerch)
+            if (ShopType == ShopType.SpeechBubble || ShopType == ShopType.ParrotPerch)
                 SpeechBubble = new SpeechBubble(this);
+
             IsSpawnedObject = false;
 
             TileLocation = tileLocation;
             boundingBox.Value = new Rectangle((int)tileLocation.X * 64, (int)tileLocation.Y * 64, 64, 64);
 
             bigCraftable.Value = true;
-            Name = "Unlockable Shop";
+            Name = "UnlockableBundles Shop";
             Type = "Crafting";
         }
 
         public override bool isPassable() => isTemporarilyInvisible;
         public override bool isActionable(Farmer who) => !isTemporarilyInvisible;
         public override bool onExplosion(Farmer who, GameLocation location) => false;
+
+        public override void actionOnPlayerEntry()
+        {
+            if (SpeechBubble != null && SpeechBubble.Shop == null) {
+                SpeechBubble.Shop = this;
+                SpeechBubble.assignNextItem();
+            }
+        }
+
         public override bool checkForAction(Farmer who, bool justCheckingForActivity = false)
         {
             Mutex.RequestLock(delegate { openMenu(who); });
@@ -87,6 +100,11 @@ namespace Unlockable_Bundles.Lib
         {
             switch (ShopType) {
                 case ShopType.Dialogue:
+                    if (Unlockable.allRequirementsPaid()) {
+                        Mutex.ReleaseLock();
+                        break;
+                    }                   
+
                     Game1.activeClickableMenu = new DialogueShopMenu(who, Unlockable);
                     Game1.activeClickableMenu.exitFunction = delegate { Mutex.ReleaseLock(); };
                     break;
@@ -96,7 +114,7 @@ namespace Unlockable_Bundles.Lib
                     Game1.activeClickableMenu.exitFunction = delegate { Mutex.ReleaseLock(); };
                     break;
 
-                case ShopType.SpeechBubble or ShopType.YesNoSpeechBubble or ShopType.ParrotPerch:
+                case ShopType.SpeechBubble or ShopType.ParrotPerch:
                     SpeechBubble.interact(who);
                     break;
 
@@ -110,7 +128,7 @@ namespace Unlockable_Bundles.Lib
             var sourceRectangle = new Rectangle(0, 0, 32, 64);
             Vector2 origin = new Vector2(0f, 0f);
 
-            if (Texture == null) {
+            if (Texture == null && Unlockable.ShopTexture.ToLower() != "none") {
                 Texture = Helper.GameContent.Load<Texture2D>(Unlockable.ShopTexture);
                 resetAnimationFrames();
             }
@@ -118,7 +136,8 @@ namespace Unlockable_Bundles.Lib
             if (AnimationSequence.Count > 0)
                 sourceRectangle.X = sourceRectangle.Width * AnimationSequence.ElementAt(AnimationFrame).Key;
 
-            b.Draw(Texture, position, sourceRectangle, Color.White, 0f, origin, 2f, this.Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)this.getBoundingBox(new Vector2(x, y)).Bottom / 10000f);
+            if (Texture != null)
+                b.Draw(Texture, position, sourceRectangle, Color.White, 0f, origin, 2f, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, getBoundingBox(new Vector2(x, y)).Bottom / 10000f);
 
             if (SpeechBubble != null)
                 SpeechBubble.draw(b);
@@ -129,10 +148,10 @@ namespace Unlockable_Bundles.Lib
 
         public void drawQuestionMark(SpriteBatch b, Vector2 position)
         {
-            float yOffset = 4f * (float)Math.Round(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 250.0), 2) - 32f;
+            if (Unlockable._completed.Value)
+                return;
 
-            //this.questionMarkOffset.X = (float)Math.Sin(time.TotalGameTime.TotalSeconds * 2.5) * 4f;
-            //this.questionMarkOffset.Y = (float)Math.Cos(time.TotalGameTime.TotalSeconds * 5.0) * -4f;
+            float yOffset = 4f * (float)Math.Round(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 250.0), 2) - 32f;
 
             b.Draw(Game1.mouseCursors2, position + Unlockable.QuestionMarkOffset + new Vector2(0, yOffset), new Rectangle(114, 53, 6, 10), Color.White, 0f, new Vector2(1f, 4f), 4f, SpriteEffects.None, 1f);
 
@@ -178,6 +197,29 @@ namespace Unlockable_Bundles.Lib
                 SpeechBubble.updateWhenCurrentLocation(time, environment);
 
             Mutex.Update(Game1.getOnlineFarmers());
+            checkPlayerNearby();
+        }
+
+        public void checkPlayerNearby()
+        {
+            bool player_nearby = false;
+            if (Math.Abs(Game1.player.getTileLocationPoint().X - TileLocation.X) <= 1 && Math.Abs(Game1.player.getTileLocationPoint().Y - TileLocation.Y) <= 1)
+                player_nearby = true;
+
+            if (player_nearby == IsPlayerNearby)
+                return;
+
+            IsPlayerNearby = player_nearby;
+
+            if (SpeechBubble != null || !IsPlayerNearby || Mutex.IsLocked())
+                return;
+
+            if (Unlockable.InteractionSound != "")
+                Game1.playSound(Unlockable.InteractionSound);
+
+            if (Unlockable.InteractionShake)
+                shakeTimer = 500;
+
         }
 
         public void updateAnimation(GameTime time)
@@ -203,8 +245,6 @@ namespace Unlockable_Bundles.Lib
                 shakeTimer = 100;
                 Game1.playSound("hammer");
             }
-
-
             return false;
         }
     }

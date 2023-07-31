@@ -20,13 +20,13 @@ using System.Xml;
 
 namespace Custom_Farm_Loader.Lib
 {
-    public class FarmTypeCache
+    public sealed class FarmTypeCache
     {
         private static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
-        private static Dictionary<string, string> Cache = new Dictionary<string, string>();
+        private static Dictionary<string, string> Cache = new();
         const string CacheFileName = "FarmTypeCache.json";
 
         public static void Initialize(Mod mod)
@@ -61,9 +61,9 @@ namespace Custom_Farm_Loader.Lib
             bool isInitial = false;
             Cache = Helper.Data.ReadJsonFile<Dictionary<string, string>>(CacheFileName);
 
-            if (Cache == null) {
+            if (Cache is null) {
                 isInitial = true;
-                Cache = new Dictionary<string, string>();
+                Cache = new();
             }
 
             Monitor.Log("Generating FarmTypeCache, this might take a while initially", isInitial ? LogLevel.Info : LogLevel.Trace);
@@ -98,8 +98,8 @@ namespace Custom_Farm_Loader.Lib
 
         public static string getFarmType(string saveFile)
         {
-            if (Cache.ContainsKey(saveFile))
-                return Cache[saveFile];
+            if (Cache.TryGetValue(saveFile, out var farmType))
+                return farmType;
 
             return readFarmTypeQuickly(saveFile);
         }
@@ -114,21 +114,21 @@ namespace Custom_Farm_Loader.Lib
 
             string fullFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "StardewValley", "Saves", saveFile, saveFile);
             string whichFarm = "";
-            char chr;
 
             var fileInfo = new FileInfo(fullFilePath);
+            var offset = fileInfo.Length - 25000 < 0 ? 0 : fileInfo.Length - 25000;
 
-            char[] target = "<whichFarm>".ToCharArray();
-            int k = 0;
+            var target = Array.ConvertAll("<whichFarm>".ToCharArray(), chr => (int)chr);
+            byte k = 0;
 
             using (var stream = File.OpenRead(fullFilePath)) {
-                stream.Seek(fileInfo.Length - 25000, SeekOrigin.Begin);
+                stream.Seek(offset, SeekOrigin.Begin);
+                int chr;
 
                 using (StreamReader sr = new StreamReader(stream))
-                    while (sr.Peek() >= 0) {
-                        chr = (char)sr.Read();
+                    while ((chr = sr.Read()) >= 0) {
 
-                        if (k != 11)
+                        if (k != 11) //k is the target length
                             if (chr == target[k])
                                 k++;
                             else
@@ -137,7 +137,7 @@ namespace Custom_Farm_Loader.Lib
                         else {
                             if (chr == '<')
                                 break;
-                            whichFarm += chr;
+                            whichFarm += (char)chr;
                         }
                     }
             }
@@ -152,13 +152,20 @@ namespace Custom_Farm_Loader.Lib
             string whichFarm = "";
 
             XmlDocument doc = new XmlDocument();
-            doc.Load(fullFilePath);
 
-            var node = doc.DocumentElement.SelectSingleNode("/SaveGame/whichFarm");
-            if (node != null)
-                whichFarm = node.InnerText;
+            try {
+                doc.Load(fullFilePath);
 
-            return whichFarm;
+                var node = doc.DocumentElement.SelectSingleNode("/SaveGame/whichFarm");
+                if (node != null)
+                    whichFarm = node.InnerText;
+
+                return whichFarm;
+            } catch (Exception e) {
+                Monitor.Log("Encountered error trying to parse savedata: " + e.Message);
+                return "";
+            }
+
         }
     }
 }

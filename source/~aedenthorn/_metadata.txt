@@ -10,6 +10,7 @@ mods:
    Advanced Melee Framework
    Advanced Menu Positioning
    AFK Pause
+   Alarms
    All Chests Menu
    Animal Dialogue Framework
    Animated Parrot and Perch
@@ -79,7 +80,9 @@ mods:
    Farmer Portraits
    Field Harvest
    Fire Breath
+   Fish Spot Bait
    Fishing Chests Expanded
+   Floating Garden Pots
    Flowing Mine Rocks
    Food on the Table
    Free Love
@@ -195,6 +198,7 @@ mods:
    Swim
    Take All
    Tappable Palm Trees
+   Tile Transparency
    Tool Smart Switch
    Train Tracks
    Trampoline
@@ -219,9 +223,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 50f6a56e751fb92c643aa5f89f61b570ab810b4f
+   commit c02a8108c419fc4bfe9f267560f47dafdb553194
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Sun Jun 25 16:36:01 2023 -0400
+   Date:   Fri Jul 28 22:57:56 2023 -0400
    
        etc
    

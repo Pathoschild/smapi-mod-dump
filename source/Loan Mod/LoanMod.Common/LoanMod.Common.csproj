@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>G:\Desktop\Stardew Valley\StardewModdingAPI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+
+
+</Project>

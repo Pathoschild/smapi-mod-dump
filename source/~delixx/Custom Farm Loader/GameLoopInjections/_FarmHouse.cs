@@ -51,7 +51,8 @@ namespace Custom_Farm_Loader.GameLoopInjections
             if (!CustomFarm.IsCFLMapSelected())
                 return;
 
-            loadStartFurniture(__instance);
+            if (!ModEntry.Config.DisableStartFurniture)
+                loadStartFurniture(__instance);
         }
 
         private static void fixBrokenTVs(FarmHouse __instance)

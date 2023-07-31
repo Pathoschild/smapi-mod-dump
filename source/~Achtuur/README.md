@@ -27,3 +27,15 @@ This repository contains all mods I have made for Stardew Valley. For mod specif
 * [CrossBreeding Seeds]()
 * [Junimo Beacon](./JunimoBeacon/)
 * [LGreenhouseBTQPlus](./LGreenhouseBTQPlus/)
+#
+
+
+## symbol list
+
+* `<` - heart
+* `\t`, `*` - angry vein
+* `>` - triangle to the right
+* `@` - triangle to the left
+* `$` - circle within a circle
+* `euro sign` - x in a circle
+* `=` - star

@@ -17,6 +17,10 @@ In the Stardew Valley, gaining farming experience early on is based entirely on 
 
 # Changelog
 
+## Planned
+* Flood fill
+  * higher tier watering cans flood faster
+
 ## 1.0.4
 * New/Changed
   * Updated to support AchtuurCore 1.0.7 

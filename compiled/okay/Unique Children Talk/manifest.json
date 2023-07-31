@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Unique Children Talk",
     "Author": "Shaklin",
-    "Version": "2.0",
+    "Version": "2.1",
     "Description": "Talk to your Children",
     "UniqueID": "shaklin.uniquechildrentalk",
     "EntryDll": "UniqueChildren Talk.dll",

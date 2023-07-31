@@ -1,8 +1,8 @@
 ﻿{
   "Name": "Pet Spawn Location",
   "Author": "Shaklin",
-  "Version": "1.9",
-  "Description": "Your pets will spawn around your house.",
+  "Version": "2.1",
+  "Description": "Set the spawn location for each pet",
   "UniqueID": "shaklin.petspawnlocation",
   "EntryDll": "PetSpawnLocation.dll",
   "MinimumApiVersion": "2.10.1",

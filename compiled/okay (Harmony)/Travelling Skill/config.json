@@ -5,6 +5,6 @@
   "RestoreStaminaPercentage": 0.01,
   "SprintMovespeedBonus": 0.15,
   "TotemUseChance": 0.5,
-  "StepsPerExp": 25,
+  "StepsPerExp": 20,
   "SprintSteps": 5
 }

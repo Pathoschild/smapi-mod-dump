@@ -1,0 +1,142 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Companion dialogues for Corine",
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Corine",
+      "Entries": {
+        "companionAccepted": "{{i18n:Corine.Dialogue.companionAccepted}}",
+        "companionAccepted_Dating": "{{i18n:Corine.Dialogue.companionAccepted_Dating}}",
+        "companionAccepted_Spouse": "{{i18n:Corine.Dialogue.companionAccepted_Spouse}}",
+
+        "companionRejected": "{{i18n:Corine.Dialogue.companionRejected}}",
+        "companionRejected_Dating": "{{i18n:Corine.Dialogue.companionRejected_Dating}}",
+        "companionRejected_Spouse": "{{i18n:Corine.Dialogue.companionRejected_Spouse}}",
+
+        "companionRejectedNight": "{{i18n:Corine.Dialogue.companionRejectedNight}}",
+        "companionRejectedNight_Dating": "{{i18n:Corine.Dialogue.companionRejectedNight_Dating}}",
+        "companionRejectedNight_Spouse": "{{i18n:Corine.Dialogue.companionRejectedNight_Spouse}}",
+
+        "companionDismiss": "{{i18n:Corine.Dialogue.companionDismiss}}",
+        "companionDismiss_Dating": "{{i18n:Corine.Dialogue.companionDismiss_Dating}}",
+        "companionDismiss_Spouse": "{{i18n:Corine.Dialogue.companionDismiss_Spouse}}",
+
+        "companionDismissAuto": "{{i18n:Corine.Dialogue.companionDismissAuto}}",
+        "companionDismissAuto_Dating": "{{i18n:Corine.Dialogue.companionDismissAuto_Dating}}",
+        "companionDismissAuto_Spouse": "{{i18n:Corine.Dialogue.companionDismissAuto_Spouse}}",
+
+        "companionRecruited": "{{i18n:Corine.Dialogue.companionRecruited}}",
+        "companionRecruited_Dating": "{{i18n:Corine.Dialogue.companionRecruited_Dating}}",
+        "companionRecruited_Spouse": "{{i18n:Corine.Dialogue.companionRecruited_Spouse}}",
+
+        "farmerRunAway": "{{i18n:Corine.Dialogue.farmerRunAway}}",
+        "giveForages": "{{i18n:Corine.Dialogue.giveForages}}",
+
+        "farmerRunAway_Dating": "{{i18n:Corine.Dialogue.farmerRunAway_Dating}}",
+        "giveForages_Dating": "{{i18n:Corine.Dialogue.giveForages_Dating}}",
+
+        "farmerRunAway_Spouse": "{{i18n:Corine.Dialogue.farmerRunAway_Spouse}}",
+        "giveForages_Spouse": "{{i18n:Corine.Dialogue.giveForages_Spouse}}",
+
+
+      //Locations (Farm)
+        //Friends
+        //General
+        "companion_Farm": "{{i18n:Corine.Dialogue.companion_Farm}}",
+        "companion_Farm~1": "{{i18n:Corine.Dialogue.companion_Farm~1}}",
+        //Weather
+        "companion_Farm_Rainy": "{{i18n:Corine.Dialogue.companion_Farm_Rainy}}",
+        "companion_Farm_Snowy": "{{i18n:Corine.Dialogue.companion_Farm_Snowy}}",
+        //Season
+        "companion_Farm_Spring": "{{i18n:Corine.Dialogue.companion_Farm_Spring}}",
+        "companion_Farm_Summer": "{{i18n:Corine.Dialogue.companion_Farm_Summer}}",
+        "companion_Farm_Fall": "{{i18n:Corine.Dialogue.companion_Farm_Fall}}",
+        "companion_Farm_Winter": "{{i18n:Corine.Dialogue.companion_Farm_Winter}}",
+        //Entering
+        "companionEnter_Farm": "{{i18n:Corine.Dialogue.companionEnter_Farm}}",
+        "companionEnter_Farm_Night": "{{i18n:Corine.Dialogue.companionEnter_Farm_Night}}",
+        //Night
+        "companion_Farm_Night": "{{i18n:Corine.Dialogue.companion_Farm_Night}}",
+
+        //Dating
+        //General
+        "companion_Farm_Dating": "{{i18n:Corine.Dialogue.companion_Farm_Dating}}",
+        "companion_Farm_Dating~1": "{{i18n:Corine.Dialogue.companion_Farm_Dating~1}}",
+        //Weather
+        "companion_Farm_Rainy_Dating": "{{i18n:Corine.Dialogue.companion_Farm_Rainy_Dating}}",
+        "companion_Farm_Snowy_Dating": "{{i18n:Corine.Dialogue.companion_Farm_Snowy_Dating}}",
+        //Season
+        "companion_Farm_Spring_Dating": "{{i18n:Corine.Dialogue.companion_Farm_Spring_Dating}}",
+        "companion_Farm_Summer_Dating": "{{i18n:Corine.Dialogue.companion_Farm_Summer_Dating}}",
+        "companion_Farm_Fall_Dating": "{{i18n:Corine.Dialogue.companion_Farm_Fall_Dating}}",
+        "companion_Farm_Winter_Dating": "{{i18n:Corine.Dialogue.companion_Farm_Winter_Dating}}",
+        //Entering
+        "companionEnter_Farm_Dating": "{{i18n:Corine.Dialogue.companionEnter_Farm_Dating}}",
+        "companionEnter_Farm_Night_Dating": "{{i18n:Corine.Dialogue.companionEnter_Farm_Night_Dating}}",
+        //Night
+        "companion_Farm_Night_Dating": "{{i18n:Corine.Dialogue.companion_Farm_Night_Dating}}",
+
+        //Spouse
+        //General
+        "companion_Farm_Spouse": "{{i18n:Corine.Dialogue.companion_Farm_Spouse}}",
+        "companion_Farm_Spouse~1": "{{i18n:Corine.Dialogue.companion_Farm_Spouse~1}}",
+        //Weather
+        "companion_Farm_Rainy_Spouse": "{{i18n:Corine.Dialogue.companion_Farm_Rainy_Spouse}}",
+        "companion_Farm_Snowy_Spouse": "{{i18n:Corine.Dialogue.companion_Farm_Snowy_Spouse}}",
+        //Season
+        "companion_Farm_Spring_Spouse": "{{i18n:Corine.Dialogue.companion_Farm_Spring_Spouse}}",
+        "companion_Farm_Summer_Spouse": "{{i18n:Corine.Dialogue.companion_Farm_Summer_Spouse}}",
+        "companion_Farm_Fall_Spouse": "{{i18n:Corine.Dialogue.companion_Farm_Fall_Spouse}}",
+        "companion_Farm_Winter_Spouse": "{{i18n:Corine.Dialogue.companion_Farm_Winter_Spouse}}",
+        //Entering
+        "companionEnter_Farm_Spouse": "{{i18n:Corine.Dialogue.companionEnter_Farm_Spouse}}",
+        "companionEnter_Farm_Night_Spouse": "{{i18n:Corine.Dialogue.companionEnter_Farm_Night_Spouse}}",
+        //Night
+        "companion_Farm_Night_Spouse": "{{i18n:Corine.Dialogue.companion_Farm_Night_Spouse}}",
+
+      //Locations (Others)
+      //Format: "companion_(location name)" https://www.npcadventures.dev/docs/modding/dialogues
+      //Feel free to change/remove/add! (During editing)
+        "companion_Town_Rainy": "{{i18n:Corine.Dialogue.companion_Town_Rainy}}",
+        "companion_Town_Night": "{{i18n:Corine.Dialogue.companion_Town_Night}}",
+        "companion_Town_Night~1": "{{i18n:Corine.Dialogue.companion_Town_Night~1}}",
+        "companion_Town": "{{i18n:Corine.Dialogue.companion_Town}}",
+        "companion_Town~1": "{{i18n:Corine.Dialogue.companion_Town~1}}",
+        "companion_Custom_Ridgeside_RidgesideVillage": "{{i18n:Corine.Dialogue.companion_Custom_Ridgeside_RidgesideVillage}}",
+        "companion_Custom_Ridgeside_RidgesideVillage~1": "{{i18n:Corine.Dialogue.companion_Custom_Ridgeside_RidgesideVillage~1}}",
+        "companion_Custom_Ridgeside_LogCabinHotel2ndFloor": "{{i18n:Corine.Dialogue.companion_Custom_Ridgeside_LogCabinHotel2ndFloor}}",
+        "companion_Custom_Ridgeside_EzekielHouse": "{{i18n:Corine.Dialogue.companion_Custom_Ridgeside_EzekielHouse}}",
+        "companion_Custom_Ridgeside_NinjaHouse8": "{{i18n:Corine.Dialogue.companion_Custom_Ridgeside_NinjaHouse8}}",
+        "companion_Custom_Ridgeside_NinjaHouse8~1": "{{i18n:Corine.Dialogue.companion_Custom_Ridgeside_NinjaHouse8~1}}",
+        "companion_Custom_Ridgeside_Ridge": "{{i18n:Corine.Dialogue.companion_Custom_Ridgeside_Ridge}}",
+        "companion_Custom_Ridgeside_RidgeFores8t": "{{i18n:Corine.Dialogue.companion_Custom_Ridgeside_RidgeFores8t}}",
+        "companion_Custom_Ridgeside_Ridge_Night8": "{{i18n:Corine.Dialogue.companion_Custom_Ridgeside_Ridge_Night8}}",
+        "companion_Custom_Ridgeside_RSVTheHike8": "{{i18n:Corine.Dialogue.companion_Custom_Ridgeside_RSVTheHike8}}",
+
+      //Suggestion
+        "companionSuggest": "{{i18n:Corine.Dialogue.companionSuggest}}",
+        "companionSuggest_Dating": "{{i18n:Corine.Dialogue.companionSuggest_Dating}}",
+        "companionSuggest_Spouse": "{{i18n:Corine.Dialogue.companionSuggest_Spouse}}",
+
+        "companionSuggest_Yes": "{{i18n:Corine.Dialogue.companionSuggest_Yes}}",
+        "companionSuggest_No": "{{i18n:Corine.Dialogue.companionSuggest_No}}",
+
+        "companionSuggest_Yes_Dating": "{{i18n:Corine.Dialogue.companionSuggest_Yes_Dating}}",
+        "companionSuggest_No_Dating": "{{i18n:Corine.Dialogue.companionSuggest_No_Dating}}",
+
+        "companionSuggest_Yes_Spouse": "{{i18n:Corine.Dialogue.companionSuggest_Yes_Spouse}}",
+        "companionSuggest_No_Spouse": "{{i18n:Corine.Dialogue.companionSuggest_No_Spouse}}",
+      }
+    }
+  ]
+}

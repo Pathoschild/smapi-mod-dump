@@ -1,0 +1,14 @@
+﻿{
+	"saveDescriptor.gameVersion": "Game version: {{Version}}",
+	"saveDescriptor.smapiVersion": "SMAPI version: {{Version}}",
+	"saveDescriptor.pendingRemovalMods": "Mods pending removal ({{Count}}):",
+	"saveDescriptor.pendingAdditionMods": "Mods pending addition ({{Count}}):",
+	"saveDescriptor.pendingDowngradeMods": "Mods pending downgrade ({{Count}}):",
+	"saveDescriptor.pendingUpgradeMods": "Mods pending upgrade ({{Count}}):",
+	"saveDescriptor.matchingMods": "Matching mods ({{Count}}):",
+	"saveDescriptor.allMods": "Mods ({{Count}}):",
+	"saveDescriptor.allModsMatch": "All ({{Count}}) mods match.",
+	"saveDescriptor.andXMore": "... and {{Count}} more.",
+	"saveDescriptor.noInfo": "No additional info available for this save file.",
+	"saveDescriptor.copiedToClipboard": "Copied mod list to clipboard."
+}

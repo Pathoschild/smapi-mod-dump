@@ -6,9 +6,9 @@ mods:
    Zoom Level
 
 latest commit:
-   commit 67e666968727267217aa3fa3416c791949e148fa
+   commit eac14bb1462db77e008df7865435018679c0dc94
    Author: thespbgamer <30112696+thespbgamer@users.noreply.github.com>
-   Date:   Sat Jun 17 16:56:41 2023 +0100
+   Date:   Sun Jul 30 14:42:50 2023 +0100
    
-       Updated requirements
+       Fix missing link in changelog
    

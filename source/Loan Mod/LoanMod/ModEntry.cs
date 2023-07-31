@@ -8,23 +8,25 @@
 **
 *************************************************/
 
+using System;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using LoanMod.Common;
+using LoanMod.Common.Constants;
+using LoanMod.Common.Enums;
+using LoanMod.Common.Interfaces;
 using StardewValley.Menus;
-using System;
-using System.Collections.Generic;
 
 namespace LoanMod
 {
     public partial class ModEntry : Mod
     {
-        internal ModConfig Config;
-        private bool canSave;
-        private bool borrowProcess, repayProcess;
-        private int amount, duration;
-        private float interest;
-        private LoanManager loanManager;
+        private ModConfig _config;
+        private ILoanManager _loanManager;
+        private bool _canSave;
+        private int _amount, _duration;
+        private float _interest;
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e) => AddModFunctions();
 
@@ -39,151 +41,85 @@ namespace LoanMod
             helper.Events.GameLoop.DayStarted += DayStarted;
             helper.Events.Display.MenuChanged += MenuChanged;
 
-            Config = helper.ReadConfig<ModConfig>();
+            _config = helper.ReadConfig<ModConfig>();
         }
+
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             // ignore if player hasn't loaded a save yet
             if (!Context.IsWorldReady || !Context.CanPlayerMove)
                 return;
 
-            if (Helper.Input.IsDown(Config.LoanButton))
-            {
-                StartBorrow(1, "Key_Amount");
-                Monitor.Log($"{Game1.player.Name} pressed {e.Button} to open Loan Menu.", LogLevel.Debug);
-            }
+            if (!Helper.Input.IsDown(_config.LoanButton)) return;
+            StartBorrow(1, ModConstants.BorrowAmountKey);
+            Monitor.Log($"{Game1.player.Name} pressed {e.Button} to open Loan Menu.", LogLevel.Debug);
         }
 
         private void MenuChanged(object sender, MenuChangedEventArgs e)
         {
-            if (borrowProcess && Game1.player.canMove)
+            if (_loanManager == null || !Game1.player.canMove) return;
+            switch (_loanManager.CurrentStage)
             {
-                if (amount >= 0 && duration == 0)
-                    StartBorrow(2, "Key_Duration");
-                else if (amount >= 0 && duration > 0)
-                    InitiateBorrow(amount, duration, interest);
+                case Stages.Borrowing:
+                    switch (_amount)
+                    {
+                        case >= 0 when _duration == 0:
+                            StartBorrow(2, ModConstants.BorrowDurationKey);
+                            break;
+                        case >= 0 when _duration > 0:
+                            InitiateBorrow(_amount, _duration, _interest);
+                            break;
+                    }
+                    break;
+                case Stages.Repayment:
+                    StartBorrow(3, ModConstants.RepayKey);
+                    break;
             }
-
-            if (repayProcess && Game1.player.canMove)
-                StartBorrow(3, "Key_Repay");
         }
 
         private void InitiateBorrow(int option, int duration, float interest)
         {
-            loanManager.AmountBorrowed = option;
-            loanManager.Duration = duration;
-            loanManager.Interest = interest;
-            loanManager.Balance = (int)loanManager.CalculateBalance;
-            loanManager.DailyAmount = (int)loanManager.CalculateInitDailyAmount;
+            _loanManager.AmountBorrowed = option;
+            _loanManager.Duration = duration;
+            _loanManager.Interest = interest;
+            _loanManager.Balance = (int)_loanManager.CalculateBalance;
+            _loanManager.DailyAmount = (int)_loanManager.CalculateDailyAmount;
 
             Monitor.Log($"Amount: {option}, Duration: {duration}, Interest: {interest}.", LogLevel.Info);
 
-            Game1.player.Money += option;
+            Game1.player.addUnearnedMoney(option);
 
-            loanManager.IsBorrowing = true;
-            borrowProcess = false;
+            _loanManager.IsBorrowing = true;
+            _loanManager.CurrentStage = Stages.None;
 
-            Monitor.Log($"Is Borrowing: {loanManager.IsBorrowing}.", LogLevel.Info);
+            Monitor.Log($"Is Borrowing: {_loanManager.IsBorrowing}.", LogLevel.Info);
 
-            amount = 0;
-            this.duration = 0;
-            this.interest = 0;
+            _amount = 0;
+            _duration = 0;
+            _interest = 0;
 
-            AddMessage(I18n.Msg_Payment_Credited(loanManager.AmountBorrowed.ToString("N0")), HUDMessage.achievement_type);
+            ExtensionHelper.AddMessage(I18n.Msg_Payment_Credited(_loanManager.AmountBorrowed.ToString("N0")), HUDMessage.achievement_type);
 
-            if (mobileApi?.GetRunningApp() == Helper.ModRegistry.ModID)
-                mobileApi.SetAppRunning(false);
+            if (_mobileApi?.GetRunningApp() == Helper.ModRegistry.ModID)
+                _mobileApi.SetAppRunning(false);
         }
 
         private void InitiateRepayment(bool full, bool custom = false)
         {
-            if (loanManager.IsBorrowing && loanManager.Balance > 0 )
+            if (!_loanManager.IsBorrowing || _loanManager.Balance <= 0)
+                return;
+
+            if (custom)
             {
-                //check if player wants to repay in full.
-                if (custom)
-                {
-                    Game1.activeClickableMenu = new NumberSelectionMenu(I18n.Msg_Startrepay(), (val, cost, farmer) =>
-                    {
-                        //if user chooses to repay full amount from custom menu
-                        if (val == loanManager.Balance)
-                        {
-                            StartBorrow(3, "Key_Repay");
-                            return;
-                        }
-
-                        if (Game1.player.Money >= val)
-                        {
-                            Game1.player.Money -= val;
-                            loanManager.AmountRepaid += val;
-                            loanManager.Balance -= val;
-                            //recalculate daily amount in case balance is lower than daily repayment
-                            loanManager.AmountRepaidToday += val;
-                            AddMessage(I18n.Msg_Payment_Complete(val.ToString("N0")), HUDMessage.achievement_type);
-                        }
-                        Game1.activeClickableMenu = null;
-                    }, -1, 1, loanManager.Balance, Math.Min(loanManager.DailyAmount, loanManager.Balance));
-                }
-                else if (full)
-                {
-                    if (Game1.player.Money >= loanManager.Balance)
-                    {   //Repays the remaining balance
-                        Game1.player.Money -= loanManager.Balance;
-                        loanManager.InitiateReset();
-                        AddMessage(I18n.Msg_Payment_Full(), HUDMessage.achievement_type);
-                    }
-                    else
-                    {
-                        AddMessage(I18n.Msg_Payment_Failed(loanManager.Balance.ToString("N0")), HUDMessage.error_type);
-                    }
-                    repayProcess = false;
-                    return;
-                } //Check if you are still in loan contract
-                else if (loanManager.Balance > 0)
-                {
-                    int moneyToRepay = loanManager.CalculateAmountToPayToday;
-                    //If player has enough Money for the daily deduction amount
-                    if (Game1.player.Money >= moneyToRepay)
-                    {
-                        //Checks if the balance is greater than or equal to the daily repayment amount
-                        if (loanManager.Balance > moneyToRepay)
-                        {
-                            Game1.player.Money -= moneyToRepay;
-                            loanManager.AmountRepaid += moneyToRepay;
-                            loanManager.Balance -= moneyToRepay;
-                        }
-                        else
-                        {
-                            //Repays the remaining balance
-                            Game1.player.Money -= loanManager.Balance;
-                            loanManager.IsBorrowing = false;
-                            AddMessage(I18n.Msg_Payment_Full(), HUDMessage.achievement_type);
-                        }
-                        loanManager.HasPaid = true;
-
-                        if (loanManager.Duration > 0) loanManager.Duration--;
-                        loanManager.LateDays = 0;
-                    }
-                    else
-                    {
-                        if (Config.LatePaymentChargeRate != 0)
-                        {
-                            loanManager.LateChargeRate = Config.LatePaymentChargeRate;
-                            loanManager.LateChargeAmount = (int)loanManager.CalculateLateFees;
-                            AddMessage(I18n.Msg_Payment_Failed(loanManager.DailyAmount.ToString("N0")), HUDMessage.error_type);
-                            if (loanManager.LateDays == 0)
-                            {
-                                AddMessage(I18n.Msg_Payment_Missed1(loanManager.LateChargeAmount.ToString("N0")), HUDMessage.error_type);
-                                loanManager.LateDays++;
-                            }
-                            else
-                            {
-                                AddMessage(I18n.Msg_Payment_Missed2(loanManager.LateChargeAmount.ToString("N0")), HUDMessage.error_type);
-                                loanManager.Balance += loanManager.LateChargeAmount;
-                            }
-                        }
-                        loanManager.HasPaid = false;
-                    }
-                }
+                InitiateCustomRepayment();
+            }
+            else if (full)
+            {
+                InitiateFullRepayment();
+            }
+            else
+            {
+                InitiateRegularRepayment();
             }
         }
 
@@ -194,62 +130,147 @@ namespace LoanMod
 
             //checks if player is currently taking any loans, if so it will load all the loan data.
             if (Game1.player.IsMainPlayer)
-                loanManager = this.Helper.Data.ReadSaveData<LoanManager>("Doomnik.MoneyManage"); 
+                _loanManager = Helper.Data.ReadSaveData<LoanManager>("Doomnik.MoneyManage");
 
-            if (loanManager == null || Config.Reset)
-            {
-                loanManager = new LoanManager();
-                Config.Reset = false;
-                Helper.WriteConfig<ModConfig>(Config);
-                AddMessage(I18n.Msg_Create(), HUDMessage.achievement_type);
-            }
+            if (_loanManager != null && !_config.Reset) return;
+
+            _loanManager = new LoanManager();
+            _config.Reset = false;
+            Helper.WriteConfig(_config);
+            ExtensionHelper.AddMessage(I18n.Msg_Create(), HUDMessage.achievement_type);
         }
 
         private void DayStarted(object sender, DayStartedEventArgs e)
         {
-            //checks if player has made payment.
-            if (loanManager.IsBorrowing)
+            if (_loanManager.IsBorrowing)
             {
-                if (loanManager.HasPaid)
+                if (_loanManager.Balance < _loanManager.DailyAmount) _loanManager.DailyAmount = _loanManager.Balance;
+                if (_loanManager.HasPaid)
                 {
-                    if (loanManager.DailyAmount > 0) 
-                        AddMessage(I18n.Msg_Payment_Complete(loanManager.CalculateAmountToPayToday.ToString("N0")), HUDMessage.achievement_type);
-
-                    loanManager.AmountRepaidToday = 0;
-                    loanManager.HasPaid = false;
+                    _loanManager.AmountRepaidToday = 0;
+                    _loanManager.HasPaid = false;
                 }
-                if (loanManager.Balance < loanManager.DailyAmount) loanManager.DailyAmount = loanManager.Balance;
             }
             else
             {
-                loanManager.InitiateReset();
+                _loanManager.InitiateReset();
             }
 
-            if (loanManager.Balance < 0)
-            {
-                Monitor.Log($"Amount Borrowed vs Repaid: {loanManager.AmountBorrowed} / {loanManager.AmountRepaid}, Duration: {loanManager.Duration}. Interest: {loanManager.Interest}", LogLevel.Info);
-                loanManager.InitiateReset();
-                AddMessage(I18n.Msg_Payment_Error(), HUDMessage.error_type);
-            }
+            if (_loanManager.Balance >= 0) return;
+
+            Monitor.Log($"Amount Borrowed vs Repaid: {_loanManager.AmountBorrowed} / {_loanManager.AmountRepaid}, Duration: {_loanManager.Duration}. Interest: {_loanManager.Interest}", LogLevel.Error);
+            _loanManager.InitiateReset();
+            ExtensionHelper.AddMessage(I18n.Msg_Payment_Error(), HUDMessage.error_type);
         }
 
         /// <summary>
         /// This method prevents mods like SaveAnytime from interfering with repayments.
         /// </summary>
-        private void DayEnding(object sender, DayEndingEventArgs e) => canSave = true;
+        private void DayEnding(object sender, DayEndingEventArgs e) => _canSave = true;
 
         private void Saving(object sender, SavingEventArgs e)
         {
-            if (canSave)
+            if (!_canSave) return;
+
+            InitiateRepayment(false);
+
+            if (Context.IsMainPlayer) Helper.Data.WriteSaveData("Doomnik.MoneyManage", _loanManager);
+            _canSave = false;
+        }
+        
+        private void InitiateCustomRepayment()
+        {
+            Game1.activeClickableMenu = new NumberSelectionMenu(I18n.Msg_Startrepay(), (val, _, _) =>
             {
-                InitiateRepayment(false);
-                if (Context.IsMainPlayer)
+                if (val == _loanManager.Balance)
                 {
-                    Helper.Data.WriteSaveData("Doomnik.MoneyManage", loanManager);
+                    StartBorrow(3, ModConstants.RepayKey);
+                    return;
                 }
 
-                canSave = false;
+                if (Game1.player.Money >= val) RepayAmount(val);
+                Game1.activeClickableMenu = null;
+            }, -1, 1, _loanManager.Balance, Math.Min(_loanManager.DailyAmount, _loanManager.Balance));
+        }
+
+        private void InitiateFullRepayment()
+        {
+            if (Game1.player.Money >= _loanManager.Balance)
+            {
+                RepayAmount(_loanManager.Balance);
+                _loanManager.InitiateReset();
+                ExtensionHelper.AddMessage(I18n.Msg_Payment_Full(), HUDMessage.achievement_type);
             }
+            else
+            {
+                ExtensionHelper.AddMessage(I18n.Msg_Payment_Failed(_loanManager.Balance.ToString("N0")), HUDMessage.error_type);
+            }
+
+            _loanManager.CurrentStage = Stages.Repayment;
+        }
+
+        private void InitiateRegularRepayment()
+        {
+            if (_loanManager.Balance <= 0) return;
+
+            var moneyToRepay = _loanManager.CalculateAmountToPayToday;
+
+            if (Game1.player.Money >= moneyToRepay)
+            {
+                if (_loanManager.Balance > moneyToRepay)
+                {
+                    RepayAmount(moneyToRepay);
+                }
+                else
+                {
+                    RepayAmount(_loanManager.Balance);
+                    _loanManager.IsBorrowing = false;
+                    ExtensionHelper.AddMessage(I18n.Msg_Payment_Full(), HUDMessage.achievement_type);
+                }
+
+                if (_loanManager.Duration > 0) _loanManager.Duration--;
+
+                _loanManager.HasPaid = true;
+                _loanManager.LateDays = 0;
+            }
+            else
+            {
+                HandleLatePayment();
+            }
+        }
+
+        private void RepayAmount(int amount)
+        {
+            if (amount == 0) return;
+            Game1.player.Money -= amount;
+            _loanManager.Balance -= amount;
+            _loanManager.AmountRepaid += amount;
+            _loanManager.AmountRepaidToday += amount;
+
+            ExtensionHelper.AddMessage(I18n.Msg_Payment_Complete(amount.ToString("N0")), HUDMessage.achievement_type);
+        }
+
+        private void HandleLatePayment()
+        {
+            if (_config.LatePaymentChargeRate != 0)
+            {
+                _loanManager.LateChargeRate = _config.LatePaymentChargeRate;
+                _loanManager.LateChargeAmount = (int)_loanManager.CalculateLateFees;
+                ExtensionHelper.AddMessage(I18n.Msg_Payment_Failed(_loanManager.DailyAmount.ToString("N0")), HUDMessage.error_type);
+
+                if (_loanManager.LateDays == 0)
+                {
+                    ExtensionHelper.AddMessage(I18n.Msg_Payment_Missed1(_loanManager.LateChargeAmount.ToString("N0")), HUDMessage.error_type);
+                    _loanManager.LateDays++;
+                }
+                else
+                {
+                    ExtensionHelper.AddMessage(I18n.Msg_Payment_Missed2(_loanManager.LateChargeAmount.ToString("N0")), HUDMessage.error_type);
+                    _loanManager.Balance += _loanManager.LateChargeAmount;
+                }
+            }
+
+            _loanManager.HasPaid = false;
         }
     }
 }

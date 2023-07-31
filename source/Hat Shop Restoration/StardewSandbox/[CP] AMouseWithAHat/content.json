@@ -1,0 +1,305 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/StardewSandbox
+**
+*************************************************/
+
+{
+  "Format": "1.28.4",
+
+  "CustomLocations": [
+    {
+      "Name": "Custom_PeacefulEnd_MouseShop",
+      "FromMapFile": "assets/MouseShop.tmx"
+    }
+  ],
+
+  "Changes": [
+    {
+      "Action": "Load",
+      "Target": "Data/Events/Custom_PeacefulEnd_MouseShop",
+      "FromFile": "assets/Event.json"
+    },
+    {
+      "Action": "Load",
+      "Target": "Maps/z_MouseShop_Interior",
+      "FromFile": "assets/tilesheets/z_MouseShop_Interior.png"
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Events/Custom_PeacefulEnd_MouseShop",
+      "Entries": {
+        "17291001/n HatShopRepaired": "playful/5 6/farmer -100 -100 0/addTemporaryActor Abigail 0 0 3 3 2 false Character/broadcastEvent/skippable/pause 1500/playSound doorClose/warp farmer 3 10/pause 750/textAboveHead Abigail \"{{i18n: hiyo}}\"/pause 1500/move farmer 0 -4 0 false/pause 750/textAboveHead Abigail \"{{i18n: statement}}\"/pause 3000/textAboveHead Abigail \"{{i18n: thank_you}}\"/pause 2750/emote farmer 32/pause 1250/end position 3 6"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Forest",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 34,
+            "Y": 95
+          },
+          "Layer": "Buildings",
+          "SetProperties": {
+            "Action": "LockedDoorWarp 3 10 Custom_PeacefulEnd_MouseShop 600 2000"
+          }
+        }
+      ],
+      "When": {
+        "HasFlag": "HatShopRepaired"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Custom_PeacefulEnd_MouseShop",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 8,
+            "Y": 4
+          },
+          "Layer": "Accessories",
+          "SetIndex": "65"
+        },
+        {
+          "Position": {
+            "X": 8,
+            "Y": 5
+          },
+          "Layer": "Accessories",
+          "SetIndex": "81"
+        }
+      ],
+      "When": {
+        "HasFlag": "HatShopRepaired",
+        "Weather": "Rain, Storm"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Custom_PeacefulEnd_MouseShop",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 1,
+            "Y": 6
+          },
+          "Layer": "Front",
+          "SetIndex": "{{Query: {{Random:59, 75, 91, 107, 123, 139, 155, 171, 187, 203, 219, 235, 251, 267, 283, 299, 315, 331, 347, 363, 379, 395, 411, 427, 443 |key=first_mannequin}}}}"
+        },
+        {
+          "Position": {
+            "X": 2,
+            "Y": 6
+          },
+          "Layer": "Front",
+          "SetIndex": "{{Query: {{Random:59, 75, 91, 107, 123, 139, 155, 171, 187, 203, 219, 235, 251, 267, 283, 299, 315, 331, 347, 363, 379, 395, 411, 427, 443 |key=first_mannequin}} + 1}}"
+        },
+        {
+          "Position": {
+            "X": 3,
+            "Y": 6
+          },
+          "Layer": "Front",
+          "SetIndex": "{{Query: {{Random:59, 75, 91, 107, 123, 139, 155, 171, 187, 203, 219, 235, 251, 267, 283, 299, 315, 331, 347, 363, 379, 395, 411, 427, 443 |key=first_mannequin}} + 2}}"
+        }
+      ],
+      "When": {
+        "HasFlag": "HatShopRepaired"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Custom_PeacefulEnd_MouseShop",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 4,
+            "Y": 6
+          },
+          "Layer": "Front",
+          "SetIndex": "{{Query: {{Random:59, 75, 91, 107, 123, 139, 155, 171, 187, 203, 219, 235, 251, 267, 283, 299, 315, 331, 347, 363, 379, 395, 411, 427, 443 |key=second_mannequin}}}}"
+        },
+        {
+          "Position": {
+            "X": 5,
+            "Y": 6
+          },
+          "Layer": "Front",
+          "SetIndex": "{{Query: {{Random:59, 75, 91, 107, 123, 139, 155, 171, 187, 203, 219, 235, 251, 267, 283, 299, 315, 331, 347, 363, 379, 395, 411, 427, 443 |key=second_mannequin}} + 1}}"
+        },
+        {
+          "Position": {
+            "X": 6,
+            "Y": 6
+          },
+          "Layer": "Front",
+          "SetIndex": "{{Query: {{Random:59, 75, 91, 107, 123, 139, 155, 171, 187, 203, 219, 235, 251, 267, 283, 299, 315, 331, 347, 363, 379, 395, 411, 427, 443 |key=second_mannequin}} + 2}}"
+        }
+      ],
+      "When": {
+        "HasFlag": "HatShopRepaired"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Custom_PeacefulEnd_MouseShop",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 8,
+            "Y": 5
+          },
+          "Layer": "Front",
+          "SetIndex": "{{Query: {{Random:59, 75, 107, 123, 139, 187, 203, 219 |key=third_mannequin}} + 1}}"
+        }
+      ],
+      "When": {
+        "HasFlag": "HatShopRepaired"
+      }
+    },
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Custom_PeacefulEnd_MouseShop",
+      "MapTiles": [
+        {
+          "Position": {
+            "X": 8,
+            "Y": 3
+          },
+          "Layer": "Front",
+          "SetIndex": "{{Query: {{Random:59, 75, 91, 107, 123, 139, 155, 171, 187, 203, 219, 235, 251, 267, 283, 299, 315, 331, 347, 363, 379, 395, 411, 427, 443 |key=fourth_mannequin}}}}"
+        },
+        {
+          "Position": {
+            "X": 9,
+            "Y": 3
+          },
+          "Layer": "Front",
+          "SetIndex": "{{Query: {{Random:59, 75, 91, 107, 123, 139, 155, 171, 187, 203, 219, 235, 251, 267, 283, 299, 315, 331, 347, 363, 379, 395, 411, 427, 443 |key=fourth_mannequin}} + 1}}"
+        },
+        {
+          "Position": {
+            "X": 10,
+            "Y": 3
+          },
+          "Layer": "Front",
+          "SetIndex": "{{Query: {{Random:59, 75, 91, 107, 123, 139, 155, 171, 187, 203, 219, 235, 251, 267, 283, 299, 315, 331, 347, 363, 379, 395, 411, 427, 443 |key=fourth_mannequin}} + 2}}"
+        }
+      ],
+      "When": {
+        "HasFlag": "HatShopRepaired"
+      }
+    },
+
+    // Hide the exterior mouse sprite
+    {
+      "Action": "EditImage",
+      "Target": "LooseSprites/Cursors",
+      "FromFile": "assets/Blank.png",
+      "FromArea": {
+        "X": 0,
+        "Y": 0,
+        "Width": 78,
+        "Height": 47
+      },
+      "ToArea": {
+        "X": 592,
+        "Y": 1952,
+        "Width": 78,
+        "Height": 47
+      },
+      "When": {
+        "HasFlag": "HatShopRepaired"
+      }
+    },
+
+    // Building replacement
+    {
+      "Action": "EditImage",
+      "Target": "Maps/{{season}}_outdoorsTileSheet",
+      "FromFile": "assets/HatMouseShop_{{season}}.png",
+      "FromArea": {
+        "X": 32,
+        "Y": 16,
+        "Width": 16,
+        "Height": 16
+      },
+      "ToArea": {
+        "X": 336,
+        "Y": 1120,
+        "Width": 16,
+        "Height": 16
+      },
+      "When": {
+        "HasFlag": "HatShopRepaired"
+      }
+    },
+    {
+      "Action": "EditImage",
+      "Target": "Maps/{{season}}_outdoorsTileSheet",
+      "FromFile": "assets/HatMouseShop_{{season}}.png",
+      "FromArea": {
+        "X": 48,
+        "Y": 0,
+        "Width": 64,
+        "Height": 128
+      },
+      "ToArea": {
+        "X": 336,
+        "Y": 1136,
+        "Width": 64,
+        "Height": 128
+      },
+      "When": {
+        "HasFlag": "HatShopRepaired"
+      }
+    },
+    {
+      "Action": "EditImage",
+      "Target": "Maps/{{season}}_outdoorsTileSheet",
+      "FromFile": "assets/HatMouseShop_{{season}}.png",
+      "FromArea": {
+        "X": 32,
+        "Y": 32,
+        "Width": 16,
+        "Height": 96
+      },
+      "ToArea": {
+        "X": 320,
+        "Y": 1168,
+        "Width": 16,
+        "Height": 96
+      },
+      "When": {
+        "HasFlag": "HatShopRepaired"
+      }
+    },
+    {
+      "Action": "EditImage",
+      "Target": "Maps/{{season}}_outdoorsTileSheet",
+      "FromFile": "assets/HatMouseShop_{{season}}.png",
+      "FromArea": {
+        "X": 0,
+        "Y": 64,
+        "Width": 32,
+        "Height": 64
+      },
+      "ToArea": {
+        "X": 288,
+        "Y": 1200,
+        "Width": 32,
+        "Height": 64
+      },
+      "When": {
+        "HasFlag": "HatShopRepaired"
+      }
+    }
+  ]
+}

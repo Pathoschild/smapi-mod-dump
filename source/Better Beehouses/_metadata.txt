@@ -6,9 +6,11 @@ mods:
    Better Beehouses
 
 latest commit:
-   commit 7e56fecba06d4c2f268fac89d499ed4ce9fde02f
+   commit fecc1b9b2ca3daf41de042e4ebbcddb57dd6fbb4
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Tue Apr 25 11:03:03 2023 -0400
+   Date:   Thu Jul 6 15:07:57 2023 -0400
    
-       version bump
+       Merge pull request #5 from DanielleTlumach/patch-3
+       
+       Update Ukrainian translation
    

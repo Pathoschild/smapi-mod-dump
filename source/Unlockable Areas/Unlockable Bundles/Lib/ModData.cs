@@ -55,15 +55,34 @@ namespace Unlockable_Bundles.Lib
             ensureExist(key, location);
 
             Instance.UnlockableSaveData[key][location].Purchased = value;
+            Instance.UnlockableSaveData[key][location].DayPurchased = Game1.Date.TotalDays;
             API.UnlockableBundlesAPI.clearCache();
         }
 
-        public static void setPartiallyPurchased(string key, string location, string requirement, int value, int index)
+        public static void setPartiallyPurchased(string key, string location, string requirement, int value, int index = -1)
         {
             ensureExist(key, location);
 
             Instance.UnlockableSaveData[key][location].AlreadyPaid.Add(requirement, value);
-            Instance.UnlockableSaveData[key][location].AlreadyPaidIndex.Add(requirement, index);
+            if (index != -1)
+                Instance.UnlockableSaveData[key][location].AlreadyPaidIndex.Add(requirement, index);
+        }
+
+        //Returns the most recent purchase day spawn of an unlockable or -1
+        public static int getDaysSincePurchase(string key)
+        {
+            if (Instance == null)
+                Instance = new ModData();
+
+            if (!Instance.UnlockableSaveData.ContainsKey(key))
+                return -1;
+
+            var entries = Instance.UnlockableSaveData[key].Where(e => Game1.Date.TotalDays - e.Value.DayPurchased != -1);
+
+            if (entries.Count() == 0)
+                return -1;
+
+            return Game1.Date.TotalDays - entries.OrderBy(e => e.Value.DayPurchased).First().Value.DayPurchased;
         }
 
         public static void checkLegacySaveData()
@@ -88,9 +107,18 @@ namespace Unlockable_Bundles.Lib
         public static void applySaveData(UnlockableModel unlockable)
         {
             ensureExist(unlockable.ID, unlockable.LocationUnique);
+            var savedata = Instance.UnlockableSaveData[unlockable.ID][unlockable.Location];
 
-            unlockable.AlreadyPaid = Instance.UnlockableSaveData[unlockable.ID][unlockable.Location].AlreadyPaid;
-            unlockable.AlreadyPaidIndex = Instance.UnlockableSaveData[unlockable.ID][unlockable.Location].AlreadyPaidIndex;
+            unlockable.AlreadyPaid = savedata.AlreadyPaid;
+            unlockable.AlreadyPaidIndex = savedata.AlreadyPaidIndex;
+
+            if (unlockable.RandomPriceEntries > 0) {
+                if(savedata.Price.Count == 0)
+                    savedata.Price = new Dictionary<string, int>(unlockable.Price.OrderBy(x => Game1.random.Next()).Take(unlockable.RandomPriceEntries));
+
+                unlockable.Price = savedata.Price;
+            }
+                
         }
     }
 }

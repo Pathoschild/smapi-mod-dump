@@ -1,23 +1,23 @@
 # -*- encoding: utf-8 -*-
-import os
-import sys
 import datetime
+import os
 import struct
+import sys
 import time
 from pathlib import Path
 from typing import List
 
-from PyQt5.QtCore import QDir, QFileInfo, QFile, QDateTime, Qt
-from PyQt5.QtGui import QPixmap, QPainter
+from PyQt6.QtCore import QDateTime, QDir, QFile, QFileInfo, Qt
+from PyQt6.QtGui import QPainter, QPixmap
 
 import mobase
 
-from ..basic_game import BasicGame
 from ..basic_features.basic_save_game_info import (
     BasicGameSaveGame,
-    BasicGameSaveGameInfoWidget,
     BasicGameSaveGameInfo,
+    BasicGameSaveGameInfoWidget,
 )
+from ..basic_game import BasicGame
 
 
 class BlackAndWhite2ModDataChecker(mobase.ModDataChecker):
@@ -300,7 +300,7 @@ class BlackAndWhite2SaveGameInfoWidget(BasicGameSaveGameInfoWidget):
         self.resize(0, 0)
 
         # Retrieve the pixmap:
-        value = self._get_preview(save.getFilepath())
+        value = self._get_preview(Path(save.getFilepath()))
 
         if value is None:
             return
@@ -347,11 +347,19 @@ class BlackAndWhite2Game(BasicGame, mobase.IPluginFileMapper):
     GameBinary = "white.exe"
     GameDocumentsDirectory = "%DOCUMENTS%/Black & White 2"
     GameSavesDirectory = "%GAME_DOCUMENTS%/Profiles"
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-Black-&-White-2"
+    )
 
     _program_link = PSTART_MENU + "\\Black & White 2\\Black & White® 2.lnk"
 
+    def __init__(self):
+        BasicGame.__init__(self)
+        mobase.IPluginFileMapper.__init__(self)
+
     def init(self, organizer: mobase.IOrganizer) -> bool:
-        super().init(organizer)
+        BasicGame.init(self, organizer)
         self._featureMap[mobase.ModDataChecker] = BlackAndWhite2ModDataChecker()
         self._featureMap[mobase.LocalSavegames] = BlackAndWhite2LocalSavegames(
             self.savesDirectory()

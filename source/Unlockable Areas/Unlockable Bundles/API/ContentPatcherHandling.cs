@@ -25,9 +25,8 @@ namespace Unlockable_Bundles.API
         public static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
-        public static ContentPatcherHandling Singleton;
 
-        public bool IsConditionsApiReady => throw new NotImplementedException();
+        internal static DaysSincePurchaseToken DaysSincePurchaseToken = new DaysSincePurchaseToken();
 
         public static void Initialize()
         {
@@ -42,9 +41,10 @@ namespace Unlockable_Bundles.API
         private static void gameLaunched(object sender, GameLaunchedEventArgs e)
         {
             var api = Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
-            api.RegisterToken(Mod.ModManifest, "Purchased", getValue);
+            api.RegisterToken(Mod.ModManifest, "Purchased", getPurchasdUnlockables);
+            api.RegisterToken(Mod.ModManifest, "DaysSincePurchase", DaysSincePurchaseToken);
         }
 
-        public static IEnumerable<string> getValue() => UnlockableBundlesAPI.getPurchasedUnlockables();
+        public static IEnumerable<string> getPurchasdUnlockables() => UnlockableBundlesAPI.getPurchasedUnlockables();
     }
 }

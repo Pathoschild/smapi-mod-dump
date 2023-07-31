@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17252
+IDs: Achtuur.BetterPlanting
+update keys: Nexus:17252, GitHub:Achtuur/StardewMods

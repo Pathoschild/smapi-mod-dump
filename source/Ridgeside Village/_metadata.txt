@@ -6,11 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit d8f688a92c9681605ecf503411de41f7dc7f7c8e
+   commit ae2e14945e66494d4e6606ae22e98ccf73bf3db7
    Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
-   Date:   Fri Jun 23 10:35:03 2023 +0800
+   Date:   Mon Jul 31 12:41:55 2023 +0800
    
-       more animations
-       
-       ported from NPC Adventures RSV
+       Merge branch 'main' of https://github.com/Rafseazz/Ridgeside-Village-Mod
    

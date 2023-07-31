@@ -13,8 +13,24 @@
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
 		<PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
 		<Reference Include="AchtuurCore" HintPath="$(GameModsPath)\AchtuurCore\AchtuurCore.dll" Private="False" />
-		<Reference Include="JsonAssets" HintPath="$(GameModsPath)\devmods\JsonAssets\JsonAssets.dll" Private="False"/>
+		<Reference Include="JsonAssets" HintPath="$(GameModsPath)\devmods\JsonAssets\JsonAssets.dll" Private="False" />
 		<Reference Include="MailFrameworkMod" HintPath="$(GameModsPath)\devmods\MailFrameworkMod\MailFrameworkMod.dll" Private="False" />
+		<Reference Include="SpaceCore" HintPath="$(GameModsPath)\devmods\SpaceCore\SpaceCore.dll" Private="False" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="assets\fall.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="assets\spring.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="assets\summer.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="assets\winter.png">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 

@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://gitlab.com/delixx/stardew-valley-unlockable-bundles
+**
+*************************************************/
+
+{
+  "ub_not_enough1": "Pas assez de '{{displayName}}'",
+  "ub_not_enough2": "Tu as besoin de plus de '{{displayName}}'",
+  "ub_parrot_ask": "*Coco*... {{item}} ! *Coco*... Donne ?",
+  "ub_parrot_money": "Le brillant",
+  "ub_speech_ask": "{{item}} ? C'est très bien ! Je peux l'avoir ?",
+  "ub_speech_money": "L'argent",
+}

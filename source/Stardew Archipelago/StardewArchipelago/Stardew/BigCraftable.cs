@@ -46,6 +46,19 @@ namespace StardewArchipelago.Stardew
             }
         }
 
+        public static string ConvertToRarecrowAPName(string stardewName, string stardewDescription)
+        {
+            if (stardewName != "Rarecrow")
+            {
+                return stardewName;
+            }
+
+            var pattern = @"\((\d) of \s*\d\)"; // (# of 8)
+            var match = Regex.Match(stardewDescription, pattern);
+            var rarecrowNumber = match.Groups[1].Value;
+            return $"{stardewName} #{rarecrowNumber}";
+        }
+
         public override Item PrepareForGivingToFarmer(int amount = 1)
         {
             var bigCraftable = new Object(Vector2.Zero, Id);

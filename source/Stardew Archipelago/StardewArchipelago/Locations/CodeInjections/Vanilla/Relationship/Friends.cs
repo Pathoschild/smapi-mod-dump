@@ -48,7 +48,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                 var spawnsOnIsland = IsIslandLocation(spawnLocation);
                 var apName = _stardewNameToArchipelagoName.ContainsKey(name) ? _stardewNameToArchipelagoName[name] : name;
 
-                var friend = new ArchipelagoFriend(name, apName, datable, false, spawnsOnIsland, name.Contains("Dwarf"));
+                var friend = new ArchipelagoFriend(name, apName, datable, false, spawnsOnIsland, name.Contains("Dwarf"), false);
                 _friends.Add(friend);
             }
         }
@@ -76,13 +76,36 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                 var friend = _friends.FirstOrDefault(x => x.StardewName == name || x.ArchipelagoName == name);
                 if (friend == null)
                 {
-                    return null;
+                    friend = TryFindKidWithThatName(name);
+                    if (friend == null)
+                    {
+                        return null;
+                    }
                 }
 
                 _friendsByName.Add(name, friend);
             }
 
             return _friendsByName[name];
+        }
+
+        private static ArchipelagoFriend TryFindKidWithThatName(string name)
+        {
+            var kids = Game1.player.getChildren();
+            for (var kidIndex = 0; kidIndex < kids.Count; kidIndex++)
+            {
+                var kid = kids[kidIndex];
+                if (kid.Name != name)
+                {
+                    continue;
+                }
+
+                var firstOrSecond = kidIndex % 2 == 0 ? "First" : "Second";
+                return new ArchipelagoFriend(kid.Name, $"{firstOrSecond} Child", false, false, false,
+                    false, true);
+            }
+
+            return null;
         }
 
         public ArchipelagoFriend GetFriend(Friendship friendship)
@@ -111,7 +134,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                 return;
             }
 
-            var pet = new ArchipelagoFriend(petName, PET_NAME, false, true, false, false);
+            var pet = new ArchipelagoFriend(petName, PET_NAME, false, true, false, false, false);
             _friends.Add(pet);
             _friendsByName.Add(petName, pet);
         }

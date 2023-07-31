@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17550
+IDs: spacechase0.BlahajBlast
+update keys: Nexus:17550, GitHub:spacechase0/StardewValleyMods

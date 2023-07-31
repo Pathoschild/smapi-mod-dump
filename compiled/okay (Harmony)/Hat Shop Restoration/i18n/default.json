@@ -1,0 +1,17 @@
+﻿{
+  "ui.message.hand_mirror_unlock": "[Hand Mirror]\nUnlocked the {0} hat.",
+
+  "dialogue.shop.repair_hat_shop": "Repair Hat Shop",
+  "dialogue.shop.leave": "Leave",
+  "dialogue.shop.purchase_hat": "Purchase a hat",
+  "dialogue.shop.unlock_hat_customization": "Unlock hat customization",
+  "dialogue.shop.special_projects": "Special Projects",
+
+  "dialogue.examine.small_door": "You are a tad too tall to fit through this small door. It seems to be a tiny bedroom of sorts.",
+
+  "dialogue.chat.greeting": "Hiyo, poke! Come for hats?",
+  "dialogue.chat.project_question": "What project would you like to start?",
+  "dialogue.chat.project_requirements": "You would like to convert that old abandoned house into a hat shop? It will cost 10,000g and you'll also need to provide me with 250 pieces of wood and 10 cloths.",
+  "dialogue.chat.missing_wood": "Sorry... You have the money, but I also need the 250 pieces of wood.",
+  "dialogue.chat.missing_cloth": "Sorry... You have the money and wood, but I also need the 10 bolts of cloth."
+}

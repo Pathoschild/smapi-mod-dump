@@ -31,6 +31,7 @@ namespace StardewArchipelago.Items.Mail
         private readonly IModHelper _modHelper;
         private readonly Mailman _mail;
         private readonly TrapManager _trapManager;
+        private readonly BabyBirther _babyBirther;
         private Dictionary<string, Action<string>> _letterActions;
         private ArchipelagoClient _archipelago;
 
@@ -40,6 +41,7 @@ namespace StardewArchipelago.Items.Mail
             _mail = mail;
             _archipelago = archipelago;
             _trapManager = trapManager;
+            _babyBirther = new BabyBirther();
             _letterActions = new Dictionary<string, Action<string>>();
             _letterActions.Add(LetterActionsKeys.Friendship, IncreaseFriendshipWithEveryone);
             _letterActions.Add(LetterActionsKeys.Backpack, (_) => IncreaseBackpackLevel());
@@ -69,6 +71,7 @@ namespace StardewArchipelago.Items.Mail
             _letterActions.Add(LetterActionsKeys.GiveFurniture, ReceiveFurniture);
             _letterActions.Add(LetterActionsKeys.GiveHat, ReceiveHat);
             _letterActions.Add(LetterActionsKeys.IslandUnlock, PerformParrotUpgrade);
+            _letterActions.Add(LetterActionsKeys.SpawnBaby, (_) => _babyBirther.SpawnNewBaby());
             _letterActions.Add(LetterActionsKeys.Trap, ExecuteTrap);
         }
 
@@ -480,6 +483,12 @@ namespace StardewArchipelago.Items.Mail
                 case "VolcanoShortcutOut":
                     OpenVolcanoExitShortcut();
                     return;
+                case "ProfessorSnailCave":
+                    OpenProfessorSnailCave();
+                    return;
+                case VanillaUnlockManager.TREEHOUSE:
+                    ConstructTreeHouse();
+                    return;
             }
         }
 
@@ -488,6 +497,7 @@ namespace StardewArchipelago.Items.Mail
         private const string _islandNorth = "IslandNorth";
         private const string _islandWest = "IslandWest";
         private const string _volcanoDungeon = "VolcanoDungeon0";
+        private const string _mountain = "Mountain";
 
         private static T FindLocation<T>(string locationName)
         {
@@ -594,7 +604,20 @@ namespace StardewArchipelago.Items.Mail
             Game1.addMailForTomorrow("Island_VolcanoShortcutOut", true, true);
             var shortcutOutUnlockedField = _modHelper.Reflection.GetField<NetBool>(volcanoDungeon, "shortcutOutUnlocked");
             shortcutOutUnlockedField.GetValue().Value = true;
+        }
 
+        private void OpenProfessorSnailCave()
+        {
+            var islandNorth = FindLocation<IslandNorth>(_islandNorth);
+
+            islandNorth.caveOpened.Value = true;
+            Game1.addMailForTomorrow("islandNorthCaveOpened", true, true);
+        }
+
+        private void ConstructTreeHouse()
+        {
+            var mountain = FindLocation<Mountain>(_mountain);
+            mountain.ApplyTreehouseIfNecessary();
         }
 
         private void ExecuteTrap(string trapName)

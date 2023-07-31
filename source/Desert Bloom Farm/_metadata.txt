@@ -6,9 +6,9 @@ mods:
    Desert Bloom Farm
 
 latest commit:
-   commit 3ba423bda05b465348b97df43a4d97f024fec445
+   commit 9f36ec0718ce494204c788eebf7cfda812ca74c0
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Mon Jun 26 13:38:54 2023 +0200
+   Date:   Sat Jul 8 12:57:01 2023 +0200
    
-       added gmcm option
+       Migrated from UA to UB
    

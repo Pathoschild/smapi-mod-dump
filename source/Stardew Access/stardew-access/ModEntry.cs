@@ -8,14 +8,17 @@
 **
 *************************************************/
 
-using stardew_access.Features;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using HarmonyLib;
+using   stardew_access.Features;
 using stardew_access.Patches;
 using stardew_access.ScreenReader;
+using stardew_access.Translation;
+using stardew_access.Utils;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 
 namespace stardew_access
 {
@@ -23,7 +26,6 @@ namespace stardew_access
     {
         #region Global Vars & Properties
 
-#pragma warning disable CS8603
         private static int prevDate = -99;
         private static ModConfig? config;
         private Harmony? harmony;
@@ -34,69 +36,94 @@ namespace stardew_access
         private static TileViewer? tileViewer;
         private static Warnings? warnings;
         private static ReadTile? readTile;
+        private static GridMovement? gridMovement;
+        private static ObjectTracker? objectTracker;
 
-        internal static ModConfig Config { get => config; set => config = value; }
-        public static IModHelper? ModHelper { get => modHelper; }
+        internal static ModConfig Config
+        {
+            get => config ?? throw new InvalidOperationException("Config has not been initialized.");
+            set => config = value;
+        }
+        internal static IModHelper? ModHelper
+        {
+            get => modHelper;
+        }
 
-        public static Radar RadarFeature
+        internal static Radar RadarFeature
         {
             get
             {
-                if (radarFeature == null)
-                    radarFeature = new Radar();
+                radarFeature ??= new Radar();
 
                 return radarFeature;
             }
             set => radarFeature = value;
         }
 
-        public static string hudMessageQueryKey = "";
-        public static bool isNarratingHudMessage = false;
-        public static bool radarDebug = false;
+        internal static string hudMessageQueryKey = "";
+        internal static bool isNarratingHudMessage = false;
+        internal static bool radarDebug = false;
 
-        public static IScreenReader ScreenReader
+        internal static IScreenReader ScreenReader
         {
             get
             {
-                if (screenReader == null)
-                    screenReader = new ScreenReaderController().Initialize();
+                screenReader ??= ScreenReaderController.Initialize();
 
                 return screenReader;
             }
-
             set => screenReader = value;
         }
 
-        public static TileViewer TileViewerFeature
+        internal static TileViewer TileViewerFeature
         {
             get
             {
-                if (tileViewer == null)
-                    tileViewer = new TileViewer();
+                tileViewer ??= new TileViewer();
                 return tileViewer;
             }
         }
 
-        public static ReadTile ReadTileFeature
+        internal static ReadTile ReadTileFeature
         {
             get
             {
-                if (readTile == null)
-                    readTile = new ReadTile();
+                readTile ??= new ReadTile();
                 return readTile;
             }
         }
 
-        public static Warnings WarningsFeature
+        internal static Warnings WarningsFeature
         {
             get
             {
-                if (warnings == null)
-                    warnings = new Warnings();
+                warnings ??= new Warnings();
 
                 return warnings;
             }
         }
+
+        internal static GridMovement GridMovementFeature
+        {
+            get
+            {
+                gridMovement ??= new GridMovement();
+                return gridMovement;
+            }
+        }
+        internal static int? LastGridMovementDirection = null;
+        internal static InputButton? LastGridMovementButtonPressed = null;
+
+        internal static ObjectTracker ObjectTrackerFeature
+        {
+            get
+            {
+                objectTracker ??= new ObjectTracker();
+                return objectTracker;
+            }
+        }
+        internal static Boolean IsUsingPathfinding = false;
+
         #endregion
 
         /*********
@@ -114,7 +141,7 @@ namespace stardew_access
 
             Game1.options.setGamepadMode("force_on");
 
-            ScreenReader = new ScreenReaderController().Initialize();
+            ScreenReader = ScreenReaderController.Initialize();
             ScreenReader.Say("Initializing Stardew Access", true);
 
             CustomSoundEffects.Initialize();
@@ -136,67 +163,64 @@ namespace stardew_access
             }
             #endregion
 
-            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-            helper.Events.GameLoop.UpdateTicked += this.onUpdateTicked;
-            helper.Events.GameLoop.DayStarted += this.onDayStarted;
-            helper.Events.Display.MenuChanged += this.onMenuChanged;
+            helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+            helper.Events.Input.ButtonPressed += OnButtonPressed;
+            helper.Events.Input.ButtonsChanged += OnButtonsChanged;
+            helper.Events.Player.Warped += OnPlayerWarped;
+            helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.Display.MenuChanged += OnMenuChanged;
             AppDomain.CurrentDomain.DomainUnload += OnExit;
             AppDomain.CurrentDomain.ProcessExit += OnExit;
         }
 
-        private void onMenuChanged(object? sender, MenuChangedEventArgs e)
-        {
-            TextBoxPatch.activeTextBoxes = "";
-            if (e.OldMenu != null)
-            {
-                MainClass.DebugLog($"Switched from {e.OldMenu.GetType().ToString()} menu, performing cleanup...");
-                IClickableMenuPatch.Cleanup(e.OldMenu);
-            }
-        }
+        private void OnGameLaunched(object? sender, GameLaunchedEventArgs e) => Translator.Instance.Initialize(ModManifest);
 
         /// <summary>Returns the Screen Reader class for other mods to use.</summary>
-        public override object GetApi()
-        {
-            return new API();
-        }
+        public override object GetApi() => new API();
 
         public void OnExit(object? sender, EventArgs? e)
         {
             // This closes the connection with the screen reader, important for linux
             // Don't know if this ever gets called or not but, just in case if it does.
-            if (ScreenReader != null)
-                ScreenReader.CloseScreenReader();
+            ScreenReader?.CloseScreenReader();
         }
 
-        private void onDayStarted(object? sender, DayStartedEventArgs? e)
+        private void OnDayStarted(object? sender, DayStartedEventArgs? e)
         {
             StaticTiles.LoadTilesFiles();
             StaticTiles.SetupTilesDicts();
+            ObjectTrackerFeature.GetLocationObjects();
         }
 
-        private void onUpdateTicked(object? sender, UpdateTickedEventArgs? e)
+        private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
         {
-            if (!Context.IsPlayerFree)
+            // The event with id 13 is the Haley's six heart event, the one at the beach requiring the player to find the bracelet
+            // *** Exiting here will cause GridMovement and ObjectTracker functionality to not work during this event, making the bracelet impossible to track ***
+            if (!Context.IsPlayerFree && !(Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13))
                 return;
 
             // Narrates currently selected inventory slot
-            Other.narrateCurrentSlot();
+            GameStateNarrator.NarrateCurrentSlot();
             // Narrate current location's name
-            Other.narrateCurrentLocation();
+            GameStateNarrator.NarrateCurrentLocation();
             //handle TileCursor update logic
-            TileViewerFeature.update();
+            TileViewerFeature.Update();
 
             if (Config.Warning)
-                WarningsFeature.update();
+                WarningsFeature.Update();
 
             if (Config.ReadTile)
-                ReadTileFeature.update();
+                ReadTileFeature.Update();
 
             RunRadarFeatureIfEnabled();
 
             RunHudMessageNarration();
 
             RefreshBuildListIfRequired();
+
+            RunGridMovementFeatureIfEnabled();
+            RunObjectTrackerFeatureIfEnabled();
 
             async void RunRadarFeatureIfEnabled()
             {
@@ -214,7 +238,7 @@ namespace stardew_access
                 if (!isNarratingHudMessage)
                 {
                     isNarratingHudMessage = true;
-                    Other.narrateHudMessages();
+                    GameStateNarrator.NarrateHudMessages();
                     await Task.Delay(300);
                     isNarratingHudMessage = false;
                 }
@@ -228,34 +252,67 @@ namespace stardew_access
                     {
                         prevDate = CurrentPlayer.Date;
                         DebugLog("Refreshing buildlist...");
-                        CustomCommands.onBuildListCalled();
+                        CustomCommands.OnBuildListCalled();
                     }
+                }
+            }
+
+            void RunGridMovementFeatureIfEnabled()
+            {
+                if (LastGridMovementButtonPressed.HasValue)
+                {
+                    SButton button = LastGridMovementButtonPressed.Value.ToSButton();
+                    bool isButtonDown = Helper.Input.IsDown(button) || Helper.Input.IsSuppressed(button);
+                    bool? isGridMovementActive = Config?.GridMovementActive;
+                    bool? isGridMovementMoving = GridMovementFeature?.is_moving;
+
+                    if (LastGridMovementDirection is not null && Game1.activeClickableMenu == null && isGridMovementActive == true && isGridMovementMoving == false && Config?.GridMovementOverrideKey.IsDown() == false && isButtonDown)
+                    {
+                        GridMovementFeature?.HandleGridMovement(LastGridMovementDirection.Value, LastGridMovementButtonPressed.Value);
+                    }
+                }
+            }
+            
+            void RunObjectTrackerFeatureIfEnabled()
+            {
+                if (e.IsMultipleOf(15) && Config != null && Config.OTAutoRefreshing)
+                {
+                    ObjectTrackerFeature.Tick();
                 }
             }
         }
 
-        private void OnButtonPressed(object? sender, ButtonPressedEventArgs? e)
+        private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
         {
-            if (e == null)
-                return;
-
-            void SimulateMouseClicks(Action<int, int> leftClickHandler, Action<int, int> rightClickHandler)
+            TextBoxPatch.activeTextBoxes = "";
+            if (e.OldMenu != null)
             {
-                int mouseX = Game1.getMouseX(true);
-                int mouseY = Game1.getMouseY(true);
+                MainClass.DebugLog($"Switched from {e.OldMenu.GetType()} menu, performing cleanup...");
+                IClickableMenuPatch.Cleanup(e.OldMenu);
+            }
+        }
 
-                if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())
-                {
-                    leftClickHandler(mouseX, mouseY);
-                }
-                else if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
-                {
-                    rightClickHandler(mouseX, mouseY);
-                }
+        private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
+        {
+            if (Game1.player.controller is not null && Config!.OTCancelAutoWalking.JustPressed())
+            {
+                #if DEBUG
+                DebugLog("Canceling OTAutoWalking.");
+                #endif
+                Game1.player.controller.endBehaviorFunction(Game1.player, Game1.currentLocation);
+                Helper.Input.Suppress(e.Button);
+            }
+
+            if (Config is null)
+            {
+                #if DEBUG
+                DebugLog("Returning due to 'Config' being null");
+                #endif
+                return;
             }
 
             #region Simulate left and right clicks
-            if (!TextBoxPatch.isAnyTextBoxActive)
+            if (!TextBoxPatch.IsAnyTextBoxActive)
             {
                 if (Game1.activeClickableMenu != null)
                 {
@@ -274,8 +331,119 @@ namespace stardew_access
             }
             #endregion
 
-            if (!Context.IsPlayerFree)
+            // Exit if in a menu
+            if (Game1.activeClickableMenu != null)
+            {
+                #if DEBUG
+                DebugLog("Returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
+                #endif
                 return;
+            }
+
+            // Code only run during game play below this line 
+            
+            // Stops the auto walk   controller if any movement key(WASD) is pressed
+            if (TileViewerFeature.isAutoWalking && IsMovementKey(e.Button))
+                TileViewerFeature.StopAutoWalking(wasForced: true);
+
+            // Narrate Current Location
+            if (Config.LocationKey.JustPressed())
+                Narrate(Game1.currentLocation.Name);
+
+            // Narrate Position
+            if (Config.PositionKey.JustPressed())
+            {
+                string toSpeak = Config.VerboseCoordinates
+                    ? $"X: {CurrentPlayer.PositionX}, Y: {CurrentPlayer.PositionY}"
+                    : $"{CurrentPlayer.PositionX}, {CurrentPlayer.PositionY}";
+                Narrate(toSpeak);
+            }
+
+            // Narrate health and stamina
+            if (Config.HealthNStaminaKey.JustPressed())
+            {
+                if (ModHelper == null)
+                    return;
+
+                string toSpeak = Config.HealthNStaminaInPercentage
+                    ? Translator.Instance.Translate(
+                        "feature-speak_health_n_stamina-in_percentage_format",
+                        new
+                        {
+                            health = CurrentPlayer.PercentHealth,
+                            stamina = CurrentPlayer.PercentStamina
+                        }
+                    )
+                    : Translator.Instance.Translate(
+                        "feature-speak_health_n_stamina-in_normal_format",
+                        new
+                        {
+                            health = CurrentPlayer.CurrentHealth,
+                            stamina = CurrentPlayer.CurrentStamina
+                        }
+                    );
+
+                Narrate(toSpeak);
+            }
+
+            // Narrate money at hand
+            if (Config.MoneyKey.JustPressed())
+                Narrate($"You have {CurrentPlayer.Money}g");
+
+            // Narrate time and season
+            if (Config.TimeNSeasonKey.JustPressed())
+                Narrate($"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}");
+
+            // Manual read tile at player's position
+            if (Config.ReadStandingTileKey.JustPressed())
+                ReadTileFeature.Run(manuallyTriggered: true, playersPosition: true);
+
+            // Manual read tile at looking tile
+            if (Config.ReadTileKey.JustPressed())
+                ReadTileFeature.Run(manuallyTriggered: true);
+
+            // Tile viewing cursor keys
+            TileViewerFeature.HandleInput();
+
+            // GridMovement 
+            if (Game1.player.controller is not null || (GridMovementFeature != null && GridMovementFeature.is_warping))
+            {
+                Helper.Input.Suppress(e.Button);
+                #if DEBUG
+                DebugLog("Returning due to Game1.player.controller not being null or GridMovementFeature.is_warping being true");
+                #endif
+                return;
+            }
+            if (!Context.CanPlayerMove)
+            {
+                #if DEBUG
+                DebugLog("Returning due to 'Context.CanPlayerMove' being false");
+                #endif
+                return;
+            }
+            HandleGridMovement();
+
+            // local functions
+            void SimulateMouseClicks(Action<int, int> leftClickHandler, Action<int, int> rightClickHandler)
+            {
+                int mouseX = Game1.getMouseX(true);
+                int mouseY = Game1.getMouseY(true);
+
+                if (Config.LeftClickMainKey.JustPressed() || Config.LeftClickAlternateKey.JustPressed())
+                {
+                    #if DEBUG
+                    DebugLog("Simulating left mouse click");
+                    #endif
+                    leftClickHandler(mouseX, mouseY);
+                }
+                else if (Config.RightClickMainKey.JustPressed() || Config.RightClickAlternateKey.JustPressed())
+                {
+                    #if DEBUG
+                    DebugLog("Simulating right mouse click");
+                    #endif
+                    rightClickHandler(mouseX, mouseY);
+                }
+            }
 
             void Narrate(string message) => MainClass.ScreenReader.Say(message, true);
 
@@ -287,88 +455,76 @@ namespace stardew_access
                     || button.Equals(SButtonExtensions.ToSButton(Game1.options.moveRightButton[0]));
             }
 
-            // Stops the auto walk   controller if any movement key(WASD) is pressed
-            if (TileViewerFeature.isAutoWalking && IsMovementKey(e.Button))
+            void HandleGridMovement()
             {
-                TileViewerFeature.stopAutoWalking(wasForced: true);
-            }
-
-            // Narrate Current Location
-            if (Config.LocationKey.JustPressed())
-            {
-                Narrate(Game1.currentLocation.Name);
-                return;
-            }
-
-            // Narrate Position
-            if (Config.PositionKey.JustPressed())
-            {
-                string toSpeak = Config.VerboseCoordinates
-                    ? $"X: {CurrentPlayer.PositionX}, Y: {CurrentPlayer.PositionY}"
-                    : $"{CurrentPlayer.PositionX}, {CurrentPlayer.PositionY}";
-                Narrate(toSpeak);
-                return;
-            }
-
-            // Narrate health and stamina
-            if (Config.HealthNStaminaKey.JustPressed())
-            {
-                if (ModHelper == null)
+                if (Config!.GridMovementOverrideKey.IsDown())
+                {
+                    #if DEBUG
+                    DebugLog("Returning due to 'Config.GridMovementOverrideKey.IsDown()' being true");
+                    #endif
                     return;
+                }
 
-                string toSpeak = Config.HealthNStaminaInPercentage
-                    ? ModHelper.Translation.Get("manuallytriggered.healthnstamina.percent", new { health = CurrentPlayer.PercentHealth, stamina = CurrentPlayer.PercentStamina })
-                    : ModHelper.Translation.Get("manuallytriggered.healthnstamina.normal", new { health = CurrentPlayer.CurrentHealth, stamina = CurrentPlayer.CurrentStamina });
+                if (!Config!.GridMovementActive)
+                {
+                    #if DEBUG
+                    DebugLog("Returning due to 'Config.GridMovementActive' being false");
+                    #endif
+                    return;
+                }
 
-                Narrate(toSpeak);
-                return;
+                if (GridMovementFeature == null)
+                {
+                    #if DEBUG
+                    DebugLog("Returning due to 'gridMovement' being null");
+                    #endif
+                    return;
+                }
+
+                e.Button.TryGetStardewInput(out InputButton keyboardButton);
+                e.Button.TryGetController(out Buttons controllerButton);
+
+                var directionMappings = new Dictionary<(InputButton, Buttons), int>
+                {
+                    {(Game1.options.moveUpButton[0], Buttons.DPadUp), 0},
+                    {(Game1.options.moveRightButton[0], Buttons.DPadRight), 1},
+                    {(Game1.options.moveDownButton[0], Buttons.DPadDown), 2},
+                    {(Game1.options.moveLeftButton[0], Buttons.DPadLeft), 3}
+                };
+
+                foreach (var mapping in directionMappings)
+                {
+                    if (keyboardButton.Equals(mapping.Key.Item1) || controllerButton.Equals(mapping.Key.Item2))
+                    {
+                        GridMovementFeature!.HandleGridMovement(mapping.Value, keyboardButton);
+                        Helper.Input.Suppress(e.Button);
+                        break;
+                    }
+                }
             }
-
-            // Narrate money at hand
-            if (Config.MoneyKey.JustPressed())
-            {
-                Narrate($"You have {CurrentPlayer.Money}g");
-                return;
-            }
-
-            // Narrate time and season
-            if (Config.TimeNSeasonKey.JustPressed())
-            {
-                Narrate($"Time is {CurrentPlayer.TimeOfDay} and it is {CurrentPlayer.Day} {CurrentPlayer.Date} of {CurrentPlayer.Season}");
-                return;
-            }
-
-            // Manual read tile at player's position
-            if (Config.ReadStandingTileKey.JustPressed())
-            {
-                ReadTileFeature.run(manuallyTriggered: true, playersPosition: true);
-                return;
-            }
-
-            // Manual read tile at looking tile
-            if (Config.ReadTileKey.JustPressed())
-            {
-                ReadTileFeature.run(manuallyTriggered: true);
-                return;
-            }
-
-            // Tile viewing cursor keys
-            TileViewerFeature.HandleInput();
         }
 
-        public static string Translate(string translationKey)
+        private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
         {
-            if (ModHelper == null) return "null";
+            if (!Context.IsPlayerFree)
+                return;
 
-            return ModHelper.Translation.Get(translationKey);
+            if(Config!.ToggleGridMovementKey.JustPressed())
+            {
+                Config!.GridMovementActive = !Config!.GridMovementActive;
+                string output = "Grid Movement Status: " + (Config!.GridMovementActive ? "Active" : "Inactive");
+                MainClass.ScreenReader.Say(output, true);
+                return;
+            } 
+            ObjectTrackerFeature?.HandleKeys(sender, e);
         }
 
-        public static string Translate(string translationKey, object? tokens)
+        private void OnPlayerWarped(object? sender, WarpedEventArgs e)
         {
-            if (ModHelper == null) return "null";
-
-            return ModHelper.Translation.Get(translationKey, tokens);
+            GridMovementFeature?.PlayerWarped(sender, e);
+            ObjectTrackerFeature?.GetLocationObjects(resetFocus: true);
         }
+
 
         private static void LogMessage(string message, LogLevel logLevel)
         {
@@ -390,7 +546,9 @@ namespace stardew_access
 
         public static void DebugLog(string message)
         {
+            #if DEBUG
             LogMessage(message, LogLevel.Debug);
+            #endif
         }
     }
 }

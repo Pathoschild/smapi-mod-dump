@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aedenthorn/StardewValleyMods
+**
+*************************************************/
+
+{
+  "too-late": "[Поздно] {0}",
+  "too-late-message": "Слишком поздно для высадки {0}!",
+  "animals-outside": "{0}, некоторые животные всё ещё на улице!",
+  "animals-need-petting": "{0}, некоторые животные не были проглажены!",
+  "animals-need-harvesting": "{0}, продукция некоторых животных не была собрана!",
+  "plants-need-watering": "{0}, некоторые растения не были политы!",
+  "plants-ready-for-harvest": "{0}, некоторые растения готовы к сбору!"
+}

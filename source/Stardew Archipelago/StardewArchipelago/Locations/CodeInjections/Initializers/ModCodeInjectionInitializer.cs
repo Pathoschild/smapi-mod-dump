@@ -35,6 +35,10 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             {
                 MagicModInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             }
+            if (_archipelago.SlotData.Mods.HasMod(ModNames.SKULL_CAVERN_ELEVATOR))
+            {
+                SkullCavernInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
+            }
             if (archipelago.SlotData.Mods.ModIsInstalledAndLoaded(modHelper, "SpaceCore"))
             {
                 NewSkillsPageInjections.Initialize(monitor, modHelper, archipelago, locationChecker);

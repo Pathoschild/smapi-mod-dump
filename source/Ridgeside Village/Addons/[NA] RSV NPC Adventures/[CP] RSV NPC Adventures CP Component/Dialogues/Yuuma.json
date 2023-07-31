@@ -1,0 +1,58 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Companion dialogues for Yuuma", //Change Name
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Yuuma", //Change Name
+      "Entries": {
+        "companionAccepted": "{{i18n:Yuuma.Dialogue.companionAccepted}}",
+        "companionRejected": "{{i18n:Yuuma.Dialogue.companionRejected}}",
+        "companionRejectedNight": "{{i18n:Yuuma.Dialogue.companionRejectedNight}}",
+        "companionDismiss": "{{i18n:Yuuma.Dialogue.companionDismiss}}",
+        "companionDismissAuto": "{{i18n:Yuuma.Dialogue.companionDismissAuto}}",
+        "companionRecruited": "{{i18n:Yuuma.Dialogue.companionRecruited}}",
+
+        "farmerRunAway": "{{i18n:Yuuma.Dialogue.farmerRunAway}}",
+
+      //Locations (Farm)
+        //Friends
+        //General
+        "companion_Farm": "{{i18n:Yuuma.Dialogue.companion_Farm}}",
+        "companion_Farm~1": "{{i18n:Yuuma.Dialogue.companion_Farm~1}}",
+        //Weather
+        "companion_Farm_Rainy": "{{i18n:Yuuma.Dialogue.companion_Farm_Rainy}}",
+        "companion_Farm_Snowy": "{{i18n:Yuuma.Dialogue.companion_Farm_Snowy}}",
+        //Season
+        "companion_Farm_Spring": "{{i18n:Yuuma.Dialogue.companion_Farm_Spring}}",
+        "companion_Farm_Summer": "{{i18n:Yuuma.Dialogue.companion_Farm_Summer}}",
+        "companion_Farm_Fall": "{{i18n:Yuuma.Dialogue.companion_Farm_Fall}}",
+        "companion_Farm_Winter": "{{i18n:Yuuma.Dialogue.companion_Farm_Winter}}",
+
+      //Locations (Others)
+      //Format: "companion_(location name)" https://www.npcadventures.dev/docs/modding/dialogues
+      //Feel free to change/remove/add! (During editing)
+
+        "companion_Town": "{{i18n:Yuuma.Dialogue.companion_Town}}",
+        "companion_Custom_Ridgeside_RidgesideVillage": "{{i18n:Yuuma.Dialogue.companion_Custom_Ridgeside_RidgesideVillage}}",
+        "companion_Custom_Ridgeside_RidgesideVillage~1": "{{i18n:Yuuma.Dialogue.companion_Custom_Ridgeside_RidgesideVillage~1}}",
+
+      //Suggestion
+        "companionSuggest": "{{i18n:Yuuma.Dialogue.companionSuggest}}",
+
+        "companionSuggest_Yes": "{{i18n:Yuuma.Dialogue.companionSuggest_Yes}}",
+        "companionSuggest_No": "{{i18n:Yuuma.Dialogue.companionSuggest_No}}",
+
+      }
+    }
+  ]
+}

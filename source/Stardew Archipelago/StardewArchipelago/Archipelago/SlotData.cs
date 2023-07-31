@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using Newtonsoft.Json;
 using StardewArchipelago.GameModifications.EntranceRandomizer;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
@@ -26,7 +27,7 @@ namespace StardewArchipelago.Archipelago
         private const string PROFIT_MARGIN_KEY = "profit_margin";
         private const string ENTRANCE_RANDOMIZATION_KEY = "entrance_randomization";
         private const string SEASON_RANDOMIZATION_KEY = "season_randomization";
-        private const string SEED_SHUFFLE_KEY = "seed_shuffle";
+        private const string CROPSANITY_KEY = "cropsanity";
         private const string BACKPACK_PROGRESSION_KEY = "backpack_progression";
         private const string TOOL_PROGRESSION_KEY = "tool_progression";
         private const string ELEVATOR_PROGRESSION_KEY = "elevator_progression";
@@ -49,7 +50,6 @@ namespace StardewArchipelago.Archipelago
         private const string DEBRIS_MULTIPLIER_KEY = "debris_multiplier";
         private const string QUICK_START_KEY = "quick_start";
         private const string GIFTING_KEY = "gifting";
-        private const string GIFT_TAX_KEY = "gift_tax";
         private const string BANKING_KEY = "banking";
         private const string BANK_TAX_KEY = "bank_tax";
         private const string DEATH_LINK_KEY = "death_link";
@@ -59,7 +59,7 @@ namespace StardewArchipelago.Archipelago
         // private const string RANDOMIZE_NPC_APPEARANCES_KEY = "randomize_appearances";
         // private const string RANDOMIZE_NPC_APPEARANCES_DAILY_KEY = "randomize_appearances_daily";
         private const string MULTIWORLD_VERSION_KEY = "client_version";
-        private const string MOD_LIST_KEY = "mod_versions";
+        private const string MOD_LIST_KEY = "mods";
         
         private Dictionary<string, object> _slotDataFields;
         private IMonitor _console;
@@ -70,7 +70,7 @@ namespace StardewArchipelago.Archipelago
         public double ProfitMargin { get; private set; }
         public EntranceRandomization EntranceRandomization { get; private set; }
         public SeasonRandomization SeasonRandomization { get; private set; }
-        public SeedShuffle SeedShuffle { get; private set; }
+        public Cropsanity Cropsanity { get; private set; }
         public BackpackProgression BackpackProgression { get; private set; }
         public ToolProgression ToolProgression { get; private set; }
         public ElevatorProgression ElevatorProgression { get; private set; }
@@ -93,7 +93,6 @@ namespace StardewArchipelago.Archipelago
         public DebrisMultiplier DebrisMultiplier { get; private set; }
         public bool QuickStart { get; private set; }
         public bool Gifting { get; private set; }
-        public double GiftTax { get; private set; }
         public bool Banking { get; private set; }
         public double BankTax { get; private set; }
         public bool DeathLink { get; private set; }
@@ -116,7 +115,7 @@ namespace StardewArchipelago.Archipelago
             ProfitMargin = GetSlotSetting(PROFIT_MARGIN_KEY, 100) / 100.0;
             EntranceRandomization = GetSlotSetting(ENTRANCE_RANDOMIZATION_KEY, EntranceRandomization.Disabled);
             SeasonRandomization = GetSlotSetting(SEASON_RANDOMIZATION_KEY, SeasonRandomization.Disabled);
-            SeedShuffle = GetSlotSetting(SEED_SHUFFLE_KEY, SeedShuffle.Disabled);
+            Cropsanity = GetSlotSetting(CROPSANITY_KEY, Cropsanity.Disabled);
             BackpackProgression = GetSlotSetting(BACKPACK_PROGRESSION_KEY, BackpackProgression.Progressive);
             ToolProgression = GetSlotSetting(TOOL_PROGRESSION_KEY, ToolProgression.Progressive);
             ElevatorProgression = GetSlotSetting(ELEVATOR_PROGRESSION_KEY, ElevatorProgression.ProgressiveFromPreviousFloor);
@@ -139,7 +138,6 @@ namespace StardewArchipelago.Archipelago
             DebrisMultiplier = GetSlotSetting(DEBRIS_MULTIPLIER_KEY, DebrisMultiplier.HalfDebris);
             QuickStart = GetSlotSetting(QUICK_START_KEY, false);
             Gifting = GetSlotSetting(GIFTING_KEY, true);
-            GiftTax = GetSlotSetting(GIFT_TAX_KEY, 30) / 100.0;
             Banking = true;
             BankTax = 25 / 100.0;
             DeathLink = GetSlotSetting(DEATH_LINK_KEY, false);
@@ -153,8 +151,8 @@ namespace StardewArchipelago.Archipelago
             AppearanceRandomization = AppearanceRandomization.Disabled; // GetSlotSetting(RANDOMIZE_NPC_APPEARANCES_KEY, AppearanceRandomization.Disabled);
             AppearanceRandomizationDaily = false; // GetSlotSetting(RANDOMIZE_NPC_APPEARANCES_DAILY_KEY, false);
             var modsString = GetSlotSetting(MOD_LIST_KEY, "");
-            var modsAndVersions = JsonConvert.DeserializeObject<Dictionary<string, string>>(modsString);
-            Mods = new ModsManager(modsAndVersions);
+            var mods = JsonConvert.DeserializeObject<List<string>>(modsString);
+            Mods = new ModsManager(mods);
         }
 
         private T GetSlotSetting<T>(string key, T defaultValue) where T : struct, Enum, IConvertible
@@ -202,7 +200,7 @@ namespace StardewArchipelago.Archipelago
         Progressive = 3,
     }
 
-    public enum SeedShuffle
+    public enum Cropsanity
     {
         Disabled = 0,
         Shuffled = 1,

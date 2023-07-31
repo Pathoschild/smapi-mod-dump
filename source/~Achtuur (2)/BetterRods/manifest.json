@@ -11,7 +11,7 @@
 {
     "Name": "Better Rods",
     "Author": "Achtuur",
-    "Version": "1.0.0",
+    "Version": "1.0.1",
     "Description": "Improves higher tier fishing rods",
     "UniqueID": "Achtuur.BetterRods",
     "EntryDll": "BetterRods.dll",

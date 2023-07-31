@@ -5,10 +5,9 @@ VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoanMod", "LoanMod\LoanMod.csproj", "{AEAAE590-0987-4AD7-989E-CE2481D1D61F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{709E68A1-1CE7-4A63-AFE6-9C9827E056BB}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanModTests", "LoanModTests\LoanModTests.csproj", "{09FC2A20-08E1-44EC-9E91-A41CA91F720D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoanMod.Common", "LoanMod.Common\LoanMod.Common.csproj", "{C910E8B8-4AED-44CE-A53E-4C8FD0D9C54C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +19,14 @@ Global
 		{AEAAE590-0987-4AD7-989E-CE2481D1D61F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEAAE590-0987-4AD7-989E-CE2481D1D61F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AEAAE590-0987-4AD7-989E-CE2481D1D61F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09FC2A20-08E1-44EC-9E91-A41CA91F720D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09FC2A20-08E1-44EC-9E91-A41CA91F720D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09FC2A20-08E1-44EC-9E91-A41CA91F720D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09FC2A20-08E1-44EC-9E91-A41CA91F720D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C910E8B8-4AED-44CE-A53E-4C8FD0D9C54C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C910E8B8-4AED-44CE-A53E-4C8FD0D9C54C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C910E8B8-4AED-44CE-A53E-4C8FD0D9C54C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C910E8B8-4AED-44CE-A53E-4C8FD0D9C54C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

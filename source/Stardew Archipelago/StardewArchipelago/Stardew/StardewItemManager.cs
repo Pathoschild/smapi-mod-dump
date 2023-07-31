@@ -10,8 +10,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using StardewValley;
+using Object = StardewValley.Object;
 
 namespace StardewArchipelago.Stardew
 {
@@ -425,6 +428,40 @@ namespace StardewArchipelago.Stardew
                 addedPrecision, addedDefence, type, baseMineLevel, minMineLevel, addedAoe, criticalChance,
                 criticalDamage, displayName);
             return meleeWeapon;
+        }
+
+        public void ExportAllItemsMatching(Func<Object, bool> condition, string filePath)
+        {
+            var objectsToExport = new List<string>();
+
+            objectsToExport.AddRange(GetObjectsToExport(condition, _objectsByName));
+            objectsToExport.AddRange(GetObjectsToExport(condition, _bigCraftablesByName));
+            objectsToExport.AddRange(GetObjectsToExport(condition, _furnitureByName));
+            objectsToExport.AddRange(GetObjectsToExport(condition, _hatsByName));
+            objectsToExport.AddRange(GetObjectsToExport(condition, _bootsByName));
+            objectsToExport.AddRange(GetObjectsToExport(condition, _weaponsByName));
+
+            var objectsAsJson = JsonConvert.SerializeObject(objectsToExport);
+            File.WriteAllText(filePath, objectsAsJson);
+        }
+
+        private IEnumerable<string> GetObjectsToExport<T>(Func<Object, bool> condition, Dictionary<string, T> objectsByName) where T : StardewItem
+        {
+            foreach (var (name, svItem) in objectsByName)
+            {
+                var stardewItem = svItem.PrepareForGivingToFarmer(1);
+                if (stardewItem is not Object stardewObject)
+                {
+                    continue;
+                }
+
+                if (!condition(stardewObject))
+                {
+                    continue;
+                }
+
+                yield return name;
+            }
         }
     }
 }

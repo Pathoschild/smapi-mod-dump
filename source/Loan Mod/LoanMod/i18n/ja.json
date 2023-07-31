@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/legovader09/SDVLoanMod
+**
+*************************************************/
+
+{
+  "menu.cancel": "キャンセル",
+  "menu.days": "日",
+  "menu.leave": "戻る",
+  "menu.no": "いいえ",
+  "menu.repaycustom": "支払金額の変更",
+  "menu.repayfull": "全額返済する",
+  "menu.showbalance": "支払金額を表示する",
+  "menu.yes": "はい",
+  "msg.create": "お金を借りられるようになりました",
+  "msg.hostonly": "この操作はホストのみが実行可能です",
+  "msg.menu-1": "どうされますか？",
+  "msg.menu-2": "全額返済すると{{Balance}}gになります。続けますか？",
+  "msg.payment.complete": "あなたは{{DailyAmount}}g返しました。",
+  "msg.payment.credited": "あなたは{{creditAmount}}g 借りました。",
+  "msg.payment.error": "問題が発生したため、あなたの負債をリセットしました。",
+  "msg.payment.failed": "支払いに必要な{{DailyAmount}}gを所持していません",
+  "msg.payment.full": "あなたの借金は全額返済されました。ご利用ありがとうございました",
+  "msg.payment.missed-1": "注意：次の支払いがされない場合、次の遅延損害金が発生します。: {{LateChargeAmount}}g.",
+  "msg.payment.missed-2": "注意：遅延損害金として、{{LateChargeAmount}}g をあなたの残高に加算します。.",
+  "msg.payment.remaining": "あなたの現在の負債は {{Balance}}gです。残り日数は{{Duration}}日です。あなたは1日あたり{{DailyAmount}}gを支払う必要があります。",
+  "msg.startborrow-1": "いくら借りますか？",
+  "msg.startborrow-2": "何日間借りますか？",
+  "msg.startrepay": "いくら返済しますか？",
+  "app.name": "Loans"
+}

@@ -6,9 +6,9 @@ mods:
    Ranged Tools
 
 latest commit:
-   commit a952dfda73f807a33836346f31999a4c37d7831f
+   commit 10258272b0dab608ec2374756116d44cfdf77a38
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Sat Oct 1 00:30:03 2022 -0700
+   Date:   Sun Jul 9 15:06:59 2023 -0700
    
-       1.5.4 update (Ukrainian fixes and new lines)
+       1.5.5 update (Crab Pot placement fix)
    

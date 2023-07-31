@@ -82,7 +82,7 @@ namespace Profiler
                     case DetailsType.Argument:
                         if (__args?.Length > 0 && details is InternalArgumentDetailsEntry argDetails && argDetails.Index < __args.Length)
                         {
-                            return __args[argDetails.Index].ToString();
+                            return __args[argDetails.Index]?.ToString() ?? "<null>";
                         }
                         goto case default;
                     default:

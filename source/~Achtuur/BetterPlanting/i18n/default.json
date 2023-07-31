@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Achtuur/StardewTravelSkill
+**
+*************************************************/
+
+{
+    /** Config Menu **/
+    "cfg_section.general": "General settings",
+
+    "cfg_IncrementKeyBind.Name": "Next Fill Mode",
+    "cfg_IncrementKeyBind.Desc": "Key to press when swapping to next fill mode",
+    "cfg_DecrementKeyBind.Name": "Previous Fill Mode",
+    "cfg_DecrementKeyBind.Desc": "Key to press when swapping to previous fill mode",
+    "cfg_PlaceDiagonally.Name": "Enable Diagonal Placement",
+    "cfg_PlaceDiagonally.Desc": "Fill shapes will also be created diagonally when enabled. Allows for a bit more freedom when placing, but makes control a bit hard when moving around.",
+    "cfg_TileFillLimit.Name": "Fill Tile Limit",
+    "cfg_TileFillLimit.Desc": "Maximum size of \"fill\" mode in tiles when planting. If you are experiencing performance issues when filling large patches, consider turning down the limit.",
+
+    // These are shown above cursor when switching modes
+    "FillMode_Disabled": "Disabled",
+    "FillMode_InArow": "{{n}} in a row",
+    "FillMode_Square": "{{n}}x{{n}} square",
+    "FillMode_All": "Fill"
+}

@@ -50,7 +50,7 @@ internal sealed class ModEntry : Mod
     };
 
     internal static ModEntry Instance;
-    public static TravelSkill TravelSkill;
+    public TravelSkill travelSkill;
 
     public ContentPackHelper contentPackHelper;
     public ModConfig Config;
@@ -58,7 +58,7 @@ internal sealed class ModEntry : Mod
     /// <summary>
     /// Whether player is currently under effects of sprint profession
     /// </summary>
-    public static bool SprintActive { get; set; }
+    public PerScreen<bool> SprintActive { get; set; }
 
     /// <summary>
     /// Amount of steps taken the previous time it was checked
@@ -95,9 +95,9 @@ internal sealed class ModEntry : Mod
     public static float GetMovespeedMultiplier()
     {
         float professionbonus = Game1.player.HasCustomProfession(TravelSkill.ProfessionMovespeed) ? Instance.Config.MovespeedProfessionBonus : 0.0f;
-        float sprintbonus = SprintActive ? Instance.Config.SprintMovespeedBonus : 0.0f;
+        float sprintbonus = (ModEntry.Instance.SprintActive.Value) ? Instance.Config.SprintMovespeedBonus : 0.0f;
 
-        float multiplier = Game1.player.GetCustomSkillLevel(TravelSkill) * Instance.Config.LevelMovespeedBonus + professionbonus + sprintbonus;
+        float multiplier = Game1.player.GetCustomSkillLevel(ModEntry.Instance.travelSkill) * Instance.Config.LevelMovespeedBonus + professionbonus + sprintbonus;
         return 1 + multiplier;
     }
 
@@ -148,7 +148,9 @@ internal sealed class ModEntry : Mod
 
 
         // Setup Spacecore skill
-        Skills.RegisterSkill(ModEntry.TravelSkill = new TravelSkill());
+        this.travelSkill = new TravelSkill();
+        Skills.RegisterSkill(this.travelSkill);
+        this.SprintActive = new PerScreen<bool>();
 
 
         // Setup event listeners
@@ -217,7 +219,7 @@ internal sealed class ModEntry : Mod
         uint step_diff = Game1.player.stats.stepsTaken - this.m_previousSteps.Value;
         if (step_diff >= Instance.Config.StepsPerExp * Instance.Config.AddExpIncrement)
         {
-            Game1.player.AddCustomSkillExperience(TravelSkill, Instance.Config.AddExpIncrement);
+            Game1.player.AddCustomSkillExperience(travelSkill, Instance.Config.AddExpIncrement);
             // Set previous steps to current steps, with correction
             uint steps_over_exp_incr = step_diff - (uint)(Instance.Config.StepsPerExp * Instance.Config.AddExpIncrement);
             this.m_previousSteps.Value = Game1.player.stats.stepsTaken - steps_over_exp_incr;
@@ -374,16 +376,16 @@ internal sealed class ModEntry : Mod
         {
             // "Reset" counter by setting it to current step count
             this.m_consecutiveSteps.Value = Game1.player.stats.stepsTaken;
-            ModEntry.SprintActive = false;
+            this.SprintActive.Value = false;
             return;
         }
 
         uint step_diff = Game1.player.stats.stepsTaken - this.m_consecutiveSteps.Value;
 
-        if (step_diff > Instance.Config.SprintSteps && !ModEntry.SprintActive)
+        if (step_diff > Instance.Config.SprintSteps && !this.SprintActive.Value)
         {
             AchtuurCore.Logger.DebugLog(ModEntry.Instance.Monitor, "Now sprinting");
-            ModEntry.SprintActive = true;
+            this.SprintActive.Value = true;
         }
     }
 

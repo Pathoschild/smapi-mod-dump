@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 from typing import List
 
-from PyQt5.QtCore import QDir, QFileInfo, QStandardPaths
+from PyQt6.QtCore import QDir, QFileInfo, QStandardPaths
 
 import mobase
 
@@ -171,6 +171,10 @@ class DarkestDungeonGame(BasicGame):
     GameGogId = 1719198803
     GameBinary = "_windowsnosteam//darkest.exe"
     GameDataPath = ""
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-Darkest-Dungeon"
+    )
 
     def init(self, organizer: mobase.IOrganizer) -> bool:
         super().init(organizer)
@@ -208,7 +212,9 @@ class DarkestDungeonGame(BasicGame):
     def savesDirectory(self) -> QDir:
         documentsSaves = QDir(
             "{}/Darkest".format(
-                QStandardPaths.writableLocation(QStandardPaths.DocumentsLocation)
+                QStandardPaths.writableLocation(
+                    QStandardPaths.StandardLocation.DocumentsLocation
+                )
             )
         )
         if self.is_steam():

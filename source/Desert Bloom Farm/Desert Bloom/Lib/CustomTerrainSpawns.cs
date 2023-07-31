@@ -87,7 +87,7 @@ namespace Desert_Bloom.Lib
         //This function does the same thing the game does just for non diggable tiles as well
         public static void growGrassOnNonDiggable()
         {
-            BetterGrassSpread = UnlockableAreas.unlocked("DLX.Desert_Bloom.Mining_Area_3");
+            BetterGrassSpread = UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mining_Area_3");
             var farm = Game1.getFarm();
 
             for (int j = farm.terrainFeatures.Count() - 1; j >= 0; j--) {

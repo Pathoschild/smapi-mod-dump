@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17280
+IDs: Shockah.HatsOnHats
+update keys: Nexus:17280, GitHub:Shockah/Stardew-Valley-Mods

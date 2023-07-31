@@ -410,6 +410,10 @@
       "code": 717237,
       "region": "The Mines - Floor 120"
     },
+    "Volcano Caldera Treasure": {
+      "code": 717251,
+      "region": "Volcano - Floor 10"
+    },
     "Level 1 Farming": {
       "code": 717301,
       "region": "Stardew Valley"
@@ -862,6 +866,18 @@
       "code": 717545,
       "region": "Island West"
     },
+    "Dark Talisman": {
+      "code": 717546,
+      "region": "Railroad"
+    },
+    "Goblin Problem": {
+      "code": 717547,
+      "region": "Witch's Swamp"
+    },
+    "Magic Ink": {
+      "code": 717548,
+      "region": "Witch's Hut"
+    },
     "JotPK: Boots 1": {
       "code": 717601,
       "region": "JotPK World 1"
@@ -957,6 +973,14 @@
     "Galaxy Sword Shrine": {
       "code": 717703,
       "region": "Desert"
+    },
+    "Have a Baby": {
+      "code": 717704,
+      "region": "Farmhouse"
+    },
+    "Have Another Baby": {
+      "code": 717705,
+      "region": "Farmhouse"
     },
     "Help Wanted: Gathering 1": {
       "code": 717801,
@@ -1484,7 +1508,7 @@
     },
     "Fishsanity: Mutant Carp": {
       "code": 718055,
-      "region": "Sewers"
+      "region": "Sewer"
     },
     "Fishsanity: Crayfish": {
       "code": 718056,
@@ -3096,43 +3120,43 @@
     },
     "Friendsanity: Krobus 1 <3": {
       "code": 718579,
-      "region": "Sewers"
+      "region": "Sewer"
     },
     "Friendsanity: Krobus 2 <3": {
       "code": 718580,
-      "region": "Sewers"
+      "region": "Sewer"
     },
     "Friendsanity: Krobus 3 <3": {
       "code": 718581,
-      "region": "Sewers"
+      "region": "Sewer"
     },
     "Friendsanity: Krobus 4 <3": {
       "code": 718582,
-      "region": "Sewers"
+      "region": "Sewer"
     },
     "Friendsanity: Krobus 5 <3": {
       "code": 718583,
-      "region": "Sewers"
+      "region": "Sewer"
     },
     "Friendsanity: Krobus 6 <3": {
       "code": 718584,
-      "region": "Sewers"
+      "region": "Sewer"
     },
     "Friendsanity: Krobus 7 <3": {
       "code": 718585,
-      "region": "Sewers"
+      "region": "Sewer"
     },
     "Friendsanity: Krobus 8 <3": {
       "code": 718586,
-      "region": "Sewers"
+      "region": "Sewer"
     },
     "Friendsanity: Krobus 9 <3": {
       "code": 718587,
-      "region": "Sewers"
+      "region": "Sewer"
     },
     "Friendsanity: Krobus 10 <3": {
       "code": 718588,
-      "region": "Sewers"
+      "region": "Sewer"
     },
     "Friendsanity: Leo 1 <3": {
       "code": 718590,
@@ -3766,6 +3790,14 @@
       "code": 719029,
       "region": "Town"
     },
+    "The Legend of the Winter Star": {
+      "code": 719030,
+      "region": "Town"
+    },
+    "Collect All Rarecrows": {
+      "code": 719031,
+      "region": "Farm"
+    },
     "Island Ingredients": {
       "code": 719101,
       "region": "Town"
@@ -3933,6 +3965,198 @@
     "Parrot Express": {
       "code": 719214,
       "region": "Island West"
+    },
+    "Open Professor Snail Cave": {
+      "code": 719215,
+      "region": "Dig Site"
+    },
+    "Complete Island Field Office": {
+      "code": 719216,
+      "region": "Field Office"
+    },
+    "Harvest Amaranth": {
+      "code": 719301,
+      "region": "Farm"
+    },
+    "Harvest Artichoke": {
+      "code": 719302,
+      "region": "Farm"
+    },
+    "Harvest Beet": {
+      "code": 719303,
+      "region": "Farm"
+    },
+    "Harvest Blue Jazz": {
+      "code": 719304,
+      "region": "Farm"
+    },
+    "Harvest Blueberry": {
+      "code": 719305,
+      "region": "Farm"
+    },
+    "Harvest Bok Choy": {
+      "code": 719306,
+      "region": "Farm"
+    },
+    "Harvest Cauliflower": {
+      "code": 719307,
+      "region": "Farm"
+    },
+    "Harvest Corn": {
+      "code": 719308,
+      "region": "Farm"
+    },
+    "Harvest Cranberries": {
+      "code": 719309,
+      "region": "Farm"
+    },
+    "Harvest Eggplant": {
+      "code": 719310,
+      "region": "Farm"
+    },
+    "Harvest Fairy Rose": {
+      "code": 719311,
+      "region": "Farm"
+    },
+    "Harvest Garlic": {
+      "code": 719312,
+      "region": "Farm"
+    },
+    "Harvest Grape": {
+      "code": 719313,
+      "region": "Farm"
+    },
+    "Harvest Green Bean": {
+      "code": 719314,
+      "region": "Farm"
+    },
+    "Harvest Hops": {
+      "code": 719315,
+      "region": "Farm"
+    },
+    "Harvest Hot Pepper": {
+      "code": 719316,
+      "region": "Farm"
+    },
+    "Harvest Kale": {
+      "code": 719317,
+      "region": "Farm"
+    },
+    "Harvest Melon": {
+      "code": 719318,
+      "region": "Farm"
+    },
+    "Harvest Parsnip": {
+      "code": 719319,
+      "region": "Farm"
+    },
+    "Harvest Poppy": {
+      "code": 719320,
+      "region": "Farm"
+    },
+    "Harvest Potato": {
+      "code": 719321,
+      "region": "Farm"
+    },
+    "Harvest Pumpkin": {
+      "code": 719322,
+      "region": "Farm"
+    },
+    "Harvest Radish": {
+      "code": 719323,
+      "region": "Farm"
+    },
+    "Harvest Red Cabbage": {
+      "code": 719324,
+      "region": "Farm"
+    },
+    "Harvest Rhubarb": {
+      "code": 719325,
+      "region": "Farm"
+    },
+    "Harvest Starfruit": {
+      "code": 719326,
+      "region": "Farm"
+    },
+    "Harvest Strawberry": {
+      "code": 719327,
+      "region": "Farm"
+    },
+    "Harvest Summer Spangle": {
+      "code": 719328,
+      "region": "Farm"
+    },
+    "Harvest Sunflower": {
+      "code": 719329,
+      "region": "Farm"
+    },
+    "Harvest Tomato": {
+      "code": 719330,
+      "region": "Farm"
+    },
+    "Harvest Tulip": {
+      "code": 719331,
+      "region": "Farm"
+    },
+    "Harvest Unmilled Rice": {
+      "code": 719332,
+      "region": "Farm"
+    },
+    "Harvest Wheat": {
+      "code": 719333,
+      "region": "Farm"
+    },
+    "Harvest Yam": {
+      "code": 719334,
+      "region": "Farm"
+    },
+    "Harvest Cactus Fruit": {
+      "code": 719335,
+      "region": "Farm"
+    },
+    "Harvest Pineapple": {
+      "code": 719336,
+      "region": "Farm"
+    },
+    "Harvest Taro Root": {
+      "code": 719337,
+      "region": "Farm"
+    },
+    "Harvest Sweet Gem Berry": {
+      "code": 719338,
+      "region": "Farm"
+    },
+    "Harvest Apple": {
+      "code": 719339,
+      "region": "Farm"
+    },
+    "Harvest Apricot": {
+      "code": 719340,
+      "region": "Farm"
+    },
+    "Harvest Cherry": {
+      "code": 719341,
+      "region": "Farm"
+    },
+    "Harvest Orange": {
+      "code": 719342,
+      "region": "Farm"
+    },
+    "Harvest Pomegranate": {
+      "code": 719343,
+      "region": "Farm"
+    },
+    "Harvest Peach": {
+      "code": 719344,
+      "region": "Farm"
+    },
+    "Harvest Banana": {
+      "code": 719345,
+      "region": "Farm"
+    },
+    "Harvest Mango": {
+      "code": 719346,
+      "region": "Farm"
     },
     "Level 1 Luck": {
       "code": 722001,
@@ -4250,7 +4474,7 @@
       "code": 722519,
       "region": "Stardew Valley"
     },
-    "Analyze all Eldritch School Locations": {
+    "Analyze All Eldritch School Locations": {
       "code": 722520,
       "region": "Stardew Valley"
     },
@@ -4739,52 +4963,208 @@
       "region": "Forest"
     },
     "Friendsanity: Juna 7 <3": {
-      "code": 724001,
+      "code": 723121,
       "region": "Forest"
     },
     "Friendsanity: Juna 8 <3": {
-      "code": 724002,
+      "code": 723122,
       "region": "Forest"
     },
     "Friendsanity: Juna 9 <3": {
-      "code": 724003,
+      "code": 723123,
       "region": "Forest"
     },
     "Friendsanity: Juna 10 <3": {
-      "code": 724004,
+      "code": 723124,
       "region": "Forest"
     },
+    "Friendsanity: Riley 1 <3": {
+      "code": 723125,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 2 <3": {
+      "code": 723126,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 3 <3": {
+      "code": 723127,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 4 <3": {
+      "code": 723128,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 5 <3": {
+      "code": 723129,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 6 <3": {
+      "code": 723130,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 7 <3": {
+      "code": 723131,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 8 <3": {
+      "code": 723132,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 9 <3": {
+      "code": 723133,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 10 <3": {
+      "code": 723134,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 11 <3": {
+      "code": 723135,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 12 <3": {
+      "code": 723136,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 13 <3": {
+      "code": 723137,
+      "region": "Town"
+    },
+    "Friendsanity: Riley 14 <3": {
+      "code": 723138,
+      "region": "Town"
+    },
     "Premium Pack": {
-      "code": 724005,
+      "code": 724001,
       "region": "Pierre's General Store"
     },
     "Tractor Garage Blueprint": {
-      "code": 724006,
+      "code": 724002,
       "region": "Carpenter Shop"
     },
     "Pet the Deep Woods Unicorn": {
-      "code": 724007,
+      "code": 724003,
       "region": "The Deep Woods Depth 100"
     },
     "Breaking Up Deep Woods Gingerbread House": {
-      "code": 724008,
+      "code": 724004,
       "region": "The Deep Woods Depth 50"
     },
     "Drinking From Deep Woods Fountain": {
-      "code": 724009,
+      "code": 724005,
       "region": "The Deep Woods Depth 50"
     },
     "Deep Woods Treasure Chest": {
-      "code": 724010,
+      "code": 724006,
       "region": "The Deep Woods Depth 100"
     },
     "Deep Woods Trash Bin": {
-      "code": 724011,
+      "code": 724007,
       "region": "The Deep Woods Depth 100"
     },
     "Chop Down a Deep Woods Iridium Tree": {
-      "code": 724012,
+      "code": 724008,
       "region": "The Deep Woods Depth 50"
+    },
+    "The Deep Woods: Depth 10": {
+      "code": 724009,
+      "region": "The Deep Woods Depth 10"
+    },
+    "The Deep Woods: Depth 20": {
+      "code": 724010,
+      "region": "The Deep Woods Depth 20"
+    },
+    "The Deep Woods: Depth 30": {
+      "code": 724011,
+      "region": "The Deep Woods Depth 30"
+    },
+    "The Deep Woods: Depth 40": {
+      "code": 724012,
+      "region": "The Deep Woods Depth 40"
+    },
+    "The Deep Woods: Depth 50": {
+      "code": 724013,
+      "region": "The Deep Woods Depth 50"
+    },
+    "The Deep Woods: Depth 60": {
+      "code": 724014,
+      "region": "The Deep Woods Depth 60"
+    },
+    "The Deep Woods: Depth 70": {
+      "code": 724015,
+      "region": "The Deep Woods Depth 70"
+    },
+    "The Deep Woods: Depth 80": {
+      "code": 724016,
+      "region": "The Deep Woods Depth 80"
+    },
+    "The Deep Woods: Depth 90": {
+      "code": 724017,
+      "region": "The Deep Woods Depth 90"
+    },
+    "The Deep Woods: Depth 100": {
+      "code": 724018,
+      "region": "The Deep Woods Depth 100"
+    },
+    "Purify an Infested Lichtung": {
+      "code": 724019,
+      "region": "The Deep Woods Depth 50"
+    },
+    "Skull Cavern: Floor 25": {
+      "code": 724020,
+      "region": "Skull Cavern Floor 25"
+    },
+    "Skull Cavern: Floor 50": {
+      "code": 724021,
+      "region": "Skull Cavern Floor 50"
+    },
+    "Skull Cavern: Floor 75": {
+      "code": 724022,
+      "region": "Skull Cavern Floor 75"
+    },
+    "Skull Cavern: Floor 100": {
+      "code": 724023,
+      "region": "Skull Cavern Floor 100"
+    },
+    "Skull Cavern: Floor 125": {
+      "code": 724024,
+      "region": "Skull Cavern Floor 125"
+    },
+    "Skull Cavern: Floor 150": {
+      "code": 724025,
+      "region": "Skull Cavern Floor 150"
+    },
+    "Skull Cavern: Floor 175": {
+      "code": 724026,
+      "region": "Skull Cavern Floor 175"
+    },
+    "Skull Cavern: Floor 200": {
+      "code": 724027,
+      "region": "Skull Cavern Floor 200"
+    },
+    "Missing Envelope": {
+      "code": 724501,
+      "region": "Town"
+    },
+    "Lost Emerald Ring": {
+      "code": 724502,
+      "region": "Town"
+    },
+    "Mr.Ginger's request": {
+      "code": 724503,
+      "region": "Forest"
+    },
+    "Juna's Drink Request": {
+      "code": 724504,
+      "region": "Forest"
+    },
+    "Juna's BFF Request": {
+      "code": 724505,
+      "region": "Forest"
+    },
+    "Juna's Monster Mash": {
+      "code": 724506,
+      "region": "Forest"
     }
   }
 }

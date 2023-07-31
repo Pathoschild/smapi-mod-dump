@@ -2,7 +2,7 @@
 from pathlib import Path
 from typing import List
 
-from PyQt5.QtCore import QDir
+from PyQt6.QtCore import QDir
 
 import mobase
 
@@ -20,6 +20,10 @@ class Starsector(BasicGame):
     GameBinary = "starsector.exe"
     GameDataPath = "mods"
     GameSavesDirectory = "%GAME_PATH%/saves"
+    GameSupportURL = (
+        r"https://github.com/ModOrganizer2/modorganizer-basic_games/wiki/"
+        "Game:-Starsector"
+    )
 
     def listSaves(self, folder: QDir) -> List[mobase.ISaveGame]:
         return [

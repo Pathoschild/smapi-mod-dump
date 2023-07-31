@@ -1,0 +1,5 @@
+{
+  "ModEnabled": true,
+  "DefaultSound": "rooster",
+  "MenuButton": "LeftShift + OemPipe"
+}

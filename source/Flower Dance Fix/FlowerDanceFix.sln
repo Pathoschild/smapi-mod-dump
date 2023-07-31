@@ -1,36 +1,32 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31112.23
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerDanceFix", "FlowerDanceFix\FlowerDanceFix.csproj", "{CD803ECE-E2F8-438E-858C-F23169B50B8B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stardew-Valley", "..\..\..\..\Desktop\Stardew Mod Files\Stardew Valley Decompiled\Stardew-Valley.csproj", "{5E5B6068-F4DF-426C-A9F4-6052CF61BA0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlowerDanceFix", "FlowerDanceFix\FlowerDanceFix.csproj", "{CD803ECE-E2F8-438E-858C-F23169B50B8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Debug|x64.Build.0 = Debug|Any CPU
 		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Debug|x86.Build.0 = Debug|Any CPU
 		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Release|x64.ActiveCfg = Release|Any CPU
+		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Release|x64.Build.0 = Release|Any CPU
 		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Release|x86.ActiveCfg = Release|Any CPU
 		{CD803ECE-E2F8-438E-858C-F23169B50B8B}.Release|x86.Build.0 = Release|Any CPU
-		{5E5B6068-F4DF-426C-A9F4-6052CF61BA0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5E5B6068-F4DF-426C-A9F4-6052CF61BA0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5E5B6068-F4DF-426C-A9F4-6052CF61BA0F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{5E5B6068-F4DF-426C-A9F4-6052CF61BA0F}.Debug|x86.Build.0 = Debug|Any CPU
-		{5E5B6068-F4DF-426C-A9F4-6052CF61BA0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5E5B6068-F4DF-426C-A9F4-6052CF61BA0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5E5B6068-F4DF-426C-A9F4-6052CF61BA0F}.Release|x86.ActiveCfg = Release|Any CPU
-		{5E5B6068-F4DF-426C-A9F4-6052CF61BA0F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

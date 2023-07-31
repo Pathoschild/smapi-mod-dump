@@ -22,11 +22,9 @@ mods:
    Winter Pigs
 
 latest commit:
-   commit 4c0e09587bd6fcc2478e69b978a51d018b9f6dc9
+   commit fa69a98d215b52f03393efa11a6aee26e49e17d8
    Author: MindMeltMax <mindmeltmax695@gmail.com>
-   Date:   Fri Jun 2 19:03:56 2023 +0200
+   Date:   Sat Jul 15 16:00:10 2023 +0200
    
-       Added source code for Quality Bait and Winter Pigs
-       
-       Also updated Fishnets
+       Update MultiPlayer Info to 1.0.4
    

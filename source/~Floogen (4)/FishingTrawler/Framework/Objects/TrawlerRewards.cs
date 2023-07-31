@@ -76,7 +76,14 @@ namespace FishingTrawler.Objects
                 {
                     for (int j = 0; j < rawFishData.Length; j += 2)
                     {
-                        rawFishDataWithLocation[Convert.ToInt32(rawFishData[j])] = rawFishData[j + 1];
+                        try
+                        {
+                            rawFishDataWithLocation[Convert.ToInt32(rawFishData[j])] = rawFishData[j + 1];
+                        }
+                        catch (IndexOutOfRangeException ex)
+                        {
+                            FishingTrawler.monitor.Log($"Failed to extract rawFishData for index {j} at location {location.Name}");
+                        }
                     }
                 }
 

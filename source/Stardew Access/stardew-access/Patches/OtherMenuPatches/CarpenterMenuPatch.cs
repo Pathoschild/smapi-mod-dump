@@ -45,7 +45,7 @@ namespace stardew_access.Patches
 
                     int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
                     bool isPrimaryInfoKeyPressed = MainClass.Config.PrimaryInfoKey.JustPressed();
-                    string blueprintInfo = getCurrentBlueprintInfo(currentBlueprint, ___price, ___ingredients);
+                    string blueprintInfo = GetCurrentBlueprintInfo(currentBlueprint, ___price, ___ingredients);
 
                     if (isPrimaryInfoKeyPressed && !isSayingBlueprintInfo)
                     {
@@ -58,7 +58,7 @@ namespace stardew_access.Patches
                     }
                     else
                     {
-                        narrateHoveredButton(__instance, ___blueprints, ___currentBlueprintIndex, x, y);
+                        NarrateHoveredButton(__instance, ___blueprints, ___currentBlueprintIndex, x, y);
                     }
                 }
                 else
@@ -81,7 +81,7 @@ namespace stardew_access.Patches
             }
         }
 
-        private static string getCurrentBlueprintInfo(BluePrint currentBlueprint, int ___price, List<Item> ___ingredients)
+        private static string GetCurrentBlueprintInfo(BluePrint currentBlueprint, int ___price, List<Item> ___ingredients)
         {
             string ingredients = "";
             string name = currentBlueprint.displayName;
@@ -127,7 +127,7 @@ namespace stardew_access.Patches
             isSayingBlueprintInfo = false;
         }
 
-        private static void narrateHoveredButton(CarpenterMenu __instance, List<BluePrint> ___blueprints, int ___currentBlueprintIndex, int x, int y)
+        private static void NarrateHoveredButton(CarpenterMenu __instance, List<BluePrint> ___blueprints, int ___currentBlueprintIndex, int x, int y)
         {
             string toSpeak = "";
             if (__instance.backButton != null && __instance.backButton.containsPoint(x, y))
