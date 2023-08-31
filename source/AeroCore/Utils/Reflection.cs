@@ -277,5 +277,7 @@ namespace AeroCore.Utils
             harmony.Patch(original, prefix, postfix, transpiler, finalizer);
             return true;
         }
+        public static T CreateDelegateOld<T>(this MethodInfo method, object source) where T : Delegate
+            => (T)Delegate.CreateDelegate(typeof(T), source, method);
     }
 }

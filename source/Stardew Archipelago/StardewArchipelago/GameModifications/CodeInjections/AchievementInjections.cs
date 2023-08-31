@@ -10,7 +10,9 @@
 
 using System;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Extensions;
 using StardewModdingAPI;
+using StardewValley;
 
 namespace StardewArchipelago.GameModifications.CodeInjections
 {
@@ -57,5 +59,68 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 return true; // run original logic
             }
         }
+
+        // public void checkForMoneyAchievements()
+        public static bool CheckForMoneyAchievements_GrantMoneyAchievementsFairly_Prefix(Stats __instance)
+        {
+            try
+            {
+                if (_archipelago.SlotData.StartingMoney.IsUnlimited())
+                {
+                    return false; // don't run original logic
+                }
+
+                var totalMoneyEarned = Game1.player.totalMoneyEarned;
+                var moneyEarnedAfterStartingMoney = totalMoneyEarned - _archipelago.SlotData.StartingMoney;
+                var moneyEarnedIfProfitMarginWas1 = moneyEarnedAfterStartingMoney / _archipelago.SlotData.ProfitMargin;
+
+                const uint greenhornAmount = 15000U;
+                const uint cowpokeAmount = 50000U;
+                const uint homesteaderAmount = 250000U;
+                const uint millionaireAmount = 1000000U;
+                const uint legendAmount = 10000000U;
+
+                if (moneyEarnedIfProfitMarginWas1 >= legendAmount)
+                {
+                    Game1.getAchievement((int)MoneyAchievement.Legend);
+                }
+
+                if (moneyEarnedIfProfitMarginWas1 >= millionaireAmount)
+                {
+                    Game1.getAchievement((int)MoneyAchievement.Millionaire);
+                }
+
+                if (moneyEarnedIfProfitMarginWas1 >= homesteaderAmount)
+                {
+                    Game1.getAchievement((int)MoneyAchievement.Homesteader);
+                }
+
+                if (moneyEarnedIfProfitMarginWas1 >= cowpokeAmount)
+                {
+                    Game1.getAchievement((int)MoneyAchievement.Cowpoke);
+                }
+
+                if (moneyEarnedIfProfitMarginWas1 >= greenhornAmount)
+                {
+                    Game1.getAchievement((int)MoneyAchievement.Greenhorn);
+                }
+
+                return false; // don't run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(CheckForMoneyAchievements_GrantMoneyAchievementsFairly_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
+            }
+        }
+    }
+
+    public enum MoneyAchievement
+    {
+        Greenhorn = 0,
+        Cowpoke = 1,
+        Homesteader = 2,
+        Millionaire = 3,
+        Legend = 4,
     }
 }

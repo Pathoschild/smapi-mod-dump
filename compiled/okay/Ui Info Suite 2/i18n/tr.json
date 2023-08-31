@@ -1,4 +1,6 @@
 {
+  // GUI - Game Menu
+  // "OptionsTabTooltip": "UI Info Suite 2 Options", // TODO
   //GUI - Billboard
   "Billboard": "İlan panosu",
   "Calendar": "Takvim",
@@ -23,6 +25,7 @@
   "ToolIsFinishedBeingUpgraded": "{0} hazır!",
   "NpcBirthday": "Doğum günü: {0}",
   "RobinBuildingStatus": "Robin inşaatı {0} günde bitirecek",
+  "RobinHouseUpgradeStatus": "Robin will finish upgrading your house in {0} day(s)", // TODO
   // Display icons - Foragables
   "CanFindSalmonberry": "Bugün Ağaç Çileği bulabilirsin",
   "CanFindBlackberry": "Bugün Yabani Böğürtlen bulabilirsin",

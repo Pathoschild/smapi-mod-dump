@@ -37,6 +37,11 @@ namespace CustomCrystalariumMod
                     __result = DataLoader.CrystalariumDataId[itemCategory];
                     return false;
                 }
+                else if (DataLoader.ModConfig.EnableCrystalariumCloneEveryObject)
+                {
+                    __result = DataLoader.ModConfig.DefaultCloningTime;
+                    return false;
+                }
             }
             return true;
         }

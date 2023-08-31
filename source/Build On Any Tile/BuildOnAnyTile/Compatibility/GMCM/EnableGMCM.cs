@@ -36,9 +36,9 @@ namespace BuildOnAnyTile
                 //register "revert to default" and "write" methods for this mod's config
                 api.Register
                 (
-                    mod: ModManifest, 
-                    reset: () => Config = new ModConfig(), 
-                    save: () => Helper.WriteConfig(Config), 
+                    mod: ModManifest,
+                    reset: () => Config = new ModConfig(),
+                    save: () => Helper.WriteConfig(Config),
                     titleScreenOnly: false
                 );
 

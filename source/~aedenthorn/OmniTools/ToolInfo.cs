@@ -21,6 +21,7 @@ namespace OmniTools
         public ToolDescription description;
         public string displayName;
         public List<string> enchantments = new();
+        public List<int> enchantLevels = new();
         public List<ObjectInfo> attachments = new();
         public Dictionary<string, string> modData = new();
         public List<object> vars = new();
@@ -37,6 +38,7 @@ namespace OmniTools
             foreach (var e in tool.enchantments)
             {
                 enchantments.Add(e.GetType().ToString());
+                enchantLevels.Add(e.Level);
             }
             foreach (var o in tool.attachments)
             {

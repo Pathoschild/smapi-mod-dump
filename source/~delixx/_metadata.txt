@@ -7,9 +7,9 @@ mods:
    Easy Farm Switcher
 
 latest commit:
-   commit 91ecb2ecc6eeea10cfc5268ddeab41f3eca53cc6
+   commit 532108a9fed52bc1aba7821467f72dc9830038a3
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Fri Jul 28 22:50:05 2023 +0200
+   Date:   Tue Aug 8 22:20:17 2023 +0200
    
-       changed out how I read dictionary
+       updated manifest to 1.1.6
    

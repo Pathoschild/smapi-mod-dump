@@ -1,0 +1,15 @@
+{
+  "Name": "Love Festival",
+  "Author": "AvalonMFX",
+  "Version": "1.1.0",
+  "Description": "Adds a Love Festival to the game",
+  "UniqueID": "AvalonMFX.LoveFestival",
+  "EntryDll": "LoveFestival.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:17819" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.JsonAssets"
+    }
+  ]
+}

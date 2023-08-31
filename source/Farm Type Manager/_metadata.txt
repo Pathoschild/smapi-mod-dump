@@ -6,9 +6,11 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 7a8f54fb1770bb7c85b25461f99c92548b344bba
-   Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sun Apr 10 15:30:34 2022 -0500
+   commit 7f3e01317766c4e0ab6d5b554aef0b5736096257
+   Author: Esca-MMC <41843952+Esca-MMC@users.noreply.github.com>
+   Date:   Sun Aug 27 10:51:59 2023 -0500
    
-       Remove ConfigEditor.html from build zip
+       Merge pull request #25 from RealSweetPanda/patch-1
+       
+       Fix compatibility with SaveAnywhere v3.2.6
    

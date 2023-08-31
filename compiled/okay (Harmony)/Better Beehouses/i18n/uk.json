@@ -56,5 +56,16 @@
   "config.useAnyFruitTrees.name": "Дозволити всі фруктові дерева",
   "config.useAnyFruitTrees.desc": "Чи варто ігнорувати перевірку на наявність квіток при виготовленні меду з дерев.",
   "config.patchCJB.name": "Інтеграція зі CJB модом",
-  "config.patchCJB.desc": "Підлатати мод CJB Item Spawner для реєстрації відсутніх предметів з меду"
+  "config.patchCJB.desc": "Підлатати мод CJB Item Spawner для реєстрації відсутніх предметів з меду",
+  "config.beePaths.name": "Бджолинні шляхи",
+  "config.beePaths.desc": "Показує бджіл, що переміщуються між вуликами та квітами, до яких вони прив'язані",
+  "config.particleCount.name": "Підрахунок бджіл",
+  "config.particleCount.desc": "Скільки бджіл повинно бути в кожному вулику",
+  "config.pathParticleCount.name": "Підрахунок бджолиних шляхів",
+  "config.pathParticleCount.desc": "Скільки бджіл на бджолиний шлях",
+  "config.sources.name": "Джерела меду",
+  "config.sources.desc": "Звідки бджоли беруть мед",
+  "config.visual.name": "Візуальні ефекти",
+  "config.visual.desc": "Косметичні ефекти",
+  "config.noparticles": "Частинки потребують або AeroCore, або мод Particles"
 }

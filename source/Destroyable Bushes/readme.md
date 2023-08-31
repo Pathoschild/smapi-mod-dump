@@ -15,6 +15,8 @@ A mod for the game Stardew Valley, allowing players to destroy every type of bus
 * [Commands](#commands)
 	* [add_bush](#add_bush)
 	* [remove_bush](#remove_bush)
+* [Translation](#translation)
+	* [Available Languages](#available-languages)
 
 ## Installation
 1. **Install the latest version of [SMAPI](https://smapi.io/).**
@@ -79,3 +81,16 @@ The `remove_bush` command removes a bush from the specified location. Bushes rem
 * `remove_bush`
 * `remove_bush 64 19`
 * `remove_bush 64 19 farm`
+
+## Translation
+Destroyable Bushes supports translation of its Generic Mod Config Menu (GMCM) setting names and descriptions.
+
+The mod will load a file from the `DestroyableBushes/i18n` folder that matches the current language code. If no matching translation exists, it will use [`default.json`](https://github.com/Esca-MMC/DestroyableBushes/blob/master/DestroyableBushes/i18n/default.json).
+
+See the Stardew Valley Wiki's [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations) page for more information. Please feel free to submit translation files through GitHub, Nexus Mods, ModDrop, or Discord.
+
+### Available Languages
+Language | File | Contributor(s)
+---------|------|------------
+English | [default.json](https://github.com/Esca-MMC/DestroyableBushes/blob/master/DestroyableBushes/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)
+Korean | [ko.json](https://github.com/Esca-MMC/DestroyableBushes/blob/master/DestroyableBushes/i18n/ko.json) | [wally232](https://github.com/wally232)

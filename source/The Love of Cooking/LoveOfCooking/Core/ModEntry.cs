@@ -81,7 +81,7 @@ namespace LoveOfCooking
 			Luck
 		}
 		// safe item names
-		internal string ChocolateName { get { return Interface.Interfaces.UsingPPJACrops ? "Chocolate" : $"{ObjectPrefix}chocolate"; } }
+		internal string ChocolateName { get { return Interface.Interfaces.UsingPPJATreesAndRecipes ? "Chocolate" : $"{ObjectPrefix}chocolate"; } }
 		internal string CabbageName { get { return Interface.Interfaces.UsingPPJACrops ? "Cabbage" : $"{ObjectPrefix}cabbage"; } }
 		internal string OnionName { get { return Interface.Interfaces.UsingPPJACrops ? "Onion" : $"{ObjectPrefix}onion"; } }
 		internal string CarrotName { get { return Interface.Interfaces.UsingPPJACrops ? "Carrot" : $"{ObjectPrefix}carrot"; } }
@@ -175,9 +175,6 @@ namespace LoveOfCooking
 				return false;
 			}
 
-			// Asset editors
-			this.Helper.Events.Content.AssetRequested += AssetManager.OnAssetRequested;
-
 			// Game events
 			this.RegisterEvents();
 
@@ -186,6 +183,7 @@ namespace LoveOfCooking
 
 		private void RegisterEvents()
 		{
+			this.Helper.Events.Content.AssetRequested += AssetManager.OnAssetRequested;
 			this.Helper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
 			this.Helper.Events.GameLoop.Saving += this.GameLoop_Saving;
 			this.Helper.Events.GameLoop.DayStarted += this.GameLoop_DayStarted;
@@ -522,10 +520,6 @@ namespace LoveOfCooking
 
 		private void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
 		{
-			// Remove contextual event handlers
-			Helper.Events.Input.ButtonPressed -= this.Event_TryDropInItem;
-			Helper.Events.Player.InventoryChanged -= this.Event_CheckForDroppedInItem;
-
 			// Reset session state
 			States.Value = new State();
 		}
@@ -613,114 +607,7 @@ namespace LoveOfCooking
 				yOffset: 0,
 				extraAlpha: 1f);
 		}
-
-		private void Event_TryDropInItem(object sender, ButtonPressedEventArgs e)
-		{
-			if (!Context.IsWorldReady || Game1.currentLocation is null)
-				return;
-
-			if (e.Button.IsUseToolButton())
-			{
-				if (Utils.AreNettlesActive()
-					&& Game1.currentLocation.Objects.TryGetValue(e.Cursor.GrabTile, out StardewValley.Object o)
-					&& o is not null
-					&& o.Name == "Keg"
-					&& o.heldObject?.Value is null
-					&& Game1.player.ActiveObject is not null
-					&& Game1.player.ActiveObject.Name.EndsWith("nettles", StringComparison.InvariantCultureIgnoreCase))
-				{
-					if (CookingSkillApi.IsEnabled()
-						&& CookingSkillApi.GetLevel() < int.Parse(ItemDefinitions["NettlesUsableLevel"][0]))
-					{
-						// Ignore Nettles used on Kegs to make Nettle Tea when Cooking skill level is too low
-						Game1.playSound("cancel");
-					}
-					else
-					{
-						// Since kegs don't accept forage items, we trigger the dropIn behaviours through our inventory changed handler 
-						if (--Game1.player.ActiveObject.Stack < 1)
-							Game1.player.ActiveObject = null;
-						Helper.Input.Suppress(e.Button);
-					}
-				}
-			}
-		}
-
-		private void Event_CheckForDroppedInItem(object sender, InventoryChangedEventArgs e)
-		{
-			if (!Context.IsWorldReady || Game1.currentLocation is null)
-				return;
-
-			// Handle unique craftable input/output
-			if (Game1.activeClickableMenu is null && Interface.Interfaces.JsonAssets is not null)
-			{
-				Vector2 tilePosition = Game1.currentCursorTile;
-				if (Game1.currentLocation.Objects.ContainsKey(tilePosition)
-					&& Game1.currentLocation.Objects[tilePosition] is StardewValley.Object craftable
-					&& craftable is not null
-					&& craftable.bigCraftable.Value
-					&& Game1.player.mostRecentlyGrabbedItem is not null)
-				{
-					if (Utils.AreNettlesActive()
-						&& craftable.Name == "Keg"
-						&& Game1.player.mostRecentlyGrabbedItem.Name.EndsWith("nettles", StringComparison.InvariantCultureIgnoreCase)
-						&& craftable.heldObject.Value is null // Keg must be empty
-						&& e.QuantityChanged.FirstOrDefault(x => x.Item == Game1.player.mostRecentlyGrabbedItem) is ItemStackSizeChange i
-						&& i.NewSize < i.OldSize)
-					{
-						string name = NettleTeaName;
-						craftable.heldObject.Value = new StardewValley.Object(
-							Vector2.Zero,
-							Interface.Interfaces.JsonAssets.GetObjectId(name),
-							Givenname: name,
-							canBeSetDown: false,
-							canBeGrabbed: true,
-							isHoedirt: false,
-							isSpawnedObject: false);
-						craftable.MinutesUntilReady = 180;
-
-						// Since kegs don't accept forage items, we perform the dropIn behaviours ourselves
-						Game1.currentLocation.playSound("Ship");
-						Game1.currentLocation.playSound("bubbles");
-						Multiplayer multiplayer = Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
-						multiplayer.broadcastSprites(
-							Game1.currentLocation,
-							new TemporaryAnimatedSprite(
-								textureName: "TileSheets\\animations",
-								sourceRect: new Rectangle(256, 1856, 64, 128),
-								animationInterval: 80f,
-								animationLength: 6,
-								numberOfLoops: 999999,
-								position: (craftable.TileLocation * Game1.tileSize) + new Vector2(0f, -2 * Game1.tileSize),
-								flicker: false,
-								flipped: false,
-								layerDepth: ((craftable.TileLocation.Y + 1f) * Game1.tileSize / 10000f) + (1 / 10000f),
-								alphaFade: 0f,
-								color: Color.Lime * 0.75f,
-								scale: 1f, scaleChange: 0f, rotation: 0f, rotationChange: 0f)
-							{
-								alphaFade = 0.005f
-							});
-					}
-					else if (Game1.player.mostRecentlyGrabbedItem.Name.EndsWith("Apple", StringComparison.InvariantCulture)
-						&& craftable.heldObject.Value is not null // Keg will not be empty, but we override base behaviour
-						&& !(craftable.heldObject.Value.Name.EndsWith("cider", StringComparison.InvariantCultureIgnoreCase)))
-					{
-						var name = ObjectPrefix + "cider";
-						craftable.heldObject.Value = new StardewValley.Object(
-							Vector2.Zero,
-							Interface.Interfaces.JsonAssets.GetObjectId(name),
-							Givenname: name,
-							canBeSetDown: false,
-							canBeGrabbed: true,
-							isHoedirt: false,
-							isSpawnedObject: false);
-						craftable.MinutesUntilReady = 1900;
-					}
-				}
-			}
-		}
-
+		
 		private void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
 		{
 			if (!Context.IsWorldReady || Game1.currentLocation is null)
@@ -1136,13 +1023,6 @@ namespace LoveOfCooking
 		{
 			try
 			{
-				// Add contextual event handlers
-				if (!Interface.Interfaces.UsingProducerFramework)
-				{
-					Helper.Events.Input.ButtonPressed += this.Event_TryDropInItem;
-					Helper.Events.Player.InventoryChanged += this.Event_CheckForDroppedInItem;
-				}
-
 				// Load local persistent data from saved modData
 				States.Value.IsUsingRecipeGridView = false;
 				States.Value.CookingToolLevel = 0;

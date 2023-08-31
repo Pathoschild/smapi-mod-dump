@@ -9,12 +9,12 @@
 *************************************************/
 
 {
-  "Format": "1.26.0",
+  "Format": "1.29.0",
   "Changes": [
 
     {
       "Action": "Include",
-      "FromFile": "Data/Animations.json, Data/Mail.json, Strings/SpeechBubbles.json"
+      "FromFile": "Data/Animations.json, Data/Mail.json, Data/Forage.json, Strings/SpeechBubbles.json"
     },
 
     {

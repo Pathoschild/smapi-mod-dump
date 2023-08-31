@@ -1,7 +1,7 @@
 {
     "Name": "Junimo Beacon",
     "Author": "Achtuur",
-    "Version": "1.1.0",
+    "Version": "1.1.2",
     "Description": "Adds Junimo Beacon to the game",
     "UniqueID": "Achtuur.JunimoBeacon",
     "EntryDll": "JunimoBeacon.dll",
@@ -15,7 +15,9 @@
             "UniqueID": "spacechase0.SpaceCore"
         },
         {
-            "UniqueID": "DIGUS.MailFrameworkMod" // added locally
+            "UniqueID": "DIGUS.MailFrameworkMod",
+            "MinimumVersion": "1.15.0",
+            "isRequired": true
         }
     ],
     "UpdateKeys": [ "Nexus: 17135" ]

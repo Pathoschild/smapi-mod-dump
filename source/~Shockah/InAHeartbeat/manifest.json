@@ -1,0 +1,32 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Shockah/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+	"Name": "In a Heartbeat",
+	"Author": "Shockah",
+	"Version": "1.0.0",
+	"Description": "Show some extra love to date/marry villagers early. Adds craftable Bouquets and Mermaid's Pendants.",
+	"UniqueID": "Shockah.InAHeartbeat",
+	"EntryDll": "InAHeartbeat.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:17834" ],
+	"Dependencies": [
+		{
+			"UniqueID": "Shockah.Kokoro",
+			"IsRequired": true,
+			"MinimumVersion": "2.0.1"
+		},
+		{
+			"UniqueID": "spacechase0.AdvancedSocialInteractions",
+			"IsRequired": true,
+			"MinimumVersion": "1.0.0"
+		}
+	]
+}

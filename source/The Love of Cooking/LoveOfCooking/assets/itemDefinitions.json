@@ -49,6 +49,12 @@
 	"NettlesDamage": [
 		"5"
 	],
+	"NettlesKegDuration": [
+		"180"
+	],
+	"CiderKegDuration": [
+		"1900"
+	],
 	"ShopDiscounts": [
 		"Saloon:35"
 	],

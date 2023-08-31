@@ -4,6 +4,6 @@
   "GetObjectBackImmediately": false,
   "BlockChange": false,
   "EnableCrystalariumCloneEveryObject": false,
-  "DefaultCloningTime": 300,
+  "DefaultCloningTime": 5000,
   "OverrideContentPackGetObjectProperties": false
 }

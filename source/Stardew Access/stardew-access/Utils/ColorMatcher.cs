@@ -58,7 +58,7 @@ namespace stardew_access.Utils
             }
             catch (Exception ex)
             {
-                MainClass.ErrorLog($"Failed to convert RGB string '{rgb}' to integers: {ex.Message}");
+                Log.Error($"Failed to convert RGB string '{rgb}' to integers: {ex.Message}");
                 throw new ArgumentException("The RGB string must be in the format 'RRGGBB'.", nameof(rgb));
             }
         }
@@ -101,7 +101,7 @@ namespace stardew_access.Utils
             }
             catch (Exception ex)
             {
-                MainClass.ErrorLog($"Failed to convert HSV ({h}, {s}, {v}) to RGB: {ex.Message}");
+                Log.Error($"Failed to convert HSV ({h}, {s}, {v}) to RGB: {ex.Message}");
                 throw;
             }
         }
@@ -114,8 +114,13 @@ namespace stardew_access.Utils
         {
             var colorCodeToName = new Dictionary<string, string>();
 
-            JsonElement colorJson = LoadJsonFile(ColorsFileName);
+            bool loaded = TryLoadJsonFile(ColorsFileName, out JsonElement colorJson);
 
+            if (!loaded || colorJson.ValueKind == JsonValueKind.Undefined)
+            {
+                Log.Warn($"Unable to load assets/{ColorsFileName}.");
+                return colorCodeToName;
+            }
             foreach (var colorCode in colorJson.EnumerateObject())
             {
                 if (colorCode.Value.ValueKind == JsonValueKind.String)
@@ -124,7 +129,7 @@ namespace stardew_access.Utils
                 }
                 else
                 {
-                    MainClass.ErrorLog($"Failed to parse color name for color code '{colorCode.Name}'.");
+                    Log.Error($"Failed to parse color name for color code '{colorCode.Name}'.");
                 }
             }
 
@@ -151,7 +156,7 @@ namespace stardew_access.Utils
                 colorCodeToIndex[index++] = colorCode;
             }
 
-            MainClass.InfoLog($"Loaded {index} colors into the K-d tree.");
+            Log.Info($"Loaded {index} colors into the K-d tree.");
 
             return colorTree;
         }
@@ -173,7 +178,7 @@ namespace stardew_access.Utils
                 return _colorCodeToName.TryGetValue(nearestColorCode!, out var colorName) ? colorName : "Unknown";
             }
 
-            MainClass.ErrorLog($"Unable to find a nearest color for the RGB values: ({r}, {g}, {b}).");
+            Log.Error($"Unable to find a nearest color for the RGB values: ({r}, {g}, {b}).");
             return "Unknown";
         }
 
@@ -191,7 +196,7 @@ namespace stardew_access.Utils
             }
             catch (Exception ex)
             {
-                MainClass.ErrorLog($"Failed to get nearest color name from RGB string '{rgb}': {ex.Message}");
+                Log.Error($"Failed to get nearest color name from RGB string '{rgb}': {ex.Message}");
                 return rgb;
             }
         }
@@ -212,7 +217,7 @@ namespace stardew_access.Utils
             }
             catch (Exception ex)
             {
-                MainClass.ErrorLog($"Failed to get nearest color name from HSV ({h}, {s}, {v}): {ex.Message}");
+                Log.Error($"Failed to get nearest color name from HSV ({h}, {s}, {v}): {ex.Message}");
                 (int r, int g, int b) = HSVToRGB(h, s, v);
                 return $"{r:X2}{g:X2}{b:X2}";
             }

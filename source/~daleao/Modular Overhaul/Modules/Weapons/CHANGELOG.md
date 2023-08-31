@@ -6,15 +6,27 @@ for queries and analysis.**
 
 ----
 
-# WPNZ Change Log
+# WPNZ Changelog
 
-## 2.5.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.5.8 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
+
+### Added
+
+* Added compatibility for Romancible Rasmodia.
+
+## 2.5.5 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
+
+### Removed
+
+* Removed the follow-up forge quest for finding all blueprints. The feedback has been that this quest is confusing and it doesn't reward anything anyway.
+
+## 2.5.0 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
 * Added failsafe to Virtue Quest to auto-complete if Blade of Dawn is detected as already obtained.
 
-## 2.5.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.5.0 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -31,7 +43,7 @@ for queries and analysis.**
 * Virtue progress can no longer drop below zero.
 * Fixed some typos in GMCM dropdown selectors (Tooltip Style and Quest Difficulty).
 
-## 2.4.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.4.0 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -42,7 +54,7 @@ for queries and analysis.**
 * Fixed a small display bug with Crit. Rate in weapon tooltips.
 * Fixed DaggerEnchantment not getting removed before saving.
 
-## 2.3.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.3.0 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -54,7 +66,7 @@ for queries and analysis.**
 * Now actually remembers when you start the Hero's Journey quest.
 * Weapon sale price now considers Profit Margin settings.
 
-## 2.2.8 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.2.8 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -64,7 +76,7 @@ for queries and analysis.**
 
 * Improved Slick Moves stop condtion, which fixes a weird bug where Weapon slick moves would interfere with Slingshot slick moves, and vive versa.
 
-## 2.2.7 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.2.7 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -80,7 +92,7 @@ for queries and analysis.**
 
 * Removed the CustomStabbingSwords, GalaxySwordType and InfinitySwordType config settings.
 
-## 2.2.6 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.2.6 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -92,19 +104,19 @@ for queries and analysis.**
 
 * When FaceMouseCursor is enabled, pressing the Action button will no longer cause the player to accidentally use a special move in another direction when trying to interact with something.
 
-## 2.2.5 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.2.5 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Removed the leftover Virtue quest entries which were causing severe crashing in 2.2.4.
 
-## 2.2.4 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.2.4 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Removed
 
 * Moved Infinity Slingshot transformation over to SLNGS module.
 
-## 2.2.3 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.2.3 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -120,7 +132,7 @@ for queries and analysis.**
 
 * Revised enable condition for ButtonPressedEvent, which should fix issues with FaceMouseCursor, SlickMoves and AutoSelection working if any is disabled.
 
-## 2.2.2 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.2.2 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -132,13 +144,13 @@ for queries and analysis.**
 * No longer forcefully restarts the Blade of Ruin quest by checking for events seen. This was not doing I wanted and wasn't even necessary. Fixes the bug where player were receiving the quest every time the save was loaded.
 * Fixed an IndexOutOfRange error when using any weapon with VFX and ComboHits disabled.
 
-## 2.2.1 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.2.1 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
 * Refactored some patchers into more specific namespaces, just for consistency.
 
-## 2.2.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.2.0 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -155,13 +167,13 @@ for queries and analysis.**
 * Stabby sword thrust move will now automatically home-in on the hovered enemy if FaceMouseCursor setting is enabled.
 * Increased the hitbox of Club's overhead smash hit (final combo hit).
 
-## 2.1.1 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.1.1 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Enough people have suffered SpaceCore serialization issues to make it worth mitigating the risk. From now on, instrinsic weapon enchantments will be temporary removed before the game is saving. There is no need to persist them on the save anyway. This does not apply to enchantments from [ENCH](../Enchantments).
 
-## 2.1.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.1.0 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -173,7 +185,7 @@ for queries and analysis.**
 * Fixed Galaxy and Infinity weapons not being registered as Stabbing Swords right away.
 * Can no longer dash in festivals.
 
-## 2.0.6 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.0.6 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
@@ -183,7 +195,7 @@ for queries and analysis.**
 * Increased Steel Falchion damage slightly.
 * Should now correctly load the cometkins-style sprite for Elderwood if [Better Resources](https://www.nexusmods.com/stardewvalley/mods/6942) is installed.
 
-## 2.0.5 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.0.5 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
@@ -191,7 +203,7 @@ for queries and analysis.**
 * Fixed a small display issue when drawing the tooltip of weapons with negative defense.
 * Galaxy and Infinity sword types should now obey the config settings.
 
-## 2.0.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 2.0.0 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 * Initial release of Weapons module.
 
@@ -218,31 +230,31 @@ for queries and analysis.**
 
 *Changes below this point refer to the legacy Arsenal module.*
 
-## 1.3.5 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.3.5 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed a bad Null-Reference Exception introduced in 1.3.4.
 
-## 1.3.4 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.3.4 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed missing scythe swipe sound.
 
-## 1.3.2 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.3.2 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Enemies defeated by knockback damage now properly count for game stats, quests and drop items. 
 
-## 1.3.1 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.3.1 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed start-up error with Neptune's Glaive patcher.
 
-## 1.3.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.3.0 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -255,7 +267,7 @@ for queries and analysis.**
 * Fixed a bug preventing explosive ammo from exploding without the Desperado profession.
 * Fixed a bug with Obsidian Edge and Lava Katana drops creating error daggers instead.
 
-## 1.2.3 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.2.3 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -270,14 +282,14 @@ for queries and analysis.**
 
 * Blade of the Ruined Hero introduction event is no longer skippable.
 
-## 1.2.1 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.2.1 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed auto-selection preventing other LeftShift actions in inventory menu.
 * Fixed inverted swipe effect when swinging scythe.
 
-## 1.2.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.2.0 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -288,14 +300,14 @@ for queries and analysis.**
 
 * Fixed a bug in the console command for getting blueprints (`ars get bp`).
 
-## 1.1.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.1.0 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed out-of-bounds tooltip elements for slingshots higher than basic.
 * Fixed bullseye position while aiming.
 
-## 1.0.4 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.0.4 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -307,11 +319,11 @@ for queries and analysis.**
 
 * Fixed shipping bin logic, which was also messed up by the Dark Sword.
 
-## 1.0.3-Hotfix <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.0.3-Hotfix <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 Hotfix for Null-Reference Exception when opening Clint's shop menu.
 
-## 1.0.2 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.0.2 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -325,7 +337,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Dark Sword should now be immune from accidental deposit by Better Chests' stack feature.
 * Clint's menu should now support mod geodes like Kaya's.
 
-## 1.0.1 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.0.1 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -347,7 +359,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * No longer conflicts with Love Of Cooking's Frying Pan upgrades or drbirbdev's Panning and Ranching Tool Upgrades.
 * No longer prevents players from receiving the Galaxy Sword mail flag.
 
-## 1.0.0 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 1.0.0 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -369,7 +381,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Weapon and Slingshot Forges now unapply correctly.
 * Hoe is not longer classified as Rare (color-coded Blue).
 
-## 0.9.9 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 0.9.9 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -391,7 +403,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Fixed possible bug with Bloodthirsty enchantment.
 * Fixed some incorrect translation keys.
 
-## 0.9.8 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 0.9.8 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -402,7 +414,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Improvements to Slick Moves. Can now drift in the parallel direction (i.e., when swinging directly in front or behind you). Before, drifting only worked for perpendicular directions (i.e., when swinging to the sides). Also increased the drift velocity slightly. Finally, the drift now comes to a halt at the end of the animation, removing the unimmersive impression of buttery floor.
 * Clint's follow-up quest now begins correctly.
 
-## 0.9.7 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 0.9.7 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
@@ -426,7 +438,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Fixed missing patch targets for allowing crits to ignore monster defense.
 * Added config checks to logic that was missing it.
 
-## 0.9.6 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 0.9.6 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
@@ -434,7 +446,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Fixed a compatibility issue with any modded recipes containing Dragon Tooth.
 * Fixed a null-reference exception when farmer takes damage from bombs and maybe other sources too.
 
-## 0.9.5 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 0.9.5 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -448,7 +460,7 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 
 * Removed automatic initialization script from SaveLoaded event. This was inefficient and unreliable. Replaced with manual console command.
 
-## 0.9.4 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 0.9.4 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Added
 
@@ -470,27 +482,24 @@ Hotfix for Null-Reference Exception when opening Clint's shop menu.
 * Players on existing save files that have already obtained the Galaxy Sword should now be able to obtain the remaining Galaxy weapons.
 * Fixed a bug in the monster stat randomization logic, which was generating monsters with current HP higher than max HP.
 
-## 0.9.3 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 0.9.3 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Fixed
 
 * Fixed null-reference exception when opening Marlon's shop (forgot to pass `__result` by `ref`).
 * Control settings now apply only to weapons, as they should.
 
-## 0.9.2 <sup><sub><sup>[🔼](#wpnz-change-log)</sup></sub></sup>
+## 0.9.2 <sup><sub><sup>[🔼 Back to top](#wpnz-change-log)</sup></sub></sup>
 
 ### Changed
 
 * Weapon tooltips now revert to vanilla when `RebalancedStats` option is disabled.
+* The category of Dwarven Blueprint has been changed from Artifact to Junk. This avoids the error caused by the game attempting to spawn a blueprint when the player digs an artifact spot.
 
 ### Fixed
 
 * Added even more robust null-checking for custom JA items to avoid issues.
 * Fixed SlickMoves config setting in GMCM which was incorrectly mapped to FaceMouseCursor.
-
-### Fixed
-
-* The category of Dwarven Blueprint has been changed from Artifact to Junk. This avoids the error caused by the game attempting to spawn a blueprint when the player digs an artifact spot.
 * Fixed player's facing direction changing during active menu.
 
 ## 0.9.0 (Initial release)

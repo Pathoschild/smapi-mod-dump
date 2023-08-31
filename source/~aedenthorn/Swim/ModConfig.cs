@@ -16,6 +16,7 @@ namespace Swim
     {
         public bool EnableMod { get; set; }
         public bool ReadyToSwim { get; set; }
+        public bool SwimIndoors { get; set; }
         public bool SwimSuitAlways { get; set; }
         public bool NoAutoSwimSuit { get; set; }
         public bool ShowOxygenBar { get; set; }
@@ -61,6 +62,7 @@ namespace Swim
 
             EnableMod = true;
             ReadyToSwim = true;
+            SwimIndoors = false;
             ShowOxygenBar = true;
             SwimSuitAlways = false;
             EnableClickToSwim = true;

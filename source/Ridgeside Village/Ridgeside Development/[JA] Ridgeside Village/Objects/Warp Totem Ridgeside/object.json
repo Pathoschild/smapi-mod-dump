@@ -11,7 +11,7 @@
 {
 	"Name": "Warp Totem: Ridgeside",
   "Price": 20,
-	"Description": "Warp directly to Ridgeside Village. Consumed on use.",
+	"TranslationKey": "objects.warp-totem-ridgeside",
 	"Category": "Crafting",
 	"CanPurchase": false,
 	"Recipe":
@@ -33,35 +33,4 @@
         ],
         "CanPurchase": false,
     },
-
-    "NameLocalization":
-    {
-    	//remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    },
-    "DescriptionLocalization":
-    {
-    	//remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    }
 }

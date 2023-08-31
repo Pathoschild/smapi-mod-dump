@@ -15,11 +15,11 @@ using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 
-namespace BlueberryMushroomAutomation.Core
+namespace BlueberryMushroomAutomation
 {
 	public class PropagatorFactory : IAutomationFactory
 	{
-		public IAutomatable GetFor(StardewValley.Object obj, GameLocation location, in Vector2 tile)
+		public IAutomatable GetFor(Object obj, GameLocation location, in Vector2 tile)
 		{
 			if (obj is BlueberryMushroomMachine.Propagator propagator)
 				return new PropagatorMachine(propagator, location, tile);

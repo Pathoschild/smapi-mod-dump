@@ -45,6 +45,9 @@ namespace StardewArchipelago.Items.Traps
             }
         }
 
+        private const int CRAFTING_CATEGORY = -9;
+        private const string CRAFTING_TYPE = "Crafting";
+
         public void ShuffleInventories(ShuffleInventoryTarget targets)
         {
             if (targets == ShuffleInventoryTarget.None)
@@ -117,7 +120,7 @@ namespace StardewArchipelago.Items.Traps
             {
                 foreach (var (tile, gameObject) in gameLocation.Objects.Pairs)
                 {
-                    if (gameObject is not Chest chest || chest.SpecialChestType != Chest.SpecialChestTypes.None || chest.giftbox.Value)
+                    if (gameObject is not Chest { SpecialChestType: Chest.SpecialChestTypes.None, Category: CRAFTING_CATEGORY, Type: CRAFTING_TYPE } chest || chest.giftbox.Value)
                     {
                         continue;
                     }

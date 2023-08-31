@@ -6,9 +6,9 @@ mods:
    The Love of Cooking
 
 latest commit:
-   commit 1ed3efabacc59157ae9273450d3db4fa5373b3c7
-   Author: b-b-blueberry <dearbblueberry@gmail.com>
-   Date:   Thu Oct 20 00:56:00 2022 +1100
+   commit d5328e8b78ee1edfdeb90c2fde33974ea1b97c1b
+   Author: blueberry <dearbblueberry@gmail.com>
+   Date:   Wed Aug 16 01:06:49 2023 +1000
    
-       Update manifest to version 1.0.29.
+       Remove x86 build config.
    

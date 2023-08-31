@@ -1,3 +1,6 @@
 {
-  "ModEnabled": true
+  "ModEnabled": true,
+  "ToiletKeywords": "Toilet",
+  "PoopWarningTime": 30,
+  "PoopWarning": "sad"
 }

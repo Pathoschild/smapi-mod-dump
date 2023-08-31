@@ -78,18 +78,18 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             if (key.ToLower() == "money")
                 return who.Money;
 
-            int id = Unlockable.intParseID(Unlockable.getIDFromReqSplit(key));
+            var obj = Unlockable.parseItem(Unlockable.getIDFromReqSplit(key));
             int quality = Unlockable.getQualityFromReqSplit(key);
-            if (id == 858)
+            if (obj.QualifiedItemId == "(O)858")
                 return who.QiGems;
 
-            else if (id == 73)
-                return Game1.netWorldState.Value.GoldenWalnuts.Value;
+            else if (obj.QualifiedItemId == "(O)73")
+                return Game1.netWorldState.Value.GoldenWalnuts;
 
             else
-                return who.Items.Sum(e => e is StardewValley.Object
-                                         && e.ParentSheetIndex == id
-                                         && (e as StardewValley.Object).Quality >= quality
+                return who.Items.Sum(e => e is not null
+                                         && e.QualifiedItemId == obj.QualifiedItemId
+                                         && e.Quality >= quality
                                          ? e.Stack
                                          : 0);
         }
@@ -101,24 +101,23 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 return;
             }
 
-            int id = Unlockable.intParseID(Unlockable.getIDFromReqSplit(key));
+            var obj = Unlockable.parseItem(Unlockable.getIDFromReqSplit(key));
             int quality = Unlockable.getQualityFromReqSplit(key);
 
-            if (id == 858) {
+            if (obj.QualifiedItemId == "(O)858") {
                 who.QiGems -= amount;
                 return;
-            } else if (id == 73) {
-                Game1.netWorldState.Value.GoldenWalnuts.Value -= amount;
+            } else if (obj.QualifiedItemId == "(O)73") {
+                Game1.netWorldState.Value.GoldenWalnuts -= amount;
                 return;
             }
 
             var relevantInventory = new Dictionary<int, int>();
             for (int i = 0; i < who.Items.Count; i++)
-                if (who.Items[i] != null
-                    && who.Items[i] is StardewValley.Object
-                    && (who.Items[i] as StardewValley.Object).Quality >= quality
-                    && who.Items[i].ParentSheetIndex == id)
-                    relevantInventory.Add(i, (who.Items[i] as StardewValley.Object).Quality);
+                if (who.Items[i] is not null
+                    && who.Items[i].QualifiedItemId == obj.QualifiedItemId
+                    && who.Items[i].Quality >= quality)
+                    relevantInventory.Add(i, who.Items[i].Quality);
 
             //We want to take the least valuable items out first, so we sort by quality
             var sortedInventry = (from e in relevantInventory orderby e.Value ascending select e);
@@ -145,11 +144,11 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 return true;
             }
 
-            if (id == "858") {
+            if (id == "(O)858" || id == "858") {
                 who.QiGems += value;
                 return true;
-            } else if (id == "73") {
-                Game1.netWorldState.Value.GoldenWalnuts.Value += value;
+            } else if (id == "(O)73" || id == "73") {
+                Game1.netWorldState.Value.GoldenWalnuts += value;
                 return true; ;
             }
 

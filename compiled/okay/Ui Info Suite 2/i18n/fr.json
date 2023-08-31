@@ -1,4 +1,6 @@
 {
+  // GUI - Game Menu
+  // "OptionsTabTooltip": "UI Info Suite 2 Options", // TODO
   //GUI - Billboard
   "Billboard": "Tableau d'annonces",
   "Calendar": "Calendrier",
@@ -23,10 +25,11 @@
   "ToolIsFinishedBeingUpgraded": "{0} est terminé!",
   "NpcBirthday": "Anniversaire de {0}",
   "RobinBuildingStatus": "Robin aura fini votre nouveau batiment dans {0} jour(s)",
+  "RobinHouseUpgradeStatus": "Robin will finish upgrading your house in {0} day(s)", // TODO
   // Display icons - Foragables
-  "CanFindSalmonberry": "You can find Salmonberries today", // TODO
-  "CanFindBlackberry": "You can find Blackberries today", // TODO
-  "CanFindHazelnut": "You can find Hazelnuts on trees today", // TODO
+  "CanFindSalmonberry": "Vous pouvez trouver des baies rouges aujourd'hui",
+  "CanFindBlackberry": "Vous pouvez trouver des baies noires aujourd'hui",
+  "CanFindHazelnut": "Vous pouvez trouver des noisettes sur les arbres aujourd'hui ",
   //Display icons - Luck
   "DailyLuckValue": "Ta chance du jour est {0}",
   "FeelingLucky": "Tu te sens chanceux !!",
@@ -66,8 +69,8 @@
   "ShowRobinBuildingStatusIcon": "Montrer l'avancée du chantier de Robin",
   "ShowLuckIcon": "Montrer l'icône de chance",
   "ShowExactValue": "Montrer la valeur exacte",
-  "ShowSeasonalBerry": "Show seasonal forageables", // TODO
-  "ShowSeasonalBerryHazelnut": "Show hazelnuts on trees", // TODO
+  "ShowSeasonalBerry": "Montrer les cultures de saison",
+  "ShowSeasonalBerryHazelnut": "Montrer les noisettes sur les arbres",
   //Others
   "LevelUp": "Gain de niveau"
 }

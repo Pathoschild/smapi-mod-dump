@@ -27,7 +27,7 @@
             <summary>Gets the <see cref="T:DaLion.Overhaul.API.IModularOverhaul.ISkill"/> which offers this profession.</summary>
         </member>
         <member name="P:DaLion.Overhaul.API.IModularOverhaul.IProfession.BranchingProfessions">
-            <summary>Gets get the professions which branch off from this profession, if any.</summary>
+            <summary>Gets the professions which branch off from this profession, if any.</summary>
         </member>
         <member name="M:DaLion.Overhaul.API.IModularOverhaul.IProfession.GetDescription(System.Boolean)">
             <summary>Get the localized description text for this profession.</summary>
@@ -341,7 +341,7 @@
                 <see cref="T:DaLion.Overhaul.API.IModularOverhaul.IGemstone"/>.
             </summary>
             <param name="other">Some other <see cref="T:DaLion.Overhaul.API.IModularOverhaul.IGemstone"/>.</param>
-            <returns>The <see cref="T:DaLion.Overhaul.API.IModularOverhaul.IntervalNumber"/> of the between this and <paramref name="other"/>.</returns>
+            <returns>The <see cref="T:DaLion.Overhaul.API.IModularOverhaul.IntervalNumber"/> between this and <paramref name="other"/>.</returns>
         </member>
         <member name="T:DaLion.Overhaul.API.IModularOverhaulApi">
             <summary>Implementation of the mod API.</summary>
@@ -657,7 +657,7 @@
             <param name="duration">The duration in milliseconds.</param>
             <param name="intensity">The intensity of the bleeding effect (how many stacks).</param>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.StopBleeding(StardewValley.Monsters.Monster)">
+        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.Unbleed(StardewValley.Monsters.Monster)">
             <summary>Removes bleeding from <paramref name="monster"/>.</summary>
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
         </member>
@@ -672,7 +672,7 @@
             <param name="burner">The <see cref="T:StardewValley.Farmer"/> who inflicted the burn.</param>
             <param name="duration">The duration in milliseconds.</param>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.CureBurn(StardewValley.Monsters.Monster)">
+        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.Unburn(StardewValley.Monsters.Monster)">
             <summary>Removes burn from <paramref name="monster"/>.</summary>
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
         </member>
@@ -686,7 +686,7 @@
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
             <param name="duration">The duration in milliseconds.</param>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.WarmUp(StardewValley.Monsters.Monster)">
+        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.Unchill(StardewValley.Monsters.Monster)">
             <summary>Removes chilled status from the <paramref name="monster"/>.</summary>
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
         </member>
@@ -700,7 +700,7 @@
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
             <param name="duration">The duration in milliseconds.</param>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.CureFear(StardewValley.Monsters.Monster)">
+        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.Unfear(StardewValley.Monsters.Monster)">
             <summary>Removes fear from <paramref name="monster"/>.</summary>
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
         </member>
@@ -730,7 +730,7 @@
             <param name="duration">The duration in milliseconds.</param>
             <param name="intensity">The intensity of the slow effect (how many stacks).</param>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.CurePoison(StardewValley.Monsters.Monster)">
+        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.Detox(StardewValley.Monsters.Monster)">
             <summary>Removes poison from <paramref name="monster"/>.</summary>
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
         </member>
@@ -745,7 +745,7 @@
             <param name="duration">The duration in milliseconds.</param>
             <param name="intensity">The intensity of the slow effect.</param>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.RemoveSlow(StardewValley.Monsters.Monster)">
+        <member name="M:DaLion.Overhaul.Modules.Combat.Extensions.MonsterExtensions.Unslow(StardewValley.Monsters.Monster)">
             <summary>Removes slow from <paramref name="monster"/>.</summary>
             <param name="monster">The <see cref="T:StardewValley.Monsters.Monster"/>.</param>
         </member>
@@ -769,6 +769,12 @@
         </member>
         <member name="M:DaLion.Overhaul.Modules.Combat.Patchers.BuffCtorPatcher.BuffCtorPostfix(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
             <summary>Adjust Jinxed debuff for defense overhaul.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Combat.Patchers.CharacterGetboundingBoxPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Combat.Patchers.CharacterGetboundingBoxPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Combat.Patchers.CharacterGetboundingBoxPatcher.CharacterGetboundingBoxPostfix(StardewValley.Character,Microsoft.Xna.Framework.Rectangle@)">
+            <summary>Extend Lava Lurk hitbox.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Combat.Patchers.DuggyUpdatePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Combat.Patchers.DuggyUpdatePatcher"/> class.</summary>
@@ -1005,13 +1011,6 @@
         <member name="M:DaLion.Overhaul.Modules.Core.ConfigMenu.ModuleSelectionOption.Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch,Microsoft.Xna.Framework.Vector2)">
             <inheritdoc />
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Core.ConfigMenu.ModuleSelectionTooltipRenderedActiveMenuEvent.#ctor(DaLion.Shared.Events.EventManager)">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Core.ConfigMenu.ModuleSelectionTooltipRenderedActiveMenuEvent"/> class.</summary>
-            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Core.ConfigMenu.ModuleSelectionTooltipRenderedActiveMenuEvent.OnRenderedActiveMenuImpl(System.Object,StardewModdingAPI.Events.RenderedActiveMenuEventArgs)">
-            <inheritdoc />
-        </member>
         <member name="M:DaLion.Overhaul.Modules.Core.Debug.DebugButtonPressedEvent.#ctor(DaLion.Shared.Events.EventManager)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Core.Debug.DebugButtonPressedEvent"/> class.</summary>
             <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
@@ -1058,10 +1057,10 @@
         <member name="M:DaLion.Overhaul.Modules.Core.Debug.DebugPatcher.UnapplyImpl(HarmonyLib.Harmony)">
             <inheritdoc />
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Core.Debug.DebugPatcher.DebugPrefix(System.Object)">
+        <member name="M:DaLion.Overhaul.Modules.Core.Debug.DebugPatcher.DebugPrefix(StardewValley.Farmer,System.Boolean@)">
             <summary>Placeholder patch for debugging.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Core.Debug.DebugPatcher.DebugPostfix(System.Object,System.Collections.Generic.Dictionary{StardewValley.Item,System.Boolean})">
+        <member name="M:DaLion.Overhaul.Modules.Core.Debug.DebugPatcher.DebugPostfix(System.Object)">
             <summary>Placeholder patch for debugging.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Core.Debug.DebugRenderedActiveMenuEvent.#ctor(DaLion.Shared.Events.EventManager)">
@@ -1188,6 +1187,16 @@
             <inheritdoc />
         </member>
         <member name="M:DaLion.Overhaul.Modules.Core.Events.HudPointerUpdateTickedEvent.OnUpdateTickedImpl(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Core.Events.ModuleSelectionTooltipRenderedActiveMenuEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Core.Events.ModuleSelectionTooltipRenderedActiveMenuEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Core.Events.ModuleSelectionTooltipRenderedActiveMenuEvent.IsEnabled">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Core.Events.ModuleSelectionTooltipRenderedActiveMenuEvent.OnRenderedActiveMenuImpl(System.Object,StardewModdingAPI.Events.RenderedActiveMenuEventArgs)">
             <inheritdoc />
         </member>
         <member name="M:DaLion.Overhaul.Modules.Core.Events.OutOfCombatOneSecondUpdateTickedEvent.#ctor(DaLion.Shared.Events.EventManager)">
@@ -1547,6 +1556,13 @@
             <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Enchantments.Events.GatlingUpdateTickedEvent.OnUpdateTickedImpl(System.Object,StardewModdingAPI.Events.UpdateTickedEventArgs)">
+            <inheritdoc />
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Enchantments.Events.WabbajackSavingEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Enchantments.Events.WabbajackSavingEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Enchantments.Events.WabbajackSavingEvent.OnSavingImpl(System.Object,StardewModdingAPI.Events.SavingEventArgs)">
             <inheritdoc />
         </member>
         <member name="T:DaLion.Overhaul.Modules.Enchantments.Gemstone.GarnetEnchantment">
@@ -2983,13 +2999,13 @@
                 maximum size.
             </summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Professions.Config.TrashNeededPerTaxDeductionPct">
-            <summary>Gets you must collect this many junk items from crab pots for every 1% of tax deduction the following season.</summary>
+        <member name="P:DaLion.Overhaul.Modules.Professions.Config.TrashNeededPerTaxDeduction">
+            <summary>Gets the amount of junk items that must be collected from crab pots for every 1% of tax deduction the following season.</summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Professions.Config.TrashNeededPerFriendshipPoint">
-            <summary>Gets you must collect this many junk items from crab pots for every 1 point of friendship towards villagers.</summary>
+            <summary>Gets the amount of junk items that must be collected from crab pots for every 1 point of friendship towards villagers.</summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Professions.Config.ConservationistTaxBonusCeiling">
+        <member name="P:DaLion.Overhaul.Modules.Professions.Config.ConservationistTaxDeductionCeiling">
             <summary>Gets the maximum income deduction allowed by the Ferngill Revenue Service.</summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Professions.Config.PiperBuffCeiling">
@@ -3043,11 +3059,20 @@
         <member name="P:DaLion.Overhaul.Modules.Professions.Config.PrestigeExpMultiplier">
             <summary>Gets cumulative multiplier to each skill's experience gain after a respective skill reset.</summary>
         </member>
+        <member name="P:DaLion.Overhaul.Modules.Professions.Config.PrestigeRespecCost">
+            <summary>Gets monetary cost of respecing prestige profession choices for a skill. Set to 0 to respec for free.</summary>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Professions.Config.EnableExtendedProgession">
+            <summary>Gets a value indicating whether to allow extended progression up to level 20.</summary>
+        </member>
         <member name="P:DaLion.Overhaul.Modules.Professions.Config.RequiredExpPerExtendedLevel">
             <summary>Gets how much skill experience is required for each level up beyond 10.</summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Professions.Config.PrestigeRespecCost">
-            <summary>Gets monetary cost of respecing prestige profession choices for a skill. Set to 0 to respec for free.</summary>
+        <member name="P:DaLion.Overhaul.Modules.Professions.Config.ProgressionStyle">
+            <summary>
+                Gets the style of the sprite that appears next to skill bars. Accepted values: "StackedStars", "Gen3Ribbons",
+                "Gen4Ribbons".
+            </summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Professions.Config.BaseSkillExpMultipliers">
             <summary>Gets a multiplier that will be applied to all skill experience gained from the start of the game.</summary>
@@ -3055,12 +3080,6 @@
         </member>
         <member name="P:DaLion.Overhaul.Modules.Professions.Config.CustomSkillExpMultipliers">
             <summary>Gets multiplies all skill experience gained from the start of the game, for custom skills.</summary>
-        </member>
-        <member name="P:DaLion.Overhaul.Modules.Professions.Config.ProgressionStyle">
-            <summary>
-                Gets the style of the sprite that appears next to skill bars. Accepted values: "StackedStars", "Gen3Ribbons",
-                "Gen4Ribbons".
-            </summary>
         </member>
         <member name="T:DaLion.Overhaul.Modules.Professions.DataKeys">
             <summary>Holds the string keys of mod data fields used by <see cref="F:DaLion.Overhaul.Modules.OverhaulModule.Professions"/>.</summary>
@@ -4105,7 +4124,7 @@
             <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
             <returns>A <see cref="T:System.Single"/> multiplier for fish prices.</returns>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.FarmerExtensions.GetAquaristCatchingBonus(StardewValley.Farmer)">
+        <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.FarmerExtensions.GetAquaristCatchingHandicap(StardewValley.Farmer)">
             <summary>Gets the bonus "catching" bar build rate for <see cref="F:DaLion.Overhaul.Modules.Professions.Profession.Aquarist"/>.</summary>
             <param name="farmer">The <see cref="T:StardewValley.Farmer"/>.</param>
             <returns>A <see cref="T:System.Single"/> catching height.</returns>
@@ -4212,16 +4231,6 @@
             <param name="location">The <see cref="T:StardewValley.GameLocation"/>.</param>
             <returns><see langword="true"/> if the <paramref name="location"/> is a <see cref="T:StardewValley.Locations.MineShaft"/> or one of several recognized dungeon locations, otherwise <see langword="false"/>.</returns>
             <remarks>Includes locations from Stardew Valley Expanded, Ridgeside Village and Moon Misadventures.</remarks>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.GameLocationExtensions.GetRawFishDataForCurrentSeason(StardewValley.GameLocation)">
-            <summary>Gets the raw fish data for this <paramref name="location"/> during the current game season.</summary>
-            <param name="location">The <see cref="T:StardewValley.GameLocation"/>.</param>
-            <returns>The raw fish data for <paramref name="location"/> and the current game season.</returns>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.GameLocationExtensions.GetRawFishDataForAllSeasons(StardewValley.GameLocation)">
-            <summary>Gets the raw fish data for this <paramref name="location"/> including all seasons.</summary>
-            <param name="location">The <see cref="T:StardewValley.GameLocation"/>.</param>
-            <returns>The raw fish data for <paramref name="location"/> and for all seasons.</returns>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Extensions.GameLocationExtensions.IsTileValidForTreasure(StardewValley.GameLocation,Microsoft.Xna.Framework.Vector2)">
             <summary>Determines whether a <paramref name="tile"/> on a map is valid for spawning diggable treasure.</summary>
@@ -4403,11 +4412,11 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Integrations.SpaceCoreIntegration.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Integrations.SpaceCoreIntegration"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Integrations.SpaceCoreIntegration.RegisterImpl">
-            <inheritdoc />
-        </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Integrations.SpaceCoreIntegration.LoadSpaceCoreSkills">
             <summary>Instantiates and caches one instance of every <see cref="T:DaLion.Overhaul.Modules.Professions.SCSkill"/>.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Integrations.SpaceCoreIntegration.RegisterImpl">
+            <inheritdoc />
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Integrations.StardewValleyExpandedIntegration.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Integrations.StardewValleyExpandedIntegration"/> class.</summary>
@@ -5171,10 +5180,10 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.ModEntryEventDrawRegenBarPatcher.ModEntryEvent_DrawRegenBarTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
             <summary>Patch to displace food bar.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.PropagatorPopExtraHeldMushroomsPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Integration.PropagatorPopExtraHeldMushroomsPatcher"/> class.</summary>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.PropagatorPopHeldObjectPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Patchers.Integration.PropagatorPopHeldObjectPatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.PropagatorPopExtraHeldMushroomsPatcher.PropagatorPopExtraHeldMushroomsTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+        <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.PropagatorPopHeldObjectPatcher.PropagatorPopExtraHeldMushroomsTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
             <summary>Patch for Propagator output quantity (Harvester) and quality (Ecologist).</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Patchers.Integration.ProducerRuleControllerProduceOutputPatcher.#ctor">
@@ -7361,6 +7370,12 @@
         <member name="M:DaLion.Overhaul.Modules.Rings.Patchers.Game1DrawHudPatcher.Game1DrawHUDTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
             <summary>Patch draw over-healed health.</summary>
         </member>
+        <member name="M:DaLion.Overhaul.Modules.Rings.Patchers.Integration.RingPatcherPostfixGetDisplayNamePatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Rings.Patchers.Integration.RingPatcherPostfixGetDisplayNamePatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Rings.Patchers.Integration.RingPatcherPostfixGetDisplayNamePatcher.RingPatcherPostfixGetDisplayNamePrefix(StardewValley.Objects.Ring)">
+            <summary>Remove (Many) tag from Infinity Band.</summary>
+        </member>
         <member name="M:DaLion.Overhaul.Modules.Rings.Patchers.Integration.NewForgeMenuCraftItemPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Rings.Patchers.Integration.NewForgeMenuCraftItemPatcher"/> class.</summary>
         </member>
@@ -8225,7 +8240,7 @@
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Projectiles.ObjectProjectile"/> class.</summary>
             <remarks>Required for multiplayer syncing.</remarks>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Slingshots.Projectiles.ObjectProjectile.#ctor(StardewValley.Item,System.Int32,StardewValley.Tools.Slingshot,StardewValley.Farmer,System.Single,System.Single,System.Single,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single,System.Boolean)">
+        <member name="M:DaLion.Overhaul.Modules.Slingshots.Projectiles.ObjectProjectile.#ctor(StardewValley.Item,System.Int32,StardewValley.Tools.Slingshot,StardewValley.Farmer,System.Single,System.Single,System.Single,Microsoft.Xna.Framework.Vector2,System.Single,System.Single,System.Single)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Slingshots.Projectiles.ObjectProjectile"/> class.</summary>
             <param name="ammo">The <see cref="T:StardewValley.Object"/> that was fired.</param>
             <param name="index">The index of the fired ammo (this may be different from the index of the <see cref="T:StardewValley.Object"/>).</param>
@@ -8238,7 +8253,6 @@
             <param name="xVelocity">The projectile's starting velocity in the horizontal direction.</param>
             <param name="yVelocity">The projectile's starting velocity in the vertical direction.</param>
             <param name="rotationVelocity">The projectile's starting rotational velocity.</param>
-            <param name="canRecover">Whether the fired <paramref name="ammo"/> can be recovered.</param>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Slingshots.Projectiles.ObjectProjectile.IsSquishy">
             <summary>Gets a value indicating whether the projectile should pierce and bounce or make squishy noises upon collision.</summary>
@@ -8332,7 +8346,7 @@
         <member name="P:DaLion.Overhaul.Modules.Taxes.Config.IncomeBrackets">
             <summary>Gets the income thresholds that determine each tax bracket.</summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Taxes.Config.IncomeTaxPerBracket">
+        <member name="P:DaLion.Overhaul.Modules.Taxes.Config.TaxPerBracket">
             <summary>Gets the taxable percentage of income at each bracket. If there are n brackets, this array should contain n+1 elements.</summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Taxes.Config.AnnualInterest">
@@ -8356,7 +8370,7 @@
         <member name="P:DaLion.Overhaul.Modules.Taxes.Config.DeductibleToolExpenses">
             <summary>Gets a value indicating whether or not any gold spent on tool purchases and upgrades should be tax-deductible.</summary>
         </member>
-        <member name="P:DaLion.Overhaul.Modules.Taxes.Config.DeductibleObjects">
+        <member name="P:DaLion.Overhaul.Modules.Taxes.Config.DeductibleExtras">
             <summary>Gets a value indicating the list of extra objects that should be tax-deductible.</summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Taxes.Config.PropertyTaxLatenessFine">
@@ -8388,16 +8402,6 @@
             <inheritdoc />
         </member>
         <member name="M:DaLion.Overhaul.Modules.Taxes.Events.HostModMessageReceivedEvent.OnModMessageReceivedImpl(System.Object,StardewModdingAPI.Events.ModMessageReceivedEventArgs)">
-            <inheritdoc />
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Taxes.Events.HostPeerConnectedEvent.#ctor(DaLion.Shared.Events.EventManager)">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Taxes.Events.HostPeerConnectedEvent"/> class.</summary>
-            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
-        </member>
-        <member name="P:DaLion.Overhaul.Modules.Taxes.Events.HostPeerConnectedEvent.IsEnabled">
-            <inheritdoc />
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Taxes.Events.HostPeerConnectedEvent.OnPeerConnectedImpl(System.Object,StardewModdingAPI.Events.PeerConnectedEventArgs)">
             <inheritdoc />
         </member>
         <member name="M:DaLion.Overhaul.Modules.Taxes.Events.TaxAssetRequestedEvent.#ctor(DaLion.Shared.Events.EventManager)">
@@ -10418,7 +10422,7 @@
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Dwarven.NpcCheckForNewCurrentDialoguePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Weapons.Patchers.Dwarven.NpcCheckForNewCurrentDialoguePatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Dwarven.NpcCheckForNewCurrentDialoguePatcher.NpcCheckForNewCurrentDialoguePrefix(StardewValley.NPC)">
+        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Dwarven.NpcCheckForNewCurrentDialoguePatcher.NpcCheckForNewCurrentDialoguePrefix(StardewValley.NPC,System.Boolean@)">
             <summary>Add special custom dialogue.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Dwarven.ObjectCheckForSpecialItemHoldUpMessagePatcher.#ctor">
@@ -10522,12 +10526,6 @@
         </member>
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.IClickableMenuDrawHoverTextPatcher.IClickableMenuDrawHoverTextTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.MethodBase)">
             <summary>Set hover text color for legendary weapons.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.AdventurerGuildGilPatcher.#ctor">
-            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.AdventurerGuildGilPatcher"/> class.</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.AdventurerGuildGilPatcher.AdventurerGuildGilPostfix">
-            <summary>Update virtue progress.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.BaseEnchantmentGetEnchantmentFromItemPatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.BaseEnchantmentGetEnchantmentFromItemPatcher"/> class.</summary>
@@ -10658,7 +10656,7 @@
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.NpcCheckForNewCurrentDialoguePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.NpcCheckForNewCurrentDialoguePatcher"/> class.</summary>
         </member>
-        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.NpcCheckForNewCurrentDialoguePatcher.NpcCheckForNewCurrentDialoguePrefix(StardewValley.NPC)">
+        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.NpcCheckForNewCurrentDialoguePatcher.NpcCheckForNewCurrentDialoguePrefix(StardewValley.NPC,System.Boolean@)">
             <summary>Add special custom dialogue.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.NpcReceiveGiftPatcher.#ctor">
@@ -10684,6 +10682,12 @@
         </member>
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.ShopMenuHighlightItemToSellPatcher.ShopMenuHighlightItemToSellPostfix(System.Boolean@,StardewValley.Item)">
             <summary>Replace highlighting method.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.StatsMonsterKilledPatcher.#ctor">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.StatsMonsterKilledPatcher"/> class.</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.StatsMonsterKilledPatcher.StatsMonsterKilledTranspiler(System.Collections.Generic.IEnumerable{HarmonyLib.CodeInstruction},System.Reflection.Emit.ILGenerator,System.Reflection.MethodBase)">
+            <summary>Update virtue progress.</summary>
         </member>
         <member name="M:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.ToolForgePatcher.#ctor">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Weapons.Patchers.Infinity.ToolForgePatcher"/> class.</summary>
@@ -10992,9 +10996,6 @@
         </member>
         <member name="F:DaLion.Overhaul.Modules.Weapons.Quest.ForgeIntro">
             <summary>The initial quest which introduces the forging mechanic.</summary>
-        </member>
-        <member name="F:DaLion.Overhaul.Modules.Weapons.Quest.ForgeNext">
-            <summary>The follow-up forging quest for collecting all Dwarven blueprints.</summary>
         </member>
         <member name="F:DaLion.Overhaul.Modules.Weapons.Quest.CurseIntro">
             <summary>The initial quest which introduces Viego's curse.</summary>
@@ -11821,7 +11822,7 @@
             <summary>Get a translation equivalent to "Aquarist".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Aquarist_Desc">
-            <summary>Get a translation equivalent to "Fish pond max capacity +2. Catching bar increases faster for every unique fish species raised in a Fish Pond.".</summary>
+            <summary>Get a translation equivalent to "Fish pond max capacity +2. Catching bar decrease slower for every unique fish species raised in a Fish Pond.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Aquarist_Desc_Prestiged">
             <summary>Get a translation equivalent to "Fish pond max capacity +2 &gt;&gt; +4.".</summary>
@@ -12574,7 +12575,7 @@
             <summary>Get a translation equivalent to "Tools".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Modules_Tols_Desc">
-            <summary>Get a translation equivalent to "A one-stop-shop for tool augmentation, customization and quality-of-life. Adds charging to resource tools, automatic tool selection, expanded tool enchantments, among other features.".</summary>
+            <summary>Get a translation equivalent to "A one-stop-shop for tool augmentation, customization and quality-of-life. Adds Radioactive tool upgrades, charging to resource tools, automatic tool selection, expanded enchantment pools, among other features.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Modules_Ench_Name">
             <summary>Get a translation equivalent to "Enchantments".</summary>
@@ -12625,7 +12626,7 @@
             <summary>Get a translation equivalent to "Changes the size of the pointer used to track objects by Prospector and Scavenger professions.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Ui_Trackingpointerbobrate_Title">
-            <summary>Get a translation equivalent to "Tracking Pointer Bobbing Rate".</summary>
+            <summary>Get a translation equivalent to "Tracking Pointer Bob Rate".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Ui_Trackingpointerbobrate_Desc">
             <summary>Get a translation equivalent to "Changes the size of the pointer used to track objects by Prospector and Scavenger professions.".</summary>
@@ -12649,7 +12650,7 @@
             <summary>Get a translation equivalent to "Lax Ownership Requirements".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Laxownershiprequirements_Desc">
-            <summary>Get a translation equivalent to "If enabled, machine and building ownerhsip will be ignored when determining whether to apply certain profession bonuses (only relevant in multiplayer).".</summary>
+            <summary>Get a translation equivalent to "If enabled, machine and building ownership will be ignored when determining whether to apply certain profession bonuses (only relevant in multiplayer).".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Artisangoodsalwaysinputquality_Title">
             <summary>Get a translation equivalent to "Artisan Goods Always Input Quality".</summary>
@@ -12718,7 +12719,7 @@
             <summary>Get a translation equivalent to "The maximum speed a Spelunker can reach in the mines.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Enablegetexcited_Title">
-            <summary>Get a translation equivalent to "Enable 'Get Excited' buff".</summary>
+            <summary>Get a translation equivalent to "Enable 'Get Excited' Buff".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Enablegetexcited_Desc">
             <summary>Get a translation equivalent to "Whether to trigger the 'Get Excited' buff when a Demolitionist is hit by an explosion.".</summary>
@@ -12736,13 +12737,13 @@
             <summary>Get a translation equivalent to "The maximum number of Fish Ponds that will be counted for Aquarist's fishing bonus. If you like raising dozens of fish species, you may use this to limit how easy the fishing minigame will become.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Trashpertaxdeduction_Title">
-            <summary>Get a translation equivalent to "Trash Per Tax Deduction %".</summary>
+            <summary>Get a translation equivalent to "Trash per Tax Deduction %".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Trashpertaxdeduction_Desc">
             <summary>Get a translation equivalent to "Conservationists must collect this much trash for every 1% tax deduction the following season.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Trashperfriendshippoint_Title">
-            <summary>Get a translation equivalent to "Trash Per Friendship Point".</summary>
+            <summary>Get a translation equivalent to "Trash per Friendship Point".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Trashperfriendshippoint_Desc">
             <summary>Get a translation equivalent to "Conservationists must collect this much trash for every 1 friendship point towards villagers.".</summary>
@@ -12829,13 +12830,13 @@
             <summary>Get a translation equivalent to "Multiplies the base cost reseting a skill at the Statue of Prestige. Set to 0 to reset for free.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Forgetrecipes_Title">
-            <summary>Get a translation equivalent to "Forget Recipes On Skill Reset".</summary>
+            <summary>Get a translation equivalent to "Forget Recipes on Skill Reset".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Forgetrecipes_Desc">
             <summary>Get a translation equivalent to "Disable this to keep all skill recipes upon skill reseting.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Allowmultipleprestige_Title">
-            <summary>Get a translation equivalent to "Allow Multiple Prestiges Per Day".</summary>
+            <summary>Get a translation equivalent to "Allow Multiple Prestiges per Day".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Allowmultipleprestige_Desc">
             <summary>Get a translation equivalent to "Whether the player can use the Statue of Prestige more than once in a day.".</summary>
@@ -12845,12 +12846,6 @@
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Expmultiplier_Desc">
             <summary>Get a translation equivalent to "Cumulative bonus that multiplies a skill's experience gain after each respective skill reset.".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Requiredexpperextendedlevel_Title">
-            <summary>Get a translation equivalent to "Required Exp Per Prestige Level".</summary>
-        </member>
-        <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Requiredexpperextendedlevel_Desc">
-            <summary>Get a translation equivalent to "How much skill experience is required for each level-up beyond level 10.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Respeccost_Title">
             <summary>Get a translation equivalent to "Cost of Prestige Respec".</summary>
@@ -12872,6 +12867,18 @@
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Progressionstyle_Gen4ribbons">
             <summary>Get a translation equivalent to "Gen 4 Ribbons".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Raisedlevelcap_Title">
+            <summary>Get a translation equivalent to "Enable Extended Progression".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Raisedlevelcap_Desc">
+            <summary>Get a translation equivalent to "Must be enabled to allow progression until level 20.".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Requiredexpperextendedlevel_Title">
+            <summary>Get a translation equivalent to "Required Exp per Extended Level".</summary>
+        </member>
+        <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Prestige_Requiredexpperextendedlevel_Desc">
+            <summary>Get a translation equivalent to "How much skill experience is required for each level-up above level 10.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Profs_Experience_Heading">
             <summary>Get a translation equivalent to "Experience Settings".</summary>
@@ -12924,7 +12931,7 @@
             <summary>Get a translation equivalent to "The income thresholds that determine each tax bracket. You can set a single very high value to disable income taxes entirely.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Txs_Income_Taxperbracket_Title">
-            <summary>Get a translation equivalent to "Tax Per Brackets".</summary>
+            <summary>Get a translation equivalent to "Tax per Brackets".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Txs_Income_Taxperbracket_Desc">
             <summary>Get a translation equivalent to "The taxable percentage of income at (up to) each bracket. If there are n brackets, this array should contain n+1 values. You can set all values to zero to disable income taxes entirely.".</summary>
@@ -12939,25 +12946,25 @@
             <summary>Get a translation equivalent to "Deductible Animal Expenses".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Txs_Income_Deductibleanimalexpenses_Desc">
-            <summary>Get a translation equivalent to "Whether or not any gold spent on animal purchases and supplies should be tax-deductible.".</summary>
+            <summary>Get a translation equivalent to "What percentage of gold spent on animal purchases and supplies should be tax-deductible.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Txs_Income_Deductiblebuildingexpenses_Title">
             <summary>Get a translation equivalent to "Deductible Building Expenses".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Txs_Income_Deductiblebuildingexpenses_Desc">
-            <summary>Get a translation equivalent to "Whether or not any gold spent constructing farm buildings is tax-deductible.".</summary>
+            <summary>Get a translation equivalent to "What percentage of gold spent constructing farm buildings is tax-deductible.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Txs_Income_Deductibleseedexpenses_Title">
             <summary>Get a translation equivalent to "Deductible Seed Expenses".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Txs_Income_Deductibleseedexpenses_Desc">
-            <summary>Get a translation equivalent to "Whether or not any gold spent on seed purchases should be tax-deductible.".</summary>
+            <summary>Get a translation equivalent to "What percentage of gold spent on seed purchases should be tax-deductible.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Txs_Income_Deductibletoolexpenses_Title">
             <summary>Get a translation equivalent to "Deductible Tool Expenses".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Txs_Income_Deductibletoolexpenses_Desc">
-            <summary>Get a translation equivalent to "Whether or not any gold spent on tool purchases and upgrades should be tax-deductible.".</summary>
+            <summary>Get a translation equivalent to "What percentage of gold spent on tool purchases and upgrades should be tax-deductible.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Txs_Property_Heading">
             <summary>Get a translation equivalent to "Property Tax".</summary>
@@ -13044,7 +13051,7 @@
             <summary>Get a translation equivalent to "Stronger".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Rngs_Lightsource_Patterned">
-            <summary>Get a translation equivalent to "patterned".</summary>
+            <summary>Get a translation equivalent to "Patterned".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Ench_Heading">
             <summary>Get a translation equivalent to "ENCH Settings".</summary>
@@ -13191,7 +13198,7 @@
             <summary>Get a translation equivalent to "Bombs within any explosion radius immediately explode themselves.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Gameplay_Spawncrowsonthesemaps_Title">
-            <summary>Get a translation equivalent to "Spawn Crows On These Maps:".</summary>
+            <summary>Get a translation equivalent to "Spawn Crows on These Maps:".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Twx_Maps_Islandwest">
             <summary>Get a translation equivalent to "Ginger Island Farm".</summary>
@@ -13317,7 +13324,7 @@
             <param name="tool">The value to inject for the <c>{{tool}}</c> token.</param>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Charging_Requpgradeforcharging_Title">
-            <summary>Get a translation equivalent to "Min. Upgrade For Charging".</summary>
+            <summary>Get a translation equivalent to "Min. Upgrade for Charging".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Tols_Charging_Requpgradeforcharging_Desc(System.Object)">
             <summary>Get a translation equivalent to "The {{tool}} must be at least this level in order to be charged.".</summary>
@@ -13859,7 +13866,7 @@
             <summary>Get a translation equivalent to "Makes legendary Galaxy and Infinity weapons stronger and harder to get.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Quests_Iridiumbarspergalaxyweapon_Title">
-            <summary>Get a translation equivalent to "Iridium Bars Per Galaxy Weapon".</summary>
+            <summary>Get a translation equivalent to "Iridium Bars per Galaxy Weapon".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Wpnz_Quests_Iridiumbarspergalaxyweapon_Desc">
             <summary>Get a translation equivalent to "The number of Iridium Bars required to receive a Galaxy weapon.".</summary>
@@ -13931,7 +13938,7 @@
             <summary>Get a translation equivalent to "Enable Auto-Selection".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Controls_Enableautoselection_Desc(System.Object)">
-            <summary>Get a translation equivalent to "The selected {{selected}} will be automatically equipped near enemies.".</summary>
+            <summary>Get a translation equivalent to "The highlighted {{selected}} will be automatically equipped when appropriate.".</summary>
             <param name="selected">The value to inject for the <c>{{selected}}</c> token.</param>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Controls_Selectionkey_Title">
@@ -13965,7 +13972,7 @@
             <summary>Get a translation equivalent to "Interface Settings".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Interface_Colorcodedforyourconvenience_Title">
-            <summary>Get a translation equivalent to "Color-Coded For Convenience".</summary>
+            <summary>Get a translation equivalent to "Color-Coded for Your Convenience".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gmcm_Headings_General">
             <summary>Get a translation equivalent to "General Settings".</summary>
@@ -13987,11 +13994,10 @@
         <member name="T:DaLion.Shared.Attributes.ModConflictAttribute">
             <summary>Indicates to a factory that the implicitly-used marked symbol should not be instantiated when a third-party mod is installed.</summary>
         </member>
-        <member name="M:DaLion.Shared.Attributes.ModConflictAttribute.#ctor(System.String,System.String,System.String)">
+        <member name="M:DaLion.Shared.Attributes.ModConflictAttribute.#ctor(System.String,System.String)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Shared.Attributes.ModConflictAttribute"/> class.</summary>
             <param name="uniqueId">The required mod's unique ID.</param>
             <param name="name">A human-readable name for the mod.</param>
-            <param name="version">The minimum required version.</param>
         </member>
         <member name="P:DaLion.Shared.Attributes.ModConflictAttribute.UniqueId">
             <summary>Gets the required mod's unique ID.</summary>
@@ -19640,6 +19646,28 @@
             <param name="shadowColor">
               The color to use for the shadow drawn under the separator.  Defaults to the
               game's text shadow color.  Use <c>Color.Transparent</c> to remove the shadow completely.
+            </param>
+        </member>
+        <member name="M:DaLion.Shared.Integrations.GenericModConfigMenu.IGenericModConfigMenuOptionsApi.AddDynamicParagraph(StardewModdingAPI.IManifest,System.String,System.Func{System.String},System.Boolean)">
+            <summary>
+              Add a dynamic paragraph.  A dynamic paragraph reflects changes in the text returned by
+              <paramref name="text"/> even while the GMCM window is open.  It also supports styled text.
+              <para>
+                Styled text supports simple HTML-like markup for specifying text formatting.  The text must
+                be valid XML fragment(s).  (I.e., if the text were enclosed in an XML tag, the result must be
+                a valid XML document.)  See https://github.com/jltaylor-us/StardewGMCMOptions/blob/default/README.md#dynamic-paragraph
+                for details about the tags supported.
+              </para>
+            </summary>
+            <param name="mod">The mod's manifest.</param>
+            <param name="logName">
+              A name to identify <em>this</em> dynamic paragraph in the SMAPI log, should there be any errors in
+              the text returned by <paramref name="text"/>.  This string may appear in the log, but will not appear
+              in-game.
+            </param>
+            <param name="text">The paragraph text.</param>
+            <param name="isStyledText">
+              If <c>true</c>, then the text returned by <paramref name="text"/> will be treated as styled text.
             </param>
         </member>
         <member name="T:DaLion.Shared.Integrations.GenericModConfigMenu.MultiPageLinkOption`1">

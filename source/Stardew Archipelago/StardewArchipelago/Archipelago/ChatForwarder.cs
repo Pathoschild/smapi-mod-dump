@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
+using StardewArchipelago.Archipelago.Gifting;
 using StardewArchipelago.GameModifications;
 using StardewArchipelago.GameModifications.CodeInjections;
 using StardewArchipelago.Goals;
@@ -33,11 +34,11 @@ namespace StardewArchipelago.Archipelago
         private static IModHelper _helper;
         private static ArchipelagoClient _archipelago;
         private Harmony _harmony;
-        private static GiftHandler _giftHandler;
+        private static IGiftHandler _giftHandler;
         private static BankHandler _bankHandler;
         private static PlayerUnstucker _playerUnstucker;
 
-        public ChatForwarder(IMonitor monitor, IModHelper helper, Harmony harmony, ArchipelagoClient archipelago, GiftHandler giftHandler, TileChooser tileChooser)
+        public ChatForwarder(IMonitor monitor, IModHelper helper, Harmony harmony, ArchipelagoClient archipelago, IGiftHandler giftHandler, TileChooser tileChooser)
         {
             _monitor = monitor;
             _helper = helper;
@@ -409,7 +410,10 @@ namespace StardewArchipelago.Archipelago
             Game1.chatBox?.addMessage($"{COMMAND_PREFIX}goal - Shows your current Archipelago Goal", Color.Gold);
             Game1.chatBox?.addMessage($"{COMMAND_PREFIX}experience - Shows your current progressive skills experience levels", Color.Gold);
             Game1.chatBox?.addMessage($"{COMMAND_PREFIX}bank [deposit|withdraw] [amount] - Deposit or withdraw money from your shared bank account", Color.Gold);
-            Game1.chatBox?.addMessage($"{COMMAND_PREFIX}gift [slotName] - Sends your currently held item stack to a chosen player as a gift", Color.Gold);
+            if (_archipelago.SlotData.Gifting)
+            {
+                Game1.chatBox?.addMessage($"{COMMAND_PREFIX}gift [slotName] - Sends your currently held item stack to a chosen player as a gift", Color.Gold);
+            }
             Game1.chatBox?.addMessage($"{COMMAND_PREFIX}letters - Toggle Hiding Empty Archipelago Letters", Color.Gold);
             Game1.chatBox?.addMessage($"{COMMAND_PREFIX}deathlink - Toggles Deathlink on/off. Saves when sleeping", Color.Gold);
             Game1.chatBox?.addMessage($"{COMMAND_PREFIX}unstuck - Nudge your character if you are stuck in a wall", Color.Gold);

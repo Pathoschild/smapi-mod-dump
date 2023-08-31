@@ -16,7 +16,6 @@ using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
-using DaLion.Overhaul.Modules.Slingshots.VirtualProperties;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Extensions.Xna;
 using Microsoft.Xna.Framework;
@@ -87,7 +86,6 @@ internal sealed class ObjectProjectile : BasicProjectile
         this.Overcharge = overcharge;
         this.Damage = (int)(this.damageToFarmer.Value * (1f + firer.attackIncreaseModifier) * overcharge);
         this.Knockback = knockback * (1f + firer.knockbackModifier) * overcharge;
-        this.CanPierce = !this.IsSquishy && ammo.ParentSheetIndex != ItemIDs.ExplosiveAmmo;
         if (this.IsSquishy)
         {
             Reflector
@@ -120,8 +118,6 @@ internal sealed class ObjectProjectile : BasicProjectile
     public float Overcharge { get; private set; }
 
     public float Knockback { get; private set; }
-
-    public bool CanPierce { get; }
 
     public bool DidBounce { get; private set; }
 
@@ -185,7 +181,7 @@ internal sealed class ObjectProjectile : BasicProjectile
             monster.GetBoundingBox(),
             this.Damage,
             this.Damage + 1,
-            false,
+            this.Ammo.ParentSheetIndex == ItemIDs.ExplosiveAmmo,
             this.Knockback,
             0,
             0f,
@@ -202,7 +198,8 @@ internal sealed class ObjectProjectile : BasicProjectile
         }
 
         // check for piercing
-        if (this.Firer.HasProfession(Profession.Desperado, true) && this.CanPierce && this._pierceCount < 2 &&
+        if (this.Firer.HasProfession(Profession.Desperado, true) && !this.IsSquishy &&
+            this.Ammo.ParentSheetIndex != ItemIDs.ExplosiveAmmo && this._pierceCount < 2 &&
             Game1.random.NextDouble() < this.Overcharge - 1f)
         {
             this.Damage = (int)(this.Damage * 0.65f);
@@ -211,7 +208,6 @@ internal sealed class ObjectProjectile : BasicProjectile
             this.xVelocity.Value *= 0.65f;
             this.yVelocity.Value *= 0.65f;
             this.DidPierce = true;
-            Log.D("Pierced!");
             this._pierceCount++;
         }
         else
@@ -227,6 +223,12 @@ internal sealed class ObjectProjectile : BasicProjectile
         {
             blossom.ChargeValue += (this.DidBounce || this.DidPierce ? 18 : 12) -
                                    (10 * this.Firer.health / this.Firer.maxHealth);
+        }
+
+        if (this.Source?.hasEnchantmentOfType<PreservingEnchantment>() == true || this.Ammo is not { } ammo || this.IsSquishy ||
+            ammo.ParentSheetIndex == ItemIDs.ExplosiveAmmo || !this.Firer.professions.Contains(Farmer.scout))
+        {
+            return;
         }
 
         // try to recover
@@ -264,13 +266,14 @@ internal sealed class ObjectProjectile : BasicProjectile
             return;
         }
 
-        if (!this.Firer.HasProfession(Profession.Rascal))
+        if (this.Source?.hasEnchantmentOfType<PreservingEnchantment>() == true || this.Ammo is not { } ammo || this.IsSquishy ||
+            ammo.ParentSheetIndex == ItemIDs.ExplosiveAmmo || !this.Firer.professions.Contains(Farmer.scout))
         {
             return;
         }
 
         // try to recover
-        var chance = this.Ammo.ParentSheetIndex is SObject.wood or SObject.coal ? 0.175 : 0.35;
+        var chance = this.Ammo?.ParentSheetIndex is SObject.wood or SObject.coal ? 0.175 : 0.35;
         if (this.Firer.HasProfession(Profession.Rascal, true))
         {
             chance *= 2d;
@@ -281,7 +284,7 @@ internal sealed class ObjectProjectile : BasicProjectile
         {
             location.debris.Add(
                 new Debris(
-                    this.Ammo.ParentSheetIndex,
+                    ammo.ParentSheetIndex,
                     new Vector2((int)this.position.X, (int)this.position.Y),
                     this.Firer.getStandingPosition()));
         }
@@ -310,7 +313,7 @@ internal sealed class ObjectProjectile : BasicProjectile
         // check if already collided
         if (didCollide)
         {
-            return !this.DidPierce && didCollide;
+            return !this.DidPierce;
         }
 
         this.DidPierce = false;
@@ -374,7 +377,7 @@ internal sealed class ObjectProjectile : BasicProjectile
             monster.GetBoundingBox(),
             adjustedDamage,
             adjustedDamage + 1,
-            false,
+            this.Ammo.ParentSheetIndex == ItemIDs.ExplosiveAmmo,
             this.Knockback,
             0,
             0f,

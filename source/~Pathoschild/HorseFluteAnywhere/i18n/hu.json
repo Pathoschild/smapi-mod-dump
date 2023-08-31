@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Pathoschild/StardewMods
+**
+*************************************************/
+
+{
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    "config.require-flute.name": "Lófuvola igénye",
+    "config.require-flute.description": "Vajon a lófuvolának benne kell-e lennie az eszköztáradban, hogy leidézd a lovat. Alapból ez hamis.",
+
+    "config.summon-horse-button.name": "Lóidézés gombja",
+    "config.summon-horse-button.description": "A gomb, amit megnyomsz, hogy játsz a fuvolán és leidézd a lovat. Alapból {{defaultValue}}."
+}

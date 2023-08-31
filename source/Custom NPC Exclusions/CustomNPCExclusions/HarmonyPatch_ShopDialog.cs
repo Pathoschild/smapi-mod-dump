@@ -13,9 +13,6 @@ using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Reflection.Emit;
 
 namespace CustomNPCExclusions
 {
@@ -24,75 +21,48 @@ namespace CustomNPCExclusions
     {
         public static void ApplyPatch(Harmony harmony)
         {
-            ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_ShopDialog)}\": transpiling SDV method \"Game1.UpdateShopPlayerItemInventory(string, HashSet<NPC>)\".", LogLevel.Trace);
+            ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_ShopDialog)}\": prefixing SDV method \"Game1.UpdateShopPlayerItemInventory(string, HashSet<NPC>)\".", LogLevel.Trace);
             harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), nameof(Game1.UpdateShopPlayerItemInventory), new[] { typeof(string), typeof(HashSet<NPC>) }),
-                transpiler: new HarmonyMethod(typeof(HarmonyPatch_ShopDialog), nameof(Game1_UpdateShopPlayerItemInventory))
+                prefix: new HarmonyMethod(typeof(HarmonyPatch_ShopDialog), nameof(Game1_UpdateShopPlayerItemInventory))
             );
         }
 
-        /// <summary>Replaces calls to <see cref="Utility.getRandomTownNPC()"/> with <see cref="GetRandomTownNPC_ShopDialogExclusions()"/>.</summary>
-        public static IEnumerable<CodeInstruction> Game1_UpdateShopPlayerItemInventory(IEnumerable<CodeInstruction> instructions)
+        /// <summary>Excludes a list of NPCs from randomly discussing items that players have sold to certain shops.</summary>
+        /// <param name="purchased_item_npcs">A list of NPCs to exclude from receiving shop dialog (normally used to avoid an NPC receiving multiple sets of dialog simultaneously).</param>
+        private static void Game1_UpdateShopPlayerItemInventory(ref HashSet<NPC> purchased_item_npcs)
         {
             try
             {
-                MethodInfo getOriginal = AccessTools.Method(typeof(Utility), nameof(Utility.getRandomTownNPC)); //get the original method's info
-                MethodInfo getWithExclusions = AccessTools.Method(typeof(HarmonyPatch_ShopDialog), nameof(GetRandomTownNPC_ShopDialogExclusions)); //get the new method's info
+                List<string> excluded = new List<string>(); //a list of NPC names to exclude from giving or receiving gifts
 
-                List<CodeInstruction> patched = new List<CodeInstruction>(instructions); //make a copy of the instructions to modify
-
-                for (int x = 0; x < patched.Count; x++) //for each instruction
+                foreach (KeyValuePair<string, List<string>> data in ModEntry.GetAllNPCExclusions()) //for each NPC's set of exclusion data
                 {
-                    if (patched[x].opcode == OpCodes.Call //if this instruction is a method call
-                        && (patched[x].operand as MethodInfo) == getOriginal) //AND this instruction is calling Utility.getRandomTownNPC
+                    if (data.Value.Exists(entry =>
+                        entry.StartsWith("All", StringComparison.OrdinalIgnoreCase) //if this NPC is excluded from everything
+                     || entry.StartsWith("TownEvent", StringComparison.OrdinalIgnoreCase) //OR if this NPC is excluded from town events
+                     || entry.StartsWith("ShopDialog", StringComparison.OrdinalIgnoreCase) //OR this NPC is excluded from dialog about the town shop
+                    ))
                     {
-                        patched[x] = new CodeInstruction(OpCodes.Call, getWithExclusions); //replace it with a call to the exclusions method
+                        if (Game1.getCharacterFromName(data.Key) is NPC npc) //if the excluded NPC exists
+                        {
+                            excluded.Add(data.Key); //add their name to the exclusion list
+                            purchased_item_npcs.Add(npc); //add them to the set of NPCs who already received dialog this time
+                        }
                     }
                 }
 
-                return patched;
+                if (excluded.Count > 0 && ModEntry.Instance.Monitor.IsVerbose) //if any NPCs were excluded
+                {
+                    string logMessage = String.Join(", ", excluded);
+                    ModEntry.Instance.Monitor.Log($"Excluded NPCs from random shop dialog: {logMessage}", LogLevel.Trace);
+                }
             }
             catch (Exception ex)
             {
-                ModEntry.Instance.Monitor.LogOnce($"Harmony patch \"{nameof(HarmonyPatch_ShopDialog)}\" has encountered an error. Transpiler \"{nameof(Game1_UpdateShopPlayerItemInventory)}\" will not be applied. Full error message:\n{ex.ToString()}", LogLevel.Error);
-                return instructions; //return the original instructions
+                ModEntry.Instance.Monitor.LogOnce($"Harmony patch \"{nameof(Game1_UpdateShopPlayerItemInventory)}\" has encountered an error. The \"ShopDialog\" setting may not work correctly. Full error message: \n{ex.ToString()}", LogLevel.Error);
+                return; //run the original method
             }
-        }
-
-        /// <summary>Gets a random NPC from <see cref="Utility.getRandomTownNPC(Random)"/> while removing any NPCs who are excluded from random town-related shop dialog.</summary>
-        /// <returns>An random NPC from the Town who is NOT excluded from random town-related shop dialog.</returns>
-        public static NPC GetRandomTownNPC_ShopDialogExclusions()
-        {
-            List<string> excluded = new List<string>(); //a list of NPC names to exclude from giving or receiving gifts
-
-            foreach (KeyValuePair<string, List<string>> data in ModEntry.GetAllNPCExclusions()) //for each NPC's set of exclusion data
-            {
-                if (data.Value.Exists(entry =>
-                    entry.StartsWith("All", StringComparison.OrdinalIgnoreCase) //if this NPC is excluded from everything
-                 || entry.StartsWith("TownEvent", StringComparison.OrdinalIgnoreCase) //OR if this NPC is excluded from town events
-                 || entry.StartsWith("ShopDialog", StringComparison.OrdinalIgnoreCase) //OR this NPC is excluded from dialog about the town shop
-                ))
-                {
-                    excluded.Add(data.Key); //add this NPC's name to the excluded list
-                }
-            }
-
-            HashSet<string> rerolledNames = new HashSet<string>(); //a record of NPCs excluded below
-
-            NPC npc = Utility.getRandomTownNPC(); //get a random NPC
-            while (excluded.Contains(npc?.Name, StringComparer.OrdinalIgnoreCase)) //while the selected NPC is NOT in the excluded list
-            {
-                rerolledNames.Add(npc?.Name); //add NPC name to record
-                npc = Utility.getRandomTownNPC(); //get another random NPC
-            }
-
-            if (rerolledNames.Count > 0 && ModEntry.Instance.Monitor.IsVerbose) //if any NPCs were excluded
-            {
-                string logMessage = String.Join(", ", rerolledNames);
-                ModEntry.Instance.Monitor.Log($"Excluded NPCs from random shop dialog: {logMessage}", LogLevel.Trace);
-            }
-
-            return npc;
         }
     }
 }

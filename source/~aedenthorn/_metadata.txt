@@ -21,19 +21,26 @@ mods:
    Bee Paths
    Better Elevator
    Better Lightning Rods
+   Birthday Buff
+   Birthday Friendship
    Boss Creatures
+   Buff Framework
    Bulk Animal Purchase
    Catalogue Filter
    Chess Boards
    Coin Collector
    Connected Garden Pots
+   Content Patcher Editor
    Cooperative Egg Hunt
    Craft and Build from Containers
    Craftable Butterfly Hutches
    Craftable Terrarium
    Crop Growth Info
+   Crop Harvest Bubbles
    Crop Hat
    Crop Variation
+   Crop Watering Bubbles
+   Crops Survive Season Change
    Custom Achievements
    Custom Backpack Framework
    Custom Chest Types
@@ -174,6 +181,7 @@ mods:
    Rainbow Trail
    Random NPCs
    Realistic Random Names
+   Resource Storage
    Restauranteer
    Robin Work Hours
    Secret Hedge Maze
@@ -194,6 +202,7 @@ mods:
    Stacked Item Icons
    Stardew Impact
    Stardew RPG
+   Statue Shorts
    Submerged Crab Pots
    Swim
    Take All
@@ -223,9 +232,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit c02a8108c419fc4bfe9f267560f47dafdb553194
+   commit 1a57ff466d500629b90ee917484d9c27bb8ed583
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Fri Jul 28 22:57:56 2023 -0400
+   Date:   Wed Aug 30 13:45:34 2023 -0400
    
        etc
    

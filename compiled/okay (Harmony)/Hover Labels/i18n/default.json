@@ -2,7 +2,7 @@
 
     /** Config Menu **/
     "cfg_section.general": "General settings",
-    "cfg_section.enablemod": "{{mod_name}} (by {{author}}) labels",
+    "cfg_section.enablemod": "\"{{mod_name}}\" (by {{author}}) labels",
     "cfg_enable_label.name": "Enable {{labelname}}",
     "cfg_enable_label.desc": "Whether to enable {{label_name}} label",
     "cfg_delayms.name": "Popup delay (ms)",

@@ -337,6 +337,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                     newApPoints = GetBoundedToCurrentRelationState(newApPoints, friend.StardewName);
                     SetFriendshipPoints(friend.StardewName, newApPoints);
                     var earnedHearts = (int)newApPoints / POINTS_PER_HEART;
+                    earnedHearts = Math.Min(earnedHearts, friend.ShuffledUpTo(_archipelago));
                     for (var i = 1; i <= earnedHearts; i++)
                     {
                         _locationChecker.AddCheckedLocation(string.Format(FRIENDSANITY_PATTERN, friend.ArchipelagoName, i));

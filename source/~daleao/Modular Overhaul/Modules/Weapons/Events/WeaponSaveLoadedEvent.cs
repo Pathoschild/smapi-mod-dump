@@ -38,6 +38,7 @@ internal sealed class WeaponSaveLoadedEvent : SaveLoadedEvent
         var player = Game1.player;
 
         // temp fix for existing saves
+
         if (player.hasQuest((int)Quest.CurseIntro))
         {
             player.removeQuest((int)Quest.CurseIntro);
@@ -57,7 +58,15 @@ internal sealed class WeaponSaveLoadedEvent : SaveLoadedEvent
                 }
             }
         }
-        // temp fix for existing saves
+
+        if (player.hasQuest((int)(Quest.ForgeIntro + 1)))
+        {
+            player.removeQuest((int)(Quest.ForgeIntro + 1));
+        }
+
+        player.questLog.Remove((StardewValley.Quests.Quest?)null); // fix for removed 144702 quest
+
+        // temp fixes for existing saves
 
         WeaponsModule.State.ContainerDropAccumulator = player.Read(DataKeys.ContainerDropAccumulator, 0.05);
         WeaponsModule.State.MonsterDropAccumulator = player.Read<double>(DataKeys.MonsterDropAccumulator);

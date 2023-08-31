@@ -6,9 +6,9 @@ mods:
    Custom NPC Exclusions
 
 latest commit:
-   commit 688d58408dc23c6257cb93aa2cd820cefe1141de
+   commit ee332258fa3efd747b4e0a0fee52bafe89f72a63
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Thu Apr 7 16:10:52 2022 -0500
+   Date:   Sun Aug 13 16:04:02 2023 -0500
    
-       Update to SMAPI 3.14 content system, add transpiler remarks
+       Add protection to non-arg overload too
    

@@ -110,7 +110,7 @@ internal sealed class Harmonizer
             return this;
         }
 
-        Log.D("[Harmonizer]: Applying patches...");
+        Log.T("[Harmonizer]: Applying patches...");
         for (var i = 0; i < patchTypes.Length; i++)
         {
             var patchType = patchTypes[i];
@@ -125,6 +125,7 @@ internal sealed class Harmonizer
             var ignoreAttribute = patchType.GetCustomAttribute<ImplicitIgnoreAttribute>();
             if (ignoreAttribute is not null)
             {
+                Log.D($"[Harmonizer]: {patchType.Name} is marked to be ignored.");
                 continue;
             }
 
@@ -133,7 +134,7 @@ internal sealed class Harmonizer
             {
                 if (!this._modRegistry.IsLoaded(modRequirementAttribute.UniqueId))
                 {
-                    Log.D(
+                    Log.T(
                         $"[Harmonizer]: The target mod {modRequirementAttribute.UniqueId} is not loaded. {patchType.Name} will be ignored.");
                     continue;
                 }
@@ -155,7 +156,7 @@ internal sealed class Harmonizer
             {
                 if (this._modRegistry.IsLoaded(modConflictAttribute.UniqueId))
                 {
-                    Log.D(
+                    Log.T(
                         $"[Harmonizer]: The conflicting mod {modConflictAttribute.UniqueId} is loaded. {patchType.Name} will be ignored.");
                     continue;
                 }
@@ -212,7 +213,7 @@ internal sealed class Harmonizer
         var appliedTranspilers = this.Harmony.GetAllTranspilers(p => p.owner == this.HarmonyId).Count();
         var appliedFinalizers = this.Harmony.GetAllFinalizers(p => p.owner == this.HarmonyId).Count();
         var totalApplied = appliedPrefixes + appliedPostfixes + appliedTranspilers + appliedFinalizers;
-        Log.A($"[Harmonizer]: {this.HarmonyId} patching completed in {this._sw.ElapsedMilliseconds}ms." +
+        Log.I($"[Harmonizer]: {this.HarmonyId} patching completed in {this._sw.ElapsedMilliseconds}ms." +
               $"\nApplied {totalApplied} patches to {methodsPatched} methods, of which" +
               $"\n\t- {appliedPrefixes} prefixes" +
               $"\n\t- {appliedPostfixes} postfixes" +

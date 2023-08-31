@@ -11,7 +11,7 @@
 {
   "Name": "Stacked Item Icons",
   "Author": "aedenthorn",
-  "Version": "0.1.1",
+  "Version": "0.2.1",
   "Description": "Stacked Item Icons.",
   "UniqueID": "aedenthorn.StackedItemIcons",
   "EntryDll": "StackedItemIcons.dll",

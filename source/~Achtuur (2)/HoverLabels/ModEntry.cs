@@ -260,6 +260,8 @@ namespace HoverLabels
             {
                 this.HoverLabelApi.RegisterLabel(this.ModManifest, "example", new ExampleLabel());
             });
+
+            this.LabelManager.SetLabelEnabled(this.Config);
         }
 
         private static string SplitCapitalCase(string s)

@@ -11,7 +11,7 @@
 {
 	"Name": "Love of Cooking",
 	"Author": "blueberry",
-	"Version": "1.0.29",
+	"Version": "1.0.30",
 	"Description": "Cooking overhaul suite. Enter a world of food!",
 	"UniqueID": "blueberry.LoveOfCooking",
 	"EntryDll": "LoveOfCooking.dll",

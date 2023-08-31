@@ -32,7 +32,7 @@ namespace RidgesideVillage
             Animations.ApplyPatch(harmony, Helper);
             Backgrounds.ApplyPatch(harmony, Helper);
             ClothingDonation.ApplyPatch(harmony, Helper);
-            Dateables.ApplyPatch(harmony, Helper);
+            Dateables.ApplyPatch(harmony, Helper, Manifest);
             EventDetection.ApplyPatch(harmony, Helper);
             EventPatches.ApplyPatch(harmony, Helper);
             Fish.ApplyPatch(harmony, Helper);

@@ -52,11 +52,14 @@ namespace RidgesideVillage
             harmony.Patch(
                 original: AccessTools.Method(typeof(MapPage), nameof(MapPage.receiveLeftClick)),
                 prefix: new HarmonyMethod(typeof(EventDetection), nameof(MapPage_receiveLeftClick_Prefix))
-            );            
-            harmony.Patch(
-              original: AccessTools.Constructor(typeof(MapPage), new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) }),
-              postfix: new HarmonyMethod(typeof(EventDetection), nameof(MapPage_Constructor_Postfix))
             );
+            if (Constants.TargetPlatform != GamePlatform.Android)
+            {
+                harmony.Patch(
+                  original: AccessTools.Constructor(typeof(MapPage), new Type[] { typeof(int), typeof(int), typeof(int), typeof(int) }),
+                  postfix: new HarmonyMethod(typeof(EventDetection), nameof(MapPage_Constructor_Postfix))
+                );
+            }
             if (Helper.ModRegistry.IsLoaded("Bouhm.NPCMapLocations"))
             {
                 try
@@ -87,12 +90,23 @@ namespace RidgesideVillage
                 upNeighborID = 1001
             };
 
+            Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             Helper.Events.Display.WindowResized += OnWindowResized;
         }
 
+        private static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            try
+            {
+                RSVIcon = Helper.GameContent.Load<Texture2D>(PathUtilities.NormalizeAssetName("LooseSprites/RSVIcon"));
+            }
+            catch
+            {
+               Log.Debug("RSV: Failed to get RSVIcon on SaveLoaded event");
+            }
+        }
         private static void MapPage_Constructor_Postfix(MapPage __instance)
         {
-            RSVIcon = Helper.GameContent.Load<Texture2D>(PathUtilities.NormalizeAssetName("LooseSprites/RSVIcon"));
             __instance.points.Add(RSVButton);
             ClickableComponent DesertArea = __instance.points.Where(x => x.myID == 1001).ElementAtOrDefault(0);
             if(DesertArea != null)
@@ -120,7 +134,7 @@ namespace RidgesideVillage
         {
             try
             {
-              if(whichTab == GameMenu.mapTab && Game1.currentLocation.Name.StartsWith("Custom_Ridgeside"))
+                if (whichTab == GameMenu.mapTab && Game1.currentLocation.Name.StartsWith("Custom_Ridgeside") && Constants.TargetPlatform != GamePlatform.Android)
                 {
                     RSVWorldMap.Open(Game1.activeClickableMenu);
                 }
@@ -133,6 +147,10 @@ namespace RidgesideVillage
 
         internal static void MapPage_draw_Postfix(ref MapPage __instance, SpriteBatch b) {
             Game1.drawDialogueBox(ButtonArea.X - 92 + 60, ButtonArea.Y - 16 - 80, 250 - 42, 232, false, true);
+            if (RSVIcon is null)
+            {
+                RSVIcon = Helper.GameContent.Load<Texture2D>(PathUtilities.NormalizeAssetName("LooseSprites/RSVIcon"));
+            }
             b.Draw(RSVIcon, new Vector2(EventDetection.ButtonArea.X, EventDetection.ButtonArea.Y), null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0.1f);
             Point mouseCoords = Game1.getMousePosition(true);
             if (ButtonArea.Contains(mouseCoords.X, mouseCoords.Y))

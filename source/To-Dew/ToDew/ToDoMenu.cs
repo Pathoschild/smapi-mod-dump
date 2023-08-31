@@ -236,6 +236,8 @@ namespace ToDew {
             private Rectangle doubleUp = Rectangle.Empty;
             private Rectangle doubleDown = Rectangle.Empty;
             private Rectangle repeatingCheckbox = Rectangle.Empty;
+            private Rectangle repeatingDaysMinus = Rectangle.Empty;
+            private Rectangle repeatingDaysPlus = Rectangle.Empty;
             private Rectangle headerCheckbox = Rectangle.Empty;
             private Rectangle boldCheckbox = Rectangle.Empty;
             private Rectangle hideInOverlayCheckbox = Rectangle.Empty;
@@ -285,6 +287,17 @@ namespace ToDew {
                 boldCheckbox = MakeCheckboxRect(leftPx, topPx);
                 topPx += boldCheckbox.Height + margin;
                 repeatingCheckbox = MakeCheckboxRect(leftPx, topPx);
+                int plusMinusTopPx = repeatingCheckbox.Top + (repeatingCheckbox.Height - OptionsPlusMinus.minusButtonSource.Height * checkboxScale + 1) / 2;
+                repeatingDaysMinus = new Rectangle(
+                    repeatingCheckbox.Right + margin + (int)Game1.smallFont.MeasureString(todoItem.IsRepeating ? I18n.Menu_Edit_RepeatEvery() : I18n.Menu_Edit_Repeating()).X + margin,
+                    plusMinusTopPx,
+                    OptionsPlusMinus.minusButtonSource.Width * checkboxScale,
+                    OptionsPlusMinus.minusButtonSource.Height * checkboxScale);
+                repeatingDaysPlus = new Rectangle(
+                    repeatingDaysMinus.Right + margin + (int)Game1.smallFont.MeasureString(todoItem.RepeatDays > 99 ? todoItem.RepeatDays.ToString() : "88").X + margin,
+                    plusMinusTopPx,
+                    OptionsPlusMinus.minusButtonSource.Width * checkboxScale,
+                    OptionsPlusMinus.minusButtonSource.Height * checkboxScale);
                 topPx += repeatingCheckbox.Height + margin;
                 hideInOverlayCheckbox = MakeCheckboxRect(leftPx, topPx);
                 topPx += hideInOverlayCheckbox.Height + margin;
@@ -345,7 +358,15 @@ namespace ToDew {
                 // checkboxes
                 DrawCheckbox(spriteBatch, headerCheckbox, todoItem.IsHeader, I18n.Menu_Edit_Header());
                 DrawCheckbox(spriteBatch, boldCheckbox, todoItem.IsBold, I18n.Menu_Edit_Bold());
-                DrawCheckbox(spriteBatch, repeatingCheckbox, todoItem.IsRepeating, I18n.Menu_Edit_Repeating());
+                if (todoItem.IsRepeating) {
+                    DrawCheckbox(spriteBatch, repeatingCheckbox, todoItem.IsRepeating, I18n.Menu_Edit_RepeatEvery());
+                    spriteBatch.DrawSprite(Game1.mouseCursors, OptionsPlusMinus.minusButtonSource, repeatingDaysMinus.X, repeatingDaysMinus.Y, null, checkboxScale);
+                    spriteBatch.DrawString(Game1.smallFont, todoItem.RepeatDays.ToString(), new Vector2(repeatingDaysMinus.Right + checkboxLabelSpace, repeatingCheckbox.Top), Color.Black);
+                    spriteBatch.DrawSprite(Game1.mouseCursors, OptionsPlusMinus.plusButtonSource, repeatingDaysPlus.X, repeatingDaysPlus.Y, null, checkboxScale);
+                    spriteBatch.DrawString(Game1.smallFont, I18n.Menu_Edit_RepeatDays(), new Vector2(repeatingDaysPlus.Right + checkboxLabelSpace, repeatingCheckbox.Top), Color.Black);
+                } else {
+                    DrawCheckbox(spriteBatch, repeatingCheckbox, todoItem.IsRepeating, I18n.Menu_Edit_Repeating());
+                }
                 DrawCheckbox(spriteBatch, hideInOverlayCheckbox, todoItem.HideInOverlay, I18n.Menu_Edit_HideInOverlay());
 
                 // weather
@@ -422,6 +443,16 @@ namespace ToDew {
                 }
                 if (repeatingCheckbox.Contains(mouseX, mouseY)) {
                     theList.SetItemRepeating(todoItem, !todoItem.IsRepeating);
+                    Game1.playSound("drumkit6");
+                    return;
+                }
+                if (repeatingDaysMinus.Contains(mouseX, mouseY) && todoItem.RepeatDays > 1) {
+                    theList.SetItemRepeatDays(todoItem, todoItem.RepeatDays - 1);
+                    Game1.playSound("drumkit6");
+                    return;
+                }
+                if (repeatingDaysPlus.Contains(mouseX, mouseY) && todoItem.RepeatDays < 28*4*5) {
+                    theList.SetItemRepeatDays(todoItem, todoItem.RepeatDays + 1);
                     Game1.playSound("drumkit6");
                     return;
                 }

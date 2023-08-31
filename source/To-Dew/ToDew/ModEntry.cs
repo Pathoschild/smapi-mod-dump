@@ -153,7 +153,7 @@ namespace ToDew {
         }
 
         private void onDayStarted(object? sender, DayStartedEventArgs e) {
-            list.Value?.RefreshVisibility();
+            list.Value?.RefreshVisibility(true);
         }
 
         private void onSaving(object? sender, SavingEventArgs e) {

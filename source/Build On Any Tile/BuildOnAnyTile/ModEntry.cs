@@ -34,7 +34,7 @@ namespace BuildOnAnyTile
             }
 
             ApplyHarmonyPatches();
-            
+
             Helper.Events.Display.RenderedActiveMenu += EnableGMCM; //enable GMCM compatibility when a menu is drawn (due to i18n timing issues with GMCM and SDV 1.5.5+, as of this writing)
         }
 

@@ -20,18 +20,22 @@ using StardewValley.Objects;
 using QuestFramework.Api;
 using QuestFramework.Quests;
 using QuestFramework;
+using System.IO;
 
 namespace FoodCravings
 {
     internal sealed class ModEntry : Mod
     {
         Random rnd = new Random();
-        StardewValley.Object DailyCravingItem;
+        string DailyCravingKey;
+        string DailyCravingName;
         bool CravingFulfilled;
-        // public Buff(int farming, int fishing, int mining, int digging, int luck, int foraging, int crafting, in maxStamina,
-        // int magneticRadius, int speed, int defense, int attack, int minutesDuration, string source, string displaySource)
-        Buff cravingBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 2, 0, "FoodCravings", "Craving fulfilled");
-        Dictionary<string, string> recipeDict = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
+        Buff cravingBuff;
+        Buff cravingDebuff;
+        //Dictionary<string, string> recipeDict = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
+        private ModConfig Config;
+        bool isHangryMode;
+        string[] recipeBlacklist;
 
         IQuestApi api;
         IManagedQuestApi managedApi;
@@ -40,9 +44,19 @@ namespace FoodCravings
 
         public override void Entry(IModHelper helper)
         {
+            this.Config = this.Helper.ReadConfig<ModConfig>();
+            this.isHangryMode = this.Config.useHangryMode;
+            this.recipeBlacklist = this.Config.recipeBlacklist;
+
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
-            this.cravingBuff.millisecondsDuration = 540000; // Buff lasts half an in-game day NOTE setting the time on init is weird, so we use this
+
+            // public Buff(int farming, int fishing, int mining, int digging, int luck, int foraging, int crafting, int maxStamina,
+            // int magneticRadius, int speed, int defense, int attack, int minutesDuration, string source, string displaySource)
+            this.cravingBuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0,
+                0, this.Config.speedBuff, this.Config.defenseBuff, this.Config.attackBuff, 0, "FoodCravings", "Craving fulfilled");
+            this.cravingDebuff = new Buff(0, 0, 0, 0, 0, 0, 0, 0,
+                0, this.Config.speedDebuff, this.Config.defenseDebuff, this.Config.attackDebuff, 0, "FoodCravings", "Craving unfulfilled");
 
             helper.Events.GameLoop.GameLaunched += this.OnGameStarted;
         }
@@ -65,37 +79,82 @@ namespace FoodCravings
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            // Randomize food craving
-            var DailyCravingEntry = this.recipeDict.ElementAt(rnd.Next(0, this.recipeDict.Count));
-            string DailyCravingValue = DailyCravingEntry.Value; // Food info
+            // (Re)set buff and debuff durations, or else the same remaining time will be used over multiple days
+            this.cravingBuff.millisecondsDuration = 540000; // Buff lasts half a day NOTE setting the time on init is weird, so we use this
+            this.cravingDebuff.millisecondsDuration = 1080000; // Debuff lasts entire day, unless stopped
 
-            // Get food object
-            int DailyCravingId = int.Parse(DailyCravingValue.Split("/")[2]);
-            DailyCravingItem = new StardewValley.Object(DailyCravingId, 1);
-            Game1.addHUDMessage(new HUDMessage("Craving: " + DailyCravingItem.name, 2));
+            // Get list of all known recipes
+            List<string> knownRecipes = Game1.player.cookingRecipes.Keys.ToList();
+
+            // Randomize food craving until non-blacklisted food is found
+            if (this.Config.seededRandom)
+            {
+                this.rnd = new Random(Game1.Date.ToString().GetHashCode());
+            }
+            while (true)
+            {
+                this.DailyCravingKey = knownRecipes.ElementAt(this.rnd.Next(0, knownRecipes.Count));
+
+                // Find the proper display name of the food
+                this.DailyCravingName = this.DailyCravingKey; // For vanilla food (and some older mods) the key name will be the same as the display name
+                if (CraftingRecipe.cookingRecipes.TryGetValue(this.DailyCravingKey, out string recipe))
+                {
+                    string[] recipeParts = recipe.Split('/');
+                    if (recipeParts.Length == 6) // afaik modded food will follow this format, where the last part of the recipe is the name we want
+                    {
+                        this.DailyCravingName = recipeParts[5]; // Modded food might use i18n format as key, so we need to replace it with sth more readable
+                    }
+                }
+
+                if (!this.recipeBlacklist.Contains(this.DailyCravingName))
+                {
+                    break;
+                }
+            }
+            
+            foreach (string rec in this.recipeBlacklist)
+            {
+                this.Monitor.Log($"recipe blacklist: {rec}.", LogLevel.Debug);
+            }
 
             // Add quest for craving into quest tab
+            Game1.addHUDMessage(new HUDMessage("Craving: " + this.DailyCravingName, 2));
             if (!this.CravingFulfilled) this.managedApi.CompleteQuest("food_craving"); // Remove old food craving quest in case it was not fulfilled
-            this.quest.Description = "I am craving some " + DailyCravingItem.name + "...";
-            this.quest.Objective = "Consume " + DailyCravingItem.name + ".";
+            this.quest.Description = "I am craving some " + this.DailyCravingName + "...";
+            this.quest.Objective = "Consume " + this.DailyCravingName + ".";
             this.managedApi.AcceptQuest("food_craving", true);
 
-            // Reset flag
+            // Reset flag (buffs seem to automatically reset on next day)
             this.CravingFulfilled = false;
+
+            // Apply craving debuff if necessary
+            if (this.isHangryMode)
+            {
+                Game1.buffsDisplay.addOtherBuff(this.cravingDebuff);
+            }
         }
 
         private void OnUpdateTicked(object sender, EventArgs e)
         {
-            if (Game1.player.isEating && !this.CravingFulfilled)
+            if (!Game1.player.isEating || this.CravingFulfilled) // Player is not eating or craving has already been fulfilled before
             {
-                Item CurrentFood = Game1.player.itemToEat;
-                if (this.DailyCravingItem.name.Equals(CurrentFood.Name))
-                {
-                    this.CravingFulfilled = true;
-                    this.managedApi.CompleteQuest("food_craving"); // Mark quest for craving as completed
+                return;
+            }
 
-                    Game1.buffsDisplay.addOtherBuff(this.cravingBuff); // Add buff for fulfilled craving
-                }
+            Item CurrentFood = Game1.player.itemToEat;
+
+            if (!this.DailyCravingKey.Equals(CurrentFood.Name)) // Player is eating food that is not craved
+            {
+                return;
+            }
+
+            this.CravingFulfilled = true;
+            this.managedApi.CompleteQuest("food_craving"); // Mark quest for craving as completed
+
+            Game1.buffsDisplay.addOtherBuff(this.cravingBuff); // Add buff for fulfilled craving
+            if (this.isHangryMode)
+            {
+                Game1.buffsDisplay.removeOtherBuff(this.cravingDebuff.which); // Remove debuff
             }
         }
     }

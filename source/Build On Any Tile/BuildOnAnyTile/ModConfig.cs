@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using System.Collections.Generic;
-
 namespace BuildOnAnyTile
 {
     /// <summary>A collection of this mod's config.json file settings.</summary>

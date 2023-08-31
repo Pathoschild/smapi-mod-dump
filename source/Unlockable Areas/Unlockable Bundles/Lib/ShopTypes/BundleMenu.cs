@@ -147,20 +147,19 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                     continue;
                 }
 
-                var index = Unlockable.intParseID(id);
+                var obj = Unlockable.parseItem(id, Unlockable._price.Pairs.ElementAt(i).Value, Unlockable.getFirstQualityFromReqKey(requirement.Key));
 
-                if (Game1.objectInformation.ContainsKey(index))
-                    RequirementSlots.Add(new ClickableRequirementTexture("", ingredientListRectangles[i], "", Game1.objectInformation[index].Split('/')[0], Game1.objectSpriteSheet, Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, index, 16, 16), 4f) {
-                        ReqKey = requirement.Key,
-                        ReqValue = requirement.Value,
-                        ReqItemId = id,
-                        myID = i + 1000,
-                        item = new StardewValley.Object(index, Unlockable._price.Pairs.ElementAt(i).Value, isRecipe: false, -1, Unlockable.getFirstQualityFromReqKey(requirement.Key)),
-                        upNeighborID = -99998,
-                        rightNeighborID = -99998,
-                        leftNeighborID = -99998,
-                        downNeighborID = -99998
-                    });
+                RequirementSlots.Add(new ClickableRequirementTexture("", ingredientListRectangles[i], "", obj.DisplayName, Game1.objectSpriteSheet, Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, obj.ParentSheetIndex, 16, 16), 4f) {
+                    ReqKey = requirement.Key,
+                    ReqValue = requirement.Value,
+                    ReqItemId = id,
+                    myID = i + 1000,
+                    item = obj,
+                    upNeighborID = -99998,
+                    rightNeighborID = -99998,
+                    leftNeighborID = -99998,
+                    downNeighborID = -99998
+                });
             }
             customPopulateClickableComponentList();
 
@@ -180,7 +179,6 @@ namespace Unlockable_Bundles.Lib.ShopTypes
         private void updateAlreadyPaidSlots()
         {
             TempSprites.Clear();
-            //int slotNumber = 0;
             for (int i = 0; i < Unlockable._price.Pairs.Count(); i++) {
                 var req = Unlockable._price.Pairs.ElementAt(i);
 
@@ -197,9 +195,9 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                     if (id == "money")
                         continue;
 
-                    var index = Unlockable.intParseID(id);
+                    var obj = Unlockable.parseItem(id, req.Value, Unlockable.getFirstQualityFromReqKey(req.Key));
 
-                    slot.item = new StardewValley.Object(index, req.Value, isRecipe: false, -1, Unlockable.getFirstQualityFromReqKey(req.Key));
+                    slot.item = obj;
                 }
             }
         }
@@ -271,18 +269,29 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 return CurrentPartialRequirement.Key.Split(",").Any(e =>
                     IsValidItemForThisIngredient(
                         item,
-                        Unlockable.intParseID(Unlockable.getIDFromReqSplit(e)),
+                        Unlockable.getIDFromReqSplit(e),
                         Unlockable.getQualityFromReqSplit(e),
                         Unlockable._alreadyPaid.ContainsKey(CurrentPartialRequirement.Key)));
             }
-            return Utility.highlightSmallObjects(item);
+            return RequirementSlots.Any(el => reqContainsType(el.ReqKey, item.TypeDefinitionId) && !Unlockable._alreadyPaid.ContainsKey(el.ReqKey));
+        }
+
+        public static bool reqContainsType(string reqKey, string type)
+        {
+            foreach (var req in reqKey.Split(",")) {
+                var id = Unlockable.getIDFromReqSplit(req);
+                if (isExceptionItem(id))
+                    continue;
+
+                if (id.StartsWith(type))
+                    return true;
+            }
+
+            return false;
         }
 
         public bool couldThisItemBeDeposited(Item item)
         {
-            if (item is not StardewValley.Object || item is Furniture)
-                return false;
-
             foreach (var requirement in Unlockable._price.Pairs)
                 if (!IsValidItemForThisRequirement(item, requirement))
                     return true;
@@ -299,32 +308,21 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
                 return IsValidItemForThisIngredient(
                     item,
-                    Unlockable.intParseID(id),
+                    id,
                     Unlockable.getQualityFromReqSplit(e),
                     Unlockable._alreadyPaid.ContainsKey(requirement.Key));
             }
             );
         }
 
-        private bool IsValidItemForThisIngredient(Item item, int index, int quality, bool completed)
+        private bool IsValidItemForThisIngredient(Item comparedItem, string requiredID, int requiredQuality, bool completed)
         {
-            if (item is not StardewValley.Object)
-                return false;
-
-            StardewValley.Object o = item as StardewValley.Object;
-            if (!completed && quality <= o.Quality) {
-                if (index < 0) {
-                    if (item.Category == index) {
-                        return true;
-                    }
-                } else if (index == item.ParentSheetIndex) {
-                    return true;
-                }
-            }
-            return false;
+            return !completed
+                && requiredQuality <= comparedItem.Quality
+                && requiredID == comparedItem.QualifiedItemId;
         }
 
-        private bool isExceptionItem(string id) => id.ToLower() == "money" || id == "858" || id == "73";
+        private static bool isExceptionItem(string id) => Unlockable.isExceptionItem(id);
 
         public override void receiveRightClick(int x, int y, bool playSound = true)
         {
@@ -420,12 +418,9 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 Unlockable.processContribution(new KeyValuePair<string, int>(c.ReqKey, c.ReqValue), i);
 
                 if (c.ReqItemId != "money") {
-                    var index = Unlockable.intParseID(c.ReqItemId);
+                    var obj = Unlockable.parseItem(c.ReqItemId, c.ReqValue);
 
-                    if (index < 0)
-                        index = JunimoNoteMenu.GetObjectOrCategoryIndex(index);
-
-                    AlreadyPaidSlots[i].item = new StardewValley.Object(index, c.ReqValue, isRecipe: false, -1, 0);
+                    AlreadyPaidSlots[i].item = obj;
                 }
 
                 announceDonation(AlreadyPaidSlots[i]);
@@ -574,12 +569,8 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public bool canAcceptThisItem(Item item, ClickableRequirementTexture slot, bool ignore_stack_count = false)
         {
-            if (item is not StardewValley.Object)
-                return false;
-
-            var o = item as StardewValley.Object;
             for (int i = 0; i < Unlockable._price.Count(); i++)
-                if (IsValidItemForThisRequirement(o, Unlockable._price.Pairs.ElementAt(i))
+                if (IsValidItemForThisRequirement(item, Unlockable._price.Pairs.ElementAt(i))
                     && (ignore_stack_count || Unlockable._price.Pairs.ElementAt(i).Value <= item.Stack)
                     && (slot == null || slot.ReqKey == null))
                     return true;
@@ -599,7 +590,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 return;
 
             if (slot.ReqKey == null) {
-                PartialDonationItem = new StardewValley.Object(Unlockable.intParseID(Unlockable.getFirstIDFromReqKey(CurrentPartialRequirement.Key)), 0, quality: Unlockable.getFirstQualityFromReqKey(CurrentPartialRequirement.Key));
+                PartialDonationItem = Unlockable.parseItem(Unlockable.getFirstIDFromReqKey(CurrentPartialRequirement.Key), 0, Unlockable.getFirstQualityFromReqKey(CurrentPartialRequirement.Key));
 
                 slot.ReqItemId = Unlockable.getFirstIDFromReqKey(CurrentPartialRequirement.Key);
                 slot.ReqKey = CurrentPartialRequirement.Key;
@@ -720,22 +711,8 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             }
         }
 
-        private int findQualityOfRequirementKey(int index, string key)
-        {
-            foreach (var item in CurrentPartialRequirement.Key.Split(",")) {
-                var id = Unlockable.getIDFromReqSplit(item);
-                if (Unlockable.intParseID(id) == index)
-                    return Unlockable.getQualityFromReqSplit(item);
-            }
-
-            return 0;
-        }
-
         public Item tryToDepositThisItem(Item item, ClickableRequirementTexture slot)
         {
-            if (!(item is StardewValley.Object) || item is Furniture)
-                return item;
-
             for (int i = 0; i < Unlockable._price.Pairs.Count(); i++) {
                 var requirement = Unlockable._price.Pairs.ElementAt(i);
 
@@ -749,12 +726,9 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                     slot.ReqKey = requirement.Key;
                     slot.ReqValue = requirement.Value;
 
-                    var index = Unlockable.intParseID(id);
+                    var obj = Unlockable.parseItem(id, requirement.Value, Unlockable.getFirstQualityFromReqKey(requirement.Key));
 
-                    if (index < 0)
-                        index = JunimoNoteMenu.GetObjectOrCategoryIndex(index);
-
-                    slot.item = new StardewValley.Object(index, requirement.Value, isRecipe: false, -1, Unlockable.getFirstQualityFromReqKey(requirement.Key));
+                    slot.item = obj;
 
                     announceDonation(slot);
 
@@ -804,7 +778,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             if (IsValidItemForThisRequirement(item, requirement))
                 count += item.Stack;
 
-            foreach (Item inventory_item in Game1.player.Items)
+            foreach (Item inventory_item in Game1.player.Items.Where(el => el is not null))
                 if (IsValidItemForThisRequirement(inventory_item, requirement))
                     count += inventory_item.Stack;
 
@@ -816,12 +790,8 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public int GetIngredientIndexForItem(Item item)
         {
-            if (item is not StardewValley.Object)
-                return -1;
-
-            StardewValley.Object o = item as StardewValley.Object;
             for (int i = 0; i < Unlockable._price.Count(); i++)
-                if (IsValidItemForThisRequirement(o, Unlockable._price.Pairs.ElementAt(i)))
+                if (IsValidItemForThisRequirement(item, Unlockable._price.Pairs.ElementAt(i)))
                     return i;
 
             return -1;
@@ -983,7 +953,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public void drawDescription(SpriteBatch b)
         {
-            if(Unlockable.BundleDescription != "")
+            if (Unlockable.BundleDescription != "")
                 SpriteText.drawStringWithScrollCenteredAt(b, Unlockable.BundleDescription, base.xPositionOnScreen + base.width / 2, Math.Min(base.yPositionOnScreen + base.height + 20, Game1.uiViewport.Height - 64 - 8));
         }
 

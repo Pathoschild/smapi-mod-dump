@@ -223,7 +223,7 @@ namespace LoveOfCooking
 			}
 
 			// Do not regenerate if game is paused
-			if ((!Game1.IsMultiplayer && !Game1.game1.IsActive) || (Game1.activeClickableMenu is not null && !Game1.shouldTimePass()))
+			if ((!Game1.IsMultiplayer && (!Game1.game1.IsActive || Game1.eventUp)) || (Game1.activeClickableMenu is not null && !Game1.shouldTimePass()))
 			{
 				return;
 			}
@@ -263,31 +263,31 @@ namespace LoveOfCooking
 			if (this.RemainingValue.HP > 0 && this.TicksCurrent.HP < this.TicksRequired.HP)
 			{
 				++this.TicksCurrent.HP;
-				if (this.TicksCurrent.HP >= rate.HP)
+			}
+			else if (this.TicksCurrent.HP >= rate.HP)
+			{
+				this.TicksCurrent.HP = 0;
+				if (this.RemainingValue.HP > 0)
 				{
-					this.TicksCurrent.HP = 0;
-					if (this.RemainingValue.HP > 0)
-					{
-						if (Game1.player.health < Game1.player.maxHealth)
-							++Game1.player.health;
-						--this.RemainingValue.HP;
-						diff = true;
-					}
+					if (Game1.player.health < Game1.player.maxHealth)
+						++Game1.player.health;
+					--this.RemainingValue.HP;
+					diff = true;
 				}
 			}
 			if (this.RemainingValue.EP > 0 && this.TicksCurrent.EP < this.TicksRequired.EP)
 			{
 				++this.TicksCurrent.EP;
-				if (this.TicksCurrent.EP >= rate.EP)
+			}
+			else if (this.TicksCurrent.EP >= rate.EP)
+			{
+				this.TicksCurrent.EP = 0;
+				if (this.RemainingValue.EP > 0)
 				{
-					this.TicksCurrent.EP = 0;
-					if (this.RemainingValue.EP > 0)
-					{
-						if (Game1.player.Stamina < Game1.player.MaxStamina)
-							++Game1.player.Stamina;
-						--this.RemainingValue.EP;
-						diff = true;
-					}
+					if (Game1.player.Stamina < Game1.player.MaxStamina)
+						++Game1.player.Stamina;
+					--this.RemainingValue.EP;
+					diff = true;
 				}
 			}
 			if (diff)

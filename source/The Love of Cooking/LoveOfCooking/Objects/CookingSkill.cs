@@ -137,8 +137,8 @@ namespace LoveOfCooking.Objects
 					Name = i18n.Get($"{id}{extra}.name"),
 					Description = i18n.Get($"{id}{extra}.description",
 					new { // v-- Skill profession description values are tokenised here
-						SaleValue = $"{((SalePriceModifier - 1) * 100):00}",
-						RestorationAltValue = $"{(RestorationAltValue):00}",
+						SaleValue = $"{((SalePriceModifier - 1) * 100):0}",
+						RestorationAltValue = $"{(RestorationAltValue):0}",
 					})
 				};
 				// Skill professions are paired and applied

@@ -55,7 +55,7 @@ namespace DestroyableBushes
                 }
                 else //if the location list has no entries
                 {
-                    switch (__instance.size)
+                    switch (__instance.size.Value)
                     {
                         case Bush.smallBush:
                             if (ModEntry.Config.DestroyableBushTypes.SmallBushes) //if allow to destroy this bush size

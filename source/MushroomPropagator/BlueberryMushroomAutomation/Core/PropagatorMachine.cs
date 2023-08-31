@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using Pathoschild.Stardew.Automate;
 using StardewValley;
 
-namespace BlueberryMushroomAutomation.Core
+namespace BlueberryMushroomAutomation
 {
 	public class PropagatorMachine : IMachine
 	{
@@ -27,29 +27,26 @@ namespace BlueberryMushroomAutomation.Core
 		/// <param name="tile">The tile covered by the machine.</param>
 		public PropagatorMachine(BlueberryMushroomMachine.Propagator entity, GameLocation location, in Vector2 tile)
 		{
-			Entity = entity;
-			Location = location;
-			TileArea = new Rectangle((int)tile.X, (int)tile.Y, 1, 1);
+			this.Entity = entity;
+			this.Location = location;
+			this.TileArea = new Rectangle(x: (int)tile.X, y: (int)tile.Y, width: 1, height: 1);
 		}
 
 		/// <summary>Get the machine's processing state.</summary>
 		public MachineState GetState()
 		{
-			if (Entity.heldObject.Value == null)
+			if (this.Entity.heldObject.Value is null)
 			{
 				return MachineState.Empty;
 			}
 
-			return Entity.readyForHarvest.Value ? MachineState.Done : MachineState.Processing;
+			return this.Entity.readyForHarvest.Value ? MachineState.Done : MachineState.Processing;
 		}
 
 		/// <summary>Get the output item.</summary>
 		public ITrackedStack GetOutput()
 		{
-			return new TrackedItem(Entity.heldObject.Value, onEmpty: item =>
-			{
-				Entity.PopExtraHeldMushrooms(giveNothing: true);
-			});
+			return new TrackedItem(item: this.Entity.heldObject.Value, onEmpty: (Item item) => this.Entity.PopHeldObject(giveNothing: true));
 		}
 
 

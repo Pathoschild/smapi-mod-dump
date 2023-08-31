@@ -10,8 +10,6 @@
 
 using HarmonyLib;
 using StardewModdingAPI;
-using System;
-using System.Collections.Generic;
 
 namespace CustomNPCExclusions
 {
@@ -42,6 +40,9 @@ namespace CustomNPCExclusions
             HarmonyPatch_MovieInvitation.ApplyPatch(harmony);
             HarmonyPatch_Greetings.ApplyPatch(harmony);
             HarmonyPatch_BirthdayCalendar.ApplyPatch(harmony);
+
+            Fixes.HarmonyPatch_Fix_NullSoldItems.ApplyPatch(harmony);
+            Fixes.HarmonyPatch_Fix_NullRandomNPCs.ApplyPatch(harmony);
         }
     }
 }

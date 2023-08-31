@@ -58,37 +58,37 @@ The asset is similar to other "Data" types and is a `Dictionary<string, string>`
 The asset can be edited in multiple ways; see the sections below for example of specific methods.
 
 ### SMAPI Mods
-SMAPI mods can edit NPC exclusion data by using the `IAssetEditor` interface. See this wiki page for an overview: [https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#Edit_a_game_asset](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#Edit_a_game_asset)
+SMAPI mods can edit NPC exclusions by adding events with the `helper`. See this wiki page for an overview: [https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#Edit_a_game_asset](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Content#Edit_a_game_asset)
 
 Below is a more specific example, which adds the "WinterStar" and "ItemDelivery" rules to a custom NPC named "MyCustomNpcName":
 
 ```cs
-public bool CanEdit<T>(IAssetInfo asset)
+public override void Entry(IModHelper helper)
 {
-	if (asset.AssetNameEquals("Data/CustomNPCExclusions"))
-		return true;
-		
-	return false;
+	helper.Events.Content.AssetRequested += this.OnAssetRequested;
 }
 
-public void Edit<T>(IAssetData asset)
+private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
 {
-	if (asset.AssetNameEquals("Data/CustomNPCExclusions"))
+	if (e.NameWithoutLocale.IsEquivalentTo("Data/CustomNPCExclusions"))
 	{
-		IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-		data.Add("MyCustomNpcName", "WinterStar ItemDelivery"); 
+		e.Edit(asset =>
+		{
+			var data = asset.AsDictionary<string, string>().Data;
+			data.Add("MyCustomNpcName", "WinterStar ItemDelivery"); 
+		});
 	}
 }
 ```
 
 ### Content Patcher Mods
-Content Patcher's content packs can edit NPC exclusion data by using `"Action": "EditData"` with `"Target": "Data/CustomNPCExclusions"`. See the Content Patcher author guide for an overview: [https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md#editdata](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md#editdata)
+Content Patcher's content packs can edit NPC exclusions by using `"Action": "EditData"` with `"Target": "Data/CustomNPCExclusions"`. See the Content Patcher author guide for an overview: [https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md#editdata](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide.md#editdata)
 
 Below is a more specific example, which adds the "WinterStar" and "ItemDelivery" rules to a custom NPC named "MyCustomNpcName":
 
 ```js
 {
-   "Format": "1.18.0",
+   "Format": "1.29.0",
    "Changes": [
       {
          "Action": "EditData",

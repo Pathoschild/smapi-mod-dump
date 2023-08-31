@@ -13,6 +13,7 @@ using System.Linq;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Archipelago.Gifting;
 using StardewArchipelago.Constants;
 using StardewArchipelago.GameModifications;
 using StardewArchipelago.GameModifications.CodeInjections;
@@ -52,7 +53,7 @@ namespace StardewArchipelago
         private AdvancedOptionsManager _advancedOptionsManager;
         private Mailman _mail;
         private ChatForwarder _chatForwarder;
-        private GiftHandler _giftHandler;
+        private IGiftHandler _giftHandler;
         private BundleReader _bundleReader;
         private ItemManager _itemManager;
         private RandomizedLogicPatcher _logicPatcher;
@@ -116,7 +117,8 @@ namespace StardewArchipelago
             // _helper.ConsoleCommands.Add("load_entrances", "Loads the entrances file", (_, _) => _entranceRandomizer.LoadTransports());
             // _helper.ConsoleCommands.Add("save_entrances", "Saves the entrances file", (_, _) => EntranceInjections.SaveNewEntrancesToFile());
             _helper.ConsoleCommands.Add("export_shippables", "Export all currently loaded shippable items", this.ExportShippables);
-            _helper.ConsoleCommands.Add("teleport", "Runs whatever is currently in the debug method", this.DebugMethod);
+            _helper.ConsoleCommands.Add("export_all_gifts", "Export all currently loaded giftable items and their traits", this.ExportGifts);
+            _helper.ConsoleCommands.Add("debug_method", "Runs whatever is currently in the debug method", this.DebugMethod);
 #endif
         }
 
@@ -134,7 +136,7 @@ namespace StardewArchipelago
             _multiSleep = new MultiSleep(Monitor, _helper, _harmony);
             _advancedOptionsManager = new AdvancedOptionsManager(this, _harmony, _archipelago);
             _advancedOptionsManager.InjectArchipelagoAdvancedOptions();
-            _giftHandler = new GiftHandler();
+            _giftHandler = new CrossGiftHandler();
             SkillInjections.ResetSkillExperience();
             FriendshipInjections.ResetArchipelagoFriendshipPoints();
         }
@@ -238,7 +240,7 @@ namespace StardewArchipelago
             _mailPatcher = new MailPatcher(Monitor, _harmony, _archipelago, _locationChecker, new LetterActions(_helper, _mail, _archipelago, _itemManager.TrapManager));
             _locationsPatcher = new LocationPatcher(Monitor, _helper, _harmony, _archipelago, _locationChecker, _bundleReader, _stardewItemManager);
             _chatForwarder.ListenToChatMessages();
-            _giftHandler.Initialize(_stardewItemManager, _mail, _archipelago);
+            _giftHandler.Initialize(Monitor, _archipelago, _stardewItemManager, _mail);
             _logicPatcher.PatchAllGameLogic();
             _mailPatcher.PatchMailBoxForApItems();
             _archipelago.SlotData.Bundles.ReplaceAllBundles();
@@ -385,7 +387,7 @@ namespace StardewArchipelago
 
         private void DebugMethod(string arg1, string[] arg2)
         {
-            _itemManager.ItemParser.TrapManager.TeleportRandomly();
+            _itemManager.ItemParser.TrapManager.ShuffleInventory();
         }
 
         public bool ArchipelagoConnect(string ip, int port, string slot, string password, out string errorMessage)
@@ -431,6 +433,11 @@ namespace StardewArchipelago
         private void ExportShippables(string arg1, string[] arg2)
         {
             _stardewItemManager.ExportAllItemsMatching(x => x.canBeShipped(), "shippables.json");
+        }
+
+        private void ExportGifts(string arg1, string[] arg2)
+        {
+            _giftHandler.ExportAllGifts("gifts.json");
         }
     }
 }

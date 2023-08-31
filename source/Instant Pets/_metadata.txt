@@ -6,9 +6,9 @@ mods:
    Instant Pets
 
 latest commit:
-   commit 1c9e0f47b08ab3a86595767a3d6440dd75614d02
-   Author: b-b-blueberry <pocketsathome@gmail.com>
-   Date:   Sat Sep 4 22:21:23 2021 +1000
+   commit 26af57b37c933de7c94b91ba0778b624b5dee735
+   Author: blueberry <dearbblueberry@gmail.com>
+   Date:   Thu Aug 17 20:07:40 2023 +1000
    
-       Add project files.
+       Update mod to version 1.0.2.
    

@@ -77,6 +77,11 @@ namespace LoveOfCooking.HarmonyPatches
 					original: AccessTools.Method(typeof(StardewValley.Utility), nameof(StardewValley.Utility.getBlacksmithUpgradeStock)),
 					postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(Utility_GetBlacksmithUpgradeStock_Postfix)));
 
+				// Add contextual drop-in behaviours to Keg for new items
+				harmony.Patch(
+					original: AccessTools.Method(typeof(StardewValley.Object), nameof(StardewValley.Object.performObjectDropInAction)),
+					transpiler: new HarmonyMethod(typeof(HarmonyPatches), nameof(Object_PerformObjectDropInAction_Transpiler)));
+
 				// Hide buffs in cooked foods not yet eaten
 				if (ModEntry.HideBuffIconsOnItems)
 				{
@@ -263,6 +268,42 @@ namespace LoveOfCooking.HarmonyPatches
 				}
 			}
 			__result *= multiplier;
+		}
+
+		/// <summary>
+		/// Adds handlers for object drop-in behaviours.
+		/// </summary>
+		public static IEnumerable<CodeInstruction> Object_PerformObjectDropInAction_Transpiler(ILGenerator gen, MethodBase original, IEnumerable<CodeInstruction> il)
+		{
+			// Seek to drop-in behaviour for Keg
+			List<CodeInstruction> ilOut = il.ToList();
+			int i = ilOut.FindIndex(match: (CodeInstruction ci) => ci.opcode == OpCodes.Ldstr && ci.operand.ToString() == "Keg");
+			int j = i < 0 ? i : ilOut.FindIndex(startIndex: i, count: ilOut.Count - i, match: (CodeInstruction ci) => ci.opcode == OpCodes.Brfalse);
+			if (j < 0)
+			{
+				Log.E($"Failed to add handlers for object drop-in behaviours. Some items may be unobtainable.");
+				return il;
+			}
+
+			// Add branch label to continue to default behaviour
+			CodeInstruction ci = ilOut[j + 1];
+			ci.labels.Add(gen.DefineLabel());
+
+			ilOut.InsertRange(index: j + 1, collection: new CodeInstruction[]
+			{
+				// On Keg drop-in check, try running our input item handler to set the output item and machine duration
+				new(OpCodes.Ldarg_0), // keg: this
+				new(OpCodes.Ldloc_1), // dropIn: dropIn
+				new(OpCodes.Ldarg_2), // probe: probe
+				new(OpCodes.Ldarg_3), // who: who
+				new(OpCodes.Call, AccessTools.Method(type: typeof(Utils), name: nameof(Utils.TryKegDropInAction))),
+				// Continue to default behaviour if our input item handler wasn't interested
+				new(OpCodes.Brfalse, ci.labels.First()),
+				// Otherwise return true on drop-in after running our custom behaviours
+				new(OpCodes.Ldc_I4_1),
+				new(OpCodes.Ret)
+			});
+			return ilOut;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Unique Children",
   "Author": "Shaklin",
-  "Version": "3.0",
+  "Version": "3.2",
   "Description": "Unique Sprites for each Child",
   "UniqueID": "shaklin.uniquechildren",
   "EntryDll": "UniqueChildren.dll",

@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
@@ -70,20 +71,26 @@ namespace StardewArchipelago.Locations
             ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, true);
         }
 
-        private void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, ISalable itemOnSale, string apLocation, bool removeOriginal)
+        private void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, ISalable itemOnSale, string apLocationName, bool removeOriginal)
         {
             var itemPrice = itemPriceAndStock[itemOnSale][0];
             if (removeOriginal)
             {
                 itemPriceAndStock.Remove(itemOnSale);
             }
-            if (_locationChecker.IsLocationChecked(apLocation))
+
+            if (_locationChecker.IsLocationChecked(apLocationName))
+            {
+                return;
+            }
+
+            if (itemPriceAndStock.Keys.Any(x => (x is PurchaseableArchipelagoLocation apLocation) && apLocation.ApLocationName.Equals(apLocationName)))
             {
                 return;
             }
 
             var purchaseableLocation =
-                new PurchaseableArchipelagoLocation(apLocation, apLocation, _modHelper, _locationChecker,
+                new PurchaseableArchipelagoLocation(apLocationName, apLocationName, _modHelper, _locationChecker,
                     _archipelago);
             itemPriceAndStock.Add(purchaseableLocation, new[] { itemPrice, 1 });
         }

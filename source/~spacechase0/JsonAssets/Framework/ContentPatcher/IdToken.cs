@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using SpaceShared;
 
 namespace JsonAssets.Framework.ContentPatcher
 {
@@ -51,9 +52,11 @@ namespace JsonAssets.Framework.ContentPatcher
         }
 
         public override IEnumerable<string> GetValues(string input)
-        {
+        { 
+            Log.Debug("meow getvalues "+TokenName+" "+input);
             if (!this.IsReady())
-                return Array.Empty<string>();
+                return new[]{"-12345" };
+            Array.Empty<string>();
 
             if (input == "")
                 return this.Ids.Values.Select(p => p.ToString()).ToArray();
@@ -65,6 +68,7 @@ namespace JsonAssets.Framework.ContentPatcher
 
         protected override void UpdateContextImpl()
         {
+            Log.Debug("meow updatecontext " + TokenName);
             this.Ids = this.IdsFunc();
         }
     }

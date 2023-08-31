@@ -35,30 +35,30 @@ namespace SaveAnywhere.Framework
         public const int OutroFadeTime = 800;
         public const int SmokeRate = 100;
         public const int CategorylabelHeight = 25;
+        private readonly List<TemporaryAnimatedSprite> _animations = new();
+        private readonly ClickableTextureComponent _backButton;
+        private readonly List<ClickableTextureComponent> _categories = new();
         private readonly List<MoneyDial> _categoryDials = new();
         private readonly List<List<Item>> _categoryItems = new();
         private readonly int _categoryLabelsWidth;
         private readonly List<int> _categoryTotals = new();
+        private readonly ClickableTextureComponent _forwardButton;
         private readonly int _itemAndPlusButtonWidth;
         private readonly int _itemSlotWidth;
         private readonly Dictionary<Item, int> _itemValues = new();
+        private readonly ClickableTextureComponent _okButton;
         private readonly int _plusButtonWidth;
         private readonly int _totalWidth;
-        private bool _hasFinished;
-        private readonly List<TemporaryAnimatedSprite> _animations = new();
-        private readonly ClickableTextureComponent _backButton;
-        private readonly List<ClickableTextureComponent> _categories = new();
         private int _centerX;
         private int _centerY;
         private int _currentPage = -1;
         private int _currentTab;
         private int _dayPlaqueY;
         private int _finalOutroTimer;
-        private readonly ClickableTextureComponent _forwardButton;
+        private bool _hasFinished;
         private int _introTimer = 3500;
         private int _itemsPerCategoryPage = 9;
         private int _moonShake = -1;
-        private readonly ClickableTextureComponent _okButton;
         private bool _outro;
         private int _outroFadeTimer;
         private int _outroPauseBeforeDateChange;
@@ -82,11 +82,11 @@ namespace SaveAnywhere.Framework
             _centerX = Game1.viewport.Width / 2;
             _centerY = Game1.viewport.Height / 2;
             _hasFinished = false;
-            _outro = true;
+            _outro = false;
             var num = -1;
             for (var index = 0; index < 6; ++index)
             {
-                var categories = this._categories;
+                var categories = _categories;
                 var textureComponent = new ClickableTextureComponent("",
                     new Rectangle(_centerX + _totalWidth / 2 - _plusButtonWidth, _centerY - 300 + index * 27 * 4,
                         _plusButtonWidth, 44), "", getCategoryName(index), Game1.mouseCursors,
@@ -102,8 +102,9 @@ namespace SaveAnywhere.Framework
                 num = index >= 5 || _categoryItems[index].Count <= 0 ? num : index;
             }
 
-            _dayPlaqueY = this._categories[0].bounds.Y - 128;
-            var rectangle = new Rectangle(_centerX + _totalWidth / 2 - _itemAndPlusButtonWidth + 32, _centerY + 300 - 64,
+            _dayPlaqueY = _categories[0].bounds.Y - 128;
+            var rectangle = new Rectangle(_centerX + _totalWidth / 2 - _itemAndPlusButtonWidth + 32,
+                _centerY + 300 - 64,
                 64, 64);
             var textureComponent1 = new ClickableTextureComponent(
                 Game1.content.LoadString("Strings\\StringsFromCSFiles:ShippingMenu.cs.11382"), rectangle, null,
@@ -169,12 +170,14 @@ namespace SaveAnywhere.Framework
             _backButton.bounds.Y = yPositionOnScreen + height - 64;
             _forwardButton.bounds.X = xPositionOnScreen + width - 32 - 48;
             _forwardButton.bounds.Y = yPositionOnScreen + height - 64;
-            _okButton.bounds = new Rectangle(_centerX + _totalWidth / 2 - _itemAndPlusButtonWidth + 32, _centerY + 300 - 64,
+            _okButton.bounds = new Rectangle(_centerX + _totalWidth / 2 - _itemAndPlusButtonWidth + 32,
+                _centerY + 300 - 64,
                 64, 64);
             _itemsPerCategoryPage = (int)((yPositionOnScreen + height - 64 - (yPositionOnScreen + 32)) / 68.0);
             if (_currentPage < 0)
                 return;
-            _currentTab = Utility.Clamp(_currentTab, 0, (_categoryItems[_currentPage].Count - 1) / _itemsPerCategoryPage);
+            _currentTab = Utility.Clamp(_currentTab, 0,
+                (_categoryItems[_currentPage].Count - 1) / _itemsPerCategoryPage);
         }
 
         protected override void customSnapBehavior(int direction, int oldRegion, int oldId)
@@ -294,36 +297,36 @@ namespace SaveAnywhere.Framework
             base.update(time);
             if (_hasFinished)
             {
-                shipItems();
+                //shipItems();
                 exitThisMenu(false);
             }
             else
             {
-                double weatherX = this._weatherX;
+                double weatherX = _weatherX;
                 var elapsedGameTime = time.ElapsedGameTime;
                 var num1 = elapsedGameTime.Milliseconds * 0.029999999329447746;
-                this._weatherX = (float)(weatherX + num1);
+                _weatherX = (float)(weatherX + num1);
                 for (var index = _animations.Count - 1; index >= 0; --index)
                     if (_animations[index].update(time))
                         _animations.RemoveAt(index);
                 if (_outro)
                 {
-                    if (this._outroFadeTimer > 0)
+                    if (_outroFadeTimer > 0)
                     {
-                        var outroFadeTimer = this._outroFadeTimer;
+                        var outroFadeTimer = _outroFadeTimer;
                         elapsedGameTime = time.ElapsedGameTime;
                         var milliseconds = elapsedGameTime.Milliseconds;
-                        this._outroFadeTimer = outroFadeTimer - milliseconds;
+                        _outroFadeTimer = outroFadeTimer - milliseconds;
                     }
-                    else if (this._outroFadeTimer <= 0 && this._dayPlaqueY < _centerY - 64)
+                    else if (_outroFadeTimer <= 0 && _dayPlaqueY < _centerY - 64)
                     {
                         if (_animations.Count > 0)
                             _animations.Clear();
-                        var dayPlaqueY = this._dayPlaqueY;
+                        var dayPlaqueY = _dayPlaqueY;
                         elapsedGameTime = time.ElapsedGameTime;
                         var num2 = (int)Math.Ceiling(elapsedGameTime.Milliseconds * 0.349999994039536);
-                        this._dayPlaqueY = dayPlaqueY + num2;
-                        if (this._dayPlaqueY >= _centerY - 64)
+                        _dayPlaqueY = dayPlaqueY + num2;
+                        if (_dayPlaqueY >= _centerY - 64)
                             _outroPauseBeforeDateChange = 700;
                     }
                     else if (_outroPauseBeforeDateChange > 0)
@@ -341,13 +344,13 @@ namespace SaveAnywhere.Framework
                                 _savedYet = true;
                         }
                     }
-                    else if (this._finalOutroTimer > 0 && _savedYet)
+                    else if (_finalOutroTimer > 0 && _savedYet)
                     {
-                        var finalOutroTimer = this._finalOutroTimer;
+                        var finalOutroTimer = _finalOutroTimer;
                         elapsedGameTime = time.ElapsedGameTime;
                         var milliseconds = elapsedGameTime.Milliseconds;
-                        this._finalOutroTimer = finalOutroTimer - milliseconds;
-                        if (this._finalOutroTimer <= 0)
+                        _finalOutroTimer = finalOutroTimer - milliseconds;
+                        if (_finalOutroTimer <= 0)
                             _hasFinished = true;
                     }
                 }
@@ -453,7 +456,8 @@ namespace SaveAnywhere.Framework
                         else if (Game1.random.NextDouble() < 1E-05)
                         {
                             rectangle = new Rectangle(640, 784, 16, 16);
-                            _animations.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", rectangle, 75f, 4, 1000,
+                            _animations.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", rectangle, 75f, 4,
+                                1000,
                                 vector2, false, false, 0.01f, 0.0f, Color.White, 4f, 0.0f, 0.0f, 0.0f, true)
                             {
                                 motion = new Vector2(-3f, 0.0f),
@@ -465,13 +469,13 @@ namespace SaveAnywhere.Framework
                         }
                     }
 
-                    var smokeTimer = this._smokeTimer;
+                    var smokeTimer = _smokeTimer;
                     elapsedGameTime = time.ElapsedGameTime;
                     var milliseconds = elapsedGameTime.Milliseconds;
-                    this._smokeTimer = smokeTimer - milliseconds;
-                    if (this._smokeTimer <= 0)
+                    _smokeTimer = smokeTimer - milliseconds;
+                    if (_smokeTimer <= 0)
                     {
-                        this._smokeTimer = 50;
+                        _smokeTimer = 50;
                         _animations.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors",
                             new Rectangle(684, 1075, 1, 1), 1000f, 1, 1000,
                             new Vector2(188f, Game1.viewport.Height - 128 + 20), false, false)
@@ -486,12 +490,12 @@ namespace SaveAnywhere.Framework
                     }
                 }
 
-                if (this._moonShake <= 0)
+                if (_moonShake <= 0)
                     return;
-                var moonShake = this._moonShake;
+                var moonShake = _moonShake;
                 elapsedGameTime = time.ElapsedGameTime;
                 var milliseconds1 = elapsedGameTime.Milliseconds;
-                this._moonShake = moonShake - milliseconds1;
+                _moonShake = moonShake - milliseconds1;
             }
         }
 
@@ -500,7 +504,7 @@ namespace SaveAnywhere.Framework
             switch (which)
             {
                 case 0:
-                    return !(_categoryItems[0][0] as Object).isAnimalProduct() ? "harvest" : "cluck";
+                    return !((Object)_categoryItems[0][0]).isAnimalProduct() ? "harvest" : "cluck";
                 case 1:
                     return "leafrustle";
                 case 2:
@@ -551,15 +555,15 @@ namespace SaveAnywhere.Framework
             if (!CanReceiveInput())
                 return;
             if (_introTimer <= 0 && !Game1.options.gamepadControls && (key.Equals((Keys)27) ||
-                                                                      Game1.options.doesInputListContain(
-                                                                          Game1.options.menuButton, key)))
+                                                                       Game1.options.doesInputListContain(
+                                                                           Game1.options.menuButton, key)))
             {
                 base.receiveLeftClick(_okButton.bounds.Center.X, _okButton.bounds.Center.Y);
             }
             else
             {
                 if (_introTimer > 0 || (Game1.options.gamepadControls &&
-                                       Game1.options.doesInputListContain(Game1.options.menuButton, key)))
+                                        Game1.options.doesInputListContain(Game1.options.menuButton, key)))
                     return;
                 base.receiveKeyPress(key);
             }
@@ -1020,6 +1024,8 @@ namespace SaveAnywhere.Framework
             drawMouse(b);
         }
 
+        // Keeping for future option for passing the day at save
+        // ReSharper disable once UnusedMember.Local
         private void shipItems()
         {
             var shippingBin = Game1.getFarm().getShippingBin(Game1.player);

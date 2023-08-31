@@ -11,7 +11,7 @@
 {
   "Name": "Tile Transparency",
   "Author": "aedenthorn",
-  "Version": "0.2.0",
+  "Version": "0.2.1",
   "Description": "Tile Transparency.",
   "UniqueID": "aedenthorn.TileTransparency",
   "EntryDll": "TileTransparency.dll",

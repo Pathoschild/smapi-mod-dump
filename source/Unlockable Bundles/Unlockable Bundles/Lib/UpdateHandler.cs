@@ -11,6 +11,7 @@
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,8 @@ namespace Unlockable_Bundles.Lib
         private static IModHelper Helper;
 
         public static List<UnlockableModel> AppliedUnlockables = new();
-        private static Dictionary<string, TileSheet> CachedTilesheets = new();
+        public static Dictionary<string, TileSheet> CachedTilesheets = new();
+        private static Dictionary<string, UnsafeMap> CachedMaps = new();
 
         public static void Initialize()
         {
@@ -41,27 +43,34 @@ namespace Unlockable_Bundles.Lib
             Helper.Events.Multiplayer.ModMessageReceived += modMessageReceived;
             Helper.Events.Multiplayer.PeerConnected += peerConnected;
             Helper.Events.Player.Warped += warped;
-            Helper.Events.GameLoop.ReturnedToTitle += returnedToTitle;
         }
 
-        private static void returnedToTitle(object sender, ReturnedToTitleEventArgs e)
+        public static void clearCache()
         {
-            AppliedUnlockables = new List<UnlockableModel>();
-            ModData.Instance = null;
+            AppliedUnlockables.Clear();
         }
 
         private static void warped(object sender, WarpedEventArgs e)
         {
-            if (e.NewLocation.Name == e.NewLocation.NameOrUniqueName)
+            if (e.NewLocation.Name == e.NewLocation.NameOrUniqueName && !isExceptionLocation(e.NewLocation))
                 return;
 
-            if (e.NewLocation.mapPath.Value != null && AppliedUnlockables.Any(el => el.Location == e.NewLocation.Name)) {
-                //Buildings share the same map, so when entering a building we hard reload it before applying our map patches
+            if (e.NewLocation.mapPath.Value is null) {
+                Monitor.Log($"Player {Game1.player.Name} warped to location {e.NewLocation.Name}:{e.NewLocation.NameOrUniqueName} with invalid mapPath");
+                return;
+            }
+
+            if (!CachedMaps.ContainsKey(e.NewLocation.Map.assetPath) && !AppliedUnlockables.Any(el => el.Location == e.NewLocation.Name))
+                return;
+
+            //Buildings, Cellars and FarmHouses share the same map, so when entering a building we hard reload it before applying our map patches
+            if (CachedMaps.ContainsKey(e.NewLocation.Map.assetPath))
+                CachedMaps[e.NewLocation.Map.assetPath].PasteData(e.NewLocation);
+            else
                 e.NewLocation.loadMap(e.NewLocation.mapPath.Value, true);
 
-                foreach (var unlockable in AppliedUnlockables.Where(el => el.LocationUnique == e.NewLocation.NameOrUniqueName))
-                    applyUnlockable(new Unlockable(unlockable), false);
-            }
+            foreach (var unlockable in AppliedUnlockables.Where(el => el.LocationUnique == e.NewLocation.NameOrUniqueName))
+                applyUnlockable(new Unlockable(unlockable), false);
         }
 
         private static void peerConnected(object sender, PeerConnectedEventArgs e)
@@ -71,7 +80,7 @@ namespace Unlockable_Bundles.Lib
 
             var saveData = ModData.Instance.UnlockableSaveData;
             var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
-            List<UnlockableModel> applyList = new List<UnlockableModel>();
+            List<UnlockableModel> applyList = new();
 
             foreach (var keyDicPairs in saveData)
                 foreach (var locationValue in keyDicPairs.Value)
@@ -81,7 +90,7 @@ namespace Unlockable_Bundles.Lib
                         unlockable.applyDefaultValues();
 
                         if (locationValue.Value.Purchased)
-                            applyList.Add(unlockable);
+                            applyList.Add((UnlockableModel)new Unlockable(unlockable));
                     }
 
             ModEntry._Helper.Multiplayer.SendMessage(new KeyValuePair<List<UnlockableModel>, ModData>(applyList, ModData.Instance), "UnlockablesReady", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID }, playerIDs: new[] { e.Peer.PlayerID });
@@ -99,11 +108,37 @@ namespace Unlockable_Bundles.Lib
             var map = Helper.GameContent.Load<Map>(unlockable.EditMap);
             var location = unlockable.EditMapLocation == "" ? unlockable.getGameLocation() : Game1.getLocationFromName(unlockable.EditMapLocation);
 
+            if (location is null) {
+                Monitor.Log($"Skipped applying overlay for '{unlockable.ID}'. Location '{unlockable.LocationUnique}' was null. This can happen for SF buildings in multiplayer");
+                return;
+            }
+
+            cacheMapIfNecessary(location, isNew);
+
+            if (location.Name != location.NameOrUniqueName && Game1.currentLocation.NameOrUniqueName != location.NameOrUniqueName)
+                return;
+
             applyOverlay(location, unlockable, map);
 
-            if (location.Name == Game1.player.currentLocation.Name)
+            if (location.Name == Game1.currentLocation.Name)
                 location.Map.LoadTileSheets(Game1.mapDisplayDevice);
         }
+
+        private static void cacheMapIfNecessary(GameLocation location, bool isNew)
+        {
+            if (!isNew
+                || (location.Name == location.NameOrUniqueName && !isExceptionLocation(location))
+                || CachedMaps.ContainsKey(location.Map.assetPath))
+                return;
+
+            var map = new UnsafeMap(location);
+            CachedMaps.Add(location.Map.assetPath, map);
+        }
+
+
+        //Cellar, Cellar2, Cellar3 etc.
+        //FarmHouse, 
+        private static bool isExceptionLocation(GameLocation location) => location is Cellar or FarmHouse or Cabin;
 
         private static void modMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
@@ -111,17 +146,19 @@ namespace Unlockable_Bundles.Lib
                 return;
 
             if (e.Type == "UnlockablesReady") {
-                ShopPlacement.resetDay();
+                if (!Context.IsOnHostComputer) {
+                    ShopPlacement.resetDay();
 
-                //I have 0 control over when this is run and whether my bundles asset is loaded at this point or not
-                //So instead of reading the bundles asset and using ModData for Unlockable data, I transfer all unlockables that need to be applied
-                //While mighty unfortunate, I'd rather have lots of redundancy than unreliable and finicky architecture
-                var transferData = e.ReadAs<KeyValuePair<List<UnlockableModel>, ModData>>();
-                ModData.Instance = transferData.Value;
-                var applyList = transferData.Key;
+                    //I have 0 control over when this is run and whether my bundles asset is loaded at this point or not
+                    //So instead of reading the bundles asset and using ModData for Unlockable data, I transfer all unlockables that need to be applied
+                    //While mighty unfortunate, I'd rather have lots of redundancy than unreliable and finicky architecture
+                    var transferData = e.ReadAs<KeyValuePair<List<Unlockable>, ModData>>();
+                    ModData.Instance = transferData.Value;
+                    var applyList = transferData.Key;
 
-                foreach (var model in applyList)
-                    applyUnlockable(new Unlockable(model));
+                    foreach (var unlockable in applyList)
+                        applyUnlockable(unlockable);
+                }
 
                 ModEntry._API.raiseIsReady(new API.IsReadyEventArgs(Game1.player));
             } else if (e.Type == "BundlePurchased") {
@@ -180,7 +217,8 @@ namespace Unlockable_Bundles.Lib
                             ? copyStaticTile(copyFrom as StaticTile, locationLayer, location, unlockable)
                             : copyAnimatedTile(copyFrom as AnimatedTile, locationLayer, location, unlockable);
 
-                        copy.TileIndexProperties.CopyFrom(copyFrom.TileIndexProperties);
+                        //Should be fine as is, but maybe I should move the TileIndexProperties to addTilesheetsAndLayers?
+                        copy.TileSheet.TileIndexProperties[copy.TileIndex].CopyFrom(copyFrom.TileSheet.TileIndexProperties[copyFrom.TileIndex]);
                         copy.Properties.CopyFrom(copyFrom.Properties);
 
                         locationLayer.Tiles[locationX, locationY] = copy;

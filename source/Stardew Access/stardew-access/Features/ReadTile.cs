@@ -9,8 +9,9 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using stardew_access.Utils;
+using static stardew_access.Log;
 using stardew_access.Translation;
+using stardew_access.Utils;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -114,6 +115,17 @@ namespace stardew_access.Features
                                 MainClass.ScreenReader.Say(Translator.Instance.Translate("feature-read_tile-manually_triggered_info", new {tile_name = name, tile_category = category}), true);
                             else
                                 MainClass.ScreenReader.SayWithTileQuery(name, x, y, true);
+                            #if DEBUG
+                            if (manuallyTriggered)
+                            {
+                                var backTileIndex = Game1.currentLocation.Map.GetLayer("Back")?.Tiles[x, y]?.TileIndex ?? -1;
+                                var buildingsTileIndex = Game1.currentLocation.Map.GetLayer("Buildings")?.Tiles[x, y]?.TileIndex ?? -1;
+                                var pathsTileIndex = Game1.currentLocation.Map.GetLayer("Paths")?.Tiles[x, y]?.TileIndex ?? -1;
+                                var frontTileIndex = Game1.currentLocation.Map.GetLayer("Front")?.Tiles[x, y]?.TileIndex ?? -1;
+                                var alwaysFrontTileIndex = Game1.currentLocation.Map.GetLayer("AlwaysFront")?.Tiles[x, y]?.TileIndex ?? -1;
+                                MainClass.ScreenReader?.Say($"Tile indexes: back {backTileIndex}, buildings {buildingsTileIndex}, paths {pathsTileIndex}, front {frontTileIndex}, always front {alwaysFrontTileIndex}", false);
+                            }
+                            #endif
                     #endregion
 
                     #region Play colliding sound effect
@@ -130,7 +142,7 @@ namespace stardew_access.Features
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"Error in Read Tile:\n{e.Message}\n{e.StackTrace}");
             }
         }
     }

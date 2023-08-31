@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Snorlax",
+  "Author": "daleonar",
+  "Version": "1.2.0", // fixed locally
+  "Description": "Snorlax blocks the path to the secret woods",
+  "UniqueID": "daleonar.Snorlax",
+  "EntryDll": "Snorlax.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:???" ]
+}

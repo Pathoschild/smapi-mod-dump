@@ -15,7 +15,6 @@
   "MonsterSpawnEnabled": true,
   "Forage_Spawn_Settings": {
     "Areas": [
-      // Hike Forage
       {
         "SpringItemIndex": [
           "Ridge Cherry",
@@ -84,7 +83,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Village Forage
       {
         "SpringItemIndex": [
           "Ridge Cherry",
@@ -177,7 +175,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Ridge Forage
       {
         "SpringItemIndex": [
           "Ridge Cherry",
@@ -249,7 +246,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Ridge Falls Forage
       {
         "SpringItemIndex": [
           "Ridge Cherry",
@@ -312,7 +308,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Ridge Forest Forage
       {
         "SpringItemIndex": [
           "Ridge Cherry",
@@ -569,7 +564,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Ridge Forest Treasure
       {
         "SpringItemIndex": [
           74,
@@ -819,7 +813,6 @@
         },
         "DaysUntilSpawnsExpire": 2
       },
-      // Ridge Forest Mistblooms
       {
         "SpringItemIndex": [
           "Mountain Mistbloom"
@@ -1049,7 +1042,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Yellow Wood Sculpture
       {
         "SpringItemIndex": [
           "Yellow Wood Sculpture"
@@ -1099,7 +1091,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Silver Fish Bones
       {
         "SpringItemIndex": [
           "Silver Fish Bones"
@@ -1159,7 +1150,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Inked Fossil
       {
         "SpringItemIndex": [
           "Inked Fossil"
@@ -1219,7 +1209,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Nighblack Diamond
       {
         "SpringItemIndex": [
           "Nightblack Diamond"
@@ -1270,7 +1259,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Shell Bracelet
       {
         "SpringItemIndex": [
           "Shell Bracelet"
@@ -1320,7 +1308,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Aguar Fruit Cave
       {
         "SpringItemIndex": [
           "Cherry Pluot",
@@ -1423,7 +1410,6 @@
         },
         "DaysUntilSpawnsExpire": 14
       },
-      // Aguar Flower Cave
       {
         "SpringItemIndex": [
           "Foxbloom",
@@ -1526,7 +1512,6 @@
         },
         "DaysUntilSpawnsExpire": 14
       },
-      // Summit Farm initial debris
       {
         "SpringItemIndex": [
           295,
@@ -1534,7 +1519,7 @@
           450,
           678,
           679,
-          786,
+          786
         ],
         "SummerItemIndex": [
           295,
@@ -1542,7 +1527,7 @@
           450,
           678,
           679,
-          786,
+          786
         ],
         "FallItemIndex": [
           295,
@@ -1550,7 +1535,7 @@
           450,
           678,
           679,
-          786,
+          786
         ],
         "WinterItemIndex": [
           295,
@@ -1558,7 +1543,7 @@
           450,
           678,
           679,
-          786,
+          786
         ],
         "UniqueAreaID": "RSV Summit Farm Initial Debris",
         "MapName": "Custom_Ridgeside_SummitFarm",
@@ -1578,7 +1563,7 @@
           "90,46/92,79",
           "89,64/92,79",
           "88,67/92,79",
-          "70,42/71,45
+          "70,42/71,45"
         ],
         "StrictTileChecking": "High",
         "SpawnTiming": {
@@ -1604,7 +1589,6 @@
         },
         "DaysUntilSpawnsExpire": 0
       },
-      // Summit Farm monthly debris
       {
         "SpringItemIndex": [
           295,
@@ -1612,7 +1596,7 @@
           450,
           678,
           679,
-          786,
+          786
         ],
         "SummerItemIndex": [
           295,
@@ -1620,7 +1604,7 @@
           450,
           678,
           679,
-          786,
+          786
         ],
         "FallItemIndex": [
           295,
@@ -1628,7 +1612,7 @@
           450,
           678,
           679,
-          786,
+          786
         ],
         "WinterItemIndex": [
           295,
@@ -1636,7 +1620,7 @@
           450,
           678,
           679,
-          786,
+          786
         ],
         "UniqueAreaID": "RSV Summit Farm Monthly Debris",
         "MapName": "Custom_Ridgeside_SummitFarm",
@@ -1656,7 +1640,7 @@
           "90,46/92,79",
           "89,64/92,79",
           "88,67/92,79",
-          "70,42/71,45
+          "70,42/71,45"
         ],
         "StrictTileChecking": "High",
         "SpawnTiming": {
@@ -1682,7 +1666,6 @@
         },
         "DaysUntilSpawnsExpire": 0
       },
-      // Summit Farm Forage
       {
         "SpringItemIndex": [
           "Ridge Cherry",
@@ -1767,7 +1750,7 @@
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
-      },
+      }
     ],
     "PercentExtraSpawnsPerForagingLevel": 0,
     "SpringItemIndex": [
@@ -1793,7 +1776,6 @@
   },
   "Large_Object_Spawn_Settings": {
     "Areas": [
-      // Ridge log blocking forest
       {
         "ObjectTypes": [
           "Log"
@@ -1828,12 +1810,13 @@
           "WeatherToday": [],
           "WeatherTomorrow": [],
           "CPConditions": {},
-          "EPUPreconditions": [ "!e 75160377" ],
+          "EPUPreconditions": [
+            "!e 75160377"
+          ],
           "LimitedNumberOfSpawns": 1
         },
         "DaysUntilSpawnsExpire": 0
       },
-      // Summit Farm large objects
       {
         "ObjectTypes": [
           "Log",
@@ -1888,7 +1871,9 @@
           "WeatherToday": [],
           "WeatherTomorrow": [],
           "CPConditions": {},
-          "EPUPreconditions": [ "Hl OddJobsNotice" ],
+          "EPUPreconditions": [
+            "Hl OddJobsNotice"
+          ],
           "LimitedNumberOfSpawns": 1
         },
         "DaysUntilSpawnsExpire": 0
@@ -1898,7 +1883,6 @@
   },
   "Ore_Spawn_Settings": {
     "Areas": [
-      // Ridge Forest ore
       {
         "MiningLevelRequired": null,
         "StartingSpawnChance": null,
@@ -1954,7 +1938,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Summit Farm Ore Area
       {
         "MiningLevelRequired": {
           "Stone": 0,
@@ -2017,8 +2000,7 @@
         "MapName": "Custom_Ridgeside_SummitFarm",
         "MinimumSpawnsPerDay": 0,
         "MaximumSpawnsPerDay": 3,
-        "IncludeTerrainTypes": [
-        ],
+        "IncludeTerrainTypes": [],
         "ExcludeTerrainTypes": [],
         "IncludeCoordinates": [
           "87,30/90,30",
@@ -2026,7 +2008,7 @@
           "82,32/90,32",
           "82,33/90,33",
           "82,34/90,34",
-          "85,35/90,35",
+          "85,35/90,35"
         ],
         "ExcludeCoordinates": [],
         "StrictTileChecking": "Maximum",
@@ -2116,7 +2098,6 @@
   },
   "Monster_Spawn_Settings": {
     "Areas": [
-      // Ridge Forest Ghost
       {
         "MonsterTypes": [
           {
@@ -2165,7 +2146,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Ridge Forest Corrupted Spirit
       {
         "MonsterTypes": [
           {
@@ -2218,7 +2198,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Ridge Forest Wraith
       {
         "MonsterTypes": [
           {
@@ -2271,7 +2250,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Ridge Forest Viperial
       {
         "MonsterTypes": [
           {
@@ -2508,7 +2486,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Ridge Forest Extra Viperials
       {
         "MonsterTypes": [
           {
@@ -2747,7 +2724,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Ridge Forest Serpentine Beast
       {
         "MonsterTypes": [
           {
@@ -3014,7 +2990,6 @@
         },
         "DaysUntilSpawnsExpire": null
       },
-      // Ridge Forest Wilderness Golem
       {
         "MonsterTypes": [
           {
@@ -3250,7 +3225,6 @@
         },
         "DaysUntilSpawnsExpire": null
       },
-      // Ridge Forest Serperial
       {
         "MonsterTypes": [
           {
@@ -3312,7 +3286,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Spirit Realm Corrupted Spirit (dynamic)
       {
         "MonsterTypes": [
           {
@@ -3365,7 +3338,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Spirit Realm Wraith (dynamic)
       {
         "MonsterTypes": [
           {
@@ -3418,7 +3390,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Spirit Realm Viperial (static)
       {
         "MonsterTypes": [
           {
@@ -3476,7 +3447,6 @@
         },
         "DaysUntilSpawnsExpire": 1
       },
-      // Spirit Realm Serpentine Beasts (static)
       {
         "MonsterTypes": [
           {
@@ -3562,7 +3532,6 @@
         },
         "DaysUntilSpawnsExpire": null
       },
-      // Spirit Realm Serperial (dynamic)
       {
         "MonsterTypes": [
           {
@@ -3623,7 +3592,7 @@
           "LimitedNumberOfSpawns": null
         },
         "DaysUntilSpawnsExpire": 1
-      },
+      }
     ],
     "CustomTileIndex": []
   },

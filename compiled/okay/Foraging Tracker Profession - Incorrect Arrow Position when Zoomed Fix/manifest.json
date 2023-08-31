@@ -1,0 +1,10 @@
+{
+  "Name": "TrackerZoomFix",
+  "Author": "DanielB",
+  "Version": "1.0.0",
+  "Description": "Fixes incorrect 'Tracker' profession arrow placement when UI Zoom Level doesn't match the main Zoom Level.",
+  "UniqueID": "DanielB.TrackerZoomFix",
+  "EntryDll": "TrackerZoomFix.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:17935" ]
+}

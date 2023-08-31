@@ -1,7 +1,7 @@
 {
     "Name": "Shared Professions",
     "Author": "virtualbjorn",
-    "Version": "0.0.7",
+    "Version": "1.0.0",
     "Description": "Shared Profession Benefits",
     "UniqueID": "virtualbjorn.SharedProfessions",
     "EntryDll": "SharedProfessions.dll",

@@ -56,6 +56,7 @@ namespace BetterBeehouses
 		public bool BeePaths { set; get; } = true;
 		public int ParticleCount { get; set; } = 20;
 		public int PathParticleCount { get; set; } = 5;
+		public bool AnythingHoney { get; set; } = false;
 
 		private ITranslationHelper i18n => ModEntry.helper.Translation;
 
@@ -85,6 +86,7 @@ namespace BetterBeehouses
 			BeePaths = true;
 			ParticleCount = 20;
 			PathParticleCount = 5;
+			AnythingHoney = false;
 		}
 
 		public void ApplyConfig()
@@ -134,6 +136,7 @@ namespace BetterBeehouses
 			api.AddQuickBool(this, manifest, nameof(UseGiantCrops));
 			api.AddQuickBool(this, manifest, nameof(UseFruitTrees));
 			api.AddQuickBool(this, manifest, nameof(UseAnyFruitTrees));
+			api.AddQuickBool(this, manifest, nameof(AnythingHoney));
 
 			//visual
 			api.AddPage(manifest, "visual", () => i18n.Get("config.visual.name"));

@@ -15,6 +15,7 @@
   "EnableReplacingFences": false,
   "EnableReplacingFloors": false,
   "EnableTreeTappers": false,
+  "CreativeMode": false,
   "EngageBuildMode": "LeftShift + B",
   "EraseTool": "None",
   "FilledRectangleTool": "None",

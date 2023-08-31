@@ -33,7 +33,7 @@ namespace Unlockable_Bundles.Lib
             Monitor = Mod.Monitor;
             Helper = Mod.Helper;
 
-            Helper.Events.GameLoop.Saving += Saving;
+            Helper.Events.GameLoop.DayEnding += DayEnding;
         }
 
         public static void LoadModData()
@@ -41,7 +41,10 @@ namespace Unlockable_Bundles.Lib
             ModData.Instance = Helper.Data.ReadSaveData<ModData>(SaveKey) ?? new ModData();
             ModData.checkLegacySaveData();
         }
-        private static void Saving(object sender, SavingEventArgs e)
+
+        //Solid Foundations has [EventPriority(EventPriority.High + 1)], but we want to run before it <3
+        [EventPriority(EventPriority.High + 2)]
+        private static void DayEnding(object sender, DayEndingEventArgs e)
         {
             if (!Context.IsMainPlayer)
                 return;
@@ -56,14 +59,23 @@ namespace Unlockable_Bundles.Lib
         private static void clearUnlockableShops()
         {
             var farm = Game1.getFarm();
+
+            /*
             if (farm.isThereABuildingUnderConstruction()
                 && farm.getBuildingUnderConstruction().indoors.Value != null
-                && !ShopPlacement.modifiedLocations.Contains(farm.getBuildingUnderConstruction().indoors.Value))
-                ShopPlacement.modifiedLocations.Add(farm.getBuildingUnderConstruction().indoors.Value);
+                && !ShopPlacement.ModifiedLocations.Contains(farm.getBuildingUnderConstruction().indoors.Value))
+                ShopPlacement.ModifiedLocations.Add(farm.getBuildingUnderConstruction().indoors.Value);
+            */
 
-            foreach (var loc in ShopPlacement.modifiedLocations)
+            foreach (var loc in Game1.locations)
+                foreach (var building in loc.buildings.Where(el => el.isUnderConstruction() && el.indoors.Value != null && !ShopPlacement.ModifiedLocations.Contains(el.indoors.Value)))
+                        ShopPlacement.ModifiedLocations.Add(building.indoors.Value);
+
+
+            foreach (var loc in ShopPlacement.ModifiedLocations)
                 foreach (var obj in loc.Objects.Values.Where(el => el is ShopObject))
                     loc.removeObject(obj.TileLocation, false);
+
         }
     }
 }

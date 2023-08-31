@@ -45,7 +45,5 @@ namespace RidgesideVillage
 
         public bool EnableTouristNPCs = true;
 
-        public bool EnableWTDRCompat = false;
-
     }
 }

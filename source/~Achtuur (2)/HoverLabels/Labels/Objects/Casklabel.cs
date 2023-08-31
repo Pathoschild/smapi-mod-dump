@@ -56,7 +56,7 @@ internal class Casklabel : ObjectLabel
         float aging_rate = hoverCask.agingRate.Value;
         int nextQuality = hoverCask.GetNextQuality(hoverCask.heldObject.Value.Quality);
         float daysToMature = hoverCask.daysToMature.Value - hoverCask.GetDaysForQuality(nextQuality);
-        int days_to_next_quality = (int)Math.Ceiling(daysToMature / aging_rate);
+        int days_to_next_quality = Math.Max(1, (int)Math.Ceiling(daysToMature / aging_rate));
 
         // Add time to next quality to description
         string nextQualityReadyDate = ModEntry.GetDateAfterDays(days_to_next_quality);

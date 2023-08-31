@@ -22,6 +22,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewValley.Network;
+using SpaceCore.Events;
 
 namespace RidgesideVillage
 {
@@ -29,19 +30,36 @@ namespace RidgesideVillage
     internal static class Dateables
     {
         private static IModHelper Helper { get; set; }
-        private static Dictionary<string, string> unlockables = new Dictionary<string, string>(){
-         // Character, 8 heart event ID/response ID for becoming datable
-            { "Anton", "75160304/75163042" },
-            { "Paula", "75160352/75163521" },
-            { "Irene", "75160324/7516325" },
-            { "Zayne", "75160440/7516439" },
-            { "Faye", "75160449/7516319" },
-            { "Bryle", "75160453/7516453" },
+        private static IManifest ModManifest;
+
+        private static string[] travelers = { "Bryle", "Irene", "June", "Zayne" };
+        private static Dictionary<string, string> to_be_broadcast = new Dictionary<string, string>(){
+         // Important event, extra info type/extra info ID
+         // e: event only, r: response ID, m: mail flag
+            { "75160304", "r/75163042" }, // Anton
+            { "75160352", "r/75163521" }, // Paula
+            { "75160324", "r/7516325" }, // Irene
+            { "75160440", "r/7516439" }, //Zayne
+            { "75160319", "m/FayeBryleLoveStory" }, //Faye + Bryle
+            { "75160431", "e/" }, // Irene follow-up
+            { "75160320", "e/" }, // Faye fashion show notice
+            { "75160449", "e/" }, // Faye fashion show
+        };
+        private static Dictionary<string, string> unlock_rules = new Dictionary<string, string>(){
+         // Character, deciding heart event ID/unlock cond type/cond ID
+         // r: response, m: mail, !: does not have
+            { "Anton", "75160304/r/75163042" },
+            { "Paula", "75160352/r/75163521" },
+            { "Irene", "75160324/r/7516325" },
+            { "Zayne", "75160440/r/7516439" },
+            { "Faye", "75160449/!m/FayeBryleLoveStory" },
+            { "Bryle", "75160453/!m/FayeBryleLoveStory" },
         };
 
-        internal static void ApplyPatch(Harmony harmony, IModHelper helper)
+        internal static void ApplyPatch(Harmony harmony, IModHelper helper, IManifest manifest)
         {
             Helper = helper;
+            ModManifest = manifest;
 
             Log.Trace($"Applying Harmony Patch \"{nameof(Dateables)}.");
             harmony.Patch(
@@ -53,231 +71,189 @@ namespace RidgesideVillage
                 postfix: new HarmonyMethod(typeof(Dateables), nameof(SocialPage_drawNPCSlot_Postfix))
             );
 
-            Helper.Events.GameLoop.DayEnding += OnDayEnding;
+            Helper.Events.Multiplayer.ModMessageReceived += OnMessageReceived;
             Helper.Events.GameLoop.DayStarted += OnDayStarted;
-            Helper.Events.GameLoop.OneSecondUpdateTicked += OnOneSecondUpdateTicked;
+            Helper.Events.GameLoop.DayEnding += OnDayEnding;
+            Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+            SpaceEvents.OnEventFinished += OnEventFinished;
         }
 
-        private static void OnDayStarted(object sender, DayStartedEventArgs e)
+        // sync_direction
+        // Negative means this player is any player who has seen a relevant event and we want the others to be in sync
+        // Positive means this player is a farmhand and we want them to be in sync with the host if they've seen a relevant event
+        private static void CheckUnlockables(int sync_direction)
         {
-            NPC irene = Game1.getCharacterFromName("Irene");
-            if (irene is not null && Game1.player.friendshipData.TryGetValue("Irene", out var friendship) 
-                && friendship.Status == FriendshipStatus.Married)
-            { 
-                if (Game1.currentSeason.Equals("spring") || Game1.currentSeason.Equals("summer"))
+            if (sync_direction > 0 && Game1.IsMasterGame)
+                return;
+            //Log.Trace($"RSV: Syncing datable info. Direction = " + sync_direction);
+            Farmer currentPlayer = Game1.player;
+            foreach (string key in to_be_broadcast.Keys)
+            {
+                int eventID = int.Parse(key);
+                string[] info = to_be_broadcast[key].Split('/');
+                // For all entries, make sure all players have seen the event in the first bucket if anyone has
+                if (sync_direction < 0 && Game1.CurrentEvent.id == eventID)
                 {
-                    if (Game1.dayOfMonth >= 15 && Game1.dayOfMonth <= 21)
+                    Helper.Multiplayer.SendMessage(
+                                message: $"{eventID}",
+                                messageType: "EventSeen",
+                                modIDs: new[] { ModManifest.UniqueID },
+                                playerIDs: null);
+                    Log.Trace($"RSV: EventSeen message for {eventID} sent to all players.");
+                }
+                else if (sync_direction > 0 && Game1.MasterPlayer.eventsSeen.Contains(eventID))
+                {
+                    if (!currentPlayer.eventsSeen.Contains(eventID))
                     {
-                        Game1.warpCharacter(irene, RSVConstants.L_HIDDENWARP, Vector2.One);
+                        currentPlayer.eventsSeen.Add(eventID);
+                        Log.Trace($"RSV: {currentPlayer.Name} has now seen event {eventID}.");
                     }
                 }
-                else if (Game1.currentSeason.Equals("fall") || Game1.currentSeason.Equals("winter"))
+
+                // For each listing with a second item in the list, use that as condition and make sure it's universally met or unmet
+                var id_type = info[0];
+                int responseID;
+                string mailID;
+                bool decision_made;
+                switch (id_type)
                 {
-                    if (Game1.dayOfMonth >= 2 && Game1.dayOfMonth <= 7)
-                    {
-                        Game1.warpCharacter(irene, RSVConstants.L_HIDDENWARP, Vector2.One);
-                    }
+                    case "e":
+                        break;
+                    // Unlocked by dialogue ID
+                    case "r":
+                        if (sync_direction < 0 && Game1.CurrentEvent.id == eventID)
+                        {
+                            responseID = int.Parse(info[1]);
+                            decision_made = sync_direction < 0 ? Game1.player.dialogueQuestionsAnswered.Contains(responseID) : Game1.MasterPlayer.dialogueQuestionsAnswered.Contains(responseID);
+                            if (decision_made)
+                            {
+                                Helper.Multiplayer.SendMessage(
+                                message: $"{responseID}",
+                                messageType: "QuestionAnswered",
+                                modIDs: new[] { ModManifest.UniqueID },
+                                playerIDs: null);
+                                Log.Trace($"RSV: QuestionAnswered message for {responseID} sent to all players.");
+                            }
+                        }
+                        else if (sync_direction > 0 && Game1.MasterPlayer.eventsSeen.Contains(eventID))
+                        {
+                            responseID = int.Parse(info[1]);
+                            decision_made = sync_direction < 0 ? Game1.player.dialogueQuestionsAnswered.Contains(responseID) : Game1.MasterPlayer.dialogueQuestionsAnswered.Contains(responseID);
+                            if (!currentPlayer.dialogueQuestionsAnswered.Contains(responseID) && decision_made)
+                            {
+                                currentPlayer.dialogueQuestionsAnswered.Add(responseID);
+                                Log.Trace($"RSV: {currentPlayer.Name} now has response ID {responseID}.");
+                            }  
+                        }
+                        break;
+                    // Unlocked by mail flag
+                    case "m":
+                        if (sync_direction < 0 && Game1.CurrentEvent.id == eventID)
+                        {
+                            mailID = info[1];
+                            decision_made = sync_direction < 0 ? Game1.player.mailReceived.Contains(mailID) : Game1.MasterPlayer.mailReceived.Contains(mailID);
+                            if (decision_made)
+                            {
+                                Helper.Multiplayer.SendMessage(
+                                message: $"{mailID}",
+                                messageType: "MailReceived",
+                                modIDs: new[] { ModManifest.UniqueID },
+                                playerIDs: null);
+                                Log.Trace($"RSV: MailReceived message for {mailID} sent to all players.");
+                            }
+                        }
+                        else if (sync_direction > 0 && Game1.MasterPlayer.eventsSeen.Contains(eventID))
+                        {
+                            mailID = info[1];
+                            decision_made = sync_direction < 0 ? Game1.player.mailReceived.Contains(mailID) : Game1.MasterPlayer.mailReceived.Contains(mailID);
+                            if (!currentPlayer.mailReceived.Contains(mailID) && decision_made)
+                            {
+                                currentPlayer.mailReceived.Add(mailID);
+                                Log.Trace($"RSV: {currentPlayer.Name} now has mail flag {mailID}.");
+                            }   
+                        }
+                        break;
+                    default:
+                        break;
                 }
             }
         }
 
-        private static void OnOneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
+        private static void OnMessageReceived(object sender, ModMessageReceivedEventArgs e)
         {
-            //Bryle leaves
-            NPC bryle = Game1.getCharacterFromName("Bryle");
-            if (bryle is not null && Game1.player.friendshipData.TryGetValue("Bryle", out var friendship)
-                && friendship.Status == FriendshipStatus.Married)
+            if (e.FromModID != ModManifest.UniqueID)
+                return;
+            string message = e.ReadAs<string>();
+            //Log.Trace($"RSV: {Game1.player.Name} received message {e.Type} {message} received.");
+            switch (e.Type)
             {
-                if (Game1.player.eventsSeen.Contains(75160460) && !bryle.currentLocation.Equals(RSVConstants.L_HIDDENWARP))
+                case "EventSeen":
+                    Game1.player.eventsSeen.Add(int.Parse(message));
+                    Log.Trace($"RSV: Marked event {message} as seen.");
+                    break;
+                case "QuestionAnswered":
+                    Game1.player.dialogueQuestionsAnswered.Add(int.Parse(message));
+                    Log.Trace($"RSV: Marked response {message} as chosen.");
+                    break;
+                case "MailReceived":
+                    Game1.player.mailReceived.Add(message);
+                    Log.Trace($"RSV: Marked mail {message} as received.");
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+        {
+            if (Game1.IsMultiplayer)
+            {
+                Log.Trace($"RSV: Checking unlockables at load time.");
+                CheckUnlockables(1);
+            }
+        }
+
+        private static void OnEventFinished(object sender, EventArgs e)
+        {
+            if (Game1.IsMultiplayer)
+            {
+                Log.Trace($"RSV: Checking unlockables at event end.");
+                CheckUnlockables(-1);
+            }
+
+            //Teleport Bryle
+            if (Game1.CurrentEvent.id == 75160460)
+            {
+                NPC bryle = Game1.getCharacterFromName("Bryle");
+                if (bryle is not null && Game1.player.friendshipData.TryGetValue("Bryle", out var f1)
+                    && f1.Status == FriendshipStatus.Married)
                 {
                     Game1.warpCharacter(bryle, RSVConstants.L_HIDDENWARP, Vector2.One);
-                }
-            }
-
-            //Has crucial events be marked as seen for every player when one player triggers it.
-            //Made so that it doesn't require the host to trigger the crucial event to apply changes
-            if (!Game1.IsMultiplayer)
-            {
-                return;
-            }
-
-            foreach (Farmer o in Game1.getAllFarmers())
-            {
-                //Paula's 8 heart event
-                if (o.eventsSeen.Contains(75160389)) //seen Paula's 8 heart part 2
-                {
-                    int EventID = 75160352;
-                    int EventID2 = 75160389;
-                    int ResponseID = 75163521;
-                    foreach (Farmer p in Game1.getAllFarmers())
-                    {
-                        if (!p.eventsSeen.Contains(EventID) && !p.eventsSeen.Contains(EventID2))
-                        {
-                            p.eventsSeen.Add(EventID);
-                            p.eventsSeen.Add(EventID2);
-                        }
-                    }
-
-                    if (o.dialogueQuestionsAnswered.Contains(ResponseID)) //Romance Paula route; Makes Paula dateable for everyone
-                    {
-                        foreach (Farmer p in Game1.getAllFarmers())
-                        {
-                            if (!p.dialogueQuestionsAnswered.Contains(ResponseID))
-                            {
-                                p.dialogueQuestionsAnswered.Add(ResponseID);
-                            }
-                        }
-                    }
-                }
-
-                //Anton's 8 heart event
-                if (o.eventsSeen.Contains(75160304))
-                {
-                    int EventID = 75160304;
-                    int ResponseID = 75163042;
-                    foreach (Farmer p in Game1.getAllFarmers())
-                    {
-                        if (!p.eventsSeen.Contains(EventID))
-                        {
-                            p.eventsSeen.Add(EventID);
-                        }
-                    }
-
-                    if (o.dialogueQuestionsAnswered.Contains(ResponseID)) //Romance Anton route; Makes Anton dateable for everyone
-                    {
-                        foreach (Farmer p in Game1.getAllFarmers())
-                        {
-                            if (!p.dialogueQuestionsAnswered.Contains(ResponseID))
-                            {
-                                p.dialogueQuestionsAnswered.Add(ResponseID);
-                            }
-                        }
-                    }
-                }
-
-                //Irene's 8 heart event
-                if (o.eventsSeen.Contains(75160431)) //seen Irene's 8 heart part 2
-                {
-                    int EventID = 75160324;
-                    int EventID2 = 75160431;
-                    int ResponseID = 7516325;
-                    foreach (Farmer p in Game1.getAllFarmers())
-                    {
-                        if (!p.eventsSeen.Contains(EventID) && !p.eventsSeen.Contains(EventID2))
-                        {
-                            p.eventsSeen.Add(EventID);
-                            p.eventsSeen.Add(EventID2);
-                        }
-                    }
-
-                    if (o.dialogueQuestionsAnswered.Contains(ResponseID)) //Romance Irene route; Makes Irene dateable for everyone
-                    {
-                        foreach (Farmer p in Game1.getAllFarmers())
-                        {
-                            if (!p.dialogueQuestionsAnswered.Contains(ResponseID))
-                            {
-                                p.dialogueQuestionsAnswered.Add(ResponseID);
-                            }
-                        }
-                    }
-                }
-
-                //Zayne's 8 heart event
-                if (o.eventsSeen.Contains(75160440))
-                {
-                    int EventID = 75160440;
-                    int ResponseID = 7516439;
-                    foreach (Farmer p in Game1.getAllFarmers())
-                    {
-                        if (!p.eventsSeen.Contains(EventID))
-                        {
-                            p.eventsSeen.Add(EventID);
-                        }
-                    }
-
-                    if (o.dialogueQuestionsAnswered.Contains(ResponseID)) //Romance Zayne route; Makes Zayne dateable for everyone
-                    {
-                        foreach (Farmer p in Game1.getAllFarmers())
-                        {
-                            if (!p.dialogueQuestionsAnswered.Contains(ResponseID))
-                            {
-                                p.dialogueQuestionsAnswered.Add(ResponseID);
-                            }
-                        }
-                    }
-                }
-
-                //Bryle's 8 heart event (If seen by one, seen by all)
-                if (o.eventsSeen.Contains(75160453))
-                {
-                    int EventID = 75160453;
-                    int ResponseID = 7516453;
-                    foreach (Farmer p in Game1.getAllFarmers())
-                    {
-                        if (!p.eventsSeen.Contains(EventID))
-                        {
-                            p.eventsSeen.Add(EventID);
-                        }
-                    }
-
-                    //Adding false dialogue keys for unlocking Faye and Bryle as romance candidates
-                    // Bryle Dialogue Key: 7516453
-                    if (!o.mailReceived.Contains("FayeBryleLoveStory") && o.eventsSeen.Contains(75160453)) //No Brayle flag and seen Bryle's 8 heart event; Makes Bryle dateable for everyone
-                    {
-                        foreach (Farmer p in Game1.getAllFarmers())
-                        {
-                            if (!p.dialogueQuestionsAnswered.Contains(ResponseID))
-                            {
-                                p.dialogueQuestionsAnswered.Add(ResponseID);
-                            }
-                        }
-                    }
-                }
-
-                //Faye's 8 heart event (If seen by one, seen by all)
-                if (o.eventsSeen.Contains(75160449))
-                {
-                    int EventID = 75160449;
-                    int ResponseID = 7516319;
-                    foreach (Farmer p in Game1.getAllFarmers())
-                    {
-                        if (!p.eventsSeen.Contains(EventID))
-                        {
-                            p.eventsSeen.Add(EventID);
-                        }
-                    }
-
-                    //Adding false dialogue keys for unlocking Faye and Bryle as romance candidates
-                    // Faye Dialogue Key: 7516319
-                    if (o.mailReceived.Contains("FarmerxFaye")) //Has FarmerxFaye flag; Makes Faye dateable for everyone
-                    {
-                        foreach (Farmer p in Game1.getAllFarmers())
-                        {
-                            if (!p.dialogueQuestionsAnswered.Contains(ResponseID))
-                            {
-                                p.dialogueQuestionsAnswered.Add(ResponseID);
-                                p.mailReceived.Add("FarmerxFaye");
-                            }
-                        }
-                    }
                 }
             }
         }
 
         private static void OnDayEnding(object sender, DayEndingEventArgs e)
         {
-            //If host has seen the respective event that prevent friendship decay, remove the decay by marking them as talked to
-            if(Game1.MasterPlayer.eventsSeen.Contains(RSVConstants.E_IRENE_NODECAY) && Game1.player.friendshipData.ContainsKey("Irene"))
+            foreach(string name in travelers)
+                if (Game1.player.friendshipData.ContainsKey(name) && Game1.getCharacterFromName(name).currentLocation.Name.Contains("HiddenWarp"))
+                    Game1.player.friendshipData[name].TalkedToToday = true;
+        }
+
+        private static void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            NPC irene = Game1.getCharacterFromName("Irene");
+            if (irene is not null && Game1.player.friendshipData.TryGetValue("Irene", out var friendship)
+                && friendship.Status == FriendshipStatus.Married)
             {
-                Game1.player.friendshipData["Irene"].TalkedToToday = true;
-            }
-            if (Game1.MasterPlayer.eventsSeen.Contains(RSVConstants.E_ZAYNE_NODECAY) && Game1.player.friendshipData.ContainsKey("Zayne"))
-            {
-                Game1.player.friendshipData["Zayne"].TalkedToToday = true;
-            }
-            if (Game1.player.friendshipData.ContainsKey("Bryle"))
-            {
-                Game1.player.friendshipData["Bryle"].TalkedToToday = true;
+                if (Game1.currentSeason.Equals("spring") && Game1.dayOfMonth >= 15 && Game1.dayOfMonth <= 21)
+                {
+                    Game1.warpCharacter(irene, RSVConstants.L_HIDDENWARP, Vector2.One);
+                }
+                else if (Game1.currentSeason.Equals("fall") && Game1.dayOfMonth >= 2 && Game1.dayOfMonth <= 7)
+                {
+                    Game1.warpCharacter(irene, RSVConstants.L_HIDDENWARP, Vector2.One);
+                }
             }
         }
 
@@ -303,11 +279,17 @@ namespace RidgesideVillage
         private static void SocialPage_drawNPCSlot_Postfix(SocialPage __instance, SpriteBatch b, int i)
         {
             string name = __instance.names[i] as string;
-            if (unlockables.Keys.Contains(name) && !SocialPage.isDatable(name))
+            if (unlock_rules.Keys.Contains(name) && !SocialPage.isDatable(name))
             {
-                int event_id = int.Parse(unlockables[name].Split("/")[0]);
-                int romance_id = int.Parse(unlockables[name].Split("/")[1]);
-                if (Game1.player.eventsSeen.Contains(event_id) && !Game1.player.dialogueQuestionsAnswered.Contains(romance_id))
+                int event_id = int.Parse(unlock_rules[name].Split("/")[0]);
+                string id_type = unlock_rules[name].Split("/")[1];
+                var romance_id = unlock_rules[name].Split("/")[2];
+                bool unlocked = false;
+                if (id_type == "r")
+                    unlocked = Game1.player.dialogueQuestionsAnswered.Contains(int.Parse(romance_id));
+                else if (id_type == "!m")
+                    unlocked = !Game1.player.mailReceived.Contains(romance_id);
+                if (Game1.player.eventsSeen.Contains(event_id) && unlocked)
                     return;
                 int width = (IClickableMenu.borderWidth * 3 + 128 - 40 + 192) / 2;
                 string text = Game1.parseText(Helper.Translation.Get("RelationshipStatus.Locked"), Game1.smallFont, width);
@@ -317,6 +299,5 @@ namespace RidgesideVillage
                 b.DrawString(Game1.smallFont, text, new Vector2((__instance.xPositionOnScreen + 192 + 8) - textSize.X / 2f, sprites[i].bounds.Bottom - (textSize.Y - lineHeight)), Game1.textColor);
             }
         }
-                
     }
 }

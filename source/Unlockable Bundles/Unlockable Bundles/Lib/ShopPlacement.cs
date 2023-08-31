@@ -32,7 +32,10 @@ namespace Unlockable_Bundles.Lib
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
-        public static List<GameLocation> modifiedLocations = new List<GameLocation>();
+        public static List<GameLocation> ModifiedLocations = new List<GameLocation>();
+
+        //This flag is supposed to prevent locationListChanged from possibly running before dayStarted
+        public static bool HasDayStarted = false;
         public static void Initialize()
         {
             Mod = ModEntry.Mod;
@@ -41,29 +44,51 @@ namespace Unlockable_Bundles.Lib
 
             Helper.Events.GameLoop.DayStarted += dayStarted;
             Helper.Events.World.LocationListChanged += locationListChanged;
+
+            Helper.Events.GameLoop.DayEnding += delegate { cleanupDay(); };
+            Helper.Events.GameLoop.ReturnedToTitle += delegate { cleanupDay(); };
+        }
+
+        private static void cleanupDay()
+        {
+            ContentPatcherHandling.DaysSincePurchaseToken.Ready = false;
+            HasDayStarted = false;
+            ModData.Instance = null;
+            UpdateHandler.clearCache();
         }
 
         private static void locationListChanged(object sender, LocationListChangedEventArgs e)
         {
-            if (!Context.IsWorldReady || !Context.IsMainPlayer)
+            //This is relevant for buildings
+            if (!Context.IsWorldReady || !HasDayStarted || !Context.IsMainPlayer)
                 return;
 
             var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
 
-            foreach (var loc in e.Added)
-                foreach (var unlockable in unlockables.Where(el => el.Value.Location == loc.Name)) {
+            foreach (var loc in e.Added.Where(e => !ModifiedLocations.Contains(e)))
+                foreach (var unlockable in unlockables.Where(el => locationMatchesName(el.Value.Location, loc))) {
                     unlockable.Value.ID = unlockable.Key;
                     unlockable.Value.LocationUnique = loc.NameOrUniqueName;
+
+                    if (ModData.isUnlockablePurchased(unlockable.Key, loc.NameOrUniqueName))
+                        continue;
+
                     unlockable.Value.applyDefaultValues();
-                    placeShop(new Unlockable(unlockable.Value));
+                    ModData.applySaveData(unlockable.Value);
+                    placeShop(new Unlockable(unlockable.Value), loc);
                 }
         }
 
+        //resetDay is also called when clients receive the UnlockablesReady message
         public static void resetDay()
         {
+            HasDayStarted = true;
             Unlockable.CachedJsonAssetIDs.Clear();
             Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("UnlockableBundles/Bundles"));
+
             UnlockableBundlesAPI.clearCache();
+            UpdateHandler.clearCache();
+
             ModData.Instance = new ModData();
             ContentPatcherHandling.DaysSincePurchaseToken.Ready = false;
         }
@@ -77,7 +102,7 @@ namespace Unlockable_Bundles.Lib
             resetDay();
             SaveDataEvents.LoadModData();
             var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
-            modifiedLocations = new List<GameLocation>();
+            ModifiedLocations = new List<GameLocation>();
             List<UnlockableModel> applyList = new List<UnlockableModel>();
             AssetRequested.MailData = new Dictionary<string, string>();
 
@@ -90,12 +115,19 @@ namespace Unlockable_Bundles.Lib
                 foreach (var location in locations) {
                     entry.Value.LocationUnique = location.NameOrUniqueName;
                     ModData.applySaveData(entry.Value);
+                    var unlockable = new Unlockable(entry.Value);
+                    var loc = unlockable.getGameLocation();
+
+                    if(loc is null) {
+                        Monitor.Log($"skipped applying bundle logic to location {location.NameOrUniqueName} as it does not exist");
+                        continue;
+                    }
 
                     if (ModData.isUnlockablePurchased(entry.Key, location.NameOrUniqueName)) {
-                        applyList.Add(entry.Value);
-                        UpdateHandler.applyUnlockable(new Unlockable(entry.Value));
+                        applyList.Add((UnlockableModel)unlockable);
+                        UpdateHandler.applyUnlockable(unlockable);
                     } else
-                        placeShop(new Unlockable(entry.Value));
+                        placeShop(unlockable, loc);
 
                     if (entry.Value.BundleCompletedMail != "")
                         AssetRequested.MailData.Add(Unlockable.getMailKey(entry.Key), entry.Value.BundleCompletedMail);
@@ -116,7 +148,7 @@ namespace Unlockable_Bundles.Lib
                     Helper.GameContent.Load<Texture2D>(u.ShopTexture);
                 } catch (Exception e) { Monitor.LogOnce($"Invalid ShopTexture for '{u.ID}':\n {e.Message}", LogLevel.Error); }
 
-            if (u.ShopAnimation != "" && !new Regex("^\\s*(?:(?:\\d+|\\d+\\s*-\\s*\\d+)(?:@\\d+){0,1})\\s*(?:,\\s*(?:(?:\\d+|\\d+\\s*-\\s*\\d+)(?:@\\d+){0,1})\\s*)*$").IsMatch(u.ShopAnimation))
+            if (u.ShopAnimation != "" && !new Regex("^\\s*(?:(?:\\d+|\\d+\\s*-\\s*\\d+)(?:\\s*@\\s*\\d+){0,1})\\s*(?:,\\s*(?:(?:\\d+|\\d+\\s*-\\s*\\d+)(?:\\s*@\\s*\\d+){0,1})\\s*)*$").IsMatch(u.ShopAnimation))
                 Monitor.LogOnce($"Invalid ShopAnimation format for '{u.ID}'. Expected comma seperated \"<From>-<To>@<Interval>\". eg. \"0-2@300, 3, 5-4@600\"", LogLevel.Error);
 
             validatePrice(u, u.Price);
@@ -141,21 +173,20 @@ namespace Unlockable_Bundles.Lib
                     if (quality == -1)
                         Monitor.LogOnce($"Invalid quality '{entry.Split(":").Last()}' for item '{u.ID}': '{id}'", LogLevel.Error);
 
-                    if (new StardewValley.Object(Unlockable.intParseID(id), el.Value).Name == "Error Item")
+                    if (Unlockable.parseItem(id, el.Value).Name == "Error Item")
                         Monitor.LogOnce($"Invalid item ID for '{u.ID}': '{id}'", LogLevel.Error);
                 }
 
             }
         }
 
-        public static void placeShop(Unlockable unlockable)
+        public static void placeShop(Unlockable unlockable, GameLocation location)
         {
-            var location = unlockable.getGameLocation();
-            modifiedLocations.Add(location);
+            ModifiedLocations.Add(location);
 
             var shopObject = new ShopObject(unlockable.ShopPosition, unlockable);
 
-            if (!location.isTileOccupiedIgnoreFloors(unlockable.ShopPosition)) {
+            if (!location.IsTileOccupiedBy(unlockable.ShopPosition, collisionMask: CollisionMask.Objects)) {
                 location.setObject(unlockable.ShopPosition, shopObject);
                 Monitor.Log($"Placed Shop Object for '{unlockable.ID}' at '{location.NameOrUniqueName}':'{unlockable.ShopPosition}'");
             } else
@@ -188,17 +219,23 @@ namespace Unlockable_Bundles.Lib
             var res = new List<GameLocation>();
 
             foreach (var loc in Game1.locations) {
-                if (loc.Name == name)
-                    return new List<GameLocation> { loc };
-
-                if (!(loc is BuildableGameLocation))
+                if (locationMatchesName(name, loc)) {
+                    res.Add(loc);
                     continue;
+                }
 
-                foreach (var building in (loc as BuildableGameLocation).buildings.Where(el => el.indoors?.Value?.Name == name))
+                foreach (var building in loc.buildings.Where(el => el.indoors?.Value?.Name == name))
                     res.Add(building.indoors.Value);
             }
 
             return res;
+        }
+
+        public static bool locationMatchesName(string name, GameLocation loc)
+        {
+            return (loc.Name == name)
+                || (loc is Cellar && name == "Cellar") //Cellar location names are enumerated
+                || (loc is FarmHouse && name == "FarmHouse"); //Farmhand FarmHouses are called "Cabin"
         }
     }
 }

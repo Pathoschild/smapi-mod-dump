@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Save Anywhere Redux",
   "Author": "Open Source",
-  "Version": "3.2.5",
+  "Version": "3.2.7",
   "Description": "This mod allows you to save your game at any time, anywhere.",
   "UniqueID": "Omegasis.SaveAnywhere",
   "EntryDll": "SaveAnywhere.dll",

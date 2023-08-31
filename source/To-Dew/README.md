@@ -74,7 +74,9 @@ properties:
 A Header item can help you organize your list by acting as a header or separator
 in the list.  It cannot be marked as "done".
 
-Repeating items have their "done-ness" reset each day.
+Repeating items have their "done-ness" reset at the end of each day when they
+were marked as "done".  You can specify the number
+of days before they become visible again.
 
 Item visibility can be set based on the weather, day of the week, and season.
 

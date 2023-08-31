@@ -60,9 +60,9 @@ namespace BetterBeehouses
 		{
 			if (field is null)
 				return null;
-			if (!typeof(TObject).IsAssignableTo(field.DeclaringType))
+			if (!field.DeclaringType.IsAssignableFrom(typeof(TObject)))
 				throw new ArgumentException($"{typeof(TObject).FullName} is not assignable to {field.DeclaringType?.FullName}");
-			if (!typeof(TField).IsAssignableTo(field.FieldType))
+			if (!field.FieldType.IsAssignableFrom(typeof(TField)))
 				throw new ArgumentException($"{typeof(TField).FullName} is not assignable to {field.FieldType.FullName}");
 			if (field.IsStatic)
 				throw new ArgumentException($"Expected a non-static field");

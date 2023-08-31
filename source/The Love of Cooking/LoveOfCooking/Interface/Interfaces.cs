@@ -35,12 +35,12 @@ namespace LoveOfCooking.Interface
 		// Loaded mods
 		internal static bool UsingSVE;
 		internal static bool UsingPPJACrops;
+		internal static bool UsingPPJATreesAndRecipes;
 		internal static bool UsingCustomCC;
 		internal static bool UsingNettlesCrops;
 		internal static bool UsingManaBar;
 		internal static bool UsingLevelExtender;
 		internal static bool UsingBigBackpack;
-		internal static bool UsingProducerFramework;
 		internal static bool UsingFarmhouseKitchenStart;
 
 
@@ -87,7 +87,6 @@ namespace LoveOfCooking.Interface
 					LoadCustomCommunityCentreContent();
 					IsLoaded = LoadSpaceCoreAPI()
 						&& LoadJsonAssetsObjects()
-						&& LoadProducerFrameworkRules()
 						&& LoadModConfigMenuElements()
 						&& LoadLevelExtenderApi();
 				}
@@ -109,11 +108,11 @@ namespace LoveOfCooking.Interface
 
 			UsingSVE = Helper.ModRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP");
 			UsingPPJACrops = Helper.ModRegistry.IsLoaded("PPJA.FruitsAndVeggies");
+			UsingPPJATreesAndRecipes = Helper.ModRegistry.IsLoaded("paradigmnomad.morefood");
 			UsingCustomCC = Helper.ModRegistry.IsLoaded("blueberry.CustomCommunityCentre");
 			UsingNettlesCrops = Helper.ModRegistry.IsLoaded("uberkwefty.wintercrops");
 			UsingLevelExtender = Helper.ModRegistry.IsLoaded("Devin_Lematty.Level_Extender");
 			UsingBigBackpack = Helper.ModRegistry.IsLoaded("spacechase0.BiggerBackpack");
-			UsingProducerFramework = Helper.ModRegistry.IsLoaded("Digus.ProducerFrameworkMod");
 			UsingFarmhouseKitchenStart = new string[]
 			{
 				"Allayna.Kitchen",
@@ -229,27 +228,6 @@ namespace LoveOfCooking.Interface
 			return true;
 		}
 
-		private static bool LoadProducerFrameworkRules()
-		{
-			if (!ModEntry.PFMEnabled)
-				return true;
-
-			IProducerFrameworkAPI producerFramework = Helper.ModRegistry
-				.GetApi<IProducerFrameworkAPI>
-				("DIGUS.ProducerFrameworkMod");
-			if (producerFramework is null)
-			{
-				Log.E("Can't access the Producer Framework API. Is the mod installed correctly?");
-				return false;
-			}
-
-			if (ModEntry.Config.DebugMode)
-				Log.W("Loading Producer Framework Pack.");
-
-			producerFramework.AddContentPack(directory: Path.Combine(Helper.DirectoryPath, AssetManager.ProducerFrameworkPackPath));
-			return true;
-		}
-
 		private static bool LoadModConfigMenuElements()
 		{
 			IGenericModConfigMenuAPI gmcm = Helper.ModRegistry
@@ -260,9 +238,13 @@ namespace LoveOfCooking.Interface
 				return true;
 			}
 
-			gmcm.RegisterModConfig(ModEntry.Instance.ModManifest, () => ModEntry.Config = new Config(), () => Helper.WriteConfig(ModEntry.Config));
-			gmcm.SubscribeToChange(ModManifest,
-				changeHandler: (string key, bool value) =>
+			gmcm.Register(
+				mod: ModEntry.Instance.ModManifest,
+				reset: () => ModEntry.Config = new Config(),
+				save: () => Helper.WriteConfig(ModEntry.Config));
+			gmcm.OnFieldChanged(
+				mod: ModManifest,
+				onChange: (string key, object value) =>
 				{
 					Log.D($"Config check: {key} => {value}",
 						ModEntry.Config.DebugMode);
@@ -310,12 +292,12 @@ namespace LoveOfCooking.Interface
 					string i18nKey = $"config.option.{entry.ToLower()}_";
 					if (property.PropertyType == typeof(bool))
 					{
-						gmcm.RegisterSimpleOption(
-							ModManifest,
-							optionName: i18n.Get(i18nKey + "name"),
-							optionDesc: i18n.Get(i18nKey + "description"),
-							optionGet: () => (bool)property.GetValue(ModEntry.Config),
-							optionSet: (bool value) =>
+						gmcm.AddBoolOption(
+							mod: ModManifest,
+							name: () => i18n.Get(i18nKey + "name"),
+							tooltip: () => i18n.Get(i18nKey + "description"),
+							getValue: () => (bool)property.GetValue(ModEntry.Config),
+							setValue: (bool value) =>
 							{
 								Log.D($"Config edit: {property.Name} - {property.GetValue(ModEntry.Config)} => {value}",
 									ModEntry.Config.DebugMode);
@@ -324,22 +306,21 @@ namespace LoveOfCooking.Interface
 					}
 					else if (property.Name == "DefaultSearchFilter")
 					{
-						gmcm.RegisterChoiceOption(
-							ModManifest,
-							optionName: i18n.Get(i18nKey + "name"),
-							optionDesc: i18n.Get(i18nKey + "description"),
-							optionGet: () => (string)property.GetValue(ModEntry.Config),
-							optionSet: (string value) => property.SetValue(ModEntry.Config, value),
-							choices: Enum.GetNames(typeof(Objects.CookingMenu.Filter)));
+						gmcm.AddTextOption(
+							mod: ModManifest,
+							name: () => i18n.Get(i18nKey + "name"),
+							tooltip: () => i18n.Get(i18nKey + "description"),
+							getValue: () => (string)property.GetValue(ModEntry.Config),
+							setValue: (string value) => property.SetValue(ModEntry.Config, value),
+							allowedValues: Enum.GetNames(typeof(Objects.CookingMenu.Filter)));
 					}
 				}
 				else
 				{
 					string i18nKey = $"config.{entry}_";
-					gmcm.RegisterLabel(
-						ModManifest,
-						labelName: i18n.Get(i18nKey + "label"),
-						labelDesc: null);
+					gmcm.AddSectionTitle(
+						mod: ModManifest,
+						text: () => i18n.Get(i18nKey + "label"));
 				}
 			}
 			return true;

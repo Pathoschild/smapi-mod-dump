@@ -40,7 +40,7 @@ namespace Unlockable_Bundles.Lib
 
         private static void ensureExist(string key, string location)
         {
-            if (Instance == null) //Can happen when a player connects during the day //Check if still useful
+            if (Instance == null) //Can happen when a player connects during the day //TODO: Check if still useful
                 Instance = new ModData();
 
             if (!Instance.UnlockableSaveData.ContainsKey(key))
@@ -77,7 +77,7 @@ namespace Unlockable_Bundles.Lib
             if (!Instance.UnlockableSaveData.ContainsKey(key))
                 return -1;
 
-            var entries = Instance.UnlockableSaveData[key].Where(e => Game1.Date.TotalDays - e.Value.DayPurchased != -1);
+            var entries = Instance.UnlockableSaveData[key].Where(e => e.Value.Purchased);
 
             if (entries.Count() == 0)
                 return -1;
@@ -107,7 +107,7 @@ namespace Unlockable_Bundles.Lib
         public static void applySaveData(UnlockableModel unlockable)
         {
             ensureExist(unlockable.ID, unlockable.LocationUnique);
-            var savedata = Instance.UnlockableSaveData[unlockable.ID][unlockable.Location];
+            var savedata = Instance.UnlockableSaveData[unlockable.ID][unlockable.LocationUnique];
 
             unlockable.AlreadyPaid = savedata.AlreadyPaid;
             unlockable.AlreadyPaidIndex = savedata.AlreadyPaidIndex;

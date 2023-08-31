@@ -1,0 +1,35 @@
+##################################################
+##
+## You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+## for queries and analysis.
+##
+## This is *not* the original file, and not necessarily the latest version.
+## Source repository: https://github.com/RealSweetPanda/SaveAnywhereRedux
+##
+##################################################
+
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore

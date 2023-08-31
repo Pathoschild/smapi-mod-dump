@@ -1,0 +1,14 @@
+urls:
+   web: https://gitlab.com/delixx/stardew-valley-gacha-geodes
+   Git: https://gitlab.com/delixx/stardew-valley-gacha-geodes.git
+
+mods:
+   Gacha Geodes
+
+latest commit:
+   commit b41e62b86f4df082e0bc7c6103fd139187c1ccda
+   Author: DeLiXx <fake122344@gmail.com>
+   Date:   Fri Aug 4 17:08:51 2023 +0200
+   
+       updated manifest
+   

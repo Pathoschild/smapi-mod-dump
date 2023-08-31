@@ -1,0 +1,24 @@
+{
+  "IsBouquetCraftable": true,
+  "BouquetFlowersRequired": 5,
+  "BouquetFlowerTypesRequired": 2,
+  "DateFriendshipRequired": {
+    "Regular": 2000,
+    "Silver": 1750,
+    "Gold": 1500,
+    "Iridium": 1250
+  },
+  "IsPendantCraftable": true,
+  "PendantGemsRequired": {
+    "Regular": 2,
+    "Silver": 4,
+    "Gold": 6,
+    "Iridium": 8
+  },
+  "MarryFriendshipRequired": {
+    "Regular": 2500,
+    "Silver": 2250,
+    "Gold": 2000,
+    "Iridium": 1750
+  }
+}

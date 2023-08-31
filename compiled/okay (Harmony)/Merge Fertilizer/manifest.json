@@ -1,0 +1,10 @@
+{
+  "Name": "MergeFertilizer",
+  "Author": "TianXiaobai",
+  "Version": "1.0.2",
+  "Description": "Add a blend fertilizer that are combined from the hyper fertilizer",
+  "UniqueID": "TianXiaobai.MergeFertilizer",
+  "EntryDll": "MergeFertilizer.dll",
+  "MinimumApiVersion": "3.18.0",
+  "UpdateKeys": [ "Nexus:17743" ]
+}

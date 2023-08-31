@@ -225,21 +225,18 @@ public abstract class GenericSpedUpMachineWrapper
         if (n_statues == 0)
             return minutes_until_ready;
 
-        // max of 10 statues -> divides time by 3
-
         double minutes_unrounded = minutes_until_ready * GetSpeedUpFactor(n_statues);
-
         return RoundToNearestTenth((int)minutes_unrounded);
     }
 
     /// <summary>
-    /// Rounds <paramref name="x"/> to nearest tenth, with a minimum of 0
+    /// Rounds <paramref name="x"/> to nearest tenth, with a minimum of 10
     /// </summary>
     /// <param name="x"></param>
     /// <returns></returns>
     private static int RoundToNearestTenth(int x)
     {
-        return Math.Max(x - (x % 10), 0);
+        return Math.Max(10, Math.Max(x - (x % 10), 0));
     }
 
     public static SObject GetMachineEntity(IMachine machine)

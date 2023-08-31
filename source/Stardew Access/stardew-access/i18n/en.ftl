@@ -221,7 +221,7 @@ event_tile-feast_of_the_winter_star_shop-name = Feast of the Winter Star Shop
 # Copied from default.json (needs to be organised)
 
 grandpastory-scene0 = Grandpa, on his deathbed.
-grandpastory-scene4 = Employees working in JoJa corp.
+grandpastory-scene4 = Employees working in Joja corp.
 grandpastory-scene5 = Employees in their cubicles, some of them look exhausted including yourself.
 grandpastory-scene6 = You reach your desk finding grandpa's letter.
 grandpastory-letteropen = Left click to open grandpa's letter
@@ -229,6 +229,32 @@ intro-scene3 = Traveling to Stardew Valley bus stop
 intro-scene4 = Stardew valley 0.5 miles away
 patch-trash_bear-wanted_item = {$trash_bear_name} wants {$item_name}!
 
+
+common-chest_colors =
+  {$index ->
+   [0] Chest color: Brown (default)
+   [1] Blue
+   [2] Light Blue
+   [3] Teal
+   [4] Aqua
+   [5] Green
+   [6] Lime Green
+   [7] Yellow
+   [8] Light Orange
+   [9] Orange
+   [10] Red
+   [11] Dark Red
+   [12] Light Pink
+   [13] Pink
+   [14] Magenta
+   [15] Purple
+   [16] Dark Purple
+   [17] Dark Grey
+   [18] Medium Grey
+   [19] Light Grey
+   [20] White
+   *[other] Unknown
+  }
 
 common-unknown = Unknown
 
@@ -240,20 +266,8 @@ common-ui-cancel_button = Cancel button
 # TODO add this to more places
 common-util-pluralize_name = 
   {$name ->
-    [Quartz] {$item_count ->
-      [1] Quartz
-      *[other] {$item_count} Quartz
-    }
-    [Topaz] {$item_count ->
-      [1] Topaz
-      *[other] {$item_count} Topazes
-    }
-    [Strawberry] {$item_count ->
-      [1] Strawberry
-      *[other] {$item_count} Strawberries
-    }
     *[other] {$item_count ->
-      [1] {$name}
-      *[other] {$item_count} {$name}s
+      [1] {$item_count} {PLURALIZE($item_count, $name)}
+      *[other] {$item_count} {PLURALIZE($item_count, $name)}
     }
   }

@@ -32,7 +32,10 @@ namespace Unlockable_Bundles.Lib
         protected override void initNetFields()
         {
             base.initNetFields();
-            NetFields.AddFields(_unlockable, Mutex.NetFields, _speechBubble);
+            NetFields.SetOwner(this)
+                 .AddField(_unlockable, "_unlockable")
+                 .AddField(Mutex.NetFields, "Mutex.NetFields")
+                 .AddField(_speechBubble, "_speechBubble");
         }
 
         public readonly NetRef<Unlockable> _unlockable = new NetRef<Unlockable>();
@@ -79,7 +82,7 @@ namespace Unlockable_Bundles.Lib
 
         public override bool isPassable() => isTemporarilyInvisible;
         public override bool isActionable(Farmer who) => !isTemporarilyInvisible;
-        public override bool onExplosion(Farmer who, GameLocation location) => false;
+        public override bool onExplosion(Farmer who) => false;
 
         public override void actionOnPlayerEntry()
         {
@@ -137,7 +140,7 @@ namespace Unlockable_Bundles.Lib
                 sourceRectangle.X = sourceRectangle.Width * AnimationSequence.ElementAt(AnimationFrame).Key;
 
             if (Texture != null)
-                b.Draw(Texture, position, sourceRectangle, Color.White, 0f, origin, 2f, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, getBoundingBox(new Vector2(x, y)).Bottom / 10000f);
+                b.Draw(Texture, position, sourceRectangle, Color.White, 0f, origin, 2f, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
 
             if (SpeechBubble != null)
                 SpeechBubble.draw(b);
@@ -187,14 +190,14 @@ namespace Unlockable_Bundles.Lib
             }
         }
 
-        public override void updateWhenCurrentLocation(GameTime time, GameLocation environment)
+        public override void updateWhenCurrentLocation(GameTime time)
         {
             if (shakeTimer > 0)
                 shakeTimer -= time.ElapsedGameTime.Milliseconds;
 
             updateAnimation(time);
             if (SpeechBubble != null)
-                SpeechBubble.updateWhenCurrentLocation(time, environment);
+                SpeechBubble.updateWhenCurrentLocation(time);
 
             Mutex.Update(Game1.getOnlineFarmers());
             checkPlayerNearby();
@@ -203,7 +206,7 @@ namespace Unlockable_Bundles.Lib
         public void checkPlayerNearby()
         {
             bool player_nearby = false;
-            if (Math.Abs(Game1.player.getTileLocationPoint().X - TileLocation.X) <= 1 && Math.Abs(Game1.player.getTileLocationPoint().Y - TileLocation.Y) <= 1)
+            if (Math.Abs(Game1.player.TilePoint.X - TileLocation.X) <= 1 && Math.Abs(Game1.player.TilePoint.Y - TileLocation.Y) <= 1)
                 player_nearby = true;
 
             if (player_nearby == IsPlayerNearby)
@@ -239,7 +242,7 @@ namespace Unlockable_Bundles.Lib
             }
         }
 
-        public override bool performToolAction(Tool t, GameLocation location)
+        public override bool performToolAction(Tool t)
         {
             if (t is Pickaxe or Axe) {
                 shakeTimer = 100;

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/KediDili/NPCUtilities
+   Git: https://github.com/KediDili/NPCUtilities.git
+
+mods:
+   Kedi's NPC Utilities
+
+latest commit:
+   commit 6f78827ceda2392745bae9f5d743fa1b751d9cb8
+   Author: KediDili <78353874+KediDili@users.noreply.github.com>
+   Date:   Mon Aug 21 15:11:36 2023 +0300
+   
+       Update repo for 1.0.2
+   

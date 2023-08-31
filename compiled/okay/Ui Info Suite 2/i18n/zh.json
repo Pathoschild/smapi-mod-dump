@@ -1,4 +1,6 @@
 {
+  // GUI - Game Menu
+  // "OptionsTabTooltip": "UI Info Suite 2 Options", // TODO
   //GUI - Billboard
   "Billboard": "布告栏",
   "Calendar": "日历",
@@ -23,6 +25,7 @@
   "ToolIsFinishedBeingUpgraded": "{0}完成了！",
   "NpcBirthday": "{0}的生日",
   "RobinBuildingStatus": "罗宾将在{0}天内完成您的新建筑",
+  "RobinHouseUpgradeStatus": "Robin will finish upgrading your house in {0} day(s)", // TODO
   // Display icons - Foragables
   "CanFindSalmonberry": "今天可以找到美洲大树莓",
   "CanFindBlackberry": "今天可以找到黑莓",

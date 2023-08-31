@@ -7,9 +7,9 @@ mods:
    Mushroom Propagator Automation
 
 latest commit:
-   commit af93dcbbb2c2da131d28e44049557208b953fd78
-   Author: b-b-blueberry <dearbblueberry@gmail.com>
-   Date:   Mon Jun 26 01:42:42 2023 +1000
+   commit cf4500ae410d06f834da20addadf9f8746892d9b
+   Author: blueberry <dearbblueberry@gmail.com>
+   Date:   Thu Aug 17 02:07:29 2023 +1000
    
-       Update project versioning.
+       Update page banners.
    

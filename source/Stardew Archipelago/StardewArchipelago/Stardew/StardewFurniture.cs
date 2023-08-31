@@ -18,19 +18,24 @@ namespace StardewArchipelago.Stardew
 {
     public class StardewFurniture : StardewItem
     {
+        private const string TYPE_BED = "bed";
+        private const string TYPE_DOUBLE_BED = "bed double";
+        private const string TYPE_FISHTANK = "fishtank";
+        private const string TYPE_TV = "TV";
+
         public string Type { get; }
         public string TilesheetSize { get; }
         public string BoundingBoxSize { get; }
         public string Rotations { get; }
         public string PlacementRestriction { get; }
 
-        public bool IsBed => Type.Equals("bed", StringComparison.OrdinalIgnoreCase) ||
-                             Type.Equals("double bed", StringComparison.OrdinalIgnoreCase);
+        public bool IsBed => Type.Equals(TYPE_BED, StringComparison.OrdinalIgnoreCase) ||
+                             Type.Equals(TYPE_DOUBLE_BED, StringComparison.OrdinalIgnoreCase);
 
-        public bool IsFishTank => Type.Equals("fishtank", StringComparison.OrdinalIgnoreCase);
+        public bool IsFishTank => Type.Equals(TYPE_FISHTANK, StringComparison.OrdinalIgnoreCase);
 
-        public bool IsTV => Type.Contains("TV", StringComparison.OrdinalIgnoreCase) ||
-                             Name.Contains("TV", StringComparison.OrdinalIgnoreCase);
+        public bool IsTV => Type.Contains(TYPE_TV, StringComparison.OrdinalIgnoreCase) ||
+                             Name.Contains(TYPE_TV, StringComparison.OrdinalIgnoreCase);
 
         public StardewFurniture(int id, string name, string type, string tilesheetSize, string boundingBoxSize, string rotations, string price, string displayName, string placementRestriction): base(id, name, 0, displayName, "")
         {

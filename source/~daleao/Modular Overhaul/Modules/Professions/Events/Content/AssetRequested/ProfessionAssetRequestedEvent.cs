@@ -114,8 +114,8 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
     {
         var data = asset.AsDictionary<string, string>().Data;
         var taxBonus =
-            Game1.player.Read<float>(DataKeys.ConservationistActiveTaxBonusPct);
-        var key = taxBonus >= ProfessionsModule.Config.ConservationistTaxBonusCeiling
+            Game1.player.Read<float>(DataKeys.ConservationistActiveTaxDeduction);
+        var key = taxBonus >= ProfessionsModule.Config.ConservationistTaxDeductionCeiling
             ? "conservationist.mail.max"
             : "conservationist.mail";
 

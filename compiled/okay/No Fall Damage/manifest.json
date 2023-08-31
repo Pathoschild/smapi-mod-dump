@@ -1,0 +1,10 @@
+{
+  "Name": "No Fall Damage",
+  "Author": "Kryspur",
+  "Version": "1.0.0",
+  "Description": "Removes fall damage from Skull Caverns",
+  "UniqueID": "Kryspur.NoFallDamage",
+  "EntryDll": "NoFallDamage.dll",
+  "MinimumApiVersion": "3.17.0",
+  "UpdateKeys": ["Nexus:17749"]
+}

@@ -111,7 +111,7 @@
   "angler.desc.prestiged": "최대 크기의 독특한 어종을 잡을 때마다 물고기의 가치가 0.5% 더 높아집니다.",
   "aquarist.title.male": "수족관 관리자",
   "aquarist.title.female": "수족관 관리자",
-  "aquarist.desc": "물고기 연못 최대 용량 +2. 물고기 연못에 보관된 각 유형의 물고기는 포획 미터의 속도를 높입니다.",
+  "aquarist.desc": "물고기 연못 최대 용량 +2. 연못에 보관된 각 유형의 물고기는 어획량 손실을 늦춥니다.",
   "aquarist.desc.prestiged": "물고기 연못 최대 수용 인원 +2 >> +4.",
 
   "trapper.title.male": "덫 사냥꾼",
@@ -261,6 +261,7 @@
   "locations.SeedShop.Yoba": "그 어떤 악도 요바의 영웅을 건드릴 수는 없으리라.",
 
   "mail.curse.intro": "친애하는 @, 너를 만나야 해. 대단히 급한 일이야.^최대한 빨리 탑으로 와줘.^   -M. 라스모디우스, 마법사[#]저주받은 영웅",
+  "mail.curse.intro.witch": "친애하는 @, 너를 만나야 해. 대단히 급한 일이야.^최대한 빨리 탑으로 와줘.^   -M. 라스모디우스, 마법사[#]저주받은 영웅",
 
   "quests.forge.intro": "Basic/드워프의 유산/클린트는 설계도 번역이 이틀 뒤에 끝날 것이라고 말했습니다./클린트를 찾아가 설계도에 대해 묻기./Blacksmith/144702/0/-1/false",
   "quests.forge.next": "Basic/드워프의 유산 II/오래된 설계도는 강력한 고대의 무기 설계도였습니다! 다른 설계도들도 있을까요?/나머지 드워프 설계도를 찾아 클린트에게 가져가기./null/-1/0/-1/false",
@@ -435,7 +436,7 @@
   "gmcm.profs.shouldjunimosinheritprofessions.title": "Should Junimos Inherit Professions",
   "gmcm.profs.shouldjunimosinheritprofessions.desc": "Whether Junimo harvesters should apply Harvester and Agriculturist perks.",
   "gmcm.profs.laxownershiprequirements.title": "Lax Ownership Requirements",
-  "gmcm.profs.laxownershiprequirements.desc": "If enabled, machine and building ownerhsip will be ignored when determining whether to apply certain profession bonuses (only relevant in multiplayer).",
+  "gmcm.profs.laxownershiprequirements.desc": "If enabled, machine and building ownership will be ignored when determining whether to apply certain profession bonuses (only relevant in multiplayer).",
   "gmcm.profs.artisangoodsalwaysinputquality.title": "Artisan Goods Always Input Quality",
   "gmcm.profs.artisangoodsalwaysinputquality.desc": "Enable this if you preferred the old broken Artisan perk without randomization.",
   "gmcm.profs.beesareanimals.title": "Bees Are Animals",
@@ -539,13 +540,13 @@
   "gmcm.txs.income.latenessfine.title": "Lateness Fine",
   "gmcm.txs.income.latenessfine.desc": "A one-time penalty rate charged over the unpaid amount when income taxes are not paid on-time.",
   "gmcm.txs.income.deductibleanimalexpenses.title": "Deductible Animal Expenses",
-  "gmcm.txs.income.deductibleanimalexpenses.desc": "Whether or not any gold spent on animal purchases and supplies should be tax-deductible.",
+  "gmcm.txs.income.deductibleanimalexpenses.desc": "What percentage of gold spent on animal purchases and supplies should be tax-deductible.",
   "gmcm.txs.income.deductiblebuildingexpenses.title": "Deductible Building Expenses",
-  "gmcm.txs.income.deductiblebuildingexpenses.desc": "Whether or not any gold spent constructing farm buildings is tax-deductible.",
+  "gmcm.txs.income.deductiblebuildingexpenses.desc": "What percentage of gold spent constructing farm buildings is tax-deductible.",
   "gmcm.txs.income.deductibleseedexpenses.title": "Deductible Seed Expenses",
-  "gmcm.txs.income.deductibleseedexpenses.desc": "Whether or not any gold spent on seed purchases should be tax-deductible.",
+  "gmcm.txs.income.deductibleseedexpenses.desc": "What percentage of gold spent on seed purchases should be tax-deductible.",
   "gmcm.txs.income.deductibletoolexpenses.title": "Deductible Tool Expenses",
-  "gmcm.txs.income.deductibletoolexpenses.desc": "Whether or not any gold spent on tool purchases and upgrades should be tax-deductible.",
+  "gmcm.txs.income.deductibletoolexpenses.desc": "What percentage of gold spent on tool purchases and upgrades should be tax-deductible.",
 
   "gmcm.txs.property.heading": "Property Tax",
   "gmcm.txs.property.latenessfine.title": "Lateness Fine",
@@ -859,8 +860,6 @@
   "gmcm.wpnz.rebalance.defenseimprovesparry.desc": "Parry damage will increase for each point in defense.",
   "gmcm.wpnz.rebalance.groundedclubsmash.title": "Grounded Club Smash",
   "gmcm.wpnz.rebalance.groundedclubsmash.desc": "A club smash AoE will inflict guaranteed critical damage on burrowed enemies, but completely miss flying enemies.",
-
-  "gmcm.wpnz.stabbysword.heading": "Combo Settings",
   "gmcm.wpnz.stabbysword.enablestabbyswords.title": "Enable Stabbing Swords",
   "gmcm.wpnz.stabbysword.enablestabbyswords.desc": "Replaces the defensive special move of some swords with an offensive lunge move.",
 
@@ -910,7 +909,7 @@
   "gmcm.controls.facemousecursor.title": "Face Towards Mouse Cursor",
   "gmcm.controls.facemousecursor.desc": "If using mouse and keyboard, turn to face towards the current cursor position before swinging.",
   "gmcm.controls.enableautoselection.title": "Enable Auto-Selection",
-  "gmcm.controls.enableautoselection.desc": "The selected {{selected}} will be automatically equipped near enemies.",
+  "gmcm.controls.enableautoselection.desc": "The highlighted {{selected}} will be automatically equipped when appropriate.",
   "gmcm.controls.selectionkey.title": "Selection Key",
   "gmcm.controls.selectionkey.desc": "Hold this key to toggle a {{tool}} for auto-selection, if enabled.",
   "gmcm.controls.selectionbordercolor.title": "Selection Border Color",

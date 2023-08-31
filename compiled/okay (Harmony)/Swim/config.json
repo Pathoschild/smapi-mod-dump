@@ -1,6 +1,7 @@
 {
   "EnableMod": true,
   "ReadyToSwim": true,
+  "SwimIndoors": false,
   "SwimSuitAlways": false,
   "NoAutoSwimSuit": false,
   "ShowOxygenBar": true,
@@ -30,5 +31,10 @@
   "MinOceanChests": 0,
   "MaxOceanChests": 3,
   "SwimRestoresVitals": false,
-  "ManualJumpButton": "MouseRight"
+  "ManualJumpButton": "MouseRight",
+  "TriggerDistanceMult": 1.0,
+  "TriggerDistanceUp": 144,
+  "TriggerDistanceDown": 96,
+  "TriggerDistanceLeft": 130,
+  "TriggerDistanceRight": 130
 }

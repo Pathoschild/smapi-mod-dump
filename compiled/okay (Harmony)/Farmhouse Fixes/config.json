@@ -1,3 +1,4 @@
 {
-  "UnhardcodedWarps": false
+  "UnhardcodedWarps": false,
+  "RemoveGlitchedTile": false
 }

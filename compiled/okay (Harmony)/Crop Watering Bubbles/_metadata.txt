@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/17773
+IDs: aedenthorn.CropWateringBubbles
+update keys: Nexus:17773, GitHub:aedenthorn/StardewValleyMods

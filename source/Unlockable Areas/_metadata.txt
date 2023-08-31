@@ -6,9 +6,9 @@ mods:
    Unlockable Areas
 
 latest commit:
-   commit b3424aeb5d10357711c6a3503622bf28200eb9a7
+   commit 8f8afb00fe50ef93b82cf4e01fee1e7937dd9b9b
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Sat Jul 29 15:57:52 2023 +0200
+   Date:   Wed Aug 30 08:18:57 2023 +0200
    
-       ""
+       hopefully improved TileIndexProperties behavior a bunch
    

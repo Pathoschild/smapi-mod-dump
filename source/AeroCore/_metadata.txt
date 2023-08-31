@@ -6,10 +6,9 @@ mods:
    AeroCore
 
 latest commit:
-   commit 6f59b7aef1b191ff1d6c1e9db0f97038b63fae12
+   commit 0777b24368d825bd57b68f8d3029ff8703a309d6
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Tue Jul 18 13:45:49 2023 -0400
+   Date:   Mon Aug 21 16:02:33 2023 -0400
    
-       lighting improvements
-       region bugfix
+       reorder update keys
    

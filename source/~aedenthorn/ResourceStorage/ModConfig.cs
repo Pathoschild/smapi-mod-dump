@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aedenthorn/StardewValleyMods
+**
+*************************************************/
+
+using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
+
+namespace ResourceStorage
+{
+    public class ModConfig
+    {
+        public bool ModEnabled { get; set; } = true;
+        public bool AutoUse { get; set; } = true;
+        public string AutoStore { get; set; } = "Sap,Wood,Hardwood,Stone,Coal,Fiber,Clay";
+        public SButton ModKeyMax { get; set; } = SButton.LeftShift;
+        public SButton ResourcesKey { get; set; } = SButton.R;
+        public int IconOffsetX { get; set; } = 0;
+        public int IconOffsetY { get; set; } = 0;
+    }
+}

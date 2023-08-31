@@ -113,6 +113,20 @@ namespace SmartCursor
             if (clump is GiantCrop)
                 return this.config.AllowTargetingGiantCrops ? BreakableType.Axe : BreakableType.NotAllowed;
 
+            switch (clump.parentSheetIndex.Value)
+            {
+                case 600:
+                case 602:
+                    return BreakableType.Axe;
+                case 622:
+                case 672:
+                case 752:
+                case 754:
+                case 756:
+                case 758:
+                    return BreakableType.Pickaxe;
+            }
+
             return BreakableType.Axe;
         }
     }

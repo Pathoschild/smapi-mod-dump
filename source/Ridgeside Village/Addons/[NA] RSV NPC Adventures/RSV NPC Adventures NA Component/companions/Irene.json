@@ -38,28 +38,32 @@
 
   ],
   "Rules": {
-    //Basics
-    "": "accept", //acceptance when asked
-    "!f Irene 1": "reject", //talked once
-    
+    //Work
+
+
+    //Marriage
+    //Reject if under 8 hearts, otherwise always go
+    "O Irene/!f Irene 2000": "reject",
+    "O Irene": "accept",
+
     //Normal
     //Requires seen 4 heart event + 4 hearts and above
     "!f Irene 1000": "reject",
     "k 75160321": "reject",
 
-    //Marriage
-    //no rules
+    //Basics
+    "": "accept", //acceptance when asked
   },
-  
+
   "Bedtime": "2200",
   "BedtimeSpouse": "2530",
-  
+
   "Buffs": { //Farming, Fishing, Mining, Luck, Foraging, Crafting, MaxStamina, MagneticRadius, Speed, Defense, Attack
   	"Foraging": 3,
-  	"MaxStamina": 32,
+  	"MaxStamina": 40,
   },
   "BuffsDescription": "[Irene.buffs]",
-  
+
   "Weapons": {
     /*"0": "Obsidian Edge",
 	  "1": "Obsidian Edge",
@@ -74,7 +78,7 @@
 	  "10": "Infinity Blade"*/
 
     "0": "Obsidian Edge",
-    "5": "Lovesick"
+    "10": "Lovesick"
   },
 
   "IdleBehaviors": [

@@ -1,0 +1,10 @@
+{
+  "Name": "CursorTeleport",
+  "Author": "Patap",
+  "Version": "1.0.0",
+  "Description": "Allows you to teleport your player to current cursor position",
+  "UniqueID": "Patap.CursorTeleport",
+  "EntryDll": "CursorTeleport.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:17934" ]
+}

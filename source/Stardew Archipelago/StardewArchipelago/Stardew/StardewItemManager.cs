@@ -43,6 +43,18 @@ namespace StardewArchipelago.Stardew
             InitializeData();
         }
 
+        public List<StardewItem> GetAllItems()
+        {
+            var allItems = new List<StardewItem>();
+            allItems.AddRange(_objectsByName.Values);
+            allItems.AddRange(_bigCraftablesByName.Values);
+            allItems.AddRange(_bootsByName.Values);
+            allItems.AddRange(_furnitureByName.Values);
+            allItems.AddRange(_hatsByName.Values);
+            allItems.AddRange(_weaponsByName.Values);
+            return allItems;
+        }
+
         public bool ItemExists(string itemName)
         {
             return _objectsByName.ContainsKey(itemName) || 
@@ -66,6 +78,11 @@ namespace StardewArchipelago.Stardew
         public bool ObjectExists(int itemId)
         {
             return _objectsById.ContainsKey(itemId);
+        }
+
+        public bool ObjectExists(string itemName)
+        {
+            return _objectsByName.ContainsKey(itemName);
         }
 
         public StardewItem GetItemByName(string itemName)
@@ -111,6 +128,16 @@ namespace StardewArchipelago.Stardew
             }
 
             throw new ArgumentException($"Item not found: {itemId}");
+        }
+
+        public StardewObject GetObjectByName(string itemName)
+        {
+            if (_objectsByName.ContainsKey(itemName))
+            {
+                return _objectsByName[itemName];
+            }
+
+            throw new ArgumentException($"Item not found: {itemName}");
         }
 
         public BigCraftable GetBigCraftableById(int itemId)

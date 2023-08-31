@@ -8,28 +8,20 @@
 **
 *************************************************/
 
-using BlueberryMushroomMachine.Core;
 using BlueberryMushroomMachine.Editors;
-using Microsoft.Xna.Framework;
+using BlueberryMushroomMachine.Interface;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.Objects;
-
 using System;
 using System.Linq;
-using Object = StardewValley.Object;
+using System.Reflection;
 
 namespace BlueberryMushroomMachine
 {
 	public sealed class ModEntry : Mod
 	{
-		public class SaveData
-		{
-			public bool PyTKMigration { get; set; } = true;
-		}
-
 		public enum Mushrooms
 		{
 			Morel = 257,
@@ -39,340 +31,326 @@ namespace BlueberryMushroomMachine
 			Purple = 422
 		}
 
-		internal static ModEntry Instance;
-		internal SaveData Data;
-		internal Config Config;
-		internal ITranslationHelper i18n => Helper.Translation;
+		public static ModEntry Instance { get; private set; }
+		public static Config Config { get; private set; }
+		public static ITranslationHelper I18n => ModEntry.Instance.Helper.Translation;
+		public static Texture2D MachineTexture { get; private set; }
+		public static Texture2D OverlayTexture { get; private set; }
 
-		public static Texture2D OverlayTexture;
-
-        private static IJsonAssetsAPI? jsonAssetsAPI;
+		internal static IJsonAssetsAPI JsonAssetsAPI;
+		internal static IBetterCrafting CraftingAPI;
 
 		public override void Entry(IModHelper helper)
 		{
-			Instance = this;
-			Config = helper.ReadConfig<Config>();
+			ModEntry.Instance = this;
+			ModEntry.Config = helper.ReadConfig<Config>();
 
-			if (Config.DebugMode)
-				helper.Events.Input.ButtonPressed += OnButtonPressed;
-
-			Helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-			Helper.Events.GameLoop.DayStarted += OnDayStarted;
-
-			// Load mushroom overlay texture for all filled machines
-			OverlayTexture = Helper.ModContent.Load<Texture2D>(ModValues.OverlayPath);
-
-			// Harmony setup
-			HarmonyPatches.Apply(this.ModManifest.UniqueID);
-
-            // Load textures
-            BigCraftablesTilesheetEditor.Initialize(helper.ModContent);
+			this.Helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
 		}
 
-		private void LoadApis()
+		private bool TryLoadApis()
 		{
 			// SpaceCore setup
-			var spacecoreApi = Helper.ModRegistry.GetApi<Core.ISpaceCoreAPI>("spacechase0.SpaceCore");
-			spacecoreApi.RegisterSerializerType(typeof(Propagator));
+			try
+			{
+				ISpaceCoreAPI spacecoreApi = this.Helper.ModRegistry
+					.GetApi<ISpaceCoreAPI>
+					("spacechase0.SpaceCore");
+				spacecoreApi.RegisterSerializerType(typeof(Propagator));
+			}
+			catch (Exception e)
+			{
+				Log.E($"Failed to register Propagator objects with SpaceCore.{Environment.NewLine}{e}");
+				return false;
+			}
 
-            jsonAssetsAPI =  Helper.ModRegistry.GetApi<IJsonAssetsAPI>("spacechase0.JsonAssets");
-            if (jsonAssetsAPI is null)
-                this.Monitor.Log($"Json Assets not found, deshuffling will not happen");
-            else
-                jsonAssetsAPI.IdsFixed += this.FixIds;
+			// Json Assets setup
+			try
+			{
+				ModEntry.JsonAssetsAPI = this.Helper.ModRegistry
+					.GetApi<IJsonAssetsAPI>
+					("spacechase0.JsonAssets");
+				if (ModEntry.JsonAssetsAPI is not null)
+				{
+					ModEntry.JsonAssetsAPI.IdsFixed += (object sender, EventArgs e) => Utils.FixPropagatorObjectIds();
+				}
+				else
+				{
+					Log.D($"Json Assets not found, deshuffling will not happen",
+						ModEntry.Config.DebugMode);
+				}
+			}
+			catch (Exception e)
+			{
+				Log.E($"Failed to add Json Assets behaviours.{Environment.NewLine}{e}");
+			}
+
+			// Generic Mod Config Menu setup
+			try
+			{
+				IGenericModConfigMenuApi gmcm = this.Helper.ModRegistry
+					.GetApi<IGenericModConfigMenuApi>
+					("spacechase0.GenericModConfigMenu");
+				if (gmcm is not null)
+				{
+					// Register config
+					gmcm.Register(
+						mod: this.ModManifest,
+						reset: () => ModEntry.Config = new(),
+						save: () => this.Helper.WriteConfig(ModEntry.Config));
+
+					// Register config options
+					var entries = new (string i18n, string propertyName, Type type)[] {
+						("working_rules", null, null),
+
+						("disabled_for_fruit_cave", nameof(ModEntry.Config.DisabledForFruitCave), typeof(bool)),
+						("recipe_always_available", nameof(ModEntry.Config.RecipeAlwaysAvailable), typeof(bool)),
+						("maximum_days_to_mature", nameof(ModEntry.Config.MaximumDaysToMature), typeof(int)),
+						("maximum_quantity_limits_doubled", nameof(ModEntry.Config.MaximumQuantityLimitsDoubled), typeof(bool)),
+						("only_tools_remove_root_mushrooms", nameof(ModEntry.Config.OnlyToolsCanRemoveRootMushrooms), typeof(bool)),
+						("pulse_when_growing", nameof(ModEntry.Config.PulseWhenGrowing), typeof(bool)),
+
+						("working_areas", null, null),
+
+						("works_in_cellar", nameof(ModEntry.Config.WorksInCellar), typeof(bool)),
+						("works_in_farm_cave", nameof(ModEntry.Config.WorksInFarmCave), typeof(bool)),
+						("works_in_buildings", nameof(ModEntry.Config.WorksInBuildings), typeof(bool)),
+						("works_in_farmhouse", nameof(ModEntry.Config.WorksInFarmHouse), typeof(bool)),
+						("works_in_greenhouse", nameof(ModEntry.Config.WorksInGreenhouse), typeof(bool)),
+						("works_outdoors", nameof(ModEntry.Config.WorksOutdoors), typeof(bool))
+					};
+					foreach ((string i18n, string propertyName, Type type) in entries)
+					{
+						BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
+						if (propertyName is null)
+						{
+							Translation title = ModEntry.I18n.Get($"config.title.{i18n}");
+							gmcm.AddSectionTitle(
+								this.ModManifest,
+								text: () => title.HasValue() ? title : i18n);
+						}
+						else
+						{
+							void onChanged(PropertyInfo property, object value)
+							{
+								object current = property.GetValue(ModEntry.Config);
+								if (current != value)
+								{
+									Log.D($"Config edit: {property.Name} - {current} => {value}",
+										ModEntry.Config.DebugMode);
+									property.SetValue(ModEntry.Config, value);
+								}
+							}
+							PropertyInfo property = typeof(Config).GetProperty(propertyName, flags);
+							Translation name = I18n.Get($"config.name.{i18n}");
+							Translation description = I18n.Get($"config.description.{i18n}");
+							if (type == typeof(bool))
+							{
+								gmcm.AddBoolOption(
+									mod: this.ModManifest,
+									getValue: () => (bool)property.GetValue(ModEntry.Config),
+									setValue: (bool value) => onChanged(property: property, value: value),
+									name: () => name.HasValue() ? name : propertyName,
+									tooltip: () => description.HasValue() ? description : null);
+							}
+							else if (type == typeof(int))
+							{
+								gmcm.AddNumberOption(
+									mod: this.ModManifest,
+									getValue: () => (int)property.GetValue(ModEntry.Config),
+									setValue: (int value) => onChanged(property: property, value: value),
+									name: () => name.HasValue() ? name : propertyName,
+									tooltip: () => description.HasValue() ? description : null,
+									min: 1,
+									max: 28,
+									formatValue: (int value) => $"{value:0}");
+							}
+							else
+							{
+								Log.D($"Unsupported config entry type {type}",
+									ModEntry.Config.DebugMode);
+							}
+						}
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log.E($"Failed to add Generic Mod Config Menu behaviours.{Environment.NewLine}{e}");
+			}
+
+			// Better Crafting setup
+			try
+			{
+				ModEntry.CraftingAPI = this.Helper.ModRegistry.GetApi<IBetterCrafting>("leclair.bettercrafting");
+				if (ModEntry.CraftingAPI is not null)
+				{
+					ModEntry.CraftingAPI.AddRecipeProvider(provider: new BetterCraftingRecipeProvider());
+					ModEntry.CraftingAPI.AddRecipesToDefaultCategory(cooking: false, categoryId: "machinery", recipeNames: new[] { ModValues.PropagatorInternalName });
+				}
+			}
+			catch (Exception e)
+			{
+				Log.E($"Failed to add Better Crafting behaviours.{Environment.NewLine}{e}");
+			}
+
+			return true;
 		}
 
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
-        {
-            try
-            {
-                if (Config.DebugMode)
-                {
-                    Log.D("== CONFIG SUMMARY ==\n"
-                          + "\nWorks in locations:"
-                          + $"\n    {Config.WorksInCellar} {Config.WorksInFarmCave} {Config.WorksInBuildings}"
-                          + $"\n    {Config.WorksInFarmHouse} {Config.WorksInGreenhouse} {Config.WorksOutdoors}\n"
-                          + $"\nMushroom Cave:  {Config.DisabledForFruitCave}"
-                          + $"\nRecipe Cheat:   {Config.RecipeAlwaysAvailable}"
-                          + $"\nQuantity Cheat: {Config.MaximumQuantityLimitsDoubled}"
-                          + $"\nDays To Mature: {Config.MaximumDaysToMature}"
-                          + $"\nGrowth Pulse:   {Config.PulseWhenGrowing}"
-                          + $"\nOnly Tools Pop: {Config.OnlyToolsCanRemoveRootMushrooms}"
-                          + $"\nCustom Objects: {Config.OtherObjectsThatCanBeGrown.Aggregate("", (s, s1) => $"{s}\n    {s1}")}\n"
-                          + $"\nLanguage:       {LocalizedContentManager.CurrentLanguageCode.ToString().ToUpper()}"
-                          + $"\nDebugging:      {Config.DebugMode}",
-                        Config.DebugMode);
-                }
-            }
-            catch (Exception e1)
-            {
-                Log.E($"Error in printing mod configuration.\n{e1}");
-            }
+		private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+		{
+			// Display mod config
+			try
+			{
+				if (ModEntry.Config.DebugMode)
+				{
+					Log.D("== CONFIG SUMMARY ==\n"
+						  + "\nWorks in locations:"
+						  + $"\n    {ModEntry.Config.WorksInCellar} {ModEntry.Config.WorksInFarmCave} {ModEntry.Config.WorksInBuildings}"
+						  + $"\n    {ModEntry.Config.WorksInFarmHouse} {ModEntry.Config.WorksInGreenhouse} {ModEntry.Config.WorksOutdoors}\n"
+						  + $"\nMushroom Cave:  {ModEntry.Config.DisabledForFruitCave}"
+						  + $"\nRecipe Cheat:   {ModEntry.Config.RecipeAlwaysAvailable}"
+						  + $"\nQuantity Cheat: {ModEntry.Config.MaximumQuantityLimitsDoubled}"
+						  + $"\nDays To Mature: {ModEntry.Config.MaximumDaysToMature}"
+						  + $"\nGrowth Pulse:   {ModEntry.Config.PulseWhenGrowing}"
+						  + $"\nOnly Tools Pop: {ModEntry.Config.OnlyToolsCanRemoveRootMushrooms}"
+						  + $"\nCustom Objects: {ModEntry.Config.OtherObjectsThatCanBeGrown.Aggregate("", (s, s1) => $"{s}\n    {s1}")}\n"
+						  + $"\nLanguage:       {LocalizedContentManager.CurrentLanguageCode.ToString().ToUpper()}"
+						  + $"\nDebugging:      {ModEntry.Config.DebugMode}",
+						ModEntry.Config.DebugMode);
+				}
+			}
+			catch (Exception ex)
+			{
+				Log.E($"Failed to display mod config.{Environment.NewLine}{ex}");
+			}
 
-            LoadApis();
+			// Load behaviours for required and optional mods
+			if (!this.TryLoadApis())
+			{
+				Log.E("Failed to load required mods. Mod will not be loaded.");
+				return;
+			}
 
-            this.Helper.Events.Content.AssetRequested += this.OnAssetRequested;
-        }
+			// Add SMAPI console commands
+			this.RegisterConsoleCommands();
 
-        private void FixIds(object? sender, EventArgs e)
-        {
-            try
-            {
-                Utility.ForAllLocations((location) =>
-                {
-                    foreach (var obj in location.Objects.Values)
-                    {
-                        if (obj is Propagator propagator && propagator.Name == ModValues.PropagatorInternalName)
-                        {
-                            var newId = jsonAssetsAPI.GetObjectId(propagator.SourceMushroomName);
-                            if (newId != -1 && newId != propagator.SourceMushroomIndex)
-                            {
-                                this.Monitor.Log($"Updating mushroom ID for mushroom propagator located at {location.NameOrUniqueName}::{propagator.TileLocation}: {propagator.SourceMushroomName} {propagator.SourceMushroomIndex} => {newId}");
-                                propagator.SourceMushroomIndex = newId;
-                            }
-                        }
-                    }
-                });
-            }
-            catch (Exception ex)
-            {
-                Log.E($"Error while deshuffling held mushrooms\n\n{ex}");
-            }
-        }
+			// Load mushroom overlay texture for all filled machines
+			ModEntry.MachineTexture = this.Helper.ModContent.Load<Texture2D>(ModValues.MachinePath);
+			ModEntry.OverlayTexture = this.Helper.ModContent.Load<Texture2D>(ModValues.OverlayPath);
+
+			// Harmony setup
+			HarmonyPatches.Apply(uniqueID: this.ModManifest.UniqueID);
+
+			// Event handlers
+			this.Helper.Events.GameLoop.DayStarted += this.OnDayStarted;
+			this.Helper.Events.GameLoop.ReturnedToTitle += this.OnTitleScreen;
+			this.Helper.Events.Content.AssetRequested += this.OnAssetRequested;
+		}
+
+		private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+		{
+			// Handle asset requests
+			_ = BigCraftablesInfoEditor.ApplyEdit(e)
+				|| CraftingRecipesEditor.ApplyEdit(e)
+				|| EventsEditor.ApplyEdit(e);
+		}
+
+		private void OnTitleScreen(object sender, ReturnedToTitleEventArgs e)
+		{
+			// Reset data values
+			ModValues.PropagatorIndex = 0;
+			ModValues.ObjectData = null;
+			ModValues.RecipeData = null;
+		}
 
 		private void OnDayStarted(object sender, DayStartedEventArgs e)
 		{
-			if (Data == null)
-			{
-				Log.D("Loading data.", Config.DebugMode);
-				Data = Helper.Data.ReadSaveData<SaveData>("SaveData") ?? new SaveData();
-			}
-
 			// Add Robin's pre-Demetrius-event dialogue
 			if (Game1.player.daysUntilHouseUpgrade.Value == 2 && Game1.player.HouseUpgradeLevel == 2)
+			{
 				Game1.player.activeDialogueEvents.Add("event.4637.0000.0000", 7);
+			}
 
-			// Add the Propagator crafting recipe if the cheat is enabled
-			if (Config.RecipeAlwaysAvailable)
-				if (!Game1.player.craftingRecipes.ContainsKey(ModValues.PropagatorInternalName))
-					Game1.player.craftingRecipes.Add(ModValues.PropagatorInternalName, 0);
-
-			// Correct invalid objects matching ours
-			RebuildPropagtors();
-
-            // Manually DayUpdate each Propagator
-            Utility.ForAllLocations((location) =>
-            {
-                foreach (var obj in location.Objects.Values)
-                {
-                    if (obj is Propagator propagator && propagator.Name == ModValues.PropagatorInternalName)
-                        propagator.DayUpdate();
-                }
-            });
-
-            Log.D("Saving data.", Config.DebugMode);
-            Helper.Data.WriteSaveData("SaveData", Data);
-        }
-
-		private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
-		{
-			if (Game1.eventUp && !Game1.currentLocation.currentEvent.playerControlSequence
-			    || Game1.currentBillboard != 0 || Game1.activeClickableMenu != null || Game1.menuUp
-			    || Game1.nameSelectUp
-			    || Game1.IsChatting || Game1.dialogueTyping || Game1.dialogueUp || Game1.fadeToBlack
-			    || !Game1.player.CanMove || Game1.eventUp || Game1.isFestival())
-				return;
-
-			// Debug spawning for Propagator: Can't be spawned in with CJB Item Spawner as it subclasses Object
-			if (e.Button == Config.DebugGivePropagatorKey)
+			// Update player recipes
+			if (ModEntry.Config.RecipeAlwaysAvailable
+				&& !Game1.player.craftingRecipes.ContainsKey(ModValues.PropagatorInternalName))
 			{
-				var prop = new Propagator(Game1.player.getTileLocation());
-				Game1.player.addItemByMenuIfNecessary(prop);
-				Log.D($"{Game1.player.Name} spawned in a"
-				      + $" [{ModValues.PropagatorIndex}] {ModValues.PropagatorInternalName} ({prop.DisplayName}).");
+				// Add the Propagator crafting recipe if the cheat is enabled
+				Game1.player.craftingRecipes.Add(ModValues.PropagatorInternalName, 0);
+			}
+			else if (!ModEntry.Config.RecipeAlwaysAvailable
+				&& !Game1.player.eventsSeen.Contains(ModValues.EventId)
+				&& Game1.player.craftingRecipes.ContainsKey(ModValues.PropagatorInternalName))
+			{
+				// Remove the Propagator crafting recipe if cheat is disabled and player has not seen the requisite event
+				Game1.player.craftingRecipes.Remove(ModValues.PropagatorInternalName);
 			}
 		}
 
-		/// <summary>
-		/// Rebuilds any broken or missing Propagator objects in the player's inventory and throughout game location object lists.
-		/// </summary>
-		private void RebuildPropagtors()
+		private void RegisterConsoleCommands()
 		{
-			if (Data != null && Data.PyTKMigration)
-			{
-				// Manually rebuild each Propagator in the player's inventory
-				var rebuiltItemsCount = 0;
-				var items = Game1.player.Items;
-				for (var i = items.Count - 1; i > 0; --i)
+			// Commands usable by all players
+
+			this.Helper.ConsoleCommands.Add(
+				name: ModValues.GiveConsoleCommand,
+				documentation: "Add one (or a given number of) mushroom propagator(s) to your inventory.",
+				callback: (string cmd, string[] args) =>
 				{
-					if (items[i] == null
-						|| !items[i].Name.StartsWith($"PyTK|Item|{ModValues.PackageName}")
-						|| !items[i].Name.Contains($"{ModValues.PropagatorInternalName}"))
-						continue;
-
-					++rebuiltItemsCount;
-					Log.D($"Found a broken Propagator in {Game1.player.Name}'s inventory slot {i}, rebuilding manually.",
-						Config.DebugMode);
-
-					var stack = items[i].Stack;
-					Game1.player.removeItemFromInventory(items[i]);
-					Game1.player.addItemToInventory(new Propagator { Stack = stack }, i);
-				}
-
-				// Manually rebuild each Propagator in the world
-				var rebuiltObjectsCount = 0;
-				foreach (var location in Game1.locations)
-				{
-					foreach (var key in location.Objects.Keys.ToList())
+					// Debug spawning for Propagator: Can't be spawned in with CJB Item Spawner as it subclasses Object
+					Propagator propagator = new(tileLocation: Game1.player.getTileLocation())
 					{
-						if (!location.Objects[key].Name.StartsWith($"PyTK|Item|{ModValues.PackageName}"))
-							continue;
+						Stack = args.Length > 0 && int.TryParse(args[0], out int stack) ? stack : 1
+					};
+					Game1.player.addItemByMenuIfNecessary(item: propagator);
+					Log.D($"{Game1.player.Name} spawned in a"
+						  + $" [{ModValues.PropagatorIndex}] {ModValues.PropagatorInternalName} ({propagator.DisplayName}).");
+				});
 
-						int index = 0, quantity = 0, quality = 0;
-						var days = 0f;
-						var replacement = new Propagator();
-						var tileLocation = Vector2.Zero;
-						var isHoldingMushroom = false;
-						var itemSplit = location.Objects[key].Name.Substring(location.Objects[key].Name.IndexOf(", ")).Split('|');
-						foreach (var field in itemSplit)
+			// Commands usable when debugging
+
+			if (ModEntry.Config.DebugMode)
+			{
+				this.Helper.ConsoleCommands.Add(
+					name: ModValues.GrowConsoleCommand,
+					documentation: "DEBUG: Grows mushrooms held by propagators in the current location.",
+					callback: (string cmd, string[] args) =>
+					{
+						foreach (Propagator propagator in Utils.GetMachinesIn(Game1.currentLocation))
 						{
-							var fieldSplit = field.Split(new[] { '=' }, 2);
-							switch (fieldSplit[0])
-							{
-								case "tileLocationX":
-									tileLocation.X = float.Parse(fieldSplit[1]);
-									break;
-								case "tileLocationY":
-									tileLocation.Y = float.Parse(fieldSplit[1]);
-									break;
-								case "heldObjectIndex":
-									index = int.Parse(fieldSplit[1]);
-									break;
-								case "heldObjectQuality":
-									quality = int.Parse(fieldSplit[1]);
-									break;
-								case "heldObjectQuantity":
-									quantity = int.Parse(fieldSplit[1]);
-									break;
-								case "days":
-									days = float.Parse(fieldSplit[1]);
-									break;
-								case "produceExtra":
-									isHoldingMushroom = true;
-									break;
-							}
+							Log.D($"Grow (item: [{propagator.SourceMushroomIndex}]" +
+								$" {propagator.SourceMushroomName ?? "N/A"}x{propagator.heldObject?.Value?.Stack ?? 0}" +
+								$" Q{propagator.SourceMushroomQuality}" +
+								$" ({propagator.Growth}/{Propagator.DefaultDaysToGrow} days +{propagator.GrowthRatePerDay})" +
+								$" at {Game1.currentLocation.Name} {propagator.TileLocation}",
+								ModEntry.Config.DebugMode);
+
+							propagator.GrowHeldObject();
 						}
-						replacement.TileLocation = tileLocation;
-						replacement.PutSourceMushroom(new Object(index, quantity) { Quality = quality });
-						if (isHoldingMushroom)
+					});
+
+				this.Helper.ConsoleCommands.Add(
+					name: ModValues.StatusConsoleCommand,
+					documentation: "DEBUG: Prints state of propagators in the current location.",
+					callback: (string cmd, string[] args) =>
+					{
+						// TODO: DEBUG: 
+						foreach (Propagator propagator in Utils.GetMachinesIn(Game1.currentLocation))
 						{
-							replacement.PutExtraHeldMushroom(daysToMature: days);
+							Log.D($"Status (item: [{propagator.SourceMushroomIndex}]" +
+								$" {propagator.SourceMushroomName ?? "N/A"}x{propagator.heldObject?.Value?.Stack ?? 0}" +
+								$" Q{propagator.SourceMushroomQuality}" +
+								$" ({propagator.Growth}/{Propagator.DefaultDaysToGrow} days +{propagator.GrowthRatePerDay})" +
+								$" at {Game1.currentLocation.Name} {propagator.TileLocation}",
+								ModEntry.Config.DebugMode);
 						}
+					});
 
-						++rebuiltObjectsCount;
-						Log.D($"Found a broken Propagator in {location.Name}'s objects at {key}, rebuilding manually.",
-							Config.DebugMode);
-
-						location.Objects[key] = replacement;
-					}
-				}
-
-				Log.D($"Rebuilt {rebuiltItemsCount} inventory items and {rebuiltObjectsCount} world objects.");
-				Data.PyTKMigration = false;
+				this.Helper.ConsoleCommands.Add(
+					name: ModValues.FixIdsConsoleCommand,
+					documentation: "DEBUG: Manually fix IDs of objects held by mushroom propagators.",
+					callback: (string cmd, string[] args) => Utils.FixPropagatorObjectIds());
 			}
-		}
-
-
-        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
-        {
-            _ = BigCraftablesInfoEditor.ApplyEdit(e)
-                || BigCraftablesTilesheetEditor.ApplyEdit(e)
-                || CraftingRecipesEditor.ApplyEdit(e)
-                || EventsEditor.ApplyEdit(e); 
-        }
-
-		/// <summary>
-		/// Determines the frame to be used for showing held mushroom growth.
-		/// </summary>
-		/// <param name="currentDays">Current days since last growth.</param>
-		/// <param name="goalDays">Number of days when next growth happens.</param>
-		/// <param name="quantity">Current count of mushrooms.</param>
-		/// <param name="max">Maximum amount of mushrooms of this type.</param>
-		/// <returns>Frame for mushroom growth progress.</returns>
-		public static int GetOverlayGrowthFrame(float currentDays, int goalDays, int quantity, int max)
-		{
-			var maths =
-				(((quantity - 1) + ((float)currentDays / goalDays)) * goalDays)
-				/ ((max - 1) * goalDays)
-				* ModValues.OverlayMushroomFrames;
-            return Math.Clamp((int)maths, 0, ModValues.OverlayMushroomFrames);
-		}
-
-		/// <summary>
-		/// Generates a clipping rectangle for the overlay appropriate
-		/// to the current held mushroom, and its held quantity.
-		/// Undefined mushrooms will use their default object rectangle.
-		/// </summary>
-		/// <returns></returns>
-		public static Rectangle GetOverlaySourceRect(int index, int whichFrame)
-		{
-			return Enum.IsDefined(typeof(Mushrooms), index)
-				? new Rectangle(whichFrame * 16,  GetMushroomSourceRectIndex(index) * 32, 16, 32)
-				: Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, index, 16, 16);
-		}
-
-        public static bool IsValidMushroom(Object o)
-        {
-            // from the vanilla Utility.IsPerfectlyNormalObjectAtParentSheetIndex or whatever that method was again.
-            // Don't want to start growing wallpaper
-            Type type = o.GetType();
-            if (o is null || (type != typeof(Object) && type != typeof(ColoredObject)))
-                return false;
-
-            return Enum.IsDefined(typeof(Mushrooms), o.ParentSheetIndex)
-                   || (o.Category == -75 || o.Category == -81)
-                   && (o.Name.Contains("mushroom", StringComparison.InvariantCultureIgnoreCase) || o.Name.Contains("fungus", StringComparison.InvariantCultureIgnoreCase))
-                   || Instance.Config.OtherObjectsThatCanBeGrown.Contains(o.Name);
-        }
-
-		public static int GetMushroomSourceRectIndex(int index)
-		{
-			return index switch
-			{
-				(int) Mushrooms.Morel => 0,
-				(int) Mushrooms.Chantarelle => 1,
-				(int) Mushrooms.Common => 2,
-				(int) Mushrooms.Red => 3,
-				(int) Mushrooms.Purple => 4,
-				_ => -1
-			};
-		}
-
-		public static void GetMushroomGrowthRate(Object o, out float rate)
-		{
-			rate = o.ParentSheetIndex switch
-			{
-				(int) Mushrooms.Morel => 0.5f,
-				(int) Mushrooms.Chantarelle => 0.5f,
-				(int) Mushrooms.Common => 1.0f,
-				(int) Mushrooms.Red => 0.5f,
-				(int) Mushrooms.Purple => 0.25f,
-				_ => o.Price < 50 ? 1.0f : o.Price < 100 ? 0.75f : o.Price < 200 ? 0.5f : 0.25f
-			};
-		}
-
-		public static void GetMushroomMaximumQuantity(Object o, out int quantity)
-		{
-			quantity = o.ParentSheetIndex switch
-			{
-				(int) Mushrooms.Morel => 4,
-				(int) Mushrooms.Chantarelle => 4,
-				(int) Mushrooms.Common => 6,
-				(int) Mushrooms.Red => 3,
-				(int) Mushrooms.Purple => 2,
-				_ => o.Price < 50 ? 5 : o.Price < 100 ? 4 : o.Price < 200 ? 3 : 2
-			};
-			quantity *= Instance.Config.MaximumQuantityLimitsDoubled ? 2 : 1;
 		}
 	}
 }

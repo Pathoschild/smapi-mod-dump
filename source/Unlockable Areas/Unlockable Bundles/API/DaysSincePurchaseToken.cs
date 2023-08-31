@@ -49,7 +49,7 @@ namespace Unlockable_Bundles.API
         /// <returns>Returns whether the value changed, which may trigger patch updates.</returns>
         public bool UpdateContext()
         {
-            if(RequiresContextUpdate) {
+            if (RequiresContextUpdate) {
                 RequiresContextUpdate = false;
                 return true;
             }
@@ -67,13 +67,12 @@ namespace Unlockable_Bundles.API
         /// <param name="input">The input arguments, if applicable.</param>
         public IEnumerable<string> GetValues(string input)
         {
-            if(input == null)
+            if (input == null)
                 yield break;
 
             var days = ModData.getDaysSincePurchase(input);
 
-            if (days != -1)
-                yield return days.ToString();
+            yield return days.ToString();
         }
     }
 }

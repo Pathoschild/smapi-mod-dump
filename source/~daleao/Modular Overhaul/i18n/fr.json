@@ -111,7 +111,7 @@
   "angler.desc.prestiged": "Les poissons ont encore 0,5 % de valeur en plus pour chaque espèce de poisson unique de taille maximale capturée.",
   "aquarist.title.male": "Aquariophile",
   "aquarist.title.female": "Aquariophile",
-  "aquarist.desc": "Capacité des étanges +2. La barre de capture augmente plus vite pour chaque espèce de poisson élevée dans un étang.",
+  "aquarist.desc": "Capacité des étanges +2. La barre de capture diminue plus lentement pour chaque espèce de poisson élevée dans un étang.",
   "aquarist.desc.prestiged": "Capacité des étanges +2 >> +4.",
 
   "trapper.title.male": "Trappeur",
@@ -260,9 +260,10 @@
 
   "fromcsfiles.MeleeWeapon.cs.14122": "Le Tesson prismatique brille, absorbe l'iridium de votre sac à dos et se transforme sous vos yeux ! ^^     Vous obtenez le ={{galaxyWeapon}}=  ^",
   "locations.Town.DwarfGrave.Translated": "     Vous traduisez le nain :     \n\nEntre triplés d'or perdus dans le sable\nproduisez un arc-en-ciel forgé depuis la terre\nimplorez les cieux ! revendiquez votre droit\nlaissez les tonnerres rugir votre nom\nsi votre cœur est pur et votre conscience claire\net votre foi n'a ni doute ni peur\nles étoiles pleuvront là-bas sceau\net vous accorderont l'acier du ciel",
-  "locations.SeedShop.Yoba": "\"No evil shall touch a true Hero of Yoba.\"",
+  "locations.SeedShop.Yoba": "\"Aucun mal ne touchera un véritable héros de Yoba.\"",
 
-  "mail.curse.intro": "Dear @, I must see you about a matter of utmost urgency.^Please come see me at the tower at your earliest convenience.^   -M. Rasmodius, Wizard[#]Ruined Hero",
+  "mail.curse.intro": "Cher @, Je dois vous voir pour une question de la plus haute urgence.^Veuillez venir me voir à la tour dès que possible.^ -M. Rasmodius, Sorcier[#]Ruined Hero",
+  "mail.curse.intro.witch": "Cher @, Je dois vous voir pour une question de la plus haute urgence.^Veuillez venir me voir à la tour dès que possible.^ -M. Rasmodius, Sorcière[#]Ruined Hero",
 
   "quests.forge.intro": "Basic/Un héritage nain/Clint vous a dit qu'il finirait de traduire ce vieux plan dans quelques jours./Rendez visite à Clint pour vous renseigner sur le plan./Blacksmith/144702/0/-1/false",
   "quests.forge.next": "Basic/Un héritage nain II/Ce vieux plan s'est avéré être une recette pour une puissante arme ancienne ! Pourrait-il y en avoir d'autres ?/Trouvez les plans nains restants./null/-1/0/-1/false",
@@ -444,7 +445,7 @@
   "gmcm.profs.shouldjunimosinheritprofessions.title": "Should Junimos Inherit Professions",
   "gmcm.profs.shouldjunimosinheritprofessions.desc": "Whether Junimo harvesters should apply Harvester and Agriculturist perks.",
   "gmcm.profs.laxownershiprequirements.title": "Lax Ownership Requirements",
-  "gmcm.profs.laxownershiprequirements.desc": "If enabled, machine and building ownerhsip will be ignored when determining whether to apply certain profession bonuses (only relevant in multiplayer).",
+  "gmcm.profs.laxownershiprequirements.desc": "If enabled, machine and building ownership will be ignored when determining whether to apply certain profession bonuses (only relevant in multiplayer).",
   "gmcm.profs.artisangoodsalwaysinputquality.title": "Artisan Goods Always Input Quality",
   "gmcm.profs.artisangoodsalwaysinputquality.desc": "Enable this if you preferred the old broken Artisan perk without randomization.",
   "gmcm.profs.beesareanimals.title": "Bees Are Animals",
@@ -548,13 +549,13 @@
   "gmcm.txs.income.latenessfine.title": "Lateness Fine",
   "gmcm.txs.income.latenessfine.desc": "A one-time penalty rate charged over the unpaid amount when income taxes are not paid on-time.",
   "gmcm.txs.income.deductibleanimalexpenses.title": "Deductible Animal Expenses",
-  "gmcm.txs.income.deductibleanimalexpenses.desc": "Whether or not any gold spent on animal purchases and supplies should be tax-deductible.",
+  "gmcm.txs.income.deductibleanimalexpenses.desc": "What percentage of gold spent on animal purchases and supplies should be tax-deductible.",
   "gmcm.txs.income.deductiblebuildingexpenses.title": "Deductible Building Expenses",
-  "gmcm.txs.income.deductiblebuildingexpenses.desc": "Whether or not any gold spent constructing farm buildings is tax-deductible.",
+  "gmcm.txs.income.deductiblebuildingexpenses.desc": "What percentage of gold spent constructing farm buildings is tax-deductible.",
   "gmcm.txs.income.deductibleseedexpenses.title": "Deductible Seed Expenses",
-  "gmcm.txs.income.deductibleseedexpenses.desc": "Whether or not any gold spent on seed purchases should be tax-deductible.",
+  "gmcm.txs.income.deductibleseedexpenses.desc": "What percentage of gold spent on seed purchases should be tax-deductible.",
   "gmcm.txs.income.deductibletoolexpenses.title": "Deductible Tool Expenses",
-  "gmcm.txs.income.deductibletoolexpenses.desc": "Whether or not any gold spent on tool purchases and upgrades should be tax-deductible.",
+  "gmcm.txs.income.deductibletoolexpenses.desc": "What percentage of gold spent on tool purchases and upgrades should be tax-deductible.",
 
   "gmcm.txs.property.heading": "Property Tax",
   "gmcm.txs.property.latenessfine.title": "Lateness Fine",
@@ -868,8 +869,6 @@
   "gmcm.wpnz.rebalance.defenseimprovesparry.desc": "Parry damage will increase for each point in defense.",
   "gmcm.wpnz.rebalance.groundedclubsmash.title": "Grounded Club Smash",
   "gmcm.wpnz.rebalance.groundedclubsmash.desc": "A club smash AoE will inflict guaranteed critical damage on burrowed enemies, but completely miss flying enemies.",
-
-  "gmcm.wpnz.stabbysword.heading": "Combo Settings",
   "gmcm.wpnz.stabbysword.enablestabbyswords.title": "Enable Stabbing Swords",
   "gmcm.wpnz.stabbysword.enablestabbyswords.desc": "Replaces the defensive special move of some swords with an offensive lunge move.",
 
@@ -919,7 +918,7 @@
   "gmcm.controls.facemousecursor.title": "Face Towards Mouse Cursor",
   "gmcm.controls.facemousecursor.desc": "If using mouse and keyboard, turn to face towards the current cursor position before swinging.",
   "gmcm.controls.enableautoselection.title": "Enable Auto-Selection",
-  "gmcm.controls.enableautoselection.desc": "The selected {{selected}} will be automatically equipped near enemies.",
+  "gmcm.controls.enableautoselection.desc": "The highlighted {{selected}} will be automatically equipped when appropriate.",
   "gmcm.controls.selectionkey.title": "Selection Key",
   "gmcm.controls.selectionkey.desc": "Hold this key to toggle a {{tool}} for auto-selection, if enabled.",
   "gmcm.controls.selectionbordercolor.title": "Selection Border Color",

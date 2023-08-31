@@ -50,6 +50,8 @@
     "menu.edit.header": "Header",
     "menu.edit.bold": "Bold",
     "menu.edit.repeating": "Repeating",
+    "menu.edit.repeat-every": "Repeating",
+    "menu.edit.repeat-days": "",
     "menu.edit.hide-in-overlay": "In Overlay ausblenden",
     "menu.edit.show-when": "Element anzeigen, wenn:",
     "menu.edit.raining-on-farm": "Regen auf dem Bauernhof",

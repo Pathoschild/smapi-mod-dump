@@ -1,7 +1,7 @@
 {
   "Name": "More Random Edition",
   "Author": "Chikakoo; doomdonuts; SlyryD; certifiableGrimalkin",
-  "Version": "0.5.6",
+  "Version": "0.5.7",
   "Description": "Randomizes many gameplay and visual aspects of the game, see the readme for more info.",
   "UniqueID": "Chikakoo.Randomizer",
   "EntryDll": "Randomizer.dll",

@@ -851,6 +851,18 @@ namespace Swim
                 Game1.player.position.Value = new Vector2(endJumpLoc.Value.X - (difx * completed), endJumpLoc.Value.Y - (dify * completed) - (float)Math.Sin(completed * Math.PI) * 64);
                 return;
             }
+            if (!SwimUtils.CanSwimHere())
+                return;
+
+            // only if ready to swim from here on!
+            var readyToAutoSwim = Config.ReadyToSwim;
+            var manualSwim = Helper.Input.IsDown(Config.ManualJumpButton);
+
+            // !IMP: Conditions, with locations (i.e. locations with restricted swimming), must be checked here.
+            if ((!readyToAutoSwim && !manualSwim) || !Context.IsPlayerFree)
+            {
+                return;
+            }
 
             if (Game1.player.swimming.Value && !SwimUtils.IsInWater() && !isJumping.Value)
             {
@@ -866,17 +878,6 @@ namespace Swim
                 Game1.player.swimming.Value = false;
                 if (Game1.player.bathingClothes.Value && !Config.SwimSuitAlways)
                     Game1.player.changeOutOfSwimSuit();
-            }
-
-            // only if ready to swim from here on!
-            var readyToAutoSwim = Config.ReadyToSwim;
-            var manualSwim = Helper.Input.IsDown(Config.ManualJumpButton);
-
-            // !IMP: Conditions, with locations (i.e. locations with restricted swimming), must be checked here.
-            if ((!readyToAutoSwim && !manualSwim) || !Context.IsPlayerFree ||
-                Game1.player.currentLocation is BeachNightMarket || Game1.player.currentLocation is VolcanoDungeon)
-            {
-                return;
             }
 
             if (Game1.player.swimming.Value)

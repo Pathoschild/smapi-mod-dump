@@ -9,5 +9,25 @@
 *************************************************/
 
 {
-"Menu_Patches.carpenters.Robin_busy": "Robin está ocupada."
+  "ImagePathNewJojaFormTexture": "assets/jojaformtexture.png",
+  "MenusNewJojaFormHoverMessage0": "Buy the abundant quarry land.",
+  "MenusNewJojaFormHoverMessage1": "Buy the old town cinema that was bought by Joja but is now inactive.",
+  "MenusNewJojaFormHoverMessage2": "Buy the plot of cultivable land.",
+  "MenusNewJojaFormHoverMessage3": "Buy the plot with the magical lake.",
+  "NPCDataATMName": "ATM",
+  "NPCDataATMQuote": "Please register your purchase in our system.",
+  "NPCDataATMRequestSucess": "Pronto! Agora é só esperar entregarem meu pedido!",
+  "NPCDataMorrisName": "Morris",
+  "NPCDataMorrisBuySomethingMessage": "Congratulations on your acquisition! We will grant access to your new property as soon as possible.$h",
+  "NPCDataVendorAway": "There's a sign here: 'I am not available at the moment. Please use our ATM.",
+  "QuestionDialoguesTile": "O que vim fazer aqui?",
+  "QuestionDialoguesChoicesShop": "Comprar alguma coisa.",
+  "QuestionDialoguesChoicesCarpenterBuilderVanilla": "Construir na Fazenda.",
+  "QuestionDialoguesChoicesFarm1_Builder": "Construir na Pedreira.",
+  "QuestionDialoguesChoicesFarm2_Builder": "Construir no Lote de Terra.",
+  "QuestionDialoguesChoicesSpecialJobs": "Serviços especiais.",
+  "QuestionDialoguesChoicesSpecialJobsTitle": "Esses são os serviços especiais disponíveis.",
+  "QuestionDialoguesChoicesRepairHatShop": "Repair Hat Shop",
+  "QuestionDialoguesNoChoice": "Leave",
+  "QuestionDialoguesNoSpecialJobs": "No momento não tenho nenhum serviço especial disponível."
 }

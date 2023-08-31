@@ -45,8 +45,8 @@ namespace Shoplifter
 				case "SeedShop":
 					foreach (var shopstock in (location as SeedShop).shopStock())
 					{
-						// Stops illegal stock being added, will result in an error item
-						if ((shopstock.Key as StardewValley.Object) == null || (shopstock.Key as Wallpaper) != null || (shopstock.Key as Furniture) != null || (shopstock.Key as StardewValley.Object).bigCraftable.Value == true || (shopstock.Key as StardewValley.Object).IsRecipe == true || (shopstock.Key as Clothing) != null || (shopstock.Key as Ring) != null || (shopstock.Key as Boots) != null || (shopstock.Key as Hat) != null)
+                        // Stops illegal stock being added, will result in an error item
+                        if ((shopstock.Key as StardewValley.Object) == null || (shopstock.Key as Wallpaper) != null || (shopstock.Key as Furniture) != null || (shopstock.Key as StardewValley.Object).bigCraftable.Value == true || (shopstock.Key as StardewValley.Object).IsRecipe == true || (shopstock.Key as Clothing) != null || (shopstock.Key as Ring) != null || (shopstock.Key as Boots) != null || (shopstock.Key as Hat) != null)
 						{
 							continue;
 						}
@@ -68,8 +68,15 @@ namespace Shoplifter
                                 CurrentStock.Add(index);
                             }
                         }
+						
 					}
-					break;
+
+                    // Grass starter if nothing available
+                    if (CurrentStock.Count == 0)
+                    {
+                        CurrentStock.Add(297);
+                    }
+                    break;
 
 				// Willy's shop
 				case "FishShop":
@@ -99,8 +106,14 @@ namespace Shoplifter
                                 CurrentStock.Add(index);
                             }
                         }
-					}
-					break;
+                    }
+
+                    // Trout soup if nothing available
+                    if (CurrentStock.Count == 0)
+                    {
+                        CurrentStock.Add(219);
+                    }
+                    break;
 
 				// Robin's shop
 				case "Carpenters":
@@ -129,8 +142,14 @@ namespace Shoplifter
                                 CurrentStock.Add(index);
                             }
                         }
-					}
-					break;
+                        
+                    }
+                    // Wood if nothing available
+                    if (CurrentStock.Count == 0)
+                    {
+                        CurrentStock.Add(388);
+                    }
+                    break;
 
 				// Marnie's shop
 				case "AnimalShop":
@@ -160,7 +179,12 @@ namespace Shoplifter
                             }
                         }
 					}
-					break;
+                    // Hay if nothing available
+                    if (CurrentStock.Count == 0)
+                    {
+                        CurrentStock.Add(178);
+                    }
+                    break;
 
 				// Clint's shop
 				case "Blacksmith":
@@ -191,7 +215,12 @@ namespace Shoplifter
                             }
 						}
 					}
-					break;
+                    // Coal if nothing available
+                    if (CurrentStock.Count == 0)
+                    {
+                        CurrentStock.Add(382);
+                    }
+                    break;
 
 				// Gus' shop
 				case "Saloon":
@@ -222,7 +251,12 @@ namespace Shoplifter
                             }
                         }
 					}
-					break;
+                    // Beer if nothing available
+                    if (CurrentStock.Count == 0)
+                    {
+                        CurrentStock.Add(346);
+                    }
+                    break;
 
 				// Harvey's shop
 				case "HospitalShop":
@@ -253,7 +287,12 @@ namespace Shoplifter
                             }
                         }
 					}
-					break;
+                    // Muscle Remedy if nothing available
+                    if (CurrentStock.Count == 0)
+                    {
+                        CurrentStock.Add(351);
+                    }
+                    break;
 				// Icecream Stand
 				case "IceCreamStand":
 					CurrentStock.Add(233);
@@ -297,12 +336,17 @@ namespace Shoplifter
 					CurrentStock.Add(340);
 					break;
 			}
-
+			
 			// Add generated stock to store from array
 			for (int i = 0; i < stocklimit; i++)
 			{
                 int quantity = random.Next(1, maxquantity + 1);
 				var item = random.Next(0, CurrentStock.Count);
+
+				if (CurrentStock.Count == 0)
+				{
+					break;
+				}
 
 				if (CurrentStock[item] is String && ModEntry.IDGAItem.SpawnDGAItem(CurrentStock[item].ToString()) as StardewValley.ISalable as Item != null)
 				{

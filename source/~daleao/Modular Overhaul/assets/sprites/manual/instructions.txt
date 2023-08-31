@@ -10,3 +10,4 @@
 
 Copy the file "tools-mythicite.png" and paste it inside "Mods/MoonMisadventures/assets".
 Overwrite when prompted.
+Do the same for the Radioactive texture (you will have to rename it to "tools-radioactive.png").

@@ -9,6 +9,11 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.14.0
+
+* Repeating items can now specify a number of days to delay before the item
+  is visible again
+
 ## Version 1.13.0
 
 * Add an API to allow other mods to use the overlay

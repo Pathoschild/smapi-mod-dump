@@ -10,7 +10,7 @@
 
 {
   "Name": "Highland Ice Cream",
-  "Description": "Special ice cream made in Ridgeside Village. A treat best enjoyed while admiring the mountainside view.",
+  "TranslationKey": "objects.highland-ice-cream",
   "Category": "Cooking",
   "Price": 100,
   "Edibility": 51,
@@ -49,35 +49,4 @@
         ],
         "CanPurchase": false,
     },
-
-    "NameLocalization":
-    { 
-      //remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    },
-    "DescriptionLocalization":
-    {
-      //remove the "//" from your language      
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    }
 }

@@ -6,11 +6,11 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit 3cf22e59018dfac6e0c34d4ff64f56b82788eebb
-   Author: TÃ³th ÃdÃ¡m <adam_toth4@epam.com>
-   Date:   Wed Jul 19 14:31:24 2023 +0200
+   commit 65d16f3afb9a4fa6f4eb4dbc2cea9ca26bbd78a6
+   Author: Tilwa Qendov <tqdv@users.noreply.github.com>
+   Date:   Sat Aug 26 13:22:35 2023 +0200
    
-       Merge pull request #320 from DanielleTlumach/patch-6
+       Merge pull request #325 from Pseurae/robin-fix
        
-       Update Ukrainian translation
+       Update ShowRobinBuildingStatusIcon to account for house upgrades
    

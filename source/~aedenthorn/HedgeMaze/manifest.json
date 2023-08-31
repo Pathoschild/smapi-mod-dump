@@ -11,7 +11,7 @@
 {
   "Name": "Hedge Maze",
   "Author": "aedenthorn",
-  "Version": "0.1.1",
+  "Version": "0.2.1",
   "Description": "Hedge Maze.",
   "UniqueID": "aedenthorn.HedgeMaze",
   "EntryDll": "HedgeMaze.dll",

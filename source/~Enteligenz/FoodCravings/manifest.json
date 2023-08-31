@@ -11,7 +11,7 @@
 {
   "Name": "Food Cravings",
   "Author": "Hexenentendrache",
-  "Version": "1.2.0",
+  "Version": "1.6.0",
   "Description": "Adds daily cravings for random cooked foods for the player.",
   "UniqueID": "Hexenentendrache.FoodCravings",
   "EntryDll": "FoodCravings.dll",

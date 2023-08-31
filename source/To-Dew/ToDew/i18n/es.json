@@ -60,6 +60,8 @@
     "menu.edit.header": "Título",
     "menu.edit.bold": "Negrita",
     "menu.edit.repeating": "Repetición",
+    "menu.edit.repeat-every": "Repetición",
+    "menu.edit.repeat-days": "",
     "menu.edit.hide-in-overlay": "Ocultar en la superposición",
     "menu.edit.show-when": "Mostrar ítem cuando:",
     "menu.edit.raining-on-farm": "Llueve en la granja",

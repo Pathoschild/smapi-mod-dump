@@ -10,9 +10,9 @@ mods:
    Sturdy Saplings
 
 latest commit:
-   commit 7d83d0b357972683f05faa2481fde6b0e41f146b
+   commit dfc39a3b28823d8e308c861794a83786ec7ce887
    Author: sophiesalacia <sophiesalacia@users.noreply.github.com>
-   Date:   Fri Mar 3 18:24:21 2023 -0500
+   Date:   Wed Aug 23 13:17:19 2023 -0400
    
-       add fireworks mod
+       Migrated tarot event code to Sunberry Village repo.
    

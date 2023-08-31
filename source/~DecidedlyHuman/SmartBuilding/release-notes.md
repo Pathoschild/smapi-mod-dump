@@ -8,6 +8,10 @@ for queries and analysis.**
 
 # Smart Building release notes
 
+## 1.7.11
+Fixed a problem placing DengDeng Monogatari's chest opener.
+## 1.7.10
+New creative mode feature!
 ## 1.7.8
 Hopefully fully fixed the item stowing issue, and added a workaround to recover from the previous glitched state. Added a PR from atravita adding support for their upcoming mod.
 ## 1.7.7

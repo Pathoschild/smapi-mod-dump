@@ -15,7 +15,6 @@ namespace DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.StatusEffects;
 using DaLion.Shared.Enums;
 using DaLion.Shared.Extensions;
-using DaLion.Shared.Extensions.Stardew;
 using Microsoft.Xna.Framework;
 using StardewValley.Monsters;
 
@@ -76,7 +75,7 @@ internal static class MonsterExtensions
 
     /// <summary>Removes bleeding from <paramref name="monster"/>.</summary>
     /// <param name="monster">The <see cref="Monster"/>.</param>
-    internal static void StopBleeding(this Monster monster)
+    internal static void Unbleed(this Monster monster)
     {
         monster.Set_Bleeder(null);
         monster.Get_BleedTimer().Value = -1;
@@ -116,7 +115,7 @@ internal static class MonsterExtensions
 
     /// <summary>Removes burn from <paramref name="monster"/>.</summary>
     /// <param name="monster">The <see cref="Monster"/>.</param>
-    internal static void CureBurn(this Monster monster)
+    internal static void Unburn(this Monster monster)
     {
         monster.Set_Burner(null);
         monster.Get_BurnTimer().Value = -1;
@@ -159,10 +158,10 @@ internal static class MonsterExtensions
 
     /// <summary>Removes chilled status from the <paramref name="monster"/>.</summary>
     /// <param name="monster">The <see cref="Monster"/>.</param>
-    internal static void WarmUp(this Monster monster)
+    internal static void Unchill(this Monster monster)
     {
         monster.Get_Chilled().Value = false;
-        monster.RemoveSlow();
+        monster.Unslow();
     }
 
     /// <summary>Checks whether the <paramref name="monster"/> is chilled.</summary>
@@ -188,7 +187,7 @@ internal static class MonsterExtensions
 
     /// <summary>Removes fear from <paramref name="monster"/>.</summary>
     /// <param name="monster">The <see cref="Monster"/>.</param>
-    internal static void CureFear(this Monster monster)
+    internal static void Unfear(this Monster monster)
     {
         monster.Get_FearTimer().Value = -1;
     }
@@ -220,7 +219,7 @@ internal static class MonsterExtensions
     internal static void Defrost(this Monster monster)
     {
         monster.Get_Frozen().Value = false;
-        monster.WarmUp();
+        monster.Unchill();
     }
 
     /// <summary>Checks whether the <paramref name="monster"/> is frozen.</summary>
@@ -252,7 +251,7 @@ internal static class MonsterExtensions
 
     /// <summary>Removes poison from <paramref name="monster"/>.</summary>
     /// <param name="monster">The <see cref="Monster"/>.</param>
-    internal static void CurePoison(this Monster monster)
+    internal static void Detox(this Monster monster)
     {
         monster.Set_Poisoner(null);
         monster.Get_PoisonTimer().Value = -1;
@@ -286,7 +285,7 @@ internal static class MonsterExtensions
 
     /// <summary>Removes slow from <paramref name="monster"/>.</summary>
     /// <param name="monster">The <see cref="Monster"/>.</param>
-    internal static void RemoveSlow(this Monster monster)
+    internal static void Unslow(this Monster monster)
     {
         monster.Get_SlowTimer().Value = -1;
         monster.Get_SlowIntensity().Value = 0;

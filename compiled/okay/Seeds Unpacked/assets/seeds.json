@@ -1,0 +1,31 @@
+{
+    "Include": {
+        "Name": [],
+        "Prefix": [],
+        "Suffix": [
+            // Standard seeds
+            "Bulb",
+            "Seed",
+            "Seeds"
+        ]
+    },
+    "Exclude": {
+        "Name": [
+            // Unique seeds
+            "Ancient Seeds",
+            "Coffee Bean",
+            "Qi Bean",
+            "Rare Seed",
+            "Sunflower Seeds"
+        ],
+        "Prefix": [
+            // Mixed seeds
+            "Mixed",
+            "Spring",
+            "Summer",
+            "Fall",
+            "Winter"
+        ],
+        "Suffix": []
+    }
+}

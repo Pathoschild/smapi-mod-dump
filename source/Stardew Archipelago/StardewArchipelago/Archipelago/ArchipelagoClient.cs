@@ -30,7 +30,7 @@ namespace StardewArchipelago.Archipelago
 {
     public class ArchipelagoClient
     {
-        private const string GAME_NAME = "Stardew Valley";
+        public const string GAME_NAME = "Stardew Valley";
         private IMonitor _console;
         private IModHelper _modHelper;
         private ArchipelagoSession _session;
@@ -42,6 +42,7 @@ namespace StardewArchipelago.Archipelago
 
         private Action _itemReceivedFunction;
 
+        public ArchipelagoSession Session => _session;
         public bool IsConnected { get; private set; }
         public SlotData SlotData { get; private set; }
         public Dictionary<string, ScoutedLocation> ScoutedLocations { get; set; }
@@ -287,6 +288,13 @@ namespace StardewArchipelago.Archipelago
             _session.Locations.CompleteLocationChecks(locationIds);
         }
 
+        public PlayerInfo CurrentPlayer => _session.Players.AllPlayers.FirstOrDefault(x => x.Slot == _session.ConnectionInfo.Slot);
+
+        public int GetTeam()
+        {
+            return _session.ConnectionInfo.Team;
+        }
+
         public string GetPlayerName(int playerId)
         {
             return _session.Players.GetPlayerName(playerId) ?? "Archipelago";
@@ -308,15 +316,26 @@ namespace StardewArchipelago.Archipelago
             return player.Alias;
         }
 
-        public bool IsStardewValleyPlayer(string playerName)
+        public bool PlayerExists(string playerName)
+        {
+            return _session.Players.AllPlayers.Any(x => x.Name == playerName) || _session.Players.AllPlayers.Any(x => x.Alias == playerName);
+        }
+
+        public string GetPlayerGame(string playerName)
         {
             var player = _session.Players.AllPlayers.FirstOrDefault(x => x.Name == playerName);
             if (player == null)
             {
                 player = _session.Players.AllPlayers.FirstOrDefault(x => x.Alias == playerName);
             }
-            
-            return player != null && player.Game == GAME_NAME;
+
+            return player?.Game;
+        }
+
+        public bool IsStardewValleyPlayer(string playerName)
+        {
+            var game = GetPlayerGame(playerName);
+            return game != null && game == GAME_NAME;
         }
 
         public const string STRING_DATA_STORAGE_DELIMITER = "|||";

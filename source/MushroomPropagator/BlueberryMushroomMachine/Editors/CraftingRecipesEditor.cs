@@ -10,6 +10,7 @@
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using System.Collections.Generic;
 
 namespace BlueberryMushroomMachine.Editors
 {
@@ -17,26 +18,28 @@ namespace BlueberryMushroomMachine.Editors
 	{
 		public static bool ApplyEdit(AssetRequestedEventArgs e)
 		{
-            if (e.NameWithoutLocale.IsEquivalentTo(@"Data/CraftingRecipes"))
-            {
-                e.Edit(EditImpl);
-                return true;
-            }
-            return false;
+			if (e.NameWithoutLocale.IsEquivalentTo(@"Data/CraftingRecipes"))
+			{
+				e.Edit(EditImpl);
+				return true;
+			}
+			return false;
 		}
 		public static void EditImpl(IAssetData asset)
 		{
 			Log.T($"Editing {asset.Name}.",
-                ModEntry.Instance.Config.DebugMode);
+				ModEntry.Config.DebugMode);
 
-			// Inject crafting recipe data using custom appended index as the result.
-			var name = ModValues.PropagatorInternalName;
-			var data = asset.AsDictionary<string, string>().Data;
+			// Inject crafting recipe data using custom appended index as the result
+			string name = ModValues.PropagatorInternalName;
+			IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
 			if (!data.ContainsKey(name))
-				data.Add(name, ModValues.CraftingRecipeData);
+			{
+				data.Add(name, ModValues.RecipeData);
+			}
 
 			Log.D($"Recipe injected: \"{name}\": \"{data[name]}\"",
-                ModEntry.Instance.Config.DebugMode);
+				ModEntry.Config.DebugMode);
 		}
 	}
 }

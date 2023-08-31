@@ -108,7 +108,6 @@ internal sealed class SkillLevelUpMenuUpdatePatcher : HarmonyPatcher
         {
             Log.E(
                 "Professions module failed patching 2nd-tier profession choices to reflect last chosen 1st-tier profession." +
-                "\n—-- Do NOT report this to SpaceCore's author. ---" +
                 $"\nHelper returned {ex}");
             return null;
         }
@@ -216,7 +215,7 @@ internal sealed class SkillLevelUpMenuUpdatePatcher : HarmonyPatcher
                                     new CodeInstruction(
                                         OpCodes.Call,
                                         typeof(SkillLevelUpMenuUpdatePatcher).RequireMethod(
-                                            nameof(ShouldCongratulateOnFullSkillMastery))),
+                                            nameof(HasAcquiredLastProfession))),
                                     // store the bool result for later
                                     new CodeInstruction(OpCodes.Stloc_S, shouldCongratulateFullSkillMastery),
                                 },
@@ -227,7 +226,6 @@ internal sealed class SkillLevelUpMenuUpdatePatcher : HarmonyPatcher
         catch (Exception ex)
         {
             Log.E("Professions module failed patching level up profession redundancy." +
-                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
         }
@@ -272,7 +270,7 @@ internal sealed class SkillLevelUpMenuUpdatePatcher : HarmonyPatcher
                         new CodeInstruction(OpCodes.Ldfld, typeof(SkillLevelUpMenu).RequireField("currentSkill")),
                         new CodeInstruction(
                             OpCodes.Call,
-                            typeof(SkillLevelUpMenuUpdatePatcher).RequireMethod(nameof(CongratulateOnFullSkillMastery))),
+                            typeof(SkillLevelUpMenuUpdatePatcher).RequireMethod(nameof(CongratulateForAcquiringLastProfession))),
                     },
                     // restore backed-up labels
                     labels);
@@ -341,7 +339,6 @@ internal sealed class SkillLevelUpMenuUpdatePatcher : HarmonyPatcher
         catch (Exception ex)
         {
             Log.E("Professions module failed patching level up menu choice suppression." +
-                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
         }
@@ -376,7 +373,7 @@ internal sealed class SkillLevelUpMenuUpdatePatcher : HarmonyPatcher
         return branch == firstId ? professionPairs[1] : professionPairs[2];
     }
 
-    private static bool ShouldCongratulateOnFullSkillMastery(int currentLevel, string skillId)
+    private static bool HasAcquiredLastProfession(int currentLevel, string skillId)
     {
         if (!ProfessionsModule.Config.EnablePrestige || currentLevel != 10 ||
             !SCSkill.Loaded.TryGetValue(skillId, out var scSkill))
@@ -404,9 +401,12 @@ internal sealed class SkillLevelUpMenuUpdatePatcher : HarmonyPatcher
         return false;
     }
 
-    private static void CongratulateOnFullSkillMastery(string skillId)
+    private static void CongratulateForAcquiringLastProfession(string skillId)
     {
-        Game1.drawObjectDialogue(I18n.Prestige_Levelup_Unlocked(SCSkill.Loaded[skillId].DisplayName));
+        if (ProfessionsModule.Config.EnableExtendedProgession)
+        {
+            Game1.drawObjectDialogue(I18n.Prestige_Levelup_Unlocked(SCSkill.Loaded[skillId].DisplayName));
+        }
 
         if (!Game1.player.HasAllProfessions(true))
         {

@@ -475,10 +475,13 @@ namespace LoveOfCooking.Objects
 
 				ModEntry.CookingSkillApi.CalculateExperienceGainedFromCookingItem(
 					item: item,
-					recipe.getNumberOfIngredients(),
-					quantityCooked,
+					numIngredients: recipe.getNumberOfIngredients(),
+					numCooked: quantityCooked,
 					applyExperience: true);
-				Game1.player.cookedRecipe(item.ParentSheetIndex);
+				for (int i = 0; i < quantityCooked; ++i)
+				{
+					Game1.player.cookedRecipe(item.ParentSheetIndex);
+				}
 
 				// Update game stats
 				Game1.stats.ItemsCooked += (uint)quantityCooked;

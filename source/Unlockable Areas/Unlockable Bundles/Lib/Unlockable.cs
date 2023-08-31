@@ -28,7 +28,7 @@ namespace Unlockable_Bundles.Lib
 {
     public sealed class Unlockable : INetObject<NetFields>
     {
-        public NetFields NetFields { get; } = new NetFields();
+        public NetFields NetFields { get; } = new NetFields("DLX.Bundles/Unlockable");
 
         private NetString _id = new NetString();
         private NetString _location = new NetString();
@@ -115,7 +115,7 @@ namespace Unlockable_Bundles.Lib
         public string EditMapLocation { get => _editMapLocation.Value; set => _editMapLocation.Value = value; }
 
         private string CachedLocalizedShopDescription = null;
-        public static Dictionary<string, int> CachedJsonAssetIDs = new Dictionary<string, int>();
+        public static Dictionary<string, string> CachedJsonAssetIDs = new Dictionary<string, string>();
         public Unlockable(UnlockableModel model)
         {
             this.ID = model.ID;
@@ -165,50 +165,49 @@ namespace Unlockable_Bundles.Lib
 
         public Unlockable() => addNetFields();
 
-        private void addNetFields() => this.NetFields.AddFields(
-            _id,
-            _location,
-            _locationUnique,
+        private void addNetFields() => NetFields.SetOwner(this)
+            .AddField(_id, "_id")
+            .AddField(_location, "_location")
+            .AddField(_locationUnique, "_locationUnique")
 
-            _bundleName,
-            _bundleDescription,
-            _bundleIcon,
-            _bundleIconAsset,
-            _bundleSlots,
-            _junimoNoteTexture,
-            _bundleCompletedMail,
+            .AddField(_bundleName, "_bundleName")
+            .AddField(_bundleDescription, "_bundleDescription")
+            .AddField(_bundleIcon, "_bundleIcon")
+            .AddField(_bundleIconAsset, "_bundleIconAsset")
+            .AddField(_bundleSlots, "_bundleSlots")
+            .AddField(_junimoNoteTexture, "_junimoNoteTexture")
+            .AddField(_bundleCompletedMail, "_bundleCompletedMail")
 
-            _shopPosition,
-            _shopTexture,
-            _shopAnimation,
-            _shopEvent,
-            _shopType,
-            _instantShopRemoval,
+            .AddField(_shopPosition, "_shopPosition")
+            .AddField(_shopTexture, "_shopTexture")
+            .AddField(_shopAnimation, "_shopAnimation")
+            .AddField(_shopEvent, "_shopEvent")
+            .AddField(_shopType, "_shopType")
+            .AddField(_instantShopRemoval, "_instantShopRemoval")
 
-            _drawQuestionMark,
-            _questionMarkOffset,
-            _speechBubbleOffset,
-            _parrotTarget,
-            _timeUntilChomp,
-            _parrotIndex,
-            _parrotTexture,
+            .AddField(_drawQuestionMark, "_drawQuestionMark")
+            .AddField(_questionMarkOffset, "_questionMarkOffset")
+            .AddField(_speechBubbleOffset, "_speechBubbleOffset")
+            .AddField(_parrotTarget, "_parrotTarget")
+            .AddField(_timeUntilChomp, "_timeUntilChomp")
+            .AddField(_parrotIndex, "_parrotIndex")
+            .AddField(_parrotTexture, "_parrotTexture")
 
-            _interactionShake,
-            _interactionTexture,
-            _interactionAnimation,
-            _interactionSound,
+            .AddField(_interactionShake, "_interactionShake")
+            .AddField(_interactionTexture, "_interactionTexture")
+            .AddField(_interactionAnimation, "_interactionAnimation")
+            .AddField(_interactionSound, "_interactionSound")
 
-            _randomPriceEntries,
-            _price,
-            _alreadyPaid,
-            _alreadyPaidIndex,
-            _bundleReward,
+            .AddField(_randomPriceEntries, "_randomPriceEntries")
+            .AddField(_price, "_price")
+            .AddField(_alreadyPaid, "_alreadyPaid")
+            .AddField(_alreadyPaidIndex, "_alreadyPaidIndex")
+            .AddField(_bundleReward, "_bundleReward")
 
-            _editMap,
-            _editMapMode,
-            _editMapPosition,
-            _editMapLocation
-            );
+            .AddField(_editMap, "_editMap")
+            .AddField(_editMapMode, "_editMapMode")
+            .AddField(_editMapPosition, "_editMapPosition")
+            .AddField(_editMapLocation, "_editMapLocation");
 
         public static Dictionary<string, Unlockable> convertModelDicToEntity(Dictionary<string, UnlockableModel> modelDic)
         {
@@ -221,7 +220,15 @@ namespace Unlockable_Bundles.Lib
             return entityDic;
         }
 
-        public GameLocation getGameLocation() => Game1.getLocationFromName(LocationUnique, Location != LocationUnique);
+        public GameLocation getGameLocation()
+        {
+            var isStruct = Location != LocationUnique;
+
+            if (Location == "FarmHouse" || Location == "Cellar")
+                isStruct = true;
+
+            return Game1.getLocationFromName(LocationUnique, isStruct);
+        }
 
         public string getTranslatedShopDescription()
         {
@@ -259,10 +266,24 @@ namespace Unlockable_Bundles.Lib
                 _ => -1
             };
         }
+        public static bool isExceptionItem(string id) => id.ToLower() == "money" || id == "(O)858" || id == "(O)73";
+        public static string getIDFromReqSplit(string key)
+        {
+            var id = key.Split(":").First().Trim();
 
-        public static string getIDFromReqSplit(string key) => key.Split(":").First();
+            if (id.ToLower() == "money")
+                return "money";
 
-        public static string getFirstIDFromReqKey(string reqKey) => getIDFromReqSplit(reqKey.Split(",").First().Trim().ToLower());
+            if (id.First() != '(')
+                id = "(O)" + id;
+
+            //(S)10 can become (P)10 at ItemRegistry.Create.. so yeah
+            var item = parseItem(id);
+
+            return item.QualifiedItemId;
+        }
+
+        public static string getFirstIDFromReqKey(string reqKey) => getIDFromReqSplit(reqKey.Split(",").First().Trim());
         public static int getFirstQualityFromReqKey(string reqKey) => getQualityFromReqSplit(reqKey.Split(",").First());
 
         public string getMailKey() => getMailKey(ID);
@@ -307,7 +328,7 @@ namespace Unlockable_Bundles.Lib
                 openRewardsMenu();
                 return;
             } else {
-                var ev = new UBEvent(this, ShopEvent, -1, Game1.player);
+                var ev = new UBEvent(this, ShopEvent, Game1.player);
                 ev.onEventFinished = openRewardsMenu;
                 Game1.globalFadeToBlack(() => Game1.player.currentLocation.startEvent(ev));
             }
@@ -322,7 +343,7 @@ namespace Unlockable_Bundles.Lib
                 if (Inventory.addExceptionItem(Game1.player, id, entry.Value))
                     continue;
 
-                rewards.Add(new StardewValley.Object(Unlockable.intParseID(id), entry.Value, quality: quality) { HasBeenInInventory = false });
+                rewards.Add(parseItem(id, entry.Value, quality: quality));
             }
 
             if (rewards.Count == 0)
@@ -374,24 +395,25 @@ namespace Unlockable_Bundles.Lib
             return _price.Pairs.All(e => _alreadyPaid.ContainsKey(e.Key));
         }
 
-        public static int intParseID(string id)
+        public static Item parseItem(string id, int initialStack = 0, int quality = 0)
         {
-            id = id.TrimStart();
-
             //Items prefixed with (JA) are item names
-            if (!id.StartsWith("(JA)", StringComparison.OrdinalIgnoreCase))
-                return int.Parse(id);
+            if (id.StartsWith("(JA)", StringComparison.OrdinalIgnoreCase)) {
+                var name = id[4..].Trim();
+                if (CachedJsonAssetIDs.ContainsKey(name))
+                    return new StardewValley.Object(CachedJsonAssetIDs[name], initialStack, quality: quality);
 
-            var name = id[4..].Trim();
-            if (CachedJsonAssetIDs.ContainsKey(name))
-                return CachedJsonAssetIDs[name];
+                var kvp = Game1.objectInformation.FirstOrDefault(el => el.Value.StartsWith(name + '/', StringComparison.OrdinalIgnoreCase));
+                if (kvp.Key == "")
+                    ModEntry._Monitor.LogOnce($"Unknown JA item name: {name}", LogLevel.Error);
+                CachedJsonAssetIDs.Add(name, kvp.Key);
 
-            var obj = Game1.objectInformation.FirstOrDefault(el => el.Value.StartsWith(name + '/', StringComparison.OrdinalIgnoreCase));
-            if (obj.Key == 0)
-                ModEntry._Monitor.Log($"Unknown JA item name: {name}", LogLevel.Error);
-            CachedJsonAssetIDs.Add(name, obj.Key);
+                id = kvp.Key;
+            }
 
-            return obj.Key;
+            var ret = ItemRegistry.Create(id, initialStack, quality: quality);
+
+            return ret;
         }
     }
 }

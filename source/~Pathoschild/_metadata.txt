@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 5862d8b8201c4f972825c98a6f15f0c8c3ec6ebf
+   commit 4461ceeec2c07c29a9bc6a694624ddbe0eeec6ab
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Jul 29 21:29:03 2023 -0400
+   Date:   Sun Aug 27 18:17:01 2023 -0400
    
-       update hay logic for SDV 1.6
+       Merge branch 'develop' into stable
    

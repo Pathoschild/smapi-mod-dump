@@ -35,13 +35,12 @@ namespace FarmTypeManager
             {
                 Utility.Monitor.Log("Save Anywhere API loaded. Sending compatibility events.", LogLevel.Trace);
                 saveAnywhere.addBeforeSaveEvent(ModManifest.UniqueID, SaveAnywhere_BeforeSave);
-                /*
-                 * disable "aftersave" due to the current version of SaveAnywhere not executing it; a workaround has been added below
-                 * 
                 saveAnywhere.addAfterSaveEvent(ModManifest.UniqueID, SaveAnywhere_AfterSave);
-                */
 
-                Utility.Helper.Events.Display.MenuChanged += SaveAnywhere_MenuChanged;
+                /*
+                 * workaround shouldn't work in SaveAnywhere 3.2.6+ as it switched to using the normal SaveGameMenu
+                 Utility.Helper.Events.Display.MenuChanged += SaveAnywhere_MenuChanged;
+                */
             }
         }
 

@@ -19,8 +19,8 @@
         "PatchMapName": "farm_patch_0.tmx",
         "MapPatchPointX": 0,
         "MapPatchPointY": 15,
-        "PathBlockX": 2,
-        "PathBlockY": 18,
+        "PathBlockX": 1,
+        "PathBlockY": 17,
 		    "Sign": {
         "UseSign": true,
         "UseFront": false,
@@ -48,7 +48,7 @@
         "MapPatchPointX": 0,
         "MapPatchPointY": 43,
         "PathBlockX": 1,
-        "PathBlockY": 47,
+        "PathBlockY": 45,
 		    "Sign": {
         "UseSign": true,
         "UseFront": false,
@@ -83,7 +83,7 @@
         "MapPatchPointX": 0,
         "MapPatchPointY": 26,
         "PathBlockX": 7,
-        "PathBlockY": 29
+        "PathBlockY": 28
 
       }
     }

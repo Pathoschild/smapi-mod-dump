@@ -149,13 +149,17 @@ namespace UIInfoSuite2.UIElements
 
                 if (itemName.IndexOf("arecrow", StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    arrayToUse = itemName.Contains("eluxe") ? GetDistanceArray(ObjectsWithDistance.DeluxeScarecrow) : GetDistanceArray(ObjectsWithDistance.Scarecrow);
+                    arrayToUse = itemName.Contains("eluxe") ? 
+                        GetDistanceArray(ObjectsWithDistance.DeluxeScarecrow, false, currentItem) : 
+                        GetDistanceArray(ObjectsWithDistance.Scarecrow, false, currentItem);
                     AddTilesToHighlightedArea(arrayToUse, (int)validTile.X, (int)validTile.Y);
 
                     similarObjects = GetSimilarObjectsInLocation("arecrow");
                     foreach (StardewValley.Object next in similarObjects)
                     {
-                        arrayToUse = next.Name.IndexOf("eluxe", StringComparison.OrdinalIgnoreCase) >= 0 ? GetDistanceArray(ObjectsWithDistance.DeluxeScarecrow) : GetDistanceArray(ObjectsWithDistance.Scarecrow);
+                        arrayToUse = next.Name.IndexOf("eluxe", StringComparison.OrdinalIgnoreCase) >= 0 ? 
+                            GetDistanceArray(ObjectsWithDistance.DeluxeScarecrow, false, next) : 
+                            GetDistanceArray(ObjectsWithDistance.Scarecrow, false, next);
                         AddTilesToHighlightedArea(arrayToUse, (int)next.TileLocation.X, (int)next.TileLocation.Y);
                     }
                 }
@@ -256,7 +260,7 @@ namespace UIInfoSuite2.UIElements
             PrismaticSprinkler
         }
 
-        private int[][] GetDistanceArray(ObjectsWithDistance type, bool hasPressureNozzle = false)
+        private int[][] GetDistanceArray(ObjectsWithDistance type, bool hasPressureNozzle = false, StardewValley.Object? instance = null)
         {
             switch (type)
             {
@@ -265,9 +269,9 @@ namespace UIInfoSuite2.UIElements
                 case ObjectsWithDistance.Beehouse:
                     return GetCircularMask(4.19, exceptionalDistance: 5, onlyClearExceptions: true);
                 case ObjectsWithDistance.Scarecrow:
-                    return GetCircularMask(8.99);
+                    return GetCircularMask((instance?.GetRadiusForScarecrow() ?? 9) - 0.01);
                 case ObjectsWithDistance.DeluxeScarecrow:
-                    return GetCircularMask(16.99);
+                    return GetCircularMask((instance?.GetRadiusForScarecrow() ?? 17) - 0.01);
                 case ObjectsWithDistance.Sprinkler:
                     return hasPressureNozzle ? GetCircularMask(100, maxDisplaySquareRadius: 1) : GetCircularMask(1);
                 case ObjectsWithDistance.QualitySprinkler:

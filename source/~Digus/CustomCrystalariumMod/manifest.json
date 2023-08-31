@@ -11,7 +11,7 @@
 {
     "Name": "Custom Crystalarium Mod",
     "Author": "Digus",
-    "Version": "1.4.1",
+    "Version": "1.4.2",
     "Description": "Adds a way to customize the crystalarium machine. Adds a way to create custom cloners using content packs.",
     "UniqueID": "DIGUS.CustomCrystalariumMod",
     "EntryDll": "CustomCrystalariumMod.dll",

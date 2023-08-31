@@ -100,20 +100,49 @@ namespace UIInfoSuite2.UIElements
         #endregion
 
         #region Logic
+        private bool GetRobinMessage(out string hoverText)
+        {
+            int remainingDays = Game1.player.daysUntilHouseUpgrade.Value;
+
+            if (remainingDays <= 0)
+            {
+                Building b = Game1.getFarm().getBuildingUnderConstruction();
+
+                if (b is not null)
+                {
+                    if (b.daysOfConstructionLeft.Value > b.daysUntilUpgrade.Value)
+                    {
+                        hoverText = String.Format(_helper.SafeGetString(LanguageKeys.RobinBuildingStatus), b.daysOfConstructionLeft.Value);
+                        return true;
+                    }
+                    else
+                    {
+                        // Add another translation string for this?
+                        hoverText = String.Format(_helper.SafeGetString(LanguageKeys.RobinBuildingStatus), b.daysUntilUpgrade.Value);
+                        return true;
+                    }
+                }
+                else
+                {
+                    hoverText = String.Empty;
+                    return false;
+                }
+            }
+
+            hoverText = String.Format(_helper.SafeGetString(LanguageKeys.RobinHouseUpgradeStatus), remainingDays);
+            return true;
+        }
+
         private void UpdateRobinBuindingStatusData()
         {
-            Building buildingUnderConstruction = Game1.getFarm().getBuildingUnderConstruction();
-            if (buildingUnderConstruction is null)
+            if (GetRobinMessage(out _hoverText))
             {
-                _IsBuildingInProgress = false;
-                _hoverText = String.Empty;
+                _IsBuildingInProgress = true;
+                FindRobinSpritesheet();
             }
             else
             {
-                _IsBuildingInProgress = true;
-                _hoverText = String.Format(_helper.SafeGetString(LanguageKeys.RobinBuildingStatus), buildingUnderConstruction.daysOfConstructionLeft.Value > 0 ? buildingUnderConstruction.daysOfConstructionLeft.Value : buildingUnderConstruction.daysUntilUpgrade.Value);
-
-                FindRobinSpritesheet();
+                _IsBuildingInProgress = false;
             }
         }
 

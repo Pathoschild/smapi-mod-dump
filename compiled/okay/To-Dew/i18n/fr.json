@@ -50,6 +50,8 @@
     "menu.edit.header": "En-tête",
     "menu.edit.bold": "Gras",
     "menu.edit.repeating": "Répétition",
+    "menu.edit.repeat-every": "Répétition",
+    "menu.edit.repeat-days": "",
     "menu.edit.hide-in-overlay": "Masquer dans l'overlay",
     "menu.edit.show-when": "Afficher l'élément quand :",
     "menu.edit.raining-on-farm": "Il pleut à la ferme",

@@ -7,9 +7,9 @@ mods:
    Twitch Chat Integration
 
 latest commit:
-   commit f03a5cbee4a846ed81c9af9c6abc7bb249cf46ed
-   Author: Enteligenz <s8frdrie@stud.uni-saarland.de>
-   Date:   Tue Jul 11 19:39:16 2023 +0200
+   commit b913a09d571a4f8e0616e2345398a063be8b7441
+   Author: Enteligenz <blacklilydragon@gmail.com>
+   Date:   Fri Aug 18 14:42:47 2023 +0200
    
-       Merge branch 'master' of https://github.com/Enteligenz/StardewMods
+       [FoodCravings] fixed versioning mess
    

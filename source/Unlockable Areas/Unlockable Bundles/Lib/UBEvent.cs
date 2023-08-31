@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -21,21 +22,33 @@ namespace Unlockable_Bundles.Lib
 {
     public class UBEvent : Event
     {
+        public static Mod Mod;
+        private static IMonitor Monitor;
+        private static IModHelper Helper;
+
         public Unlockable Unlockable;
-        public UBEvent(Unlockable unlockable, string eventString, int eventID = -1, Farmer farmerActor = null) : base(eventString, eventID, farmerActor)
+
+        public static void Initialize()
+        {
+            Mod = ModEntry.Mod;
+            Monitor = Mod.Monitor;
+            Helper = Mod.Helper;
+
+            RegisterCustomCommand("ub_applyPatch", delegate { ub_applyPatch(); });
+        }
+        public UBEvent(Unlockable unlockable, string eventString, Farmer farmerActor = null) : base(eventString, farmerActor)
         {
             Unlockable = unlockable;
-
-            if (!_commandLookup.ContainsKey("ub_applyPatch"))
-                _commandLookup.Add("ub_applyPatch", (from method_info in typeof(UBEvent).GetMethods()
-                                                           where method_info.Name == "command_ub_applyPatch"
-                                                           select method_info).First());
         }
 
-        public virtual void command_ub_applyPatch(GameLocation location, GameTime time, string[] split)
+        public static void ub_applyPatch()
         {
-            UpdateHandler.applyUnlockable(Unlockable);
-            CurrentCommand++;
+            if (Game1.CurrentEvent is UBEvent ev)
+                UpdateHandler.applyUnlockable(ev.Unlockable);
+            else
+                Monitor.Log("Event command ub_applyPatch was called outside of the context of Unlockable Bundles.", LogLevel.Warn);
+
+            Game1.CurrentEvent.CurrentCommand++;
         }
     }
 }

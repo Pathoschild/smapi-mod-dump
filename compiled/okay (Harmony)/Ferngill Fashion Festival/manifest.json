@@ -1,10 +1,10 @@
 ﻿{
     "Name": "FashionFestivalSMAPI",
     "Author": "UNA",
-    "Version": "1.1.1", // fixed locally
+    "Version": "1.1.2",
     "MinimumApiVersion": "3.15.0",
     "Description": "SMAPI part for Fashion Festival",
     "UniqueID": "UNA.FashionFestivalSMAPI",
     "EntryDll": "FashionFestivalSMAPI.dll",
-    "UpdateKeys": [ "???" ]
+    "UpdateKeys": ["Nexus:17404"]
 }

@@ -1,7 +1,7 @@
 {
     "Name": "Hover Labels",
     "Author": "Achtuur",
-    "Version": "1.1.0",
+    "Version": "1.1.2",
     "Description": "Adds labels to things when you hover over them",
     "UniqueID": "Achtuur.HoverLabels",
     "EntryDll": "HoverLabels.dll",

@@ -50,6 +50,8 @@
     "menu.edit.header": "목차",
     "menu.edit.bold": "볼드체",
     "menu.edit.repeating": "반복",
+    "menu.edit.repeat-every": "반복",
+    "menu.edit.repeat-days": "",
     "menu.edit.hide-in-overlay": "오버레이에서 가리기",
     "menu.edit.show-when": "날씨 조건:",
     "menu.edit.raining-on-farm": "농장에 비가 올 때",

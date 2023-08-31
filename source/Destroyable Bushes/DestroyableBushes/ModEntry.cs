@@ -8,8 +8,8 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
 using HarmonyLib;
+using StardewModdingAPI;
 
 namespace DestroyableBushes
 {
@@ -26,7 +26,7 @@ namespace DestroyableBushes
             Config = Helper.ReadConfig<ModConfig>(); //attempt to load (or create) config.json
 
             //enable SMAPI events
-            Helper.Events.GameLoop.GameLaunched += EnableGMCM; //try to enable Generic Mod Config Menu when the game has launched
+            Helper.Events.Display.RenderedActiveMenu += GMCM.Enable;
             Helper.Events.GameLoop.SaveLoaded += LoadModData;
             Helper.Events.GameLoop.Saving += SaveModData;
             Helper.Events.GameLoop.DayStarted += RegrowBushes;

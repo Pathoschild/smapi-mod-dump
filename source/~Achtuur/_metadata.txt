@@ -7,9 +7,9 @@ mods:
    Travelling Skill
 
 latest commit:
-   commit aa5593f0c491fc2bef5234a62f01b6bc4b238b6b
+   commit ba81ff4ac167ed171aeb1ee7cb1efa097fcaf2b9
    Author: Achtuur <arthurdegroot88@gmail.com>
-   Date:   Thu Jul 27 17:35:20 2023 +0200
+   Date:   Thu Aug 3 10:50:52 2023 +0200
    
-       hoverlabels 1.1.0
+       mod updates
    

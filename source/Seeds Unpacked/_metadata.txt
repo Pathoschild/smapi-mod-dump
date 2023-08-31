@@ -6,9 +6,9 @@ mods:
    Seeds Unpacked
 
 latest commit:
-   commit 6f79eecffc7e501ff0078426805f463ee47dc8ff
-   Author: blueberry <36073351+b-b-blueberry@users.noreply.github.com>
-   Date:   Sat Jun 5 17:09:22 2021 +1000
+   commit d981e3fb173419af0f2d6531bf3f1cf557c26573
+   Author: blueberry <dearbblueberry@gmail.com>
+   Date:   Thu Aug 17 19:28:28 2023 +1000
    
-       Create README.md
+       Update SMAPI minimum requirement to 3.14.0.
    

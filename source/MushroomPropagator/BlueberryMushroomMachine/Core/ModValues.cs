@@ -30,11 +30,28 @@ namespace BlueberryMushroomMachine
 		public static readonly string EventsPath
 			= Path.Combine("assets", "events.json");
 
-		// Objects
-		public static int PropagatorIndex = 0;
-		public static string ObjectData = "{0}/0/-300/Crafting -9/{1}/true/true/0";
-		public static string CraftingRecipeData = "388 20 709 1/Home/{0}/true/null";
+		// Console
+		public static readonly string ConsoleCommandPrefix
+			= "bb.mm.";
+		public static readonly string GiveConsoleCommand
+			= ModValues.ConsoleCommandPrefix + "give";
+		public static readonly string GrowConsoleCommand
+			= ModValues.ConsoleCommandPrefix + "grow";
+		public static readonly string StatusConsoleCommand
+			= ModValues.ConsoleCommandPrefix + "status";
+		public static readonly string FixIdsConsoleCommand
+			= ModValues.ConsoleCommandPrefix + "fix_ids";
 
-		public const int OverlayMushroomFrames = 3;
+		// Objects
+		public const int OverlayMushroomFrames = 4;
+		public const string ObjectDataFormat = "{0}/0/-300/Crafting -9/{1}/true/true/0";
+		public const string RecipeDataFormat = "388 20 709 1/Home/{0}/true/null";
+
+		public static int PropagatorIndex { get; set; } = 0;
+		public static string ObjectData { get; set; } = null;
+		public static string RecipeData { get; set; } = null;
+
+		// Events
+		public const int EventId = 46370001;
 	}
 }

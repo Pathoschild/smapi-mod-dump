@@ -64,9 +64,9 @@
     "AnglerPriceBonusCeiling": 1.0,
     "AquaristFishPondCeiling": 12,
     "ShowFishCollectionMaxIcon": true,
-    "TrashNeededPerTaxDeductionPct": 100,
+    "TrashNeededPerTaxDeduction": 100,
     "TrashNeededPerFriendshipPoint": 100,
-    "ConservationistTaxBonusCeiling": 0.37,
+    "ConservationistTaxDeductionCeiling": 1.0,
     "PiperBuffCeiling": 10,
     "EnableLimitBreaks": true,
     "LimitBreakKey": "LeftShift, LeftShoulder",
@@ -82,8 +82,10 @@
     "ForgetRecipes": true,
     "AllowMultiplePrestige": false,
     "PrestigeExpMultiplier": 0.1,
-    "RequiredExpPerExtendedLevel": 5000,
     "PrestigeRespecCost": 20000,
+    "EnableExtendedProgession": true,
+    "RequiredExpPerExtendedLevel": 5000,
+    "ProgressionStyle": "StackedStars",
     "BaseSkillExpMultipliers": [
       1.0,
       1.0,
@@ -101,8 +103,7 @@
       "moonslime.Excavation": 1.0,
       "spacechase0.LuckSkill": 1.0,
       "DaLion.Alchemy": 1.0
-    },
-    "ProgressionStyle": "StackedStars"
+    }
   },
   "Combat": {
     "EnableStatusConditions": true,
@@ -361,7 +362,7 @@
       209425,
       523600
     ],
-    "IncomeTaxPerBracket": [
+    "TaxPerBracket": [
       0.1,
       0.12,
       0.22,
@@ -372,11 +373,11 @@
     ],
     "AnnualInterest": 0.12,
     "IncomeTaxLatenessFine": 0.05,
-    "DeductibleAnimalExpenses": true,
-    "DeductibleBuildingExpenses": true,
-    "DeductibleSeedExpenses": true,
-    "DeductibleToolExpenses": true,
-    "DeductibleObjects": [],
+    "DeductibleAnimalExpenses": 1.0,
+    "DeductibleBuildingExpenses": 1.0,
+    "DeductibleSeedExpenses": 1.0,
+    "DeductibleToolExpenses": 1.0,
+    "DeductibleExtras": [],
     "PropertyTaxLatenessFine": 0.15,
     "UnusedTileTaxRate": 0.05,
     "UsedTileTaxRate": 0.02,

@@ -28,7 +28,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 {
     public class SpeechBubble : INetObject<NetFields>
     {
-        public NetFields NetFields { get; } = new NetFields();
+        public NetFields NetFields { get; } = new NetFields("DLX.Bundles/SpeechBubble");
 
         public static Mod Mod;
         private static IMonitor Monitor;
@@ -62,7 +62,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
         public KeyValuePair<string, int> NextRequirement;
         public string NextId;
         public int NextQuality;
-        public StardewValley.Object NextObject;
+        public Item NextItem;
 
         public static void Initialize()
         {
@@ -72,7 +72,11 @@ namespace Unlockable_Bundles.Lib.ShopTypes
         }
         private void addNetFieldsAndEvents()
         {
-            NetFields.AddFields(CurrentState, AnimationEvent, UpgradeCompleteEvent, _parrotPerch);
+            NetFields.SetOwner(this)
+                .AddField(CurrentState,         "CurrentState")
+                .AddField(AnimationEvent,       "AnimationEvent")
+                .AddField(UpgradeCompleteEvent, "UpgradeCompleteEvent")
+                .AddField(_parrotPerch,         "_parrotPerch");
 
             Helper.Events.GameLoop.ReturnedToTitle += returnedToTitle;
             Helper.Events.GameLoop.DayEnding += dayEnding;
@@ -104,8 +108,6 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                     ParrotPerch.texture = Helper.GameContent.Load<Texture2D>(Unlockable.ParrotTexture);
             }
                 
-
-
             assignNextItem();
         }
 
@@ -126,7 +128,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                     NextRequirement = req;
                     NextId = Unlockable.getFirstIDFromReqKey(req.Key);
                     NextQuality = Unlockable.getFirstQualityFromReqKey(req.Key);
-                    NextObject = NextId == "money" ? null : new StardewValley.Object(Unlockable.intParseID(NextId), req.Value, quality: NextQuality);
+                    NextItem = NextId == "money" ? null : Unlockable.parseItem(NextId, req.Value, NextQuality);
                     return;
                 }
 
@@ -175,7 +177,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             }
         }
 
-        public void updateWhenCurrentLocation(GameTime time, GameLocation environment)
+        public void updateWhenCurrentLocation(GameTime time)
         {
             updateTimers(time);
             updateParrots(time);
@@ -186,7 +188,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             if (Unlockable.ShopType != ShopType.ParrotPerch)
                 return;
 
-            if (CurrentState == UpgradeState.Building && Parrots.Count < 24) {
+            if (CurrentState.Value == UpgradeState.Building && Parrots.Count < 24) {
                 if (NextParrotSpawn > 0f)
                     NextParrotSpawn -= (float)time.ElapsedGameTime.TotalSeconds;
 
@@ -233,7 +235,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
         public void doPlayerNearbySqwawk()
         {
             bool player_nearby = false;
-            if (Math.Abs(Game1.player.getTileLocationPoint().X - Shop.TileLocation.X) <= 1 && Math.Abs(Game1.player.getTileLocationPoint().Y - Shop.TileLocation.Y) <= 1)
+            if (Math.Abs(Game1.player.TilePoint.X - Shop.TileLocation.X) <= 1 && Math.Abs(Game1.player.TilePoint.Y - Shop.TileLocation.Y) <= 1)
                 player_nearby = true;
 
             if (player_nearby != IsPlayerNearby) {
@@ -250,9 +252,9 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                         CostShakeTime = 0.5f;
                     }
 
-                    if (NextId == "73")
+                    if (NextId == "(O)73")
                         Game1.specialCurrencyDisplay.ShowCurrency("walnuts");
-                    else if (NextId == "858")
+                    else if (NextId == "(O)858")
                         Game1.specialCurrencyDisplay.ShowCurrency("qiGems");
                 } else {
                     Game1.specialCurrencyDisplay.ShowCurrency(null);
@@ -368,7 +370,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
             Inventory.removeItemsOfRequirement(who, NextRequirement);
             Unlockable.processContribution(NextRequirement);
-            var displayName = NextId == "money" ? NextRequirement.Value.ToString("# ### ##0").TrimStart() + "g" : NextObject.DisplayName;
+            var displayName = NextId == "money" ? NextRequirement.Value.ToString("# ### ##0").TrimStart() + "g" : NextItem.DisplayName;
             Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue().globalChatInfoMessage("BundleDonate", Game1.player.displayName, displayName);
             AnimationEvent.Fire();
             return true;
@@ -379,11 +381,11 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             var question = Unlockable.getTranslatedShopDescription();
             var moneyString = Unlockable.ShopType == ShopType.ParrotPerch ? Helper.Translation.Get("ub_parrot_money") : Helper.Translation.Get("ub_speech_money");
 
-            question = question.Replace("{{item}}", NextId == "money" ? moneyString : NextObject.DisplayName);
+            question = question.Replace("{{item}}", NextId == "money" ? moneyString : NextItem.DisplayName);
 
             Game1.currentLocation.afterQuestion = exitYesNo;
             var yesNo = Game1.currentLocation.createYesNoResponses();
-            Game1.activeClickableMenu = new DialogueBox(question, yesNo.ToList());
+            Game1.activeClickableMenu = new DialogueBox(question, yesNo);
         }
 
         public void exitYesNo(Farmer who, string whichAnswer)
@@ -403,6 +405,14 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             PerformAnimationLocal();
             assignNextItem();
         }
+        private KeyValuePair<string, Rectangle> getAnimationTexture(string id)
+        {
+            if (id == "money")
+                return new("LooseSprites\\Cursors", new Rectangle(280, 412, 15, 14));
+
+            var itemData = ItemRegistry.GetDataOrErrorItem(id);
+            return new(itemData.GetTextureName(), itemData.GetSourceRect());
+        }
 
         private void PerformAnimationLocal()
         {
@@ -414,10 +424,10 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
             Parrots.Clear();
             ParrotPresent = true;
-            var textureName = NextId == "money" ? "LooseSprites\\Cursors" : "Maps\\springobjects";
-            var sourceRectangle = NextId == "money" ? new Rectangle(280, 412, 15, 14) : Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, Unlockable.intParseID(NextId), 16, 16);
 
-            Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(textureName, sourceRectangle, 2000f, 1, 0, (Shop.TileLocation + new Vector2(0.25f, -2.5f)) * 64f, flicker: false, flipped: false, (float)(Shop.TileLocation.Y * 64 + 1) / 10000f, 0f, Color.White, 4f, -0.015f, 0f, 0f) {
+            var texture = getAnimationTexture(NextId);
+
+            Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(texture.Key, texture.Value, 2000f, 1, 0, (Shop.TileLocation + new Vector2(0.25f, -2.5f)) * 64f, flicker: false, flipped: false, (float)(Shop.TileLocation.Y * 64 + 1) / 10000f, 0f, Color.White, 4f, -0.015f, 0f, 0f) {
                 motion = new Vector2(-0.1f, -7f),
                 acceleration = new Vector2(0f, 0.25f),
                 id = 98765f,
@@ -468,13 +478,13 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             if (NextId == "money")
                 UtilityMisc.drawMoneyKiloFormat(b, NextRequirement.Value, (int)item_draw_position.X, (int)item_draw_position.Y, Color.White);
             else
-                NextObject.drawInMenu(b, item_draw_position, 1f);
+                NextItem.drawInMenu(b, item_draw_position, 1f);
 
         }
 
         public void drawPerchParrot(SpriteBatch b)
         {
-            if (ParrotPerch == null || !ParrotPresent || CurrentState == UpgradeState.Complete)
+            if (ParrotPerch == null || !ParrotPresent || CurrentState.Value == UpgradeState.Complete)
                 return;
 
             int num = 0;

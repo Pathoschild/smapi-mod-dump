@@ -1002,7 +1002,7 @@ You shouldn't change this file unless you know what you're doing.
             "Locations": [
                 {
                     "LocationName": "Submarine",
-                    "Seasons": [ "Winter" ]
+                    "Seasons": [ "winter" ]
                 }
             ]
         },
@@ -1012,7 +1012,7 @@ You shouldn't change this file unless you know what you're doing.
             "Locations": [
                 {
                     "LocationName": "Submarine",
-                    "Seasons": [ "Winter" ]
+                    "Seasons": [ "winter" ]
                 }
             ]
         },
@@ -1022,7 +1022,7 @@ You shouldn't change this file unless you know what you're doing.
             "Locations": [
                 {
                     "LocationName": "Submarine",
-                    "Seasons": [ "Winter" ]
+                    "Seasons": [ "winter" ]
                 }
             ]
         },
@@ -1032,7 +1032,7 @@ You shouldn't change this file unless you know what you're doing.
             "Locations": [
                 {
                     "LocationName": "Submarine",
-                    "Seasons": [ "Winter" ]
+                    "Seasons": [ "winter" ]
                 }
             ]
         },
@@ -1043,7 +1043,7 @@ You shouldn't change this file unless you know what you're doing.
                 {
                     "LocationName": "UndergroundMine",
                     "Area": 20,
-                    "Seasons": [ "Spring", "Summer", "Fall", "Winter" ]
+                    "Seasons": [ "spring", "summer", "fall", "winter" ]
                 }
             ]
         },
@@ -1056,7 +1056,7 @@ You shouldn't change this file unless you know what you're doing.
                 {
                     "LocationName": "Beach",
                     "Area": "east-pier",
-                    "Seasons": [ "Summer" ]
+                    "Seasons": [ "summer" ]
                 }
             ]
         },
@@ -1069,7 +1069,7 @@ You shouldn't change this file unless you know what you're doing.
                 {
                     "LocationName": "Town",
                     "Area": "northmost-bridge",
-                    "Seasons": [ "Fall" ]
+                    "Seasons": [ "fall" ]
                 }
             ]
         },
@@ -1080,7 +1080,7 @@ You shouldn't change this file unless you know what you're doing.
                 {
                     "LocationName": "UndergroundMine",
                     "Area": 60,
-                    "Seasons": [ "Spring", "Summer", "Fall", "Winter" ]
+                    "Seasons": [ "spring", "summer", "fall", "winter" ]
                 }
             ]
         },
@@ -1091,7 +1091,7 @@ You shouldn't change this file unless you know what you're doing.
                 {
                     "LocationName": "UndergroundMine",
                     "Area": 100,
-                    "Seasons": [ "Spring", "Summer", "Fall", "Winter" ]
+                    "Seasons": [ "spring", "summer", "fall", "winter" ]
                 }
             ]
         },
@@ -1104,7 +1104,7 @@ You shouldn't change this file unless you know what you're doing.
             "Locations": [
                 {
                     "LocationName": "Mountain",
-                    "Seasons": [ "Spring" ]
+                    "Seasons": [ "spring" ]
                 }
             ]
         },
@@ -1115,7 +1115,7 @@ You shouldn't change this file unless you know what you're doing.
             "Locations": [
                 {
                     "LocationName": "Sewer",
-                    "Seasons": [ "Spring", "Summer", "Fall", "Winter" ]
+                    "Seasons": [ "spring", "summer", "fall", "winter" ]
                 }
             ]
         },
@@ -1128,7 +1128,7 @@ You shouldn't change this file unless you know what you're doing.
                 {
                     "LocationName": "Forest",
                     "Area": "island-tip",
-                    "Seasons": [ "Winter" ]
+                    "Seasons": [ "winter" ]
                 }
             ]
         },
@@ -1138,7 +1138,7 @@ You shouldn't change this file unless you know what you're doing.
             "Locations": [
                 {
                     "LocationName": "Submarine",
-                    "Seasons": [ "Winter" ]
+                    "Seasons": [ "winter" ]
                 }
             ]
         },
@@ -1148,7 +1148,7 @@ You shouldn't change this file unless you know what you're doing.
             "Locations": [
                 {
                     "LocationName": "Submarine",
-                    "Seasons": [ "Winter" ]
+                    "Seasons": [ "winter" ]
                 }
             ]
         },
@@ -1158,7 +1158,7 @@ You shouldn't change this file unless you know what you're doing.
             "Locations": [
                 {
                     "LocationName": "Submarine",
-                    "Seasons": [ "Winter" ]
+                    "Seasons": [ "winter" ]
                 }
             ]
         }

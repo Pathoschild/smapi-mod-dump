@@ -38,6 +38,8 @@ namespace Unlockable_Bundles.Lib
             UpdateHandler.Initialize();
             UB_NoGrass.Initialize();
             UtilityMisc.Initialize();
+            UnsafeMap.Initialize();
+            UBEvent.Initialize();
         }
     }
 }

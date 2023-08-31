@@ -12,7 +12,7 @@
   "Format": "2.0",
   "Name": "Paula",
   "Skills": [
-    
+
     //Doctor Skill
     {
       "Name": "doctor",
@@ -25,7 +25,7 @@
     //Fighter or Warrior Skill
     {
       "Name": "fighter",
-      "IsWarrior": false, //Fight with fists boiii
+      "IsWarrior": true, //Fight with fists boiii
       "Strength": 1.0,
       "Speed": 1.0,
       "Effeciency": 1.0,
@@ -42,27 +42,34 @@
 
   ],
   "Rules": {
-    //Basics
-    "": "accept", //acceptance when asked
-    "!f Paula 1": "reject", //talked once
-    
+    //Work
+    "t 800 1400/!d Sun/Hn GH1Letter/!O Paula/!z rainy": "reject companionRejectedWork",
+    "t 1000 1700/!d Wed/!O Paula/!z rainy": "reject companionRejectedWork",
+    "t 800 1700/d Wed/!O Paula": "reject companionRejectedWork",
+    "t 800 1600/d Tue Thu Sat Sun/O Paula/!z rainy": "reject companionRejectedWork_Spouse",
+
+    //Marriage
+    //Reject if under 8 hearts, otherwise always go
+    "O Paula/!f Paula 2000": "reject",
+    "O Paula": "accept",
+
     //Normal
     //Requires seen 4 heart event + 4 hearts and above
     "!f Paula 1000": "reject",
     "k 75160349": "reject",
 
-    //Marriage
-    //no rules
+    //Basics
+    "": "accept", //acceptance when asked
   },
-  
-  "Bedtime": "2200",
+
+  "Bedtime": "2100",
   "BedtimeSpouse": "2530",
-  
+
   "Buffs": { //Farming, Fishing, Mining, Luck, Foraging, Crafting, MaxStamina, MagneticRadius, Speed, Defense, Attack
-  	"MaxStamina": 64,
+  	"MaxStamina": 60,
   },
   "BuffsDescription": "[Paula.buffs]",
-  
+
   "Weapons": {
     /*"0": "Obsidian Edge",
 	  "1": "Obsidian Edge",
@@ -77,7 +84,7 @@
 	  "10": "Infinity Blade"*/
 
     "0": "Obsidian Edge",
-    "5": "Military Saber"
+    "10": "Military Saber"
   },
 
   "IdleBehaviors": [

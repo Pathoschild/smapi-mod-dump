@@ -10,7 +10,7 @@
 
 {
   "Name": "Desert Tangelo",
-  "Description": "A seedless hybrid of tangerine and grapefruit that looks like it has been sun-kissed in the desert.",
+  "TranslationKey": "objects.desert-tangelo",
   "Category": "Fruit",
   "Edibility": 22,
   "Price": 165,

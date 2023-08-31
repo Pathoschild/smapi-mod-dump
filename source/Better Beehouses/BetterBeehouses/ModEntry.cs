@@ -86,6 +86,8 @@ namespace BetterBeehouses
 			var data = asset.AsDictionary<string, string>().Data;
 			data["Daffodil"] += ", honey_source";
 			data["Dandelion"] += ", honey_source";
+			data["Crocus"] += ", honey_source";
+			data["Sweet Pea"] += ", honey_source";
 		}
 	}
 }

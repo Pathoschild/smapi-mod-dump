@@ -46,13 +46,26 @@ Types of labels:
 * Add option for smaller borders (similar to ones you get when hovering over items in inventory)
 
 #### extra labels
-* (slime) incubator
+* None for now
 
 #### small label changes
 
 * disable label during events?
 * labels with a duration that is longer than a day should show date
-  
+ 
+
+## 1.1.2
+* New/Changed
+  * Junimo hut label now shows whether hut is prismatic
+
+* Fixes
+  * Label enabled config now properly saves
+
+## 1.1.1
+* Fixes
+  * Fixed objects being labelled as nodes erroneously (kegs, seed makers etc.)
+  * Fixed some palm trees being labelled as "palm tree 2"
+  * Fixed jade nodes being labelled as ruby nodes
 
 ## 1.1.0
 * New/Changed

@@ -1,0 +1,7 @@
+{
+  "PostedGiftRelationshipModifier": 0.75,
+  "PostboxCost": 2500,
+  "PostboxMaterialCost": "Normal",
+  "CustomPostboxMaterialCost": "113 1",
+  "VerboseGifting": false
+}

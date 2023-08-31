@@ -22,5 +22,6 @@
   "UseAnyFruitTrees": false,
   "BeePaths": true,
   "ParticleCount": 20,
-  "PathParticleCount": 5
+  "PathParticleCount": 5,
+  "AnythingHoney": false
 }

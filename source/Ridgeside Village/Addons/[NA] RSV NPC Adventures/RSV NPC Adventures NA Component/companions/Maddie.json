@@ -38,28 +38,34 @@
 
   ],
   "Rules": {
-    //Basics
-    "": "accept", //acceptance when asked
-    "!f Maddie 1": "reject", //talked once
-    
+    //Work
+    "t 1130 1400/Hn GH1Letter/!d Mon/!O Maddie/!z rainy": "reject companionRejectedWork",
+    "t 1000 1400/!u 10 20/d Sun/!O Maddie": "reject companionRejectedWork",
+    "t 1200 1400/d Tue Thu Fri Sat Sun/O Maddie/!z rainy": "reject companionRejectedWork_Spouse",
+
+    //Marriage
+    //Reject if under 8 hearts, otherwise always go
+    "O Maddie/!f Maddie 2000": "reject",
+    "O Maddie": "accept",
+
     //Normal
     //Requires seen 4 heart event + 4 hearts and above
     "!f Maddie 1000": "reject",
     "k 75160135": "reject",
 
-    //Marriage
-    //no rules
+    //Basics
+    "": "accept", //acceptance when asked
   },
-  
+
   "Bedtime": "2200",
   "BedtimeSpouse": "2530",
-  
+
   "Buffs": { //Farming, Fishing, Mining, Luck, Foraging, Crafting, MaxStamina, MagneticRadius, Speed, Defense, Attack
   	"Mining": 3,
   	"Foraging": 3,
   },
   "BuffsDescription": "[Maddie.buffs]",
-  
+
   "Weapons": {
     /*"0": "Obsidian Edge",
 	  "1": "Obsidian Edge",

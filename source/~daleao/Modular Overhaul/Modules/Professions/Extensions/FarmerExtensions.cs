@@ -55,7 +55,7 @@ internal static class FarmerExtensions
     /// <returns><see langword="true"/> only if the <paramref name="farmer"/> has both tier-two professions which branch from <paramref name="profession"/>, otherwise <see langword="false"/>.</returns>
     internal static bool HasAllProfessionsBranchingFrom(this Farmer farmer, IProfession profession)
     {
-        return profession.BranchingProfessions.All(farmer.professions.Contains);
+        return profession.BranchingProfessions.All(branch => farmer.professions.Contains(branch.Id));
     }
 
     /// <summary>
@@ -132,7 +132,10 @@ internal static class FarmerExtensions
     internal static int GetCurrentProfessionForBranch(this Farmer farmer, IProfession branch)
     {
         var current = farmer.professions
-            .Intersect(branch.BranchingProfessions.Concat(branch.BranchingProfessions.Select(id => id + 100)))
+            .Intersect(branch.BranchingProfessions
+                .Select(p => p.Id)
+                .Concat(branch.BranchingProfessions
+                    .Select(p => p.Id + 100)))
             .DefaultIfEmpty(-1)
             .Last();
 
@@ -328,7 +331,7 @@ internal static class FarmerExtensions
     /// <summary>Gets the bonus "catching" bar build rate for <see cref="Profession.Aquarist"/>.</summary>
     /// <param name="farmer">The <see cref="Farmer"/>.</param>
     /// <returns>A <see cref="float"/> catching height.</returns>
-    internal static float GetAquaristCatchingBonus(this Farmer farmer)
+    internal static float GetAquaristCatchingHandicap(this Farmer farmer)
     {
         HashSet<int> fishTypes = new();
         var buildings = Game1.getFarm().buildings;
@@ -351,7 +354,7 @@ internal static class FarmerExtensions
     /// <returns>A <see cref="float"/> multiplier for general items.</returns>
     internal static float GetConservationistPriceMultiplier(this Farmer farmer)
     {
-        return 1f + farmer.Read<float>(DataKeys.ConservationistActiveTaxBonusPct);
+        return 1f + farmer.Read<float>(DataKeys.ConservationistActiveTaxDeduction);
     }
 
     /// <summary>Gets the quality of items foraged by <see cref="Profession.Ecologist"/>.</summary>

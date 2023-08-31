@@ -10,7 +10,7 @@
 
 using Pathoschild.Stardew.Automate;
 
-namespace BlueberryMushroomAutomation.Core
+namespace BlueberryMushroomAutomation
 {
 	public interface IAutomateAPI
 	{

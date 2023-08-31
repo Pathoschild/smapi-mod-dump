@@ -10,7 +10,7 @@
 
 {
   "Name": "Cherry Berry Shakey",
-  "Description": "A sweet, cherry-rich drink beloved by both kids and adults!",
+  "TranslationKey": "objects.cherry-berry-shakey",
   "Category": "Cooking",
   "Price": 200,
   "Edibility": 51,
@@ -49,35 +49,4 @@
         ],
         "CanPurchase": false,
     },
-
-    "NameLocalization":
-    { 
-      //remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    },
-    "DescriptionLocalization":
-    {
-      //remove the "//" from your language      
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    }
 }

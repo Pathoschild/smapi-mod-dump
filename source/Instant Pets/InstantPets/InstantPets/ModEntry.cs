@@ -12,7 +12,6 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace InstantPets
 {
@@ -43,17 +42,12 @@ namespace InstantPets
 			var api = this.Helper.ModRegistry.GetApi
 				<IGenericModConfigMenuAPI>
 				("spacechase0.GenericModConfigMenu");
-			if (api != null)
+			if (api is not null)
 			{
-				api.RegisterModConfig(
+				api.Register(
 					mod: this.ModManifest,
-					revertToDefault: () => ModEntry.Config = new Config(),
-					saveToFile: () => this.Helper.WriteConfig(ModEntry.Config));
-
-				// Set all config options to be customisable in-game
-				api.SetDefaultIngameOptinValue(
-					mod: this.ModManifest,
-					optedIn: true);
+					reset: () => ModEntry.Config = new Config(),
+					save: () => this.Helper.WriteConfig(ModEntry.Config));
 
 				// Add all specified config properties
 				foreach (KeyValuePair<string, string> entry in Config.ConfigPropertiesAndDescriptions)
@@ -62,12 +56,12 @@ namespace InstantPets
 					string name = System.Text.RegularExpressions.Regex.Replace(entry.Key, "([A-Z])", " $1").Trim();
 					string description = entry.Value;
 					System.Reflection.PropertyInfo property = typeof(Config).GetProperty(entry.Key);
-					api.RegisterSimpleOption(
+					api.AddBoolOption(
 						mod: this.ModManifest,
-						optionName: name,
-						optionDesc: string.IsNullOrWhiteSpace(description) ? null : description,
-						optionGet: () => (bool)property.GetValue(ModEntry.Config),
-						optionSet: (bool value) => property.SetValue(ModEntry.Config, value: value));
+						name: () => name,
+						tooltip: () => string.IsNullOrWhiteSpace(description) ? null : description,
+						getValue: () => (bool)property.GetValue(ModEntry.Config),
+						setValue: (bool value) => property.SetValue(ModEntry.Config, value: value));
 				}
 			}
 		}

@@ -50,6 +50,8 @@
     "menu.edit.header": "Заголовок",
     "menu.edit.bold": "Жирный",
     "menu.edit.repeating": "Повторяющийся",
+    "menu.edit.repeat-every": "Повторяющийся",
+    "menu.edit.repeat-days": "",
     "menu.edit.hide-in-overlay": "Не показывать в оверлее",
     "menu.edit.show-when": "Показывать элемент, когда:",
     "menu.edit.raining-on-farm": "На ферме идет дождь",

@@ -24,6 +24,10 @@ Ever hated having to put a sprinkler in the middle of your crops? Ever wanted to
 Hats on hats.
 \[[source code](HatsOnHats)]
 
+[![In a Heartbeat](InAHeartbeat/Header.png)](https://www.nexusmods.com/stardewvalley/mods/17834)
+Show some extra love to date/marry villagers early. Adds craftable Bouquets and Mermaid's Pendants.
+\[[source code](InAHeartbeat)]
+
 [![Junimo Warp](JunimoWarp/Header.png)](https://www.nexusmods.com/stardewvalley/mods/15676)
 Place yourself inside a Junimo Chest and warp to another chest.
 \[[source code](JunimoWarp)]

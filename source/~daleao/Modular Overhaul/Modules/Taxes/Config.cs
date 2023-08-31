@@ -25,7 +25,7 @@ public sealed class Config : Shared.Configs.Config
 
     /// <summary>Gets the taxable percentage of income at each bracket. If there are n brackets, this array should contain n+1 elements.</summary>
     [JsonProperty]
-    public float[] IncomeTaxPerBracket { get; internal set; } = { 0.1f, 0.12f, 0.22f, 0.24f, 0.32f, 0.35f, 0.37f };
+    public float[] TaxPerBracket { get; internal set; } = { 0.1f, 0.12f, 0.22f, 0.24f, 0.32f, 0.35f, 0.37f };
 
     /// <summary>
     ///     Gets the interest rate charged annually over any outstanding debt. Interest is accrued daily at a rate of 1/112 the
@@ -40,23 +40,23 @@ public sealed class Config : Shared.Configs.Config
 
     /// <summary>Gets a value indicating whether or not any gold spent on animal purchases and supplies should be tax-deductible.</summary>
     [JsonProperty]
-    public bool DeductibleAnimalExpenses { get; internal set; } = true;
+    public float DeductibleAnimalExpenses { get; internal set; } = 1f;
 
     /// <summary>Gets a value indicating whether or not any gold spent constructing farm buildings should be tax-deductible.</summary>
     [JsonProperty]
-    public bool DeductibleBuildingExpenses { get; internal set; } = true;
+    public float DeductibleBuildingExpenses { get; internal set; } = 1f;
 
     /// <summary>Gets a value indicating whether or not any gold spent on seed purchases should be tax-deductible.</summary>
     [JsonProperty]
-    public bool DeductibleSeedExpenses { get; internal set; } = true;
+    public float DeductibleSeedExpenses { get; internal set; } = 1f;
 
     /// <summary>Gets a value indicating whether or not any gold spent on tool purchases and upgrades should be tax-deductible.</summary>
     [JsonProperty]
-    public bool DeductibleToolExpenses { get; internal set; } = true;
+    public float DeductibleToolExpenses { get; internal set; } = 1f;
 
     /// <summary>Gets a value indicating the list of extra objects that should be tax-deductible.</summary>
     [JsonProperty]
-    public string[] DeductibleObjects { get; internal set; } = Array.Empty<string>();
+    public string[] DeductibleExtras { get; internal set; } = Array.Empty<string>();
 
     /// <summary>Gets the flat rate charged over due income taxes not paid in time.</summary>
     [JsonProperty]
@@ -83,7 +83,7 @@ public sealed class Config : Shared.Configs.Config
     {
         Log.T("[TXS]: Verifying tax configs...");
 
-        if (this.IncomeBrackets.Length == this.IncomeTaxPerBracket.Length - 1)
+        if (this.IncomeBrackets.Length == this.TaxPerBracket.Length - 1)
         {
             return true;
         }
@@ -92,7 +92,7 @@ public sealed class Config : Shared.Configs.Config
               " For `n` income brackets there should be `n+1` tax values (the final value implicitly corresponds to infinity)." +
               " The default values will be restored.");
         this.IncomeBrackets = new[] { 9950, 40525, 86375, 164925, 209425, 523600 };
-        this.IncomeTaxPerBracket = new[] { 0.1f, 0.12f, 0.22f, 0.24f, 0.32f, 0.35f, 0.37f };
+        this.TaxPerBracket = new[] { 0.1f, 0.12f, 0.22f, 0.24f, 0.32f, 0.35f, 0.37f };
         return false;
     }
 }

@@ -11,10 +11,10 @@
 {
   "Name": "AeroCore",
   "Author": "Tlitookilakin",
-  "Version": "0.9.5",
+  "Version": "0.9.6",
   "Description": "A utility coremod",
   "UniqueID": "tlitookilakin.AeroCore",
   "EntryDll": "AeroCore.dll",
   "MinimumApiVersion": "3.14",
-  "UpdateKeys": [ "GitHub:Tlitookilakin/AeroCore", "Nexus:14700", "ModDrop:1275014"]
+  "UpdateKeys": [ "Nexus:14700", "GitHub:Tlitookilakin/AeroCore", "ModDrop:1275014"]
 }

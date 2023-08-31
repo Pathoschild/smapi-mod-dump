@@ -218,7 +218,7 @@ namespace SmartBuilding.Utilities
                 return ItemType.GenericFurniture;
             if (itemName.Contains("Floor") || (itemName.Contains("Path") && item.Category == -24))
                 return ItemType.Floor;
-            if (itemName.Contains("Chest") || item is Chest)
+            if (item is Chest)
                 return ItemType.Chest;
             if (itemName.Contains("Fence"))
                 return ItemType.Fence;

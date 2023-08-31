@@ -25,6 +25,7 @@ namespace Unlockable_Bundles.Lib
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
+        //TODO: For clients mail language is currently the same as the hosts, I should translate at the 'UpdateMailData' mod message received
         public static Dictionary<string, string> MailData = new Dictionary<string, string>();
         public static void Initialize()
         {

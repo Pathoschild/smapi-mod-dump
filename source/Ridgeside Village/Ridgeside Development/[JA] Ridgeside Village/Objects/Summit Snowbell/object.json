@@ -10,7 +10,7 @@
 
 {
   "Name": "Summit Snowbell",
-  "Description": "It's a local sign that winter is coming!",
+  "TranslationKey": "objects.summit-snowbell",
   "Category": "Flower",
   "Edibility": 5,
   "EdibleBuffs": {
@@ -34,35 +34,4 @@
   "Love": ["Trinnie", "Kenneth", "Ian", "Sean", "Shiro"],
   "Like": ["Jas", "Jeric"],
   },
-
-      "NameLocalization":
-    {
-      //remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    },
-    "DescriptionLocalization":
-    {
-      //remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    }
 }

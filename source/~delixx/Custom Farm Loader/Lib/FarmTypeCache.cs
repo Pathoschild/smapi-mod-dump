@@ -42,15 +42,18 @@ namespace Custom_Farm_Loader.Lib
 
         private static void Saved(object sender, StardewModdingAPI.Events.SavedEventArgs e)
         {
-            if (Cache.ContainsKey(Game1.GetSaveGameName(false)) && Cache[Game1.GetSaveGameName(false)] == Game1.GetFarmTypeID())
+            string friendlyName = SaveGame.FilterFileName(Game1.GetSaveGameName(false));
+            string savefile = friendlyName + "_" + Game1.uniqueIDForThisGame;
+
+            if (Cache.ContainsKey(savefile) && Cache[savefile] == Game1.GetFarmTypeID())
                 return;
 
             Monitor.Log("Updating FarmTypeCache for " + Game1.GetSaveGameName(false));
 
-            if (Cache.ContainsKey(Game1.GetSaveGameName(false)))
-                Cache[Game1.GetSaveGameName(false)] = Game1.GetFarmTypeID();
+            if (Cache.ContainsKey(savefile))
+                Cache[savefile] = Game1.GetFarmTypeID();
 
-            else Cache.Add(Game1.GetSaveGameName(false), Game1.GetFarmTypeID());
+            else Cache.Add(savefile, Game1.GetFarmTypeID());
 
             Helper.Data.WriteJsonFile(CacheFileName, Cache);
         }

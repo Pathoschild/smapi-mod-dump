@@ -6,9 +6,9 @@ mods:
    Greenhouse Entry Begone!
 
 latest commit:
-   commit a7ea8992e81ac7aa1589ece9220488c28ba3500b
-   Author: blueberry <36073351+b-b-blueberry@users.noreply.github.com>
-   Date:   Sat Jun 5 17:03:29 2021 +1000
+   commit dd77e8411657a3bf0156dcd405188d45d1e68308
+   Author: blueberry <dearbblueberry@gmail.com>
+   Date:   Thu Aug 17 22:52:08 2023 +1000
    
-       Update README.md
+       Merge branch 'master' of https://github.com/b-b-blueberry/GreenhouseEntryPatch
    

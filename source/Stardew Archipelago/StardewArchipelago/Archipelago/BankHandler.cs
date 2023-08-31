@@ -18,12 +18,12 @@ namespace StardewArchipelago.Archipelago
 {
     public class BankHandler
     {
-        private const string BANKING_KEY = "EnergyLink";
+        // private const string BANKING_KEY = "EnergyLink";
         private const string BANKING_TEAM_KEY = "EnergyLink{0}";
         private const string DEPOSIT_COMMAND = "Deposit";
         private const string WITHDRAW_COMMAND = "Withdraw";
         private const int MAX_DISPLAY_MONEY = 100000000; // 100 Millions
-        private const int EXCHANGE_RATE = 10000000; // To be adjusted based on feedback (pun intended)
+        public const int EXCHANGE_RATE = 10000000; // To be adjusted based on feedback (pun intended)
 
         public ArchipelagoClient _archipelago;
 
@@ -61,6 +61,12 @@ namespace StardewArchipelago.Archipelago
             }
 
             var bankCommandParts = bankCommand.Split(" ");
+#if DEBUG
+            if (bankCommandParts[0] == "reset")
+            {
+                HandleResetCommand();
+            }
+#endif
 
             if (bankCommandParts.Length != 2)
             {
@@ -82,6 +88,17 @@ namespace StardewArchipelago.Archipelago
 
             PrintUsageRules();
             return true;
+        }
+
+        private void HandleResetCommand()
+        {
+#if RELEASE
+    return;
+#endif
+            var bankingKey = string.Format(BANKING_TEAM_KEY, _archipelago.GetTeam());
+            _archipelago.SetBigIntegerDataStorage(Scope.Global, bankingKey, 0);
+
+            Game1.chatBox?.addMessage($"You have successfully reset your bank account to {0}$", Color.Gold);
         }
 
         private void HandleDepositCommand(string amount)
@@ -157,7 +174,8 @@ namespace StardewArchipelago.Archipelago
 
         private BigInteger GetBankJoulesAmount()
         {
-            var realAmountJoules = _archipelago.ReadBigIntegerFromDataStorage(Scope.Global, BANKING_KEY);
+            var bankingKey = string.Format(BANKING_TEAM_KEY, _archipelago.GetTeam());
+            var realAmountJoules = _archipelago.ReadBigIntegerFromDataStorage(Scope.Global, bankingKey);
             if (realAmountJoules == null)
             {
                 return 0;
@@ -168,18 +186,20 @@ namespace StardewArchipelago.Archipelago
 
         private void AddToBank(int amountToAdd)
         {
+            var bankingKey = string.Format(BANKING_TEAM_KEY, _archipelago.GetTeam());
             var currentAmountJoules = GetBankJoulesAmount();
             var amountToAddJoules = MoneyToJoules(amountToAdd);
             var bankAmountAfterOperation = currentAmountJoules + amountToAddJoules;
-            _archipelago.SetBigIntegerDataStorage(Scope.Global, BANKING_KEY, bankAmountAfterOperation);
+            _archipelago.SetBigIntegerDataStorage(Scope.Global, bankingKey, bankAmountAfterOperation);
         }
 
         private void RemoveFromBank(int amountToRemove)
         {
+            var bankingKey = string.Format(BANKING_TEAM_KEY, _archipelago.GetTeam());
             var currentAmountJoules = GetBankJoulesAmount();
             var amountToRemoveJoules = MoneyToJoules(amountToRemove);
             var bankAmountAfterOperation = currentAmountJoules - amountToRemoveJoules;
-            _archipelago.SetBigIntegerDataStorage(Scope.Global, BANKING_KEY, bankAmountAfterOperation);
+            _archipelago.SetBigIntegerDataStorage(Scope.Global, bankingKey, bankAmountAfterOperation);
         }
 
         private BigInteger MoneyToJoules(BigInteger money)

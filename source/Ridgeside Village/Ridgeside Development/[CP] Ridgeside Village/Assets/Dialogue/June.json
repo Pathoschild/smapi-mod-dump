@@ -32,6 +32,12 @@
     "winter_28": "{{i18n:June.winter_28}}",
 
     // No hearts
+    "Mon": "{{i18n:June.Mon}}",
+    "Tue": "{{i18n:June.Tue}}",
+    "Wed": "{{i18n:June.Wed}}",
+    "Thu": "{{i18n:June.Thu}}",
+    "Fri": "{{i18n:June.Fri}}",
+    "Sat": "{{i18n:June.Sat}}",
     "fall_Mon": "{{i18n:June.fall_Mon}}",
     "fall_Tue": "{{i18n:June.fall_Tue}}",
     "fall_Wed": "{{i18n:June.fall_Wed}}",
@@ -48,6 +54,12 @@
     "winter_Sun": "{{i18n:June.winter_Sun}}",
 
     // Two hearts
+    "Mon2": "{{i18n:June.Mon2}}",
+    "Tue2": "{{i18n:June.Tue2}}",
+    "Wed2": "{{i18n:June.Wed2}}",
+    "Thu2": "{{i18n:June.Thu2}}",
+    "Fri2": "{{i18n:June.Fri2}}",
+    "Sat2": "{{i18n:June.Sat2}}",
     "fall_Mon2": "{{i18n:June.fall_Mon2}}",
     "fall_Tue2": "{{i18n:June.fall_Tue2}}",
     "fall_Wed2": "{{i18n:June.fall_Wed2}}",
@@ -64,6 +76,12 @@
     "winter_Sun2": "{{i18n:June.winter_Sun2}}",
 
     // Four hearts
+    "Mon4": "{{i18n:June.Mon4}}",
+    "Tue4": "{{i18n:June.Tue4}}",
+    "Wed4": "{{i18n:June.Wed4}}",
+    "Thu4": "{{i18n:June.Thu4}}",
+    "Fri4": "{{i18n:June.Fri4}}",
+    "Sat4": "{{i18n:June.Sat4}}",
     "fall_Mon4": "{{i18n:June.fall_Mon4}}",
     "fall_Tue4": "{{i18n:June.fall_Tue4}}",
     "fall_Wed4": "{{i18n:June.fall_Wed4}}",
@@ -80,6 +98,12 @@
     "winter_Sun4": "{{i18n:June.winter_Sun4}}",
 
     // Six hearts
+    "Mon6": "{{i18n:June.Mon6}}",
+    "Tue6": "{{i18n:June.Tue6}}",
+    "Wed6": "{{i18n:June.Wed6}}",
+    "Thu6": "{{i18n:June.Thu6}}",
+    "Fri6": "{{i18n:June.Fri6}}",
+    "Sat6": "{{i18n:June.Sat6}}",
     "fall_Mon6": "{{i18n:June.fall_Mon6}}",
     "fall_Tue6": "{{i18n:June.fall_Tue6}}",
     "fall_Wed6": "{{i18n:June.fall_Wed6}}",
@@ -96,6 +120,12 @@
     "winter_Sun6": "{{i18n:June.winter_Sun6}}",
 
     // Eight hearts
+    "Mon8": "{{i18n:June.Mon8}}",
+    "Tue8": "{{i18n:June.Tue8}}",
+    "Wed8": "{{i18n:June.Wed8}}",
+    "Thu8": "{{i18n:June.Thu8}}",
+    "Fri8": "{{i18n:June.Fri8}}",
+    "Sat8": "{{i18n:June.Sat8}}",
     "fall_Mon8": "{{i18n:June.fall_Mon8}}",
     "fall_Tue8": "{{i18n:June.fall_Tue8}}",
     "fall_Wed8": "{{i18n:June.fall_Wed8}}",
@@ -112,6 +142,20 @@
     "winter_Sun8": "{{i18n:June.winter_Sun8}}",
 
     // Ten hearts
+    "spring_Mon10": "{{i18n:June.spring_Mon10}}",
+    "spring_Tue10": "{{i18n:June.spring_Tue10}}",
+    "spring_Wed10": "{{i18n:June.spring_Wed10}}",
+    "spring_Thu10": "{{i18n:June.spring_Thu10}}",
+    "spring_Fri10": "{{i18n:June.spring_Fri10}}",
+    "spring_Sat10": "{{i18n:June.spring_Sat10}}",
+    "spring_Sun10": "{{i18n:June.spring_Sun10}}",
+    "summer_Mon10": "{{i18n:June.summer_Mon10}}",
+    "summer_Tue10": "{{i18n:June.summer_Tue10}}",
+    "summer_Wed10": "{{i18n:June.summer_Wed10}}",
+    "summer_Thu10": "{{i18n:June.summer_Thu10}}",
+    "summer_Fri10": "{{i18n:June.summer_Fri10}}",
+    "summer_Sat10": "{{i18n:June.summer_Sat10}}",
+    "summer_Sat10": "{{i18n:June.summer_Sat10}}",
     "fall_Mon10": "{{i18n:June.fall_Mon10}}",
     "fall_Tue10": "{{i18n:June.fall_Tue10}}",
     "fall_Wed10": "{{i18n:June.fall_Wed10}}",
@@ -202,16 +246,6 @@
     // Misc
     "MovieInvitation": "{{i18n:June.MovieInvitation}}",
     "MovieInvite_Spouse_June": "{{i18n:June.MovieInvitation}}",
-    //"Saloon_2_18": "Single June at the Saloon",
-
-    // Hopefully this dialogue never shows up
-    "Mon": "{{i18n:June.error}}",
-    "Tue": "{{i18n:June.error}}",
-    "Wed": "{{i18n:June.error}}",
-    "Thu": "{{i18n:June.error}}",
-    "Fri": "{{i18n:June.error}}",
-    "Sat": "{{i18n:June.error}}",
-    "Sun": "{{i18n:June.error}}",
     }
   },
 
@@ -265,13 +299,11 @@
     "June_spouse": "{{i18n:June.ember.spouse}}"
   }
 },
-
-// Festivals June can only attend when married
 {
   "Action": "EditData",
   "Target": "Data/Festivals/spring13",
   "Entries": {
-    "June": "{{i18n:June.error}}",
+    "June": "{{i18n:June.egghunt}}",
     "June_spouse": "{{i18n:June.egghunt.spouse}}"
   }
 },
@@ -279,7 +311,7 @@
   "Action": "EditData",
   "Target": "Data/Festivals/spring24",
   "Entries": {
-    "June": "{{i18n:June.error}}",
+    "June": "{{i18n:June.dance}}",
     "June_spouse": "{{i18n:June.dance.spouse}}"
   }
 },
@@ -287,7 +319,7 @@
   "Action": "EditData",
   "Target": "Data/Festivals/summer11",
   "Entries": {
-    "June": "{{i18n:June.error}}",
+    "June": "{{i18n:June.luau}}",
     "June_spouse": "{{i18n:June.luau.spouse}}"
   }
 },
@@ -295,160 +327,13 @@
   "Action": "EditData",
   "Target": "Data/Festivals/summer28",
   "Entries": {
-    "June": "{{i18n:June.error}}",
+    "June": "{{i18n:June.jellies}}",
     "June_spouse": "{{i18n:June.jellies.spouse}}"
   }
 },
 
-// Spouse fix for Free Love
 {
-  "LogName": "June SDV Fair Dialogue",
-  "Action": "EditData",
-  "Target": "Data/Festivals/fall16",
-  "When": { "Relationship:June |contains=Married": true },
-  "Entries": {
-    "June": "{{i18n:June.fair.spouse}}",
-  }
-},
-
-{
-  "LogName": "June Gathering Dialogue",
-  "Action": "EditData",
-  "Target": "Data/Festivals/fall20",
-  "When": { "Relationship:June |contains=Married": true },
-  "Entries": {
-    "June": "{{i18n:June.gathering.spouse}}"
-  }
-},
-{
-  "Action": "EditData",
-  "Target": "Data/Festivals/fall27",
-  "When": { "Relationship:June |contains=Married": true },
-  "Entries": {
-    "June": "{{i18n:June.spiritseve.spouse}}"
-  }
-},
-{
-  "Action": "EditData",
-  "Target": "Data/Festivals/winter8",
-  "When": { "Relationship:June |contains=Married": true },
-  "Entries": {
-    "June": "{{i18n:June.fishing.spouse}}"
-  }
-},
-{
-  "Action": "EditData",
-  "Target": "Data/Festivals/winter25",
-  "When": { "Relationship:June |contains=Married": true },
-  "Entries": {
-    "June": "{{i18n:June.winterstar.spouse}}"
-  }
-},
-{
-  "Action": "EditData",
-  "Target": "Data/Festivals/winter28",
-  "When": { "Relationship:June |contains=Married": true },
-  "Entries": {
-    "June": "{{i18n:June.ember.spouse}}"
-  }
-},
-{
-  "Action": "EditData",
-  "Target": "Data/Festivals/spring13",
-  "When": { "Relationship:June |contains=Married": true },
-  "Entries": {
-    "June": "{{i18n:June.egghunt.spouse}}"
-  }
-},
-{
-  "Action": "EditData",
-  "Target": "Data/Festivals/spring24",
-  "When": { "Relationship:June |contains=Married": true },
-  "Entries": {
-    "June": "{{i18n:June.dance.spouse}}"
-  }
-},
-{
-  "Action": "EditData",
-  "Target": "Data/Festivals/summer11",
-  "When": { "Relationship:June |contains=Married": true },
-  "Entries": {
-    "June": "{{i18n:June.luau.spouse}}"
-  }
-},
-{
-  "Action": "EditData",
-  "Target": "Data/Festivals/summer28",
-  "When": { "Relationship:June |contains=Married": true },
-  "Entries": {
-    "June": "{{i18n:June.jellies.spouse}}"
-  }
-},
-
-{
-  "LogName": "June 'fun leave' dialogue",
-  "Action": "EditData",
-  "Target": "Characters/Dialogue/MarriageDialogueJune",
-  "When": {
-    "Season": "fall",
-    "DayOfWeek": "Tuesday"
-  },
-  "Entries": {
-    "funLeave_June": "{{i18n:June.funLeave_fall}}",
-    "funReturn_June": "{{i18n:June.funReturn_fall}}",
-  }
-},
-{
-  "LogName": "June 'fun leave' dialogue",
-  "Action": "EditData",
-  "Target": "Characters/Dialogue/MarriageDialogueJune",
-  "When": {
-    "Season": "winter",
-    "DayOfWeek": "Tuesday"
-  },
-  "Entries": {
-    "funLeave_June": "{{i18n:June.funLeave_winter}}",
-    "funReturn_June": "{{i18n:June.funReturn_winter}}",
-  }
-},
-{
-  "LogName": "June 'fun leave' dialogue",
-  "Action": "EditData",
-  "Target": "Characters/Dialogue/MarriageDialogueJune",
-  "When": {
-    "Season": "spring",
-    "DayOfWeek": "Tuesday"
-  },
-  "Entries": {
-    "funLeave_June": "{{i18n:June.funLeave_spring}}",
-    "funReturn_June": "{{i18n:June.funReturn_spring}}",
-  }
-},
-{
-  "LogName": "June 'fun leave' dialogue",
-  "Action": "EditData",
-  "Target": "Characters/Dialogue/MarriageDialogueJune",
-  "When": {
-    "Season": "summer",
-    "DayOfWeek": "Tuesday",
-    "HasMod": "spacechase0.JsonAssets"
-  },
-  "Entries": {
-    "funLeave_June": "{{i18n:June.funLeave_summer}}",
-    "funReturn_June": "{{i18n:June.funReturn_summer.1}} [{{spacechase0.JsonAssets/ObjectId:Fried Fish a la Ridge}} {{spacechase0.JsonAssets/ObjectId:Fried Mountain Greens}} {{spacechase0.JsonAssets/ObjectId:Ridge Fruity Plate}} {{spacechase0.JsonAssets/ObjectId:Zesty Tuna}}]#$b#{{i18n:June.funReturn_summer.2}}"
-  }
-},
-{
-  "LogName": "June alternate patio dialogue",
-  "Action": "EditData",
-  "Target": "Characters/Dialogue/MarriageDialogueJune",
-  "When": { "RandomNumber": "{{Range: 0,4}}" },
-  "Entries": {
-    "patio_June": "{{i18n:June.patio.2}}",
-  }
-},
-{
-  "LogName": "June romance dialogue",
+  "LogName": "June dating return/leave dialogue",
   "Action": "EditData",
   "Target": "Characters/Dialogue/June",
   "When": {

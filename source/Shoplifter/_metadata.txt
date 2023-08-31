@@ -6,9 +6,9 @@ mods:
    Shoplifter
 
 latest commit:
-   commit 9ba32455e40b956d4901c373b56e0450db726b2d
+   commit e584642ab2f3512250282bfb3cf6905fb0fd8c98
    Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Fri Jul 28 12:29:20 2023 +1000
+   Date:   Thu Aug 31 10:40:44 2023 +1000
    
-       update manifest
+       Add failsafe for empty stocklist
    

@@ -105,7 +105,7 @@ G	✔	Burrito					Tortilla + Rice + Chilli							Rice, Tortilla
 	✔	Cray Mornay				Crayfish + Artichoke								Crayfish
 	✔	Dwarven Stew			Hearty Stew + Beer/Ale/Cider						+Attack -Speed
 	✔	Eel Sushi				Eel + Seaweed + Rice								Rice
-U	✔	Egg Sandwich			Bread + Mayonnaise + Egg (Leftovers)				Runescape
+	✔	Egg Sandwich			Bread + Mayonnaise + Egg (Leftovers)				Runescape
 	✔	Garden Pie				Flour + Cabbage + Onion + Tomato					Runescape
 G	✔	Hearty Stew				Carrot x2 + Potato									New ingredients, homely
 	✔	Hot Cocoa				Milk + Chocolate Bar								Personal pref
@@ -121,8 +121,8 @@ G	✔	Hearty Stew				Carrot x2 + Potato									New ingredients, homely
 	✔	Porridge				Wheat x2 + Milk										Wheat
 	✔	Quick Breakfast			Omelet + Coffee										Augmented recipe
 	✔	Redberry Pie			Flour + Sugar + Redberries x3						Runescape
-U	✔	Salad Sandwich			Bread + Vinegar + Dandelion (Leftovers)				Runescape
-U	✔	Seafood Sandwich		Bread + Mayonnaise + Crab (Leftovers)				Runescape
+	✔	Salad Sandwich			Bread + Vinegar + Dandelion (Leftovers)				Runescape
+	✔	Seafood Sandwich		Bread + Mayonnaise + Crab (Leftovers)				Runescape
 	✔	Stuffed Potato			Potato + Cheese + Common Mushroom					Augmented recipe
 	✔	Tropical Salad			Pineapple + Apple + Watermelon						New ingredients
 
@@ -141,3 +141,51 @@ U	✔	Seafood Sandwich		Bread + Mayonnaise + Crab (Leftovers)				Runescape
 	A	Auto-reward on learning other recipes
 	F	Festival only
 	G	Gus' shop only
+	
+Cooking skill recipes:
+Lv0
+	Baked Potato			Potato
+Lv1
+	Burrito					Tortilla + Rice + Hot Pepper
+	Cauliflower Fritters	Cauliflower + Spring Onion
+Lv2
+	Plum Porridge			Wild Plum + Wheat x2 + Milk (any)
+	Quick Breakfast			Omelet + Coffee
+Lv3
+	Loaded Potato			Baked Potato + Tuna + Corn
+	Lobster Bake			Lobster
+	Stuffed Potato			Potato + Cheese + Common Mushroom
+Lv4
+	Berry Waffles			Wheat + Blueberry x2 + Maple Syrup
+	Cake					Flour x2 + Egg (any) x2 + Milk (any)
+	Cray Mornay				Crayfish x2 + Artichoke
+	Hot Cocoa				Milk (any) + Chocolate Bar [Cookie]
+Lv5
+	---						---
+Lv6
+	Cabbage Pot				Cabbage x2 + Onion x2 [Parsnip x2]
+	Eel Sushi				Eel + Seaweed + Rice
+	Hearty Stew				Potato + Carrot x2 [Cave Carrot x2]
+	Onion Soup				Cheese + Garlic + Onion [Garlic x2]
+Lv7
+	Apple Pie				Flour + Sugar + Apple x2
+	Beet Burger				Bread + Beet + Red Cabbage + Onion []
+	Egg Sandwich			Bread + Mayonnaise + Fried Egg
+	Pineapple Skewers		Pineapple + Eggplant + Onion [Parsnip]
+	Tropical Salad			Pineapple + Apple + Pomegranate
+Lv8
+	Admiral Pie				Flour + Milk (any) + Fish (any) x2
+	Dwarven Stew			Hearty Stew + Beer
+	Hot Pot Roast			Cranberry Sauce + Roots Platter + Stuffing + Onion [Potato]
+	Hunter's Plate			Potato + Wild Horseradish + Cabbage [Garlic]
+	Salad Sandwich			Bread + Salad + Tomato
+Lv9
+	Garden Pie				Flour + Cabbage + Tomato + Onion [Artichoke]
+	Kebab					Tortilla + Tomato + Cabbage [Fiddlehead Fern]
+	Hot Curry				Hearty Stew + Hot Pepper + Rice
+	Ocean Platter			Baked Fish + Baked Lobster + Rice + Oyster x2
+	Seafood Sandwich		Bread + Crab + Amaranth
+Lv10
+	---						---
+
+[Substitute ingredients if custom crops disabled]

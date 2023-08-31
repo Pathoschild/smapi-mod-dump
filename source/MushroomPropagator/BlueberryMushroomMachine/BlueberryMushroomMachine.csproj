@@ -1,21 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AssemblyName>BlueberryMushroomMachine</AssemblyName>
-    <RootNamespace>BlueberryMushroomMachine</RootNamespace>
-    <Version>2.1.0</Version>
-    <EnableHarmony>true</EnableHarmony>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<AssemblyName>BlueberryMushroomMachine</AssemblyName>
+		<RootNamespace>BlueberryMushroomMachine</RootNamespace>
+		<Version>2.2.0</Version>
+		<EnableHarmony>true</EnableHarmony>
+		<TargetFramework>net5.0</TargetFramework>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
+	<PropertyGroup>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="assets\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="Newtonsoft.Json" HintPath="$(GamePath)/smapi-internal/Newtonsoft.Json.dll" Private="false" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+	</ItemGroup>
 </Project>

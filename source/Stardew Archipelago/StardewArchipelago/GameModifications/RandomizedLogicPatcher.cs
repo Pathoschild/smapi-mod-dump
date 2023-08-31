@@ -57,8 +57,10 @@ namespace StardewArchipelago.GameModifications
             LostAndFoundInjections.Initialize(monitor, archipelago);
             TVInjections.Initialize(monitor, archipelago);
             ProfitInjections.Initialize(monitor, archipelago);
-            QuestLogInjections.Initialize(monitor, archipelago);
+            QuestLogInjections.Initialize(monitor, archipelago, locationChecker);
             WorldChangeEventInjections.Initialize(monitor);
+            CropInjections.Initialize(monitor, archipelago, stardewItemManager);
+            VoidMayoInjections.Initialize(monitor);
         }
 
         public void PatchAllGameLogic()
@@ -77,9 +79,11 @@ namespace StardewArchipelago.GameModifications
             PatchQuestLog();
             PatchWorldChangedEvent();
             PatchLostAndFoundBox();
+            PatchMixedSeeds();            
             PatchTvChannels();
             PatchCleanupBeforeSave();
             PatchProfitMargin();
+            PatchVoidMayo();
             _startingResources.GivePlayerStartingResources();
         }
 
@@ -88,6 +92,10 @@ namespace StardewArchipelago.GameModifications
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Game1), nameof(Game1.getSteamAchievement)),
                 prefix: new HarmonyMethod(typeof(AchievementInjections), nameof(AchievementInjections.GetSteamAchievement_DisableUndeservedAchievements_Prefix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Stats), nameof(Stats.checkForMoneyAchievements)),
+                prefix: new HarmonyMethod(typeof(AchievementInjections), nameof(AchievementInjections.CheckForMoneyAchievements_GrantMoneyAchievementsFairly_Prefix))
             );
         }
 
@@ -334,6 +342,11 @@ namespace StardewArchipelago.GameModifications
                 original: AccessTools.Constructor(typeof(QuestLog)),
                 postfix: new HarmonyMethod(typeof(QuestLogInjections), nameof(QuestLogInjections.Constructor_MakeQuestsNonCancellable_Postfix))
             );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Farmer), nameof(Farmer.foundArtifact)),
+                postfix: new HarmonyMethod(typeof(QuestLogInjections), nameof(QuestLogInjections.FoundArtifact_StartArchaeologyIfMissed_Postfix))
+            );
         }
 
         private void PatchWorldChangedEvent()
@@ -341,6 +354,19 @@ namespace StardewArchipelago.GameModifications
             _harmony.Patch(
                 original: AccessTools.Method(typeof(WorldChangeEvent), nameof(WorldChangeEvent.setUp)),
                 prefix: new HarmonyMethod(typeof(WorldChangeEventInjections), nameof(WorldChangeEventInjections.SetUp_MakeSureEventsAreNotDuplicated_Prefix))
+            );
+        }
+
+        private void PatchMixedSeeds()
+        {
+            if (_archipelago.SlotData.Cropsanity == Cropsanity.Disabled)
+            {
+                return;
+            }
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Crop), nameof(Crop.getRandomLowGradeCropForThisSeason)),
+                prefix: new HarmonyMethod(typeof(CropInjections), nameof(CropInjections.GetRandomLowGradeCropForThisSeason_OnlyUnlockedCrops_Prefix))
             );
         }
 
@@ -358,6 +384,11 @@ namespace StardewArchipelago.GameModifications
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.cleanupBeforeSave)),
                 postfix: new HarmonyMethod(typeof(CleanupBeforeSaveInjections), nameof(CleanupBeforeSaveInjections.CleanupBeforeSave_RemoveIllegalMonsters_Postfix))
             );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(CommunityCenter), nameof(CommunityCenter.cleanupBeforeSave)),
+                postfix: new HarmonyMethod(typeof(CleanupBeforeSaveInjections), nameof(CleanupBeforeSaveInjections.CleanupBeforeSave_RemoveIllegalMonsters_Postfix))
+            );
         }
 
         private void PatchProfitMargin()
@@ -365,6 +396,14 @@ namespace StardewArchipelago.GameModifications
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Object), nameof(Object.sellToStorePrice)),
                 postfix: new HarmonyMethod(typeof(ProfitInjections), nameof(ProfitInjections.SellToStorePrice_ApplyProfitMargin_Postfix))
+            );
+        }
+
+        private void PatchVoidMayo()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.getFish)),
+                prefix: new HarmonyMethod(typeof(VoidMayoInjections), nameof(VoidMayoInjections.GetFish_FishVoidMayo_PreFix))
             );
         }
     }

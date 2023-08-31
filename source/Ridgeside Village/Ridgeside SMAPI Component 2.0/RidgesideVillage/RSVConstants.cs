@@ -42,8 +42,11 @@ namespace RidgesideVillage
         public const int E_GRANDMA = 75160383;
         public const int E_SUMMITUNLOCK = 75160387;
         public const int E_BUSSTOP_INTRO = 75160186;
-        public const int E_IRENE_NODECAY = 75160324;
-        public const int E_ZAYNE_NODECAY = 75160338;
+        public const int E_ZAYNE_INTRO = 75160338;
+        public const int E_ZAYNE_2H = 75160436;
+        public const int E_ZAYNE_6H = 75160438;
+        public const int E_BRYLE_INTRO = 75160375;
+        public const int E_BRYLE_8H = 75160453;
 
         // Quests
         public const int Q_CURSEDGH1 = 72860001;
@@ -128,6 +131,7 @@ namespace RidgesideVillage
         public const string L_SUMMITHOUSE = "Custom_Ridgeside_RSVSummitHouseNew";
         public const string L_SUMMITSHED = "Custom_Ridgeside_RSVSummitShed";
         public const string L_HIDDENWARP = "Custom_Ridgeside_RSVHiddenWarp2";
+        public const string L_CABLECARBG = "Custom_Ridgeside_RSVTheRide_static";
 
         // Conversation topics
         public const string CT_HOUSEUPGRADE = "RSV.HouseCT";

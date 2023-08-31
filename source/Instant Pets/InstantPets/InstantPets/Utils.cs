@@ -43,7 +43,8 @@ namespace InstantPets
 		public static void InstantPet(bool isMessageVisible)
 		{
 			bool isFirstDay = Game1.dayOfMonth == 1 && Utility.getSeasonNumber(Game1.currentSeason) == 0 && Game1.year == 1;
-			if (isFirstDay || !Utils.HasMadePetSelection())
+			bool hasChosenPet = Utils.HasMadePetSelection();
+			if (isFirstDay || !hasChosenPet)
 			{
 				if (ModEntry.Config.NoPets)
 				{
@@ -69,7 +70,8 @@ namespace InstantPets
 		public static void InstantCave(bool isMessageVisible)
 		{
 			bool isFirstDay = Game1.dayOfMonth == 1 && Utility.getSeasonNumber(Game1.currentSeason) == 0 && Game1.year == 1;
-			if (isFirstDay || !Utils.HasMadeCaveSelection())
+			bool hasChosenCave = !Utils.HasMadeCaveSelection();
+			if (isFirstDay || !hasChosenCave)
 			{
 				if (ModEntry.Config.EmptyCave)
 				{
@@ -252,7 +254,7 @@ namespace InstantPets
 		public static bool HasMadePetSelection()
 		{
 			return Game1.MasterPlayer.eventsSeen.Contains(Utils.EventIdCat)
-				|| Game1.MasterPlayer.eventsSeen.Contains(Utils.EventIdCat)
+				|| Game1.MasterPlayer.eventsSeen.Contains(Utils.EventIdDog)
 				|| Game1.MasterPlayer.mailReceived.Contains(Utils.MailIdRejected)
 				|| Game1.MasterPlayer.hasPet();
 		}

@@ -21,6 +21,7 @@ using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 
@@ -573,11 +574,27 @@ namespace SmartCursor
                     this.breakableResources.Add(new BreakableEntity(tree, this.config));
             }
 
+            // Then with large terrain features.
+            foreach (var feature in location.largeTerrainFeatures)
+            {
+                this.breakableResources.Add(new BreakableEntity(feature, this.config));
+            }
+
+
             // And finally, resource clumps.
             foreach (var clump in location.resourceClumps)
             {
                 this.breakableResources.Add(new BreakableEntity(clump, this.config));
                 // this.logger.Log($"Clump parentSheetIndex: {clump.parentSheetIndex}");
+            }
+
+            // And, in case we're in the Secret Woods...
+            if (location is Woods)
+            {
+                foreach (var clump in (location as Woods).stumps)
+                {
+                    this.breakableResources.Add((new BreakableEntity(clump, this.config)));
+                }
             }
 
             time.Stop();

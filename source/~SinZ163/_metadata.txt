@@ -7,9 +7,9 @@ mods:
    Profiler
 
 latest commit:
-   commit de5b2ccf7ad97d76e2ffe25adae251685d8fe795
+   commit be316c1f65c6680ad72a37ef59a5beb08eac7b12
    Author: SinZ <github@361zn.is>
-   Date:   Wed Jul 19 13:06:50 2023 +1000
+   Date:   Thu Aug 10 10:09:23 2023 +1000
    
-       Misc remaining changes
+       Misc 1.6 Debug mods WIP
    

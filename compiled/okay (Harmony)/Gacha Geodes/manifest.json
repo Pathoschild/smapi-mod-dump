@@ -1,0 +1,12 @@
+﻿{
+  "Name": "Gacha Geodes",
+  "Author": "DeLiXx",
+  "Version": "1.0.0",
+  "Description": "Balances out Geode drop chances to favor missing minerals",
+  "UniqueID": "DLX.Geodes",
+  "EntryDll": "Gacha Geodes.dll",
+  "MinimumApiVersion": "3.14.1",
+  "UpdateKeys": [ "Nexus:17691" ],
+  "Dependencies": [
+  ]
+}

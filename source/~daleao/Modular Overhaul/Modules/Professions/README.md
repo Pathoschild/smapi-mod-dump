@@ -54,7 +54,9 @@ Integrations are provided out-of-the-box for several popular mods. See the [comp
 
 This module is safe to enable or disable mid-save. All profession perks will be applied retroactively. However, please note that disabling this mod will have no effect on skill levels or acquired professions, so make sure to manually reset your skills and professions back to vanilla standards **before** disabling, using provided console commands.
 
-## Professions <sup><sub><sup>[🔼](#margo-professions-profs)</sup></sub></sup>
+<sup><sub><sup>[🔼 Back to top](#margo-professions-profs)</sup></sub></sup>
+
+## Professions
 
 The perks in *italics* refer to ![shield:prestige] variants. Written in *(parenthesis)*, these perks **replace**, and do not stack with, their regular counterpart.
 
@@ -65,7 +67,7 @@ The perks in *italics* refer to ![shield:prestige] variants. Written in *(parent
 - ![](resources/assets/sprites/loose/agriculturist.png)  **Agriculturist (Lv10)** - Crops grow 10% *(20%)* faster. Grow best-quality crops organically without fertilizer.
 	- Allows harvesting iridium-quality crops, normally only possible with Deluxe Fertilizer. The chance is equivalent to half of the chance with Deluxe Fertilizer. This means that fertilizers are **not** obsolete.
 - ![](resources/assets/sprites/loose/artisan.png)  **Artisan (Lv10)** - Artisan machines work 10% *(25%)* faster. Machine output quality can be as good as input ingredient quality.
-	- Quality output is based on Farming level. The lowest possible quality is 2 stages below the input quality, and the highest possible quality is 1 higher than the input quality. For reference, the chance to preserve quality at level 10 is 30%. Note that the quality preservation perk is tied to the Artisan player, while the production time and quality promotion perks are tied to the machine itself; in other words, only Artisans themselves can preserve the quality of ingredients, but they can do so on any machine, whereas any non-Artisan player can benefit from faster production and quality upgrades, so long as they use a machine crafted by an Artisan player (ownerhsip requirements can be turned off in the configs).
+	- Quality output is based on Farming level. The lowest possible quality is 2 stages below the input quality, and the highest possible quality is 1 higher than the input quality. For reference, the chance to preserve quality at level 10 is 30%. Note that the quality preservation perk is tied to the Artisan player, while the production time and quality promotion perks are tied to the machine itself; in other words, only Artisans themselves can preserve the quality of ingredients, but they can do so on any machine, whereas any non-Artisan player can benefit from faster production and quality upgrades, so long as they use a machine crafted by an Artisan player (ownership requirements can be turned off in the configs).
 - ![](resources/assets/sprites/loose/miner.png)  **Rancher (Lv5)** - Befriend animals 2× *(3×)* quicker.
 	- Gain double mood *and* friendship points from petting. Newborn animals are also born with a non-zero, random initial friendship.
 - ![](resources/assets/sprites/loose/breeder.png)  **Breeder (Lv10)** - Incubation 2× *(3×)* faster and natural pregnancy 3× *(5×)* more likely. Increase value of animals at high friendship.
@@ -105,7 +107,7 @@ The perks in *italics* refer to ![shield:prestige] variants. Written in *(parent
 	- This aims to improve the bomberman style of mining while attempting to compensate for the lack of Geologist and Gemologist professions from vanilla. As a configurable bonus, the pyromaniac in your will [get excited](https://www.youtube.com/watch?v=0nlJuwO0GDs) when hit by an explosion.
     - You can also manually detonate bombs; any bombs placed while holding down the Mod Key (default LeftShift) will not detonate until you release the key.
 - ![](resources/assets/sprites/loose/gemologist.png)  **Gemologist (Lv10)** - Progressively identify gems and minerals of higher quality. Crystalariums work 25% *(50%)* faster.
-	- Analogous to Ecologist. All gems and minerals mined from nodes have a fixed quality, starting at silver and increasing to iridium as you mine. Please note that this bonus will only apply to gems or minerals that have been either physically mined, or produced by Geode Crushers owned by the Gemologist. Crystalariums and geodes opened by Clint will **not** receive quality upgrades. The exception to this is Crystalariums already in production, which will all receive an equivalent quality upgrade whenever the owner reaches a quality milestone. The production time bonus for Crystalarium is likewise tied to the owner, and therefore only Crystalariums crafted by the Gemologist will receive that perk (ownerhsip requirements can be turned off in the configs).
+	- Analogous to Ecologist. All gems and minerals mined from nodes have a fixed quality, starting at silver and increasing to iridium as you mine. Please note that this bonus will only apply to gems or minerals that have been either physically mined, or produced by Geode Crushers owned by the Gemologist. Crystalariums and geodes opened by Clint will **not** receive quality upgrades. The exception to this is Crystalariums already in production, which will all receive an equivalent quality upgrade whenever the owner reaches a quality milestone. The production time bonus for Crystalarium is likewise tied to the owner, and therefore only Crystalariums crafted by the Gemologist will receive that perk (ownership requirements can be turned off in the configs).
 
 ### ![](https://i.imgur.com/XvdVsAn.png) Fishing
 
@@ -127,7 +129,7 @@ The perks in *italics* refer to ![shield:prestige] variants. Written in *(parent
 		- **Magic bait:** Chance to catch high-level fish of any location or season. Also upgrades all catch to iridium-quality.
     - All baits, with the exception of Magnet, prevent collecting junk.
 - ![](resources/assets/sprites/loose/conservationist.png)  **Conservationist (Lv10)** - Crab pots without bait can trap junk. Clean the Valley's waters to merit tax deductions and villager favor. *Tax deductions build 50% faster.*
-	- Every 100 (configurable) junk items collected will earn you a 1% tax deduction the following season (max 25%, also configurable). What a "tax deduction" means depends on whether the [Taxes](../Taxes/README.md) module is enabled; if it is enabled, a tax deduction works as you would expect, reducing your overall amount due. If this module is not enabled, then a tax deduction works as a % value increasing to all items shipped in the bin. If you quality for a deduction you will receive a formal mail from the Ferngill Revenue Service on the first of the season informing your currrent deduction rights.
+    	- Every 100 (configurable) junk items collected will earn you a 1% tax deduction the following season (max 25%, also configurable). What a "tax deduction" means depends on whether the [Taxes](../Taxes/README.md) module is enabled; if it is enabled, a tax deduction works as you would expect, reducing your overall amount due. If this module is not enabled, then a tax deduction works as a % value increasing to all items shipped in the bin. If you quality for a deduction you will receive a formal mail from the Ferngill Revenue Service on the first of the season informing your currrent deduction rights.
 
 ### ![](https://i.imgur.com/fUnZSTj.png) Combat
 
@@ -149,7 +151,9 @@ The perks in *italics* refer to ![shield:prestige] variants. Written in *(parent
 	- Obtainable buffs are the same as food/drink buffs (skill levels, attack, defense, speed, luck, max energy, magnetism). Buffs lasts 3 real-life minutes and can stack indefinitely, refreshing the duration each time. If at least one buff stack is active, also gain immunity to the Slimed debuff, even without a Slime Charmer ring (but **not** to Slime damage).
 	- Slime ammo deals twice as much damage, and can be used to heal ally Slimes.
 
-## Prestige <sup><sub><sup>[🔼](#margo-professions-profs)</sup></sub></sup>
+<sup><sub><sup>[🔼 Back to top](#margo-professions-profs)</sup></sub></sup>
+
+## Prestige
 
 If enabled, the [Statue of Uncertainty](https://stardewvalleywiki.com/The_Sewers#Statue%20Of%20Uncertainty) is replaced by the **Statue of Prestige**.
 
@@ -163,7 +167,9 @@ The entire Prestige system is optional. It may be turned off at any time, but ke
 
 All custom mod skills based on SpaceCore are compatible with the skill reset feature, but cannot have their level cap raised above the regular 10. For skill mod developers, if you wish to provide prestiged professions you can do so by registering your skill via the provided [API](../../API/IModularOverhaulApi.cs).
 
-## Limit Breaks <sup><sub><sup>[🔼](#margo-professions-profs)</sup></sub></sup>
+<sup><sub><sup>[🔼 Back to top](#margo-professions-profs)</sup></sub></sup>
+
+## Limit Breaks
 
 In addition to their regular perks listed above, every level 10 profession in the Combat skill tree also grants a unique [Limit Break](https://tvtropes.org/pmwiki/pmwiki.php/Main/LimitBreak). This special ability must be charged by performing certain actions during combat. You can track the current charge by the HUD bar labeled "L".
 
@@ -185,7 +191,9 @@ Note that, though all combat professions can be acquired via skill reset, only o
 
 After all possible skills have had their level cap raised, the Statue of Prestige will let you switch between the four Limit Breaks for free (though a cost can be configured). Switching Limmit Breaks is not possible if the Prestige system is disabled. As with the Prestige system, Limit Breaks can be turned off in the mod settings.
 
-## Compatibility <sup><sub><sup>[🔼](#margo-professions-profs)</sup></sub></sup>
+<sup><sub><sup>[🔼 Back to top](#margo-professions-profs)</sup></sub></sup>
+
+## Compatibility
 
 The following mods are fully integrated:
 
@@ -223,7 +231,9 @@ The following mods are **not** compatible:
 - [All Professions][mod:all-professions] and [Skill Prestige][mod:prestige], as they conflict with this mod's Prestige system. You could potentially use them if you disable this mod's Prestige system, but I will not provide support in case of bugs.
 - [Yet Another Harvest With Scythe Mod][mod:yahwsm] will not apply modded profession perks. Use instead the feature included in CJB Cheats Menu.
 
-## F.A.Q. <sup><sub><sup>[🔼](#margo-professions-profs)</sup></sub></sup>
+<sup><sub><sup>[🔼 Back to top](#margo-professions-profs)</sup></sub></sup>
+
+## F.A.Q.
 
 **Do Ecologist and Gemologist professions count forages/gems acquired before the profession?**  
 No.
@@ -249,7 +259,9 @@ An example file is offered under the Optional downloads as a template for this.
 It adds several valuable items to the possible produce list of each Legendary Fish, but doesn't change their spawn time or population quests.  
 You may customize this file to achieve your preferred behavior.
 
-## For C# Developers <sup><sub><sup>[🔼](#margo-professions-profs)</sup></sub></sup>
+<sup><sub><sup>[🔼 Back to top](#margo-professions-profs)</sup></sub></sup>
+
+## For C# Developers
 
 The module exposes an API to facilitate integration with other mods. Currently exposed endpoints include:
 
@@ -264,6 +276,8 @@ The module exposes an API to facilitate integration with other mods. Currently e
 - Registering custom skills for Prestige.
 
 To consume the API, copy both interfaces from the [API folder](../../API/) namespace to your project and [ask SMAPI for a proxy][wiki:integrations-api].
+
+<sup><sub><sup>[🔼 Back to top](#margo-professions-profs)</sup></sub></sup>
 
 ## Recommended Mods
 

@@ -12,31 +12,34 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using SaveAnywhere.Framework.Model;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Menus;
+using StardewValley.Objects;
 
 namespace SaveAnywhere.Framework
 {
     public class SaveManager
     {
+        private readonly IModHelper _helper;
+        private readonly Action _onLoaded;
         public readonly Dictionary<string, Action> AfterCustomSavingCompleted;
         public readonly Dictionary<string, Action> AfterSaveLoaded;
         public readonly Dictionary<string, Action> BeforeCustomSavingBegins;
-
-        private readonly IModHelper _helper;
-        private readonly Action _onLoaded;
-        private NewSaveGameMenuV2 _currentSaveMenu;
+        private SaveGameMenu _currentSaveMenu;
         private bool _waitingToSave;
 
         public SaveManager(IModHelper helper, Action onLoaded)
         {
             _helper = helper;
             _onLoaded = onLoaded;
-            BeforeCustomSavingBegins = new();
-            AfterCustomSavingCompleted = new();
-            AfterSaveLoaded = new();
+            BeforeCustomSavingBegins = new Dictionary<string, Action>();
+            AfterCustomSavingCompleted = new Dictionary<string, Action>();
+            AfterSaveLoaded = new Dictionary<string, Action>();
         }
 
         private string RelativeDataPath => Path.Combine("data", Constants.SaveFolderName + ".json");
@@ -47,24 +50,22 @@ namespace SaveAnywhere.Framework
 
         public event EventHandler AfterLoad;
 
-
-
+        
         public void Update()
         {
             if (!_waitingToSave || Game1.activeClickableMenu != null)
                 return;
-            Game1.newDaySync = new(); //SaveComplete was never called because newDaySync was never assigned, causing AfterSave event to never fire
-            _currentSaveMenu = new NewSaveGameMenuV2();
-            _currentSaveMenu.SaveComplete += CurrentSaveMenu_SaveComplete;
+            _currentSaveMenu = new SaveGameMenu();
             Game1.activeClickableMenu = _currentSaveMenu;
             _waitingToSave = false;
         }
 
-        private void CurrentSaveMenu_SaveComplete(object sender, EventArgs e)
+        public void SaveComplete(object sender, EventArgs e)
         {
-            _currentSaveMenu.SaveComplete -= CurrentSaveMenu_SaveComplete;
             _currentSaveMenu = null;
             SaveAnywhere.RestoreMonsters();
+            Game1.getFarm().removeObject(new Vector2(-100, -100), false);
+            Game1.activeClickableMenu = new FTMCompMenu();
             AfterSave?.Invoke(this, EventArgs.Empty);
             foreach (var keyValuePair in AfterCustomSavingCompleted)
                 keyValuePair.Value?.Invoke();
@@ -78,25 +79,33 @@ namespace SaveAnywhere.Framework
             RemoveLegacyDataForThisPlayer();
         }
 
-        public bool saveDataExists() => File.Exists(Path.Combine(_helper.DirectoryPath, RelativeDataPath)) || _helper.Data.ReadSaveData<PlayerData>("midday-save") != null;
+        public bool saveDataExists()
+        {
+            return File.Exists(Path.Combine(_helper.DirectoryPath, RelativeDataPath)) ||
+                   _helper.Data.ReadSaveData<PlayerData>("midday-save") != null;
+        }
 
         public void BeginSaveData()
         {
             BeforeSave?.Invoke(this, EventArgs.Empty);
             foreach (var customSavingBegin in BeforeCustomSavingBegins)
                 customSavingBegin.Value?.Invoke();
+
+
             SaveAnywhere.Instance.cleanMonsters();
             var farm = Game1.getFarm();
             var drink = Game1.buffsDisplay.drink;
             BuffData drinkdata = null;
 
             if (drink != null)
-                drinkdata = new BuffData(drink.displaySource, drink.source, drink.millisecondsDuration, drink.buffAttributes);
+                drinkdata = new BuffData(drink.displaySource, drink.source, drink.millisecondsDuration,
+                    drink.buffAttributes);
 
             var food = Game1.buffsDisplay.food;
             BuffData fooddata = null;
             if (food != null)
-                fooddata = new BuffData(food.displaySource, food.source, food.millisecondsDuration, food.buffAttributes);
+                fooddata = new BuffData(food.displaySource, food.source, food.millisecondsDuration,
+                    food.buffAttributes);
 
             _helper.Data.WriteSaveData("midday-save", new PlayerData
             {
@@ -107,25 +116,47 @@ namespace SaveAnywhere.Framework
                 Position = GetPosition().ToArray(),
                 IsCharacterSwimming = Game1.player.swimming.Value
             });
-            
-            Game1.activeClickableMenu = new NewShippingMenuV2(farm.getShippingBin(Game1.player));
-            farm.lastItemShipped = null;
-            _waitingToSave = true;
+            Game1.newDaySync =
+                new NewDaySynchronizer(); //SaveComplete was never called because newDaySync was never assigned, causing AfterSave event to never fire
+            Game1.newDaySync.start();
+            Game1.flushLocationLookup();
+            Game1.weatherForTomorrow = Game1.getWeatherModificationsForDate(Game1.Date, Game1.weatherForTomorrow);
+            var tempShippingBin = new Chest(true, new Vector2(-100, -100));
+            foreach (var item in farm.getShippingBin(Game1.player))
+            {
+                item.modData["farmerSelling"] = Game1.player.UniqueMultiplayerID.ToString();
+                if (item == Game1.getFarm().lastItemShipped)
+                    item.modData["last"] = "true";
+                else
+                    item.modData["last"] = "false";
+                tempShippingBin.addItem(item);
+            }
 
+            Game1.getFarm().setObject(new Vector2(-100, -100), tempShippingBin);
+            Game1.activeClickableMenu = new NewShippingMenuV2(farm.getShippingBin(Game1.player));
+            _waitingToSave = true;
             RemoveLegacyDataForThisPlayer();
         }
 
         public void LoadData()
         {
-            var data = _helper.Data.ReadSaveData<PlayerData>("midday-save") ?? _helper.Data.ReadJsonFile<PlayerData>(RelativeDataPath);
+            var data = _helper.Data.ReadSaveData<PlayerData>("midday-save") ??
+                       _helper.Data.ReadJsonFile<PlayerData>(RelativeDataPath);
             if (data == null)
-            {
                 ClearData();
-                _helper.Data.WriteSaveData("midday-save", data);
-            }
+
+
+            foreach (var item in (Game1.getFarm().getObjectAtTile(-100, -100) as Chest).items)
+                if (item.modData["farmerSelling"] == Game1.player.UniqueMultiplayerID.ToString())
+                {
+                    if (item.modData["last"] == "true")
+                        Game1.getFarm().lastItemShipped = item;
+                    Game1.getFarm().getShippingBin(Game1.player).Add(item);
+                }
+
+            Game1.getFarm().removeObject(new Vector2(-100, -100), false);
             SetPositions(data.Position, data.Time);
             if (data.OtherBuffs != null)
-            {
                 foreach (var buff in data.OtherBuffs)
                 {
                     var atts = buff.Attributes;
@@ -145,7 +176,6 @@ namespace SaveAnywhere.Framework
                         buff.Source,
                         buff.DisplaySource));
                 }
-            }
 
             var datadrink = data.DrinkBuff;
             var datafood = data.FoodBuff;
@@ -215,7 +245,8 @@ namespace SaveAnywhere.Framework
         private IEnumerable<BuffData> GetotherBuffs()
         {
             foreach (var buff in Game1.buffsDisplay.otherBuffs)
-                yield return new BuffData(buff.displaySource, buff.source, buff.millisecondsDuration, buff.buffAttributes);
+                yield return new BuffData(buff.displaySource, buff.source, buff.millisecondsDuration,
+                    buff.buffAttributes);
         }
 
         private IEnumerable<PositionData> GetPosition()
@@ -240,10 +271,9 @@ namespace SaveAnywhere.Framework
         {
             Game1.player.faceDirection(position[0].FacingDirection);
             foreach (var allCharacter in Utility.getAllCharacters())
-            {
-                allCharacter.dayUpdate(Game1.dayOfMonth);
                 if (allCharacter.isVillager())
                 {
+                    allCharacter.dayUpdate(Game1.dayOfMonth);
                     var pos = position.FirstOrDefault(p => p.Name == allCharacter.Name);
                     if (pos != null)
                     {
@@ -255,20 +285,25 @@ namespace SaveAnywhere.Framework
                         var newSchedule = allCharacter.getSchedule(Game1.dayOfMonth);
                         if (newSchedule != null)
                         {
-                            var dest = allCharacter.getSchedule(Game1.dayOfMonth).LastOrDefault(data => data.Key < time);
+                            var dest = allCharacter.getSchedule(Game1.dayOfMonth)
+                                .OrderBy(pair => pair.Key).LastOrDefault(data => data.Key < time);
 
                             if (dest.Key != 0)
                             {
-                                var destMap = allCharacter.currentLocation.Name;
-                                foreach (var point in dest.Value.route)
+                                newSchedule.Remove(dest.Key);
+                                while (newSchedule.ContainsKey(dest.Key))
                                 {
-                                    var warp = Game1.getLocationFromName(destMap).warps
-                                        .FirstOrDefault(data => data.X == point.X && data.Y == point.Y);
-                                    if (warp != null) destMap = warp.TargetName;
                                 }
 
-                                newSchedule.Remove(dest.Key);
-                                while (newSchedule.ContainsKey(dest.Key)){}
+                                var scheduleEntry =
+                                    allCharacter.getMasterScheduleEntry(getCurrentEndLocation(allCharacter));
+                                if (scheduleEntry.Contains("GOTO"))
+                                    scheduleEntry =
+                                        allCharacter.getMasterScheduleEntry(scheduleEntry.Replace("GOTO ", ""));
+                                var destMap = scheduleEntry.Split("/")
+                                    .LastOrDefault(s =>
+                                        int.Parse(s.Replace("/", "").Split(" ")[0].Replace(" ", "")) < time)
+                                    .Split(" ")[1].Replace(" ", "");
                                 newSchedule.TryAdd(time,
                                     allCharacter.pathfindToNextScheduleLocation(pos.Map, pos.X, pos.Y, destMap,
                                         dest.Value.route.Last().X, dest.Value.route.Last().Y,
@@ -286,9 +321,18 @@ namespace SaveAnywhere.Framework
                     Game1.fadeScreenToBlack();
                     Game1.warpFarmer(position[0].Map, position[0].X, position[0].Y, false);
                 }
-            }
 
             SafelySetTime(time);
+            foreach (var allCharacter in Utility.getAllCharacters())
+                if (allCharacter.isVillager())
+                {
+                    allCharacter.update(Game1.currentGameTime, Utility.getGameLocationOfCharacter(allCharacter));
+                    if (allCharacter.doingEndOfRouteAnimation.Value)
+                        continue;
+                    allCharacter.controller = null;
+                    allCharacter.checkSchedule(time);
+                }
+
             Utility.fixAllAnimals();
         }
 
@@ -304,6 +348,93 @@ namespace SaveAnywhere.Framework
             directoryInfo1.Delete(true);
         }
 
+        private string getCurrentEndLocation(NPC allCharacter)
+        {
+            if (allCharacter.isMarried())
+            {
+                if (allCharacter.hasMasterScheduleEntry("marriage_" + Game1.currentSeason + "_" +
+                                                        Game1.dayOfMonth))
+                    return "marriage_" + Game1.currentSeason + "_" + Game1.dayOfMonth;
+
+                var str = Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth);
+                if ((allCharacter.Name.Equals("Penny") &&
+                     (str.Equals("Tue") || str.Equals("Wed") || str.Equals("Fri"))) ||
+                    (allCharacter.Name.Equals("Maru") && (str.Equals("Tue") || str.Equals("Thu"))) ||
+                    (allCharacter.Name.Equals("Harvey") && (str.Equals("Tue") || str.Equals("Thu"))))
+                    return "marriageJob";
+
+                if (!Game1.isRaining &&
+                    allCharacter.hasMasterScheduleEntry("marriage_" +
+                                                        Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth)))
+                    return "marriage_" + Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth);
+            }
+
+            if (allCharacter.hasMasterScheduleEntry(Game1.currentSeason + "_" + Game1.dayOfMonth))
+                return Game1.currentSeason + "_" + Game1.dayOfMonth;
+            var playerFriendshipLevel = Utility.GetAllPlayerFriendshipLevel(allCharacter);
+            if (playerFriendshipLevel >= 0)
+                playerFriendshipLevel /= 250;
+            for (; playerFriendshipLevel > 0; --playerFriendshipLevel)
+                if (allCharacter.hasMasterScheduleEntry(Game1.dayOfMonth + "_" +
+                                                        playerFriendshipLevel))
+                    return Game1.dayOfMonth + "_" +
+                           playerFriendshipLevel;
+
+            if (allCharacter.hasMasterScheduleEntry(string.Empty + Game1.dayOfMonth))
+                return string.Empty + Game1.dayOfMonth;
+            if (allCharacter.Name.Equals("Pam") && Game1.player.mailReceived.Contains("ccVault"))
+                return "bus";
+            if (Game1.IsRainingHere(allCharacter.currentLocation))
+            {
+                if (Game1.random.NextDouble() < 0.5 && allCharacter.hasMasterScheduleEntry("rain2"))
+                    return "rain2";
+                if (allCharacter.hasMasterScheduleEntry("rain"))
+                    return "rain";
+            }
+
+            var values = new List<string>
+            {
+                Game1.currentSeason,
+                Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth)
+            };
+            playerFriendshipLevel = Utility.GetAllPlayerFriendshipLevel(allCharacter);
+            if (playerFriendshipLevel >= 0)
+                playerFriendshipLevel /= 250;
+            while (playerFriendshipLevel > 0)
+            {
+                values.Add(string.Empty + playerFriendshipLevel);
+                if (allCharacter.hasMasterScheduleEntry(string.Join("_", values)))
+                    return string.Join("_", values);
+                --playerFriendshipLevel;
+                values.RemoveAt(values.Count - 1);
+            }
+
+            if (allCharacter.hasMasterScheduleEntry(string.Join("_", values)))
+                return string.Join("_", values);
+            if (allCharacter.hasMasterScheduleEntry(Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth)))
+                return Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth);
+            if (allCharacter.hasMasterScheduleEntry(Game1.currentSeason))
+                return Game1.currentSeason;
+            if (allCharacter.hasMasterScheduleEntry("spring_" + Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth)))
+                return "spring_" +
+                       Game1.shortDayNameFromDayOfSeason(Game1.dayOfMonth);
+            values.RemoveAt(values.Count - 1);
+            values.Add("spring");
+            playerFriendshipLevel = Utility.GetAllPlayerFriendshipLevel(allCharacter);
+            if (playerFriendshipLevel >= 0)
+                playerFriendshipLevel /= 250;
+            while (playerFriendshipLevel > 0)
+            {
+                values.Add(string.Empty + playerFriendshipLevel);
+                if (allCharacter.hasMasterScheduleEntry(string.Join("_", values)))
+                    return string.Join("_", values);
+                --playerFriendshipLevel;
+                values.RemoveAt(values.Count - 1);
+            }
+
+            return "spring";
+        }
+
         private void SafelySetTime(int time)
         {
             // transition to new time
@@ -312,13 +443,12 @@ namespace SaveAnywhere.Framework
                 for (var i = 0; i < intervals; i++)
                     Game1.performTenMinuteClockUpdate();
             else if (intervals < 0)
-            {
                 for (var i = 0; i > intervals; i--)
                 {
-                    Game1.timeOfDay = Utility.ModifyTime(Game1.timeOfDay, -20); // offset 20 mins so game updates to next interval
+                    Game1.timeOfDay =
+                        Utility.ModifyTime(Game1.timeOfDay, -20); // offset 20 mins so game updates to next interval
                     Game1.performTenMinuteClockUpdate();
                 }
-            }
 
             // reset ambient light
             // White is the default non-raining color. If it's raining or dark out, UpdateGameClock

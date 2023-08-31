@@ -40,29 +40,25 @@
 
   ],
   "Rules": {
-    //Basics
-    "": "accept", //acceptance when asked
-    "!f Lenny 1": "reject", //talked once
-    
     //Normal
     //Requires seen 6 heart event + 6 hearts and above
     "!f Lenny 1500": "reject",
     "k 75160088": "reject",
 
-    //Marriage
-    //no rules
+    //Basics
+    "": "accept", //acceptance when asked
   },
-  
+
   "Bedtime": "2200",
   "BedtimeSpouse": "2530",
-  
+
   "Buffs": { //Farming, Fishing, Mining, Luck, Foraging, Crafting, MaxStamina, MagneticRadius, Speed, Defense, Attack
   	"Luck": 1,
   	"MagneticRadius": 32,
-    "MaxStamina": 32,
+    "MaxStamina": 20,
   },
   "BuffsDescription": "[Lenny.buffs]",
-  
+
   "Weapons": {
     /*"0": "Obsidian Edge",
 	  "1": "Obsidian Edge",
@@ -77,7 +73,7 @@
 	  "10": "Infinity Blade"*/
 
     "0": "Obsidian Edge",
-    "5": "The Wild Whip"
+    "10": "The Wild Whip"
   },
 
   "IdleBehaviors": [

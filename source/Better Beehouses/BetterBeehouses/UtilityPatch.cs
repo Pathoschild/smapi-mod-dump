@@ -130,6 +130,9 @@ namespace BetterBeehouses
 		}
 		private static bool IndexIsFlower(int index)
 		{
+			if (ModEntry.config.AnythingHoney)
+				return true;
+
 			if (index == 1720) // DGA reserved fake ID
 				return false;
 			var res = new StardewValley.Object(index, 1);

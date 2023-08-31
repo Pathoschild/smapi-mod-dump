@@ -45,7 +45,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(CleanupBeforeSave_RemoveIllegalMonsters_Postfix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(CleanupBeforeSave_RemoveIllegalMonsters_Postfix)} ({__instance?.GetType()} version):\n{ex}", LogLevel.Error);
                 return;
             }
         }

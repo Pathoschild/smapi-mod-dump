@@ -9,7 +9,6 @@
 *************************************************/
 
 using System.Collections.Generic;
-using StardewModdingAPI;
 
 namespace BlueberryMushroomMachine
 {
@@ -19,9 +18,9 @@ namespace BlueberryMushroomMachine
 		public bool RecipeAlwaysAvailable { get; set; } = false;
 		public int MaximumDaysToMature { get; set; } = 4;
 		public bool MaximumQuantityLimitsDoubled { get; set; } = false;
-		public bool OnlyToolsCanRemoveRootMushrooms = false;
-		public bool PulseWhenGrowing = true;
-		public List<string> OtherObjectsThatCanBeGrown = new List<string>
+		public bool OnlyToolsCanRemoveRootMushrooms { get; set; } = false;
+		public bool PulseWhenGrowing { get; set; } = true;
+		public List<string> OtherObjectsThatCanBeGrown { get; set; } = new()
 		{
 			"Example Mushroom Name",
 			"Example Item Not Called Fungus",
@@ -35,6 +34,5 @@ namespace BlueberryMushroomMachine
 		public bool WorksOutdoors { get; set; } = false;
 
 		public bool DebugMode { get; set; } = false;
-		public SButton DebugGivePropagatorKey { get; set; } = SButton.OemComma;
 	}
 }

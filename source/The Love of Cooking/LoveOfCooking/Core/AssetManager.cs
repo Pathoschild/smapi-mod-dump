@@ -81,7 +81,6 @@ namespace LoveOfCooking
 		public static string NewRecipesPackPath { get; private set; } = "NewRecipesPack";
 		public static string NewCropsPackPath { get; private set; } = "NewCropsPack";
 		public static string NettlesPackPath { get; private set; } = "NettlesPack";
-		public static string ProducerFrameworkPackPath { get; private set; } = "[PFM] ProducerFrameworkPack";
 		public static string CommunityCentreContentPackPath { get; private set; } = "[CCC] KitchenContentPack";
 
 		// Assets to edit: asset keys passed to Edit()
@@ -212,6 +211,10 @@ namespace LoveOfCooking
 			else if (asset.NameWithoutLocale.IsEquivalentTo(@"Data/ObjectContextTags"))
 			{
 				AssetManager.EditContextTags(asset: asset);
+			}
+			else if (asset.NameWithoutLocale.IsEquivalentTo(@"Data/mail"))
+			{
+				AssetManager.EditMail(asset: asset);
 			}
 			else if (asset.NameWithoutLocale.IsEquivalentTo(@"Data/ObjectInformation"))
 			{
@@ -508,6 +511,16 @@ namespace LoveOfCooking
 			asset.AsDictionary<string, string>().ReplaceWith(data);
 		}
 
+		private static void EditMail(IAssetData asset)
+		{
+			var data = asset.AsDictionary<string, string>().Data;
+
+			// Send Mom's Cookbook in the mail to allow cooking
+			data.Add(ModEntry.MailCookbookUnlocked, i18n.Get("mail.cookbook_unlocked"));
+
+			asset.AsDictionary<string, string>().ReplaceWith(data);
+		}
+
 		private static void EditObjects(IAssetData asset)
 		{
 			// Edit fields of vanilla objects to revalue and recategorise some produce
@@ -544,8 +557,7 @@ namespace LoveOfCooking
 						{206, new[] {null, null, "45"}}, // Pizza
 						{220, new[] {null, null, "60"}}, // Chocolate Cake
 						{221, new[] {null, null, "75"}}, // Pink Cake
-						{419, new[] {null, "220", "-300", "Basic -26"}}, // Vinegar
-						{247, new[] {null, null, "-300", "Basic -26", null, i18n.Get("item.oil.description")}}, // Oil
+						{247, new[] {null, null, "-300", null, null, i18n.Get("item.oil.description")}}, // Oil
 						{432, new[] {null, null, "-300", null, null, i18n.Get("item.truffleoil.description")}}, // Truffle Oil
 						{917, new[] {null, null, null, null, null, data[917].Split('/')[5].Split('.')[0] + '.'}}, // Qi Seasoning
 						//{Interface.Interfaces.JsonAssets.GetObjectId(ObjectPrefix + "sugarcane"), new[] {null, null, null, "Basic"}},

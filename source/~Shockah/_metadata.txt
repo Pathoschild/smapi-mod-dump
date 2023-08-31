@@ -8,6 +8,7 @@ mods:
    Flexible Sprinklers
    Hats on Hats
    Hibernation
+   In a Heartbeat
    Junimo Warp
    Kokoro
    Machine Status
@@ -22,9 +23,9 @@ mods:
    XP Display
 
 latest commit:
-   commit 592d832d96ea00ede2f9a327db7d76c7d2cb8377
+   commit e063bc6d17f91d46e9852dbda0402c455598682c
    Author: MichaÅ‚ DolaÅ› <me@shockah.pl>
-   Date:   Sat Jul 29 14:49:37 2023 +0200
+   Date:   Mon Aug 14 23:55:35 2023 +0200
    
-       Improved common configuration path
+       InAHeartbeat: Version 1.0.0
    

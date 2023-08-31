@@ -16,8 +16,8 @@ namespace PoopFramework
         public string poopSound;
         public string poopEmote;
         public bool bigCraftablePoop;
-        public object poopChance;
-        public object poopInterval;
+        public int poopChance;
+        public int poopInterval;
         public string pooper;
     }
 }

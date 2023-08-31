@@ -102,7 +102,6 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
         catch (Exception ex)
         {
             Log.E("Professions module failed adjusing localized skill page content position." +
-                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
         }
@@ -145,7 +144,6 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
         catch (Exception ex)
         {
             Log.E("Professions module failed patching to draw SpaceCore skills page extended level bars." +
-                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
         }
@@ -186,7 +184,6 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
         catch (Exception ex)
         {
             Log.E("Professions module failed patching to draw max skill level with different color." +
-                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
         }
@@ -226,7 +223,6 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
         catch (Exception ex)
         {
             Log.E("Professions module failed patching to draw SpaceCore skills page extended level bars for custom skills." +
-                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
         }
@@ -265,7 +261,6 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
         catch (Exception ex)
         {
             Log.E("Professions module failed patching to draw max custom skill level with different color." +
-                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
         }
@@ -304,7 +299,6 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
         catch (Exception ex)
         {
             Log.E("Professions module failed patching to draw skills page prestige ribbons." +
-                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
         }
@@ -329,7 +323,6 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
         catch (Exception ex)
         {
             Log.E("Professions module failed patching to draw skills page prestige ribbons." +
-                  "\n—-- Do NOT report this to SpaceCore's author. ---" +
                   $"\nHelper returned {ex}");
             return null;
         }

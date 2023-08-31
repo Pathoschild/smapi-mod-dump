@@ -50,6 +50,8 @@
     "menu.edit.header": "标题",
     "menu.edit.bold": "粗体",
     "menu.edit.repeating": "重复",
+    "menu.edit.repeat-every": "重复",
+    "menu.edit.repeat-days": "",
     "menu.edit.hide-in-overlay": "在叠加中隐藏",
     "menu.edit.show-when": "何时显示项目: ",
     "menu.edit.raining-on-farm": "农村里下雨",

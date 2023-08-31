@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Slingshots.Projectiles;
 #region using directives
 
 using DaLion.Overhaul.Modules.Combat.Extensions;
+using DaLion.Overhaul.Modules.Enchantments.Ranged;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
@@ -52,7 +53,6 @@ internal sealed class ObjectProjectile : BasicProjectile
     /// <param name="xVelocity">The projectile's starting velocity in the horizontal direction.</param>
     /// <param name="yVelocity">The projectile's starting velocity in the vertical direction.</param>
     /// <param name="rotationVelocity">The projectile's starting rotational velocity.</param>
-    /// <param name="canRecover">Whether the fired <paramref name="ammo"/> can be recovered.</param>
     public ObjectProjectile(
         Item ammo,
         int index,
@@ -64,8 +64,7 @@ internal sealed class ObjectProjectile : BasicProjectile
         Vector2 startingPosition,
         float xVelocity,
         float yVelocity,
-        float rotationVelocity,
-        bool canRecover)
+        float rotationVelocity)
         : base(
             (int)damage,
             index,
@@ -100,8 +99,6 @@ internal sealed class ObjectProjectile : BasicProjectile
             ? (1f + source.Get_EffectiveCritPower()) * (1f + firer.critPowerModifier)
             : 0f;
 
-        this.CanBeRecovered = canRecover && !this.IsSquishy && ammo.ParentSheetIndex != ItemIDs.ExplosiveAmmo;
-        this.CanPierce = !this.IsSquishy && ammo.ParentSheetIndex != ItemIDs.ExplosiveAmmo;
         if (this.IsSquishy)
         {
             Reflector
@@ -143,10 +140,6 @@ internal sealed class ObjectProjectile : BasicProjectile
     public float CritPower { get; }
 
     public bool DidBounce { get; private set; }
-
-    public bool CanPierce { get; }
-
-    public bool CanBeRecovered { get; }
 
     public bool DidPierce { get; private set; }
 
@@ -210,7 +203,7 @@ internal sealed class ObjectProjectile : BasicProjectile
             monster.GetBoundingBox(),
             this.Damage,
             this.Damage + 1,
-            false,
+            this.Ammo.ParentSheetIndex == ItemIDs.ExplosiveAmmo,
             this.Knockback,
             0,
             this.CritChance,
@@ -218,15 +211,7 @@ internal sealed class ObjectProjectile : BasicProjectile
             true,
             this.Firer);
 
-        if (!ProfessionsModule.ShouldEnable)
-        {
-            Reflector
-                .GetUnboundMethodDelegate<Action<BasicProjectile, GameLocation>>(this, "explosionAnimation")
-                .Invoke(this, location);
-            return;
-        }
-
-        if (!this.Firer.professions.Contains(Farmer.desperado))
+        if (!ProfessionsModule.ShouldEnable || !this.Firer.professions.Contains(Farmer.desperado))
         {
             Reflector
                 .GetUnboundMethodDelegate<Action<BasicProjectile, GameLocation>>(this, "explosionAnimation")
@@ -235,7 +220,8 @@ internal sealed class ObjectProjectile : BasicProjectile
         }
 
         // check for piercing
-        if (this.Firer.professions.Contains(Farmer.desperado + 100) && this.CanPierce && this._pierceCount < 2 &&
+        if (this.Firer.professions.Contains(Farmer.desperado + 100) && !this.IsSquishy &&
+            this.Ammo.ParentSheetIndex != ItemIDs.ExplosiveAmmo && this._pierceCount < 2 &&
             Game1.random.NextDouble() < this.Overcharge - 1f)
         {
             this.Damage = (int)(this.Damage * 0.65f);
@@ -244,7 +230,6 @@ internal sealed class ObjectProjectile : BasicProjectile
             this.xVelocity.Value *= 0.65f;
             this.yVelocity.Value *= 0.65f;
             this.DidPierce = true;
-            Log.D("Pierced!");
             this._pierceCount++;
         }
         else
@@ -266,6 +251,12 @@ internal sealed class ObjectProjectile : BasicProjectile
         {
             blossom.ChargeValue += (this.DidBounce || this.DidPierce ? 18 : 12) -
                                    (10 * this.Firer.health / this.Firer.maxHealth);
+        }
+
+        if (this.Source?.hasEnchantmentOfType<PreservingEnchantment>() == true || this.IsSquishy ||
+            this.Ammo.ParentSheetIndex == ItemIDs.ExplosiveAmmo || !this.Firer.professions.Contains(Farmer.scout))
+        {
+            return;
         }
 
         // try to recover
@@ -305,7 +296,8 @@ internal sealed class ObjectProjectile : BasicProjectile
             return;
         }
 
-        if (!this.CanBeRecovered || !this.Firer.professions.Contains(Farmer.scout))
+        if (this.Source?.hasEnchantmentOfType<PreservingEnchantment>() == true || this.IsSquishy ||
+            this.Ammo.ParentSheetIndex == ItemIDs.ExplosiveAmmo || !this.Firer.professions.Contains(Farmer.scout))
         {
             return;
         }
@@ -363,7 +355,7 @@ internal sealed class ObjectProjectile : BasicProjectile
         // check if already collided
         if (didCollide)
         {
-            return !this.DidPierce && didCollide;
+            return !this.DidPierce;
         }
 
         this.DidPierce = false;
@@ -427,7 +419,7 @@ internal sealed class ObjectProjectile : BasicProjectile
             monster.GetBoundingBox(),
             adjustedDamage,
             adjustedDamage + 1,
-            false,
+            this.Ammo.ParentSheetIndex == ItemIDs.ExplosiveAmmo,
             this.Knockback,
             0,
             this.CritChance,

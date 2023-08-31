@@ -10,7 +10,7 @@
 
 {
   "Name": "Matcha Latte",
-  "Description": "Coffee and green tea live in perfect harmony.",
+  "TranslationKey": "objects.matcha-latte",
   "Category": "Cooking",
   "Price": 20,
   "Edibility": 15,
@@ -49,35 +49,4 @@
         ],
         "CanPurchase": false,
     },
-
-    "NameLocalization":
-    {
-      //remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    },
-    "DescriptionLocalization":
-    {
-      //remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    }
 }

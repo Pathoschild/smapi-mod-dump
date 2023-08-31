@@ -11,7 +11,7 @@
 {
   "Name": "Quest Time Limits",
   "Author": "aedenthorn",
-  "Version": "0.1.1",
+  "Version": "0.1.3",
   "Description": "Quest Time Limits.",
   "UniqueID": "aedenthorn.QuestTimeLimits",
   "EntryDll": "QuestTimeLimits.dll",

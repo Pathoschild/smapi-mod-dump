@@ -103,7 +103,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 if (lackingItem.Key.ToLower() == "money")
                     text = Game1.content.LoadString("Strings\\UI:NotEnoughMoney" + new Random().Next(1, 4));
                 else {
-                    var displayName = new StardewValley.Object(Unlockable.intParseID(Unlockable.getIDFromReqSplit(lackingItem.Key.Split(',').First())), lackingItem.Value).DisplayName;
+                    var displayName = Unlockable.parseItem(Unlockable.getIDFromReqSplit(lackingItem.Key.Split(',').First()), lackingItem.Value).DisplayName;
                     text = Helper.Translation.Get("ub_not_enough" + new Random().Next(1, 3), new { displayName = displayName });
                 }
 
@@ -366,7 +366,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 var firstEntry = requirement.Key.Split(",").First();
                 var id = Unlockable.getIDFromReqSplit(firstEntry);
                 var quality = Unlockable.getQualityFromReqSplit(firstEntry);
-                var obj = new StardewValley.Object(Unlockable.intParseID(id), requirement.Value, quality: quality);
+                var obj = Unlockable.parseItem(id, requirement.Value, quality: quality);
                 obj.drawInMenu(b, new Vector2(xPos, yPos), 0.9f, 1f, 1f, StackDrawType.HideButShowQuality, color: Color.White, false);
                 if (requirement.Value > 1)
                     Utility.drawTinyDigits(requirement.Value, b, new Vector2(xPos, yPos) + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(requirement.Value, 3f)) + 3f, 64f - 18f + 1f), 3f, 1f, hasItems ? Color.White : Color.Red);

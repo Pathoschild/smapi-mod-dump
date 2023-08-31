@@ -9,7 +9,6 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Tools;
@@ -115,7 +114,7 @@ namespace AdvancedMeleeFramework
 
         public static bool _OnDealDamage_Prefix(BaseEnchantment __instance, string ____displayName, Monster monster, GameLocation location, Farmer who, ref int amount)
         {
-            if (!(__instance is BaseWeaponEnchantment) || ____displayName == null  || ____displayName == "" || !ModEntry.advancedEnchantments.ContainsKey(____displayName) || (ModEntry.EnchantmentTriggers.TryGetValue(who.UniqueMultiplayerID + ____displayName, out int trigger) && trigger == Game1.ticks))
+            if (__instance is not BaseWeaponEnchantment || who is null || who.CurrentTool is not MeleeWeapon || ____displayName == null  || ____displayName == "" || !ModEntry.advancedEnchantments.ContainsKey(____displayName) || (ModEntry.EnchantmentTriggers.TryGetValue(who.UniqueMultiplayerID + ____displayName, out int trigger) && trigger == Game1.ticks))
                 return true;
             AdvancedEnchantmentData enchantment = ModEntry.advancedEnchantments[____displayName];
 
@@ -243,6 +242,5 @@ namespace AdvancedMeleeFramework
             }
             return false;
         }
-
     }
 }

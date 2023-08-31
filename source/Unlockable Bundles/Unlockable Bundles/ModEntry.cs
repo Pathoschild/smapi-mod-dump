@@ -18,6 +18,7 @@ using Unlockable_Bundles.API;
 using Unlockable_Bundles.Lib.ShopTypes;
 using StardewValley.BellsAndWhistles;
 using Unlockable_Bundles.Lib;
+using StardewValley.Locations;
 
 namespace Unlockable_Bundles
 {
@@ -47,6 +48,8 @@ namespace Unlockable_Bundles
             helper.ConsoleCommands.Add("ub", "Debug Breakpoint", this.commands);
         }
 
+        //Please note that these commands are mainly used for development purposes.
+        //There's no guarentee they'll be changed or removed unannounced
         private void commands(string command, string[] args)
         {
             if (args.Length == 0)
@@ -62,6 +65,29 @@ namespace Unlockable_Bundles
                 debug();
             else if (args[0] == "event")
                 playEventScript(args[1]);
+            else if (args[0] == "location")
+                showLocationData();
+            else if (args[0] == "cabin")
+                upgradeCabin(args);
+
+        }
+
+        private static void upgradeCabin(string[] args)
+        {
+            var lvl = args.Length > 1 ? int.Parse(args[1]) : 3;
+
+            if(Game1.currentLocation is Cabin cabin) {
+                cabin.upgradeLevel = lvl;
+                cabin.updateCellarWarps();
+                cabin.updateWarps();
+
+                Game1.updateCellarAssignments();
+            }
+        }
+
+        private void showLocationData()
+        {
+            Monitor.Log($"\nLocation: {Game1.currentLocation.Name}\nUnique: {Game1.currentLocation.NameOrUniqueName}", LogLevel.Alert);
         }
 
         private void debug()
@@ -72,7 +98,7 @@ namespace Unlockable_Bundles
         private void playEventScript(string key)
         {
             var unlockables = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
-            Game1.globalFadeToBlack(() => Game1.currentLocation.startEvent(new UBEvent(new Unlockable(unlockables[key]), unlockables[key].ShopEvent, -1, Game1.player)));
+            Game1.globalFadeToBlack(() => Game1.currentLocation.startEvent(new UBEvent(new Unlockable(unlockables[key]), unlockables[key].ShopEvent, Game1.player)));
         }
 
         private void debugPurchase()

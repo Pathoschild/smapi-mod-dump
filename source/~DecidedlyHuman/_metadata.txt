@@ -13,9 +13,9 @@ mods:
    Smart Cursor
 
 latest commit:
-   commit fca0f6dd4865fc9961aeb58c8c3cf3800d3316c1
+   commit 1f50aad60bbc1d985e524373bcb648a82c21568b
    Author: Alan <contact@decidedlyhuman.co.uk>
-   Date:   Thu Jun 15 13:19:23 2023 +0100
+   Date:   Sun Aug 6 18:03:08 2023 +0100
    
-       SLN: Visual Studio GUID crap.
+       SB: Updated release notes.
    

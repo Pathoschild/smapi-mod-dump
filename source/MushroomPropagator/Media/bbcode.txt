@@ -1,0 +1,115 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/BlueberryMushroomMachine
+**
+*************************************************/
+
+After Robin builds your cellar, Demetrius will drop in to give you the recipe to his new project – a rotten old log that grows mushrooms overnight!
+
+[img]https://i.imgur.com/yOzJUQa.png[/img]
+[size=4][b][img]https://i.imgur.com/rpt2ff4.png[/img]Translations[/b][/size]
+[img]https://i.imgur.com/x8XztE0.png[/img]Available translations and credits
+
+[size=4][b][img]https://i.imgur.com/ZKfKBTu.png[/img]How to install[/b][/size]
+[img]https://i.imgur.com/x8XztE0.png[/img]Downloading and installing the mod
+
+[size=4][b][img]https://i.imgur.com/XHPtoOQ.png[/img]How to get it[/b][/size]
+[img]https://i.imgur.com/x8XztE0.png[/img]Meeting Demetrius and unlocking the recipe
+
+[size=4][b][img]https://i.imgur.com/wdt2cIh.png[/img][/b][b]How it works[/b][/size]
+[img]https://i.imgur.com/x8XztE0.png[/img]Crafting, growing, interacting, and professions
+
+[size=4][b][img]https://i.imgur.com/F7CdLyz.png[/img]Config[/b][/size]
+[img]https://i.imgur.com/x8XztE0.png[/img]All config options and what they do
+
+
+
+[img]https://i.imgur.com/Y9EgwwE.png[/img][size=4]
+[img]https://i.imgur.com/x8XztE0.png[/img][img]https://i.imgur.com/FppFcvF.png[/img]中文 — by [b]chiwei[/b]
+[img]https://i.imgur.com/x8XztE0.png[/img][img]https://i.imgur.com/7YjmIrD.png[/img]한국어 — by [b]KAYA[/b]
+[img]https://i.imgur.com/x8XztE0.png[/img][img]https://i.imgur.com/vyoDiVG.png[/img]Français — by [b]Inu'tile[/b]
+[img]https://i.imgur.com/x8XztE0.png[/img][img]https://i.imgur.com/QthcohZ.png[/img]Español — by [b]ErosDkAl[/b]
+[img]https://i.imgur.com/x8XztE0.png[/img][img]https://i.imgur.com/Cp4dJMq.png[/img]Pусский — by [b]maraticon[/b]
+[img]https://i.imgur.com/x8XztE0.png[/img][img]https://i.imgur.com/5IkQeuk.png[/img]Italiano — by [b]Nekora8[/b]
+[img]https://i.imgur.com/x8XztE0.png[/img][img]https://i.imgur.com/JM1BI2I.png[/img][img]https://i.imgur.com/lZOy2eA.png[/img][img]https://i.imgur.com/fQWKWlf.png[/img][img]https://i.imgur.com/3LLM9Yi.png[/img] também disponível em Português!
+[img]https://i.imgur.com/x8XztE0.png[/img][img]https://i.imgur.com/NHmnKSO.png[/img]日本語 — 自分で書いた、初心者からあまりよくない。改めばご苦労様でした。[/size]
+
+[img]https://i.imgur.com/rpt2ff4.png[/img][size=3]Want to translate this mod to your native language?[/size]
+[img]https://i.imgur.com/x8XztE0.png[/img][url=https://github.com/b-b-blueberry/BlueberryMushroomMachine/blob/master/BlueberryMushroomMachine/i18n/default.json]Read the latest English-language translations here![/url]
+
+[img]https://i.imgur.com/rpt2ff4.png[/img][size=3]All dialogue and events were written by [b]Oddshot[/b]![/size]
+
+[size=4]
+[img]https://i.imgur.com/Mcbu0K4.png[/img]
+[img]https://i.imgur.com/x8XztE0.png[/img][b][color=#e69138]1.[/color][/b] Download [url=https://www.nexusmods.com/stardewvalley/mods/1348]SpaceCore[/url],
+[img]https://i.imgur.com/x8XztE0.png[/img][b][color=#e69138]2.[/color][/b] Drop it into your [b]Mods[/b] folder along with [b]Blueberry's Mushroom Machine[/b],
+[img]https://i.imgur.com/x8XztE0.png[/img][img]https://i.imgur.com/x8XztE0.png[/img]﻿[b][color=#e69138]+ [/color][/b] If you play with [url=https://www.nexusmods.com/stardewvalley/mods/1063]Automate[/url], include [b]Blueberry's Mushroom Automation[/b],
+[img]https://i.imgur.com/x8XztE0.png[/img]﻿[b][color=#e69138]3.[/color][/b] Ensure [b]all players in multiplayer[/b] have this mod installed,
+[img]https://i.imgur.com/x8XztE0.png[/img]﻿[b][color=#e69138]4.[/color][/b] Done! Yep, that's it! From here:
+[/size]
+[img]https://i.imgur.com/x8XztE0.png[/img][b][color=#e69138]﻿+[/color][/b]  To change which features you have enabled or disabled, launch the game and edit this mod's config file.
+[img]https://i.imgur.com/x8XztE0.png[/img][b][color=#e69138]﻿+[/color][/b]  To change features in-game, try playing with spacechase's [url=https://www.nexusmods.com/stardewvalley/mods/5098]Generic Mod Config Menu[/url].
+[img]https://i.imgur.com/x8XztE0.png[/img][b][color=#e69138]﻿+[/color][/b]  If you want to remove this mod and all of its effects, simply remove it from your Mods folder.
+
+
+[img]https://i.imgur.com/A3KCW5J.png[/img]
+
+[img]https://i.imgur.com/XHPtoOQ.png[/img][size=3][b]Requirements[/b][/size]
+[img]https://i.imgur.com/x8XztE0.png[/img]The Propagator isn't immediately available – you'll be given the recipe when you have [b][color=#efefef]a farmhouse cellar and a mushroom cave![/color][/b]
+[img]https://i.imgur.com/x8XztE0.png[/img]Demetrius will visit the morning after Robin finishes your cellar to deliver the recipe.
+[img]https://i.imgur.com/x8XztE0.png[/img]Unless changed in the config, the propagation log isn't available with a fruit cave!
+
+[img]https://i.imgur.com/XHPtoOQ.png[/img][size=3][b]Crafting[/b][/size]
+[img]https://i.imgur.com/x8XztE0.png[/img]Logs are crafted with the same ingredients as a cask – [color=#efefef][b]20 wood and 1 hardwood![/b][/color]
+[img]https://i.imgur.com/x8XztE0.png[/img]Place a mushroom on the log to start growing!
+
+
+[img]https://i.imgur.com/E4pJWBn.png[/img]
+
+[size=3][b][img]https://i.imgur.com/wdt2cIh.png[/img]Growing[/b][/size]
+[img]https://i.imgur.com/x8XztE0.png[/img]At the end of the day, each of the logs will grow a little more.
+[img]https://i.imgur.com/x8XztE0.png[/img]A common mushroom will typically grow every night, a red mushroom every two nights, and a purple mushroom every four nights.
+   ﻿Custom mushrooms added with Json Assets, like Shiitake Mushrooms and Black Fungus, will grow relative to their value.
+   You can leave the logs for a few days and they'll keep growing more mushrooms for their stacks for when you check on them.
+[img]https://i.imgur.com/x8XztE0.png[/img]The logs can only hold so many of each type of mushroom, though: bigger and better mushrooms will grow smaller stacks.
+[img]https://i.imgur.com/x8XztE0.png[/img]Keep an eye out for logs with huge, fully-grown mushrooms: they've reached their capacity, and you'll need to pop them off to keep growing.
+
+[size=3][b][img]https://i.imgur.com/wdt2cIh.png[/img]Interacting[/b][/size]
+[img]https://i.imgur.com/x8XztE0.png[/img]Click a log while holding a mushroom to add it as the root-mushroom. If the log's not empty, it'll swap to the new mushroom.
+[img]https://i.imgur.com/x8XztE0.png[/img]Click the log later on to pop any extra mushrooms off it, and click it again to pop the root-mushroom off.
+[img]https://i.imgur.com/x8XztE0.png[/img]Like the Casks in your cellar, you can whack them with an axe or a hoe to pop off the root-mushroom, too.
+
+[size=3][b][img]https://i.imgur.com/wdt2cIh.png[/img]Professions[/b][/size]
+[img]https://i.imgur.com/x8XztE0.png[/img]Your [b]Foraging[/b] professions improve the mushrooms you grow!
+[img]https://i.imgur.com/x8XztE0.png[/img]With the [color=#efefef][b]Gatherer[/b][/color] profession, you'll get a chance for a bonus mushroom on each harvest.
+[img]https://i.imgur.com/x8XztE0.png[/img]With the [b]Botanist[/b] profession, you'll pluck only the highest-quality mushrooms.
+
+
+[img]https://i.imgur.com/MCC9Q4W.png[/img]
+
+[img]https://i.imgur.com/F7CdLyz.png[/img][size=3]If you'd like to use the logs in places other than your cellar and the cave, you can enable them almost anywhere else, too.[/size]
+
+[img]https://i.imgur.com/F7CdLyz.png[/img][size=3][color=#f9cb9c][b][font=Courier New]DisabledForFruitCave[/font][/b][/color] – Picked the fruit cave and you still want to grow more mushrooms? I'll allow it![/size]
+
+[img]https://i.imgur.com/F7CdLyz.png[/img][size=3][color=#f9cb9c][b][font=Courier New]RecipeAlwaysAvailable[/font][/b][/color] – No time for Demetrius? Don't want a big house? You can get the recipe from day 1![/size]
+﻿
+[img]https://i.imgur.com/F7CdLyz.png[/img][size=3][color=#f9cb9c][b][font=Courier New]MaximumDaysToMature[/font][/b][/color] – Want mushrooms to grow faster or slower to match your other mods? Change the timescale![/size]
+
+[img]https://i.imgur.com/F7CdLyz.png[/img][size=3][color=#f9cb9c][b][font=Courier New]MaximumQuantityLimitsDoubled[/font][/b][/color] – Don't check the cellar often? The total mushrooms each log holds can be raised![/size]
+
+[img]https://i.imgur.com/F7CdLyz.png[/img][size=3][color=#f9cb9c][b][font=Courier New]OnlyToolsCanRemoveRootMushrooms[/font][/b][/color] – Want better control over your logs? Clicking won't pop mushrooms off using this![/size]
+
+[img]https://i.imgur.com/F7CdLyz.png[/img][size=3][color=#f9cb9c][b][font=Courier New]PulseWhenGrowing[/font][/b][/color] – Don't want a visible growing effect? You don't need it, set this to false![/size]
+
+[img]https://i.imgur.com/F7CdLyz.png[/img][size=3][color=#f9cb9c][b][font=Courier New]OtherObjectsThatCanBeGrown[/font][/b][/color] – The mushroom machine accepts all custom items named as a "mushroom" or "fungus".[/size]
+[img]https://i.imgur.com/x8XztE0.png[/img]If you have any custom objects that use a different name, like "Red Cap" instead of "Red Cap Mushroom", add them here!
+
+
+
+[img]https://i.imgur.com/QsyofAJ.png[/img]
+
+[url=https://github.com/b-b-blueberry/BlueberryMushroomMachine][img]https://i.imgur.com/moz2K2H.png[/img]>> github[/url]

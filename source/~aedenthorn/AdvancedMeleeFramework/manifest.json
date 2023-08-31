@@ -11,7 +11,7 @@
 {
   "Name": "Advanced Melee Framework",
   "Author": "aedenthorn",
-  "Version": "0.8.0",
+  "Version": "0.8.1",
   "Description": "Advanced melee framework.",
   "UniqueID": "aedenthorn.AdvancedMeleeFramework",
   "EntryDll": "AdvancedMeleeFramework.dll",
@@ -27,6 +27,6 @@
       {
         "UniqueID": "Platonymous.ModUpdater",
         "IsRequired": false
-      },
+      }
   ]
 }

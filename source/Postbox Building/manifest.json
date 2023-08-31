@@ -1,0 +1,25 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/i-saac-b/PostBoxMod
+**
+*************************************************/
+
+{
+  "Name": "PostBoxMod",
+  "Author": "i-saac-b",
+  "Version": "1.0.1",
+  "Description": "Adds a postbox as a constructable building to allow remote gifting to townsfolk.",
+  "UniqueID": "i-saac-b.PostBoxMod",
+  "EntryDll": "PostBoxMod.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:17614", "GitHub:i-saac-b/PostBoxMod" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    }
+  ]
+}

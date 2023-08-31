@@ -9,16 +9,16 @@
 *************************************************/
 
 {
-  "Name": "> Novo Mundo: Code ",
+  "Name": "> Novo Mundo",
   "Author": "somaraezel",
   "Version": "1.0.0",
-  "Description": "Movo Mundo Core Code.",
+  "Description": "Part Of Novo Mundo Mod.",
   "UniqueID": "somaraezel.NovoMundo",
   "EntryDll": "NovoMundo.dll",
   "UpdateKeys": [ "Nexus: ???" ],
   "Dependencies": [
     {
-      "UniqueID": "spacechase0.SpaceCore",
+      "UniqueID": "SuperAardvark.AntiSocial",
       "IsRequired": true
     }
   ]

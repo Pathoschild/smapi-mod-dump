@@ -187,17 +187,23 @@ namespace BetterBeehouses
 		}
 		public static void ManipulateObject(Object obj, Farmer who, GameLocation where, Vector2 tile)
 		{
-			if (obj is null)
-				return;
 			where ??= who?.currentLocation ?? Game1.currentLocation;
+			if (where is null || obj is null)
+				return;
 			obj.Quality = GetQuality(who, obj.Quality);
 			float val = obj.Price * ModEntry.config.ValueMultiplier;
 			int cap = ModEntry.config.CapFactor;
+			
 			if(val > cap)
 				val = cap * MathF.Pow(
 					val / cap,
 					1f / (1f + ModEntry.config.CapCurve)
 				);
+			
+			/* new algo
+			if (val > cap)
+				val = MathF.Log(val - cap + 1f, ModEntry.config.CapCurve * 2f + 2f);
+			*/
 			obj.Price = (int)(val + .5f);
 			var test = UtilityPatch.GetAllNearFlowers(where, tile, ModEntry.config.FlowerRange).ToArray();
 			if (ModEntry.config.UseFlowerBoost)
@@ -221,9 +227,9 @@ namespace BetterBeehouses
 			if (!ModEntry.config.UseQuality)
 				return original;
 
-			float boost = who.eventsSeen.Contains(2120303) ? ModEntry.config.BearBoost : 1f;
+			float boost = who is not null && who.eventsSeen.Contains(2120303) ? ModEntry.config.BearBoost : 1f;
 
-			double chanceForGoldQuality = 0.2 * (who.FarmingLevel / 10.0) + 0.2 * boost * ((who.FarmingLevel + 2.0) / 12.0) + 0.01;
+			double chanceForGoldQuality = 0.2 * (who?.FarmingLevel ?? 0.0 / 10.0) + 0.2 * boost * ((who?.FarmingLevel ?? 0.0 + 2.0) / 12.0) + 0.01;
 			double chanceForSilverQuality = Math.Min(0.75, chanceForGoldQuality * 2.0);
 			return Math.Max(original, 
 				(Game1.random.NextDouble() < chanceForGoldQuality / 2.0) ? 4 :

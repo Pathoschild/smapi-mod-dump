@@ -28,6 +28,7 @@ namespace HereFishy
 
         public static ModConfig Config;
         private static SoundEffect fishySound;
+        private static SoundEffect weeSound;
         private static List<TemporaryAnimatedSprite> animations = new List<TemporaryAnimatedSprite>();
         private static SparklingText sparklingText;
         private static bool caughtDoubleFish;
@@ -56,6 +57,7 @@ namespace HereFishy
             try
             {
                 fishySound = SoundEffect.FromStream(new FileStream(Path.Combine(Helper.DirectoryPath, "assets", "fishy.wav"), FileMode.Open));
+                weeSound = SoundEffect.FromStream(new FileStream(Path.Combine(Helper.DirectoryPath, "assets", "wee.wav"), FileMode.Open));
             }
             catch(Exception ex)
             {
@@ -69,7 +71,7 @@ namespace HereFishy
 
         private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
-            if(e.Button == SButton.MouseRight && Context.IsWorldReady && Context.CanPlayerMove && (Game1.player.CurrentTool is FishingRod))
+            if (e.Button == SButton.MouseRight && Context.IsWorldReady && Context.CanPlayerMove && (Game1.player.CurrentTool is FishingRod))
             {
                 if (hereFishying)
                 {
@@ -267,7 +269,10 @@ namespace HereFishy
                 
                 who.gainExperience(1, experience);
             }
-
+            if (weeSound != null)
+            {
+                weeSound.Play();
+            }
             if (who.FacingDirection == 1 || who.FacingDirection == 3)
             {
                 float distance = Vector2.Distance(new Vector2(x, y), who.Position);

@@ -1,4 +1,6 @@
 {
+  // GUI - Game Menu
+  // "OptionsTabTooltip": "UI Info Suite 2 Options", // TODO
   //GUI - Billboard
   "Billboard": "กระดานปิดประกาศ",
   "Calendar": "ปฏิทิน",
@@ -23,6 +25,7 @@
   "ToolIsFinishedBeingUpgraded": "{0} เสร็จเรียบร้อย!",
   "NpcBirthday": "วันเกิดของ {0}",
   "RobinBuildingStatus": "โรบินจะสร้างสิ่งปลูกสร้างใหม่ของคุณให้เสร็จใน {0} วัน",
+  "RobinHouseUpgradeStatus": "Robin will finish upgrading your house in {0} day(s)", // TODO
   // Display icons - Foragables
   "CanFindSalmonberry": "คุณจะเจอ Salmonberry ได้ในวันนี้",
   "CanFindBlackberry": "คุณจะเจอ Blackberries ได้ในวันนี้",

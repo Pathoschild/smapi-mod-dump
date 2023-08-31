@@ -1,9 +1,9 @@
 {
-	"Name": "[SMAPI] The Adventurer's Life Expanded",
+	"Name": "[SMAPI] A Vida de Aventureiro Expandida",
 	"Author": "HamioDracny",
-	"Version": "1.1.0",
+	"Version": "1.2.0",
 	//"Description": "",
 	"UniqueID": "HamioDracny.TALE.SMAPI",
 	"EntryDll": "Evolution.dll",
-	"UpdateKeys": ["Nexus:"],
+	"UpdateKeys": ["Nexus:14083"],
 }

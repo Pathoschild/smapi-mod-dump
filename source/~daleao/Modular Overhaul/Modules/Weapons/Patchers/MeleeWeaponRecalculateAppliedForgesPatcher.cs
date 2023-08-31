@@ -69,6 +69,7 @@ internal sealed class MeleeWeaponRecalculateAppliedForgesPatcher : HarmonyPatche
                 }
             }
 
+            __instance.description = null;
             return false; // don't run original logic
         }
         catch (Exception ex)

@@ -1,0 +1,17 @@
+urls:
+   web: https://github.com/jamescodesthings/smapi-better-sprinklers
+   Git: https://github.com/jamescodesthings/smapi-better-sprinklers.git
+
+mods:
+   Better Sprinklers Plus
+
+latest commit:
+   commit 8b5fa76adaad524d8d45edf4a797e035c0d354cd
+   Author: James Macmillan <jamescodesthings@gmail.com>
+   Date:   Wed Aug 30 07:26:47 2023 +0100
+   
+       feat: add option for "default tiles are free", suggested by MicomiBite
+       
+       - Also, remove notice about data layers compatibility, as the PR has
+         been merged!
+   

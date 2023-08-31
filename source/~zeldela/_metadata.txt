@@ -7,9 +7,9 @@ mods:
    Remember Birthday Gifts
 
 latest commit:
-   commit 815e57a9269a9a8d2703c822a040094f534c9e6c
-   Author: zeldela <delagomen@gmail.com>
-   Date:   Sun Oct 2 15:59:13 2022 -0400
+   commit 06d8e2cf2ce54207dd87a10aa1dcb5645e552df5
+   Author: zeldela <gomendp@gmail.com>
+   Date:   Fri Aug 25 01:09:57 2023 -0400
    
-       fish pond edit
+       signing key
    

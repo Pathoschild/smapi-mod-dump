@@ -23,6 +23,10 @@ This mod lets you plant faster, by letting you plant multiple seeds at once
 
 # Changelog
 
+## 1.2.2 (unreleased)
+* Fixes
+  * Row plant modes now prioritise seeds closer to player
+
 ## 1.2.1
 * New/Changed
   * Updated to support AchtuurCore 1.1.5

@@ -1,0 +1,11 @@
+{
+  "entry.badConfig": "Unable to read config file.",
+  "blueprint-title": "Postbox",
+  "blueprint-description": "For shipping gifts from the comfort of your farm! Almost as effective as gifting in person.",
+  "postbox-tooManyGifts": "has received enough gifts from you!",
+  "postbox-sentGift": "sent to",
+  "postbox-from": "from",
+  "postbox-occupied": "Someone else is sending a package.",
+  "postbox-noMoreRecipients": "You've sent everyone you can a gift already!",
+  "postageMenu-shippingTo": "Shipping to"
+}

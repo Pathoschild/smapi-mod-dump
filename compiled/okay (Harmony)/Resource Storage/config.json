@@ -1,0 +1,9 @@
+{
+  "ModEnabled": true,
+  "AutoUse": true,
+  "AutoStore": "Sap,Wood,Hardwood,Stone,Coal,Fiber,Clay",
+  "ModKeyMax": "LeftShift",
+  "ResourcesKey": "R",
+  "IconOffsetX": 0,
+  "IconOffsetY": 0
+}

@@ -24,7 +24,7 @@ namespace DestroyableBushes
         /// <summary>The unit component of <see cref="WhenBushesRegrow"/>.</summary>
         [JsonIgnore]
         public RegrowUnit? regrowUnit = RegrowUnit.Days;
-        
+
         private string whenBushesRegrow = "3 days";
         /// <summary>A string describing the amount of time that will pass before a destroyed bush respawns. Set to null if unrecognized; null disables respawning.</summary>
         public string WhenBushesRegrow

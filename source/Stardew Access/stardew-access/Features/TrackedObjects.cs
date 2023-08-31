@@ -49,7 +49,7 @@ namespace stardew_access.Features.Tracker
             }
 
             if (!sortByProximity) {
-                MainClass.DebugLog("Sorting alphabetically");
+                Log.Debug("Sorting alphabetically");
                 foreach (var cat in Objects) {
                     var ordered = cat.Value.OrderBy(x => x.Key).ToDictionary(x => x.Key, x => x.Value);
                     cat.Value.Clear();

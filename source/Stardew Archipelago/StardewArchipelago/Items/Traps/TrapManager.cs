@@ -401,7 +401,7 @@ namespace StardewArchipelago.Items.Traps
             }
         }
 
-        private void ShuffleInventory()
+        public void ShuffleInventory()
         {
             var targets = _difficultyBalancer.ShuffleInventoryTargets[_archipelago.SlotData.TrapItemsDifficulty];
             _inventoryShuffler.ShuffleInventories(targets);

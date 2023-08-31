@@ -1,0 +1,88 @@
+{
+  "festival.name": "Das Liebesfestival",
+
+  //Dialogues
+  "Dialogue.Evelyn": "Ich kann mich noch daran erinnern, wie ich meinen ersten Liebesbrief an George geschickt habe.#$b#Er war anfangs nicht sehr begeistert.$s",
+  "Dialogue.Alex": "Ich werde dieses Jahr möglicherweise nicht so viele Liebesbriefe erhalten, aber sobald ich ein professioneller Sportler werde, will jeder mein sein.",
+  "Dialogue.Clint": "Denkst du, dass Emily mir ihren Liebesbrief geben wird?$3",
+  "Dialogue.Caroline": "Pierre hat leider keine Zeit mehr, Liebesbriefe für mich zu schreiben. Anscheinend ist er mit seinen Laden zu beschäftigt.$2",
+  "Dialogue.Shane": "Es wäre mir egal, wenn wir dieses Festival überspringen würden.",
+  "Dialogue.Willy": "Ein alter Kapitän, wie ich, wird immer seine alte Seeerkundungsmaschine lieben.",
+  "Dialogue.Abigail": "I würde sehr gerne den Teddy umarmen.",
+  "Dialogue.Robin": "Immer wenn ich mit Demetrius tanze, fühlt es sich so an, als hätte ich mich frisch in ihn verliebt.$h",
+  "Dialogue.Demetrius": "Wenn man verliebt ist, fühlt es sich so an, als wäre man auf Drogen. Wusstest du das?",
+  "Dialogue.Maru": "Ich frag mich, ob es möglich ist, Gefühle mit Technologie zu manipulieren.",
+  "Dialogue.Sebastian": "Ich würde nicht hier sein, wenn meine Mutter mich nicht gezwungen hätte.",
+  "Dialogue.Pierre": "Ich empfehle dir äußerst, Liebesbriefe bei Pierre's zu kaufen.",
+  "Dialogue.Linus": "Ich habe nie einen Liebesbrief erhalten.$s#$b#Ich frage mich, ob sie meiner Existenz noch bewusst sind.$s",
+  "Dialogue.George": "Ahh... Liebe ist in der Luft. Das ist besser als jene Romanze im Fernsehen.$h",
+  "Dialogue.Lewis": "Ich persönlich finde, dass dies das beste Festival des Jahres ist. Ich genieße es immer der Jugend zuzuschauen, wie sie ihre Gefühle austauschen.$h",
+  "Dialogue.Emily": "$y '@! Denkst du, du wirst einen Liebesbrief erhalten?_Sicherlich._Gut, Ich wünsche dir viel Glück._Ich glaube eher nicht._Sei nicht traurig. Ich bin mir ziemlich sicher, dass es nächstes Jahr was wird.",
+  "Dialogue.Haley": "Ich hoffe, dass die Person, die mir einen Brief geben wird, schön angezogen ist.",
+  "Dialogue.Penny": "Oh... hi @. Ich hab dich gerade nicht erwartet.",
+  "Dialogue.Pam": "Ich bin nur für die Pralinen gekommen.",
+  "Dialogue.Jodi": "Damals, als ich ein Kind war, hab ich dieses Festival geliebt.",
+  "Dialogue.Marnie": "Ich hoffe, dass ich dieses Jahr einen Liebesbrief von jemandem besonderen erhalten werde.",
+  "Dialogue.Leo": "Ich bekomme immer Liebesbriefe von Papageien... In diesem Fall sind es jedoch Walnüsse.",
+  "Dialogue.Vincent": "Mama hat gesagt, dass ich zu jung bin, um das hier zu verstehen.$2",
+  "Dialogue.Jas": "Ich habe Vincent einen Liebesbrief geschrieben.$h#$b#Sag's ihm aber nicht'.",
+  "Dialogue.Sandy": "Oh, hi @.#$b#Are you excited for your letters? I'm pretty sure hard-working people are attractive.",
+  "Dialogue.Harvey": "Liebe kann wirklich eine Medizin sein.",
+  "Dialogue.Wizard": "Frag mich nicht nach Liebeszaubersprüchen.",
+  "Dialogue.Gus": "Wenn du jemanden nach einen Date fragen wirst, kommt zu meinem Restaurant.$h",
+  "Dialogue.Leah": "Diese Veranstaltung erinnert mich immer an meinen Ex.$s",
+  "Dialogue.Sam": "Eines Tages möchte ich ein Konzert während der Liebesbriefzeremonie geben.",
+  "Dialogue.Elliott": "Das Liebesfestival... Es gibt mir neue Harmonien und einen leichten Gedankensprung. Es ist Zeit, einen Roman zu schreiben.",
+  "Dialogue.Kent": "Ich hab diese Veranstaltung so vermisst. Es tut wirklich gut, wieder hier zu sein.$h",
+  "Dialogue.Marlon": "Naja, ich dachte mir mal, ich leiste heute ein wenig Gesellschaft.",
+  "Dialogue.Haley_spouse": "Rate mal wer meinen Liebesbrief bekommt.$h",
+  "Dialogue.Leah_spouse": "Diese Veranstaltung hat mich aufgrund meiner Vergangenheit immer traurig gemacht, aber mit dir ist es anders.$h",
+  "Dialogue.Abigail_spouse": "Da ich den Teddy nicht umarmen kann, kann ich dich stattdessen umarmen?$h",
+  "Dialogue.Emily_spouse": "Hi liebling, ich mache gerade den Liebesbrief für dich.$h",
+  "Dialogue.Maru_spouse": "Eines tages werde ich für dich ein futuristischen Brief erstellen.",
+  "Dialogue.Penny_spouse": "Hi liebling, willst du danach etwas machen?",
+  "Dialogue.Elliott_spouse": "Liebesbriefe für dich?#$b#Wie wäre es damit, wenn ich dir einen Roman schreibe?",
+  "Dialogue.Alex_spouse": "Möchtest du ein romantisches Abendessen danach haben?",
+  "Dialogue.Sebastian_spouse": "Damals mochte ich es nicht, hier teilzunehmen. Jetzt ist es das Gegenteil.$h",
+  "Dialogue.Shane_spouse": "Es fühlt sich so an, als wäre meine Depression verscwhunden, immer wenn ich hier mit dir bin.$h",
+  "Dialogue.Sam_spouse": "Wenn du willst, kann ich ein romantisches Lied für dich spielen.$h",
+  "Dialogue.Harvey_spouse": "Oh hi @... Ich habe fast einen gesunden Herzinfarkt bekommen.$h",
+
+  //Invitation Letters
+  "Letter.NextDay": "Lieber @, ^Vergiss das Liebesfestival morgen nicht. Es startet um 9 in der Stadt.^Pass auf, dass du jemandem deinen Liebesbrief geben wirst. ^-Bürgermeister Lewis",
+  "Letter.WeekBefore": "Lieber @, ^Das Liebesfestival findet in einer Woche statt. ^Ich hoffe du hast viele Freundschaften dieses Jahr gemacht... ^...Ansonsten wirst du wahrscheinlich nichts bekommen. ^Es fängt 9 Uhr an... Verpass es nicht! ^-Bürgermeister Lewis",
+
+  //Love Letters
+  "LoveLetter.FoodMail": "Hi @ <...^Ich genieße wirklich deine Gesellschaft. Ich wusste, dass du das Leben im Tal aufpeppen wirst.. ^Ich hab dir etwas zu essen gemacht, um meine Dankbarkeit zu zeigen. <",
+  "LoveLetter.VegetableMail": "Hey @... ^Du weißt es wahrscheinlich nicht, aber ich liebe die Tiere auf deiner Farm. Du kümmerst sich sehr gut um sie. ^Das ist der Grund, warum ich dir ein wenig Gemüse gebe. Vielleicht mögen deine Tiere sie ja.",
+  "LoveLetter.MoneyMail": "Liebling @, ^Immer wenn du mich besuchst, weiß ich, dass es ein guter Tag wird. Deine Anwesenheit bringt mich immer zum lächeln <.^Falls du jemandem zum reden brauchst, bin ich immer für dich da.",
+  "LoveLetter.CropMail": "Hey @..., ^Ich bin ziemlich beeindruckt von deiner Arbeit auf der farm < ^Ich bin ziemlich neidisch, also habe ich versucht, selber Pflanzen anzubauen, aber es lief nicht so, wie ich wollte... ^Deshalb gebe ich dir meine übrigen Samen. Sie werden in besseren Händen sein.",
+  "LoveLetter.GemMail": "Hi @... < ^Ich glaube es ist Zeit, dich zu belohnen, da du unser liebes Tal verbesserst. ^Du unterhältst alle von uns, besonders mich. Ich habe diesen Edelstein letztens gefunden, aber weiß nicht was ich damit tun soll. Ich hoffe, du magst ihn.",
+
+  //Send Letter
+  "SendLetter.Message": "Ja...?",
+  "SendLetter.Yes": "Gebe {{name}} Liebesbrief?",
+  "SendLetter.No": "Abbrechen",
+
+  //Lewis Start message
+  "StartMessage.Question": "Möchtest du starten?",
+  "StartMessage.AnswerYes": "Ja",
+  "StartMessage.AnswerNo": "Nein",
+
+  //Letter Given Reactions
+  "ReceiveLetterReaction.Flattered": "Als ob du mich ausgewählt hast. Ich bin geschmeichelt.$h",
+  "ReceiveLetterReaction.notExpected": "Wow @, das hätte ich nie erwartet.$h",
+  "ReceiveLetterReaction.Romantic": "Aww, wie romantisch @.$h",
+
+  //NPC Gift Letter Dialogue
+  "npcGiftingLetter.WroteLetterForYou": "Hi @, Ich hab dir diesen Brief geschrieben. Ich hoffe du magst ihn.",
+  "npcGiftingLetter.AskValentine": "Ehmmm..., @$h#$b#Willst du, dass wir uns ein wenig näher sind? Schau, was ich für dich gemacht habe.$h",
+  "npcGiftingLetter.ExpressFeelings": "Hey @, Ich weiß, dass du eventuell was anderes fühlst, aber trotzdem. Ich wollte dir nur von meinen Gefühlen erzählen.$h",
+  "npcGiftingLetter.Admire": "Hey @...#$b#Ich bewundere immer dich und die Arbeit, die du auf deiner Farm tätigst. Es ist ziemlich beeindruckend und bringt etwas Frische in unser Tal.#$b#Dehalb gebe ich dir das hier.$h",
+
+  //Extras
+  "MarnieReaction.Start": "Okay @, es ist Zeit, deine Liebesbriefe zu erhalten.",
+  "MarnieReaction.NoLoveLetters": "Oh naja, sieht so aus, als will niemand dieses Jahr dir Liebesbriefe geben wollen.$s",
+  "JealousyDialogue.Spouse": "Übrigens, Ich schätze es sehr, dass du mir nicht deinen Liebesbrief gegeben hast...$s",
+
+}

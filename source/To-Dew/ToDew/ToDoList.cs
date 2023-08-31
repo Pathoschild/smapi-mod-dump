@@ -25,7 +25,7 @@ namespace ToDew {
 
         /// <summary>The version of the data format.</summary>
         /// The data format comprises the ListData object (and any objects reachable therefrom).
-        public static readonly ISemanticVersion CurrentDataFormatVersion = new SemanticVersion(1, 1, 0);
+        public static readonly ISemanticVersion CurrentDataFormatVersion = new SemanticVersion(1, 2, 0);
 
         [Flags]
         public enum WeatherVisiblity {
@@ -68,11 +68,14 @@ namespace ToDew {
             public bool IsDone { get; set; }
             public bool IsHeader { get; set; }
             public bool IsRepeating { get; set; }
+            public int RepeatDays { get; set; } = 1; // 0 and 1 are effectivly the same behavior
             public bool HideInOverlay { get; set; }
             public WeatherVisiblity FarmWeatherVisiblity { get; set; }
             public WeatherVisiblity IslandWeatherVisiblity { get; set; }
             public DayVisibility DayOfWeekVisibility { get; set; }
 
+            // internally-maintained state
+            public int DaysUntilVisible { get; set; } = 0;
             // transient; reset at beginning of day or when flags change
             public bool IsVisibleToday { get; set; }
 
@@ -93,6 +96,10 @@ namespace ToDew {
             }
 
             internal void RefreshVisibility(bool farmRaining, bool islandRaining) {
+                if (DaysUntilVisible > 0) {
+                    IsVisibleToday = false;
+                    return;
+                }
                 DayVisibility dayOfWeek = (DayVisibility)(1 << (Game1.dayOfMonth % 7));
                 DayVisibility season = (DayVisibility)((int)DayVisibility.Spring << Utility.getSeasonNumber(Game1.currentSeason));
                 DayVisibility week = (DayVisibility)((int)DayVisibility.Week1 << ((Game1.dayOfMonth - 1) / 7));
@@ -370,7 +377,7 @@ namespace ToDew {
         }
 
         /// <summary>
-        /// Mark an item as repeating (or not).  Reapeating items that are marked done are
+        /// Mark an item as repeating (or not).  Repeating items that are marked done are
         /// reset at the end of the day rather than deleted.
         /// </summary>
         /// <param name="id">The item to update</param>
@@ -381,6 +388,20 @@ namespace ToDew {
                 Save();
             } else {
                 SendToHost(MessageType.SetBoolProperty, new Tuple<long, string, bool>(item.Id, "IsRepeating", isRepeating));
+            }
+        }
+
+        /// <summary>
+        /// Set the item repeat period
+        /// </summary>
+        /// <param name="id">The item to update</param>
+        /// <param name="days">how many days before the item repeats</param>
+        public void SetItemRepeatDays(ListItem item, int days) {
+            if (Context.IsMainPlayer) {
+                item.RepeatDays = days;
+                Save();
+            } else {
+                SendToHost(MessageType.SetIntProperty, new Tuple<long, string, int>(item.Id, "RepeatDays", days));
             }
         }
 
@@ -467,7 +488,10 @@ namespace ToDew {
         public void PreSaveCleanup() {
             if (Context.IsMainPlayer) {
                 foreach (var item in theList.Items) {
-                    if (item.IsRepeating) item.IsDone = false;
+                    if (item.IsRepeating && item.IsDone) {
+                        item.DaysUntilVisible = item.RepeatDays;
+                        item.IsDone = false;
+                    }
                     item.IsVisibleToday = false;
                 }
                 theList.Items.RemoveAll(li => li.IsDone);
@@ -475,11 +499,14 @@ namespace ToDew {
             }
         }
 
-        public void RefreshVisibility() {
+        public void RefreshVisibility(bool advanceDay) {
             if (Context.IsMainPlayer) {
                 bool farmRaining = Game1.IsRainingHere(Game1.getFarm());
                 bool islandRaining = Game1.IsRainingHere(Game1.getLocationFromName("IslandSouth"));
                 foreach (var item in theList.Items) {
+                    if (advanceDay && item.DaysUntilVisible > 0) {
+                        item.DaysUntilVisible--;
+                    }
                     item.RefreshVisibility(farmRaining, islandRaining);
                 }
                 Save();
@@ -509,6 +536,7 @@ namespace ToDew {
             public const string MarkItemDone = "MarkItemDone";
             public const string SetItemText = "SetItemText";
             public const string SetBoolProperty = "SetBoolProperty";
+            public const string SetIntProperty = "SetIntProperty";
             public const string SetWeatherFlag = "SetWeatherFlag";
             public const string SetDayOfWeekFlag = "SetDayOfWeekFlag"; // Deprecated
             public const string SetDayVisibilityFlag = "SetDayVisibilityFlag";
@@ -598,6 +626,22 @@ namespace ToDew {
                                     Save();
                                 } else {
                                     theMod.Monitor.Log($"Ignoring SetBoolProperty for unknown property {propName}", LogLevel.Debug);
+                                }
+                            }, itemId);
+                            break;
+                        }
+                    case MessageType.SetIntProperty: {
+                            var t = e.ReadAs<Tuple<long, string, int>>();
+                            long itemId = t.Item1;
+                            string propName = t.Item2;
+                            int newVal = t.Item3;
+                            CallWithItem("SetIntProperty", (li) => {
+                                IReflectedProperty<int> prop = theMod.Helper.Reflection.GetProperty<int>(li, propName, false);
+                                if (prop != null) {
+                                    prop.SetValue(newVal);
+                                    Save();
+                                } else {
+                                    theMod.Monitor.Log($"Ignoring SetIntProperty for unknown property {propName}", LogLevel.Debug);
                                 }
                             }, itemId);
                             break;
@@ -769,7 +813,7 @@ namespace ToDew {
                     }
                 }
             }
-            RefreshVisibility();
+            RefreshVisibility(false);
         }
     }
 }

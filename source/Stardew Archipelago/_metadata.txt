@@ -6,9 +6,9 @@ mods:
    Stardew Archipelago
 
 latest commit:
-   commit d79652d544b643d9bd488ba5c5eb25d85aea884c
+   commit 7fe11500a7cdef4c0a378b96fa36e552a2ee7e2d
    Author: Alex Gilbert <alexgilbert@yahoo.com>
-   Date:   Wed Jul 26 21:32:37 2023 -0400
+   Date:   Tue Aug 29 13:33:50 2023 -0400
    
-       - Added mod documentation
+       - Version 4.5.1
    

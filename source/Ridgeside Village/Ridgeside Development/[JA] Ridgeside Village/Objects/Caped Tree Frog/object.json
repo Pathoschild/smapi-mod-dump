@@ -10,7 +10,7 @@
 
 {
 	"Name": "Caped Tree Frog",
-	"Description": "The red pattern that covers its neck and back looks like a cape. When leaping, it tucks one arm in while extending the other. Its rarity caused it to become a valuable pet among collectors.",
+	"TranslationKey": "objects.caped-tree-frog",
 	"Category": "Fish",
 	"Edibility": 10,
 	"EdibleIsDrink": false,
@@ -19,37 +19,6 @@
 	"IsColored": false,
 	"GiftTastes":
 	{
-		"Love": ["Philip"],
+		"Love": ["Philip", "Sebastian"],
 	},
-
-    "NameLocalization":
-    { 
-    	//remove the "//" from your language
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    },
-    "DescriptionLocalization":
-    {
-    	//remove the "//" from your language    	
-        //"es": "PLACEHOLDER",
-        //"ko": "PLACEHOLDER",
-        //"de": "PLACEHOLDER",
-        //"fr": "PLACEHOLDER",
-        //"hu": "PLACEHOLDER",
-        //"it": "PLACEHOLDER",
-        //"ja": "PLACEHOLDER",
-        //"pt": "PLACEHOLDER",
-        //"ru": "PLACEHOLDER",
-        //"tr": "PLACEHOLDER",
-        //"zh": "PLACEHOLDER",
-    }
 }

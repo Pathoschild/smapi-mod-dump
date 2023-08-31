@@ -1,0 +1,10 @@
+{
+  "ModEnabled": true,
+  "RequireKeyPress": false,
+  "OnlyWhenWatering": false,
+  "IncludeGiantable": true,
+  "RepeatInterval": 3,
+  "OpacityPercent": 75,
+  "SizePercent": 100,
+  "PressKeys": "LeftShift + OemPeriod"
+}

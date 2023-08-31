@@ -1,10 +1,12 @@
 {
   "Name": "WitchEventsShop",
   "Author": "jennisimone",
-  "Version": "1.0.1", // fixed locally
+  "Version": "1.1.0",
   "Description": "This mod should only be used with my expanded witch mod. It removes the events and adds a shop after 6 hearts with the witch.",
   "UniqueID": "jennisimone.WitchEventsShop",
   "EntryDll": "WitchEventsShop.dll",
-  "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": ["Nexus:16304"]
+  "UpdateKeys": [
+    "Nexus:16304"
+  ],
+  "MinimumApiVersion": "3.0.0"
 }

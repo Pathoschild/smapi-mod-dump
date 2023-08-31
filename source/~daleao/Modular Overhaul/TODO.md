@@ -12,16 +12,14 @@ for queries and analysis.**
 
 # Arsenal
 
-# Rings
+* Better quest prompts for Blade of Ruin.
 
-* Review resonance algorithm.
+# Rings
 
 # Ponds
 
 # Taxes
 
 # Tools
-
-* Add Radioactive tools.
 
 # Tweaks

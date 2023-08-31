@@ -1,10 +1,10 @@
 ﻿{
   "Name": "FieldWorks",
   "Author": "ChiroxT",
-  "Version": "0.9.1",
-  "Description": "Harvest, Plant and Fertalise with 1 click",
+  "Version": "0.9.3",
+  "Description": "Harvests, Plants and Fertalizes all seeds in your Inventory, when holding shift while clicking",
   "UniqueID": "treinke.FieldWorks",
   "EntryDll": "FieldWorks.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:17267" ]
 }

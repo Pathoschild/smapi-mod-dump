@@ -6,9 +6,9 @@ mods:
    Destroyable Bushes
 
 latest commit:
-   commit 594b02d613a6fbf9a7dbcb10c9c0317c92201bc7
+   commit 5978b8e1a9651658ebb3736ccb7aa39588d95833
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Sat Aug 7 10:37:39 2021 -0500
+   Date:   Sun Aug 13 15:35:45 2023 -0500
    
-       Add note about berry bushes in readme and GMCM
+       Add i18n credit to readme
    

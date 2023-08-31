@@ -54,10 +54,10 @@ namespace stardew_access.Patches
 
         private static Dictionary<string, Dictionary<int, string>> LoadDescriptionJson()
         {
-            MainClass.DebugLog("Attempting to load json");
-            JsonElement jsonElement = LoadJsonFile("new-character-appearance-descriptions.json");
+            Log.Debug("Attempting to load json");
+            bool loaded = TryLoadJsonFile("new-character-appearance-descriptions.json", out JsonElement jsonElement);
 
-            if (jsonElement.ValueKind == JsonValueKind.Undefined)
+            if (!loaded || jsonElement.ValueKind == JsonValueKind.Undefined)
             {
                 return new Dictionary<string, Dictionary<int, string>>();
             }
@@ -75,7 +75,7 @@ namespace stardew_access.Patches
                 }
 
                 result[category.Name] = innerDictionary;
-                MainClass.InfoLog($"Loaded key '{category.Name}' with {innerDictionary.Count} entries in the sub dictionary.");
+                Log.Info($"Loaded key '{category.Name}' with {innerDictionary.Count} entries in the sub dictionary.");
             }
 
             return result;
@@ -170,7 +170,7 @@ namespace stardew_access.Patches
             }
             catch (Exception e)
             {
-                MainClass.ErrorLog($"An error occured in character customization menu patch:\n{e.Message}\n{e.StackTrace}");
+                Log.Error($"An error occured in character customization menu patch:\n{e.Message}\n{e.StackTrace}");
             }
         }
 
@@ -741,7 +741,7 @@ namespace stardew_access.Patches
                     }
                     else
                     {
-                        MainClass.ErrorLog($"Warning: Description for {petType} with index {whichPetBreed} not found in the dictionary.");
+                        Log.Error($"Warning: Description for {petType} with index {whichPetBreed} not found in the dictionary.");
                     }
                 }
 
@@ -766,12 +766,12 @@ namespace stardew_access.Patches
                         }
                         else
                         {
-                            MainClass.ErrorLog($"Warning: Description for {componentName} with index {index} not found in the inner dictionary.");
+                            Log.Error($"Warning: Description for {componentName} with index {index} not found in the inner dictionary.");
                         }
                     }
                     else
                     {
-                        MainClass.ErrorLog($"Warning: Description for {componentName} not found in the outer dictionary.");
+                        Log.Error($"Warning: Description for {componentName} not found in the outer dictionary.");
                     }
                 }
                 return $"{componentName}: {index}";

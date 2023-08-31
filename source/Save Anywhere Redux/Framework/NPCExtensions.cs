@@ -20,7 +20,6 @@ namespace SaveAnywhere.Framework
 {
     public static class NpcExtensions
     {
-        
         public static SchedulePathDescription pathfindToNextScheduleLocation(this NPC npc,
             string startingLocation,
             int startingX,

@@ -6,12 +6,9 @@ mods:
    Save Anywhere Redux
 
 latest commit:
-   commit 5bd88fd84957d9241dcd35b3ac1540d85c7b310d
-   Author: MindMeltMax <49438916+MindMeltMax@users.noreply.github.com>
-   Date:   Fri Jul 28 08:45:43 2023 +0200
+   commit 0a175166547104bc7ccf9cfaf63f5dfb06f6c10c
+   Author: yuval <yuvalb588@gmail.com>
+   Date:   Sat Aug 26 19:03:22 2023 +0300
    
-       Fix some bugs (#11)
-       
-       Fix NewSaveGameMenuV2.SaveComplete not firing (See SaveManager.cs@Line46)
-       Fix showing save menu twice
+       Merge remote-tracking branch 'origin/main'
    

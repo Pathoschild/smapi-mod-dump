@@ -57,7 +57,7 @@ namespace Unlockable_Bundles.Lib
             if ((item is StardewValley.Object && (item as StardewValley.Object).bigCraftable.Value) || item is StardewValley.Objects.Furniture)
                 return true;
 
-            if (!BannedObjects.Contains(item.ParentSheetIndex))
+            if (!BannedObjects.Contains(item.ParentSheetIndex)) //TODO: This seems scuffed
                 return true;
 
             Vector2 placementTile = new Vector2(x / 64, y / 64);

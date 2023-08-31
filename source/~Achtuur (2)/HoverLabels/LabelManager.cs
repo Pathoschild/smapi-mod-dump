@@ -27,7 +27,7 @@ internal class LabelManager
     /// <summary>
     /// Registered labels, one entry for each mod
     /// </summary>
-    internal static List<RegisteredLabel> RegisteredLabels { get; set; }
+    internal List<RegisteredLabel> RegisteredLabels { get; set; }
 
     internal IHoverLabel CurrentLabel;
 
@@ -36,14 +36,13 @@ internal class LabelManager
         RegisteredLabels = new();
     }
 
-    public static List<IManifest> GetUniqueRegisteredManifests()
+    public List<IManifest> GetUniqueRegisteredManifests()
     {
         return RegisteredLabels.Select(rl => rl.Manifest).Distinct().ToList();
     }
 
     public void TrySetLabel(Vector2 cursorTile)
     {
-
         IEnumerable<RegisteredLabel> labels = RegisteredLabels.Where(registeredLabel => registeredLabel.Enabled)
             .OrderByDescending(registeredLabel => registeredLabel.Label.Priority);
 
@@ -56,27 +55,14 @@ internal class LabelManager
                 break;
             }
         }
+    }
 
-        //IEnumerable<KeyValuePair<string, IHoverLabel>> labels = RegisteredLabels.Values
-        //    .SelectMany(labelDict => labelDict) //get all IHoverLabels inside second dict
-        //    .OrderByDescending(kvp => kvp.Value.Priority); //order by IHoverLabel.Priority
-
-        //List<(IManifest, string, IHoverLabel)> labels2 = new();
-        //foreach(IManifest manifest in RegisteredLabels.Keys)
-        //{
-        //    foreach ((string name, IHoverLabel label) in RegisteredLabels[manifest])
-        //        labels2.Add((manifest, name, label));
-        //}
-
-        //this.CurrentLabel = null;
-        //foreach ((string name, IHoverLabel label) in labels)
-        //{
-        //    if (label.ShouldGenerateLabel(cursorTile))
-        //    {
-        //        this.CurrentLabel = label;
-        //        break;
-        //    }
-        //}
+    public void SetLabelEnabled(ModConfig config)
+    {
+        foreach(RegisteredLabel registeredLabel in RegisteredLabels)
+        {
+            registeredLabel.Enabled = config.IsLabelEnabled(registeredLabel.Manifest, registeredLabel.Name);
+        }
     }
 
     public void AddLabel(IManifest manifest, string name, IHoverLabel label)
@@ -85,15 +71,9 @@ internal class LabelManager
         if (RegisteredLabels.Any(label => label.Manifest == manifest && label.Name == name))
             return;
 
+        RegisteredLabel newLabel = new RegisteredLabel(manifest, name, label);
+
         RegisteredLabels.Add(new RegisteredLabel(manifest, name, label));
-
-        //if (!this.RegisteredLabels.ContainsKey(manifest))
-        //    this.RegisteredLabels.Add(manifest, new Dictionary<string, IHoverLabel>());
-
-        //if (this.RegisteredLabels[manifest].ContainsKey(name))
-        //    throw new Exception($"{name} label is already registered");
-
-        //this.RegisteredLabels[manifest].Add(name, label);
     }
     public string GetDescriptionAsString()
     {

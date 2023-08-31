@@ -44,6 +44,8 @@ public sealed class WabbajackEnchantment : BaseWeaponEnchantment
 
     private readonly Random _random = new(Guid.NewGuid().GetHashCode());
 
+    internal static List<Monster> TransfiguredMonsters { get; } = new();
+
     /// <inheritdoc />
     public override string GetName()
     {
@@ -152,6 +154,7 @@ public sealed class WabbajackEnchantment : BaseWeaponEnchantment
                             .Invoke(new object?[] { monster.Position });
                         location.characters.Add(transfigure);
                         Log.D($"[ENCH]: {monster.Name} was transfigured into a {transfigure.Name}.");
+                        TransfiguredMonsters.Add(transfigure);
                         break;
                     }
 

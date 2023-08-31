@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Extensions;
 using StardewArchipelago.Stardew;
 using StardewValley;
 using StardewValley.Buildings;
@@ -48,7 +49,7 @@ namespace StardewArchipelago.GameModifications
         private void GivePlayerStartingMoney()
         {
             var startingMoney = _archipelago.SlotData.StartingMoney;
-            var isUnlimitedMoney = startingMoney < 0;
+            var isUnlimitedMoney = startingMoney.IsUnlimited();
             if (isUnlimitedMoney)
             {
                 startingMoney = UNLIMITED_MONEY_AMOUNT;
@@ -62,10 +63,6 @@ namespace StardewArchipelago.GameModifications
 
         private void GivePlayerQuickStart()
         {
-            if (!_archipelago.SlotData.QuickStart)
-            {
-                return;
-            }
 
             if (Game1.getLocationFromName("FarmHouse") is not FarmHouse farmhouse)
             {
@@ -74,13 +71,19 @@ namespace StardewArchipelago.GameModifications
 
             RemoveGiftBoxes(farmhouse);
             var seeds = _stardewItemManager.GetItemByName(GetStartingSeedsForThisSeason()).PrepareForGivingToFarmer(15);
+            CreateGiftBoxItemInEmptySpot(farmhouse, seeds);
+
+            if (!_archipelago.SlotData.QuickStart)
+            {
+                return;
+            }
+
             var chest = _stardewItemManager.GetItemByName("Chest").PrepareForGivingToFarmer(1);
             var iridiumBand = _stardewItemManager.GetItemByName("Iridium Band").PrepareForGivingToFarmer(4);
             var qualitySprinklers = _stardewItemManager.GetItemByName("Quality Sprinkler").PrepareForGivingToFarmer(4);
             var autoPetters = _stardewItemManager.GetItemByName("Auto-Petter").PrepareForGivingToFarmer(2);
             var autoGrabbers = _stardewItemManager.GetItemByName("Auto-Grabber").PrepareForGivingToFarmer(2);
 
-            CreateGiftBoxItemInEmptySpot(farmhouse, seeds);
             CreateGiftBoxItemInEmptySpot(farmhouse, chest);
             CreateGiftBoxItemInEmptySpot(farmhouse, iridiumBand);
             CreateGiftBoxItemInEmptySpot(farmhouse, qualitySprinklers);
@@ -103,6 +106,11 @@ namespace StardewArchipelago.GameModifications
 
         private string GetStartingSeedsForThisSeason()
         {
+            if (_archipelago.SlotData.Cropsanity == Cropsanity.Shuffled)
+            {
+                return "Mixed Seeds";
+            }
+
             return Game1.currentSeason switch
             {
                 "spring" => "Parsnip Seeds",
