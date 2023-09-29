@@ -3,5 +3,6 @@
   "EnablePantsEffects": true,
   "EnableHatEffects": true,
   "AllItemsCanBeTailored": false,
-  "LoadCustomEffectDefinitions": false
+  "LoadCustomEffectDefinitions": false,
+  "verboseLogging": false
 }

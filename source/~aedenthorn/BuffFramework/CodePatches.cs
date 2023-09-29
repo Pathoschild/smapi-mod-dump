@@ -9,15 +9,19 @@
 *************************************************/
 
 using HarmonyLib;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using Object = StardewValley.Object;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace BuffFramework
@@ -51,17 +55,143 @@ namespace BuffFramework
             {
                 if (!Config.ModEnabled || !__instance.IsLocalPlayer || farmerBuffs.Value is null)
                     return;
-                foreach(var fb in farmerBuffs.Value.Values)
+                foreach(var key in farmerBuffs.Value.Keys.ToArray())
                 {
+                    var fb = farmerBuffs.Value[key];
                     Buff? buff = Game1.buffsDisplay.otherBuffs.FirstOrDefault(p => p.which == fb.which);
-                    if (buff == null)
+
+                    if(fb.totalMillisecondsDuration <= 50)
                     {
-                        Game1.buffsDisplay.addOtherBuff(
-                            buff = fb
-                        );
+                        if (buff is not null && buff.totalMillisecondsDuration > 50)
+                        {
+                            Game1.buffsDisplay.removeOtherBuff(buff.which);
+                            buff = null;
+                        }
+                        if (buff == null)
+                        {
+                            Game1.buffsDisplay.addOtherBuff(
+                                buff = fb
+                            );
+                        }
+                        buff.millisecondsDuration = 50;
                     }
-                    buff.millisecondsDuration = 50;
+                    else
+                    {
+                        if (buff == fb)
+                        {
+                            if (buff.millisecondsDuration <= 50 && buff.totalMillisecondsDuration > 50)
+                            {
+                                farmerBuffs.Value.Remove(key);
+                                if (cues.TryGetValue(key, out var cue))
+                                {
+                                    if (cue.IsPlaying)
+                                    {
+                                        cue.Stop(AudioStopOptions.Immediate);
+                                    }
+                                    cues.Remove(key);
+                                }
+                            }
+                        }
+                        else if (buff != null)
+                        {
+                            if (buff.totalMillisecondsDuration <= 50) // present persistant buff
+                            {
+                                farmerBuffs.Value.Remove(key); // no effect
+                            }
+                            else 
+                            {
+                                Game1.buffsDisplay.removeOtherBuff(buff.which);
+                                buff = null;
+                            }
+                        }
+                        if(buff == null)
+                        {
+                            Game1.buffsDisplay.addOtherBuff(fb);
+                        }
+                    }
                 }
+            }
+        }
+        [HarmonyPatch(typeof(Farmer), nameof(Farmer.doneEating))]
+        public class Farmer_doneEating_Patch
+        {
+            public static void Prefix(Farmer __instance)
+            {
+                if (!Config.ModEnabled || !__instance.IsLocalPlayer || farmerBuffs.Value is null)
+                    return;
+                foreach (var kvp in buffDict)
+                {
+                    int duration = 50;
+                    var dataDict = kvp.Value;
+                    if (!dataDict.TryGetValue("consume", out var food))
+                        continue;
+                    if (!Game1.player.isEating || Game1.player.itemToEat is not Object || (Game1.player.itemToEat as Object).Name != (string)food)
+                        continue;
+                    if (dataDict.TryGetValue("duration", out var dur))
+                    {
+                        duration = GetInt(dur) * 1000;
+                    }
+                    Buff buff = CreateBuff(kvp.Key, kvp.Value, food, duration);
+                    foreach(var key in farmerBuffs.Value.Keys.ToArray())
+                    {
+                        Buff oldBuff = farmerBuffs.Value[key];
+                        if(oldBuff.which == buff.which)
+                        {
+                            if(oldBuff.totalMillisecondsDuration > 50)
+                            {
+                                Game1.buffsDisplay.removeOtherBuff(oldBuff.which);
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                    }
+                    farmerBuffs.Value[kvp.Key] = buff;
+                }
+            }
+        }
+        [HarmonyPatch(typeof(Farmer), "farmerInit")]
+        public class Farmer_farmerInit_Patch
+        {
+            public static void Postfix(Farmer __instance)
+            {
+                __instance.hat.fieldChangeEvent += Hat_fieldChangeEvent;
+                __instance.shirtItem.fieldChangeEvent += ShirtItem_fieldChangeEvent;
+                __instance.pantsItem.fieldChangeEvent += PantsItem_fieldChangeEvent;
+                __instance.boots.fieldChangeEvent += Boots_fieldChangeEvent;
+                __instance.leftRing.fieldChangeEvent += LeftRing_fieldChangeEvent;
+                __instance.rightRing.fieldChangeEvent += RightRing_fieldChangeEvent;
+            }
+
+            public static void RightRing_fieldChangeEvent(Netcode.NetRef<StardewValley.Objects.Ring> field, StardewValley.Objects.Ring oldValue, StardewValley.Objects.Ring newValue)
+            {
+                UpdateBuffs();
+            }
+
+            public static void LeftRing_fieldChangeEvent(Netcode.NetRef<StardewValley.Objects.Ring> field, StardewValley.Objects.Ring oldValue, StardewValley.Objects.Ring newValue)
+            {
+                UpdateBuffs();
+            }
+
+            public static void Boots_fieldChangeEvent(Netcode.NetRef<StardewValley.Objects.Boots> field, StardewValley.Objects.Boots oldValue, StardewValley.Objects.Boots newValue)
+            {
+                UpdateBuffs();
+            }
+
+            public static void PantsItem_fieldChangeEvent(Netcode.NetRef<StardewValley.Objects.Clothing> field, StardewValley.Objects.Clothing oldValue, StardewValley.Objects.Clothing newValue)
+            {
+                UpdateBuffs();
+            }
+
+            public static void ShirtItem_fieldChangeEvent(Netcode.NetRef<StardewValley.Objects.Clothing> field, StardewValley.Objects.Clothing oldValue, StardewValley.Objects.Clothing newValue)
+            {
+                UpdateBuffs();
+            }
+
+            public static void Hat_fieldChangeEvent(Netcode.NetRef<StardewValley.Objects.Hat> field, StardewValley.Objects.Hat oldValue, StardewValley.Objects.Hat newValue)
+            {
+                UpdateBuffs();
             }
         }
         [HarmonyPatch(typeof(BuffsDisplay), nameof(BuffsDisplay.performHoverAction))]
@@ -96,16 +226,29 @@ namespace BuffFramework
                 
                 foreach (var kvp in farmerBuffs.Value)
                 {
-                    object texturePath = null;
-                    object description = null;
                     if (kvp.Value.which == __instance.which)
                     {
+                        object texturePath = null;
+                        object description = null;
                         var hasTex = buffDict[kvp.Key].TryGetValue("texturePath", out texturePath);
                         var hasDesc = buffDict[kvp.Key].TryGetValue("description", out description);
                         if (hasTex || hasDesc)
                         {
-                            var tex = texturePath is not null ? SHelper.GameContent.Load<Texture2D>((string)texturePath) : (__result.Any() ? __result[0].texture : null);
-                            var cc = new ClickableTextureComponent("", Rectangle.Empty, null, description is not null ? (string)description : (__result.Any() ? __result[0].hoverText : null), tex, texturePath is not null ? new Rectangle(0, 0, tex.Width, tex.Height) : (__result.Any() ? __result[0].sourceRect : new Rectangle()), 4f, false);
+                            Texture2D tex = (__result.Any() ? __result[0].texture : null);
+                            Rectangle sourceRect = __instance.sheetIndex > -1 && __result.Any() ? __result[0].sourceRect : new Rectangle();
+                            float scale = 4;
+                            if (texturePath is not null)
+                            {
+                                tex = SHelper.GameContent.Load<Texture2D>((string)texturePath);
+                                var sourceX = buffDict[kvp.Key].TryGetValue("textureX", out var x) ? GetInt(x) : 0;
+                                var sourceY = buffDict[kvp.Key].TryGetValue("textureY", out var y) ? GetInt(y) : 0;
+                                var sourceW = buffDict[kvp.Key].TryGetValue("textureWidth", out var w) ? GetInt(w) : tex.Width;
+                                var sourceH = buffDict[kvp.Key].TryGetValue("textureHeight", out var h) ? GetInt(h) : tex.Height;
+                                sourceRect = new Rectangle(sourceX, sourceY, sourceW, sourceH);
+                                if(buffDict[kvp.Key].TryGetValue("textureScale", out var s))
+                                    scale = GetFloat(s);
+                            }
+                            var cc = new ClickableTextureComponent("", Rectangle.Empty, null, description is not null ? (string)description + "\n" + Game1.content.LoadString("Strings\\StringsFromCSFiles:Buff.cs.508") + __instance.displaySource : (__result.Any() ? __result[0].hoverText : null), tex, sourceRect, scale, false);
 
                             if (buffDict[kvp.Key].TryGetValue("separate", out var separate) && (bool)separate)
                             {

@@ -12,6 +12,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Archipelago.MultiClient.Net.Enums;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewArchipelago.Archipelago;
@@ -85,7 +87,7 @@ namespace StardewArchipelago.Items.Traps
 
         public bool TryExecuteTrapImmediately(string trapName)
         {
-            if (Game1.player.currentLocation is FarmHouse or IslandFarmHouse)
+            if (Game1.player.currentLocation is FarmHouse or IslandFarmHouse || Game1.eventUp || Game1.fadeToBlack) // || Game1.currentMinigame != null || Game1.isWarping || Game1.killScreen)
             {
                 return false;
             }
@@ -168,6 +170,11 @@ namespace StardewArchipelago.Items.Traps
 
         private void AddDebuff(Buffs whichBuff, BuffDuration duration)
         {
+            if (duration == BuffDuration.Zero)
+            {
+                return;
+            }
+
             var debuff = new Buff((int)whichBuff);
             debuff.millisecondsDuration = (int)duration;
             debuff.totalMillisecondsDuration = (int)duration;
@@ -176,11 +183,29 @@ namespace StardewArchipelago.Items.Traps
 
         private void ChargeTaxes()
         {
-            var taxRate = _difficultyBalancer.TaxRates[_archipelago.SlotData.TrapItemsDifficulty];
+            var difficulty = _archipelago.SlotData.TrapItemsDifficulty;
+            var taxRate = _difficultyBalancer.TaxRates[difficulty];
             var player = Game1.player;
             var currentMoney = player.Money;
             var tax = (int)(currentMoney * taxRate);
             Game1.player.addUnearnedMoney(tax * -1);
+            if (difficulty == TrapItemsDifficulty.Nightmare)
+            {
+                RemoveTaxTrapFromBankAsync().FireAndForget();
+            }
+        }
+
+        public async Task RemoveTaxTrapFromBankAsync()
+        {
+            var bankingKey = string.Format(BankHandler.BANKING_TEAM_KEY, _archipelago.GetTeam());
+            var currentAmountJoules = await _archipelago.ReadBigIntegerFromDataStorageAsync(Scope.Global, bankingKey);
+            if (currentAmountJoules == null || currentAmountJoules <= 0)
+            {
+                return;
+            }
+
+            var halfAmountJoules = currentAmountJoules.Value / 2;
+            _archipelago.SetBigIntegerDataStorage(Scope.Global, bankingKey, halfAmountJoules);
         }
 
         public void TeleportRandomly()
@@ -260,7 +285,7 @@ namespace StardewArchipelago.Items.Traps
                 {
                     layerDepth = 1f,
                     delayBeforeAnimationStart = num * 25,
-                    motion = new Vector2(-0.25f, 0.0f)
+                    motion = new Vector2(-0.25f, 0.0f),
                 });
                 ++num;
             }

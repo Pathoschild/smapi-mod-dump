@@ -90,7 +90,7 @@ namespace Custom_Farm_Loader.Lib
                             dailyUpdate.BackgroundTypes = UtilityMisc.parseEnumArray<BackgroundType>(property);
                             break;
                         case "items":
-                            dailyUpdate.Items = ItemObject.MapNameToParentsheetindex(UtilityMisc.parseStringArray(property));
+                            dailyUpdate.Items = ItemObject.MapNameToItemId(UtilityMisc.parseStringArray(property));
                             break;
                         default:
                             if (dailyUpdate.Filter.parseAttribute(property))
@@ -161,11 +161,7 @@ namespace Custom_Farm_Loader.Lib
 
         public bool isValidTile(Vector2 v)
         {
-            if (!Location.isTileLocationTotallyClearAndPlaceable(v) && !wildCropsException(v))
-                return false;
-
-
-            if (Location.getTileIndexAt((int)v.X, (int)v.Y, "AlwaysFront") != -1)
+            if (!Location.CanItemBePlacedHere(v) && !wildCropsException(v))
                 return false;
 
             string noSpawn = Location.doesTileHaveProperty((int)v.X, (int)v.Y, "NoSpawn", "Back");
@@ -185,7 +181,7 @@ namespace Custom_Farm_Loader.Lib
         {
             //This allows wild crops to respawn at empty hoedirts
             return Type == DailyUpdateType.SpawnWildCrops
-                && Location.isTileLocationTotallyClearAndPlaceableIgnoreFloors(v)
+                && !Location.IsTileOccupiedBy(v)
                 && Location.terrainFeatures.ContainsKey(v)
                 && Location.terrainFeatures[v] is HoeDirt
                 && (Location.terrainFeatures[v] as HoeDirt).crop == null;

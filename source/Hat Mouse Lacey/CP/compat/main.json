@@ -1,0 +1,56 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+{
+	"Changes": [
+		// NPC Map Locations: define a custom offset for Lacey, per documentation
+		{
+			"Target": "Mods/Bouhm.NPCMapLocations/NPCs",
+			"Action": "EditData",
+			"Entries": {
+				"HatMouseLacey": {
+					"MarkerCropOffset": 9
+				}
+			}
+		},
+		// Stardew Valley Reimagined 3: when edited forest map is in use
+		{
+			"Action": "Include",
+			"FromFile": "compat/svr3_forest.json",
+			"When": {
+				"SVR3Forest": "true"
+			}
+		},
+		// CC Reimagined: when the mod is installed
+		{
+			"Action": "Include",
+			"FromFile": "compat/cc_reimagined.json",
+			"When": {
+				"HasMod|contains=LemurKat.CommunityCenter.CP": true
+			}
+		},
+		// Ridgeside Village: when the mod is installed
+		{
+			"Action": "Include",
+			"FromFile": "compat/ridgeside_village.json",
+			"When": {
+				"HasMod|contains=Rafseazz.RSVCP": true
+			}
+		},
+		// SVE: when the mod is installed
+		{
+			"Action": "Include",
+			"FromFile": "compat/sdv_expanded.json",
+			"When": {
+				"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true
+			}
+		}
+	]
+}

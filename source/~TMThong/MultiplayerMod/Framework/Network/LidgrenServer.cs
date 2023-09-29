@@ -129,7 +129,6 @@ namespace MultiplayerMod.Framework.Network
             config.MaximumTransmissionUnit = 1200;
             server = new NetServer(config);
             server.Start();
-             
             ModUtilities.ModMonitor.Log($"LidgrenServer is running with port {config.Port}... max player : " + ModUtilities.multiplayer.playerLimit , LogLevel.Alert);
         }
 

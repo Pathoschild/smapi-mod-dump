@@ -1,6 +1,6 @@
 {
-  "bettercrystalariums.wrong-mineral": "Break the machine to add a new mineral.",
-  "bettercrystalariums.no-gmcm": "User doesn't appear to have GMCM installed. This is not a problem.",
-  "bettercrystalariums.debug-setting-title": "Debug Mode",
-  "bettercrystalariums.debug-setting-description": "Only enable this if I've asked you to, or you want to dig into a problem yourself. This will enable additional logging."
+    "bettercrystalariums.wrong-mineral": "Break the machine to add a new mineral.",
+    "bettercrystalariums.no-gmcm": "User doesn't appear to have GMCM installed. This is not a problem.",
+    "bettercrystalariums.debug-setting-title": "Debug Mode",
+    "bettercrystalariums.debug-setting-description": "Only enable this if I've asked you to, or you want to dig into a problem yourself. This will enable additional logging."
 }

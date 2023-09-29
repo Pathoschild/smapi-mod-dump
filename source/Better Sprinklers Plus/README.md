@@ -92,6 +92,27 @@ __Don't Water:__ the sprinklers don't water your crops.
 
 _note:_ at the moment this does not affect the default spinkler tiles(see the roadmap).
 
+## Default Tiles
+The tiles that would be watered by default
+
+__Cost Money:__ The tiles will cost the same as any other tile in balanced mode.
+
+![Cost Money](./docs/defaults-cost-money.png)
+
+__Are Free:__ The default tiles (in the same position) are free.
+
+![Are Free](./docs/defaults-are-free.png)
+
+__Same Number Are Free:__ The number of tiles that would be watered by default are free.
+
+![Same Number](./docs/defaults-same-number.png)
+
+(x is sprinkler, 1 is tile watered, 0 is tile not watered)
+```
+00000
+11x11
+00000
+```
 
 ## Show Bills Message
 __On:__ Every morning you'll see a message for how much your sprinklers cost.
@@ -170,11 +191,26 @@ It's out of scope of my aims to improve this. But, I'll happily accept and consi
 - [x] (fix) Do not activate sprinklers if the menu is open
 - [x] (fix) Error during launch reported by Chargoal
 - [x] (balancing) Default tiles are free Option, suggested by MicomiBite
+- [x] (fix) Greenhouse watering/unwatering, reported by hiew32
+- [x] (balancing) Default tile count is free, suggested by MicomiBite
+- [x] (fix) Clicking the sprinkler in the edit menu adds an extra tile.
 - [ ] (multiplayer) Make Master Game responsible for Sprinkler Coverage setting?
 - [ ] (ui) Add ability to open coverage menu from config menu?
 - [ ] (accessibility) i18n basics.
 
 # Versions
+## 2.17.2
+- Changelog update only.
+
+## 2.17.1
+- fix: Clicking the sprinkler in the edit menu adds an extra tile.
+
+## 2.17.0
+- feat: Default tile count is free, suggested by MicomiBite
+
+## 2.16.1
+- fix: Greenhouse watering/unwatering, reported by hiew32.
+
 ## 2.16.0
 - docs: deprecate notice about DataLayers, as the PR has been merged!
 

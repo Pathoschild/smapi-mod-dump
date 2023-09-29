@@ -22,9 +22,9 @@ mods:
    Winter Pigs
 
 latest commit:
-   commit fa69a98d215b52f03393efa11a6aee26e49e17d8
-   Author: MindMeltMax <mindmeltmax695@gmail.com>
-   Date:   Sat Jul 15 16:00:10 2023 +0200
+   commit 5dfa54e107062eb2bc05ac609228d2530466502a
+   Author: MindMeltMax <49438916+MindMeltMax@users.noreply.github.com>
+   Date:   Mon Sep 25 09:00:45 2023 +0200
    
-       Update MultiPlayer Info to 1.0.4
+       Update fishnets to 1.0.7
    

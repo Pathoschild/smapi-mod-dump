@@ -13,43 +13,105 @@ using StardewValley.Buildings;
 using StardewValley;
 using StardewModdingAPI.Events;
 using System.Collections.Generic;
-using System.Collections;
+using NovoMundo.Farm1;
+using NovoMundo.Farm2;
+using NovoMundo.Managers;
 
 namespace NovoMundo.NPCs
 {
     public class Call_Builders
     {
+        internal NPC npc;
+        internal string locationName;
+        internal bool isBuilding = false;
+        internal Building buildingUnderConstruction;
+       
         public void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            Farm farm = mainfarm(out NPC npc);
-            if (farm != null)
+            if (Game1.player.daysUntilHouseUpgrade.Value > 0)
             {
-                if (Game1.player.daysUntilHouseUpgrade.Value > 0)
-                {
-                    Game1.warpCharacter(npc, "Farm", new Vector2(farm.GetMainFarmHouseEntry().X + 4, farm.GetMainFarmHouseEntry().Y - 1));
-                    animateBuilder("nmBuilder1");
-                    return;
-                }
-                if (Game1.getFarm().isThereABuildingUnderConstruction())
-                {
-                    Building buildingUnderConstruction = Game1.getFarm().getBuildingUnderConstruction();
-                    setWhichBuilder(buildingUnderConstruction, npc, "Farm");
-                }
+                callBuilders(-1);
+                return;
             }
-
-        }
-        public static Farm mainfarm(out NPC npc)
-        {
-            npc = null;
             if (Game1.getFarm().isThereABuildingUnderConstruction())
             {
-                npc = Game1.getCharacterFromName("nmBuilder1");
-                return Game1.getLocationFromName("Farm") as Farm;
+                Game1.getFarm().removeTemporarySpritesWithIDLocal(16846f);
+                Building building = Game1.getFarm().getBuildingUnderConstruction();
+                Game1.getFarm().temporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(399, 262, (building.daysOfConstructionLeft.Value == 1) ? 29 : 9, 43), new Vector2(building.tileX.Value + building.tilesWide.Value / 2, building.tileY.Value + building.tilesHigh.Value / 2) * 64f + new Vector2(-16f, -144f), false, 0f, Color.White)
+                {
+                    id = 99999f,
+                    scale = 4f,
+                    interval = 999999f,
+                    animationLength = 1,
+                    totalNumberOfLoops = 99999,
+                    layerDepth = ((building.tileY.Value + building.tilesHigh.Value / 2) * 64 + 32) / 10000f
+                });
+                callBuilders(0);
             }
-            return null;             
+            if (Property_Manager.QuarryLand().isThereABuildingUnderConstruction())
+            {
+                Property_Manager.QuarryLand().removeTemporarySpritesWithIDLocal(16846f);
+                Building building = Property_Manager.QuarryLand().getBuildingUnderConstruction();
+                Property_Manager.QuarryLand().temporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(399, 262, (building.daysOfConstructionLeft.Value == 1) ? 29 : 9, 43), new Vector2(building.tileX.Value + building.tilesWide.Value / 2, building.tileY.Value + building.tilesHigh.Value / 2) * 64f + new Vector2(-16f, -144f), false, 0f, Color.White)
+                {
+                    id = 99998f,
+                    scale = 4f,
+                    interval = 999999f,
+                    animationLength = 1,
+                    totalNumberOfLoops = 99999,
+                    layerDepth = ((building.tileY.Value + building.tilesHigh.Value / 2) * 64 + 32) / 10000f
+                });
+                callBuilders(1);
+            }
+            if (Property_Manager.PlantationLand().isThereABuildingUnderConstruction())
+            {
+                Property_Manager.PlantationLand().removeTemporarySpritesWithIDLocal(16846f);
+                Building building = Property_Manager.PlantationLand().getBuildingUnderConstruction();
+                Property_Manager.PlantationLand().temporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Rectangle(399, 262, (building.daysOfConstructionLeft.Value == 1) ? 29 : 9, 43), new Vector2(building.tileX.Value + building.tilesWide.Value / 2, building.tileY.Value + building.tilesHigh.Value / 2) * 64f + new Vector2(-16f, -144f), false, 0f, Color.White)
+                {
+                    id = 9997f,
+                    scale = 4f,
+                    interval = 999999f,
+                    animationLength = 1,
+                    totalNumberOfLoops = 99999,
+                    layerDepth = ((building.tileY.Value + building.tilesHigh.Value / 2) * 64 + 32) / 10000f
+                });
+                callBuilders(2);
+            }
         }
+        public void callBuilders(int locationType)
+        {
+            npc = Game1.getCharacterFromName("nmBuilder1");
+            if (locationType == -1)
+            {
+                Game1.warpCharacter(npc, "Farm", new Vector2(Game1.getFarm().GetMainFarmHouseEntry().X + 4, Game1.getFarm().GetMainFarmHouseEntry().Y - 1));
+                animateBuilder();
+            }
+            if (locationType == 0)
+            {
+                isBuilding = Game1.getFarm().isThereABuildingUnderConstruction();
+                buildingUnderConstruction = Game1.getFarm().getBuildingUnderConstruction();            
+                locationName = "Farm";
+            }
+            if (locationType == 1)
+            {
+                isBuilding = Property_Manager.QuarryLand().isThereABuildingUnderConstruction();
+                buildingUnderConstruction = Property_Manager.QuarryLand().getBuildingUnderConstruction();
+                locationName = "NMFarm1";
+            }
+            if (locationType == 2)
+            {
+                isBuilding = Property_Manager.PlantationLand().isThereABuildingUnderConstruction();
+                buildingUnderConstruction = Property_Manager.PlantationLand().getBuildingUnderConstruction();
+                locationName = "NMFarm2";
+            }
+            if (isBuilding)
+            {
+                setWhichBuilder();
 
-        public void setWhichBuilder(Building buildingUnderConstruction, NPC npc, string locationName)
+            }
+        }
+        public void setWhichBuilder()
         {
             if (buildingUnderConstruction.daysUntilUpgrade.Value > 0 && buildingUnderConstruction.indoors.Value != null)
             {
@@ -57,13 +119,11 @@ namespace NovoMundo.NPCs
                 {
                     npc.currentLocation.characters.Remove(npc);
                 }
-
                 npc.currentLocation = buildingUnderConstruction.indoors.Value;
                 if (npc.currentLocation != null && !npc.currentLocation.characters.Contains(npc))
                 {
                     npc.currentLocation.addCharacter(npc);
                 }
-
                 if (buildingUnderConstruction.nameOfIndoorsWithoutUnique.Contains("Shed"))
                 {
                     npc.setTilePosition(2, 2);
@@ -80,13 +140,11 @@ namespace NovoMundo.NPCs
                 npc.position.X += 16f;
                 npc.position.Y -= 32f;
             }
-            animateBuilder("nmBuilder1");
+            animateBuilder();
             return;
         }
-
-        public void animateBuilder(string builderName)
+        public void animateBuilder()
         {
-            NPC npc = Game1.getCharacterFromName(builderName);
             npc.Sprite.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>
             {
                 new FarmerSprite.AnimationFrame(24, 75),
@@ -95,32 +153,16 @@ namespace NovoMundo.NPCs
                 new FarmerSprite.AnimationFrame(27, 1000, secondaryArm: false, flip: false, setBuilderWorkingSoundPauses)
             });
         }
-
         public void setBuilderWorkingSound(Farmer who)
         {
-            string builderName = null;
-            if (Game1.getFarm().isThereABuildingUnderConstruction())
-            {
-                builderName = "nmBuilder1";
-
-            }
-            NPC npc = Game1.getCharacterFromName(builderName);
             if (Game1.currentLocation.Equals(npc.currentLocation) && Utility.isOnScreen(npc.Position, 256))
             {
                 Game1.playSound((Game1.random.NextDouble() < 0.1) ? "clank" : "axchop");
                 npc.shake(250);
             }
-
         }
         public void setBuilderWorkingSoundPauses(Farmer who)
         {
-            string builderName = null;
-            if (Game1.getFarm().isThereABuildingUnderConstruction())
-            {
-                builderName = "nmBuilder1";
-
-            }
-            NPC npc = Game1.getCharacterFromName(builderName);
             if (Game1.random.NextDouble() < 0.4)
             {
                 npc.Sprite.CurrentAnimation[npc.Sprite.currentAnimationIndex] = new FarmerSprite.AnimationFrame(27, 300, secondaryArm: false, flip: false, setBuilderWorkingSoundPauses);
@@ -135,4 +177,8 @@ namespace NovoMundo.NPCs
             }
         }
     }
+
+    
 }
+
+       

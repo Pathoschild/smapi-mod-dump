@@ -1,7 +1,7 @@
 ﻿{
 	"Name": "Forecaster Text",
 	"Author": "TheElm",
-	"Version": "1.2.3",
+	"Version": "1.2.4",
 	"Description": "Receive messages from the News station every day",
 	"UniqueID": "TheElm.ForecasterText",
 	"EntryDll": "ForecasterText.dll",

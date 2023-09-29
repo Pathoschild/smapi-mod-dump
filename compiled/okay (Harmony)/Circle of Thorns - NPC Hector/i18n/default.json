@@ -1,0 +1,9 @@
+{
+  "shapeshifted": "Shapeshifted",
+  "keybind.shapeshift.name": "Shapeshift Keybind",
+  "keybind.shapeshift.description": "The key to shapeshift (if unlocked). Long press (2 seconds) to change your form.",
+  "item.druidic-essence.name": "Druidic Essence",
+  "item.druidic-essence.description": "Nature's power, manifest. Used to breathe life into new things.'",
+  "hector.engagement.wait": "You've just started dating! Wait a while.",
+  "wallet-item.name": "Thorned Circlet Fragment"
+}

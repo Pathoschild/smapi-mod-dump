@@ -6,11 +6,11 @@ mods:
    Lasting Conversation Topics
 
 latest commit:
-   commit 6a9a9bbd301db8909e14d6d99f6e0714e4b69404
+   commit 2802df3f8767e0f27925ad7d2b76888f66b0b64c
    Author: MikaÃ«l Capelle <capelle.mikael@gmail.com>
-   Date:   Sat Oct 22 14:54:29 2022 +0200
+   Date:   Tue Sep 26 16:17:31 2023 +0200
    
-       Merge pull request #92 from ZashIn/subnautica/feat/checker+root
+       Merge pull request #118 from ZashIn/fix/python11_deps_linters
        
-       Subnautica: feature update v2.1
+       Fix python11 deps + linters
    

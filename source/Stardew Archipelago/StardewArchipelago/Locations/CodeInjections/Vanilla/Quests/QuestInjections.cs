@@ -11,9 +11,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Archipelago.MultiClient.Net.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Items.Unlocks;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -30,9 +32,15 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 {
     public static class QuestInjections
     {
+        private const string HELP_WANTED = "Help Wanted: {0}";
+        private const string ITEM_DELIVERY = "Item Delivery";
+        private const string SLAY_MONSTERS = "Slay Monsters";
+        private const string FISHING = "Fishing";
+        private const string GATHERING = "Gathering";
+
         private static readonly string[] _ignoredQuests = {
             "To The Beach", "Explore The Mine", "Deeper In The Mine", "To The Bottom?", "The Mysterious Qi",
-            "A Winter Mystery", "Cryptic Note", "Dark Talisman", "Goblin Problem"
+            "A Winter Mystery", "Cryptic Note", "Dark Talisman", "Goblin Problem",
         };
 
         private static IMonitor _monitor;
@@ -69,24 +77,20 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                 if (__instance.dailyQuest.Value)
                 {
                     var isArchipelago = true;
-                    var numberOfSteps = _archipelago.SlotData.HelpWantedLocationNumber / 7;
-                    if (_archipelago.SlotData.HelpWantedLocationNumber % 7 > 0)
-                    {
-                        numberOfSteps++;
-                    }
+                    var numberOfSteps = GetNumberOfHelpWantedGroups();
                     switch (__instance.questType.Value)
                     {
                         case (int)QuestType.ItemDelivery:
-                            isArchipelago = CheckDailyQuestLocationOfType("Item Delivery", numberOfSteps * 4);
+                            isArchipelago = CheckDailyQuestLocationOfType(ITEM_DELIVERY, numberOfSteps * 4);
                             break;
                         case (int)QuestType.SlayMonsters:
-                            isArchipelago = CheckDailyQuestLocationOfType("Slay Monsters", numberOfSteps);
+                            isArchipelago = CheckDailyQuestLocationOfType(SLAY_MONSTERS, numberOfSteps);
                             break;
                         case (int)QuestType.Fishing:
-                            isArchipelago = CheckDailyQuestLocationOfType("Fishing", numberOfSteps);
+                            isArchipelago = CheckDailyQuestLocationOfType(FISHING, numberOfSteps);
                             break;
                         case (int)QuestType.ResourceCollection:
-                            isArchipelago = CheckDailyQuestLocationOfType("Gathering", numberOfSteps);
+                            isArchipelago = CheckDailyQuestLocationOfType(GATHERING, numberOfSteps);
                             break;
                     }
 
@@ -110,6 +114,17 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                 _monitor.Log($"Failed in {nameof(QuestComplete_LocationInsteadOfReward_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
+        }
+
+        private static int GetNumberOfHelpWantedGroups()
+        {
+            var numberOfSteps = _archipelago.SlotData.HelpWantedLocationNumber / 7;
+            if (_archipelago.SlotData.HelpWantedLocationNumber % 7 > 0)
+            {
+                numberOfSteps++;
+            }
+
+            return numberOfSteps;
         }
 
         private static string GetQuestEnglishName(int questId, string defaultName)
@@ -152,7 +167,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 
         private static bool CheckDailyQuestLocationOfType(string typeApName, int max)
         {
-            var locationName = $"Help Wanted: {typeApName}";
+            var locationName = string.Format(HELP_WANTED, typeApName);
             return CheckDailyQuestLocation(locationName, max);
         }
 
@@ -201,6 +216,116 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                 _monitor.Log($"Failed in {nameof(Command_RemoveQuest_CheckLocation_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
+        }
+
+        // public static Quest getQuestOfTheDay()
+        public static bool GetQuestOfTheDay_BalanceQuests_Prefix(ref Quest __result)
+        {
+            try
+            {
+                if (Game1.stats.DaysPlayed <= 1U)
+                {
+                    __result = null;
+                    return false; // don't run original logic
+                }
+
+                var todayRandom = new Random((int)Game1.uniqueIDForThisGame + (int)Game1.stats.DaysPlayed);
+                var weightedLocations = CreateWeightedMissingLocations();
+                if (!weightedLocations.Any())
+                {
+                    __result = null;
+                    return true; // run original logic
+                }
+
+                var chosenIndex = todayRandom.Next(0, weightedLocations.Count);
+                var chosenQuestType = weightedLocations[chosenIndex];
+                switch (chosenQuestType)
+                {
+                    case ITEM_DELIVERY:
+                        __result = new ItemDeliveryQuest();
+                        return false; // don't run original logic
+                    case FISHING:
+                        __result = new FishingQuest();
+                        return false; // don't run original logic
+                    case GATHERING:
+                        __result = new ResourceCollectionQuest();
+                        return false; // don't run original logic
+                    case SLAY_MONSTERS:
+                        __result = new SlayMonsterQuest();
+                        return false; // don't run original logic
+                    default:
+                        __result = null;
+                        return true; // run original logic
+                }
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(GetQuestOfTheDay_BalanceQuests_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
+            }
+        }
+
+        private static List<string> CreateWeightedMissingLocations()
+        {
+            var hints = _archipelago.GetHints()
+                .Where(x => !x.Found && _archipelago.GetPlayerName(x.FindingPlayer) == _archipelago.SlotData.SlotName)
+                .ToArray();
+            var numberOfSteps = GetNumberOfHelpWantedGroups();
+            var remainingHelpWantedQuests = new List<string>();
+            for (var groupNumber = 1; groupNumber <= numberOfSteps; groupNumber++)
+            {
+                AddWeightedItemDeliveries(groupNumber, hints, remainingHelpWantedQuests);
+                AddWeightedFishing(groupNumber, hints, remainingHelpWantedQuests);
+                AddWeightedHelpWanted(groupNumber, GATHERING, hints, remainingHelpWantedQuests);
+                AddWeightedSlaying(groupNumber, hints, remainingHelpWantedQuests);
+            }
+
+            return remainingHelpWantedQuests;
+        }
+
+        private static void AddWeightedItemDeliveries(int groupNumber, Hint[] hints, List<string> remainingHelpWantedQuests)
+        {
+            for (var delivery = 0; delivery < 4; delivery++)
+            {
+                AddWeightedHelpWanted(groupNumber + delivery, ITEM_DELIVERY, hints, remainingHelpWantedQuests);
+            }
+        }
+
+        private static void AddWeightedFishing(int groupNumber, Hint[] hints, List<string> remainingHelpWantedQuests)
+        {
+            if (!_archipelago.HasReceivedItem(VanillaUnlockManager.PROGRESSIVE_FISHING_ROD_AP_NAME))
+            {
+                return;
+            }
+
+            AddWeightedHelpWanted(groupNumber, FISHING, hints, remainingHelpWantedQuests);
+        }
+
+        private static void AddWeightedSlaying(int groupNumber, Hint[] hints, List<string> remainingHelpWantedQuests)
+        {
+            if (Game1.stats.monstersKilled < 10)
+            {
+                return;
+            }
+
+            AddWeightedHelpWanted(groupNumber, SLAY_MONSTERS, hints, remainingHelpWantedQuests);
+        }
+
+        private static void AddWeightedHelpWanted(int questNumber, string questType, Hint[] hints, List<string> remainingHelpWantedQuests)
+        {
+            var location = GetHelpWantedLocationName(questType, questNumber);
+            if (!_locationChecker.IsLocationMissingAndExists(location))
+            {
+                return;
+            }
+
+            var weight = hints.Any(hint => _archipelago.GetLocationName(hint.LocationId) == location) ? 10 : 1;
+            remainingHelpWantedQuests.AddRange(Enumerable.Repeat(questType, weight));
+        }
+
+        private static string GetHelpWantedLocationName(string type, int number)
+        {
+            return $"{string.Format(HELP_WANTED, type)} {number}";
         }
 
         public static bool CheckAction_AdventurerGuild_Prefix(Mountain __instance, Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who, ref bool __result)

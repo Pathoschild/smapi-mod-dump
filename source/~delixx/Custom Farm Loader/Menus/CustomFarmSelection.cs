@@ -632,7 +632,7 @@ namespace Custom_Farm_Loader.Menus
 
                 //display Name
                 string displayName = item.MaxPlayers > 0 ? $"{item.Name} ({item.MaxPlayers}P)" : item.Name;
-                SpriteText.drawString(b, displayName, CustomFarmButtons[k].bounds.X + 96 + 8, CustomFarmButtons[k].bounds.Y + 28, 999999, -1, 999999, 1f, 0.88f, junimoText: false, -1, "", -1);
+                SpriteText.drawString(b, displayName, CustomFarmButtons[k].bounds.X + 96 + 8, CustomFarmButtons[k].bounds.Y + 28, 999999, -1, 999999, 1f, 0.88f, junimoText: false);
 
                 if (item.ID == CurrentCustomFarm?.ID && item.Name == CurrentCustomFarm?.Name)
                     //Red farm selection rectangle

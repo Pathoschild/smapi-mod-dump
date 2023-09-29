@@ -1,0 +1,8 @@
+﻿{
+    "Name": "Druidic Essence",
+    "Category": "MonsterLoot",
+    "Edibility": -300,
+    "Price": 50,
+    "HideFromShippingCollection": true,
+    "TranslationKey": "items.druidic-essence"
+}

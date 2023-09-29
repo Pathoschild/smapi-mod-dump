@@ -20,6 +20,8 @@ namespace AlternativeTextures.Framework.Models
     public class AlternativeTextureModel
     {
         public string Owner { get; set; }
+        public string PackName { get; set; }
+        public string Author { get; set; }
         public string ItemName { get; set; }
         public List<string> CollectiveNames { get; set; } = new List<string>();
         internal int ItemId { get; set; } = -1;

@@ -76,7 +76,7 @@ namespace StardewArchipelago.Locations.Festival
 
         private static ShopMenu _lastShopMenuUpdated = null;
         // public override void update(GameTime time)
-        public static void Update_HandleRarecrow2FirstTimeOnly_Postfix(ShopMenu __instance, GameTime time)
+        public static void Update_HandleSpiritEveShopFirstTimeOnly_Postfix(ShopMenu __instance, GameTime time)
         {
             try
             {
@@ -87,9 +87,11 @@ namespace StardewArchipelago.Locations.Festival
                 }
 
                 _lastShopMenuUpdated = __instance;
+                var myActiveHints = _archipelago.GetMyActiveHints();
                 foreach (var salableItem in __instance.itemPriceAndStock.Keys.ToArray())
                 {
-                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.RARECROW_2, item => _shopReplacer.IsRarecrow(item, 2));
+                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.RARECROW_2, item => _shopReplacer.IsRarecrow(item, 2), myActiveHints);
+                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.JACK_O_LANTERN_RECIPE, item => item.IsRecipe && item.Name.Equals("Jack-O-Lantern", StringComparison.InvariantCultureIgnoreCase), myActiveHints);
                 }
 
                 __instance.forSale = __instance.itemPriceAndStock.Keys.ToList();
@@ -97,7 +99,7 @@ namespace StardewArchipelago.Locations.Festival
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(Update_HandleRarecrow2FirstTimeOnly_Postfix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(Update_HandleSpiritEveShopFirstTimeOnly_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
         }

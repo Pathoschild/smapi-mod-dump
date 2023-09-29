@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Version>6.9.1</Version>
+		<Version>6.10.0</Version>
 		<TargetFramework>net5.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<EnableHarmony>true</EnableHarmony>
@@ -12,6 +12,9 @@
 		<Compile Remove="releases\**" />
 		<EmbeddedResource Remove="releases\**" />
 		<None Remove="releases\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Framework\Assets\Catalogue.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,6 +31,9 @@
 		</Content>
 		<Content Include="Framework\Assets\PaintBucket.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Framework\Assets\Catalogue.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 		<Content Include="Framework\Assets\Scissors.png">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>

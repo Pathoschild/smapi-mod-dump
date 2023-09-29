@@ -1,0 +1,243 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"Target": "Maps/Forest",
+			"Action": "EditMap",
+			"MapTiles": [
+				// grass around the entrance
+				{
+					"Position": {"X": 30, "Y": 95},
+					"Layer": "Paths",
+					"Remove": true
+				},
+				{
+					"Position": {"X": 31, "Y": 95},
+					"Layer": "Paths",
+					"Remove": true
+				},
+				{
+					"Position": {"X": 30, "Y": 96},
+					"Layer": "Paths",
+					"Remove": true
+				},
+				{
+					"Position": {"X": 31, "Y": 96},
+					"Layer": "Paths",
+					"Remove": true
+				},
+				{
+					"Position": {"X": 29, "Y": 97},
+					"Layer": "Paths",
+					"Remove": true
+				},
+				{
+					"Position": {"X": 30, "Y": 97},
+					"Layer": "Paths",
+					"Remove": true
+				},
+				{
+					"Position": {"X": 37, "Y": 94},
+					"Layer": "Paths",
+					"Remove": true
+				},
+				{
+					"Position": {"X": 34, "Y": 99},
+					"Layer": "Paths",
+					"Remove": true
+				},
+				{
+					"Position": {"X": 35, "Y": 99},
+					"Layer": "Paths",
+					"Remove": true
+				},
+				{
+					"Position": {"X": 34, "Y": 100},
+					"Layer": "Paths",
+					"Remove": true
+				},
+				// andy's garbage
+				{
+					"Position": {"X": 30, "Y": 100},
+					"Layer": "Buildings",
+					"Remove": true
+				},
+				{
+					"Position": {"X": 36, "Y": 102},
+					"Layer": "Buildings",
+					"Remove": true
+				},
+				{
+					"Position": {"X": 31, "Y": 103},
+					"Layer": "Buildings",
+					"Remove": true
+				},
+				// remove messages from area below house
+				{
+					"Position": {"X": 28, "Y": 99},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 29, "Y": 99},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 30, "Y": 99},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 31, "Y": 99},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 32, "Y": 99},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 35, "Y": 107},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 36, "Y": 107},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 37, "Y": 107},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 38, "Y": 107},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				}
+			]
+		},
+		{
+			"Target": "Maps/Forest",
+			"Action": "EditMap",
+			"MapTiles": [
+				// remove these tile messages only if trash bear
+				// hasn't been through. (suppress harmless errors)
+				{
+					"Position": {"X": 33, "Y": 102},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 34, "Y": 102},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 33, "Y": 103},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 34, "Y": 103},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 30, "Y": 105},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				}
+			],
+			"When": {
+				"HasFlag|contains=trashBearDone": false
+			}
+		},
+		{
+			"Target": "Characters/schedules/HatMouseLacey",
+			"Action": "EditData",
+			// default schedule avoids using island (andy's house is there now)
+			"Entries": {
+				"default": "630 Custom_HatMouseLacey_MouseHouse 14 12 0/700 Custom_HatMouseLacey_MouseHouse 10 15 2 hatmouselacey_sewing/900 Forest 20 48 3/1130 Forest 34 50 2 hatmouselacey_sewing/1500 Forest 15 93 2/a1800 Forest 36 99 2/1940 Custom_HatMouseLacey_MouseHouse 10 14 2 hatmouselacey_sewing/2200 bed"
+			},
+			// move Friday's pond spot out from behind a new tree
+			// shift winter 15 graveyard spot slightly
+			"Fields": {
+				"Fri": {
+					2: "900 Forest 39 41 0"
+				},
+				"winter_15": {
+					3: "1130 Town 44 89 3 \"Characters\\Dialogue\\HatMouseLacey:winter.nightmarket.wait\""
+				},
+				"marriage_winter_15": {
+					1: "1230 Town 44 89 3"
+				}
+			}
+		},
+		{
+			"Target": "Data/Events/Forest",
+			"Action": "EditData",
+			// move 6-heart event to a more secluded spot
+			"Fields": {
+				"236750600/f HatMouseLacey 1500/w sunny/p HatMouseLacey": {
+					1: "15 94",
+					2: "HatMouseLacey 15 93 2 farmer 10 86 1",
+					4: "advancedMove farmer false 4 0 0 4 2 10",
+					39: "advancedMove HatMouseLacey false 0 1 2 0 0 1 4 0 1 10",
+					41: "advancedMove farmer false 0 -6 4 10"
+				},
+				"hatmouselacey_6h_meanfork": {
+					9: "advancedMove HatMouseLacey false 3 0 3 10",
+					16: "advancedMove HatMouseLacey false 0 1 9 0 1 10"
+				}
+			},
+			// hide some trees and stuff for the picnic scene
+			"TextOperations": [
+				{
+					"Operation": "Append",
+					"Target": ["Fields", "hatmouselacey_14h_picnic", "5"],
+					"Value": "makeInvisible 46 97 4 3/makeInvisible 43 101 3 5",
+					"Delimiter": "/"
+				}
+			]
+		},
+		{
+			"Target": "Data/Events/Town",
+			"Action": "EditData",
+			// Change a few coordinates on the secret event
+			"Fields": {
+				"236750802/n HatMouseLacey_ApologySummons/t 1200 1300": {
+					1: "27 23",
+					2: "HatMouseLacey 27 22 2 farmer 22 29 0",
+					8: "advancedMove farmer false 0 -6 4 0 1 10",
+					42: "advancedMove HatMouseLacey false 2 0 0 7 2 10"
+				},
+				"hatmouselaceyApologyMaybeNot": {
+					2: "move HatMouseLacey 2 0 1"
+				}
+			}
+		},
+		{
+			"Target": "Data/Events/Saloon",
+			"Action": "EditData",
+			// Add a line about Andy in the 4-heart event
+			"Fields": {
+				"236750400/f HatMouseLacey 1000/p HatMouseLacey": {
+					36: "speak HatMouseLacey \"{{i18n:events.4h.5.Andy}}\""
+				}
+			}
+		}
+	]
+}

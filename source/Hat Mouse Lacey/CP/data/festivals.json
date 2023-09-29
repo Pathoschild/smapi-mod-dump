@@ -1,0 +1,165 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+{
+	"Changes": [
+		// see "festival trick" in CP author guide. This is helpful
+		// since in festivals, spouse dialogue keys don't support $e
+		// correctly. also, spring24 doesn't check for spouse keys.
+		{
+			"Target": "Data/Festivals/spring13, Data/Festivals/spring24, Data/Festivals/summer11, Data/Festivals/summer28, Data/Festivals/fall16, Data/Festivals/fall27, Data/Festivals/winter8, Data/Festivals/winter25",
+			"Action": "EditData",
+			"Entries": {
+				"HatMouseLacey": "{{i18n:festival.{{TargetWithoutPath}}.{{Relationship:HatMouseLacey}}.1 |default={{i18n:festival.{{TargetWithoutPath}}.1}} }}",
+				"HatMouseLacey_y2": "{{i18n:festival.{{TargetWithoutPath}}.{{Relationship:HatMouseLacey}}.2 |default={{i18n:festival.{{TargetWithoutPath}}.2}} }}",
+				"HatMouseLacey_y3": "{{i18n:festival.{{TargetWithoutPath}}.{{Relationship:HatMouseLacey}}.3 |default={{i18n:festival.{{TargetWithoutPath}}.3}} }}"
+			}
+		},
+		{
+			"Target": "Data/Festivals/spring13, Data/Festivals/spring24, Data/Festivals/summer11, Data/Festivals/summer28, Data/Festivals/fall16, Data/Festivals/winter8",
+			"Action": "EditData",
+			"Entries": {
+				"HatMouseLacey": "{{i18n:festival.{{TargetWithoutPath}}.y1}}"
+			},
+			"When": {
+				"Year": "1",
+				"Relationship:HatMouseLacey": "Unmet, Friendly"
+			}
+		},
+		// sadly, can't use indirection to get festival coordinates from
+		// the dynamic tokens, so 8 patches it is.
+		{
+			"Target": "Data/Festivals/spring13",
+			"Action": "EditData",
+			"TextOperations": [
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Set-Up_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_spring13_setUp}}",
+					"Delimiter": "/"
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "MainEvent_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_spring13_mainEvent}}",
+					"Delimiter": "/"
+				}
+			]
+		},
+		{
+			"Target": "Data/Festivals/spring24",
+			"Action": "EditData",
+			"TextOperations": [
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Set-Up_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_spring24_setUp}}",
+					"Delimiter": "/"
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Fields", "set-up", 5],
+					"Value": "/advancedMove HatMouseLacey true 3 4400 0 -1 -1 0 2 5200 1 0 0 1"
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "MainEvent_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_spring24_mainEvent}}",
+					"Delimiter": "/"
+				}
+			]
+		},
+		{
+			"Target": "Data/Festivals/summer11",
+			"Action": "EditData",
+			"TextOperations": [
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Set-Up_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_summer11_setUp}}",
+					"Delimiter": "/"
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "MainEvent_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_summer11_mainEvent}}",
+					"Delimiter": "/"
+				}
+			]
+		},
+		{
+			"Target": "Data/Festivals/summer28",
+			"Action": "EditData",
+			"TextOperations": [
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Set-Up_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_summer28_setUp}}",
+					"Delimiter": "/"
+				}
+			]
+		},
+		{
+			"Target": "Data/Festivals/fall16",
+			"Action": "EditData",
+			"TextOperations": [
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Set-Up_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_fall16_setUp}}",
+					"Delimiter": "/"
+				}
+			]
+		},
+		{
+			"Target": "Data/Festivals/fall27",
+			"Action": "EditData",
+			"TextOperations": [
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Set-Up_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_fall27_setUp}}",
+					"Delimiter": "/"
+				}
+			]
+		},
+		// shoutout to winter8 using Main-Event instead of MainEvent
+		{
+			"Target": "Data/Festivals/winter8",
+			"Action": "EditData",
+			"TextOperations": [
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Set-Up_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_winter8_setUp}}",
+					"Delimiter": "/"
+				},
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Main-Event_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_winter8_mainEvent}}",
+					"Delimiter": "/"
+				}
+			]
+		},
+		{
+			"Target": "Data/Festivals/winter25",
+			"Action": "EditData",
+			"TextOperations": [
+				{
+					"Operation": "Append",
+					"Target": ["Entries", "Set-Up_additionalCharacters"],
+					"Value": "HatMouseLacey {{festival_winter25_setUp}}",
+					"Delimiter": "/"
+				}
+			]
+		}
+	]
+}

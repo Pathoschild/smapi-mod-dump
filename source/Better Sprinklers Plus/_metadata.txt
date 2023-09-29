@@ -6,12 +6,9 @@ mods:
    Better Sprinklers Plus
 
 latest commit:
-   commit 8b5fa76adaad524d8d45edf4a797e035c0d354cd
+   commit d785607fc5044312a23037080f980d1915d0183a
    Author: James Macmillan <jamescodesthings@gmail.com>
-   Date:   Wed Aug 30 07:26:47 2023 +0100
+   Date:   Thu Aug 31 15:52:33 2023 +0100
    
-       feat: add option for "default tiles are free", suggested by MicomiBite
-       
-       - Also, remove notice about data layers compatibility, as the PR has
-         been merged!
+       docs: changelog update
    

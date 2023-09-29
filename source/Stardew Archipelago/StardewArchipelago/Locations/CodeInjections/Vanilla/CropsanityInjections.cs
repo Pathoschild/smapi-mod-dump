@@ -31,12 +31,15 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
     public static class CropsanityInjections
     {
+        private const int WEEDS = 0;
+        private const int SPRING_ONION = 399;
         private const int ANCIENT_FRUIT = 454;
         private const int FIBER = 771;
+        private const int QI_FRUIT = 889;
 
         private static readonly int[] _cropsanityExceptions = new[]
         {
-            ANCIENT_FRUIT, FIBER
+            WEEDS, SPRING_ONION, ANCIENT_FRUIT, FIBER, QI_FRUIT,
         };
 
         private static IMonitor _monitor;

@@ -10,19 +10,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Monsters;
 using StardewValley.Objects;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 {
     public class DarkTalismanInjections
     {
+        private const string DARK_TALISMAN = "Dark Talisman";
 
         private static IMonitor _monitor;
         private static IModHelper _helper;
@@ -84,16 +84,20 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 
                 who.currentLocation.playSound("openChest");
                 if (__instance.synchronized.Value)
+                {
                     __instance.GetMutex().RequestLock(() => __instance.openChestEvent.Fire());
+                }
                 else
+                {
                     __instance.performOpenChest();
-                
+                }
+
                 var obj = __instance.items[0];
                 __instance.items[0] = null;
                 __instance.items.RemoveAt(0);
                 __result = true;
 
-                _locationChecker.AddCheckedLocation($"Dark Talisman");
+                _locationChecker.AddCheckedLocation(DARK_TALISMAN);
 
                 return false; // don't run original logic
 
@@ -138,6 +142,48 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             {
                 _monitor.Log($"Failed in {nameof(CheckAction_ShowWizardMagicInk_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
+            }
+        }
+
+        // public void setUpLocationSpecificFlair()
+        public static bool SetUpLocationSpecificFlair_BuglandChest_Prefix(GameLocation __instance)
+        {
+            try
+            {
+                if (!__instance.Name.Equals("BugLand"))
+                {
+                    return true; // run original logic
+                }
+
+                if (_locationChecker.IsLocationNotChecked(DARK_TALISMAN) && __instance.isTileLocationTotallyClearAndPlaceable(31, 5))
+                {
+                    __instance.overlayObjects.Add(new Vector2(31f, 5f), new Chest(0, new List<Item>()
+                    {
+                        new SpecialItem(6),
+                    }, new Vector2(31f, 5f))
+                    {
+                        Tint = Color.Gray,
+                    });
+                }
+                   
+                foreach (var character in __instance.characters)
+                {
+                    if (character is Grub grub)
+                    {
+                        grub.setHard();
+                    }
+                    else if (character is Fly fly)
+                    {
+                        fly.setHard();
+                    }
+                }
+
+                return false; // don't run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(SetUpLocationSpecificFlair_BuglandChest_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
             }
         }
     }

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/jangofett4/FishingTreasureSpawner
+   Git: https://github.com/jangofett4/FishingTreasureSpawner.git
+
+mods:
+   Fishing Treasure Spawner
+
+latest commit:
+   commit 45eb7436c4529483ff3aa1756ecd4dbcb2bf86ec
+   Author: jangofett4 <yahyagedikyg@gmail.com>
+   Date:   Sun Sep 3 04:55:51 2023 +0300
+   
+       Added helpful ingame chat messages about brute forcing.
+   

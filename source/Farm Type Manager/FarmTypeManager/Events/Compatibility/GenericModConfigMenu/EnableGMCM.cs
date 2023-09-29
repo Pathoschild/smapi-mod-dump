@@ -16,12 +16,12 @@ namespace FarmTypeManager
 {
     public partial class ModEntry : Mod
     {
-        /// <summary>A SMAPI GameLaunched event that enables GMCM support if that mod is available.</summary>
+        /// <summary>A SMAPI event that enables GMCM support if that mod is available.</summary>
         public void EnableGMCM(object sender, GameLaunchedEventArgs e)
         {
             try
             {
-                GenericModConfigMenuAPI api = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu"); //attempt to get GMCM's API instance
+                var api = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu"); //attempt to get GMCM's API instance
 
                 if (api == null) //if the API is NOT available
                 {
@@ -33,15 +33,60 @@ namespace FarmTypeManager
                     Monitor.Log($"Optional API found: Generic Mod Config Menu (GMCM).", LogLevel.Trace);
                 }
 
-                api.RegisterModConfig(ModManifest, () => ResetConfigToDefault(), () => Helper.WriteConfig(Utility.MConfig)); //register "revert to default" and "write" methods for this mod's config
-                api.SetDefaultIngameOptinValue(ModManifest, true); //allow in-game setting changes (rather than just at the main menu)
+                //create this mod's menu
+                api.Register
+                (
+                    mod: ModManifest,
+                    reset: () => ResetConfigToDefault(),
+                    save: () => Helper.WriteConfig(Utility.MConfig),
+                    titleScreenOnly: false
+                );
 
                 //register an option for each of this mod's config settings
-                api.RegisterSimpleOption(ModManifest, "Enable console commands", "Uncheck this box to disable FTM's console commands, e.g. for mod compatibility.\nNOTE: This will not take effect until Stardew Valley is restarted.", () => Utility.MConfig.EnableConsoleCommands, (bool val) => Utility.MConfig.EnableConsoleCommands = val);
-                api.RegisterSimpleOption(ModManifest, "Enable content packs", "Uncheck this box to disable all FTM content packs.\nOnly the \"personal\" files in FarmTypeManager/data will be used.", () => Utility.MConfig.EnableContentPacks, (bool val) => Utility.MConfig.EnableContentPacks = val);
-                api.RegisterSimpleOption(ModManifest, "Enable trace log messages", "Uncheck this box to disable FTM's [TRACE] message type in SMAPI's log files.\nLogs will be smaller but provide less info.", () => Utility.MConfig.EnableTraceLogMessages, (bool val) => Utility.MConfig.EnableTraceLogMessages = val);
-                api.RegisterSimpleOption(ModManifest, "Enable EPU debug messages", "Check this box to enable Expanded Preconditions Utility (EPU) debug messages.\nThis can be helpful when testing preconditions.", () => EPUDebugMessages, (bool val) => EPUDebugMessages = val);
-                api.RegisterSimpleOption(ModManifest, "Monster limit per location", "The maximum number of monsters FTM will spawn on a single map.\nEnter NULL for unlimited monsters.", () => MonsterLimitAsString, (string val) => MonsterLimitAsString = val);
+                api.AddBoolOption
+                (
+                    mod: ModManifest,
+                    getValue: () => Utility.MConfig.EnableConsoleCommands,
+                    setValue: (bool val) => Utility.MConfig.EnableConsoleCommands = val,
+                    name: () => Helper.Translation.Get("Config.EnableConsoleCommands.Name"),
+                    tooltip: () => Helper.Translation.Get("Config.EnableConsoleCommands.Desc")
+                );
+
+                api.AddBoolOption
+                (
+                    mod: ModManifest,
+                    getValue: () => Utility.MConfig.EnableContentPacks,
+                    setValue: (bool val) => Utility.MConfig.EnableContentPacks = val,
+                    name: () => Helper.Translation.Get("Config.EnableContentPacks.Name"),
+                    tooltip: () => Helper.Translation.Get("Config.EnableContentPacks.Desc")
+                );
+
+                api.AddBoolOption
+                (
+                    mod: ModManifest,
+                    getValue: () => Utility.MConfig.EnableTraceLogMessages,
+                    setValue: (bool val) => Utility.MConfig.EnableTraceLogMessages = val,
+                    name: () => Helper.Translation.Get("Config.EnableTraceLogMessages.Name"),
+                    tooltip: () => Helper.Translation.Get("Config.EnableTraceLogMessages.Desc")
+                );
+
+                api.AddBoolOption
+                (
+                    mod: ModManifest,
+                    getValue: () => EPUDebugMessages,
+                    setValue: (bool val) => EPUDebugMessages = val,
+                    name: () => Helper.Translation.Get("Config.EnableEPUDebugMessages.Name"),
+                    tooltip: () => Helper.Translation.Get("Config.EnableEPUDebugMessages.Desc")
+                );
+
+                api.AddTextOption
+                (
+                    mod: ModManifest,
+                    getValue: () => MonsterLimitAsString,
+                    setValue: (string val) => MonsterLimitAsString = val,
+                    name: () => Helper.Translation.Get("Config.MonsterLimitPerLocation.Name"),
+                    tooltip: () => Helper.Translation.Get("Config.MonsterLimitPerLocation.Desc")
+                );
             }
             catch (Exception ex)
             {
@@ -115,15 +160,5 @@ namespace FarmTypeManager
                 }
             }
         }
-    }
-
-    /// <summary>Generic Mod Config Menu's API interface. Used to recognize & interact with the mod's API when available.</summary>
-    public interface GenericModConfigMenuAPI
-    {
-        void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
-        void SetDefaultIngameOptinValue(IManifest mod, bool optedIn);
-
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet);
     }
 }

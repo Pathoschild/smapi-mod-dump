@@ -31,7 +31,15 @@ namespace StardewArchipelago.Items.Unlocks
         public const string QI_WALNUT_ROOM = "Qi Walnut Room";
         public const string PIERRE_STOCKLIST = "Pierre's Missing Stocklist";
         public const string ADVENTURE_GUILD = "Adventurer's Guild";
+        public const string ISLAND_FARMHOUSE = "Island Farmhouse";
+        public const string ISLAND_MAILBOX = "Island Mailbox";
         public const string TREEHOUSE = "Treehouse";
+        public const string PROGRESSIVE_WEAPON = "Progressive Weapon";
+        public const string PROGRESSIVE_SWORD = "Progressive Sword";
+        public const string PROGRESSIVE_CLUB = "Progressive Club";
+        public const string PROGRESSIVE_DAGGER = "Progressive Dagger";
+        public const string PROGRESSIVE_BOOTS = "Progressive Footwear";
+
         private Dictionary<string, Func<ReceivedItem, LetterAttachment>> _unlockables;
 
         public VanillaUnlockManager()
@@ -46,6 +54,7 @@ namespace StardewArchipelago.Items.Unlocks
             RegisterIsolatedEventsItems();
             RegisterGingerIslandRepairs();
             RegisterSpecialItems();
+            RegisterEquipment();
         }
 
         public bool IsUnlock(string unlockName)
@@ -124,8 +133,8 @@ namespace StardewArchipelago.Items.Unlocks
             _unlockables.Add("Island Trader", RestoreIslandTrader);
             _unlockables.Add("Island Resort", RepairResort);
             _unlockables.Add("Farm Obelisk", CreateFarmObelisk);
-            _unlockables.Add("Island Mailbox", RepairIslandMailbox);
-            _unlockables.Add("Island Farmhouse", RepairIslandFarmhouse);
+            _unlockables.Add(ISLAND_MAILBOX, RepairIslandMailbox);
+            _unlockables.Add(ISLAND_FARMHOUSE, RepairIslandFarmhouse);
             _unlockables.Add("Parrot Express", RepairParrotExpress);
             _unlockables.Add("Volcano Bridge", ConstructVolcanoBridge);
             _unlockables.Add("Volcano Exit Shortcut", OpenVolcanoExitShortcut);
@@ -142,6 +151,15 @@ namespace StardewArchipelago.Items.Unlocks
         private void RegisterMineElevators()
         {
             _unlockables.Add(PROGRESSIVE_MINE_ELEVATOR_AP_NAME, SendProgressiveMineElevatorLetter);
+        }
+
+        private void RegisterEquipment()
+        {
+            _unlockables.Add(PROGRESSIVE_WEAPON, SendProgressiveWeaponLetter);
+            _unlockables.Add(PROGRESSIVE_SWORD, SendProgressiveSwordLetter);
+            _unlockables.Add(PROGRESSIVE_CLUB, SendProgressiveClubLetter);
+            _unlockables.Add(PROGRESSIVE_DAGGER, SendProgressiveDaggerLetter);
+            _unlockables.Add(PROGRESSIVE_BOOTS, SendProgressiveBootsLetter);
         }
 
         private LetterVanillaAttachment RepairBridge(ReceivedItem receivedItem)
@@ -415,6 +433,31 @@ namespace StardewArchipelago.Items.Unlocks
         {
             var experienceForLevelUp = farmer.GetExperienceToNextLevel(skill);
             farmer.AddExperience(skill, experienceForLevelUp);
+        }
+
+        private LetterActionAttachment SendProgressiveWeaponLetter(ReceivedItem receivedItem)
+        {
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveWeapon);
+        }
+
+        private LetterActionAttachment SendProgressiveSwordLetter(ReceivedItem receivedItem)
+        {
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveSword);
+        }
+
+        private LetterActionAttachment SendProgressiveClubLetter(ReceivedItem receivedItem)
+        {
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveClub);
+        }
+
+        private LetterActionAttachment SendProgressiveDaggerLetter(ReceivedItem receivedItem)
+        {
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveDagger);
+        }
+
+        private LetterActionAttachment SendProgressiveBootsLetter(ReceivedItem receivedItem)
+        {
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveBoots);
         }
     }
 }

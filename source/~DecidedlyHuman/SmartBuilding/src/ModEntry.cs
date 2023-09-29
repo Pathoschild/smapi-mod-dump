@@ -475,6 +475,7 @@ namespace SmartBuilding
             configMenuApi.AddBoolOption(
                 this.ModManifest,
                 name: () => I18n.SmartBuilding_Settings_CheatyOptions_CreativeMode(),
+                tooltip: () => I18n.SmartBuilding_Settings_CheatyOptions_CreativeMode_Tooltip(),
                 getValue: () => config.CreativeMode,
                 setValue: value => config.CreativeMode = value
             );

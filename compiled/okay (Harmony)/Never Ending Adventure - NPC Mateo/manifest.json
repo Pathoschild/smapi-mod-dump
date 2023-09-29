@@ -1,9 +1,9 @@
 {
-	"Name": "Never Ending Adventure - Code",
-	"Author": "DestyNova",
+	"Name": "[SMAPI] Never Ending Adventure",
+	"Author": "KittyCatCasey",
 	"Description": "Adds C# components to NEA",
-	"Version": "1.9.6",
-	"UpdateKeys": [ "Nexus:???" ],
+	"Version": "1.9.9",
+	"UpdateKeys": [ "Nexus:12369" ],
 	"UniqueID": "DestyNova.NEACode",
 	"EntryDll": "NeverEndingAdventure.dll"
 }

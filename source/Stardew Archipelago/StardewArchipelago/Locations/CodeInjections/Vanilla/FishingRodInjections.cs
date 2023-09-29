@@ -122,7 +122,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 "end",
                 "position",
                 "43",
-                "36"
+                "36",
             }, Game1.currentLocation);
         }
 
@@ -188,23 +188,30 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         private static void AddFishingToolsAPLocations(Dictionary<ISalable, int[]> fishShopStock)
         {
+            if (!_archipelago.SlotData.ToolProgression.HasFlag(ToolProgression.Progressive))
+            {
+                return;
+            }
+
+            var myActiveHints = _archipelago.GetMyActiveHints();
+            var priceMultiplier = _archipelago.SlotData.ToolPriceMultiplier;
             if (_locationChecker.IsLocationMissingAndExists(TRAINING_ROD))
             {
                 var trainingRodAPlocation = new PurchaseableArchipelagoLocation("Training Rod", TRAINING_ROD, _modHelper,
-                    _locationChecker, _archipelago);
-                fishShopStock.Add(trainingRodAPlocation, new[] { 25, 1 });
+                    _locationChecker, _archipelago, myActiveHints);
+                fishShopStock.Add(trainingRodAPlocation, new[] { (int)(25 * priceMultiplier), 1 });
             }
             if (Game1.player.fishingLevel.Value >= 2 && _locationChecker.IsLocationMissingAndExists(FIBERGLASS_ROD))
             {
                 var fiberglassRodAPlocation = new PurchaseableArchipelagoLocation("Fiberglass Rod", FIBERGLASS_ROD, _modHelper,
-                    _locationChecker, _archipelago);
-                fishShopStock.Add(fiberglassRodAPlocation, new[] { 1800, 1 });
+                    _locationChecker, _archipelago, myActiveHints);
+                fishShopStock.Add(fiberglassRodAPlocation, new[] { (int)(1800 * priceMultiplier), 1 });
             }
             if (Game1.player.fishingLevel.Value >= 6 && _locationChecker.IsLocationMissingAndExists(IRIDIUM_ROD))
             {
                 var iridiumRodAPLocation = new PurchaseableArchipelagoLocation("Iridium Rod", IRIDIUM_ROD, _modHelper,
-                    _locationChecker, _archipelago);
-                fishShopStock.Add(iridiumRodAPLocation, new[] { 7500, 1 });
+                    _locationChecker, _archipelago, myActiveHints);
+                fishShopStock.Add(iridiumRodAPLocation, new[] { (int)(7500 * priceMultiplier), 1 });
             }
         }
 
@@ -212,33 +219,37 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         {
             var modData = Game1.getFarm().modData;
             var receivedFishingRodLevel = _archipelago.GetReceivedItemCount(VanillaUnlockManager.PROGRESSIVE_FISHING_ROD_AP_NAME);
-            if (receivedFishingRodLevel >= 1)
+            var isVanillaTools = !_archipelago.SlotData.ToolProgression.HasFlag(ToolProgression.Progressive);
+            var fishingLevel = Game1.player.fishingLevel.Value;
+            var priceMultiplier = _archipelago.SlotData.ToolPriceMultiplier;
+
+            if (isVanillaTools || receivedFishingRodLevel >= 1)
             {
                 var trainingRod = new FishingRod(1);
-                fishShopStock.Add(trainingRod, new[] { 25, int.MaxValue });
+                fishShopStock.Add(trainingRod, new[] { (int)(25 * priceMultiplier), int.MaxValue });
             }
 
-            if (receivedFishingRodLevel >= 2)
+            if (isVanillaTools || receivedFishingRodLevel >= 2)
             {
                 var bambooPole = new FishingRod(0);
-                fishShopStock.Add(bambooPole, new[] { 500, int.MaxValue });
+                fishShopStock.Add(bambooPole, new[] { (int)(500 * priceMultiplier), int.MaxValue });
             }
 
-            if (receivedFishingRodLevel >= 3)
+            if ((isVanillaTools && fishingLevel >= 2) || receivedFishingRodLevel >= 3)
             {
                 var fiberglassRod = new FishingRod(2);
-                fishShopStock.Add(fiberglassRod, new[] { 1800, int.MaxValue });
+                fishShopStock.Add(fiberglassRod, new[] { (int)(1800 * priceMultiplier), int.MaxValue });
             }
 
-            if (receivedFishingRodLevel >= 4)
+            if ((isVanillaTools && fishingLevel >= 6) || receivedFishingRodLevel >= 4)
             {
                 var iridiumRod = new FishingRod(3);
-                fishShopStock.Add(iridiumRod, new[] { 7500, int.MaxValue });
+                fishShopStock.Add(iridiumRod, new[] { (int)(7500 * priceMultiplier), int.MaxValue });
             }
 
             if (Game1.MasterPlayer.mailReceived.Contains("ccFishTank"))
             {
-                fishShopStock.Add(new Pan(), new[] { 2500, int.MaxValue });
+                fishShopStock.Add(new Pan(), new[] { (int)(2500 * priceMultiplier), int.MaxValue });
             }
         }
 

@@ -6,9 +6,9 @@ mods:
    Special Orders Anywhere
 
 latest commit:
-   commit 8d8ecb8480f25524ad6426c2bcfcc437483d9f15
-   Author: Nicole Abadie <nic4096@gmail.com>
-   Date:   Sun Jan 17 18:16:56 2021 -0800
+   commit 3e0cb6b47c2ab032dbc2f1c434aa303c60de5a48
+   Author: AcidicNic <nicole.r.abadie@gmail.com>
+   Date:   Thu Sep 28 01:45:55 2023 -0700
    
-       readme updated
+       quick bug fix: close menu when journal active
    

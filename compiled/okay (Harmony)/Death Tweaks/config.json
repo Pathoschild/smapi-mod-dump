@@ -1,0 +1,16 @@
+{
+  "ModEnabled": true,
+  "DropEverything": false,
+  "DropNothing": false,
+  "CreateTombstone": true,
+  "MoneyLostMult": 1.0,
+  "TombStonePath": "Maps/spring_town",
+  "TombStoneRect": {
+    "X": 16,
+    "Y": 160,
+    "Width": 16,
+    "Height": 16
+  },
+  "TombStoneOffset": "0, 0",
+  "TombStoneScale": 4.0
+}

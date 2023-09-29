@@ -47,7 +47,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
         public static void FarmHouse_Postfix(FarmHouse __instance, string m, string name)
         {
-            fixBrokenTVs(__instance);
+            //fixBrokenTVs(__instance);
             if (!CustomFarm.IsCFLMapSelected())
                 return;
 
@@ -55,14 +55,15 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 loadStartFurniture(__instance);
         }
 
+        //Probably no longer required in 1.6
         private static void fixBrokenTVs(FarmHouse __instance)
         {
-            for (int i = 0; i < __instance.furniture.Count; i++) {
-                var furniture = __instance.furniture[i];
+            //for (int i = 0; i < __instance.furniture.Count; i++) {
+            //    var furniture = __instance.furniture[i];
 
-                if (Furniture.TvIds.Exists(e => e == furniture.ParentSheetIndex.ToString()) && furniture.GetType().Name != "TV")
-                    __instance.furniture[i] = new StardewValley.Objects.TV(furniture.ParentSheetIndex, furniture.TileLocation);
-            }
+            //    if (Furniture.TvIds.Exists(e => e == furniture.ParentSheetIndex.ToString()) && furniture.GetType().Name != "TV")
+            //        __instance.furniture[i] = new StardewValley.Objects.TV(furniture.ParentSheetIndex, furniture.TileLocation);
+            //}
         }
 
         private static void loadStartFurniture(FarmHouse __instance)

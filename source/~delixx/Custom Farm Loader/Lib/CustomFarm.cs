@@ -245,7 +245,7 @@ namespace Custom_Farm_Loader.Lib
                         continue;
 
                     switch (name.ToLower().Replace(" ", "")) {
-                        case "farmhouse" or "greenhouse" or "spousearea" or "mailbox" or "shippingbin" or "grandpashrine":
+                        case "farmhouse" or "greenhouse" or "spousearea" or "petbowl" or "mailbox" or "shippingbin" or "grandpashrine":
                             ret.Add(new KeyValuePair<string, Point>(name, UtilityMisc.parsePoint(value)));
                             break;
                         default:

@@ -1,7 +1,7 @@
 {
 	"Name": "[SMAPI] A Vida de Aventureiro Expandida",
 	"Author": "HamioDracny",
-	"Version": "1.2.0",
+	"Version": "1.2.1",
 	//"Description": "",
 	"UniqueID": "HamioDracny.TALE.SMAPI",
 	"EntryDll": "Evolution.dll",

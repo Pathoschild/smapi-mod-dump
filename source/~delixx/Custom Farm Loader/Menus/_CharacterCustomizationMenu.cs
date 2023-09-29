@@ -105,7 +105,8 @@ namespace Custom_Farm_Loader.Menus
                 y = baseFarmButton.Y - 12;
             }
 
-            CustomFarmButton = new ClickableTextureComponent("CustomFarm", new Rectangle(x, y, 88, 80), null, "Custom", CustomFarmIcon, new Rectangle(0, 0, 18, 20), 4f) {
+            //TODO: Remove Custom _ workaround
+            CustomFarmButton = new ClickableTextureComponent("CustomFarm", new Rectangle(x, y, 88, 80), null, "Custom_", CustomFarmIcon, new Rectangle(0, 0, 18, 20), 4f) {
                 myID = 548,
                 upNeighborID = -99998,
                 leftNeighborID = -99998,
@@ -173,11 +174,27 @@ namespace Custom_Farm_Loader.Menus
                 if (Game1.whichFarm == 7 && __instance.farmTypeButtons.Count > 0 && CustomFarmButton != null)
                     IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(375, 357, 3, 3), CustomFarmButton.bounds.X - 8, CustomFarmButton.bounds.Y - 4, CustomFarmButton.bounds.Width, CustomFarmButton.bounds.Height + 8, Color.White, 4f, drawShadow: false);
 
+                //1.6 hover logic is a bit weird, so I decided to draw it for this button myself.
+                if (CustomFarmButton.containsPoint(Game1.getMouseX(), Game1.getMouseY())) {
+                    ___hoverText = null;
+                    string text;
+
+                    if (CurrentCustomFarm is not null && Game1.whichFarm == 7)
+                        text = CurrentCustomFarm.Name.Replace("_", " ");
+                    else
+                        text = "Custom";
+
+                    int width = Math.Max((int)Game1.dialogueFont.MeasureString(text).X, 256);
+                    IClickableMenu.drawHoverText(b, Game1.parseText(text, Game1.smallFont, width), Game1.smallFont, 0, 0, -1);
+                }
+
+
             } catch (Exception ex) {
                 Monitor.Log($"Failed in {nameof(draw_Prefix)}:\n{ex}", LogLevel.Error);
             }
             return true;
         }
+
         public static void draw_Postfix(CharacterCustomization __instance, List<ClickableComponent> ___leftSelectionButtons, string ___hoverText, SpriteBatch b)
         {
             if (__instance.source == CharacterCustomization.Source.NewGame || __instance.source == CharacterCustomization.Source.HostNewFarm)
@@ -192,13 +209,13 @@ namespace Custom_Farm_Loader.Menus
                 return;
 
             if (customFarm != null && Game1.whichFarm == 7) {
-                var description = customFarm.getLocalizedDescription().Replace("_", " ");
-                description = description.Length > 200 ? description.Substring(0, 200) + "..." : description;
-                CustomFarmButton.hoverText = $"{customFarm.Name.Replace("_", " ")}";
+                //var description = customFarm.getLocalizedDescription().Replace("_", " ");
+                //description = description.Length > 200 ? description.Substring(0, 200) + "..." : description;
+                //CustomFarmButton.hoverText = $"{customFarm.Name.Replace("_", " ")}_";
                 CustomFarmButton.texture = customFarm.Icon;
 
             } else {
-                CustomFarmButton.hoverText = "Custom";
+                CustomFarmButton.hoverText = "Custom_";
                 CustomFarmButton.texture = CustomFarmIcon;
 
             }

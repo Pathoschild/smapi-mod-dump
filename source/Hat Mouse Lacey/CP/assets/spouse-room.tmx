@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="6" height="9" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="10">
+ <tileset firstgid="1" name="untitled tile sheet" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior" width="512" height="1088"/>
+  <tile id="1323">
+   <animation>
+    <frame tileid="1323" duration="250"/>
+    <frame tileid="1323" duration="250"/>
+    <frame tileid="1323" duration="250"/>
+    <frame tileid="1259" duration="250"/>
+    <frame tileid="1325" duration="250"/>
+    <frame tileid="1325" duration="250"/>
+    <frame tileid="1259" duration="250"/>
+    <frame tileid="1323" duration="250"/>
+    <frame tileid="1323" duration="250"/>
+    <frame tileid="1323" duration="250"/>
+    <frame tileid="1323" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="1324">
+   <animation>
+    <frame tileid="1324" duration="250"/>
+    <frame tileid="1324" duration="250"/>
+    <frame tileid="1324" duration="250"/>
+    <frame tileid="1260" duration="250"/>
+    <frame tileid="1326" duration="250"/>
+    <frame tileid="1326" duration="250"/>
+    <frame tileid="1260" duration="250"/>
+    <frame tileid="1324" duration="250"/>
+    <frame tileid="1324" duration="250"/>
+    <frame tileid="1324" duration="250"/>
+    <frame tileid="1324" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="1355">
+   <animation>
+    <frame tileid="1355" duration="250"/>
+    <frame tileid="1355" duration="250"/>
+    <frame tileid="1355" duration="250"/>
+    <frame tileid="1291" duration="250"/>
+    <frame tileid="1357" duration="250"/>
+    <frame tileid="1357" duration="250"/>
+    <frame tileid="1291" duration="250"/>
+    <frame tileid="1355" duration="250"/>
+    <frame tileid="1355" duration="250"/>
+    <frame tileid="1355" duration="250"/>
+    <frame tileid="1355" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="1356">
+   <animation>
+    <frame tileid="1356" duration="250"/>
+    <frame tileid="1356" duration="250"/>
+    <frame tileid="1356" duration="250"/>
+    <frame tileid="1292" duration="250"/>
+    <frame tileid="1358" duration="250"/>
+    <frame tileid="1358" duration="250"/>
+    <frame tileid="1292" duration="250"/>
+    <frame tileid="1356" duration="250"/>
+    <frame tileid="1356" duration="250"/>
+    <frame tileid="1356" duration="250"/>
+    <frame tileid="1356" duration="250"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="2177" name="z_lacey" tilewidth="16" tileheight="16" tilecount="32" columns="8">
+  <image source="lacey-tilesheet.png" width="128" height="64"/>
+ </tileset>
+ <tileset firstgid="2209" name="z_p" tilewidth="16" tileheight="16" tilecount="36" columns="4">
+  <image source="paths.png" width="64" height="144"/>
+ </tileset>
+ <layer id="1" name="Back" width="6" height="9">
+  <data encoding="base64" compression="zlib">
+   eJw7x8DAcI4EXIgDxzJhxzE0xLV45ADN+Bmu
+  </data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <layer id="3" name="Buildings" width="6" height="9">
+  <data encoding="base64" compression="zlib">
+   eJxjYMAOAnFgEJjMwcAwhQPCTmNiYEgH4kYgfzYQzwHiHEYGhjagWDsTDsNJAJ1A85aw4Za/xMrAcBmIezlQxQHGAwq8
+  </data>
+ </layer>
+ <objectgroup id="4" name="Buildings"/>
+ <layer id="5" name="Front" width="6" height="9">
+  <data encoding="base64" compression="zlib">
+   eJxjYGBgYGRkgANktiIONgz4QMW+MWHKkQNa2HDLbWJlYNgMxK0cxJkFAHOUBBQ=
+  </data>
+ </layer>
+ <objectgroup id="6" name="Front"/>
+ <layer id="7" name="Paths" width="6" height="9">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA/WMFBezsARZAAsQ==
+  </data>
+ </layer>
+</map>

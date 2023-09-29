@@ -24,7 +24,7 @@ namespace StardewArchipelago.GameModifications.Buildings
     public abstract class BuildingMenuArchipelago : CarpenterMenu
     {
         private List<string> ExcludedBuildings = new List<string>{
-            "Stone Cabin", "Plank Cabin", "Log Cabin", "Greenhouse", "Mine Elevator"
+            "Stone Cabin", "Plank Cabin", "Log Cabin", "Greenhouse", "Mine Elevator",
         };
 
         private const string _stableName = "Stable";

@@ -37,7 +37,6 @@ namespace Custom_Farm_Loader.Menus
         private static IModHelper Helper;
 
         private static List<ModFarmType> ModFarms = new List<ModFarmType>();
-        private static LoadGameMenu LoadGameMenuParent = null;
         private static FieldInfo _currentItemIndex = typeof(LoadGameMenu).GetField("currentItemIndex", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
         private static Dictionary<int, string> CachedFarmTypes = new Dictionary<int, string>();
@@ -78,7 +77,7 @@ namespace Custom_Farm_Loader.Menus
             );
 
             harmony.Patch(
-               original: AccessTools.Constructor(typeof(LoadGameMenu)),
+               original: AccessTools.DeclaredConstructor(typeof(LoadGameMenu), new[] { typeof(string) }),
                postfix: new HarmonyMethod(typeof(_LoadGameMenu), nameof(_LoadGameMenu.LoadGameMenu_Postfix))
             );
 
@@ -142,10 +141,10 @@ namespace Custom_Farm_Loader.Menus
             if (__instance.Farmer.slotName == null) //Happens when you join someones game and are asked to select a character.
                 return;
 
-            int currentItemIndex = (int)_currentItemIndex.GetValue(LoadGameMenuParent) + i;
+            int currentItemIndex = (int)_currentItemIndex.GetValue(TitleMenu.subMenu) + i;
 
             Texture2D icon = getFarmTypeIcon(__instance.Farmer.slotName, currentItemIndex);
-            Rectangle bounds = LoadGameMenuParent.slotButtons[i].bounds;
+            Rectangle bounds = (TitleMenu.subMenu as LoadGameMenu).slotButtons[i].bounds;
             Rectangle iconBounds = __instance.GetType().Name == "SaveFileSlot" //SaveFileSlot = Load, HostFileSlot = Host
                 ? new Rectangle(bounds.X + 20, bounds.Y + 78, (int)(72 * ModEntry.Config.LoadMenuIconScale), (int)(80 * ModEntry.Config.LoadMenuIconScale))
                 : new Rectangle(bounds.X + 12, bounds.Y + 12, (int)(54 * ModEntry.Config.CoopMenuIconScale), (int)(60 * ModEntry.Config.CoopMenuIconScale));
@@ -256,7 +255,6 @@ namespace Custom_Farm_Loader.Menus
         public static void LoadGameMenu_Postfix(LoadGameMenu __instance)
         {
             ModFarms = Game1.content.Load<List<ModFarmType>>("Data\\AdditionalFarms");
-            LoadGameMenuParent = __instance;
             CachedFarmTypes = new Dictionary<int, string>();
             CustomFarm.getAll().ForEach(farm => farm.reloadTextures());
         }

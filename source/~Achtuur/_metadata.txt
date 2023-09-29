@@ -7,9 +7,11 @@ mods:
    Travelling Skill
 
 latest commit:
-   commit ba81ff4ac167ed171aeb1ee7cb1efa097fcaf2b9
-   Author: Achtuur <arthurdegroot88@gmail.com>
-   Date:   Thu Aug 3 10:50:52 2023 +0200
+   commit 8eb34073b02a84466a51de216866a2ea13019803
+   Author: Arthur de Groot <68847937+Achtuur@users.noreply.github.com>
+   Date:   Wed Sep 27 12:09:57 2023 +0200
    
-       mod updates
+       Merge pull request #3 from Summer1Solstice/patch-1
+       
+       Create zh.json
    

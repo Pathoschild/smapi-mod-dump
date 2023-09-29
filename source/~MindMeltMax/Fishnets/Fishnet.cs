@@ -287,13 +287,14 @@ namespace Fishnets
             if ((bait.Value == null && !flag1) || heldObject.Value != null)
                 return;
             readyForHarvest.Value = true;
-            Random r = new ((int)Game1.stats.DaysPlayed + (int)(Game1.uniqueIDForThisGame / 2 + TileLocation.X * 1000 + TileLocation.Y));
+            Random r = new();
             Dictionary<int, string> fishData = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
             List<int> nums = new();
             double chance = flag2 ? 0.0 : 0.2;
             if (!flag2)
                 chance += location.getExtraTrashChanceForCrabPot((int)TileLocation.X, (int)TileLocation.Y);
-            if (r.NextDouble() > chance)
+            var next = r.NextDouble();
+            if (next > chance)
             {
                 foreach (KeyValuePair<int, string> kvp in fishData)
                 {

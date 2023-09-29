@@ -216,22 +216,27 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             {
                 var random = new Random(seed + i);
                 var choice = random.NextDouble();
-                var price = new[] { _merchantArtifactPrices[random.Next(0, _merchantArtifactPrices.Length)], 1 };
+                var priceMultiplier = _merchantArtifactPriceMultipliers[random.Next(0, _merchantArtifactPriceMultipliers.Length)];
                 if (allHintedDonatableItems.Any() && choice < 0.25)
                 {
-                    price[0] *= 4;
+                    priceMultiplier *= 4;
                     var chosenArtifactOrMineral = GetRandomArtifactOrMineral(random, allHintedDonatableItems);
                     _flairOverride.Add(chosenArtifactOrMineral, allHintedDonatableItemsWithFlair[chosenArtifactOrMineral]);
-                    stock.Add(chosenArtifactOrMineral, price);
+                    var price = (int)(chosenArtifactOrMineral.salePrice() * priceMultiplier);
+                    stock.Add(chosenArtifactOrMineral, new[] { price, 1 });
                 }
                 else if (allMissingDonatableItems.Any() && choice < 0.50)
                 {
-                    price[0] *= 2;
-                    stock.Add(GetRandomArtifactOrMineral(random, allMissingDonatableItems), price);
+                    priceMultiplier *= 2;
+                    var chosenArtifactOrMineral = GetRandomArtifactOrMineral(random, allMissingDonatableItems);
+                    var price = (int)(chosenArtifactOrMineral.salePrice() * priceMultiplier);
+                    stock.Add(chosenArtifactOrMineral, new[] { price, 1 });
                 }
                 else
                 {
-                    stock.Add(GetRandomArtifactOrMineral(random, allDonatableItems), price);
+                    var chosenArtifactOrMineral = GetRandomArtifactOrMineral(random, allDonatableItems);
+                    var price = (int)(chosenArtifactOrMineral.salePrice() * priceMultiplier);
+                    stock.Add(chosenArtifactOrMineral, new[] { price, 1 });
                 }
             }
         }
@@ -379,8 +384,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             var chosenApItem = apItems[random.Next(0, apItems.Count)];
 
             var scamName = _merchantApItemNames[random.Next(0, _merchantApItemNames.Length)];
-            var apLocation =
-                new PurchaseableArchipelagoLocation(scamName, chosenApItem, _modHelper, _locationChecker, _archipelago);
+            var myActiveHints = _archipelago.GetMyActiveHints();
+            var apLocation = new PurchaseableArchipelagoLocation(scamName, chosenApItem, _modHelper, _locationChecker, _archipelago, myActiveHints);
             var price = ModifyPrice(_merchantPrices[random.Next(0, _merchantPrices.Length)], priceMultiplier);
 
             currentStock.Add(apLocation, new[] { price, 1 });
@@ -410,17 +415,19 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             throw new ArgumentException($"Invalid day: {day}");
         }
 
-        private static readonly int[] _merchantArtifactPrices = new[]
+        private static readonly double[] _merchantArtifactPriceMultipliers = new[] // Strong odds of a price slightly above the normal, small odds of significantly cheaper or significantly more expensive
         {
+            0.1,
+            0.25,
+            0.5,
+            1, 1,
+            2, 2,
+            3, 3,
+            4, 4,
+            5, 5,
             10,
-            25,
+            20,
             50,
-            75,
-            100,
-            250,
-            500,
-            750,
-            1000,
         };
 
         private static readonly int[] _merchantPrices = new[]

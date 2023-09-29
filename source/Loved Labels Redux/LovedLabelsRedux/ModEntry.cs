@@ -31,6 +31,7 @@ namespace LovedLabelsRedux
         private ModConfig configsForTheMod;
         private Texture2D _hearts;
         private string _hoverText;
+        private bool? _hoverStatus;
 
         public override void Entry(IModHelper helper)
         {
@@ -78,8 +79,9 @@ namespace LovedLabelsRedux
 
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (!Context.IsPlayerFree || !Game1.currentLocation.IsFarm) { return; }
+            if (!configsForTheMod.IsUIEnabled || (!Context.IsPlayerFree || !Game1.currentLocation.IsFarm)) { return; }
             _hoverText = null;
+            _hoverStatus = null;
 
             if (configsForTheMod.IsPettingEnabled)
             {
@@ -93,11 +95,6 @@ namespace LovedLabelsRedux
                         animal.pet(Game1.player);
                     }
                 }
-            }
-
-            if (!configsForTheMod.IsUIEnabled)
-            {
-                return;
             }
 
             GameLocation location = Game1.currentLocation;
@@ -120,7 +117,10 @@ namespace LovedLabelsRedux
                 RectangleF animalBoundaries = new(animal.position.X, animal.position.Y - animal.Sprite.getHeight(), animal.Sprite.getWidth() * 3 + animal.Sprite.getWidth() / 1.5f, animal.Sprite.getHeight() * 4);
 
                 if (animalBoundaries.Contains(mousePos.X * Game1.tileSize, mousePos.Y * Game1.tileSize))
+                {
                     _hoverText = animal.wasPet.Value ? configsForTheMod.AlreadyPettedMessage : configsForTheMod.NeedsPettingMessage;
+                    _hoverStatus = animal.wasPet.Value;
+                }
             }
 
             foreach (Pet pet in location.characters.OfType<Pet>())
@@ -131,18 +131,22 @@ namespace LovedLabelsRedux
                     NetLongDictionary<int, NetInt> lastPettedDays = Helper.Reflection.GetField<NetLongDictionary<int, NetInt>>(pet, "lastPetDay").GetValue();
                     bool wasPet = lastPettedDays.Values.Any(day => day == Game1.Date.TotalDays);
                     _hoverText = wasPet ? configsForTheMod.AlreadyPettedMessage : configsForTheMod.NeedsPettingMessage;
+                    _hoverStatus = wasPet;
                 }
             }
         }
 
         private void OnRendered(object sender, RenderedEventArgs e)
         {
-            if (Context.IsPlayerFree && _hoverText != null)
-                DrawSimpleTooltip(Game1.spriteBatch, _hoverText, Game1.smallFont);
+            if (Context.IsPlayerFree && _hoverText != null && _hoverStatus != null)
+                DrawSimpleTooltip(Game1.spriteBatch, _hoverText, Game1.smallFont, _hoverStatus);
         }
 
-        private void DrawSimpleTooltip(SpriteBatch b, string hoverText, SpriteFont font)
+        private void DrawSimpleTooltip(SpriteBatch b, string hoverText, SpriteFont font, bool? hoverStatus)
         {
+            //log
+            //this.Monitor.Log("[" + hoverStatus + "]", LogLevel.Debug);
+
             var textSize = font.MeasureString(hoverText);
             var width = (int)textSize.X + _hearts.Width + Game1.tileSize / 2;
             var height = Math.Max(60, (int)textSize.Y + Game1.tileSize / 2);
@@ -159,7 +163,7 @@ namespace LovedLabelsRedux
                 y = Game1.viewport.Height - height;
             }
             IClickableMenu.drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), x, y, width, height, Color.White);
-            if (hoverText.Length > 1)
+            if (hoverText.Length >= 1)
             {
                 var tPosVector = new Vector2(x + (Game1.tileSize / 4), y + (Game1.tileSize / 4 + 4));
                 b.DrawString(font, hoverText, tPosVector + new Vector2(2f, 2f), Game1.textShadowColor, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
@@ -168,7 +172,7 @@ namespace LovedLabelsRedux
                 b.DrawString(font, hoverText, tPosVector, Game1.textColor * 0.9f, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
             }
             var halfHeartSize = _hearts.Width * 0.5f;
-            var sourceY = (hoverText == configsForTheMod.AlreadyPettedMessage) ? 0 : 32;
+            var sourceY = (hoverStatus == true) ? 0 : 32;
             var heartpos = new Vector2(x + textSize.X + halfHeartSize, y + halfHeartSize);
             b.Draw(_hearts, heartpos, new Rectangle(0, sourceY, 32, 32), Color.White);
         }

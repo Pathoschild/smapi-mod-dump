@@ -70,7 +70,33 @@ namespace FarmTypeManager.Monsters
             this.NetFields.AddField(customDamage);
         }
 
-        //this override fixes the following Duggy behavioral bugs:
+        //This override fixes the following Duggy behavioral bugs:
+        // * error that prevented multiplayer farmhands from loading the game while these monsters exist (null location/map/layer data)
+        public override void update(GameTime time, GameLocation location)
+        {
+            if (this.invincibleCountdown > 0)
+            {
+                this.glowingColor = Color.Cyan;
+                this.invincibleCountdown -= time.ElapsedGameTime.Milliseconds;
+                if (this.invincibleCountdown <= 0)
+                    this.stopGlowing();
+            }
+            if (!location.farmers.Any())
+                return;
+            this.behaviorAtGameTick(time);
+
+            Layer backLayer = location?.map?.GetLayer("Back"); //if this monster's location exists and is loaded, get the back layer
+            if (backLayer != null) //if the layer exists
+            {
+                //perform the original removal check
+                if ((double)this.Position.X < 0.0 || (double)this.Position.X > (double)(backLayer.LayerWidth * 64) || ((double)this.Position.Y < 0.0 || (double)this.Position.Y > (double)(backLayer.LayerHeight * 64)))
+                    location.characters.Remove((NPC)this);
+            }
+
+            this.updateGlow();
+        }
+
+        //This override fixes the following Duggy behavioral bugs:
         // * permanently editing tiles' TileIndex (attempting to display the "empty hole" sprite)
         // * failing to un-burrow in most game locations
         // * using hard-coded damage values, making it non-customizable
@@ -120,66 +146,37 @@ namespace FarmTypeManager.Monsters
             //skip the base Duggy's tile alterations
         }
 
-        /// <summary>This is a copy of the virtual method "Monster.behaviorAtGameTick", used to implement the base Duggy class's "base.behaviorAtGameTick" call.</summary>
+        /// <summary>Except where commented, this is a copy of "Monster.behaviorAtGameTick", used to implement this monster's "base.behaviorAtGameTick" call.</summary>
         private void Monster_behaviorAtGameTick(GameTime time)
         {
-            if ((double)this.timeBeforeAIMovementAgain > 0.0)
-                this.timeBeforeAIMovementAgain -= (float)time.ElapsedGameTime.Milliseconds;
-            if (!this.Player.isRafting || !this.withinPlayerThreshold(4))
-                return;
-            Microsoft.Xna.Framework.Rectangle boundingBox1 = this.Player.GetBoundingBox();
-            int y1 = boundingBox1.Center.Y;
-            boundingBox1 = this.GetBoundingBox();
-            int y2 = boundingBox1.Center.Y;
-            if (Math.Abs(y1 - y2) > 192)
+            if (base.timeBeforeAIMovementAgain > 0f)
             {
-                Microsoft.Xna.Framework.Rectangle boundingBox2 = this.Player.GetBoundingBox();
-                int x1 = boundingBox2.Center.X;
-                boundingBox2 = this.GetBoundingBox();
-                int x2 = boundingBox2.Center.X;
-                if (x1 - x2 > 0)
-                    this.SetMovingLeft(true);
+                base.timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
+            }
+            if (this.Player?.isRafting != true || !this.withinPlayerThreshold(4)) //check for null on Player due to reported errors (not necessarily FTM-specific)
+            {
+                return;
+            }
+            if (Math.Abs(this.Player.GetBoundingBox().Center.Y - this.GetBoundingBox().Center.Y) > 192)
+            {
+                if (this.Player.GetBoundingBox().Center.X - this.GetBoundingBox().Center.X > 0)
+                {
+                    this.SetMovingLeft(b: true);
+                }
                 else
-                    this.SetMovingRight(true);
+                {
+                    this.SetMovingRight(b: true);
+                }
+            }
+            else if (this.Player.GetBoundingBox().Center.Y - this.GetBoundingBox().Center.Y > 0)
+            {
+                this.SetMovingUp(b: true);
             }
             else
             {
-                Microsoft.Xna.Framework.Rectangle boundingBox2 = this.Player.GetBoundingBox();
-                int y3 = boundingBox2.Center.Y;
-                boundingBox2 = this.GetBoundingBox();
-                int y4 = boundingBox2.Center.Y;
-                if (y3 - y4 > 0)
-                    this.SetMovingUp(true);
-                else
-                    this.SetMovingDown(true);
+                this.SetMovingDown(b: true);
             }
-            this.MovePosition(time, Game1.viewport, this.currentLocation);
-        }
-
-        //this override fixes the following duggy behavioral bugs:
-        // * preventing multiplayer farmhands from loading the game while they exist (caused by null location/map/layer data)
-        public override void update(GameTime time, GameLocation location)
-        {
-            if (this.invincibleCountdown > 0)
-            {
-                this.glowingColor = Color.Cyan;
-                this.invincibleCountdown -= time.ElapsedGameTime.Milliseconds;
-                if (this.invincibleCountdown <= 0)
-                    this.stopGlowing();
-            }
-            if (!location.farmers.Any())
-                return;
-            this.behaviorAtGameTick(time);
-
-            Layer backLayer = location?.map?.GetLayer("Back"); //get the "Back" layer if it exists
-            if (backLayer != null) //if the layer exists
-            {
-                //perform the original layer check
-                if ((double)this.Position.X < 0.0 || (double)this.Position.X > (double)(backLayer.LayerWidth * 64) || ((double)this.Position.Y < 0.0 || (double)this.Position.Y > (double)(backLayer.LayerHeight * 64)))
-                    location.characters.Remove((NPC)this);
-            }
-
-            this.updateGlow();
+            this.MovePosition(time, Game1.viewport, base.currentLocation);
         }
     }
 }

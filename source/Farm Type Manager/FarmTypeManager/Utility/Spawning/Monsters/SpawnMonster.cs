@@ -508,7 +508,7 @@ namespace FarmTypeManager
                         break;
                     default: //if the name doesn't match any directly known monster types
                         //check MTF monster types
-                        if (MonstersTheFrameworkAPI.IsKnownMonsterType(monsterType.MonsterName, true)) //if this is a known (and previously validated) monster type from MTF
+                        if (MonstersTheFrameworkAPI?.IsKnownMonsterType(monsterType.MonsterName, true) == true) //if this is a known (and previously validated) monster type from MTF
                         {
                             monster = MonstersTheFrameworkAPI.CreateMonster(monsterType.MonsterName); //create it through the MTF interface
                             break;

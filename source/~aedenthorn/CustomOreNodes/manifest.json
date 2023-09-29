@@ -11,7 +11,7 @@
 {
   "Name": "Custom Ore Nodes",
   "Author": "aedenthorn",
-  "Version": "2.3.0",
+  "Version": "2.3.4",
   "Description": "Spawns custom ore nodes in mines.",
   "UniqueID": "aedenthorn.CustomOreNodes",
   "EntryDll": "CustomOreNodes.dll",

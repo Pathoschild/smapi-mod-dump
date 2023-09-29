@@ -145,11 +145,6 @@ namespace StardewArchipelago.Archipelago
                 return true;
             }
 
-            if (HandleDeathlinkCommand(messageLower))
-            {
-                return true;
-            }
-
             if (HandleHelpCommand(messageLower))
             {
                 return true;
@@ -230,7 +225,10 @@ namespace StardewArchipelago.Archipelago
                 case "hobo":
                     return "Linus";
                 case "josh":
+                case "himbo":
                     return "Alex";
+                case "bimbo":
+                    return "Haley";
                 case "bestgirl":
                     return "Abigail";
                 case "gilf":
@@ -241,6 +239,8 @@ namespace StardewArchipelago.Archipelago
                     return "Maru";
                 case "emo":
                     return "Sebastian";
+                case "chicken":
+                    return "Harvey";
                 default:
                     return Utility.capitalizeFirstLetter(enteredName);
             }
@@ -254,17 +254,6 @@ namespace StardewArchipelago.Archipelago
             }
 
             _archipelago.Sync();
-            return true;
-        }
-
-        private static bool HandleDeathlinkCommand(string message)
-        {
-            if (message != $"{COMMAND_PREFIX}deathlink")
-            {
-                return false;
-            }
-
-            _archipelago.ToggleDeathlink();
             return true;
         }
 
@@ -415,7 +404,6 @@ namespace StardewArchipelago.Archipelago
                 Game1.chatBox?.addMessage($"{COMMAND_PREFIX}gift [slotName] - Sends your currently held item stack to a chosen player as a gift", Color.Gold);
             }
             Game1.chatBox?.addMessage($"{COMMAND_PREFIX}letters - Toggle Hiding Empty Archipelago Letters", Color.Gold);
-            Game1.chatBox?.addMessage($"{COMMAND_PREFIX}deathlink - Toggles Deathlink on/off. Saves when sleeping", Color.Gold);
             Game1.chatBox?.addMessage($"{COMMAND_PREFIX}unstuck - Nudge your character if you are stuck in a wall", Color.Gold);
             Game1.chatBox?.addMessage($"{COMMAND_PREFIX}sleep - Immediately pass out, ending the day", Color.Gold);
 #if DEBUG

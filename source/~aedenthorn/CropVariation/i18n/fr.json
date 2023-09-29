@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/aedenthorn/StardewValleyMods
+**
+*************************************************/
+
+{
+  // GMCM
+  "GMCM_Option_ModEnabled_Name": "Activer le Mod",
+  "GMCM_Option_EnableTrellisResize_Name": "Redimensionner les treillis",
+  "GMCM_Option_SizeVariationPercent_Name": "Variation de taille max (en %)",
+  "GMCM_Option_ColorVariation_Name": "Variation de couleur max",
+  "GMCM_Option_SizeVariationQualityFactor_Name": "Facteur de qualité de la taille",
+  "GMCM_Option_ColorVariationQualityFactor_Name": "Facteur de qualité de la couleur"
+}

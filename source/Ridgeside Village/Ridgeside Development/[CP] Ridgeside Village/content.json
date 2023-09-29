@@ -14,7 +14,7 @@
 	// For Event Limiter compatibility
 	"EventLimiterExceptions": [
 		// Spirit Realm story events
-		75160187, 75160254, 75160255, 75160256, 75160257, 75160258, 75160259, 75160263, 75160264, 75160265,
+		75160377, 75160187, 75160254, 75160255, 75160256, 75160257, 75160258, 75160259, 75160263, 75160264, 75160265,
 		// Greenhouse story events
 		75160266, 75160267, 75160268, 75160269,
 		// Special Order reward events
@@ -109,6 +109,16 @@
 			"When": {
 				"Rafseazz.RidgesideVillage/EnableOtherNPCsInCableCar": true,
 				"HasMod |contains=tiakall.jortsandjean": true
+			}
+		},
+
+		// The Stray Catfe
+		{
+			"Name": "PossibleCableCarNPCs",
+			"Value": "{{PossibleCableCarNPCs}}, Tabitha, Theo",
+			"When": {
+				"Rafseazz.RidgesideVillage/EnableOtherNPCsInCableCar": true,
+				"HasMod |contains=ch20youk.TSCCP": true
 			}
 		},
 
@@ -1343,7 +1353,7 @@
 	{
 		"LogName": "Include all InterModCompat files",
 		"Action": "Include",
-		"FromFile": "Data/InterModCompat/CustomGiftDialogue.json, Data/InterModCompat/EastScarpe.json, Data/InterModCompat/KarmyllasImmersiveMaps.json, Data/InterModCompat/StardewValleyExpanded.json, Data/InterModCompat/TownSchool.json, Data/InterModCompat/WarpNetwork.json, Data/InterModCompat/EventLookup.json, Data/InterModCompat/FreeLove.json, Data/InterModCompat/DaisyNiko.json",
+		"FromFile": "Data/InterModCompat/CustomGiftDialogue.json, Data/InterModCompat/EastScarpe.json, Data/InterModCompat/KarmyllasImmersiveMaps.json, Data/InterModCompat/StardewValleyExpanded.json, Data/InterModCompat/TownSchool.json, Data/InterModCompat/WarpNetwork.json, Data/InterModCompat/EventLookup.json, Data/InterModCompat/FreeLove.json, Data/InterModCompat/DaisyNiko.json, Data/InterModCompat/WalkToDesertRedux.json",
 	},
 
 	//Includes Map Data

@@ -27,7 +27,6 @@ namespace MultiplayerMod.Framework.Patch.Mobile
         {
             harmony.Patch(AccessTools.PropertyGetter(PATCH_TYPE, "tapToMove"), postfix: new HarmonyMethod(this.GetType(), nameof(postfix_get_tapToMove)));
         }
-
         private static void postfix_get_tapToMove(GameLocation __instance, ref object __result)
         {
             if (__result == null)

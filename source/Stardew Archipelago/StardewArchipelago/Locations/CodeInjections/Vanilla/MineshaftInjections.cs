@@ -20,7 +20,6 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
 using xTile.Dimensions;
-using xTile.Tiles;
 using Rectangle = xTile.Dimensions.Rectangle;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla
@@ -92,7 +91,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 items.Add(new MeleeWeapon(8));
                 __instance.overlayObjects[chestPosition] = new Chest(0, items, chestPosition)
                 {
-                    Tint = Color.Pink
+                    Tint = Color.Pink,
                 };
 
                 return false; // don't run original logic

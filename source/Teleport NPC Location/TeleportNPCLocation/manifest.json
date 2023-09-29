@@ -11,7 +11,7 @@
 {
   "Name": "Teleport NPC Location",
   "Author": "ccr",
-  "Version": "1.0.5",
+  "Version": "1.0.7",
   "Description": "teleport to NPC Location",
   "UniqueID": "ccr.TeleportNPCLocation",
   "EntryDll": "TeleportNPCLocation.dll",

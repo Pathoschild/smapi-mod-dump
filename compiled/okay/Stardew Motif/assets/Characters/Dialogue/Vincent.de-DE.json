@@ -1,0 +1,21 @@
+{
+  "Introduction": "Oh, jemand Fremdes! Mein Name ist Vincent.#$b#Mama sagt, ich soll nicht mit Fremden reden... Aber du siehst in Ordnung aus.",
+  "Resort_Entering": "Das hat Spaß gemacht! Ich will eines Tages Bootskapitän werden!",
+  "Resort_Leaving": "Ich möchte bald wiederkommen!",
+  "Resort_Shore": "Ich will einen Hai sehen!$h",
+  "Resort": "Wenn man genau hinsieht, sieht man kleine Käfer aus dem Sand springen.$h",
+  "reject_869": "Oooh! Netter Fund!#$b#Mama würde es mir allerdings nicht erlauben ihn zu behalten...$s",
+  "Mon": "Ich will genau wie mein großer Bruder sein, wenn ich groß bin!$h#$e#Okay! Bye!",
+  "Mon4": "$d kent#Ich bin froh, dass Papa wieder da ist... aber er ist anders als früher...$s|Papa ist nicht oft da... Ich vermisse es, mit ihm zu spielen.$s",
+  "Tue": "*schnüff* Mama lässt mich heute nichts Süßes mehr essen.$s",
+  "Tue6": "Kannst du ein Geheimnis für dich behalten?^Kannst du ein Geheimnis für dich behalten?$u#$b#Ich will Frau Laphi heiraten, wenn ich groß bin.#$e#Sag's ihr aber nicht, okay?$u",
+  "Wed": "Ich will nach Käfern suchen, aber Mama wird böse, wenn ich mich schmutzig mache.$u#$b#Was soll ich nur tun...",
+  "Thu": "Ich bin hungrig... Wo ist Mama?$s",
+  "Thu2": "Du bist nicht so langweilig wie die meisten Erwachsenen!",
+  "Fri": "#$c .3#Pfui, es ist wieder gekochte Beete-Abend...$s#$e#Oh nein... Mama macht heute Nacht Linsensuppe.$s",
+  "Sat_1": "Papa kommt bald zurück!#$b#Ich hoffe, er bringt mir ein Spielzeug mit.$u",
+  "Sat": "Frau Laphi möchte, dass ich jede Woche ein Buch lese.$s#$b#Wenigstens lässt sie mich manchmal eins aussuchen!",
+  "Sat8": "$d kent#Papa ist irgendwie merkwürdig, seit er zurück ist. Ich frage mich, was mit ihm passiert ist?$s#$b#Er spielt nicht mehr mit mir.$s| Ich frage mich, ob Papa je wieder nachhause kommt...$s",
+  "Sun": "Hi, du!",
+  "Sun10": "Hi Onkel @!^Hi Tante @!#$e#Erzähl's nicht Mama... aber du bist mein Lieblingserwachsener.$h"
+}

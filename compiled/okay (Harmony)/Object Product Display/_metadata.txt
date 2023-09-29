@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/18365
+IDs: aedenthorn.ObjectProductDisplay
+update keys: Nexus:18365, GitHub:aedenthorn/StardewValleyMods

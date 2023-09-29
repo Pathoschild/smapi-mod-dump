@@ -71,7 +71,7 @@ namespace RidgesideVillage
             if (Game1.player.eventsSeen.Contains(RSVConstants.E_WEDDINGRECEPTION))
             {
                 Game1.player.eventsSeen.Remove(RSVConstants.E_WEDDINGRECEPTION);
-                Game1.player.mailReceived.Remove(RSVConstants.M_RECEPTIONBOOKEDFLAG);
+                Game1.player.activeDialogueEvents.Remove(RSVConstants.M_RECEPTIONBOOKEDFLAG);
             }
 
             //Adds flag if player is engaged so the mail can be sent to the player
@@ -91,10 +91,10 @@ namespace RidgesideVillage
 
             //If it's after wedding day and the player didn't attend their booked Wedding Reception
             if (!(Game1.player.eventsSeen.Contains(RSVConstants.E_WEDDINGRECEPTION))
-                && !Game1.weddingToday && Game1.player.mailReceived.Contains(RSVConstants.M_RECEPTIONBOOKEDFLAG) && Game1.player.isMarried())
+                && !Game1.weddingToday && Game1.player.activeDialogueEvents[RSVConstants.M_RECEPTIONBOOKEDFLAG] <= 0 && Game1.player.isMarried())
             {
                 Game1.player.eventsSeen.Remove(RSVConstants.E_WEDDINGRECEPTION);
-                Game1.player.mailReceived.Remove(RSVConstants.M_RECEPTIONBOOKEDFLAG);
+                Game1.player.activeDialogueEvents.Remove(RSVConstants.M_RECEPTIONBOOKEDFLAG);
             }
 
             //removes booked flag next day
@@ -263,7 +263,7 @@ namespace RidgesideVillage
                 Game1.activeClickableMenu = new DialogueBox(Helper.Translation.Get("EventHallCounter.Booking.NotEnoughMoney"));
             }            
             //If player has booked an event
-            else if (HotelMenu.IsThereUpcomingBirthdayBooked() || Game1.player.mailReceived.Contains(RSVConstants.M_RECEPTIONBOOKEDFLAG) || Game1.player.mailReceived.Contains(RSVConstants.M_ANNIVERSARYBOOKEDFLAG))
+            else if (HotelMenu.IsThereUpcomingBirthdayBooked() || Game1.player.activeDialogueEvents.ContainsKey(RSVConstants.M_RECEPTIONBOOKEDFLAG) || Game1.player.mailReceived.Contains(RSVConstants.M_ANNIVERSARYBOOKEDFLAG))
             {
                 Game1.activeClickableMenu = new DialogueBox(Helper.Translation.Get("EventHallCounter.Booking.AlreadyBooked"));
             }
@@ -286,7 +286,7 @@ namespace RidgesideVillage
                     responseActions.Add(birthdayAction);
 
                 }
-                if(!Game1.player.mailReceived.Contains(RSVConstants.M_RECEPTIONBOOKEDFLAG) && Game1.player.isEngaged())
+                if(!Game1.player.activeDialogueEvents.ContainsKey(RSVConstants.M_RECEPTIONBOOKEDFLAG) && Game1.player.isEngaged())
                 {
                     Response receptionesponse = new Response("weddingReception", Helper.Translation.Get("EventHallCounter.Booking.WeddingReception"));
                     responses.Add(receptionesponse);
@@ -328,7 +328,7 @@ namespace RidgesideVillage
                         delegate
                         {
                             Game1.player.Money -= WEDDINGPRICE;
-                            Game1.player.mailReceived.Add(RSVConstants.M_RECEPTIONBOOKEDFLAG);
+                            Game1.player.activeDialogueEvents.Add(RSVConstants.M_RECEPTIONBOOKEDFLAG, Game1.player.friendshipData[UtilFunctions.GetFiance(Game1.player)].CountdownToWedding+1);
                             Game1.activeClickableMenu = new DialogueBox(Helper.Translation.Get("EventHallCounter.Booking.WR.AfterBooking"));
                         },
                         delegate { HandleEventHallMenu(); }

@@ -107,7 +107,11 @@ namespace StardewArchipelago.Archipelago
         {
             try
             {
-                SendDeathLink("Passed out");
+                if (__instance.stamina <= -15)
+                {
+                    SendDeathLink("Passed out");
+                }
+
                 return true; // run original logic
             }
             catch (Exception ex)

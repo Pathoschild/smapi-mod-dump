@@ -27,10 +27,10 @@ namespace StardewArchipelago.Items
         {
             "Albrekka", "Alchav", "axe_y", "beauxq", "Berserker", "Black Sliver", "blastron", "BootsinSoots", "CaitSith2", "Captain Canadia", "Celeste", "Damocles",
             "dewin", "el_", "Espeon", "eudaimonistic", "Exempt-Medic", "Farrak Kilhn", "Figment", "Fly Sniper",
-            "Frazzleduck", "Heinermann", "JaredWeakStrike", "Jarno", "jat2980", "Jouramie", "Justice", "Kaito Kid",
-            "KelioMZX", "KittyAshy", "Kono Tyran", "lordlou", "Magnemania", "Marech", "Mati", "Mav", "mewlif", "N00byKing", "Phar",
-            "PoryGone", "ProfBytes", "RaspberrySpaceJam", "Rosalie", "Salzkorn", "Scipio", "Sneaki", "Snow", "SunnyBat",
-            "TheCondor", "toaster", "Trev", "Violet", "Yellow_Meep", "zig", "Ziktofel",
+            "Frazzleduck", "Heinermann", "Ishigh", "JaredWeakStrike", "Jarno", "jat2980", "Jouramie", "Justice", "Kaito Kid",
+            "KelioMZX", "KittyAshy", "Kono Tyran", "Lady Redacted", "lordlou", "Magnemania", "Marech", "Mati", "Mav", "MeleneV", "mewlif", "N00byKing", "Phar",
+            "PoryGone", "ProfBytes", "RaspberrySpaceJam", "Rosalie", "Salzkorn", "SamanthaCoffin", "Scipio", "Sneaki", "Snow", "SunnyBat",
+            "TheCondor", "toaster", "Trev", "Violet", "WhySoThirstyy", "Yellow_Meep", "zig", "Ziktofel",
         };
 
         public void SpawnNewBaby()
@@ -44,7 +44,7 @@ namespace StardewArchipelago.Items
             var baby = new Child(babyName, babyGender, babyColor, Game1.player)
             {
                 Age = 0,
-                Position = new Vector2(16f, 4f) * 64f + new Vector2(0.0f, -24f)
+                Position = new Vector2(16f, 4f) * 64f + new Vector2(0.0f, -24f),
             };
             Utility.getHomeOfFarmer(Game1.player).characters.Add(baby);
             Game1.playSound("smallSelect");

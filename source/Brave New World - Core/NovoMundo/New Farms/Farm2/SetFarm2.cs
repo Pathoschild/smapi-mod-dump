@@ -401,7 +401,7 @@ namespace NovoMundo.Farm2
             var locationFromName = (NMFarm2)Game1.getLocationFromName("NMFarm2");
             if (locationFromName == null)
                 return;
-            __result = locationFromName.getBuildingByName((string)((NetFieldBase<string, NetString>)___nameOfIndoors));
+            __result = locationFromName.getBuildingByName((string)((NetFieldBase<string, NetString>)___nameOfIndoors).Value);
         }
     }
     static class Helpers

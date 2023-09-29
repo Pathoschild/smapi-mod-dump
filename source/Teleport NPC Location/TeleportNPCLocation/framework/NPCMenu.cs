@@ -9,10 +9,13 @@
 *************************************************/
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Metadata;
 using System.Xml.Linq;
+using Microsoft.VisualBasic.FileIO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -20,6 +23,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using static System.Net.Mime.MediaTypeNames;
+using static StardewValley.LocationRequest;
 
 namespace TeleportNPCLocation.framework
 {
@@ -40,8 +44,11 @@ namespace TeleportNPCLocation.framework
             ColorDestinationBlend = Blend.InverseSourceAlpha
         };
 
-        /// <summary>The nps list.</summary>
+        /// <summary>The npc list.</summary>
         private List<NPC> npcList;
+
+        /// <summary>ban npc list.</summary>
+        public List<string> BanNPCList;
 
         /// <summary>Encapsulates logging and monitoring.</summary>
         private readonly IMonitor Monitor;
@@ -74,7 +81,7 @@ namespace TeleportNPCLocation.framework
         private readonly SearchTextBox SearchTextbox;
 
         /// <summary> icon.</summary>
-        private List<ClickableTextureComponent>
+        private List<ClickableComponent>
             teleportComponents;
 
         /// <summary>Whether the game HUD was enabled when the menu was opened.</summary>
@@ -93,7 +100,9 @@ namespace TeleportNPCLocation.framework
         /// <remarks>This is enabled automatically when the menu detects a rare scissor rectangle error ("The scissor rectangle cannot be larger than or outside of the current render target bounds"). The menu will usually be pushed into the top-left corner when this is active, so it be disabled unless it's needed.</remarks>
         protected static bool UseSafeDimensions { get; set; }
 
-        public NPCMenu(List<NPC> npcList, IMonitor monitor, ModConfig config, int scroll)
+        public Action<List<string>> Callback { get; set; }
+
+        public NPCMenu(List<NPC> npcList, IMonitor monitor, ModConfig config, int scroll, Action<List<string>> callback)
 		{
             // save data
             this.npcList = npcList;
@@ -103,13 +112,13 @@ namespace TeleportNPCLocation.framework
             this.WasHudEnabled = Game1.displayHUD;
             this.SearchLookup = npcList.ToLookup(p => p.displayName, StringComparer.OrdinalIgnoreCase);
             this.SearchResults = this.npcList;
+            this.BanNPCList = new List<string>();
+            this.Callback = callback;
 
             // add scroll buttons
             this.ScrollUpButton = new ClickableTextureComponent(Rectangle.Empty, CommonSprites.Icons.Sheet, CommonSprites.Icons.UpArrow, 1);
             this.ScrollDownButton = new ClickableTextureComponent(Rectangle.Empty, CommonSprites.Icons.Sheet, CommonSprites.Icons.DownArrow, 1);
             this.SearchTextbox = new SearchTextBox(Game1.smallFont, Color.Black);
-
-            this.teleportComponents = new List<ClickableTextureComponent>();
 
             // update layout
             this.UpdateLayout();
@@ -249,9 +258,10 @@ namespace TeleportNPCLocation.framework
             base.cleanupBeforeExit();
         }
 
-        /// <summary>Perform cleanup specific to the lookup menu.</summary>
+        /// <summary>Perform cleanup specific to the npc menu.</summary>
         private void CleanupImpl()
         {
+            this.Callback(this.BanNPCList);
             Game1.displayHUD = this.WasHudEnabled;
             this.SearchTextbox.Dispose();
         }
@@ -332,21 +342,40 @@ namespace TeleportNPCLocation.framework
                 this.ScrollDown();
 
             // teleport to npc location
-            int index = 0;
-            foreach (ClickableTextureComponent component in this.teleportComponents)
+            foreach (ClickableComponent component in this.teleportComponents)
             {
-                if (component.containsPoint(x, y))
+                if (component.containsPoint(x, y) && component is NPCMenuItem)
                 {
-                    TeleportHelper.teleportToNPCLocation(this.SearchResults.ElementAt(index));
+                    NPCMenuItem menuItem = (NPCMenuItem)component;
 
-                    // Close this menu
-                    this.exitThisMenu();
+                    // click checkbox
+                    if (menuItem.isCheckBoxContainsPoint(x, y))
+                    {
+                        menuItem.checkbox.Update();
+                    }
+                    // click other area
+                    else
+                    {
+                        TeleportHelper.teleportToNPCLocation(menuItem.npc);
+                        // Close this menu
+                        this.exitThisMenu();
+                    }
+
                     break;
                 }
-                index++;
             }
         }
 
+        public void HandleCheckBoxClick(NPCMenuItem menuItem)
+        {
+            NPC npc = menuItem.npc;
+            if (menuItem.checkbox.Checked)
+                this.BanNPCList.Remove(npc.Name);
+            else
+                this.BanNPCList.Add(npc.Name);
+
+            this.Monitor.Log($"npc:{npc.Name}, checked:{menuItem.checkbox.Checked}", LogLevel.Warn);
+        }
 
         /// <summary>Render the UI.</summary>
         /// <param name="spriteBatch">The sprite batch being drawn.</param>
@@ -362,7 +391,6 @@ namespace TeleportNPCLocation.framework
                 float topOffset = gutter;
                 float contentWidth = this.width - gutter * 2;
                 float contentHeight = this.height - gutter * 2;
-                int tableBorderWidth = 1;
 
                 // get font
                 SpriteFont font = Game1.smallFont;
@@ -421,47 +449,24 @@ namespace TeleportNPCLocation.framework
                             }
 
                             // draw npc list
-                            this.teleportComponents = new List<ClickableTextureComponent>();
+                            this.teleportComponents = new List<ClickableComponent>();
                             if (this.SearchResults.Any())
                             {
-                                float cellPadding = 3;
-                                float portraitWidth = NPC.portrait_width;
-                                float valueWidth = wrapWidth - portraitWidth - cellPadding * 4 - tableBorderWidth;
                                 int index = 0;
                                 foreach (NPC npc in this.SearchResults)
                                 {
-                                    // draw value label
                                     if (npc.IsInvisible || npc.currentLocation == null)
                                         continue;
 
-                                    // draw Portrait
-                                    Vector2 portraitPosition = new Vector2(x + leftOffset + cellPadding, y + topOffset + cellPadding);
-                                    Vector2 portraitSize = new Vector2(NPC.portrait_width, NPC.portrait_height);
-                                    ClickableTextureComponent teleportButton = new ClickableTextureComponent(Rectangle.Empty, npc.Portrait, new Rectangle(0, 0, NPC.portrait_width, NPC.portrait_height), 1);
-                                    teleportButton.bounds = new Rectangle((int)portraitPosition.X, (int)portraitPosition.Y, (int)portraitSize.X, (int)portraitSize.Y);
-                                    teleportButton.draw(contentBatch);
-                                    this.teleportComponents.Add(teleportButton);
-
-                                    // draw value label
-                                    Vector2 valuePosition = new Vector2(x + leftOffset + portraitWidth + cellPadding * 3, y + topOffset + cellPadding);
-                                    string value = npc.displayName ?? npc.Name;
-                                    if (this.Config.showMoreInfo)
-                                    {
-                                        value += $"\nlocation:{npc.currentLocation.NameOrUniqueName}";
-                                    }
-                                    Vector2 valueSize = contentBatch.DrawTextBlock(font, value, valuePosition, valueWidth);
-                                    Vector2 rowSize = new Vector2(portraitWidth + valueWidth + cellPadding * 4, Math.Max(portraitSize.Y + cellPadding * 2, valueSize.Y + cellPadding * 2));
-
-                                    // draw table row
-                                    Color lineColor = Color.Gray;
-                                    contentBatch.DrawLine(x + leftOffset, y + topOffset, new Vector2(rowSize.X, tableBorderWidth), lineColor); // top
-                                    contentBatch.DrawLine(x + leftOffset, y + topOffset + rowSize.Y, new Vector2(rowSize.X, tableBorderWidth), lineColor); // bottom
-                                    contentBatch.DrawLine(x + leftOffset, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // left
-                                    contentBatch.DrawLine(x + leftOffset + portraitWidth + cellPadding * 2, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // middle
-                                    contentBatch.DrawLine(x + leftOffset + rowSize.X, y + topOffset, new Vector2(tableBorderWidth, rowSize.Y), lineColor); // right
+                                    bool check = !this.BanNPCList.Contains(npc.Name);
+                                    Vector2 position = new Vector2(x + leftOffset, y + topOffset);
+                                    NPCMenuItem menuItem = new NPCMenuItem(npc,index,this.Config.showMoreInfo);
+                                    menuItem.Draw(contentBatch, position, wrapWidth, font, check);
+                                    menuItem.Callback = (NPCMenuItem menuItem) => this.HandleCheckBoxClick(menuItem);
+                                    this.teleportComponents.Add(menuItem);
 
                                     // update offset
-                                    topOffset += Math.Max(portraitSize.Y, valueSize.Y) + cellPadding * 2;
+                                    topOffset += menuItem.bounds.Height;
                                     index++;
                                 }
                             }
@@ -481,7 +486,7 @@ namespace TeleportNPCLocation.framework
                     }
                     catch (ArgumentException ex) when (ex.ParamName == "value" && ex.StackTrace?.Contains("Microsoft.Xna.Framework.Graphics.GraphicsDevice.set_ScissorRectangle") == true)
                     {
-                        this.Monitor.Log("The viewport size seems to be inaccurate. Enabling compatibility mode; lookup menu may be misaligned.", LogLevel.Warn);
+                        this.Monitor.Log("The viewport size seems to be inaccurate. Enabling compatibility mode; npc menu may be misaligned.", LogLevel.Warn);
                         this.Monitor.Log(ex.ToString());
                         this.UpdateLayout();
                     }
@@ -502,7 +507,7 @@ namespace TeleportNPCLocation.framework
         /// <param name="ex">The intercepted exception.</param>
         private void OnDrawError(Exception ex)
         {
-            this.Monitor.InterceptErrors("handling an error in the lookup code", () => this.exitThisMenu());
+            this.Monitor.InterceptErrors("handling an error in the npc menu code", () => this.exitThisMenu());
         }
 
     }

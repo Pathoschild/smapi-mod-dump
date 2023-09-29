@@ -54,7 +54,9 @@ namespace Unlockable_Bundles.Lib
             ContentPatcherHandling.DaysSincePurchaseToken.Ready = false;
             HasDayStarted = false;
             ModData.Instance = null;
+
             UpdateHandler.clearCache();
+            UnlockableBundlesAPI.clearCache();
         }
 
         private static void locationListChanged(object sender, LocationListChangedEventArgs e)
@@ -94,6 +96,7 @@ namespace Unlockable_Bundles.Lib
         }
 
 
+        [EventPriority(EventPriority.Low)] //EventPriority needs to be low, or CP will be very inconsistent with token evaluations before UB dayStarted
         public static void dayStarted(object sender, DayStartedEventArgs e)
         {
             if (!Context.IsMainPlayer)

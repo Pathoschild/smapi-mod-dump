@@ -7,9 +7,9 @@ mods:
    Multiplayer Mod
 
 latest commit:
-   commit 967ae29e3412b4336b0c13b5bde302150c07f7ec
+   commit b44a1fabf5e74ada8921162c1a0746b60daa5862
    Author: TMThong <mthongdev@gmail.com>
-   Date:   Thu Jul 13 18:15:54 2023 +0700
+   Date:   Sat Sep 2 21:54:42 2023 +0700
    
-       Delete MultplayerPatch.cs
+       update
    

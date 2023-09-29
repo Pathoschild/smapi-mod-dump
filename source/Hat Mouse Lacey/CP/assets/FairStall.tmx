@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.1" orientation="orthogonal" renderorder="right-down" width="3" height="4" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="30">
+ <properties>
+  <property name="Outdoors" value="T"/>
+ </properties>
+ <tileset firstgid="1" name="Landscape" tilewidth="16" tileheight="16" tilecount="1975" columns="25">
+  <image source="fall_outdoorsTileSheet.png" width="400" height="1264"/>
+ </tileset>
+ <tileset firstgid="1976" name="z_lacey" tilewidth="16" tileheight="16" tilecount="32" columns="8">
+  <image source="lacey-tilesheet.png" width="128" height="64"/>
+ </tileset>
+ <layer id="1" name="Back" width="3" height="4">
+  <data encoding="base64" compression="zlib">
+   eJxjYCANAAAAMAAB
+  </data>
+ </layer>
+ <objectgroup id="2" name="Back"/>
+ <layer id="3" name="Buildings" width="3" height="4">
+  <data encoding="base64" compression="zlib">
+   eJxjYCAMrrIzMFwD4utADAAUywKY
+  </data>
+ </layer>
+ <objectgroup id="4" name="Buildings">
+  <object id="29" name="TileData" x="16" y="48" width="16" height="16">
+   <properties>
+    <property name="Action" value="HatShop"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer id="5" name="Front" width="3" height="4">
+  <data encoding="base64" compression="zlib">
+   eJxjYMAOzrIzMJwD4vPsqOIAMf8CgA==
+  </data>
+ </layer>
+ <objectgroup id="6" name="Front"/>
+ <layer id="7" name="AlwaysFront" width="3" height="4">
+  <data encoding="base64" compression="zlib">
+   eJzby87AsA+I9wPxUSA+BsTHgRgXAACyagS3
+  </data>
+ </layer>
+ <objectgroup id="8" name="AlwaysFront"/>
+ <layer id="9" name="Set-Up" width="3" height="4">
+  <data encoding="base64" compression="zlib">
+   eJxjYCANAAAAMAAB
+  </data>
+ </layer>
+ <objectgroup id="10" name="Set-Up"/>
+</map>

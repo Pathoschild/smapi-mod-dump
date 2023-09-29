@@ -138,12 +138,14 @@ namespace CustomDeathPenaltyPlus
             this.config = this.Helper.ReadConfig<ModConfig>();
 
             // Add console command
-            helper.ConsoleCommands.Add("configinfo", "Displays the current config settings", this.Info);
+            helper.ConsoleCommands.Add("cdpp.info", "show config info", this.Info);
+            helper.ConsoleCommands.Add("cdpp.event", "show an event - debug for translation purposes", this.ShowEvent);
 
             // Allow other classes to use the ModConfig
             PlayerStateRestorer.SetConfig(this.config);
             AssetEditor.SetConfig(this.config, this.ModManifest);
-        }
+            i18n.gethelpers(this.Helper.Translation, this.config);
+        }       
 
         private void AddSaveData()
         {
@@ -258,7 +260,7 @@ namespace CustomDeathPenaltyPlus
                 // Save location of death
                 location = Game1.currentLocation.NameOrUniqueName;
                 // Reload events
-                this.Helper.GameContent.InvalidateCache("Data\\Events\\Hospital");
+                this.Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("Data\\Events\\Hospital") && Helper.GameContent.CurrentLocale.Equals(asset.Locale));
             }
 
             // Check if player died each half second
@@ -275,7 +277,7 @@ namespace CustomDeathPenaltyPlus
                     this.Monitor.Log("Saving death state...");
 
                     // Reload asset upon death to reflect amount lost
-                    this.Helper.GameContent.InvalidateCache("Strings\\StringsFromCSFiles");
+                    this.Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("Strings\\StringsFromCSFiles") && Helper.GameContent.CurrentLocale.Equals(asset.Locale));
 
                     // Will a new day be loaded in multiplayer after death?
                     if (true
@@ -595,7 +597,7 @@ namespace CustomDeathPenaltyPlus
                 {
                     this.Monitor.Log("Unable to find save data...Mail could not be edited to reflect true value, substituted with placeholders.", LogLevel.Warn);                   
                 }
-                this.Helper.GameContent.InvalidateCache("Data\\mail");
+                this.Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("Data\\mail") && Helper.GameContent.CurrentLocale.Equals(asset.Locale));
             }
 
             // Did player wake up in clinic?
@@ -649,7 +651,7 @@ namespace CustomDeathPenaltyPlus
                         $"\nMoneytoRestorePercentage: {config.PassOutPenalty.MoneytoRestorePercentage}" +
                         $"\nEnergytoRestorePercentage: {config.PassOutPenalty.EnergytoRestorePercentage}" +
                         $"\n\nOtherPenalties" +
-                        $"\n\nWakeupNextDayinClinic: { config.OtherPenalties.WakeupNextDayinClinic.ToString().ToLower()}" +
+                        $"\n\nWakeupNextDayinClinic: {config.OtherPenalties.WakeupNextDayinClinic.ToString().ToLower()}" +
                         $"\nHarveyFriendshipChange: {config.OtherPenalties.HarveyFriendshipChange}" +
                         $"\nMaruFriendshipChange: {config.OtherPenalties.MaruFriendshipChange}" +
                         $"\nMoreRealisticWarps: {config.OtherPenalties.MoreRealisticWarps.ToString().ToLower()}" +
@@ -660,6 +662,75 @@ namespace CustomDeathPenaltyPlus
             {
                 this.Monitor.Log("Incorrect command format used.\nRequired format: configinfo", LogLevel.Error);
             }
+        }
+
+        private void ShowEvent(string command, string[] args)
+        {
+            try
+            {
+                IDictionary<string, string> events = this.Helper.ModContent.Load<Dictionary<string, string>>("assets\\Events.json");
+
+                switch (args[0])
+                {
+                    case "mine":
+                        this.Monitor.Log(string.Format(events["CDPP.PlayerKilledMine"], i18n.string_wakeplayer(), i18n.string_easynow1(), DebugResponseBuilder("{0}", i18n.string_responseappendix2(), false, 0)), LogLevel.Debug);
+                        break;
+                    case "island":
+                        this.Monitor.Log(string.Format(events["CDPP.PlayerKilledIsland"], i18n.string_wakeplayer(), i18n.string_easynow1(), DebugResponseBuilder("{0}", i18n.string_responseappendix3(), false, 0)), LogLevel.Debug);
+                        break;
+                    case "qi":
+                        this.Monitor.Log(string.Format(events["CDPP.PlayerKilledSkullCave"], i18n.string_wakeplayer(), i18n.string_easynow2(), i18n.string_qi()), LogLevel.Debug);
+                        break;
+                    case "farm":
+                        this.Monitor.Log(string.Format(events["CDPP.PlayerKilledFarm"], 10, 11, 12, i18n.string_whathappened(), i18n.string_somethingbad()), LogLevel.Debug);
+                        break;
+                    case "other":
+                        this.Monitor.Log(string.Format(events["CDPP.PlayerKilledHospital"], i18n.string_wakeplayer(), i18n.string_easynow1(), DebugResponseBuilder(i18n.string_responseperson(), i18n.string_responseappendix1(), false, 0)), LogLevel.Info);
+                        this.Monitor.Log(string.Format(events["CDPP.PlayerKilledHospital"], i18n.string_wakeplayer(), i18n.string_easynow1(), DebugResponseBuilder(i18n.string_responseperson(), i18n.string_responseappendix1(), true, 0)), LogLevel.Debug);
+                        this.Monitor.Log(string.Format(events["CDPP.PlayerKilledHospital"], i18n.string_wakeplayer(), i18n.string_easynow1(), DebugResponseBuilder(i18n.string_responseperson(), i18n.string_responseappendix1(), false, 1)), LogLevel.Info);
+                        this.Monitor.Log(string.Format(events["CDPP.PlayerKilledHospital"], i18n.string_wakeplayer(), i18n.string_easynow1(), DebugResponseBuilder(i18n.string_responseperson(), i18n.string_responseappendix1(), false, -1)), LogLevel.Debug);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (IndexOutOfRangeException)
+            {
+                this.Monitor.Log("Incorrect command format used.\nRequired format: cdpp.event [event]", LogLevel.Error);
+            }
+        }
+
+        string DebugResponseBuilder(string person, string location, bool newday, int friendship)
+        {
+            // Create new string to build on
+            string basestring = string.Format(i18n.string_replacementdialogue(), person, location);
+            StringBuilder finalresponse = new StringBuilder(basestring);
+
+            // Is WakeupNextDayinClinic true?
+            if (newday == true)
+            {
+                // Yes, build string accordingly
+
+                finalresponse.Insert(0, i18n.string_finallyawake());
+            }
+
+            // Is FriendshipPenalty greater than 0?
+            if (friendship < 0)
+            {
+                // Yes, build string accordingly
+                finalresponse.Append(i18n.string_bereallycareful());
+            }
+            else if (friendship > 0)
+            {
+                finalresponse.Append(i18n.string_nicetoseeyou());
+            }
+            else
+            {
+                finalresponse.Append(i18n.string_becareful());
+            }
+
+            // Return the built string
+            return finalresponse.ToString();
         }
     }
 }

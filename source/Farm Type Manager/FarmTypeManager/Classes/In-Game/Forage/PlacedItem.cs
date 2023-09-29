@@ -114,7 +114,7 @@ namespace FarmTypeManager
                     DelayedAction.playSoundAfterDelay("coin", 300, location, -1);
                     Game1.player.animateOnce(279 + Game1.player.FacingDirection); //do the player's "pick up object" animation
 
-                    if (Item.GetType() != typeof(StardewValley.Object) || (Item as StardewValley.Object).bigCraftable) //if this item is anything other than a basic StardewValley.Object
+                    if (Item.GetType() != typeof(StardewValley.Object) || (Item as StardewValley.Object).bigCraftable.Value) //if this item is anything other than a basic StardewValley.Object
                     {
                         //prevent displaying the item during the "pick up object" animation
                         for (int x = 0; x < Game1.player.FarmerSprite.CurrentAnimation.Count; x++) //modify each frame of the player's "pick up object" animation

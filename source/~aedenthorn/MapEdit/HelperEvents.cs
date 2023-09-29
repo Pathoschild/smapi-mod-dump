@@ -11,129 +11,209 @@
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using xTile;
 using xTile.Layers;
 using xTile.Tiles;
 
 namespace MapEdit
 {
-    public class HelperEvents
+    public partial class ModEntry
     {
-        public static ModConfig Config;
-        public static IModHelper Helper;
-        public static IMonitor Monitor;
-
-        public static void Initialize(ModConfig config, IMonitor monitor, IModHelper helper)
+        private void Content_AssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            Config = config;
-            Helper = helper;
-            Monitor = monitor;
+            if (!Config.ModEnabled)
+                return;
+            if (e.DataType == typeof(Map))
+            {
+                foreach (string name in mapCollectionData.mapDataDict.Keys)
+                {
+                    if (e.NameWithoutLocale.IsEquivalentTo("Maps/" + name) || e.NameWithoutLocale.IsEquivalentTo(name))
+                    {
+                        e.Edit(delegate (IAssetData idata)
+                        {
+                            SMonitor.Log("Editing map " + e.Name);
+                            var mapData = idata.AsMap();
+                            MapData data = mapCollectionData.mapDataDict[name];
+                            mapData.ReplaceWith(EditMap(e.Name.Name, mapData.Data, data));
+
+                        });
+                    }
+                }
+            }
         }
         public static void GameLoop_ReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         {
-            ModActions.DeactivateMod();
-            ModEntry.cleanMaps.Clear();
+            DeactivateMod();
+            cleanMaps.Clear();
         }
 
         public static void GameLoop_SaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            MapActions.GetMapCollectionData();
+            GetMapCollectionData();
+            UpdateCurrentMap(true);
         }
 
 
         public static void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
-            if (ModEntry.modActive.Value && (Helper.Input.IsDown(Config.PasteButton) || Helper.Input.IsSuppressed(Config.PasteButton)) && ModEntry.pastedTileLoc.Value.X > -1 && ModEntry.pastedTileLoc.Value != Game1.currentCursorTile)
+            if (MouseInMenu())
             {
-                TileActions.PasteCurrentTile();
+                pastedTileLoc.Value = -Vector2.One;
+                return;
             }
-            else if (ModEntry.modActive.Value && (Helper.Input.IsDown(Config.RevertButton) || Helper.Input.IsSuppressed(Config.RevertButton)) && MapActions.MapHasTile(Game1.currentCursorTile))
+            if (modActive.Value && (SHelper.Input.IsDown(Config.PasteButton) || SHelper.Input.IsSuppressed(Config.PasteButton)) && pastedTileLoc.Value.X > -1 && pastedTileLoc.Value != Game1.currentCursorTile)
             {
-                TileActions.RevertCurrentTile();
+                PasteCurrentTile();
+            }
+            else if (modActive.Value && (SHelper.Input.IsDown(Config.RevertButton) || SHelper.Input.IsSuppressed(Config.RevertButton)) && MapHasTile(Game1.currentCursorTile))
+            {
+                RevertCurrentTile();
             }
         }
 
 
         public static void Player_Warped(object sender, WarpedEventArgs e)
         {
-            if (!Config.EnableMod)
+            if (!Config.ModEnabled)
                 return;
-            ModActions.DeactivateMod();
-            MapActions.UpdateCurrentMap(false);
+            DeactivateMod();
+            UpdateCurrentMap(false);
         }
+        private void Input_MouseWheelScrolled(object sender, MouseWheelScrolledEventArgs e)
+        {
+            if(MouseInMenu())
+            {
+                tileMenu.Value.receiveScrollWheelAction(e.Delta > 0 ? 1 : -1);
+            }
+        }
+        private void Input_ButtonsChanged(object sender, ButtonsChangedEventArgs e)
+        {
+            if (!Config.ModEnabled || !Context.IsPlayerFree)
+            {
+                DeactivateMod();
+                return;
+            }
+            if(Config.ToggleButton.JustPressed())
+            {
+                foreach(var kb in Config.ToggleButton.Keybinds)
+                {
+                    foreach(var b in kb.Buttons)
+                    {
+                        SHelper.Input.Suppress(b);
+                    }
+                }
+                modActive.Value = !modActive.Value;
+                copiedTileLoc.Value = new Vector2(-1, -1);
+                currentTileDict.Value.Clear();
+                SMonitor.Log($"Toggled mod: {modActive}");
+                tileMenu.Value = null;
+                if (!Config.ShowMenu)
+                {
+                    if (modActive.Value)
+                        ShowMessage(string.Format(SHelper.Translation.Get("mod-active"), Config.ToggleButton));
+                    else
+                        ShowMessage(string.Format(SHelper.Translation.Get("mod-inactive"), Config.ToggleButton));
+                }
+            }
 
+        }
         public static void Input_ButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (!Config.EnableMod || !Context.IsPlayerFree)
+            if (!Config.ModEnabled || !Context.IsPlayerFree)
             {
-                ModActions.DeactivateMod();
+                DeactivateMod();
                 return;
             }
 
-            if (e.Button == Config.ToggleButton)
+            if (modActive.Value)
             {
-                Helper.Input.Suppress(e.Button);
-                ModEntry.modActive.Value = !ModEntry.modActive.Value;
-                ModEntry.copiedTileLoc.Value = new Vector2(-1, -1);
-                ModEntry.currentTileDict.Value.Clear();
-                Monitor.Log($"Toggled mod: {ModEntry.modActive}");
-                if (ModEntry.modActive.Value)
-                    ModActions.ShowMessage(string.Format(Helper.Translation.Get("mod-active"), Config.ToggleButton));
-                else
-                    ModActions.ShowMessage(string.Format(Helper.Translation.Get("mod-inactive"), Config.ToggleButton));
-            }
-            else if (ModEntry.modActive.Value) 
-            {
+                if(e.Button == Config.ToggleMenuButton)
+                {
+                    SHelper.Input.Suppress(e.Button);
+
+                    Config.ShowMenu = !Config.ShowMenu;
+                    Game1.playSound(Config.ShowMenu ? "bigSelect" : "bigDeSelect");
+                    SMonitor.Log($"Toggled menu: {Config.ShowMenu}");
+                    SHelper.WriteConfig(Config);
+                }
+                if (MouseInMenu())
+                {
+                    if(e.Button == SButton.MouseLeft)
+                    {
+                        tileMenu.Value.receiveLeftClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                    }
+                    else if(e.Button == SButton.MouseRight)
+                    {
+                        tileMenu.Value.receiveRightClick(Game1.getMouseX(true), Game1.getMouseY(true));
+                    }
+                    else
+                    {
+                        tileMenu.Value.receiveKeyPress((Keys)e.Button);
+                    }
+                    SHelper.Input.Suppress(e.Button);
+                    return;
+                }
                 if (e.Button == Config.CopyButton)
                 {
-                    Helper.Input.Suppress(e.Button);
+                    SHelper.Input.Suppress(e.Button);
 
-                    TileActions.CopyCurrentTile();
-
-                }
-                else if (ModEntry.copiedTileLoc.Value.X > -1 && e.Button == Config.PasteButton && ModEntry.pastedTileLoc.Value != Game1.currentCursorTile)
-                {
-                    Helper.Input.Suppress(e.Button);
-                    TileActions.PasteCurrentTile();
+                    CopyCurrentTile();
 
                 }
-                else if (e.Button == Config.RevertButton && MapActions.MapHasTile(Game1.currentCursorTile))
+                else if (currentTileDict.Value.Count > 0 && e.Button == Config.PasteButton && pastedTileLoc.Value != Game1.currentCursorTile)
                 {
-                    Helper.Input.Suppress(e.Button);
-                    TileActions.RevertCurrentTile();
+                    SHelper.Input.Suppress(e.Button);
+                    PasteCurrentTile();
+
+                }
+                else if (e.Button == Config.RevertButton)
+                {
+                    if (SHelper.Input.IsDown(Config.RevertModButton))
+                    {
+                        RevertCurrentMap();
+                    }
+                    else if(MapHasTile(Game1.currentCursorTile))
+                    {
+                        RevertCurrentTile();
+                    }
+                    SHelper.Input.Suppress(e.Button);
                 }
                 else if (e.Button == SButton.Escape)
                 {
-                    Helper.Input.Suppress(e.Button);
-                    if (ModEntry.copiedTileLoc.Value.X > -1)
+                    SHelper.Input.Suppress(e.Button);
+                    if (copiedTileLoc.Value.X > -1)
                     {
-                        ModEntry.copiedTileLoc.Value = new Vector2(-1, -1);
-                        ModEntry.pastedTileLoc.Value = new Vector2(-1, -1);
-                        ModEntry.currentLayer.Value = 0;
-                        ModEntry.currentTileDict.Value.Clear();
+                        copiedTileLoc.Value = new Vector2(-1, -1);
+                        pastedTileLoc.Value = new Vector2(-1, -1);
+                        currentLayer.Value = null;
+                        currentTileDict.Value.Clear();
                     }
                     else
-                        ModActions.DeactivateMod();
+                        DeactivateMod();
                 }
                 else if (e.Button == Config.RefreshButton)
                 {
-                    Helper.Input.Suppress(e.Button);
-                    ModEntry.cleanMaps.Clear();
-                    MapActions.GetMapCollectionData();
-                    MapActions.UpdateCurrentMap(true);
+                    SHelper.Input.Suppress(e.Button);
+                    cleanMaps.Clear();
+                    GetMapCollectionData();
+                    UpdateCurrentMap(true);
                 }
                 else if (e.Button == Config.ScrollUpButton)
                 {
-                    Helper.Input.Suppress(e.Button);
-                    ModActions.SwitchTile(true);
+                    SHelper.Input.Suppress(e.Button);
+                    SwitchTile(true);
                 }
                 else if (e.Button == Config.ScrollDownButton)
                 {
-                    Helper.Input.Suppress(e.Button);
-                    ModActions.SwitchTile(false);
+                    SHelper.Input.Suppress(e.Button);
+                    SwitchTile(false);
                 }
             } 
 
@@ -141,12 +221,17 @@ namespace MapEdit
 
         public static void Display_RenderedWorld(object sender, RenderedWorldEventArgs e)
         {
-            if (!Config.EnableMod || !ModEntry.modActive.Value)
+            if (!Config.ModEnabled || !modActive.Value)
                 return;
 
             if (Game1.activeClickableMenu != null)
             {
-                ModEntry.modActive.Value = false;
+                modActive.Value = false;
+                return;
+            }
+
+            if (MouseInMenu())
+            {
                 return;
             }
 
@@ -154,12 +239,12 @@ namespace MapEdit
             Vector2 mouseTilePos = mouseTile * Game1.tileSize - new Vector2(Game1.viewport.X, Game1.viewport.Y);
             var ts1 = (Dictionary<TileSheet, Texture2D>)AccessTools.Field(Game1.mapDisplayDevice.GetType(), "m_tileSheetTextures")?.GetValue(Game1.mapDisplayDevice);
             var ts2 = (Dictionary<TileSheet, Texture2D>)AccessTools.Field(Game1.mapDisplayDevice.GetType(), "m_tileSheetTextures2")?.GetValue(Game1.mapDisplayDevice);
-            if (ModEntry.copiedTileLoc.Value.X > -1)
+            if (currentTileDict.Value.Count > 0)
             {
-                foreach (var kvp in ModEntry.currentTileDict.Value)
+                foreach (var kvp in currentTileDict.Value)
                 {
                     int offset = kvp.Key.Equals("Front") ? (16 * Game1.pixelZoom) : 0;
-                    float layerDepth = (ModEntry.copiedTileLoc.Value.Y * (16 * Game1.pixelZoom) + 16 * Game1.pixelZoom + offset) / 10000f;
+                    float layerDepth = (copiedTileLoc.Value.Y * (16 * Game1.pixelZoom) + 16 * Game1.pixelZoom + offset) / 10000f;
                     Tile tile = kvp.Value;
                     if (tile == null)
                         continue;
@@ -179,14 +264,193 @@ namespace MapEdit
                     if (texture2D != null)
                         e.SpriteBatch.Draw(texture2D, mouseTilePos, sourceRectangle, Color.White, 0f, Vector2.Zero, Layer.zoom, SpriteEffects.None, layerDepth);
                 }
-                e.SpriteBatch.Draw(ModEntry.copiedTexture, mouseTilePos, Color.White);
+                e.SpriteBatch.Draw(copiedTexture, mouseTilePos, Color.White);
 
             }
-            else if (MapActions.MapHasTile(mouseTile))
-                e.SpriteBatch.Draw(ModEntry.existsTexture, mouseTilePos, Color.White);
+            else if (MapHasTile(mouseTile))
+                e.SpriteBatch.Draw(existsTexture, mouseTilePos, Color.White);
             else
-                e.SpriteBatch.Draw(ModEntry.activeTexture, mouseTilePos, Color.White);
+                e.SpriteBatch.Draw(activeTexture, mouseTilePos, Color.White);
 
+        }
+        private void Display_RenderedHud(object sender, RenderedHudEventArgs e)
+        {
+            if (!Config.ModEnabled || !modActive.Value)
+                return;
+            if (tileMenu.Value is null)
+            {
+                tileMenu.Value = new TileSelectMenu();
+            }
+
+            tileMenu.Value.draw(e.SpriteBatch);
+        }
+
+        private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+        {
+
+            // get Generic Mod Config Menu's API (if it's installed)
+            var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is not null)
+            {
+                // register mod
+                configMenu.Register(
+                    mod: ModManifest,
+                    reset: () => Config = new ModConfig(),
+                    save: () => Helper.WriteConfig(Config)
+                );
+
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_ModEnabled_Name"),
+                    getValue: () => Config.ModEnabled,
+                    setValue: value => Config.ModEnabled = value
+                );
+
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_UseSaveSpecificEdits_Name"),
+                    getValue: () => Config.UseSaveSpecificEdits,
+                    setValue: value => Config.UseSaveSpecificEdits = value
+                );
+
+                configMenu.AddBoolOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_IncludeGlobalEdits_Name"),
+                    getValue: () => Config.IncludeGlobalEdits,
+                    setValue: value => Config.IncludeGlobalEdits = value
+                );
+
+
+
+                configMenu.AddSectionTitle(
+                    mod: ModManifest,
+                    text: () => SHelper.Translation.Get("GMCM_Option_Buttons_Text")
+                );
+
+                
+                configMenu.AddKeybindList(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_ToggleButton_Name"),
+                    getValue: () => Config.ToggleButton,
+                    setValue: value => Config.ToggleButton = value
+                );
+                
+                configMenu.AddKeybind(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_ToggleMenuButton_Name"),
+                    getValue: () => Config.ToggleMenuButton,
+                    setValue: value => Config.ToggleMenuButton = value
+                );
+                
+                configMenu.AddKeybind(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_RefreshButton_Name"),
+                    getValue: () => Config.RefreshButton,
+                    setValue: value => Config.RefreshButton = value
+                );
+                
+                configMenu.AddKeybind(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_CopyButton_Name"),
+                    getValue: () => Config.CopyButton,
+                    setValue: value => Config.CopyButton = value
+                );
+                
+                configMenu.AddKeybind(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_PasteButton_Name"),
+                    getValue: () => Config.PasteButton,
+                    setValue: value => Config.PasteButton = value
+                );
+                
+                configMenu.AddKeybind(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_RevertButton_Name"),
+                    getValue: () => Config.RevertButton,
+                    setValue: value => Config.RevertButton = value
+                );
+                
+                configMenu.AddKeybind(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_RevertModButton_Name"),
+                    getValue: () => Config.RevertModButton,
+                    setValue: value => Config.RevertModButton = value
+                );
+                
+                configMenu.AddKeybind(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_ScrollUpButton_Name"),
+                    getValue: () => Config.ScrollUpButton,
+                    setValue: value => Config.ScrollUpButton = value
+                );
+                
+                configMenu.AddKeybind(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_ScrollDownButton_Name"),
+                    getValue: () => Config.ScrollDownButton,
+                    setValue: value => Config.ScrollDownButton = value
+                );
+                
+                configMenu.AddKeybind(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_LayerModButton_Name"),
+                    getValue: () => Config.LayerModButton,
+                    setValue: value => Config.LayerModButton = value
+                );
+                
+                configMenu.AddKeybind(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_SheetModButton_Name"),
+                    getValue: () => Config.SheetModButton,
+                    setValue: value => Config.SheetModButton = value
+                );
+                
+
+
+                configMenu.AddSectionTitle(
+                    mod: ModManifest,
+                    text: () => SHelper.Translation.Get("GMCM_Option_Sounds_Text")
+                );
+
+                configMenu.AddTextOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_CopySound_Name"),
+                    getValue: () => Config.CopySound,
+                    setValue: value => Config.CopySound = value
+                );
+                configMenu.AddTextOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_PasteSound_Name"),
+                    getValue: () => Config.PasteSound,
+                    setValue: value => Config.PasteSound = value
+                );
+                configMenu.AddTextOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_ScrollSound_Name"),
+                    getValue: () => Config.ScrollSound,
+                    setValue: value => Config.ScrollSound = value
+                );
+
+                configMenu.AddSectionTitle(
+                    mod: ModManifest,
+                    text: () => SHelper.Translation.Get("GMCM_Option_Misc_Text")
+                );
+
+                configMenu.AddNumberOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_BorderThickness_Name"),
+                    getValue: () => Config.BorderThickness,
+                    setValue: value => Config.BorderThickness = value,
+                    min: 1,
+                    max: 16
+                );
+                configMenu.AddNumberOption(
+                    mod: ModManifest,
+                    name: () => SHelper.Translation.Get("GMCM_Option_DefaultAnimationInterval_Name"),
+                    getValue: () => Config.DefaultAnimationInterval,
+                    setValue: value => Config.DefaultAnimationInterval = value
+                );
+            }
         }
     }
 }

@@ -8,13 +8,10 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Archipelago.Gifting.Net;
+using Archipelago.Gifting.Net.Service;
+using Archipelago.Gifting.Net.Traits;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using StardewArchipelago.Items.Mail;
@@ -30,7 +27,7 @@ namespace StardewArchipelago.Archipelago.Gifting
         private static readonly string[] _desiredTraits = new[]
         {
             GiftFlag.Speed, GiftFlag.Wood, GiftFlag.Stone, GiftFlag.Consumable, GiftFlag.Food, GiftFlag.Drink,
-            GiftFlag.Fish, GiftFlag.Heal, GiftFlag.Metal, GiftFlag.Seed
+            GiftFlag.Fish, GiftFlag.Heal, GiftFlag.Metal, GiftFlag.Seed,
         };
 
         private static IMonitor _monitor;
@@ -71,8 +68,11 @@ namespace StardewArchipelago.Archipelago.Gifting
             }
 
             var giftPrefix = $"{ChatForwarder.COMMAND_PREFIX}gift";
+            var trapPrefix = $"{ChatForwarder.COMMAND_PREFIX}trap";
             var giftPrefixWithSpace = $"{giftPrefix} ";
-            if (!message.StartsWith(giftPrefixWithSpace))
+            var trapPrefixWithSpace = $"{trapPrefix} ";
+            var isTrap = message.StartsWith(trapPrefixWithSpace);
+            if (!message.StartsWith(giftPrefixWithSpace) && !isTrap)
             {
                 if (message.StartsWith(giftPrefix))
                 {
@@ -82,7 +82,7 @@ namespace StardewArchipelago.Archipelago.Gifting
                 return false;
             }
 
-            var receiverSlotName = message.Substring(giftPrefixWithSpace.Length);
+            var receiverSlotName = isTrap ? message[trapPrefixWithSpace.Length..] : message[giftPrefixWithSpace.Length..];
 #if RELEASE
             if (receiverSlotName == _archipelago.SlotData.SlotName)
             {
@@ -90,13 +90,13 @@ namespace StardewArchipelago.Archipelago.Gifting
                 return true;
             }
 #endif
-            _giftSender.SendGift(receiverSlotName);
+            _giftSender.SendGift(receiverSlotName, isTrap);
             return true;
         }
 
         public void ReceiveAllGiftsTomorrow()
         {
-            if (_archipelago == null || !_archipelago.SlotData.Gifting)
+            if (_archipelago == null || !_archipelago.SlotData.Gifting || !_archipelago.MakeSureConnected())
             {
                 return;
             }
@@ -117,7 +117,7 @@ namespace StardewArchipelago.Archipelago.Gifting
                     continue;
                 }
 
-                if (!_giftSender.GiftGenerator.TryCreateGiftItem(stardewObject, out var giftItem, out var traits))
+                if (!_giftSender.GiftGenerator.TryCreateGiftItem(stardewObject, false, out var giftItem, out var traits))
                 {
                     continue;
                 }

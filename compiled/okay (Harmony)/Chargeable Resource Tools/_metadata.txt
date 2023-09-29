@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/14470
-IDs: DaLion.Chargeable
-update keys: Nexus:14470@Chargeable, Nexus:14470, GitHub:daleao/sdv-mods

@@ -13,6 +13,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Extensions;
+using StardewArchipelago.GameModifications.CodeInjections;
 using StardewArchipelago.Stardew;
 using StardewValley;
 using StardewValley.Buildings;
@@ -40,9 +41,9 @@ namespace StardewArchipelago.GameModifications
             if (Game1.Date.TotalDays == 0)
             {
                 GivePlayerQuickStart();
-                RemoveShippingBin();
             }
 
+            RemoveShippingBin();
             SendGilTelephoneLetter();
         }
 
@@ -72,14 +73,16 @@ namespace StardewArchipelago.GameModifications
             RemoveGiftBoxes(farmhouse);
             var seeds = _stardewItemManager.GetItemByName(GetStartingSeedsForThisSeason()).PrepareForGivingToFarmer(15);
             CreateGiftBoxItemInEmptySpot(farmhouse, seeds);
+            var telephone = _stardewItemManager.GetItemByName("Telephone").PrepareForGivingToFarmer(1);
+            CreateGiftBoxItemInEmptySpot(farmhouse, telephone);
 
             if (!_archipelago.SlotData.QuickStart)
             {
                 return;
             }
 
-            var chest = _stardewItemManager.GetItemByName("Chest").PrepareForGivingToFarmer(1);
-            var iridiumBand = _stardewItemManager.GetItemByName("Iridium Band").PrepareForGivingToFarmer(4);
+            var chest = _stardewItemManager.GetItemByName("Chest").PrepareForGivingToFarmer(4);
+            var iridiumBand = _stardewItemManager.GetItemByName("Iridium Band").PrepareForGivingToFarmer(1);
             var qualitySprinklers = _stardewItemManager.GetItemByName("Quality Sprinkler").PrepareForGivingToFarmer(4);
             var autoPetters = _stardewItemManager.GetItemByName("Auto-Petter").PrepareForGivingToFarmer(2);
             var autoGrabbers = _stardewItemManager.GetItemByName("Auto-Grabber").PrepareForGivingToFarmer(2);
@@ -117,7 +120,7 @@ namespace StardewArchipelago.GameModifications
                 "summer" => "Wheat Seeds",
                 "fall" => "Bok Choy Seeds",
                 "winter" => "Winter Seeds",
-                _ => "Mixed Seeds"
+                _ => "Mixed Seeds",
             };
         }
 
@@ -143,26 +146,21 @@ namespace StardewArchipelago.GameModifications
 
             farmhouse.objects.Add(emptySpot, new Chest(0, new List<Item>()
             {
-                itemToGift
+                itemToGift,
             }, emptySpot, true));
         }
 
         private void RemoveShippingBin()
         {
-            if (_archipelago.SlotData.BuildingProgression == BuildingProgression.Vanilla)
+            if (!_archipelago.SlotData.BuildingProgression.HasFlag(BuildingProgression.Progressive) || _archipelago.HasReceivedItem("Shipping Bin"))
             {
                 return;
             }
 
             var farm = Game1.getFarm();
-            ShippingBin shippingBin = null;
-            foreach (var building in Game1.getFarm().buildings)
+            if (!FarmInjections.TryFindShippingBin(farm, out var shippingBin))
             {
-                if (building is ShippingBin bin)
-                {
-                    shippingBin = bin;
-                    break;
-                }
+                return;
             }
 
             shippingBin.BeforeDemolish();

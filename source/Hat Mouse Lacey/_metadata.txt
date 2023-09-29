@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ichortower/HatMouseLacey
+   Git: https://github.com/ichortower/HatMouseLacey.git
+
+mods:
+   Hat Mouse Lacey
+
+latest commit:
+   commit bb769b9ea942c14a5c2d54e4c6ee7b23bc4c2404
+   Author: ichortower <sudo.ichor@proton.me>
+   Date:   Wed Sep 27 15:02:20 2023 -0400
+   
+       Merge branch 'release-1.0.4' into main
+   

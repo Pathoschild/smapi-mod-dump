@@ -3236,9 +3236,9 @@
    </properties>
   </object>
  </objectgroup>
- <layer id="5" name="Paths" width="42" height="33" visible="0">
+ <layer id="5" name="Paths" width="42" height="33">
   <data encoding="base64" compression="zlib">
-   eJztlVsKhDAMRe8GfH/4K3T/exzCGKyxkdrHtB28EBS0eprcpAaA2aNmGbTH2RdmuZNBOzkltcT677JrseDr86Eo0aENZ75pv3aoyz8jDp4Z137syqGdZDMx54i6+5GYBpw96spxrewLrj1Wm2SOKdaI71Gfzgm4pFw1j6l7Lg9pnPYMe/Iv+/2cvue5QLWnc4Bnw5P1dtB66X/2WSxnTB60etxFSt6QdbI/XefLgjRndwxnD/0czNW/IZyuuMtxjHdDOMmXnEsj7n/lWx9OyUM5Wh0c9HwrxOpTWy1WZT85JGelDPKAVvdJ2eOYgZO//aTHc8+C0D1o/eXzrKR888memMpgvnr1SugD104pBQ==
+   eJztl90OgCAIhX2Bfr3otvd/ynZWbM5MVk7ExXdTpjWCg4hzRi3G1gYYRmW8O3U+tTbkYo/Gy3UdhO3gmIP7NTGvzV5Ads7ZVToI9QiNpnysFc+MtRDn/FbwLeRpTzGSZOGXNAVxQ+xRB0r3Brwf611LbSG0x4PI+Y3qi2fWSUDn5B7zn/OdpG+hy7DniPsPbbole+CjVO3A/C5mzZ2vsdtcWS18A3c2gAae4o7nqX+seb7rMcefyPX3Pff+pAlt+4Vh/JUDd10EGw==
   </data>
  </layer>
  <objectgroup id="6" name="Paths"/>

@@ -2,7 +2,12 @@
   "ModEnabled": true,
   "AutoUse": true,
   "AutoStore": "Sap,Wood,Hardwood,Stone,Coal,Fiber,Clay",
-  "ModKeyMax": "LeftShift",
+  "ModKey1": "LeftShift",
+  "ModKey2": "LeftControl",
+  "ModKey3": "LeftAlt",
+  "ModKey1Amount": 999,
+  "ModKey2Amount": 100,
+  "ModKey3Amount": 10,
   "ResourcesKey": "R",
   "IconOffsetX": 0,
   "IconOffsetY": 0

@@ -1,0 +1,4 @@
+{
+	"gmcm.alwaysadopt.tooltip": "If set, Lacey will always adopt children with the farmer, no matter the farmer's gender. If unset, Lacey can get pregnant with a male farmer.",
+	"gmcm.dtf.tooltip": "Enables some suggestive dialogue lines. Unset to keep it G-rated."
+}

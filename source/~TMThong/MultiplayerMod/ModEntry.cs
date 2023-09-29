@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Network;
 using MultiplayerMod.Framework.Network;
+using MultiplayerMod.Framework.Mobile;
 
 namespace MultiplayerMod
 {
@@ -52,6 +53,7 @@ namespace MultiplayerMod
             if (ModUtilities.IsAndroid)
             {
                 tapToMoveProperty = typeof(GameLocation).GetProperty("tapToMove");
+                ModUtilities.multiplayer = new MobileMultiplayer();
             }
         }
 
@@ -93,21 +95,6 @@ namespace MultiplayerMod
             }
         }
 
-        void OnPlayerWarped(object sender, StardewModdingAPI.Events.WarpedEventArgs warpedEventArgs)
-        {
-            if (warpedEventArgs.NewLocation != null && ModUtilities.IsAndroid)
-            {
-                var property = warpedEventArgs.NewLocation.GetType().GetProperty("tapToMove");
-                if (property.GetValue(warpedEventArgs.NewLocation) == null)
-                {
-                    object TapToMove = typeof(IClickableMenu).Assembly.GetType("StardewValley.Mobile.TapToMove").CreateInstance<object>(new object[] { warpedEventArgs.NewLocation });
-                    property.SetValue(warpedEventArgs.NewLocation, TapToMove);
-                }
-#if DEBUG
-                Monitor.Log("New Location " + warpedEventArgs.NewLocation.name, LogLevel.Warn);
-#endif
-            }
-        }
 
         /// <summary>
         /// This is for debugging, never mind it ...

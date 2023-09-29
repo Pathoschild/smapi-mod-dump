@@ -49,6 +49,7 @@ namespace Desert_Bloom.Lib
             load_unlockables(sender, e);
             load_unlockable_textures(sender, e);
             load_unlockable_maps(sender, e);
+            edit_pet_bowl(sender, e);
         }
 
         private static void load_unlockables(object sender, AssetRequestedEventArgs e)
@@ -177,7 +178,7 @@ namespace Desert_Bloom.Lib
                 ShopPosition = new Vector2(47, 16),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
                 ShopAnimation = "0-11@100",
-                Price = { 
+                Price = {
                     { "Money", 1000 },
                     { "388", 100 }, //Wood
                     { "771", 50 } //Fiber
@@ -200,7 +201,7 @@ namespace Desert_Bloom.Lib
                 ShopPosition = new Vector2(47, 16),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
                 ShopAnimation = "0-11@100",
-                Price = { 
+                Price = {
                     { "Money", 5000 },
                     { "334", 5 }, //Copper Bar
                     { "92", 50 }, //Sap
@@ -223,7 +224,7 @@ namespace Desert_Bloom.Lib
                 ShopPosition = new Vector2(60, 9),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
                 ShopAnimation = "0-11@100",
-                Price = { 
+                Price = {
                     { "Money", 15000 },
                     { "335", 5 }, //Iron Bar
                     { "324", 20 } //Iron Fence
@@ -385,6 +386,12 @@ namespace Desert_Bloom.Lib
 
             if (e.NameWithoutLocale.StartsWith("DLX.Desert_Bloom.Mill_"))
                 e.LoadFromModFile<xTile.Map>($"Assets/Overlays/Mill_{e.NameWithoutLocale.BaseName.Last()}.tmx", AssetLoadPriority.Medium);
+        }
+
+        private static void edit_pet_bowl(object sender, AssetRequestedEventArgs e)
+        {
+            if (e.NameWithoutLocale.IsEquivalentTo("Buildings/Pet Bowl"))
+                e.LoadFromModFile<Texture2D>("Assets/Tileset/Pet Bowl", AssetLoadPriority.Low);
         }
 
         //private static bool canTalkToJunimo() => true;

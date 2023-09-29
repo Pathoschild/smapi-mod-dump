@@ -110,6 +110,11 @@
 		"Default": "True",
 		"Type": "bool"
 	},
+	/*{
+		"Name": "TownRamps",
+		"Default": "True",
+		"Type": "bool"
+	},*/
 	{
 		"Name": "MaternitySprites",
 		"Default": "True",
@@ -896,6 +901,11 @@
 		"Type": "string",
 		"Default": "Beard"
 	},
+	{
+		"Name": "GeorgeEvelynSpiritsEve",
+		"Default": "True",
+		"Type": "bool"
+	},
 	//----------------------------------------------------------
 	{
 		"Name": "5",
@@ -970,14 +980,14 @@
 	},
 	{
 		"Name": "EmilyWeddingOutfit",
-		"AllowedValues": "8",
+		"AllowedValues": "7",
 		"Default": "1",
 		"Type": "int",
 		"ToolTipKey": "GMCM.Options.WeddingOutfits.ToolTip"
 	},
 	{
 		"Name": "HaleyWeddingOutfit",
-		"AllowedValues": "8",
+		"AllowedValues": "7",
 		"Default": "1",
 		"Type": "int",
 		"ToolTipKey": "GMCM.Options.WeddingOutfits.ToolTip"
@@ -1542,14 +1552,14 @@
 	},
 	{
 		"Name": "SebastianWeddingOutfit",
-		"AllowedValues": "7",
+		"AllowedValues": "6",
 		"Default": "1",
 		"Type": "int",
 		"ToolTipKey": "GMCM.Options.WeddingOutfits.ToolTip"
 	},
 	{
 		"Name": "MaruWeddingOutfit",
-		"AllowedValues": "8",
+		"AllowedValues": "7",
 		"Default": "1",
 		"Type": "int",
 		"ToolTipKey": "GMCM.Options.WeddingOutfits.ToolTip"
@@ -1726,6 +1736,11 @@
 	{
 		"Name": "WillyAdditionalOptions",
 		"Type": "subtitle"
+	},
+	{
+		"Name": "WillySpiritsEve",
+		"Default": "True",
+		"Type": "bool"
 	},
 	{
 		"Name": "ClintScar",

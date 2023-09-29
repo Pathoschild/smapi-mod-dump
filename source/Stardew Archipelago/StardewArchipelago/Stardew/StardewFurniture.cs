@@ -66,6 +66,11 @@ namespace StardewArchipelago.Stardew
             return new StardewValley.Objects.Furniture(Id, Vector2.Zero);
         }
 
+        public override Item PrepareForRecovery()
+        {
+            throw new NotImplementedException();
+        }
+
         public override void GiveToFarmer(Farmer farmer, int amount = 1)
         {
             var furniture = PrepareForGivingToFarmer();

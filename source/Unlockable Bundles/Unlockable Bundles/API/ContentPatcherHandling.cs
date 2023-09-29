@@ -41,10 +41,10 @@ namespace Unlockable_Bundles.API
         private static void gameLaunched(object sender, GameLaunchedEventArgs e)
         {
             var api = Helper.ModRegistry.GetApi<IContentPatcherAPI>("Pathoschild.ContentPatcher");
-            api.RegisterToken(Mod.ModManifest, "Purchased", getPurchasdUnlockables);
+            api.RegisterToken(Mod.ModManifest, "Purchased", getPurchasedUnlockables);
             api.RegisterToken(Mod.ModManifest, "DaysSincePurchase", DaysSincePurchaseToken);
         }
 
-        public static IEnumerable<string> getPurchasdUnlockables() => UnlockableBundlesAPI.getPurchasedUnlockables();
+        public static IEnumerable<string> getPurchasedUnlockables() => UnlockableBundlesAPI.getPurchasedUnlockables();
     }
 }

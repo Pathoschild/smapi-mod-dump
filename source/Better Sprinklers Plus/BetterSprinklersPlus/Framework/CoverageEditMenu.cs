@@ -171,7 +171,7 @@ namespace BetterSprinklersPlus.Framework
       if (_hoveredItemX > -1 && _hoveredItemY > -1)
       {
         // If not Center Tile, draw hover effect
-        if (_hoveredItemX != _centerTile || _hoveredItemX != _centerTile) {
+        if (_hoveredItemX != _centerTile || _hoveredItemY != _centerTile) {
           x = xPositionOnScreen + _leftMargin + _hoveredItemX * _tileSize;
           y = yPositionOnScreen + _topMargin + _hoveredItemY * _tileSize;
         
@@ -218,7 +218,7 @@ namespace BetterSprinklersPlus.Framework
 
       // Draw Cost
       var font = Game1.smallFont;
-      var defaultMessage = BetterSprinklersPlusConfig.Active.DefaultsAreFree ? "extra " : "";
+      var defaultMessage = BetterSprinklersPlusConfig.Active.DefaultTiles != (int)BetterSprinklersPlusConfig.DefaultTilesOptions.CostMoney ? "extra " : "";
       Utility.drawTextWithShadow(b, $"{_cost}G per day ({_countCovered} {defaultMessage}tiles x {_costPerTile}G per day)", font,
         new Vector2(xPositionOnScreen + 18, yPositionOnScreen + height - TextSize), Game1.textColor);
 
@@ -256,7 +256,7 @@ namespace BetterSprinklersPlus.Framework
         ResetToggle();
       }
 
-      if (isLeftMousePressed && _hoveredItemX != -1 && _hoveredItemY != -1)
+      if (isLeftMousePressed && _hoveredItemX != -1 && _hoveredItemY != -1 && (_hoveredItemX != _centerTile || _hoveredItemY != _centerTile))
       {
         Logger.Verbose($"Left mouse is pressed over hovered item");
         Toggle();

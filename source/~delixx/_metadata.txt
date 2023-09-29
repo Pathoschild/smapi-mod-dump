@@ -7,9 +7,9 @@ mods:
    Easy Farm Switcher
 
 latest commit:
-   commit 532108a9fed52bc1aba7821467f72dc9830038a3
+   commit d151ac53daa2dfa5a215da547e6de2d4b13eaca0
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Tue Aug 8 22:20:17 2023 +0200
+   Date:   Wed Sep 6 21:29:06 2023 +0200
    
-       updated manifest to 1.1.6
+       Added android source code backup (too lazy to create a separate project :P)
    

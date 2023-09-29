@@ -23,7 +23,7 @@ namespace Custom_Farm_Loader.Lib
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
-        private static Dictionary<int, string> CachedItemData;
+        private static Dictionary<string, string> CachedItemData;
 
         public string Id;
         public int Amount;
@@ -35,37 +35,34 @@ namespace Custom_Farm_Loader.Lib
             Monitor = mod.Monitor;
             Helper = mod.Helper;
 
-            CachedItemData = Helper.GameContent.Load<Dictionary<int, string>>("Data\\ObjectInformation");
+            CachedItemData = Helper.GameContent.Load<Dictionary<string, string>>("Data\\ObjectInformation");
         }
 
-        public static List<string> MapNameToParentsheetindex(List<string> names)
+        public static List<string> MapNameToItemId(List<string> names)
         {
             List<string> ret = new List<string>();
 
-            names.ForEach(name => ret.Add(MapNameToParentsheetindex(name)));
+            names.ForEach(name => ret.Add(MapNameToItemId(name)));
             return ret;
         }
 
-        public static string MapNameToParentsheetindex(string name)
+        public static string MapNameToItemId(string name)
         {
             var comparableName = name.ToLower().Replace("_", " ").Replace("'", "");
             var match = CachedItemData.FirstOrDefault(fur => fur.Value.ToLower().Replace("'", "").StartsWith(comparableName + "/"));
 
             if (match.Value != null)
-                return match.Key.ToString();
+                return match.Key;
 
             return name;
         }
 
         public static string GetItemData(string name, int index)
         {
+            var item = CachedItemData[name];
 
-            if (int.TryParse(name, out int id)) {
-                var item = CachedItemData[id];
-
-                if (item != null)
-                    return item.Split('/')[index];
-            }
+            if (item != null)
+                return item.Split('/')[index];
 
             return "";
         }

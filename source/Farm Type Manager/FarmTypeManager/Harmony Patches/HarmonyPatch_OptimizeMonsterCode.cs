@@ -23,7 +23,7 @@ namespace FarmTypeManager
 {
     public partial class ModEntry : Mod
     {
-        /// <summary>A set of Harmony patches that optimizes some monster-related code, generally reducing CPU load and improving framerate.</summary>
+        /// <summary>Harmony patches that optimize some monster-related code, generally reducing CPU load and improving framerate.</summary>
         public static class HarmonyPatch_OptimizeMonsterCode
         {
             /// <summary>Indicates whether this class's patches are currently enabled.</summary>
@@ -56,6 +56,12 @@ namespace FarmTypeManager
                     original: AccessTools.Method(typeof(Monster), "findPlayer", new Type[] { }),
                     prefix: new HarmonyMethod(typeof(HarmonyPatch_OptimizeMonsterCode), nameof(Monster_findPlayer_Prefix))
                 );
+
+                Utility.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": postfixing SDV method \"Monster.findPlayer\".", LogLevel.Trace);
+                harmony.Patch(
+                    original: AccessTools.Method(typeof(Monster), "findPlayer", new Type[] { }),
+                    postfix: new HarmonyMethod(typeof(HarmonyPatch_OptimizeMonsterCode), nameof(Monster_findPlayer_Postfix))
+                );
             }
 
             /// <summary>Disables this class's Harmony patches. Does nothing if patches are not currently applied.</summary>
@@ -85,6 +91,13 @@ namespace FarmTypeManager
                 harmony.Unpatch(
                     original: AccessTools.Method(typeof(Monster), "findPlayer", new Type[] { }),
                     HarmonyPatchType.Prefix,
+                    harmony.Id
+                );
+
+                Utility.Monitor.Log($"Removing Harmony patch \"{nameof(HarmonyPatch_OptimizeMonsterCode)}\": postfix on SDV method \"Monster.findPlayer\".", LogLevel.Trace);
+                harmony.Unpatch(
+                    original: AccessTools.Method(typeof(Monster), "findPlayer", new Type[] { }),
+                    HarmonyPatchType.Postfix,
                     harmony.Id
                 );
             }
@@ -165,6 +178,40 @@ namespace FarmTypeManager
                 {
                     Utility.Monitor.LogOnce($"Harmony patch \"{nameof(Monster_findPlayer_Prefix)}\" has encountered an error and will not be applied:\n{ex.ToString()}", LogLevel.Error);
                     return true; //call the original method
+                }
+            }
+
+            /// <summary>
+            /// Attempts to avoid a bug where monsters occasionally crash the game due to a null "Monster.Player" during "Monster.behaviorAtGameTick".
+            /// </summary>
+            /// <remarks>
+            /// I cannot yet naturally reproduce this bug, but it has been reported by several players.
+            /// atravita found that the null errors occurred in "!Player.isRafting" and fixed the issue by transpiling a null check into that code. If errors persist, consider that solution.
+            /// This postfix solution should address issues in other code that reference "Monster.Player" as well. Most of the game's code assumes it cannot be null.</remarks>
+            private static void Monster_findPlayer_Postfix(ref Farmer __result)
+            {
+                try
+                {
+                    if (__result == null) //if this method failed to return a farmer (possible due to other mods' patches, multiplayer/threading issues, etc)
+                    {
+                        __result = Game1.player; //assign the local player (should never be null because it causes immediate crashes in most contexts, but may still be possible)
+                        
+                        if (__result == null) //if the result is somehow still null
+                        {
+                            Utility.Monitor.LogOnce($"Monster.findPlayer and Game1.player both returned null. If errors occur, please share your full log file with this mod's developer.", LogLevel.Debug);
+                            return;
+                        }
+                        else
+                        {
+                            Utility.Monitor.LogOnce($"Monster.findPlayer returned null. Using Game1.player instead.", LogLevel.Trace);
+                            return;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Utility.Monitor.LogOnce($"Harmony patch \"{nameof(Monster_findPlayer_Postfix)}\" has encountered an error and will not be applied:\n{ex.ToString()}", LogLevel.Error);
+                    return; //call the original method
                 }
             }
         }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/18384
+IDs: nihilistzsche.FashionSenseOutfits
+update keys: Nexus:18384, GitHub:nihilistzsche/FashionSenseOutfits

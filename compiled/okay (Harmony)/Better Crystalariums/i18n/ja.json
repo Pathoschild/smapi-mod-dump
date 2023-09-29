@@ -3,4 +3,4 @@
     "bettercrystalariums.no-gmcm": "ユーザーにGMCMがインストールされていないようです。 これは問題ではありません。",
     "bettercrystalariums.debug-setting-title": "デバッグモード",
     "bettercrystalariums.debug-setting-description": "私があなたに頼んだ場合、またはあなたが自分で問題を掘り下げたい場合にのみ、これを有効にしてください。 これにより、追加のロギングが有効になります。"
-  }
+}

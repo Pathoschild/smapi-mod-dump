@@ -1,0 +1,110 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"Target": "Characters/Dialogue/HatMouseLacey",
+			"Action": "EditData",
+			"Entries": {
+				"Introduction": "{{i18n: dialogue.Introduction}}",
+				"danceAccept": "{{i18n: dialogue.danceAccept}}",
+				"danceAcceptSpouse": "{{i18n: dialogue.danceAcceptSpouse}}",
+				"danceRejection": "{{i18n: dialogue.danceRejection}}",
+				"MovieInvitation": "{{i18n: dialogue.MovieInvitation}}",
+				"birthdayLove": "{{i18n: dialogue.birthday.Love}}",
+				"birthdayLike": "{{i18n: dialogue.birthday.Like}}",
+				"birthdayNeutral": "{{i18n: dialogue.birthday.Neutral}}",
+				"birthdayDislike": "{{i18n: dialogue.birthday.Dislike}}",
+				"birthdayHate": "{{i18n: dialogue.birthday.Hate}}",
+				"bouquetLow": "{{i18n: dialogue.bouquetLow}}",
+				"bouquetMid": "{{i18n: dialogue.bouquetMid}}",
+				"bouquetAccept": "{{i18n: dialogue.bouquetAccept}}",
+				"bouquetRejectCruelty": "{{i18n: dialogue.bouquetRejectCruelty}}",
+				"bouquetRejectCrueltyRepeat": "{{i18n: dialogue.bouquetRejectCrueltyRepeat}}",
+				"bouquetAcceptApologized": "{{i18n: dialogue.bouquetAcceptApologized}}",
+				"breakUp": "{{i18n: dialogue.breakUp}}",
+				"divorced": "{{i18n: dialogue.divorced}}",
+				"reject_868": "{{i18n: dialogue.reject_868}}",
+				"SeedShop": "$d joja#{{i18n: dialogue.SeedShop}}#$b#{{i18n: dialogue.SeedShop.joja}}|{{i18n: dialogue.SeedShop}}",
+				"SeedShop2": "{{i18n: dialogue.SeedShop2}}",
+				"SeedShop6": "$d cc#{{i18n: dialogue.SeedShop6.cc}}|{{i18n: dialogue.SeedShop6}}",
+				"SeedShop10": "{{i18n: dialogue.SeedShop10}}",
+				"springForest_Wed": "{{i18n: dialogue.springForest_Wed}}",
+				"summerTown4": "{{i18n: dialogue.summerTown4}}",
+				"Mon": "{{i18n: dialogue.Mon}}",
+				"Tue": "$d joja#{{i18n: dialogue.Tue.joja}}|{{i18n: dialogue.Tue.cc}}",
+				"Wed": "{{i18n: dialogue.Wed}}",
+				"Thu": "{{i18n: dialogue.Thu}}",
+				"Fri": "{{i18n: dialogue.Fri}}",
+				"Sat": "{{i18n: dialogue.Sat}}",
+				"Sun": "{{i18n: dialogue.Sun}}",
+				"Mon2": "{{i18n: dialogue.Mon2}}",
+				"Tue2": "$m hatter#{{i18n:dialogue.Tue2.0a}}|{{i18n:dialogue.Tue2.0b}}#$b#{{i18n:dialogue.Tue2.1}}",
+				"Thu2": "{{i18n: dialogue.Thu2}}",
+				"Fri2": "{{i18n: dialogue.Fri2}}",
+				"Fri2_1": "{{i18n: dialogue.Fri2_1}}",
+				"Sat2": "$m HatMouseLacey_HatReactions#{{i18n: dialogue.Sat2a}}|{{i18n: dialogue.Sat2b}}",
+				"Mon4": "{{i18n: dialogue.Mon4}}",
+				"Wed4": "{{i18n: dialogue.Wed4}}",
+				"Fri4": "{{i18n: dialogue.Fri4}}",
+				"Sun4": "{{i18n: dialogue.Sun4}}",
+				"Tue6": "{{i18n: dialogue.Tue6}}",
+				"Thu6": "{{i18n: dialogue.Thu6}}",
+				"Sat6": "{{i18n: dialogue.Sat6}}",
+				"Mon8": "{{i18n: dialogue.Mon8}}",
+				"Tue8": "{{i18n: dialogue.Tue8}}",
+				"Wed8": "{{i18n: dialogue.Wed8}}",
+				"Fri8": "{{i18n: dialogue.Fri8}}",
+				"Sun8": "{{i18n: dialogue.Sun8}}",
+				"Mon10": "{{i18n: dialogue.Mon10}}",
+				"Thu10": "{{i18n: dialogue.Thu10}}",
+				"Sat10": "{{i18n: dialogue.Sat10}}",
+				"Wed.cc_0": "{{i18n: dialogue.Wed.cc_0}}",
+				"Wed.cc_1": "{{i18n: dialogue.Wed.cc_1}}",
+				"28_1": "{{i18n: dialogue.28_1}}",
+				"spring_Sat": "{{i18n: dialogue.spring_Sat}}",
+				"spring_Sat_2": "{{i18n: dialogue.spring_Sat_2}}",
+				"summer_Mon": "{{i18n: dialogue.summer_Mon}}",
+				"summer_Tue": "{{i18n: dialogue.summer_Tue}}",
+				"summer_Thu": "{{i18n: dialogue.summer_Thu}}",
+				"summer_Thu4": "{{i18n: dialogue.summer_Thu4}}",
+				"fall_Mon": "{{i18n: dialogue.fall_Mon}}",
+				"fall_Tue4": "{{i18n: dialogue.fall_Tue4}}",
+				"winter_Wed2": "{{i18n: dialogue.winter_Wed2}}",
+				"winter_Sun6": "{{i18n: dialogue.winter_Sun6}}",
+				"winter_Sun6_2": "{{i18n: dialogue.winter_Sun6_2}}",
+				"spring_23_1": "{{i18n: dialogue.spring_23_1}}",
+				"spring_23_2": "{{i18n: dialogue.spring_23_2}}",
+				"summer_4_1": "{{i18n: dialogue.summer_4_1}}",
+				"summer_13_1": "{{i18n: dialogue.summer_13_1}}",
+				"winter.nightmarket.wait": "{{i18n: dialogue.winter.nightmarket.wait}}",
+				"winter_15.nightmarket0": "{{i18n: dialogue.winter_15.nightmarket0}}",
+				"winter_15.nightmarket1": "{{i18n: dialogue.winter_15.nightmarket1}}",
+				"winter_17.nightmarket0": "{{i18n: dialogue.winter_17.nightmarket0}}",
+				"winter_17.nightmarket1": "{{i18n: dialogue.winter_17.nightmarket1}}",
+				"fall_16.fair.shopdialogue": "{{i18n: dialogue.fall_16.fair.shopdialogue}}",
+				"EOF": ""
+			}
+		},
+		{
+			"Target": "Characters/Dialogue/HatMouseLacey",
+			"Action": "EditData",
+			"Entries": {
+				"Mon8": "{{i18n: dialogue.Mon8.dating}}",
+				"Wed8": "{{i18n: dialogue.Wed8.dating}}",
+				"Sun8": "{{i18n: dialogue.Sun8.dating}}"
+			},
+			"When": {
+				"Relationship:HatMouseLacey": "Dating"
+			}
+		}
+	]
+}

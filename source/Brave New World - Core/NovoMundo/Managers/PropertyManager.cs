@@ -29,8 +29,7 @@ namespace NovoMundo.Managers
         private Vector2 _playerPos;
         internal static GameLocation SourceLocation;
         public void OnButtonPressed(object sender, ButtonPressedEventArgs e)
-        {
-            
+        {           
             if (!Context.CanPlayerMove)
                 return;
             SourceLocation = null;
@@ -66,7 +65,7 @@ namespace NovoMundo.Managers
             {
                 Game1.player.position.Set(_playerPos);
             }
-            if (e.OldMenu is CarpenterMenu || e.OldMenu is Farm1_Builder || e.OldMenu is Farm2_Builder || e.OldMenu is PurchaseAnimalsMenu)
+            if (e.OldMenu is CarpenterMenu || e.OldMenu is Carpenter_Builder || e.OldMenu is PurchaseAnimalsMenu)
             {
                 if(e.NewMenu is DialogueBox)
                 {
@@ -90,23 +89,47 @@ namespace NovoMundo.Managers
                 var checking = (string)property;
                 switch (checking)
                 {
-                    case "Carpenter_ATM":
+                    case "JojaATM":
                         {
-                            ifAwayUseATM("nmATM", "Carpenter", true);
+                            bool noload = false;
+                            if (Utility.doesAnyFarmerHaveOrWillReceiveMail("nmQuarry") is true && Utility.doesAnyFarmerHaveOrWillReceiveMail("nmCinema") is true && Utility.doesAnyFarmerHaveOrWillReceiveMail("nmFarm") is true && Utility.doesAnyFarmerHaveOrWillReceiveMail("nmLake") is true)
+                            {
+                                noload = true;
+                            }
+                            createQuestionDialogue(checking, noload);
                             break;
                         }
-                    case "Carpenter_Robin":
+                    case "JojaNPC":
                         {
-                            isNPCaway("Robin", out string npcchecked);
-                            ifAwayUseATM(npcchecked, "Carpenter", false);
+                            isNPCaway("Claire", out string npcchecked);
+                            if(npcchecked!= null) 
+                            {
+                                createQuestionDialogue(checking, false);
+                                break;
+                            }
+                            isNPCaway("Martin", out string npcchecked2);
+                            if (npcchecked2 != null)
+                            {
+                                createQuestionDialogue(checking, false);
+                                break;
+                            }
+                            Game1.drawObjectDialogue(ModEntry.ModHelper.Translation.Get("NPCDataVendorAway"));
                             break;
                         }
-                    case "NewJojaForm":
+                    case "CarpenterATM":
                         {
-                            callMenu(checking);
-                            break;
+                            //isNPCaway("Robin", out string npcchecked);
+                            //if (npcchecked != null)
+                            //{
+                            //createQuestionDialogue(checking, false);
+                            //break;
+                            //}
+                            //Game1.drawObjectDialogue(ModEntry.ModHelper.Translation.Get("NPCDataVendorAway"));
+                            //break;
+                             createQuestionDialogue(checking, false);
+                             break;
                         }
-                        
+
                 }             
             }
         }
@@ -131,58 +154,134 @@ namespace NovoMundo.Managers
                 npcchecked = null;
             }
         }
-        public void ifAwayUseATM(string npcchecked, string caller, bool noload)
-        {
-            if (npcchecked != null)
-            {
-                createQuestionDialogue(caller, noload);
-            }
-            else
-            {
-                Game1.drawObjectDialogue(ModEntry.ModHelper.Translation.Get("NPCDataVendorAway"));
-            }
-        }
-        public static bool getBasiShop(string npcchecked, Dictionary<ISalable, int[]> stock, int currency, out ShopMenu shop)
-        {           
-            shop = new ShopMenu(stock, currency, npcchecked);
-            if (npcchecked is null)
-            {
-                shop.portraitPerson = Game1.getCharacterFromName("nmATM");
-                shop.potraitPersonDialogue = Game1.parseText(ModEntry.ModHelper.Translation.Get("NPCDataATMQuote"), Game1.dialogueFont, 304);
-            }          
-            return true;
-        }
         public static IClickableMenu WhichMenu(string menu, out bool warpingShop)
         {           
             warpingShop = false;
-            Texture2D jojaFormTexture = ModEntry.ModHelper.ModContent.Load<Texture2D>(ModEntry.ModHelper.Translation.Get("ImagePathNewJojaFormTexture"));
-            switch (menu)
+            Texture2D jojaATMmenutexture = ModEntry.ModHelper.ModContent.Load<Texture2D>(ModEntry.ModHelper.Translation.Get("ImagePathNewjojaATMMenuTexture"));
+            Texture2D carpenterATMmaintexture = ModEntry.ModHelper.ModContent.Load<Texture2D>(ModEntry.ModHelper.Translation.Get("ImagePathNewCarpenterATMMainTexture"));
+            Texture2D carpenterATMselecttypetexture = ModEntry.ModHelper.ModContent.Load<Texture2D>(ModEntry.ModHelper.Translation.Get("ImagePathNewCarpenterATMSelectTypeTexture"));
+            Texture2D carpenterATMselectwheretexture = ModEntry.ModHelper.ModContent.Load<Texture2D>(ModEntry.ModHelper.Translation.Get("ImagePathNewCarpenterATMSelectWhereTexture"));
+            Texture2D carpenterATMimprovtexture = ModEntry.ModHelper.ModContent.Load<Texture2D>(ModEntry.ModHelper.Translation.Get("ImagePathNewCarpenterATMImprovementsLocked0Texture"));//upgrade 1
+            if (!Utility.doesAnyFarmerHaveOrWillReceiveMail("nmQuarry"))
             {
-                case "CarpenterStock":
+                jojaATMmenutexture = ModEntry.ModHelper.ModContent.Load<Texture2D>(ModEntry.ModHelper.Translation.Get("ImagePathNewjojaATMMenuLockedTexture"));
+
+            }
+            if (Game1.player.HouseUpgradeLevel == 1)
+            {
+                carpenterATMimprovtexture = ModEntry.ModHelper.ModContent.Load<Texture2D>(ModEntry.ModHelper.Translation.Get("ImagePathNewCarpenterATMImprovementsLocked1Texture"));//upgrade 2
+            }
+            else if (Game1.player.HouseUpgradeLevel == 2)
+            {
+                carpenterATMimprovtexture = ModEntry.ModHelper.ModContent.Load<Texture2D>(ModEntry.ModHelper.Translation.Get("ImagePathNewCarpenterATMImprovementsUnlockedTexture"));//cellar
+            }
+            else if (Game1.player.HouseUpgradeLevel == 3)
+            {
+                carpenterATMimprovtexture = ModEntry.ModHelper.ModContent.Load<Texture2D>(ModEntry.ModHelper.Translation.Get("ImagePathNewCarpenterATMImprovementsCompletedTexture"));//completo
+            }
+            switch (menu)
+            {                
+                case "JojaNPCCashier":
                     {
-                        isNPCaway("Robin", out string npcchecked);
-                        getBasiShop(npcchecked, Utility.getCarpenterStock(), 0, out ShopMenu shop);
+                        string npc = null;
+                        isNPCaway("Claire", out string npcchecked);
+                        if(npcchecked != null)
+                        {
+                            npc = npcchecked;
+                        }
+                        isNPCaway("Martin", out string npcchecked2);
+                        if(npcchecked2 !=null)
+                        {
+                            npc= npcchecked2;
+                        }
+                        if(npcchecked2 != null && npcchecked != null)
+                        {
+                            npc = "Martin";
+                        }
+                        var shop = new ShopMenu(Utility.getJojaStock())
+                        {
+                            portraitPerson = Game1.getCharacterFromName(npc),
+                            potraitPersonDialogue = Game1.parseText(ModEntry.ModHelper.Translation.Get("NPCDataJojaNPCQuote"), Game1.dialogueFont, 304)
+                        };
+                        return shop;                        
+                    }
+                case "JojaFormATM":
+                    {
+                        return new Form_Builder(jojaATMmenutexture, 1, 1, true, 4);
+                    }
+                case "JojaStock":
+                    {
+                        var shop = new ShopMenu(Utility.getJojaStock(), 0)
+                        {
+                            portraitPerson = Game1.getCharacterFromName("nmATMJoja"),
+                            potraitPersonDialogue = Game1.parseText(ModEntry.ModHelper.Translation.Get("NPCDataATMQuote"), Game1.dialogueFont, 304)
+
+                        };
                         return shop;
-                    }                  
-                case "CarpenterBuilderVanilla":
+                    }
+                case "CarpenterFormATM":
+                    {
+                        return new Form_Builder(carpenterATMmaintexture, 0, 0, false, 4);
+                    }
+                case "CarpenterFormATMSelectType":
+                    {
+                        return new Form_Builder(carpenterATMselecttypetexture, 0, 2, false, 2);
+                    }
+                case "CarpenterFormATMSelectWhere":
+                    {
+                        return new Form_Builder(carpenterATMselectwheretexture, 0, 3, false, 4);
+                    }
+                case "CarpenterFormATMImprovements0":
+                    {
+                        return new Form_Builder(carpenterATMimprovtexture, 0, 4, true, 4);
+                    }
+                case "CarpenterFormATMImprovements1":
+                    {
+                        return new Form_Builder(carpenterATMimprovtexture, 0, 5, true, 4);
+                    }
+                case "CarpenterFormATMImprovements2":
+                    {
+                        return new Form_Builder(carpenterATMimprovtexture, 0, 6, true, 4);
+                    }
+                case "CarpenterShopATM":
+                    {
+                        var shop = new ShopMenu(Utility.getCarpenterStock(), 0)
+                        {
+                            portraitPerson = Game1.getCharacterFromName("nmATM"),
+                            potraitPersonDialogue = Game1.parseText(ModEntry.ModHelper.Translation.Get("NPCDataATMQuote"), Game1.dialogueFont, 304)
+
+                        };
+                        return shop;
+                    }
+                case "CarpenterShopRobin":
+                    {
+                        return new ShopMenu(Utility.getCarpenterStock(), 0, "Robin");
+                    }
+                case "CarpenterMenuVanilla":
                     {
                         warpingShop = true;
                         return new CarpenterMenu();
                     }
-                case "Farm1_Builder":
+                case "CarpenterMenuMainFarm":
                     {
                         warpingShop = true;
-                        return new Farm1_Builder();
-                    }                 
-                case "Farm2_Builder":
-                    {
-                        warpingShop = true;
-                        return new Farm2_Builder();
+                        return new Carpenter_Builder(0);
                     }
-                case "NewJojaForm":
+                case "CarpenterMenuQuarry":
                     {
-                        return new NewJojaForm(jojaFormTexture);
-                    }                   
+                        warpingShop = true;
+                        return new Carpenter_Builder(1);
+                    }
+                case "CarpenterMenuPlantation":
+                    {
+                        warpingShop = true;
+                        return new Carpenter_Builder(2);
+                    }
+                case "CarpenterMenuLakeLand":
+                    {
+                        warpingShop = true;
+                        return new Carpenter_Builder(3);
+                    }
             }
             return null;
         }
@@ -192,161 +291,76 @@ namespace NovoMundo.Managers
             List<Response> options = new();
             switch (checking)
             {
-                case "Carpenter":
+                case "JojaATM":
                     {
-                        isNPCaway("Robin", out string npcchecked);
-                        options.Add(new Response("CarpenterStock", ModEntry.ModHelper.Translation.Get("QuestionDialoguesChoicesShop")));
-                        options.Add(new Response("CarpenterBuilderVanilla", ModEntry.ModHelper.Translation.Get("QuestionDialoguesChoicesCarpenterBuilderVanilla")));
-                        options.Add(new Response("Farm1Builder", ModEntry.ModHelper.Translation.Get("QuestionDialoguesChoicesFarm1_Builder")));
-                        options.Add(new Response("Farm2Builder", ModEntry.ModHelper.Translation.Get("QuestionDialoguesChoicesFarm2_Builder")));
-                        if (npcchecked !=null && noload is false)
+                        options.Add(new Response("JojaStock", ModEntry.ModHelper.Translation.Get("QuestionDialoguesChoicesShop")));
+                        if (noload is false)
                         {
-                            options.Add(new Response("SpecialJobs", ModEntry.ModHelper.Translation.Get("QuestionDialoguesChoicesSpecialJobs")));
-                        }
-                        //if (Game1.IsMasterGame)
-                        //{
-                            //if (Game1.player.HouseUpgradeLevel < 3)
-                            //{
-                                //options.Add(new Response("Upgrade", ModEntry.ModHelper.Translation.Get("ImagePathNewJojaFormTexture")));
-                            //}
-                        //}
-                        //else if (Game1.player.HouseUpgradeLevel < 3)
-                        //{
-                            //options.Add(new Response("Upgrade", ModEntry.ModHelper.Translation.Get("ImagePathNewJojaFormTexture")));
-                        //}
-                        //if (Game1.player.HouseUpgradeLevel >= 2)
-                        //{
-                            //if (Game1.IsMasterGame)
-                            //{
-                                //options.Add(new Response("Renovate", ModEntry.ModHelper.Translation.Get("ImagePathNewJojaFormTexture")));
-                            //}
-                            //else
-                            //{
-                                //options.Add(new Response("Renovate", ModEntry.ModHelper.Translation.Get("ImagePathNewJojaFormTexture")));
-                            //}
-                        //}
+                            options.Add(new Response("JojaFormATM", ModEntry.ModHelper.Translation.Get("QuestionDialoguesChoicesJojaATMFormMenu")));
+                        }                       
                         options.Add(new Response("Leave", ModEntry.ModHelper.Translation.Get("QuestionDialoguesNoChoice")));
                         Game1.currentLocation.createQuestionDialogue(ModEntry.ModHelper.Translation.Get("QuestionDialoguesTile"), options.ToArray(), new GameLocation.afterQuestionBehavior(CreateQuestionDialogue_output));
                         break;
-                    }    
+                    }
+                case "JojaNPC":
+                    {
+                        options.Add(new Response("JojaNPCCashier", ModEntry.ModHelper.Translation.Get("QuestionDialoguesChoicesShop")));
+                        options.Add(new Response("Leave", ModEntry.ModHelper.Translation.Get("QuestionDialoguesNoChoice")));
+                        Game1.currentLocation.createQuestionDialogue(ModEntry.ModHelper.Translation.Get("QuestionDialoguesTile"), options.ToArray(), new GameLocation.afterQuestionBehavior(CreateQuestionDialogue_output));
+                        break;
+                    }
+                case "CarpenterATM":
+                    {
+                        options.Add(new Response("CarpenterShopATM", ModEntry.ModHelper.Translation.Get("QuestionDialoguesChoicesShop")));
+                        options.Add(new Response("CarpenterFormATM", ModEntry.ModHelper.Translation.Get("QuestionDialoguesBuilderForm")));
+                        options.Add(new Response("Leave", ModEntry.ModHelper.Translation.Get("QuestionDialoguesNoChoice")));
+                        Game1.currentLocation.createQuestionDialogue(ModEntry.ModHelper.Translation.Get("QuestionDialoguesTile"), options.ToArray(), new GameLocation.afterQuestionBehavior(CreateQuestionDialogue_output));
+                        break;
+                    }
             }
         }
         public void CreateQuestionDialogue_output(Farmer farmer, string choice)
         {
             switch (choice)
             {
-                case "CarpenterStock":
+                case "JojaStock":
                     {
-                        callMenu("CarpenterStock");
+                        callMenu("JojaStock");
                         break;
                     }
-                case "CarpenterBuilderVanilla":
+                case "JojaFormATM":
                     {
-                        if (Game1.player.daysUntilHouseUpgrade.Value < 0 && !Game1.getFarm().isThereABuildingUnderConstruction() && !getFarm1().isThereABuildingUnderConstruction() && !getFarm2().isThereABuildingUnderConstruction())
-                        {
-                            callMenu("CarpenterBuilderVanilla");
-                        }
-                        else
-                        {
-                            if (Game1.currentLocation.getCharacterFromName("Robin") != null)
-                            {
-                                Game1.drawDialogue(Game1.getCharacterFromName("Robin"), "Estou ocupada.");
-                            }
-                            else
-                            {
-                                Game1.drawObjectDialogue("Robin ocupada.");
-                            }
-                        }
+                        callMenu("JojaFormATM");
                         break;
                     }
-                case "Farm1Builder":
+                case "JojaNPCCashier":
                     {
-                        if (Game1.player.daysUntilHouseUpgrade.Value < 0 && !Game1.getFarm().isThereABuildingUnderConstruction() && !getFarm1().isThereABuildingUnderConstruction() && !getFarm2().isThereABuildingUnderConstruction())
-                        {
-                            callMenu("Farm1_Builder");
-                        }
-                        else
-                        {
-                            if (Game1.currentLocation.getCharacterFromName("Robin") != null)
-                            {
-                                Game1.drawDialogue(Game1.getCharacterFromName("Robin"), "Estou ocupada.");
-                            }
-                            else
-                            {
-                                Game1.drawObjectDialogue("Robin ocupada.");
-                            }
-                        }
+                        callMenu("JojaNPCCashier");
                         break;
                     }
-                case "Farm2Builder":
+                case "CarpenterFormATM":
                     {
-                        if (Game1.player.daysUntilHouseUpgrade.Value < 0 && !Game1.getFarm().isThereABuildingUnderConstruction() && !getFarm1().isThereABuildingUnderConstruction() && !getFarm2().isThereABuildingUnderConstruction())
-                        {
-                            callMenu("Farm2_Builder");
-                        }
-                        else
-                        {
-                            if (Game1.currentLocation.getCharacterFromName("Robin") != null)
-                            {
-                                Game1.drawDialogue(Game1.getCharacterFromName("Robin"), "Estou ocupada.");
-                            }
-                            else
-                            {
-                                Game1.drawObjectDialogue("Robin ocupada.");
-                            }
-                        }
+                        callMenu("CarpenterFormATM");
                         break;
                     }
-                case "SpecialJobs":
+                case "CarpenterShopATM":
                     {
-                        if (ModEntry.ModHelper.ModRegistry.IsLoaded("PeacefulEnd.AMouseWithAHat.Core") && Game1.MasterPlayer.mailReceived.Contains("hatter") is true && Game1.MasterPlayer.mailReceived.Contains("HatShopRepaired") is false)
-                        {
-                            Location location = new();
-                            Game1.currentLocation.carpenters(location);
-                        }
-                        else
-                        {
-                            Game1.drawDialogue(Game1.getCharacterFromName("Robin"), ModEntry.ModHelper.Translation.Get("QuestionDialoguesNoSpecialJobs"));
-                        }
+                        callMenu("CarpenterShopATM");
                         break;
                     }
-                case "Upgrade":
-                    if (Game1.player.daysUntilHouseUpgrade.Value < 0 && !Game1.getFarm().isThereABuildingUnderConstruction() && !getFarm1().isThereABuildingUnderConstruction() && !getFarm2().isThereABuildingUnderConstruction())
-                    {
-                        switch (Game1.player.HouseUpgradeLevel)
-                        {
-                            case 0:
-                                Game1.currentLocation.createQuestionDialogue(Game1.parseText(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_UpgradeHouse1")), Game1.currentLocation.createYesNoResponses(), "uphouse");
-                                break;
-                            case 1:
-                                Game1.currentLocation.createQuestionDialogue(Game1.parseText(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_UpgradeHouse2")), Game1.currentLocation.createYesNoResponses(), "uphouse");
-                                break;
-                            case 2:
-                                Game1.currentLocation.createQuestionDialogue(Game1.parseText(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_UpgradeHouse3")), Game1.currentLocation.createYesNoResponses(), "uphouse");
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        if (Game1.currentLocation.getCharacterFromName("Robin") != null)
-                        {
-                            Game1.drawDialogue(Game1.getCharacterFromName("Robin"), "Estou ocupada.");
-                        }
-                        else
-                        {
-                            Game1.drawObjectDialogue("Robin ocupada.");
-                        }
-                    }
-                    break;
             }
         }
-        public static NMFarm1 getFarm1()
+        public static NMFarm1 QuarryLand()
         {
             return Game1.getLocationFromName("NMFarm1") as NMFarm1;
         }
-        public static NMFarm2 getFarm2()
+        public static NMFarm2 PlantationLand()
         {
             return Game1.getLocationFromName("NMFarm2") as NMFarm2;
+        }
+        public static NMFarm2 LakeLand()
+        {
+            return Game1.getLocationFromName("NMFarm3") as NMFarm2;
         }
     }
 }

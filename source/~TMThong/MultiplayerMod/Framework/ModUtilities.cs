@@ -40,10 +40,14 @@ namespace MultiplayerMod.Framework
             {
                 return Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
             }
+            set
+            {
+                Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").SetValue(value);
+            }
         }
         public static IModHelper Helper;
         internal static Config ModConfig;
-        
+
 
         #region Reflection
         public static T GetPrivatePropertyValue<T>(this object obj, string propName)
@@ -107,7 +111,7 @@ namespace MultiplayerMod.Framework
             }
             return default(T);
         }
-        public static T CreateInstance<T>(this Type type, object[] obj , Type[] types)
+        public static T CreateInstance<T>(this Type type, object[] obj, Type[] types)
         {
             ConstructorInfo constructor = type.GetConstructor(BindingFlags.Public | BindingFlags.Instance, null, types, null);
             object o = constructor.Invoke(obj);

@@ -207,9 +207,39 @@ namespace StardewArchipelago.Goals
             _archipelago.ReportGoalCompletion();
         }
 
+        public static void CheckProtectorOfTheValleyGoalCompletion()
+        {
+            if (!_archipelago.IsConnected || _archipelago.SlotData.Goal != Goal.ProtectorOfTheValley)
+            {
+                return;
+            }
+
+            if (!AdventureGuild.areAllMonsterSlayerQuestsComplete())
+            {
+                return;
+            }
+
+            _archipelago.ReportGoalCompletion();
+        }
+
+        public static void CheckFullShipmentGoalCompletion()
+        {
+            if (!_archipelago.IsConnected || _archipelago.SlotData.Goal != Goal.FullShipment)
+            {
+                return;
+            }
+
+            if (!Utility.hasFarmerShippedAllItems())
+            {
+                return;
+            }
+
+            _archipelago.ReportGoalCompletion();
+        }
+
         public static void CheckPerfectionGoalCompletion()
         {
-            if (!_archipelago.IsConnected || _archipelago.SlotData.Goal != Goal.GreatestWalnutHunter)
+            if (!_archipelago.IsConnected || _archipelago.SlotData.Goal != Goal.Perfection)
             {
                 return;
             }
@@ -299,8 +329,10 @@ namespace StardewArchipelago.Goals
                 Goal.CompleteCollection => "Complete the Museum Collection by donating all 95 items",
                 Goal.FullHouse => "Get married and have two children",
                 Goal.GreatestWalnutHunter => "Find all 130 Golden Walnuts",
+                Goal.ProtectorOfTheValley => "Complete all the monster slaying goals",
+                Goal.FullShipment => "Ship every item",
                 Goal.Perfection => "Achieve Perfection",
-                _ => throw new NotImplementedException()
+                _ => throw new NotImplementedException(),
             };
             return goal;
         }
@@ -317,8 +349,10 @@ namespace StardewArchipelago.Goals
                 Goal.CompleteCollection => "Restore our beautiful museum with a full collection of various artifacts and minerals",
                 Goal.FullHouse => "I wish for my bloodline to thrive. Please find a partner and live happily ever after",
                 Goal.GreatestWalnutHunter => "Prove your worth to an old friend of mine, and become the greatest walnut hunter",
+                Goal.ProtectorOfTheValley => "Make sure the valley is safe for generations to come, by slaying all the monsters",
+                Goal.FullShipment => "Contribute to the local economy and market, by shipping as many things as you can",
                 Goal.Perfection => "For a fulfilling life, you need to do a lot of everything. Leave no loose ends",
-                _ => throw new NotImplementedException()
+                _ => throw new NotImplementedException(),
             };
             return goal;
         }

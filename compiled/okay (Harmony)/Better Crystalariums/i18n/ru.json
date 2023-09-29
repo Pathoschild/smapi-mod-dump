@@ -1,6 +1,6 @@
 {
-  "bettercrystalariums.wrong-mineral": "Сломайте аппарат, чтобы добавить новый минерал.",
-  "bettercrystalariums.no-gmcm": "GMCM (Generic Mod Config Menu) не обнаружен. Не критическая проблема.",
-  "bettercrystalariums.debug-setting-title": "Режим дебага",
-  "bettercrystalariums.debug-setting-description": "Включать только если я Вас попросил лично, или если Вы хотите разобраться в проблеме сами. Эта опция расширит логирование."
+    "bettercrystalariums.wrong-mineral": "Сломайте аппарат, чтобы добавить новый минерал.",
+    "bettercrystalariums.no-gmcm": "GMCM (Generic Mod Config Menu) не обнаружен. Не критическая проблема.",
+    "bettercrystalariums.debug-setting-title": "Режим дебага",
+    "bettercrystalariums.debug-setting-description": "Включать только если я Вас попросил лично, или если Вы хотите разобраться в проблеме сами. Эта опция расширит логирование."
 }

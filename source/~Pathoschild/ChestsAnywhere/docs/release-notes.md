@@ -9,6 +9,9 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## Upcoming release
+* Fixed error showing dropdown UI on Android.
+
 ## 1.22.7
 Released 25 June 2023 for SMAPI 3.14.0 or later.
 

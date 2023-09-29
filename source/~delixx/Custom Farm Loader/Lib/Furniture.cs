@@ -32,7 +32,7 @@ namespace Custom_Farm_Loader.Lib
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
-        private static Dictionary<int, string> CachedFurnitureData;
+        private static Dictionary<string, string> CachedFurnitureData;
         public static List<string> TvIds = new List<string>() { "1466", "1468", "1680", "2326" };
         public static List<string> BedIds = new List<string>() { "2048", "2052", "2058", "2064", "2070", "2176", "2180", "2186", "2192", "2496", "2502", "2508", "2514" };
 
@@ -51,7 +51,7 @@ namespace Custom_Farm_Loader.Lib
             Monitor = mod.Monitor;
             Helper = mod.Helper;
 
-            CachedFurnitureData = Helper.GameContent.Load<Dictionary<int, string>>("Data\\Furniture");
+            CachedFurnitureData = Helper.GameContent.Load<Dictionary<string, string>>("Data\\Furniture");
         }
 
         public static List<Furniture> parseFurnitureJsonArray(JProperty furnitureArray)
@@ -127,7 +127,7 @@ namespace Custom_Farm_Loader.Lib
 
                     switch (name.ToLower()) {
                         case "id":
-                            id = ItemObject.MapNameToParentsheetindex(value);
+                            id = ItemObject.MapNameToItemId(value);
                             break;
                         case "amount":
                             amount = int.Parse(value);
@@ -165,16 +165,6 @@ namespace Custom_Farm_Loader.Lib
                 return match.Key.ToString();
 
             return name;
-        }
-
-        public static string MapParentsheetindexToName(int id)
-        {
-            var match = CachedFurnitureData.FirstOrDefault(fur => fur.Key == id);
-
-            if (match.Value != null)
-                return match.Value.Split("/").First();
-
-            return "";
         }
 
         private static string MapDuplicateFurniture(string name)
@@ -274,11 +264,11 @@ namespace Custom_Farm_Loader.Lib
 
                 case FurnitureType.Furniture:
                     if (Furniture.TvIds.Exists(e => e == ID))
-                        location.furniture.Add(new TV(int.Parse(ID), Position));
+                        location.furniture.Add(new TV(ID, Position));
                     else if (Furniture.BedIds.Exists(e => e == ID))
-                        location.furniture.Add(new BedFurniture(int.Parse(ID), Position));
+                        location.furniture.Add(new BedFurniture(ID, Position));
                     else {
-                        location.furniture.Add(new StardewValley.Objects.Furniture(int.Parse(ID), Position, Rotations));
+                        location.furniture.Add(new StardewValley.Objects.Furniture(ID, Position, Rotations));
                         if (HeldObject != null)
                             location.furniture.Last().heldObject.Value = HeldObject.objectFactory(Position);
                     }
@@ -287,14 +277,14 @@ namespace Custom_Farm_Loader.Lib
                 case FurnitureType.Purple_Giftbox or FurnitureType.Giftbox or FurnitureType.Chest or FurnitureType.Dungeon_Chest:
                     Chest chest = null;
                     var items = new List<Item>();
-                    Items.ForEach(item => { items.Add(new StardewValley.Object(int.Parse(item.Id), item.Amount, quality: item.Quality) { HasBeenInInventory = false }); });
+                    Items.ForEach(item => { items.Add(new StardewValley.Object(item.Id, item.Amount, quality: item.Quality) { HasBeenInInventory = false }); });
 
                     if (Type == FurnitureType.Giftbox || Type == FurnitureType.Purple_Giftbox) {
                         int giftboxIndex = Type == FurnitureType.Purple_Giftbox ? 1 : 0;
-                        chest = new Chest(0, items, Position, true, giftboxIndex: giftboxIndex);
+                        chest = new Chest(items, Position, true, giftboxIndex: giftboxIndex);
 
                     } else if (Type == FurnitureType.Dungeon_Chest) {
-                        chest = new Chest(0, items, Position, false, giftboxIndex: 0);
+                        chest = new Chest(items, Position, false, giftboxIndex: 0);
 
                     } else if (Type == FurnitureType.Chest) {
                         chest = new Chest(true);

@@ -39,6 +39,11 @@ namespace StardewArchipelago.Archipelago
         private const string HELP_WANTED_LOCATIONS_KEY = "help_wanted_locations";
         private const string FISHSANITY_KEY = "fishsanity";
         private const string MUSEUMSANITY_KEY = "museumsanity";
+        private const string MONSTERSANITY_KEY = "monstersanity";
+        private const string SHIPSANITY_KEY = "shipsanity";
+        private const string COOKSANITY_KEY = "cooksanity";
+        private const string CHEFSANITY_KEY = "chefsanity";
+        private const string CRAFTSANITY_KEY = "craftsanity";
         private const string FRIENDSANITY_KEY = "friendsanity";
         private const string FRIENDSANITY_HEART_SIZE_KEY = "friendsanity_heart_size";
         private const string EXCLUDE_GINGER_ISLAND_KEY = "exclude_ginger_island";
@@ -82,10 +87,15 @@ namespace StardewArchipelago.Archipelago
         public int HelpWantedLocationNumber { get; private set; }
         public Fishsanity Fishsanity { get; private set; }
         public Museumsanity Museumsanity { get; private set; }
+        public Monstersanity Monstersanity { get; private set; }
+        public Shipsanity Shipsanity { get; private set; }
+        public Cooksanity Cooksanity { get; private set; }
+        public Chefsanity Chefsanity { get; private set; }
+        public Craftsanity Craftsanity { get; private set; }
         public Friendsanity Friendsanity { get; private set; }
         public int FriendsanityHeartSize { get; private set; }
         public bool ExcludeGingerIsland { get; private set; }
-        public TrapItemsDifficulty TrapItemsDifficulty { get; private set; }
+        public TrapItemsDifficulty TrapItemsDifficulty { get; set; }
         public bool EnableMultiSleep { get; private set; }
         public int MultiSleepCostPerDay { get; private set; }
         public double ExperienceMultiplier { get; private set; }
@@ -120,13 +130,18 @@ namespace StardewArchipelago.Archipelago
             ToolProgression = GetSlotSetting(TOOL_PROGRESSION_KEY, ToolProgression.Progressive);
             ElevatorProgression = GetSlotSetting(ELEVATOR_PROGRESSION_KEY, ElevatorProgression.ProgressiveFromPreviousFloor);
             SkillProgression = GetSlotSetting(SKILLS_PROGRESSION_KEY, SkillsProgression.Progressive);
-            BuildingProgression = GetSlotSetting(BUILDING_PROGRESSION_KEY, BuildingProgression.Shuffled);
+            BuildingProgression = GetSlotSetting(BUILDING_PROGRESSION_KEY, BuildingProgression.Progressive);
             FestivalLocations = GetSlotSetting(FESTIVAL_OBJECTIVES_KEY, FestivalLocations.Easy);
             ArcadeMachineLocations = GetSlotSetting(ARCADE_MACHINES_KEY, ArcadeLocations.FullShuffling);
             SpecialOrderLocations = GetSlotSetting(SPECIAL_ORDERS_KEY, SpecialOrderLocations.BoardOnly);
             HelpWantedLocationNumber = GetSlotSetting(HELP_WANTED_LOCATIONS_KEY, 0);
             Fishsanity = GetSlotSetting(FISHSANITY_KEY, Fishsanity.None);
             Museumsanity = GetSlotSetting(MUSEUMSANITY_KEY, Museumsanity.None);
+            Monstersanity = GetSlotSetting(MONSTERSANITY_KEY, Monstersanity.None);
+            Shipsanity = GetSlotSetting(SHIPSANITY_KEY, Shipsanity.None);
+            Cooksanity = GetSlotSetting(COOKSANITY_KEY, Cooksanity.None);
+            Chefsanity = GetSlotSetting(CHEFSANITY_KEY, Chefsanity.Vanilla);
+            Craftsanity = GetSlotSetting(CRAFTSANITY_KEY, Craftsanity.None);
             Friendsanity = GetSlotSetting(FRIENDSANITY_KEY, Friendsanity.None);
             FriendsanityHeartSize = GetSlotSetting(FRIENDSANITY_HEART_SIZE_KEY, 4);
             ExcludeGingerIsland = GetSlotSetting(EXCLUDE_GINGER_ISLAND_KEY, true);
@@ -172,13 +187,70 @@ namespace StardewArchipelago.Archipelago
 
         private bool GetSlotSetting(string key, bool defaultValue)
         {
-            return _slotDataFields.ContainsKey(key) && _slotDataFields[key] != null ? (bool)_slotDataFields[key] : GetSlotDefaultValue(key, defaultValue);
+            if (_slotDataFields.ContainsKey(key) && _slotDataFields[key] != null && _slotDataFields[key] is bool boolValue)
+            {
+                return boolValue;
+            }
+            if (_slotDataFields[key] is string strValue && bool.TryParse(strValue, out var parsedValue))
+            {
+                return parsedValue;
+            }
+            if (_slotDataFields[key] is int intValue)
+            {
+                return intValue != 0;
+            }
+            if (_slotDataFields[key] is long longValue)
+            {
+                return longValue != 0;
+            }
+            if (_slotDataFields[key] is short shortValue)
+            {
+                return shortValue != 0;
+            }
+
+            return GetSlotDefaultValue(key, defaultValue);
         }
 
         private T GetSlotDefaultValue<T>(string key, T defaultValue)
         {
             _console.Log($"SlotData did not contain expected key: \"{key}\"", LogLevel.Warn);
             return defaultValue;
+        }
+
+        public double ToolPriceMultiplier
+        {
+            get
+            {
+                if (ToolProgression.HasFlag(ToolProgression.VeryCheap))
+                {
+                    return 0.2;
+                }
+
+                if (ToolProgression.HasFlag(ToolProgression.Cheap))
+                {
+                    return 0.4;
+                }
+
+                return 1;
+            }
+        }
+
+        public double BuildingPriceMultiplier
+        {
+            get
+            {
+                if (BuildingProgression.HasFlag(BuildingProgression.VeryCheap))
+                {
+                    return 0.2;
+                }
+
+                if (BuildingProgression.HasFlag(BuildingProgression.Cheap))
+                {
+                    return 0.5;
+                }
+
+                return 1;
+            }
         }
     }
 
@@ -210,13 +282,16 @@ namespace StardewArchipelago.Archipelago
     {
         Vanilla = 0,
         Progressive = 1,
-        ProgressiveEarlyBackpack = 2
+        ProgressiveEarlyBackpack = 2,
     }
 
+    [Flags]
     public enum ToolProgression
     {
-        Vanilla = 0,
-        Progressive = 1,
+        // Vanilla = 0b000,
+        Progressive = 0b001,
+        Cheap = 0b010,
+        VeryCheap = 0b100,
     }
 
     public enum ElevatorProgression
@@ -232,11 +307,13 @@ namespace StardewArchipelago.Archipelago
         Progressive = 1,
     }
 
+    [Flags]
     public enum BuildingProgression
     {
-        Vanilla = 0,
-        Shuffled = 1,
-        ShuffledEarlyShippingBin = 2
+        Progressive = 0b0001,
+        EarlyShippingBin = 0b0010,
+        Cheap = 0b0100,
+        VeryCheap = 0b1000,
     }
 
     public enum FestivalLocations
@@ -281,6 +358,52 @@ namespace StardewArchipelago.Archipelago
         All = 3,
     }
 
+    public enum Monstersanity
+    {
+        None = 0,
+        OnePerCategory = 1,
+        OnePerMonster = 2,
+        Goals = 3,
+        ShortGoals = 4,
+        VeryShortGoals = 5,
+        ProgressiveGoals = 6,
+        SplitGoals = 7,
+    }
+
+    public enum Shipsanity
+    {
+        None = 0,
+        Crops = 1,
+        Fish = 3,
+        FullShipment = 5,
+        FullShipmentWithFish = 7,
+        Everything = 9,
+    }
+
+    public enum Cooksanity
+    {
+        None = 0,
+        QueenOfSauce = 1,
+        All = 2,
+    }
+
+    [Flags]
+    public enum Chefsanity
+    {
+        Vanilla = 0b0000,
+        QueenOfSauce = 0b0001,
+        Purchases = 0b0010,
+        Skills = 0b0100,
+        Friendship = 0b1000,
+        All = QueenOfSauce | Purchases | Skills | Friendship,
+    }
+
+    public enum Craftsanity
+    {
+        None = 0,
+        All = 1,
+    }
+
     public enum Friendsanity
     {
         None = 0,
@@ -311,6 +434,9 @@ namespace StardewArchipelago.Archipelago
         CompleteCollection = 5,
         FullHouse = 6,
         GreatestWalnutHunter = 7,
+        ProtectorOfTheValley = 8,
+        FullShipment = 9,
+        GourmetChef = 10,
         Perfection = 25,
     }
 

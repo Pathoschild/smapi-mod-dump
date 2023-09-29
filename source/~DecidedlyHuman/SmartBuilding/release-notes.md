@@ -8,6 +8,8 @@ for queries and analysis.**
 
 # Smart Building release notes
 
+## 1.7.12
+Fixed some GMCM naming issues that made things look terrible.
 ## 1.7.11
 Fixed a problem placing DengDeng Monogatari's chest opener.
 ## 1.7.10

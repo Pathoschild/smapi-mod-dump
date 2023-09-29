@@ -78,6 +78,14 @@ namespace AlternativeTextures.Framework.Patches
             return sprayCan;
         }
 
+        internal static GenericTool GetCatalogueTool()
+        {
+            var catalogue = new GenericTool(_helper.Translation.Get("tools.name.catalogue"), _helper.Translation.Get("tools.description.catalogue"), -1, 6, 6);
+            catalogue.modData[AlternativeTextures.CATALOGUE_FLAG] = null;
+
+            return catalogue;
+        }
+
         internal static string GetObjectName(Object obj)
         {
             // Perform separate check for DGA objects, before using check for vanilla objects
@@ -226,6 +234,10 @@ namespace AlternativeTextures.Framework.Patches
             Vector2 tile = new Vector2(x / 64, y / 64);
             if (!location.terrainFeatures.ContainsKey(tile))
             {
+                if (location.largeTerrainFeatures is not null)
+                {
+                    return location.largeTerrainFeatures.FirstOrDefault(t => t is not null && t.tilePosition.Value == tile);
+                }
                 return null;
             }
 
@@ -350,10 +362,18 @@ namespace AlternativeTextures.Framework.Patches
 
         internal static string GetBushTypeString(Bush bush)
         {
-            switch (bush.size)
+            switch (bush.size.Value)
             {
+                case 0:
+                    return "Small";
+                case 1:
+                    return bush.townBush.Value ? "Town" : "Medium";
+                case 2:
+                    return "Large";
                 case 3:
                     return "Tea";
+                case 4:
+                    return "Walnut";
                 default:
                     return String.Empty;
             }
@@ -373,6 +393,8 @@ namespace AlternativeTextures.Framework.Patches
                     return TextureType.FruitTree;
                 case Grass grass:
                     return TextureType.Grass;
+                case Bush bush:
+                    return TextureType.Bush;
                 case ResourceClump resourceClump:
                     return TextureType.GiantCrop;
                 case TerrainFeature hoeDirt:

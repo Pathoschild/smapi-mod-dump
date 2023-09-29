@@ -24,7 +24,7 @@ namespace MapTeleport
         {
             public static bool Prefix(MapPage __instance, int x, int y)
             {
-                if (!Config.EnableMod)
+                if (!Config.ModEnabled)
                     return true;
                 var coordinates = SHelper.GameContent.Load<CoordinatesList>(dictPath);
                 bool added = false;
@@ -48,7 +48,7 @@ namespace MapTeleport
                 }
                 if (added)
                 {
-                    SHelper.Data.WriteJsonFile("coordinates.json", coordinates);
+                    SHelper.Data.WriteJsonFile(isSVE ? "sve_coordinates.json" : "coordinates.json", coordinates);
                 }
                 return !found;
             }

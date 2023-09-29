@@ -15,6 +15,7 @@ using StardewValley.Locations;
 using StardewValley;
 using System;
 using System.Text;
+using System.Linq;
 
 
 
@@ -45,30 +46,34 @@ namespace CustomDeathPenaltyPlus
         static string ResponseBuilder(string person, string location)
         {
             // Create new string to build on
-            StringBuilder response = new StringBuilder($"speak Harvey \"{person} found you unconscious {location}... I had to perform an emergency surgery on you!#$b#Be a little more careful next time, okay?$s\"");
+            string basestring = string.Format(i18n.string_replacementdialogue(), person, location);
+            StringBuilder finalresponse = new StringBuilder(basestring);
 
             // Is WakeupNextDayinClinic true?
             if (config.OtherPenalties.WakeupNextDayinClinic == true)
             {
                 // Yes, build string accordingly
 
-                response.Insert(14, "Good you're finally awake. ");
+                finalresponse.Insert(0,i18n.string_finallyawake());
             }
 
             // Is FriendshipPenalty greater than 0?
             if (config.OtherPenalties.HarveyFriendshipChange < 0)
             {
                 // Yes, build string accordingly
-
-                response.Replace("Be a little more careful next time, okay?", "You really need to be more careful, I don't like having to patch you up after you do something dangerous.");
+                finalresponse.Append(i18n.string_bereallycareful());
             }
-            else if(config.OtherPenalties.HarveyFriendshipChange > 0)
+            else if (config.OtherPenalties.HarveyFriendshipChange > 0)
             {
-                response.Replace("Be a little more careful next time, okay?$s", "While it's nice to see you, I hate having to patch you up...#$b#Please be a little more careful next time, okay?$s");
+                finalresponse.Append(i18n.string_nicetoseeyou());
+            }
+            else
+            {
+                finalresponse.Append(i18n.string_becareful());
             }
 
             // Return the built string
-            return response.ToString();
+            return finalresponse.ToString();
         }
 
         /// <summary>
@@ -96,17 +101,17 @@ namespace CustomDeathPenaltyPlus
                     if (config.DeathPenalty.MoneyLossCap == 0 || config.DeathPenalty.MoneytoRestorePercentage == 1)
                     {
                         // Yes, edit strings to show this special case
-                        stringeditor["Event.cs.1068"] = "I still seem to have all my money. ";
-                        stringeditor["Event.cs.1058"] = "Fortunately, I still have all my money";
+                        stringeditor["Event.cs.1068"] = i18n.string_nomoneylost();
+                        stringeditor["Event.cs.1058"] = i18n.string_nomoneylostmine();
                     }
                     else
                     {
                         // No, edit strings to show amount lost
-                        stringeditor["Event.cs.1068"] = $"I seem to have lost {(int)Math.Round(PlayerStateRestorer.statedeathps.Value.moneylost)}g. I wonder how that happened... ";
+                        stringeditor["Event.cs.1068"] = i18n.string_moneylost();
                         stringeditor["Event.cs.1058"] = stringeditor["Event.cs.1058"].Replace("{0}", $"{(int)Math.Round(PlayerStateRestorer.statedeathps.Value.moneylost)}");
                     }
 
-                    stringeditor["Event.cs.1070"] = "Fortunately, I have no money to lose. That could have been bad.";
+                    stringeditor["Event.cs.1070"] = i18n.string_nomoney();
                 }
                 else
                 {
@@ -114,8 +119,8 @@ namespace CustomDeathPenaltyPlus
                     if (config.DeathPenalty.MoneyLossCap == 0 || config.DeathPenalty.MoneytoRestorePercentage == 1)
                     {
                         // Yes, edit strings to show this special case
-                        stringeditor["Event.cs.1068"] = "Dr. Harvey didn't charge me for the hospital visit, how nice. ";
-                        stringeditor["Event.cs.1058"] = "Fortunately, I still have all my money";
+                        stringeditor["Event.cs.1068"] = i18n.string_nocharge();
+                        stringeditor["Event.cs.1058"] = i18n.string_nomoneylostmine();
                     }
                     else
                     {
@@ -159,9 +164,9 @@ namespace CustomDeathPenaltyPlus
                 if (data[$"{manifest.UniqueID}.MoneyLostLastPassOut"] != null && data[$"{manifest.UniqueID}.MoneyLostLastPassOut"] == "0")
                 {
                     // Yes, edit strings to show this special case
-                    maileditor["passedOut1_Billed_Male"] = maileditor["passedOut1_Billed_Male"].Replace("You've been billed {0}g for this service", "Be thankful you haven't been billed for this service");
-                    maileditor["passedOut1_Billed_Female"] = maileditor["passedOut1_Billed_Female"].Replace("You've been billed {0}g for this service", "Be thankful you haven't been billed for this service");
-                    maileditor["passedOut3_Billed"] = maileditor["passedOut3_Billed"].Replace("I've billed you {0}g to cover your medical expenses.", "I haven't billed you for your medical expenses this time.");
+                    maileditor["passedOut1_Billed_Male"] = maileditor["passedOut1_Billed_Male"].Replace(i18n.string_replacementmail1(), i18n.string_mailnocharge());
+                    maileditor["passedOut1_Billed_Female"] = maileditor["passedOut1_Billed_Female"].Replace(i18n.string_replacementmail1(), i18n.string_mailnocharge());
+                    maileditor["passedOut3_Billed"] = maileditor["passedOut3_Billed"].Replace(i18n.string_replacementmail2(), i18n.string_mailnochargeharvey());
                 }
 
                 else if(data[$"{manifest.UniqueID}.MoneyLostLastPassOut"] != null && data[$"{manifest.UniqueID}.MoneyLostLastPassOut"] != "0")
@@ -200,7 +205,7 @@ namespace CustomDeathPenaltyPlus
                 // Is WakeupNextDayinClinic true?
                 if (config.OtherPenalties.WakeupNextDayinClinic == true)
                 {
-                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledMine"], Game1.player.Name, ResponseBuilder("{0}", "in the mine"));
+                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledMine"], i18n.string_wakeplayer(), i18n.string_easynow1(), ResponseBuilder("{0}", i18n.string_responseappendix2()));
                     //$"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/changeLocation Hospital/pause 500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("{0}", "in the mine")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
 
                 }
@@ -228,7 +233,7 @@ namespace CustomDeathPenaltyPlus
                 // Is WakeupNextDayinClinic true?
                 if (config.OtherPenalties.WakeupNextDayinClinic == true)
                 {
-                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledIsland"], Game1.player.Name, ResponseBuilder("{0}", "on the island shore"));
+                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledIsland"], i18n.string_wakeplayer(), i18n.string_easynow1(), ResponseBuilder("{0}", i18n.string_responseappendix3()));
                     //$"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/changeLocation Hospital/pause 500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("{0}", "on the island shore")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
                 }
             }
@@ -252,7 +257,7 @@ namespace CustomDeathPenaltyPlus
 
                 IDictionary<string, string> events = modHelper.ModContent.Load<Dictionary<string, string>>("assets\\Events.json");
 
-                eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledHospital"], Game1.player.Name, ResponseBuilder("Someone", "and battered"));
+                eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledHospital"], i18n.string_wakeplayer(), i18n.string_easynow1(), ResponseBuilder(i18n.string_responseperson(), i18n.string_responseappendix1()));
                 //$"none/-100 -100/farmer 20 12 2 Harvey 21 12 3/pause 1500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Easy, now... take it slow.\"/viewport 20 12 true/pause 1000/{ResponseBuilder("Someone", "and battered")}/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
 
                 if (ModEntry.location != null
@@ -260,7 +265,7 @@ namespace CustomDeathPenaltyPlus
                     || ModEntry.location == "SkullCave")
                     && config.OtherPenalties.MoreRealisticWarps == true)
                 {
-                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledSkullCave"], Game1.player.Name);
+                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledSkullCave"], i18n.string_wakeplayer(), i18n.string_easynow2(), i18n.string_qi());
                     //$"none/-100 -100/farmer 3 5 2 MrQi 4 4 2/changeLocation SkullCave/pause 1500/showFrame 5/message \" ...{Game1.player.Name}?\"/pause 1000/message \"Hey, kid! You okay?\"/viewport 3 5 true/pause 1000/speak MrQi \"I found you battered and unconscious down there, kid... I hope you weren't doing something stupid.$1#$b#Just be more careful in the caverns next time, okay. There's still lots of potential in you, kid!\"/showFrame 0/pause 1000/emote farmer 28/hospitaldeath/end";
 
                 }
@@ -288,7 +293,7 @@ namespace CustomDeathPenaltyPlus
                             break;
                     }
 
-                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledFarm"], tileX, tileY, cabin);
+                    eventedits["PlayerKilled"] = string.Format(events["CDPP.PlayerKilledFarm"], tileX, tileY, cabin, i18n.string_whathappened(), i18n.string_somethingbad());
                     //$"none/-100 -100/farmer {tileX} {tileY} 2/changeLocation {cabin}/pause 1500/showFrame 5/message \"...\"/pause 1000/message \"...What just happened?\"/viewport {tileX} {tileY} true/pause 1000/showFrame 0/pause 1000/emote farmer 28/message \"Something bad must have happened to me... I have no idea how I got here...\"/pause 500/hospitaldeath/end";
                 }
             }

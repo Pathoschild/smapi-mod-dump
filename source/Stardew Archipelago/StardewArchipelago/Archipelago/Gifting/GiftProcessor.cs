@@ -11,9 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Archipelago.Gifting.Net;
+using Archipelago.Gifting.Net.Gifts.Versions.Current;
+using Archipelago.Gifting.Net.Traits;
 using StardewArchipelago.Extensions;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
@@ -39,17 +38,17 @@ namespace StardewArchipelago.Archipelago.Gifting
 
         public bool TryMakeStardewItem(Gift gift, out string itemName, out int amount)
         {
-            if (_itemManager.ObjectExists(gift.Item.Name))
+            if (_itemManager.ObjectExists(gift.ItemName))
             {
-                itemName = gift.Item.Name;
-                amount = gift.Item.Amount;
+                itemName = gift.ItemName;
+                amount = gift.Amount;
                 return true;
             }
 
-            var capitalizedName = gift.Item.Name.ToCapitalized();
+            var capitalizedName = gift.ItemName.ToCapitalized();
             if (_specialItems.ContainsKey(capitalizedName))
             {
-                var specialItem = _specialItems[capitalizedName](gift.Item.Amount);
+                var specialItem = _specialItems[capitalizedName](gift.Amount);
                 itemName = specialItem.ItemName;
                 amount = specialItem.Amount;
                 return true;
@@ -65,7 +64,7 @@ namespace StardewArchipelago.Archipelago.Gifting
                     }
 
                     var traitsByName = gift.Traits.ToDictionary(t => t.Trait, t => t);
-                    var itemAmount = itemFunction(gift.Item.Amount, traitsByName);
+                    var itemAmount = itemFunction(gift.Amount, traitsByName);
                     itemName = itemAmount.ItemName;
                     amount = itemAmount.Amount;
                     return true;
@@ -77,7 +76,7 @@ namespace StardewArchipelago.Archipelago.Gifting
                 if (_itemManager.ObjectExists(trait.Trait))
                 {
                     itemName = trait.Trait;
-                    amount = (int)Math.Round(trait.Quality * gift.Item.Amount);
+                    amount = (int)Math.Round(trait.Quality * gift.Amount);
                     return true;
                 }
             }

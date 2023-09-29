@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/daleao/bagi-meads
+   Git: https://github.com/daleao/bagi-meads.git
+
+mods:
+   Better Artisan Good Icons For Meads
+
+latest commit:
+   commit a7b136a39da6edf777d5c9b3c291aa9c01e3ea90
+   Author: daleao <111105627+daleao@users.noreply.github.com>
+   Date:   Sun Sep 24 20:58:47 2023 -0300
+   
+       Update README.md
+   

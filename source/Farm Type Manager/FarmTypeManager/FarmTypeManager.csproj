@@ -1,18 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <EnableHarmony>true</EnableHarmony>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+	
+	<PropertyGroup>
+		<AssemblyName>FarmTypeManager</AssemblyName>
+		<RootNamespace>FarmTypeManager</RootNamespace>
+		<Version>1.0.0</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<LangVersion>Latest</LangVersion>
+		<EnableHarmony>true</EnableHarmony>
+	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 
   <ItemGroup>
 	<Reference Include="ContentPatcher" HintPath="$(GameModsPath)\ContentPatcher\ContentPatcher.dll" Private="False" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="i18n\default.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

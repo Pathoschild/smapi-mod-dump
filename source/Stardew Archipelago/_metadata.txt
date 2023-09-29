@@ -6,9 +6,9 @@ mods:
    Stardew Archipelago
 
 latest commit:
-   commit 7fe11500a7cdef4c0a378b96fa36e552a2ee7e2d
+   commit b4e42f6d3776724efb331572df89a56dcc6b2ebe
    Author: Alex Gilbert <alexgilbert@yahoo.com>
-   Date:   Tue Aug 29 13:33:50 2023 -0400
+   Date:   Thu Sep 28 22:25:55 2023 -0400
    
-       - Version 4.5.1
+       - Added the two festival recipe as purchasable items
    

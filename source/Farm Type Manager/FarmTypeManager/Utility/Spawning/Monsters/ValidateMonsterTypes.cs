@@ -185,7 +185,7 @@ namespace FarmTypeManager
                             break;
                         default: //if the name doesn't match any directly known monster types
                             //check for MTF monster types
-                            if (MonstersTheFrameworkAPI.IsKnownMonsterType(validTypes[x].MonsterName, false)) //if this is a known monster type from MTF
+                            if (MonstersTheFrameworkAPI?.IsKnownMonsterType(validTypes[x].MonsterName, false) == true) //if this is a known monster type from MTF
                             {
                                 validName = true; //the name is valid
                                 break;

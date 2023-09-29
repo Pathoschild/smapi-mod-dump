@@ -72,7 +72,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 }
 
                 __result = rewards;
-                GoalCodeInjection.CheckCompleteCollectionGoalCompletion();
 
                 return false; // don't run original logic
             }
@@ -80,6 +79,20 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             {
                 _monitor.Log($"Failed in {nameof(GetRewardsForPlayer_Museumsanity_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
+            }
+        }
+
+        public static void GetRewardsForPlayer_CheckGoalCompletion_Postfix(LibraryMuseum __instance, Farmer who, ref List<Item> __result)
+        {
+            try
+            {
+                GoalCodeInjection.CheckCompleteCollectionGoalCompletion();
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(GetRewardsForPlayer_CheckGoalCompletion_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
             }
         }
 

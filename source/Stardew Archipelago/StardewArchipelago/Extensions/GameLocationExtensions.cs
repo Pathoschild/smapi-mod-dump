@@ -37,7 +37,7 @@ namespace StardewArchipelago.Extensions
             {new WarpRequest(Game1.getLocationRequest("IslandWest"), 20, 23, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("QiNutRoom"), 7, 8, FacingDirection.Up)},
             {new WarpRequest(Game1.getLocationRequest("WizardHouse"), 4, 5, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("WizardHouseBasement"), 4, 4, FacingDirection.Down)},
             {new WarpRequest(Game1.getLocationRequest("IslandWest"), 77, 40, FacingDirection.Down), new WarpRequest(Game1.getLocationRequest("IslandFarmhouse"), 14, 17, FacingDirection.Down)},
-            {new WarpRequest(Game1.getLocationRequest("DeepWoods"), 20, 6, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("DeepWoodsMaxHouse"), 19, 24, FacingDirection.Up)}
+            {new WarpRequest(Game1.getLocationRequest("DeepWoods"), 20, 6, FacingDirection.Up), new WarpRequest(Game1.getLocationRequest("DeepWoodsMaxHouse"), 19, 24, FacingDirection.Up)},
         };
 
         public static List<Point> GetAllWarpPointsTo(this GameLocation origin, string destinationName)

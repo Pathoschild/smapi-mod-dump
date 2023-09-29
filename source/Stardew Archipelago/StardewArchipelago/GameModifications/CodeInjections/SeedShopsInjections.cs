@@ -196,14 +196,35 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         private static void AddGrassStarterToPierreStock(Dictionary<ISalable, int[]> stock)
         {
             AddToPierreStock(stock, GRASS_STARTER);
-            if (!Game1.player.craftingRecipes.ContainsKey("Grass Starter"))
+
+            ISalable grassStarterRecipe;
+            if (_archipelago.SlotData.Craftsanity == Craftsanity.None)
             {
-                stock.Add(new StardewValley.Object(GRASS_STARTER, 1, true), new int[2]
+                if (Game1.player.craftingRecipes.ContainsKey("Grass Starter"))
                 {
-                    1000,
-                    1
-                });
+                    return;
+                }
+
+                grassStarterRecipe = new Object(GRASS_STARTER, 1, true);
             }
+            else
+            {
+                var location = "Grass Starter Recipe";
+                if (!_locationChecker.IsLocationMissingAndExists(location))
+                {
+                    return;
+                }
+
+                var activeHints = _archipelago.GetMyActiveHints();
+                grassStarterRecipe = new PurchaseableArchipelagoLocation(location, location,
+                    _modHelper, _locationChecker, _archipelago, activeHints);
+            }
+
+            stock.Add(grassStarterRecipe, new int[2]
+            {
+                1000,
+                1,
+            });
         }
 
         private static void AddCookingIngredientsToPierreStock(Dictionary<ISalable, int[]> stock)
@@ -249,19 +270,19 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             stock.Add(key1, new int[2]
             {
                 key1.salePrice(),
-                int.MaxValue
+                int.MaxValue,
             });
             var key2 = new Wallpaper(random.Next(56), true);
             stock.Add(key2, new int[2]
             {
                 key2.salePrice(),
-                int.MaxValue
+                int.MaxValue,
             });
             var key3 = new Furniture(1308, Vector2.Zero);
             stock.Add(key3, new int[2]
             {
                 key3.salePrice(),
-                int.MaxValue
+                int.MaxValue,
             });
         }
 
@@ -292,7 +313,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 stock.Add(itemToBuyBack, new int[2]
                 {
                     buyBackPrice,
-                    itemToBuyBack.Stack
+                    itemToBuyBack.Stack,
                 });
             }
         }
@@ -315,6 +336,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         {
             var priceMultiplier = 2.0;
             var item = new StardewValley.Object(Vector2.Zero, itemId, 1);
+            var maxAmount = 20;
 
             if (basePrice == -1)
             {
@@ -326,15 +348,28 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 priceMultiplier *= Game1.MasterPlayer.difficultyModifier;
             }
 
+            var hasStocklist = Game1.MasterPlayer.hasOrWillReceiveMail("PierreStocklist");
             if (itemSeason != null && itemSeason != Game1.currentSeason)
             {
-                if (!Game1.MasterPlayer.hasOrWillReceiveMail("PierreStocklist"))
+                if (!hasStocklist)
                 {
                     return;
                 }
 
                 priceMultiplier *= 1.5f;
             }
+
+            if (hasStocklist)
+            {
+                maxAmount *= 2;
+            }
+
+            if (Game1.player.hasCompletedCommunityCenter())
+            {
+                maxAmount *= 2;
+                priceMultiplier *= 1.5f;
+            }
+
             var price = (int)(basePrice * priceMultiplier);
             if (itemSeason != null)
             {
@@ -356,7 +391,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             if (howManyInStock == -1)
             {
                 var random = new Random((int)Game1.stats.DaysPlayed + (int)Game1.uniqueIDForThisGame / 2 + itemId);
-                howManyInStock = random.Next(20);
+                howManyInStock = random.Next(maxAmount);
                 if (howManyInStock < 5)
                 {
                     return;
@@ -367,7 +402,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             stock.Add(item, new int[2]
             {
                 price,
-                howManyInStock
+                howManyInStock,
             });
         }
 
@@ -474,7 +509,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             stock.Add(item, new int[2]
             {
                 price,
-                int.MaxValue
+                int.MaxValue,
             });
         }
 
@@ -631,9 +666,10 @@ namespace StardewArchipelago.GameModifications.CodeInjections
 
                 if (_locationChecker.IsLocationMissingAndExists(FestivalLocationNames.STRAWBERRY_SEEDS))
                 {
+                    var myActiveHints = _archipelago.GetMyActiveHints();
                     var strawberrySeedsApItem =
                         new PurchaseableArchipelagoLocation(salableObject.Name, FestivalLocationNames.STRAWBERRY_SEEDS,
-                            _modHelper, _locationChecker, _archipelago);
+                            _modHelper, _locationChecker, _archipelago, myActiveHints);
                     __instance.itemPriceAndStock.Add(strawberrySeedsApItem, new[] { 1000, 1 });
                     __instance.forSale.Add(strawberrySeedsApItem);
                 }

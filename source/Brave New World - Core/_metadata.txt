@@ -6,9 +6,9 @@ mods:
    Brave New World - Core
 
 latest commit:
-   commit 2b425560150a8145252eb8b07e85e5f40db50650
+   commit 44baef1ae642e659423e41b300e5edc909d7d6fe
    Author: diogo <diogo@DESKTOP-HMP6MQ6>
-   Date:   Wed Aug 30 13:56:51 2023 -0300
+   Date:   Tue Sep 5 09:32:18 2023 -0300
    
-       update_2023_08_30_1356
+       update_2023_09_05_0932
    

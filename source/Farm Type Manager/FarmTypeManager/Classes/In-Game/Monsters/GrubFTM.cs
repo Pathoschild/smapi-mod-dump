@@ -43,7 +43,7 @@ namespace FarmTypeManager
                 base.behaviorAtGameTick(time); //perform Grub's normal method
 
                 //if this spawns a Fly, replace it with a FlyFTM (note: this method is used to avoid overriding the entire method & working around readonly object fields)
-                if (Health == -500 && currentLocation.characters[currentLocation.characters.Count - 1] is Fly oldFly)
+                if (Health == -500 && currentLocation.characters.Count > 0 && currentLocation.characters[currentLocation.characters.Count - 1] is Fly oldFly)
                 {
                     int ID = Utility.RNG.Next(int.MinValue, -1); //generate a random ID for saving purposes (note: the ID is below -1 to avoid matching any known NPC values set by base game functions)
                     FlyFTM newFly = new FlyFTM(oldFly.Position, oldFly.hard) //make a replacement fly of the correct subclass

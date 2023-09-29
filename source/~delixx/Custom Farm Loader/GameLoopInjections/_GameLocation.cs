@@ -22,6 +22,7 @@ using Microsoft.Xna.Framework;
 using System.Reflection;
 using Custom_Farm_Loader.Lib;
 using StardewValley.Buildings;
+using StardewValley.Tools;
 
 namespace Custom_Farm_Loader.GameLoopInjections
 {
@@ -99,7 +100,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             //Warps
             foreach (var warp in customFarm.Warps) {
-                var coordinates = new xTile.ObjectModel.PropertyValue(warp.Value.X + " " + warp.Value.Y);
+                string coordinates = warp.Value.X + " " + warp.Value.Y;
                 string propertyName = warp.Key.ToLower().Replace(" ", "") switch {
                     "busstop" => "BusStopEntry",
                     "forest" => "ForestEntry",
@@ -118,12 +119,13 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             //Locations
             foreach (var location in customFarm.Locations) {
-                var coordinates = new xTile.ObjectModel.PropertyValue(location.Value.X + " " + location.Value.Y);
+                var coordinates = location.Value.X + " " + location.Value.Y;
                 string propertyName = location.Key.ToLower().Replace(" ", "") switch {
                     "farmhouse" => "FarmHouseEntry",
                     "greenhouse" => "GreenhouseLocation",
                     //The SpouseAreaLocation isn't updated in reloadMap, so we prefix GetSpouseOutdoorAreaCorner in _Farm
                     "spousearea" => "SpouseAreaLocation",
+                    "petbowl" => "PetBowlLocation",
                     "farmcave" => "FarmCaveEntry",
                     "mailbox" => "MailboxLocation",
                     "shippingbin" => "ShippingBinLocation",
@@ -138,21 +140,26 @@ namespace Custom_Farm_Loader.GameLoopInjections
             }
         }
 
-        public static bool getFish_Prefix(GameLocation __instance, ref StardewValley.Object __result, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string locationName = null)
+        public static bool getFish_Prefix(GameLocation __instance, ref Item __result, float millisecondsAfterNibble, string bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string locationName = null)
         {
             if (!CustomFarm.IsCFLMapSelected())
                 return true;
 
-            if (__instance.IsFarm && __instance is Farm)
-                foreach (Building b in (__instance as Farm).buildings)
-                    if (b is FishPond && b.isTileFishable(bobberTile)) {
-                        __result = (b as FishPond).CatchFish();
-                        return false;
-                    }
+            foreach (Building b in __instance.buildings)
+                if (b is FishPond && b.isTileFishable(bobberTile)) {
+                    __result = (b as FishPond).CatchFish();
+                    return false;
+                }
 
             CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
 
-            bool isUsingMagicBait = __instance.IsUsingMagicBait(who);
+            bool isUsingMagicBait = false;
+            bool hasCuriosityLure = false;
+            if (who?.CurrentTool is FishingRod rod) {
+                isUsingMagicBait = rod.HasMagicBait();
+                hasCuriosityLure = rod.HasCuriosityLure();
+            }
+
             var validFishingRules = customFarm.FishingRules.FindAll(el => el.Area.LocationName == __instance.Name
                                                                        && el.Area.isTileIncluded(bobberTile)
                                                                        && el.Filter.isValid(excludeSeason: isUsingMagicBait, excludeTime: isUsingMagicBait, excludeWeather: isUsingMagicBait, who: who)

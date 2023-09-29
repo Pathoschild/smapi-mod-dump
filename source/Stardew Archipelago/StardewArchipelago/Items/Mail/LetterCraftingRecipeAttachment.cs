@@ -15,7 +15,6 @@ namespace StardewArchipelago.Items.Mail
     public class LetterCraftingRecipeAttachment : LetterAttachment
     {
         public string RecipeItemName { get; private set; }
-        public int AttachmentAmount { get; private set; }
 
         protected override bool IsEmptyLetter => false;
 

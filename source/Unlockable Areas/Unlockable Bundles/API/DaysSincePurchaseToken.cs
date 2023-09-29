@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using StardewModdingAPI;
+using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +51,11 @@ namespace Unlockable_Bundles.API
         /// <returns>Returns whether the value changed, which may trigger patch updates.</returns>
         public bool UpdateContext()
         {
+            //This may cause multiple context updates on daystart, but it's consistent
+            //Won't rewrite for now
+            if (SaveGame.loaded is not null && Context.IsMainPlayer)
+                return true;
+
             if (RequiresContextUpdate) {
                 RequiresContextUpdate = false;
                 return true;
@@ -60,7 +67,16 @@ namespace Unlockable_Bundles.API
         /// <summary>Get whether the token is available for use.</summary>
         public bool IsReady()
         {
-            return Ready;
+            if (SaveGame.loaded is null && !Context.IsWorldReady)
+                return false;
+
+            if (!Context.IsMainPlayer)
+                return Ready;
+
+            if (ModData.Instance is null)
+                SaveDataEvents.LoadModData();
+
+            return true;
         }
 
         /// <summary>Get the current values.</summary>

@@ -21,7 +21,7 @@ namespace StardewArchipelago.GameModifications.Modded
 
         public void CheckJunaHearts(ArchipelagoClient _archipelago)
         {
-            if (!_archipelago.SlotData.Mods.HasMod(ModNames.JUNA))
+            if (_archipelago == null || !_archipelago.SlotData.Mods.HasMod(ModNames.JUNA))
             {
                 return;
             }

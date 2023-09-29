@@ -1,0 +1,33 @@
+{
+   // String fragments
+    "TheMightyAmondee.CDPP/responseperson":"Someone",
+    "TheMightyAmondee.CDPP/responseappendix1": "and battered",
+    "TheMightyAmondee.CDPP/responseappendix2": "in the mine",
+    "TheMightyAmondee.CDPP/responseappendix3": "on the island shore",
+    "TheMightyAmondee.CDPP/finallyawake": "Good you're finally awake. ",
+  
+    // Event fragments
+    "TheMightyAmondee.CDPP/wakeplayer": " ...{0}?",
+    "TheMightyAmondee.CDPP/nomoneylost": "I still seem to have all my money. ",
+    "TheMightyAmondee.CDPP/nomoneylostmine": "Fortunately, I still have all my money",
+    "TheMightyAmondee.CDPP/nocharge": "Dr. Harvey didn't charge me for the hospital visit, how nice. ",
+    "TheMightyAmondee.CDPP/nomoney": "Fortunately, I have no money to lose. That could have been bad.",
+    "TheMightyAmondee.CDPP/becareful": "Be a little more careful next time, okay?$s",
+    "TheMightyAmondee.CDPP/nicetoseeyou": "While it's nice to see you, I hate having to patch you up...#$b#Please be a little more careful next time, okay?$s",
+    "TheMightyAmondee.CDPP/bereallycareful": "You really need to be more careful, I don't like having to patch you up after you do something dangerous.$s",
+    "TheMightyAmondee.CDPP/easynow1": "Easy, now... take it slow.",
+    "TheMightyAmondee.CDPP/easynow2": "Hey, kid! You okay?",
+    "TheMightyAmondee.CDPP/qi": "I found you battered and unconscious down there, kid... I hope you weren't doing something stupid.$1#$b#Just be more careful in the caverns next time, okay. There's still lots of potential in you, kid!",
+    "TheMightyAmondee.CDPP/whathappened": "...What just happened?",
+    "TheMightyAmondee.CDPP/somethingbad": "Something bad must have happened to me... I have no idea how I got here...",
+    "TheMightyAmondee.CDPP/moneylost": "I seem to have lost {{moneylost}}g. I wonder how that happened... ",
+  
+    // Mail fragments
+    "TheMightyAmondee.CDPP/mailnocharge": "Be thankful you haven't been billed for this service",
+    "TheMightyAmondee.CDPP/mailnochargeharvey": "I haven't billed you for your medical expenses this time",
+
+    // Replacements
+    "TheMightyAmondee.CDPP/replacementdialogue":"{0} found you unconscious {1}... I had to perform an emergency surgery on you!#$b#",
+    "TheMightyAmondee.CDPP/replacementmail1":"You've been billed {0}g for this service",
+    "TheMightyAmondee.CDPP/replacementmail2":"I've billed you {0}g to cover your medical expenses"
+}

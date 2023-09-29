@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 namespace Custom_Farm_Loader.Lib.Enums
 {    public enum FishType
     {
-        Any,
         Item,
         Furniture,
         Location

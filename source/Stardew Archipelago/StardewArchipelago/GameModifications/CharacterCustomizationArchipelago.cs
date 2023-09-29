@@ -183,7 +183,7 @@ namespace StardewArchipelago.GameModifications
                 upNeighborID = -99998,
                 leftNeighborID = -99998,
                 rightNeighborID = -99998,
-                downNeighborID = -99998
+                downNeighborID = -99998,
             };
             var languageOffset = LocalizedContentManager.CurrentLanguageCode is LocalizedContentManager.LanguageCode.ru or LocalizedContentManager.LanguageCode.es or LocalizedContentManager.LanguageCode.pt ? -4 : 0;
             ipAddressLabel = new ClickableComponent(new Rectangle(xOffset + languageOffset + 16 + 192 + 4, yOffset - 8, 1, 1), "Server");
@@ -208,7 +208,7 @@ namespace StardewArchipelago.GameModifications
                 upNeighborID = -99998,
                 leftNeighborID = -99998,
                 rightNeighborID = -99998,
-                downNeighborID = -99998
+                downNeighborID = -99998,
             };
             var languageOffset = LocalizedContentManager.CurrentLanguageCode is LocalizedContentManager.LanguageCode.ru or LocalizedContentManager.LanguageCode.es or LocalizedContentManager.LanguageCode.pt ? -4 : 0;
             slotNameLabel = new ClickableComponent(new Rectangle(xOffset + languageOffset + 16 + 192 + 4, yOffset - 8, 1, 1), "Slot");
@@ -233,7 +233,7 @@ namespace StardewArchipelago.GameModifications
                 upNeighborID = -99998,
                 leftNeighborID = -99998,
                 rightNeighborID = -99998,
-                downNeighborID = -99998
+                downNeighborID = -99998,
             };
             var languageOffset = LocalizedContentManager.CurrentLanguageCode is LocalizedContentManager.LanguageCode.ru or LocalizedContentManager.LanguageCode.es or LocalizedContentManager.LanguageCode.pt ? -4 : 0;
             passwordLabel = new ClickableComponent(new Rectangle(xOffset + languageOffset + 16 + 192 + 4, yOffset - 8, 1, 1), "Password");

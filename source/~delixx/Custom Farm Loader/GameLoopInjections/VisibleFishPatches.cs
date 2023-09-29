@@ -50,7 +50,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
             );
         }
 
-        public static bool getFish_Prefix(int tileX, int tileY, ref StardewValley.Object __result) => _GameLocation.getFish_Prefix(Game1.currentLocation, ref __result, 0f, 0, 4, Game1.player, 0f, new Microsoft.Xna.Framework.Vector2(tileX, tileY));
+        public static bool getFish_Prefix(int tileX, int tileY, ref Item __result) => _GameLocation.getFish_Prefix(Game1.currentLocation, ref __result, 0f, "", 4, Game1.player, 0f, new Microsoft.Xna.Framework.Vector2(tileX, tileY));
         
     }
     

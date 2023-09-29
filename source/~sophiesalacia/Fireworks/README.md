@@ -7,15 +7,9 @@ for queries and analysis.**
 ----
 
 
-## More Tokens
+## Fireworks (2023 Mod Jam Collab)
 *by sophie*
 
-[NexusMods]()  
-[GitHub]()
-TO DO
+[NexusMods](https://www.nexusmods.com/stardewvalley/mods/15277)
 
-#### If you have any issues:
-* Read the documentation carefully. I have tried to be as thorough as possible.
-* Make sure SMAPI and Content Patcher are up-to-date.
-* You can reach me on the Stardew Valley discord (Vertigon#1851) or on the Nexus mod page.
-* Please provide a SMAPI log, as well as your mod files, so that I can assist you better.
+This is not a standalone mod - it is the C# component of the New Year's Eve mod created by Yri, Airyn, shekurika, LenneDalben, beyondrecovery, TiaKall, and myself for the Stardew Valley Discord 2023 Mod Jam.

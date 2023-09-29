@@ -47,8 +47,15 @@ namespace Unlockable_Bundles.API
 
         public static List<string> getPurchasedUnlockables()
         {
-            if (!Context.IsWorldReady || ModData.Instance is null)
+            //We are not currently loading a savegame and are not between daystart and dayending
+            if (SaveGame.loaded is null && !Context.IsWorldReady)
                 return null;
+
+            if (ModData.Instance is null)
+                if (Context.IsMainPlayer)
+                    SaveDataEvents.LoadModData();
+                else
+                    return null;
 
             if (CachedPurchasedBundles != null)
                 return CachedPurchasedBundles;
@@ -65,8 +72,14 @@ namespace Unlockable_Bundles.API
 
         public static Dictionary<string, List<string>> getPurchasedUnlockablesByLocation()
         {
-            if (ModData.Instance is null)
+            if (SaveGame.loaded is null && !Context.IsWorldReady)
                 return null;
+
+            if (ModData.Instance is null)
+                if (Context.IsMainPlayer)
+                    SaveDataEvents.LoadModData();
+                else
+                    return null;
 
             if (CachedPurchasedBundlesByLocation != null)
                 return CachedPurchasedBundlesByLocation;

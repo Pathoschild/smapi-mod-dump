@@ -20,6 +20,11 @@
   "Dependencies": [
     {
       "UniqueID": "spacechase0.JsonAssets",
+      "IsRequired": false,
+      "MinimumVersion": "1.10.14"
+    },
+    {
+      "UniqueID": "spacechase0.MoreGiantCrops",
       "IsRequired": false
     },
     {

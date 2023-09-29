@@ -37,6 +37,20 @@ namespace BetterSprinklersPlus.Framework.Helpers
       [621] = "Quality Sprinkler",
       [645] = "Iridium Sprinkler",
     };
+    
+    public static readonly Dictionary<int, int> DefaultTileCountWithoutPressureNozzle = new()
+    {
+      [599] = 4,
+      [621] = 8,
+      [645] = 24,
+    };
+    
+    public static readonly Dictionary<int, int> DefaultTileCountWithPressureNozzle = new()
+    {
+      [599] = 8,
+      [621] = 24,
+      [645] = 48,
+    };
 
     public static readonly Dictionary<int, int[,]> DefaultGrids = new()
     {
@@ -95,35 +109,32 @@ namespace BetterSprinklersPlus.Framework.Helpers
       return SprinklerObjectIds.Contains(obj.ParentSheetIndex);
     }
 
-    public static IEnumerable<KeyValuePair<Vector2, Object>> AllSprinklers(this IEnumerable<GameLocation> locations)
+    private static int DefaultTileCount(this int type, bool hasPressureNozzle = false)
     {
-      var allSprinklers = new List<KeyValuePair<Vector2, Object>>();
-      foreach (var location in locations)
+      var count = 0;
+      try
       {
-        allSprinklers.AddRange(location.AllSprinklers());
+        if (hasPressureNozzle)
+        {
+          DefaultTileCountWithPressureNozzle.TryGetValue(type, out count);
+        }
+        else
+        {
+          DefaultTileCountWithoutPressureNozzle.TryGetValue(type, out count);
+        }
+      }
+      catch (Exception e)
+      {
+        Logger.Error($"Could not get default count for type {type}, returning 0: {e.Message}");
       }
 
-      return allSprinklers;
+      return count;
     }
+
     public static IEnumerable<KeyValuePair<Vector2, Object>> AllSprinklers(this GameLocation location)
     {
       return location.objects.Pairs
         .Where(obj => SprinklerObjectIds.Contains(obj.Value.ParentSheetIndex));
-    }
-
-    public static IEnumerable<Vector2> AllPressureNozzles(this GameLocation location)
-    {
-      return location.objects.Pairs
-        .Where(obj => obj.Value.ParentSheetIndex == PressureNozzleId).Select((pn) => pn.Key);
-    }
-
-    public static void ForCoveredTiles(this Object sprinkler, BetterSprinklersPlusConfig config, Vector2 tile, Action<Vector2> perform)
-    {
-      config.SprinklerShapes.TryGetValue(sprinkler.ParentSheetIndex, out var grid);
-      foreach (var coveredTile in GridHelper.GetCoveredTiles(tile , grid))
-      {
-        perform(coveredTile);
-      }
     }
 
     public static int CountCoveredTiles(this int type)
@@ -131,12 +142,24 @@ namespace BetterSprinklersPlus.Framework.Helpers
       BetterSprinklersPlusConfig.Active.SprinklerShapes.TryGetValue(type, out var grid);
       if (grid == null) return 0;
 
-      if (BetterSprinklersPlusConfig.Active.DefaultsAreFree)
+      if (BetterSprinklersPlusConfig.Active.DefaultTiles == (int)BetterSprinklersPlusConfig.DefaultTilesOptions.AreFree)
       {
         grid = grid.UnsetDefaultTiles(type);
       }
 
-      return grid.CountCoveredTiles();
+      var countCoveredTiles = grid.CountCoveredTiles();
+      Logger.Verbose($"Count Covered Tiles: {countCoveredTiles}");
+      if (BetterSprinklersPlusConfig.Active.DefaultTiles ==
+          (int)BetterSprinklersPlusConfig.DefaultTilesOptions.SameNumberAreFree)
+      {
+        var defaultForType = type.DefaultTileCount();
+
+        countCoveredTiles = countCoveredTiles < defaultForType ? 0 : countCoveredTiles - defaultForType;
+        
+        Logger.Verbose($"Default count is free, count without default: {countCoveredTiles}");
+      }
+
+      return countCoveredTiles;
     }
     
     public static int CountCoveredTiles(this int[,] grid)
@@ -234,17 +257,30 @@ namespace BetterSprinklersPlus.Framework.Helpers
 
     public static float CalculateCostForSprinkler(this int[,] grid, int type, bool hasPressureNozzle = false)
     {
-      if (BetterSprinklersPlusConfig.Active.DefaultsAreFree)
+      if (BetterSprinklersPlusConfig.Active.DefaultTiles == (int)BetterSprinklersPlusConfig.DefaultTilesOptions.AreFree)
       {
-        Logger.Verbose("Defaults are free");
-        grid.VerboseLog();
+        Logger.Verbose("Defaults are free, removing tiles in default position");
+        // grid.VerboseLog();
         grid = grid.UnsetDefaultTiles(type, hasPressureNozzle);
-        grid.VerboseLog();
+        // grid.VerboseLog();
       }
 
       Logger.Verbose($"CalculateCostForSprinkler(int[,] grid, {SprinklerTypes[type]})");
       var count = grid.CountCoveredTiles();
+      
       Logger.Verbose($"Count of covered tiles: {count}");
+
+      if (BetterSprinklersPlusConfig.Active.DefaultTiles ==
+          (int)BetterSprinklersPlusConfig.DefaultTilesOptions.SameNumberAreFree)
+      {
+        var defaultForType = type.DefaultTileCount();
+
+        count = count < defaultForType ? 0 : count - defaultForType;
+        
+        
+        Logger.Verbose($"Default count is free, Count of covered tiles without default: {count}");
+      }
+
       var costPerTile = type.GetCostPerTile(hasPressureNozzle);
       Logger.Verbose($"Cost Per Tile: {costPerTile}G");
 

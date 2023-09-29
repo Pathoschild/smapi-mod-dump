@@ -67,7 +67,7 @@ namespace Desert_Bloom.Lib
             var farm = Game1.getFarm();
             var oasisArea = new Microsoft.Xna.Framework.Rectangle(107, 13, 29, 29);
 
-            foreach (HoeDirt dirt in farm.terrainFeatures.Values.Where(e => e is HoeDirt && !oasisArea.Contains(e.currentTileLocation))) {
+            foreach (HoeDirt dirt in farm.terrainFeatures.Values.Where(e => e is HoeDirt && !oasisArea.Contains(e.Tile))) {
                 if (chance == 1 || Game1.random.NextDouble() < chance)
                     dirt.state.Value = 1; //Watered HoeDirt
 
@@ -111,8 +111,7 @@ namespace Desert_Bloom.Lib
         public static void trySpreadGrass(GameLocation farm, KeyValuePair<Vector2, TerrainFeature> kvp, int xCoord, int yCoord, int xOffset, int yOffset)
         {
             if (farm.isTileOnMap(xCoord, yCoord)
-                && !farm.isTileOccupied(kvp.Key + new Vector2(xOffset, yOffset))
-                && farm.isTileLocationOpenIgnoreFrontLayers(new Location(xCoord + xOffset, yCoord + yOffset))
+                && !farm.IsTileOccupiedBy(kvp.Key + new Vector2(xOffset, yOffset))
                 && farm.doesTileHaveProperty(xCoord + xOffset, yCoord + yOffset, "NoSpawn", "Back") == null) {
 
                 var diggable = farm.doesTileHaveProperty(xCoord + xOffset, yCoord + yOffset, "Diggable", "Back") != null;

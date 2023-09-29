@@ -29,6 +29,11 @@ namespace StardewArchipelago.Stardew
             return new StardewValley.Objects.Hat(Id);
         }
 
+        public override Item PrepareForRecovery()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void GiveToFarmer(Farmer farmer, int amount = 1)
         {
             var boots = PrepareForGivingToFarmer();

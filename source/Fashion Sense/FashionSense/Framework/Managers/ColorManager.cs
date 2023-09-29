@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using FashionSense.Framework.Models.Messages;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -24,6 +25,12 @@ namespace FashionSense.Framework.Managers
         {
             _monitor = monitor;
             _farmerToColorIdToColorValue = new Dictionary<Farmer, Dictionary<string, Color>>();
+        }
+
+        internal void BroadcastColorChange(Farmer who, string colorKey, Color colorValue)
+        {
+            var colorChangeMessage = new ColorChangeMessage(who.UniqueMultiplayerID, colorKey, colorValue);
+            FashionSense.modHelper.Multiplayer.SendMessage(colorChangeMessage, "ColorChangeMessage", modIDs: new[] { FashionSense.modManifest.UniqueID });
         }
 
         internal Color GetColor(Farmer who, string colorKey)
@@ -51,6 +58,12 @@ namespace FashionSense.Framework.Managers
 
             who.modData[colorKey] = colorValue.PackedValue.ToString();
             _farmerToColorIdToColorValue[who][colorKey] = colorValue;
+
+            // Send out color change message to all other players
+            if (who.IsLocalPlayer)
+            {
+                BroadcastColorChange(who, colorKey, colorValue);
+            }
         }
 
         internal void SetColor(Farmer who, string colorKey, string rawColorValue)

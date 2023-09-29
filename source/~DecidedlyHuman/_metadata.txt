@@ -13,9 +13,9 @@ mods:
    Smart Cursor
 
 latest commit:
-   commit 1f50aad60bbc1d985e524373bcb648a82c21568b
+   commit 2236671f223c95cc9d0c5ee477cea4b7c6045ee2
    Author: Alan <contact@decidedlyhuman.co.uk>
-   Date:   Sun Aug 6 18:03:08 2023 +0100
+   Date:   Thu Sep 14 17:01:18 2023 +0100
    
-       SB: Updated release notes.
+       SB: Fixed GMCM naming for creative mode.
    

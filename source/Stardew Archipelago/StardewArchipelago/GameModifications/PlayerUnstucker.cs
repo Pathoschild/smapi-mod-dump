@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework;
 using StardewArchipelago.Extensions;
 using StardewArchipelago.Items.Traps;
 using StardewValley;
+using StardewValley.Locations;
 
 namespace StardewArchipelago.GameModifications
 {
@@ -34,10 +35,17 @@ namespace StardewArchipelago.GameModifications
             var player = Game1.player;
             var map = player.currentLocation;
             var tiles = new List<Point>();
+            var islandSouth = map as IslandSouth;
             for (var x = 0; x < map.Map.Layers[0].LayerWidth; x++)
             {
                 for (var y = 0; y < map.Map.Layers[0].LayerHeight; y++)
                 {
+                    var tilePosition = new Rectangle(x * 64 + 1, y * 64 + 1, 62, 62);
+                    if (map.isCollidingPosition(tilePosition, Game1.viewport, true, 0, false, Game1.player))
+                    {
+                        continue;
+                    }
+
                     tiles.Add(new Point(x, y));
                 }
             }
@@ -46,7 +54,7 @@ namespace StardewArchipelago.GameModifications
 
             foreach (var tile in tiles)
             {
-                if (_tileChooser.CanPathFindToAnyWarp(map, tile))
+                if (_tileChooser.CanPathFindToAnyWarp(map, tile, 2))
                 {
                     player.setTileLocation(new Vector2(tile.X, tile.Y));
                     return true;

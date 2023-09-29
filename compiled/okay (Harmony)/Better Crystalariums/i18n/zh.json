@@ -3,4 +3,4 @@
     "bettercrystalariums.no-gmcm": "用户似乎没有安装 GMCM。 这不是问题。",
     "bettercrystalariums.debug-setting-title": "调试模式",
     "bettercrystalariums.debug-setting-description": "仅当我要求您启用此功能，或者您想自己挖掘问题时才启用此功能。 这将启用额外的日志记录。"
-  }
+}

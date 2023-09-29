@@ -9,6 +9,8 @@ for queries and analysis.**
 
 Custom Death Penalty Plus allows the death penalty (and pass out penalty as of 1.1.0) to be fully customised in [Stardew Valley](https://www.stardewvalley.net/).
 
+Now with translation support as of version 1.5.0. Feel free to translate the mod and send me the files for addition (best place to reach me is on the mod page). Full credit given, obviously!
+
 Current options allow configuration for:
 
 **Death Penalty**
@@ -63,5 +65,7 @@ Current options allow configuration for:
 1.4.0 - Mod data now saved to save file instead of the mod folder, added more config options, removed most debug commands (better to edit config manually, more error checking is in place) only configinfo remains
 
 1.4.1 - Updated for new content api in SMAPI 3.14.0
+
+1.5.0 - Added translation support, added italian, spanish and french translations thanks to AlixNauts on Nexus!
 
 

@@ -1,0 +1,21 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "DestyNova.Hector.SMAPI",
+  "Name": "[SMAPI] Circle of Thorns",
+  "Author": "KittyCatCasey",
+  "Version": "1.0.2",
+  "EntryDll": "CircleOfThornsSMAPI.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "MinimumVersion": "1.17.2"
+    }
+  ]
+}

@@ -25,7 +25,7 @@ namespace Unlockable_Bundles.Lib
 {
     public sealed class ModData
     {
-        public static ModData Instance = new ModData();
+        public static ModData Instance = null;
 
         //Dic<UnlockableKey, Dic<locationUnique, SaveData>>
         public Dictionary<string, Dictionary<string, UnlockableSaveData>> UnlockableSaveData { get; set; } = new Dictionary<string, Dictionary<string, UnlockableSaveData>>();

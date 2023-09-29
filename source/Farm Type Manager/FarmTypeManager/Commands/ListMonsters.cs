@@ -33,7 +33,7 @@ namespace FarmTypeManager
                 Utility.Monitor.Log($"{monster}", LogLevel.Info);
             }
             string previousAssembly = null; //the most recently displayed assembly name
-            List<Type> monsters = GetAllSubclassTypes(typeof(Monster)); //a list of every available monster type (including those from SDV and this mod)
+            List<Type> monsters = Utility.GetAllSubclassTypes(typeof(Monster)); //a list of every available monster type (including those from SDV and this mod)
             foreach (Type monster in monsters) //for each available monster type
             {
                 string currentAssembly = monster.Assembly.GetName().Name; //get this monster's simple assembly name
@@ -72,38 +72,6 @@ namespace FarmTypeManager
                     Utility.Monitor.Log($"{id}", LogLevel.Info); //display this ID
                 }
             }
-        }
-
-        /// <summary>Searches all loaded assemblies for subclasses of the provided class type and returns them in a list.</summary>
-        /// <param name="baseClass">The returned type must be derived from this class.</param>
-        /// <returns>A list of types derived from baseClass.</returns>
-        private static List<Type> GetAllSubclassTypes(Type baseClass)
-        {
-            List<Type> subclassTypes = new List<Type>();
-
-            if (baseClass == null)
-            {
-                return subclassTypes;
-            }
-
-            bool filterSubclass(Type type) => type.IsSubclassOf(baseClass); //true when a type is derived from the provided base class
-
-            subclassTypes.AddRange
-            (
-                AppDomain.CurrentDomain.GetAssemblies() //get all assemblies
-                .Where
-                (
-                    //ignore any assemblies that can't contain monster and/or may cause errors
-                    assembly => assembly.IsDynamic == false
-                    && assembly.ManifestModule.Name != "<In Memory Module>"
-                    && !assembly.FullName.StartsWith("System")
-                    && !assembly.FullName.StartsWith("Microsoft")
-                )
-                .SelectMany(assembly => Utility.TryGetTypes(assembly)) //get all types from each assembly as a single sequence
-                .Where(filterSubclass) //ignore any types that are not subclasses of baseClass
-            );
-
-            return subclassTypes;
         }
 
         /// <summary>Produces a premade (non-dynamic) list of names for each monster type from Stardew Valley, as used by this mod's "MonsterName" setting.</summary>

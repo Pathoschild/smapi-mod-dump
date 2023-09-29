@@ -1,15 +1,14 @@
 from __future__ import annotations
-from enum import Enum
 
 import os
 from collections.abc import Iterable
+from enum import Enum
 from pathlib import Path
 
+import mobase
 from PyQt6.QtCore import QDir, qWarning
 
-import mobase
-
-from ..basic_features import BasicModDataChecker
+from ..basic_features import BasicModDataChecker, GlobPatterns
 from ..basic_features.basic_save_game_info import (
     BasicGameSaveGame,
     BasicGameSaveGameInfo,
@@ -18,22 +17,24 @@ from ..basic_game import BasicGame
 
 
 class SubnauticaModDataChecker(BasicModDataChecker):
-    default_file_patterns = {
-        "unfold": ["BepInExPack_Subnautica"],
-        "valid": ["winhttp.dll", "doorstop_config.ini", "BepInEx", "QMods"],
-        "delete": [
-            "*.txt",
-            "*.md",
-            "icon.png",
-            "license",
-            "manifest.json",
-        ],
-        "move": {"plugins": "BepInEx/", "patchers": "BepInEx/", "*": "QMods/"},
-    }
+    def __init__(self, patterns: GlobPatterns = GlobPatterns()):
+        super().__init__(
+            GlobPatterns(
+                unfold=["BepInExPack_Subnautica"],
+                valid=["winhttp.dll", "doorstop_config.ini", "BepInEx", "QMods"],
+                delete=[
+                    "*.txt",
+                    "*.md",
+                    "icon.png",
+                    "license",
+                    "manifest.json",
+                ],
+                move={"plugins": "BepInEx/", "patchers": "BepInEx/", "*": "QMods/"},
+            ).merge(patterns),
+        )
 
 
 class SubnauticaGame(BasicGame, mobase.IPluginFileMapper):
-
     Name = "Subnautica Support Plugin"
     Author = "dekart811, Zash"
     Version = "2.1.1"

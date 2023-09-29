@@ -12,8 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Items.Mail;
 using StardewArchipelago.Items.Unlocks;
+using StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
@@ -30,14 +30,15 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static IModHelper _modHelper;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
+        private static WeaponsManager _weaponsManager;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago,
-            LocationChecker locationChecker)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, WeaponsManager weaponsManager)
         {
             _monitor = monitor;
             _modHelper = modHelper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
+            _weaponsManager = weaponsManager;
         }
 
         // protected override void resetLocalState()
@@ -66,12 +67,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             catch (Exception ex)
             {
                 _monitor.Log($"Failed in {nameof(ResetLocalState_GuildMemberOnlyIfReceived_Postfix)}:\n{ex}", LogLevel.Error);
-                throw;
+                return;
             }
         }
 
         // public virtual bool answerDialogueAction(string questionAndAnswer, string[] questionParams)
-        public static bool TelephoneAdventureGuild_AddReceivedWeapons_Prefix(GameLocation __instance, string questionAndAnswer, string[] questionParams, bool __result)
+        public static bool TelephoneAdventureGuild_AddReceivedEquipments_Prefix(GameLocation __instance, string questionAndAnswer, string[] questionParams, bool __result)
         {
             try
             {
@@ -82,43 +83,74 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
                 var farmer = Game1.player;
 
-                foreach (var mail in Game1.player.mailReceived)
+                var equipmentsToRecover = new[]
                 {
-                    if (!MailKey.TryParse(mail, out var mailKey))
+                    VanillaUnlockManager.PROGRESSIVE_WEAPON, VanillaUnlockManager.PROGRESSIVE_SWORD,
+                    VanillaUnlockManager.PROGRESSIVE_CLUB, VanillaUnlockManager.PROGRESSIVE_DAGGER,
+                    VanillaUnlockManager.PROGRESSIVE_BOOTS,
+                };
+
+                var seed = (int)(Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed);
+                var random = new Random(seed);
+                foreach (var equipmentApItem in equipmentsToRecover)
+                {
+                    var received = Math.Min(5, _archipelago.GetReceivedItemCount(equipmentApItem));
+                    if (received <= 0)
                     {
                         continue;
                     }
 
-                    var apActionName = mailKey.LetterOpenedAction;
+                    var candidates = equipmentApItem switch
+                    {
+                        VanillaUnlockManager.PROGRESSIVE_WEAPON => _weaponsManager.WeaponsByTier[received],
+                        VanillaUnlockManager.PROGRESSIVE_SWORD => _weaponsManager.WeaponsByCategoryByTier[WeaponsManager.TYPE_SWORD][received],
+                        VanillaUnlockManager.PROGRESSIVE_CLUB => _weaponsManager.WeaponsByCategoryByTier[WeaponsManager.TYPE_CLUB][received],
+                        VanillaUnlockManager.PROGRESSIVE_DAGGER => _weaponsManager.WeaponsByCategoryByTier[WeaponsManager.TYPE_DAGGER][received],
+                        VanillaUnlockManager.PROGRESSIVE_BOOTS => _weaponsManager.BootsByTier[received],
+                        _ => new List<StardewItem>(),
+                    };
 
-                    if (apActionName != LetterActionsKeys.GiveMeleeWeapon)
+                    if (!candidates.Any())
                     {
                         continue;
                     }
 
-                    var weaponIdStr = mailKey.ActionParameter;
-                    var weaponId = int.Parse(weaponIdStr);
-                    var weapon = new MeleeWeaponToRecover(weaponId);
+                    var chosenIndex = random.Next(0, candidates.Count);
+                    var chosenEquipment = candidates[chosenIndex];
 
-                    if (farmer.itemsLostLastDeath.Any(x => x.Name == weapon.Name))
+                    var equipmentToRecover = chosenEquipment.PrepareForRecovery();
+
+                    if (farmer.itemsLostLastDeath.Any(x => x.Name == equipmentToRecover.Name))
                     {
                         continue;
                     }
 
-                    weapon.isLostItem = true;
-                    farmer.itemsLostLastDeath.Add(weapon);
+                    equipmentToRecover.isLostItem = true;
+                    farmer.itemsLostLastDeath.Add(equipmentToRecover);
                 }
 
                 return true; // run original logic
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(TelephoneAdventureGuild_AddReceivedWeapons_Prefix)}:\n{ex}",
+                _monitor.Log($"Failed in {nameof(TelephoneAdventureGuild_AddReceivedEquipments_Prefix)}:\n{ex}",
                     LogLevel.Error);
-                throw;
+                return true; // run original logic
             }
         }
 
+        public static void RemoveExtraItemsFromItemsLostLastDeath()
+        {
+            foreach (var lostItem in Game1.player.itemsLostLastDeath.ToArray())
+            {
+                if (lostItem is not MeleeWeaponToRecover)
+                {
+                    continue;
+                }
+
+                Game1.player.itemsLostLastDeath.Remove(lostItem);
+            }
+        }
 
         public static bool GetAdventureShopStock_ShopBasedOnReceivedItems_Prefix(
             ref Dictionary<ISalable, int[]> __result)
@@ -151,9 +183,10 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 WoodenBlade, IronDirk, WindSpire, Femur, SteelSmallsword, WoodClub, ElfBlade, SilverSaber, PirateSword,
                 CrystalDagger, Cutlass, IronEdge, BurglarsShank, WoodMallet, Claymore, TemplarsBlade, Kudgel,
                 ShadowDagger, ObsidianEdge, TemperedBroadsword, WickedKris, BoneSword, OssifiedBlade, SteelFalchion,
-                TheSlammer, LavaKatana, GalaxySword, GalaxyDagger, GalaxyHammer
+                TheSlammer, LavaKatana, // No Galaxy Weapons here
             };
             AddItemsToShop(adventureShopStock, weapons);
+            AddGalaxyWeaponsToShopIfReceivedAny(adventureShopStock);
         }
 
         private static void AddShoes(Dictionary<ISalable, int[]> adventureShopStock)
@@ -161,7 +194,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             var shoes = new[]
             {
                 Sneakers, LeatherBoots, WorkBoots, TundraBoots, ThermalBoots, CombatBoots, FirewalkerBoots, DarkBoots,
-                SpaceBoots, CrystalShoes
+                SpaceBoots, CrystalShoes,
             };
             AddItemsToShop(adventureShopStock, shoes);
         }
@@ -259,10 +292,31 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         {
             foreach (var (item, price) in items)
             {
-                if (_archipelago.HasReceivedItem(item.Name))
-                {
-                    adventureShopStock.Add(item, price);
-                }
+                AddItemToStockIfReceived(adventureShopStock, item, price);
+            }
+        }
+
+        private static void AddItemToStockIfReceived(Dictionary<ISalable, int[]> adventureShopStock, ISalable item, int[] price)
+        {
+            if (!_archipelago.HasReceivedItem(item.Name))
+            {
+                return;
+            }
+
+            adventureShopStock.Add(item, price);
+        }
+
+        private static void AddGalaxyWeaponsToShopIfReceivedAny(Dictionary<ISalable, int[]> adventureShopStock)
+        {
+            var galaxyWeapons = new[] { GalaxySword, GalaxyDagger, GalaxyHammer };
+            if (!galaxyWeapons.Any(weapon => _archipelago.HasReceivedItem(weapon.Key.Name)))
+            {
+                return;
+            }
+
+            foreach (var (item, price) in galaxyWeapons)
+            {
+                adventureShopStock.Add(item, price);
             }
         }
 

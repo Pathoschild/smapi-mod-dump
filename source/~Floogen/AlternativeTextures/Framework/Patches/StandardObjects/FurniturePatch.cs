@@ -250,7 +250,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
 
         private static bool DrawInMenuPrefix(Furniture __instance, NetInt ___sourceIndexOffset, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
         {
-            if (Game1.activeClickableMenu is PaintBucketMenu && !PatchTemplate.IsDGAObject(__instance))
+            if ((Game1.activeClickableMenu is PaintBucketMenu || Game1.activeClickableMenu is CatalogueMenu) && !PatchTemplate.IsDGAObject(__instance))
             {
                 var texture = Furniture.furnitureTexture;
                 var sourceRect = __instance.rotations > 1 ? __instance.sourceRect.Value : __instance.defaultSourceRect.Value;

@@ -6,9 +6,9 @@ mods:
    Unlockable Bundles
 
 latest commit:
-   commit 8f8afb00fe50ef93b82cf4e01fee1e7937dd9b9b
+   commit 4ab9036001543a4397016a095566bf58f38abcd8
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Wed Aug 30 08:18:57 2023 +0200
+   Date:   Sat Sep 16 07:33:16 2023 +0200
    
-       hopefully improved TileIndexProperties behavior a bunch
+       copied changes from 1.5 branch for more consistent token use as bundle conditions
    

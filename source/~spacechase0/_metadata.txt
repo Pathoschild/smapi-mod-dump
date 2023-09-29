@@ -76,11 +76,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 43388ca131dfa0943758b4ca0d770d660174f6a8
-   Author: Casey W <spacechase0@users.noreply.github.com>
-   Date:   Wed Aug 30 20:12:17 2023 -0400
+   commit d592630503c9076b6c2183a75d135fcaf0d2c5cb
+   Author: Casey Warrington <spacechase0.and.cat@gmail.com>
+   Date:   Thu Aug 31 17:36:40 2023 -0400
    
-       Merge pull request #373 from Shockah/Shockah-patch-1
-       
-       Disabling .zip publishing for debug builds
+       Merge remote-tracking branch 'origin/develop' into develop
    

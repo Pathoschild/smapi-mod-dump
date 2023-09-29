@@ -103,10 +103,15 @@ namespace FarmTypeManager
             /// Intended changes:
             /// * Fix a base game issue where Skeletons always use a sight range of 8
             /// * Implement a custom monster setting to disable ranged attacks (bone throwing)
+            /// * Minimize a reported issue where behaviorAtGameTick is called while no Farmer instances exist (i.e. Monster.Player returns null)
             /// </remarks>
             public override void behaviorAtGameTick(GameTime time)
             {
-                if (!this.throwing)
+                if (Player == null) //if this was somehow called while no farmers exist
+                {
+                    return; //do nothing
+                }
+                if (!throwing.Value)
                 {
                     Monster_behaviorAtGameTick(time); //replace inaccessible "base" call with a local copy
                 }
@@ -122,7 +127,7 @@ namespace FarmTypeManager
                     base.currentLocation.playSound("skeletonStep");
                     base.IsWalkingTowardPlayer = true;
                 }
-                else if ((bool)this.throwing)
+                else if (throwing.Value)
                 {
                     if (base.invincibleCountdown > 0)
                     {
@@ -156,7 +161,7 @@ namespace FarmTypeManager
                         }
                     }
                 } //check the ranged attacks setting before attempting to start throwing
-                else if (RangedAttacks && this.spottedPlayer && base.controller == null && Game1.random.NextDouble() < (this.isMage ? 0.008 : 0.002) && !base.wildernessFarmMonster && StardewValley.Utility.doesPointHaveLineOfSightInMine(base.currentLocation, base.getTileLocation(), base.Player.getTileLocation(), 8))
+                else if (RangedAttacks && this.spottedPlayer && base.controller == null && Game1.random.NextDouble() < (isMage.Value ? 0.008 : 0.002) && !base.wildernessFarmMonster && StardewValley.Utility.doesPointHaveLineOfSightInMine(base.currentLocation, base.getTileLocation(), base.Player.getTileLocation(), 8))
                 {
                     this.throwing.Value = true;
                     this.Halt();
@@ -184,37 +189,37 @@ namespace FarmTypeManager
                 this.controllerAttemptTimer -= time.ElapsedGameTime.Milliseconds;
             }
 
-            /// <summary>A copy of <see cref="Monster.behaviorAtGameTick(GameTime)"/> as a workaround for "base" calls in the overriden method.</summary>
-            public void Monster_behaviorAtGameTick(GameTime time)
+            /// <summary>Except where commented, this is a copy of "Monster.behaviorAtGameTick", used to implement this monster's "base.behaviorAtGameTick" call.</summary>
+            private void Monster_behaviorAtGameTick(GameTime time)
             {
-                if (timeBeforeAIMovementAgain > 0f)
+                if (base.timeBeforeAIMovementAgain > 0f)
                 {
-                    timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
+                    base.timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
                 }
-                if (!Player.isRafting || !withinPlayerThreshold(4))
+                if (this.Player?.isRafting != true || !this.withinPlayerThreshold(4)) //check for null on Player due to reported errors (not necessarily FTM-specific)
                 {
                     return;
                 }
-                if (Math.Abs(Player.GetBoundingBox().Center.Y - GetBoundingBox().Center.Y) > 192)
+                if (Math.Abs(this.Player.GetBoundingBox().Center.Y - this.GetBoundingBox().Center.Y) > 192)
                 {
-                    if (Player.GetBoundingBox().Center.X - GetBoundingBox().Center.X > 0)
+                    if (this.Player.GetBoundingBox().Center.X - this.GetBoundingBox().Center.X > 0)
                     {
-                        SetMovingLeft(b: true);
+                        this.SetMovingLeft(b: true);
                     }
                     else
                     {
-                        SetMovingRight(b: true);
+                        this.SetMovingRight(b: true);
                     }
                 }
-                else if (Player.GetBoundingBox().Center.Y - GetBoundingBox().Center.Y > 0)
+                else if (this.Player.GetBoundingBox().Center.Y - this.GetBoundingBox().Center.Y > 0)
                 {
-                    SetMovingUp(b: true);
+                    this.SetMovingUp(b: true);
                 }
                 else
                 {
-                    SetMovingDown(b: true);
+                    this.SetMovingDown(b: true);
                 }
-                MovePosition(time, Game1.viewport, currentLocation);
+                this.MovePosition(time, Game1.viewport, base.currentLocation);
             }
         }
     }

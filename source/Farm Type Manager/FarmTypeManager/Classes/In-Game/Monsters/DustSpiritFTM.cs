@@ -126,37 +126,37 @@ namespace FarmTypeManager
                 }
             }
 
-            /// <summary>A local copy of <see cref="Monster.behaviorAtGameTick(GameTime)"/> to call in replaced subclass methods.</summary>
-            public void Monster_behaviorAtGameTick(GameTime time)
+            /// <summary>Except where commented, this is a copy of "Monster.behaviorAtGameTick", used to implement this monster's "base.behaviorAtGameTick" call.</summary>
+            private void Monster_behaviorAtGameTick(GameTime time)
             {
-                if (timeBeforeAIMovementAgain > 0f)
+                if (base.timeBeforeAIMovementAgain > 0f)
                 {
-                    timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
+                    base.timeBeforeAIMovementAgain -= time.ElapsedGameTime.Milliseconds;
                 }
-                if (!Player.isRafting || !withinPlayerThreshold(4))
+                if (this.Player?.isRafting != true || !this.withinPlayerThreshold(4)) //check for null on Player due to reported errors (not necessarily FTM-specific)
                 {
                     return;
                 }
-                if (Math.Abs(Player.GetBoundingBox().Center.Y - GetBoundingBox().Center.Y) > 192)
+                if (Math.Abs(this.Player.GetBoundingBox().Center.Y - this.GetBoundingBox().Center.Y) > 192)
                 {
-                    if (Player.GetBoundingBox().Center.X - GetBoundingBox().Center.X > 0)
+                    if (this.Player.GetBoundingBox().Center.X - this.GetBoundingBox().Center.X > 0)
                     {
-                        SetMovingLeft(b: true);
+                        this.SetMovingLeft(b: true);
                     }
                     else
                     {
-                        SetMovingRight(b: true);
+                        this.SetMovingRight(b: true);
                     }
                 }
-                else if (Player.GetBoundingBox().Center.Y - GetBoundingBox().Center.Y > 0)
+                else if (this.Player.GetBoundingBox().Center.Y - this.GetBoundingBox().Center.Y > 0)
                 {
-                    SetMovingUp(b: true);
+                    this.SetMovingUp(b: true);
                 }
                 else
                 {
-                    SetMovingDown(b: true);
+                    this.SetMovingDown(b: true);
                 }
-                MovePosition(time, Game1.viewport, base.currentLocation);
+                this.MovePosition(time, Game1.viewport, base.currentLocation);
             }
         }
     }

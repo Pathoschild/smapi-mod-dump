@@ -24,7 +24,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
     internal class TVInjections
     {
         private const string AP_WEATHER_REPORT = "Weather Report";
-        private const string AP_FORTUNE_TELLER = " Fortune Teller";
+        private const string AP_FORTUNE_TELLER = "Fortune Teller";
         private const string AP_LIVING_OFF_THE_LAND = "Livin' Off The Land";
         private const string AP_QUEEN_OF_SAUCE = "The Queen of Sauce";
         private const string AP_FISHING = "Fishing Information Broadcasting Service";
@@ -94,7 +94,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
 
         private static void AddLivingOffTheLandChannel(string dayOfWeek, List<Response> channelsList)
         {
-            if (!dayOfWeek.Equals("Mon") && !dayOfWeek.Equals("Thu"))
+            if (!dayOfWeek.Equals("Mon") && !dayOfWeek.Equals("Thu") && !dayOfWeek.Equals("Tue") && !dayOfWeek.Equals("Fri"))
             {
                 return;
             }
@@ -120,7 +120,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
 
         private static void AddQueenOfSauceChannel(string str, List<Response> channelsList)
         {
-            if (!str.Equals("Sun"))
+            if (!str.Equals("Sun") && !str.Equals("Sat"))
             {
                 return;
             }

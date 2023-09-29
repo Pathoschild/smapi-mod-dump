@@ -27,5 +27,11 @@ namespace StardewArchipelago.Extensions
 
             return word[..1].ToUpper() + word[1..].ToLower();
         }
+
+        public static string TurnHeartsIntoStardewHearts(this string messageWithHearts)
+        {
+            messageWithHearts = messageWithHearts.Replace("<3", "<");
+            return messageWithHearts;
+        }
     }
 }

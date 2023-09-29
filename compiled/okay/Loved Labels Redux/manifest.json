@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Loved Labels Redux",
   "Author": "thespbgamer",
-  "Version": "1.3.0",
+  "Version": "1.4.1",
   "Description": "Shows the labels of the animals.",
   "UniqueID": "thespbgamer.LovedLabelsRedux",
   "EntryDll": "LovedLabelsRedux.dll",

@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
+using StardewValley.GameData.Locations;
 
 namespace Custom_Farm_Loader.Lib
 {
@@ -26,7 +27,7 @@ namespace Custom_Farm_Loader.Lib
         private static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
-        private static Dictionary<int, string> CachedFishData;
+        private static Dictionary<string, string> CachedFishData;
 
         private string Name = ""; //Makes debugging easier
 
@@ -37,7 +38,7 @@ namespace Custom_Farm_Loader.Lib
         public float DepthDropOff = 0;
         public bool ChanceModifiedByLuck = false;
         public Filter Filter = new Filter();
-        public FishType Type = FishType.Any;
+        public FishType Type = FishType.Item;
 
         //Whether each field was changed during parse
         public bool ChangedType = false;
@@ -53,7 +54,7 @@ namespace Custom_Farm_Loader.Lib
             Monitor = mod.Monitor;
             Helper = mod.Helper;
 
-            CachedFishData = Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
+            CachedFishData = Game1.content.Load<Dictionary<string, string>>("Data\\Fish");
         }
 
         public static List<Fish> parseFishJsonArray(JProperty jArray)
@@ -104,7 +105,7 @@ namespace Custom_Farm_Loader.Lib
                 }
             }
 
-            if(!forAll) {
+            if (!forAll) {
                 fish.updateType();
                 fish.applyDefaultIfNotChanged();
             }
@@ -114,34 +115,27 @@ namespace Custom_Farm_Loader.Lib
 
         private void updateType()
         {
-            if (Id == "")
+            if (Id == "" || Id.StartsWith("("))
                 return;
 
-            if (int.TryParse(Id, out int id))
+            if (Type == FishType.Item) {
+                var itemIdString = ItemObject.MapNameToItemId(Id);
+
+                Id = itemIdString;
+                Type = FishType.Item;
                 return;
-
-            if (Type == FishType.Any || Type == FishType.Item) {
-                var itemIdString = ItemObject.MapNameToParentsheetindex(Id);
-
-                if (int.TryParse(itemIdString, out int itemId)) {
-                    Id = itemIdString;
-                    Type = FishType.Item;
-                    return;
-                }
             }
 
-            if (Type == FishType.Any || Type == FishType.Furniture) {
+            if (Type == FishType.Furniture) {
                 var furnitureIdString = Furniture.MapNameToParentsheetindex(Id);
 
-                if (int.TryParse(furnitureIdString, out int furnitureId)) {
-                    Id = furnitureIdString;
-                    Type = FishType.Furniture;
-                    return;
-                }
+                Id = furnitureIdString;
+                Type = FishType.Furniture;
+                return;
             }
 
-            if (Type == FishType.Any || Type == FishType.Location) {
-                Dictionary<string, string> locationData = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
+            if (Type == FishType.Location) {
+                Dictionary<string, LocationData> locationData = Game1.content.Load<Dictionary<string, LocationData>>("Data\\Locations");
                 var fishLocationData = locationData.FirstOrDefault(el => el.Key.ToLower() == Id.ToLower());
 
                 if (fishLocationData.Key != null)
@@ -156,8 +150,8 @@ namespace Custom_Farm_Loader.Lib
         {
             var baseFish = parseFishJObject(obj);
 
-            if (baseFish.Type == FishType.Any || baseFish.Type == FishType.Location) {
-                Dictionary<string, string> locationData = Game1.content.Load<Dictionary<string, string>>("Data\\Locations");
+            if (baseFish.Type == FishType.Location) {
+                Dictionary<string, LocationData> locationData = Game1.content.Load<Dictionary<string, LocationData>>("Data\\Locations");
                 var fishLocationData = locationData.FirstOrDefault(el => el.Key.ToLower() == baseFish.Id.ToLower());
 
                 if (fishLocationData.Key != null)
@@ -167,103 +161,74 @@ namespace Custom_Farm_Loader.Lib
             return new List<Fish>() { parseFishJObject(obj) };
         }
 
-        private static List<Fish> parseFishLocationData(string fishLocationData, JObject obj)
+        private static List<Fish> parseFishLocationData(LocationData data, JObject obj)
         {
             List<Fish> ret = new List<Fish>();
-            var splitData = fishLocationData.Split('/');
-            for (int k = 0; k < 4; k++) {
-                //Locations data shows fish per season in index 4 (spring) to 7 (winter)
-                //Every second entry isn't a fish, but instead a weird location restriction paired with the previous entry
-                //-1 = this fish can be caught everywhere, 0 and 1 only in certain areas decided by the GameLocations' getFishingLocation.
-                //I am just going to ignore that location restriction for simplicity sake
-                //If someone wants those they can just always list the fish separately instead of using a group
-                var seasonFish = splitData[4 + k].Split(' ').Where((_, i) => i % 2 == 0).ToList();
 
-                foreach (string fishId in seasonFish) {
-                    var newFish = parseFishJObject(obj);
-                    newFish.Id = fishId;
-                    newFish.Type = FishType.Item;
-                    newFish.applyDefaultIfNotChanged();
+            foreach (var fish in data.Fish) {
+                if (fish.IsBossFish)
+                    continue;
 
-                    if (newFish.ChangedChance)
-                        newFish.Chance *= newFish.getDefaultChanceOr1();
+                var newFish = parseFishJObject(obj);
+                newFish.Id = fish.Id;
+                newFish.Type = FishType.Item;
+                newFish.applyDefaultIfNotChanged();
 
-                    if (!newFish.Filter.ChangedSeasons) {
-                        var prevFish = ret.Find(el => el.Id == fishId);
-                        if (prevFish != null)
-                            prevFish.Filter.Seasons.Add(UtilityMisc.getSeasonString(k));
-                        else {
-                            newFish.Filter.Seasons = new List<string>() { UtilityMisc.getSeasonString(k) };
-                            ret.Add(newFish);
-                        }
+                if (newFish.ChangedChance)
+                    newFish.Chance *= fish.Chance;
 
-                    } else {
-                        if (!ret.Exists(el => el.Id == newFish.Id))
-                            ret.Add(newFish);
-                    }
+                if (!newFish.Filter.ChangedSeasons) {
+                    newFish.Filter.Seasons = new List<string>() { fish.Season.ToString() };
+                    ret.Add(newFish);
+
+                } else {
+                    if (!ret.Exists(el => el.Id == newFish.Id))
+                        ret.Add(newFish);
                 }
             }
+
 
             return ret;
         }
 
         public void applyDefaultIfNotChanged()
         {
-            if (Type != FishType.Any && Type != FishType.Item)
+            if (Type != FishType.Item)
                 return;
 
-            if (int.TryParse(Id, out int fishId)) {
-                if (!CachedFishData.ContainsKey(fishId))
-                    return;
+            if (!CachedFishData.ContainsKey(Id))
+                return;
 
-                Type = FishType.Item;
-                var fishData = CachedFishData[fishId];
-                var split = fishData.Split('/');
+            Type = FishType.Item;
+            var fishData = CachedFishData[Id];
+            var split = fishData.Split('/');
 
-                Name = split[0];
+            Name = split[0];
 
-                if (split[1] == "trap")
-                    return;
+            if (split[1] == "trap")
+                return;
 
-                if (!Filter.ChangedStartTime)
-                    Filter.StartTime = int.Parse(split[5].Split(' ')[0]);
+            if (!Filter.ChangedStartTime)
+                Filter.StartTime = int.Parse(split[5].Split(' ')[0]);
 
-                if (!Filter.ChangedEndTime)
-                    Filter.EndTime = int.Parse(split[5].Split(' ')[1]);
+            if (!Filter.ChangedEndTime)
+                Filter.EndTime = int.Parse(split[5].Split(' ')[1]);
 
-                if (!Filter.ChangedSeasons)
-                    Filter.Seasons = split[6].Split(' ').ToList();
+            if (!Filter.ChangedSeasons)
+                Filter.Seasons = split[6].Split(' ').ToList();
 
-                if (!Filter.ChangedWeather)
-                    Filter.parseNativeWeather(split[7]);
+            if (!Filter.ChangedWeather)
+                Filter.parseNativeWeather(split[7]);
 
-                if (!ChangedOptimalDepth)
-                    OptimalDepth = Convert.ToInt32(split[9]);
+            if (!ChangedOptimalDepth)
+                OptimalDepth = Convert.ToInt32(split[9]);
 
-                if (!ChangedChance)
-                    Chance = (float)Convert.ToDouble(split[10]);
+            if (!ChangedChance)
+                Chance = (float)Convert.ToDouble(split[10]);
 
-                if (!ChangedDepthDropOff)
-                    DepthDropOff = (float)Convert.ToDouble(split[11]);
-            }
-        }
+            if (!ChangedDepthDropOff)
+                DepthDropOff = (float)Convert.ToDouble(split[11]);
 
-        private float getDefaultChanceOr1()
-        {
-            if (int.TryParse(Id, out int fishId)) {
-                if (!CachedFishData.ContainsKey(fishId))
-                    return 1f;
-
-                var fishData = CachedFishData[fishId];
-                var split = fishData.Split('/');
-
-                if (split[1] == "trap")
-                    return 1f;
-
-                return (float)Convert.ToDouble(split[10]);
-            }
-
-            return 1f;
         }
     }
 }

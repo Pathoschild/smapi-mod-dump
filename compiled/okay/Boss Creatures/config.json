@@ -1,4 +1,5 @@
 {
+  "ModEnabled": true,
   "PercentChanceOfBossInMonsterArea": 100,
   "PercentChanceOfBossInFarm": 0,
   "PercentChanceOfBossInTown": 0,

@@ -31,7 +31,7 @@ namespace StardewArchipelago.Items.Traps
         private readonly string[] _monsterTypes =
         {
             "Bat", "Frost Bat", "Lava Bat", "Iridium Bat", "Serpent", "Shadow Brute", "Rock Golem", "Green Slime",
-            "Frost Jelly", "Sludge", "Purple Slime"
+            "Frost Jelly", "Sludge", "Purple Slime",
         };
 
         public void SpawnOneMonster(GameLocation map)

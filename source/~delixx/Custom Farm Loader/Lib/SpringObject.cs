@@ -24,6 +24,7 @@ namespace Custom_Farm_Loader.Lib
         //A variety of 2x2 resources
         public static List<SpringObjectID> LargeResources = new List<SpringObjectID> { SpringObjectID.Large_Stump, SpringObjectID.Large_Log, SpringObjectID.Boulder, SpringObjectID.Boulder_Alternative, SpringObjectID.Blue_Boulder, SpringObjectID.Blue_Boulder_Alternative, SpringObjectID.Dense_Boulder, SpringObjectID.Meteorite };
 
+        //TODO: I seemingly don't need to remember the node HP anymore in 1.6
 
         //A variety of rocks/nodes and their HP aka. MinutesUntilReady
         public static Dictionary<SpringObjectID, int> SmallResources = new Dictionary<SpringObjectID, int>() {
@@ -58,46 +59,46 @@ namespace Custom_Farm_Loader.Lib
                 _ => item
             };
         }
-        public static int getRandomWeedForSeason(string season)
+        public static string getRandomWeedForSeason(Season season)
         {
             double random = Game1.random.NextDouble();
 
-            return season switch {
-                "spring" => random switch {
+            return (season switch {
+                Season.Spring => random switch {
                     < 0.33 => 674,
                     < 0.5 => 675,
                     _ => 784
                 },
 
-                "summer" => random switch {
+                Season.Summer => random switch {
                     < 0.33 => 676,
                     < 0.5 => 677,
                     _ => 785
                 },
 
-                "fall" => random switch {
+                Season.Fall => random switch {
                     < 0.33 => 678,
                     < 0.5 => 679,
                     _ => 786
                 },
 
                 _ => 674
-            };
+            }).ToString();
         }
 
-        public static int getTransformedWeedForSeason(string season)
+        public static SpringObjectID getTransformedWeedForSeason(Season season)
         {
             double random = Game1.random.NextDouble();
 
             return season switch {
-                "spring" => (int)SpringObjectID.Transformed_Weed,
+                Season.Spring => SpringObjectID.Transformed_Weed,
 
-                "summer" => (int)SpringObjectID.Transformed_Weed_Summer,
+                Season.Summer => SpringObjectID.Transformed_Weed_Summer,
 
-                "fall" => (int)SpringObjectID.Transformed_Weed_Fall,
+                Season.Fall => SpringObjectID.Transformed_Weed_Fall,
 
                 //There's no winter variant for transformed weeds, so this will have to do
-                _ => (int)SpringObjectID.Transformed_Weed
+                _ => SpringObjectID.Transformed_Weed
             };
         }
     }

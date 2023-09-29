@@ -6,9 +6,9 @@ mods:
    Skillful Clothes
 
 latest commit:
-   commit 5a19c59d1869fa3dde0bd491ea4d5573d624d18c
+   commit 6281ba58ec0232bad9be0fcd220279cfcd814d9a
    Author: LunaticShade <lunaticshade@googlemail.com>
-   Date:   Mon Apr 17 15:29:10 2023 +0200
+   Date:   Thu Sep 28 13:44:39 2023 +0200
    
-       ShopDiscount: support displaying percentage values < 1
+       also set version of assembly to 1.4.0
    

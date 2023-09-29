@@ -11,7 +11,7 @@
 {
   "Name": "Content Patcher Editor",
   "Author": "aedenthorn",
-  "Version": "0.5.0",
+  "Version": "0.5.2",
   "Description": "Content Patcher Editor.",
   "UniqueID": "aedenthorn.ContentPatcherEditor",
   "EntryDll": "ContentPatcherEditor.dll",

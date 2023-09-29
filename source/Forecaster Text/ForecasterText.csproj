@@ -3,7 +3,7 @@
     <PropertyGroup>
         <AssemblyName>ForecasterText</AssemblyName>
         <RootNamespace>ForecasterText</RootNamespace>
-        <Version>1.2.2</Version>
+        <Version>1.2.4</Version>
         <TargetFramework>net5.0</TargetFramework>
         <GamePath>/mnt/gaming/Steam/steamapps/common/Stardew Valley/</GamePath>
     </PropertyGroup>

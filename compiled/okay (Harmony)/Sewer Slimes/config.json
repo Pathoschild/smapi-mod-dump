@@ -1,0 +1,44 @@
+{
+  "ModEnabled": true,
+  "Debug": false,
+  "SlimeWeights": {
+    "Green Slime": 1000,
+    "Frost Jelly": 800,
+    "Red Sludge": 600,
+    "Purple Sludge": 400,
+    "Yellow Slime": 100,
+    "Black Slime": 50,
+    "Copper Slime": 80,
+    "Iron Slime": 50,
+    "Tiger Slime": 20,
+    "Aqua Slime": 10,
+    "Prismatic Slime": 1
+  },
+  "BigSlimeWeights": {
+    "Green": 200,
+    "Blue": 150,
+    "Red": 100,
+    "Purple": 50
+  },
+  "BigChancePercent": 20,
+  "SpecialChancePercent": 10,
+  "MinSlimesPerDay": 1,
+  "MaxSlimesPerDay": 3,
+  "MaxTotalSlimes": 10,
+  "SpawnAreas": [
+    {
+      "X": 12,
+      "Y": 11,
+      "Width": 9,
+      "Height": 12
+    }
+  ],
+  "ForbidAreas": [
+    {
+      "X": 28,
+      "Y": 15,
+      "Width": 7,
+      "Height": 8
+    }
+  ]
+}

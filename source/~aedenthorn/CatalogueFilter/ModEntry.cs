@@ -40,6 +40,7 @@ namespace CatalogueFilter
 
             SMonitor = Monitor;
             SHelper = helper;
+            helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
 
             var harmony = new Harmony(ModManifest.UniqueID);
             harmony.PatchAll();
@@ -63,7 +64,7 @@ namespace CatalogueFilter
 
             configMenu.AddBoolOption(
                 mod: ModManifest,
-                name: () => "Mod Enabled?",
+                name: () => ModEntry.SHelper.Translation.Get("GMCM_Option_ModEnabled_Name"),
                 getValue: () => Config.ModEnabled,
                 setValue: value => Config.ModEnabled = value
             );

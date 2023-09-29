@@ -107,6 +107,7 @@
   "AlexTattoos": "False",
   "AlexWeddingOutfit": "1",
   "GeorgeBeard": "Beard",
+  "GeorgeEvelynSpiritsEve": "True",
   "EmilyVariant": "Vanilla",
   "EmilyLightweightConfig": "Full",
   "HaleyVariant": "Vanilla",
@@ -217,6 +218,7 @@
   "ClintLightweightConfig": "Full",
   "LinusVariant": "Vanilla",
   "LinusLightweightConfig": "Full",
+  "WillySpiritsEve": "True",
   "ClintScar": "False",
   "ClintBeard": "False",
   "LinusEventChanges": "True"

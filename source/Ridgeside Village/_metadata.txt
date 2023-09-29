@@ -6,9 +6,9 @@ mods:
    Ridgeside Village
 
 latest commit:
-   commit 566878ff7b170503b653223c18ed3ee8a62b459e
-   Author: Clare <ccathanlon@gmail.com>
-   Date:   Wed Aug 30 22:30:11 2023 -0400
+   commit 0b9a720eecdd99d39ce311a1022eba489eb9beec
+   Author: Rafseazz <76096474+Rafseazz@users.noreply.github.com>
+   Date:   Sun Sep 24 18:19:32 2023 +0800
    
-       toying with some spirit's eve stuff
+       Merge branch 'main' of https://github.com/Rafseazz/Ridgeside-Village-Mod
    

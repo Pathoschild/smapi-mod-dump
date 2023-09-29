@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15564
+IDs: JefGrizli.RedrawPelicanTownC
+update keys: Nexus:???, Nexus:15564

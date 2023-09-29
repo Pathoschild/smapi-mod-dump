@@ -32,10 +32,19 @@ namespace StardewArchipelago.Stardew
         private Dictionary<string, StardewHat> _hatsByName;
         private Dictionary<int, StardewWeapon> _weaponsById;
         private Dictionary<string, StardewWeapon> _weaponsByName;
+        private Dictionary<string, StardewCookingRecipe> _cookingRecipesByName;
+        private Dictionary<string, StardewCraftingRecipe> _craftingRecipesByName;
 
         private List<int> _priorityIds = new List<int>()
         {
-            390
+            390,
+        };
+
+        public Dictionary<int, string> ItemSuffixes = new Dictionary<int, string>()
+        {
+            {126, " (Green)"},
+            {180, " (Brown)"},
+            {182, " (Brown)"},
         };
 
         public StardewItemManager()
@@ -82,7 +91,12 @@ namespace StardewArchipelago.Stardew
 
         public bool ObjectExists(string itemName)
         {
-            return _objectsByName.ContainsKey(itemName);
+            if (_objectsByName.ContainsKey(itemName))
+            {
+                return true;
+            }
+
+            return false; // This is where I should do something about complex items like wines and such
         }
 
         public StardewItem GetItemByName(string itemName)
@@ -160,6 +174,11 @@ namespace StardewArchipelago.Stardew
             throw new ArgumentException($"Item not found: {itemId}");
         }
 
+        public StardewBoots[] GetAllBoots()
+        {
+            return _bootsByName.Values.ToArray();
+        }
+
         public StardewFurniture GetFurnitureById(int itemId)
         {
             if (_furnitureById.ContainsKey(itemId))
@@ -180,14 +199,44 @@ namespace StardewArchipelago.Stardew
             throw new ArgumentException($"Item not found: {itemId}");
         }
 
-        public StardewWeapon GetWeaponById(int itemId)
+        public StardewWeapon GetWeaponById(int weaponId)
         {
-            if (_weaponsById.ContainsKey(itemId))
+            if (_weaponsById.ContainsKey(weaponId))
             {
-                return _weaponsById[itemId];
+                return _weaponsById[weaponId];
             }
 
-            throw new ArgumentException($"Item not found: {itemId}");
+            throw new ArgumentException($"Weapon not found: {weaponId}");
+        }
+
+        public StardewWeapon GetWeaponByName(string weaponName)
+        {
+            if (_weaponsByName.ContainsKey(weaponName))
+            {
+                return _weaponsByName[weaponName];
+            }
+
+            throw new ArgumentException($"Weapon not found: {weaponName}");
+        }
+
+        public StardewRecipe GetRecipeByName(string recipeName)
+        {
+            if (_cookingRecipesByName.ContainsKey(recipeName))
+            {
+                return _cookingRecipesByName[recipeName];
+            }
+
+            if (_craftingRecipesByName.ContainsKey(recipeName))
+            {
+                return _craftingRecipesByName[recipeName];
+            }
+
+            throw new ArgumentException($"Recipe not found: {recipeName}");
+        }
+
+        public StardewWeapon[] GetAllWeapons()
+        {
+            return _weaponsByName.Values.ToArray();
         }
 
         private void InitializeData()
@@ -200,6 +249,8 @@ namespace StardewArchipelago.Stardew
             InitializeHats();
             // InitializeTools();
             InitializeWeapons();
+            InitializeCookingRecipes();
+            InitializeCraftingRecipes();
         }
 
         private void InitializeObjects()
@@ -229,6 +280,10 @@ namespace StardewArchipelago.Stardew
 
                 _objectsById.Add(id, stardewItem);
                 _objectsByName.Add(stardewItem.Name, stardewItem);
+                if (stardewItem.Name == "Cookie")
+                {
+                    _objectsByName.Add("Cookies", stardewItem);
+                }
             }
         }
 
@@ -301,7 +356,7 @@ namespace StardewArchipelago.Stardew
         {
             _hatsById = new Dictionary<int, StardewHat>();
             _hatsByName = new Dictionary<string, StardewHat>();
-            var allHatsInformation = (IDictionary<int, string>)Game1.content.Load<Dictionary<int, string>>("Data\\Hats");
+            var allHatsInformation = (IDictionary<int, string>)Game1.content.Load<Dictionary<int, string>>("Data\\hats");
             foreach (var (id, hatInfo) in allHatsInformation)
             {
                 var hat = ParseStardewHatData(id, hatInfo);
@@ -320,7 +375,7 @@ namespace StardewArchipelago.Stardew
         {
             _weaponsById = new Dictionary<int, StardewWeapon>();
             _weaponsByName = new Dictionary<string, StardewWeapon>();
-            var allWeaponsInformation = (IDictionary<int, string>)Game1.content.Load<Dictionary<int, string>>("Data\\Weapons");
+            var allWeaponsInformation = Game1.content.Load<Dictionary<int, string>>("Data\\weapons");
             foreach (var (id, weaponsInfo) in allWeaponsInformation)
             {
                 var weapon = ParseStardewWeaponData(id, weaponsInfo);
@@ -335,7 +390,41 @@ namespace StardewArchipelago.Stardew
             }
         }
 
-        private static StardewObject ParseStardewObjectData(int id, string objectInfo)
+        private void InitializeCookingRecipes()
+        {
+            _cookingRecipesByName = new Dictionary<string, StardewCookingRecipe>();
+            var allCookingInformation = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
+            foreach (var (recipeName, recipeInfo) in allCookingInformation)
+            {
+                var recipe = ParseStardewCookingRecipeData(recipeName, recipeInfo);
+
+                if (_cookingRecipesByName.ContainsKey(recipe.ItemName))
+                {
+                    continue;
+                }
+
+                _cookingRecipesByName.Add(recipe.ItemName, recipe);
+            }
+        }
+
+        private void InitializeCraftingRecipes()
+        {
+            _craftingRecipesByName = new Dictionary<string, StardewCraftingRecipe>();
+            var allCraftingInformation = Game1.content.Load<Dictionary<string, string>>("Data\\CraftingRecipes");
+            foreach (var (recipeName, recipeInfo) in allCraftingInformation)
+            {
+                var recipe = ParseStardewCraftingRecipeData(recipeName, recipeInfo);
+
+                if (_craftingRecipesByName.ContainsKey(recipe.ItemName))
+                {
+                    continue;
+                }
+
+                _craftingRecipesByName.Add(recipe.ItemName, recipe);
+            }
+        }
+
+        private StardewObject ParseStardewObjectData(int id, string objectInfo)
         {
             var fields = objectInfo.Split("/");
             var name = fields[0];
@@ -347,11 +436,7 @@ namespace StardewArchipelago.Stardew
             var displayName = fields[4];
             var description = fields[5];
 
-            if (id == 126)
-            {
-                name += " (Green)";
-            }
-
+            name = NormalizeName(id, name);
 
             if (objectType == "Ring")
             {
@@ -361,9 +446,19 @@ namespace StardewArchipelago.Stardew
             return new StardewObject(id, name, sellPrice, edibility, objectType, category, displayName, description);
         }
 
-        private static BigCraftable ParseStardewBigCraftableData(int id, string objectInfo)
+        public string NormalizeName(int id, string name)
         {
-            var fields = objectInfo.Split("/");
+            if (ItemSuffixes.ContainsKey(id))
+            {
+                name += ItemSuffixes[id];
+            }
+
+            return name;
+        }
+
+        private static BigCraftable ParseStardewBigCraftableData(int id, string bigCraftableInfo)
+        {
+            var fields = bigCraftableInfo.Split("/");
             var name = fields[0];
             var sellPrice = int.Parse(fields[1]);
             var edibility = int.Parse(fields[2]);
@@ -380,9 +475,9 @@ namespace StardewArchipelago.Stardew
             return bigCraftable;
         }
 
-        private static StardewBoots ParseStardewBootsData(int id, string objectInfo)
+        private static StardewBoots ParseStardewBootsData(int id, string bootsInfo)
         {
-            var fields = objectInfo.Split("/");
+            var fields = bootsInfo.Split("/");
             var name = fields[0];
             var description = fields[1];
             var sellPrice = int.Parse(fields[2]);
@@ -396,9 +491,9 @@ namespace StardewArchipelago.Stardew
             return bigCraftable;
         }
 
-        private static StardewFurniture ParseStardewFurnitureData(int id, string objectInfo)
+        private static StardewFurniture ParseStardewFurnitureData(int id, string furnitureInfo)
         {
-            var fields = objectInfo.Split("/");
+            var fields = furnitureInfo.Split("/");
             var name = fields[0];
             var type = fields[1];
             var tilesheetSize = fields[2];
@@ -412,9 +507,9 @@ namespace StardewArchipelago.Stardew
             return furniture;
         }
 
-        private static StardewHat ParseStardewHatData(int id, string objectInfo)
+        private static StardewHat ParseStardewHatData(int id, string hatInfo)
         {
-            var fields = objectInfo.Split("/");
+            var fields = hatInfo.Split("/");
             var name = fields[0];
             var description = fields[1];
             var skipHairDraw = fields[2];
@@ -425,9 +520,9 @@ namespace StardewArchipelago.Stardew
             return hat;
         }
 
-        private static StardewWeapon ParseStardewWeaponData(int id, string objectInfo)
+        private static StardewWeapon ParseStardewWeaponData(int id, string weaponInfo)
         {
-            var fields = objectInfo.Split("/");
+            var fields = weaponInfo.Split("/");
             var name = fields[0];
             var description = fields[1];
             var minDamage = int.Parse(fields[2]);
@@ -455,6 +550,47 @@ namespace StardewArchipelago.Stardew
                 addedPrecision, addedDefence, type, baseMineLevel, minMineLevel, addedAoe, criticalChance,
                 criticalDamage, displayName);
             return meleeWeapon;
+        }
+
+        private static StardewCookingRecipe ParseStardewCookingRecipeData(string recipeName, string recipeInfo)
+        {
+            var fields = recipeInfo.Split("/");
+            var ingredientsField = fields[0].Split(" ");
+            var ingredients = new Dictionary<int, int>();
+            for (var i = 0; i < ingredientsField.Length - 1; i += 2)
+            {
+                ingredients.Add(int.Parse(ingredientsField[i]), int.Parse(ingredientsField[i+1]));
+            }
+            var unusedField = fields[1];
+            var yieldField = fields[2].Split(" ");
+            var yieldItemId = int.Parse(yieldField[0]);
+            var yieldAmount = yieldField.Length > 1 ? int.Parse(yieldField[1]) : 1;
+            var unlockConditions = fields[3];
+            var displayName = fields.Length > 4 ? fields[4] : recipeName;
+
+            var cookingRecipe = new StardewCookingRecipe(recipeName, ingredients, yieldItemId, yieldAmount, unlockConditions, displayName);
+            return cookingRecipe;
+        }
+
+        private static StardewCraftingRecipe ParseStardewCraftingRecipeData(string recipeName, string recipeInfo)
+        {
+            var fields = recipeInfo.Split("/");
+            var ingredientsField = fields[0].Split(" ");
+            var ingredients = new Dictionary<int, int>();
+            for (var i = 0; i < ingredientsField.Length - 1; i += 2)
+            {
+                ingredients.Add(int.Parse(ingredientsField[i]), int.Parse(ingredientsField[i + 1]));
+            }
+            var unusedField = fields[1];
+            var yieldField = fields[2].Split(" ");
+            var yieldItemId = int.Parse(yieldField[0]);
+            var yieldAmount = yieldField.Length > 1 ? int.Parse(yieldField[1]) : 1;
+            var bigCraftable = fields[3];
+            var unlockConditions = fields[4];
+            var displayName = fields.Length > 5 ? fields[5] : recipeName;
+
+            var craftingRecipe = new StardewCraftingRecipe(recipeName, ingredients, yieldItemId, yieldAmount, bigCraftable, unlockConditions, displayName);
+            return craftingRecipe;
         }
 
         public void ExportAllItemsMatching(Func<Object, bool> condition, string filePath)
@@ -486,7 +622,7 @@ namespace StardewArchipelago.Stardew
                 {
                     continue;
                 }
-
+                
                 yield return name;
             }
         }

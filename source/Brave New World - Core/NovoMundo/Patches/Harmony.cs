@@ -11,9 +11,6 @@
 using StardewValley;
 using System.Collections.Generic;
 using HarmonyLib;
-using NovoMundo.Managers;
-using StardewValley.Menus;
-using static System.Net.Mime.MediaTypeNames;
 using StardewValley.Buildings;
 using Microsoft.Xna.Framework;
 

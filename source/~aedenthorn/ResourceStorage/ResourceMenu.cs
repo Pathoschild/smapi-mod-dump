@@ -17,6 +17,7 @@ using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Object = StardewValley.Object;
 
 namespace ResourceStorage
@@ -43,16 +44,7 @@ namespace ResourceStorage
         public ResourceMenu() : base(Game1.uiViewport.Width / 2 - (windowWidth + borderWidth * 2) / 2, -borderWidth, windowWidth + borderWidth * 2, Game1.uiViewport.Height, false)
         {
             scrolled = 0;
-            resources = ModEntry.GetFarmerResources(Game1.player);
-            foreach(var resource in resources)
-            {
-                int index = ModEntry.GetIndex(resource.Key);
-                if (index < 0)
-                    continue;
-                Object obj = new Object(index, (int)resource.Value);
-                //obj.stack.Value = obj.ParentSheetIndex * 193;
-                resourceList.Add(obj);
-            }
+
             RepopulateComponentList();
 
             exitFunction = emergencyShutDown;
@@ -62,13 +54,25 @@ namespace ResourceStorage
 
         public void RepopulateComponentList()
         {
-            int lineHeight = 64;
-            linesPerPage = (Game1.viewport.Height + 72 - spaceToClearTopBorder * 2 - 108) / lineHeight;
+            resourceList.Clear();
+            resources = ModEntry.GetFarmerResources(Game1.player);
+            foreach (var resource in resources)
+            {
+                int index = ModEntry.GetIndex(resource.Key);
+                if (index < 0)
+                    continue;
+                Object obj = new Object(index, (int)resource.Value);
+                //obj.stack.Value = obj.ParentSheetIndex * 193;
+                resourceList.Add(obj);
+            }
 
-            width = Math.Min(64 * 12, Game1.viewport.Width);
-            height = Math.Min(Game1.viewport.Height + 72, Math.Min(linesPerPage, resourceList.Count) * lineHeight + (borderWidth + spaceToClearTopBorder) * 2 - 32);
-            xPositionOnScreen = (Game1.viewport.Width - width) / 2;
-            yPositionOnScreen = Math.Max(-72, (Game1.viewport.Height - height) / 2 - 32);
+            int lineHeight = 64;
+            linesPerPage = (Game1.uiViewport.Height + 72 - spaceToClearTopBorder * 2 - 108) / lineHeight;
+
+            width = Math.Min(64 * 12, Game1.uiViewport.Width);
+            height = Math.Min(Game1.uiViewport.Height + 72, Math.Min(linesPerPage, resourceList.Count) * lineHeight + (borderWidth + spaceToClearTopBorder) * 2 - 32);
+            xPositionOnScreen = (Game1.uiViewport.Width - width) / 2;
+            yPositionOnScreen = Math.Max(-72, (Game1.uiViewport.Height - height) / 2 - 32);
 
             //allComponents.Clear();
             autoCCs.Clear();
@@ -146,7 +150,7 @@ namespace ResourceStorage
         {
             ModEntry.gameMenu.draw(b);
             Game1.drawDialogueBox(xPositionOnScreen, yPositionOnScreen, width, height, false, true, null, false, true);
-            SpriteText.drawStringHorizontallyCenteredAt(b, ModEntry.SHelper.Translation.Get("resources"), Game1.viewport.Width / 2, yPositionOnScreen + spaceToClearTopBorder + borderWidth / 2);
+            SpriteText.drawStringHorizontallyCenteredAt(b, ModEntry.SHelper.Translation.Get("resources"), Game1.uiViewport.Width / 2, yPositionOnScreen + spaceToClearTopBorder + borderWidth / 2);
             b.Draw(Game1.menuTexture, new Rectangle(xPositionOnScreen + 32, yPositionOnScreen + borderWidth + spaceToClearTopBorder + 48, width - 64, 16), new Rectangle(40, 16, 1, 16), Color.White);
             int count = 0;
             for (int i = scrolled; i < Math.Min(linesPerPage + scrolled, resourceList.Count); i++)
@@ -212,33 +216,24 @@ namespace ResourceStorage
                 if (takeCCs[i].containsPoint(x, y))
                 {
                     int stack = 1;
-                    if (ModEntry.SHelper.Input.IsDown(ModEntry.Config.ModKeyMax))
+                    if (ModEntry.SHelper.Input.IsDown(ModEntry.Config.ModKey1))
                     {
-                        stack = Math.Min(resourceList[i].Stack, resourceList[i].maximumStackSize());
+                        stack = Math.Min(Math.Min(resourceList[i].Stack, resourceList[i].maximumStackSize()), ModEntry.Config.ModKey1Amount);
+                    }
+                    else if (ModEntry.SHelper.Input.IsDown(ModEntry.Config.ModKey2))
+                    {
+                        stack = Math.Min(Math.Min(resourceList[i].Stack, resourceList[i].maximumStackSize()), ModEntry.Config.ModKey2Amount);
+                    }
+                    else if (ModEntry.SHelper.Input.IsDown(ModEntry.Config.ModKey3))
+                    {
+                        stack = Math.Min(Math.Min(resourceList[i].Stack, resourceList[i].maximumStackSize()), ModEntry.Config.ModKey3Amount);
                     }
 
                     Object obj = new Object(resourceList[i].ParentSheetIndex, stack);
-                    if (Game1.player.addItemToInventoryBool(obj))
+                    if (Game1.objectInformation.TryGetValue(obj.ParentSheetIndex, out string data) && Game1.player.addItemToInventoryBool(obj))
                     {
-                        ModEntry.SMonitor.Log($"Moving {obj.DisplayName}x{stack} from resources: {resourceList[i].Stack} > {resourceList[i].Stack - stack}");
-
                         Game1.playSound("Ship");
-                        if (resourceList[i].Stack <= stack)
-                        {
-                            resourceList.RemoveAt(i);
-                        }
-                        else
-                        {
-                            resourceList[i].stack.Value = resourceList[i].Stack - stack;
-                        }
-                        resources.Clear();
-                        foreach(var r in resourceList)
-                        {
-                            if(Game1.objectInformation.TryGetValue(r.ParentSheetIndex, out string data))
-                            {
-                                resources[ModEntry.GetIdString(data)] = r.Stack;
-                            }
-                        }
+                        ModEntry.ModifyResourceLevel(Game1.player, ModEntry.GetIdString(data), -stack);
                         RepopulateComponentList();
                     }
                     else
@@ -344,6 +339,19 @@ namespace ResourceStorage
                         next = getComponentWithID(currentlySnappedComponent.leftNeighborID);
                         break;
                 }
+                if (next is null && (currentlySnappedComponent.myID % 1000 == 0))
+                {
+                    if (direction == 0)
+                    {
+                        DoScroll(1);
+                        next = getComponentWithID(currentlySnappedComponent.upNeighborID);
+                    }
+                    else if (direction == 2)
+                    {
+                        DoScroll(-1);
+                        next = getComponentWithID(currentlySnappedComponent.downNeighborID);
+                    }
+                }
                 if (next is not null)
                 {
                     Game1.playSound("shiny4");
@@ -422,7 +430,7 @@ namespace ResourceStorage
         public override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
         {
             base.gameWindowSizeChanged(oldBounds, newBounds);
-            scrolled = Math.Min(scrolled, resourceList.Count - ((Game1.viewport.Height + 72 - spaceToClearTopBorder * 2 - 108) / 64));
+            scrolled = Math.Min(scrolled, resourceList.Count - ((Game1.uiViewport.Height + 72 - spaceToClearTopBorder * 2 - 108) / 64));
             RepopulateComponentList();
         }
 

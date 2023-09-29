@@ -33,6 +33,11 @@ namespace StardewArchipelago.Stardew
             return new StardewValley.Objects.Boots(Id);
         }
 
+        public override Item PrepareForRecovery()
+        {
+            return new BootsToRecover(Id);
+        }
+
         public override void GiveToFarmer(Farmer farmer, int amount = 1)
         {
             var boots = PrepareForGivingToFarmer();

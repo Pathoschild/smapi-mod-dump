@@ -11,7 +11,7 @@
 {
   "Name": "Resource Storage",
   "Author": "aedenthorn",
-  "Version": "0.3.0",
+  "Version": "0.5.1",
   "Description": "Resource Storage.",
   "UniqueID": "aedenthorn.ResourceStorage",
   "EntryDll": "ResourceStorage.dll",

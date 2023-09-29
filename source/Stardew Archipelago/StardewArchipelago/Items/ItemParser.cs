@@ -60,9 +60,8 @@ namespace StardewArchipelago.Items
                 var resourcePackItem = GetResourcePackItem(stardewItemName);
                 return resourcePackItem.GetAsLetter(receivedItem, resourcePackAmount);
             }
-
-            var itemIsFriendshipBonus = TryParseFriendshipBonus(receivedItem.ItemName, out var numberOfPoints);
-            if (itemIsFriendshipBonus)
+            
+            if (TryParseFriendshipBonus(receivedItem.ItemName, out var numberOfPoints))
             {
                 return new LetterActionAttachment(receivedItem, LetterActionsKeys.Friendship, numberOfPoints.ToString());
             }
@@ -79,9 +78,8 @@ namespace StardewArchipelago.Items
 
             if (receivedItem.ItemName.EndsWith(RECIPE_SUFFIX))
             {
-                var itemOfRecipe =
-                    receivedItem.ItemName.Substring(0, receivedItem.ItemName.Length - RECIPE_SUFFIX.Length);
-                return new LetterCraftingRecipeAttachment(receivedItem, itemOfRecipe);
+                var itemOfRecipe = receivedItem.ItemName.Substring(0, receivedItem.ItemName.Length - RECIPE_SUFFIX.Length);
+                return _itemManager.GetRecipeByName(itemOfRecipe).GetAsLetter(receivedItem);
             }
 
             if (_itemManager.ItemExists(receivedItem.ItemName))

@@ -8,23 +8,30 @@
 **
 *************************************************/
 
-RSV 2.5.2
+Next
 ------------------------------------------------------
-(next)
+Traveling Merchant now visits Hike Trail on Wednesdays
+Moved Paula slightly for RSV Gathering
+Hopefully fixed Wedding Reception bug with Free Love
+Added more custom NPCs as potential cable car riders
+Fixed June's room in hotel
+Chances of Ridge Forest treasure spawn corresponds to combat level
+
+
+RSV 2.5.3
+------------------------------------------------------
+Some more tweaks for Seasonal Outfits
 Fixed i18n errors in CC, JA, and CP sections
 Added Caped Tree Frog as a loved gift for Sebastian
-
-Hotfix 2:
-Fixed manifest version error
-Removed blank tile from RidgesideVillage map
-Fixed i18n error for Tide Bringer and Faye-rytale Pastel Shirt
-
-Hotfix 1: Fixed multiplayer loading bug
-
-Fixed Irene post-8 heart event error
-Integrated mobile support into main mod
-
-
+Added titles for June's letters
+Fixed Autumn Dew Drop Juice missing recipe
+Tweaked Shanice's 2 heart event; now won't trigger in Saturdays because that's her usual date day with Lorenzo
+Re-added WTDR compat without config option
+Reworked Odd Jobs Summit Farm stuff under the hood to avoid bad Building data errors
+Renamed ridgeside minecarts to the nearest buildings to the entry/exit points to improve clarity
+Fixed Marlon SVE compat at Gathering festival
+Fixed some typos
+Changed Stardew Fair pony ride to tempActor rather than custom companion to avoid him breaking loose
 
 
 

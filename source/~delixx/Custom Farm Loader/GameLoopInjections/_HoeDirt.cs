@@ -56,13 +56,13 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             if (!customFarm.DailyUpdates.Any(e =>
                     e.Type == DailyUpdateType.SpawnWildCrops
-                    && __instance.currentLocation.Name == e.Area.LocationName
-                    && e.Area.isTileIncluded(__instance.currentTileLocation)))
+                    && __instance.Location.Name == e.Area.LocationName
+                    && e.Area.isTileIncluded(__instance.Tile)))
                 return;
 
             //Spring Onions bug out after season change and ginger doesn't decay
             if (__instance.crop.forageCrop.Value)
-                __instance.currentLocation.terrainFeatures.Remove(__instance.currentTileLocation);
+                __instance.Location.terrainFeatures.Remove(__instance.Tile);
         }
     }
 }

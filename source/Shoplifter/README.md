@@ -72,6 +72,7 @@ Shoplifter fully supports translation! In game translations currently available 
 Generic Mod Config Menu config menu translations currently avaliable in:
 - Chinese, thanks to XinJiDA!
 - Italian, thanks to AlixNauts!
+- German, thanks to Nordmole!
 
 Other Generic Mod Config Menu translations done using DeepL and Google Translate. Improved translations are welcome.
 
@@ -91,5 +92,5 @@ Note: Translated GMCM menus may not have the proper layout.
 
 1.1.4 - Added GMCM support thanks to luelista! Added Turkish, Spanish and Russian translations.
 
-
+1.15 to 1.19 - Minor bug fixes
 

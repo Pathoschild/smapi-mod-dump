@@ -1,0 +1,33 @@
+{
+  // String fragments
+  "TheMightyAmondee.CDPP/responseperson": "Alguien",
+  "TheMightyAmondee.CDPP/responseappendix1": "y malparado",
+  "TheMightyAmondee.CDPP/responseappendix2": "en las mina",
+  "TheMightyAmondee.CDPP/responseappendix3": "en la playa",
+  "TheMightyAmondee.CDPP/finallyawake": "Bien, finalmente estás despierto. ",
+
+  // Event fragments
+  "TheMightyAmondee.CDPP/wakeplayer": " ¿...{0}?",
+  "TheMightyAmondee.CDPP/nomoneylost": "Todavía parece que tengo todo mi dinero. ",
+  "TheMightyAmondee.CDPP/nomoneylostmine": "Afortunadamente, todavía parece que tengo todo mi dinero",
+  "TheMightyAmondee.CDPP/nocharge": "Dr. Harvey no me cobro la visita al hospital, que lindo. ",
+  "TheMightyAmondee.CDPP/nomoney": "Afortunadamente, no tengo dinero que perder. Eso pudo haber sido malo.",
+  "TheMightyAmondee.CDPP/becareful": "Ser un poco más cuidadoso la próxima vez, okay?\\Ser un poco más cuidadosa la próxima vez, okay?",
+  "TheMightyAmondee.CDPP/nicetoseeyou": "Aunque es bueno verte, odio tener que curarte...#$b#Por favor, ten un poco más de cuidado la próxima vez, okay?",
+  "TheMightyAmondee.CDPP/bereallycareful": "Realmente necesitas tener más cuidado, no me gusta tener que curarte después de que haces algo peligroso.",
+  "TheMightyAmondee.CDPP/easynow1": "Tranquilo, ahora... tómalo con calma.^Tranquila, ahora... tómalo con calma.",
+  "TheMightyAmondee.CDPP/easynow2": "¿Oye, estás bien?",
+  "TheMightyAmondee.CDPP/qi": "Te encontré malparado y inconsciente ahí, amigo... Espero que no estuvieras haciendo algo estúpido.$1#$b#Solamiente, ten más cuidado la próxima vez, okay. Todavía hay mucho potencial en ti, amigo!\\Te encontré malparado y inconsciente ahí, amiga... Espero que no estuvieras haciendo algo estúpido.$1#$b#Solamiente, ten más cuidado la próxima vez, okay. Todavía hay mucho potencial en ti, amiga!",
+  "TheMightyAmondee.CDPP/whathappened": "...Qué pasó?",
+  "TheMightyAmondee.CDPP/somethingbad": "Algo malo me debe haber pasado... no tengo idea de como llegué aquí...",
+  "TheMightyAmondee.CDPP/moneylost": "Parece que perdido {{moneylost}}G. Me pregunto como sucedió... ",
+
+  // Mail fragments
+  "TheMightyAmondee.CDPP/mailnocharge": "Agredece que no te hayan facturado por este servicio",
+  "TheMightyAmondee.CDPP/mailnochargeharvey": "Esta vez no le he facturado sus gastos médicos.",
+
+  // Replacements
+  "TheMightyAmondee.CDPP/replacementdialogue":"{0} te ha encontrado inconsciente {1}... ¡Te he tenido que operar de urgencia!#$b#",
+  "TheMightyAmondee.CDPP/replacementmail1":"Le hemos facturado {0}G por este servicio",
+  "TheMightyAmondee.CDPP/replacementmail2":"Te he cobrado {0}G por los gastos médicos"  
+}

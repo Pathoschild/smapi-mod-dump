@@ -30,18 +30,22 @@ namespace Fishnets
         internal static bool HasAlternativeTextures => IHelper.ModRegistry.IsLoaded("PeacefulEnd.AlternativeTextures");
         internal static bool HasJsonAssets => IHelper.ModRegistry.IsLoaded("spacechase0.JsonAssets");
         internal static bool HasDynamicGameAssets => IHelper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets");
+        internal static bool HasSaveAnywhere => IHelper.ModRegistry.IsLoaded("Omegasis.SaveAnywhere");
 
         internal static IModHelper IHelper;
         internal static IMonitor IMonitor;
         internal static ITranslationHelper i18n;
         internal static IApi IApi;
+
         internal static IQualityBaitApi IQualityBaitApi;
         internal static IAlternativeTexturesApi IAlternativeTexturesApi;
         internal static IJsonAssetsApi IJsonAssetsApi;
         internal static IDynamicGameAssetsApi IDynamicGameAssetsApi;
+        internal static ISaveAnywhereApi ISaveAnywhereApi;
 
         private int lastObjectId;
         private Rectangle? fishNetTextureLocation;
+        private bool fromMidDay = false;
 
         public override void Entry(IModHelper helper)
         {
@@ -72,6 +76,30 @@ namespace Fishnets
                 IJsonAssetsApi = Helper.ModRegistry.GetApi<IJsonAssetsApi>("spacechase0.JsonAssets");
             if (HasDynamicGameAssets)
                 IDynamicGameAssetsApi = Helper.ModRegistry.GetApi<IDynamicGameAssetsApi>("spacechase0.DynamicGameAssets");
+            if (HasSaveAnywhere)
+                ISaveAnywhereApi = Helper.ModRegistry.GetApi<ISaveAnywhereApi>("Omegasis.SaveAnywhere");
+
+            if (ISaveAnywhereApi is not null)
+            {
+                ISaveAnywhereApi.addBeforeSaveEvent(Helper.ModRegistry.ModID, () => 
+                {
+                    fromMidDay = true;
+                    onDayEnding(null, null);
+                    fromMidDay = false;
+                });
+                ISaveAnywhereApi.addAfterLoadEvent(Helper.ModRegistry.ModID, () =>
+                {
+                    fromMidDay = true;
+                    onDayStarted(null, null);
+                    fromMidDay = false;
+                });
+                ISaveAnywhereApi.addAfterSaveEvent(Helper.ModRegistry.ModID, () =>
+                {
+                    fromMidDay = true;
+                    onDayStarted(null, null);
+                    fromMidDay = false;
+                });
+            }
         }
 
         private void onDayEnding(object sender, DayEndingEventArgs e)
@@ -92,7 +120,8 @@ namespace Fishnets
                 var serializable = new List<FishNet.FishNetSerializable>();
                 foreach (var f in fishNets) 
                 {
-                    f.DayUpdate(l);
+                    if (!fromMidDay)
+                        f.DayUpdate(l);
                     serializable.Add(new((FishNet)f));
                 }
 
@@ -101,7 +130,8 @@ namespace Fishnets
                     string json = JsonConvert.SerializeObject(serializable);
                     l.modData[ModDataKey] = json;
                 }
-                else l.modData.Remove(ModDataKey);
+                else 
+                    l.modData.Remove(ModDataKey);
 
                 foreach (var f in fishNets)
                     l.Objects.Remove(f.TileLocation);
@@ -113,11 +143,13 @@ namespace Fishnets
             if (Game1.player.FishingLevel >= 6 && !Game1.player.knowsRecipe("Fish Net"))
                 Game1.player.craftingRecipes.Add("Fish Net", 0);
 
-            if (!Context.IsMainPlayer) return;
+            if (!Context.IsMainPlayer) 
+                return;
 
             foreach (var l in Game1.locations)
             {
-                if (!l.modData.ContainsKey(ModDataKey)) continue;
+                if (!l.modData.ContainsKey(ModDataKey)) 
+                    continue;
 
                 string json = l.modData[ModDataKey];
                 var deserialized = JsonConvert.DeserializeObject<List<FishNet.FishNetSerializable>>(json);
@@ -133,7 +165,8 @@ namespace Fishnets
                         l.Objects.Add(f.Tile, fishNet);
 
                     //If fishnet failed to update previously, try again
-                    fishNet.DayUpdate(l);
+                    if (!fromMidDay)
+                        fishNet.DayUpdate(l);
                 }
 
                 l.modData.Remove(ModDataKey);
@@ -243,26 +276,5 @@ namespace Fishnets
                 }, AssetEditPriority.Late);
             }
         }
-    }
-
-    public interface IQualityBaitApi
-    {
-        int GetQuality(int currentQuality, int baitQuality);
-    }
-
-    public interface IAlternativeTexturesApi
-    {
-        Texture2D GetTextureForObject(Object obj, out Rectangle sourceRect);
-    }
-
-    public interface IJsonAssetsApi
-    {
-        int GetObjectId(string name);
-    }
-
-    public interface IDynamicGameAssetsApi
-    {
-        string GetDGAItemId(object item);
-        object SpawnDGAItem(string fullId);
     }
 }

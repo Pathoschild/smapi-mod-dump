@@ -4,7 +4,7 @@
   "ActivateKey": "MouseRight",
   "OverlayEnabledOnPlace": true,
   "BalancedMode": 2,
-  "DefaultsAreFree": false,
+  "DefaultTiles": 0,
   "CannotAfford": 1,
   "BalancedModeCostMessage": true,
   "BalancedModeCannotAffordWarning": true,

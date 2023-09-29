@@ -9,20 +9,13 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Characters;
 using StardewValley.Events;
-using StardewValley.Locations;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
 {
@@ -103,7 +96,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
 
                 Response[] answerChoices1 = {
                     new("Yes", Game1.content.LoadString("Strings\\Events:HaveBabyAnswer_Yes")),
-                    new("Not", Game1.content.LoadString("Strings\\Events:HaveBabyAnswer_No"))
+                    new("Not", Game1.content.LoadString("Strings\\Events:HaveBabyAnswer_No")),
                 };
                 string question;
 

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "AlvadeasMiningShack",
-  "Author": "Alja",
-  "Version": "1.2.3",
+  "Author": "Alvadea & Jaksha",
+  "Version": "1.3.0",
   "Description": "Add a new shack map",
   "UniqueID": "Alja.Shack",
   "EntryDll": "AlvadeasMiningShack.dll",

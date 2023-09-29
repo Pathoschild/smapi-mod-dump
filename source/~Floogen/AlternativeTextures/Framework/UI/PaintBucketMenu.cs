@@ -256,7 +256,6 @@ namespace AlternativeTextures.Framework.UI
                     _texturesPerRow = 4;
                     widthOffsetScale = 3;
                     xOffset = 32;
-                    sourceRect = new Rectangle(0, 0, 15, 20);
                     break;
                 case TextureType.Furniture:
                     if (sourceRect.Height >= 64)
@@ -622,7 +621,7 @@ namespace AlternativeTextures.Framework.UI
                             else if (_textureTarget is Fence)
                             {
                                 this.availableTextures[i].texture = (_textureTarget as Fence).loadFenceTexture();
-                                this.availableTextures[i].sourceRect = this.GetFenceSourceRect(textureModel, _textureTarget as Fence, this.availableTextures[i].sourceRect.Height, -1);
+                                this.availableTextures[i].sourceRect = PaintBucketMenu.GetFenceSourceRect(textureModel, _textureTarget as Fence, this.availableTextures[i].sourceRect.Height, -1);
                                 this.availableTextures[i].draw(b, colorOverlay, 0.87f);
                             }
                             else if (_textureType is TextureType.Character && PatchTemplate.GetCharacterAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is Character character && character != null)
@@ -644,8 +643,23 @@ namespace AlternativeTextures.Framework.UI
                             }
                             else if (PatchTemplate.GetResourceClumpAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is GiantCrop giantCrop)
                             {
-                                this.availableTextures[i].texture = Game1.cropSpriteSheet;
-                                this.availableTextures[i].sourceRect = new Rectangle(112 + (int)giantCrop.which * 48, 512, 48, 63);
+                                var jsonAssetsApi = AlternativeTextures.apiManager.GetJsonAssetsApi();
+                                var moreGiantCropsApi = AlternativeTextures.apiManager.GetMoreGiantCropsApi();
+                                if (jsonAssetsApi is not null && jsonAssetsApi.TryGetGiantCropSprite(giantCrop.parentSheetIndex.Value, out Lazy<Texture2D> jsonAssetGiantCrop))
+                                {
+                                    this.availableTextures[i].texture = jsonAssetGiantCrop.Value;
+                                    this.availableTextures[i].sourceRect = new Rectangle(0, 0, 48, 63);
+                                }
+                                else if (moreGiantCropsApi is not null && moreGiantCropsApi.GetTexture(giantCrop.parentSheetIndex.Value) is Texture2D moreGiantCropsTexture)
+                                {
+                                    this.availableTextures[i].texture = moreGiantCropsTexture;
+                                    this.availableTextures[i].sourceRect = new Rectangle(0, 0, 48, 63);
+                                }
+                                else
+                                {
+                                    this.availableTextures[i].texture = Game1.cropSpriteSheet;
+                                    this.availableTextures[i].sourceRect = new Rectangle(112 + (int)giantCrop.which * 48, 512, 48, 63);
+                                }
                                 this.availableTextures[i].draw(b, colorOverlay, 0.87f);
                             }
                             else if (PatchTemplate.GetTerrainFeatureAt(Game1.currentLocation, (int)_position.X, (int)_position.Y) is Tree tree)
@@ -873,13 +887,13 @@ namespace AlternativeTextures.Framework.UI
             }
         }
 
-        private Rectangle GetSourceRectangle(AlternativeTextureModel textureModel, Object target, int textureWidth, int textureHeight, int variation)
+        internal static Rectangle GetSourceRectangle(AlternativeTextureModel textureModel, Object target, int textureWidth, int textureHeight, int variation)
         {
             var textureOffset = variation > 0 ? textureModel.GetTextureOffset(variation) : 0;
             var sourceRect = new Rectangle(0, textureOffset, textureWidth, textureHeight);
             if (target is Fence fence)
             {
-                sourceRect = this.GetFenceSourceRect(textureModel, fence, textureHeight, variation);
+                sourceRect = PaintBucketMenu.GetFenceSourceRect(textureModel, fence, textureHeight, variation);
             }
             else if (target is Furniture furniture)
             {
@@ -895,7 +909,7 @@ namespace AlternativeTextures.Framework.UI
             return sourceRect;
         }
 
-        private Rectangle GetFenceSourceRect(AlternativeTextureModel textureModel, Fence fence, int textureHeight, int variation)
+        private static Rectangle GetFenceSourceRect(AlternativeTextureModel textureModel, Fence fence, int textureHeight, int variation)
         {
             int sourceRectPosition = 1;
             var textureOffset = variation == -1 ? 0 : textureModel.GetTextureOffset(variation);
@@ -1035,7 +1049,13 @@ namespace AlternativeTextures.Framework.UI
                 bush.setUpSourceRect();
                 return AlternativeTextures.modHelper.Reflection.GetField<NetRectangle>(bush, "sourceRect").GetValue();
             }
-            return new Rectangle(Math.Min(2, bush.getAge() / 10) * 16 + bush.tileSheetOffset.Value * 16, 0, 16, 32);
+
+            if (bush.size.Value == Bush.greenTeaBush)
+            {
+                return new Rectangle(Math.Min(2, bush.getAge() / 10) * 16 + bush.tileSheetOffset.Value * 16, variation, 16, 32);
+            }
+            var vanillaSourceRect = AlternativeTextures.modHelper.Reflection.GetField<NetRectangle>(bush, "sourceRect").GetValue();
+            return new Rectangle(bush.tileSheetOffset.Value == 1 && bush.inBloom(Game1.GetSeasonForLocation(bush.currentLocation), Game1.dayOfMonth) ? 32 : 0, 0, vanillaSourceRect.Width, vanillaSourceRect.Height);
         }
 
         private Rectangle GetCharacterSourceRectangle(AlternativeTextureModel textureModel, Character character, int textureWidth, int textureHeight, int variation)

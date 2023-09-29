@@ -6,11 +6,11 @@ mods:
    Deep Woods
 
 latest commit:
-   commit 9358ffdf73d48bdf470751a6aabf0791b1398ed8
+   commit ff5734a22dd55a2f7f73e8be8cecc714b9930074
    Author: Max Vollmer <maxvollmer@users.noreply.github.com>
-   Date:   Wed Mar 22 09:30:17 2023 +0100
+   Date:   Tue Sep 5 22:58:51 2023 +0200
    
-       Merge pull request #16 from AcimasizKanarya/main
+       Merge pull request #17 from Jeffyshewan/main
        
-       Added Turkish translation
+       ðŸŒ: update french translation
    

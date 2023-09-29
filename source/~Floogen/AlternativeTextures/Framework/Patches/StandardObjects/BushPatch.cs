@@ -13,6 +13,7 @@ using AlternativeTextures.Framework.Utilities;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.TerrainFeatures;
@@ -36,7 +37,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             harmony.Patch(AccessTools.Constructor(typeof(Bush), new[] { typeof(Vector2), typeof(int), typeof(GameLocation), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(BushPostfix)));
         }
 
-        private static bool DrawPrefix(Bush __instance, float ___yDrawOffset, float ___alpha, float ___shakeRotation, SpriteBatch spriteBatch, Vector2 tileLocation)
+        private static bool DrawPrefix(Bush __instance, float ___yDrawOffset, float ___alpha, float ___shakeRotation, NetRectangle ___sourceRect, SpriteBatch spriteBatch, Vector2 tileLocation)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
             {
@@ -52,8 +53,8 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     return true;
                 }
 
-                var effectiveSize = 0;
-                if ((bool)__instance.drawShadow)
+                var effectiveSize = getEffectiveSize(__instance.size.Value);
+                if (__instance.drawShadow.Value)
                 {
                     if (effectiveSize > 0)
                     {
@@ -66,13 +67,32 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                 }
 
                 var textureOffset = textureModel.GetTextureOffset(textureVariation);
-                var sourceRect = new Rectangle(Math.Min(2, __instance.getAge() / 10) * 16 + __instance.tileSheetOffset.Value * 16, textureOffset, 16, 32);
+                var sourceRect = new Rectangle(__instance.tileSheetOffset.Value == 1 && __instance.inBloom(Game1.GetSeasonForLocation(__instance.currentLocation), Game1.dayOfMonth) ? 32 : 0, textureOffset, ___sourceRect.Value.Width, ___sourceRect.Value.Height);
+                if (__instance.size.Value == Bush.greenTeaBush)
+                {
+                    sourceRect = new Rectangle(Math.Min(2, __instance.getAge() / 10) * 16 + __instance.tileSheetOffset.Value * 16, textureOffset, 16, 32);
+                }
                 spriteBatch.Draw(textureModel.GetTexture(textureVariation), Game1.GlobalToLocal(Game1.viewport, new Vector2(tileLocation.X * 64f + (float)((effectiveSize + 1) * 64 / 2), (tileLocation.Y + 1f) * 64f - (float)((effectiveSize > 0 && (!__instance.townBush || effectiveSize != 1) && (int)__instance.size != 4) ? 64 : 0) + ___yDrawOffset)), sourceRect, Color.White * ___alpha, ___shakeRotation, new Vector2((effectiveSize + 1) * 16 / 2, 32f), 4f, __instance.flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, (float)(__instance.getBoundingBox(tileLocation).Center.Y + 48) / 10000f - tileLocation.X / 1000000f);
 
                 return false;
             }
             return true;
         }
+
+        private static int getEffectiveSize(int size)
+        {
+            if (size == 3)
+            {
+                return 0;
+            }
+            if (size == 4)
+            {
+                return 1;
+            }
+
+            return size;
+        }
+
 
         private static void SeasonUpdatePostfix(Bush __instance, bool onLoad)
         {

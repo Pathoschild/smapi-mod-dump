@@ -9,18 +9,40 @@
 *************************************************/
 
 using System;
-namespace SpecialOrdersAnywhere
-{
-    public class ModConfig
-    {
-        public StardewModdingAPI.SButton ActivateKey { get; set; } = StardewModdingAPI.SButton.P;
-        public StardewModdingAPI.SButton CycleLeftKey { get; set; } = StardewModdingAPI.SButton.OemOpenBrackets;
-        public StardewModdingAPI.SButton CycleRightKey { get; set; } = StardewModdingAPI.SButton.OemCloseBrackets;
+using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
-        public Boolean SpecialOrdersBeforeUnlocked { get; set; } = false;
-        public Boolean QiBeforeUnlocked { get; set; } = false;
+namespace AcidicNic.SpecialOrdersAnywhere {
+    public class ModConfig {
+        public SButton ActivateKey { get; set; } = SButton.P;
+        public SButton CycleLeftKey { get; set; } = SButton.OemOpenBrackets;
+        public SButton CycleRightKey { get; set; } = SButton.OemCloseBrackets;
 
-        public Boolean enableCalendar { get; set; } = true;
-        public Boolean enableDailyQuests { get; set; } = true;
+        public bool enableCalendar { get; set; } = true;
+        public bool enableDailyQuests { get; set; } = true;
+        public bool enableSpecialOrders { get; set; } = true;
+        public bool enableQiSpecialOrders { get; set; } = true;
+        public bool enableJournal { get; set; } = false;
+
+        public bool SpecialOrdersBeforeUnlocked { get; set; } = false;
+        public bool QiBeforeUnlocked { get; set; } = false;
+
+        internal int MenuLen;
+
+        public ModConfig()
+        {
+            this.MenuLen = 0;
+
+            if (enableCalendar)
+                this.MenuLen++;
+            if (enableDailyQuests)
+                this.MenuLen++;
+            if (enableSpecialOrders)
+                this.MenuLen++;
+            if (enableQiSpecialOrders)
+                this.MenuLen++;
+            if (enableQiSpecialOrders)
+                this.MenuLen++;
+        }
     }
 }

@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;net6.0</TargetFrameworks>
+    <EnableHarmony>true</EnableHarmony>
+    <BundleExtraAssemblies>ThirdParty, System</BundleExtraAssemblies>
+    <IgnoreModFilePaths>System.Configuration.ConfigurationManager.dll,System.Security.Permissions.dll</IgnoreModFilePaths>
+  </PropertyGroup>
+
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+    <GamePath>C:\Users\acerP\Downloads\depotdownloader-2.4.7\stardew1.6</GamePath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <InternalsAssemblyNames>StardewModdingAPI</InternalsAssemblyNames>
+    <InternalsAssemblyUseEmptyMethodBodies>false</InternalsAssemblyUseEmptyMethodBodies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IgnoresAccessChecksToGenerator" Version="0.6.0" />
+    <PackageReference Include="IronPython" Version="3.4.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    <Reference Include="SMAPI.Toolkit" HintPath="$(GamePath)\smapi-internal\SMAPI.Toolkit.dll" />
+  </ItemGroup>
+
+</Project>

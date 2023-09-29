@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using StardewArchipelago.Extensions;
+
 namespace StardewArchipelago.Archipelago
 {
     public class ScoutedLocation
@@ -36,7 +38,7 @@ namespace StardewArchipelago.Archipelago
 
         public override string ToString()
         {
-            return $"{PlayerName}'s {ItemName}";
+            return $"{PlayerName}'s {ItemName.TurnHeartsIntoStardewHearts()}";
         }
 
         public static string GenericItemName()

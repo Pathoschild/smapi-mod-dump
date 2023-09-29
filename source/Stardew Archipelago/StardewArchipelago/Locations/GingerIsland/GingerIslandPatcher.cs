@@ -8,11 +8,6 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HarmonyLib;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Locations.CodeInjections;
@@ -20,7 +15,6 @@ using StardewArchipelago.Locations.GingerIsland.Boat;
 using StardewArchipelago.Locations.GingerIsland.Parrots;
 using StardewArchipelago.Locations.GingerIsland.VolcanoForge;
 using StardewArchipelago.Locations.GingerIsland.WalnutRoom;
-using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -42,7 +36,7 @@ namespace StardewArchipelago.Locations.GingerIsland
             _parrotReplacers = new IParrotReplacer[]
             {
                 new IslandHutInjections(), new IslandNorthInjections(),
-                new IslandSouthInjections(), new IslandWestInjections()
+                new IslandSouthInjections(), new IslandWestInjections(),
             };
         }
 
@@ -79,6 +73,11 @@ namespace StardewArchipelago.Locations.GingerIsland
                 original: AccessTools.Method(typeof(BoatTunnel), nameof(BoatTunnel.answerDialogue)),
                 prefix: new HarmonyMethod(typeof(BoatTunnelInjections), nameof(BoatTunnelInjections.AnswerDialogue_BoatRepairAndUsage_Prefix))
             );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(BoatTunnel), nameof(BoatTunnel.draw)),
+                postfix: new HarmonyMethod(typeof(BoatTunnelInjections), nameof(BoatTunnelInjections.Draw_DrawBoatSectionsBasedOnTasksCompleted_Postfix))
+            );
         }
 
         private void ReplaceParrotsWithChecks()
@@ -91,11 +90,6 @@ namespace StardewArchipelago.Locations.GingerIsland
             _harmony.Patch(
                 original: AccessTools.Method(typeof(VolcanoDungeon), nameof(VolcanoDungeon.GenerateContents)),
                 postfix: new HarmonyMethod(typeof(VolcanoDungeonInjections), nameof(VolcanoDungeonInjections.GenerateContents_ReplaceParrots_Postfix))
-            );
-
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(IslandWest), nameof(IslandWest.ApplyFarmHouseRestore)),
-                prefix: new HarmonyMethod(typeof(IslandWestInjections), nameof(IslandWestInjections.ApplyFarmHouseRestore_RestoreOnlyCorrectParts_Prefix))
             );
 
             _harmony.Patch(

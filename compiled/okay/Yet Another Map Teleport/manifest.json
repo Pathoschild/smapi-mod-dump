@@ -1,0 +1,10 @@
+﻿{
+  "Name": "StardewMapTeleport",
+  "Author": "moddem",
+  "Version": "1.0.0",
+  "Description": "Yet another cool mod.",
+  "UniqueID": "moddem.StardewMapTeleport",
+  "EntryDll": "StardewMapTeleport.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

@@ -37,9 +37,9 @@ namespace FarmTypeManager
                 saveAnywhere.addBeforeSaveEvent(ModManifest.UniqueID, SaveAnywhere_BeforeSave);
                 saveAnywhere.addAfterSaveEvent(ModManifest.UniqueID, SaveAnywhere_AfterSave);
 
-                /*
-                 * workaround shouldn't work in SaveAnywhere 3.2.6+ as it switched to using the normal SaveGameMenu
-                 Utility.Helper.Events.Display.MenuChanged += SaveAnywhere_MenuChanged;
+                //Note from SaveAnywhere developer: "workaround shouldn't work in SaveAnywhere 3.2.6+ as it switched to using the normal SaveGameMenu"
+                /* 
+                Utility.Helper.Events.Display.MenuChanged += SaveAnywhere_MenuChanged;
                 */
             }
         }

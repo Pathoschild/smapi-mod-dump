@@ -41,59 +41,75 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             _archipelago = archipelago;
             _stardewItemManager = stardewItemManager;
         }
-
-        // public static int getRandomLowGradeCropForThisSeason(string season)
-        public static bool GetRandomLowGradeCropForThisSeason_OnlyUnlockedCrops_Prefix(string season, ref int __result)
+        
+        // public Crop(int seedIndex, int tileX, int tileY)
+        public static bool CropConstructor_WildSeedsBecomesUnlockedCrop_Prefix(Crop __instance, ref int seedIndex, int tileX, int tileY)
         {
             try
             {
-                var receivedSeeds = _archipelago.GetAllReceivedItems().Select(x => x.ItemName).Where(x => (x.EndsWith("Seeds") || x.EndsWith("Starter") || x.EndsWith("Seed") || x.EndsWith("Bean")) && _stardewItemManager.ItemExists(x));
-                var seedItems = receivedSeeds.Select(x => _stardewItemManager.GetItemByName(x).PrepareForGivingToFarmer());
-                var location = Game1.currentLocation;
-                var seedsInfo = Game1.content.Load<Dictionary<int, string>>("Data\\Crops");
-
-                var seedsICanPlantHere = seedItems.Where(x => SeedCanBePlantedHere(x, location, season, seedsInfo)).ToArray();
-
-                if (!seedsICanPlantHere.Any())
+                if (seedIndex != 770)
                 {
-                    __result = season switch
-                    {
-                        "spring" => SPRING_SEEDS,
-                        "summer" => SUMMER_SEEDS,
-                        "fall" => FALL_SEEDS,
-                        "winter" => WINTER_SEEDS,
-                        _ => -1
-                    };
-                    return __result == -1; // run original logic only if I couldn't give good seeds
+                    return true; // run original logic
                 }
 
-                var weightedSeeds = new List<Item>();
-                foreach (var seed in seedsICanPlantHere)
-                {
-                    if (_overpoweredSeeds.Contains(seed.Name))
-                    {
-                        weightedSeeds.Add(seed);
-                    }
-                    else if (SeedRegrows(seed, seedsInfo))
-                    {
-                        weightedSeeds.AddRange(Enumerable.Repeat(seed, 10));
-                    }
-                    else
-                    {
-                        weightedSeeds.AddRange(Enumerable.Repeat(seed, 100));
-                    }
-                }
-
-                var randomIndex = Game1.random.Next(weightedSeeds.Count);
-                var randomSeed = weightedSeeds[randomIndex];
-                __result = randomSeed.ParentSheetIndex;
-                return false; // don't run original logic
+                var randomSeed = GetWeigthedRandomUnlockedCrop(Game1.currentSeason);
+                seedIndex = randomSeed;
+                return true; // run original logic
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(GetRandomLowGradeCropForThisSeason_OnlyUnlockedCrops_Prefix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(CropConstructor_WildSeedsBecomesUnlockedCrop_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
+        }
+
+        private static int GetWeigthedRandomUnlockedCrop(string season)
+        {
+            var receivedSeeds = _archipelago.GetAllReceivedItems().Select(x => x.ItemName).Where(x =>
+                (x.EndsWith("Seeds") || x.EndsWith("Starter") || x.EndsWith("Seed") || x.EndsWith("Bean")) &&
+                _stardewItemManager.ItemExists(x));
+            var seedItems = receivedSeeds.Select(x => _stardewItemManager.GetItemByName(x).PrepareForGivingToFarmer());
+            var location = Game1.currentLocation;
+            var seedsInfo = Game1.content.Load<Dictionary<int, string>>("Data\\Crops");
+
+            var seedsICanPlantHere = seedItems.Where(x => SeedCanBePlantedHere(x, location, season, seedsInfo)).ToList();
+
+            switch (season)
+            {
+                case "spring":
+                    seedsICanPlantHere.Add(_stardewItemManager.GetItemByName("Spring Seeds").PrepareForGivingToFarmer());
+                    break;
+                case "summer":
+                    seedsICanPlantHere.Add(_stardewItemManager.GetItemByName("Summer Seeds").PrepareForGivingToFarmer());
+                    break;
+                case "fall":
+                    seedsICanPlantHere.Add(_stardewItemManager.GetItemByName("Fall Seeds").PrepareForGivingToFarmer());
+                    break;
+                case "winter":
+                    seedsICanPlantHere.Add(_stardewItemManager.GetItemByName("Winter Seeds").PrepareForGivingToFarmer());
+                    break;
+            }
+
+            var weightedSeeds = new List<int>();
+            foreach (var seed in seedsICanPlantHere)
+            {
+                if (_overpoweredSeeds.Contains(seed.Name))
+                {
+                    weightedSeeds.Add(seed.ParentSheetIndex);
+                }
+                else if (SeedRegrows(seed, seedsInfo))
+                {
+                    weightedSeeds.AddRange(Enumerable.Repeat(seed.ParentSheetIndex, 10));
+                }
+                else
+                {
+                    weightedSeeds.AddRange(Enumerable.Repeat(seed.ParentSheetIndex, 100));
+                }
+            }
+
+            var randomIndex = Game1.random.Next(weightedSeeds.Count);
+            var randomSeed = weightedSeeds[randomIndex];
+            return randomSeed;
         }
 
         private static bool SeedCanBePlantedHere(Item x, GameLocation location, string season, Dictionary<int, string> seedsInfo)

@@ -84,7 +84,7 @@ namespace NovoMundo.Farm2
                 for (int index = 0; index < 10; ++index)
                 {
                     TerrainFeature terrainFeature = this.terrainFeatures.Pairs.ElementAt<KeyValuePair<Vector2, TerrainFeature>>(Game1.random.Next(this.terrainFeatures.Count())).Value;
-                    if (terrainFeature is Tree && (int)((NetFieldBase<int, NetInt>)(terrainFeature as Tree).growthStage) >= 5 && !(bool)((NetFieldBase<bool, NetBool>)(terrainFeature as Tree).tapped))
+                    if (terrainFeature is Tree && (int)((NetFieldBase<int, NetInt>)(terrainFeature as Tree).growthStage).Value >= 5 && !(bool)((NetFieldBase<bool, NetBool>)(terrainFeature as Tree).tapped).Value)
                     {
                         (terrainFeature as Tree).treeType.Value = 7;
                         (terrainFeature as Tree).loadSprite();

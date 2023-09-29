@@ -8,13 +8,13 @@
 **
 *************************************************/
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Archipelago.Gifting;
-using StardewArchipelago.Constants;
 using StardewArchipelago.GameModifications;
 using StardewArchipelago.GameModifications.CodeInjections;
 using StardewArchipelago.GameModifications.EntranceRandomizer;
@@ -33,8 +33,8 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
-using StardewValley.Menus;
 using StardewArchipelago.GameModifications.Modded;
+using StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer;
 
 namespace StardewArchipelago
 {
@@ -108,6 +108,9 @@ namespace StardewArchipelago
 
 
             _helper.ConsoleCommands.Add("connect_override", $"Overrides your next connection to Archipelago. {CONNECT_SYNTAX}", this.OnCommandConnectToArchipelago);
+            _helper.ConsoleCommands.Add("export_all_gifts", "Export all currently loaded giftable items and their traits", this.ExportGifts);
+            _helper.ConsoleCommands.Add("deathlink", "Override the deathlink setting", this.OverrideDeathlink);
+            _helper.ConsoleCommands.Add("trap_difficulty", "Override the trap difficulty setting", this.OverrideTrapDifficulty);
 
 #if DEBUG
             _helper.ConsoleCommands.Add("connect", $"Connect to Archipelago. {CONNECT_SYNTAX}", this.OnCommandConnectToArchipelago);
@@ -117,7 +120,6 @@ namespace StardewArchipelago
             // _helper.ConsoleCommands.Add("load_entrances", "Loads the entrances file", (_, _) => _entranceRandomizer.LoadTransports());
             // _helper.ConsoleCommands.Add("save_entrances", "Saves the entrances file", (_, _) => EntranceInjections.SaveNewEntrancesToFile());
             _helper.ConsoleCommands.Add("export_shippables", "Export all currently loaded shippable items", this.ExportShippables);
-            _helper.ConsoleCommands.Add("export_all_gifts", "Export all currently loaded giftable items and their traits", this.ExportGifts);
             _helper.ConsoleCommands.Add("debug_method", "Runs whatever is currently in the debug method", this.DebugMethod);
 #endif
         }
@@ -137,8 +139,11 @@ namespace StardewArchipelago
             _advancedOptionsManager = new AdvancedOptionsManager(this, _harmony, _archipelago);
             _advancedOptionsManager.InjectArchipelagoAdvancedOptions();
             _giftHandler = new CrossGiftHandler();
+            _villagerEvents = new ModifiedVillagerEventChecker();
             SkillInjections.ResetSkillExperience();
             FriendshipInjections.ResetArchipelagoFriendshipPoints();
+
+            IslandWestMapInjections.PatchMapInjections(Monitor, _helper, _harmony);
         }
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -164,9 +169,12 @@ namespace StardewArchipelago
 
             _seasonsRandomizer = new SeasonsRandomizer(Monitor, _helper, _archipelago, State);
             State.AppearanceRandomizerOverride = null;
+            State.TrapDifficultyOverride = null;
             State.SeasonsOrder = new List<string>();
             State.SeasonsOrder.Add(_seasonsRandomizer.GetFirstSeason());
             SeasonsRandomizer.SetSeason(State.SeasonsOrder.Last());
+
+            DebugAssertStateValues(State);
             _helper.Data.WriteSaveData(AP_DATA_KEY, State);
             _helper.Data.WriteSaveData(AP_EXPERIENCE_KEY, SkillInjections.GetArchipelagoExperience());
             _helper.Data.WriteSaveData(AP_FRIENDSHIP_KEY, FriendshipInjections.GetArchipelagoFriendshipPoints());
@@ -184,9 +192,21 @@ namespace StardewArchipelago
             State.LocationsScouted = _archipelago.ScoutedLocations;
             State.LettersGenerated = _mail.GetAllLettersGenerated();
             // _state.SeasonOrder should be fine?
+
+            DebugAssertStateValues(State);
             _helper.Data.WriteSaveData(AP_DATA_KEY, State);
             _helper.Data.WriteSaveData(AP_EXPERIENCE_KEY, SkillInjections.GetArchipelagoExperience());
             _helper.Data.WriteSaveData(AP_FRIENDSHIP_KEY, FriendshipInjections.GetArchipelagoFriendshipPoints());
+        }
+
+        private void DebugAssertStateValues(ArchipelagoStateDto state)
+        {
+            if (state.APConnectionInfo == null)
+            {
+                Monitor.Log(
+                    $"About to write Archipelago State data, but the connectionInfo is null! This should never happen. Please contact KaitoKid and describe what you did last so it can be investigated.",
+                    LogLevel.Error);
+            }
         }
 
         private void OnSaved(object sender, SavedEventArgs e)
@@ -211,13 +231,6 @@ namespace StardewArchipelago
             var tileChooser = new TileChooser();
             _chatForwarder = new ChatForwarder(Monitor, _helper, _harmony, _archipelago, _giftHandler, tileChooser);
             _questCleaner = new QuestCleaner();
-            _villagerEvents = new ModifiedVillagerEventChecker();
-
-
-            if (State.APConnectionInfo == null)
-            {
-                return;
-            }
 
             if (!_archipelago.IsConnected)
             {
@@ -226,7 +239,17 @@ namespace StardewArchipelago
                     State.APConnectionInfo = _apConnectionOverride;
                     _apConnectionOverride = null;
                 }
-                _archipelago.Connect(State.APConnectionInfo, out var errorMessage);
+
+                var errorMessage = "";
+                if (State.APConnectionInfo == null)
+                {
+                    errorMessage =
+                        $"The game being loaded has no connection information.{Environment.NewLine}Please use the connect_override command to input connection fields before loading it";
+                }
+                else
+                {
+                    _archipelago.Connect(State.APConnectionInfo, out errorMessage);
+                }
 
                 if (!_archipelago.IsConnected)
                 {
@@ -237,8 +260,9 @@ namespace StardewArchipelago
             }
 
             _itemManager = new ItemManager(_helper, _archipelago, _stardewItemManager, _mail, tileChooser, State.ItemsReceived);
-            _mailPatcher = new MailPatcher(Monitor, _harmony, _archipelago, _locationChecker, new LetterActions(_helper, _mail, _archipelago, _itemManager.TrapManager));
-            _locationsPatcher = new LocationPatcher(Monitor, _helper, _harmony, _archipelago, _locationChecker, _bundleReader, _stardewItemManager);
+            var weaponsManager = new WeaponsManager(_stardewItemManager);
+            _mailPatcher = new MailPatcher(Monitor, _harmony, _archipelago, _locationChecker, new LetterActions(_helper, _mail, _archipelago, weaponsManager, _itemManager.TrapManager));
+            _locationsPatcher = new LocationPatcher(Monitor, _helper, _harmony, _archipelago, State, _locationChecker, _bundleReader, _stardewItemManager, weaponsManager);
             _chatForwarder.ListenToChatMessages();
             _giftHandler.Initialize(Monitor, _archipelago, _stardewItemManager, _mail);
             _logicPatcher.PatchAllGameLogic();
@@ -296,9 +320,8 @@ namespace StardewArchipelago
 
             _questCleaner.CleanQuests(Game1.player);
 
-
-
             FarmInjections.DeleteStartingDebris();
+            FarmInjections.PlaceEarlyShippingBin();
             _mail.SendToday();
             FarmInjections.ForcePetIfNeeded(_mail);
             _locationChecker.VerifyNewLocationChecksWithArchipelago();
@@ -311,29 +334,23 @@ namespace StardewArchipelago
             {
                 _archipelago.SlotData.AppearanceRandomization = State.AppearanceRandomizerOverride.Value;
             }
+            if (State.TrapDifficultyOverride != null)
+            {
+                _archipelago.SlotData.TrapItemsDifficulty = State.TrapDifficultyOverride.Value;
+            }
             _appearanceRandomizer.ShuffleCharacterAppearances();
             _entranceManager.ResetCheckedEntrancesToday(_archipelago.SlotData);
-
-            DoBugsCleanup();
         }
 
         private void DoBugsCleanup()
         {
-            if (_archipelago.HasReceivedItem("Dark Talisman"))
-            {
-                Game1.player.hasDarkTalisman = true;
-            }
-
-            if (_archipelago.HasReceivedItem("Key To The Town"))
-            {
-                Game1.player.HasTownKey = true;
-            }
         }
 
         private void OnDayEnding(object sender, DayEndingEventArgs e)
         {
             _giftHandler.ReceiveAllGiftsTomorrow();
             _villagerEvents.CheckJunaHearts(_archipelago);
+            AdventurerGuildInjections.RemoveExtraItemsFromItemsLostLastDeath();
         }
 
         private void OnTimeChanged(object sender, TimeChangedEventArgs e)
@@ -343,9 +360,6 @@ namespace StardewArchipelago
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             _archipelago.APUpdate();
-            // var methods = _harmony.GetPatchedMethods().ToList();
-            // _entranceManager.RegisterAllEntrances();
-            // _entranceManager.SetEntranceRandomizerSettings(_archipelago.SlotData);
         }
 
         private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
@@ -438,6 +452,36 @@ namespace StardewArchipelago
         private void ExportGifts(string arg1, string[] arg2)
         {
             _giftHandler.ExportAllGifts("gifts.json");
+        }
+
+        private void OverrideDeathlink(string arg1, string[] arg2)
+        {
+            _archipelago?.ToggleDeathlink();
+        }
+
+        private void OverrideTrapDifficulty(string arg1, string[] arg2)
+        {
+            if (_archipelago == null || State == null || !_archipelago.MakeSureConnected(0))
+            {
+                Monitor.Log($"This command can only be used from in-game, when connected to Archipelago", LogLevel.Info);
+                return;
+            }
+
+            if (arg2.Length < 1)
+            {
+                Monitor.Log($"Choose one of the following difficulties: [NoTraps, Easy, Medium, Hard, Hell, Nightmare].", LogLevel.Info);
+                return;
+            }
+
+            var difficulty = arg2[0];
+            if (!Enum.TryParse<TrapItemsDifficulty>(difficulty, true, out var difficultyOverride))
+            {
+                Monitor.Log($"Choose one of the following difficulties: [NoTraps, Easy, Medium, Hard, Hell, Nightmare].", LogLevel.Info);
+                return;
+            }
+
+            State.TrapDifficultyOverride = difficultyOverride;
+            Monitor.Log($"Trap Difficulty set to [{difficultyOverride}]. Change will be saved next time you sleep", LogLevel.Info);
         }
     }
 }

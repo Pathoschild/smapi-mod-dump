@@ -70,7 +70,7 @@ namespace StardewArchipelago.Items.Traps
             return spawnPosition.Value;
         }
 
-        public bool CanPathFindToAnyWarp(GameLocation location, Point startPoint)
+        public bool CanPathFindToAnyWarp(GameLocation location, Point startPoint, int minimumDistance = 0, int maximumDistance = 500)
         {
             if (location.warps == null || location.warps.Count < 1)
             {
@@ -89,7 +89,7 @@ namespace StardewArchipelago.Items.Traps
                 var endPointFunction = new PathFindController.isAtEnd(PathFindController.isAtEndPoint);
                 var character = (Character)Game1.player;
                 var path = PathFindController.findPath(startPoint, endPoint, endPointFunction, location, character, 250);
-                if (path != null && path.Count < 200)
+                if (path != null && path.Count >= minimumDistance && path.Count <= maximumDistance)
                 {
                     return true;
                 }

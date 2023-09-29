@@ -33,6 +33,8 @@ namespace StardewArchipelago.Stardew
 
         public abstract Item PrepareForGivingToFarmer(int amount = 1);
 
+        public abstract Item PrepareForRecovery();
+
         public abstract void GiveToFarmer(Farmer farmer, int amount = 1);
 
         public abstract LetterAttachment GetAsLetter(ReceivedItem receivedItem, int amount = 1);

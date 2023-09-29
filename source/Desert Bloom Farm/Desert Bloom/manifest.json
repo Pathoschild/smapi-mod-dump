@@ -11,7 +11,7 @@
 {
   "Name": "Desert Bloom Farm",
   "Author": "DeLiXx",
-  "Version": "1.0.4",
+  "Version": "1.0.5-alpha",
   "Description": "Desert Bloom Farm",
   "UniqueID": "DeLiXx.Desert_Bloom_Farm",
   "EntryDll": "Desert Bloom.dll",
@@ -27,10 +27,6 @@
       "UniqueID": "DeLiXx.Custom_Farm_Loader",
       "IsRequired": true,
       "MinimumVersion": "1.0.15"
-    },
-    {
-      "UniqueID": "aedenthorn.ExtraMapLayers",
-      "IsRequired": true
     },
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",

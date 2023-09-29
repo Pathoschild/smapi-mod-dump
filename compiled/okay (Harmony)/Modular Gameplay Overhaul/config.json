@@ -58,9 +58,8 @@
     "ProspectorHuntHandicap": 1.0,
     "TreasureDetectionDistance": 3.0,
     "SpelunkerSpeedCeiling": 10,
-    "EnableGetExcited": true,
-    "CrystalariumsUpgradeWithGemologist": true,
-    "FishNeededForInstantCatch": 500,
+    "DemolitionistGetExcited": true,
+    "CrystalariumUpgradesWithGemologist": true,
     "AnglerPriceBonusCeiling": 1.0,
     "AquaristFishPondCeiling": 12,
     "ShowFishCollectionMaxIcon": true,
@@ -79,8 +78,8 @@
     "LimitGaugeYOffset": 0,
     "EnablePrestige": true,
     "SkillResetCostMultiplier": 1.0,
-    "ForgetRecipes": true,
-    "AllowMultiplePrestige": false,
+    "ForgetRecipesOnSkillReset": true,
+    "AllowMultipleResets": false,
     "PrestigeExpMultiplier": 0.1,
     "PrestigeRespecCost": 20000,
     "EnableExtendedProgession": true,
@@ -107,27 +106,18 @@
   },
   "Combat": {
     "EnableStatusConditions": true,
-    "KnockbackDamage": true,
-    "ShadowyShooterProjectile": true,
-    "OverhauledDefense": true,
+    "EnableKnockbackDamage": true,
     "CriticalBackAttacks": true,
-    "MonsterHealthMultiplier": 1.0,
-    "MonsterDamageMultiplier": 1.0,
-    "MonsterDefenseMultiplier": 1.0,
-    "VariedEncounters": true
-  },
-  "Weapons": {
-    "EnableRebalance": true,
-    "WeaponTooltipStyle": "Relative",
-    "ColorCodedForYourConvenience": true,
+    "NewResistanceFormula": true,
+    "EnableWeaponOverhaul": true,
     "EnableComboHits": true,
-    "SwipeHold": true,
     "ComboHitsPerWeapon": {
       "StabbingSword": 4,
       "DefenseSword": 4,
       "Club": 2
     },
-    "EnableStabbySwords": true,
+    "SwipeHold": true,
+    "EnableStabbingSwords": true,
     "StabbingSwords": [
       "Bone Sword",
       "Steel Smallsword",
@@ -142,19 +132,39 @@
       "Infinity Blade",
       "Strawblaster"
     ],
-    "EnableRetexture": true,
+    "DefenseImprovesParry": true,
+    "GroundedClubSmash": true,
+    "EnableRangedCriticalHits": true,
+    "EnableSlingshotSpecialMove": true,
+    "EnableInfinitySlingshot": true,
+    "RemoveSlingshotGracePeriod": true,
+    "RebalancedRings": true,
+    "CraftableGemstoneRings": true,
+    "EnableInfinityBand": true,
+    "EnableResonances": true,
+    "ColorfulResonances": true,
+    "ResonanceLightsourceTexture": "Sconce",
+    "RebalancedGemstones": true,
+    "NewPrismaticEnchantments": true,
+    "WoodyReplacesRusty": true,
     "DwarvenLegacy": true,
-    "InfinityPlusOne": true,
+    "EnableHeroQuest": true,
     "IridiumBarsPerGalaxyWeapon": 10,
     "RuinBladeDotMultiplier": 1.0,
     "CanStoreRuinBlade": false,
-    "VirtueTrialDifficulty": "Medium",
-    "DefenseImprovesParry": true,
-    "GroundedClubSmash": true,
-    "WoodyReplacesRusty": true,
+    "HeroQuestDifficulty": "Medium",
+    "MonsterHealthSummand": 0,
+    "MonsterDamageSummand": 0,
+    "MonsterDefenseSummand": 1,
+    "MonsterHealthMultiplier": 1.5,
+    "MonsterDamageMultiplier": 1.0,
+    "MonsterDefenseMultiplier": 2.0,
+    "VariedEncounters": true,
     "FaceMouseCursor": true,
     "SlickMoves": true,
     "EnableAutoSelection": true,
+    "MeleeAutoSelectionRange": 2,
+    "RangedAutoSelectionRange": 4,
     "SelectionKey": "LeftShift, LeftShoulder",
     "SelectionBorderColor": {
       "B": 255,
@@ -162,33 +172,17 @@
       "R": 255,
       "A": 255
     },
-    "AutoSelectionRange": 2
-  },
-  "Slingshots": {
-    "EnableRebalance": true,
-    "EnableCriticalHits": true,
-    "EnableEnchantments": true,
-    "EnableSpecialMove": true,
-    "EnableInfinitySlingshot": true,
-    "DisableGracePeriod": true,
-    "FaceMouseCursor": true,
-    "SlickMoves": true,
-    "EnableAutoSelection": true,
-    "SelectionKey": "LeftShift, LeftShoulder",
-    "SelectionBorderColor": {
-      "B": 255,
-      "G": 0,
-      "R": 255,
-      "A": 255
-    },
-    "AutoSelectionRange": 4,
     "ColorCodedForYourConvenience": true,
+    "DrawForgeSockets": true,
+    "SocketStyle": "Diamond",
+    "SocketPosition": "AboveSeparator",
+    "WeaponTooltipStyle": "Relative",
     "DrawCurrentAmmo": true,
     "BullseyeReplacesCursor": true
   },
   "Tools": {
     "Axe": {
-      "BaseStaminaMultiplier": 1.0,
+      "BaseStaminaCostMultiplier": 1.0,
       "EnableCharging": true,
       "RequiredUpgradeForCharging": "Copper",
       "RadiusAtEachPowerLevel": [
@@ -199,7 +193,7 @@
         5,
         6
       ],
-      "ChargedStaminaMultiplier": 1.0,
+      "ChargedStaminaCostMultiplier": 1.0,
       "ClearFruitTreeSeeds": false,
       "ClearFruitTreeSaplings": false,
       "CutGrownFruitTrees": false,
@@ -212,12 +206,11 @@
       "ClearLiveCrops": false,
       "ClearDeadCrops": true,
       "ClearDebris": true,
-      "PlayShockwaveAnimation": true,
       "AllowMasterEnchantment": true,
       "AllowReachingEnchantment": true
     },
     "Pick": {
-      "BaseStaminaMultiplier": 1.0,
+      "BaseStaminaCostMultiplier": 1.0,
       "EnableCharging": true,
       "RequiredUpgradeForCharging": "Copper",
       "RadiusAtEachPowerLevel": [
@@ -238,12 +231,11 @@
       "ClearLiveCrops": false,
       "ClearDeadCrops": true,
       "ClearDebris": true,
-      "PlayShockwaveAnimation": true,
       "AllowMasterEnchantment": true,
       "AllowReachingEnchantment": true
     },
     "Hoe": {
-      "BaseStaminaMultiplier": 1.0,
+      "BaseStaminaCostMultiplier": 1.0,
       "AffectedTilesAtEachPowerLevel": [
         {
           "Item1": 3,
@@ -273,7 +265,7 @@
       "AllowMasterEnchantment": true
     },
     "Can": {
-      "BaseStaminaMultiplier": 1.0,
+      "BaseStaminaCostMultiplier": 1.0,
       "AffectedTilesAtEachPowerLevel": [
         {
           "Item1": 3,
@@ -316,12 +308,14 @@
       "GoldScytheOnly": false,
       "AllowHaymakerEnchantment": true
     },
-    "ModKey": "LeftShift, LeftShoulder",
     "HoldToCharge": true,
+    "ChargeKey": "LeftShift, LeftShoulder",
+    "PlayShockwaveAnimation": true,
+    "TicksBetweenCrests": 4,
     "HideAffectedTiles": false,
-    "TicksBetweenWaves": 4,
     "FaceMouseCursor": true,
     "EnableAutoSelection": true,
+    "SelectionKey": "LeftShift, LeftShoulder",
     "SelectionBorderColor": {
       "B": 255,
       "G": 0,
@@ -330,23 +324,6 @@
     },
     "ColorCodedForYourConvenience": false,
     "EnableForgeUpgrading": true
-  },
-  "Enchantments": {
-    "MeleeEnchantments": true,
-    "RangedEnchantments": true,
-    "RebalancedForges": true,
-    "DrawForgeSockets": true,
-    "SocketStyle": "Diamond",
-    "SocketPosition": "AboveSeparator"
-  },
-  "Rings": {
-    "RebalancedRings": true,
-    "CraftableGemRings": true,
-    "BetterGlowstoneProgression": true,
-    "TheOneInfinityBand": true,
-    "EnableResonance": true,
-    "ColorfulResonance": true,
-    "LightsourceTexture": "Sconce"
   },
   "Ponds": {
     "DaysUntilAlgaeSpawn": 3,
@@ -371,7 +348,7 @@
       0.35,
       0.37
     ],
-    "AnnualInterest": 0.12,
+    "AnnualInterest": 1.0,
     "IncomeTaxLatenessFine": 0.05,
     "DeductibleAnimalExpenses": 1.0,
     "DeductibleBuildingExpenses": 1.0,
@@ -385,17 +362,11 @@
     "ExemptMagicalBuilding": true
   },
   "Tweex": {
-    "BeeHouseAgingFactor": 1.0,
-    "MushroomBoxAgingFactor": 1.0,
-    "TreeAgingFactor": 1.0,
-    "FruitTreeAgingFactor": 1.0,
-    "TeaBushAgingFactor": 1.0,
-    "DeterministicAgeQuality": true,
-    "BerryBushExpReward": 5,
-    "MushroomBoxExpReward": 1,
-    "TapperExpReward": 2,
+    "DeterministicAgeQuality": false,
     "CropWitherChance": 0.1,
     "PreventFruitTreeWinterGrowth": true,
+    "BeeHouseAgingFactor": 1.0,
+    "TeaBushAgingFactor": 1.0,
     "LargeDairyYieldsQuantityOverQuality": true,
     "DairyArtisanMachines": [
       "Butter Churn",
@@ -403,8 +374,6 @@
       "Keg",
       "Yogurt Jar"
     ],
-    "TrashDoesNotConsumeBait": true,
-    "ExplosionTriggeredBombs": true,
     "SpawnCrowsOnTheseMaps": [
       "IslandWest",
       "Custom_Garden",
@@ -412,7 +381,16 @@
       "Custom_GrampletonFields_Small",
       "Custom_Ridgeside_SummitFarm",
       "Custom_ESMeadowFarm"
-    ]
+    ],
+    "TreeAgingFactor": 1.0,
+    "FruitTreeAgingFactor": 1.0,
+    "BerryBushExpReward": 5,
+    "MushroomBoxAgingFactor": 1.0,
+    "MushroomBoxExpReward": 1,
+    "TapperExpReward": 2,
+    "TrashDoesNotConsumeBait": true,
+    "ChainExplosions": true,
+    "ImmersiveGlowstoneProgression": true
   },
   "OpenMenuKey": "LeftShift + F12",
   "DebugKey": "OemQuotes, OemTilde"

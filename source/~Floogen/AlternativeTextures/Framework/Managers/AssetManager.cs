@@ -29,6 +29,7 @@ namespace AlternativeTextures.Framework.Managers
         private Texture2D _sprayCanTextureRare;
         private Texture2D _paintBrushEmptyTexture;
         private Texture2D _paintBrushFilledTexture;
+        private Texture2D _catalogueTexture;
 
         public AssetManager(IModHelper helper, TextureManager textureManager)
         {
@@ -42,11 +43,13 @@ namespace AlternativeTextures.Framework.Managers
             _sprayCanTextureRare = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "SprayCanRare.png"));
             _paintBrushEmptyTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "PaintBrushEmpty.png"));
             _paintBrushFilledTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "PaintBrushFilled.png"));
+            _catalogueTexture = helper.ModContent.Load<Texture2D>(Path.Combine(assetFolderPath, "Catalogue.png"));
 
             // Setup toolNames
             toolNames.Add("PaintBucket", _paintBucketTexture);
             toolNames.Add("Scissors", _scissorsTexture);
             toolNames.Add("SprayCan", _sprayCanTexture);
+            toolNames.Add("Catalogue", _catalogueTexture);
             toolNames.Add("PaintBrush_Empty", _paintBrushEmptyTexture);
             toolNames.Add("PaintBrush_Filled", _paintBrushFilledTexture);
             toolNames.Add($"{AlternativeTextures.TOOL_TOKEN_HEADER}PaintBucket", _paintBucketTexture);
@@ -54,6 +57,7 @@ namespace AlternativeTextures.Framework.Managers
             toolNames.Add($"{AlternativeTextures.TOOL_TOKEN_HEADER}SprayCan", _sprayCanTexture);
             toolNames.Add($"{AlternativeTextures.TOOL_TOKEN_HEADER}PaintBrush_Empty", _paintBrushEmptyTexture);
             toolNames.Add($"{AlternativeTextures.TOOL_TOKEN_HEADER}PaintBrush_Filled", _paintBrushFilledTexture);
+            toolNames.Add($"{AlternativeTextures.TOOL_TOKEN_HEADER}Catalogue", _catalogueTexture);
 
             // Get the TextureMananger
             _textureManager = textureManager;
@@ -82,6 +86,11 @@ namespace AlternativeTextures.Framework.Managers
         internal Texture2D GetPaintBrushFilledTexture()
         {
             return _paintBrushFilledTexture;
+        }
+
+        internal Texture2D GetCatalogueTexture()
+        {
+            return _catalogueTexture;
         }
     }
 }

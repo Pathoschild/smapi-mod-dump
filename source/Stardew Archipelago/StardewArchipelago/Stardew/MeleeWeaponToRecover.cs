@@ -14,6 +14,11 @@ namespace StardewArchipelago.Stardew
 {
     public class MeleeWeaponToRecover : MeleeWeapon
     {
+        public MeleeWeaponToRecover() : base()
+        {
+
+        }
+
         public MeleeWeaponToRecover(int weaponId) : base(weaponId)
         {
 

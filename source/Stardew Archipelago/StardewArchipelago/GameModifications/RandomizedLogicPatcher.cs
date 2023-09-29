@@ -56,11 +56,14 @@ namespace StardewArchipelago.GameModifications
             SeedShopsInjections.Initialize(monitor, helper, archipelago, locationChecker);
             LostAndFoundInjections.Initialize(monitor, archipelago);
             TVInjections.Initialize(monitor, archipelago);
+            LivinOffTheLandInjections.Initialize(monitor, archipelago);
             ProfitInjections.Initialize(monitor, archipelago);
             QuestLogInjections.Initialize(monitor, archipelago, locationChecker);
             WorldChangeEventInjections.Initialize(monitor);
             CropInjections.Initialize(monitor, archipelago, stardewItemManager);
             VoidMayoInjections.Initialize(monitor);
+            KentInjections.Initialize(monitor, archipelago);
+            GoldenEggInjections.Initialize(monitor, archipelago);
         }
 
         public void PatchAllGameLogic()
@@ -84,6 +87,8 @@ namespace StardewArchipelago.GameModifications
             PatchCleanupBeforeSave();
             PatchProfitMargin();
             PatchVoidMayo();
+            PatchKent();
+            PatchGoldenEgg();
             _startingResources.GivePlayerStartingResources();
         }
 
@@ -365,8 +370,8 @@ namespace StardewArchipelago.GameModifications
             }
 
             _harmony.Patch(
-                original: AccessTools.Method(typeof(Crop), nameof(Crop.getRandomLowGradeCropForThisSeason)),
-                prefix: new HarmonyMethod(typeof(CropInjections), nameof(CropInjections.GetRandomLowGradeCropForThisSeason_OnlyUnlockedCrops_Prefix))
+                original: AccessTools.Constructor(typeof(Crop), new[] { typeof(int), typeof(int), typeof(int)}),
+                prefix: new HarmonyMethod(typeof(CropInjections), nameof(CropInjections.CropConstructor_WildSeedsBecomesUnlockedCrop_Prefix))
             );
         }
 
@@ -375,6 +380,11 @@ namespace StardewArchipelago.GameModifications
             _harmony.Patch(
                 original: AccessTools.Method(typeof(TV), nameof(TV.checkForAction)),
                 prefix: new HarmonyMethod(typeof(TVInjections), nameof(TVInjections.CheckForAction_TVChannels_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(TV), "getTodaysTip"),
+                prefix: new HarmonyMethod(typeof(LivinOffTheLandInjections), nameof(LivinOffTheLandInjections.GetTodaysTip_CustomLivinOffTheLand_Prefix))
             );
         }
 
@@ -404,6 +414,22 @@ namespace StardewArchipelago.GameModifications
             _harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.getFish)),
                 prefix: new HarmonyMethod(typeof(VoidMayoInjections), nameof(VoidMayoInjections.GetFish_FishVoidMayo_PreFix))
+            );
+        }
+
+        private void PatchKent()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Game1), nameof(Game1.addKentIfNecessary)),
+                prefix: new HarmonyMethod(typeof(KentInjections), nameof(KentInjections.AddKentIfNecessary_ConsiderSeasonsRandomizer_Prefix))
+            );
+        }
+
+        private void PatchGoldenEgg()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Utility), nameof(Utility.getAnimalShopStock)),
+                prefix: new HarmonyMethod(typeof(GoldenEggInjections), nameof(GoldenEggInjections.GetAnimalShopStock_GoldenEggIfReceived_Postfix))
             );
         }
     }

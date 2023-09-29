@@ -1,7 +1,7 @@
 {
     "Name": "Better Planting",
     "Author": "Achtuur",
-    "Version": "1.2.1",
+    "Version": "1.2.3",
     "Description": "Lets you plant more seeds at once",
     "UniqueID": "Achtuur.BetterPlanting",
     "EntryDll": "BetterPlanting.dll",

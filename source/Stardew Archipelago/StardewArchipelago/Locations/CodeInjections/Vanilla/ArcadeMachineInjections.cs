@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewArchipelago.Archipelago;
@@ -57,12 +58,24 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private const string JOTPK_PROGRESSIVE_AMMO = "JotPK: Progressive Ammo";
         private const string JOTPK_EXTRA_LIFE = "JotPK: Extra Life";
 
+        private const int BOOTS_1 = 3;
+        private const int BOOTS_2 = 4;
+        private const int GUN_1 = 0;
+        private const int GUN_2 = 1;
+        private const int GUN_3 = 2;
+        private const int SUPER_GUN = 9;
+        private const int AMMO_1 = 6;
+        private const int AMMO_2 = 7;
+        private const int AMMO_3 = 8;
+        private const int EXTRA_LIFE = 5;
+        private const int SHERIFF_BADGE = 10;
+
         private static readonly string[] JK_ALL_LOCATIONS = JK_LEVEL_LOCATIONS.Values.ToArray();
 
         private static readonly string[] JOTPK_ALL_LOCATIONS =
         {
             JOTPK_BOOTS_1, JOTPK_BOOTS_2, JOTPK_GUN_1, JOTPK_GUN_2, JOTPK_GUN_3, JOTPK_SUPER_GUN, JOTPK_AMMO_1,
-            JOTPK_AMMO_2, JOTPK_AMMO_3, JOTPK_COWBOY_1, JOTPK_COWBOY_2, JOTPK_VICTORY
+            JOTPK_AMMO_2, JOTPK_AMMO_3, JOTPK_COWBOY_1, JOTPK_COWBOY_2, JOTPK_VICTORY,
         };
 
         private static IMonitor _monitor;
@@ -90,6 +103,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             {
                 var livesLeftField = _helper.Reflection.GetField<int>(__instance, "livesLeft");
                 var livesLeft = livesLeftField.GetValue();
+
                 if (livesLeft != 3 || !new_game)
                 {
                     return;
@@ -290,10 +304,10 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 {
                     switch (_bootsItemOffered)
                     {
-                        case 3:
+                        case BOOTS_1:
                             _locationChecker.AddCheckedLocation(JOTPK_BOOTS_1);
                             break;
-                        case 4:
+                        case BOOTS_2:
                             _locationChecker.AddCheckedLocation(JOTPK_BOOTS_2);
                             break;
                     }
@@ -307,16 +321,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 {
                     switch (_gunItemOffered)
                     {
-                        case 0:
+                        case GUN_1:
                             _locationChecker.AddCheckedLocation(JOTPK_GUN_1);
                             break;
-                        case 1:
+                        case GUN_2:
                             _locationChecker.AddCheckedLocation(JOTPK_GUN_2);
                             break;
-                        case 2:
+                        case GUN_3:
                             _locationChecker.AddCheckedLocation(JOTPK_GUN_3);
                             break;
-                        case 9:
+                        case SUPER_GUN:
                             _locationChecker.AddCheckedLocation(JOTPK_SUPER_GUN);
                             break;
                     }
@@ -329,13 +343,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 {
                     switch (_ammoItemOffered)
                     {
-                        case 6:
+                        case AMMO_1:
                             _locationChecker.AddCheckedLocation(JOTPK_AMMO_1);
                             break;
-                        case 7:
+                        case AMMO_2:
                             _locationChecker.AddCheckedLocation(JOTPK_AMMO_2);
                             break;
-                        case 8:
+                        case AMMO_3:
                             _locationChecker.AddCheckedLocation(JOTPK_AMMO_3);
                             break;
                     }
@@ -400,7 +414,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         {
             var missingBoots1 = _locationChecker.IsLocationNotChecked(JOTPK_BOOTS_1);
             var missingBoots2 = _locationChecker.IsLocationNotChecked(JOTPK_BOOTS_2);
-            var bootsItemOffered = missingBoots1 ? 3 : (missingBoots2 ? 4 : 5);
+            var bootsItemOffered = missingBoots1 ? BOOTS_1 : (missingBoots2 ? BOOTS_2 : EXTRA_LIFE);
             return bootsItemOffered;
         }
 
@@ -410,7 +424,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             var missingGun2 = _locationChecker.IsLocationNotChecked(JOTPK_GUN_2);
             var missingGun3 = _locationChecker.IsLocationNotChecked(JOTPK_GUN_3);
             var missingSuperGun = _locationChecker.IsLocationNotChecked(JOTPK_SUPER_GUN);
-            var gunItemOffered = missingGun1 ? 0 : (missingGun2 ? 1 : (missingGun3 ? 2 : (missingSuperGun ? 9 : 10)));
+            var gunItemOffered = missingGun1 ? GUN_1 : (missingGun2 ? GUN_2 : (missingGun3 ? GUN_3 : (missingSuperGun ? SUPER_GUN : SHERIFF_BADGE)));
             return gunItemOffered;
         }
 
@@ -419,7 +433,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             var missingAmmo1 = _locationChecker.IsLocationNotChecked(JOTPK_AMMO_1);
             var missingAmmo2 = _locationChecker.IsLocationNotChecked(JOTPK_AMMO_2);
             var missingAmmo3 = _locationChecker.IsLocationNotChecked(JOTPK_AMMO_3);
-            var ammoItemOffered = missingAmmo1 ? 6 : (missingAmmo2 ? 7 : (missingAmmo3 ? 8 : 10));
+            var ammoItemOffered = missingAmmo1 ? AMMO_1 : (missingAmmo2 ? AMMO_2 : (missingAmmo3 ? AMMO_3 : SHERIFF_BADGE));
             return ammoItemOffered;
         }
 

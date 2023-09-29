@@ -97,11 +97,11 @@ namespace FarmTypeManager
                     {
                         location.playSound(BreakSound, NetAudio.SoundContext.Default); //this no longer checks whether "breakSound" is assigned
                         releaseContents(location); //this now passes the provided location, rather than the tool owner and their location
-                        t.getLastFarmerToUse().currentLocation.objects.Remove((Vector2)((NetFieldBase<Vector2, NetVector2>)this.tileLocation));
+                        t.getLastFarmerToUse().currentLocation.objects.Remove(tileLocation.Value);
                         int num = Game1.random.Next(4, 12);
                         //removed the code that determines color based on parent sheet index
                         for (int index = 0; index < num; ++index)
-                            multiplayer.broadcastSprites(t.getLastFarmerToUse().currentLocation, new TemporaryAnimatedSprite("LooseSprites\\Cursors", (Rectangle)(Game1.random.NextDouble() < 0.5 ? (NetFieldBase<Rectangle, NetRectangle>)this.breakDebrisSource : (NetFieldBase<Rectangle, NetRectangle>)this.breakDebrisSource2), 999f, 1, 0, this.tileLocation.Value * 64f + new Vector2(32f, 32f), false, Game1.random.NextDouble() < 0.5, (float)(((double)this.tileLocation.Y * 64.0 + 32.0) / 10000.0), 0.01f, color, 4f, 0.0f, (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 8.0), (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 64.0), false)
+                            multiplayer.broadcastSprites(t.getLastFarmerToUse().currentLocation, new TemporaryAnimatedSprite("LooseSprites\\Cursors", Game1.random.NextDouble() < 0.5 ? breakDebrisSource.Value : breakDebrisSource2.Value, 999f, 1, 0, tileLocation.Value * 64f + new Vector2(32f, 32f), false, Game1.random.NextDouble() < 0.5, (float)(((double)tileLocation.Y * 64.0 + 32.0) / 10000.0), 0.01f, color, 4f, 0.0f, (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 8.0), (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 64.0), false)
                             {
                                 motion = new Vector2((float)Game1.random.Next(-30, 31) / 10f, (float)Game1.random.Next(-10, -7)),
                                 acceleration = new Vector2(0.0f, 0.3f)
@@ -111,7 +111,7 @@ namespace FarmTypeManager
                     {
                         this.shakeTimer = 300;
                         location.playSound(HitSound, NetAudio.SoundContext.Default);
-                        Game1.createRadialDebris(t.getLastFarmerToUse().currentLocation, 12, (int)this.tileLocation.X, (int)this.tileLocation.Y, Game1.random.Next(4, 7), false, -1, false, ParentSheetIndex == 120 ? 10000 : -1); //this now reads the container's parent sheet index instead of "containerType"
+                        Game1.createRadialDebris(t.getLastFarmerToUse().currentLocation, 12, (int)tileLocation.X, (int)tileLocation.Y, Game1.random.Next(4, 7), false, -1, false, ParentSheetIndex == 120 ? 10000 : -1); //this now reads the container's parent sheet index instead of "containerType"
                     }
                 }
                 return false;
@@ -127,7 +127,7 @@ namespace FarmTypeManager
                 int num = Game1.random.Next(4, 12);
                 //removed the code that determines color based on parent sheet index
                 for (int index = 0; index < num; ++index)
-                    multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite("LooseSprites\\Cursors", (Rectangle)(Game1.random.NextDouble() < 0.5 ? (NetFieldBase<Rectangle, NetRectangle>)this.breakDebrisSource : (NetFieldBase<Rectangle, NetRectangle>)this.breakDebrisSource2), 999f, 1, 0, this.tileLocation.Value * 64f + new Vector2(32f, 32f), false, Game1.random.NextDouble() < 0.5, (float)(((double)this.tileLocation.Y * 64.0 + 32.0) / 10000.0), 0.01f, color, 4f, 0.0f, (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 8.0), (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 64.0), false)
+                    multiplayer.broadcastSprites(location, new TemporaryAnimatedSprite("LooseSprites\\Cursors", Game1.random.NextDouble() < 0.5 ? breakDebrisSource.Value : breakDebrisSource2.Value, 999f, 1, 0, tileLocation.Value * 64f + new Vector2(32f, 32f), false, Game1.random.NextDouble() < 0.5, (float)(((double)tileLocation.Y * 64.0 + 32.0) / 10000.0), 0.01f, color, 4f, 0.0f, (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 8.0), (float)((double)Game1.random.Next(-5, 6) * 3.14159274101257 / 64.0), false)
                     {
                         motion = new Vector2((float)Game1.random.Next(-30, 31) / 10f, (float)Game1.random.Next(-10, -7)),
                         acceleration = new Vector2(0.0f, 0.3f)
@@ -168,7 +168,7 @@ namespace FarmTypeManager
                     destinationRectangle.X += Game1.random.Next(-num, num + 1);
                     destinationRectangle.Y += Game1.random.Next(-num, num + 1);
                 }
-                spriteBatch.Draw(Game1.bigCraftableSpriteSheet, destinationRectangle, new Rectangle?(StardewValley.Object.getSourceRectForBigCraftable((bool)((NetFieldBase<bool, NetBool>)this.showNextIndex) ? this.ParentSheetIndex + 1 : this.ParentSheetIndex)), Color.White * alpha, 0.0f, Vector2.Zero, SpriteEffects.None, Math.Max(0.0f, (float)((y + 1) * 64 - 1) / 10000f) + ((int)((NetFieldBase<int, NetInt>)this.parentSheetIndex) == 105 ? 0.0015f : 0.0f));
+                spriteBatch.Draw(Game1.bigCraftableSpriteSheet, destinationRectangle, new Rectangle?(StardewValley.Object.getSourceRectForBigCraftable(showNextIndex.Value ? ParentSheetIndex + 1 : ParentSheetIndex)), Color.White * alpha, 0.0f, Vector2.Zero, SpriteEffects.None, Math.Max(0.0f, (float)((y + 1) * 64 - 1) / 10000f) + (ParentSheetIndex == 105 ? 0.0015f : 0.0f));
             }
         }
     }

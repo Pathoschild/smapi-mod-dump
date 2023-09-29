@@ -73,4 +73,5 @@ Loved Labels Redux is compatible with Stardew Valley 1.5+ on Linux/Mac/Windows, 
 ## See also
 
 - [Nexus mod](https://www.nexusmods.com/stardewvalley/mods/8880)
+- [CurseForge mod](https://www.curseforge.com/stardewvalley/mods/loved-labels-redux/files)
 - [The mod that this mod was based by](https://www.nexusmods.com/stardewvalley/mods/279)

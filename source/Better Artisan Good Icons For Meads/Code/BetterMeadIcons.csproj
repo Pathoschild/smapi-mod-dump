@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>DaLion.Meads</AssemblyName>
+    <RootNamespace>DaLion.Meads</RootNamespace>
+    <Version>1.2.0</Version>
+    <TargetFramework>net5.0</TargetFramework>
+    <EnableHarmony>true</EnableHarmony>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <GamePath>G:\Steam\steamapps\common\Stardew Valley 1.5.6</GamePath>
+    <GameModsPath>$(GamePath)/Mods - Build/$(Configuration)</GameModsPath>
+    <ModZipPath>$(GamePath)/Mods - Build/Archive</ModZipPath>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0"/>
+  </ItemGroup>
+  
+</Project>

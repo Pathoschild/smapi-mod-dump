@@ -38,7 +38,7 @@
     },
     "Stardrop": {
       "code": 717023,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Progressive Backpack": {
       "code": 717024,
@@ -258,11 +258,11 @@
     },
     "Earth Obelisk": {
       "code": 717078,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Water Obelisk": {
       "code": 717079,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Desert Obelisk": {
       "code": 717080,
@@ -278,7 +278,7 @@
     },
     "Gold Clock": {
       "code": 717083,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Progressive Coop": {
       "code": 717084,
@@ -318,7 +318,7 @@
     },
     "Shipping Bin": {
       "code": 717093,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Beach Bridge": {
       "code": 717094,
@@ -382,11 +382,11 @@
     },
     "Movement Speed Bonus": {
       "code": 717109,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Luck Bonus": {
       "code": 717110,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Lava Katana": {
       "code": 717111,
@@ -606,151 +606,555 @@
     },
     "Ancient Seeds": {
       "code": 717165,
-      "classification": "useful"
+      "classification": "progression"
     },
     "Traveling Merchant Metal Detector": {
       "code": 717166,
       "classification": "progression"
     },
-    "Alex: 1 <3": {
+    "Alex <3": {
       "code": 717167,
       "classification": "progression"
     },
-    "Elliott: 1 <3": {
+    "Elliott <3": {
       "code": 717168,
       "classification": "progression"
     },
-    "Harvey: 1 <3": {
+    "Harvey <3": {
       "code": 717169,
       "classification": "progression"
     },
-    "Sam: 1 <3": {
+    "Sam <3": {
       "code": 717170,
       "classification": "progression"
     },
-    "Sebastian: 1 <3": {
+    "Sebastian <3": {
       "code": 717171,
       "classification": "progression"
     },
-    "Shane: 1 <3": {
+    "Shane <3": {
       "code": 717172,
       "classification": "progression"
     },
-    "Abigail: 1 <3": {
+    "Abigail <3": {
       "code": 717173,
       "classification": "progression"
     },
-    "Emily: 1 <3": {
+    "Emily <3": {
       "code": 717174,
       "classification": "progression"
     },
-    "Haley: 1 <3": {
+    "Haley <3": {
       "code": 717175,
       "classification": "progression"
     },
-    "Leah: 1 <3": {
+    "Leah <3": {
       "code": 717176,
       "classification": "progression"
     },
-    "Maru: 1 <3": {
+    "Maru <3": {
       "code": 717177,
       "classification": "progression"
     },
-    "Penny: 1 <3": {
+    "Penny <3": {
       "code": 717178,
       "classification": "progression"
     },
-    "Caroline: 1 <3": {
+    "Caroline <3": {
       "code": 717179,
       "classification": "progression"
     },
-    "Clint: 1 <3": {
+    "Clint <3": {
       "code": 717180,
       "classification": "progression"
     },
-    "Demetrius: 1 <3": {
+    "Demetrius <3": {
       "code": 717181,
       "classification": "progression"
     },
-    "Dwarf: 1 <3": {
+    "Dwarf <3": {
       "code": 717182,
       "classification": "progression"
     },
-    "Evelyn: 1 <3": {
+    "Evelyn <3": {
       "code": 717183,
       "classification": "progression"
     },
-    "George: 1 <3": {
+    "George <3": {
       "code": 717184,
       "classification": "progression"
     },
-    "Gus: 1 <3": {
+    "Gus <3": {
       "code": 717185,
       "classification": "progression"
     },
-    "Jas: 1 <3": {
+    "Jas <3": {
       "code": 717186,
       "classification": "progression"
     },
-    "Jodi: 1 <3": {
+    "Jodi <3": {
       "code": 717187,
       "classification": "progression"
     },
-    "Kent: 1 <3": {
+    "Kent <3": {
       "code": 717188,
       "classification": "progression"
     },
-    "Krobus: 1 <3": {
+    "Krobus <3": {
       "code": 717189,
       "classification": "progression"
     },
-    "Leo: 1 <3": {
+    "Leo <3": {
       "code": 717190,
       "classification": "progression"
     },
-    "Lewis: 1 <3": {
+    "Lewis <3": {
       "code": 717191,
       "classification": "progression"
     },
-    "Linus: 1 <3": {
+    "Linus <3": {
       "code": 717192,
       "classification": "progression"
     },
-    "Marnie: 1 <3": {
+    "Marnie <3": {
       "code": 717193,
       "classification": "progression"
     },
-    "Pam: 1 <3": {
+    "Pam <3": {
       "code": 717194,
       "classification": "progression"
     },
-    "Pierre: 1 <3": {
+    "Pierre <3": {
       "code": 717195,
       "classification": "progression"
     },
-    "Robin: 1 <3": {
+    "Robin <3": {
       "code": 717196,
       "classification": "progression"
     },
-    "Sandy: 1 <3": {
+    "Sandy <3": {
       "code": 717197,
       "classification": "progression"
     },
-    "Vincent: 1 <3": {
+    "Vincent <3": {
       "code": 717198,
       "classification": "progression"
     },
-    "Willy: 1 <3": {
+    "Willy <3": {
       "code": 717199,
       "classification": "progression"
     },
-    "Wizard: 1 <3": {
+    "Wizard <3": {
       "code": 717200,
       "classification": "progression"
     },
-    "Pet: 1 <3": {
+    "Pet <3": {
       "code": 717201,
       "classification": "progression"
+    },
+    "Rarecrow #1": {
+      "code": 717202,
+      "classification": "progression"
+    },
+    "Rarecrow #2": {
+      "code": 717203,
+      "classification": "progression"
+    },
+    "Rarecrow #3": {
+      "code": 717204,
+      "classification": "progression"
+    },
+    "Rarecrow #4": {
+      "code": 717205,
+      "classification": "progression"
+    },
+    "Rarecrow #5": {
+      "code": 717206,
+      "classification": "progression"
+    },
+    "Rarecrow #6": {
+      "code": 717207,
+      "classification": "progression"
+    },
+    "Rarecrow #7": {
+      "code": 717208,
+      "classification": "progression"
+    },
+    "Rarecrow #8": {
+      "code": 717209,
+      "classification": "progression"
+    },
+    "Straw Hat": {
+      "code": 717210,
+      "classification": "filler"
+    },
+    "Golden Pumpkin": {
+      "code": 717211,
+      "classification": "useful"
+    },
+    "Barbed Hook": {
+      "code": 717212,
+      "classification": "useful"
+    },
+    "Dressed Spinner": {
+      "code": 717213,
+      "classification": "useful"
+    },
+    "Magnet": {
+      "code": 717214,
+      "classification": "useful"
+    },
+    "Sailor's Cap": {
+      "code": 717215,
+      "classification": "filler"
+    },
+    "Pearl": {
+      "code": 717216,
+      "classification": "useful"
+    },
+    "Cone Hat": {
+      "code": 717217,
+      "classification": "filler"
+    },
+    "Iridium Fireplace": {
+      "code": 717218,
+      "classification": "filler"
+    },
+    "Lupini: Red Eagle": {
+      "code": 717219,
+      "classification": "filler"
+    },
+    "Lupini: Portrait Of A Mermaid": {
+      "code": 717220,
+      "classification": "filler"
+    },
+    "Lupini: Solar Kingdom": {
+      "code": 717221,
+      "classification": "filler"
+    },
+    "Lupini: Clouds": {
+      "code": 717222,
+      "classification": "filler"
+    },
+    "Lupini: 1000 Years From Now": {
+      "code": 717223,
+      "classification": "filler"
+    },
+    "Lupini: Three Trees": {
+      "code": 717224,
+      "classification": "filler"
+    },
+    "Lupini: The Serpent": {
+      "code": 717225,
+      "classification": "filler"
+    },
+    "Lupini: 'Tropical Fish #173'": {
+      "code": 717226,
+      "classification": "filler"
+    },
+    "Lupini: Land Of Clay": {
+      "code": 717227,
+      "classification": "filler"
+    },
+    "Special Order Board": {
+      "code": 717228,
+      "classification": "progression"
+    },
+    "Solar Panel Recipe": {
+      "code": 717229,
+      "classification": "progression"
+    },
+    "Geode Crusher Recipe": {
+      "code": 717230,
+      "classification": "progression"
+    },
+    "Farm Computer Recipe": {
+      "code": 717231,
+      "classification": "progression"
+    },
+    "Bone Mill Recipe": {
+      "code": 717232,
+      "classification": "progression"
+    },
+    "Fiber Seeds Recipe": {
+      "code": 717233,
+      "classification": "progression"
+    },
+    "Stone Chest Recipe": {
+      "code": 717234,
+      "classification": "progression"
+    },
+    "Quality Bobber Recipe": {
+      "code": 717235,
+      "classification": "progression"
+    },
+    "Mini-Obelisk Recipe": {
+      "code": 717236,
+      "classification": "progression"
+    },
+    "Monster Musk Recipe": {
+      "code": 717237,
+      "classification": "progression"
+    },
+    "Sewing Machine": {
+      "code": 717239,
+      "classification": "progression"
+    },
+    "Coffee Maker": {
+      "code": 717240,
+      "classification": "progression"
+    },
+    "Mini-Fridge": {
+      "code": 717241,
+      "classification": "useful"
+    },
+    "Mini-Shipping Bin": {
+      "code": 717242,
+      "classification": "progression"
+    },
+    "Deluxe Fish Tank": {
+      "code": 717243,
+      "classification": "useful"
+    },
+    "10 Qi Gems": {
+      "code": 717244,
+      "classification": "progression"
+    },
+    "20 Qi Gems": {
+      "code": 717245,
+      "classification": "progression"
+    },
+    "25 Qi Gems": {
+      "code": 717246,
+      "classification": "progression"
+    },
+    "35 Qi Gems": {
+      "code": 717247,
+      "classification": "progression"
+    },
+    "40 Qi Gems": {
+      "code": 717248,
+      "classification": "progression"
+    },
+    "50 Qi Gems": {
+      "code": 717249,
+      "classification": "progression"
+    },
+    "100 Qi Gems": {
+      "code": 717250,
+      "classification": "progression"
+    },
+    "Rare Seed": {
+      "code": 717251,
+      "classification": "progression"
+    },
+    "Apple Sapling": {
+      "code": 717252,
+      "classification": "progression"
+    },
+    "Apricot Sapling": {
+      "code": 717253,
+      "classification": "progression"
+    },
+    "Cherry Sapling": {
+      "code": 717254,
+      "classification": "progression"
+    },
+    "Orange Sapling": {
+      "code": 717255,
+      "classification": "progression"
+    },
+    "Pomegranate Sapling": {
+      "code": 717256,
+      "classification": "progression"
+    },
+    "Peach Sapling": {
+      "code": 717257,
+      "classification": "progression"
+    },
+    "Banana Sapling": {
+      "code": 717258,
+      "classification": "progression"
+    },
+    "Mango Sapling": {
+      "code": 717259,
+      "classification": "progression"
+    },
+    "Boat Repair": {
+      "code": 717260,
+      "classification": "progression"
+    },
+    "Open Professor Snail Cave": {
+      "code": 717261,
+      "classification": "progression"
+    },
+    "Island North Turtle": {
+      "code": 717262,
+      "classification": "progression"
+    },
+    "Island West Turtle": {
+      "code": 717263,
+      "classification": "progression"
+    },
+    "Island Farmhouse": {
+      "code": 717264,
+      "classification": "progression"
+    },
+    "Island Mailbox": {
+      "code": 717265,
+      "classification": "progression"
+    },
+    "Farm Obelisk": {
+      "code": 717266,
+      "classification": "progression"
+    },
+    "Dig Site Bridge": {
+      "code": 717267,
+      "classification": "progression"
+    },
+    "Island Trader": {
+      "code": 717268,
+      "classification": "progression"
+    },
+    "Volcano Bridge": {
+      "code": 717269,
+      "classification": "progression"
+    },
+    "Volcano Exit Shortcut": {
+      "code": 717270,
+      "classification": "progression"
+    },
+    "Island Resort": {
+      "code": 717271,
+      "classification": "progression"
+    },
+    "Parrot Express": {
+      "code": 717272,
+      "classification": "progression"
+    },
+    "Qi Walnut Room": {
+      "code": 717273,
+      "classification": "progression"
+    },
+    "Pineapple Seeds": {
+      "code": 717274,
+      "classification": "progression"
+    },
+    "Taro Tuber": {
+      "code": 717275,
+      "classification": "progression"
+    },
+    "Weather Report": {
+      "code": 717276,
+      "classification": "useful"
+    },
+    "Fortune Teller": {
+      "code": 717277,
+      "classification": "useful"
+    },
+    "Livin' Off The Land": {
+      "code": 717278,
+      "classification": "useful"
+    },
+    "The Queen of Sauce": {
+      "code": 717279,
+      "classification": "progression"
+    },
+    "Fishing Information Broadcasting Service": {
+      "code": 717280,
+      "classification": "useful"
+    },
+    "Sinister Signal": {
+      "code": 717281,
+      "classification": "useful"
+    },
+    "Dark Talisman": {
+      "code": 717282,
+      "classification": "progression"
+    },
+    "Ostrich Incubator Recipe": {
+      "code": 717283,
+      "classification": "progression"
+    },
+    "Cute Baby": {
+      "code": 717284,
+      "classification": "progression"
+    },
+    "Ugly Baby": {
+      "code": 717285,
+      "classification": "progression"
+    },
+    "Deluxe Scarecrow Recipe": {
+      "code": 717286,
+      "classification": "progression"
+    },
+    "Burnt": {
+      "code": 721001,
+      "classification": "trap"
+    },
+    "Darkness": {
+      "code": 721002,
+      "classification": "trap"
+    },
+    "Frozen": {
+      "code": 721003,
+      "classification": "trap"
+    },
+    "Jinxed": {
+      "code": 721004,
+      "classification": "trap"
+    },
+    "Nauseated": {
+      "code": 721005,
+      "classification": "trap"
+    },
+    "Slimed": {
+      "code": 721006,
+      "classification": "trap"
+    },
+    "Weakness": {
+      "code": 721007,
+      "classification": "trap"
+    },
+    "Taxes": {
+      "code": 721008,
+      "classification": "trap"
+    },
+    "Random Teleport": {
+      "code": 721009,
+      "classification": "trap"
+    },
+    "The Crows": {
+      "code": 721010,
+      "classification": "trap"
+    },
+    "Monsters": {
+      "code": 721011,
+      "classification": "trap"
+    },
+    "Entrance Reshuffle": {
+      "code": 721012,
+      "classification": "trap"
+    },
+    "Debris": {
+      "code": 721013,
+      "classification": "trap"
+    },
+    "Shuffle": {
+      "code": 721014,
+      "classification": "trap"
+    },
+    "Temporary Winter": {
+      "code": 721015,
+      "classification": "trap"
+    },
+    "Pariah": {
+      "code": 721016,
+      "classification": "trap"
+    },
+    "Drought": {
+      "code": 721017,
+      "classification": "trap"
     },
     "Resource Pack: 500 Money": {
       "code": 722000,
@@ -1559,6 +1963,430 @@
     "Friendship Bonus (4 <3)": {
       "code": 722201,
       "classification": "useful"
+    },
+    "30 Qi Gems": {
+      "code": 722202,
+      "classification": "useful"
+    },
+    "Solar Panel": {
+      "code": 722203,
+      "classification": "filler"
+    },
+    "Geode Crusher": {
+      "code": 722204,
+      "classification": "filler"
+    },
+    "Farm Computer": {
+      "code": 722205,
+      "classification": "filler"
+    },
+    "Bone Mill": {
+      "code": 722206,
+      "classification": "filler"
+    },
+    "Fiber Seeds": {
+      "code": 722207,
+      "classification": "filler"
+    },
+    "Chest": {
+      "code": 722208,
+      "classification": "filler"
+    },
+    "Stone Chest": {
+      "code": 722209,
+      "classification": "filler"
+    },
+    "Quality Bobber": {
+      "code": 722210,
+      "classification": "filler"
+    },
+    "Mini-Obelisk": {
+      "code": 722211,
+      "classification": "filler"
+    },
+    "Monster Musk": {
+      "code": 722212,
+      "classification": "filler"
+    },
+    "Sprinkler": {
+      "code": 722213,
+      "classification": "filler"
+    },
+    "Quality Sprinkler": {
+      "code": 722214,
+      "classification": "filler"
+    },
+    "Iridium Sprinkler": {
+      "code": 722215,
+      "classification": "filler"
+    },
+    "Scarecrow": {
+      "code": 722216,
+      "classification": "filler"
+    },
+    "Deluxe Scarecrow": {
+      "code": 722217,
+      "classification": "filler"
+    },
+    "Furnace": {
+      "code": 722218,
+      "classification": "filler"
+    },
+    "Charcoal Kiln": {
+      "code": 722219,
+      "classification": "filler"
+    },
+    "Lightning Rod": {
+      "code": 722220,
+      "classification": "filler"
+    },
+    "Resource Pack: 5000 Money": {
+      "code": 722221,
+      "classification": "useful"
+    },
+    "Resource Pack: 10000 Money": {
+      "code": 722222,
+      "classification": "useful"
+    },
+    "Junimo Chest": {
+      "code": 722223,
+      "classification": "filler"
+    },
+    "Horse Flute": {
+      "code": 722224,
+      "classification": "filler"
+    },
+    "Pierre's Missing Stocklist": {
+      "code": 722225,
+      "classification": "filler"
+    },
+    "Hopper": {
+      "code": 722226,
+      "classification": "filler"
+    },
+    "Enricher": {
+      "code": 722227,
+      "classification": "filler"
+    },
+    "Pressure Nozzle": {
+      "code": 722228,
+      "classification": "filler"
+    },
+    "Deconstructor": {
+      "code": 722229,
+      "classification": "filler"
+    },
+    "Key To The Town": {
+      "code": 722230,
+      "classification": "filler"
+    },
+    "Galaxy Soul": {
+      "code": 722231,
+      "classification": "filler"
+    },
+    "Mushroom Tree Seed": {
+      "code": 722232,
+      "classification": "filler"
+    },
+    "Resource Pack: 20 Magic Bait": {
+      "code": 722233,
+      "classification": "filler"
+    },
+    "Resource Pack: 10 Qi Seasoning": {
+      "code": 722234,
+      "classification": "filler"
+    },
+    "Mr. Qi's Hat": {
+      "code": 722235,
+      "classification": "filler"
+    },
+    "Aquatic Sanctuary": {
+      "code": 722236,
+      "classification": "filler"
+    },
+    "Heavy Tapper Recipe": {
+      "code": 722237,
+      "classification": "filler"
+    },
+    "Hyper Speed-Gro Recipe": {
+      "code": 722238,
+      "classification": "filler"
+    },
+    "Deluxe Fertilizer Recipe": {
+      "code": 722239,
+      "classification": "filler"
+    },
+    "Hopper Recipe": {
+      "code": 722240,
+      "classification": "filler"
+    },
+    "Magic Bait Recipe": {
+      "code": 722241,
+      "classification": "filler"
+    },
+    "Exotic Double Bed": {
+      "code": 722242,
+      "classification": "filler"
+    },
+    "Resource Pack: 2 Qi Gem": {
+      "code": 722243,
+      "classification": "filler"
+    },
+    "Golden Egg": {
+      "code": 722244,
+      "classification": "filler"
+    },
+    "Golden Walnut": {
+      "code": 722245,
+      "classification": "filler"
+    },
+    "Fairy Dust Recipe": {
+      "code": 722246,
+      "classification": "useful"
+    },
+    "Fairy Dust": {
+      "code": 722247,
+      "classification": "useful"
+    },
+    "Seed Maker": {
+      "code": 722248,
+      "classification": "useful"
+    },
+    "Keg": {
+      "code": 722249,
+      "classification": "useful"
+    },
+    "Cask": {
+      "code": 722250,
+      "classification": "useful"
+    },
+    "Preserves Jar": {
+      "code": 722251,
+      "classification": "useful"
+    },
+    "Bee House": {
+      "code": 722252,
+      "classification": "useful"
+    },
+    "Garden Pot": {
+      "code": 722253,
+      "classification": "useful"
+    },
+    "Cheese Press": {
+      "code": 722254,
+      "classification": "useful"
+    },
+    "Mayonnaise Machine": {
+      "code": 722255,
+      "classification": "useful"
+    },
+    "Loom": {
+      "code": 722256,
+      "classification": "useful"
+    },
+    "Oil Maker": {
+      "code": 722257,
+      "classification": "useful"
+    },
+    "Recycling Machine": {
+      "code": 722258,
+      "classification": "useful"
+    },
+    "Worm Bin": {
+      "code": 722259,
+      "classification": "useful"
+    },
+    "Tapper": {
+      "code": 722260,
+      "classification": "useful"
+    },
+    "Heavy Tapper": {
+      "code": 722261,
+      "classification": "useful"
+    },
+    "Slime Incubator": {
+      "code": 722262,
+      "classification": "useful"
+    },
+    "Slime Egg-Press": {
+      "code": 722263,
+      "classification": "useful"
+    },
+    "Crystalarium": {
+      "code": 722264,
+      "classification": "useful"
+    },
+    "Ostrich Incubator": {
+      "code": 722265,
+      "classification": "useful"
+    },
+    "Luck Level": {
+      "code": 727001,
+      "classification": "progression"
+    },
+    "Magic Level": {
+      "code": 727002,
+      "classification": "progression"
+    },
+    "Socializing Level": {
+      "code": 727003,
+      "classification": "progression"
+    },
+    "Archaeology Level": {
+      "code": 727004,
+      "classification": "progression"
+    },
+    "Cooking Level": {
+      "code": 727005,
+      "classification": "progression"
+    },
+    "Binning Level": {
+      "code": 727006,
+      "classification": "progression"
+    },
+    "Tractor Garage": {
+      "code": 727007,
+      "classification": "useful"
+    },
+    "Woods Obelisk": {
+      "code": 727008,
+      "classification": "progression"
+    },
+    "Spell: Clear Debris": {
+      "code": 727009,
+      "classification": "progression"
+    },
+    "Spell: Till": {
+      "code": 727010,
+      "classification": "useful"
+    },
+    "Spell: Water": {
+      "code": 727011,
+      "classification": "progression"
+    },
+    "Spell: Blink": {
+      "code": 727012,
+      "classification": "progression"
+    },
+    "Spell: Evac": {
+      "code": 727013,
+      "classification": "useful"
+    },
+    "Spell: Haste": {
+      "code": 727014,
+      "classification": "filler"
+    },
+    "Spell: Heal": {
+      "code": 727015,
+      "classification": "progression"
+    },
+    "Spell: Buff": {
+      "code": 727016,
+      "classification": "useful"
+    },
+    "Spell: Shockwave": {
+      "code": 727017,
+      "classification": "progression"
+    },
+    "Spell: Fireball": {
+      "code": 727018,
+      "classification": "progression"
+    },
+    "Spell: Frostbite": {
+      "code": 727019,
+      "classification": "progression"
+    },
+    "Spell: Teleport": {
+      "code": 727020,
+      "classification": "progression"
+    },
+    "Spell: Lantern": {
+      "code": 727021,
+      "classification": "filler"
+    },
+    "Spell: Tendrils": {
+      "code": 727022,
+      "classification": "progression"
+    },
+    "Spell: Photosynthesis": {
+      "code": 727023,
+      "classification": "useful"
+    },
+    "Spell: Descend": {
+      "code": 727024,
+      "classification": "progression"
+    },
+    "Spell: Meteor": {
+      "code": 727025,
+      "classification": "progression"
+    },
+    "Spell: Bloodmana": {
+      "code": 727026,
+      "classification": "useful"
+    },
+    "Spell: Lucksteal": {
+      "code": 727027,
+      "classification": "useful"
+    },
+    "Spell: Spirit": {
+      "code": 727028,
+      "classification": "progression"
+    },
+    "Spell: Rewind": {
+      "code": 727029,
+      "classification": "useful"
+    },
+    "Juna <3": {
+      "code": 727101,
+      "classification": "progression"
+    },
+    "Jasper <3": {
+      "code": 727102,
+      "classification": "progression"
+    },
+    "Alec <3": {
+      "code": 727103,
+      "classification": "progression"
+    },
+    "Yoba <3": {
+      "code": 727104,
+      "classification": "progression"
+    },
+    "Eugene <3": {
+      "code": 727105,
+      "classification": "progression"
+    },
+    "Wellwick <3": {
+      "code": 727106,
+      "classification": "progression"
+    },
+    "Mr. Ginger <3": {
+      "code": 727107,
+      "classification": "progression"
+    },
+    "Shiko <3": {
+      "code": 727108,
+      "classification": "progression"
+    },
+    "Delores <3": {
+      "code": 727109,
+      "classification": "progression"
+    },
+    "Ayeisha <3": {
+      "code": 727110,
+      "classification": "progression"
+    },
+    "Riley <3": {
+      "code": 727111,
+      "classification": "progression"
+    },
+    "Progressive Wood Obelisk Sigils": {
+      "code": 727301,
+      "classification": "progression"
+    },
+    "Progressive Skull Cavern Elevator": {
+      "code": 727302,
+      "classification": "progression"
     }
   }
 }

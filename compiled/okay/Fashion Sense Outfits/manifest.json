@@ -1,0 +1,14 @@
+{
+  "Name": "FashionSenseOutfits",
+  "Author": "nihilistzsche",
+  "Version": "1.0.4",
+  "Description": "Adds a Content Patcher target to change the current FashionSense outfit through the FashionSense API.",
+  "UniqueID": "nihilistzsche.FashionSenseOutfits",
+  "EntryDll": "FashionSenseOutfits.dll",
+  "MinimumApiVersion": "3.0.0",
+  "Dependencies": [
+    { "UniqueID": "PeacefulEnd.FashionSense", "IsRequired": true },
+    { "UniqueID": "Pathoschild.ContentPatcher", "IsRequired": true }
+  ],
+  "UpdateKeys": [ "Nexus:18384" ]
+}

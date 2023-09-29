@@ -18,6 +18,7 @@ using StardewArchipelago.Locations.CodeInjections;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Characters;
 using StardewValley.Menus;
 using StardewValley.TerrainFeatures;
@@ -191,6 +192,67 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public static void PlaceEarlyShippingBin()
+        {
+            try
+            {
+                if (!_archipelago.SlotData.BuildingProgression.HasFlag(BuildingProgression.EarlyShippingBin) || !_archipelago.HasReceivedItem("Shipping Bin"))
+                {
+                    return;
+                }
+
+                var farm = Game1.getFarm();
+                if (TryFindShippingBin(farm, out _))
+                {
+                    return;
+                }
+
+                ConstructStarterShippingBin(farm);
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(DeleteStartingDebris)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+        }
+
+        private static void ConstructStarterShippingBin(Farm farm)
+        {
+            var blueprint = new BluePrint("Shipping Bin");
+            var tileLocation = farm.GetStarterShippingBinLocation();
+            var shippingBin = new ShippingBin(blueprint, tileLocation);
+            for (var y = 0; y < blueprint.tilesHeight; ++y)
+            {
+                for (var x = 0; x < blueprint.tilesWidth; ++x)
+                {
+                    var isBuildable = !farm.isTileOccupiedForPlacement(tileLocation, null) && 
+                                      farm.GetFurnitureAt(tileLocation) == null;
+                    if (!isBuildable)
+                    {
+                        return;
+                    }
+                }
+            }
+
+            farm.buildings.Add(shippingBin);
+            shippingBin.load();
+        }
+
+        public static bool TryFindShippingBin(Farm farm, out ShippingBin shippingBin)
+        {
+            foreach (var building in farm.buildings)
+            {
+                if (building is ShippingBin bin)
+                {
+                    shippingBin = bin;
+                    return true;
+                }
+            }
+
+            shippingBin = null;
+            return false;
         }
 
         public static void ForcePetIfNeeded(Mailman mailman)

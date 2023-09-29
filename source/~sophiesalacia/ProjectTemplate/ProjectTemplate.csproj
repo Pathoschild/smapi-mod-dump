@@ -5,6 +5,8 @@
     <GamePath>D:\Games\SteamLibrary\steamapps\common\Stardew Valley</GamePath>
     <Version>0.1.0</Version>
     <TargetFramework>net5.0</TargetFramework>
+    <EnableModZip>false</EnableModZip>
+    <EnableModDeploy>false</EnableModDeploy>
     <EnableHarmony>true</EnableHarmony>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>

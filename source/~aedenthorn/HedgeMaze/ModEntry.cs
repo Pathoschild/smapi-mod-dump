@@ -13,9 +13,7 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using xTile;
 
 namespace HedgeMaze
@@ -82,6 +80,10 @@ namespace HedgeMaze
                 {
                     foreach(var inst in kvp.Value)
                     {
+                        if (e.NameWithoutLocale.IsEquivalentTo("Maps/Farm"))
+                        {
+                            var x = inst.mapPath;
+                        }
                         if (e.NameWithoutLocale.IsEquivalentTo(inst.mapPath))
                         {
                             e.Edit(delegate (IAssetData data)
@@ -89,7 +91,6 @@ namespace HedgeMaze
                                 SMonitor.Log($"adding maze to map {e.NameWithoutLocale}");
                                 ModifyMap(data.AsMap().Data, inst);
                             });
-                            return;
                         }
                     }
                 }

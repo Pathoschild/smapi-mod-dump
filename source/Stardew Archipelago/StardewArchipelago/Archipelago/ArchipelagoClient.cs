@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
@@ -216,7 +217,7 @@ namespace StardewArchipelago.Archipelago
             var fullMessage = string.Join(" ", message.Parts.Select(str => str.Text));
             _console.Log(fullMessage, LogLevel.Info);
 
-            fullMessage = fullMessage.Replace("<3", "<");
+            fullMessage = fullMessage.TurnHeartsIntoStardewHearts();
 
             switch (message)
             {
@@ -262,7 +263,7 @@ namespace StardewArchipelago.Archipelago
 
             var packet = new SayPacket()
             {
-                Text = text
+                Text = text,
             };
 
             _session.Socket.SendPacket(packet);
@@ -295,9 +296,9 @@ namespace StardewArchipelago.Archipelago
             return _session.ConnectionInfo.Team;
         }
 
-        public string GetPlayerName(int playerId)
+        public string GetPlayerName(int playerSlot)
         {
-            return _session.Players.GetPlayerName(playerId) ?? "Archipelago";
+            return _session.Players.GetPlayerName(playerSlot) ?? "Archipelago";
         }
 
         public string GetPlayerAlias(string playerName)
@@ -329,6 +330,12 @@ namespace StardewArchipelago.Archipelago
                 player = _session.Players.AllPlayers.FirstOrDefault(x => x.Alias == playerName);
             }
 
+            return player?.Game;
+        }
+
+        public string GetPlayerGame(int playerSlot)
+        {
+            var player = _session.Players.AllPlayers.FirstOrDefault(x => x.Slot == playerSlot);
             return player?.Game;
         }
 
@@ -431,7 +438,27 @@ namespace StardewArchipelago.Archipelago
             }
             catch (Exception ex)
             {
-                _console.Log($"Error Reading BigInteger from DataStorage key [{key}]. Value: {value}");
+                _console.Log($"Error Reading BigInteger from DataStorage key [{key}]. Value: {value}", LogLevel.Error);
+                return null;
+            }
+        }
+
+        public async Task<BigInteger?> ReadBigIntegerFromDataStorageAsync(Scope scope, string key)
+        {
+            if (!MakeSureConnected())
+            {
+                return null;
+            }
+
+            var value = _session.DataStorage[scope, key];
+            try
+            {
+                var integerValue = await value.GetAsync<BigInteger>();
+                return integerValue;
+            }
+            catch (Exception ex)
+            {
+                _console.Log($"Error Async Reading BigInteger from DataStorage key [{key}]. Value: {value}", LogLevel.Error);
                 return null;
             }
         }
@@ -534,6 +561,11 @@ namespace StardewArchipelago.Archipelago
             return hintTask.Result;
         }
 
+        public Hint[] GetMyActiveHints()
+        {
+            return GetHints().Where(x => !x.Found && GetPlayerName(x.FindingPlayer) == SlotData.SlotName).ToArray();
+        }
+
         public void ReportGoalCompletion()
         {
             if (!MakeSureConnected())
@@ -564,6 +596,11 @@ namespace StardewArchipelago.Archipelago
 
         public bool LocationExists(string locationName)
         {
+            if (!MakeSureConnected())
+            {
+                return false;
+            }
+
             var id = GetLocationId(locationName);
             return _session.Locations.AllLocations.Contains(id);
         }

@@ -97,10 +97,11 @@ namespace StardewArchipelago.Locations.Festival
                 }
 
                 _lastShopMenuUpdated = __instance;
+                var myActiveHints = _archipelago.GetMyActiveHints();
                 foreach (var salableItem in __instance.itemPriceAndStock.Keys.ToArray())
                 {
-                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.RARECROW_1, item => _shopReplacer.IsRarecrow(item, 1));
-                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.FAIR_STARDROP, (Object item) => item.ParentSheetIndex == 434);
+                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.RARECROW_1, item => _shopReplacer.IsRarecrow(item, 1), myActiveHints);
+                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.FAIR_STARDROP, (Object item) => item.ParentSheetIndex == 434, myActiveHints);
                 }
 
                 __instance.forSale = __instance.itemPriceAndStock.Keys.ToList();

@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Archipelago.Gifting.Net" Version="0.1.1" />
+    <PackageReference Include="Archipelago.Gifting.Net" Version="0.2.3" />
     <PackageReference Include="Archipelago.MultiClient.Net" Version="5.0.6" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
   </ItemGroup>

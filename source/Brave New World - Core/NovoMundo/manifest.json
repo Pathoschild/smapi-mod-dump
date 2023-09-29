@@ -18,8 +18,16 @@
   "UpdateKeys": [ "Nexus: ???" ],
   "Dependencies": [
     {
+      "UniqueID": "somaraezel.NovoMundoMapPatcher",
+      "IsRequired": true
+    },
+    {
       "UniqueID": "SuperAardvark.AntiSocial",
       "IsRequired": true
+    },
+    {
+      "UniqueID": "FlashShifter.StardewValleyExpandedCP",
+      "IsRequired": false
     }
   ]
 }

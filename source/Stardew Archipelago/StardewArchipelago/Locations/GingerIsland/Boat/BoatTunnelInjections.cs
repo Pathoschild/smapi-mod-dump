@@ -9,12 +9,15 @@
 *************************************************/
 
 using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using xTile.Dimensions;
+using Rectangle = xTile.Dimensions.Rectangle;
 
 namespace StardewArchipelago.Locations.GingerIsland.Boat
 {
@@ -48,8 +51,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
         {
             try
             {
-                var tileProperty =
-                    __instance.doesTileHaveProperty(tileLocation.X, tileLocation.Y, "Action", "Buildings");
+                var tileProperty = __instance.doesTileHaveProperty(tileLocation.X, tileLocation.Y, "Action", "Buildings");
                 if (tileProperty == "BoatTicket")
                 {
                     InteractWithTicketMachine(__instance, who);
@@ -196,7 +198,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
         {
             if (Game1.player.isRidingHorse() && Game1.player.mount != null)
             {
-                Game1.player.mount.checkAction(Game1.player, (GameLocation)__instance);
+                Game1.player.mount.checkAction(Game1.player, __instance);
                 return;
             }
 
@@ -204,13 +206,13 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
             {
                 __instance.createQuestionDialogueWithCustomWidth(
                     Game1.content.LoadString("Strings\\Locations:BoatTunnel_BuyTicket",
-                        (object)__instance.GetTicketPrice()), __instance.createYesNoResponses(), "Boat");
+                        __instance.GetTicketPrice()), __instance.createYesNoResponses(), "Boat");
                 return;
             }
 
             __instance.createQuestionDialogue(
                 Game1.content.LoadString("Strings\\Locations:BoatTunnel_BuyTicket",
-                    (object)__instance.GetTicketPrice()), __instance.createYesNoResponses(), "Boat");
+                    __instance.GetTicketPrice()), __instance.createYesNoResponses(), "Boat");
         }
 
         private static void InteractWithHull(BoatTunnel __instance, Farmer player)
@@ -257,6 +259,65 @@ namespace StardewArchipelago.Locations.GingerIsland.Boat
             }
 
             Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:BoatTunnel_DonateIridiumHint"));
+        }
+
+        // public override void draw(SpriteBatch spriteBatch)
+        public static void Draw_DrawBoatSectionsBasedOnTasksCompleted_Postfix(BoatTunnel __instance, SpriteBatch b)
+        {
+            try
+            {
+                if (!Game1.MasterPlayer.hasOrWillReceiveMail(MAIL_FIXED_BOAT) || Game1.farmEvent != null)
+                {
+                    return;
+                }
+
+                var ticketMachineFixed = _locationChecker.IsLocationChecked(AP_TICKET_MACHINE);
+                var hullFixed = _locationChecker.IsLocationChecked(AP_BOAT_HULL);
+                var anchorFixed = _locationChecker.IsLocationChecked(AP_BOAT_ANCHOR);
+
+                if (ticketMachineFixed && hullFixed && anchorFixed)
+                {
+                    return;
+                }
+
+                if (Game1.eventUp)
+                {
+                    return;
+                }
+
+                DrawRepairMarkers(b, hullFixed, ticketMachineFixed, anchorFixed);
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(Draw_DrawBoatSectionsBasedOnTasksCompleted_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+        }
+
+        private static void DrawRepairMarkers(SpriteBatch spriteBatch, bool hullFixed, bool ticketMachineFixed, bool anchorFixed)
+        {
+            var timeSinWave = (float)(4.0 * Math.Round(Math.Sin(Game1.currentGameTime.ElapsedGameTime.TotalMilliseconds / 250.0), 2));
+            var sourceRectangle = new Microsoft.Xna.Framework.Rectangle(395, 497, 3, 8);
+            var origin = new Vector2(1f, 4f);
+            var color = Color.White;
+            var scale = 4f + Math.Max(0.0f, (float)(0.25 - timeSinWave / 4.0));
+            if (!hullFixed)
+            {
+                var position = Game1.GlobalToLocal(Game1.viewport, new Vector2(416f, 456f + timeSinWave));
+                spriteBatch.Draw(Game1.mouseCursors, position, sourceRectangle, color, 0.0f, origin, scale, SpriteEffects.None, 1f);
+            }
+
+            if (!ticketMachineFixed)
+            {
+                var position = Game1.GlobalToLocal(Game1.viewport, new Vector2(288f, 520f + timeSinWave));
+                spriteBatch.Draw(Game1.mouseCursors, position, sourceRectangle, color, 0.0f, origin, scale, SpriteEffects.None, 1f);
+            }
+
+            if (!anchorFixed)
+            {
+                var position = Game1.GlobalToLocal(Game1.viewport, new Vector2(544f, 520f + timeSinWave));
+                spriteBatch.Draw(Game1.mouseCursors, position, sourceRectangle, color, 0.0f, origin, scale, SpriteEffects.None, 1f);
+            }
         }
     }
 }

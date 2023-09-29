@@ -9,8 +9,6 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewValley;
-using StardewValley.Objects;
 using System.Collections.Generic;
 
 namespace HedgeMaze
@@ -23,10 +21,10 @@ namespace HedgeMaze
         public EntranceSide entranceSide;
         public int entranceOffset = -1;
 
-        public int[] topEntranceOffsets;
-        public int[] rightEntranceOffsets;
-        public int[] leftEntranceOffsets;
-        public int[] bottomEntranceOffsets;
+        public List<int> topEntranceOffsets = new();
+        public List<int> rightEntranceOffsets = new();
+        public List<int> leftEntranceOffsets = new();
+        public List<int> bottomEntranceOffsets = new();
 
         public bool HideMaze = false;
         public bool HideBorders = false;

@@ -1,0 +1,12 @@
+{
+  "Config.EnableConsoleCommands.Name": "Enable console commands",
+  "Config.EnableConsoleCommands.Desc": "Enables FTM's console commands.\nThis will not take effect until Stardew Valley is restarted.",
+  "Config.EnableContentPacks.Name": "Enable content packs",
+  "Config.EnableContentPacks.Desc": "Enables all FTM content packs.\nIf this is disabled, only the files in FarmTypeManager/data will be used.",
+  "Config.EnableTraceLogMessages.Name": "Enable trace log messages",
+  "Config.EnableTraceLogMessages.Desc": "Enables FTM's [TRACE] messages in SMAPI's log files.\nIf this is disabled, log files will be smaller, but they'll provide less information about FTM.",
+  "Config.EnableEPUDebugMessages.Name": "Enable EPU debug messages",
+  "Config.EnableEPUDebugMessages.Desc": "Enables Expanded Preconditions Utility (EPU) debug messages.\nThis can be helpful when creating mods with preconditions.",
+  "Config.MonsterLimitPerLocation.Name": "Monster limit per location",
+  "Config.MonsterLimitPerLocation.Desc": "The maximum number of monsters FTM will allow on a single map simultaneously.\nUsing a lower number can improve the game's framerate. 50 is a common suggestion.\nType NULL to allow unlimited monsters."
+}

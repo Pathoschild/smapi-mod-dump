@@ -21,5 +21,8 @@ namespace TeleportNPCLocation
 
         /// <summary>show more npc info.</summary>
         public bool showMoreInfo { get; set; } = true;
+
+        /// <summary>ban npc list.</summary>
+        public string banNPCListString = "";
     }
 }

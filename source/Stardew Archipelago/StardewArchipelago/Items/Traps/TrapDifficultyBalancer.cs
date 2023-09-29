@@ -25,18 +25,18 @@ namespace StardewArchipelago.Items.Traps
             {TrapItemsDifficulty.NoTraps, BuffDuration.Zero},
             {TrapItemsDifficulty.Easy, BuffDuration.TenMinutes},
             {TrapItemsDifficulty.Medium, BuffDuration.HalfHour},
-            {TrapItemsDifficulty.Hard, BuffDuration.TwoHours},
-            {TrapItemsDifficulty.Hell, BuffDuration.FourHours},
+            {TrapItemsDifficulty.Hard, BuffDuration.OneHour},
+            {TrapItemsDifficulty.Hell, BuffDuration.TwoHours},
             {TrapItemsDifficulty.Nightmare, BuffDuration.WholeDay},
         };
 
         public Dictionary<TrapItemsDifficulty, BuffDuration> DefaultDebuffDurations = new()
         {
             {TrapItemsDifficulty.NoTraps, BuffDuration.Zero},
-            {TrapItemsDifficulty.Easy, BuffDuration.OneHour},
-            {TrapItemsDifficulty.Medium, BuffDuration.TwoHours},
-            {TrapItemsDifficulty.Hard, BuffDuration.FourHours},
-            {TrapItemsDifficulty.Hell, BuffDuration.WholeDay},
+            {TrapItemsDifficulty.Easy, BuffDuration.HalfHour},
+            {TrapItemsDifficulty.Medium, BuffDuration.OneHour},
+            {TrapItemsDifficulty.Hard, BuffDuration.TwoHours},
+            {TrapItemsDifficulty.Hell, BuffDuration.FourHours},
             {TrapItemsDifficulty.Nightmare, BuffDuration.WholeDay},
         };
 
@@ -166,7 +166,7 @@ namespace StardewArchipelago.Items.Traps
         SameMap,
         SameMapOrHome,
         PelicanTown,
-        Anywhere
+        Anywhere,
     }
 
     public enum CrowTargets
@@ -191,6 +191,6 @@ namespace StardewArchipelago.Items.Traps
         Soil = 1,
         Crops = 2,
         CropsIncludingInside = 3,
-        CropsIncludingWateringCan = 4
+        CropsIncludingWateringCan = 4,
     }
 }

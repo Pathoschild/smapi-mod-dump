@@ -225,7 +225,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             "Wilderness Golem", "Skeleton", "Ghost", "Bat", "Big Slime", "Blue Squid", "Bug", "Pepper Rex", "Duggy",
             "Dust Spirit", "Dwarvish Sentry", "Fly", "Green Slime", "Grub", "Lava Crab", "Lava Lurk", "Spider",
             "Metal Head", "Mummy", "Rock Crab", "Stone Golem", "Serpent", "Shadow Brute", "Shadow Girl", "Shadow Guy",
-            "Shadow Shaman", "Shadow Sniper", "Spiker", "Squid Kid"
+            "Shadow Shaman", "Shadow Sniper", "Spiker", "Squid Kid",
         };
 
         private const string _animalTexturePrefix = "Animals\\";
@@ -233,7 +233,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         private static readonly string[] _animalSprites = new[]
         {
             "horse", "Dog", "Dog1", "Dog2", "Dog3", "cat", "cat1", "cat2", "cat3", "White Chicken", "BabyWhite Chicken",
-            "Brown Chicken", "BabyBrown Chicken", "Duck", "Rabbit", "BabyRabbit", "Cow", "BabyCow", "Sheep", "ShearedSheep", "BabySheep", "Pig", "BabyPig"
+            "Brown Chicken", "BabyBrown Chicken", "Duck", "Rabbit", "BabyRabbit", "Cow", "BabyCow", "Sheep", "ShearedSheep", "BabySheep", "Pig", "BabyPig",
         };
     }
 }

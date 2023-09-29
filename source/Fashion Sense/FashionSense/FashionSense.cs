@@ -21,6 +21,7 @@ using FashionSense.Framework.Models.Appearances.Shirt;
 using FashionSense.Framework.Models.Appearances.Shoes;
 using FashionSense.Framework.Models.Appearances.Sleeves;
 using FashionSense.Framework.Models.General;
+using FashionSense.Framework.Models.Messages;
 using FashionSense.Framework.Patches.Core;
 using FashionSense.Framework.Patches.Entities;
 using FashionSense.Framework.Patches.GameLocations;
@@ -51,6 +52,7 @@ namespace FashionSense
         // Shared static helpers
         internal static IMonitor monitor;
         internal static IModHelper modHelper;
+        internal static IManifest modManifest;
 
         // Managers
         internal static AccessoryManager accessoryManager;
@@ -80,6 +82,7 @@ namespace FashionSense
             // Set up the monitor, helper and multiplayer
             monitor = Monitor;
             modHelper = helper;
+            modManifest = ModManifest;
 
             // Load managers
             accessoryManager = new AccessoryManager(monitor);
@@ -146,6 +149,22 @@ namespace FashionSense
             helper.Events.Player.Warped += OnWarped;
             helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
             helper.Events.Display.Rendered += OnRendered;
+            helper.Events.Multiplayer.ModMessageReceived += OnModMessageReceived;
+        }
+
+        private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
+        {
+            if (e.FromModID == this.ModManifest.UniqueID && e.Type == "ColorChangeMessage")
+            {
+                ColorChangeMessage message = e.ReadAs<ColorChangeMessage>();
+
+                var farmer = Game1.getFarmer(message.FarmerID);
+                if (farmer is null)
+                {
+                    return;
+                }
+                colorManager.SetColor(farmer, message.ColorKey, message.ColorValue);
+            }
         }
 
         private void OnRendered(object sender, StardewModdingAPI.Events.RenderedEventArgs e)

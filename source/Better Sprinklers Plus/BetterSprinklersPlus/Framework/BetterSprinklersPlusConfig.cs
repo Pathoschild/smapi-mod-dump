@@ -37,6 +37,13 @@ namespace BetterSprinklersPlus.Framework
       DoNotWater,
     }
 
+    public enum DefaultTilesOptions
+    {
+      CostMoney,
+      AreFree,
+      SameNumberAreFree,
+    }
+
     public static readonly string[] RangeAllowedValues = {
       "7",
       "11",
@@ -72,6 +79,13 @@ namespace BetterSprinklersPlus.Framework
       "Don't Water",
     };
 
+    private static readonly string[] DefaultTilesOptionsText =
+    {
+      "Cost Money",
+      "Are Free",
+      "Same Number are Free",
+    };
+
     public static BetterSprinklersPlusConfig Active { get; set; }
     public static IModHelper Helper { get; set; }
     public static IManifest Mod { get; set; }
@@ -80,11 +94,10 @@ namespace BetterSprinklersPlus.Framework
     public SButton ActivateKey { get; set; } = SButton.MouseRight;
     public bool OverlayEnabledOnPlace { get; set; } = true;
     public int BalancedMode { get; set; } = (int)BalancedModeOptions.Normal;
-    
     /// <summary>
     /// If true the default sprinkler tiles for each sprinkler are free.
     /// </summary>
-    public bool DefaultsAreFree { get; set; } = false;
+    public int DefaultTiles { get; set; } = (int)DefaultTilesOptions.CostMoney;
     public int CannotAfford { get; set; } = (int)CannotAffordOptions.DoNotWater;
     public bool BalancedModeCostMessage { get; set; } = true;
     public bool BalancedModeCannotAffordWarning { get; set; } = true;
@@ -276,13 +289,38 @@ namespace BetterSprinklersPlus.Framework
         },
         allowedValues: CannotAffordOptionsText
       );
-
-      configMenu.AddBoolOption(
+      
+      configMenu.AddTextOption(
         mod: Mod,
-        name: () => "Defaults are free",
-        tooltip: () => "When on, the default tiles for each sprinkler are free",
-        getValue: () => Active.DefaultsAreFree,
-        setValue: value => Active.DefaultsAreFree = value
+        name: () => "Default Tiles",
+        tooltip: () => "What should default tiles do?",
+        getValue: () =>
+        {
+          try
+          {
+            return DefaultTilesOptionsText[Active.DefaultTiles] ?? DefaultTilesOptionsText[0];
+          }
+          catch (Exception exception)
+          {
+            Logger.Error($"Error Getting Default Tiles option {Active.DefaultTiles}: {exception.Message}");
+            return DefaultTilesOptionsText[0];
+          }
+        },
+        setValue: value =>
+        {
+          try
+          {
+            var index = Array.IndexOf(DefaultTilesOptionsText, value);
+            if (index == -1) index = 0;
+            Active.DefaultTiles = index;
+          }
+          catch (Exception exception)
+          {
+            Logger.Error($"Error Setting Default Tiles option {value}: {exception.Message}");
+            Active.CannotAfford = (int)CannotAffordOptions.Off;
+          }
+        },
+        allowedValues: DefaultTilesOptionsText
       );
 
       configMenu.AddBoolOption(

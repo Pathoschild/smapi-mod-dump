@@ -38,6 +38,7 @@ mods:
    Crop Growth Info
    Crop Harvest Bubbles
    Crop Hat
+   Crop Markers
    Crop Variation
    Crop Watering Bubbles
    Crops Survive Season Change
@@ -68,9 +69,11 @@ mods:
    Custom Tree Tweaks
    Custom Wallpaper Framework
    Custom Warp Points
+   Death Tweaks
    Dialogue Display Framework
    Dialogue New Line
    Dialogue Trees
+   Dino Form
    Dreamscape
    Dungeon Merchants
    Dynamic Flooring
@@ -124,7 +127,7 @@ mods:
    Longer Seasons
    Loose Audio Files
    Mailbox Menu
-   Map Editor
+   Map Editor Extended
    Map Teleport
    Mayo Mart
    Meteor Defence
@@ -151,6 +154,7 @@ mods:
    Non-Random Prairie King
    NPC Clothing Framework
    Object Import Map
+   Object Product Display
    OK Night Check
    Omni Tools
    Outfit Sets
@@ -188,6 +192,7 @@ mods:
    Seed Info
    Seed Maker Tweaks
    Self Serve
+   Sewer Slimes
    Show Players Behind Buildings
    Simple Screenshots
    Sixty-Nine Shirt
@@ -232,9 +237,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 1a57ff466d500629b90ee917484d9c27bb8ed583
+   commit 37e49c59d5f2c5e653bc1104c4805e4588a6150f
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Wed Aug 30 13:45:34 2023 -0400
+   Date:   Tue Sep 26 04:20:38 2023 -0400
    
        etc
    

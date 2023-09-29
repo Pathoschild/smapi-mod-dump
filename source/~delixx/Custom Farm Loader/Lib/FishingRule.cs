@@ -106,7 +106,7 @@ namespace Custom_Farm_Loader.Lib
 
             return fishingRule;
         }
-        public StardewValley.Object getFish(bool isUsingMagicBait, float millisecondsAfterNibble, int bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string locationName = null)
+        public StardewValley.Object getFish(bool isUsingMagicBait, float millisecondsAfterNibble, string bait, int waterDepth, Farmer who, double baitPotency, Vector2 bobberTile, string locationName = null)
         {
             var validFish = Fish.FindAll(el => el.Filter.isValid(excludeSeason: isUsingMagicBait, excludeTime: isUsingMagicBait, excludeWeather: isUsingMagicBait, who: who));
             validFish = UtilityMisc.PickSomeInRandomOrder(validFish, validFish.Count).ToList();
@@ -153,16 +153,15 @@ namespace Custom_Farm_Loader.Lib
             if (!Game1.isFestival() && Game1.random.NextDouble() <= 0.15 && Game1.player.team.SpecialOrderRuleActive("DROP_QI_BEANS"))
                 whichFish = "890";
 
-            if (int.TryParse(whichFish, out int id)) {
-                if (fishType == FishType.Any || fishType == FishType.Item)
-                    return new StardewValley.Object(id, 1);
+            if (fishType == FishType.Item)
+                return new StardewValley.Object(whichFish, 1);
 
-                if (fishType == FishType.Furniture)
-                    return new StardewValley.Objects.Furniture(id, Vector2.Zero);
-            }
+            if (fishType == FishType.Furniture)
+                return new StardewValley.Objects.Furniture(whichFish, Vector2.Zero);
+
 
             Monitor.LogOnce($"Item not found: {whichFish}", LogLevel.Warn);
-            return new StardewValley.Object(Game1.random.Next(167, 173), 1);
+            return new StardewValley.Object(Game1.random.Next(167, 173).ToString(), 1);
         }
 
         //Yes, this is very hard coded. Don't judge

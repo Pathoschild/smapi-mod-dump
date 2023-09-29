@@ -45,6 +45,7 @@ namespace StardewArchipelago.Locations.Festival
         {
             try
             {
+                var myActiveHints = _archipelago.GetMyActiveHints();
                 foreach (var salableItem in __result.Keys.ToArray())
                 {
                     if (salableItem is not Item)
@@ -57,18 +58,16 @@ namespace StardewArchipelago.Locations.Festival
                         continue;
                     }
 
-                    _shopReplacer.ReplaceShopItem(__result, salableItem, FestivalLocationNames.RARECROW_7, item => _shopReplacer.IsRarecrow(item, 7));
-                    _shopReplacer.ReplaceShopItem(__result, salableItem, FestivalLocationNames.RARECROW_8, item => _shopReplacer.IsRarecrow(item, 8));
+                    _shopReplacer.ReplaceShopItem(__result, salableItem, FestivalLocationNames.RARECROW_7, item => _shopReplacer.IsRarecrow(item, 7), myActiveHints);
+                    _shopReplacer.ReplaceShopItem(__result, salableItem, FestivalLocationNames.RARECROW_8, item => _shopReplacer.IsRarecrow(item, 8), myActiveHints);
 
                     if (_archipelago.SlotData.FestivalLocations != FestivalLocations.Hard)
                     {
                         continue;
                     }
 
-                    _shopReplacer.ReplaceShopItem(__result, salableItem, FestivalLocationNames.CONE_HAT,
-                        item => item.which.Value == 39);
-                    _shopReplacer.ReplaceShopItem(__result, salableItem, FestivalLocationNames.IRIDIUM_FIREPLACE,
-                        (Furniture item) => item.ParentSheetIndex == 1796);
+                    _shopReplacer.ReplaceShopItem(__result, salableItem, FestivalLocationNames.CONE_HAT, item => item.which.Value == 39, myActiveHints);
+                    _shopReplacer.ReplaceShopItem(__result, salableItem, FestivalLocationNames.IRIDIUM_FIREPLACE, (Furniture item) => item.ParentSheetIndex == 1796, myActiveHints);
                 }
 
                 return;

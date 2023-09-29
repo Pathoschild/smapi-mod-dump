@@ -64,6 +64,12 @@ namespace StardewArchipelago.Goals
                 case Goal.GreatestWalnutHunter:
                     GoalCodeInjection.CheckWalnutHunterGoalCompletion();
                     return;
+                case Goal.ProtectorOfTheValley:
+                    GoalCodeInjection.CheckProtectorOfTheValleyGoalCompletion();
+                    return;
+                case Goal.FullShipment:
+                    GoalCodeInjection.CheckFullShipmentGoalCompletion();
+                    return;
                 case Goal.Perfection:
                     GoalCodeInjection.CheckPerfectionGoalCompletion();
                     return;
@@ -97,6 +103,12 @@ namespace StardewArchipelago.Goals
                     return;
                 case Goal.GreatestWalnutHunter:
                     InjectWalnutHunterGoalMethods();
+                    return;
+                case Goal.ProtectorOfTheValley:
+                    // Gets tested when slaying monsters
+                    return;
+                case Goal.FullShipment:
+                    // Gets tested when Shipping an item
                     return;
                 case Goal.Perfection:
                     InjectPerfectionGoalMethods();

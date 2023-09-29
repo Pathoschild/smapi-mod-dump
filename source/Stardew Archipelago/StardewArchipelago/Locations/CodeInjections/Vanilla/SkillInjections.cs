@@ -32,7 +32,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static readonly Dictionary<Skill, string> _skillToModName = new()
         {
             { Skill.Magic, ModNames.MAGIC }, { Skill.Binning, ModNames.BINNING }, { Skill.Cooking, ModNames.COOKING },
-            { Skill.Excavation, ModNames.ARCHAEOLOGY }, { Skill.Socializing, ModNames.SOCIALIZING }
+            { Skill.Excavation, ModNames.ARCHAEOLOGY }, { Skill.Socializing, ModNames.SOCIALIZING },
         };
 
         private static IMonitor _monitor;
@@ -239,7 +239,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 < 6900 => 7,
                 < 10000 => 8,
                 < 15000 => 9,
-                _ => 10
+                _ => 10,
             };
         }
 
@@ -257,7 +257,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 8 => 6900,
                 9 => 10000,
                 10 => 15000,
-                _ => 0
+                _ => 0,
             };
         }
 
@@ -339,6 +339,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         Socializing = 7,
         Excavation = 8,
         Binning = 9,
-        Cooking = 10
+        Cooking = 10,
     }
 }

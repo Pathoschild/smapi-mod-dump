@@ -51,6 +51,7 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
             }
         }
 
+        [HarmonyBefore(new string[] { "spacechase0.JsonAssets", "spacechase0.MoreGiantCrops" })]
         private static bool DrawPrefix(GiantCrop __instance, float ___shakeTimer, SpriteBatch spriteBatch, Vector2 tileLocation)
         {
             if (__instance.modData.ContainsKey(ModDataKeys.ALTERNATIVE_TEXTURE_NAME))
