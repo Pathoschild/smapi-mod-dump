@@ -1,7 +1,7 @@
 {
     "Name": "Lurking in the Dark - SMAPI Component",
     "Author": "7thAxis",
-    "Version": "1.1.7",
+    "Version": "1.1.9",
     "Description": "C# Component for Lurking in the Dark",
     "UniqueID": "7thAxis.LitD",
     "EntryDll": "Lurking In The Dark.dll",

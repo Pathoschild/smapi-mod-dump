@@ -6,9 +6,9 @@ mods:
    Clean Beach
 
 latest commit:
-   commit 6e4f836e4db2bcdca3e4fa2cc058c821fab81d26
+   commit c23cfcd2dace7a3406d26338ebfac5fa019ea22d
    Author: Artinity <31357507+Artinity@users.noreply.github.com>
-   Date:   Thu Jan 5 15:37:11 2023 +0100
+   Date:   Mon Oct 9 22:35:41 2023 +0200
    
-       Create README.md
+       Add license
    

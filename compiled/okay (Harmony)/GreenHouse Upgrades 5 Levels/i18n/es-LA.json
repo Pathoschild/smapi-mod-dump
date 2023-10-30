@@ -1,0 +1,27 @@
+﻿{
+    "GreenhouseLevel1": "Invernadero",
+    "GreenhouseLevel1Description": "Terreno para sembrar 15x15. Añade un sótano.",
+    
+    "GreenhouseLevel2": "Invernadero Chiquito",
+    "GreenhouseLevel2Description": "Terreno para sembrar 30x30. Amplía el sótano. Incorpora riego automático. Puedes meter árboles frutales adentro.",
+    
+    "GreenhouseLevel3": "Invernadero Mediano",
+    "GreenhouseLevel3Description": "Terreno para sembrar 60x60. Expande aún más el sótano. Añade un espacio cerrado para plantas.",
+    
+    "GreenhouseLevel4": "Invernadero Grande",
+    "GreenhouseLevel4Description": "Terreno para sembrar 120x120. Extiende aún más el sótano. Espacio cerrado más grande para plantas.",
+  
+    "GreenhouseLevel5": "Invernadero Gigante Deluxe",
+    "GreenhouseLevel5Description": "Terreno para sembrar 240x240. Expansión máxima del sótano. Espacio cerrado aún más amplio para plantas.",
+
+    "LeftBehindTree": "Te olvidaste el árbol.",
+    "LeftBehindCrop": "Te olvidaste del cultivo.",
+    "PickUpTreeMessage": "¡Tomaste el árbol!",
+    "PlaceTreeMessage": "¡Pusiste el árbol!",
+    "PickUpCropMessage": "¡Tomaste el cultivo!",
+    "PlaceCropMessage": "¡Pusiste el cultivo!",
+    "EnableTreePickingOption": "Recolectar árboles y cosechas",
+    "EnableTreePickingTooltip": "Activa o desactiva la opción.",
+    "language-choice-name": "Idioma",
+    "language-choice-tooltip": "Selecciona el idioma del mod"
+}

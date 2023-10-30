@@ -1,0 +1,73 @@
+{
+    // Strings for the Generic Mod Config Menu configuration
+    "config.hotkey": "Tecla de acesso direto",
+    "config.hotkey.desc": "O botão para mostrar a lista de tarefas pendentes",
+    "config.secondary-close-button": "Tecla secundária para fechar",
+    "config.secondary-close-button.desc": "Um botão alternativo (além do ESC) para fechar a lista de tarefas pendentes",
+    "config.debug": "Depuração",
+    "config.debug.desc": "Ativar a saída de depuração no registro",
+    "config.overlay": "Superposição",
+    "config.overlay.desc": "Configurar a superposição permanente da lista",
+    "config.overlay.enabled": "Ativado",
+    "config.overlay.enabled.desc": "Está ativada a superposição?",
+    "config.overlay.click-to-mark-done": "Clique nos elementos para marcar como terminados",
+    "config.overlay.click-to-mark-done.desc": "Habilitar clique na superposição para marcar elementos terminados",
+    "config.overlay.hotkey": "Tecla de acesso direto",
+    "config.overlay.hotkey.desc": "Tecla de acesso direto para mostrar ou ocultar",
+    "config.overlay.hide-at-festivals": "Ocultar durante os festivais",
+    "config.overlay.hide-at-festivals.desc": "Ocultar a superposição durante os festivais?",
+    "config.overlay.max-width": "Largura máxima",
+    "config.overlay.max-width.desc": "Largura máxima da superposição em pixels",
+    "config.overlay.max-items": "Máximo de items",
+    "config.overlay.max-items.desc": "Número máximo de elementos para mostrar na superposição",
+    "config.overlay.zoom": "Ampliar tamanho com",
+    "config.overlay.zoom.desc": "Escolhe qual das opções de zoom do jogo controla o tamanho da superposição",
+    "config.overlay.x-offset": "Deslocamento X",
+    "config.overlay.x-offset.desc": "Deslocamento X da superposição em pixels desde a borda esquerda da tela",
+    "config.overlay.y-offset": "Deslocamento Y",
+    "config.overlay.y-offset.desc": "Deslocamento Y da superposição em pixels desde a borda superior da tela",
+
+    // Overlay
+    "overlay.header": "Lista de Tarefas",
+
+    // Console log messages
+    "message.save-version-newer": "A informação da lista neste save está em uma versão de formato mais novo ({{saveFormatVersion}}) que a que utiliza esta versão de {{modName}} ({{modFormatVersion}}). O seguinte save utilizará esta versão mais antiga, o que fará com que se percam os atributos adicionados na versão mais recente.",
+    "message.save-version-older": "Lendo a informação da lista na versão de formato {{saveFormatVersion}}. Se atualizará à versão de formato atual ({{modFormatVersion}}) no el seguinte save.",
+    "message.host-no-mod": "O host não tem instalado {{modName}}; lista desativada.",
+    "message.host-different-mod-version": "O host tem a versão {{hostVersion}} de {{modName}} instalada, mas tem a versão {{myVersion}}. Tentar-se-á iniciar o mod de todos os modos.",
+    "message.ignoring-unexpected-message-type": "Ignorando o tipo de mensagem inesperada {{messageType}} do jogador {{fromId}} ({{fromName}})",
+    "message.host-newer-data-format-minor": "O host está utilizando uma versão de formato de dados mais recente ({{hostVersion}}) que sua versão de {{modName}} ({{myVersion}}), mas tentaremos fazer funcionar.",
+    "message.host-newer-data-format-major": "O host está utilizando uma versão de formato de datos mais recente ({{hostVersion}}) que sua versão de {{modName}} ({{myVersion}}).  Como tem um número de versão principal diferente, não podemos fazer nada para que seu mod funcione.",
+    "message.host-older-data-format": "O host está utilizando a versão {{hostVersion}}, que é mais antigua que sua versão atual ({{myVersion}}). Algumas funções podem não estar disponíveis.",
+    "message.current-item-deleted": "O item {{itemId}} foi eliminado por outro jogador",
+
+    // list menu
+    "menu.list.title-bold-part": "Lista de Tarefas",
+    "menu.list.title-rest": "da fazenda {{farmName}}",
+    "menu.textbox.title": "Adicionar tarefa pendente", // not sure the TitleText actually shows up anywhere
+    // item configuration (edit) menu
+    "menu.edit.title": "Editar item",
+    "menu.edit.header": "Título",
+    "menu.edit.bold": "Negrito",
+    "menu.edit.repeating": "Repetição",
+    "menu.edit.repeat-every": "Repetição",
+    "menu.edit.repeat-days": "",
+    "menu.edit.hide-in-overlay": "Ocultar na superposição",
+    "menu.edit.show-when": "Mostrar item quando:",
+    "menu.edit.raining-on-farm": "Chover na fazenda",
+    "menu.edit.not-raining-on-farm": "Não chover na fazenda",
+    "menu.edit.raining-on-island": "Chover na ilha",
+    "menu.edit.not-raining-on-island": "Não chover na ilha",
+    "menu.edit.only-days": "Mostrar somente estes dias:",
+    "menu.edit.week": "Semana:",
+    "menu.edit.only-season": "Mostrar somente em:",
+
+    // full day names (since the game only has translations for the short names)
+    "sunday": "Domingo",
+    "monday": "Segunda",
+    "tuesday": "Terça",
+    "wednesday": "Quarta",
+    "thursday": "Quinta",
+    "friday": "Sexta",
+    "saturday": "Sábado"
+}

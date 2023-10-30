@@ -1,6 +1,11 @@
 {
+  "$id": "1",
   "WeatherForYesterday": "Sunny",
-  "LNOSCounter": {},
-  "ExistingObjectLocations": {},
+  "LNOSCounter": {
+    "$id": "2"
+  },
+  "ExistingObjectLocations": {
+    "$id": "3"
+  },
   "SavedObjects": []
 }

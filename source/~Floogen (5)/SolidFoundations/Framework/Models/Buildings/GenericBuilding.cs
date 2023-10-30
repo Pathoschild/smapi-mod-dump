@@ -533,6 +533,17 @@ namespace SolidFoundations.Framework.Models.ContentPack
         }
 
         // Preserve this override (required to manage LightSources) when updating to SDV v1.6
+        public override bool isTileOccupiedForPlacement(Vector2 tile, Object to_place)
+        {
+            if (base.occupiesTile(tile) is false)
+            {
+                return base.isTileOccupiedForPlacement(tile, to_place);
+            }
+
+            return true;
+        }
+
+        // Preserve this override (required to manage LightSources) when updating to SDV v1.6
         public override void performActionOnDemolition(GameLocation location)
         {
             if (LightSources.Count > 0)

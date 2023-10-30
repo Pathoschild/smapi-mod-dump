@@ -25,59 +25,38 @@ namespace StardewRoguelike.Bosses
     {
         public string DisplayName => "Hachi the Queen Bee";
 
-        public string MapPath
-        {
-            get { return "boss-queenbee"; }
-        }
+        public string MapPath => "boss-queenbee";
 
-        public string TextureName
-        {
-            get { return "Characters\\Monsters\\Fly_dangerous"; }
-        }
+        public string TextureName => "Characters\\Monsters\\Fly_dangerous";
 
-        public Vector2 SpawnLocation
-        {
-            get { return new(25, 27); }
-        }
+        public Vector2 SpawnLocation => new(25, 27);
 
-        public List<string> MusicTracks
-        {
-            get { return new() { "bee_boss" }; }
-        }
+        public List<string> MusicTracks => new() { "bee_boss" };
 
-        public bool InitializeWithHealthbar
-        {
-            get { return true; }
-        }
+        public bool InitializeWithHealthbar => true;
 
-        private float _difficulty;
+        public float Difficulty { get; set; }
 
-        public float Difficulty
-        {
-            get { return _difficulty; }
-            set { _difficulty = value; }
-        }
+        private int TicksToChargeWarmup = 0;
+        private int ChargeDurationTicks = 0;
 
-        private int ticksToChargeWarmup = 0;
-        private int chargeDurationTicks = 0;
+        private bool ChargingWarmup = false;
+        private bool MidCharge = false;
+        private Vector2 ChargeVector;
 
-        private bool chargingWarmup = false;
-        private bool midCharge = false;
-        private Vector2 chargeVector;
+        private int TimesToCharge = 0;
 
-        private int timesToCharge = 0;
+        private int FireRate;
+        private int StingersToShoot = 0;
+        private int NextShot = 0;
 
-        private int fireRate;
-        private int stingersToShoot = 0;
-        private int nextShot = 0;
+        private int TicksToAttack = 300;
 
-        private int ticksToAttack = 300;
+        private int PreviousAttack;
 
-        private int previousAttack;
-
-        private int wasHitCounter;
-        private float targetRotation;
-        private bool turningRight;
+        private int WasHitCounter;
+        private float TargetRotation;
+        private bool TurningRight;
 
         public QueenBee() { }
 
@@ -97,7 +76,7 @@ namespace StardewRoguelike.Bosses
 
         public override void behaviorAtGameTick(GameTime time)
         {
-            if (!midCharge)
+            if (!MidCharge)
                 base.behaviorAtGameTick(time);
 
             if (Health <= 0)
@@ -105,15 +84,15 @@ namespace StardewRoguelike.Bosses
 
             HandleChargeTick();
 
-            if (stingersToShoot > 0)
+            if (StingersToShoot > 0)
             {
-                nextShot--;
+                NextShot--;
 
-                if (nextShot == 0)
+                if (NextShot == 0)
                 {
                     ShootStinger();
-                    stingersToShoot--;
-                    nextShot = fireRate;
+                    StingersToShoot--;
+                    NextShot = FireRate;
                 }
                 return;
             }
@@ -121,26 +100,26 @@ namespace StardewRoguelike.Bosses
             if (IsCharging())
                 return;
 
-            if (ticksToAttack > 0)
+            if (TicksToAttack > 0)
             {
-                ticksToAttack--;
+                TicksToAttack--;
                 return;
             }
 
             int attack = -1;
-            while (attack == -1 || attack == previousAttack)
+            while (attack == -1 || attack == PreviousAttack)
                 attack = Game1.random.Next(0, 3);
 
             if (attack == 0)
             {
                 // stingers
-                fireRate = 16 - this.AdjustRangeForHealth(0, 8);
+                FireRate = 16 - this.AdjustRangeForHealth(0, 8);
 
-                stingersToShoot = 60 * this.AdjustRangeForHealth(5, 10) / fireRate;
-                nextShot = fireRate;
+                StingersToShoot = 60 * this.AdjustRangeForHealth(5, 10) / FireRate;
+                NextShot = FireRate;
 
-                ticksToAttack = 60 * 3;
-                previousAttack = 0;
+                TicksToAttack = 60 * 3;
+                PreviousAttack = 0;
             }
             else if (attack == 1)
             {
@@ -149,71 +128,71 @@ namespace StardewRoguelike.Bosses
                 if (Roguelike.HardMode)
                     beesToSpawn += 2;
                 SummonBees(beesToSpawn);
-                ticksToAttack = 60 * 5;
-                previousAttack = 1;
+                TicksToAttack = 60 * 5;
+                PreviousAttack = 1;
             }
             else
             {
                 // charge
                 StartCharging(this.AdjustRangeForHealth(3, 8));
-                ticksToAttack = 60 * 3;
-                previousAttack = 2;
+                TicksToAttack = 60 * 3;
+                PreviousAttack = 2;
             }
         }
 
         public void StartCharging(int times)
         {
-            if (timesToCharge == 0)
-                timesToCharge = times;
+            if (TimesToCharge == 0)
+                TimesToCharge = times;
         }
 
         public bool IsAttacking()
         {
-            return IsCharging() || stingersToShoot > 0;
+            return IsCharging() || StingersToShoot > 0;
         }
 
         public bool IsCharging()
         {
-            return midCharge || chargingWarmup;
+            return MidCharge || ChargingWarmup;
         }
 
         public void HandleChargeTick()
         {
-            if (Player is null || timesToCharge == 0)
+            if (Player is null || TimesToCharge == 0)
                 return;
 
-            if (midCharge)
+            if (MidCharge)
             {
-                Position += chargeVector;
-                rotation = RoguelikeUtility.VectorToRadians(chargeVector) + RoguelikeUtility.DegreesToRadians(90);
-                chargeDurationTicks--;
-                if (chargeDurationTicks == 0)
+                Position += ChargeVector;
+                rotation = RoguelikeUtility.VectorToRadians(ChargeVector) + RoguelikeUtility.DegreesToRadians(90);
+                ChargeDurationTicks--;
+                if (ChargeDurationTicks == 0)
                 {
-                    midCharge = false;
-                    timesToCharge--;
+                    MidCharge = false;
+                    TimesToCharge--;
                 }
             }
-            else if (chargingWarmup && ticksToChargeWarmup > 0)
+            else if (ChargingWarmup && TicksToChargeWarmup > 0)
             {
-                rotation = RoguelikeUtility.VectorToRadians(chargeVector) + RoguelikeUtility.DegreesToRadians(90);
-                ticksToChargeWarmup--;
+                rotation = RoguelikeUtility.VectorToRadians(ChargeVector) + RoguelikeUtility.DegreesToRadians(90);
+                TicksToChargeWarmup--;
             }
-            else if (chargingWarmup && ticksToChargeWarmup == 0)
+            else if (ChargingWarmup && TicksToChargeWarmup == 0)
             {
                 currentLocation.playSound("croak");
-                chargeDurationTicks = Roguelike.HardMode ? 30 : 60;
+                ChargeDurationTicks = Roguelike.HardMode ? 30 : 60;
 
-                chargingWarmup = false;
-                midCharge = true;
+                ChargingWarmup = false;
+                MidCharge = true;
             }
-            else if (!chargingWarmup && ticksToChargeWarmup == 0)
+            else if (!ChargingWarmup && TicksToChargeWarmup == 0)
             {
-                chargeVector = Player.Position - Position;
-                chargeVector.Normalize();
-                chargeVector *= this.AdjustRangeForHealth(13, 17);
+                ChargeVector = Player.Position - Position;
+                ChargeVector.Normalize();
+                ChargeVector *= this.AdjustRangeForHealth(13, 17);
 
-                chargingWarmup = true;
-                ticksToChargeWarmup = 60 - this.AdjustRangeForHealth(0, 55);
+                ChargingWarmup = true;
+                TicksToChargeWarmup = 60 - this.AdjustRangeForHealth(0, 55);
             }
         }
 
@@ -284,8 +263,8 @@ namespace StardewRoguelike.Bosses
                     buzz.SetVariable("Volume", volume);
             }
 
-            if (wasHitCounter >= 0)
-                wasHitCounter -= time.ElapsedGameTime.Milliseconds;
+            if (WasHitCounter >= 0)
+                WasHitCounter -= time.ElapsedGameTime.Milliseconds;
 
             Sprite.Animate(time, (FacingDirection == 0) ? 8 : ((FacingDirection != 2) ? (FacingDirection * 4) : 0), 4, 75f);
             if ((withinPlayerThreshold() || Utility.isOnScreen(position, 256)) && invincibleCountdown <= 0)
@@ -302,22 +281,22 @@ namespace StardewRoguelike.Bosses
                 xSlope /= t;
                 ySlope /= t;
 
-                if (wasHitCounter <= 0)
+                if (WasHitCounter <= 0)
                 {
-                    targetRotation = (float)Math.Atan2(0f - ySlope, xSlope) - (float)Math.PI / 2f;
+                    TargetRotation = (float)Math.Atan2(0f - ySlope, xSlope) - (float)Math.PI / 2f;
 
-                    if ((Math.Abs(targetRotation) - Math.Abs(rotation)) > Math.PI * 7.0 / 8.0 && Game1.random.NextDouble() < 0.5)
-                        turningRight = true;
-                    else if ((Math.Abs(targetRotation) - Math.Abs(rotation)) < Math.PI / 8.0)
-                        turningRight = false;
+                    if ((Math.Abs(TargetRotation) - Math.Abs(rotation)) > Math.PI * 7.0 / 8.0 && Game1.random.NextDouble() < 0.5)
+                        TurningRight = true;
+                    else if ((Math.Abs(TargetRotation) - Math.Abs(rotation)) < Math.PI / 8.0)
+                        TurningRight = false;
 
-                    if (turningRight)
-                        rotation -= Math.Sign(targetRotation - rotation) * ((float)Math.PI / 64f);
+                    if (TurningRight)
+                        rotation -= Math.Sign(TargetRotation - rotation) * ((float)Math.PI / 64f);
                     else
-                        rotation += Math.Sign(targetRotation - rotation) * ((float)Math.PI / 64f);
+                        rotation += Math.Sign(TargetRotation - rotation) * ((float)Math.PI / 64f);
 
                     rotation %= (float)Math.PI * 2f;
-                    wasHitCounter = 5 + Game1.random.Next(-1, 2);
+                    WasHitCounter = 5 + Game1.random.Next(-1, 2);
                 }
 
                 float maxAccel = Math.Min(7f, Math.Max(2f, 7f - t / 64f / 2f));
@@ -359,7 +338,7 @@ namespace StardewRoguelike.Bosses
             {
                 Health -= actualDamage;
                 setTrajectory(xTrajectory / 3, yTrajectory / 3);
-                wasHitCounter = 500;
+                WasHitCounter = 500;
                 if (currentLocation is not null)
                 {
                     currentLocation.playSound("hitEnemy");

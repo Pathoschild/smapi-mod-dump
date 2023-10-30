@@ -25,8 +25,6 @@ namespace SocializingSkill
         internal static ModEntry Instance;
         [SmapiConfig]
         internal static Config Config;
-        [SmapiCommand]
-        internal static Command Command;
         [SmapiAsset]
         internal static Assets Assets;
         [SmapiApi(UniqueID = "DaLion.Overhaul", IsRequired = false)]

@@ -10,16 +10,15 @@
 
 namespace DaLion.Overhaul.Modules.Combat.Events.GameLoop.SaveLoaded;
 
-using DaLion.Overhaul;
-using DaLion.Overhaul.Modules.Combat;
-
 #region using directives
 
+using System.Linq;
 using DaLion.Overhaul.Modules.Combat.Enums;
 using DaLion.Overhaul.Modules.Combat.Events.GameLoop.DayStarted;
 using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Shared.Constants;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.SMAPI;
 using DaLion.Shared.Extensions.Stardew;
 using StardewModdingAPI.Events;
@@ -48,9 +47,14 @@ internal sealed class CombatSaveLoadedEvent : SaveLoadedEvent
 
         Utility.iterateAllItems(item =>
         {
-            if (item is MeleeWeapon weapon && weapon.ShouldHaveIntrinsicEnchantment())
+            switch (item)
             {
-                weapon.AddIntrinsicEnchantments();
+                case MeleeWeapon weapon when weapon.ShouldHaveIntrinsicEnchantment():
+                    weapon.AddIntrinsicEnchantments();
+                    break;
+                case Slingshot slingshot when slingshot.ShouldHaveIntrinsicEnchantment():
+                    slingshot.AddIntrinsicEnchantments();
+                    break;
             }
         });
 
@@ -63,42 +67,9 @@ internal sealed class CombatSaveLoadedEvent : SaveLoadedEvent
         // continue clint translation
         if (player.hasQuest((int)QuestId.ForgeIntro))
         {
+            player.questLog.First(q => q.id.Value == (int)QuestId.ForgeIntro).nextQuests.Clear(); // this is a temporary fix for this goddamn error
             ModEntry.EventManager.Enable<BlueprintDayStartedEvent>();
         }
-
-        // -- temp fixes --
-
-        if (player.Read<int>("ProvenHonor") is var provenHonor and > 0)
-        {
-            player.WriteIfNotExists("Honor", provenHonor.ToString());
-            player.Write("ProvenHonor", null);
-        }
-
-        if (player.Read<int>("ProvenCompassion") is var provenCompassion and > 0)
-        {
-            player.WriteIfNotExists("Compassion", provenCompassion.ToString());
-            player.Write("ProvenCompassion", null);
-        }
-
-        if (player.Read<int>("ProvenWisdom") is var provenWisdom and > 0)
-        {
-            player.WriteIfNotExists("Wisdom", provenWisdom.ToString());
-            player.Write("ProvenWisdom", null);
-        }
-
-        if (player.Read<int>("ProvenGenerosity") is var provenGenerosity and > 0)
-        {
-            player.WriteIfNotExists("Generosity", provenGenerosity.ToString());
-            player.Write("ProvenGenerosity", null);
-        }
-
-        if (player.Read<int>("ProvenValor") is var provenValor and > 0)
-        {
-            player.WriteIfNotExists("Valor", provenValor.ToString());
-            player.Write("ProvenValor", null);
-        }
-
-        // -- temp fixes ==
 
         // record pre-obtained galaxy sword
         if (player.mailReceived.Contains("galaxySword"))
@@ -122,6 +93,13 @@ internal sealed class CombatSaveLoadedEvent : SaveLoadedEvent
                 CombatModule.State.HeroQuest = new HeroQuest();
             }
         }
+        else if (player.Read<HeroQuest.QuestState>(DataKeys.VirtueQuestState) == HeroQuest.QuestState.Completed)
+        {
+            if (!player.hasQuest((int)QuestId.HeroReward) && !player.mailReceived.Contains("gotHolyBlade"))
+            {
+                player.addQuest((int)QuestId.HeroReward);
+            }
+        }
 
         // block bullseye cursor
         if (Game1.options.useLegacySlingshotFiring)
@@ -139,7 +117,7 @@ internal sealed class CombatSaveLoadedEvent : SaveLoadedEvent
 
         // load auto-selections
         var index = player.Read(DataKeys.SelectableMelee, -1);
-        if (index > 0 && index < player.Items.Count)
+        if (player.Items.IsIndexInBounds(index))
         {
             var item = player.Items[index];
             if (item is MeleeWeapon weapon && !weapon.isScythe())
@@ -149,7 +127,7 @@ internal sealed class CombatSaveLoadedEvent : SaveLoadedEvent
         }
 
         index = player.Read(DataKeys.SelectableRanged, -1);
-        if (index > 0 && index < player.Items.Count)
+        if (player.Items.IsIndexInBounds(index))
         {
             var item = player.Items[index];
             if (item is Slingshot slingshot)

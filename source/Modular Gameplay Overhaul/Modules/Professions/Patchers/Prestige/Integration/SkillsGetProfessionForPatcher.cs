@@ -43,7 +43,7 @@ internal sealed class SkillsGetProfessionForPatcher : HarmonyPatcher
         var scSkill = SCSkill.FromSpaceCore(skill);
         if (scSkill is null)
         {
-            Log.W($"[PROFS]: The SpaceCore skill {skill.Id} is loaded, but failed to be mapped.");
+            Log.W($"[PRFS]: The SpaceCore skill {skill.Id} is loaded, but failed to be mapped.");
             return true; // run original logic
         }
 
@@ -56,7 +56,7 @@ internal sealed class SkillsGetProfessionForPatcher : HarmonyPatcher
 
         if (!SCProfession.Loaded.TryGetValue(tierOneIndex, out var tierOneProfession))
         {
-            Log.W($"[PROFS]: The profession {tierOneIndex} was not found within the loaded SpaceCore professions.");
+            Log.W($"[PRFS]: The profession {tierOneIndex} was not found within the loaded SpaceCore professions.");
             return true; // run original logic
         }
 
@@ -76,7 +76,7 @@ internal sealed class SkillsGetProfessionForPatcher : HarmonyPatcher
 
                 if (!SCProfession.Loaded.TryGetValue(tierTwoIndex, out var tierTwoProfession))
                 {
-                    Log.W($"[PROFS]: The profession {tierTwoIndex} was not found within the loaded SpaceCore professions.");
+                    Log.W($"[PRFS]: The profession {tierTwoIndex} was not found within the loaded SpaceCore professions.");
                     return true; // run original logic
                 }
 

@@ -10,7 +10,6 @@
 
 using StardewValley.Minigames;
 using StardewValley;
-using System;
 
 namespace StardewRoguelike
 {

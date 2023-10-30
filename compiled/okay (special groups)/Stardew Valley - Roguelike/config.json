@@ -1,5 +1,6 @@
 {
   "SkipModDisclaimer": false,
   "SkipCharacterCreation": false,
-  "DisableBossSplits": false
+  "DisableBossSplits": false,
+  "AutomaticallyFaceMouse": false
 }

@@ -1,0 +1,123 @@
+﻿{
+  "game-font-type.small-font": "Fonte Pequena",
+  "game-font-type.dialogue-font": "Fonte Média",
+  "game-font-type.sprite-text": "Fonte de Diálogos",
+
+  "options-page.font-header": "Fonte",
+  "hud-message.success-set-font": "{{fontType}} foi definida!",
+  "hud-message.failed-set-font": "Falha na configuração de {{fontType}}. Veja o console SMAPI para mais detalhes.",
+  "hud-message.export-success": "Fonte exportada com sucesso!\nSalvo em {{path}}",
+  "hud-message.export-fail": "Falha ao exportar a fonte! Veja a janela do SMAPI para detalhes.",
+
+  "ui.main-menu.title": "Configurações de Fonte",
+  "ui.main-menu.font-type-help.paragraph": "Existem três fontes principais em Stardew Valley:\n- Fonte Pequena\n- Fonte Média\n- Fonte de Diálogos\nPressione as setas esquerda ou direita para alternar.\nVocê pode configurar apenas uma ou duas, ou todas elas, de acordo com sua preferência.",
+  "ui.main-menu.font-type-help.latin-lang.paragraph": "Língua Latina:\nVocê está usando um idioma latino ({{locale}}).\nPara editar a fonte de diálogo, vá até as configurações e marque a opção \"Fonte de diálogo personalizada para línguas latinas\".",
+  "ui.main-menu.section.general": "Geral",
+  "ui.main-menu.enable": "Ativado",
+  "ui.main-menu.font": "Família de Fontes",
+  "ui.main-menu.font.keep-orig": "Manter Original",
+  "ui.main-menu.refresh-fonts": "Atualizar Lista de Fontes",
+  "ui.main-menu.font-from-pack": "(do pacote '{{packName}}')",
+  "ui.main-menu.font-size": "Tamanho da Fonte",
+
+  "ui.main-menu.section.advanced": "Avançado",
+  "ui.main-menu.spacing": "Espaçamento",
+  "ui.main-menu.line-spacing": "Espaçamento de Linhas",
+  "ui.main-menu.x-offset": "Deslocamento X",
+  "ui.main-menu.y-offset": "Deslocamento Y",
+  "ui.main-menu.pixel-zoom": "Zoom de Pixels",
+  "ui.main-menu.vanilla-example": "Padrão",
+  "ui.main-menu.current-example": "Atual",
+
+  "ui.main-menu.section.preset": "Predefinições",
+  "ui.main-menu.prev-preset": "Predefinição Anterior",
+  "ui.main-menu.next-preset": "Próxima Predefinição",
+  "ui.main-menu.new-preset": "Salvar atual como...",
+  "ui.main-menu.save-preset": "Salvar",
+  "ui.main-menu.del-preset": "Deletar",
+
+  "ui.main-menu.reset-font": "Redefinir Fonte Atual",
+
+  "ui.main-menu.ok": "Aplicar",
+  "ui.main-menu.export": "Exportar Configurações",
+
+  "ui.main-menu.merge-examples": "Comparar",
+  "ui.main-menu.show-example-bounds": "Mostrar Limites",
+  "ui.main-menu.show-example-text": "Mostrar Texto",
+
+  "ui.main-menu.validation.font.file-not-found": "Arquivo de fonte não encotrado: {{filePath}}",
+  "ui.main-menu.failed-to-recognize-font-file": "Falha ao reconhecer o arquivo de fonte: {{filePath}}",
+
+  "ui.new-preset-menu.title": "Nova Predefinição",
+  "ui.new-preset-menu.name": "Nome",
+  "ui.invalid-preset-name.empty": "Não pode ser vazio.",
+  "ui.invalid-preset-name.invalid-char": "Contém caracteres inválidos (/, \\, *, \", |, <, >, ?).",
+  "ui.invalid-preset-name.duplicated": "Já em uso.",
+
+  "ui.preset-info-menu.name": "Nome",
+  "ui.preset-info-menu.notes": "Notas",
+  "ui.preset-info-menu.cp-name": "Pacote de Fonte",
+  "ui.preset-info-menu.cp-author": "Autor",
+  "ui.preset-info-menu.cp-ver": "Versão",
+
+  "ui.export-menu.title": "Configurações de Exportação",
+  "ui.export-menu.out-in-xnb": "Formato XNB",
+  "ui.export-menu.out-dir": "Pasta de saída",
+  "ui.export-menu.out-name": "Nome de saída",
+  "ui.export-menu.section.xnb": "Configurações XNB",
+  "ui.export-menu.profile": "Perfil de Gráficos",
+  "ui.export-menu.compress": "Comprimido",
+  "ui.export-menu.export": "Exportar",
+  "ui.export-menu.cancel": "Cancelar",
+
+  "config.section-color-and-shadow": "Color & Shadow", // TODO
+  "config.disable-text-shadow": "Desativar sombra de texto",
+  "config.disable-text-shadow.description": "Se deve ocultar a sombra da fonte.",
+  "config.color-format": "\n\nInsira um valor hexadecimal:\nAABBGGRR\nexemplo: Azul Índigo (R=63, G=72, B=204, A=255)\n => FFCC483F", // TODO: edit
+  "config.text-color": "Cor do Texto",
+  "config.text-color.description": "Configura a cor do texto padrão do jogo.",
+  "config.text-color-dialogue": "Cor do texto de diálogo",
+  "config.text-color-dialogue.description": "Configura a cor do texto de diálogo padrão do jogo.",
+  "config.shadow-color": "Cor da sombra do texto",
+  "config.shadow-color.description": "Configura a cor da sombra do texto padrão do jogo.",
+
+  "config.section-compatibility": "Compatibility", // TODO
+  "config.enable-latin-dialogue-font": "Fonte de diálogo personalizada para línguas latinas",
+  "config.enable-latin-dialogue-font.description": "Se deve ativar a fonte de diálogo personalizada em idiomas latinos. Idioma Latino: idioma que contém apenas caracteres latinos. O idioma atual ({{locale}}) é um idioma latino: {{isLatinLanguage}}",
+  "config.edit-mode": "Modo de edição",
+  "config.edit-mode.description": "Ativa o Modo de edição, se marcado. ou modo de carregamento, se desmarcado.\nO modo de edição melhora a compatibilidade dos mods e evita conflitos quando vários mods carregam a mesma fonte.",
+  "config.edit-prio": "Prioridade de edição",
+  "config.edit-prio.description": "Prioridade para editar fontes. Quanto maior o valor, mais lentamente as fontes serão editadas.\nAlcance: [{{minValue}}, {{maxValue}}]\nPadrão: 0",
+
+  "config.section-ui": "UI", // TODO
+  "config.font-menu-key": "Abrir Menu de Fontes",
+  "config.font-menu-key.description": "Cria um atalho para abrir o menu de configurações de fonte.",
+  "config.example-text": "Texto de Exemplo",
+  "config.example-text.description": "Texto de exemplo personalizado. Mantenha isso desativado, a menos que você realmente queira o seu, o mod tem um integrado.",
+  "config.min-font-size": "Tamanho mínimo da fonte",
+  "config.min-font-size.description": "Min reachable value of font size UI control.", // TODO
+  "config.max-font-size": "Tamanho máximo da fonte",
+  "config.max-font-size.description": "Max reachable value of font size UI control.", // TODO
+  "config.min-spacing": "Espaçamento mínimo",
+  "config.min-spacing.description": "Min reachable value of spacing UI control.", // TODO
+  "config.max-spacing": "Espaçamento máximo",
+  "config.max-spacing.description": "Max reachable value of spacing UI control.", // TODO
+  "config.min-line-spacing": "Espaçamento de linhas mínimo",
+  "config.min-line-spacing.description": "Min reachable value of line spacing UI control.", // TODO
+  "config.max-line-spacing": "Espaçamento de linhas máximo",
+  "config.max-line-spacing.description": "Max reachable value of line spacing UI control.", // TODO
+  "config.min-offset-x": "Deslocamento X mínimo",
+  "config.min-offset-x.description": "Min reachable value of X-offset UI control.", // TODO
+  "config.max-offset-x": "Deslocamento X máximo",
+  "config.max-offset-x.description": "Max reachable value of X-offset UI control.", // TODO
+  "config.min-offset-y": "Deslocamento Y mínimo",
+  "config.min-offset-y.description": "Min reachable value of Y-offset UI control.", // TODO
+  "config.max-offset-y": "Deslocamento Y máximo",
+  "config.max-offset-y.description": "Max reachable value of Y-offset UI control.", // TODO
+  "config.min-pixel-zoom": "Zoom de pixels mínimo",
+  "config.min-pixel-zoom.description": "Min reachable value of pixel zoom UI control.", // TODO
+  "config.max-pixel-zoom": "Zoom de pixels máximo",
+  "config.max-pixel-zoom.description": "Max reachable value of pixel zoom UI control.", // TODO
+
+  "misc.mod-file-not-found": "Não foi possível encontrar \"{{filePath}}\", que faz parte de arquivos de mod. Baixe o mod novamente para resolver este problema."
+}

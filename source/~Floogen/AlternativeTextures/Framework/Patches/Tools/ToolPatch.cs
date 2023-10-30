@@ -46,6 +46,7 @@ namespace AlternativeTextures.Framework.Patches.Tools
             harmony.Patch(AccessTools.Method(_object, "get_description", null), postfix: new HarmonyMethod(GetType(), nameof(GetDescriptionPostfix)));
 
 
+            harmony.Patch(AccessTools.Method(typeof(Item), nameof(Item.canBeTrashed), null), postfix: new HarmonyMethod(GetType(), nameof(CanBeTrashedPostfix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.drawInMenu), new[] { typeof(SpriteBatch), typeof(Vector2), typeof(float), typeof(float), typeof(float), typeof(StackDrawType), typeof(Color), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(DrawInMenuPrefix)));
             harmony.Patch(AccessTools.Method(_object, nameof(Tool.beginUsing), new[] { typeof(GameLocation), typeof(int), typeof(int), typeof(Farmer) }), prefix: new HarmonyMethod(GetType(), nameof(BeginUsingPrefix)));
         }
@@ -113,6 +114,15 @@ namespace AlternativeTextures.Framework.Patches.Tools
             {
                 __result = _helper.Translation.Get("tools.description.catalogue");
                 return;
+            }
+        }
+
+        [HarmonyPriority(Priority.Last)]
+        private static void CanBeTrashedPostfix(Item __instance, ref bool __result)
+        {
+            if (IsAlternativeTextureTool(__instance))
+            {
+                __result = true;
             }
         }
 
@@ -621,6 +631,16 @@ namespace AlternativeTextures.Framework.Patches.Tools
         {
             who.CanMove = true;
             who.UsingTool = false;
+            return false;
+        }
+
+        internal static bool IsAlternativeTextureTool(Item item)
+        {
+            if (item is StardewValley.Tools.GenericTool tool && (tool.modData.ContainsKey(AlternativeTextures.PAINT_BUCKET_FLAG) || tool.modData.ContainsKey(AlternativeTextures.SCISSORS_FLAG) || tool.modData.ContainsKey(AlternativeTextures.PAINT_BRUSH_FLAG) || tool.modData.ContainsKey(AlternativeTextures.SPRAY_CAN_FLAG) || tool.modData.ContainsKey(AlternativeTextures.CATALOGUE_FLAG)))
+            {
+                return true;
+            }
+
             return false;
         }
     }

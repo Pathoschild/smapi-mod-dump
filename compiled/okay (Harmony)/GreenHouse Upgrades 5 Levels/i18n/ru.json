@@ -1,0 +1,25 @@
+﻿{
+    "GreenhouseLevel1": "Теплица",
+    "GreenhouseLevel1Description": "Поле для культивирования 15x15. Добавляет погреб.",
+    "GreenhouseLevel2": "Маленькая теплица",
+    "GreenhouseLevel2Description": "Поле для культивирования 30x30. Расширяет погреб, добавляет внутренний тепличный и автоматический полив.",
+    "GreenhouseLevel3": "Средняя теплица",
+    "GreenhouseLevel3Description": "Поле для культивирования 50x50. Дальше расширяет погреб и увеличивает размер внутренней теплицы.",
+    "GreenhouseLevel4": "Большая теплица",
+    "GreenhouseLevel4Description": "Поле для культивирования 75x75. Увеличивает погреб и внутренний тепличный размер.",
+    "GreenhouseLevel5": "Очень большая роскошная теплица",
+    "GreenhouseLevel5Description": "Поле для культивирования 100x100. Расширяет погреб и увеличивает размер внутренней теплицы.",
+
+    "LeftBehindTree": "Вы оставили дерево.",
+    "LeftBehindCrop": "Вы оставили урожай.",
+    "PickUpTreeMessage": "Дерево поднято!",
+    "PlaceTreeMessage": "Дерево размещено!",
+    "PickUpCropMessage": "Урожай поднят!",
+    "PlaceCropMessage": "Урожай размещен!",
+    "EnableTreePickingOption": "Сбор деревьев и урожая",
+    "EnableTreePickingTooltip": "Включить/выключить сбор.",
+    "language-choice-name": "Язык",
+"language-choice-tooltip": "Выберите язык мода"
+
+    
+}

@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Netcode;
 using HarmonyLib;
@@ -18,7 +17,6 @@ using StardewModdingAPI;
 using StardewArchipelago.Archipelago;
 using StardewValley;
 using StardewValley.Characters;
-using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 

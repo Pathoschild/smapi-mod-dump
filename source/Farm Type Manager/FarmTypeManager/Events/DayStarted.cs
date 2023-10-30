@@ -21,11 +21,13 @@ namespace FarmTypeManager
         [EventPriority(EventPriority.Low)] //run after most other events to allow Content Patcher token updates, etc
         private void DayStarted(object sender, EventArgs e)
         {
+            if (SkipDayStartedEvents) { return; } //skip this event if necessary for SaveAnywhere compatibility
+
             //attempt to load the config.json ModConfig file and update its settings
             //note: this already happens in the Entry method, but doing it here allows settings to be changed while the game is running
             Utility.LoadModConfig();
 
-            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, don't do anything
+            if (Context.IsMainPlayer != true) { return; } //if the player using this mod is a multiplayer farmhand, do nothing
 
             Utility.Monitor.Log($"Day is starting. Loading config data.", LogLevel.Trace);
 

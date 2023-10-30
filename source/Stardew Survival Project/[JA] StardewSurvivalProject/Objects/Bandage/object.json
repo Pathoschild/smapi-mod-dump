@@ -35,7 +35,7 @@
 		"PurchaseFrom": "Harvey",
 		"PurchasePrice": 3000,
 		"CanPurchase": true,
-		"PurchaseRequirements": null,
+		"PurchaseRequirements": null
     },
     "PurchaseFrom": "Harvey",
     "PurchasePrice": 100,

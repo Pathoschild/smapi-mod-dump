@@ -10,6 +10,77 @@ for queries and analysis.**
 
 # Release notes
 
+## 1.1.1
+
+Released on 8 October 2023 for SMAPI 3.15.0 or later.
+
+- Fix: Possible crash when fishing
+
+## 1.1.0
+
+Released on 8 October 2023 for SMAPI 3.15.0 or later.
+
+This release contains the full original game soundtrack created by [Therm](https://www.youtube.com/c/ThermChannel).
+Check out the soundtrack on [Spotify](https://open.spotify.com/album/52D2KWYt3HkRcVrWvQQ9Wb?si=XshgYqK2RLGDKGRiILOC-Q) / [YouTube Music](https://music.youtube.com/playlist?list=OLAK5uy_kjGCpe72qCPi_PsKRvihbNU7G2CaAOvY4&si=bJ6E7OqJmnH0JtTP)
+
+- Add: Ability to purchase backpack from merchant floors
+- Add: Growable crops on merchant floors
+  - Each crop takes a different amount of floors to grow
+  - Crops purchasable from Volcano Dwarf
+  - Harvest can be sold to Volcano Dwarf
+- Add: Fishing capabilities (fishing rod drops from barrels, has limited uses)
+- Add: Timed chest that spawns on floor 8 and must be reached before 5 minutes
+- Add: Galaxy Soul reward for defeating bosses without being damaged
+- Add: Computer in lobby for setting the generation seed
+- Add: Save game options in-between game launches
+- Add: Hat Board
+  - Board spawns on floor 18
+  - Choose from 3 random hats, perform quest, receive hat
+  - Each hat gives a unique benefit
+- Add: Additional cases to the in-game `/stuck` command
+  - Remove map obstacles if monsters cannot path to player
+- Add: New perks
+  - Fisherman: Fishing rod has +2 uses
+  - Deconstructor: Deconstructor can spawn on merchant floors and deconstructs items for gold
+  - Gamer: Acquire gold from good performances in the arcade machines
+  - Tiller: Crops sell for more
+- Add: New curses
+  - (De)Buff Monsters: Monsters have a 50% chance to apply a random buff/debuff on hit
+- Add: New weapon enchantments
+  - Star Shooter: Shoot star projectiles on attack
+- Add: Sign to inform players of healing spa on merchant floors
+- Add: Additional Maps
+  - General Gameplay: 2 new custom maps
+  - King of the Hill: 1 new custom map, egg hunt map
+- Add: Translation capability (please help translate if you can!)
+- Add: Visual attack cue indicator in some cases where it was only audio
+- Add: Announce music credits on boss floors
+- Add: New music track for Goobins ([thanks Therm!](https://www.youtube.com/c/ThermChannel))
+- Add: New music track for Telesto ([thanks Therm!](https://www.youtube.com/c/ThermChannel))
+- Add: New music track for Odys ([thanks Therm!](https://www.youtube.com/c/ThermChannel))
+- Add: New music track for Ozul ([thanks Therm!](https://www.youtube.com/c/ThermChannel))
+- Add: New music track for Nadith ([thanks Therm!](https://www.youtube.com/c/ThermChannel))
+- Add: New music track for Arc ([thanks Therm!](https://www.youtube.com/c/ThermChannel))
+- Add: Configuration option to automatically face the direction your mouse is relative to the player
+- Adjust: Limit player to having 12 perks
+- Adjust: Floor style will cycle again when looping
+- Adjust: Boss HP bar will slowly change color based on their remaining HP
+- Adjust: Weapons can be enchanted 999 times (as opposed to 3 times)
+- Adjust: The forge can only be used 3 times per appearance
+- Adjust: Scale monsters health and damage when looping
+- Adjust: Spawn red bats after looping (on hard skull caverns)
+- Adjust: Pause time if looting a chest
+- Adjust: Increase food prices in shops
+- Adjust: Disable chest floor between floors 7 and 11
+- Adjust: Nerf Goobins base stats
+- Adjust: Load button takes player directly into the game
+- Fix: Split screen caused floors to skip, making it unplayable
+- Fix: Reset player resilience when resetting
+- Fix: Draw location desync for Cavrag on multiplayer
+- Fix: Draw location desync for Telesto on multiplayer
+- Fix: Stop multiple slingshots from spawning on multiplayer
+- Fix: Escape key can now close the gamble wheel menu
+
 ## 1.0.17
 Released on 11 September 2022 for SMAPI 3.15.0 or later.
 

@@ -6,9 +6,9 @@ mods:
    Shoplifter
 
 latest commit:
-   commit 8e8dbe54e83202fb4ccf829133d50fcc613d866d
-   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
-   Date:   Tue Sep 5 08:28:22 2023 +1000
+   commit 6c9fd0d776f40c126e8a2b359afa56f88f3283a1
+   Author: Amelie <amelie.parkinson.bates@gmail.com>
+   Date:   Wed Oct 25 09:59:39 2023 +1100
    
-       Update README.md
+       update readme
    

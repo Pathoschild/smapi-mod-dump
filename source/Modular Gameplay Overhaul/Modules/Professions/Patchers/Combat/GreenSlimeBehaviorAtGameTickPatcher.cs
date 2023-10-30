@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Combat;
 #region using directives
 
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
-using DaLion.Shared.Attributes;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Monsters;
@@ -21,7 +20,6 @@ using StardewValley.Monsters;
 #endregion using directives
 
 [UsedImplicitly]
-[ImplicitIgnore]
 internal sealed class GreenSlimeBehaviorAtGameTickPatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="GreenSlimeBehaviorAtGameTickPatcher"/> class.</summary>

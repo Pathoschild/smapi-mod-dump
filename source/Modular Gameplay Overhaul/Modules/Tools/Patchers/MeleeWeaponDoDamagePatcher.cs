@@ -85,14 +85,18 @@ internal sealed class MeleeWeaponDoDamagePatcher : HarmonyPatcher
 
         uint radius = weapon.InitialParentTileIndex switch
         {
-            WeaponIds.Scythe => ToolsModule.Config.Scythe.RegularRadius,
-            WeaponIds.GoldenScythe => ToolsModule.Config.Scythe.GoldRadius,
+            WeaponIds.Scythe => ToolsModule.Config.Scythe.RegularScytheRadius,
+            WeaponIds.GoldenScythe => ToolsModule.Config.Scythe.GoldScytheRadius,
             _ => 0,
         };
 
         var tiles = radius == 0
             ? rectange.GetInnerTiles()
-            : new CircleTileGrid(new Vector2(rectange.Center.X / 64, rectange.Center.Y / 64), radius).Tiles;
+            : new CircleTileGrid(
+                new Vector2(
+                    rectange.Center.X / Game1.tileSize,
+                    rectange.Center.Y / Game1.tileSize),
+                radius).Tiles;
         return tiles.ToList();
     }
 

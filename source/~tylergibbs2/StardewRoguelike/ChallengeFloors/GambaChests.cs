@@ -9,8 +9,12 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewRoguelike.Extensions;
+using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Objects;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StardewRoguelike.ChallengeFloors
 {
@@ -29,6 +33,8 @@ namespace StardewRoguelike.ChallengeFloors
             new(18, 19)
         };
 
+        private bool RemovedChests { get; set; } = false;
+
         public GambaChests() : base() { }
 
         public override List<string> MapPaths => new() { "custom-chest" };
@@ -38,9 +44,39 @@ namespace StardewRoguelike.ChallengeFloors
             return false;
         }
 
+        public void RemoveLocalChests(MineShaft mine)
+        {
+            List<Vector2> toRemove = mine.overlayObjects
+                .Where(kvp => kvp.Value is Chest && (kvp.Value as Chest).frameCounter.Value != 2)
+                .Select(kvp => kvp.Key).ToList();
+
+            foreach (Vector2 v in toRemove)
+            {
+                Chest chest = mine.overlayObjects[v] as Chest;
+                Item chestItem = chest.items[0];
+                Sign sign = new(v, 39);
+                sign.displayItem.Value = chestItem;
+                sign.displayType.Value = chestItem is Ring ? 4 : 1;
+                mine.overlayObjects[v] = sign;
+            }
+
+            RemovedChests = true;
+        }
+
+        public override void Update(MineShaft mine, GameTime time)
+        {
+            if (RemovedChests)
+                return;
+
+            int chestCount = mine.overlayObjects.Values.OfType<Chest>().Count();
+            if (chestCount != ChestTiles.Count)
+                RemoveLocalChests(mine);
+        }
+
         public override void Initialize(MineShaft mine)
         {
-            base.Initialize(mine);
+            foreach (var tile in ChestTiles)
+                mine.SpawnLocalChest(tile);
         }
     }
 }

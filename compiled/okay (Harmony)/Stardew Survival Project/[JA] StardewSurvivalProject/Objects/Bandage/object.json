@@ -1,0 +1,33 @@
+{
+    "Name": "Bandage",
+    "Description": "It may seem small, but i can do wonder in dire situation",
+    "Category": "ArtisanGoods",
+    "Edibility": 1,
+    "EdibleIsDrink": false,
+    "Price": 50,
+    "IsColored": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+			{
+                "Object": 766,
+                "Count": 2
+            },
+			{
+				"Object": 92,
+                "Count": 1
+			},
+			{
+				"Object": 771,
+                "Count": 1
+			}
+        ],
+		"PurchaseFrom": "Harvey",
+		"PurchasePrice": 3000,
+		"CanPurchase": true,
+		"PurchaseRequirements": null
+    },
+    "PurchaseFrom": "Harvey",
+    "PurchasePrice": 100,
+    "CanPurchase": true
+}

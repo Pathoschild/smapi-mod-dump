@@ -1,0 +1,89 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+vanilla spring
+56311c 835a38 bc8925 fcbb32 936f5e dac190 a0100e ca1210
+ed3f36 999999 afafaf d9d9d9 ffffff
+---
+vanilla summer
+64350a 915e26 ca8d13 ffbf20 a1734c e8c57e a0100e ca1210
+ed3f36 9f9b86 bdb39d e7ddc7 ffffed
+---
+vanilla fall
+4f231b 81513c bf852e f8bd41 946965 e4c4a0 a0100e ca1210
+ed3f36 9b959f b6afbc e8e1ee faf3f1
+---
+vanilla winter
+48281f 744f3f ac7841 eaa65a 8b6756 d8bf8e a0100e ca1210
+ed3f36 999999 afafaf d9d9d9 ffffff
+---
+earthy spring
+3d241d 604334 896a45 c58e57 6e5346 a99770 843624 b04730
+d1684d 999999 afafaf d9d9d9 ffffff
+---
+earthy summer
+422a1f 674533 956b4b c8945f 775841 b29967 843624 b04730
+d1684d 9f9b86 bdb39d e7ddc7 ffffed
+---
+earthy fall
+381715 5e3730 8d6542 c08e55 704a43 af9577 843624 b04730
+d1684d 9b959f b6afbc e8e1ee faf3f1
+---
+earthy winter
+351c18 563831 815a3e b97d4a 694a3f a9956e 843624 b04730
+d1684d 999999 afafaf d9d9d9 ffffff
+---
+vpr spring
+4b2724 724c44 986a48 cb9062 84676a c0ada1 8e2129 b12732
+d64e52 999999 afafaf d9d9d9 ffffff
+---
+vpr summer
+552918 7f4f38 a46b39 ce9151 946859 d2b194 8e2129 b12732
+d64e52 9f9b86 bdb39d e7ddc7 ffffed
+---
+vpr fall
+492022 794a44 a36d49 d19a67 8f6a6e d8baac 8e2129 b12732
+d64e52 9b959f b6afbc e8e1ee faf3f1
+---
+vpr winter
+3f2528 674648 936454 c98b75 7c5e60 bfab9f 8e2129 b12732
+d64e52 999999 afafaf d9d9d9 ffffff
+---
+starblue spring
+4b2d1d 7b583d bb9050 dfba81 936f5e dac190 900f15 ad0b16
+f04c47 999999 afafaf d9d9d9 ffffff
+---
+starblue summer
+4b2d1d 7b583d bb9050 dfba81 936f5e dac190 900f15 ad0b16
+f04c47 9f9b86 bdb39d e7ddc7 ffffed
+---
+starblue fall
+4b2d1d 7b583d bb9050 dfba81 936f5e dac190 900f15 ad0b16
+f04c47 9b959f b6afbc e8e1ee faf3f1
+---
+starblue winter
+4b2d1d 724e3c bb9050 dfba81 936f5e dac190 900f15 ad0b16
+f04c47 999999 afafaf d9d9d9 ffffff
+---
+wittily spring
+3a2230 6f595b aa8971 ebc49e 8d7577 d6c8c6 8e3040 b74252
+d56a7a 989fbd b6c5ed e4ecff ffffff
+---
+wittily summer
+543230 7e5e57 b88e70 efc799 8d7577 d6c8c6 8e3040 b74252
+d56a7a 9d9bab bbbfd6 e9efff ffffff
+---
+wittily fall
+401f2d 6c515a ac8876 e8c6a7 7e6c81 d8d1e2 8e3040 b74252
+d56a7a 9ba5bf c1cfff eff5ff fcfdff
+---
+wittily winter
+3a2230 5f4a57 987a76 d5b3aa 756471 c8c2ca 8e3040 b74252
+d56a7a 989fbd b6c5ed e4ecff ffffff

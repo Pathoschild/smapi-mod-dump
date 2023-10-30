@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/18628
+IDs: Pillow.WarpParsnip
+update keys: Nexus:18628, GitHub:AnotherPillow/WarpParsnip

@@ -1,0 +1,53 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Torts Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Torts, Characters/Torts",
+			"FromFile": "Assets/{{Target}}/Torts_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Query: {{Random:{{Range:1,10}}|key=DaiaMask}}|contains= 1,10": true,
+				"Torts": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Torts Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Torts, Characters/Torts",
+			"FromFile": "Assets/{{Target}}/Torts_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Torts": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Torts Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Torts, Characters/Torts",
+			"FromFile": "Assets/{{Target}}/Torts_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Torts": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

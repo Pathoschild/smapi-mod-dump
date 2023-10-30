@@ -28,22 +28,28 @@ namespace DestroyableBushes
                 {
                     for (int x = Data.DestroyedBushes.Count - 1; x >= 0; x--) //for each destroyed bush (looping backward to allow removal)
                     {
-                        var bush = Data.DestroyedBushes[x];
+                        var bushData = Data.DestroyedBushes[x];
 
-                        if (BushShouldRegrowToday(bush.DateDestroyed)) //if this bush should regrow today
+                        if (BushShouldRegrowToday(bushData.DateDestroyed)) //if this bush should regrow today
                         {
-                            GameLocation location = Game1.getLocationFromName(bush.LocationName);
+                            GameLocation location = Game1.getLocationFromName(bushData.LocationName);
 
-                            if (location != null && !bush.GetCollisionTiles().Any(tile => location.isTileOccupiedForPlacement(tile) || location.terrainFeatures.ContainsKey(tile))) //if this bush's tiles are NOT obstructed by anything (including passable features)
+                            if (location != null && !bushData.GetCollisionTiles().Any(tile => location.isTileOccupiedForPlacement(tile) || location.terrainFeatures.ContainsKey(tile))) //if this bush's tiles are NOT obstructed by anything (including passable features)
                             {
                                 try
                                 {
-                                    location.largeTerrainFeatures.Add(new Bush(bush.Tile, bush.Size, location)); //respawn this bush
+                                    //create bush and apply its saved data
+                                    Bush newBush = new Bush(bushData.Tile, bushData.Size, location);
+                                    newBush.townBush.Value = bushData.TownBush;
+                                    if (bushData.TilesheetOffset.HasValue)
+                                        newBush.tileSheetOffset.Value = bushData.TilesheetOffset.Value;
+
+                                    location.largeTerrainFeatures.Add(newBush); //add the bush to its location
                                     Data.DestroyedBushes.RemoveAt(x); //remove this bush from the list
                                 }
                                 catch (Exception ex)
                                 {
-                                    Instance.Monitor.Log($"Error respawning a bush at {bush.LocationName} ({bush.Tile.X},{bush.Tile.Y}): \n{ex.ToString()}", LogLevel.Error);
+                                    Instance.Monitor.Log($"Error respawning a bush at {bushData.LocationName} ({bushData.Tile.X},{bushData.Tile.Y}): \n{ex.ToString()}", LogLevel.Error);
                                 }
                             }
                         }

@@ -1,0 +1,92 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Irene Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Irene, Characters/Irene",
+			"FromFile": "Assets/{{Target}}/Irene_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Irene": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Irene Rain Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Irene, Characters/Irene",
+			"FromFile": "Assets/{{Target}}/Irene_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"SeasonalRainToken": "rain",
+				"Irene": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Accessories - Irene",
+			"Action": "EditImage",
+			"Target": "Portraits/Irene, Characters/Irene",
+			"FromFile": "Assets/{{Target}}/Irene_acc_fall.png",
+			"When": {
+				"Irene": "enabled",
+				"SeasonalRainToken": "fall",
+				"IsOutdoors": true,
+				"HasValue:{{DayEvent}}": false,
+				"Lightweight Outfits": false,
+				"Query: {{Random:{{Range:1,10}}|key=IreneHat}} > 5": true,
+			},
+			"Update": "OnLocationChange",
+			"PatchMode": "Overlay"
+		},
+		{
+			"LogName": "RSV Irene Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Irene, Characters/Irene",
+			"FromFile": "Assets/{{Target}}/Irene_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Irene": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Irene Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Irene, Characters/Irene",
+			"FromFile": "Assets/{{Target}}/Irene_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Irene": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Irene Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Irene, Characters/Irene",
+			"FromFile": "Assets/{{Target}}/Irene_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Irene": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

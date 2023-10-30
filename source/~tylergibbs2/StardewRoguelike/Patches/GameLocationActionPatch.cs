@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -16,10 +17,9 @@ using xTile.Tiles;
 
 namespace StardewRoguelike.Patches
 {
-	internal class GameLocationActionPatch : Patch
+    [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.checkAction))]
+	internal class GameLocationActionPatch
 	{
-		protected override PatchDescriptor GetPatchDescriptor() => new(typeof(GameLocation), "checkAction");
-
 		public static bool Prefix(GameLocation __instance, ref bool __result, Location tileLocation, Rectangle viewport, Farmer who)
 		{
 			if (__instance is MineShaft mine)

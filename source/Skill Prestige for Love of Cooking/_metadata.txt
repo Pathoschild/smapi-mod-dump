@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Tondorian/StardewValleyMods
+   Git: https://github.com/Tondorian/StardewValleyMods.git
+
+mods:
+   Skill Prestige for Love of Cooking
+
+latest commit:
+   commit e50305e399187837e00862ab8ce43c33bd10ac09
+   Author: Patrick MÃ¼ssig <patrick.muessig@gmx.de>
+   Date:   Wed Oct 11 12:32:39 2023 +0200
+   
+       Added a shared project for common  used Interfaces/Classes
+   

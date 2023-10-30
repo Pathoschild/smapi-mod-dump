@@ -83,7 +83,7 @@ namespace ImmersiveSprinklers
 
         private void Display_RenderedWorld(object sender, StardewModdingAPI.Events.RenderedWorldEventArgs e)
         {
-            if (!Config.EnableMod || !Context.IsPlayerFree || !Helper.Input.IsDown(Config.ShowRangeButton))
+            if (!Config.EnableMod || !Context.IsPlayerFree || !Helper.Input.IsDown(Config.ShowRangeButton) || Game1.currentLocation?.terrainFeatures is null)
                 return;
             List<Vector2> tiles = new List<Vector2>();
             foreach(var kvp in Game1.currentLocation.terrainFeatures.Pairs)
@@ -121,15 +121,14 @@ namespace ImmersiveSprinklers
             }
         }
 
-
         private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
         {
             if (!Config.EnableMod)
                 return;
-            if (e.Button == Config.PickupButton && Context.CanPlayerMove && Game1.currentLocation.terrainFeatures.TryGetValue(Game1.currentCursorTile, out var tf) && tf is HoeDirt)
+            if (e.Button == Config.PickupButton && Context.CanPlayerMove)
             {
                 int which = GetMouseCorner();
-                if (ReturnSprinkler(Game1.player, Game1.currentLocation, tf, Game1.currentCursorTile, which))
+                if (ReturnSprinkler(Game1.player, Game1.currentLocation, Game1.currentCursorTile, which))
                 {
                     Helper.Input.Suppress(e.Button);
                 }
@@ -232,8 +231,6 @@ namespace ImmersiveSprinklers
                 getValue: () => Config.DrawOffsetZ,
                 setValue: value => Config.DrawOffsetZ = value
             );
-
         }
-
     }
 }

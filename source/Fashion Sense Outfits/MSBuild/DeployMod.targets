@@ -1,0 +1,21 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Target Name="AfterBuild"/>
+    <Target Name="DeployMod" AfterTargets="ILRepack">
+        <DeployModTask
+            ModDllName="$(TargetName)"
+            ModFolderName="$(ModFolderName)"
+            ModZipPath="$(ModZipPath)"
+
+            EnableModDeploy="$(EnableModDeploy)"
+            EnableModZip="$(EnableModZip)"
+
+            ProjectDir="$(ProjectDir)"
+            TargetDir="$(TargetDir)"
+            GameModsDir="$(GameModsPath)"
+            IgnoreModFilePatterns="$(IgnoreModFilePatterns)"
+            IgnoreModFilePaths="$(IgnoreModFilePaths)"
+
+            BundleExtraAssemblies="$(BundleExtraAssemblies)"
+        />
+    </Target>
+</Project>

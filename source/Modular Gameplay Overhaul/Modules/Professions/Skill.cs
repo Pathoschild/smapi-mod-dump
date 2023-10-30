@@ -105,12 +105,12 @@ public class Skill : SmartEnum<Skill>, ISkill
 
     /// <inheritdoc />
     public virtual int MaxLevel => ProfessionsModule.Config.EnablePrestige &&
-                                   ProfessionsModule.Config.EnableExtendedProgession && ((ISkill)this).PrestigeLevel >= 4
+                                   ProfessionsModule.Config.EnableExtendedProgression && ((ISkill)this).PrestigeLevel >= 4
         ? 20
         : 10;
 
     /// <inheritdoc />
-    public float BaseExperienceMultiplier => ProfessionsModule.Config.BaseSkillExpMultipliers[this.Value];
+    public float BaseExperienceMultiplier => ProfessionsModule.Config.SkillExpMultipliers[this.Name];
 
     /// <inheritdoc />
     public IEnumerable<int> NewLevels =>
@@ -124,7 +124,7 @@ public class Skill : SmartEnum<Skill>, ISkill
     /// <inheritdoc />
     public IDictionary<int, ProfessionPair> ProfessionPairs { get; } = new Dictionary<int, ProfessionPair>();
 
-    /// <summary>Get the range of indices corresponding to vanilla skills.</summary>
+    /// <summary>Gets the range of indices corresponding to vanilla skills.</summary>
     /// <returns>A <see cref="IEnumerable{T}"/> of all vanilla skill indices.</returns>
     public static IEnumerable<int> GetRange()
     {

@@ -18,10 +18,8 @@ using System.Xml.Serialization;
 
 /// <summary>The secondary <see cref="BaseWeaponEnchantment"/> which characterizes the Lava Katana.</summary>
 [XmlType("Mods_DaLion_NeedleEnchantment")]
-public class NeedleEnchantment : BaseWeaponEnchantment
+public sealed class NeedleEnchantment : BaseWeaponEnchantment
 {
-    private readonly Random _random = new(Guid.NewGuid().GetHashCode());
-
     /// <inheritdoc />
     public override bool IsSecondaryEnchantment()
     {

@@ -26,13 +26,6 @@ using StardewValley.Tools;
 internal sealed class SnowballProjectile : BasicProjectile
 {
     /// <summary>Initializes a new instance of the <see cref="SnowballProjectile"/> class.</summary>
-    /// <remarks>Required for multiplayer syncing.</remarks>
-    public SnowballProjectile()
-        : base()
-    {
-    }
-
-    /// <summary>Initializes a new instance of the <see cref="SnowballProjectile"/> class.</summary>
     /// <param name="firer">The <see cref="Farmer"/> who fired this projectile.</param>
     /// <param name="overcharge">The amount of overcharge with which the projectile was fired.</param>
     /// <param name="startingPosition">The projectile's starting position.</param>
@@ -128,7 +121,7 @@ internal sealed class SnowballProjectile : BasicProjectile
         }
 
         var dummyWeapon = new MeleeWeapon { BaseName = string.Empty };
-        Reflector.GetUnboundFieldSetter<Tool, Farmer>(dummyWeapon, "lastUser")
+        Reflector.GetUnboundFieldSetter<Tool, Farmer>("lastUser")
             .Invoke(dummyWeapon, this.theOneWhoFiredMe.Get(location) as Farmer ?? Game1.player);
         if (!container.performToolAction(dummyWeapon, location))
         {

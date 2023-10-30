@@ -1,0 +1,40 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "time.weekday.Sunday": "วันอาทิตย์",
+    "time.weekday.Monday": "วันจันทร์",
+    "time.weekday.Tuesday": "วันอังคาร",
+    "time.weekday.Wednesday": "วันพุธ",
+    "time.weekday.Thursday": "วันพฤหัสบดี",
+    "time.weekday.Friday": "วันศุกร์",
+    "time.weekday.Saturday": "วันเสาร์",
+
+    "time.month.1": "มกราคม",
+    "time.month.2": "กุมภาพันธ์",
+    "time.month.3": "มีนาคม",
+    "time.month.4": "เมษายน",
+    "time.month.5": "พฤษภาคม",
+    "time.month.6": "มิถุนายน",
+    "time.month.7": "กรกฎาคม",
+    "time.month.8": "สิงหาคม",
+    "time.month.9": "กันยายน",
+    "time.month.10": "ตุลาคม",
+    "time.month.11": "พฤศจิกายน",
+    "time.month.12": "ธันวาคม",
+
+    "holiday.newyears": "วันปีใหม่",
+    "holiday.valentines": "วันวาเลนไทน์",
+    "holiday.halloween": "ฮาโลวีน",
+    "holiday.christmas": "คริสมาส",
+    "holiday.newyearseve": "คริสมาสอีฟ",
+    "holiday.easter": "อีสเตอร์",
+    "holiday.thanksgiving": "วันขอบคุณ"
+}

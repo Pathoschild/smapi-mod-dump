@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Undreya Random Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Undreya, Characters/Undreya",
+			"FromFile": "Assets/{{Target}}/Undreya_{{Random: 1, 2 |key=UndreyaOutfit}}.png",
+			"When":
+			{
+				"Undreya": "enabled",
+				"LocationName |contains= Custom_Ridgeside_RSVAbandonedHouse, Custom_Ridgeside_RSVTheHike": true
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

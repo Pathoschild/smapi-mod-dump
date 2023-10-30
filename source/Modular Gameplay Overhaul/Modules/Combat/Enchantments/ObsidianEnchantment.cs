@@ -20,7 +20,7 @@ using StardewValley.Monsters;
 
 /// <summary>The secondary <see cref="BaseWeaponEnchantment"/> which characterizes the Lava Katana.</summary>
 [XmlType("Mods_DaLion_ObsidianEnchantment")]
-public class ObsidianEnchantment : BaseWeaponEnchantment
+public sealed class ObsidianEnchantment : BaseWeaponEnchantment
 {
     private readonly Random _random = new(Guid.NewGuid().GetHashCode());
 
@@ -48,6 +48,23 @@ public class ObsidianEnchantment : BaseWeaponEnchantment
         return false;
     }
 
+    /// <summary>Invoked once damage to monster has been calculated, but before it is applied.</summary>
+    /// <param name="monster">The <see cref="Monster"/> being hit.</param>
+    /// <param name="location">The <see cref="GameLocation"/>.</param>
+    /// <param name="who">The <see cref="Farmer"/> inflicting damage.</param>
+    /// <param name="amount">The calculated damage amount.</param>
+    public new void OnCalculateDamage(Monster monster, GameLocation location, Farmer who, ref int amount)
+    {
+        if (CombatModule.Config.NewResistanceFormula)
+        {
+            amount = (int)(amount * (1f + (monster.resilience.Value / 10f)));
+        }
+        else
+        {
+            amount += monster.resilience.Value;
+        }
+    }
+
     /// <inheritdoc />
     protected override void _OnDealDamage(Monster monster, GameLocation location, Farmer who, ref int amount)
     {
@@ -55,15 +72,6 @@ public class ObsidianEnchantment : BaseWeaponEnchantment
         if (CombatModule.ShouldEnable && this._random.NextDouble() < 0.2)
         {
             monster.Bleed(who);
-        }
-
-        if (CombatModule.Config.NewResistanceFormula)
-        {
-            amount *= 1 + (monster.resilience.Value / 10);
-        }
-        else
-        {
-            amount += monster.resilience.Value;
         }
     }
 }

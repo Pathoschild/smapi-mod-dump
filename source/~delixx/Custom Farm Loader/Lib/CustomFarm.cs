@@ -90,7 +90,14 @@ namespace Custom_Farm_Loader.Lib
             Helper = mod.Helper;
 
             MissingMapIcon = ModEntry._Helper.ModContent.Load<Texture2D>("assets/MissingMapIcon.png");
-            getAll(); //Cache all maps on gameload to decrease load later
+
+            Helper.Events.GameLoop.GameLaunched += GameLaunched;
+        }
+
+        private static void GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+        {
+            //Cache all maps on gamelaunch to decrease load later
+            getAll();
         }
 
         public static CustomFarm parseMapJson(string mapJson, string contentPackDirectory, IManifest manifest)
@@ -364,7 +371,8 @@ namespace Custom_Farm_Loader.Lib
 
         public static CustomFarm getCurrentCustomFarm()
         {
-            if (CurrentCustomFarmId != Game1.whichModFarm.ID) {
+            if (Game1.whichModFarm is not null && 
+                CurrentCustomFarmId != Game1.whichModFarm.ID) {
                 CurrentCustomFarmId = Game1.whichModFarm.ID;
                 CurrentCustomFarm = get(Game1.whichModFarm.ID);
             }

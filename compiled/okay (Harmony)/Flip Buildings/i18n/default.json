@@ -1,0 +1,7 @@
+﻿{
+	"Carpenter_Flip": "Flip Buildings",
+	"Carpenter_SelectBuilding_Flip": "Select a building to flip",
+	"Carpenter_CannotFlip": "This building cannot be flipped" ,
+	"Carpenter_CannotFlip_Permission": "You do not have permission to flip this building",
+	"Carpenter_CannotFlip_PlayerHere": "Can't flip while a player is on the building"
+}

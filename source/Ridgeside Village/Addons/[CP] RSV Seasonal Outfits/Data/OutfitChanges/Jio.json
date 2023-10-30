@@ -1,0 +1,95 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Jio Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Jio, Characters/Jio",
+			"FromFile": "Assets/{{Target}}/Jio_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Jio": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Jio Rain Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Jio, Characters/Jio",
+			"FromFile": "Assets/{{Target}}/Jio_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"SeasonalRainToken": "rain",
+				"Jio": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Jio Work Outfit Mask",
+			"Action": "EditImage",
+			"Target": "Portraits/Jio, Characters/Jio",
+			"FromFile": "Assets/{{Target}}/Jio_mask.png",
+			"When":
+			{
+				"Jio": "enabled",
+				"JioMasked": true
+			},
+			"Update": "OnLocationChange",
+			"PatchMode": "Overlay"
+		},
+		{
+			"LogName": "RSV Jio Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Jio, Characters/Jio",
+			"FromFile": "Assets/{{Target}}/Jio_spring24.png",
+			"When":
+			{
+				"Jio": "enabled, festivals only",
+				"HasSeenEvent": 75160263,
+				"Relationship:Jio|contains=married": true,
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Jio Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Jio, Characters/Jio",
+			"FromFile": "Assets/{{Target}}/Jio_fall27-1.png",
+			"When":
+			{
+				"Jio": "enabled, festivals only",
+				"HasSeenEvent": 75160263,
+				"Relationship:Jio|contains=married": true,
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Jio Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Jio, Characters/Jio",
+			"FromFile": "Assets/{{Target}}/Jio_fall27-2.png",
+			"When":
+			{
+				"Jio": "enabled, festivals only",
+				"HasSeenEvent": 75160263,
+				"Relationship:Jio|contains=married": true,
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

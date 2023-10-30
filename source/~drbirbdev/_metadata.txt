@@ -10,9 +10,9 @@ mods:
    Ranching Tool Upgrades
 
 latest commit:
-   commit dcd8e99fc9b7565806652db08079808f1306ed73
+   commit 2cb3eca16676c7963657cd39decf06138563d9b6
    Author: Drbirbdev <drbirbdev@gmail.com>
-   Date:   Sat Apr 22 17:26:29 2023 -0700
+   Date:   Sun Oct 29 14:30:17 2023 -0700
    
-       Adding french and turkish binning skill translations
+       Add missing frameworks to manifest
    

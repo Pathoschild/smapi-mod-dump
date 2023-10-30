@@ -21,24 +21,10 @@ using StardewValley.Locations;
 using StardewRoguelike.UI;
 using StardewRoguelike.VirtualProperties;
 using StardewRoguelike.Patches;
+using StardewRoguelike.Netcode;
 
 namespace StardewRoguelike.Bosses
 {
-    public class BossDeathMessage
-    {
-        public string BossName { get; set; } = "";
-
-        public int KillSeconds { get; set; } = 0;
-
-        public BossDeathMessage() { }
-
-        public BossDeathMessage(string bossName, int killSeconds)
-        {
-            BossName = bossName;
-            KillSeconds = killSeconds;
-        }
-    }
-
     public static class BossManager
     {
         private static Texture2D? healthBarTexture = null;
@@ -47,7 +33,7 @@ namespace StardewRoguelike.Bosses
 
         public static readonly List<List<Type>> mainBossTypes = new()
         {
-            new() { typeof(TutorialSlime), typeof(BigCrab) },
+            new() { typeof(TutorialSlime) },
             new() { typeof(Skelly) },
             new() { typeof(ThunderKid) },
             new() { typeof(Dragon) },
@@ -75,13 +61,11 @@ namespace StardewRoguelike.Bosses
         internal static int GetBaseDamageToFarmer(MineShaft mine, Type boss)
         {
             int level = Roguelike.GetLevelFromMineshaft(mine);
-            if (level > Roguelike.ScalingOrder[^1] + 6)
+            if (level > Constants.ScalingOrder[^1] + 6)
                 return 27;
 
             if (boss == typeof(TutorialSlime))
                 return 6;
-            else if (boss == typeof(BigCrab))
-                return 7;
             else if (boss == typeof(Skelly))
                 return 10;
             else if (boss == typeof(ThunderKid))
@@ -107,13 +91,11 @@ namespace StardewRoguelike.Bosses
         internal static int GetBaseHealth(MineShaft mine, Type boss)
         {
             int level = Roguelike.GetLevelFromMineshaft(mine);
-            if (level > Roguelike.ScalingOrder[^1] + 6)
+            if (level > Constants.ScalingOrder[^1] + 6)
                 return 3000;
 
             if (boss == typeof(TutorialSlime))
                 return 400;
-            else if (boss == typeof(BigCrab))
-                return 440;
             else if (boss == typeof(Skelly))
                 return 900;
             else if (boss == typeof(ThunderKid))
@@ -250,6 +232,7 @@ namespace StardewRoguelike.Bosses
             MineShaftCheckForMusicPatch.ShouldAnnounceMusic = true;
             ModEntry.Events.Display.RenderedHud += RenderHealthBar;
             ModEntry.Events.Display.WindowResized += WindowResized;
+            MakeBossHealthBar(100, 100);
         }
 
         public static void StopRenderHealthBar()

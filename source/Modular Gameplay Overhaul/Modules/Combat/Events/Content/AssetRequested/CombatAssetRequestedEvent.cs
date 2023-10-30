@@ -13,8 +13,6 @@ namespace DaLion.Overhaul.Modules.Combat.Events.Content.AssetRequested;
 #region using directives
 
 using System.Globalization;
-using DaLion.Overhaul;
-using DaLion.Overhaul.Modules.Combat;
 using DaLion.Overhaul.Modules.Combat.Enums;
 using DaLion.Overhaul.Modules.Combat.Integrations;
 using DaLion.Shared.Constants;
@@ -68,7 +66,6 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
         this.Edit("Data/weapons", new AssetEditor(EditWeaponsData, AssetEditPriority.Late));
         this.Edit("Maps/springobjects", new AssetEditor(EditSpringObjectsMaps, AssetEditPriority.Late));
         this.Edit("Strings/Locations", new AssetEditor(EditLocationsStrings));
-        this.Edit("Strings/StringsFromCSFiles", new AssetEditor(EditStringsFromCsFiles, AssetEditPriority.Late));
         this.Edit("TileSheets/BuffsIcons", new AssetEditor(EditBuffsIconsTileSheet));
         this.Edit("TileSheets/Projectiles", new AssetEditor(EditProjectilesTileSheet));
         this.Edit("TileSheets/weapons", new AssetEditor(EditWeaponsTileSheetEarly, AssetEditPriority.Early));
@@ -78,22 +75,25 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
         this.Provide("Data/Events/Blacksmith", new DictionaryProvider<string, string>(null, AssetLoadPriority.Low));
         this.Provide(
             $"{Manifest.UniqueID}/GarnetNode",
-            new ModTextureProvider(() => "assets/sprites/garnet_node.png"));
+            new ModTextureProvider(() => "assets/sprites/objects/garnet_node.png"));
+        this.Provide(
+            $"{Manifest.UniqueID}/DwarvishBlueprint",
+            new ModTextureProvider(() => "assets/sprites/objects/blueprint.png"));
         this.Provide(
             $"{Manifest.UniqueID}/BleedAnimation",
-            new ModTextureProvider(() => "assets/sprites/bleed.png"));
+            new ModTextureProvider(() => "assets/sprites/effects/bleed.png"));
         this.Provide(
             $"{Manifest.UniqueID}/SlowAnimation",
-            new ModTextureProvider(() => "assets/sprites/slow.png"));
+            new ModTextureProvider(() => "assets/sprites/effects/slow.png"));
         this.Provide(
             $"{Manifest.UniqueID}/StunAnimation",
-            new ModTextureProvider(() => "assets/sprites/stun.png"));
+            new ModTextureProvider(() => "assets/sprites/effects/stun.png"));
         this.Provide(
             $"{Manifest.UniqueID}/GemstoneSockets",
             new ModTextureProvider(ProvideGemSockets));
         this.Provide(
             $"{Manifest.UniqueID}/SnowballCollisionAnimation",
-            new ModTextureProvider(() => "assets/sprites/snowball.png"));
+            new ModTextureProvider(() => "assets/sprites/effects/snowball.png"));
         //this.Provide(
         //    $"{Manifest.UniqueID}/BeamCollisionAnimation",
         //    new ModTextureProvider(() => "assets/sprites/beam.png", AssetLoadPriority.Medium));
@@ -121,7 +121,7 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
         var sourceArea = new Rectangle(64, 16, 32, 16);
         var targetArea = new Rectangle(64, 64, 32, 16);
         editor.PatchImage(
-            ModHelper.ModContent.Load<Texture2D>("assets/sprites/buffs"),
+            ModHelper.ModContent.Load<Texture2D>("assets/sprites/interface/buffs"),
             sourceArea,
             targetArea);
     }
@@ -161,7 +161,7 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
         data["SeedShop_Yoba"] = I18n.Locations_SeedShop_Yoba();
     }
 
-    /// <summary>Patches mail data with mail from the Ferngill Revenue Service.</summary>
+    /// <summary>Patches mail data with Wizard summons.</summary>
     private static void EditMailData(IAssetData asset)
     {
         var data = asset.AsDictionary<string, string>().Data;
@@ -222,9 +222,9 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
             fields[5] = I18n.Rings_Yoba_Desc();
             data[ObjectIds.RingOfYoba] = string.Join('/', fields);
 
-            fields = data[ObjectIds.ImmunityRing].Split('/');
-            fields[5] += I18n.Rings_Immunity_ExtraDesc();
-            data[ObjectIds.ImmunityRing] = string.Join('/', fields);
+            //fields = data[ObjectIds.ImmunityRing].Split('/');
+            //fields[5] += I18n.Rings_Immunity_ExtraDesc();
+            //data[ObjectIds.ImmunityRing] = string.Join('/', fields);
 
             if (LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en)
             {
@@ -261,22 +261,38 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
         var sourceArea = new Rectangle(16, 0, 16, 16);
         var targetArea = new Rectangle(64, 16, 16, 16);
         editor.PatchImage(
-            ModHelper.ModContent.Load<Texture2D>("assets/sprites/projectiles"),
+            ModHelper.ModContent.Load<Texture2D>("assets/sprites/effects/projectiles"),
             sourceArea,
             targetArea);
 
-        if (!CombatModule.Config.EnableHeroQuest)
+        if (CombatModule.Config.EnableHeroQuest)
         {
-            return;
+            editor.ExtendImage(editor.Data.Width, 48);
+            sourceArea = new Rectangle(0, 0, 16, 16);
+            targetArea = new Rectangle(0, 32, 16, 16);
+            editor.PatchImage(
+                ModHelper.ModContent.Load<Texture2D>("assets/sprites/effects/projectiles"),
+                sourceArea,
+                targetArea);
         }
 
-        editor = asset.AsImage();
-        sourceArea = new Rectangle(0, 0, 16, 16);
-        targetArea = new Rectangle(112, 16, 16, 16);
-        editor.PatchImage(
-            ModHelper.ModContent.Load<Texture2D>("assets/sprites/projectiles"),
-            sourceArea,
-            targetArea);
+        if (CombatModule.Config.NewPrismaticEnchantments)
+        {
+            editor.ExtendImage(editor.Data.Width, 48);
+            sourceArea = new Rectangle(32, 0, 16, 16);
+            targetArea = new Rectangle(16, 32, 16, 16);
+            editor.PatchImage(
+                ModHelper.ModContent.Load<Texture2D>("assets/sprites/effects/projectiles"),
+                sourceArea,
+                targetArea);
+
+            sourceArea = new Rectangle(48, 0, 16, 16);
+            targetArea = new Rectangle(32, 32, 16, 16);
+            editor.PatchImage(
+                ModHelper.ModContent.Load<Texture2D>("assets/sprites/effects/projectiles"),
+                sourceArea,
+                targetArea);
+        }
     }
 
     /// <summary>Edits quests data with custom Dwarvish Blueprint introduction quest.</summary>
@@ -367,7 +383,7 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
         if (CombatModule.Config.EnableWeaponOverhaul)
         {
             var editor = asset.AsImage();
-            editor.PatchImage(ModHelper.ModContent.Load<Texture2D>("assets/sprites/weapons"));
+            editor.PatchImage(ModHelper.ModContent.Load<Texture2D>("assets/sprites/objects/weapons"));
         }
 
         if (CombatModule.Config.EnableInfinitySlingshot)
@@ -375,7 +391,7 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
             var editor = asset.AsImage();
             var targetArea = new Rectangle(16, 128, 16, 16);
             editor.PatchImage(
-                ModHelper.ModContent.Load<Texture2D>("assets/sprites/InfinitySlingshot"),
+                ModHelper.ModContent.Load<Texture2D>("assets/sprites/objects/InfinitySlingshot"),
                 targetArea: targetArea);
         }
     }
@@ -391,9 +407,9 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
 
         var editor = asset.AsImage();
         var sourceTx = VanillaTweaksIntegration.Instance?.WeaponsCategoryEnabled == true
-            ? ModHelper.ModContent.Load<Texture2D>("assets/sprites/weapons_vanillatweaks.png")
+            ? ModHelper.ModContent.Load<Texture2D>("assets/sprites/objects/weapons_vanillatweaks")
             : SimpleWeaponsIntegration.Instance?.IsLoaded == true
-                ? ModHelper.ModContent.Load<Texture2D>("assets/sprites/weapons_simple.png")
+                ? ModHelper.ModContent.Load<Texture2D>("assets/sprites/objects/weapons_simple")
                 : Tool.weaponsTexture;
         Rectangle sourceArea, targetArea;
         if (CombatModule.Config.EnableHeroQuest)
@@ -429,24 +445,11 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
                 : I18n.Events_Curse_Intro();
     }
 
-    /// <summary>Adjust Jinxed debuff description.</summary>
-    private static void EditStringsFromCsFiles(IAssetData asset)
-    {
-        if (!CombatModule.Config.NewResistanceFormula)
-        {
-            return;
-        }
-
-        var data = asset.AsDictionary<string, string>().Data;
-        data["Buff.cs.465"] = I18n.Ui_Buffs_Jinxed();
-    }
-
     /// <summary>Edits crafting recipes with new ring recipes.</summary>
     private static void EditCraftingRecipesData(IAssetData asset)
     {
         var data = asset.AsDictionary<string, string>().Data;
 
-        string[] fields;
         if (CombatModule.Config.RebalancedRings)
         {
             data["Ring of Yoba"] = "336 5 335 5 72 1 768 20/Home/524/false/Combat 8";
@@ -464,7 +467,7 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
 
         if (CombatModule.Config.EnableInfinityBand)
         {
-            fields = data["Iridium Band"].Split('/');
+            var fields = data["Iridium Band"].Split('/');
             fields[0] = "337 5 768 100 769 100";
             data["Iridium Band"] = string.Join('/', fields);
         }
@@ -560,7 +563,7 @@ internal sealed class CombatAssetRequestedEvent : AssetRequestedEvent
     /// <summary>Provides the correct gemstone socket texture path.</summary>
     private static string ProvideGemSockets()
     {
-        var path = "assets/sprites/GemSocket_" + CombatModule.Config.SocketStyle;
+        var path = "assets/sprites/interface/GemSocket_" + CombatModule.Config.ForgeSocketStyle;
         if (ModHelper.ModRegistry.IsLoaded("ManaKirel.VMI") ||
             ModHelper.ModRegistry.IsLoaded("ManaKirel.VintageInterface2"))
         {

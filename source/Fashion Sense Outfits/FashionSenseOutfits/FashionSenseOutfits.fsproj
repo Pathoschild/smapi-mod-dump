@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <ModZipPath>$(SolutionDir)_releases</ModZipPath>
+    <EnableHarmony>false</EnableHarmony>
+    <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+    <IgnoreModFilePatterns>\.xml$,\.pdb$,FashionSenseOutfits.*\.json$</IgnoreModFilePatterns>
+    <Authors>nihilistzsche</Authors>
+    <Description>FashionSenseOutfits adds a Content Patcher target to set the current Fashion Sense outfit, and a Content Patcher token to retrieve the current Fashion Sense outfit.</Description>
+    <UniqueId>$(Authors).$(AssemblyName)</UniqueId>
+    <MinimumApiVersion_Behavior>Update</MinimumApiVersion_Behavior>
+    <Version>1.0.9</Version>
+    <AlwaysSetEntryDll>true</AlwaysSetEntryDll>
+    <UpdateKeys>Nexus:18384</UpdateKeys>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="$(GameModsPath)\FashionSense\FashionSense.dll">
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="$(GameModsPath)\ContentPatcher\ContentPatcher.dll">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FashionSenseOutfits.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ILRepack" Version="2.0.18" />
+    <PackageReference Include="ILRepack.Lib.MSBuild" Version="2.1.18" />
+    <PackageReference Include="Leclair.Stardew.ModManifestBuilder" Version="2.1.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FashionSenseOutfits.Models\FashionSenseOutfits.Models.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ILRepackInputAssemblies Include="$(OutputPath)$(AssemblyName).dll;$(OutputPath)$(AssemblyName).Models.dll" />
+  </ItemGroup>
+  <Import Project="..\packages\Pathoschild.Stardew.ModBuildConfig.4.1.1\build\Pathoschild.Stardew.ModBuildConfig.targets" Condition="Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.4.1.1\build\Pathoschild.Stardew.ModBuildConfig.targets')" />
+  <Import Project="..\MSBuild\FSharpLint.targets" />
+  <Import Project="..\MSBuild\DeployMod.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Pathoschild.Stardew.ModBuildConfig.4.1.1\build\Pathoschild.Stardew.ModBuildConfig.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Pathoschild.Stardew.ModBuildConfig.4.1.1\build\Pathoschild.Stardew.ModBuildConfig.targets'))" />
+  </Target>
+</Project>

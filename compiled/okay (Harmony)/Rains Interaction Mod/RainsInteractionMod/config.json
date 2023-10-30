@@ -1,0 +1,13 @@
+{
+  "enablePrerequisite": false,
+  "enableCostHealth": false,
+  "enableCostAndGainFromInteraction": true,
+  "randomBonous": true,
+  "baseFriendlyRequirement": 6,
+  "energyThreshold": 30,
+  "healthThreshold": 30,
+  "costRateFromStaminaToClimaxPoint": 0.5,
+  "costRateFromHealthToClimaxPoint": 0.5,
+  "gainMaxStatusRate": 0.01,
+  "keyBinding": "F3"
+}

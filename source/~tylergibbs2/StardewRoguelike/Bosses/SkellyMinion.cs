@@ -19,7 +19,7 @@ namespace StardewRoguelike.Bosses
 {
     public class SkellyMinion : Skeleton
     {
-        private int lineOfSightDistance = 11;
+        private readonly int LineOfSightDistance = 11;
 
         public SkellyMinion() { }
 
@@ -45,7 +45,7 @@ namespace StardewRoguelike.Bosses
             bool spottedPlayer = (bool)typeof(Skeleton).GetField("spottedPlayer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(this)!;
             NetBool throwing = (NetBool)typeof(Skeleton).GetField("throwing", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.GetValue(this)!;
 
-            if (!spottedPlayer && Utility.doesPointHaveLineOfSightInMine(currentLocation, getTileLocation(), Player.getTileLocation(), lineOfSightDistance))
+            if (!spottedPlayer && Utility.doesPointHaveLineOfSightInMine(currentLocation, getTileLocation(), Player.getTileLocation(), LineOfSightDistance))
             {
                 typeof(Skeleton).GetField("spottedPlayer", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!.SetValue(this, true);
                 Halt();
@@ -77,7 +77,7 @@ namespace StardewRoguelike.Bosses
                         currentLocation.projectiles.Add(new BasicProjectile(DamageToFarmer, 4, 0, 0, (float)Math.PI / 16f, v.X, v.Y, new Vector2(Position.X, Position.Y), "skeletonHit", "skeletonStep", explode: false, damagesMonsters: false, currentLocation, this));
                 }
             }
-            else if (spottedPlayer && Game1.random.NextDouble() < (isMage ? 0.008 : 0.002) && Utility.doesPointHaveLineOfSightInMine(currentLocation, getTileLocation(), Player.getTileLocation(), lineOfSightDistance))
+            else if (spottedPlayer && Game1.random.NextDouble() < (isMage ? 0.008 : 0.002) && Utility.doesPointHaveLineOfSightInMine(currentLocation, getTileLocation(), Player.getTileLocation(), LineOfSightDistance))
             {
                 throwing.Value = true;
                 Halt();

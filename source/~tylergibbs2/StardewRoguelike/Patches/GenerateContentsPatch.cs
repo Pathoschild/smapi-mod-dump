@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewRoguelike.Extensions;
 using StardewValley.Locations;
@@ -15,10 +16,9 @@ using System.Reflection;
 
 namespace StardewRoguelike.Patches
 {
-    internal class GenerateContentsPatch : Patch
+    [HarmonyPatch(typeof(MineShaft), "generateContents")]
+    internal class GenerateContentsPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(MineShaft), "generateContents");
-
         public static bool Prefix(MineShaft __instance)
         {
             __instance.GetType().GetField("ladderHasSpawned", BindingFlags.NonPublic | BindingFlags.Instance)!.SetValue(__instance, false);

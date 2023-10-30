@@ -6,11 +6,9 @@ mods:
    Lasting Conversation Topics
 
 latest commit:
-   commit 2802df3f8767e0f27925ad7d2b76888f66b0b64c
-   Author: MikaÃ«l Capelle <capelle.mikael@gmail.com>
-   Date:   Tue Sep 26 16:17:31 2023 +0200
+   commit fba4bd84ddd44fa4dceddb5c4c2c446777302d26
+   Author: Zash <zash@fantasymail.de>
+   Date:   Sat Oct 21 21:22:43 2023 +0200
    
-       Merge pull request #118 from ZashIn/fix/python11_deps_linters
-       
-       Fix python11 deps + linters
+       Add mapping GameIniFiles: iniFiles() to BasicGame (#123)
    

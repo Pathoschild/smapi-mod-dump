@@ -1,6 +1,6 @@
 [
   {
-    "name": "Fresh Water",
+    "name": "Joja Fresh Water",
     "value": 8
   },
   {
@@ -115,13 +115,13 @@
   {
     "name": "Chicken Stock",
     "value": 3
+  },
+  {
+    "name": "Alexander Cocktail",
+    "value": 5
+  },
+  {
+    "name": "Americano",
+    "value": 5
   }
-  //{
-  //  "name": "Alexander Cocktail",
-  //  "value": 5
-  //},
-  //{
-  //  "name": "Americano",
-  //  "value": 5
-  //}
 ]

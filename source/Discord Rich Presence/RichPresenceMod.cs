@@ -275,7 +275,7 @@ namespace SVRichPresence
             if (config.AddGetModButton)
                 presence.Buttons = new Button[]
                 {
-                    new Button() { Label = "Get SDV Rich Presence Mod", Url = "https://faynealdan.github.io/SVRichPresence/" }
+                    new Button() { Label = "Get SDV Rich Presence Mod", Url = "https://ruintd.github.io/SVRichPresence/" }
                 };
 
             presence.Assets = assets;

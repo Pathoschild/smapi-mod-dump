@@ -25,7 +25,7 @@ using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Netcode;
 using StardewValley.Buildings;
-using xTile;
+using FishPondExtensions = DaLion.Overhaul.Modules.Ponds.Extensions.FishPondExtensions;
 
 #endregion using directives
 
@@ -198,7 +198,7 @@ internal sealed class FishPondDoActionPatcher : HarmonyPatcher
 
         var heldMinerals =
             pond.Read(DataKeys.MetalsHeld)
-                .ParseList<string>(";")
+                .ParseList<string>(';')
                 .Select(li => li?.ParseTuple<int, int>())
                 .WhereNotNull()
                 .ToList();

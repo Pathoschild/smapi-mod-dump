@@ -8,30 +8,14 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Locations.CodeInjections.Initializers;
-using StardewArchipelago.Locations.CodeInjections.Modded;
-using StardewArchipelago.Locations.CodeInjections.Vanilla;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer;
-using StardewArchipelago.Locations.Festival;
-using StardewArchipelago.Locations.GingerIsland;
-using StardewArchipelago.Locations.GingerIsland.Boat;
 using StardewArchipelago.Serialization;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
-using StardewValley;
-using StardewValley.Characters;
-using StardewValley.Locations;
-using StardewValley.Menus;
-using StardewValley.Minigames;
-using StardewValley.Objects;
-using StardewValley.Quests;
-using StardewValley.TerrainFeatures;
-using Object = StardewValley.Object;
 
 namespace StardewArchipelago.Locations.Patcher
 {

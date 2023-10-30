@@ -69,7 +69,16 @@ namespace DestroyableBushes
 
                     if (shouldRegrow) //if this bush should eventually be respawned
                     {
-                        ModData.DestroyedBush destroyed = new ModData.DestroyedBush(location?.Name, __instance.tilePosition.Value, __instance.size.Value); //create a record of this bush
+                        int? safeOffset = null; //the bush's tilesheetOffset (or null if it should be ignored)
+                        if (__instance.size.Value != Bush.walnutBush) //if this is NOT a walnut bush
+                        {
+                            if (__instance.size.Value != Bush.mediumBush || __instance.townBush.Value) //and this is NOT a berry bush (medium town bushes do not produce berries)
+                            {
+                                safeOffset = __instance.tileSheetOffset.Value; //get the bush's offset
+                            }
+                        }
+
+                        ModData.DestroyedBush destroyed = new ModData.DestroyedBush(location?.Name, __instance.tilePosition.Value, __instance.size.Value, __instance.townBush.Value, safeOffset); //create a record of this bush
 
                         if (Context.IsMainPlayer) //if this code is run by the main player
                             ModEntry.Data.DestroyedBushes.Add(destroyed); //add the record to the list of destroyed bushes

@@ -1,0 +1,40 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "time.weekday.Sunday": "Domingo",
+    "time.weekday.Monday": "Lunes",
+    "time.weekday.Tuesday": "Martes",
+    "time.weekday.Wednesday": "Miércoles",
+    "time.weekday.Thursday": "Jueves",
+    "time.weekday.Friday": "Viernes",
+    "time.weekday.Saturday": "Sábado",
+
+    "time.month.1": "Enero",
+    "time.month.2": "Febrero",
+    "time.month.3": "Marzo",
+    "time.month.4": "Abril",
+    "time.month.5": "Mayo",
+    "time.month.6": "Junio",
+    "time.month.7": "Julio",
+    "time.month.8": "Agosto",
+    "time.month.9": "Septiembre",
+    "time.month.10": "Octubre",
+    "time.month.11": "Noviembre",
+    "time.month.12": "Diciembre",
+
+    "holiday.newyears": "Año Nuevo",
+    "holiday.valentines": "Día de San Valentín",
+    "holiday.halloween": "Halloween",
+    "holiday.christmas": "Navidad",
+    "holiday.newyearseve": "Nochevieja",
+    "holiday.easter": "Pascua",
+    "holiday.thanksgiving": "Día de Acción de Gracias"
+}

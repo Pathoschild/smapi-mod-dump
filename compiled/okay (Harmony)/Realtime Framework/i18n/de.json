@@ -1,0 +1,30 @@
+﻿{
+    "time.weekday.Sunday": "Sonntag",
+    "time.weekday.Monday": "Montag",
+    "time.weekday.Tuesday": "Dienstag",
+    "time.weekday.Wednesday": "Mittwoch",
+    "time.weekday.Thursday": "Donnerstag",
+    "time.weekday.Friday": "Freitag",
+    "time.weekday.Saturday": "Samstag",
+
+    "time.month.1": "Januar",
+    "time.month.2": "Februar",
+    "time.month.3": "März",
+    "time.month.4": "April",
+    "time.month.5": "Mai",
+    "time.month.6": "Juni",
+    "time.month.7": "Juli",
+    "time.month.8": "August",
+    "time.month.9": "September",
+    "time.month.10": "Oktober",
+    "time.month.11": "November",
+    "time.month.12": "Dezember",
+
+    "holiday.newyears": "Neujahr",
+    "holiday.valentines": "Valentinstag",
+    "holiday.halloween": "Halloween",
+    "holiday.christmas": "Weihnachten",
+    "holiday.newyearseve": "Silvester",
+    "holiday.easter": "Ostern",
+    "holiday.thanksgiving": "Erntedankfest"
+}

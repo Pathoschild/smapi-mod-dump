@@ -35,9 +35,10 @@ namespace StardewArchipelago.Archipelago.Gifting
         {
             giftItem = null;
             traits = null;
+            var giftOrTrap = isTrap ? "trap" : "gift";
             if (giftObject == null)
             {
-                Game1.chatBox?.addMessage($"You must hold an item in your hand to gift it", Color.Gold);
+                Game1.chatBox?.addMessage($"You must hold an item in your hand to {giftOrTrap} it", Color.Gold);
                 return false;
             }
 
@@ -45,7 +46,7 @@ namespace StardewArchipelago.Archipelago.Gifting
 
             if (!_itemManager.ObjectExists(name) || giftObject.questItem.Value)
             {
-                Game1.chatBox?.addMessage($"{name} cannot be gifted to other players", Color.Gold);
+                Game1.chatBox?.addMessage($"{name} cannot be sent to other players", Color.Gold);
                 return false;
             }
 

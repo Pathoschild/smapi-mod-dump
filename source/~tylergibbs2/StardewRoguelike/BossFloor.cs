@@ -77,11 +77,11 @@ namespace StardewRoguelike
                 return DebugCommands.ForcedDifficulty;
 
             float modifier = 1f + (Roguelike.HardMode ? 0.25f : 0f);
-            float difficulty = (float)Math.Round(level / (float)Roguelike.ScalingOrder[^1], 2) + modifier;
+            float difficulty = (float)Math.Round(level / (float)Constants.ScalingOrder[^1], 2) + modifier;
 
-            if (level > Roguelike.ScalingOrder[^1])
+            if (level > Constants.ScalingOrder[^1])
             {
-                int levelsPostLoop = Roguelike.ScalingOrder[^1] - level;
+                int levelsPostLoop = level - Constants.ScalingOrder[^1];
                 difficulty += 0.25f * (levelsPostLoop / 6f);
             }
 
@@ -92,9 +92,7 @@ namespace StardewRoguelike
         {
             var spawnedBoss = SpawnBoss(mine);
 
-            if (spawnedBoss == typeof(BigCrab))
-                mine.get_MineShaftCustomDestination().Value = new(20, 5);
-            else if (spawnedBoss == typeof(Modulosaurus))
+            if (spawnedBoss == typeof(Modulosaurus))
                 mine.get_MineShaftCustomDestination().Value = new(24, 10);
         }
 
@@ -123,7 +121,7 @@ namespace StardewRoguelike
 
             float difficulty = GetLevelDifficulty(mine);
 
-            if (bossType == typeof(TutorialSlime) && level > Roguelike.ScalingOrder[^1])
+            if (bossType == typeof(TutorialSlime) && level > Constants.ScalingOrder[^1])
                 bossType = typeof(LoopedSlime);
 
             Monster boss = (Monster)Activator.CreateInstance(bossType, new object[] { difficulty })!;

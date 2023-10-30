@@ -18,7 +18,6 @@ using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewValley.Monsters;
 
 #endregion using directives
@@ -39,38 +38,25 @@ internal sealed class GreenSlimeUpdatePatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void GreenSlimeUpdatePostfix(GreenSlime __instance, GameTime time)
     {
-        var piped = __instance.Get_Piped();
-        if (piped is null)
+        if (__instance.Get_Piped() is not { } piped)
         {
             return;
         }
 
-        __instance.Get_Piped()!.PipeTimer -= time.ElapsedGameTime.Milliseconds;
+        piped.PipeTimer -= time.ElapsedGameTime.Milliseconds;
         for (var i = 0; i < __instance.currentLocation.characters.Count; i++)
         {
             var character = __instance.currentLocation.characters[i];
-            if (character is not Monster monster || !monster.IsSlime())
+            if (character is not Monster { IsMonster: true } monster
+                || (monster.IsGlider() && !(__instance.Scale > 1.8f || __instance.Get_Jumping()))
+                || monster.IsSlime()
+                || !monster.CanBeDamaged())
             {
                 continue;
             }
 
             var monsterBox = monster.GetBoundingBox();
-            if (monster.IsInvisible || monster.isInvincible() ||
-                (monster.isGlider.Value && !(__instance.Scale > 1.8f || __instance.Get_Jumping())) ||
-                !monsterBox.Intersects(__instance.GetBoundingBox()))
-            {
-                continue;
-            }
-
-            if ((monster is Bug bug && bug.isArmoredBug.Value) // skip Armored Bugs
-                || (monster is LavaCrab && __instance.Sprite.currentFrame % 4 == 0) // skip shelled Lava Crabs
-                || (monster is RockCrab crab && crab.Sprite.currentFrame % 4 == 0 &&
-                    !Reflector
-                        .GetUnboundFieldGetter<RockCrab, NetBool>(crab, "shellGone")
-                        .Invoke(crab).Value) // skip shelled Rock Crabs
-                || (monster is LavaLurk lurk &&
-                    lurk.currentState.Value == LavaLurk.State.Submerged) // skip submerged Lava Lurks
-                || monster is Spiker) // skip Spikers
+            if (!monsterBox.Intersects(__instance.GetBoundingBox()))
             {
                 continue;
             }
@@ -97,7 +83,7 @@ internal sealed class GreenSlimeUpdatePatcher : HarmonyPatcher
                 monster.Set_Taunter(__instance);
             }
 
-            var fakeFarmer = monster.Get_FakeFarmer();
+            var fakeFarmer = monster.Get_TauntFakeFarmer();
             if (fakeFarmer is not null)
             {
                 fakeFarmer.Position = __instance.Position;

@@ -59,7 +59,7 @@ These mods will then be included in the multiworld generation, and considered in
 As previously mentioned, the generator and the StardewArchipelago client are designed and tested for a very specific version of any supported mod. When installing them, you must choose the correct version, or you will not be able to play.
 The StardewArchipelago mod will inform you if some of your supported mods have the wrong version, and tell you what version you need.
 
-Most mosts also have dependencies to some library/utility mods. You will need to install these as well, but dependency versions are less strict.
+Most mods also have dependencies to some library/utility mods. You will need to install these as well, but dependency versions are less strict.
 
 If you can load the supported mod on the correct version, the exact version of a dependency is not important.
 

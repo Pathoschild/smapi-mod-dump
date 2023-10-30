@@ -13,10 +13,10 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Ranged;
 #region using directives
 
 using System.Reflection;
+using DaLion.Overhaul;
 using DaLion.Overhaul.Modules.Combat.Enchantments;
 using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.Projectiles;
-using DaLion.Overhaul.Modules.Combat.VirtualProperties;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.UpdateTicked;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
@@ -55,17 +55,13 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
         GameLocation location,
         Farmer who)
     {
-        if (__instance.Get_IsOnSpecial())
-        {
-            return false; // don't run original logic
-        }
-
         try
         {
             var canDoQuincy = __instance.hasEnchantmentOfType<QuincyEnchantment>() && location.HasMonsters();
             if (__instance.attachments[0] is null && !canDoQuincy && !who.IsSteppingOnSnow())
             {
-                if (__instance.attachments.Count > 1 && __instance.attachments[1] is not null)
+                if (__instance.attachments.Length > 1 && __instance.attachments[1] is not null &&
+                    __instance.attachments[1].ParentSheetIndex != ObjectIds.MonsterMusk)
                 {
                     __instance.attachments[0] = __instance.attachments[1];
                     __instance.attachments[1] = null;
@@ -98,75 +94,39 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
 
             // get and spend ammo
             var ammo = __instance.attachments[0]?.getOne();
-            int ammoDamage;
-            if (ammo is not null)
+            if (ammo is not null && --__instance.attachments[0].Stack <= 0)
             {
-                if (!__instance.hasEnchantmentOfType<PreservingEnchantment>() ||
-                    ammo.ParentSheetIndex == SObject.prismaticShardIndex)
-                {
-                    if (--__instance.attachments[0].Stack <= 0)
-                    {
-                        __instance.attachments[0] = null;
-                    }
-                }
-
-                ammoDamage = __instance.GetAmmoDamage();
-            }
-            else
-            {
-                ammoDamage = canDoQuincy ? 25 : 1;
-            }
-
-            // apply slingshot damage modifiers
-            var damageMod = 1f;
-            var knockback = 0.25f;
-            switch (__instance.InitialParentTileIndex)
-            {
-                case WeaponIds.MasterSlingshot:
-                    damageMod = CombatModule.Config.EnableWeaponOverhaul ? 0.5f : 1f;
-                    knockback += 0.1f;
-                    break;
-                case WeaponIds.GalaxySlingshot:
-                    damageMod = CombatModule.Config.EnableWeaponOverhaul ? 1f : CombatModule.Config.EnableInfinitySlingshot ? 2f : 3f;
-                    knockback += 0.2f;
-                    break;
-                case WeaponIds.InfinitySlingshot:
-                    damageMod = CombatModule.Config.EnableWeaponOverhaul ? 1.5f : 3f;
-                    knockback += 0.25f;
-                    break;
+                __instance.attachments[0] = null;
             }
 
             // set projectile index
             var index = ammo?.ParentSheetIndex ?? (canDoQuincy
-                ? QuincyProjectile.TileSheetIndex
+                ? QuincyProjectile.BlueTileSheetIndex
                 : Projectile.snowBall);
 
             // calculate overcharge
             var overcharge = ProfessionsModule.ShouldEnable && who.professions.Contains(Farmer.desperado)
                 ? __instance.GetOvercharge()
                 : 1f;
-
-            // adjust velocity
             if (overcharge > 1f)
             {
-                if (index != QuincyProjectile.TileSheetIndex)
-                {
-                    xVelocity *= overcharge;
-                    yVelocity *= overcharge;
-                }
-
                 EventManager.Disable<DesperadoUpdateTickedEvent>();
             }
 
+            // adjust velocity
             if (Game1.options.useLegacySlingshotFiring)
             {
                 xVelocity *= -1f;
                 yVelocity *= -1f;
             }
 
+            if (__instance.GetEnchantmentOfType<RangedEnergizedEnchantment>() is
+                { Energy: >= RangedEnergizedEnchantment.MaxEnergy })
+            {
+                SoundEffectPlayer.PlasmaShot.Play();
+            }
+
             // add main projectile
-            var damage = (ammoDamage + Game1.random.Next(-ammoDamage / 2, ammoDamage + 2)) * damageMod;
-            knockback = CombatModule.Config.EnableWeaponOverhaul ? knockback : 1f;
             var startingPosition = shootOrigin - new Vector2(32f, 32f);
             var rotationVelocity = (float)(Math.PI / (64f + Game1.random.Next(-63, 64)));
             if (ammo?.ParentSheetIndex is ObjectIds.Wood or ObjectIds.Coal or ObjectIds.Stone or ObjectIds.CopperOre
@@ -177,10 +137,9 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
 
             BasicProjectile projectile = index switch
             {
-                QuincyProjectile.TileSheetIndex => new QuincyProjectile(
+                QuincyProjectile.BlueTileSheetIndex => new QuincyProjectile(
                     __instance,
                     who,
-                    damage,
                     overcharge,
                     startingPosition,
                     xVelocity,
@@ -198,8 +157,6 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
                     index,
                     __instance,
                     who,
-                    damage,
-                    knockback,
                     overcharge,
                     startingPosition,
                     xVelocity,
@@ -210,11 +167,6 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
             if (Game1.currentLocation.currentEvent is not null || Game1.currentMinigame is not null)
             {
                 projectile.IgnoreLocationCollision = true;
-            }
-
-            if (__instance.hasEnchantmentOfType<MagnumEnchantment>())
-            {
-                projectile.startingScale.Value *= 2f;
             }
 
             location.projectiles.Add(projectile);
@@ -232,14 +184,12 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
                         continue;
                     }
 
-                    damage = (ammoDamage + Game1.random.Next(-ammoDamage / 2, ammoDamage + 2)) * damageMod;
                     rotationVelocity = (float)(Math.PI / (64f + Game1.random.Next(-63, 64)));
                     BasicProjectile petal = index switch
                     {
-                        QuincyProjectile.TileSheetIndex => new QuincyProjectile(
+                        QuincyProjectile.BlueTileSheetIndex => new QuincyProjectile(
                             __instance,
                             who,
-                            damage,
                             0f,
                             startingPosition,
                             velocity.X,
@@ -257,8 +207,6 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
                             index,
                             __instance,
                             who,
-                            damage,
-                            knockback,
                             0f,
                             startingPosition,
                             velocity.X,
@@ -285,12 +233,11 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
                 slingshotEnchantment.OnFire(
                     __instance,
                     projectile,
-                    ammoDamage,
-                    damageMod,
-                    knockback,
+                    overcharge,
                     startingPosition,
                     xVelocity,
                     yVelocity,
+                    rotationVelocity,
                     location,
                     who);
             }

@@ -8,6 +8,9 @@ for queries and analysis.**
 
 # Version history for DialogueBoxRedesign
 
+## Upcoming
+- Updated to latest SMAPI version.
+
 ## 1.1.1
 Released February 8, 2022.
 - Added support for [HD Portraits](https://www.nexusmods.com/stardewvalley/mods/10971).

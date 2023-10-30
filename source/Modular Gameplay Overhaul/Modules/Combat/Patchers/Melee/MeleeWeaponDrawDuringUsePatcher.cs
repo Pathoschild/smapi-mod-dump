@@ -13,7 +13,8 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Melee;
 #region using directives
 
 using System.Reflection;
-using DaLion.Overhaul.Modules.Combat.Enums;
+using DaLion.Overhaul.Modules.Combat.Extensions;
+using DaLion.Shared.Enums;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -74,7 +75,7 @@ internal sealed class MeleeWeaponDrawDuringUsePatcher : HarmonyPatcher
                 return false; // don't run original logic
             }
 
-            if (!CombatModule.Config.EnableComboHits)
+            if (!CombatModule.Config.EnableMeleeComboHits)
             {
                 return true; // run original logic
             }

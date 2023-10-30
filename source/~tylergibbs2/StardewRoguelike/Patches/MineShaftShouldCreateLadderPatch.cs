@@ -8,16 +8,16 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewRoguelike.ChallengeFloors;
 using StardewRoguelike.VirtualProperties;
 using StardewValley.Locations;
 
 namespace StardewRoguelike.Patches
 {
-    internal class MineShaftShouldCreateLadderPatch : Patch
+    [HarmonyPatch(typeof(MineShaft), nameof(MineShaft.shouldCreateLadderOnThisLevel))]
+    internal class MineShaftShouldCreateLadderPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(MineShaft), "shouldCreateLadderOnThisLevel");
-
         public static bool Prefix(MineShaft __instance, ref bool __result)
         {
             if (ChallengeFloor.IsChallengeFloor(__instance))

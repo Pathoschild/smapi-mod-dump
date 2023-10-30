@@ -34,6 +34,11 @@ internal sealed class WateringCanDoFunctionPatcher : HarmonyPatcher
 
     #region harmony patches
 
+    [HarmonyPrefix]
+    private static void WateringCanDoFunctionPrefix(WateringCan __instance, Farmer who)
+    {
+    }
+
     /// <summary>Apply base stamina multiplier + stamina cost cap.</summary>
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction>? WateringCanDoFunctionTranspiler(
@@ -66,7 +71,7 @@ internal sealed class WateringCanDoFunctionPatcher : HarmonyPatcher
                             typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Tools))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
-                            typeof(Config).RequirePropertyGetter(nameof(Config.Can))),
+                            typeof(ToolConfig).RequirePropertyGetter(nameof(ToolConfig.Can))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
                             typeof(WateringCanConfig).RequirePropertyGetter(

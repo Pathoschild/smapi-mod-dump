@@ -12,9 +12,13 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Ranged;
 
 #region using directives
 
+using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
+using Microsoft.Xna.Framework;
+using Netcode;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Network;
 using StardewValley.Projectiles;
 
@@ -34,8 +38,11 @@ internal class ProjectileIsCollidingPatcher : HarmonyPatcher
     /// <summary>Allows projectiles to keep traveling over water.</summary>
     [HarmonyPostfix]
     private static void ProjectileIsCollidingPostfix(
+        Projectile __instance,
         ref bool __result,
         NetPosition ___position,
+        NetFloat ___xVelocity,
+        NetFloat ___yVelocity,
         GameLocation location)
     {
         if (!__result)
@@ -43,13 +50,28 @@ internal class ProjectileIsCollidingPatcher : HarmonyPatcher
             return;
         }
 
-        if (location.doesTileHaveProperty(
-                (int)___position.X / Game1.tileSize,
-                (int)___position.Y / Game1.tileSize,
-                "Water",
-                "Back") == "T")
+        var tile = new Vector2(___position.X / Game1.tileSize, ___position.Y / Game1.tileSize);
+        var nextTile = tile.GetNextTile(new Vector2(___xVelocity, ___yVelocity));
+        if (location.doesTileHaveProperty((int)tile.X, (int)tile.Y, "Water", "Back") == "T" ||
+            location.doesTileHaveProperty((int)nextTile.X, (int)nextTile.Y, "Water", "Back") == "T")
         {
             __result = false;
+            return;
+        }
+
+        if (location is not BuildableGameLocation buildable)
+        {
+            return;
+        }
+
+        var bb = __instance.getBoundingBox();
+        foreach (var building in buildable.buildings)
+        {
+            if (building.intersects(bb))
+            {
+                __result = false;
+                return;
+            }
         }
     }
 

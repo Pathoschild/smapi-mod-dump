@@ -12,10 +12,11 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Quests.Infinity;
 
 #region using directives
 
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using DaLion.Overhaul.Modules.Combat.Enums;
-using DaLion.Overhaul.Modules.Combat.Events.GameLoop.UpdateTicked;
+using DaLion.Overhaul.Modules.Combat.Events.GameLoop.OneSecondUpdateTicked;
 using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Shared.Constants;
 using DaLion.Shared.Extensions.Stardew;
@@ -75,6 +76,66 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
 
     #region handlers
 
+    [SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1202:Elements should be ordered by access", Justification = "Patcher-injected subroutine reused by console command.")]
+    internal static void GetHolyBlade()
+    {
+        var player = Game1.player;
+        if (player.CurrentTool is not MeleeWeapon { InitialParentTileIndex: WeaponIds.DarkSword } darkSword)
+        {
+            Log.W($"[CMBT]: {player.Name} cannot receive the Holy Blade because they are not holding the Dark Sword!");
+            return;
+        }
+
+        Game1.flashAlpha = 1f;
+
+        player.completelyStopAnimatingOrDoingAction();
+        //DelayedAction.playSoundAfterDelay("getNewSpecialItem", 750);
+        player.freezePause = 4000;
+        player.FarmerSprite.animateOnce(new FarmerSprite.AnimationFrame[]
+        {
+            new(57, 0), new(57, 2500, secondaryArm: false, flip: false, farmer =>
+            {
+                var holyBlade = new MeleeWeapon(WeaponIds.HolyBlade);
+                farmer.mostRecentlyGrabbedItem = holyBlade;
+                Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(
+                    "TileSheets\\weapons",
+                    Game1.getSquareSourceRectForNonStandardTileSheet(
+                        Tool.weaponsTexture,
+                        16,
+                        16,
+                        holyBlade.IndexOfMenuItemView),
+                    2500f,
+                    1,
+                    0,
+                    farmer.Position + new Vector2(0f, -140f),
+                    flicker: false,
+                    flipped: false,
+                    1f,
+                    0f,
+                    Color.White,
+                    4f,
+                    0f,
+                    0f,
+                    0f) { motion = new Vector2(0f, +0.1f) });
+            }),
+            new(
+                (short)player.FarmerSprite.CurrentFrame,
+                500,
+                secondaryArm: false,
+                flip: false,
+                Farmer.showReceiveNewItemMessage,
+                behaviorAtEndOfFrame: true),
+        });
+
+        darkSword.transform(WeaponIds.HolyBlade);
+        darkSword.Write(DataKeys.CursePoints, null);
+        darkSword.RefreshStats();
+        player.jitterStrength = 0f;
+        Game1.screenGlowHold = false;
+        player.mailReceived.Add("gotHolyBlade");
+        EventManager.Disable<CurseOneSecondUpdateTickedEvent>();
+    }
+
     private static void HandleYobaAltar(GameLocation location, Farmer who)
     {
         if (!who.mailReceived.Contains("gotHolyBlade") && who.hasQuest((int)QuestId.HeroReward) &&
@@ -82,21 +143,69 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
         {
             who.Halt();
             who.CanMove = false;
-            who.faceDirection(2);
-            who.showCarrying();
+            who.faceDirection(Game1.down);
+            who.FarmerSprite.setCurrentFrame(128, 0, 2500, 2, false, false);
+            Game1.currentLocation.temporarySprites.Add(
+                new TemporaryAnimatedSprite(
+                    "TileSheets\\weapons",
+                    Game1.getSquareSourceRectForNonStandardTileSheet(
+                        Tool.weaponsTexture,
+                        16,
+                        16,
+                        WeaponIds.DarkSword),
+                    2500f,
+                    1,
+                    0,
+                    who.Position + new Vector2(0f, -124f),
+                    flicker: false,
+                    flipped: false,
+                    1f,
+                    0f,
+                    Color.White,
+                    4f,
+                    0f,
+                    0f,
+                    0f)
+                    { motion = new Vector2(0f, -0.1f) });
+
+            Game1.delayedActions.Add(new DelayedAction(2500, () =>
+                Game1.currentLocation.temporarySprites.Add(
+                    new TemporaryAnimatedSprite(
+                            "TileSheets\\weapons",
+                            Game1.getSquareSourceRectForNonStandardTileSheet(
+                                Tool.weaponsTexture,
+                                16,
+                                16,
+                                WeaponIds.DarkSword),
+                            500f,
+                            1,
+                            0,
+                            who.Position + new Vector2(0f, -140f),
+                            flicker: false,
+                            flipped: false,
+                            1f,
+                            0f,
+                            Color.White,
+                            4f,
+                            0f,
+                            0f,
+                            0f))));
+
+            SoundEffectPlayer.YobaBless.PlayAfterDelay(2500);
+
             who.jitterStrength = 1f;
             Game1.pauseThenDoFunction(3000, GetHolyBlade);
             Game1.changeMusicTrack("none", false, Game1.MusicContext.Event);
             location.playSound("crit");
             Game1.screenGlowOnce(Color.Transparent, true, 0.01f, 0.999f);
-            DelayedAction.playSoundAfterDelay("stardrop", 1500);
+            DelayedAction.playSoundAfterDelay("stardrop", 500);
             Game1.screenOverlayTempSprites.AddRange(
                 Utility.sparkleWithinArea(
                     new Rectangle(0, 0, Game1.viewport.Width, Game1.viewport.Height),
                     500,
                     Color.Gold,
                     10,
-                    2000));
+                    1000));
             Game1.afterDialogues = (Game1.afterFadeFunction)Delegate.Combine(
                 Game1.afterDialogues,
                 (Game1.afterFadeFunction)(() => Game1.stopMusicTrack(Game1.MusicContext.Event)));
@@ -182,26 +291,6 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
                 new("LeaveIt", I18n.Weapons_DarkSword_LeaveIt()),
             },
             "DarkSword");
-    }
-
-    private static void GetHolyBlade()
-    {
-        var player = Game1.player;
-        if (player.CurrentTool is not MeleeWeapon { InitialParentTileIndex: WeaponIds.DarkSword } darkSword)
-        {
-            Log.W($"[CMBT]: {player.Name} cannot receive the Holy Blade because they are not holding the Dark Sword!");
-            return;
-        }
-
-        Game1.flashAlpha = 1f;
-        player.holdUpItemThenMessage(new MeleeWeapon(WeaponIds.HolyBlade));
-        darkSword.transform(WeaponIds.HolyBlade);
-        darkSword.Write(DataKeys.CursePoints, null);
-        darkSword.RefreshStats();
-        player.jitterStrength = 0f;
-        Game1.screenGlowHold = false;
-        player.mailReceived.Add("gotHolyBlade");
-        EventManager.Disable<CurseUpdateTickedEvent>();
     }
 
     #endregion handlers

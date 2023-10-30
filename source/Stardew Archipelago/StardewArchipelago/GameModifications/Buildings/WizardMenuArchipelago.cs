@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Locations.CodeInjections;
 using StardewModdingAPI;
 using StardewValley;
 

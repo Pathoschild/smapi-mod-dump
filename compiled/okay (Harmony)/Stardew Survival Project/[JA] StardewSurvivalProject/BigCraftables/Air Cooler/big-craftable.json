@@ -1,0 +1,28 @@
+{
+    "Name": "Air Cooler",
+    "Description": "Now cool you down with water mist, also may make you dam in the process but who care lol",
+    "Price": 1,
+    "ProvidesLight": false,
+    "ReserveNextIndex": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [{
+                "Object": 335,
+                "Count": 20
+            }, {
+                "Object": 336,
+                "Count": 10
+            }, {
+                "Object": 338,
+                "Count": 30
+            }
+        ],
+        "CanPurchase": true,
+        "PurchaseFrom": "Robin",
+        "PurchasePrice": 20000,
+        "PurchaseRequirements": null
+    },
+    "CanPurchase": true,
+    "PurchaseFrom": "Robin",
+    "PurchasePrice": 10000
+}

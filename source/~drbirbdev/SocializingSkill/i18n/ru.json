@@ -10,7 +10,7 @@
 
 {
     "skill.name": "Общение",
-    "skill.perk": "{{bonus}}% chance no daily friendship decay",
+    "skill.perk": "{{bonus}}% шанс не потерять очки дружбы, если вы не говорили с персонажем.",
     // "skill.perk": "-{{bonus}} от ежедневной потери очков дружбы",
 
     "friendly.name": "Дружелюбный",
@@ -30,9 +30,9 @@
     "dialogue.beloved.rare": "Привет, {{name}}! Думаю, тебе это понравится.",
     "dialogue.beloved.superrare": "Ой, а что у меня для тебя есть! Я знаю, ты будешь без ума.",
 
-    "config.ExperienceModifiers": "Experience Modifiers",
-    "config.SkillPerkModifiers": "Skill Perk Modifiers",
-    "config.ProfessionModifiers": "Profession Modifiers",
+    "config.ExperienceModifiers": "Множители Опыта",
+    "config.SkillPerkModifiers": "Модификаторы Навыков",
+    "config.ProfessionModifiers": "Модификаторы Профессий",
 
     "config.ExperienceFromTalking": "Опыт от разговоров",
     "config.ExperienceFromTalking.tooltip": "Опыт, получаемый от разговоров с жителями",
@@ -42,27 +42,27 @@
     "config.ExperienceFromEvents.tooltip": "Опыт, получаемый от событий при получении сердец",
     "config.ExperienceFromQuests": "Опыт от поручений",
     "config.ExperienceFromQuests.tooltip": "Опыт, получаемый при выполнении поручений с доски объявлений",
-    "config.LovedGiftExpMultiplier": "Loved Gift Experience Multiplier",
-    "config.LovedGiftExpMultiplier.tooltip": "Multiplies experience gained from giving gifts if the villager loves the gift",
-    "config.BirthdayGiftExpMultiplier": "Birthday Gift Experience Multiplier",
-    "config.BirthdayGiftExpMultiplier.tooltip": "Multiplies experience gained from giving gifts if it is the villagers birthday",
+    "config.LovedGiftExpMultiplier": "Множитель Опыта Любимых Подарков",
+    "config.LovedGiftExpMultiplier.tooltip": "Увеличивает количество опыта полученное за подарок, если жителю он понравился.",
+    "config.BirthdayGiftExpMultiplier": "Множитель Опыта Подарка На День Рождения",
+    "config.BirthdayGiftExpMultiplier.tooltip": "Умножает опыт полученный за подарок на День Рождения жителя.",
 
     //  "config.FriendshipRecoveryPerLevel": "Уменьш-е потери очков дружбы",
     //  "config.FriendshipRecoveryPerLevel.tooltip": "Насколько меньше очков дружбы с тем или иным персонажем вы теряете в день, не общаясь с ним",
-    "config.ChanceNoFriendshipDecayPerLevel": "Chance Of No Decay Per Level",
-    "config.ChanceNoFriendshipDecayPerLevel.tooltip": "Per level chance that friendship won't decay overnight",
+    "config.ChanceNoFriendshipDecayPerLevel": "Шанс Отстутствия Охлаждения Отношений На Уровень",
+    "config.ChanceNoFriendshipDecayPerLevel.tooltip": "Шанс того что вы не потеряете очки дружбы, в расчёте на уровень.",
 
-    "config.FriendlyProfessionModifiers": "Friendly Profession Modifiers",
+    "config.FriendlyProfessionModifiers": "Настройки Профессии 'Дружелюбный'",
     "config.FriendlyExtraFriendship": "Доп. очки дружбы",
     "config.FriendlyExtraFriendship.tooltip": "Дополнительные очки дружбы, получаемые в общении при наличии профессии 'Дружелюбный'",
 
-    "config.SmoothTalkerProfessionModifiers": "Smooth Talker Profession Modifiers",
+    "config.SmoothTalkerProfessionModifiers": "Настройки профессии 'Красноречивый'",
     "config.SmoothTalkerPositiveMultiplier": "Полож. множитель",
     "config.SmoothTalkerPositiveMultiplier.tooltip": "Коэффициент умножения положительных реакций во время события, если у вас есть профессия 'Красноречивый' (выберите > 1, чтобы улучшить реакции)",
     "config.SmoothTalkerNegativeMultiplier": "Отриц. множитель",
     "config.SmoothTalkerNegativeMultiplier.tooltip": "Коэффициент умножения отрицательных реакций во время события, если у вас есть профессия 'Красноречивый' (выберите между 0 и 1, чтобы сделать реакции лучше, но оставить их отрицательными)",
 
-    "config.GifterProfessionModifiers": "Gifter Profession Modifiers",
+    "config.GifterProfessionModifiers": "Настройки Профессии 'Даритель'",
     "config.GifterLovedGiftExtraFriendship": "Доп. очки дружбы от лучших подарков",
     "config.GifterLovedGiftExtraFriendship.tooltip": "Дополнительные очки дружбы, получаемые от дарения любимых подарков при наличии профессии 'Даритель'",
     "config.GifterLikedGiftExtraFriendship": "Доп. очки дружбы от хороших подарков",
@@ -70,17 +70,17 @@
     "config.GifterNeutralGiftExtraFriendship": "Доп. очки дружбы от обычных подарков",
     "config.GifterNeutralGiftExtraFriendship.tooltip": "Дополнительные очки дружбы, получаемые от дарения обычных подарков при наличии профессии 'Даритель'",
 
-    "config.HelpfulProfessionModifiers": "Helpful Profession Modifiers",
+    "config.HelpfulProfessionModifiers": "Настройки Профессии 'Услужливый'",
     "config.HelpfulRewardMultiplier": "Множитель наград",
     "config.HelpfulRewardMultiplier.tooltip": "Коэффициент умножения денежных наград за поручения при наличии профессии 'Услужливый'",
 
-    "config.HagglerProfessionModifiers": "Haggler Profession Modifiers",
+    "config.HagglerProfessionModifiers": "Настройки Профессии 'Торгаш'",
     "config.HagglerMinHeartLevel": "Мин. уровень отношений",
     "config.HagglerMinHeartLevel.tooltip": "Уровень отношений, начиная с которого вам дают скидку при наличии профессии 'Торгаш'",
     "config.HagglerDiscountPercentPerHeartLevel": "Процент скидки за каждый уровень отношений",
     "config.HagglerDiscountPercentPerHeartLevel.tooltip": "Дополнительный процент скидки, получаемый за каждый уровень отношений, начиная с минимального",
 
-    "config.BelovedProfessionModifiers": "Beloved Profession Modifiers",
+    "config.BelovedProfessionModifiers": "Настройки Профессии 'Любимчик'",
     "config.BelovedGiftPercentChance": "% шанса получения подарка",
     "config.BelovedGiftPercentChance.tooltip": "Шанс получить подарок от кого-то при наличии профессии 'Любимчик'",
     "config.BelovedGiftRarePercentChance": "% шанса получения редкого подарка",

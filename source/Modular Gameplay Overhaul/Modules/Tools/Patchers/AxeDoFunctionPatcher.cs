@@ -34,6 +34,11 @@ internal sealed class AxeDoFunctionPatcher : HarmonyPatcher
 
     #region harmony patches
 
+    [HarmonyPrefix]
+    private static void AxeDoFunctionPrefix(Axe __instance, Farmer who)
+    {
+    }
+
     /// <summary>Charge shockwave stamina cost.</summary>
     [HarmonyPostfix]
     private static void AxeDoFunctionPostfix(Farmer who)
@@ -82,7 +87,7 @@ internal sealed class AxeDoFunctionPatcher : HarmonyPatcher
                             typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Tools))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
-                            typeof(Config).RequirePropertyGetter(nameof(Config.Axe))),
+                            typeof(ToolConfig).RequirePropertyGetter(nameof(ToolConfig.Axe))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
                             typeof(AxeConfig).RequirePropertyGetter(nameof(AxeConfig.BaseStaminaCostMultiplier))),

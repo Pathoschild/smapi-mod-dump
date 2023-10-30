@@ -9,6 +9,7 @@ mods:
    Crop Walker
    Fishing Nets
    Fishing Nets → Automate
+   Fishing Nets → Better Crafting
    Joja's Hauntings
    Locked Chests
    Multi-User Chests
@@ -22,9 +23,9 @@ mods:
    Winter Pigs
 
 latest commit:
-   commit 5dfa54e107062eb2bc05ac609228d2530466502a
-   Author: MindMeltMax <49438916+MindMeltMax@users.noreply.github.com>
-   Date:   Mon Sep 25 09:00:45 2023 +0200
+   commit cffc8d3443f77c5d9d4e892e64c3b9ff9ce1642a
+   Author: MindMeltMax <mindmeltmax695@gmail.com>
+   Date:   Fri Oct 20 17:27:36 2023 +0200
    
-       Update fishnets to 1.0.7
+       Update Fish Nets to 1.1.2, Add Fish Nets - Better Crafting
    

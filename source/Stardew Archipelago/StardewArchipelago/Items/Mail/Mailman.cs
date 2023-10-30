@@ -217,7 +217,14 @@ namespace StardewArchipelago.Items.Mail
             "{1}^Incoming Trade Offer:^^I Receive: Your Undying Love and Affection^^You receive: {0}",
             "Grandpa's {0}^He's gone to stay with the dwarves. He's left you {4}, along with all of his possessions. The {0} is yours now. Keep it secret. Keep it safe",
             "Dear valued customer.^Joja Online is proud to introduce our new line of innovative products! To celebrate, please enjoy this free sample of {1}'s™️ {0}, made with the finest ingredients from local farmers and artisans from {2}! Now available in the Joja Online shop!",
-            "Dear valued customer,^We are sorry to hear that your package was lost in transit through Jojamart Prime. Find enclosed your replacement {0}. {1} will be appropriately disciplined for their negligence.^Have a wonderful day!"
+            "Dear valued customer,^We are sorry to hear that your package was lost in transit through Jojamart Prime. Find enclosed your replacement {0}. {1} will be appropriately disciplined for their negligence.^Have a wonderful day!",
+            "Hey, just got back from the Burger King on {2} road.^I got you a {0} so you hopefully don't need to go there.^Enjoy!^^    -{1}",
+            "Send me items!^I'll pay handsomely!^Have this {0} as a down payment. I'm expecting great things from you.^^    -{1}",
+            "Hey, I was going through Grandpa's stash at {2}, and I found this {0}, along with a bunch of turnips.^Grandpa did always have strange tastes...^^    -{1}",
+            "I have no idea what's going on, but I found this {0} with your name on it.^^    -{1}",
+            "Hey, Pierre sent me this {0}, but I can't stand the things. So now it's yours.^^    -{1}",
+            "I couldn't get Oak's Parcel back from the thieves, but hopefully you can put {0} to good use instead^^    -{1}",
+            "You should show this {0} to Mati, I bet she didn't even know it existed!^^    -{1}",
         };
     }
 }

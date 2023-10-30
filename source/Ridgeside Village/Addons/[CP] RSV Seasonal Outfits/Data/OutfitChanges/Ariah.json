@@ -1,0 +1,76 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Ariah Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Ariah, Characters/Ariah",
+			"FromFile": "Assets/{{Target}}/Ariah_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Ariah": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Ariah Rain Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Ariah, Characters/Ariah",
+			"FromFile": "Assets/{{Target}}/Ariah_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"SeasonalRainToken": "rain",
+				"Ariah": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Ariah Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Ariah, Characters/Ariah",
+			"FromFile": "Assets/{{Target}}/Ariah_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Ariah": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Ariah Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Ariah, Characters/Ariah",
+			"FromFile": "Assets/{{Target}}/Ariah_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Ariah": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Ariah Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Ariah, Characters/Ariah",
+			"FromFile": "Assets/{{Target}}/Ariah_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Ariah": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

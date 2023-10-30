@@ -9,6 +9,7 @@
     <Import_RootNamespace>BirbShared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)APIs\IContentPatcher.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IDynamicGameAssets.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IGenericModConfigMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)APIs\IJsonAssets.cs" />
@@ -24,6 +25,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Mod\ModClassParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mod\ModClass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Log.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TranspilerExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Utilities.cs" />
   </ItemGroup>
 </Project>

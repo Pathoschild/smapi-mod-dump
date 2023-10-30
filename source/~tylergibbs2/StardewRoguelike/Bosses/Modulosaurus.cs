@@ -24,62 +24,41 @@ namespace StardewRoguelike.Bosses
     {
         public string DisplayName => "Nadith the Extinct";
 
-        public string MapPath
-        {
-            get { return "boss-modulosaurus"; }
-        }
+        public string MapPath => "boss-modulosaurus";
 
-        public string TextureName
-        {
-            get { return "Characters\\Monsters\\Pepper Rex"; }
-        }
+        public string TextureName => "Characters\\Monsters\\Pepper Rex";
 
-        public Vector2 SpawnLocation
-        {
-            get { return new(25, 30); }
-        }
+        public Vector2 SpawnLocation => new(25, 30);
 
-        public List<string> MusicTracks
-        {
-            get { return new() { "VolcanoMines1", "VolcanoMines2" }; }
-        }
+        public List<string> MusicTracks => new() { "invoke_the_ancient" };
 
-        public bool InitializeWithHealthbar
-        {
-            get { return true; }
-        }
+        public bool InitializeWithHealthbar => true;
 
-        private float _difficulty;
+        public float Difficulty { get; set; }
 
-        public float Difficulty
-        {
-            get { return _difficulty; }
-            set { _difficulty = value; }
-        }
+        private readonly NetEvent2Field<Vector2, NetVector2, int, NetInt> MeteorStrikeWarningEvent = new();
 
-        private readonly NetEvent2Field<Vector2, NetVector2, int, NetInt> meteorStrikeWarningEvent = new();
+        private int TicksToAttack = 300;
 
-        private int ticksToAttack = 300;
+        private readonly List<int> AttackHistory = new();
 
-        private readonly List<int> attackHistory = new();
+        private int TicksOfTotalFireBreath = 0;
+        private int TicksUntilNextFireBreath = 0;
 
-        private int ticksOfTotalFireBreath = 0;
-        private int ticksUntilNextFireBreath = 0;
+        private int TicksUntilMeteorStrike = 0;
+        private int MeteorStrikeTicksLeft = 0;
 
-        private int ticksUntilMeteorStrike = 0;
-        private int meteorStrikeTicksLeft = 0;
+        private int TicksUntilShotgunFireballs = 0;
 
-        private int ticksUntilShotgunFireballs = 0;
+        private int TicksUntilLavaLurk = 0;
 
-        private int ticksUntilLavaLurk = 0;
+        private int TicksUntilInterweavingFireballs = 0;
+        private int TicksOfTotalInterweavingFireballs = 0;
+        private int TicksUntilNextInterweavingFireballs = 0;
+        private bool InterweavingIsOffset = false;
 
-        private int ticksUntilInterweavingFireballs = 0;
-        private int ticksOfTotalInterweavingFireballs = 0;
-        private int ticksUntilNextInterweavingFireballs = 0;
-        private bool interweavingIsOffset = false;
-
-        private Rectangle lavaLurkBox1 = new(11, 22, 6, 6);
-        private Rectangle lavaLurkBox2 = new(33, 21, 6, 6);
+        private Rectangle LavaLurkBox1 = new(11, 22, 6, 6);
+        private Rectangle LavaLurkBox2 = new(33, 21, 6, 6);
 
         public Modulosaurus() { }
 
@@ -114,15 +93,15 @@ namespace StardewRoguelike.Bosses
 
         protected override void initNetFields()
         {
-            NetFields.AddFields(meteorStrikeWarningEvent);
-            meteorStrikeWarningEvent.onEvent += MeteorStrikeWarning;
+            NetFields.AddFields(MeteorStrikeWarningEvent);
+            MeteorStrikeWarningEvent.onEvent += MeteorStrikeWarning;
             base.initNetFields();
         }
 
         public override void update(GameTime time, GameLocation location)
         {
             base.update(time, location);
-            meteorStrikeWarningEvent.Poll();
+            MeteorStrikeWarningEvent.Poll();
         }
 
         public override void behaviorAtGameTick(GameTime time)
@@ -132,101 +111,101 @@ namespace StardewRoguelike.Bosses
             if (Health <= 0)
                 return;
 
-            if (meteorStrikeTicksLeft > 0)
-                meteorStrikeTicksLeft--;
+            if (MeteorStrikeTicksLeft > 0)
+                MeteorStrikeTicksLeft--;
 
-            if (ticksOfTotalFireBreath > 0)
+            if (TicksOfTotalFireBreath > 0)
             {
-                ticksOfTotalFireBreath--;
+                TicksOfTotalFireBreath--;
 
-                if (ticksOfTotalFireBreath == 0)
+                if (TicksOfTotalFireBreath == 0)
                 {
                     attackState.Value = 0;
                     firing.Value = false;
 
-                    ticksToAttack = 90 - this.AdjustRangeForHealth(0, 60);
+                    TicksToAttack = 90 - this.AdjustRangeForHealth(0, 60);
                     return;
                 }
 
-                if (ticksUntilNextFireBreath > 0)
+                if (TicksUntilNextFireBreath > 0)
                 {
-                    ticksUntilNextFireBreath--;
+                    TicksUntilNextFireBreath--;
                     return;
                 }
 
                 ShootFireBreath();
-                ticksUntilNextFireBreath = 1;
+                TicksUntilNextFireBreath = 1;
             }
 
-            if (ticksUntilLavaLurk > 0)
+            if (TicksUntilLavaLurk > 0)
             {
-                ticksUntilLavaLurk--;
+                TicksUntilLavaLurk--;
 
-                if (ticksUntilLavaLurk == 0)
+                if (TicksUntilLavaLurk == 0)
                 {
                     DoLavaLurkAttack();
                     if (Roguelike.HardMode)
                         DoLavaLurkAttack();
 
-                    ticksToAttack = 90 - this.AdjustRangeForHealth(0, 60);
+                    TicksToAttack = 90 - this.AdjustRangeForHealth(0, 60);
                 }
             }
 
-            if (ticksUntilShotgunFireballs > 0)
+            if (TicksUntilShotgunFireballs > 0)
             {
-                ticksUntilShotgunFireballs--;
+                TicksUntilShotgunFireballs--;
 
-                if (ticksUntilShotgunFireballs == 0)
+                if (TicksUntilShotgunFireballs == 0)
                 {
                     ShootShotgunFireballs();
 
                     attackState.Value = 0;
                     firing.Value = false;
 
-                    ticksToAttack = 90 - this.AdjustRangeForHealth(0, 60);
+                    TicksToAttack = 90 - this.AdjustRangeForHealth(0, 60);
                 }
             }
 
-            if (ticksUntilInterweavingFireballs > 0)
+            if (TicksUntilInterweavingFireballs > 0)
             {
-                ticksUntilInterweavingFireballs--;
+                TicksUntilInterweavingFireballs--;
 
-                if (ticksUntilInterweavingFireballs == 0)
+                if (TicksUntilInterweavingFireballs == 0)
                 {
-                    ticksOfTotalInterweavingFireballs = 60 * this.AdjustRangeForHealth(5, 8);
-                    ticksUntilNextInterweavingFireballs = 30;
+                    TicksOfTotalInterweavingFireballs = 60 * this.AdjustRangeForHealth(5, 8);
+                    TicksUntilNextInterweavingFireballs = 30;
                 }
             }
 
-            if (ticksOfTotalInterweavingFireballs > 0)
+            if (TicksOfTotalInterweavingFireballs > 0)
             {
-                ticksOfTotalInterweavingFireballs--;
+                TicksOfTotalInterweavingFireballs--;
 
-                if (ticksOfTotalInterweavingFireballs == 0)
+                if (TicksOfTotalInterweavingFireballs == 0)
                 {
                     attackState.Value = 0;
                     firing.Value = false;
 
-                    ticksToAttack = 120 - this.AdjustRangeForHealth(0, 60);
+                    TicksToAttack = 120 - this.AdjustRangeForHealth(0, 60);
                     return;
                 }
 
-                if (ticksUntilNextInterweavingFireballs > 0)
+                if (TicksUntilNextInterweavingFireballs > 0)
                 {
-                    ticksUntilNextInterweavingFireballs--;
+                    TicksUntilNextInterweavingFireballs--;
                     return;
                 }
 
-                ShootInterweavingFireballs(interweavingIsOffset);
-                interweavingIsOffset = !interweavingIsOffset;
-                ticksUntilNextInterweavingFireballs = 45 - this.AdjustRangeForHealth(0, 20);
+                ShootInterweavingFireballs(InterweavingIsOffset);
+                InterweavingIsOffset = !InterweavingIsOffset;
+                TicksUntilNextInterweavingFireballs = 45 - this.AdjustRangeForHealth(0, 20);
             }
 
-            if (ticksUntilMeteorStrike > 0)
+            if (TicksUntilMeteorStrike > 0)
             {
-                ticksUntilMeteorStrike--;
+                TicksUntilMeteorStrike--;
 
-                if (ticksUntilMeteorStrike == 0)
+                if (TicksUntilMeteorStrike == 0)
                 {
                     attackState.Value = 0;
 
@@ -234,26 +213,26 @@ namespace StardewRoguelike.Bosses
 
                     double rng = Game1.random.NextDouble();
                     if (rng < ((float)1 / 3))
-                        ticksOfTotalFireBreath = 120;
+                        TicksOfTotalFireBreath = 120;
                     else if (rng < ((float)2 / 3))
-                        ticksUntilShotgunFireballs = 120;
+                        TicksUntilShotgunFireballs = 120;
                     else
-                        ticksUntilLavaLurk = 120;
+                        TicksUntilLavaLurk = 120;
                 }
             }
 
-            if (ticksToAttack > 0)
+            if (TicksToAttack > 0)
             {
-                ticksToAttack--;
+                TicksToAttack--;
                 return;
             }
             else if (IsAttacking())
                 return;
 
             int attack = 0;
-            while (attack == -1 || attackHistory.Contains(attack))
+            while (attack == -1 || AttackHistory.Contains(attack))
             {
-                if (meteorStrikeTicksLeft > 0)
+                if (MeteorStrikeTicksLeft > 0)
                     attack = Game1.random.Next(2, 5);
                 else
                     attack = Game1.random.Next(0, 5);
@@ -265,14 +244,14 @@ namespace StardewRoguelike.Bosses
                 firing.Value = true;
                 currentLocation.playSound("croak");
 
-                ticksUntilInterweavingFireballs = 45;
+                TicksUntilInterweavingFireballs = 45;
             }
             else if (attack == 1)
             {
                 attackState.Value = 1;
                 currentLocation.playSound("croak");
 
-                ticksUntilMeteorStrike = 120;
+                TicksUntilMeteorStrike = 120;
             }
             else if (attack == 2)
             {
@@ -280,8 +259,8 @@ namespace StardewRoguelike.Bosses
                 attackState.Value = 1;
                 currentLocation.playSound("croak");
 
-                ticksUntilNextFireBreath = 30;
-                ticksOfTotalFireBreath = 3 * 60;
+                TicksUntilNextFireBreath = 30;
+                TicksOfTotalFireBreath = 3 * 60;
 
                 if (Player is not null)
                     faceGeneralDirection(Player.Position);
@@ -292,7 +271,7 @@ namespace StardewRoguelike.Bosses
                 firing.Value = true;
                 currentLocation.playSound("croak");
 
-                ticksUntilShotgunFireballs = 45;
+                TicksUntilShotgunFireballs = 45;
             }
             else if (attack == 4)
             {
@@ -302,12 +281,12 @@ namespace StardewRoguelike.Bosses
                 if (Roguelike.HardMode)
                     DoLavaLurkAttack();
 
-                ticksToAttack = 3 * 60;
+                TicksToAttack = 3 * 60;
             }
 
-            attackHistory.Add(attack);
-            if (attackHistory.Count >= 3)
-                attackHistory.RemoveAt(0);
+            AttackHistory.Add(attack);
+            if (AttackHistory.Count >= 3)
+                AttackHistory.RemoveAt(0);
         }
 
         public bool IsAttacking()
@@ -345,8 +324,8 @@ namespace StardewRoguelike.Bosses
 
         public void DoLavaLurkAttack()
         {
-            Vector2 tileLoc1 = GetRandomTileInRect(lavaLurkBox1);
-            Vector2 tileLoc2 = GetRandomTileInRect(lavaLurkBox2);
+            Vector2 tileLoc1 = GetRandomTileInRect(LavaLurkBox1);
+            Vector2 tileLoc2 = GetRandomTileInRect(LavaLurkBox2);
             Vector2[] locs = new Vector2[] { tileLoc1, tileLoc2 };
 
             for (int i = 0; i < 2; i++)
@@ -381,10 +360,10 @@ namespace StardewRoguelike.Bosses
                 if (delay > maxDelay)
                     maxDelay = delay;
 
-                meteorStrikeWarningEvent.Fire(randomTile, delay);
+                MeteorStrikeWarningEvent.Fire(randomTile, delay);
             }
 
-            meteorStrikeTicksLeft = maxDelay;
+            MeteorStrikeTicksLeft = maxDelay;
         }
 
         public void ShootInterweavingFireballs(bool offset)
@@ -446,7 +425,7 @@ namespace StardewRoguelike.Bosses
             Vector2 shot_origin = new(GetBoundingBox().Center.X - 32f, GetBoundingBox().Center.Y - 32f);
 
             float fire_angle = RoguelikeUtility.VectorToDegrees(Player.Position - Position);
-            fire_angle += (float)Math.Sin(RoguelikeUtility.DegreesToRadians(ticksOfTotalFireBreath * 60 / 1000f * 180f)) * 25f;
+            fire_angle += (float)Math.Sin(RoguelikeUtility.DegreesToRadians(TicksOfTotalFireBreath * 60 / 1000f * 180f)) * 25f;
 
             Vector2 shot_velocity = new((float)Math.Cos(RoguelikeUtility.DegreesToRadians(fire_angle)), (float)Math.Sin(RoguelikeUtility.DegreesToRadians(fire_angle)));
             shot_velocity *= 10f;

@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Combat.Events.GameLoop.UpdateTicked;
 #region using directives
 
 using System.Collections.Generic;
-using DaLion.Overhaul;
 using DaLion.Overhaul.Modules.Core.Events;
 using DaLion.Overhaul.Modules.Core.UI;
 using DaLion.Shared.Constants;
@@ -62,7 +61,7 @@ internal sealed class WarriorUpdateTickedEvent : UpdateTickedEvent
         }
 
         // decay counter every 5 seconds after 25 seconds out of combat
-        if (Game1.game1.ShouldTimePass() && GlobalState.SecondsOutOfCombat > 25 && e.IsMultipleOf(300))
+        if (Game1.game1.ShouldTimePass() && ModEntry.State.SecondsOutOfCombat > 25 && e.IsMultipleOf(300))
         {
             CombatModule.State.WarriorKillCount--;
         }
@@ -97,7 +96,7 @@ internal sealed class WarriorUpdateTickedEvent : UpdateTickedEvent
                 millisecondsDuration = 0,
                 description =
                     this._buffDescription + Environment.NewLine +
-                    I18n.Ui_Buffs_Warrior(CombatModule.State.WarriorKillCount / 3),
+                    I18n.Ui_Buffs_Warrior_Attack(CombatModule.State.WarriorKillCount / 3),
                 glow = Color.DarkRed,
             });
     }

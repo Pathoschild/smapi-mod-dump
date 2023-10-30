@@ -45,7 +45,7 @@ internal sealed class ForgeMenuIsValidCraftIngredientPatcher : HarmonyPatcher
             return;
         }
 
-        var maxToolUpgrade = MoonMisadventuresIntegration.Instance?.IsLoaded == true ? 7 : 6;
+        var maxToolUpgrade = MoonMisadventuresIntegration.Instance?.IsLoaded == true ? 6 : 5;
         if (tool.UpgradeLevel < maxToolUpgrade)
         {
             __result = true;

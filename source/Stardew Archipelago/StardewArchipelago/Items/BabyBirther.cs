@@ -11,12 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Goals;
 using StardewValley;
-using StardewValley.BellsAndWhistles;
 using StardewValley.Characters;
 
 namespace StardewArchipelago.Items

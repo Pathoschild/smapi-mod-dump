@@ -14,12 +14,12 @@ namespace DaLion.Overhaul.Modules.Combat.Extensions;
 
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using DaLion.Overhaul.Modules.Combat.Enchantments;
 using DaLion.Overhaul.Modules.Combat.Enums;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
 using DaLion.Shared;
 using DaLion.Shared.Constants;
+using DaLion.Shared.Enums;
 using DaLion.Shared.Exceptions;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Stardew;
@@ -76,8 +76,7 @@ internal static class MeleeWeaponExtensions
             return false;
         }
 
-        var legacyWeaponIds = new[]
-        {
+        return weapon.InitialParentTileIndex.IsAnyOf(
             WeaponIds.DwarfDagger,
             WeaponIds.DwarfHammer,
             WeaponIds.DwarfSword,
@@ -85,10 +84,7 @@ internal static class MeleeWeaponExtensions
             WeaponIds.DragontoothCutlass,
             WeaponIds.DragontoothShiv,
             WeaponIds.ElfBlade,
-            WeaponIds.ForestSword,
-        };
-
-        return weapon.InitialParentTileIndex.IsIn(legacyWeaponIds);
+            WeaponIds.ForestSword);
     }
 
     /// <summary>Determines whether the <paramref name="weapon"/> should be converted to stabbing sword.</summary>
@@ -97,7 +93,9 @@ internal static class MeleeWeaponExtensions
     internal static bool ShouldBeStabbySword(this MeleeWeapon weapon)
     {
         return CombatModule.Config.EnableStabbingSwords &&
-                CombatModule.Config.StabbingSwords.Contains(weapon.Name);
+               (CombatModule.Config.StabbingSwords.Contains(weapon.Name) ||
+                (weapon.InitialParentTileIndex is WeaponIds.GalaxySword or WeaponIds.InfinityBlade &&
+                 weapon.Read(DataKeys.SwordType, 3) == 0));
     }
 
     /// <summary>Gets the default crit. chance for this weapon type.</summary>
@@ -133,14 +131,7 @@ internal static class MeleeWeaponExtensions
     /// <returns>The final <see cref="ComboHitStep"/> for <paramref name="weapon"/>.</returns>
     internal static ComboHitStep GetFinalHitStep(this MeleeWeapon weapon)
     {
-        return weapon.type.Value switch
-        {
-            MeleeWeapon.stabbingSword => (ComboHitStep)CombatModule.Config.ComboHitsPerWeapon[WeaponType.StabbingSword],
-            MeleeWeapon.club => (ComboHitStep)CombatModule.Config.ComboHitsPerWeapon[WeaponType.Club],
-            MeleeWeapon.dagger => ComboHitStep.FirstHit,
-            MeleeWeapon.defenseSword => (ComboHitStep)CombatModule.Config.ComboHitsPerWeapon[WeaponType.DefenseSword],
-            _ => 0,
-        };
+        return ((WeaponType)weapon.type.Value).GetFinalHitStep();
     }
 
     /// <summary>Refreshes the stats of the specified <paramref name="weapon"/>.</summary>
@@ -284,42 +275,37 @@ internal static class MeleeWeaponExtensions
     {
         if (CombatModule.Config.EnableWeaponOverhaul)
         {
-            if (weapon.IsDagger())
+            switch (weapon.InitialParentTileIndex)
             {
-                if (weapon.InitialParentTileIndex == WeaponIds.InsectHead &&
-                    !weapon.hasEnchantmentOfType<KillerBugEnchantment>())
-                {
+                case WeaponIds.LavaKatana when !weapon.hasEnchantmentOfType<LavaEnchantment>():
+                    weapon.AddEnchantment(new LavaEnchantment());
+                    Log.D("[CMBT]: Added LavaEnchantment to Lava Katana.");
+                    break;
+                case WeaponIds.NeptuneGlaive when !weapon.hasEnchantmentOfType<NeptuneEnchantment>():
+                    weapon.AddEnchantment(new NeptuneEnchantment());
+                    Log.D("[CMBT]: Added NeptuneEnchantment to Neptune Glaive.");
+                    break;
+                case WeaponIds.ObsidianEdge when !weapon.hasEnchantmentOfType<ObsidianEnchantment>():
+                    weapon.AddEnchantment(new ObsidianEnchantment());
+                    Log.D("[CMBT]: Added ObsidianEnchantment to Obsidian Edge.");
+                    break;
+                case WeaponIds.YetiTooth when !weapon.hasEnchantmentOfType<YetiEnchantment>():
+                    weapon.AddEnchantment(new YetiEnchantment());
+                    Log.D("[CMBT]: Added YetiEnchantment to Yeti Tooth.");
+                    break;
+                case WeaponIds.InsectHead when !weapon.hasEnchantmentOfType<KillerBugEnchantment>():
                     weapon.AddEnchantment(new KillerBugEnchantment());
-                }
-                else
-                {
-                    weapon.AddEnchantment(new DaggerEnchantment());
-                }
+                    Log.D("[CMBT]: Added KillerBugEnchantment to Insect Head.");
+                    break;
+                case WeaponIds.IridiumNeedle when !weapon.hasEnchantmentOfType<NeedleEnchantment>():
+                    weapon.AddEnchantment(new NeedleEnchantment());
+                    Log.D("[CMBT]: Added NeedleEnchantment to Iridium Needle.");
+                    break;
             }
-            else
+
+            if (weapon.IsDagger() && !weapon.hasEnchantmentOfType<NeedleEnchantment>())
             {
-                switch (weapon.InitialParentTileIndex)
-                {
-                    case WeaponIds.LavaKatana when !weapon.hasEnchantmentOfType<LavaEnchantment>():
-                        weapon.AddEnchantment(new LavaEnchantment());
-                        Log.D("[CMBT]: Added LavaEnchantment to Lava Katana.");
-                        break;
-                    case WeaponIds.IridiumNeedle when !weapon.hasEnchantmentOfType<NeedleEnchantment>():
-                        weapon.AddEnchantment(new NeedleEnchantment());
-                        Log.D("[CMBT]: Added NeptuneEnchantment to Iridium Needle.");
-                        break;
-                    case WeaponIds.NeptuneGlaive when !weapon.hasEnchantmentOfType<NeptuneEnchantment>():
-                        weapon.AddEnchantment(new NeptuneEnchantment());
-                        Log.D("[CMBT]: Added NeptuneEnchantment to Neptune Glaive.");
-                        break;
-                    case WeaponIds.ObsidianEdge when !weapon.hasEnchantmentOfType<ObsidianEnchantment>():
-                        weapon.AddEnchantment(new ObsidianEnchantment());
-                        Log.D("[CMBT]: Added ObsidianEnchantment to Obsidian Edge.");
-                        break;
-                    case WeaponIds.YetiTooth when !weapon.hasEnchantmentOfType<YetiEnchantment>():
-                        weapon.AddEnchantment(new YetiEnchantment());
-                        break;
-                }
+                weapon.AddEnchantment(new DaggerEnchantment());
             }
         }
 
@@ -406,21 +392,33 @@ internal static class MeleeWeaponExtensions
     /// <returns><see langword="true"/> if the <paramref name="weapon"/>'s index corresponds to one of the mythic or legendary weapons with intrinsic enchantments, otherwise <see langword="false"/>.</returns>
     internal static bool ShouldHaveIntrinsicEnchantment(this MeleeWeapon weapon)
     {
-        return weapon.IsDagger() || weapon.IsCursedOrBlessed() || weapon.IsInfinityWeapon() ||
-               weapon.InitialParentTileIndex is WeaponIds.InsectHead or WeaponIds.LavaKatana or WeaponIds.IridiumNeedle
-                   or WeaponIds.NeptuneGlaive or WeaponIds.ObsidianEdge or WeaponIds.YetiTooth;
+        if (CombatModule.Config.EnableWeaponOverhaul && (weapon.IsDagger() ||
+                                                         weapon.InitialParentTileIndex is WeaponIds.InsectHead
+                                                             or WeaponIds.LavaKatana or WeaponIds.IridiumNeedle
+                                                             or WeaponIds.NeptuneGlaive or WeaponIds.ObsidianEdge
+                                                             or WeaponIds.YetiTooth))
+        {
+            return true;
+        }
+
+        if (CombatModule.Config.EnableHeroQuest && (weapon.IsCursedOrBlessed() || weapon.IsInfinityWeapon()))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     internal static void SetFarmerAnimatingBackwards(this MeleeWeapon weapon, Farmer farmer)
     {
         Reflector
-            .GetUnboundFieldSetter<MeleeWeapon, bool>(weapon, "anotherClick")
+            .GetUnboundFieldSetter<MeleeWeapon, bool>("anotherClick")
             .Invoke(weapon, false);
         farmer.FarmerSprite.PauseForSingleAnimation = false;
         farmer.FarmerSprite.StopAnimation();
 
         Reflector
-            .GetUnboundFieldSetter<MeleeWeapon, bool>(weapon, "hasBegunWeaponEndPause")
+            .GetUnboundFieldSetter<MeleeWeapon, bool>("hasBegunWeaponEndPause")
             .Invoke(weapon, false);
         float swipeSpeed = 400 - (weapon.speed.Value * 40);
         swipeSpeed *= farmer.GetTotalSwingSpeedModifier();

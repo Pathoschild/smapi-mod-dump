@@ -40,10 +40,28 @@ internal sealed class MonsterFindPlayerPatcher : HarmonyPatcher
     [HarmonyPriority(Priority.First)]
     private static bool MonsterFindPlayerPrefix(Monster __instance, ref Farmer? __result)
     {
+        if (Game1.ticks % 15 == 0)
+        {
+            return false; // don't run original logic
+        }
+
         try
         {
-            var location = Game1.currentLocation;
+            var location = __instance.currentLocation;
             Farmer? target = null;
+
+            var closestMusk = __instance.GetClosest(
+                location.Get_Musks(),
+                musk => musk.FakeFarmer.getTileLocation(),
+                out var distance,
+                musk => !ReferenceEquals(musk.AttachedMonster, __instance));
+            if (closestMusk is not null && distance < 10)
+            {
+                __result = closestMusk.FakeFarmer;
+                __instance.Set_Target(__result);
+                return false; // don't run original logic
+            }
+
             if (__instance is GreenSlime slime)
             {
                 var piped = slime.Get_Piped();
@@ -57,19 +75,21 @@ internal sealed class MonsterFindPlayerPatcher : HarmonyPatcher
                         piped.FakeFarmer.Position = aggroee.Position;
                         target = piped.FakeFarmer;
                     }
+
+                    __result = target;
+                    __instance.Set_Target(__result);
+                    return false; // don't run original logic
                 }
             }
-            else
+
+            var taunter = __instance.Get_Taunter();
+            if (taunter is not null)
             {
-                var taunter = __instance.Get_Taunter();
-                if (taunter is not null)
+                var fakeFarmer = __instance.Get_TauntFakeFarmer();
+                if (fakeFarmer is not null)
                 {
-                    var fakeFarmer = __instance.Get_FakeFarmer();
-                    if (fakeFarmer is not null)
-                    {
-                        fakeFarmer.Position = taunter.Position;
-                        target = fakeFarmer;
-                    }
+                    fakeFarmer.Position = taunter.Position;
+                    target = fakeFarmer;
                 }
             }
 

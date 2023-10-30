@@ -1,0 +1,20 @@
+{
+  "riteButtons": "MouseX1, MouseX2, V, LeftShoulder",
+  "blessingList": {},
+  "questList": {},
+  "castBuffs": true,
+  "consumeRoughage": true,
+  "consumeQuicksnack": true,
+  "consumeCaffeine": true,
+  "setProgress": -1,
+  "maxDamage": false,
+  "unrestrictedStars": false,
+  "combatDifficulty": "medium",
+  "weaponAttunement": {
+    "15": "earth",
+    "14": "water",
+    "9": "stars"
+  },
+  "checkQuests": false,
+  "partyHats": false
+}

@@ -6,13 +6,14 @@ mods:
    Car Warp
    Colored Crystalariums
    Configurable Luck
+   Mines Tokens
    Splash Text
    Sturdy Saplings
 
 latest commit:
-   commit b4207cbcdd8e667286c06c4507e4ae241284c130
+   commit 7b9e6da76640e4d30571bd68a53332de26770b91
    Author: sophiesalacia <sophiesalacia@users.noreply.github.com>
-   Date:   Wed Sep 6 01:21:28 2023 -0400
+   Date:   Tue Oct 17 22:26:33 2023 -0400
    
-       Merge branch 'main' of https://github.com/sophiesalacia/StardewMods
+       MinesTokens initial commit
    

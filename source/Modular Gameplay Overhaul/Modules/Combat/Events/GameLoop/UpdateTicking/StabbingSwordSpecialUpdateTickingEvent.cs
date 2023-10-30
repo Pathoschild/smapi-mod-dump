@@ -55,13 +55,13 @@ internal sealed class StabbingSwordSpecialUpdateTickingEvent : UpdateTickingEven
             facingVector *= -1f; // for some reason up and down are inverted
         }
 
-        var trajectory = facingVector * (20f + Game1.player.addedSpeed * 2f) *
-                         (sword.hasEnchantmentOfType<MeleeArtfulEnchantment>()
+        var trajectory = facingVector * (20f + (Game1.player.addedSpeed * 2f)) *
+                         (sword.hasEnchantmentOfType<InfinityEnchantment>()
                              ? 1.5f
                              : 1.2f);
         user.setTrajectory(trajectory);
 
-        _animationFrames = sword.hasEnchantmentOfType<MeleeArtfulEnchantment>()
+        _animationFrames = sword.hasEnchantmentOfType<InfinityEnchantment>()
                 ? 24
                 : 16; // translates exactly to (6 tiles : 4 tiles) with 0 added speed
         var frame = (FacingDirection)user.FacingDirection switch
@@ -75,7 +75,7 @@ internal sealed class StabbingSwordSpecialUpdateTickingEvent : UpdateTickingEven
         };
 
         user.FarmerSprite.setCurrentFrame(frame, 0, 15, 2, user.FacingDirection == 3, true);
-        Game1.playSound(sword.CurrentParentTileIndex == WeaponIds.LavaKatana ? "fireball" : "daggerswipe");
+        user.currentLocation.playSound(sword.CurrentParentTileIndex == WeaponIds.LavaKatana ? "fireball" : "daggerswipe");
         this.Manager.Enable<StabbingSwordSpecialInterruptedButtonPressedEvent>();
         if (CombatModule.Config.FaceMouseCursor)
         {
@@ -114,18 +114,7 @@ internal sealed class StabbingSwordSpecialUpdateTickingEvent : UpdateTickingEven
 
         if (++_currentFrame > _animationFrames)
         {
-            if (sword.hasEnchantmentOfType<MeleeArtfulEnchantment>())
-            {
-                if (!this.Manager.Enable<ArtfulDashUpdateTickedEvent>())
-                {
-                    this.Manager.Disable<ArtfulDashUpdateTickedEvent>();
-                }
-            }
-            else
-            {
-                user.DoStabbingSpecialCooldown(sword);
-            }
-
+            user.DoStabbingSpecialCooldown(sword);
             this.Disable();
         }
         else

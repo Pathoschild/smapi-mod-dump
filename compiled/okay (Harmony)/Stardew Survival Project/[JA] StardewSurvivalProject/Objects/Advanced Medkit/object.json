@@ -1,0 +1,13 @@
+{
+  "Name": "Advanced Medkit",
+  "Description": "21st century medical technology in 1 single package baby!",
+  "Category": "ArtisanGoods",
+  "Edibility": 1,
+  "EdibleIsDrink": false,
+  "Price": 200,
+  "IsColored": false,
+  "Recipe": null,
+  "PurchaseFrom": "Harvey",
+  "PurchasePrice": 1000,
+  "CanPurchase": true
+}

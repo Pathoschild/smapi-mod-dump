@@ -72,50 +72,54 @@
   "ui.export-menu.export": "Export",
   "ui.export-menu.cancel": "Cancel",
 
-  "config.example-text": "Пользовательский текст примера",
-  "config.example-text.description": "Заменяет текст для сравнения и настройки отображения шрифтов в игре.\nЕсли поле оставить пустым, будет используется предустановленный текст.",
-  "config.min-font-size": "Максимальный размер шрифта",
-  "config.min-font-size.description": "Максимальный размер шрифта (в пикселях).",
-  "config.max-font-size": "Максимальный размер шрифта",
-  "config.max-font-size.description": "Максимальный размер шрифта (в пикселях).",
-  "config.max-spacing": "Максимальное расстояние",
-  "config.max-spacing.description": "Максимальный горизонтальный промежуток между символами.",
-  "config.min-spacing": "Минимальный расстояние",
-  "config.min-spacing.description": "Минимальный горизонтальный интервал между символами.",
-  "config.min-line-spacing": "Мин. расстояние между строками",
-  "config.min-line-spacing.description": "Минимальное расстояние между двумя символами.",
-  "config.max-line-spacing": "Макc. расстояние между строками",
-  "config.max-line-spacing.description": "Максимальное расстояние между двумя символами.",
-  "config.max-offset-x": "Макс. смещение символов по оси-X",
-  "config.max-offset-x.description": "Максимальное смещение по оси-X для всех символов.",
-  "config.min-offset-x": "Макс. смещение символов по оси-X",
-  "config.min-offset-x.description": "Минимальное смещение по оси-X для всех символов.",
-  "config.max-offset-y": "Макс. смещение символов по оси-Y",
-  "config.max-offset-y.description": "Максимальное смещение по оси-Y для всех символов.",
-  "config.min-offset-y": "Мин. смещение символов по оси-Y",
-  "config.min-offset-y.description": "Минимальное смещение по оси-Y для всех символов.",
-  "config.max-pixel-zoom": "Максимальный попиксельный зум",
-  "config.max-pixel-zoom.description": "Максимальное попиксельное масштабирование для каждого символа. (только диалоговый шрифт)",
-  "config.min-pixel-zoom": "Минимальный попиксельный зум",
-  "config.min-pixel-zoom.description": "Минимальное попиксельное масштабирование для каждого символа. (только диалоговый шрифт)",
+  "config.section-color-and-shadow": "Color & Shadow", // TODO
   "config.disable-text-shadow": "Отключить тень у текста",
   "config.disable-text-shadow.description": "Отключает отображение тени у всего текста в игре.",
-  "config.font-menu-key": "Открыть меню шрифтов",
-  "config.font-menu-key.description": "Сочетание клавиш для открытия меню настроек шрифта.",
-  "config.font-settings-in-game-menu": "Вкладка настроек шрифта в игровом меню",
-  "config.font-settings-in-game-menu.description": "Добавляет в игровое меню вкладку для настройки шрифтов.",
-  //TODO
-  "config.hex-format": "\n\nEnter a hexadecimal value:\nAABBGGRR\ne.g. Indigo Blue (R=63, G=72, B=204, A=255)\n => FFCC483F",
+  // TODO
+  "config.color-format": "\n\nFormat: R G B A\ne.g. Indigo Blue (R=63, G=72, B=204, A=255)\n => 63 72 204 255",
   "config.text-color": "Text color",
   "config.text-color.description": "Configues game default text color.",
   "config.text-color-dialogue": "Text color Dialogue",
   "config.text-color-dialogue.description": "Configues game default dialogue text color.",
   "config.shadow-color": "Text shadow color",
   "config.shadow-color.description": "Configues game default text shadow color.",
+
+  // TODO
+  "config.section-compatibility": "Compatibility",
   "config.edit-mode": "Edit mode",
   "config.edit-mode.description": "Edit mode if checked, or load mode.\nEdit mode enhances mod compatibility, avoids conflicts when multiple mods load same font.",
   "config.edit-prio": "Edit priority",
   "config.edit-prio.description": "Priority to edit fonts. The large the value, the later fonts get edited.\nRange: [{{minValue}}, {{maxValue}}]\nDefault: 0",
+
+  "config.section-ui": "UI", // TODO
+  "config.font-menu-key": "Открыть меню шрифтов",
+  "config.font-menu-key.description": "Сочетание клавиш для открытия меню настроек шрифта.",
+  "config.example-text": "Пользовательский текст примера",
+  "config.example-text.description": "Заменяет текст для сравнения и настройки отображения шрифтов в игре.\nЕсли поле оставить пустым, будет используется предустановленный текст.",
+  "config.min-font-size": "Максимальный размер шрифта",
+  "config.min-font-size.description": "Min reachable value of font size UI control.", // TODO
+  "config.max-font-size": "Максимальный размер шрифта",
+  "config.max-font-size.description": "Max reachable value of font size UI control.", // TODO
+  "config.min-spacing": "Минимальный расстояние",
+  "config.min-spacing.description": "Min reachable value of spacing UI control.", // TODO
+  "config.max-spacing": "Максимальное расстояние",
+  "config.max-spacing.description": "Max reachable value of spacing UI control.", // TODO
+  "config.min-line-spacing": "Мин. расстояние между строками",
+  "config.min-line-spacing.description": "Min reachable value of line spacing UI control.", // TODO
+  "config.max-line-spacing": "Макc. расстояние между строками",
+  "config.max-line-spacing.description": "Max reachable value of line spacing UI control.", // TODO
+  "config.min-offset-x": "Макс. смещение символов по оси-X",
+  "config.min-offset-x.description": "Min reachable value of X-offset UI control.", // TODO
+  "config.max-offset-x": "Макс. смещение символов по оси-X",
+  "config.max-offset-x.description": "Max reachable value of X-offset UI control.", // TODO
+  "config.min-offset-y": "Мин. смещение символов по оси-Y",
+  "config.min-offset-y.description": "Min reachable value of Y-offset UI control.", // TODO
+  "config.max-offset-y": "Макс. смещение символов по оси-Y",
+  "config.max-offset-y.description": "Max reachable value of Y-offset UI control.", // TODO
+  "config.min-pixel-zoom": "Минимальный попиксельный зум",
+  "config.min-pixel-zoom.description": "Min reachable value of pixel zoom UI control.", // TODO
+  "config.max-pixel-zoom": "Максимальный попиксельный зум",
+  "config.max-pixel-zoom.description": "Max reachable value of pixel zoom UI control.", // TODO
 
   "misc.mod-file-not-found": "Не удаётся найти \"{{filePath}}\", который является частью файлов мода. Переустановка мода может устранить ошибку."
 }

@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Combat.Events.GameLoop.UpdateTicked;
 
 using DaLion.Shared.Events;
 using StardewModdingAPI.Events;
+using Buff = DaLion.Shared.Enums.Buff;
 
 #endregion using directives
 
@@ -30,7 +31,7 @@ internal sealed class YobaRemoveUpdateTickedEvent : UpdateTickedEvent
     /// <inheritdoc />
     protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
     {
-        if (!Game1.buffsDisplay.hasBuff(21))
+        if (!Game1.buffsDisplay.hasBuff((int)Buff.YobasBlessing))
         {
             CombatModule.State.YobaShieldHealth = 0;
             Log.D("[CMBT]: Yoba Shield's timer has run out.");

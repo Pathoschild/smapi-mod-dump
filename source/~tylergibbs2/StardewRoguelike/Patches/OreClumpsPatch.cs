@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
@@ -16,9 +17,9 @@ using System.Reflection;
 
 namespace StardewRoguelike.Patches
 {
-    internal class OreClumpsPatch : Patch
+    [HarmonyPatch(typeof(MineShaft), nameof(MineShaft.tryToAddOreClumps))]
+    internal class OreClumpsPatch
     {
-		protected override PatchDescriptor GetPatchDescriptor() => new(typeof(MineShaft), "tryToAddOreClumps");
 		public static bool Prefix(MineShaft __instance)
         {
 			Random mineRandom = (Random)__instance.GetType().GetField("mineRandom", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(__instance)!;

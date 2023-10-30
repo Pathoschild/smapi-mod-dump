@@ -128,6 +128,37 @@ namespace ichortower_HatMouseLacey
         }
 
         /*
+         * Add an extra check for the "can interact/which cursor" NPC code, to
+         * display the dialogue cursor when you are pointing to Lacey and
+         * wearing an unseen hat.
+         */
+        public static void Utility__checkForCharacterInteractionAtTile__Postfix(
+                StardewValley.Utility __instance,
+                Vector2 tileLocation,
+                Farmer who,
+                ref bool __result)
+        {
+            if (Game1.mouseCursor > 0) {
+                return;
+            }
+            NPC Lacey = Game1.currentLocation.isCharacterAtTile(tileLocation);
+            if (Lacey != null && Lacey.Name.Equals(ModEntry.LCInternalName)) {
+                string hatstr = LCHatString.GetCurrentHatString(who);
+                if (hatstr != null && !LCModData.HasShownHat(hatstr)) {
+                    Game1.mouseCursor = 4;
+                    __result = true;
+                    if (Utility.tileWithinRadiusOfPlayer(
+                            (int)tileLocation.X, (int)tileLocation.Y, 1, who)) {
+                        Game1.mouseCursorTransparency = 1f;
+                    }
+                    else {
+                        Game1.mouseCursorTransparency = 0.5f;
+                    }
+                }
+            }
+        }
+
+        /*
          * NPC.sayHiTo() generates the "Hi, <NPC>!" etc. speech bubbles when
          * NPCs are walking near each other. This patch makes Lacey and Andy
          * say "..." to each other instead, since they don't get along.

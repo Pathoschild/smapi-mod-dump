@@ -1,7 +1,7 @@
 ﻿{
     "Name": "ShovelToolUpgrades",
     "Author": "moonslime",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "Description": "Adds Shovel upgrades at the blacksmith.",
     "UniqueID": "moonslime.ShovelToolUpgrades",
     "EntryDll": "ShovelToolUpgrades.dll",

@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Professions.Events.Input.ButtonPressed;
 
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
 using DaLion.Overhaul.Modules.Professions.Extensions;
+using DaLion.Shared.Constants;
 using DaLion.Shared.Events;
 using StardewModdingAPI.Events;
 using StardewValley.Tools;
@@ -43,8 +44,14 @@ internal sealed class RascalButtonPressedEvent : ButtonPressedEvent
 
         var player = Game1.player;
         if (Game1.activeClickableMenu is not null || player.CurrentTool is not Slingshot slingshot ||
-            slingshot.numAttachmentSlots.Value < 2 || slingshot.attachments.Count < 2)
+            slingshot.numAttachmentSlots.Value < 2 || slingshot.attachments.Length < 2)
         {
+            return;
+        }
+
+        if (slingshot.attachments[1] is { ParentSheetIndex: ObjectIds.MonsterMusk })
+        {
+            Game1.playSound("cancel");
             return;
         }
 

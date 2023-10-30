@@ -95,7 +95,6 @@ internal sealed class ToolbarReceiveClickPatcher : HarmonyPatcher
             selectable?.Tool == tool
                 ? null
                 : new SelectableTool(tool, toolIndex);
-
         if (playSound)
         {
             Game1.playSound("smallSelect");

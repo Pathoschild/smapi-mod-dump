@@ -6,9 +6,9 @@ mods:
    To-Dew
 
 latest commit:
-   commit 49ec7a168262d529119fc57df7b8d92cdc1a94fe
+   commit 5185d481219758818d3107d8634a79cd34f8e0f0
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Thu Aug 17 23:16:10 2023 -0400
+   Date:   Mon Oct 16 20:37:10 2023 -0400
    
-       repeating items can now specify the number of days before the item is visible
+       Add Portugese translation; release 1.14.1
    

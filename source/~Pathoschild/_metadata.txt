@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 356ae4b10e6bde6b2ff8cd7c602d08d777696453
+   commit be161604eb5749a5ab48791575bbddbdce3a2d48
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sun Sep 10 13:13:50 2023 -0400
+   Date:   Sat Oct 14 11:35:25 2023 -0400
    
-       update release notes & translation docs, normalize i18n files
+       fix Content Patcher not recognizing version 1.30.0
    

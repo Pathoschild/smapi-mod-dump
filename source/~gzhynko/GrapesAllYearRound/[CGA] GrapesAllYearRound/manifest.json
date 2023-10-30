@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/gzhynko/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "GrapesAllYearRound",
+  "Author": "GZhynko",
+  "Version": "1.1.0",
+  "Description": "Allows grapes to grow all year round, but produce only in fall.",
+  "UniqueID": "GZhynko.CGA.GrapesAllYearRound",
+  "MinimumApiVersion": "3.18.0",
+  "UpdateKeys": [ "Nexus:7759" ],
+  "ContentPackFor": {
+    "UniqueID": "GZhynko.CropGrowthAdjustments",
+    "MinimumVersion": "1.0.0"
+   }
+}

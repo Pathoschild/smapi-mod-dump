@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,12 +28,11 @@ namespace Fishnets
         /// <summary>
         /// Get the ParentSheetIndex of the fish net object
         /// </summary>
-        int GetFishNetId();
+        int GetId();
     }
 
     public class Api : IApi
     {
-        /// <inheritdoc cref="IApi.AddExclusion(string)"/>
         public bool AddExclusion(string name)
         {
             if (Statics.ExcludedFish.Any(x => x.ToLower() == name.ToLower()))
@@ -47,7 +45,6 @@ namespace Fishnets
             return true;
         }
 
-        /// <inheritdoc cref="IApi.GetFishNetId"/>
-        public int GetFishNetId() => ModEntry.FishNetId;
+        public int GetId() => ModEntry.ObjectInfo.Id;
     }
 }

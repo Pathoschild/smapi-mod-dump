@@ -8,14 +8,14 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewValley;
 
 namespace StardewRoguelike.Patches
 {
-    class DisableAchievements : Patch
+    [HarmonyPatch(typeof(Game1), nameof(Game1.getAchievement))]
+    class DisableAchievements
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Game1), "getAchievement");
-
         public static bool Prefix()
         {
             return false;

@@ -71,10 +71,11 @@ namespace StardewArchipelago.Archipelago.Gifting
             var trapPrefix = $"{ChatForwarder.COMMAND_PREFIX}trap";
             var giftPrefixWithSpace = $"{giftPrefix} ";
             var trapPrefixWithSpace = $"{trapPrefix} ";
+            var isGift = message.StartsWith(giftPrefixWithSpace);
             var isTrap = message.StartsWith(trapPrefixWithSpace);
-            if (!message.StartsWith(giftPrefixWithSpace) && !isTrap)
+            if (!isGift && !isTrap)
             {
-                if (message.StartsWith(giftPrefix))
+                if (message.StartsWith(giftPrefix) || message.StartsWith(trapPrefix))
                 {
                     Game1.chatBox?.addMessage($"Usage: !!gift [slotName]", Color.Gold);
                     return true;

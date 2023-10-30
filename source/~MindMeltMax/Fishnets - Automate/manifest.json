@@ -11,7 +11,7 @@
 {
   "Name": "Fishnets - Automate",
   "Author": "MindMeltMax",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "An Automate integration for fishnets",
   "UniqueID": "MindMeltMax.Fishnets.Automate",
   "EntryDll": "Fishnets - Automate.dll",

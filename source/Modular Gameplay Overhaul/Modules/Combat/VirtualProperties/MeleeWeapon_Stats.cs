@@ -85,12 +85,12 @@ internal static class MeleeWeapon_Stats
 
         switch (CombatModule.Config.WeaponTooltipStyle)
         {
-            case Config.TooltipStyle.Absolute:
+            case CombatConfig.TooltipStyle.Absolute:
                 return knockback - @default;
-            case Config.TooltipStyle.Relative:
+            case CombatConfig.TooltipStyle.Relative:
                 return (knockback / @default) - 1f;
             default:
-                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<Config.TooltipStyle, float>(
+                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<CombatConfig.TooltipStyle, float>(
                     CombatModule.Config.WeaponTooltipStyle);
         }
     }
@@ -112,12 +112,12 @@ internal static class MeleeWeapon_Stats
 
         switch (CombatModule.Config.WeaponTooltipStyle)
         {
-            case Config.TooltipStyle.Absolute:
+            case CombatConfig.TooltipStyle.Absolute:
                 return critChance - @default;
-            case Config.TooltipStyle.Relative:
+            case CombatConfig.TooltipStyle.Relative:
                 return (critChance / @default) - 1f;
             default:
-                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<Config.TooltipStyle, float>(
+                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<CombatConfig.TooltipStyle, float>(
                     CombatModule.Config.WeaponTooltipStyle);
         }
     }
@@ -138,12 +138,12 @@ internal static class MeleeWeapon_Stats
 
         switch (CombatModule.Config.WeaponTooltipStyle)
         {
-            case Config.TooltipStyle.Absolute:
+            case CombatConfig.TooltipStyle.Absolute:
                 return critPower - @default;
-            case Config.TooltipStyle.Relative:
+            case CombatConfig.TooltipStyle.Relative:
                 return (critPower / @default) - 1f;
             default:
-                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<Config.TooltipStyle, float>(
+                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<CombatConfig.TooltipStyle, float>(
                     CombatModule.Config.WeaponTooltipStyle);
         }
     }
@@ -227,10 +227,8 @@ internal static class MeleeWeapon_Stats
 
     private static Holder Create(MeleeWeapon weapon)
     {
-        var holder = new Holder();
+        var holder = new Holder { MinDamage = weapon.minDamage.Value, MaxDamage = weapon.maxDamage.Value };
 
-        holder.MinDamage = weapon.minDamage.Value;
-        holder.MaxDamage = weapon.maxDamage.Value;
         var data = ModHelper.GameContent
             .Load<Dictionary<int, string>>("Data/weapons")[weapon.InitialParentTileIndex]
             .SplitWithoutAllocation('/');

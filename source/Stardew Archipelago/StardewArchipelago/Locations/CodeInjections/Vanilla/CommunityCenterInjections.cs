@@ -223,7 +223,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 }
 
                 var scoutedItem = _archipelago.ScoutSingleLocation(apAreaToScout);
-                var rewardText = $"Reward: {scoutedItem.PlayerName}'s {scoutedItem.ItemName}";
+                var rewardText = $"Reward: {scoutedItem.PlayerName}'s {scoutedItem.GetItemName()}";
                 __result = rewardText;
                 return false; // don't run original logic
             }

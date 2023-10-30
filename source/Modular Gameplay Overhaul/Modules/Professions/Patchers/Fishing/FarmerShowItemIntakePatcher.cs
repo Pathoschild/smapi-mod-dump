@@ -17,7 +17,6 @@ using DaLion.Shared.Constants;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI.Utilities;
 
 #endregion using directives
 
@@ -49,7 +48,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                 Game1.up => who.FarmerSprite.currentAnimationIndex switch
                 {
                     1 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -69,7 +68,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     2 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -89,7 +88,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     3 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -109,7 +108,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     4 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -129,7 +128,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     5 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -153,7 +152,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                 Game1.right => who.FarmerSprite.currentAnimationIndex switch
                 {
                     1 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -173,7 +172,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     2 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -193,7 +192,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     3 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -213,7 +212,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     4 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -233,7 +232,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     5 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -257,7 +256,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                 Game1.down => who.FarmerSprite.currentAnimationIndex switch
                 {
                     1 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -277,7 +276,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     2 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -297,7 +296,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     3 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -317,7 +316,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     4 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -337,7 +336,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     5 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -361,7 +360,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                 Game1.left => who.FarmerSprite.currentAnimationIndex switch
                 {
                     1 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -381,7 +380,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     2 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -401,7 +400,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     3 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -421,7 +420,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     4 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,
@@ -441,7 +440,7 @@ internal sealed class FarmerShowItemIntakePatcher : HarmonyPatcher
                         0f,
                         0f),
                     5 => new TemporaryAnimatedSprite(
-                        PathUtilities.NormalizeAssetName("TileSheets/weapons"),
+                        "TileSheets\\weapons",
                         Game1.getSourceRectForStandardTileSheet(
                             Tool.weaponsTexture,
                             toShow.ParentSheetIndex,

@@ -106,7 +106,7 @@ internal sealed class ObjectGetPriceAfterMultipliersPatcher : HarmonyPatcher
 
     private static bool IsAnimalOrDerivedProduct(SObject @object)
     {
-        return @object.Category.IsIn(
+        return @object.Category.IsAnyOf(
                    SObject.EggCategory,
                    SObject.MilkCategory,
                    SObject.meatCategory,

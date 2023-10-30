@@ -14,7 +14,6 @@ namespace DaLion.Overhaul.Modules.Tools.Patchers.Integration;
 
 using DaLion.Shared.Attributes;
 using DaLion.Shared.Constants;
-using DaLion.Shared.Extensions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using SpaceCore.Interface;
@@ -42,15 +41,16 @@ internal sealed class NewForgeMenuSpendRightItemPatcher : HarmonyPatcher
             return true; // run original logic
         }
 
-        if (__instance.rightIngredientSpot.item.ParentSheetIndex is not (ObjectIds.CopperBar or ObjectIds.IronBar
-                or ObjectIds.GoldBar or ObjectIds.IridiumBar or ObjectIds.RadioactiveBar) &&
-            __instance.rightIngredientSpot.item.ParentSheetIndex !=
-            "spacechase0.MoonMisadventures/Mythicite Bar".GetDeterministicHashCode())
+        var item = __instance.rightIngredientSpot.item;
+        if (item.ParentSheetIndex is not (ObjectIds.CopperBar or ObjectIds.IronBar or ObjectIds.GoldBar
+                or ObjectIds.IridiumBar or ObjectIds.RadioactiveBar) &&
+            (item.ParentSheetIndex != 1720 ||
+             Reflector.GetUnboundPropertyGetter<object, string>(item, "FullId").Invoke(item) != "spacechase0.MoonMisadventures/Mythicite Bar"))
         {
             return true; // run original logic
         }
 
-        __instance.rightIngredientSpot.item.Stack -= 10;
+        __instance.rightIngredientSpot.item.Stack -= 5;
         if (__instance.rightIngredientSpot.item.Stack <= 0)
         {
             __instance.rightIngredientSpot.item = null;

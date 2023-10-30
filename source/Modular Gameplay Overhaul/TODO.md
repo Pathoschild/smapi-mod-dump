@@ -8,14 +8,15 @@ for queries and analysis.**
 
 # General
 
+* Review configs that say "requires restart".
+
 # CMBT
 
-* Fix Yoba, Gil and Robin localized virtue message.
-* Remove temp fixes (3.1.3+).
-
-# PROFS
+# PRFS
 
 # PNDS
+
+* Review if Aquarist is OP.
 
 # TXS
 

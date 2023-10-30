@@ -76,9 +76,9 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit d592630503c9076b6c2183a75d135fcaf0d2c5cb
+   commit 02a2404d6be968dc91f3cc6328d9ddd1b49ad194
    Author: Casey Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Thu Aug 31 17:36:40 2023 -0400
+   Date:   Sun Oct 22 15:21:55 2023 -0400
    
-       Merge remote-tracking branch 'origin/develop' into develop
+       JA changes I never committed
    

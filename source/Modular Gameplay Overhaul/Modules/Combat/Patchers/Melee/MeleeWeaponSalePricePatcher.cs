@@ -68,6 +68,7 @@ internal sealed class MeleeWeaponSalePricePatcher : HarmonyPatcher
                 }
                 else if (enchantment.IsForge())
                 {
+#pragma warning disable SA1513 // Closing brace should be followed by blank line
                     __result += enchantment switch
                     {
                         RubyEnchantment => 125,
@@ -79,6 +80,7 @@ internal sealed class MeleeWeaponSalePricePatcher : HarmonyPatcher
                         TopazEnchantment => 40,
                         _ => 0,
                     } * enchantment.GetLevel(); // half of gemstone value
+#pragma warning restore SA1513 // Closing brace should be followed by blank line
                 }
                 else if (!enchantment.IsSecondaryEnchantment())
                 {

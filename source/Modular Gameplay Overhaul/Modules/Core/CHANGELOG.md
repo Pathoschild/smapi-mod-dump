@@ -8,7 +8,36 @@ for queries and analysis.**
 
 # Core Changelog
 
+## 4.1.0
+
+### Changed
+
+* The GMCM is now self-generating (thanks to atravita for the idea and reference code). This does unfortunately mean that absolutely all translation keys for the menu have changed (sorry translators.)
+
+## 4.0.1
+
+### Added
+
+* Added a warning to re-enable modules if checksum validation fails.
+
+## 4.0.0
+
+### Added
+
+* Debug mode now highlights every segment of the Royal Serpent.
+
+### Changed
+
+* Sprite assets organized into subfolders.
+* Moved OutOfCombat MonsterTakeDamagePatcher to this module, where it should have been.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
+
 ## 3.1.4
+
+### Added
+
+* Re-added debug framework, which disappeared completely from the repo, apparently back in version 1.0?.
 
 ### Changed
 

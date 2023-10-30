@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Clothes Rack",
+  "Author": "LunaticShade",
+  "Version": "0.1.0",
+  "Description": "Adds a clothes rack furniture item",
+  "UniqueID": "LunaticShade.ClothesRack",
+  "EntryDll": "ClothesRack.dll",
+  "MinimumApiVersion": "3.18.0",
+  "UpdateKeys": [ "nexus:18765" ]
+}

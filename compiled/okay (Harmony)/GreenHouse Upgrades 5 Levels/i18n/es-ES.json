@@ -1,0 +1,27 @@
+﻿{
+  "GreenhouseLevel1": "Invernadero",
+  "GreenhouseLevel1Description": "Campo cultivable 15x15. Añade un sótano.",
+  
+  "GreenhouseLevel2": "Invernadero Pequeño",
+  "GreenhouseLevel2Description": "Campo cultivable 30x30. Amplía el sótano. Incorpora riego automático. Puedes trasladar árboles frutales al invernadero.",
+  
+  "GreenhouseLevel3": "Invernadero Medio",
+  "GreenhouseLevel3Description": "Campo cultivable 60x60. Amplía más el sótano. Invernadero interior.",
+  
+  "GreenhouseLevel4": "Invernadero Grande",
+  "GreenhouseLevel4Description": "Campo cultivable 120x120. Amplía aún más el sótano. Mayor invernadero interior.",
+
+  "GreenhouseLevel5": "Invernadero Deluxe Extra Grande",
+  "GreenhouseLevel5Description": "Campo cultivable 240x240. Amplía aún más el sótano. Invernadero interior más extenso.",
+
+  "LeftBehindTree": "Tio Joder Que se te olvido el arbol.",
+  "LeftBehindCrop": "Tio Joder Que se te olvido la cosecha.",
+  "PickUpTreeMessage": "¡Árbol recogido!",
+  "PlaceTreeMessage": "¡Árbol colocado!",
+  "PickUpCropMessage": "¡Cosecha recogida!",
+  "PlaceCropMessage": "¡Cosecha colocada!",
+  "EnableTreePickingOption": "Recolección de árboles y cultivos",
+  "EnableTreePickingTooltip": "Habilitar o deshabilitar la recolección.",
+  "language-choice-name": "Idioma",
+  "language-choice-tooltip": "Selecciona el idioma del mod"
+}

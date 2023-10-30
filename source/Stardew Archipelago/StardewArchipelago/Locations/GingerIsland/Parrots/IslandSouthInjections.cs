@@ -8,12 +8,10 @@
 **
 *************************************************/
 
-using System;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.BellsAndWhistles;
 using StardewValley.Locations;
 
 namespace StardewArchipelago.Locations.GingerIsland.Parrots
@@ -52,7 +50,7 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
 
         private static void AddResortParrot(IslandLocation __instance)
         {
-            var resortParrot = new ParrotUpgradePerch(__instance, new Point(17, 22),
+            var resortParrot = new ParrotUpgradePerchArchipelago(AP_RESORT, _archipelago, __instance, new Point(17, 22),
                 new Rectangle(12, 18, 14, 7), 20, PurchaseResortParrot, IsResortParrotPurchased,
                 "Resort", "Island_UpgradeHouse");
             __instance.parrotUpgradePerches.Add(resortParrot);
@@ -70,10 +68,12 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
 
         private static void AddWesternTurtleParrot(IslandLocation __instance)
         {
-            __instance.parrotUpgradePerches.Add(new ParrotUpgradePerch(__instance, new Point(5, 9),
+            var westernParrot = new ParrotUpgradePerchArchipelago(AP_WESTERN_TURTLE, _archipelago, __instance,
+                new Point(5, 9),
                 new Rectangle(1, 10, 3, 4), 10,
                 PurchaseWesternTurtleParrot,
-                IsWesternTurtleParrotPurchased, "Turtle", "Island_FirstParrot"));
+                IsWesternTurtleParrotPurchased, "Turtle", "Island_FirstParrot");
+            __instance.parrotUpgradePerches.Add(westernParrot);
         }
 
         private static void PurchaseWesternTurtleParrot()

@@ -21,58 +21,37 @@ namespace StardewRoguelike.Bosses
     {
         public string DisplayName => "Goobins the Gelatinous Sludge";
 
-        public string MapPath
-        {
-            get { return "boss-slime"; }
-        }
+        public string MapPath => "boss-slime";
 
-        public string TextureName
-        {
-            get { return "Characters\\Monsters\\Big Slime"; }
-        }
+        public string TextureName => "Characters\\Monsters\\Big Slime";
 
-        public Vector2 SpawnLocation
-        {
-            get { return new(24, 24); }
-        }
+        public Vector2 SpawnLocation => new(24, 24);
 
-        public List<string> MusicTracks
-        {
-            get { return new() { "jelly_junktion" }; }
-        }
+        public List<string> MusicTracks => new() { "jelly_junktion" };
 
-        public bool InitializeWithHealthbar
-        {
-            get { return true; }
-        }
+        public bool InitializeWithHealthbar => true;
 
-        private float _difficulty;
+        public float Difficulty { get; set; }
 
-        public float Difficulty
-        {
-            get { return _difficulty; }
-            set { _difficulty = value; }
-        }
+        private readonly double SplitChance = 0.225;
 
-        private double splitChance = 0.225;
-
-        private readonly int width;
-        private readonly int height;
+        private readonly int Width;
+        private readonly int Height;
 
         public TutorialSlime() { }
 
         public TutorialSlime(float difficulty) : base(Vector2.Zero, 40)
         {
             if (Roguelike.HardMode)
-                splitChance += 0.10;
+                SplitChance += 0.10;
 
             setTileLocation(SpawnLocation);
             Difficulty = difficulty;
 
-            width = 32;
-            height = 32;
-            Sprite.SpriteWidth = width;
-            Sprite.SpriteHeight = height;
+            Width = 32;
+            Height = 32;
+            Sprite.SpriteWidth = Width;
+            Sprite.SpriteHeight = Height;
             Sprite.LoadTexture(TextureName);
             Scale = 3f;
 
@@ -90,8 +69,8 @@ namespace StardewRoguelike.Bosses
         {
             Sprite = new(TextureName)
             {
-                SpriteWidth = width,
-                SpriteHeight = height
+                SpriteWidth = Width,
+                SpriteHeight = Height
             };
             Sprite.LoadTexture(TextureName);
             HideShadow = true;
@@ -115,7 +94,7 @@ namespace StardewRoguelike.Bosses
 
         public override void shedChunks(int number, float scale)
         {
-            Game1.createRadialDebris(currentLocation, Sprite.textureName.Value, new Rectangle(0, height * 4, width, height), width / 2, GetBoundingBox().Center.X, GetBoundingBox().Center.Y, number, (int)getTileLocation().Y, Color.White, 4f);
+            Game1.createRadialDebris(currentLocation, Sprite.textureName.Value, new Rectangle(0, Height * 4, Width, Height), Width / 2, GetBoundingBox().Center.X, GetBoundingBox().Center.Y, number, (int)getTileLocation().Y, Color.White, 4f);
         }
 
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
@@ -125,7 +104,7 @@ namespace StardewRoguelike.Bosses
                 BossManager.Death(who.currentLocation, who, DisplayName, SpawnLocation);
             else
             {
-                if (Game1.random.NextDouble() < splitChance && (Scale > 0.8f || Roguelike.HardMode))
+                if (Game1.random.NextDouble() < SplitChance && (Scale > 0.8f || Roguelike.HardMode))
                 {
                     shedChunks(4, 1f);
                     Game1.playSound("slime");

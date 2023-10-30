@@ -1,6 +1,7 @@
 {
   "ModEnabled": true,
   "AutoUse": true,
+  "ShowMessage": false,
   "AutoStore": "Sap,Wood,Hardwood,Stone,Coal,Fiber,Clay",
   "ModKey1": "LeftShift",
   "ModKey2": "LeftControl",

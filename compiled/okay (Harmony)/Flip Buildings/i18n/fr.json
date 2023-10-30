@@ -1,0 +1,7 @@
+﻿{
+	"Carpenter_Flip": "Retourner des constructions",
+	"Carpenter_SelectBuilding_Flip": "Sélectionner une construction à retourner",
+	"Carpenter_CannotFlip": "Cette construction ne peut pas être retournée" ,
+	"Carpenter_CannotFlip_Permission": "Vous n'avez pas l'autorisation pour retourner cette construction",
+	"Carpenter_CannotFlip_PlayerHere": "Impossible de retourner tant qu'un joueur est sur la construction"
+}

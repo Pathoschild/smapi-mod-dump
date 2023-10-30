@@ -19,6 +19,8 @@ namespace StardewArchipelago.Locations.Festival
         public const string TUB_O_FLOWERS_RECIPE = "Tub o' Flowers Recipe";
         public const string LUAU_SOUP = "Luau Soup";
         public const string MOONLIGHT_JELLIES = "Dance of the Moonlight Jellies";
+        public const string MOONLIGHT_JELLIES_BANNER = "Moonlight Jellies Banner";
+        public const string STARPORT_DECAL = "Starport Decal";
         public const string STRENGTH_GAME = "Smashing Stone";
         public const string GRANGE_DISPLAY = "Grange Display";
         public const string RARECROW_1 = "Rarecrow #1 (Turnip Head)";

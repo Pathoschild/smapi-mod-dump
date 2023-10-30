@@ -403,12 +403,14 @@ namespace Unlockable_Bundles.Lib
                 if (CachedJsonAssetIDs.ContainsKey(name))
                     return new StardewValley.Object(CachedJsonAssetIDs[name], initialStack, quality: quality);
 
-                var kvp = Game1.objectInformation.FirstOrDefault(el => el.Value.StartsWith(name + '/', StringComparison.OrdinalIgnoreCase));
-                if (kvp.Key == "")
-                    ModEntry._Monitor.LogOnce($"Unknown JA item name: {name}", LogLevel.Error);
-                CachedJsonAssetIDs.Add(name, kvp.Key);
+                var match = Game1.objectData.FirstOrDefault(el => el.Value.Name.StartsWith(name, StringComparison.OrdinalIgnoreCase));
 
-                id = kvp.Key;
+                if (match.Value is null)
+                    ModEntry._Monitor.LogOnce($"Unknown item name: {name}", LogLevel.Error);
+
+                CachedJsonAssetIDs.Add(name, match.Key ?? name);
+
+                id = match.Key ?? name;
             }
 
             var ret = ItemRegistry.Create(id, initialStack, quality: quality);

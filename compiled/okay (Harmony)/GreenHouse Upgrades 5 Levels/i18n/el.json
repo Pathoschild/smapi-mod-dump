@@ -1,0 +1,26 @@
+﻿{
+    "GreenhouseLevel1": "Θερμοκήπιο",
+    "GreenhouseLevel1Description": "Καλλιεργήσιμο έδαφος 15x15. Προσθέτει ένα υπόγειο.",
+    "GreenhouseLevel2": "Μικρό Θερμοκήπιο",
+    "GreenhouseLevel2Description": "Καλλιεργήσιμο έδαφος 30x30. Επεκτείνει το υπόγειο, προσθέτει εσωτερικό θερμοκήπιο και αυτόματη ποτίστρα.",
+    "GreenhouseLevel3": "Μεσαίο Θερμοκήπιο",
+    "GreenhouseLevel3Description": "Καλλιεργήσιμο έδαφος 50x50. Επεκτείνει περαιτέρω το υπόγειο και επεκτείνει το εσωτερικό θερμοκήπιο.",
+    "GreenhouseLevel4": "Μεγάλο Θερμοκήπιο",
+    "GreenhouseLevel4Description": "Καλλιεργήσιμο έδαφος 75x75. Επεκτείνει περαιτέρω το υπόγειο και το εσωτερικό θερμοκήπιο.",
+    "GreenhouseLevel5": "Εξαιρετικά Μεγάλο Θερμοκήπιο Deluxe",
+    "GreenhouseLevel5Description": "Καλλιεργήσιμο έδαφος 100x100. Επεκτείνει περαιτέρω το υπόγειο και το εσωτερικό θερμοκήπιο.",
+
+    
+    "LeftBehindTree": "Αφήσατε πίσω το δέντρο.",
+    "LeftBehindCrop": "Αφήσατε πίσω το καλλιέργεια.",
+    "PickUpTreeMessage": "Δέντρο σηκώθηκε!",
+    "PlaceTreeMessage": "Δέντρο τοποθετήθηκε!",
+    "PickUpCropMessage": "Καλλιέργεια σηκώθηκε!",
+    "PlaceCropMessage": "Καλλιέργεια τοποθετήθηκε!",
+    "EnableTreePickingOption": "Συλλογή δέντρων και καλλιεργειών",
+    "EnableTreePickingTooltip": "Ενεργοποίηση/απενεργοποίηση συλλογής.",
+    "language-choice-name": "Γλώσσα",
+"language-choice-tooltip": "Επιλέξτε τη γλώσσα του mod"
+
+    
+}

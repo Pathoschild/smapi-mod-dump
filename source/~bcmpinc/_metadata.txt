@@ -16,9 +16,9 @@ mods:
    Yet Another Harvest With Scythe Mod
 
 latest commit:
-   commit b6cf9d6e0eff97d1932fa3fa6b2456994821868c
+   commit fb373a7f35b67270f0809f3a6345e7b4d3e882e1
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Mon Mar 27 15:56:29 2023 +0200
+   Date:   Tue Oct 24 23:17:31 2023 +0200
    
-       Add balancedcombinemanyrings mod as incompatible.
+       Version bump and readme update.
    

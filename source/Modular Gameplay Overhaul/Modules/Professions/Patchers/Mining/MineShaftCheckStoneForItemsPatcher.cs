@@ -44,8 +44,8 @@ internal sealed class MineShaftCheckStoneForItemsPatcher : HarmonyPatcher
     {
         var helper = new ILHelper(original, instructions);
 
-        // Injected: if (who.IsLocalPlayer && who.professions.Contains(<spelunker_id>) chanceForLadderDown += ModEntry.PlayerState.SpelunkerLadderStreak * 0.005;
-        // After: if (EnemyCount == 0) chanceForLadderDown += 0.04;
+        // Injected: if (who.IsLocalPlayer && who.professions.Contains(<spelunker_id>) chanceForLadderDown *= 1.0 + ModEntry.PlayerState.SpelunkerLadderStreak * 0.005;
+        // Before: if (EnemyCount == 0) chanceForLadderDown += 0.04;
         try
         {
             var resumeExecution = generator.DefineLabel();
@@ -53,13 +53,10 @@ internal sealed class MineShaftCheckStoneForItemsPatcher : HarmonyPatcher
                 .Match(
                     new[]
                     {
-                        // find ladder spawn segment
-                        new CodeInstruction(
-                            OpCodes.Ldfld,
-                            typeof(MineShaft).RequireField("ladderHasSpawned")),
+                        // find +0.04 segment
+                        new CodeInstruction(OpCodes.Ldc_R8, 0.04),
                     })
-                .Move(-1)
-                .StripLabels(out var labels) // backup and remove branch labels
+                .Match(new[] { new CodeInstruction(OpCodes.Ldarg_0) }, ILHelper.SearchOption.Previous) // start of `if (EnemyCount == 0)`
                 .AddLabels(resumeExecution) // branch here to resume execution
                 .Insert(
                     new[]
@@ -72,9 +69,7 @@ internal sealed class MineShaftCheckStoneForItemsPatcher : HarmonyPatcher
                         new CodeInstruction(OpCodes.Brfalse_S, resumeExecution),
                         // prepare profession check
                         new CodeInstruction(OpCodes.Ldarg_S, (byte)4),
-                    },
-                    // restore backed-up labels
-                    labels)
+                    })
                 .InsertProfessionCheck(Profession.Spelunker.Value, forLocalPlayer: false)
                 .Insert(
                     new[]
@@ -89,11 +84,13 @@ internal sealed class MineShaftCheckStoneForItemsPatcher : HarmonyPatcher
                             typeof(ModState).RequirePropertyGetter(nameof(ModState.Professions))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
-                            typeof(State).RequirePropertyGetter(nameof(State.SpelunkerLadderStreak))),
+                            typeof(ProfessionState).RequirePropertyGetter(nameof(ProfessionState.SpelunkerLadderStreak))),
                         new CodeInstruction(OpCodes.Conv_R8),
                         new CodeInstruction(OpCodes.Ldc_R8, 0.005),
                         new CodeInstruction(OpCodes.Mul),
+                        new CodeInstruction(OpCodes.Ldc_R8, 1.0),
                         new CodeInstruction(OpCodes.Add),
+                        new CodeInstruction(OpCodes.Mul),
                         new CodeInstruction(OpCodes.Stloc_3),
                     });
         }

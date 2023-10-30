@@ -30,7 +30,7 @@ namespace StardewHack.WearMoreRings
     }
 
 #pragma warning disable CS0618 // Type or member is obsolete
-    public class ModEntry : HackWithConfig<ModEntry, ModConfig>, IWearMoreRingsAPI
+    public class ModEntry : HackWithConfig<ModEntry, ModConfig>, IWearMoreRingsAPI, IWearMoreRingsAPI_2
 #pragma warning restore CS0618 // Type or member is obsolete
     {
         private Type forge_menu_class = typeof(ForgeMenu);
@@ -38,6 +38,8 @@ namespace StardewHack.WearMoreRings
         public static readonly PerScreen<RingMap> container = new PerScreen<RingMap>();
 
         public override void HackEntry(IModHelper helper) {
+            I18n.Init(helper.Translation);
+
             if (config.Rings < 2) {
                 config.Rings = 2;
             }
@@ -56,9 +58,9 @@ namespace StardewHack.WearMoreRings
             helper.Events.GameLoop.Saving += (object sender, SavingEventArgs e) => {
                 container.Value.Save();
             };
-            helper.ConsoleCommands.Add("player_resetmodifiers", "Clears buffs, then resets and reapplies the modifiers applied by boots & rings.", (string arg1, string[] arg2) => { ResetModifiers(); });
-            helper.ConsoleCommands.Add("world_destroyringchests", "Removes any remaining ring chests used for storing player's rings. Any items contained therein will be dropped at your feet.", (string arg1, string[] arg2) => { Migration.DestroyRemainingChests(Monitor); });
-            helper.ConsoleCommands.Add("player_openforge", "Opens the forge menu.", (string arg1, string[] arg2) => { Game1.activeClickableMenu = new ForgeMenu(); });
+            helper.ConsoleCommands.Add("player_resetmodifiers",   I18n.ResetModifiersCommand(),    (string arg1, string[] arg2) => { ResetModifiers(); });
+            helper.ConsoleCommands.Add("world_destroyringchests", I18n.DestroyRingChestsCommand(), (string arg1, string[] arg2) => { Migration.DestroyRemainingChests(Monitor); });
+            helper.ConsoleCommands.Add("player_openforge",        I18n.OpenForgeCommand(),         (string arg1, string[] arg2) => { Game1.activeClickableMenu = new ForgeMenu(); });
             
             Patch(()=>new InventoryPage(0,0,0,0), InventoryPage_ctor);
             Patch((InventoryPage ip)=>ip.draw(null), InventoryPage_draw);
@@ -76,8 +78,8 @@ namespace StardewHack.WearMoreRings
         protected override void InitializeApi(IGenericModConfigMenuApi api) {
             api.AddNumberOption(
                 mod: ModManifest, 
-                name: () => "Rings", 
-                tooltip: () => "How many ring slots are available.", 
+                name: I18n.RingsName, 
+                tooltip: I18n.RingsTooltip,
                 getValue: () => config.Rings, 
                 setValue: (int val) => {
                     config.Rings = val; 
@@ -115,7 +117,7 @@ namespace StardewHack.WearMoreRings
 
 #region API
         public override object GetApi(IModInfo info) {
-            Monitor.Log($"Mod {info.Manifest.Name} requested the deprecated Wear More Rings API. Since version 5.0 mods should be compatible with WMR without custom support.", LogLevel.Warn);
+            Monitor.Log($"Mod {info.Manifest.Name} requested the Wear More Rings API. Since version 5.0 mods should be compatible with WMR without custom support.", LogLevel.Warn);
             return this;
         }
         
@@ -143,6 +145,24 @@ namespace StardewHack.WearMoreRings
                 } else if (ring != null) {
                     yield return ring;
                 }
+            }
+        }
+
+        public int RingSlotCount() {
+            return config.Rings;
+        }
+
+        public Ring GetRing(int slot) {
+            if (slot < 0 || config.Rings <= slot) throw new ArgumentOutOfRangeException();
+            return container.Value[slot];
+        }
+
+        public void SetRing(int slot, Ring ring) {
+            if (slot < 0 || config.Rings <= slot) throw new ArgumentOutOfRangeException();
+            if (container.Value[slot] != ring) { 
+                container.Value[slot]?.onUnequip(Game1.player, Game1.currentLocation);
+                container.Value[slot] = ring;
+                container.Value[slot]?.onEquip  (Game1.player, Game1.currentLocation);
             }
         }
 #endregion API
@@ -594,7 +614,7 @@ namespace StardewHack.WearMoreRings
                 Instructions.Call(typeof(Random), nameof(Random.Next))
             );
         }
-#endregion Patch Ring
+        #endregion Patch Ring
     }
 }
 

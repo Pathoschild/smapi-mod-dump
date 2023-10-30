@@ -1,0 +1,40 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "time.weekday.Sunday": "Chủ Nhật",
+    "time.weekday.Monday": "Thứ Hai",
+    "time.weekday.Tuesday": "Thứ Ba",
+    "time.weekday.Wednesday": "Thứ Tư",
+    "time.weekday.Thursday": "Thứ Năm",
+    "time.weekday.Friday": "Thứ Sáu",
+    "time.weekday.Saturday": "Thứ Bảy",
+
+    "time.month.1": "Tháng Một",
+    "time.month.2": "Tháng Hai",
+    "time.month.3": "Tháng Ba",
+    "time.month.4": "Tháng Tư",
+    "time.month.5": "Tháng Năm",
+    "time.month.6": "Tháng Sáu",
+    "time.month.7": "Tháng Bảy",
+    "time.month.8": "Tháng Tám",
+    "time.month.9": "Tháng Chín",
+    "time.month.10": "Tháng Mười",
+    "time.month.11": "Tháng Mười Một",
+    "time.month.12": "Tháng Mười Hai",
+
+    "holiday.newyears": "Năm Mới",
+    "holiday.valentines": "Ngày Lễ Tình Nhân",
+    "holiday.halloween": "Halloween",
+    "holiday.christmas": "Giáng Sinh",
+    "holiday.newyearseve": "Đêm Giao Thừa",
+    "holiday.easter": "Lễ Phục Sinh",
+    "holiday.thanksgiving": "Lễ Tạ Ơn"
+}

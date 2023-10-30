@@ -39,6 +39,7 @@ public class PoisonAnimation : TemporaryAnimatedSprite
             false,
             Game1.random.NextBool())
     {
+        this.Position = monster.GetOverheadOffset() + new Vector2(0f, -64f);
         this.positionFollowsAttachedCharacter = true;
         this.attachedCharacter = monster;
         this.layerDepth = 999999f;
@@ -53,15 +54,13 @@ public class PoisonAnimation : TemporaryAnimatedSprite
     {
         var result = base.update(time);
         var monster = (Monster)this.attachedCharacter;
-        if (result || monster.Health <= 0)
+        if (result || monster.Health <= 0 || !monster.IsPoisoned())
         {
             PoisonAnimationByMonster.Remove(monster);
             return result;
         }
 
-        var offset = monster.GetOverheadOffset(time);
-        offset.Y -= 64f;
-        this.Position = offset;
+        this.Position = monster.GetOverheadOffset() + new Vector2(0f, -64f);
         return result;
     }
 }

@@ -6,11 +6,9 @@ mods:
    Messy Crops
 
 latest commit:
-   commit 9e7465e2bbc0214c73003b106a72fb5f18ea899f
+   commit 83524c4b84b2a51e8140dce0c71889466925b677
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Tue Jan 17 11:43:40 2023 -0500
+   Date:   Sun Oct 29 20:15:20 2023 -0400
    
-       cleanup
-       fix build settings
-       bump version
+       1.6
    

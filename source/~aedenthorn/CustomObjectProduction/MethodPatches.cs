@@ -19,11 +19,6 @@ namespace CustomObjectProduction
     /// <summary>The mod entry point.</summary>
     public partial class ModEntry
     {
-        private static void Game1__newDayAfterFade_Prefix()
-        {
-            objectProductionDataDict = SHelper.Content.Load<Dictionary<string, ProductData>>(dictPath, ContentSource.GameContent) ?? new Dictionary<string, ProductData>();
-            SMonitor.Log($"Loaded {objectProductionDataDict.Count} products for today");
-        }
         private static bool GameLocation_checkAction_Prefix(GameLocation __instance, Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who, ref bool __result)
         {
             if (!Config.EnableMod)
@@ -38,6 +33,8 @@ namespace CustomObjectProduction
                 SMonitor.Log($"checking action on {__instance.objects[vect].Name} {__instance.objects[vect].heldObject.Value},{__instance.objects[vect].readyForHarvest.Value},{__instance.objects[vect].ParentSheetIndex},{__instance.objects[vect].Name}");
 
                 ProductData product = null;
+
+                var objectProductionDataDict = SHelper.GameContent.Load<Dictionary<string, ProductData>>(dictPath) ?? new Dictionary<string, ProductData>();
                 if (objectProductionDataDict.ContainsKey(__instance.objects[vect].ParentSheetIndex + ""))
                 {
                     product = objectProductionDataDict[__instance.objects[vect].ParentSheetIndex + ""];
@@ -79,6 +76,7 @@ namespace CustomObjectProduction
                 return;
 
             ProductData product = null;
+            var objectProductionDataDict = SHelper.GameContent.Load<Dictionary<string, ProductData>>(dictPath) ?? new Dictionary<string, ProductData>();
             if (objectProductionDataDict.ContainsKey(__instance.ParentSheetIndex + ""))
                 product = objectProductionDataDict[__instance.ParentSheetIndex + ""];
             else if (objectProductionDataDict.ContainsKey(__instance.Name))

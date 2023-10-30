@@ -1,0 +1,59 @@
+[
+	{
+		"ProducerName": "Rain Collector", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false, 
+		"WorkingWeather": [ "Rainy", "Stormy" ],
+		"WorkingOutdoors": true
+	},
+	{
+		"ProducerName": "Air Cooler", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Fan", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Medicine Worktable", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Magical Medicine Stove", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Groundwater Collector", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Primitive Water Filter", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Ice Machine", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Air Conditioner", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Tall Air Conditioner", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false
+	},
+	{
+		"ProducerName": "Portable Heater", //Only 1 frame
+		"AlternateFrameProducing": false, 
+		"AlternateFrameWhenReady": false
+	},
+]

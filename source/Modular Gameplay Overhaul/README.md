@@ -8,7 +8,9 @@ for queries and analysis.**
 
 <div align="center">
 
-# MARGO - Modular Gameplay Overhaul for Stardew Valley  
+![](resources/headings/title.png)
+
+![](resources/headings/modular-gameplay-overhaul.png)
 
 A complete and comprehensive rework of Stardew Valley gameplay mechanics, offering a much more engaging and immersive "Vanilla+" experience.
 
@@ -25,6 +27,7 @@ A complete and comprehensive rework of Stardew Valley gameplay mechanics, offeri
 - [API for C# Developers](#api-for-c-developers)
 - [Buildings the Source Code](#building-the-source-code)
 - [Dependencies](#dependencies)
+- [Mod Recommendations](#mod-recommendations)
 - [Credits & Special Thanks](#contributors--special-thanks)
 
 ## Introduction
@@ -41,7 +44,7 @@ The modular nature of this mod allows users to cherry-pick features to their lik
 
 The available modules are listed below. **Please read this page carefuly in its entirety.** Modules can be toggled on or off **in the title screen** via GMCM. Each module is itself highly configurable, and will be added to the GMCM menu if enabled. Some modules require specific enabling/disabling instructions you should pay attention to. These requirements will be mentioned below.
 
-- **[PROFS](Modules/Professions)** is the original module, formely known as Walk Of Life. It overhauls all the game's professions with the goal of supporting more diverse and interesting playstyles. It also introduces optional Prestige mechanics for very-late game save files and Limit Breaks for Combat professions.
+- **[PRFS](Modules/Professions)** is the original module, formely known as Walk Of Life. It overhauls all the game's professions with the goal of supporting more diverse and interesting playstyles. It also introduces optional Prestige mechanics for very-late game save files and Limit Breaks for Combat professions.
 
 - **[CMBT](Modules/Combat)** ﻿is a huge overhaul of nearly all aspects of combat; from rebalanced stats, melee and ranged weapons, rings and enchantments, to entirely new mechanics like status effects, weapon combos, a new weapon type, Gemstone Music Theory, and much more. **This module adds new items via Json Assets, and thus may cause Json Shuffle on existing saves.** 
 
@@ -72,17 +75,18 @@ All modules should be fully multiplayer and split-screen compatible **if and onl
 
 <div align="center">
 
-<img src="./resources/releases.png" alt="releases.png" width="80%">
-<img src="./resources/main_file.png" alt="main_file.png" width="80%">
+<img src="./resources/screenshots/releases.png" alt="releases.png" width="80%">
+<img src="./resources/screenshots/main_file.png" alt="main_file.png" width="80%">
 
 </div>
 
 3. Extract the downloaded archive file into your local mods folder.
-4. Download and install any additional optional files as desired. 
+4. Explore the `optionals` folder to find compatibility files that must be manually installed.
 5. Start the game once with SMAPI to generate a config file.
-6. Enable the desired modules in GMCM by pressing Shift+F12 in the title screen, or by manually editing the `config.json` file. I recommend you do this before beginning your playthrough.
+6. Enable the desired modules in GMCM by pressing Shift+F12 in the title screen, or by manually editing the `config.json` file.
 
-Please review the compatibility sections of each specific module in the links above.
+<div align="center"><font color="yellow">⚠ Please review the compatibility sections of each specific module in the links above. ⚠</font></div>
+<br>
 
 As with any mod, always **delete any previous installation completely** before updating. If you'd like to preserve your config settings you can delete everything except the `config.json` file.
 
@@ -90,15 +94,18 @@ As with any mod, always **delete any previous installation completely** before u
 
 <sub><sup>[🔼 Back to top](#table-of-contents)</sup></sub>
 
-## Reporting Bugs or Issues
+## Reporting Bugs and Issues
 
 1. Make sure the mod is updated to the latest version. I will not support older versions.
-2. Make sure you can reliably reproduce the issue. Write out the steps to reproduce the issue.
+2. Make sure you can reliably reproduce the issue. **Write out the steps to reproduce the issue.**
 3. Check whether the issue is caused by a mod conflict:
-    - You can do this easily by renaming your mod folder to something else (for example, just add an underscore), creating a new one, and then copying over SpaceCore, MARGO and, optionally, CJB Cheats Menu (to help with quick testing). If the issue can no longer be reproduced in this condition, then gradually copy over your remaining mods in small groups, until you identify the conflicting mod.
+    - You can do this easily by renaming your mod folder to something else (for example, just add an dot, or an underscore), creating a new one, and then copying over SpaceCore, MARGO and, optionally, CJB Cheats Menu + Item Spawner (to help with quick testing). If the issue can no longer be reproduced in this condition, then gradually copy over your remaining mods in small groups, until you identify the conflicting mod. *You can safely ignore any Content Patcher or other framework mods while doing this, as those will never cause conflicts.*
 4. Check whether the issue can be reproduced on a brand new save file. If it cannot, then I will probably ask you to upload your save folder to any file-sharing service of your choice, and share the url.
 5. Upload your entire log to [smapi.io](https://smapi.io/log). There you will also find instructions in case you don't know where to find your log.
-6. Go to the [Issues page](https://github.com/daleao/modular-overhaul/issues) and check whether someone else has already reported the same issue. If not, then create a new thread. Please include:
+    <div align="center"><font color="red"><b>❗ Do NOT copy-paste errors directly from the console window. ❗</b></font></div>
+    <br>
+
+6. Go to the [Issues page](https://github.com/daleao/modular-overhaul/issues) and check whether a similar issue thread already exists. If it does not, then create a new thread. Please include:
     - A descriptive title.
     - As much detail as you can muster. Consider describing not only what happened, but also when and how it happened, and what you expected should happen instead.
     - Your results from steps 2-4 above.
@@ -116,10 +123,10 @@ Then [request SMAPI for a proxy](https://stardewvalleywiki.com/Modding:Modder_Gu
 
 Below are some usecases for the API:
 
-- **[PROFS]**: Checking the current value of dynamic perks associated with certain professions.
-- **[PROFS]**: Hooking custom logic into Scavenger and Prospector Treasure Hunts.
-- **[PROFS]**: Hooking custom logic to several stages of the [Limit Break](./Modules/Professions/README.md#limit-breaks).
-- **[PROFS]**: Allowing SpaceCore skills to surpass level 10, and be [Prestiged](./Modules/Professions/README.md#prestige) at levels 15 and 20.
+- **[PRFS]**: Checking the current value of dynamic perks associated with certain professions.
+- **[PRFS]**: Hooking custom logic into Scavenger and Prospector Treasure Hunts.
+- **[PRFS]**: Hooking custom logic to several stages of the [Limit Break](./Modules/Professions/README.md#limit-breaks).
+- **[PRFS]**: Allowing SpaceCore skills to surpass level 10, and be [Prestiged](./Modules/Professions/README.md#prestige) at levels 15 and 20.
 - **[CMBT]**: Checking the [Resonances](./Modules/Combat/README.md#chords) currently active on any given player.
 - **[CMBT]**: Inflicting and curing [Status Effects](./Modules/Combat/README.md#status-effects).
 - Checking the config settings of any given player (note that you must create your own interface for this).
@@ -140,10 +147,20 @@ In order to build this mod you will also need to clone my [Stardew Valley Shared
   </PropertyGroup>
   ```
 
-2. The relative path to Stardew Valley Shared Lib's `Shared.projitems` file:
+2. The relative or full path to Stardew Valley Shared Lib's `Shared.projitems` file:
   ```xml
   <!-- shared projects -->
   <Import Project="..\Shared\Shared.projitems" Label="Shared" Condition="Exists('..\Shared\Shared.projitems')" />
+  ```
+
+3. The relative or full path to a copy of [SpaceCore](https://www.nexusmods.com/stardewvalley/mods/1348)'s .dll.
+  ```xml
+  <!-- mod dependencies -->
+  <ItemGroup>
+    <Reference Include="SpaceCore">
+      <HintPath>depend\SpaceCore.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   ```
 
 <sub><sup>[🔼 Back to top](#table-of-contents)</sup></sub>
@@ -162,6 +179,21 @@ This project uses the following NuGet packages:
 | [FastExpressionCompiler.LightExpression](https://github.com/dadhi/FastExpressionCompiler) | [Maksim Volkau](https://github.com/dadhi) | 3.3.3 |
 | [CommunityToolkit.Diagnostics](https://github.com/CommunityToolkit/dotnet) | Microsoft | 8.0.0 |
 | [JetBrains.Annotations](https://www.jetbrains.com/help/resharper/Code_Analysis__Code_Annotations.html) | JetBrains | 2023.2.0 |
+
+It also requires a copy of [SpaceCore](https://www.nexusmods.com/stardewvalley/mods/1348)'s .dll.
+
+<sub><sup>[🔼 Back to top](#table-of-contents)</sup></sub>
+
+## Mod Recommendations
+
+For those interested, [this is my curated modlist](https://smapi.io/log/30e05a1ace0c43a18aebaef782f8f9de). This mod list is built on the following principles:
+
+- **Immersion** and **Consistency** above anything.
+- **Aesthetic:** [Gwen's Medieval Valley](https://www.nexusmods.com/stardewvalley/users/51171631?tab=user+files) combined with the criminally underated [Wittily recolor](https://www.nexusmods.com/stardewvalley/mods/2995), and topped with [Vintage UI](https://www.nexusmods.com/stardewvalley/mods/4697). Portraits are vanilla-style with [stanloona420's revised mods](https://www.nexusmods.com/stardewvalley/users/71935143?tab=user+files).
+- **Expansions:** [SVE](https://www.nexusmods.com/stardewvalley/mods/3753) only, to keep things manageable and consistent. [Aquarium](https://www.nexusmods.com/stardewvalley/mods/6372) for a bit more longevity.
+- **New Items:** Mostly PPJA, with a few interesting additions.
+
+Please note that many of these mods have been heavily customized, including typo fixes, harmonized textures and even map edits. The most heavily edited mods are versioned with the suffix `-DaLion`, but not all do. These mods I would simply not recommend in their original state due to either lack of polish or consistency with the rest of the list. Make sure to test every mod before committing to your mod list.
 
 <sub><sup>[🔼 Back to top](#table-of-contents)</sup></sub>
 
@@ -186,7 +218,7 @@ Thanks to [JetBrains][url:jetbrains] for providing a free open-source license to
 <img width="64" src="https://smapi.io/Content/images/pufferchick.png" alt="Pufferchick"> <img width="80" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" alt="JetBrains logo.">
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[shield:license]: https://img.shields.io/badge/License-Commons%20Clause%20(MIT)-brightgreen?style=for-the-badge
+[shield:license]: https://img.shields.io/badge/Custom%20License-Non%20Commercial%20Mod-brightgreen?style=for-the-badge
 [shield:nexus]: https://img.shields.io/badge/Download-Nexus-yellow?style=for-the-badge
 [url:nexus]: https://www.nexusmods.com/stardewvalley/mods/14470
 [shield:moddrop]: https://img.shields.io/badge/Download-Mod%20Drop-blue?style=for-the-badge

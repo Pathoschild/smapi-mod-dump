@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Font Settings",
   "Author": "Becks723",
-  "Version": "0.12.2",
+  "Version": "0.12.4",
   "Description": "Customize in-game fonts.",
   "UniqueID": "Becks723.FontSettings",
   "MinimumApiVersion": "3.14.0",
@@ -10,6 +10,10 @@
   "Dependencies": [
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "jltaylor-us.GMCMOptions",
       "IsRequired": false
     }
   ]

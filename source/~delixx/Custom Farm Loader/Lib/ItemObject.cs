@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StardewModdingAPI;
+using StardewValley;
 
 namespace Custom_Farm_Loader.Lib
 {
@@ -22,8 +23,6 @@ namespace Custom_Farm_Loader.Lib
         private static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
-
-        private static Dictionary<string, string> CachedItemData;
 
         public string Id;
         public int Amount;
@@ -34,8 +33,6 @@ namespace Custom_Farm_Loader.Lib
             Mod = mod;
             Monitor = mod.Monitor;
             Helper = mod.Helper;
-
-            CachedItemData = Helper.GameContent.Load<Dictionary<string, string>>("Data\\ObjectInformation");
         }
 
         public static List<string> MapNameToItemId(List<string> names)
@@ -49,22 +46,12 @@ namespace Custom_Farm_Loader.Lib
         public static string MapNameToItemId(string name)
         {
             var comparableName = name.ToLower().Replace("_", " ").Replace("'", "");
-            var match = CachedItemData.FirstOrDefault(fur => fur.Value.ToLower().Replace("'", "").StartsWith(comparableName + "/"));
+            var match = Game1.objectData.FirstOrDefault(fur => fur.Value.Name.ToLower().Replace("'", "").StartsWith(comparableName));
 
             if (match.Value != null)
                 return match.Key;
 
             return name;
-        }
-
-        public static string GetItemData(string name, int index)
-        {
-            var item = CachedItemData[name];
-
-            if (item != null)
-                return item.Split('/')[index];
-
-            return "";
         }
     }
 }

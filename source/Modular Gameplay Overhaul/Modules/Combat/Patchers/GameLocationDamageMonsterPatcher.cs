@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
 using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Harmony;
@@ -121,7 +122,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
                     new[]
                     {
                         new CodeInstruction(OpCodes.Ldloc_2),
-                        new CodeInstruction(OpCodes.Ldc_I4_1),
+                        new CodeInstruction(OpCodes.Ldarg_S, (byte)10),
                         new CodeInstruction(
                             OpCodes.Call,
                             typeof(Monster_GotCrit).RequireMethod(nameof(Monster_GotCrit.Set_GotCrit))),
@@ -165,6 +166,36 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
             return null;
         }
 
+        try
+        {
+            helper
+                .Match(
+                    new[]
+                    {
+                        new CodeInstruction(
+                            OpCodes.Callvirt,
+                            typeof(BaseEnchantment).RequireMethod(nameof(BaseEnchantment.OnCalculateDamage))),
+                    },
+                    ILHelper.SearchOption.First)
+                .Match(
+                    new[] { new CodeInstruction(OpCodes.Stloc_S, helper.Locals[8]), },
+                    ILHelper.SearchOption.Previous)
+                .Move()
+                .Insert(
+                    new[]
+                    {
+                        new CodeInstruction(OpCodes.Ldarg_S, (byte)10),
+                        new CodeInstruction(OpCodes.Ldloc_S, helper.Locals[8]),
+                        new CodeInstruction(OpCodes.Call, typeof(GameLocationDamageMonsterPatcher).RequireMethod(nameof(ApplyBurnIfNecessary))),
+                        new CodeInstruction(OpCodes.Stloc_S, helper.Locals[8]),
+                    });
+        }
+        catch (Exception ex)
+        {
+            Log.E($"Failed injecting overhauled Burn debuff.\nHelper returned {ex}");
+            return null;
+        }
+
         return helper.Flush();
     }
 
@@ -175,6 +206,11 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
     private static bool IsBackAttack(Farmer farmer, Monster monster)
     {
         return CombatModule.Config.CriticalBackAttacks && farmer.FacingDirection == monster.FacingDirection;
+    }
+
+    private static int ApplyBurnIfNecessary(Farmer farmer, int damageAmount)
+    {
+        return farmer.IsBurning() ? damageAmount / 2 : damageAmount;
     }
 
     #endregion injected subroutines

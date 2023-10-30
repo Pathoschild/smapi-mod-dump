@@ -39,28 +39,42 @@ internal sealed class ProspectorWarpedEvent : WarpedEvent
     /// <inheritdoc />
     protected override void OnWarpedImpl(object? sender, WarpedEventArgs e)
     {
+        if (!e.IsLocalPlayer)
+        {
+            return;
+        }
+
         var prospectorHunt = e.Player.Get_ProspectorHunt();
         if (prospectorHunt.IsActive)
         {
             prospectorHunt.Fail();
         }
 
-        if (e.NewLocation.currentEvent is not null || e.NewLocation is not MineShaft shaft ||
-            shaft.IsTreasureOrSafeRoom() || prospectorHunt.TryStart(e.NewLocation))
+        if (e.NewLocation.currentEvent is not null)
         {
             return;
         }
 
-        var streak = e.Player.Read<int>(DataKeys.ProspectorHuntStreak);
-        if (streak > 1)
+        switch (e.NewLocation)
         {
-            TrySpawnOreNodes(streak / 2, shaft);
+            case MineShaft shaft when !shaft.IsTreasureOrSafeRoom():
+                var streak = e.Player.Read<int>(DataKeys.ProspectorHuntStreak);
+                if (streak > 1)
+                {
+                    TrySpawnOreNodes(streak / 2, shaft);
+                }
+
+                prospectorHunt.TryStart(e.NewLocation);
+                break;
+            case VolcanoDungeon volcano when !volcano.IsTreasureOrSafeRoom():
+                prospectorHunt.TryStart(e.NewLocation);
+                break;
         }
     }
 
     private static void TrySpawnOreNodes(int attempts, MineShaft shaft)
     {
-        var r = Reflector.GetUnboundFieldGetter<MineShaft, Random>(shaft, "mineRandom").Invoke(shaft);
+        var r = Reflector.GetUnboundFieldGetter<MineShaft, Random>("mineRandom").Invoke(shaft);
         attempts = r.Next(Math.Min(attempts, 100));
         var count = 0;
         for (var i = 0; i < attempts; i++)

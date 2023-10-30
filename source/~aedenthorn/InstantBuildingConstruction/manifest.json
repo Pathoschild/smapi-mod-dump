@@ -11,7 +11,7 @@
 {
   "Name": "Instant Building Construction",
   "Author": "aedenthorn",
-  "Version": "0.1.2",
+  "Version": "0.2.0",
   "Description": "Instant Building Construction.",
   "UniqueID": "aedenthorn.InstantBuildingConstruction",
   "EntryDll": "InstantBuildingConstruction.dll",

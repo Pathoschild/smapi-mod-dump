@@ -8,6 +8,10 @@ for queries and analysis.**
 
 # Version history for AnimalsNeedWater
 
+## Upcoming
+- Updated to latest SMAPI version.
+- Replaced xnb tilesheets with PNGs.
+
 ## 1.4.0
 Released December 30, 2021.
 - Migrated to net5.0. SMAPI 3.13 or newer is now required.

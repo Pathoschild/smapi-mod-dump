@@ -11,7 +11,6 @@
 using System;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Items.Unlocks;
-using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;

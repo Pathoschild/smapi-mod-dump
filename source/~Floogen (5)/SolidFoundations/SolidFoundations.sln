@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolidFoundations", "SolidFoundations.csproj", "{15A4E337-DF0F-4212-8DEC-5BB026EE95E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolidFoundationsAutomate", "..\SolidFoundationsAutomate\SolidFoundationsAutomate.csproj", "{52C25C9C-BB71-408B-86F5-222CFEC0D644}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SolidFoundationsAutomate", "..\SolidFoundationsAutomate\SolidFoundationsAutomate.csproj", "{52C25C9C-BB71-408B-86F5-222CFEC0D644}"
 	ProjectSection(ProjectDependencies) = postProject
 		{15A4E337-DF0F-4212-8DEC-5BB026EE95E3} = {15A4E337-DF0F-4212-8DEC-5BB026EE95E3}
 	EndProjectSection

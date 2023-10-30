@@ -37,8 +37,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameboyArcade", "GameboyArc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LookToTheSky", "LookToTheSky\LookToTheSky.csproj", "{DC696FFF-95A2-4AEE-BBBF-A5AF4EFFEE4F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SlimingSkill", "SlimingSkill\SlimingSkill.csproj", "{CFE328E9-D6C0-4565-8168-504B8506C25C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MagicSkillPageIcon", "MagicSkillPageIcon\MagicSkillPageIcon.csproj", "{18BDA79E-C6BB-49B3-90F0-D85C1048ADCE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealtimeFramework", "RealtimeTokens\RealtimeFramework.csproj", "{A8419860-CE08-4545-A5E7-3BA1F41FFF2C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HalloweenSeason", "HalloweenSeason\HalloweenSeason.shproj", "{100172ED-9F1B-4D78-8B4F-BB5C4F72537B}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		HalloweenSeason\HalloweenSeason.projitems*{100172ed-9f1b-4d78-8b4f-bb5c4f72537b}*SharedItemsImports = 13
 		BirbSharedSpaceCore\BirbSharedSpaceCore.projitems*{19cedb88-a912-48da-b35d-fce2509e70e6}*SharedItemsImports = 13
 		BirbShared\BirbShared.projitems*{8f13906d-7e88-45b4-abbc-617437970163}*SharedItemsImports = 13
 	EndGlobalSection
@@ -87,6 +96,18 @@ Global
 		{DC696FFF-95A2-4AEE-BBBF-A5AF4EFFEE4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC696FFF-95A2-4AEE-BBBF-A5AF4EFFEE4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC696FFF-95A2-4AEE-BBBF-A5AF4EFFEE4F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFE328E9-D6C0-4565-8168-504B8506C25C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFE328E9-D6C0-4565-8168-504B8506C25C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFE328E9-D6C0-4565-8168-504B8506C25C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFE328E9-D6C0-4565-8168-504B8506C25C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18BDA79E-C6BB-49B3-90F0-D85C1048ADCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18BDA79E-C6BB-49B3-90F0-D85C1048ADCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18BDA79E-C6BB-49B3-90F0-D85C1048ADCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18BDA79E-C6BB-49B3-90F0-D85C1048ADCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8419860-CE08-4545-A5E7-3BA1F41FFF2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8419860-CE08-4545-A5E7-3BA1F41FFF2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8419860-CE08-4545-A5E7-3BA1F41FFF2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8419860-CE08-4545-A5E7-3BA1F41FFF2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

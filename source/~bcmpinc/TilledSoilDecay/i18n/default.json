@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/bcmpinc/StardewHack
+**
+*************************************************/
+
+{
+	EachNightName:  "Each night",  EachNightTooltip:  "How soil decays every night",
+	EachSeasonName: "Each Season", EachSeasonTooltip: "How soil decays on the farm (and maps that have the `ClearEmptyDirtOnNewMonth` property) during nights between seasons",
+	GreenhouseName: "Greenhouse",  GreenhouseTooltip: "How soil decays inside the greenhouse",
+	IslandName:     "Island",      IslandTooltip:     "How soil decays on Ginger Island",
+	NonFarmName:    "Non-farm",    NonFarmTooltip:    "How soil decays outside the farm",
+	DryingRateName: "Drying Rate", DryingRateTooltip: "Chance that tilled soil will disappear. Normally this is {{rate}} (={{percentage}}%).",
+	DelayName:      "Delay",       DelayTooltip:      "Number of consecutive days that the patch must have been without water, before it can disappear during the night.",
+}

@@ -430,7 +430,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(texture.Key, texture.Value, 2000f, 1, 0, (Shop.TileLocation + new Vector2(0.25f, -2.5f)) * 64f, flicker: false, flipped: false, (float)(Shop.TileLocation.Y * 64 + 1) / 10000f, 0f, Color.White, 4f, -0.015f, 0f, 0f) {
                 motion = new Vector2(-0.1f, -7f),
                 acceleration = new Vector2(0f, 0.25f),
-                id = 98765f,
+                id = 98765,
                 drawAboveAlwaysFront = true
             });
             Game1.playSound("dwop");

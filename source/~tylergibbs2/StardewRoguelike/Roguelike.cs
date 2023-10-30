@@ -32,6 +32,7 @@ using StardewRoguelike.Extensions;
 using Microsoft.Xna.Framework;
 using StardewValley.Minigames;
 using StardewRoguelike.HatQuests;
+using StardewModdingAPI.Utilities;
 
 namespace StardewRoguelike
 {
@@ -41,41 +42,29 @@ namespace StardewRoguelike
 
         public static bool RerollRandomEveryRun { get; set; } = true;
 
-        public static readonly string SaveFile = "Roguelike_311053312";
-
-        public static readonly List<string> ValidMineMaps = new() {
-            "2", "3", "4", "5", "6", "7",
-            "8", "9", "11", "13", "15",
-            "21", "23", "25", "26", "27",
-            "custom-1", "custom-2", "custom-3",
-            "custom-4", "custom-5", "custom-6",
-            "custom-7", "custom-8", "custom-9"
-        };
-
-        public static readonly List<string> MapsWithWater = new()
-        {
-            "custom-1", "custom-2", "custom-3", "custom-8"
-        };
-
         public static Random FloorRng { get; set; } = new(FloorRngSeed);
 
         public static readonly List<string> SeenMineMaps = new();
-
-        public static readonly List<int> ScalingOrder = new() { 6, 12, 18, 24, 30, 36, 42, 48 };
-        public static readonly int DangerousThreshold = 24;
-
-        public static readonly List<int> FloorsIncreaseGoldMax = new() { 6 };
-        public static readonly List<int> FloorsIncreaseGoldMin = new() { 24 };
-
-        public static readonly List<int> PossibleFish = new() { 155, 269, 698, 795, 838, 128, 129 };
 
         public static readonly int StartingGold = 100;
 
         public static readonly int StartingHP = 50;
         public static readonly int MaxHP = 150;
 
-        public static int TrueMaxHP { get; set; } = Game1.player.maxHealth;
-        public static int MilksBought { get; set; } = 0;
+        private static readonly PerScreen<int> ScreenTrueMaxHP = new(() => Game1.player.maxHealth);
+        private static readonly PerScreen<int> ScreenMilksBought = new(() => 0);
+
+        public static int TrueMaxHP
+        {
+            get => ScreenTrueMaxHP.Value;
+            set => ScreenTrueMaxHP.Value = value;
+        }
+
+        public static int MilksBought
+        {
+            get => ScreenMilksBought.Value;
+            set => ScreenMilksBought.Value = value;
+        }
 
         public static bool HardMode
         {
@@ -83,39 +72,56 @@ namespace StardewRoguelike
             set => Game1.player.team.get_FarmerTeamHardMode().Value = value;
         }
 
-        public static readonly int MinimumMonstersPerFloor = 5;
-        public static readonly int MaximumMonstersPerFloorPreLoop = 15;
-        public static readonly int MaximumMonstersPerFloorPostLoop = 30;
+        private static readonly PerScreen<int> ScreenGoldDropMax = new(() => 2);
+        private static readonly PerScreen<int> ScreenGoldDropMin = new(() => 1);
+        private static readonly PerScreen<int> ScreenCurrentLevel = new(() => 0);
+        private static readonly PerScreen<bool> ScreenDidHardModeDowngrade = new(() => false);
+        private static readonly PerScreen<IMinigame?> ScreenActiveMinigame = new(() => null);
+        private static readonly PerScreen<int> ScreenFloorTickCounter = new(() => 0);
 
-        public static int GoldDropMax = 2;
-        public static int GoldDropMin = 1;
-
-        public static int CurrentLevel = 0;
-
-        private static bool DidHardModeDowngrade = false;
-
-        private static IMinigame? ActiveMinigame = null;
-
-        internal readonly static int[] RandomDebuffIds = new int[]
+        public static int GoldDropMax
         {
-            12, 17, 13,
-            18, 14, 19,
-            25, 26, 27
-        };
+            get => ScreenGoldDropMax.Value;
+            set => ScreenGoldDropMax.Value = value;
+        }
 
-        internal readonly static int[] RandomBuffIds = new int[]
+        public static int GoldDropMin
         {
-            20, 21, 22,
-            28
-        };
+            get => ScreenGoldDropMin.Value;
+            set => ScreenGoldDropMin.Value = value;
+        }
+
+        public static int CurrentLevel
+        {
+            get => ScreenCurrentLevel.Value;
+            set => ScreenCurrentLevel.Value = value;
+        }
+
+        private static bool DidHardModeDowngrade
+        {
+            get => ScreenDidHardModeDowngrade.Value;
+            set => ScreenDidHardModeDowngrade.Value = value;
+        }
+
+        private static IMinigame? ActiveMinigame
+        {
+            get => ScreenActiveMinigame.Value;
+            set => ScreenActiveMinigame.Value = value;
+        }
+
+        public static int FloorTickCounter
+        {
+            get => ScreenFloorTickCounter.Value;
+            set => ScreenFloorTickCounter.Value = value;
+        }
 
         public static void AdjustMonster(MineShaft mine, ref Monster monster)
         {
             int level = GetLevelFromMineshaft(mine);
 
-            if (level >= ScalingOrder[^1])
+            if (level >= Constants.ScalingOrder[^1])
             {
-                int levelsPostLoop = ScalingOrder[^1] - level;
+                int levelsPostLoop = level - Constants.ScalingOrder[^1];
                 int postLoopHealth = Math.Min((int)(Game1.random.Next(450, 550) * (1 + (levelsPostLoop / 48f))), 1000);
                 monster.MaxHealth = Math.Max(monster.MaxHealth, postLoopHealth);
                 monster.Health = monster.MaxHealth;
@@ -174,9 +180,10 @@ namespace StardewRoguelike
                 DidHardModeDowngrade = false;
             }
 
-            if (Game1.player.currentLocation is MineShaft)
+            if (Game1.player.currentLocation is MineShaft mine)
             {
-                MineShaft mine = (MineShaft)Game1.player.currentLocation;
+                FloorTickCounter++;
+
                 var localChests = mine.get_MineShaftNetChests();
                 foreach (NetChest chest in localChests)
                     chest.Spawn(mine);
@@ -204,11 +211,11 @@ namespace StardewRoguelike
             if (ModEntry.ActiveStats.StartTime is null && MineShaft.activeMines.Count > 0)
             {
                 MineShaft? firstMine = null;
-                foreach (MineShaft mine in MineShaft.activeMines)
+                foreach (MineShaft m in MineShaft.activeMines)
                 {
-                    if (GetLevelFromMineshaft(mine) == 1)
+                    if (GetLevelFromMineshaft(m) == 1)
                     {
-                        firstMine = mine;
+                        firstMine = m;
                         break;
                     }
                 }
@@ -226,7 +233,7 @@ namespace StardewRoguelike
                 bool allPlayersPassed = true;
                 foreach (Farmer farmer in Game1.getOnlineFarmers())
                 {
-                    if (farmer.get_FarmerCurrentLevel().Value < ScalingOrder[^1])
+                    if (farmer.get_FarmerCurrentLevel().Value < Constants.ScalingOrder[^1])
                     {
                         allPlayersPassed = false;
                         break;
@@ -379,6 +386,7 @@ namespace StardewRoguelike
         /// </summary>
         public static void NextFloor()
         {
+            FloorTickCounter = 0;
             if (CurrentLevel == 0)
             {
                 ModEntry.ActiveStats.Reset();
@@ -397,9 +405,9 @@ namespace StardewRoguelike
             Perks.CurrentMenu = null;
             ForgeFloor.CurrentForge = null;
 
-            if (FloorsIncreaseGoldMax.Contains(CurrentLevel))
+            if (Constants.FloorsIncreaseGoldMax.Contains(CurrentLevel))
                 GoldDropMax++;
-            else if (FloorsIncreaseGoldMin.Contains(CurrentLevel))
+            else if (Constants.FloorsIncreaseGoldMin.Contains(CurrentLevel))
                 GoldDropMin++;
 
             if (Context.IsMainPlayer)
@@ -422,8 +430,7 @@ namespace StardewRoguelike
             if (!Context.IsMultiplayer)
             {
                 LocalizedContentManager? mapContent = (LocalizedContentManager?)MineShaft.activeMines[0].GetType().GetField("mapContent", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(MineShaft.activeMines[0]);
-                if (mapContent is not null)
-                    mapContent.Dispose();
+                mapContent?.Dispose();
                 MineShaft.activeMines.RemoveAt(0);
                 return;
             }
@@ -432,7 +439,7 @@ namespace StardewRoguelike
             int playersToAccountFor = Game1.getOnlineFarmers().Count;
             int floorsSinceLastPlayer = 0;
             int amountToRemove = 0;
-            int merchantInterval = ScalingOrder[1] - ScalingOrder[0];
+            int merchantInterval = Constants.ScalingOrder[1] - Constants.ScalingOrder[0];
 
             for (int i = MineShaft.activeMines.Count - 1; i == 0; i--)
             {
@@ -455,8 +462,7 @@ namespace StardewRoguelike
             while (amountToRemove > 0 && MineShaft.activeMines.Count >= instancesToKeep)
             {
                 LocalizedContentManager? mapContent = (LocalizedContentManager?)MineShaft.activeMines[0].GetType().GetField("mapContent", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(MineShaft.activeMines[0]);
-                if (mapContent is not null)
-                    mapContent.Dispose();
+                mapContent?.Dispose();
                 MineShaft.activeMines.RemoveAt(0);
             }
         }
@@ -475,16 +481,14 @@ namespace StardewRoguelike
         {
             return track switch
             {
-                "junimoKart_slimeMusic" => "Slomp's Stomp - ConcernedApe",
-                "junimoKart_whaleMusic" => "The Gem Sea Giant - ConcernedApe",
-                "megalovania" => "MEGALOVANIA - Toby Fox",
+                "gelus_defensor" => "Gelus Defensor - Therm",
                 "photophobia" => "Photophobia - Therm",
                 "jelly_junktion" => "Jelly Junktion - Therm",
                 "hold_your_ground" => "Hold Your Ground - Therm",
+                "ceaseless_and_incessant" => "Ceaseless and Incessant - Therm",
+                "circus_freak" => "Circus Freak - Therm",
+                "invoke_the_ancient" => "Invoke the Ancient - Therm",
                 "bee_boss" => "Bee Boss - ConcernedApe",
-                "cowboy_boss" => "JOTPK Final Boss - ConcernedApe",
-                "VolcanoMines1" => "Molten Jelly - ConcernedApe",
-                "VolcanoMines2" => "Forgotten World - ConcernedApe",
                 _ => ""
             };
         }
@@ -502,24 +506,24 @@ namespace StardewRoguelike
             if (BossFloor.IsBossFloor(level))
                 return floor;
 
-            level %= ScalingOrder[^1];
+            level %= Constants.ScalingOrder[^1];
 
             int result;
-            if (level < ScalingOrder[0])
+            if (level < Constants.ScalingOrder[0])
                 result = 20;
-            else if (level < ScalingOrder[1])
+            else if (level < Constants.ScalingOrder[1])
                 result = 60;
-            else if (level < ScalingOrder[2])
+            else if (level < Constants.ScalingOrder[2])
                 result = 100;
-            else if (level < ScalingOrder[3])
+            else if (level < Constants.ScalingOrder[3])
                 result = 121;
-            else if (level < ScalingOrder[4])
+            else if (level < Constants.ScalingOrder[4])
                 result = 20;
-            else if (level < ScalingOrder[5])
+            else if (level < Constants.ScalingOrder[5])
                 result = 60;
-            else if (level < ScalingOrder[6])
+            else if (level < Constants.ScalingOrder[6])
                 result = 100;
-            else if (level < ScalingOrder[7])
+            else if (level < Constants.ScalingOrder[7])
                 result = 179;
             else
                 result = 179;
@@ -551,10 +555,10 @@ namespace StardewRoguelike
             else if (ChallengeFloor.IsChallengeFloor(mine))
                 return ChallengeFloor.GetMapPath(mine);
 
-            var validOptions = ValidMineMaps;
+            var validOptions = Constants.ValidMineMaps;
 
             if (avoidWater)
-                validOptions.RemoveAll(floor => MapsWithWater.Contains(floor));
+                validOptions.RemoveAll(Constants.MapsWithWater.Contains);
 
             if (SeenMineMaps.Count >= validOptions.Count)
                 SeenMineMaps.Clear();
@@ -667,7 +671,20 @@ namespace StardewRoguelike
             Game1.player.temporarilyInvincible = false;
             CurrentLevel = 0;
             Game1.screenGlow = false;
+            ModEntry.ActiveStats.Multiplayer = Context.IsMultiplayer;
+            ModEntry.ActiveStats.PlayerCount = Game1.getOnlineFarmers().Count;
             ModEntry.ActiveStats.EndTime = DateTime.UtcNow;
+            ModEntry.ActiveStats.Patch = ModEntry.CurrentVersion;
+            ModEntry.ActiveStats.Seed = FloorRngSeed.ToString();
+
+            ModPersistentData? globalData = ModEntry.Instance.Helper.Data.ReadGlobalData<ModPersistentData>("roguelike-persistent-data");
+            globalData ??= new ModPersistentData();
+
+            if (ModEntry.ActiveStats.DinoKillEndTime is not null)
+                globalData.UnlockedBossArena = true;
+            globalData.RunHistory.Add(ModEntry.ActiveStats);
+
+            ModEntry.Instance.Helper.Data.WriteGlobalData("roguelike-persistent-data", globalData);
 
             ResetLocalGameState();
             ResetLocalPlayer();
@@ -698,6 +715,8 @@ namespace StardewRoguelike
         {
             Curse.RemoveAllCurses();
             Perks.RemoveAllPerks();
+
+            Game1.player.set_FarmerActiveHatQuest(null);
 
             ModEntry.Invincible = false;
 
@@ -913,13 +932,13 @@ namespace StardewRoguelike
             if (roll <= 0.4 && !HatQuest.HasBuffFor(HatQuestType.FISHING_HAT))
             {
                 // trash
-                itemId = Game1.random.Next(167, 174);
+                itemId = Game1.random.Next(167, 173);
                 quality = 0;
             }
             else if (roll <= 0.65)
             {
                 // fish
-                itemId = MerchantFloor.PickNFromList(PossibleFish, 1).First();
+                itemId = MerchantFloor.PickNFromList(Constants.PossibleFish, 1).First();
 
                 if (qualityRoll <= 0.05)
                     quality = 3;

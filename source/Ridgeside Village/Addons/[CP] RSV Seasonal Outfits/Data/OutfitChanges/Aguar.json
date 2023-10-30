@@ -1,0 +1,78 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Aguar Random Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Aguar, Characters/Aguar",
+			"FromFile": "Assets/{{Target}}/Aguar_{{Random: 1, 2, 3, 4 |key=AguarOutfit}}.png",
+			"When": { "Aguar": "enabled" }
+		},
+		{
+			"LogName": "RSV Accessories - Aguar",
+			"Action": "EditImage",
+			"Target": "Portraits/Aguar, Characters/Aguar",
+			"FromFile": "Assets/{{Target}}/Aguar_acc.png",
+			"When":
+			{
+				"Aguar": "enabled",
+				"Query: '{{Weather|contains=Rain, Storm, Snow}}' = 'true' OR ({{Random:{{Range:1,10}}|key=AguarHat}} > 5)": true,
+				"IsOutdoors": true,
+				"HasValue:{{DayEvent}}": false,
+				"Lightweight Outfits": false
+			},
+			"Update": "OnLocationChange",
+			"PatchMode": "Overlay"
+		},
+		{
+			"LogName": "RSV Aguar Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Aguar, Characters/Aguar",
+			"FromFile": "Assets/{{Target}}/Aguar_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Aguar": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Aguar Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Aguar, Characters/Aguar",
+			"FromFile": "Assets/{{Target}}/Aguar_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Aguar": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Aguar Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Aguar, Characters/Aguar",
+			"FromFile": "Assets/{{Target}}/Aguar_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Aguar": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

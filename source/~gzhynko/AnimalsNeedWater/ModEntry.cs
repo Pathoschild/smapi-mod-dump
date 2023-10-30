@@ -386,8 +386,8 @@ namespace AnimalsNeedWater
         {
             LoadNewTileSheets();
             
-            // Notify player of animals left thirsty, if any.
-            if (AnimalsLeftThirstyYesterday.Any())
+            // If enabled in config: notify player of animals left thirsty, if any.
+            if (AnimalsLeftThirstyYesterday.Any() && Config.ShowAnimalsLeftThirstyMessage)
             {
                 switch (AnimalsLeftThirstyYesterday.Count)
                 {
@@ -620,8 +620,8 @@ namespace AnimalsNeedWater
             if (!Config.ReplaceCoopTextureIfTroughIsEmpty) return;
 
             building.texture = empty ? 
-                new Lazy<Texture2D>(() => Helper.Content.Load<Texture2D>("assets/Coop2_emptyWaterTrough.png"))
-                : new Lazy<Texture2D>(() => Helper.Content.Load<Texture2D>("assets/Coop2_fullWaterTrough.png"));
+                new Lazy<Texture2D>(() => Helper.ModContent.Load<Texture2D>("assets/Coop2_emptyWaterTrough.png"))
+                : new Lazy<Texture2D>(() => Helper.ModContent.Load<Texture2D>("assets/Coop2_fullWaterTrough.png"));
         }
         
         public void ChangeCoopTexture(Building building, bool empty)
@@ -629,8 +629,8 @@ namespace AnimalsNeedWater
             if (!Config.ReplaceCoopTextureIfTroughIsEmpty) return;
 
             building.texture = empty ? 
-                new Lazy<Texture2D>(() => Helper.Content.Load<Texture2D>("assets/Coop_emptyWaterTrough.png"))
-                : new Lazy<Texture2D>(() => Helper.Content.Load<Texture2D>("assets/Coop_fullWaterTrough.png"));
+                new Lazy<Texture2D>(() => Helper.ModContent.Load<Texture2D>("assets/Coop_emptyWaterTrough.png"))
+                : new Lazy<Texture2D>(() => Helper.ModContent.Load<Texture2D>("assets/Coop_fullWaterTrough.png"));
         }
 
         private void LoadNewTileSheets()
@@ -643,10 +643,13 @@ namespace AnimalsNeedWater
                     
                     if (coopMap.TileSheets.All(ts => !ts.Id.Equals("z_waterTroughTilesheet")))
                     {
+                        var tileSheetImageSource = Instance.Helper.ModContent
+                            .GetInternalAssetName(
+                                $"assets/waterTroughTilesheet{(Config.CleanerTroughs ? "_clean" : "")}.png").Name;
                         var tileSheet = new TileSheet(
                             "z_waterTroughTilesheet",
                             coopMap,
-                            Instance.Helper.Content.GetActualAssetKey($"assets/waterTroughTilesheet{ (Config.CleanerTroughs ? "_clean" : "") }.xnb"),
+                            tileSheetImageSource,
                             new Size(160, 16),
                             new Size(16, 16)
                         );
@@ -661,10 +664,12 @@ namespace AnimalsNeedWater
 
                     var coop3Map = building.indoors.Value.Map;
 
+                    var tileSheet3ImageSource = Instance.Helper.ModContent
+                        .GetInternalAssetName("assets/wateringSystemTilesheet.png").Name;
                     var tileSheet3 = new TileSheet(
                         "z_wateringSystemTilesheet",
                         coop3Map,
-                        Instance.Helper.Content.GetActualAssetKey("assets/wateringSystemTilesheet.xnb"),
+                        tileSheet3ImageSource,
                         new Size(48, 16),
                         new Size(16, 16)
                     );
@@ -678,10 +683,13 @@ namespace AnimalsNeedWater
 
                     if (barnMap.TileSheets.All(ts => !ts.Id.Equals("z_waterTroughTilesheet")))
                     {
+                        var tileSheetImageSource = Instance.Helper.ModContent
+                            .GetInternalAssetName(
+                                $"assets/waterTroughTilesheet{(Config.CleanerTroughs ? "_clean" : "")}.png").Name;
                         var tileSheet = new TileSheet(
                             "z_waterTroughTilesheet",
                             barnMap,
-                            Instance.Helper.Content.GetActualAssetKey($"assets/waterTroughTilesheet{ (Config.CleanerTroughs ? "_clean" : "") }.xnb"),
+                            tileSheetImageSource,
                             new Size(160, 16),
                             new Size(16, 16)
                         );
@@ -696,10 +704,12 @@ namespace AnimalsNeedWater
                     
                     var barn3Map = building.indoors.Value.Map;
 
+                    var tileSheet3ImageSource = Instance.Helper.ModContent
+                        .GetInternalAssetName("assets/wateringSystemTilesheet.png").Name;
                     var tileSheet3 = new TileSheet(
                         "z_wateringSystemTilesheet",
                         barn3Map,
-                        Instance.Helper.Content.GetActualAssetKey("assets/wateringSystemTilesheet.xnb"),
+                        tileSheet3ImageSource,
                         new Size(48, 16),
                         new Size(16, 16)
                     );

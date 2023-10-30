@@ -8,15 +8,15 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace StardewRoguelike.Patches
 {
-    internal class PermanentFoodBuffPatch : Patch
+    [HarmonyPatch(typeof(BuffsDisplay), nameof(BuffsDisplay.tryToAddFoodBuff))]
+    internal class PermanentFoodBuffPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(BuffsDisplay), "tryToAddFoodBuff");
-
         public static bool Prefix(ref Buff b)
         {
             if (b is not Curse && Curse.HasCurse(CurseType.BuffsMorePotent))
@@ -36,10 +36,9 @@ namespace StardewRoguelike.Patches
 
     }
 
-    internal class PermanentDrinkBuffPatch : Patch
+    [HarmonyPatch(typeof(BuffsDisplay), nameof(BuffsDisplay.tryToAddDrinkBuff))]
+    internal class PermanentDrinkBuffPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(BuffsDisplay), "tryToAddDrinkBuff");
-
         public static bool Prefix(BuffsDisplay __instance, ref bool __result, ref Buff b)
         {
             int buffDuration;
@@ -59,8 +58,10 @@ namespace StardewRoguelike.Patches
             Buff newb;
             if (b.source.Contains("Beer") || b.source.Contains("Wine") || b.source.Contains("Mead") || b.source.Contains("Pale Ale"))
             {
-                newb = new(17);
-                newb.millisecondsDuration = buffDuration;
+                newb = new(17)
+                {
+                    millisecondsDuration = buffDuration
+                };
                 __instance.addOtherBuff(newb);
             }
             else if (b.source.Equals("Life Elixir"))

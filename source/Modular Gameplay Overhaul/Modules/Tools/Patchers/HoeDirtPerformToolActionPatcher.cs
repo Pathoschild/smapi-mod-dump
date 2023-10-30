@@ -40,6 +40,7 @@ internal sealed class HoeDirtPerformToolActionPatcher : HarmonyPatcher
 
     /// <summary>Patch to reward Watering Can exp.</summary>
     [HarmonyPrefix]
+    // ReSharper disable once RedundantAssignment
     private static void HoeDirtPerformToolActionPrefix(HoeDirt __instance, ref int __state)
     {
         __state = __instance.state.Value;
@@ -50,9 +51,9 @@ internal sealed class HoeDirtPerformToolActionPatcher : HarmonyPatcher
     private static void HoeDirtPerformToolActionPostfix(HoeDirt __instance, int __state, Tool t)
     {
         if (t is WateringCan && __instance.state.Value > __state &&
-            Game1.random.NextDouble() < ToolsModule.Config.Can.ExpRewardChance)
+            Game1.random.NextDouble() < ToolsModule.Config.Can.CanExpRewardChance)
         {
-            t.getLastFarmerToUse()?.gainExperience(0, ToolsModule.Config.Can.ExpRewardAmount);
+            t.getLastFarmerToUse()?.gainExperience(0, ToolsModule.Config.Can.CanExpRewardAmount);
         }
     }
 

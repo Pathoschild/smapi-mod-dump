@@ -31,7 +31,7 @@ for queries and analysis.**
   * DeductibleBuildingExpenses
   * DeductibleSeedExpenses
   * DeductibleToolExpenses
-* Now actually uses ConservationistTaxBonusCeiling setting from PROFS, instead of setting it to 100%.
+* Now actually uses ConservationistTaxBonusCeiling setting from PRFS, instead of setting it to 100%.
 
 <sup><sup>[🔼 Back to top](#txs-changelog)</sup></sup>
 

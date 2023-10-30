@@ -9,7 +9,6 @@
 *************************************************/
 
 namespace DaLion.Overhaul.Modules.Combat.Events.Display.RenderedWorld;
-using DaLion.Overhaul.Modules.Combat;
 
 #region using directives
 
@@ -17,6 +16,7 @@ using DaLion.Shared.Events;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
+using Buff = DaLion.Shared.Enums.Buff;
 
 #endregion using directives
 
@@ -31,7 +31,7 @@ internal sealed class YobaRenderedWorldEvent : RenderedWorldEvent
     }
 
     /// <inheritdoc />
-    public override bool IsEnabled => CombatModule.State.YobaShieldHealth > 0 && Game1.buffsDisplay.hasBuff(21);
+    public override bool IsEnabled => CombatModule.State.YobaShieldHealth > 0 && Game1.buffsDisplay.hasBuff((int)Buff.YobasBlessing);
 
     /// <inheritdoc />
     protected override void OnRenderedWorldImpl(object? sender, RenderedWorldEventArgs e)
@@ -39,8 +39,8 @@ internal sealed class YobaRenderedWorldEvent : RenderedWorldEvent
         var player = Game1.player;
         var position = player.Position -
                        new Vector2(
-                           Game1.viewport.X + (int)((Game1.tileSize - player.Sprite.SpriteWidth * 4 / 3) * 1.5f),
-                           Game1.viewport.Y + (int)((Game1.tileSize + player.Sprite.SpriteHeight / 2) * 1.5f));
+                           Game1.viewport.X + (int)((Game1.tileSize - (player.Sprite.SpriteWidth * 4 / 3)) * 1.5f),
+                           Game1.viewport.Y + (int)((Game1.tileSize + (player.Sprite.SpriteHeight / 2)) * 1.5f));
         e.SpriteBatch.Draw(
             Textures.ShieldTx,
             position,

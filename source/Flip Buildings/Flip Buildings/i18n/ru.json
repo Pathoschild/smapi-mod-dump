@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/mouahrara/FlipBuildings
+**
+*************************************************/
+
+{
+	"Carpenter_Flip": "Продать Постройку",
+	"Carpenter_SelectBuilding_Flip": "Выберите постройку для продажи",
+	"Carpenter_CannotFlip": "Данное здание не может быть продано" ,
+	"Carpenter_CannotFlip_Permission": "У вас нет разрешения для продажи данной постройки",
+	"Carpenter_CannotFlip_PlayerHere": "Нельзя продать здание с игроком внутри"
+}

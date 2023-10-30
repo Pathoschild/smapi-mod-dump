@@ -38,7 +38,7 @@ internal sealed class AutomateIntegration : ModIntegration<AutomateIntegration>
     {
     }
 
-    /// <summary>Get the closest <see cref="Chest"/> to the given automated <see cref="Building"/> machine.</summary>
+    /// <summary>Gets the closest <see cref="Chest"/> to the given automated <see cref="Building"/> machine.</summary>
     /// <param name="machine">An automated <see cref="Building"/> machine.</param>
     /// <returns>The <see cref="Chest"/> instance closest to the <paramref name="machine"/>, or <see langword="null"/> is none are found.</returns>
     internal Chest? GetClosestContainerTo(Building machine)
@@ -148,7 +148,7 @@ internal sealed class AutomateIntegration : ModIntegration<AutomateIntegration>
                 machine.GetClosestObject(chests);
     }
 
-    /// <summary>Get the closest <see cref="Chest"/> to the given automated <see cref="SObject"/> machine.</summary>
+    /// <summary>Gets the closest <see cref="Chest"/> to the given automated <see cref="SObject"/> machine.</summary>
     /// <param name="machine">An automated <see cref="SObject"/> machine.</param>
     /// <param name="location">The machine's location.</param>
     /// <returns>The <see cref="Chest"/> instance closest to the <paramref name="machine"/>, or <see langword="null"/> is none are found.</returns>
@@ -260,7 +260,7 @@ internal sealed class AutomateIntegration : ModIntegration<AutomateIntegration>
                 : machine.GetClosestObject(location, chests);
     }
 
-    /// <summary>Get the closest <see cref="Chest"/> to the given automated <see cref="TerrainFeature"/> machine.</summary>
+    /// <summary>Gets the closest <see cref="Chest"/> to the given automated <see cref="TerrainFeature"/> machine.</summary>
     /// <param name="machine">An automated <see cref="TerrainFeature"/> machine.</param>
     /// <returns>The <see cref="Chest"/> instance closest to the <paramref name="machine"/>, or <see langword="null"/> is none are found.</returns>
     [SuppressMessage("ReSharper", "CompareOfFloatsByEqualityOperator", Justification = "Should be reference equality.")]
@@ -381,27 +381,27 @@ internal sealed class AutomateIntegration : ModIntegration<AutomateIntegration>
         {
             var mod = ModHelper.GetModEntryFor("Pathoschild.Automate") ??
                       ThrowHelper.ThrowMissingMemberException<IMod>("Pathoschild.Automate", "ModEntry");
-            this._machineManager = Reflector.GetUnboundFieldGetter<IMod, object>(mod, "MachineManager").Invoke(mod);
+            this._machineManager = Reflector.GetUnboundFieldGetter<IMod, object>(mod.GetType(), "MachineManager").Invoke(mod);
             this._machineData = (IDictionary)Reflector
                 .GetUnboundFieldGetter<object, object>(this._machineManager, "MachineData")
                 .Invoke(this._machineManager);
             if (this._machineData is not null)
             {
-                Log.D("[PROFS]: Registered the Automate integration.");
+                Log.D("[PRFS]: Registered the Automate integration.");
                 return true;
             }
 
-            Log.W("[PROFS]: Failed to grab Automate's machine data.");
+            Log.W("[PRFS]: Failed to grab Automate's machine data.");
             return false;
         }
         catch (Exception ex)
         {
-            Log.W($"[PROFS]: Failed to grab Automate's machine data.\n{ex}");
+            Log.W($"[PRFS]: Failed to grab Automate's machine data.\n{ex}");
             return false;
         }
     }
 
-    /// <summary>Get a location key for looking up location-specific machine data.</summary>
+    /// <summary>Gets a location key for looking up location-specific machine data.</summary>
     /// <param name="location">A machine group's location.</param>
     /// <returns>The <see cref="string"/> key for the given <paramref name="location"/>.</returns>
     private string GetLocationKey(GameLocation location)

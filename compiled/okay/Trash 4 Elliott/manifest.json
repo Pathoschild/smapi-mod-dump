@@ -1,0 +1,10 @@
+{
+    "Name": "Trash4Elliott",
+    "Author": "ChrisMzz",
+    "Version": "1.0.0",
+    "Description": "Makes sure you always have trash to give Elliott.",
+    "UniqueID": "ChrisMzz.trash4elliott",
+    "EntryDll": "trash4elliott.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": ["Nexus:18882"]
+}

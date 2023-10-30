@@ -29,16 +29,18 @@ namespace StardewHack.Library
                 Monitor.Log($"Expected Harmony v1.2.0.1 or later. Mods that depend on StardewHack might not work correctly.", LogLevel.Warn);
             }
             
+            I18n.Init(helper.Translation);
+
             // Check incompatible mods.
-            CheckIncompatible(helper, "bcmpinc.AlwaysScrollMap",    new SemanticVersion(6,0,0));
-            CheckIncompatible(helper, "bcmpinc.FixAnimalTools",     new SemanticVersion(6,0,0));
-            CheckIncompatible(helper, "bcmpinc.GrassGrowth",        new SemanticVersion(6,0,0));
-            CheckIncompatible(helper, "bcmpinc.HarvestWithScythe",  new SemanticVersion(6,0,0));
-            CheckIncompatible(helper, "bcmpinc.MovementSpeed",      new SemanticVersion(6,0,0));
-            CheckIncompatible(helper, "bcmpinc.TilledSoilDecay",    new SemanticVersion(6,0,0));
-            CheckIncompatible(helper, "bcmpinc.TreeSpread",         new SemanticVersion(6,0,0));
-            CheckIncompatible(helper, "bcmpinc.WearMoreRings",      new SemanticVersion(6,0,0));
-            CheckIncompatible(helper, "spacechase0.BiggerBackpack", new SemanticVersion(6,0,0));
+            CheckIncompatible(helper, "bcmpinc.AlwaysScrollMap",    new SemanticVersion(7,0,0));
+            CheckIncompatible(helper, "bcmpinc.FixAnimalTools",     new SemanticVersion(7,0,0));
+            CheckIncompatible(helper, "bcmpinc.GrassGrowth",        new SemanticVersion(7,0,0));
+            CheckIncompatible(helper, "bcmpinc.HarvestWithScythe",  new SemanticVersion(7,0,0));
+            CheckIncompatible(helper, "bcmpinc.MovementSpeed",      new SemanticVersion(7,0,0));
+            CheckIncompatible(helper, "bcmpinc.TilledSoilDecay",    new SemanticVersion(7,0,0));
+            CheckIncompatible(helper, "bcmpinc.TreeSpread",         new SemanticVersion(7,0,0));
+            CheckIncompatible(helper, "bcmpinc.WearMoreRings",      new SemanticVersion(7,0,0));
+            CheckIncompatible(helper, "spacechase0.BiggerBackpack", new SemanticVersion(7,0,0));
             
             // Register event to show warning in case some mod's patches failed to apply cleanly.
             Helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
@@ -70,10 +72,10 @@ namespace StardewHack.Library
 
             // The message is a list containing a single string.
             var dialogue = new List<string>() {
-                "StardewHack v" + ModManifest.Version +
-                " failed to apply some bytecode patches. The following mods won't work correctly or at all: " +
-                mod_list.Join() +
-                ". Check your console or error log for further instructions."
+                I18n.FailedBytecodePatches(
+                    version: "v"+ModManifest.Version, 
+                    mods: mod_list.Join()
+                )
             };
             
             // Create the dialogue box. We can't pass a string directly as the signature differs between the PC and android version.

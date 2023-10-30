@@ -42,13 +42,10 @@ namespace StardewArchipelago.Locations
             {
                 return;
             }
+            
+            var apName = BigCraftable.ConvertToApName(salableObject);
+            var shouldRemoveOriginal = !_archipelago.HasReceivedItem(apName);
 
-            var shouldRemoveOriginal = true;
-            if (IsRarecrow(salableObject))
-            {
-                var apName = BigCraftable.ConvertToRarecrowAPName(salableObject.Name, salableObject.getDescription());
-                shouldRemoveOriginal = !_archipelago.HasReceivedItem(apName);
-            }
             ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, shouldRemoveOriginal, myActiveHints);
         }
 
@@ -102,8 +99,23 @@ namespace StardewArchipelago.Locations
 
         public bool IsRarecrow(Object item, int rarecrowNumber)
         {
-            return IsRarecrow(item) &&
-                   item.getDescription().Contains($"{rarecrowNumber} of");
+            if (!IsRarecrow(item))
+            {
+                return false;
+            }
+
+            return rarecrowNumber switch
+            {
+                1 => item.ParentSheetIndex == 110,
+                2 => item.ParentSheetIndex == 113,
+                3 => item.ParentSheetIndex == 126,
+                4 => item.ParentSheetIndex == 136,
+                5 => item.ParentSheetIndex == 137,
+                6 => item.ParentSheetIndex == 138,
+                7 => item.ParentSheetIndex == 139,
+                8 => item.ParentSheetIndex == 140,
+                _ => false,
+            };
         }
     }
 }

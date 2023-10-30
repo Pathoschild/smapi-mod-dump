@@ -27,38 +27,17 @@ namespace StardewRoguelike.Bosses
     {
         public string DisplayName => "Telesto the Full Moon";
 
-        public string MapPath
-        {
-            get { return "boss-thunderkid"; }
-        }
+        public string MapPath => "boss-thunderkid";
 
-        public string TextureName
-        {
-            get { return "Characters\\Monsters\\Squid Kid"; }
-        }
+        public string TextureName => "Characters\\Monsters\\Squid Kid";
 
-        public Vector2 SpawnLocation
-        {
-            get { return new(25, 25); }
-        }
+        public Vector2 SpawnLocation => new(25, 25);
 
-        public List<string> MusicTracks
-        {
-            get { return new() { "photophobia" }; }
-        }
+        public List<string> MusicTracks => new() { "photophobia" };
 
-        public bool InitializeWithHealthbar
-        {
-            get { return true; }
-        }
+        public bool InitializeWithHealthbar => true;
 
-        private float _difficulty;
-
-        public float Difficulty
-        {
-            get { return _difficulty; }
-            set { _difficulty = value; }
-        }
+        public float Difficulty { get; set; }
 
         private static readonly List<Vector2> TeleportationPositions = new()
         {
@@ -89,23 +68,23 @@ namespace StardewRoguelike.Bosses
             new(25, 25)
         };
 
-        private float lastIceBall;
-        private float lastLightning = 2000f;
-        private bool startedLightning = false;
-        private Vector2 positionToStrike;
-        private int projectileCount = 0;
+        private float LastIceBall;
+        private float LastLightning = 2000f;
+        private bool StartedLightning = false;
+        private Vector2 PositionToStrike;
+        private int ProjectileCount = 0;
 
-        private int ticksToBurn = 0;
+        private int TicksToBurn = 0;
 
-        private int burnCooldown = 0;
+        private int BurnCooldown = 0;
 
-        private readonly NetBool charging = new();
+        private readonly NetBool Charging = new();
 
-        private readonly NetEvent0 onAttacked = new();
+        private readonly NetEvent0 OnAttackedNetEvent = new();
 
-        private readonly NetEvent1Field<Vector2, NetVector2> lightningStrikeWarningEvent = new();
+        private readonly NetEvent1Field<Vector2, NetVector2> LightningStrikeWarningEvent = new();
 
-        private readonly NetEvent1Field<Vector2, NetVector2> lightningStrikeEvent = new();
+        private readonly NetEvent1Field<Vector2, NetVector2> LightningStrikeEvent = new();
 
         public ThunderKid() { }
 
@@ -124,24 +103,24 @@ namespace StardewRoguelike.Bosses
 
         protected override void initNetFields()
         {
-            NetFields.AddFields(lightningStrikeEvent, lightningStrikeWarningEvent, onAttacked, charging);
-            lightningStrikeEvent.onEvent += LightningStrike;
-            lightningStrikeWarningEvent.onEvent += LightningStrikeWarning;
-            onAttacked.onEvent += OnAttacked;
+            NetFields.AddFields(LightningStrikeEvent, LightningStrikeWarningEvent, OnAttackedNetEvent, Charging);
+            LightningStrikeEvent.onEvent += LightningStrike;
+            LightningStrikeWarningEvent.onEvent += LightningStrikeWarning;
+            OnAttackedNetEvent.onEvent += OnAttacked;
             base.initNetFields();
         }
 
         public override void update(GameTime time, GameLocation location)
         {
-            if (charging.Value)
+            if (Charging.Value)
                 startGlowing(Color.DarkRed, false, 0.1f);
-            else if (!charging.Value && glowingColor == Color.DarkRed)
+            else if (!Charging.Value && glowingColor == Color.DarkRed)
                 stopGlowing();
 
             base.update(time, location);
-            lightningStrikeEvent.Poll();
-            lightningStrikeWarningEvent.Poll();
-            onAttacked.Poll();
+            LightningStrikeEvent.Poll();
+            LightningStrikeWarningEvent.Poll();
+            OnAttackedNetEvent.Poll();
         }
 
         private void OnAttacked()
@@ -149,10 +128,10 @@ namespace StardewRoguelike.Bosses
             if (!Context.IsMainPlayer)
                 return;
 
-            if (burnCooldown == 0 && ticksToBurn == 0)
+            if (BurnCooldown == 0 && TicksToBurn == 0)
             {
-                ticksToBurn = 90;
-                charging.Value = true;
+                TicksToBurn = 90;
+                Charging.Value = true;
                 currentLocation.playSound("croak");
             }
         }
@@ -227,7 +206,7 @@ namespace StardewRoguelike.Bosses
         {
             base.updateMonsterSlaveAnimation(time);
 
-            if (charging.Value)
+            if (Charging.Value)
             {
                 Sprite.currentFrame = 1;
                 faceDirection(2);
@@ -236,21 +215,21 @@ namespace StardewRoguelike.Bosses
 
         public override void behaviorAtGameTick(GameTime time)
         {
-            if (burnCooldown > 0)
-                burnCooldown--;
+            if (BurnCooldown > 0)
+                BurnCooldown--;
 
-            if (ticksToBurn > 0)
+            if (TicksToBurn > 0)
             {
                 Sprite.currentFrame = 1;
                 faceDirection(2);
-                ticksToBurn--;
+                TicksToBurn--;
 
-                if (ticksToBurn == 0)
+                if (TicksToBurn == 0)
                 {
                     currentLocation.playSound("explosion");
                     BurnAOE(4);
-                    burnCooldown = 7 * 60;
-                    charging.Value = false;
+                    BurnCooldown = 7 * 60;
+                    Charging.Value = false;
                     TeleportToRandomPosition();
                 }
 
@@ -264,26 +243,26 @@ namespace StardewRoguelike.Bosses
 
             if (Player is not null && withinPlayerThreshold(20))
             {
-                lastIceBall = Math.Max(0f, lastIceBall - time.ElapsedGameTime.Milliseconds);
-                lastLightning = Math.Max(0f, lastLightning - time.ElapsedGameTime.Milliseconds);
+                LastIceBall = Math.Max(0f, LastIceBall - time.ElapsedGameTime.Milliseconds);
+                LastLightning = Math.Max(0f, LastLightning - time.ElapsedGameTime.Milliseconds);
 
-                if (!startedLightning && lastLightning < (Health < MaxHealth / 2 ? 500f : 1000f))
+                if (!StartedLightning && LastLightning < (Health < MaxHealth / 2 ? 500f : 1000f))
                 {
-                    startedLightning = true;
-                    positionToStrike = Player.Position;
-                    lightningStrikeWarningEvent.Fire(positionToStrike);
+                    StartedLightning = true;
+                    PositionToStrike = Player.Position;
+                    LightningStrikeWarningEvent.Fire(PositionToStrike);
                 }
 
-                if (lastLightning == 0f)
+                if (LastLightning == 0f)
                 {
-                    startedLightning = false;
-                    lightningStrikeEvent.Fire(positionToStrike);
-                    lastLightning = Game1.random.Next(2000, 4000) * (Health < MaxHealth / 2 ? 1 : 2);
+                    StartedLightning = false;
+                    LightningStrikeEvent.Fire(PositionToStrike);
+                    LastLightning = Game1.random.Next(2000, 4000) * (Health < MaxHealth / 2 ? 1 : 2);
                     if (Roguelike.HardMode)
-                        lastLightning -= 600;
+                        LastLightning -= 600;
                 }
 
-                if (lastIceBall == 0f)
+                if (LastIceBall == 0f)
                 {
                     Vector2 trajectory = RoguelikeUtility.VectorFromDegrees(Game1.random.Next(0, 360)) * 10f;
                     BasicProjectile projectile = new(DamageToFarmer, 9, 3, 4, 0f, trajectory.X, trajectory.Y, GetProjectileOrigin(), "", "", false, false, currentLocation, this, false, null);
@@ -291,24 +270,24 @@ namespace StardewRoguelike.Bosses
                     projectile.debuff.Value = 19;
                     currentLocation.projectiles.Add(projectile);
 
-                    projectileCount++;
+                    ProjectileCount++;
 
-                    if (projectileCount >= (Health < MaxHealth / 2 ? 8 : 4))
+                    if (ProjectileCount >= (Health < MaxHealth / 2 ? 8 : 4))
                     {
-                        projectileCount = 0;
-                        lastIceBall = Game1.random.Next(1400, 3600);
+                        ProjectileCount = 0;
+                        LastIceBall = Game1.random.Next(1400, 3600);
                         if (Roguelike.HardMode)
-                            lastIceBall -= 400;
+                            LastIceBall -= 400;
                     }
                     else
                     {
                         if (Roguelike.HardMode)
-                            lastIceBall = 150;
+                            LastIceBall = 150;
                         else
-                            lastIceBall = 250;
+                            LastIceBall = 250;
                     }
 
-                    if (lastIceBall != 0f && Game1.random.NextDouble() < 0.05)
+                    if (LastIceBall != 0f && Game1.random.NextDouble() < 0.05)
                         Halt();
                 }
 
@@ -366,7 +345,7 @@ namespace StardewRoguelike.Bosses
 
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
-            onAttacked.Fire();
+            OnAttackedNetEvent.Fire();
             int result = base.takeDamage(damage, 0, 0, isBomb, addedPrecision, who);
             setTrajectory(xTrajectory / 6, yTrajectory / 6);
             if (Health <= 0)

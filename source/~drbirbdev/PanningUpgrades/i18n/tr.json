@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+  "tool.orepan.name": "Tepsi",
+
+  "config.BuyablePan.name": "Satın Alınabilir Tepsi",
+  "config.BuyablePan.tooltip": "Tepsinin Willy'nin dükkanından alınmasına izin verir.",
+  "config.BuyCost.name": "Tepsi Ücreti",
+  "config.BuyCost.tooltip": "Willy'den yeni bir tepsi almanın maliyeti.",
+  "config.UpgradeCostMultiplier.name": "Yükseltme Ücreti Çarpanı",
+  "config.UpgradeCostMultiplier.tooltip": "Tepsi yükseltme ücretinin çarpanı. 1.0 ise diğer aletlerle aynı maliyete sahip olur. 0.5 ise çöp kutusu ile aynı maliyete sahip olur.",
+  "config.UpgradeCostBars.name": "Yükseltme İçin Gereken Külçe",
+  "config.UpgradeCostBars.tooltip": "Tepsiyi yükseltmek için gereken külçe (bakır, demir, vb.) sayısı.",
+  "config.UpgradeDays.name": "Yükseltme İçin Gereken Gün",
+  "config.UpgradeDays.tooltip": "Tepsiyi yükseltmek için geçmesi gereken gün sayısı.",
+
+  "config.ExtraDrawBaseChance.name": "Fazladan Eşya Çekme Şansı",
+  "config.ExtraDrawBaseChance.tooltip": "Fazladan eşya çekme olayının olma şansı. Her yükseltme seviyesi, altın ararken bir fazladan eşya çekme olasılığı sağlar.",
+  "config.DailyLuckMultiplier.name": "Günlük Şans Çarpanı",
+  "config.DailyLuckMultiplier.tooltip": "Günlük şans, bu sayı ile çarpılır ve ardından fazladan eşya çekme şansına eklenir.",
+  "config.LuckLevelMultiplier.name": "Şans Seviyesi Çarpanı",
+  "config.LuckLevelMultiplier.tooltip": "Şans seviyesi, bu sayı ile çarpılır ve ardından fazladan eşya çekme şansına eklenir.",
+
+  "config.AnimationSection.text": "Animasyon Ayarları.",
+  "config.AnimationSectionText.text": "Altın arama animasyonu kötü durmuyorsa bunlara dokunmayın.",
+  "config.AnimationFrameDuration": "Animasyon Karesi Süresi",
+  "config.AnimationYOffset": "Animasyon Y Ofseti"
+}

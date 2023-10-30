@@ -112,6 +112,21 @@ namespace BirbShared.Asset
                 }
             };
 
+            this.Mod.Helper.Events.Content.AssetsInvalidated += (object sender, AssetsInvalidatedEventArgs e) =>
+            {
+                foreach(IAssetName asset in e.Names)
+                {
+                    if (asset.IsEquivalentTo(assetId))
+                    {
+                        propertyInfo.SetValue(this.Assets, LoadValue(propertyInfo, assetId));
+                        if (pathPropertyInfo is not null)
+                        {
+                            pathPropertyInfo.SetValue(this.Assets, PathUtilities.NormalizeAssetName(assetId));
+                        }
+                    }
+                }
+            };
+
             this.Mod.Helper.Events.GameLoop.GameLaunched += (object sender, GameLaunchedEventArgs e) =>
             {
                 propertyInfo.SetValue(this.Assets, LoadValue(propertyInfo, assetId));

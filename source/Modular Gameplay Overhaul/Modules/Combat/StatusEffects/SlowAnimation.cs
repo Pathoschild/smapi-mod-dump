@@ -45,6 +45,7 @@ public class SlowAnimation : TemporaryAnimatedSprite
             0f,
             0f)
     {
+        this.Position = monster.GetOverheadOffset() + new Vector2(0f, -32f);
         this.positionFollowsAttachedCharacter = true;
         this.attachedCharacter = monster;
         EventManager.Enable<SlowAnimationRenderedWorldEvent>();
@@ -58,15 +59,13 @@ public class SlowAnimation : TemporaryAnimatedSprite
     {
         var result = base.update(time);
         var monster = (Monster)this.attachedCharacter;
-        if (result || monster.Health <= 0)
+        if (result || monster.Health <= 0 || !monster.IsSlowed())
         {
             SlowAnimationByMonster.Remove(monster);
             return result;
         }
 
-        var offset = monster.GetOverheadOffset(time);
-        offset.Y -= 32;
-        this.Position = offset;
+        this.Position = monster.GetOverheadOffset() + new Vector2(0f, -32f);
         return result;
     }
 }

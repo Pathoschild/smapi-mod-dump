@@ -40,56 +40,35 @@ namespace StardewRoguelike.Bosses
 
         public string DisplayName => "Cavrag the Dragon Prince";
 
-        public string MapPath
-        {
-            get { return "boss-dragon"; }
-        }
+        public string MapPath => "boss-dragon";
 
-        public string TextureName
-        {
-            get { return "Characters\\Monsters\\Serpent"; }
-        }
+        public string TextureName => "Characters\\Monsters\\Serpent";
 
-        public Vector2 SpawnLocation
-        {
-            get { return new(25, 25); }
-        }
+        public Vector2 SpawnLocation => new(25, 25);
 
-        public List<string> MusicTracks
-        {
-            get { return new() { "hold_your_ground" }; }
-        }
+        public List<string> MusicTracks => new() { "hold_your_ground" };
 
-        public bool InitializeWithHealthbar
-        {
-            get { return true; }
-        }
+        public bool InitializeWithHealthbar => true;
 
-        private float _difficulty;
+        public float Difficulty { get; set; }
 
-        public float Difficulty
-        {
-            get { return _difficulty; }
-            set { _difficulty = value; }
-        }
+        private int TimeUntilNextAttack;
 
-        private int timeUntilNextAttack;
+        private readonly NetBool Firing = new();
 
-        private readonly NetBool firing = new();
+        private readonly NetEnum<State> CurrentState = new(State.Normal);
 
-        private readonly NetEnum<State> currentState = new(State.Normal);
+        private readonly NetEnum<AttackType> CurrentAttack = new();
 
-        private readonly NetEnum<AttackType> currentAttack = new();
+        private AttackType PreviousAttack;
 
-        private AttackType previousAttack;
+        private int NextFireTime;
 
-        private int nextFireTime;
+        private int TotalFireTime;
 
-        private int totalFireTime;
+        private int NextChargeTime;
 
-        private int nextChargeTime;
-
-        private int currentChargeDuration;
+        private int CurrentChargeDuration;
 
         public Dragon() { }
 
@@ -103,19 +82,19 @@ namespace StardewRoguelike.Bosses
             Sprite.LoadTexture(TextureName);
             Scale = 2f;
 
-            timeUntilNextAttack = 6000;
+            TimeUntilNextAttack = 6000;
             moveTowardPlayerThreshold.Value = 20;
         }
 
         protected override void initNetFields()
         {
             base.initNetFields();
-            NetFields.AddFields(firing, currentState, currentAttack);
+            NetFields.AddFields(Firing, CurrentState, CurrentAttack);
         }
 
         public override void MovePosition(GameTime time, xTile.Dimensions.Rectangle viewport, GameLocation currentLocation)
         {
-            if (currentState.Value == State.Normal)
+            if (CurrentState.Value == State.Normal)
                 base.MovePosition(time, viewport, currentLocation);
         }
 
@@ -123,8 +102,8 @@ namespace StardewRoguelike.Bosses
         {
             base.collisionWithFarmerBehavior();
 
-            if (currentState.Value == State.Charging)
-                currentState.Value = State.Normal;
+            if (CurrentState.Value == State.Charging)
+                CurrentState.Value = State.Normal;
         }
 
         public override void update(GameTime time, GameLocation location)
@@ -135,79 +114,79 @@ namespace StardewRoguelike.Bosses
             this.KeepInMap();
             base.update(time, location);
 
-            if (currentState.Value == State.ChargingUp && !isGlowing)
+            if (CurrentState.Value == State.ChargingUp && !isGlowing)
                 startGlowing(Color.Black, false, 0.15f);
-            else if (currentState.Value != State.ChargingUp)
+            else if (CurrentState.Value != State.ChargingUp)
                 stopGlowing();
         }
 
         public override void behaviorAtGameTick(GameTime time)
         {
-            if (currentState.Value == State.Normal)
+            if (CurrentState.Value == State.Normal)
             {
                 base.behaviorAtGameTick(time);
                 if (currentLocation is MineShaft mine)
                     DamageToFarmer = (int)(BossManager.GetBaseDamageToFarmer(mine, GetType()) * Difficulty);
             }
 
-            if (currentState.Value == State.ChargingUp || currentState.Value == State.Attacking)
+            if (CurrentState.Value == State.ChargingUp || CurrentState.Value == State.Attacking)
                 facePlayer(Player);
 
-            if (timeUntilNextAttack > 0 && currentState.Value == State.Normal)
-                timeUntilNextAttack -= time.ElapsedGameTime.Milliseconds;
+            if (TimeUntilNextAttack > 0 && CurrentState.Value == State.Normal)
+                TimeUntilNextAttack -= time.ElapsedGameTime.Milliseconds;
 
-            if (timeUntilNextAttack <= 0 && currentState.Value == State.Normal)
+            if (TimeUntilNextAttack <= 0 && CurrentState.Value == State.Normal)
             {
-                timeUntilNextAttack = 0;
-                previousAttack = currentAttack.Value;
+                TimeUntilNextAttack = 0;
+                PreviousAttack = CurrentAttack.Value;
 
                 var validAttacks = new List<AttackType>((IEnumerable<AttackType>)Enum.GetValues(typeof(AttackType)));
-                validAttacks.Remove(previousAttack);
+                validAttacks.Remove(PreviousAttack);
 
-                currentAttack.Value = validAttacks[Game1.random.Next(validAttacks.Count)];
+                CurrentAttack.Value = validAttacks[Game1.random.Next(validAttacks.Count)];
 
-                if (currentAttack.Value == AttackType.FireBreath || currentAttack.Value == AttackType.RandomFire)
+                if (CurrentAttack.Value == AttackType.FireBreath || CurrentAttack.Value == AttackType.RandomFire)
                 {
-                    nextFireTime = 60;
-                    totalFireTime = this.AdjustRangeForHealth(2000, 4000);
-                    currentState.Value = State.Attacking;
+                    NextFireTime = 60;
+                    TotalFireTime = this.AdjustRangeForHealth(2000, 4000);
+                    CurrentState.Value = State.Attacking;
                 }
-                else if (currentAttack.Value == AttackType.Charge)
+                else if (CurrentAttack.Value == AttackType.Charge)
                 {
-                    nextChargeTime = 4000 - this.AdjustRangeForHealth(0, 3000);
-                    currentChargeDuration = 0;
-                    currentState.Value = State.ChargingUp;
+                    NextChargeTime = 4000 - this.AdjustRangeForHealth(0, 3000);
+                    CurrentChargeDuration = 0;
+                    CurrentState.Value = State.ChargingUp;
 
                     if (Roguelike.HardMode)
-                        nextChargeTime -= 900;
+                        NextChargeTime -= 900;
                 }
 
-                timeUntilNextAttack = 4000 - this.AdjustRangeForHealth(0, 2500);
+                TimeUntilNextAttack = 4000 - this.AdjustRangeForHealth(0, 2500);
             }
 
-            if (currentState.Value == State.Attacking)
+            if (CurrentState.Value == State.Attacking)
             {
-                if (totalFireTime > 0)
+                if (TotalFireTime > 0)
                 {
-                    if (!firing.Value)
+                    if (!Firing.Value)
                     {
                         if (Player is not null)
                             faceGeneralDirection(Player.Position, 0, false);
                     }
 
-                    totalFireTime -= time.ElapsedGameTime.Milliseconds;
-                    if (nextFireTime > 0 && Player is not null)
+                    TotalFireTime -= time.ElapsedGameTime.Milliseconds;
+                    if (NextFireTime > 0 && Player is not null)
                     {
-                        nextFireTime -= time.ElapsedGameTime.Milliseconds;
-                        if (nextFireTime <= 0)
+                        NextFireTime -= time.ElapsedGameTime.Milliseconds;
+                        if (NextFireTime <= 0)
                         {
-                            if (!firing.Value)
+                            if (!Firing.Value)
                             {
-                                firing.Value = true;
+                                Firing.Value = true;
                                 currentLocation.playSound("furnace");
                             }
 
-                            if (currentAttack.Value == AttackType.FireBreath)
+                            if (CurrentAttack.Value == AttackType.FireBreath)
                             {
                                 Vector2 shot_origin = new(GetBoundingBox().Center.X, GetBoundingBox().Center.Y);
 
@@ -217,7 +196,7 @@ namespace StardewRoguelike.Bosses
 
                                 float fire_angle = RoguelikeUtility.VectorToRadians(playerAngle);
                                 fire_angle *= (float)(180 / Math.PI);
-                                fire_angle += (float)Math.Sin(totalFireTime / 1000f * RoguelikeUtility.DegreesToRadians(200)) * 30f;
+                                fire_angle += (float)Math.Sin(TotalFireTime / 1000f * RoguelikeUtility.DegreesToRadians(200)) * 30f;
                                 fire_angle = RoguelikeUtility.DegreesToRadians(fire_angle);
 
                                 Vector2 shot_velocity = new((float)Math.Cos(fire_angle), (float)Math.Sin(fire_angle));
@@ -233,9 +212,9 @@ namespace StardewRoguelike.Bosses
 
                                 currentLocation.projectiles.Add(projectile);
 
-                                nextFireTime = 60;
+                                NextFireTime = 60;
                             }
-                            else if (currentAttack.Value == AttackType.RandomFire)
+                            else if (CurrentAttack.Value == AttackType.RandomFire)
                             {
                                 Vector2 shot_origin = new(GetBoundingBox().Center.X, GetBoundingBox().Center.Y);
                                 int degreesToPlayer = RoguelikeUtility.VectorToDegrees(Player.Position - Position);
@@ -250,33 +229,33 @@ namespace StardewRoguelike.Bosses
                                 projectile.IgnoreLocationCollision = true;
                                 currentLocation.projectiles.Add(projectile);
 
-                                nextFireTime = 100;
+                                NextFireTime = 100;
                                 if (Roguelike.HardMode)
-                                    nextFireTime -= 30;
+                                    NextFireTime -= 30;
                             }
                         }
                     }
 
-                    if (totalFireTime <= 0)
+                    if (TotalFireTime <= 0)
                     {
-                        totalFireTime = 0;
-                        nextFireTime = 0;
-                        firing.Value = false;
-                        currentState.Value = State.Normal;
+                        TotalFireTime = 0;
+                        NextFireTime = 0;
+                        Firing.Value = false;
+                        CurrentState.Value = State.Normal;
                     }
                 }
             }
-            else if (currentState.Value == State.ChargingUp)
+            else if (CurrentState.Value == State.ChargingUp)
             {
-                nextChargeTime -= time.ElapsedGameTime.Milliseconds;
+                NextChargeTime -= time.ElapsedGameTime.Milliseconds;
 
-                if (nextChargeTime <= 0)
+                if (NextChargeTime <= 0)
                 {
-                    nextChargeTime = 0;
-                    currentState.Value = State.Charging;
+                    NextChargeTime = 0;
+                    CurrentState.Value = State.Charging;
                 }
             }
-            else if (currentState == State.Charging)
+            else if (CurrentState == State.Charging)
             {
                 if (DamageToFarmer == (int)(BossManager.GetBaseDamageToFarmer((MineShaft)currentLocation, GetType()) * Difficulty))
                     DamageToFarmer = (int)Math.Round(DamageToFarmer * 1.5f);
@@ -287,11 +266,11 @@ namespace StardewRoguelike.Bosses
                 Position += chargeVector;
                 rotation = RoguelikeUtility.VectorToRadians(chargeVector) + RoguelikeUtility.DegreesToRadians(90);
 
-                currentChargeDuration += time.ElapsedGameTime.Milliseconds;
-                if (currentChargeDuration >= 5000)
+                CurrentChargeDuration += time.ElapsedGameTime.Milliseconds;
+                if (CurrentChargeDuration >= 5000)
                 {
-                    currentState.Value = State.Normal;
-                    timeUntilNextAttack = 4000 - this.AdjustRangeForHealth(0, 2000);
+                    CurrentState.Value = State.Normal;
+                    TimeUntilNextAttack = 4000 - this.AdjustRangeForHealth(0, 2000);
                 }
             }
         }
@@ -322,9 +301,9 @@ namespace StardewRoguelike.Bosses
 
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
-            if (currentState.Value == State.Charging)
-                currentState.Value = State.Normal;
-            else if (currentState.Value == State.Attacking || currentState.Value == State.ChargingUp)
+            if (CurrentState.Value == State.Charging)
+                CurrentState.Value = State.Normal;
+            else if (CurrentState.Value == State.Attacking || CurrentState.Value == State.ChargingUp)
             {
                 currentLocation.playSound("crafting");
                 return 0;

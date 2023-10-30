@@ -17,6 +17,8 @@ using DaLion.Overhaul.Modules.Combat.Events.GameLoop.UpdateTicked;
 using DaLion.Overhaul.Modules.Combat.Events.Player.Warped;
 using DaLion.Overhaul.Modules.Combat.Projectiles;
 using DaLion.Shared.Enums;
+using DaLion.Shared.Extensions;
+using DaLion.Shared.Extensions.Xna;
 using Microsoft.Xna.Framework;
 using StardewValley.Monsters;
 using StardewValley.Tools;
@@ -25,9 +27,12 @@ using StardewValley.Tools;
 
 /// <summary>The secondary <see cref="BaseWeaponEnchantment"/> which characterizes the Holy Blade.</summary>
 [XmlType("Mods_DaLion_BlessedEnchantment")]
-public class BlessedEnchantment : BaseWeaponEnchantment
+public sealed class BlessedEnchantment : BaseWeaponEnchantment
 {
+    private readonly Color _lightSourceColor = Color.Yellow.Inverse();
+    private readonly float _lightSourceRadius = 2.5f;
     private int? _lightSourceId;
+    private LightSource? _lightSource;
 
     /// <inheritdoc />
     public override bool IsSecondaryEnchantment()
@@ -69,19 +74,28 @@ public class BlessedEnchantment : BaseWeaponEnchantment
             this._lightSourceId++;
         }
 
-        newLocation.sharedLights[this._lightSourceId.Value] = new LightSource(
-            LightSource.lantern,
-            new Vector2(who.Position.X + 21f, who.Position.Y + 64f),
-            2.5f,
-            Color.Gold,
-            this._lightSourceId.Value,
-            LightSource.LightContext.None,
-            who.UniqueMultiplayerID);
+        if (this._lightSource is null)
+        {
+            this._lightSource = new LightSource(
+                LightSource.lantern,
+                new Vector2(who.Position.X + 26f, who.Position.Y + 64f),
+                this._lightSourceRadius,
+                this._lightSourceColor,
+                this._lightSourceId.Value,
+                LightSource.LightContext.None,
+                who.UniqueMultiplayerID);
+        }
+        else
+        {
+            this._lightSource.Identifier = this._lightSourceId.Value;
+        }
+
+        newLocation.sharedLights[this._lightSourceId.Value] = this._lightSource;
     }
 
-    internal void Update(Farmer who)
+    internal void Update(uint ticks, Farmer who)
     {
-        if (!this._lightSourceId.HasValue)
+        if (this._lightSource is null || !this._lightSourceId.HasValue)
         {
             return;
         }
@@ -92,9 +106,12 @@ public class BlessedEnchantment : BaseWeaponEnchantment
             offset += who.drawOffset.Value;
         }
 
-        who.currentLocation.repositionLightSource(
-            this._lightSourceId.Value,
-            new Vector2(who.Position.X + 21f, who.Position.Y) + offset);
+        this._lightSource.position.Value = new Vector2(who.Position.X + 26f, who.Position.Y + 16) + offset;
+
+        if (ticks % 10 == 0)
+        {
+            this._lightSource.radius.Value = this._lightSourceRadius + (float)Game1.random.NextGaussian(0.5, 0.025);
+        }
     }
 
     /// <inheritdoc />
@@ -122,29 +139,39 @@ public class BlessedEnchantment : BaseWeaponEnchantment
             this._lightSourceId++;
         }
 
-        location.sharedLights[this._lightSourceId.Value] = new LightSource(
-            LightSource.lantern,
-            new Vector2(who.Position.X + 21f, who.Position.Y + 64f),
-            2.5f,
-            Color.Gold,
-            this._lightSourceId.Value,
-            LightSource.LightContext.None,
-            who.UniqueMultiplayerID);
-        EventManager.Enable(typeof(BlessedEnchantmentUpdateTickedEvent), typeof(BlessedEnchantmentWarpedEvent));
+        if (this._lightSource is null)
+        {
+            this._lightSource = new LightSource(
+                LightSource.lantern,
+                new Vector2(who.Position.X + 26f, who.Position.Y + 64f),
+                this._lightSourceRadius,
+                this._lightSourceColor,
+                this._lightSourceId.Value,
+                LightSource.LightContext.None,
+                who.UniqueMultiplayerID);
+        }
+        else
+        {
+            this._lightSource.Identifier = this._lightSourceId.Value;
+        }
+
+        location.sharedLights[this._lightSourceId.Value] = this._lightSource;
+        EventManager.Enable(typeof(BaseEnchantmentUpdateTickedEvent), typeof(BaseEnchantmentWarpedEvent));
     }
 
     /// <inheritdoc />
     protected override void _OnUnequip(Farmer who)
     {
         base._OnUnequip(who);
-        if (!this._lightSourceId.HasValue)
+        if (this._lightSource is null || !this._lightSourceId.HasValue)
         {
             return;
         }
 
         var location = who.currentLocation;
         location.removeLightSource(this._lightSourceId.Value);
-        EventManager.Disable(typeof(BlessedEnchantmentUpdateTickedEvent), typeof(BlessedEnchantmentWarpedEvent));
+        this._lightSource = null;
+        EventManager.Disable(typeof(BaseEnchantmentUpdateTickedEvent), typeof(BaseEnchantmentWarpedEvent));
     }
 
     /// <inheritdoc />
@@ -161,7 +188,7 @@ public class BlessedEnchantment : BaseWeaponEnchantment
         var startingPosition = farmer.getStandingPosition() + (facingVector * 64f) - new Vector2(32f, 32f);
         var velocity = facingVector * 10f;
         var rotation = (float)Math.PI / 180f * 32f;
-        farmer.currentLocation.projectiles.Add(new LightBeamProjectile(
+        farmer.currentLocation.projectiles.Add(new BlessedProjectile(
             weapon,
             farmer,
             startingPosition,

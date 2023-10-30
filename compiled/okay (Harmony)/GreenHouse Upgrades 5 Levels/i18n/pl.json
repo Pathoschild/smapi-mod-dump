@@ -1,0 +1,25 @@
+﻿{
+    "GreenhouseLevel1": "Szklarnia",
+    "GreenhouseLevel1Description": "Pole uprawne 15x15. Dodaje piwnicę.",
+    "GreenhouseLevel2": "Mała Szklarnia",
+    "GreenhouseLevel2Description": "Pole uprawne 30x30. Rozszerza piwnicę, dodaje wewnętrzną szklarnię i automatyczne nawadnianie.",
+    "GreenhouseLevel3": "Średnia Szklarnia",
+    "GreenhouseLevel3Description": "Pole uprawne 50x50. Dalej rozszerza piwnicę i powiększa wewnętrzną szklarnię.",
+    "GreenhouseLevel4": "Duża Szklarnia",
+    "GreenhouseLevel4Description": "Pole uprawne 75x75. Powiększa piwnicę i wewnętrzną szklarnię.",
+    "GreenhouseLevel5": "Ekstra Duża Luksusowa Szklarnia",
+    "GreenhouseLevel5Description": "Pole uprawne 100x100. Rozszerza piwnicę i powiększa wewnętrzną szklarnię.",
+
+    "LeftBehindTree": "Zostawiłeś drzewo.",
+    "LeftBehindCrop": "Zostawiłeś uprawę.",
+    "PickUpTreeMessage": "Drzewo podniesione!",
+    "PlaceTreeMessage": "Drzewo postawione!",
+    "PickUpCropMessage": "Uprawa podniesiona!",
+    "PlaceCropMessage": "Uprawa postawiona!",
+    "EnableTreePickingOption": "Zbieranie drzew i upraw",
+    "EnableTreePickingTooltip": "Włącz/Wyłącz zbieranie.",
+    "language-choice-name": "Język",
+"language-choice-tooltip": "Wybierz język moda"
+
+    
+}

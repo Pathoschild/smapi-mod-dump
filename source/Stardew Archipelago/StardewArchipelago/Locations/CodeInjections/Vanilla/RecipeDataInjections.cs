@@ -9,16 +9,10 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Extensions;
-using StardewArchipelago.GameModifications.Seasons;
-using StardewArchipelago.Serialization;
-using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Objects;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {

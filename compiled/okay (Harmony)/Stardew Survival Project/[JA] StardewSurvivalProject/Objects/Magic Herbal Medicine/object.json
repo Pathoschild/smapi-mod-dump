@@ -1,0 +1,10 @@
+{
+    "Name": "Magic Herbal Medicine",
+    "Description": "Herbal medicine, now infused with jumino magic. Three times as effective!!!",
+    "Category": "ArtisanGoods",
+    "Edibility": 1,
+    "EdibleIsDrink": false,
+    "Price": 350,
+    "IsColored": false,
+	"Recipe": null,
+}

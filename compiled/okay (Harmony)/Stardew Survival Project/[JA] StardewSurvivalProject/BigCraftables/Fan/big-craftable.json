@@ -1,0 +1,31 @@
+{
+    "Name": "Fan",
+    "Description": "Cool you down in hot summer days",
+    "Price": 1,
+    "ProvidesLight": false,
+    "ReserveNextIndex": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+			{
+                "Object": 335,
+                "Count": 5
+            },
+			{
+				"Object": 334,
+                "Count": 10
+			},
+			{
+				"Object": 338,
+				"Count": 10
+			}
+        ],
+		"CanPurchase": true,
+		"PurchaseFrom": "Robin",
+		"PurchasePrice": 10000,
+		"PurchaseRequirements": null
+    },
+	"CanPurchase": true,
+	"PurchaseFrom": "Robin",
+	"PurchasePrice": 4000
+}

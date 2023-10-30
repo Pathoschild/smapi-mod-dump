@@ -6,9 +6,9 @@ mods:
    Unlockable Bundles
 
 latest commit:
-   commit 4ab9036001543a4397016a095566bf58f38abcd8
+   commit 51f31f2e231693f8cab73188aa21a6960d19ba73
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Sat Sep 16 07:33:16 2023 +0200
+   Date:   Sun Oct 29 22:24:22 2023 +0100
    
-       copied changes from 1.5 branch for more consistent token use as bundle conditions
+       updated for build 23302
    

@@ -1,0 +1,25 @@
+﻿{
+    "GreenhouseLevel1": "Üvegház",
+    "GreenhouseLevel1Description": "Művelhető terület 15x15. Pincét ad hozzá.",
+    "GreenhouseLevel2": "Kis Üvegház",
+    "GreenhouseLevel2Description": "Művelhető terület 30x30. Kibővíti a pincét, hozzáadja a belső üvegházat és az automatikus öntözést.",
+    "GreenhouseLevel3": "Közepes Üvegház",
+    "GreenhouseLevel3Description": "Művelhető terület 50x50. Tovább bővíti a pincét és nagyobb belső üvegházat ad hozzá.",
+    "GreenhouseLevel4": "Nagy Üvegház",
+    "GreenhouseLevel4Description": "Művelhető terület 75x75. Nagyobbítja a pincét és a belső üvegházat.",
+    "GreenhouseLevel5": "Extra Nagy Deluxe Üvegház",
+    "GreenhouseLevel5Description": "Művelhető terület 100x100. Tovább bővíti a pincét és nagyobb belső üvegházat ad hozzá.",
+
+    "LeftBehindTree": "Otthagyta a fát.",
+    "LeftBehindCrop": "Otthagyta a növényt.",
+    "PickUpTreeMessage": "Fa felvéve!",
+    "PlaceTreeMessage": "Fa elhelyezve!",
+    "PickUpCropMessage": "Növény felvéve!",
+    "PlaceCropMessage": "Növény elhelyezve!",
+    "EnableTreePickingOption": "Fák és növények felvétele",
+    "EnableTreePickingTooltip": "Felvétel engedélyezése/tiltása.",
+    "language-choice-name": "Nyelv",
+"language-choice-tooltip": "Válassza ki a mod nyelvét"
+
+    
+}

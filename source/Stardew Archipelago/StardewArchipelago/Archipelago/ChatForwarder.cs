@@ -15,7 +15,6 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago.Gifting;
 using StardewArchipelago.GameModifications;
-using StardewArchipelago.GameModifications.CodeInjections;
 using StardewArchipelago.Goals;
 using StardewArchipelago.Items.Traps;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;

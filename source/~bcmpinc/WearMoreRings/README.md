@@ -39,6 +39,9 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 Mods adding additional rings most should work out of the box. For backwards compatibility this mod provides an API to access the equipped rings: [IWearMoreRingsAPI](https://github.com/bcmpinc/StardewHack/blob/master/WearMoreRings/IWearMoreRingsAPI.cs).
 
 ## Changes
+#### 7.0:
+* Localization support.
+
 #### 6.4:
 * Fixed null pointer error when saving in generic mod config menu.
 
@@ -68,7 +71,7 @@ Mods adding additional rings most should work out of the box. For backwards comp
 * Add 64-bit support
 
 #### 3.4:
-* Rearanged ring slots. The right ring is now positioned in the first column, second from the top.
+* Rearranged ring slots. The right ring is now positioned in the first column, second from the top.
 * Added config parameter `Rings` for the amount of ring slots. Anything above 8 will result in text overlaying the ring slots.
 
 #### 3.3:

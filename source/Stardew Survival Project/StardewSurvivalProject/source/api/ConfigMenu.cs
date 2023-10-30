@@ -104,6 +104,34 @@ namespace StardewSurvivalProject.source.api
                 optionGet: () => ModConfig.GetInstance().FriendshipPenaltyOnNotFeedingSpouse,
                 optionSet: value => ModConfig.GetInstance().FriendshipPenaltyOnNotFeedingSpouse = value
             );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Experimental - Saturation Stat.",
+                optionDesc: "Saturation is scaled with hunger restored to penalize low quality food, also make stomachache more severe",
+                optionGet: () => ModConfig.GetInstance().ScaleHungerRestoredWithTimeFromLastMeal,
+                optionSet: value => ModConfig.GetInstance().ScaleHungerRestoredWithTimeFromLastMeal = value
+            );
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Experimental - Stamina rework",
+                optionDesc: "Stamina will drain at an accelarated pace, but also regen overtime, and you have access to sprinting",
+                optionGet: () => ModConfig.GetInstance().UseStaminaRework,
+                optionSet: value => ModConfig.GetInstance().UseStaminaRework = value
+            );
+            api.AddKeybind(
+                mod: context.ModManifest,
+                name: () => "Sprint Button",
+                tooltip: () => "Keybind to sprint - Only available with stamina rework option enabled",
+                getValue: () => ModConfig.GetInstance().SprintButton,
+                setValue: value => ModConfig.GetInstance().SprintButton = value
+            );   
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Experimental - Sanity Meter",
+                optionDesc: "Hahahaha let's not talk about this one!",
+                optionGet: () => ModConfig.GetInstance().UseSanityModule,
+                optionSet: value => ModConfig.GetInstance().UseSanityModule = value
+            );
 
             api.StartNewPage(context.ModManifest, "UI Configuration");
             api.RegisterParagraph(context.ModManifest, "Options to adjust how the mod's UI is displayed");

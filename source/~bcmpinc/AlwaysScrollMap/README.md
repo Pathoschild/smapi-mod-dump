@@ -38,6 +38,9 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * On a day with falling leaves, the leaves disappear when scrolling past the west edge of the map.
 
 ## Changes
+#### 7.0:
+* Localization support.
+
 #### 6.0:
 * Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.
 

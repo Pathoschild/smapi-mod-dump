@@ -1,0 +1,7 @@
+{
+	"Carpenter_Flip": "Продать Постройку",
+	"Carpenter_SelectBuilding_Flip": "Выберите постройку для продажи",
+	"Carpenter_CannotFlip": "Данное здание не может быть продано" ,
+	"Carpenter_CannotFlip_Permission": "У вас нет разрешения для продажи данной постройки",
+	"Carpenter_CannotFlip_PlayerHere": "Нельзя продать здание с игроком внутри"
+}

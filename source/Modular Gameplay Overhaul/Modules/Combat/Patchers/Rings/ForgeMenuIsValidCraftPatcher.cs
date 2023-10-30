@@ -32,14 +32,17 @@ internal sealed class ForgeMenuIsValidCraftPatcher : HarmonyPatcher
     #region harmony patches
 
     /// <summary>Allow forging Infinity Band.</summary>
-    [HarmonyPostfix]
-    private static void ForgeMenuIsValidCraftPostfix(ref bool __result, Item? left_item, Item? right_item)
+    [HarmonyPrefix]
+    private static bool ForgeMenuIsValidCraftPrefix(ref bool __result, Item? left_item, Item? right_item)
     {
-        if (left_item is Ring { ParentSheetIndex: ObjectIds.IridiumBand } &&
-            right_item?.ParentSheetIndex == ObjectIds.GalaxySoul)
+        if (left_item is not Ring { ParentSheetIndex: ObjectIds.IridiumBand } ||
+            right_item?.ParentSheetIndex != ObjectIds.GalaxySoul)
         {
-            __result = true;
+            return true; // run original logic
         }
+
+        __result = true;
+        return false; // don't run original logic
     }
 
     #endregion harmony patches

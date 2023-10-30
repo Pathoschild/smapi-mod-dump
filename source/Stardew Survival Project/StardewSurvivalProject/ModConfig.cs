@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +25,14 @@ namespace StardewSurvivalProject
         public bool UseOnRunningDrain { get; set; } = true;
         public bool UseOnToolUseDrain { get; set; } = true;
         public bool UseTemperatureModule { get; set; } = true;
-        public bool UseReworkedStaminaDrain { get; set; } = true;
+        // public bool UseReworkedStaminaDrain { get; set; } = true;
         public bool UseMoodExtension { get; set; } = true;
         public bool DisableHPHealingOnEatingFood { get; set; } = true;
         public bool UseOvernightPassiveDrain { get; set; } = true;
+        public bool UseSanityModule { get; set; } = false;
+        public bool UseStaminaRework { get; set; } = true;
+        public SButton SprintButton { get; set; } = (SButton) Keys.LeftControl;
+        public bool ScaleHungerRestoredWithTimeFromLastMeal { get; set; } = false;
         public int FriendshipPenaltyOnNotFeedingSpouse { get; set; } = 50;
         public int HealthRestoreOnSleep { get; set; } = 20;
 
@@ -50,9 +56,9 @@ namespace StardewSurvivalProject
         public double PassiveThirstDrainRate { get; set; } = 0.3;
         public double RunningHungerDrainRate { get; set; } = 0.001;
         public double RunningThirstDrainRate { get; set; } = 0.002;
-        public double MeleeWeaponHungerDrain { get; set; } = 0.5;
+        public double MeleeWeaponHungerDrain { get; set; } = 0.3;
         public double MeleeWeaponThirstDrain { get; set; } = 0.2;
-        public double SlingshotHungerDrain { get; set; } = 0.5;
+        public double SlingshotHungerDrain { get; set; } = 0.3;
         public double SlingshotThirstDrain { get; set; } = 0.2;
         public double PickaxeHungerDrain { get; set; } = 0.5;
         public double PickaxeThirstDrain { get; set; } = 0.2;
@@ -156,7 +162,7 @@ namespace StardewSurvivalProject
             return _instance;
         }
 
-        public void SetConfig(ModConfig input)
+        public void SetConfig(ModConfig input, bool CopyUIConfig = false)
         {
             if (_instance == null)
             {

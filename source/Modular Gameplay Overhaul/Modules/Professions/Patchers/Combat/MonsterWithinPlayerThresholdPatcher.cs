@@ -16,6 +16,7 @@ using System.Reflection;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Harmony;
+using Extensions;
 using HarmonyLib;
 using StardewValley.Monsters;
 
@@ -44,13 +45,14 @@ internal sealed class MonsterWithinPlayerThresholdPatcher : HarmonyPatcher
             }
 
             var player = __instance.Get_Target();
-            if (!player.IsLocalPlayer || player.Get_Ultimate() is not Ambush { IsActive: true })
+            if (!player.IsLocalPlayer || !player.IsInAmbush())
             {
                 return true; // run original method
             }
 
             __result = false;
             return false; // don't run original method
+
         }
         catch (Exception ex)
         {

@@ -60,8 +60,12 @@ internal sealed class MineShaftPopulateLevelPatcher : HarmonyPatcher
                             typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Combat))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
-                            typeof(Config).RequirePropertyGetter(nameof(Config.EnableWeaponOverhaul))),
+                            typeof(CombatConfig).RequirePropertyGetter(nameof(CombatConfig.EnableWeaponOverhaul))),
                         new CodeInstruction(OpCodes.Brfalse_S, dontRebalance),
+                        new CodeInstruction(OpCodes.Ldarg_0),
+                        new CodeInstruction(OpCodes.Call, typeof(MineShaft).RequirePropertyGetter(nameof(MineShaft.mineLevel))),
+                        new CodeInstruction(OpCodes.Ldc_I4_S, 120),
+                        new CodeInstruction(OpCodes.Bgt_S, dontRebalance),
                         new CodeInstruction(OpCodes.Ldc_I4_S, 17),
                         new CodeInstruction(OpCodes.Br_S, resumeExecution),
                     })
@@ -92,8 +96,13 @@ internal sealed class MineShaftPopulateLevelPatcher : HarmonyPatcher
                             typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Combat))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
-                            typeof(Config).RequirePropertyGetter(nameof(Config.EnableWeaponOverhaul))),
-                        new CodeInstruction(OpCodes.Brfalse_S, dontRebalance), new CodeInstruction(OpCodes.Ldc_R8, 80.0),
+                            typeof(CombatConfig).RequirePropertyGetter(nameof(CombatConfig.EnableWeaponOverhaul))),
+                        new CodeInstruction(OpCodes.Brfalse_S, dontRebalance),
+                        new CodeInstruction(OpCodes.Ldarg_0),
+                        new CodeInstruction(OpCodes.Call, typeof(MineShaft).RequirePropertyGetter(nameof(MineShaft.mineLevel))),
+                        new CodeInstruction(OpCodes.Ldc_I4_S, 120),
+                        new CodeInstruction(OpCodes.Bgt_S, dontRebalance),
+                        new CodeInstruction(OpCodes.Ldc_R8, 80.0),
                         new CodeInstruction(OpCodes.Br_S, resumeExecution),
                     })
                 .Move()
@@ -102,6 +111,32 @@ internal sealed class MineShaftPopulateLevelPatcher : HarmonyPatcher
         catch (Exception ex)
         {
             Log.E($"Failed to increasing container spawn (luck).\nHelper returned {ex}");
+            return null;
+        }
+
+        try
+        {
+            helper
+                .Match(new[] { new CodeInstruction(OpCodes.Stloc_1) }, ILHelper.SearchOption.First)
+                .Insert(
+                    new[]
+                    {
+                        new CodeInstruction(
+                            OpCodes.Call,
+                            typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
+                        new CodeInstruction(
+                            OpCodes.Callvirt,
+                            typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Combat))),
+                        new CodeInstruction(
+                            OpCodes.Callvirt,
+                            typeof(CombatConfig).RequirePropertyGetter(nameof(CombatConfig.MonsterSpawnChanceMultiplier))),
+                        new CodeInstruction(OpCodes.Conv_R8),
+                        new CodeInstruction(OpCodes.Mul),
+                    });
+        }
+        catch (Exception ex)
+        {
+            Log.E($"Failed to increase monster spawn chance.\nHelper returned {ex}");
             return null;
         }
 

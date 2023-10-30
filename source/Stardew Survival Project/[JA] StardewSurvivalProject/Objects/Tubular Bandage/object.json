@@ -27,7 +27,7 @@
         "Speed": -1,
         "Defense": 0,
         "Attack": 0,
-        "Duration": 30,
+        "Duration": 30
     },
     "Recipe": {
         "ResultCount": 1,
@@ -39,12 +39,12 @@
 			{
                 "Object": 766,
                 "Count": 2
-            },
+            }
         ],
 		"PurchaseFrom": "Harvey",
 		"PurchasePrice": 3000,
 		"CanPurchase": true,
-		"PurchaseRequirements": null,
+		"PurchaseRequirements": null
     },
     "PurchaseFrom": "Harvey",
     "PurchasePrice": 250,

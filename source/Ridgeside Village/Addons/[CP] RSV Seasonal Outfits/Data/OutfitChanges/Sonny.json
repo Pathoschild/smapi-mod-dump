@@ -1,0 +1,82 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Sonny Seasonals",
+			"Action": "EditImage",
+			"Target": "Portraits/Sonny, Characters/Sonny",
+			"FromFile": "Assets/{{Target}}/Sonny_summer.png",
+			"When":
+			{
+				"Sonny": "enabled",
+				"Season": "summer"
+			}
+		},
+		{
+			"LogName": "RSV Accessories - Sonny",
+			"Action": "EditImage",
+			"Target": "Portraits/Sonny, Characters/Sonny",
+			"FromFile": "Assets/{{Target}}/Sonny_acc_{{SeasonalRainToken}}.png",
+			"When": {
+				"Sonny": "enabled",
+				"SeasonalRainToken|contains=rain": false,
+				"IsOutdoors": true,
+				"HasValue:{{DayEvent}}": false,
+				"Lightweight Outfits": false,
+				"Query: {{Random:{{Range:1,10}}|key=SonnyHat}} > 5": true,
+			},
+			"Update": "OnLocationChange",
+			"PatchMode": "Overlay"
+		},
+		{
+			"LogName": "RSV Sonny Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Sonny, Characters/Sonny",
+			"FromFile": "Assets/{{Target}}/Sonny_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Sonny": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Sonny Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Sonny, Characters/Sonny",
+			"FromFile": "Assets/{{Target}}/Sonny_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Sonny": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Sonny Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Sonny, Characters/Sonny",
+			"FromFile": "Assets/{{Target}}/Sonny_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Sonny": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

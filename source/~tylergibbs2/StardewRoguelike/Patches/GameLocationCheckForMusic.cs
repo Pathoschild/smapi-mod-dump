@@ -8,15 +8,15 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewValley;
 using StardewValley.Locations;
 
 namespace StardewRoguelike.Patches
 {
-    internal class GameLocationCheckForMusic : Patch
+    [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.checkForMusic))]
+    internal class GameLocationCheckForMusic
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(GameLocation), "checkForMusic");
-
         public static bool Prefix(GameLocation __instance)
         {
             if (__instance is MineShaft)

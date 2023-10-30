@@ -30,7 +30,7 @@ namespace StardewRoguelike
             initNetFields();
         }
 
-        public TimedChest(long mustOpenBy, List<StardewValley.Item> items, Vector2 tileLocation) : base(0, items, tileLocation)
+        public TimedChest(long mustOpenBy, List<Item> items, Vector2 tileLocation) : base(0, items, tileLocation)
         {
             MustOpenBy.Value = mustOpenBy;
             SecondsLeft = MustOpenBy.Value - ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();

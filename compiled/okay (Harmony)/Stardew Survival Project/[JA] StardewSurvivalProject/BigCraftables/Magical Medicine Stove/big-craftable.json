@@ -1,0 +1,30 @@
+{
+    "Name": "Magical Medicine Stove",
+    "Description": "Junimo included! infuse your herbal medicine with magic",
+    "Price": 1,
+    "ProvidesLight": false,
+    "ReserveNextIndex": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+			{
+                "Object": 872,
+                "Count": 2
+            },
+			{
+                "Object": 330,
+                "Count": 50
+            },
+			{
+                "Object": 74,
+                "Count": 1
+            },
+			{
+                "Object": 114,
+                "Count": 2
+            }
+        ],
+        "SkillUnlockName": "Foraging",
+		"SkillUnlockLevel": 8
+    }
+}

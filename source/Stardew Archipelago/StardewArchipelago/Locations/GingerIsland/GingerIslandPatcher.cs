@@ -88,6 +88,11 @@ namespace StardewArchipelago.Locations.GingerIsland
             }
 
             _harmony.Patch(
+                original: AccessTools.Method(typeof(IslandLocation), nameof(IslandLocation.checkAction)),
+                prefix: new HarmonyMethod(typeof(IslandLocationInjections), nameof(IslandLocationInjections.CheckAction_InteractWithParrots_Prefix))
+            );
+
+            _harmony.Patch(
                 original: AccessTools.Method(typeof(VolcanoDungeon), nameof(VolcanoDungeon.GenerateContents)),
                 postfix: new HarmonyMethod(typeof(VolcanoDungeonInjections), nameof(VolcanoDungeonInjections.GenerateContents_ReplaceParrots_Postfix))
             );

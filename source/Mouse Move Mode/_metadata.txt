@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ylsama/RightClickMoveMode
+   Git: https://github.com/ylsama/RightClickMoveMode.git
+
+mods:
+   Mouse Move Mode
+
+latest commit:
+   commit 7c095eedff965e70fe3f65edad329a4e3a8fc631
+   Author: NghÄ©a NgÃ´ Äá»©c Team <ylsama>
+   Date:   Sun Oct 29 11:33:31 2023 +0700
+   
+       Fix freeze when scrolling
+   

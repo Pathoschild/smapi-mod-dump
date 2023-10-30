@@ -1,0 +1,29 @@
+﻿{
+  "GreenhouseLevel1": "Serra",
+  "GreenhouseLevel1Description": "Campo 15x15. Aggiunge una cantina.",
+  
+  "GreenhouseLevel2": "Piccola Serra",
+  "GreenhouseLevel2Description": "Campo 30x30. Espande la cantina, aggiunge una serra interna e irrigazione automatica.",
+  
+  "GreenhouseLevel3": "Serra Media",
+  "GreenhouseLevel3Description": "Campo 50x50. Espande la cantina e la serra interna.",
+  
+  "GreenhouseLevel4": "Grande Serra",
+  "GreenhouseLevel4Description": "Campo 75x75. Espande la cantina e ingrandisce la serra interna.",
+
+  "GreenhouseLevel5": "Serra Deluxe Extra Grande",
+  "GreenhouseLevel5Description": "Campo 100x100. Espande la cantina e ingrandisce ulteriormente la serra interna.",
+
+  "LeftBehindTree": "Hai lasciato indietro l'albero.",
+  "LeftBehindCrop": "Hai lasciato indietro la coltivazione.",
+  "PickUpTreeMessage": "Albero raccolto!",
+  "PlaceTreeMessage": "Albero piazzato!",
+  "PickUpCropMessage": "Coltivazione raccolta!",
+  "PlaceCropMessage": "Coltivazione piazzata!",
+  "EnableTreePickingOption": "Raccolta di alberi e colture",
+  "EnableTreePickingTooltip": "Abilita o disabilita la raccolta.",
+  "language-choice-name": "Lingua",
+  "language-choice-tooltip": "Seleziona la lingua del mod"
+
+
+}

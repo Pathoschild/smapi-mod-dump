@@ -35,6 +35,7 @@ namespace StardewHack.AlwaysScrollMap
         }
 
         public override void HackEntry(IModHelper helper) {
+            I18n.Init(helper.Translation);
             Patch((Microsoft.Xna.Framework.Point p)=>Game1.UpdateViewPort(false, p), Game1_UpdateViewPort);
             
             Helper.Events.Input.ButtonPressed += ToggleScroll;
@@ -44,22 +45,22 @@ namespace StardewHack.AlwaysScrollMap
         {
             api.AddBoolOption(
                 mod: ModManifest, 
-                name: () => "Enabled indoors", 
-                tooltip: () => "Always scroll map indoors", 
+                name: I18n.EnabledIndoorsName,
+                tooltip: I18n.EnabledIndoorsTooltip,
                 getValue: () => config.EnabledIndoors, 
                 setValue: (bool val) => config.EnabledIndoors = val
             );
             api.AddBoolOption(
                 mod: ModManifest, 
-                name: () => "Enabled outdoors", 
-                tooltip: () => "Always scroll map outdoors", 
+                name: I18n.EnabledOutdoorsName, 
+                tooltip: I18n.EnabledOutdoorsTooltip,
                 getValue: () => config.EnabledOutdoors, 
                 setValue: (bool val) => config.EnabledOutdoors = val
             );
             api.AddKeybind(
                 mod: ModManifest, 
-                name: () => "Toggle", 
-                tooltip: () => "Toggle scrolling in current location", 
+                name: I18n.ToggleScrollName,
+                tooltip: I18n.ToggleScrollTooltip,
                 getValue: () => config.ToggleScroll, 
                 setValue: (SButton val) => config.ToggleScroll = val
             );

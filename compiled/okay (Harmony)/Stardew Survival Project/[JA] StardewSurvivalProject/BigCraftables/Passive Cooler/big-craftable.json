@@ -1,0 +1,21 @@
+{
+    "Name": "Passive Cooler",
+    "Description": "You are supposed to put wet wood in but who is looking",
+    "Price": 1,
+    "ProvidesLight": false,
+    "ReserveNextIndex": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+			{
+                "Object": 771,
+                "Count": 20
+            },
+			{
+                "Object": 388,
+                "Count": 50
+            }
+        ],
+        "IsDefault": true
+    }
+}

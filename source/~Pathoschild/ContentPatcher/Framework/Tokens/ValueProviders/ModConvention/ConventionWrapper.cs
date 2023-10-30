@@ -32,6 +32,9 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         /// <summary>Get whether the values may change depending on the context.</summary>
         private ConventionDelegates.IsMutable? IsMutableImpl;
 
+        /// <summary>The implementation for <see cref="IsDeterministicForInput"/>, if any.</summary>
+        private ConventionDelegates.IsDeterministicForInput? IsDeterministicForInputImpl;
+
         /// <summary>The implementation for <see cref="AllowsInput"/>, if any.</summary>
         private ConventionDelegates.AllowsInput? AllowsInputImpl;
 
@@ -132,6 +135,7 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
                 succeeded =
                     // metadata
                     TryMap<ConventionDelegates.IsMutable>(out error)
+                    && TryMap<ConventionDelegates.IsDeterministicForInput>(out error)
                     && TryMap<ConventionDelegates.AllowsInput>(out error)
                     && TryMap<ConventionDelegates.RequiresInput>(out error)
                     && TryMap<ConventionDelegates.CanHaveMultipleValues>(out error)
@@ -161,6 +165,12 @@ namespace ContentPatcher.Framework.Tokens.ValueProviders.ModConvention
         public bool IsMutable()
         {
             return this.IsMutableImpl?.Invoke() ?? true;
+        }
+
+        /// <inheritdoc cref="ConventionDelegates.IsDeterministicForInput"/>
+        public bool IsDeterministicForInput()
+        {
+            return this.IsDeterministicForInputImpl?.Invoke() ?? false;
         }
 
         /// <summary>Get whether the value provider allows input arguments (e.g. an NPC name for a relationship token).</summary>

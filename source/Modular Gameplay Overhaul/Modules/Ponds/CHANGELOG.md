@@ -8,6 +8,14 @@ for queries and analysis.**
 
 # PNDS Changelog
 
+## 3.1.5
+
+### Fixed
+
+* Chum bucket menu should now consolate stacks of roe.
+
+<sup><sup>[🔼 Back to top](#pnds-changelog)</sup></sup>
+
 ## 2.5.5
 
 ### Fixed

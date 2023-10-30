@@ -1,10 +1,8 @@
 {
-  "activeProfile": "Platonymous.Original",
-  "saturation": 100.0,
-  "next": "PageDown",
-  "previous": "PageUp",
-  "satHigher": "NumPad9",
-  "satLower": "NumPad6",
-  "reset": "NumPad0",
-  "passes": 10
+  "$id": "1",
+  "ActivePalette": "none",
+  "SaturationR": 1.0,
+  "SaturationB": 1.0,
+  "SaturationG": 1.0,
+  "MenuKey": "F5"
 }

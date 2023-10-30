@@ -30,8 +30,8 @@
 			"Target": "Data/ChairTiles",
 			"Action": "EditData",
 			"Entries": {
-				"lacey-tilesheet/2/3": "1/1/down/bench/-1/-1/false",
-				"lacey-tilesheet/3/3": "1/1/down/bench/-1/-1/false"
+				"hatmouselaceyInterior/2/3": "1/1/down/bench/-1/-1/false",
+				"hatmouselaceyInterior/3/3": "1/1/down/bench/-1/-1/false"
 			}
 		},
 		{

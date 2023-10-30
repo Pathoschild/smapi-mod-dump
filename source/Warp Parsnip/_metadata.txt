@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/AnotherPillow/WarpParsnip
+   Git: https://github.com/AnotherPillow/WarpParsnip.git
+
+mods:
+   Warp Parsnip
+
+latest commit:
+   commit f10889016e84a2d4b4f305d6a3a5ac5f650352f3
+   Author: AnotherPillow <Thepilous_@outlook.com>
+   Date:   Sat Oct 7 22:09:09 2023 +0100
+   
+       Initial commit
+   

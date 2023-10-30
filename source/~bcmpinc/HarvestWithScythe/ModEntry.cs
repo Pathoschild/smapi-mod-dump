@@ -9,6 +9,8 @@
 *************************************************/
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using GenericModConfigMenu;
@@ -86,6 +88,8 @@ namespace StardewHack.HarvestWithScythe
      */
     public class ModEntry : HackWithConfig<ModEntry, ModConfig> {
         public override void HackEntry(IModHelper helper) {
+            I18n.Init(helper.Translation);
+
             Patch((Crop c) => c.harvest(0, 0, null, null), Crop_harvest);
             Patch((HoeDirt hd) => hd.performToolAction(null, 0, new Vector2(), null), HoeDirt_performToolAction);
             Patch((HoeDirt hd) => hd.performUseAction(new Vector2(), null), HoeDirt_performUseAction);
@@ -111,38 +115,29 @@ namespace StardewHack.HarvestWithScythe
         }
 
 #region ModConfig
-        static string writeEnum(HarvestModeEnum val) {
-            switch (val) {
-                case HarvestModeEnum.HAND: return "Hand";
-                case HarvestModeEnum.SCYTHE: return "Scythe";
-                case HarvestModeEnum.BOTH: return "Both";
-                case HarvestModeEnum.GOLD: return "Gold";
-                default: throw new Exception("Invalid HarvestModeEnum value");
-            }
-        }
-
-        static HarvestModeEnum parseEnum(string val) {
-            HarvestModeEnum res;
-            Enum.TryParse<HarvestModeEnum>(val, true, out res);
-            return res;
-        }
 
         protected override void InitializeApi(IGenericModConfigMenuApi api) {
-            api.AddBoolOption(mod: ModManifest, name: () => "Harvest With Sword", tooltip: () => "Whether a sword can be used instead of a normal scythe.", getValue: () => config.HarvestWithSword, setValue: (bool val) => config.HarvestWithSword = val);
+            api.AddBoolOption(mod: ModManifest, name: I18n.HarvestWithSwordName, tooltip: I18n.HarvestWithSwordTooltip, getValue: () => config.HarvestWithSword, setValue: (bool val) => config.HarvestWithSword = val);
 
-            string[] options = { "Hand", "Scythe", "Both", "Gold" };
-            api.AddSectionTitle(mod: ModManifest, text: () => "HarvestMode");
-            api.AddParagraph(mod: ModManifest, text: () => " · Hand: only pluckable;");
-            api.AddParagraph(mod: ModManifest, text: () => " · Scythe: only scythable;");
-            api.AddParagraph(mod: ModManifest, text: () => " · Both: both pluckable and scythable;");
-            api.AddParagraph(mod: ModManifest, text: () => " · Gold: like 'both', but requires the golden scythe.");
-            api.AddTextOption(mod: ModManifest, name: () => "PluckableCrops", tooltip: () => "How crops that normally can only be harvested by hand can be harvested.", getValue: () => writeEnum(config.HarvestMode.PluckableCrops), setValue: (string val) => config.HarvestMode.PluckableCrops = parseEnum(val), allowedValues: options);
-            api.AddTextOption(mod: ModManifest, name: () => "ScythableCrops", tooltip: () => "How crops that normally can only be harvested with a scythe can be harvested.", getValue: () => writeEnum(config.HarvestMode.ScythableCrops), setValue: (string val) => config.HarvestMode.ScythableCrops = parseEnum(val), allowedValues: options);
-            api.AddTextOption(mod: ModManifest, name: () => "Flowers",        tooltip: () => "How flowers can be harvested.", getValue: () => writeEnum(config.HarvestMode.Flowers), setValue: (string val) => config.HarvestMode.Flowers = parseEnum(val), allowedValues: options);
-            api.AddTextOption(mod: ModManifest, name: () => "Forage",         tooltip: () => "How forage can be harvested.", getValue: () => writeEnum(config.HarvestMode.Forage), setValue: (string val) => config.HarvestMode.Forage = parseEnum(val), allowedValues: options);
-            api.AddTextOption(mod: ModManifest, name: () => "SpringOnion",    tooltip: () => "How spring onions can be harvested.", getValue: () => writeEnum(config.HarvestMode.SpringOnion), setValue: (string val) => config.HarvestMode.SpringOnion = parseEnum(val), allowedValues: options);
-        }
-#endregion
+            var options_dict = new Dictionary<HarvestModeEnum, string>()
+            {
+                {HarvestModeEnum.HAND,   I18n.Hand()  },
+                {HarvestModeEnum.SCYTHE, I18n.Scythe()},
+                {HarvestModeEnum.BOTH,   I18n.Both()  },
+                {HarvestModeEnum.GOLD,   I18n.Gold()  },
+            };
+            var reverse_dict = options_dict.ToDictionary(x=>x.Value, x=>x.Key);
+            string[] options = options_dict.Values.ToArray();
+
+            api.AddSectionTitle(mod: ModManifest, text: I18n.HarvestModeSection);
+            api.AddParagraph(mod: ModManifest, text: I18n.HarvestModeDescription);
+            api.AddTextOption(mod: ModManifest, name: I18n.PluckableCropsName, tooltip: I18n.PluckableCropsTooltip, getValue: () => options_dict[config.HarvestMode.PluckableCrops], setValue: (string val) => config.HarvestMode.PluckableCrops = reverse_dict[val], allowedValues: options);
+            api.AddTextOption(mod: ModManifest, name: I18n.ScythableCropsName, tooltip: I18n.ScythableCropsTooltip, getValue: () => options_dict[config.HarvestMode.ScythableCrops], setValue: (string val) => config.HarvestMode.ScythableCrops = reverse_dict[val], allowedValues: options);
+            api.AddTextOption(mod: ModManifest, name: I18n.FlowersName,        tooltip: I18n.FlowersTooltip,        getValue: () => options_dict[config.HarvestMode.Flowers       ], setValue: (string val) => config.HarvestMode.Flowers        = reverse_dict[val], allowedValues: options);
+            api.AddTextOption(mod: ModManifest, name: I18n.ForageName,         tooltip: I18n.ForageTooltip,         getValue: () => options_dict[config.HarvestMode.Forage        ], setValue: (string val) => config.HarvestMode.Forage         = reverse_dict[val], allowedValues: options);
+            api.AddTextOption(mod: ModManifest, name: I18n.SpringOnionName,    tooltip: I18n.SpringOnionTooltip,    getValue: () => options_dict[config.HarvestMode.SpringOnion   ], setValue: (string val) => config.HarvestMode.SpringOnion    = reverse_dict[val], allowedValues: options);
+        } 
+#endregion 
 
 #region CanHarvest methods
         public const int HARVEST_PLUCKING = Crop.grabHarvest;

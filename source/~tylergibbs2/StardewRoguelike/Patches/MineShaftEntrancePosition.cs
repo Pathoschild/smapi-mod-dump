@@ -11,13 +11,13 @@
 using Microsoft.Xna.Framework;
 using StardewValley.Locations;
 using StardewRoguelike.VirtualProperties;
+using HarmonyLib;
 
 namespace StardewRoguelike.Patches
 {
-    internal class MineShaftEntrancePosition : Patch
+    [HarmonyPatch(typeof(MineShaft), nameof(MineShaft.mineEntrancePosition))]
+    internal class MineShaftEntrancePosition
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(MineShaft), "mineEntrancePosition");
-
         public static bool Prefix(MineShaft __instance, ref Vector2 __result)
         {
             Vector2 customDest = __instance.get_MineShaftCustomDestination().Value;

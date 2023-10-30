@@ -143,7 +143,7 @@ namespace StardewRoguelike
 
             return
                 challenge.MapPaths?[Roguelike.FloorRng.Next(challenge.MapPaths.Count)] ??
-                Roguelike.ValidMineMaps[Roguelike.FloorRng.Next(Roguelike.ValidMineMaps.Count)];
+                Constants.ValidMineMaps[Roguelike.FloorRng.Next(Constants.ValidMineMaps.Count)];
         }
 
         /// <summary>

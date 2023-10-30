@@ -6,9 +6,9 @@ mods:
    Stardew Survival Project
 
 latest commit:
-   commit eae1a4a9913f37bb449f0db04c5427ab069dc38b
-   Author: Nguyen Ngoc Dang <kingrfminecraft@gmail.com>
-   Date:   Mon Jan 16 21:24:37 2023 +0700
+   commit ab971f900ce2ec3524338bd6df1487476495523a
+   Author: NeroYuki <neroyuki241@gmail.com>
+   Date:   Sun Oct 29 01:26:15 2023 +0700
    
-       Create LICENSE.md
+       tune down default drain setting
    

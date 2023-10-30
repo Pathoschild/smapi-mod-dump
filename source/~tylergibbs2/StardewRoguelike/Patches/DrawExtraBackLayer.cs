@@ -8,15 +8,15 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewValley;
 using xTile.Dimensions;
 
 namespace StardewRoguelike.Patches
 {
-    class DrawExtraBackLayer : Patch
+    [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.drawBackground))]
+    class DrawExtraBackLayer
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(GameLocation), "drawBackground");
-
         public static bool Prefix(GameLocation __instance)
         {
             __instance.Map.GetLayer("BackBackBack")?.Draw(Game1.mapDisplayDevice, Game1.viewport, Location.Origin, wrapAround: false, 4);

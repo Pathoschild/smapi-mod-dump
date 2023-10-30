@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/mouahrara/FlipBuildings
+**
+*************************************************/
+
+{
+	"Carpenter_Flip": "Retourner des constructions",
+	"Carpenter_SelectBuilding_Flip": "Sélectionner une construction à retourner",
+	"Carpenter_CannotFlip": "Cette construction ne peut pas être retournée" ,
+	"Carpenter_CannotFlip_Permission": "Vous n'avez pas l'autorisation pour retourner cette construction",
+	"Carpenter_CannotFlip_PlayerHere": "Impossible de retourner tant qu'un joueur est sur la construction"
+}

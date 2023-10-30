@@ -1,0 +1,26 @@
+{
+    "Name": "Medicine Worktable",
+    "Description": "It got a small herbal stove, chopping board and a drying rack for your medicine making need",
+    "Price": 1,
+    "ProvidesLight": false,
+    "ReserveNextIndex": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [
+			{
+                "Object": 771,
+                "Count": 50
+            },
+			{
+                "Object": 388,
+                "Count": 50
+            },
+			{
+                "Object": 382,
+                "Count": 5
+            }
+        ],
+        "SkillUnlockName": "Foraging",
+		"SkillUnlockLevel": 2
+    }
+}

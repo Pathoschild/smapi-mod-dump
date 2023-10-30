@@ -1,0 +1,76 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Paula Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Paula, Characters/Paula",
+			"FromFile": "Assets/{{Target}}/Paula_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Paula": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Paula Rain Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Paula, Characters/Paula",
+			"FromFile": "Assets/{{Target}}/Paula_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"SeasonalRainToken": "rain",
+				"Paula": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Paula Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Paula, Characters/Paula",
+			"FromFile": "Assets/{{Target}}/Paula_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Paula": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Paula Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Paula, Characters/Paula",
+			"FromFile": "Assets/{{Target}}/Paula_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Paula": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Paula Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Paula, Characters/Paula",
+			"FromFile": "Assets/{{Target}}/Paula_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Paula": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

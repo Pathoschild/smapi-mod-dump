@@ -13,7 +13,6 @@ using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.BellsAndWhistles;
 using StardewValley.Locations;
 
 namespace StardewArchipelago.Locations.GingerIsland.Parrots
@@ -51,12 +50,12 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
             AddIslandTraderParrot(_islandLocation);
         }
 
-        private static void AddDigSiteBridgeParrot(IslandLocation __instance)
+        private static void AddDigSiteBridgeParrot(IslandLocation islandNorth)
         {
-            var digSiteBridgeParrot = new ParrotUpgradePerch(__instance, new Point(35, 52),
+            var digSiteBridgeParrot = new ParrotUpgradePerchArchipelago(AP_BRIDGE_PARROT, _archipelago, islandNorth, new Point(35, 52),
                 new Rectangle(31, 52, 4, 4), 10, PurchaseBridgeParrot, IsBridgeParrotPurchased,
                 "Bridge", "Island_Turtle");
-            __instance.parrotUpgradePerches.Add(digSiteBridgeParrot);
+            islandNorth.parrotUpgradePerches.Add(digSiteBridgeParrot);
         }
 
         private static void PurchaseBridgeParrot()
@@ -69,12 +68,12 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
             return _locationChecker.IsLocationChecked(AP_BRIDGE_PARROT);
         }
 
-        private static void AddIslandTraderParrot(IslandLocation __instance)
+        private static void AddIslandTraderParrot(IslandLocation islandNorth)
         {
-            var islandTraderParrot = new ParrotUpgradePerch(__instance, new Point(32, 72),
+            var islandTraderParrot = new ParrotUpgradePerchArchipelago(AP_TRADER_PARROT, _archipelago, islandNorth, new Point(32, 72),
                 new Rectangle(33, 68, 5, 5), 10, PurchaseTraderParrot, IsTraderParrotPurchased,
                 "Trader", "Island_UpgradeHouse");
-            __instance.parrotUpgradePerches.Add(islandTraderParrot);
+            islandNorth.parrotUpgradePerches.Add(islandTraderParrot);
         }
 
         private static void PurchaseTraderParrot()

@@ -1,0 +1,29 @@
+﻿{
+    "GreenhouseLevel1": "Rumah Hijau",
+    "GreenhouseLevel1Description": "Tanah 15x15. Menambahkan ruang simpan di bawah tanah.",
+
+    "GreenhouseLevel2": "Rumah Hijau Kecil",
+    "GreenhouseLevel2Description": "Tanah 30x30. Memperluas ruang simpan, menambahkan penyiraman otomatik dan rumah hijau dalaman.",
+
+    "GreenhouseLevel3": "Rumah Hijau Sederhana",
+    "GreenhouseLevel3Description": "Tanah 50x50. Memperluas ruang simpan dan rumah hijau dalaman.",
+
+    "GreenhouseLevel4": "Rumah Hijau Besar",
+    "GreenhouseLevel4Description": "Tanah 75x75. Memperluas ruang simpan dan rumah hijau dalaman.",
+
+    "GreenhouseLevel5": "Rumah Hijau Ekstra Besar Mewah",
+    "GreenhouseLevel5Description": "Tanah 100x100. Memperluas ruang simpan dan rumah hijau dalaman.",
+
+    
+    "LeftBehindTree": "Anda telah meninggalkan pokok.",
+    "LeftBehindCrop": "Anda telah meninggalkan tanaman.",
+    "PickUpTreeMessage": "Pokok telah diambil!",
+    "PlaceTreeMessage": "Pokok telah diletakkan!",
+    "PickUpCropMessage": "Tanaman telah diambil!",
+    "PlaceCropMessage": "Tanaman telah diletakkan!",
+    "EnableTreePickingOption": "Mengambil Pokok dan Tanaman",
+    "EnableTreePickingTooltip": "Aktifkan/Nyahkan pengambilan.",
+    "language-choice-name": "Bahasa",
+"language-choice-tooltip": "Pilih bahasa mod"
+
+}

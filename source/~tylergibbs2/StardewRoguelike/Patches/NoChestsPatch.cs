@@ -8,14 +8,14 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewValley.Locations;
 
 namespace StardewRoguelike.Patches
 {
-	internal class NoChestsPatch : Patch
+    [HarmonyPatch(typeof(MineShaft), "addLevelChests")]
+	internal class NoChestsPatch
 	{
-		protected override PatchDescriptor GetPatchDescriptor() => new(typeof(MineShaft), "addLevelChests");
-
 		public static bool Prefix()
 		{
 			return false;

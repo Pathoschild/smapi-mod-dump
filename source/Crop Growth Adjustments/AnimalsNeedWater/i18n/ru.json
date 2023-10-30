@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/gzhynko/stardew-mods
+**
+*************************************************/
+
+{
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_Male": "{{firstAnimalName}} остался вчера без воды.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_Female": "{{firstAnimalName}} осталась вчера без воды.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.oneAnimal_UnknownGender": "{{firstAnimalName}} осталась(-ся) вчера без воды.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.twoAnimals": "{{firstAnimalName}} и {{secondAnimalName}} остались вчера без воды.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.threeAnimals": "{{firstAnimalName}}, {{secondAnimalName}} и {{thirdAnimalName}} остались вчера без воды.",
+    "AnimalsLeftWithoutWaterYesterday.globalMessage.multipleAnimals": "{{firstAnimalName}}, {{secondAnimalName}}, {{thirdAnimalName}} и ещё {{totalAmountExcludingFirstThree}} животных остались вчера без воды."
+}

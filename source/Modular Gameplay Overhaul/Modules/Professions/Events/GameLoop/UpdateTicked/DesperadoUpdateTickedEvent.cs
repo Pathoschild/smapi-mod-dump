@@ -10,9 +10,11 @@
 
 namespace DaLion.Overhaul.Modules.Professions.Events.GameLoop.UpdateTicked;
 
+using DaLion.Overhaul;
+
 #region using directives
 
-using DaLion.Overhaul.Modules.Professions.Events.Display.RenderedHud;
+using DaLion.Overhaul.Modules.Professions.Events.Display.RenderedWorld;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Events;
 using Microsoft.Xna.Framework.Audio;
@@ -55,7 +57,7 @@ internal sealed class DesperadoUpdateTickedEvent : UpdateTickedEvent
     protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
     {
         var firer = Game1.player;
-        if (firer.CurrentTool is not Slingshot slingshot || !firer.usingSlingshot)
+        if (firer.CurrentTool is not Slingshot slingshot || !firer.usingSlingshot || slingshot.CanAutoFire())
         {
             this.Disable();
             return;

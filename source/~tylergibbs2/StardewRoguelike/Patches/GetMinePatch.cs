@@ -14,13 +14,13 @@ using System.Reflection;
 using StardewRoguelike.VirtualProperties;
 using StardewValley;
 using StardewRoguelike.Extensions;
+using HarmonyLib;
 
 namespace StardewRoguelike.Patches
 {
-    internal class GetMinePatch : Patch
+    [HarmonyPatch(typeof(MineShaft), nameof(MineShaft.GetMine))]
+    internal class GetMinePatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(MineShaft), "GetMine");
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField:Avoid Netcode types when possible", Justification = "The property is read-only.")]
         public static bool Prefix(ref MineShaft __result, string name)
         {

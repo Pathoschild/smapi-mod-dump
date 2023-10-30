@@ -1,0 +1,76 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Flor Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Flor, Characters/Flor",
+			"FromFile": "Assets/{{Target}}/Flor_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Flor": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Flor Rain Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Flor, Characters/Flor",
+			"FromFile": "Assets/{{Target}}/Flor_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"SeasonalRainToken": "rain",
+				"Flor": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Flor Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Flor, Characters/Flor",
+			"FromFile": "Assets/{{Target}}/Flor_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Flor": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Flor Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Flor, Characters/Flor",
+			"FromFile": "Assets/{{Target}}/Flor_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Flor": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Flor Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Flor, Characters/Flor",
+			"FromFile": "Assets/{{Target}}/Flor_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Flor": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

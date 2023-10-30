@@ -1,0 +1,92 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Faye Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Faye, Characters/Faye",
+			"FromFile": "Assets/{{Target}}/Faye_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Faye": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Faye Rain Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Faye, Characters/Faye",
+			"FromFile": "Assets/{{Target}}/Faye_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"SeasonalRainToken": "rain",
+				"Faye": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Accessories - Faye",
+			"Action": "EditImage",
+			"Target": "Portraits/Faye, Characters/Faye",
+			"FromFile": "Assets/{{Target}}/Faye_acc_summer.png",
+			"When": {
+				"Faye": "enabled",
+				"SeasonalRainToken": "summer, winter",
+				"IsOutdoors": true,
+				"HasValue:{{DayEvent}}": false,
+				"Lightweight Outfits": false,
+				"Query: {{Random:{{Range:1,10}}|key=FayeHat}} > 5": true,
+			},
+			"Update": "OnLocationChange",
+			"PatchMode": "Overlay"
+		},
+		{
+			"LogName": "RSV Faye Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Faye, Characters/Faye",
+			"FromFile": "Assets/{{Target}}/Faye_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Faye": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Faye Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Faye, Characters/Faye",
+			"FromFile": "Assets/{{Target}}/Faye_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Faye": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Faye Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Faye, Characters/Faye",
+			"FromFile": "Assets/{{Target}}/Faye_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Faye": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

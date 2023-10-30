@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GiftTasteHelper", "GiftTasteHelper\GiftTasteHelper.csproj", "{CA415B12-5C37-487A-92BE-0AED14440F36}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA415B12-5C37-487A-92BE-0AED14440F36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA415B12-5C37-487A-92BE-0AED14440F36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA415B12-5C37-487A-92BE-0AED14440F36}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CA415B12-5C37-487A-92BE-0AED14440F36}.Debug|x86.Build.0 = Debug|Any CPU
+		{CA415B12-5C37-487A-92BE-0AED14440F36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA415B12-5C37-487A-92BE-0AED14440F36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA415B12-5C37-487A-92BE-0AED14440F36}.Release|x86.ActiveCfg = Release|Any CPU
+		{CA415B12-5C37-487A-92BE-0AED14440F36}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -35,7 +35,7 @@ internal sealed class GameLocationCanRefillWateringCanOnTilePatcher : HarmonyPat
         int tileY)
     {
         if (__result && (__instance is Beach || __instance.catchOceanCrabPotFishFromThisSpot(tileX, tileY)) &&
-            ToolsModule.Config.Can.PreventRefillWithSaltWater)
+            ToolsModule.Config.Can.PreventSaltWaterRefill)
         {
             __result = false;
         }

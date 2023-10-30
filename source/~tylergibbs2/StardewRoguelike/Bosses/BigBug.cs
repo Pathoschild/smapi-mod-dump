@@ -24,38 +24,19 @@ namespace StardewRoguelike.Bosses
     {
         public string DisplayName => "Odys the Hivemother";
 
-        public string MapPath
-        {
-            get { return "boss-bug"; }
-        }
+        public string MapPath => "boss-bug";
 
-        public string TextureName
-        {
-            get { return "Characters\\Monsters\\Bug_dangerous"; }
-        }
+        public string TextureName => "Characters\\Monsters\\Bug_dangerous";
 
-        public Vector2 SpawnLocation
-        {
-            get { return new(17, 23); }
-        }
+        public Vector2 SpawnLocation => new(17, 23);
 
         public List<string> MusicTracks
-        {
-            get { return new() { "junimoKart_whaleMusic" }; }
-        }
+        => new() { "ceaseless_and_incessant" };
 
         public bool InitializeWithHealthbar
-        {
-            get { return true; }
-        }
+        => true;
 
-        private float _difficulty;
-
-        public float Difficulty
-        {
-            get { return _difficulty; }
-            set { _difficulty = value; }
-        }
+        public float Difficulty { get; set; }
 
         private enum State
         {
@@ -74,31 +55,31 @@ namespace StardewRoguelike.Bosses
             Suicidal
         }
 
-        private NetEnum<State> currentState = new(State.Normal);
+        private readonly NetEnum<State> CurrentState = new(State.Normal);
 
-        private MinionState previousMinionState;
+        private MinionState PreviousMinionState;
 
-        private NetEnum<MinionState> currentMinionState = new(MinionState.Normal);
+        private readonly NetEnum<MinionState> CurrentMinionState = new(MinionState.Normal);
 
-        private Dictionary<Vector2, int> eggs = new();
+        private readonly Dictionary<Vector2, int> Eggs = new();
 
-        private NetEvent1Field<Vector2, NetVector2> spawnEggEvent = new();
+        private readonly NetEvent1Field<Vector2, NetVector2> SpawnEggEvent = new();
 
-        private NetEvent1Field<Vector2, NetVector2> despawnEggEvent = new();
+        private readonly NetEvent1Field<Vector2, NetVector2> despawnEggEvent = new();
 
-        private NetEvent0 onAttackedEvent = new();
+        private readonly NetEvent0 OnAttackedEvent = new();
 
-        private Vector2 targetEggSpot;
+        private Vector2 TargetEggSpot;
 
-        private int ticksToLayEgg = 300;
+        private int TicksToLayEgg = 300;
 
-        private int stateTickCount = 0;
+        private int StateTickCount = 0;
 
-        private int ticksToChangeMinions = 800;
+        private int TicksToChangeMinions = 800;
 
-        private int ticksToOffscreenBugs = 180;
+        private int TicksToOffscreenBugs = 180;
 
-        private List<Vector2> EggSpawnLocations = new()
+        private readonly List<Vector2> EggSpawnLocations = new()
         {
             new(14, 10),
             new(25, 11),
@@ -129,10 +110,10 @@ namespace StardewRoguelike.Bosses
         protected override void initNetFields()
         {
             base.initNetFields();
-            NetFields.AddFields(spawnEggEvent, despawnEggEvent, onAttackedEvent);
-            spawnEggEvent.onEvent += SpawnEgg;
+            NetFields.AddFields(SpawnEggEvent, despawnEggEvent, OnAttackedEvent);
+            SpawnEggEvent.onEvent += SpawnEgg;
             despawnEggEvent.onEvent += DespawnEgg;
-            onAttackedEvent.onEvent += OnAttacked;
+            OnAttackedEvent.onEvent += OnAttacked;
         }
 
         public override void reloadSprite()
@@ -146,17 +127,17 @@ namespace StardewRoguelike.Bosses
 
         public void OnAttacked()
         {
-            if (Context.IsMainPlayer && currentState.Value == State.LayingEgg)
+            if (Context.IsMainPlayer && CurrentState.Value == State.LayingEgg)
             {
-                currentState.Value = State.Normal;
-                ticksToLayEgg = 300;
-                stateTickCount = 0;
+                CurrentState.Value = State.Normal;
+                TicksToLayEgg = 300;
+                StateTickCount = 0;
             }
         }
 
         public override void MovePosition(GameTime time, xTile.Dimensions.Rectangle viewport, GameLocation currentLocation)
         {
-            if (currentState == State.Normal)
+            if (CurrentState == State.Normal)
                 base.MovePosition(time, viewport, currentLocation);
         }
 
@@ -164,76 +145,76 @@ namespace StardewRoguelike.Bosses
         {
             CheckAllEggs();
 
-            if (ticksToOffscreenBugs > 0)
+            if (TicksToOffscreenBugs > 0)
             {
-                ticksToOffscreenBugs--;
+                TicksToOffscreenBugs--;
 
-                if (ticksToOffscreenBugs == 0)
+                if (TicksToOffscreenBugs == 0)
                 {
                     int toSpawn = Game1.random.Next(1, 3);
                     SpawnOffScreenBugs(toSpawn);
 
-                    ticksToOffscreenBugs = Game1.random.Next(6 * 60, 10 * 60);
+                    TicksToOffscreenBugs = Game1.random.Next(6 * 60, 10 * 60);
                     if (Roguelike.HardMode)
-                        ticksToOffscreenBugs -= Game1.random.Next(60, 3 * 60);
+                        TicksToOffscreenBugs -= Game1.random.Next(60, 3 * 60);
                 }
             }
 
-            if (ticksToChangeMinions > 0)
+            if (TicksToChangeMinions > 0)
             {
-                ticksToChangeMinions--;
+                TicksToChangeMinions--;
 
-                if (ticksToChangeMinions == 0)
+                if (TicksToChangeMinions == 0)
                 {
-                    if (currentMinionState.Value != MinionState.Normal)
+                    if (CurrentMinionState.Value != MinionState.Normal)
                     {
-                        previousMinionState = currentMinionState;
-                        currentMinionState.Value = MinionState.Normal;
-                        ticksToChangeMinions = 300;
+                        PreviousMinionState = CurrentMinionState;
+                        CurrentMinionState.Value = MinionState.Normal;
+                        TicksToChangeMinions = 300;
                     }
                     else
                     {
                         var validStates = new List<MinionState>((IEnumerable<MinionState>)Enum.GetValues(typeof(MinionState)));
-                        validStates.Remove(previousMinionState);
+                        validStates.Remove(PreviousMinionState);
 
-                        currentMinionState.Value = validStates[Game1.random.Next(validStates.Count)];
+                        CurrentMinionState.Value = validStates[Game1.random.Next(validStates.Count)];
 
-                        ticksToChangeMinions = Roguelike.HardMode ? 480 : 600;
+                        TicksToChangeMinions = Roguelike.HardMode ? 480 : 600;
                     }
 
-                    SetAllMinionStates(currentMinionState);
+                    SetAllMinionStates(CurrentMinionState);
                 }
             }
 
-            if (currentState == State.Normal)
+            if (CurrentState == State.Normal)
             {
                 base.behaviorAtGameTick(time);
 
-                if (ticksToLayEgg > 0)
+                if (TicksToLayEgg > 0)
                 {
-                    ticksToLayEgg--;
+                    TicksToLayEgg--;
 
-                    if (ticksToLayEgg == 0)
+                    if (TicksToLayEgg == 0)
                     {
                         do
                         {
-                            targetEggSpot = EggSpawnLocations[Game1.random.Next(EggSpawnLocations.Count)];
-                        } while (eggs.ContainsKey(targetEggSpot));
+                            TargetEggSpot = EggSpawnLocations[Game1.random.Next(EggSpawnLocations.Count)];
+                        } while (Eggs.ContainsKey(TargetEggSpot));
 
-                        ticksToLayEgg = 120;
-                        currentState.Value = State.MovingToEgg;
-                        stateTickCount = 0;
+                        TicksToLayEgg = 120;
+                        CurrentState.Value = State.MovingToEgg;
+                        StateTickCount = 0;
                     }
                 }
             }
-            else if (currentState == State.MovingToEgg)
+            else if (CurrentState == State.MovingToEgg)
             {
-                Vector2 moveVector = (new Vector2(targetEggSpot.X + 1, targetEggSpot.Y + 1) * 64f) - GetBoundingBox().Center.ToVector2();
+                Vector2 moveVector = (new Vector2(TargetEggSpot.X + 1, TargetEggSpot.Y + 1) * 64f) - GetBoundingBox().Center.ToVector2();
 
                 if (moveVector.LengthSquared() <= 90)
                 {
-                    currentState.Value = State.LayingEgg;
-                    stateTickCount = 0;
+                    CurrentState.Value = State.LayingEgg;
+                    StateTickCount = 0;
                     return;
                 }
 
@@ -243,30 +224,30 @@ namespace StardewRoguelike.Bosses
                 Position += moveVector;
                 rotation = RoguelikeUtility.VectorToRadians(moveVector) + RoguelikeUtility.DegreesToRadians(90);
             }
-            else if (currentState == State.LayingEgg)
+            else if (CurrentState == State.LayingEgg)
             {
-                if (stateTickCount > 120)
+                if (StateTickCount > 120)
                 {
-                    eggs[targetEggSpot] = 500;
-                    spawnEggEvent.Fire(targetEggSpot);
+                    Eggs[TargetEggSpot] = 500;
+                    SpawnEggEvent.Fire(TargetEggSpot);
 
-                    currentState.Value = State.Normal;
-                    stateTickCount = 0;
+                    CurrentState.Value = State.Normal;
+                    StateTickCount = 0;
                 }
             }
 
-            stateTickCount++;
+            StateTickCount++;
         }
 
         public void CheckAllEggs()
         {
-            foreach (Vector2 tileLocation in eggs.Keys)
+            foreach (Vector2 tileLocation in Eggs.Keys)
             {
-                if (eggs[tileLocation] == 0)
+                if (Eggs[tileLocation] == 0)
                     continue;
 
-                eggs[tileLocation]--;
-                if (eggs[tileLocation] == 0)
+                Eggs[tileLocation]--;
+                if (Eggs[tileLocation] == 0)
                 {
                     despawnEggEvent.Fire(tileLocation);
                     SpawnBugs(tileLocation);
@@ -311,7 +292,7 @@ namespace StardewRoguelike.Bosses
                 if (Utility.isOnScreen(spawnLocation * 64f, 64))
                     spawnLocation.X -= Game1.viewport.Width / 64;
 
-                BigBugMinion minion = new(spawnLocation, Difficulty, currentMinionState);
+                BigBugMinion minion = new(spawnLocation, Difficulty, CurrentMinionState);
                 minion.moveTowardPlayerThreshold.Value = 100;
                 minion.focusedOnFarmers = true;
                 currentLocation.characters.Add(minion);
@@ -331,7 +312,7 @@ namespace StardewRoguelike.Bosses
             while (bugsToSpawn > 0)
             {
                 tileLocation = new(tileLocation.X + 64 + Game1.random.Next(-32, 33), tileLocation.Y + 64 + Game1.random.Next(-32, 33));
-                BigBugMinion minion = new(tileLocation, Difficulty, currentMinionState);
+                BigBugMinion minion = new(tileLocation, Difficulty, CurrentMinionState);
                 currentLocation.characters.Add(minion);
 
                 bugsToSpawn--;
@@ -361,12 +342,12 @@ namespace StardewRoguelike.Bosses
             Game1.playSound("slimeHit");
 
             if (Context.IsMainPlayer)
-                eggs.Remove(tileLocation);
+                Eggs.Remove(tileLocation);
         }
 
         protected override void updateAnimation(GameTime time)
         {
-            if (currentState == State.LayingEgg)
+            if (CurrentState == State.LayingEgg)
             {
                 Sprite.currentFrame = 4;
                 Halt();
@@ -380,9 +361,9 @@ namespace StardewRoguelike.Bosses
         {
             this.KeepInMap();
             base.update(time, location);
-            spawnEggEvent.Poll();
+            SpawnEggEvent.Poll();
             despawnEggEvent.Poll();
-            onAttackedEvent.Poll();
+            OnAttackedEvent.Poll();
         }
 
         public override Rectangle GetBoundingBox()
@@ -399,9 +380,9 @@ namespace StardewRoguelike.Bosses
 
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
-            onAttackedEvent.Fire();
+            OnAttackedEvent.Fire();
 
-            if (currentState.Value != State.Normal)
+            if (CurrentState.Value != State.Normal)
                 damage /= 2;
 
             int result = base.takeDamage(damage, xTrajectory, yTrajectory, isBomb, addedPrecision, who);

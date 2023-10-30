@@ -141,8 +141,8 @@ namespace AlternativeTextures.Framework.Patches.StandardObjects
                     }
                     if (__instance.ParentSheetIndex == 272)
                     {
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), destination, new Rectangle(16, textureOffset, 16, 32), Color.White * alpha, 0f, Vector2.Zero, SpriteEffects.None, draw_layer);
-                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), position + new Vector2(8.5f, 12f) * 4f, new Rectangle(32, textureOffset, 16, 32), Color.White * alpha, (float)Game1.currentGameTime.TotalGameTime.TotalSeconds * -1.5f, new Vector2(7.5f, 15.5f), 4f, SpriteEffects.None, draw_layer + 1E-05f);
+                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), destination, new Rectangle(16 + xTileOffset * 2, textureOffset, 16, 32), Color.White * alpha, 0f, Vector2.Zero, SpriteEffects.None, draw_layer);
+                        spriteBatch.Draw(textureModel.GetTexture(textureVariation), position + new Vector2(8.5f, 12f) * 4f, new Rectangle(32 + xTileOffset * 2, textureOffset, 16, 32), Color.White * alpha, (float)Game1.currentGameTime.TotalGameTime.TotalSeconds * -1.5f, new Vector2(7.5f, 15.5f), 4f, SpriteEffects.None, draw_layer + 1E-05f);
                         return false;
                     }
 

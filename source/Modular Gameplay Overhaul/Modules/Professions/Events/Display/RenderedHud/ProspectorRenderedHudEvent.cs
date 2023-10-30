@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Professions.Events.Display.RenderedHud;
 using DaLion.Overhaul.Modules.Core.Extensions;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions.Stardew;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley.Locations;

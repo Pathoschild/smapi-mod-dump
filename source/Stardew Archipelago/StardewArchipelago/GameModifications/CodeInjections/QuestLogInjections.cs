@@ -13,9 +13,7 @@ using StardewArchipelago.Archipelago;
 using StardewArchipelago.Locations;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Menus;
-using StardewValley.Quests;
 
 namespace StardewArchipelago.GameModifications.CodeInjections
 {

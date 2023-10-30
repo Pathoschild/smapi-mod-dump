@@ -13,7 +13,9 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Melee;
 #region using directives
 
 using System.Reflection;
+using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
+using DaLion.Shared.Constants;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -38,14 +40,16 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
     private static bool MeleeWeaponDrawTooltipPrefix(
         MeleeWeapon __instance, SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha)
     {
-        if (CombatModule.Config.WeaponTooltipStyle == Config.TooltipStyle.Vanilla || __instance.isScythe())
+        if (!CombatModule.Config.EnableWeaponOverhaul ||
+            CombatModule.Config.WeaponTooltipStyle == CombatConfig.TooltipStyle.Vanilla || __instance.isScythe())
         {
             return true; // run original logic
         }
 
         try
         {
-            // write description
+            #region description
+
             var descriptionWidth = Reflector
                 .GetUnboundMethodDelegate<Func<Item, int>>(__instance, "getDescriptionWidth")
                 .Invoke(__instance);
@@ -53,207 +57,180 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
                 spriteBatch,
                 Game1.parseText(__instance.description, Game1.smallFont, descriptionWidth),
                 font,
-                new Vector2(x + 16, y + 20),
+                new Vector2(x + 16f, y + 20f),
                 Game1.textColor);
             y += (int)font.MeasureString(Game1.parseText(__instance.description, Game1.smallFont, descriptionWidth)).Y;
 
+            #endregion description
+
             var co = Game1.textColor;
 
-            // write damage
+            #region damage
+
             if (__instance.hasEnchantmentOfType<RubyEnchantment>())
             {
                 co = new Color(0, 120, 120);
             }
 
-            Utility.drawWithShadow(
-                spriteBatch,
-                Game1.mouseCursors,
-                new Vector2(x + 20, y + 20),
-                new Rectangle(120, 428, 10, 10),
-                Color.White,
-                0f,
-                Vector2.Zero,
-                4f,
-                false,
-                1f);
+            spriteBatch.DrawAttackIcon(new Vector2(x + 20f, y + 20f));
+
+            var text = Game1.content.LoadString(
+                "Strings\\UI:ItemHover_Damage",
+                __instance.Get_MinDamage(),
+                __instance.Get_MaxDamage());
             Utility.drawTextWithShadow(
                 spriteBatch,
-                Game1.content.LoadString(
-                    "Strings\\UI:ItemHover_Damage",
-                    __instance.Get_MinDamage(),
-                    __instance.Get_MaxDamage()),
+                text,
                 font,
-                new Vector2(x + 68, y + 28),
+                new Vector2(x + 68f, y + 28f),
                 co * 0.9f * alpha);
             y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
 
-            // write bonus knockback
-            var relativeKnockback = __instance.Get_DisplayedKnockback();
-            if (relativeKnockback != 0)
+            #endregion damage
+
+            #region knockback
+
+            if (__instance.Get_DisplayedKnockback() is var knockback && knockback != 0)
             {
                 co = __instance.hasEnchantmentOfType<AmethystEnchantment>() ? new Color(0, 120, 120) : Game1.textColor;
-                Utility.drawWithShadow(
-                    spriteBatch,
-                    Game1.mouseCursors,
-                    new Vector2(x + 20, y + 20),
-                    new Rectangle(70, 428, 10, 10),
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    4f,
-                    false,
-                    1f);
+                spriteBatch.DrawWeightIcon(new Vector2(x + 20f, y + 20f));
 
+                text = I18n.Ui_ItemHover_Knockback($"{knockback:+#.#%;-#.#%}");
                 Utility.drawTextWithShadow(
                     spriteBatch,
-                    I18n.Ui_ItemHover_Knockback($"{relativeKnockback:+#.#%;-#.#%}"),
+                    text,
                     font,
-                    new Vector2(x + 68, y + 28),
+                    new Vector2(x + 68f, y + 28f),
                     co * 0.9f * alpha);
 
                 y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
             }
 
-            // write bonus crit rate
-            var relativeCritChance = __instance.Get_DisplayedCritChance();
-            if (relativeCritChance != 0)
+            #endregion knockback
+
+            #region crit rate
+
+            if (__instance.Get_DisplayedCritChance() is var critChance && critChance != 0)
             {
                 co = __instance.hasEnchantmentOfType<AquamarineEnchantment>()
                     ? new Color(0, 120, 120)
                     : Game1.textColor;
-                Utility.drawWithShadow(
-                    spriteBatch,
-                    Game1.mouseCursors,
-                    new Vector2(x + 20, y + 20),
-                    new Rectangle(40, 428, 10, 10),
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    4f,
-                    false,
-                    1f);
+                spriteBatch.DrawCritChanceIcon(new Vector2(x + 20f, y + 20f));
 
+                text = Game1.parseText(I18n.Ui_ItemHover_CRate($"{critChance:+#.#%;-#.#%}"), Game1.smallFont, descriptionWidth);
                 Utility.drawTextWithShadow(
                     spriteBatch,
-                    I18n.Ui_ItemHover_Crate($"{relativeCritChance:+#.#%;-#.#%}"),
+                    text,
                     font,
-                    new Vector2(x + 68, y + 28),
+                    new Vector2(x + 68f, y + 28f),
                     co * 0.9f * alpha);
 
                 y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
             }
 
-            // write bonus crit power
-            var relativeGetCritPower = __instance.Get_DisplayedCritPower();
-            if (relativeGetCritPower != 0)
+            #endregion crit rate
+
+            #region crit power
+
+            if (__instance.Get_DisplayedCritPower() is var critPower && critPower != 0)
             {
                 co = __instance.hasEnchantmentOfType<JadeEnchantment>() ? new Color(0, 120, 120) : Game1.textColor;
-                Utility.drawWithShadow(
-                    spriteBatch,
-                    Game1.mouseCursors,
-                    new Vector2(x + 16, y + 20),
-                    new Rectangle(160, 428, 10, 10),
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    4f,
-                    false,
-                    1f);
+                spriteBatch.DrawCritPowerIcon(new Vector2(x + 20f, y + 20f));
 
+                text = I18n.Ui_ItemHover_CPow($"{critPower:+#.#%;-#.#%}");
                 Utility.drawTextWithShadow(
                     spriteBatch,
-                    I18n.Ui_ItemHover_Cpow($"{relativeGetCritPower:+#.#%;-#.#%}"),
+                    text,
                     font,
-                    new Vector2(x + 68, y + 28),
+                    new Vector2(x + 68f, y + 28f),
                     co * 0.9f * alpha);
 
                 y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
             }
 
-            // write bonus swing speed
-            var speed = __instance.Get_DisplayedSwingSpeed();
-            if (speed != 0)
+            #endregion crit power
+
+            #region attack speed
+
+            if (__instance.Get_DisplayedSwingSpeed() is var speed && speed != 0)
             {
                 co = __instance.hasEnchantmentOfType<EmeraldEnchantment>() ? new Color(0, 120, 120) : Game1.textColor;
-                Utility.drawWithShadow(
-                    spriteBatch,
-                    Game1.mouseCursors,
-                    new Vector2(x + 20, y + 20),
-                    new Rectangle(130, 428, 10, 10),
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    4f,
-                    false,
-                    1f);
+                spriteBatch.DrawSpeedIcon(new Vector2(x + 20f, y + 20f));
 
+                text = Game1.parseText(I18n.Ui_ItemHover_SwingSpeed($"{speed:+#.#%;-#.#%}"), Game1.smallFont, descriptionWidth);
                 Utility.drawTextWithShadow(
                     spriteBatch,
-                    I18n.Ui_ItemHover_Swingspeed($"{speed:+#.#%;-#.#%}"),
+                    text,
                     font,
-                    new Vector2(x + 68, y + 28),
+                    new Vector2(x + 68f, y + 28f),
                     co * 0.9f * alpha);
 
                 y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
             }
 
-            // write bonus cooldown reduction
-            var cooldownReduction = __instance.Get_DisplayedCooldownReduction();
-            if (cooldownReduction > 0)
+            #endregion attack speed
+
+            #region cooldown reduction
+
+            if (__instance.Get_DisplayedCooldownReduction() is var cooldownReduction && cooldownReduction > 0)
             {
                 co = new Color(0, 120, 120);
-                Utility.drawWithShadow(
-                    spriteBatch,
-                    Game1.mouseCursors,
-                    new Vector2(x + 20, y + 20),
-                    new Rectangle(150, 428, 10, 10),
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    4f,
-                    false,
-                    1f);
+                spriteBatch.DrawCooldownIcon(new Vector2(x + 20f, y + 20f));
 
+                text = I18n.Ui_ItemHover_Cdr($"-{cooldownReduction:#.#%}");
                 Utility.drawTextWithShadow(
                     spriteBatch,
-                    I18n.Ui_ItemHover_Cdr($"-{cooldownReduction:#.#%}"),
+                    text,
                     font,
-                    new Vector2(x + 68, y + 28),
+                    new Vector2(x + 68f, y + 28f),
                     co * 0.9f * alpha);
 
                 y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
             }
 
-            // write bonus defense
-            var resistance = __instance.Get_DisplayedResilience();
-            if (resistance != 0f)
+            #endregion cooldown reduction
+
+            #region resistance
+
+            if (__instance.Get_DisplayedResilience() is var resistance && resistance != 0f)
             {
                 co = __instance.hasEnchantmentOfType<TopazEnchantment>() ? new Color(0, 120, 120) : Game1.textColor;
-                Utility.drawWithShadow(
-                    spriteBatch,
-                    Game1.mouseCursors,
-                    new Vector2(x + 20, y + 20),
-                    new Rectangle(110, 428, 10, 10),
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    4f,
-                    false,
-                    1f);
+                spriteBatch.DrawDefenseIcon(new Vector2(x + 20f, y + 20f));
 
+                text = CombatModule.Config.NewResistanceFormula
+                    ? I18n.Ui_ItemHover_Resist($"{resistance:+#.#%;-#.#%}")
+                    : Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", __instance.addedDefense.Value)
+                        .Replace("+", string.Empty);
                 Utility.drawTextWithShadow(
                     spriteBatch,
-                    CombatModule.ShouldEnable && CombatModule.Config.NewResistanceFormula
-                        ? I18n.Ui_ItemHover_Resist($"{resistance:+#.#%;-#.#%}")
-                        : Game1.content.LoadString("Strings\\UI:ItemHover_DefenseBonus", __instance.addedDefense.Value).Replace("+", string.Empty),
+                    text,
                     font,
-                    new Vector2(x + 68, y + 28),
+                    new Vector2(x + 68f, y + 28f),
                     co * 0.9f * alpha);
 
                 y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
             }
 
-            // write bonus random forges
+            #endregion resistance
+
+            #region light emittance
+
+            if (__instance.InitialParentTileIndex == WeaponIds.HolyBlade || __instance.IsInfinityWeapon())
+            {
+                co = __instance.IsInfinityWeapon()
+                    ? Color.DeepPink
+                    : Game1.textColor;
+                spriteBatch.DrawLightIcon(new Vector2(x + 20f, y + 20f));
+
+                text = I18n.Ui_ItemHover_Light();
+                Utility.drawTextWithShadow(spriteBatch, text, font, new Vector2(x + 68f, y + 28f), co * 0.9f * alpha);
+                y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
+            }
+
+            #endregion light emittance
+
+            #region random forges
+
             if (__instance.enchantments.Count > 0 && __instance.enchantments[^1] is DiamondEnchantment)
             {
                 co = new Color(0, 120, 120);
@@ -261,19 +238,23 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
                 var randomForgeString = randomForges != 1
                     ? Game1.content.LoadString("Strings\\UI:ItemHover_DiamondForge_Plural", randomForges)
                     : Game1.content.LoadString("Strings\\UI:ItemHover_DiamondForge_Singular", randomForges);
+
                 Utility.drawTextWithShadow(
                     spriteBatch,
                     randomForgeString,
                     font,
-                    new Vector2(x + 16, y + 28),
+                    new Vector2(x + 16f, y + 28f),
                     co * 0.9f * alpha);
 
                 y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
             }
 
+            #endregion random forges
+
             co = new Color(120, 0, 210);
 
-            // write other enchantments
+            #region prismatic enchantments
+
             for (var i = 0; i < __instance.enchantments.Count; i++)
             {
                 var enchantment = __instance.enchantments[i];
@@ -282,27 +263,20 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
                     continue;
                 }
 
-                Utility.drawWithShadow(
-                    spriteBatch,
-                    Game1.mouseCursors2,
-                    new Vector2(x + 20, y + 20),
-                    new Rectangle(127, 35, 10, 10),
-                    Color.White,
-                    0f,
-                    Vector2.Zero,
-                    4f,
-                    false,
-                    1f);
+                spriteBatch.DrawEnchantmentIcon(new Vector2(x + 20f, y + 20f));
 
+                text = BaseEnchantment.hideEnchantmentName ? "???" : enchantment.GetDisplayName();
                 Utility.drawTextWithShadow(
                     spriteBatch,
-                    BaseEnchantment.hideEnchantmentName ? "???" : enchantment.GetDisplayName(),
+                    text,
                     font,
-                    new Vector2(x + 68, y + 28),
+                    new Vector2(x + 68f, y + 28f),
                     co * 0.9f * alpha);
 
                 y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
             }
+
+            #endregion prismatic enchantments
 
             return false; // don't run original logic
         }

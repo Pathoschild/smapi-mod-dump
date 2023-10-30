@@ -8,16 +8,16 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewValley;
 using StardewValley.Locations;
 using xTile.Dimensions;
 
 namespace StardewRoguelike.Patches
 {
-    internal class PerformActionPatch : Patch
+    [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.performAction))]
+    internal class PerformActionPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(GameLocation), "performAction");
-
         public static bool Prefix(GameLocation __instance, ref bool __result, string action, Farmer who, Location tileLocation)
         {
             if (action is not null && who.IsLocalPlayer)

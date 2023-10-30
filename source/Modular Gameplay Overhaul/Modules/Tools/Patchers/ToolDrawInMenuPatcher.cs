@@ -18,6 +18,8 @@ using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley;
+using StardewValley.Tools;
 
 #endregion using directives
 
@@ -44,7 +46,7 @@ internal sealed class ToolDrawInMenuPatcher : HarmonyPatcher
     [SuppressMessage("SMAPI.CommonErrors", "AvoidNetField:Avoid Netcode types when possible", Justification = "Bypass property setter.")]
     private static void ToolDrawInMenuPrefix(Tool __instance, ref (int, Texture2D)? __state)
     {
-        if (__instance.UpgradeLevel < 5)
+        if (__instance.UpgradeLevel < 5 || __instance is not (Axe or Hoe or Pickaxe or WateringCan))
         {
             return;
         }

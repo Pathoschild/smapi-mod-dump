@@ -19,6 +19,7 @@ using SObject = StardewValley.Object;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
+using StardewSurvivalProject.source;
 
 namespace StardewSurvivalProject
 {
@@ -34,6 +35,7 @@ namespace StardewSurvivalProject
         private Texture2D TempIndicator;
         private Texture2D fillRect;
         private Texture2D TempRangeIndicator;
+        private List<Texture2D> MoodIcons;
         private int buffIconAppendRow = 2;
         //expose for harmony patches
         public static Texture2D InfoIcon;
@@ -103,6 +105,14 @@ namespace StardewSurvivalProject
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
             //for confirming buff icons has been loaded properly and initialize buff with proper index
             helper.Events.Content.AssetReady += this.OnAssetReady;
+            //for sanity feature
+            source.events.CustomEvents.OnItemPlaced += this.OnItemPlaced;
+            //mental breakdown event
+            source.events.CustomEvents.OnMentalBreak += this.OnMentalBreak;
+            //for forwarding mod config to multiplayer client
+            helper.Events.Multiplayer.PeerConnected += this.OnPeerConnected;
+            //for receiving mod config from host
+            helper.Events.Multiplayer.ModMessageReceived += this.OnModMessageReceived;
 
 
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
@@ -139,6 +149,17 @@ namespace StardewSurvivalProject
             this.TempIndicator = GetAssetWithPreset(helper, "TempIndicator.png", preset);
             this.fillRect = GetAssetWithPreset(helper, "fillRect.png", preset);
             this.TempRangeIndicator = GetAssetWithPreset(helper, "TempRangeIndicator.png", preset);
+            this.MoodIcons = new List<Texture2D> { 
+                GetAssetWithPreset(helper, "MoodMentalBreak.png", preset),
+                GetAssetWithPreset(helper, "MoodDistress.png", preset),
+                GetAssetWithPreset(helper, "MoodSad.png", preset),
+                GetAssetWithPreset(helper, "MoodDiscontent.png", preset),
+                GetAssetWithPreset(helper, "MoodNeutral.png", preset),
+                GetAssetWithPreset(helper, "MoodContent.png", preset),
+                GetAssetWithPreset(helper, "MoodHappy.png", preset),
+                GetAssetWithPreset(helper, "MoodOverjoy.png", preset),
+            };
+
 
             InfoIcon = GetAssetWithPreset(helper, "InfoIcon.png", preset);
             ModIcon = GetAssetWithPreset(helper, "ModIcon.png", preset);
@@ -149,6 +170,45 @@ namespace StardewSurvivalProject
             helper.ConsoleCommands.Add("player_setthirst", "Set your hydration level to a specified amount", commandManager.SetThirstCmd);
             helper.ConsoleCommands.Add("player_testeffect", "Test applying effect to player", commandManager.SetEffect);
             helper.ConsoleCommands.Add("player_settemp", "Set your body temperature to a specified value", commandManager.SetBodyTemp);
+            helper.ConsoleCommands.Add("player_setmood", "Set your mood to a specified value", commandManager.SetMood);
+        }
+
+        private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
+        {
+            // if the message doesn't have the right format, ignore it
+            if (e.FromModID != this.ModManifest.UniqueID || e.Type != "SyncModConfig")
+                return;
+
+            // deserialize the message data
+            ModConfig config = e.ReadAs<ModConfig>();
+            // set the config
+            ModConfig.GetInstance().SetConfig(config);
+        }
+
+        private void OnPeerConnected(object sender, PeerConnectedEventArgs e)
+        {
+            // send the mod config to the client
+            this.Helper.Multiplayer.SendMessage(ModConfig.GetInstance(), "SyncModConfig", modIDs: new[] { this.ModManifest.UniqueID }, playerIDs: new[] { e.Peer.PlayerID });
+        }
+
+        private void OnMentalBreak(object sender, EventArgs e)
+        {
+            if (sender != Game1.player) return;
+
+            Game1.addHUDMessage(new HUDMessage("Player is had mental breakdown, they spent 1 hour contemplating their life", HUDMessage.error_type));
+
+            // If in single player, advance the time by 1 hour
+            if (!Context.IsMultiplayer)
+            {
+                Game1.timeOfDay += 100;
+            }
+            else
+            {
+                // If in multiplayer, lock the player from moving for 1 hour in-game
+                Game1.player.freezePause = 3600;
+            }
+            
+
         }
 
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
@@ -233,7 +293,10 @@ namespace StardewSurvivalProject
 
             if (Game1.player.running && Game1.player.isMoving())
             {
-                instance.updateOnRunning();
+                // check if player is holding the sprint button
+                // TODO: check for controller button (should be locked)
+                bool isSprinting = ModConfig.GetInstance().UseStaminaRework && Game1.input.GetKeyboardState().IsKeyDown((Microsoft.Xna.Framework.Input.Keys)ModConfig.GetInstance().SprintButton);
+                instance.updateOnRunning(isSprinting);
             }
             if (Game1.player.health <= 0 || Game1.player.stamina <= -15)
             {
@@ -322,6 +385,7 @@ namespace StardewSurvivalProject
             int OffsetY = ModConfig.GetInstance().UIOffsetY;
             float Scale = ModConfig.GetInstance().UIScale;
             bool overlayComfyTemp = ModConfig.GetInstance().IndicateComfortableTemperatureRange;
+            bool overlaySaturation = ModConfig.GetInstance().ScaleHungerRestoredWithTimeFromLastMeal;
 
             Vector2 hunger_pos = new Vector2(OffsetX, OffsetY);
             b.Draw(this.HungerBar, hunger_pos, new Rectangle(0, 0, this.HungerBar.Width, this.HungerBar.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
@@ -334,6 +398,12 @@ namespace StardewSurvivalProject
 
             Vector2 body_temp_pos = new Vector2(OffsetX, OffsetY + this.HungerBar.Height * Scale * 3);
             b.Draw(this.BodyTempBar, body_temp_pos, new Rectangle(0, 0, this.BodyTempBar.Width, this.BodyTempBar.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
+
+            if (ModConfig.GetInstance().UseSanityModule)
+            {
+                Vector2 mood_pos = new Vector2(OffsetX, OffsetY + this.HungerBar.Height * Scale * 4);
+                b.Draw(this.MoodIcons[instance.getPlayerMoodIndex()], mood_pos, new Rectangle(0, 0, this.MoodIcons[instance.getPlayerMoodIndex()].Width, this.MoodIcons[instance.getPlayerMoodIndex()].Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
+            }
 
             //render indicators
             double ENV_TEMP_BOUND_LOW = ModConfig.GetInstance().EnvironmentTemperatureDisplayLowerBound;
@@ -351,7 +421,7 @@ namespace StardewSurvivalProject
             if (overlayComfyTemp)
             {
                 b.Draw(this.fillRect, env_temp_pos + new Vector2(min_env_ind_pos.X, 5 * Scale), new Rectangle(0, 0, (int)(Math.Max(max_env_ind_pos.X - min_env_ind_pos.X, 0)), (int)(6 * Scale)), new Color(Color.Green, 0.3f));
-            }
+            }            
             
             
             b.Draw(this.TempIndicator, env_ind_pos, new Rectangle(0, 0, this.TempIndicator.Width, this.TempIndicator.Height), Color.White, 0, new Vector2(), Scale, SpriteEffects.None, 1);
@@ -374,7 +444,14 @@ namespace StardewSurvivalProject
                 float perc = (float)instance.getPlayerThirstPercentage();
                 b.Draw(this.fillRect, thirst_pos + new Vector2(4 * Scale, 5 * Scale), new Rectangle(0, 0, (int)(perc * 50 * Scale), (int)(6 * Scale)), source.utils.ColorHelper.ColorFromHSV(perc * 100f, 1, 1));
             }
-            
+
+            // overlay saturation over hunger
+            if (instance.getPlayerHungerPercentage() > 0)
+            {
+                float perc = (float)instance.getPlayerHungerSaturationStat();
+                b.Draw(this.fillRect, hunger_pos + new Vector2(4 * Scale, 9 * Scale), new Rectangle(0, 0, (int)(perc * 50 * Scale), (int)(2 * Scale)), new Color(Color.Yellow, 0.3f));
+            }
+
             Rectangle hunger_hover_area = new Rectangle((int) hunger_pos.X, (int) hunger_pos.Y, (int) (this.HungerBar.Width * Scale), (int) (this.HungerBar.Height * Scale));
             Rectangle thirst_hover_area = new Rectangle((int) thirst_pos.X, (int) thirst_pos.Y, (int) (this.ThirstBar.Width * Scale), (int) (this.ThirstBar.Height * Scale));
             Rectangle env_temp_hover_area = new Rectangle((int) env_temp_pos.X, (int) env_temp_pos.Y, (int) (this.EnvTempBar.Width * Scale), (int) (this.EnvTempBar.Height * Scale));
@@ -436,7 +513,7 @@ namespace StardewSurvivalProject
             double addThirst = source.data.CustomHydrationDictionary.getHydrationValue(ateItem.name);
             double coolingModifier = source.data.CustomHydrationDictionary.getCoolingModifierValue(ateItem.name);
 
-            var arrInfo = Game1.objectInformation[ateItem.parentSheetIndex].Split('/');
+            var arrInfo = Game1.objectInformation[ateItem.ParentSheetIndex].Split('/');
             if (addThirst != 0)
             {
                 instance.onItemDrinkingUpdate(ateItem, addThirst, coolingModifier);
@@ -465,6 +542,14 @@ namespace StardewSurvivalProject
                 return;
 
             instance.updateOnGiftGiven(e.Npc, e.Gift);
+        }
+
+        private void OnItemPlaced(object sender, EventArgs e)
+        {
+            // cast sender to StardewValley.Object
+            SObject obj = sender as SObject;
+            // check if object is seed crop
+            LogHelper.Info($"Item placed: {obj.Name}");
         }
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)

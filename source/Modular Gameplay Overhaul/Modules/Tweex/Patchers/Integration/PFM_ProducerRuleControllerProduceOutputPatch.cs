@@ -22,7 +22,7 @@ using HarmonyLib;
 #endregion using directives
 
 [UsedImplicitly]
-[ModRequirement("Digus.ProducerFrameworkMod")]
+[ModRequirement("Digus.ProducerFrameworkMod", "Producer Framework Mod")]
 [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1649:File name should match first type name", Justification = "Integration patch specifies the mod in file name but not class to avoid breaking pattern.")]
 internal sealed class ProducerRuleControllerProduceOutputPatcher : HarmonyPatcher
 {
@@ -44,7 +44,7 @@ internal sealed class ProducerRuleControllerProduceOutputPatcher : HarmonyPatche
         SObject producer, SObject? input, bool probe)
     {
         if (probe || input?.Category is not (SObject.EggCategory or SObject.MilkCategory) ||
-            !input.Name.ContainsAnyOf("Large", "L.") || !TweexModule.Config.LargeDairyYieldsQuantityOverQuality ||
+            !input.Name.ContainsAnyOf("Large", "L.") || !TweexModule.Config.ImmersiveDairyYield ||
             !TweexModule.Config.DairyArtisanMachines.Contains(producer.Name))
         {
             return;

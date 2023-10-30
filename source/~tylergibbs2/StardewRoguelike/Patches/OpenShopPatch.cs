@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewRoguelike.ChallengeFloors;
 using StardewRoguelike.UI;
 using StardewRoguelike.VirtualProperties;
@@ -18,10 +19,9 @@ using System.Reflection;
 
 namespace StardewRoguelike.Patches
 {
-    internal class OpenShopPatch : Patch
+    [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.openShopMenu))]
+    internal class OpenShopPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(GameLocation), "openShopMenu");
-
         public static bool OnPurchase(ISalable item, Farmer who, int numberToBuy)
         {
             if (item is Object boughtItem && boughtItem.ParentSheetIndex == 803)

@@ -9,13 +9,35 @@
 *************************************************/
 
 {
-	"Format": "1.27.0",
+	"Format": "1.29.0",
 	"AliasTokenNames": {
 		"AlwaysAdopt": "ichortower.HatMouseLacey.Core/AlwaysAdopt",
 		"DTF": "ichortower.HatMouseLacey.Core/DTF",
 		"SVR3Forest": "ichortower.HatMouseLacey.Core/SVRThreeForest"
 	},
 	"DynamicTokens": [
+		{
+			"Name": "RecolorPalette",
+			"Value": "{{ichortower.HatMouseLacey.Core/RecolorConfig}}"
+		},
+		{
+			"Name": "RecolorPalette",
+			"Value": "{{ichortower.HatMouseLacey.Core/RecolorDetected}}",
+			"When": {
+				"ichortower.HatMouseLacey.Core/RecolorConfig": "Auto"
+			}
+		},
+		{
+			"Name": "InteriorPalette",
+			"Value": "{{ichortower.HatMouseLacey.Core/InteriorConfig}}"
+		},
+		{
+			"Name": "InteriorPalette",
+			"Value": "{{ichortower.HatMouseLacey.Core/InteriorDetected}}",
+			"When": {
+				"ichortower.HatMouseLacey.Core/InteriorConfig": "Auto"
+			}
+		},
 		// default festival positions
 		{ "Name": "festival_spring13_setUp",     "Value": "24 64 down" },
 		{ "Name": "festival_spring13_mainEvent", "Value": "32 74 up" },

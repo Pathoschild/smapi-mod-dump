@@ -10,11 +10,10 @@
 
 namespace DaLion.Overhaul.Modules.Combat.Patchers.Rings;
 
-using DaLion.Overhaul.Modules.Combat.Integrations;
-using Events.Player.Warped;
-
 #region using directives
 
+using DaLion.Overhaul.Modules.Combat.Events.Player.Warped;
+using DaLion.Overhaul.Modules.Combat.Integrations;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
 using DaLion.Shared.Constants;
 using DaLion.Shared.Harmony;
@@ -63,9 +62,9 @@ internal sealed class RingOnEquipPatcher : HarmonyPatcher
                 CombatModule.State.WarriorKillCount = 0;
                 EventManager.Enable<WarriorWarpedEvent>();
                 return true;
-            case ObjectIds.ImmunityRing:
-                who.immunity += 10;
-                return false;
+            //case ObjectIds.ImmunityRing:
+            //    who.immunity += 10;
+            //    return false;
             default:
                 if (!JsonAssetsIntegration.GarnetRingIndex.HasValue || __instance.ParentSheetIndex != JsonAssetsIntegration.GarnetRingIndex)
                 {

@@ -14,14 +14,12 @@ using System.Linq;
 using Archipelago.MultiClient.Net.Models;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Serialization;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
-using StardewValley.Util;
 using xTile.Dimensions;
 using Object = StardewValley.Object;
 

@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Prestige;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DaLion.Overhaul;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
@@ -41,17 +42,16 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
     [HarmonyPrefix]
     private static bool GameLocationAnswerDialogueActionPrefix(GameLocation __instance, ref bool __result, string? questionAndAnswer)
     {
-        if (questionAndAnswer is null)
+        if (!ProfessionsModule.Config.EnablePrestige ||
+            questionAndAnswer?.StartsWithAnyOf("dogStatue", "prestigeRespec", "skillReset") != true)
+        {
+            return true; // run original logic
+        }
+
+        if (questionAndAnswer.EndsWith("No"))
         {
             __result = false;
             return false; // don't run original logic
-        }
-
-        if (!ProfessionsModule.Config.EnablePrestige ||
-            ((!questionAndAnswer.Contains("dogStatue") || questionAndAnswer.Contains("No")) &&
-             !questionAndAnswer.ContainsAnyOf("prestigeRespec_", "skillReset_")))
-        {
-            return true; // run original logic
         }
 
         try

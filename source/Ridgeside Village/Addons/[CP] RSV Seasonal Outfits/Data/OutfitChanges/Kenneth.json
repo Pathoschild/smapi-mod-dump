@@ -1,0 +1,76 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Kenneth Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Kenneth, Characters/Kenneth",
+			"FromFile": "Assets/{{Target}}/Kenneth_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Kenneth": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Kenneth Rain Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Kenneth, Characters/Kenneth",
+			"FromFile": "Assets/{{Target}}/Kenneth_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"SeasonalRainToken": "rain",
+				"Kenneth": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Kenneth Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Kenneth, Characters/Kenneth",
+			"FromFile": "Assets/{{Target}}/Kenneth_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Kenneth": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Kenneth Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Kenneth, Characters/Kenneth",
+			"FromFile": "Assets/{{Target}}/Kenneth_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Kenneth": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Kenneth Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Kenneth, Characters/Kenneth",
+			"FromFile": "Assets/{{Target}}/Kenneth_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Kenneth": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

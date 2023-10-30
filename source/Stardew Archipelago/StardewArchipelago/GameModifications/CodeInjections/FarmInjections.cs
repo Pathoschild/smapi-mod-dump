@@ -10,11 +10,9 @@
 
 using System;
 using Microsoft.Xna.Framework;
-using Netcode;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Goals;
 using StardewArchipelago.Items.Mail;
-using StardewArchipelago.Locations.CodeInjections;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
 using StardewModdingAPI;
 using StardewValley;

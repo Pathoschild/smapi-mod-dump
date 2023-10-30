@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley.Menus;
 using System.Collections.Generic;
@@ -16,10 +17,9 @@ using static StardewValley.Menus.LoadGameMenu;
 
 namespace StardewRoguelike.Patches
 {
-    class TitleMenuButtons : Patch
+    [HarmonyPatch(typeof(TitleMenu), nameof(TitleMenu.setUpIcons))]
+    class TitleMenuButtons
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(TitleMenu), "setUpIcons");
-
         public static void Postfix(TitleMenu __instance)
         {
             __instance.buttons.Clear();
@@ -52,10 +52,9 @@ namespace StardewRoguelike.Patches
         }
     }
 
-    class TitleMenuButtonSounds : Patch
+    [HarmonyPatch(typeof(TitleMenu), nameof(TitleMenu.update))]
+    class TitleMenuButtonSounds
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(TitleMenu), "update");
-
         public static bool Prefix(TitleMenu __instance)
         {
             int buttonsToShow = (int)__instance.GetType().GetField("buttonsToShow", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(__instance)!;
@@ -66,10 +65,9 @@ namespace StardewRoguelike.Patches
         }
     }
 
-    class CoopMenuNoNewFarm : Patch
+    [HarmonyPatch(typeof(CoopMenu), "connectionFinished")]
+    class CoopMenuNoNewFarm
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(CoopMenu), "connectionFinished");
-
         public static void Postfix(CoopMenu __instance)
         {
 

@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Professions.Ultimates;
 #region using directives
 
 using System.Linq;
+using DaLion.Overhaul;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.UpdateTicked;
 using Microsoft.Xna.Framework;
 using Netcode;
@@ -27,23 +28,22 @@ public sealed class Ambush : Ultimate
 
     /// <summary>Initializes a new instance of the <see cref="Ambush"/> class.</summary>
     internal Ambush()
-        : base("Ambush", 27, Color.MediumPurple, Color.MidnightBlue)
+        : base("Ambush", Professions.Profession.Poacher, Color.MediumPurple, Color.MidnightBlue)
     {
     }
 
     /// <inheritdoc />
-    public override string Description =>
-        _I18n.Get(this.Name.ToLower() + ".desc." + (this.IsActive ? "hidden" : "revealed"));
+    public override string DisplayName { get; } = I18n.Ambush_Title();
 
     /// <inheritdoc />
-    public override IProfession Profession => Professions.Profession.Poacher;
+    public override string Description => this.IsGrantingCritBuff ? I18n.Ambush_Desc_Revealed() : I18n.Ambush_Desc_Hidden();
 
     /// <inheritdoc />
     internal override int MillisecondsDuration =>
         (int)(15000 * ((double)this.MaxValue / BaseMaxValue) / ProfessionsModule.Config.LimitDrainFactor);
 
     /// <inheritdoc />
-    internal override SoundEffectPlayer ActivationSoundEffectPlayer => SoundEffectPlayer.PoacherAmbush;
+    internal override SoundEffectPlayer ActivationSfx => SoundEffectPlayer.PoacherAmbush;
 
     /// <inheritdoc />
     internal override Color GlowColor => Color.MediumPurple;
@@ -62,7 +62,7 @@ public sealed class Ambush : Ultimate
 
         for (var i = 0; i < Game1.currentLocation.characters.Count; i++)
         {
-            if (Game1.currentLocation.characters[i] is not Monster { Player.IsLocalPlayer: true } monster)
+            if (Game1.currentLocation.characters[i] is not Monster { IsMonster: true, Player.IsLocalPlayer: true } monster)
             {
                 continue;
             }

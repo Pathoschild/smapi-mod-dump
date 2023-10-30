@@ -411,7 +411,7 @@
       	},
 
     //Hike Greenhouse unlock
-     	 {
+			{
 				 "LogName": "RSV: Open phantom greenhouse at night",
          "Action": "EditMap",
          "Target": "Maps/Custom_Ridgeside_RSVTheHike",
@@ -425,6 +425,24 @@
              "HasSeenEvent: hostPlayer": 75160266,
              "HasSeenEvent: hostPlayer |contains=75160271": false
       	}
+      	},
+     	 {
+				 "LogName": "RSV: Phantom greenhouse locked door",
+         "Action": "EditMap",
+         "Target": "Maps/Custom_Ridgeside_RSVTheHike",
+				 "MapTiles": [
+                {
+                    "Position": { "X": 38, "Y": 23 },
+                    "Layer": "Buildings",
+										"SetProperties": {
+                        "Action": "LockedDoorWarp Custom_Ridgeside_RSVGreenhouse2 10 24 2400 2600"
+                    }
+                }
+            ],
+    	 	 	"When": {
+					 "HasSeenEvent: hostPlayer": 75160266,
+					 "HasSeenEvent: hostPlayer |contains=75160271": false
+				 }
       	},
       	//Permanent unlock (after finishing quest)
       	{
@@ -1181,12 +1199,12 @@
 			},
 
 			{
-				"LogName": "Put June's stuff in room",
+				"LogName": "Decorate June's rom",
 				"Action": "EditMap",
 				"Target": "Maps/Custom_Ridgeside_LogCabinHotel2ndFloor",
-				"FromFile": "Assets/Maps/DynamicMaps/RSVTheHike_Cart.tmx",
-				"FromArea": { "X": 0, "Y": 0, "Width": 8, "Height": 9 },
-				"ToArea": { "X": 35, "Y": 18, "Width": 8, "Height": 9 },
+				"FromFile": "Assets/Maps/DynamicMaps/LogCabinHotel2ndFloor_June.tmx",
+				"FromArea": { "X": 0, "Y": 0, "Width": 8, "Height": 8 },
+				"ToArea": { "X": 35, "Y": 18, "Width": 8, "Height": 8 },
 				"PatchMode": "ReplaceByLayer",
 				"When": {
 					"Season": "fall, winter",
@@ -1352,6 +1370,7 @@
 		"FromArea": { "X": 0, "Y": 0, "Width": 9, "Height": 5 },
 		"ToArea": { "X": 48, "Y": 20, "Width": 9, "Height": 5 },
 		"PatchMode": "ReplaceByLayer",
+		"Update": "OnTimeChange",
 		"When": {
 			"Time": "{{Range: 0600, 1950}}",
 			"DayOfWeek": "Wednesday"
@@ -1365,6 +1384,7 @@
 		"FromArea": { "X": 0, "Y": 0, "Width": 9, "Height": 5 },
 		"ToArea": { "X": 48, "Y": 20, "Width": 9, "Height": 5 },
 		"PatchMode": "ReplaceByLayer",
+		"Update": "OnTimeChange",
 		"When": {
 			"Time": "{{Range: 2000, 2600}}",
 			"DayOfWeek": "Wednesday"

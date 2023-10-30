@@ -20,7 +20,6 @@ using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.Stardew;
 using Microsoft.Xna.Framework;
 using StardewValley.Buildings;
-using StardewValley.GameData.FishPond;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
@@ -29,18 +28,6 @@ using StardewValley.Objects;
 /// <summary>Extensions for the <see cref="FishPond"/> class.</summary>
 internal static class FishPondExtensions
 {
-    /// <summary>Determines whether the <paramref name="pond"/>'s population has been fully unlocked.</summary>
-    /// <param name="pond">The <see cref="FishPond"/>.</param>
-    /// <returns><see langword="true"/> if the last unlocked population gate matches the last gate in the <see cref="FishPondData"/>, otherwise <see langword="false"/>.</returns>
-    internal static bool HasUnlockedFinalPopulationGate(this FishPond pond)
-    {
-        var data = Reflector
-            .GetUnboundFieldGetter<FishPond, FishPondData?>(pond, "_fishPondData")
-            .Invoke(pond);
-        return data?.PopulationGates is null ||
-               pond.lastUnlockedPopulationGate.Value >= data.PopulationGates.Keys.Max();
-    }
-
     /// <summary>Determines whether this <paramref name="pond"/> is infested with algae.</summary>
     /// <param name="pond">The <see cref="FishPond"/>.</param>
     /// <returns><see langword="true"/> if the <paramref name="pond"/> houses any algae, otherwise <see langword="false"/>.</returns>
@@ -150,13 +137,13 @@ internal static class FishPondExtensions
                         var c = fishIndex == 698
                             ? new Color(61, 55, 42)
                             : TailoringMenu.GetDyeColor(pond.GetFishObject()) ?? Color.Orange;
-                        var o = new ColoredObject(ObjectIds.Roe, item.Stack, c);
-                        o.name = split[0].ToString() + " Roe";
-                        o.preserve.Value = SObject.PreserveType.Roe;
-                        o.preservedParentSheetIndex.Value = fishIndex;
-                        o.Price += int.Parse(split[1]) / 2;
-                        o.Quality = ((SObject)item).Quality;
-                        inventory.Add(o);
+                        var roe = new ColoredObject(ObjectIds.Roe, item.Stack, c);
+                        roe.name = split[0].ToString() + " Roe";
+                        roe.preserve.Value = SObject.PreserveType.Roe;
+                        roe.preservedParentSheetIndex.Value = fishIndex;
+                        roe.Price += int.Parse(split[1]) / 2;
+                        roe.Quality = ((SObject)item).Quality;
+                        inventory.Add(roe);
                     }
                     else
                     {
@@ -164,6 +151,7 @@ internal static class FishPondExtensions
                     }
                 }
 
+                Utility.consolidateStacks(inventory);
                 var menu = new ItemGrabMenu(inventory, pond).setEssential(false);
                 menu.source = ItemGrabMenu.source_fishingChest;
                 Game1.activeClickableMenu = menu;
@@ -188,7 +176,7 @@ internal static class FishPondExtensions
     internal static List<Item> DeserializeHeldItems(this FishPond pond)
     {
         return pond.Read(DataKeys.ItemsHeld)
-            .ParseList<string>(";")
+            .ParseList<string>(';')
             .Select(s => s?.ParseTuple<int, int, int>())
             .WhereNotNull()
             .Select(t => new SObject(t.Item1, t.Item2, quality: t.Item3))

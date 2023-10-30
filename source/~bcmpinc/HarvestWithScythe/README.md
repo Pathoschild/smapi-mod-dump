@@ -34,6 +34,9 @@ Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 * You cannot get golden walnuts on Ginger Island by harvesting crops using the scythe. 
 
 ## Changes
+#### 7.0:
+* Localization support.
+
 #### 6.0:
 * Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.
 

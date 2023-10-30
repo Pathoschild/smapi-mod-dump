@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Neosinf/StardewDruid
+   Git: https://github.com/Neosinf/StardewDruid.git
+
+mods:
+   Stardew Druid
+
+latest commit:
+   commit 27aa5cdcc86094a08b1c26065bd452c3d5ea9d83
+   Author: Piers Mathieson <piersmathieson@gmail.com>
+   Date:   Fri Oct 27 14:05:13 2023 +1300
+   
+       Update 1.2.9.1
+   

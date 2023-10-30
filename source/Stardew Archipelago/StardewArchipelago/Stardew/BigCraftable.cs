@@ -46,17 +46,31 @@ namespace StardewArchipelago.Stardew
             }
         }
 
-        public static string ConvertToRarecrowAPName(string stardewName, string stardewDescription)
+        public static string ConvertToApName(Object salableItem)
         {
-            if (stardewName != "Rarecrow")
+            if (salableItem.Name != "Rarecrow")
             {
-                return stardewName;
+                return salableItem.Name;
             }
 
-            var pattern = @"\((\d) of \s*\d\)"; // (# of 8)
-            var match = Regex.Match(stardewDescription, pattern);
-            var rarecrowNumber = match.Groups[1].Value;
-            return $"{stardewName} #{rarecrowNumber}";
+            var rarecrowNumber = GetRarecrowNumber(salableItem);
+            return $"{salableItem.Name} #{rarecrowNumber}";
+        }
+
+        private static int GetRarecrowNumber(Object salableItem)
+        {
+            return salableItem.ParentSheetIndex switch
+            {
+                110 => 1,
+                113 => 2,
+                126 => 3,
+                136 => 4,
+                137 => 5,
+                138 => 6,
+                139 => 7,
+                140 => 8,
+                _ => throw new ArgumentException($"{salableItem.Name} is not a recognized rarecrow!")
+            };
         }
 
         public override Item PrepareForGivingToFarmer(int amount = 1)

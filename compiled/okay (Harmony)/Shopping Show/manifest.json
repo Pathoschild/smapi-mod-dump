@@ -1,0 +1,16 @@
+{
+  "Name": "Shopping Show",
+  "Author": "AvalonMFX",
+  "Version": "1.0.1",
+  "Description": "Adds a new TV channel that sells items",
+  "UniqueID": "AvalonMFX.ShoppingShow",
+  "EntryDll": "ShoppingShow.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:18445" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Platonymous.Toolkit",
+      "isRequired": "false"
+    }
+  ]
+}

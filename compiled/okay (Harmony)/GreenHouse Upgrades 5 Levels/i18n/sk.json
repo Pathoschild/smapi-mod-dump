@@ -1,0 +1,25 @@
+﻿{
+    "GreenhouseLevel1": "Skleník",
+    "GreenhouseLevel1Description": "Orné pole 15x15. Pridáva pivnicu.",
+    "GreenhouseLevel2": "Malý Skleník",
+    "GreenhouseLevel2Description": "Orné pole 30x30. Rozširuje pivnicu, pridáva vnútorný skleník a automatické zavlažovanie.",
+    "GreenhouseLevel3": "Stredný Skleník",
+    "GreenhouseLevel3Description": "Orné pole 50x50. Ďalej rozširuje pivnicu a zväčšuje vnútorný skleník.",
+    "GreenhouseLevel4": "Veľký Skleník",
+    "GreenhouseLevel4Description": "Orné pole 75x75. Zväčšuje pivnicu a vnútorný skleník.",
+    "GreenhouseLevel5": "Extra Veľký Deluxe Skleník",
+    "GreenhouseLevel5Description": "Orné pole 100x100. Ďalej rozširuje pivnicu a zväčšuje vnútorný skleník.",
+
+
+    "LeftBehindTree": "Zanechali ste strom.",
+    "LeftBehindCrop": "Zanechali ste plodinu.",
+    "PickUpTreeMessage": "Strom bol zdvihnutý!",
+    "PlaceTreeMessage": "Strom bol umiestnený!",
+    "PickUpCropMessage": "Plodina bola zdvihnutá!",
+    "PlaceCropMessage": "Plodina bola umiestnená!",
+    "EnableTreePickingOption": "Zber stromov a plodín",
+    "EnableTreePickingTooltip": "Povoliť/Zakázať zber.",
+    "language-choice-name": "Jazyk",
+"language-choice-tooltip": "Vyberte jazyk modu"
+
+}

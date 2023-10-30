@@ -8,11 +8,7 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using StardewArchipelago.Stardew;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
@@ -68,7 +64,9 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
             AddGrabberItem("Sebastian", new[] { "Frozen Tear", "Obsidian" });
             AddGrabberItem("Shane", new[] { "Pepper Poppers", "Pizza" });
             AddGrabberItem("Vincent", new[] { "Strange Doll", "Strange Doll (Green)", "Clay" });
-            AddGrabberItem("Willy", new[] { "Bait" }, 5);
+            AddGrabberItem("Willy", new[] { "Bait" }, 25);
+            AddGrabberItem("Willy", new[] { "Wild Bait" }, 5);
+            AddGrabberItem("Willy", new[] { "Magic Bait" });
             AddGrabberItem("Willy", new[] { "Trout Soup", "Chub", "Carp" });
             AddGrabberItem("Wizard", new[] { "Purple Mushroom", "Fire Quartz", "Frozen Tear", "Jade" });
         }

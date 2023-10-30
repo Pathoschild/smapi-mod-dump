@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>Fishnets.BetterCrafting</RootNamespace>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Reference Include="BetterCrafting">
+      <HintPath>$(GamePath)\Mods\BetterCrafting\BetterCrafting.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Fishnets">
+      <HintPath>$(GamePath)\Mods\Fishnets\Fishnets.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
+
+</Project>

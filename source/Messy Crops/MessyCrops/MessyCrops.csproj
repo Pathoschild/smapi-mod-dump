@@ -4,12 +4,12 @@
 		<AssemblyName>MessyCrops</AssemblyName>
 		<RootNamespace>MessyCrops</RootNamespace>
 		<Version>1.0.2</Version>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<EnableHarmony>true</EnableHarmony>
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<GamePath>C:\Program Files (x86)\Steam\steamapps\common\STARDEW_CURRENT</GamePath>
+		<GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley</GamePath>
 	</PropertyGroup>
 
 	<ItemGroup>

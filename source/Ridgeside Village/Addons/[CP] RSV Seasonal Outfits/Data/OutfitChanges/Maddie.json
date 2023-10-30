@@ -1,0 +1,76 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Maddie Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Maddie, Characters/Maddie",
+			"FromFile": "Assets/{{Target}}/Maddie_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Maddie": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Maddie Rain Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Maddie, Characters/Maddie",
+			"FromFile": "Assets/{{Target}}/Maddie_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"SeasonalRainToken": "rain",
+				"Maddie": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Maddie Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Maddie, Characters/Maddie",
+			"FromFile": "Assets/{{Target}}/Maddie_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Maddie": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Maddie Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Maddie, Characters/Maddie",
+			"FromFile": "Assets/{{Target}}/Maddie_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Maddie": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Maddie Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Maddie, Characters/Maddie",
+			"FromFile": "Assets/{{Target}}/Maddie_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Maddie": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

@@ -21,10 +21,14 @@ namespace StardewRoguelike.Patches
         {
             if (Roguelike.AnswerDialogueAction(__instance, questionAndAnswer, questionParams))
                 __result = true;
-            else if (ChallengeFloor.AnswerDialogueAction((MineShaft)__instance, questionAndAnswer, questionParams))
-                __result = true;
-            else if (Merchant.AnswerDialogueAction((MineShaft)__instance, questionAndAnswer, questionParams))
-                __result = true;
+
+            if (__instance is MineShaft mine)
+            {
+                if (ChallengeFloor.AnswerDialogueAction(mine, questionAndAnswer, questionParams))
+                    __result = true;
+                else if (Merchant.AnswerDialogueAction(mine, questionAndAnswer, questionParams))
+                    __result = true;
+            }
         }
     }
 }

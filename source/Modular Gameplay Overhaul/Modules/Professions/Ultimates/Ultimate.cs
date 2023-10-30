@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Professions.Ultimates;
 #region using directives
 
 using Ardalis.SmartEnum;
+using DaLion.Overhaul;
 using DaLion.Overhaul.Modules.Professions.Events.Display.RenderedWorld;
 using DaLion.Overhaul.Modules.Professions.Events.Display.RenderingHud;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.UpdateTicked;
@@ -36,16 +37,16 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
 
     #region enum entries
 
-    /// <summary>The <see cref="Ultimate"/> of <see cref="Professions.Profession.Brute"/>.</summary>
+    /// <summary>The <see cref="Ultimate"/> of <see cref="Modules.Professions.Profession.Brute"/>.</summary>
     public static readonly Ultimate BruteFrenzy = new Frenzy();
 
-    /// <summary>The <see cref="Ultimate"/> of <see cref="Professions.Profession.Poacher"/>.</summary>
+    /// <summary>The <see cref="Ultimate"/> of <see cref="Modules.Professions.Profession.Poacher"/>.</summary>
     public static readonly Ultimate PoacherAmbush = new Ambush();
 
-    /// <summary>The <see cref="Ultimate"/> of <see cref="Professions.Profession.Piper"/>.</summary>
+    /// <summary>The <see cref="Ultimate"/> of <see cref="Modules.Professions.Profession.Piper"/>.</summary>
     public static readonly Ultimate PiperConcerto = new Concerto();
 
-    /// <summary>The <see cref="Ultimate"/> of <see cref="Professions.Profession.Desperado"/>.</summary>
+    /// <summary>The <see cref="Ultimate"/> of <see cref="Modules.Professions.Profession.Desperado"/>.</summary>
     public static readonly Ultimate DesperadoBlossom = new DeathBlossom();
 
     #endregion enum entires
@@ -55,14 +56,15 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
 
     /// <summary>Initializes a new instance of the <see cref="Ultimate"/> class.</summary>
     /// <param name="name">The name of the enum entry.</param>
-    /// <param name="value">The value of the enum entry.</param>
+    /// <param name="profession">The <see cref="IProfession"/> which owns this <see cref="Ultimate"/>.</param>
     /// <param name="meterColor">The color applied to the <see cref="UltimateHud"/>.</param>
     /// <param name="overlayColor">The color of the <see cref="UltimateOverlay"/>.</param>
-    protected Ultimate(string name, int value, Color meterColor, Color overlayColor)
-        : base(name, value)
+    protected Ultimate(string name, IProfession profession, Color meterColor, Color overlayColor)
+        : base(name, profession.Id)
     {
-        this.BuffId = Manifest.UniqueID.GetHashCode() + this.Value + 4;
-        this.BuffSheetIndex = this.Value + 22;
+        this.Profession = profession;
+        this.BuffId = Manifest.UniqueID.GetHashCode() + profession.Id + 4;
+        this.BuffSheetIndex = profession.Id + 22;
         this.Hud = new UltimateHud(this, meterColor);
         this.Overlay = new UltimateOverlay(overlayColor);
     }
@@ -86,13 +88,13 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
     internal static event EventHandler<IUltimateEmptiedEventArgs>? Emptied;
 
     /// <inheritdoc />
-    public abstract IProfession Profession { get; }
+    public IProfession Profession { get; }
 
     /// <inheritdoc />
-    public virtual string DisplayName => _I18n.Get(this.Name.ToLower() + ".title");
+    public abstract string DisplayName { get; }
 
     /// <inheritdoc />
-    public virtual string Description => _I18n.Get(this.Name.ToLower() + ".desc");
+    public abstract string Description { get; }
 
     /// <inheritdoc />
     public int Index => this.Value;
@@ -189,12 +191,12 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
     internal UltimateOverlay Overlay { get; }
 
     /// <summary>Gets the sound effect that plays when this Ultimate is activated.</summary>
-    internal abstract SoundEffectPlayer ActivationSoundEffectPlayer { get; }
+    internal abstract SoundEffectPlayer ActivationSfx { get; }
 
     /// <summary>Gets the glow color applied to the player while this Ultimate is active.</summary>
     internal abstract Color GlowColor { get; }
 
-    private static int ActivationTimerMax => (int)(ProfessionsModule.Config.LimitBreakHoldDelaySeconds * 60);
+    private static int ActivationTimerMax => (int)Math.Round(ProfessionsModule.Config.LimitBreakHoldDelayMilliseconds * 6d / 100d);
 
     /// <summary>Activates the <see cref="Ultimate"/> for the local player.</summary>
     internal virtual void Activate()
@@ -215,7 +217,7 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
         EventManager.Enable<UltimateOverlayRenderedWorldEvent>();
 
         // play sound effect
-        this.ActivationSoundEffectPlayer.Play();
+        this.ActivationSfx.Play();
 
         // notify peers
         Broadcaster.Broadcast("Active", OverhaulModule.Professions.Namespace + "ToggledUltimate");

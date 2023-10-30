@@ -1,0 +1,65 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+"Changes": [
+	{
+	 "LogName": "Flor Spirit's Eve Dialogue Change Y1",
+   "Action": "EditData",
+   "Target": "Data/Festivals/fall27",
+	 "When": {
+		 "IsOddYear": true,
+		 "Jeric": "enabled, festivals only",
+	 },
+   "Entries": {
+		"Flor": "{{i18n:SpiritEve.Flor.1}}",
+ 	  "Flor_spouse": "{{i18n:SpiritEve.Flor_spouse.1}}",
+		},
+	},
+	{
+	 "LogName": "Flor Spirit's Eve Dialogue Changes Y2",
+   "Action": "EditData",
+   "Target": "Data/Festivals/fall27",
+   "Entries": {
+ 	  "Flor_y2": "{{i18n:SpiritEve.Flor.2}}",
+ 	  "Flor_spouse_y2": "{{i18n:SpiritEve.Flor_spouse.2}}",
+		},
+	},
+
+//Free Love back-up
+	{
+	 "LogName": "Flor Spirit's Eve Dialogue Changes (Free Love back-up) Y1",
+   "Action": "EditData",
+   "Target": "Data/Festivals/fall27",
+   "When": {
+		"IsOddYear": true,
+		"HasMod": "aedenthorn.FreeLove",
+   	"Relationship:Flor": "Married",
+		"Jeric": "enabled, festivals only",
+   },
+   "Entries": {
+	   "Flor": "{{i18n:SpiritEve.Flor_spouse.1}}",
+		},
+	},
+	{
+	 "LogName": "Flor Spirit's Eve Dialogue Changes (Free Love back-up) Y2",
+   "Action": "EditData",
+   "Target": "Data/Festivals/fall27",
+   "When": {
+		"HasMod": "aedenthorn.FreeLove",
+   	"Relationship:Flor": "Married",
+		"Flor": "enabled, festivals only",
+   },
+   "Entries": {
+	   "Flor_y2": "{{i18n:SpiritEve.Flor_spouse.2}}",
+		},
+	},
+]
+}

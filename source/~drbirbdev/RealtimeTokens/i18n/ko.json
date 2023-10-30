@@ -1,0 +1,40 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "time.weekday.Sunday": "일요일",
+    "time.weekday.Monday": "월요일",
+    "time.weekday.Tuesday": "화요일",
+    "time.weekday.Wednesday": "수요일",
+    "time.weekday.Thursday": "목요일",
+    "time.weekday.Friday": "금요일",
+    "time.weekday.Saturday": "토요일",
+
+    "time.month.1": "1월",
+    "time.month.2": "2월",
+    "time.month.3": "3월",
+    "time.month.4": "4월",
+    "time.month.5": "5월",
+    "time.month.6": "6월",
+    "time.month.7": "7월",
+    "time.month.8": "8월",
+    "time.month.9": "9월",
+    "time.month.10": "10월",
+    "time.month.11": "11월",
+    "time.month.12": "12월",
+
+    "holiday.newyears": "신정",
+    "holiday.valentines": "발렌타인 데이",
+    "holiday.halloween": "할로윈",
+    "holiday.christmas": "크리스마스",
+    "holiday.newyearseve": "연말",
+    "holiday.easter": "부활절",
+    "holiday.thanksgiving": "추수감사절"
+}

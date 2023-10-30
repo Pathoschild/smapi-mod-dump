@@ -12,7 +12,6 @@
     "Name": "Passive Cooler",
     "Description": "You are supposed to put wet wood in but who is looking",
     "Price": 1,
-    "Price": 1,
     "ProvidesLight": false,
     "ReserveNextIndex": false,
     "Recipe": {

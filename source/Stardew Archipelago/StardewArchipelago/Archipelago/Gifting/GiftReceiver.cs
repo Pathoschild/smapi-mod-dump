@@ -8,12 +8,8 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Archipelago.Gifting.Net;
 using Archipelago.Gifting.Net.Gifts.Versions.Current;
 using Archipelago.Gifting.Net.Service;
 using StardewArchipelago.Items.Mail;

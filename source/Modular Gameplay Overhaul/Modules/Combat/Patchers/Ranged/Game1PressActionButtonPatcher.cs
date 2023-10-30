@@ -10,6 +10,8 @@
 
 namespace DaLion.Overhaul.Modules.Combat.Patchers.Ranged;
 
+using DaLion.Overhaul;
+
 #region using directives
 
 using DaLion.Overhaul.Modules.Combat.Extensions;
@@ -36,7 +38,7 @@ internal sealed class Game1PressActionButtonPatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void Game1PressActionButtonPostfix(ref bool __result)
     {
-        if (!__result || !CombatModule.Config.EnableSlingshotSpecialMove)
+        if (!__result || !CombatModule.Config.EnableSlingshotSpecialMove || CombatModule.State.SlingshotCooldown > 0)
         {
             return;
         }
@@ -53,6 +55,7 @@ internal sealed class Game1PressActionButtonPatcher : HarmonyPatcher
             return;
         }
 
+        SoundEffectPlayer.GunCock.Play();
         slingshot.AnimateSpecialMove();
         __result = false;
     }

@@ -95,7 +95,7 @@ internal sealed class PrintPondDataCommand : ConsoleCommand
                 .Append($"\n\t\t- White Algae: {whiteAlgaeLivingHere}");
         }
 
-        var held = nearest.Read(DataKeys.ItemsHeld).ParseList<string>(";");
+        var held = nearest.Read(DataKeys.ItemsHeld).ParseList<string>(';');
         if (held.Count > 0)
         {
             message.Append("\n\n\tAdditional items held:");

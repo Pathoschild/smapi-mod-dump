@@ -1,0 +1,11 @@
+{
+  "TeleportKey": "H",
+  "SetHomeLocation": "J",
+  "HomeLocation": {
+    "X": 25,
+    "Y": 92,
+    "Map": "Farm"
+  },
+  "StaminaCost": 15,
+  "SpeedModifier": 2
+}

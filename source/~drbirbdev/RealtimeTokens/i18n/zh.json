@@ -1,0 +1,40 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "time.weekday.Sunday": "星期日",
+    "time.weekday.Monday": "星期一",
+    "time.weekday.Tuesday": "星期二",
+    "time.weekday.Wednesday": "星期三",
+    "time.weekday.Thursday": "星期四",
+    "time.weekday.Friday": "星期五",
+    "time.weekday.Saturday": "星期六",
+
+    "time.month.1": "一月",
+    "time.month.2": "二月",
+    "time.month.3": "三月",
+    "time.month.4": "四月",
+    "time.month.5": "五月",
+    "time.month.6": "六月",
+    "time.month.7": "七月",
+    "time.month.8": "八月",
+    "time.month.9": "九月",
+    "time.month.10": "十月",
+    "time.month.11": "十一月",
+    "time.month.12": "十二月",
+
+    "holiday.newyears": "新年",
+    "holiday.valentines": "情人节",
+    "holiday.halloween": "万圣节",
+    "holiday.christmas": "圣诞节",
+    "holiday.newyearseve": "除夕",
+    "holiday.easter": "复活节",
+    "holiday.thanksgiving": "感恩节"
+}

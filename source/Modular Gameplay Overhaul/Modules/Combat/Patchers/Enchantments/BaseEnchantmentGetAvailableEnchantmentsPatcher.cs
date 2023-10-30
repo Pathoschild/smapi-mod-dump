@@ -57,19 +57,13 @@ internal sealed class BaseEnchantmentGetAvailableEnchantmentsPatcher : HarmonyPa
                             typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Combat))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
-                            typeof(Config).RequirePropertyGetter(nameof(Config.NewPrismaticEnchantments))),
+                            typeof(CombatConfig).RequirePropertyGetter(nameof(CombatConfig.NewPrismaticEnchantments))),
                         new CodeInstruction(OpCodes.Brtrue_S, newEnchantments),
                     })
                 .Move(12)
                 .Insert(
                     new[]
                     {
-                        // add redux artful enchant
-                        new CodeInstruction(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
-                        new CodeInstruction(OpCodes.Newobj, typeof(MeleeArtfulEnchantment).RequireConstructor()),
-                        new CodeInstruction(
-                            OpCodes.Callvirt,
-                            typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
                         // add carving enchant
                         new CodeInstruction(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
                         new CodeInstruction(OpCodes.Newobj, typeof(CarvingEnchantment).RequireConstructor()),
@@ -118,19 +112,9 @@ internal sealed class BaseEnchantmentGetAvailableEnchantmentsPatcher : HarmonyPa
                         new CodeInstruction(
                             OpCodes.Callvirt,
                             typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
-                        // add magnum enchant
+                        // add freezing enchant
                         new(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
-                        new(OpCodes.Newobj, typeof(MagnumEnchantment).RequireConstructor()), new(
-                            OpCodes.Callvirt,
-                            typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
-                        // add gatling enchant
-                        new(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
-                        new(OpCodes.Newobj, typeof(GatlingEnchantment).RequireConstructor()), new(
-                            OpCodes.Callvirt,
-                            typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
-                        // add preserving enchant
-                        new(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
-                        new(OpCodes.Newobj, typeof(PreservingEnchantment).RequireConstructor()), new(
+                        new(OpCodes.Newobj, typeof(FreezingEnchantment).RequireConstructor()), new(
                             OpCodes.Callvirt,
                             typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
                         // add quincy enchant
@@ -138,9 +122,14 @@ internal sealed class BaseEnchantmentGetAvailableEnchantmentsPatcher : HarmonyPa
                         new(OpCodes.Newobj, typeof(QuincyEnchantment).RequireConstructor()), new(
                             OpCodes.Callvirt,
                             typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
-                        // add spreading enchant
+                        // add runaan enchant
                         new(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
-                        new(OpCodes.Newobj, typeof(SpreadingEnchantment).RequireConstructor()), new(
+                        new(OpCodes.Newobj, typeof(RunaanEnchantment).RequireConstructor()), new(
+                            OpCodes.Callvirt,
+                            typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
+                        // add ranged energized enchant
+                        new(OpCodes.Ldsfld, typeof(BaseEnchantment).RequireField("_enchantments")),
+                        new(OpCodes.Newobj, typeof(RangedEnergizedEnchantment).RequireConstructor()), new(
                             OpCodes.Callvirt,
                             typeof(List<BaseEnchantment>).RequireMethod(nameof(List<BaseEnchantment>.Add))),
                     },

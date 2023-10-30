@@ -82,7 +82,7 @@ internal class MonsterMovePositionPatcher : HarmonyPatcher
 
     private static void CollisionDetectedSubroutine(Monster monster)
     {
-        if (monster.Health <= 0 || !monster.Get_KnockedBack())
+        if (monster.IsGlider() || monster.Health <= 0 || !monster.Get_KnockedBack())
         {
             return;
         }

@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework;
 using StardewRoguelike.Extensions;
 using StardewRoguelike.Projectiles;
+using StardewRoguelike.VirtualProperties;
 using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Projectiles;
@@ -33,13 +34,7 @@ namespace StardewRoguelike.Bosses
 
         public bool InitializeWithHealthbar => true;
 
-        private float _difficulty;
-
-        public float Difficulty
-        {
-            get { return _difficulty; }
-            set { _difficulty = value; }
-        }
+        public float Difficulty { get; set; }
 
         private enum AttackType
         {
@@ -49,18 +44,18 @@ namespace StardewRoguelike.Bosses
             BigFireball
         }
 
-        private List<AttackType> AttackHistory = new();
+        private readonly List<AttackType> AttackHistory = new();
 
-        private AttackType currentAttack;
+        private AttackType CurrentAttack;
 
-        private int fireWallAngle = 0;
+        private int FireWallAngle = 0;
 
-        private float fireballTimer;
+        private float FireballTimer;
 
-        private bool waitingToDive = false;
+        private bool WaitingToDive = false;
 
         // max health percent, shot angle
-        private readonly List<(float, int)> whenToFireWall = new()
+        private readonly List<(float, int)> WhenToFireWall = new()
         {
             (0.145f * 6, 135),
             (0.145f * 4, 45),
@@ -100,7 +95,7 @@ namespace StardewRoguelike.Bosses
 
         public override void behaviorAtGameTick(GameTime time)
         {
-            if (targettedFarmer is null || targettedFarmer.currentLocation != currentLocation)
+            if (targettedFarmer is null || targettedFarmer.currentLocation != currentLocation || targettedFarmer.get_FarmerIsSpectating().Value)
             {
                 targettedFarmer = null;
                 targettedFarmer = findPlayer();
@@ -134,9 +129,9 @@ namespace StardewRoguelike.Bosses
             }
             else if (currentState.Value == State.Emerged)
             {
-                if (stateTimer == 0f && !waitingToDive && TargetInRange())
+                if (stateTimer == 0f && !WaitingToDive && TargetInRange())
                 {
-                    AttackHistory.Add(currentAttack);
+                    AttackHistory.Add(CurrentAttack);
 
                     if (AttackHistory.Count >= 2)
                         AttackHistory.RemoveAt(0);
@@ -148,48 +143,48 @@ namespace StardewRoguelike.Bosses
                     currentState.Value = State.Firing;
                     stateTimer = 1.5f;
 
-                    currentAttack = validAttacks[Game1.random.Next(validAttacks.Count)];
+                    CurrentAttack = validAttacks[Game1.random.Next(validAttacks.Count)];
 
-                    if (whenToFireWall.Count > 0 && Health <= (int)Math.Round(MaxHealth * whenToFireWall[0].Item1))
+                    if (WhenToFireWall.Count > 0 && Health <= (int)Math.Round(MaxHealth * WhenToFireWall[0].Item1))
                     {
-                        fireWallAngle = whenToFireWall[0].Item2;
-                        whenToFireWall.RemoveAt(0);
-                        currentAttack = AttackType.FireWall;
+                        FireWallAngle = WhenToFireWall[0].Item2;
+                        WhenToFireWall.RemoveAt(0);
+                        CurrentAttack = AttackType.FireWall;
                     }
 
-                    if (currentAttack == AttackType.ExplodingRock || currentAttack == AttackType.Barrage)
+                    if (CurrentAttack == AttackType.ExplodingRock || CurrentAttack == AttackType.Barrage)
                         stateTimer += this.AdjustRangeForHealth(0f, 2f);
-                    else if (currentAttack == AttackType.BigFireball)
+                    else if (CurrentAttack == AttackType.BigFireball)
                         stateTimer = 5f;
 
                     fireTimer = 0.25f;
                 }
-                else if (stateTimer == 0f && waitingToDive)
+                else if (stateTimer == 0f && WaitingToDive)
                 {
                     currentState.Value = State.Diving;
                     stateTimer = 0.5f;
-                    waitingToDive = false;
+                    WaitingToDive = false;
                 }
             }
             else if (currentState.Value == State.Firing)
             {
-                if (stateTimer == 0f && fireballTimer == 0f)
+                if (stateTimer == 0f && FireballTimer == 0f)
                 {
                     currentState.Value = State.Emerged;
                     stateTimer = 2.5f;
-                    waitingToDive = true;
+                    WaitingToDive = true;
 
                     if (Roguelike.HardMode)
                     {
                         stateTimer = 1f;
-                        waitingToDive = false;
+                        WaitingToDive = false;
                     }
                 }
 
-                if (fireballTimer > 0f)
+                if (FireballTimer > 0f)
                 {
-                    fireballTimer -= (float)time.ElapsedGameTime.TotalSeconds;
-                    if (fireballTimer <= 0f)
+                    FireballTimer -= (float)time.ElapsedGameTime.TotalSeconds;
+                    if (FireballTimer <= 0f)
                     {
                         Vector2 shot_origin = Position + new Vector2(0f, -32f);
                         Vector2 shot_velocity = targettedFarmer.Position - shot_origin;
@@ -202,7 +197,7 @@ namespace StardewRoguelike.Bosses
 
                         currentLocation.projectiles.Add(returningShot);
 
-                        fireballTimer = 0f;
+                        FireballTimer = 0f;
                     }
                 }
 
@@ -211,7 +206,7 @@ namespace StardewRoguelike.Bosses
                     fireTimer -= (float)time.ElapsedGameTime.TotalSeconds;
                     if (fireTimer <= 0f)
                     {
-                        if (currentAttack == AttackType.Barrage)
+                        if (CurrentAttack == AttackType.Barrage)
                         {
                             fireTimer = 0.25f;
                             if (targettedFarmer != null)
@@ -229,19 +224,19 @@ namespace StardewRoguelike.Bosses
 
                                 if (stateTimer <= 0.25f)
                                 {
-                                    fireballTimer = 0.25f;
+                                    FireballTimer = 0.25f;
                                     fireTimer = 0f;
                                 }
                             }
                         }
-                        else if (currentAttack == AttackType.FireWall)
+                        else if (CurrentAttack == AttackType.FireWall)
                         {
                             if (targettedFarmer != null)
                             {
                                 Vector2 shot_origin = Position + new Vector2(0f, -32f);
 
                                 Vector2 shot_velocity;
-                                shot_velocity = RoguelikeUtility.VectorFromDegrees(fireWallAngle);
+                                shot_velocity = RoguelikeUtility.VectorFromDegrees(FireWallAngle);
                                 shot_velocity *= 7f;
 
                                 currentLocation.playSound("furnace");
@@ -262,7 +257,7 @@ namespace StardewRoguelike.Bosses
                                 stateTimer = 0f;
                             }
                         }
-                        else if (currentAttack == AttackType.ExplodingRock)
+                        else if (CurrentAttack == AttackType.ExplodingRock)
                         {
                             if (targettedFarmer != null)
                             {
@@ -288,12 +283,12 @@ namespace StardewRoguelike.Bosses
 
                                 if (stateTimer <= 0.25f)
                                 {
-                                    fireballTimer = 0.25f;
+                                    FireballTimer = 0.25f;
                                     fireTimer = 0f;
                                 }
                             }
                         }
-                        else if (currentAttack == AttackType.BigFireball)
+                        else if (CurrentAttack == AttackType.BigFireball)
                         {
                             if (targettedFarmer != null)
                             {
@@ -313,7 +308,7 @@ namespace StardewRoguelike.Bosses
 
                                 if (stateTimer <= 1.1f)
                                 {
-                                    fireballTimer = 1f;
+                                    FireballTimer = 1f;
                                     fireTimer = 0f;
                                 }
                             }

@@ -14,7 +14,6 @@ namespace DaLion.Overhaul.Modules.Tools.Patchers;
 
 using DaLion.Overhaul.Modules.Tools.Integrations;
 using DaLion.Shared.Constants;
-using DaLion.Shared.Extensions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Menus;
@@ -53,20 +52,38 @@ internal sealed class ForgeMenuCraftItemPatcher : HarmonyPatcher
             return;
         }
 
-        var upgradeItemIndex = tool.UpgradeLevel switch
+        switch (tool.UpgradeLevel)
         {
-            0 => ObjectIds.CopperBar,
-            1 => ObjectIds.IronBar,
-            2 => ObjectIds.GoldBar,
-            3 => ObjectIds.IridiumBar,
-            4 => ObjectIds.RadioactiveBar,
-            5 => "spacechase0.MoonMisadventures/Mythicite Bar".GetDeterministicHashCode(),
-            _ => SObject.prismaticShardIndex,
-        };
+            case < 5:
+            {
+                var upgradeItemIndex = tool.UpgradeLevel switch
+                {
+                    0 => ObjectIds.CopperBar,
+                    1 => ObjectIds.IronBar,
+                    2 => ObjectIds.GoldBar,
+                    3 => ObjectIds.IridiumBar,
+                    4 => ObjectIds.RadioactiveBar,
+                    _ => -1,
+                };
 
-        if (right_item.ParentSheetIndex == upgradeItemIndex && right_item.Stack >= 5)
-        {
-            ((Tool)left_item).UpgradeLevel++;
+                if (upgradeItemIndex < 0)
+                {
+                    Log.E("Go home game. You're drunk.");
+                }
+
+                if (right_item.ParentSheetIndex == upgradeItemIndex && right_item.Stack >= 5)
+                {
+                    ((Tool)left_item).UpgradeLevel++;
+                }
+
+                break;
+            }
+
+            case 5 when right_item.ParentSheetIndex == 1720 &&
+                        Reflector.GetUnboundPropertyGetter<object, string>(right_item, "FullId").Invoke(right_item) ==
+                        "spacechase0.MoonMisadventures/Mythicite Bar":
+                ((Tool)left_item).UpgradeLevel++;
+                break;
         }
 
         __result = left_item;

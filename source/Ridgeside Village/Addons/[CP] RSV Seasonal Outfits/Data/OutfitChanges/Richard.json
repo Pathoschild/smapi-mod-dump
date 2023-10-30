@@ -1,0 +1,92 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Richard Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Richard, Characters/Richard",
+			"FromFile": "Assets/{{Target}}/Richard_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Richard": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Richard Rain Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Richard, Characters/Richard",
+			"FromFile": "Assets/{{Target}}/Richard_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"SeasonalRainToken": "rain",
+				"Richard": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Accessories - Richard",
+			"Action": "EditImage",
+			"Target": "Portraits/Richard, Characters/Richard",
+			"FromFile": "Assets/{{Target}}/Richard_acc_{{SeasonalRainToken}}.png",
+			"When": {
+				"Richard": "enabled",
+				"SeasonalRainToken": "rain, winter",
+				"IsOutdoors": true,
+				"HasValue:{{DayEvent}}": false,
+				"Lightweight Outfits": false,
+				"Query: {{Random:{{Range:1,10}}|key=RichardHat}} > 5": true,
+			},
+			"Update": "OnLocationChange",
+			"PatchMode": "Overlay"
+		},
+		{
+			"LogName": "RSV Richard Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Richard, Characters/Richard",
+			"FromFile": "Assets/{{Target}}/Richard_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Richard": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Richard Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Richard, Characters/Richard",
+			"FromFile": "Assets/{{Target}}/Richard_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Richard": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Richard Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Richard, Characters/Richard",
+			"FromFile": "Assets/{{Target}}/Richard_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Richard": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

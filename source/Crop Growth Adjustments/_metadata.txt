@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/gzhynko/stardew-mods
+   Git: https://github.com/gzhynko/stardew-mods.git
+
+mods:
+   Crop Growth Adjustments
+
+latest commit:
+   commit 2e5be97ecbd06a377d40360af42fe3f16fb42fba
+   Author: Hleb Zhynko <gleb.zhinko@protonmail.com>
+   Date:   Sat Oct 28 00:52:30 2023 -0500
+   
+       add deprecation notice to GrapesAllYearRound and prepare it for release
+   

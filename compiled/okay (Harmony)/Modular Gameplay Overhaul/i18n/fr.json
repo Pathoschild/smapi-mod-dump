@@ -126,28 +126,28 @@
   "fighter.desc.prestiged": "Dégâts +10 % >> +15 %.",
   "brute.title.male": "Brute",
   "brute.title.female": "Amazone",
-  "brute.desc": "Augmente la rage lorsque vous subissez des dégàts, augmentant ainsi vos prouesses au combat. +25 HP.",
-  "brute.desc.prestiged": "Rage accorde également de la vitesse d’attaque.",
+  "brute.desc": "Devenez enragé lorsque vous subissez des dégâts, augmentant progressivement vos propres dégâts et votre vitesse d'attaque. +25 HP.",
+  "brute.desc.prestiged": "Restez enragé deux fois plus longtemps.",
   "brute.buff.title": "Rage",
   "brute.buff.desc": "Bonus de dégâts +{{damage}}.",
   "brute.buff.desc.prestiged": "Bonus de dégâts +{{damage}}. Vitesse d’attaque +{{speed}}.",
   "poacher.title.male": "Débroussailleur",
   "poacher.title.female": "Débroussailleuse",
-  "poacher.desc": "Chance de coup critique +50^. Les coups critiques font braconner des objets.",
+  "poacher.desc": "Chance de coup critique +50^. Chance de braconner un objet aux ennemis à chaque attaque.",
   "poacher.desc.prestiged": "Annule le délai de récupération des attaques spéciales lors du braconnage d’un objet.",
 
   "rascal.title.male": "Coquin",
   "rascal.title.female": "Coquine",
   "rascal.desc": "Les lance-pierres gagnent un emplacement de munitions supplémentaire. 35 % de chances de récupérer les munitions dépensées.",
-  "rascal.desc.prestiged": "35 % >> 70 % de chances de récupérer les munitions dépensées.",
+  "rascal.desc.prestiged": "35 % >> 55 % de chances de récupérer les munitions dépensées. Peut équiper Monster Musk pour tirer des munitions séduisantes.",
   "desperado.title.male": "Desperado",
   "desperado.title.female": "Desperada",
-  "desperado.desc": "Peut surcharger les lance-pierres pour tirer avec plus de puissance.",
+  "desperado.desc": "Des tirs consécutifs contre différents ennemis en 1 seconde infligent 50 % de dégâts supplémentaires. Peut surcharger les lance-pierres pour tirer avec plus de puissance.",
   "desperado.desc.prestiged": "Surcharger deux fois plus vite.",
   "piper.title.male": "Enchanteur de Slimes",
   "piper.title.female": "Enchanteresse de Slimes",
   "piper.desc": "Attirez plus de Slimes dans des zones dangereuses. Chance de gagner des effets aléatoires en battant des Slimes.",
-  "piper.desc.prestiged": "Chance d’égalmente récuperer de la santé et de l’énergie en battant des Slimes.",
+  "piper.desc.prestiged": "Meilleure efficacité et la variété des effets de Slimes battus.",
   "piper.buff": "Englué(e)",
 
 
@@ -201,6 +201,9 @@
   // * ARSENAL * //
   // *********** //
 
+  "weapons.sword": "Épée",
+  "weapons.club": "Gourdin",
+  "weapons.dagger": "Dagger",
   "weapons.dwarven.prefix": "Naine",
   "weapons.elven.prefix": "Elfique",
   "weapons.dark_sword.name": "Lame de la ruine",
@@ -225,8 +228,11 @@
   "slingshots.infinity.desc": "La vrie forme du Lance-pierre galactique.",
   "objects.galaxy_soul.desc": "Le noyau matérialisé d'une minuscule galaxie.",
 
-  "blueprint.found.first": "Vous avez trouvé un vieux plan ! Il est estompé, mais vous reconnaissez la forme d'un {{type}} à côté de certains symboles nains. Peut-être que le bon artisan pourrait y trouver un sens.",
-  "blueprint.found.local": "Vous avez trouvé un plan nain.",
+  "blueprint.found.first.unknown": "Vous avez trouvé un vieux schéma ! Il est estompé, mais vous reconnaissez des symboles étranges et un contour approximatif en forme d'un(e) {{type}}. Si seulement vous pouviez traduire les symboles...",
+  "blueprint.found.first.known": "Vous avez trouvé un vieux schéma ! Il est estompé, mais vous reconnaissez de faibles symboles nains et un contour approximatif en forme de {{type}}. Peut-être qu'un bon forgeron pourrait y donner un sens.",
+  "blueprint.found.next.unknown": "Vous avez trouvé un autre vieux schéma !",
+  "blueprint.found.next.known": "Vous avez trouvé un autre schéma nain !",
+  "blueprint.found.need_guide": "Il faut vraiment trouver une sorte de guide de traduction.",
   "blueprint.found.global": "{who} a trouvé un plan nain.",
   "blacksmith.forge.option": "Forger",
   "blacksmith.forge.explanation": "Je pourrais forger de nouvelles armes basées sur les plans que vous avez trouvés. Si seulement j'avais ces matériaux étranges.",
@@ -253,10 +259,10 @@
   "locations.SeedShop.Yoba": "\"La bénédiction de Yoba, les vrais héros la fortifiera. Dans la Générosité et la Compassion, vertus à pratiquer. Avec Honneur, Valeur, Sagesse, leurs esprits amplifiera. Une prophétie se dévoile, sous l'œil vigilant de Yoba.\"",
   "locations.desert.noiridium": "Vous sentez l'éclat prismatique vibrer...#Mais rien ne se passe.#On dirait qu'il manque quelque chose.",
 
-  "mail.curse.intro": "Cher @, Je dois vous voir pour une question de la plus haute urgence.^Veuillez venir me voir à la tour dès que possible.^ -M. Rasmodius, Sorcier[#]Ruined Hero",
-  "mail.curse.intro.witch": "Cher @, Je dois vous voir pour une question de la plus haute urgence.^Veuillez venir me voir à la tour dès que possible.^ -M. Rasmodius, Sorcière[#]Ruined Hero",
+  "mail.curse.intro": "[letterbg 2]Cher @,^Je dois vous voir pour une question de la plus haute urgence.^Veuillez venir me voir à la tour dès que possible.^ -M. Rasmodius, Sorcier[#]The Blade of Ruin",
+  "mail.curse.intro.witch": "[letterbg 2]Cher @,^Je dois vous voir pour une question de la plus haute urgence.^Veuillez venir me voir à la tour dès que possible.^ -M. Rasmodius, Sorcière[#]The Blade of Ruin",
 
-  "quests.forge.intro": "Basic/Un héritage nain/Clint vous a dit qu'il finirait de traduire ce vieux plan dans quelques jours./Rendez visite à Clint pour vous renseigner sur le plan./Blacksmith/144702/0/-1/false",
+  "quests.forge.intro": "Basic/Un héritage nain/Clint vous a dit qu'il finirait de traduire ce vieux plan dans quelques jours./Rendez visite à Clint pour vous renseigner sur le plan./Blacksmith/-1/0/-1/false",
   "quests.forge.next": "Basic/Un héritage nain II/Ce vieux plan s'est avéré être une recette pour une puissante arme ancienne ! Pourrait-il y en avoir d'autres ?/Trouvez les plans nains restants./null/-1/0/-1/false",
   "quests.hero.intro": "Basic/La lame du héros ruiné/The weapon you found carries the curse of the Ruined Hero! You can already feel it draining away your life energy. Better find some way to lift that curse, and fast!/Trouvez un moyen de lever la malédiction de la Lame en ruine./null/-1/0/-1/false",
   "quests.hero.reward": "Basic/La lame du héros ruiné/Ceux qui incarnent les vertus d'un véritable héros sont purifiés de tout mal par le pouvoir divin de Yoba./Apportez la Lame de la ruine à l'autel de Yoba./null/-1/0/-1/false",
@@ -292,6 +298,7 @@
   "virtues.recognize.yoba": "Yoba  reconnaît votre Vaillance.",
   "virtues.disapprove.singular": "{{name}} désapprouve votre manque de {{virtue}}.",
   "virtues.disapprove.plural": "{{name1}} et {{name2}} désapprouvent votre manque de {{virtue}}.",
+  "virtues.proven": "{{player}} has proven their {{virtue}}.",
 
   // json assets
   "objects.dwarvish_blueprint.name": "Ancien plan nain",
@@ -339,8 +346,6 @@
   // * ENCHANTMENTS * //
   // **************** //
 
-  "enchantments.artful.name": "Habile",
-  "enchantments.artful.parry": "Chance Crit. +100%",
   "enchantments.carving.name": "Découpant",
   "enchantments.cleaving.name": "Fendant",
   "enchantments.energized.name": "Energisant",
@@ -351,12 +356,11 @@
   "enchantments.bloodthirsty.name": "Sanguinaire",
   "enchantments.mammonite.name": "Mammonite",
   "enchantments.wabbajack.name": "Babbejacques",
-  "enchantments.magnum.name": "Magnum",
   "enchantments.gatling.name": "Mitraillant",
   "enchantments.preserving.name": "Préservant",
+  "enchantments.freezing.name": "Freljord",
   "enchantments.quincy.name": "Quincy",
-  "enchantments.spreading.name": "Répandant",
-
+  "enchantments.runaan.name": "Runaan",
 
   // *********** //
   // ** TAXES ** //
@@ -385,14 +389,21 @@
   "ui.item_hover.crate": "{{amount}} Chance Crit.",
   "ui.item_hover.cpow": "{{amount}} Puissance Crit.",
   "ui.item_hover.knockback": "{{amount}} Recul",
-  "ui.item_hover.firespeed": "{{amount}} Vitesse",
-  "ui.item_hover.swingspeed": "{{amount}} Vitesse",
+  "ui.item_hover.fire_speed": "{{amount}} Vitesse",
+  "ui.item_hover.swing_speed": "{{amount}} Vitesse",
   "ui.item_hover.cdr": "{{amount}} Temps de récharge",
-  "ui.item_hover.resist": "{{amount}} Résistance",
+  "ui.item_hover.resist": "{{amount}} Résistence",
   "ui.item_hover.precision": "{{amount}} Précision",
+  "ui.item_hover.light": "Émet de la lumière",
+  "ui.item_hover.magnetic": "Magnétique",
 
-  "ui.buffs.jinxed": "-5 Défense",
-  "ui.buffs.warrior": "+{{value}} Attaque",
+  "ui.buffs.burnt.damage": "-50% Dégâts",
+  "ui.buffs.burnt.dot": "-{{amount}} santé a chaque 3 secondes",
+  "ui.buffs.frozen.stuck": "Ne peut pas bouger",
+  "ui.buffs.frozen.vulnerable": "Vulnerable a la prochaine attaque",
+  "ui.buffs.jinxed.defense": "-5 Défense",
+  "ui.buffs.confused": "Desorienté",
+  "ui.buffs.warrior.attack": "+{{value}} Attaque",
 
   "article.definite.male": "au",
   "article.definite.female": "à la",
@@ -431,8 +442,8 @@
   "gmcm.core.choose": "Choose the modules to enable. You must save and exit this menu after enabling or disabling a module for those changes to take effect. Links to specific module settings pages will appear below for enabled modules.\n\nNote that certain modules may cause a JSON shuffle or other side-effects if enabled or disabled mid-playthrough.",
   "gmcm.core.available": "Available modules:",
   "gmcm.core.modules": "Module-specific settings:",
-  "gmcm.modules.profs.name": "Professions",
-  "gmcm.modules.profs.desc": "A complete overhaul of all skill professions with the goal of supporting more diverse and interesting playstyles. Introducing all-new Prestige mechanics and Limit Breaks.",
+  "gmcm.modules.prfs.name": "Professions",
+  "gmcm.modules.prfs.desc": "A complete overhaul of all skill professions with the goal of supporting more diverse and interesting playstyles. Introducing all-new Prestige mechanics and Limit Breaks.",
   "gmcm.modules.cmbt.name": "Combat",
   "gmcm.modules.cmbt.desc": "A complete overhaul of the combat experience, from rebalanced stats, weapons--both melee and ranged--, rings and enchantments, to entirely new mechanics like status effects, weapon combos and gemstone resonances.",
   "gmcm.modules.tols.name": "Tools",
@@ -445,7 +456,7 @@
   "gmcm.modules.twx.desc": "A collection of smaller immersion tweaks and fixes for inconsistencies in vanilla.",
 
   // professions
-  "gmcm.profs.heading": "PROFS Module Settings",
+  "gmcm.profs.heading": "PRFS Module Settings",
   "gmcm.profs.back": "Back to Profession settings",
 
   "gmcm.profs.controls.modkey.desc": "The key used to enable active effects for some professions (used by Prospector, Scavenger and Rascal).",
@@ -659,6 +670,8 @@
   "gmcm.cmbt.enemies.defense_summand.desc": "Adds to the damage resistance of all enemies (before multiplier).",
   "gmcm.cmbt.enemies.varied_encounters.title": "Varied Encounters",
   "gmcm.cmbt.enemies.varied_encounters.desc": "Randomizes monster stats, subject to Daily Luck bias, adding variability to monster encounters.",
+  "gmcm.cmbt.enemies.spawn_multiplier.title": "Monster Spawn Chance Multiplier",
+  "gmcm.cmbt.enemies.spawn_multiplier.desc": "Multiplies the chance to spawn enemies in dungeons.",
 
   "gmcm.cmbt.controls.auto_selection_range.melee.title": "Melee Auto-Selection Range",
   "gmcm.cmbt.controls.auto_selection_range.melee.desc": "The chosen melee weapon, if any, will be automatically equipped when a monster enters this range in tiles.",
@@ -666,6 +679,20 @@
   "gmcm.cmbt.controls.auto_selection_range.ranged.desc": "The chosen ranged weapon, if any, will be automatically equipped when a monster enters this range in tiles.",
 
   "gmcm.cmbt.ui.color_coded.desc": "Whether to colorize item names according to tier or unique status.",
+  "gmcm.cmbt.ui.color_coded.common.title": "Common Tier Color",
+  "gmcm.cmbt.ui.color_coded.common.desc": "The title color used to identify common-tier weapons",
+  "gmcm.cmbt.ui.color_coded.uncommon.title": "Uncommon Tier Color",
+  "gmcm.cmbt.ui.color_coded.uncommon.desc": "The title color used to identify uncommon-tier weapons",
+  "gmcm.cmbt.ui.color_coded.rare.title": "Rare Tier Color",
+  "gmcm.cmbt.ui.color_coded.rare.desc": "The title color used to identify rare-tier weapons",
+  "gmcm.cmbt.ui.color_coded.epic.title": "Epic Tier Color",
+  "gmcm.cmbt.ui.color_coded.epic.desc": "The title color used to identify epic-tier weapons",
+  "gmcm.cmbt.ui.color_coded.mythic.title": "Mythiv Tier Color",
+  "gmcm.cmbt.ui.color_coded.mythic.desc": "The title color used to identify mythic-tier weapons",
+  "gmcm.cmbt.ui.color_coded.masterwork.title": "Masterwork Tier Color",
+  "gmcm.cmbt.ui.color_coded.masterwork.desc": "The title color used to identify masterwork-tier weapons",
+  "gmcm.cmbt.ui.color_coded.legendary.title": "Legendary Tier Color",
+  "gmcm.cmbt.ui.color_coded.legendary.desc": "The title color used to identify legendary-tier weapons",
   "gmcm.cmbt.ui.sockets.draw.title": "Draw Gemstone Forge Sockets",
   "gmcm.cmbt.ui.sockets.draw.desc": "Repalces the generic vanilla \"Forged\" text in weapon tooltips with actual gemstone socket icons.",
   "gmcm.cmbt.ui.sockets.style.title": "Forge Socket Style",
@@ -688,7 +715,7 @@
   "gmcm.cmbt.ui.bullseye_cursor.desc": "Draws a bulls-eye instead of the mouse cursor while firing a slingshot. Does not support pull-back firing for obvious reasons.",
 
   // tools
-  "gmcm.tols.heading": "TOLS Settings",
+  "gmcm.tols.heading": "TOLS Module Settings",
 
   "gmcm.tols.tools": "Tools",
   "gmcm.tols.axe": "Axe",
@@ -842,7 +869,7 @@
   "gmcm.tols.ui.hide_affected_tiles.desc": "Whether to hide the affected tiles overlay while charging tools.",
 
   // ponds
-  "gmcm.pnds.heading": "PNDS Settings",
+  "gmcm.pnds.heading": "PNDS Module Settings",
   "gmcm.pnds.days_until_algae_spawn.title": "Days Until Algae Spawn",
   "gmcm.pnds.days_until_algae_spawn.desc": "The number of days until an empty pond will begin spawning algae.",
   "gmcm.pnds.roe_production_chance_multiplier.title": "Roe Production Chance Multiplier",
@@ -851,7 +878,7 @@
   "gmcm.pnds.roe_always_fish_quality.desc": "If true, then the quality of produced roe is always the same as the quality of the producing fish. If false, then the quality will be a random value less than or equal to that of the producing fish.",
 
   // taxes
-  "gmcm.txs.heading": "TXS Settings",
+  "gmcm.txs.heading": "TXS Module Settings",
   "gmcm.txs.annualinterest.title": "Annual Intereset",
   "gmcm.txs.annualinterest.desc": "The interest rate charged annually over any outstanding debt. Interest is accrued daily at a rate of 1/112 the annual rate.",
 
@@ -884,7 +911,7 @@
   "gmcm.txs.property.exempt_magical_buildings.desc": "Whether or not magical buildings (i.e., those summoned at the Wizard's Tower) are exempt from property taxes.",
 
   // tweex
-  "gmcm.twx.heading": "TWX Settings",
+  "gmcm.twx.heading": "TWX Module Settings",
   "gmcm.twx.headings.farming": "Farming Tweex",
   "gmcm.twx.headings.foraging": "Foraging Tweex",
   "gmcm.twx.headings.fishing": "Fishing Tweex",
@@ -915,8 +942,8 @@
   "gmcm.twx.farming.crop_wither_chance.desc": "The chance for a crop to wither per day left un-watered.",
   "gmcm.twx.farming.prevent_fruit_tree_winter_growth.title": "Prevent Fruit Tree Winter Growth",
   "gmcm.twx.farming.prevent_fruit_tree_winter_growth.desc": "Regular trees can't grow in winter. Why should fruit trees be any different?",
-  "gmcm.twx.farming.largedairy_yield.title": "Large Dairy Yields Quantity Over Quality",
-  "gmcm.twx.farming.largedairy_yield.desc": "Causes one large egg or milk to produce two mayonnaise or cheese but at regular quality, instead of one at gold quality.",
+  "gmcm.twx.farming.dairy_yield.title": "Large Dairy Yields Quantity Over Quality",
+  "gmcm.twx.farming.dairy_yield.desc": "Causes one large egg or milk to produce two mayonnaise or cheese but at regular quality, instead of one at gold quality. Ostrich Eggs yield 10 mayonnaise, but do not retain quality without Artisan profession (except when Ostrich Mayo is installed). And Gold Eggs yield a single mayonnaise, but always at the highest quality (except when Golden Mayo is installed).",
   "gmcm.twx.farming.spawn_crows.title": "Spawn Crows on These Maps:",
   "gmcm.twx.maps.islandwest": "Ginger Island Farm",
   "gmcm.twx.maps.custom_garden": "Community Garden (SVE)",
@@ -940,7 +967,7 @@
   "gmcm.controls.slick_moves.title": "Slick Moves",
   "gmcm.controls.slick_moves.desc": "Drift in the current running direction when swinging a weapon.",
   "gmcm.controls.enable_auto_selection.title": "Enable Auto-Selection",
-  "gmcm.controls.enable_auto_selection.desc": "The highlighted {{selected}} will be automatically equipped when appropriate.",
+  "gmcm.controls.enable_auto_selection.desc": "The highlighted tool will be automatically equipped when appropriate.",
   "gmcm.controls.selection_key.title": "Selection Key",
   "gmcm.controls.selection_key.desc": "Hold this key to toggle a {{tool}} for auto-selection, if enabled.",
   "gmcm.controls.selection_border_color.title": "Selection Border Color",

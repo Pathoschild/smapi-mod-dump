@@ -150,14 +150,9 @@ namespace StardewRoguelike
         /// <returns>True if success, False otherwise.</returns>
         public bool Upload()
         {
-            Multiplayer = Context.IsMultiplayer;
-            PlayerCount = Game1.getOnlineFarmers().Count;
-            Patch = ModEntry.CurrentVersion;
-            Seed = Roguelike.FloorRngSeed.ToString();
-
             string statsJson = JsonSerializer.Serialize(this);
 
-            ModEntry.ModMonitor.Log($"Upload request content: {statsJson}", StardewModdingAPI.LogLevel.Debug);
+            ModEntry.ModMonitor.Log($"Upload request content: {statsJson}", LogLevel.Debug);
 
             HttpRequestMessage request = new(
                 HttpMethod.Post,
@@ -178,13 +173,13 @@ namespace StardewRoguelike
             }
             catch (HttpRequestException e)
             {
-                ModEntry.ModMonitor.Log($"Server error when sending request: {e.Message}", StardewModdingAPI.LogLevel.Error);
+                ModEntry.ModMonitor.Log($"Server error when sending request: {e.Message}", LogLevel.Error);
                 return false;
             }
             using var reader = new StreamReader(response.Content.ReadAsStream());
 
             string responseText = reader.ReadToEnd();
-            ModEntry.ModMonitor.Log($"Upload response text: {responseText}", StardewModdingAPI.LogLevel.Trace);
+            ModEntry.ModMonitor.Log($"Upload response text: {responseText}", LogLevel.Trace);
             StatsAPIResponse? runIdResponse = null;
             try
             {
@@ -192,24 +187,24 @@ namespace StardewRoguelike
             }
             catch (JsonException e)
             {
-                ModEntry.ModMonitor.Log($"JSON Error when deserializing upload response: {e.Message}", StardewModdingAPI.LogLevel.Error);
+                ModEntry.ModMonitor.Log($"JSON Error when deserializing upload response: {e.Message}", LogLevel.Error);
                 return false;
             }
 
             if (runIdResponse is null)
             {
-                ModEntry.ModMonitor.Log("JSON Error when deserializing upload response: deserialized response is null", StardewModdingAPI.LogLevel.Error);
+                ModEntry.ModMonitor.Log("JSON Error when deserializing upload response: deserialized response is null", LogLevel.Error);
                 return false;
             }
             else if (runIdResponse.error is not null)
             {
-                ModEntry.ModMonitor.Log($"Server error when receiving response: {runIdResponse.error}", StardewModdingAPI.LogLevel.Error);
+                ModEntry.ModMonitor.Log($"Server error when receiving response: {runIdResponse.error}", LogLevel.Error);
                 return false;
             }
             else if (runIdResponse.result is not null)
             {
                 string runId = runIdResponse.result;
-                ModEntry.ModMonitor.Log($"Run successfully uploaded, ID is '{runId}'", StardewModdingAPI.LogLevel.Debug);
+                ModEntry.ModMonitor.Log($"Run successfully uploaded, ID is '{runId}'", LogLevel.Debug);
                 var ps = new ProcessStartInfo($"{ModEntry.WebsiteBaseUrl}/claim?id={runId}")
                 {
                     UseShellExecute = true,
@@ -220,7 +215,7 @@ namespace StardewRoguelike
             }
             else
             {
-                ModEntry.ModMonitor.Log("An unknown error occured when uploading the run.", StardewModdingAPI.LogLevel.Error);
+                ModEntry.ModMonitor.Log("An unknown error occured when uploading the run.", LogLevel.Error);
                 return false;
             }
         }

@@ -1,0 +1,19 @@
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "Pillow.WarpParsnip",
+  "Name": "Warp Parsnip",
+  "Author": "Pillow",
+  "Version": "1.0.0",
+  "Description": "Adds a Warp Parsnip to warp you to a random location",
+  "EntryDll": "WarpParsnip.dll",
+  "UpdateKeys": [
+    "Nexus:18628"
+  ]
+}

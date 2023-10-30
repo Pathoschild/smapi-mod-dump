@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/SolusCleansing/RentedToolsImproved
+   Git: https://github.com/SolusCleansing/RentedToolsImproved.git
+
+mods:
+   Rented Tools Improved
+
+latest commit:
+   commit c10f6995717450025b59bd574ce50153ed02c10a
+   Author: SolusCleansing <149191034+SolusCleansing@users.noreply.github.com>
+   Date:   Sat Oct 28 17:32:05 2023 +0200
+   
+       Fixed a bug where upgrading trash canwould bug out
+   

@@ -26,15 +26,15 @@ namespace StardewRoguelike.TerrainFeatures
 
         public CleansingCauldron() : base(false)
         {
-            resetTexture();
+            ResetTexture();
         }
 
-        protected void resetTexture()
+        protected void ResetTexture()
         {
-            texture = new(new Func<Texture2D>(loadTexture));
+            texture = new(new Func<Texture2D>(LoadTexture));
         }
 
-        protected Texture2D loadTexture()
+        protected Texture2D LoadTexture()
         {
             return Game1.content.Load<Texture2D>(textureName);
         }
@@ -51,7 +51,7 @@ namespace StardewRoguelike.TerrainFeatures
 
             used = true;
             textureName += "Empty";
-            resetTexture();
+            ResetTexture();
             Game1.playSound("glug");
             Curse.RemoveRandomCurse();
 

@@ -113,6 +113,7 @@ namespace ContentPatcher.Framework.Conditions
             if (this.IsReady && token != null)
             {
                 this.CurrentValues = this.Values.SplitValuesUnique(token.NormalizeValue);
+
                 this.IsMatch = token
                     .GetValues(this.Input)
                     .Any(value => this.CurrentValues.Contains(value));

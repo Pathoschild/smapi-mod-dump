@@ -52,18 +52,37 @@ namespace Custom_Farm_Loader
 
         private void commands(string command, string[] args)
         {
-            if (args.Length == 0)
+            if (args.Length == 0) {
+                printValidCommands();
                 return;
+            }
 
-            if (args[0] == "dayupdate" || args[0] == "du")
-                dayupdateCommand(int.Parse(args[1]));
+            switch (args[0].ToLower()) {
+                case "help":
+                    printHelp(); break;
 
-            if (args[0] == "furniture")
-                printFurniture();
+                case "dayupdate" or "du":
+                    dayupdateCommand(args.Length > 1 ? int.Parse(args[1]) : 1); break;
 
-            if (args[0] == "reload")
-                reloadCFL();
+                case "furniture":
+                    printFurniture(); break;
+
+                case "reload":
+                    reloadCFL(); break;
+            }
         }
+
+        private void printHelp() =>
+            Monitor.Log(
+                "Valid Commands:\n" +
+                "DAYUPDATE NUM      Performs all valid daily updates of the players location NUM times\n" +
+                "FURNITURE          Prints out all furniture of the current location as json so it can be directly copied into StartFurniture\n" +
+                "RELOAD             Reloads all cached cfl_map.json data"
+                    ,LogLevel.Info);
+
+
+        private void printValidCommands() =>
+            Monitor.Log("Valid Commands: help, dayupdate, furniture, reload", LogLevel.Info);
 
         private void reloadCFL()
         {
@@ -72,7 +91,7 @@ namespace Custom_Farm_Loader
             CustomFarm.getAll();
             Helper.GameContent.InvalidateCache("Data/AdditionalFarms");
             CustomFarm.getCurrentCustomFarm();
-            Monitor.Log("Done!", LogLevel.Debug);
+            Monitor.Log("Done!", LogLevel.Info);
         }
 
         private void dayupdateCommand(int times)
@@ -113,6 +132,11 @@ namespace Custom_Farm_Loader
 
         private void printFurniture()
         {
+            if(Game1.currentLocation is null) {
+                Monitor.Log("No GameLocation loaded", LogLevel.Warn);
+                return;
+            }
+
             var player = Game1.player;
             var loc = player.currentLocation;
             string res = Environment.NewLine + "\"StartFurniture\": [" + Environment.NewLine;
@@ -131,7 +155,7 @@ namespace Custom_Farm_Loader
                     continue;
 
                 string heldObject = "";
-                if(furniture.heldObject.Value is StardewValley.Object h) {
+                if (furniture.heldObject.Value is StardewValley.Object h) {
                     heldObject = ", \"HeldObject\": {" +
                         $" /*{h.Name}*/ \"ID\": {h.ParentSheetIndex}" +
                         (h is not StardewValley.Objects.Furniture ? ", \"Type\": \"Item\"" : "") +

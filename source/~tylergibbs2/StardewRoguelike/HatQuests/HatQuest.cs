@@ -25,7 +25,6 @@ namespace StardewRoguelike.HatQuests
         HARD_HAT      = 27,
         SQUIRE_HELMET = 51,
         FISHING_HAT   = 55,
-        ARCANE_HAT    = 60,
         CHEF_HAT      = 61,
         GARBAGE_HAT   = 66,
         WARRIOR_HELM  = 93
@@ -36,7 +35,7 @@ namespace StardewRoguelike.HatQuests
     {
         public int BarrelsDestroyed { get; set; } = 0;
 
-        public int GoldInBank => Game1.player.Money;
+        public static int GoldInBank => Game1.player.Money;
 
         public int DamageTaken { get; set; } = 0;
 
@@ -96,7 +95,6 @@ namespace StardewRoguelike.HatQuests
                 HatQuestType.HARD_HAT => GoldMined >= 20,
                 HatQuestType.SQUIRE_HELMET => DamageTaken >= 250,
                 HatQuestType.FISHING_HAT => FishCaught >= 3,
-                HatQuestType.ARCANE_HAT => true,
                 HatQuestType.CHEF_HAT => HealthHealed >= 150,
                 HatQuestType.GARBAGE_HAT => BarrelsDestroyed >= 15,
                 HatQuestType.WARRIOR_HELM => DamageDealt >= 1000,
@@ -127,7 +125,6 @@ namespace StardewRoguelike.HatQuests
                 HatQuestType.HARD_HAT => I18n.HatQuest_HardHat_Buff(),
                 HatQuestType.SQUIRE_HELMET => I18n.HatQuest_SquireHelmet_Buff(),
                 HatQuestType.FISHING_HAT => I18n.HatQuest_FishingHat_Buff(),
-                HatQuestType.ARCANE_HAT => I18n.HatQuest_ArcaneHat_Buff(),
                 HatQuestType.CHEF_HAT => I18n.HatQuest_ChefHat_Buff(),
                 HatQuestType.GARBAGE_HAT => I18n.HatQuest_GarbageCan_Buff(),
                 HatQuestType.WARRIOR_HELM => I18n.HatQuest_WarriorHelm_Buff(),
@@ -143,7 +140,6 @@ namespace StardewRoguelike.HatQuests
                 HatQuestType.HARD_HAT => I18n.HatQuest_HardHat_Quest(),
                 HatQuestType.SQUIRE_HELMET => I18n.HatQuest_SquireHelmet_Quest(),
                 HatQuestType.FISHING_HAT => I18n.HatQuest_FishingHat_Quest(),
-                HatQuestType.ARCANE_HAT => I18n.HatQuest_ArcaneHat_Quest(),
                 HatQuestType.CHEF_HAT => I18n.HatQuest_ChefHat_Quest(),
                 HatQuestType.GARBAGE_HAT => I18n.HatQuest_GarbageCan_Quest(),
                 HatQuestType.WARRIOR_HELM => I18n.HatQuest_WarriorHelm_Quest(),

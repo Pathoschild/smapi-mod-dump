@@ -1,7 +1,7 @@
 {
   "Name": "InstantLoad",
   "Author": "Platonymous",
-  "Version": "1.1.0",
+  "Version": "1.1.2",
   "Description": "Instantly load into your last save and added debug features",
   "UniqueID": "Platonymous.InstantLoad",
   "EntryDll": "InstantLoad.dll",

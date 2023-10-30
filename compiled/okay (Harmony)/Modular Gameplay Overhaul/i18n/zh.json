@@ -126,8 +126,8 @@
   "fighter.desc.prestiged": "增加伤害+10%>>+15%。",
   "brute.title.male": "野蛮人",
   "brute.title.female": "亚马逊",
-  "brute.desc": "当你受到伤害时，你的怒气会增加，从而增加你的战斗力。+25HP。",
-  "brute.desc.prestiged": "职业以外的伤害加成也会减少相同数量的特殊攻击冷却时间。",
+  "brute.desc": "当你受到伤害时变得愤怒，逐渐增加你自己的伤害和攻击速度。+25HP。",
+  "brute.desc.prestiged": "保持愤怒的时间是原来的两倍。",
   "brute.buff.title": "愤怒",
   "brute.buff.desc": "额外伤害+{{damage}}。",
   "brute.buff.desc.prestiged": "伤害+{{damage}}。挥动速度+{{speed}}。",
@@ -139,22 +139,21 @@
   "rascal.title.male": "流氓",
   "rascal.title.female": "流氓",
   "rascal.desc": "获得一个额外的弹药槽。有35%的机率找回用过的弹药。",
-  "rascal.desc.prestiged": "有35%>>70%的机率找回用过的弹药。",
+  "rascal.desc.prestiged": "有35%>>55%的机率找回用过的弹药。可以装备怪兽马斯克发射诱饵弹。",
   "desperado.title.male": "亡命之徒",
   "desperado.title.female": "亡命之徒",
-  "desperado.desc": "HP 较低时射击速度更快。可以对弹弓过度充电以增加弹药威力和横截面。",
+  "desperado.desc": "1秒内连续射击不同敌人造成的伤害增加50%。可以对弹弓过度充电以增加弹药威力和横截面。",
   "desperado.desc.prestiged": "过度充电的射击就像霰弹枪一样射击。",
   "piper.title.male": "史莱姆风笛手",
   "piper.title.female": "史莱姆女巫",
   "piper.desc": "如果附近有敌人，会吸引史莱姆。 击败史莱姆时有几率获得随机增益。",
-  "piper.desc.prestiged": "击败史莱姆时有机会恢复一些生命值和能量。",
+  "piper.desc.prestiged": "提高了击败史莱姆效果的有效性和多样性。",
   "piper.buff": "粘滑的",
 
 
   // *************** //
   // ** ULTIMATES ** //
   // *************** //
-
 
   "frenzy.title": "不灭之怒",
   "frenzy.desc": "怒气的积累速度是原来的两倍。对昏倒免疫。",
@@ -202,6 +201,9 @@
   // * ARSENAL * //
   // *********** //
 
+  "weapons.sword": "剑",
+  "weapons.club": "Club",
+  "weapons.dagger": "匕首",
   "weapons.dwarven.prefix": "矮人",
   "weapons.elven.prefix": "小精灵",
   "weapons.dark_sword.name": "堕落之刃",
@@ -226,8 +228,11 @@
   "slingshots.infinity.desc": "这是银河弹弓的真实形态。",
   "objects.galaxy_soul.desc": "一个微小星系的物质化核心。",
 
-  "blueprint.found.first": "你发现了一张古老的矮人蓝图！它已经褪色了，但可以在一些矮人符号旁边识别出{{type}}的形状。也许铁匠可以从中得到一些启发。",
-  "blueprint.found.local": "你发现了一张古老的矮人蓝图。",
+  "blueprint.found.first.unknown": "你发现了一张旧蓝图！ 它已经褪色，但您认出了奇怪的符号和 {{type}} 形状的粗略轮廓。 如果你能翻译这些符号就好了...",
+  "blueprint.found.first.known": "你发现了一张旧蓝图！ 它已经褪色，但你可以辨认出微弱的矮人符号和 {{type}} 形状的粗略轮廓。 也许合适的工匠可以从中理解一些东西。",
+  "blueprint.found.next.unknown": "你发现了另一个旧蓝图！",
+  "blueprint.found.next.known": "你发现了另一个矮人蓝图！",
+  "blueprint.found.need_guide": "您可能应该抽出时间寻找某种翻译指南。",
   "blueprint.found.global": "{who}发现了一张古老的矮人蓝图。",
   "blacksmith.forge.option": "锻造",
   "blacksmith.forge.explanation": "我可以根据你找到的那些蓝图，锻造一些新武器。如果我有这些奇怪的材料就好了。",
@@ -253,10 +258,10 @@
   "locations.SeedShop.Yoba": "\"约巴的祝福，真正的英雄将得以强化。在慷慨和同情中，美德应遵循。以荣誉、勇气、智慧，他们的精神将被放大。一则预言展现，约巴的警觉目光下。\"",
   "locations.desert.noiridium": "你感觉到五彩碎片在振动...#但是，无事发生.#似乎缺少些什么材料。",
 
-  "mail.curse.intro": "亲爱的@，我有最紧急的事情，必须见你^请尽早来塔楼见我。^   -M. 拉斯莫迪斯，巫师[#]Ruined Hero",
-  "mail.curse.intro.witch": "亲爱的@，我有最紧急的事情，必须见你^请尽早来塔楼见我。^   -M. 拉斯莫迪斯，巫师[#]Ruined Hero",
+  "mail.curse.intro": "[letterbg 2]亲爱的@，^我有最紧急的事情，必须见你^请尽早来塔楼见我。^   -M. 拉斯莫迪斯，巫师[#]The Blade of Ruin",
+  "mail.curse.intro.witch": "[letterbg 2]亲爱的@，^我有最紧急的事情，必须见你^请尽早来塔楼见我。^   -M. 拉斯莫迪斯，巫师[#]The Blade of Ruin",
 
-  "quests.forge.intro": "Basic/矮人的遗产/克林特告诉你，他会在几天内完成旧蓝图的破解。/向克林特询问蓝图的事。/Blacksmith/144702/0/-1/false",
+  "quests.forge.intro": "Basic/矮人的遗产/克林特告诉你，他会在几天内完成旧蓝图的破解。/向克林特询问蓝图的事。/Blacksmith/-1/0/-1/false",
   "quests.forge.next": "Basic/矮人的遗产 II/那张古老的蓝图，竟然是一件强大的古代武器的配方！会不会还有其它的？/查找剩下的矮人蓝图./null/-1/0/-1/false",
   "quests.hero.intro": "Basic/堕落的英雄之刃/你找到的武器带有堕落英雄的诅咒！你已经可以感觉到它消耗了你的生命能量。最好找到一些方法来解除诅咒，而且要快！/想办法解除堕落之刃的诅咒./null/-1/0/-1/false",
   "quests.hero.reward": "Basic/英雄的奖励/你了解到，受到由巴青睐的英雄会得到他的保护，免受邪恶的侵害。要请求由巴的青睐，你必须证明自己具备五种英雄的美德./将堕落之刃带去由巴的祭坛./null/-1/0/-1/false",
@@ -296,6 +301,7 @@
   "virtues.recognize.yoba": "Yoba recognizes your Valor.",
   "virtues.disapprove.singular": "{{name}} disapproves of your lack of {{virtue}}.",
   "virtues.disapprove.plural": "{{name1}} and {{name2}} disapprove of your lack of {{virtue}}.",
+  "virtues.proven": "{{player}} has proven their {{virtue}}.",
 
   // json assets
   "objects.dwarvish_blueprint.name": "古老的矮人蓝图",
@@ -343,8 +349,6 @@
   // * ENCHANTMENTS * //
   // **************** //
 
-  "enchantments.artful.name": "熟练",
-  "enchantments.artful.parry": "暴击几率+100%",
   "enchantments.carving.name": "破甲",
   "enchantments.cleaving.name": "撕裂",
   "enchantments.energized.name": "电击",
@@ -355,30 +359,28 @@
   "enchantments.bloodthirsty.name": "嗜血",
   "enchantments.mammonite.name": "拜金主义",
   "enchantments.wabbajack.name": "瓦巴杰克",
-  "enchantments.magnum.name": "马格南",
-  "enchantments.gatling.name": "加特林",
-  "enchantments.preserving.name": "节约弹药",
+  "enchantments.freezing.name": "弗雷尔卓德",
   "enchantments.quincy.name": "能量弹",
-  "enchantments.spreading.name": "散射",
+  "enchantments.runaan.name": "鲁南",
 
 
   // *********** //
   // ** TAXES ** //
   // *********** //
 
-  "mail.frs.intro": "财政部^芬吉尔税务局^^^{{honorific}}纳税人,^^这封信是通知你，你最近提出的地址变更至星露谷鹈鹕镇的请求已提交并注册。未来所有的通信都将直接发送至{{farm}}农场。^^我们谨提醒您，联邦所得税缴款每个季节的第一天结束。为了你的方便，你的到期应缴税额将自动从你的余额中扣除。如果你的余额不足，根据芬吉尔税收法典第 501(c)(1)节，您将被罚款，金额为{{fine}}g，星露谷银行将以您的名义发放贷款，加收每年{{interest}}的利息。^^^此致，^^劳拉D.普雷托^税务官，芬吉尔税务局[#]FRS Intro",
-  "mail.frs.notice": "财政部^芬吉尔税务局^^^{{honorific}}纳税人：^^这封信是为了通知您，您在上一季的应缴所得税总额为{{due}}g，已自动从你的余额中扣除。^^如果您需要了解有关你的税务状况，请将此信保存在你的永久记录中。^^^此致，^^劳拉D.普雷托^税务官，芬吉尔税务局[#]FRS Notice",
-  "mail.frs.outstanding": "财政部^芬吉尔税务局^^^{{honorific}}纳税人：^^这封信是为了通知您，您在上一季的应缴所得税总额为{{due}}g，未完全从你的余额中扣除。芬吉尔税收法典第501(c)(1)节，您将被罚款{{fine}}g并且{farm}}农场的所有未来收入将被征收，直到您请偿合计为{{outstanding}}g的全部债务。为了保障你的最佳利益，请尽快清偿未偿税额以避免每年{{interest}}的罚息。^^如果您需要了解有关你的税务状况，请将此信保存在你的永久记录中。^^^此致，^^劳拉D.普雷托^税务官，芬吉尔税务局[#]FRS Outstanding",
-  "mail.frs.deduction": "财政部^芬吉尔税务局^^^{{honorific}}纳税人,^^我们很高兴地通知您，在审查了你的环保活动后，我们确定根据芬吉尔税收法典第501(c)(3)节，你有资格获得所得税减免{{deductible}}g。^^如果您需要了解有关你的税务状况，请将此信保存在你的永久记录中。^^^此致，^^劳拉D.普雷托^税务官，芬吉尔税务局[#]FRS Deduction",
-  "mail.frs.deduction.max": "财政部^芬吉尔税务局^^^{{honorific}}纳税人,^^我们很高兴地通知您，在审查你的环保活动后，我们确定根据芬吉尔税收法典第501(c)(3)节，你有资格获得全额所得税减免。因此，不会扣除你任何税款。^^如果您需要了解有关你的税务状况，请将此信保存在你的永久记录中。^^^此致，^^劳拉D.普雷托^税务官，芬吉尔税务局[#]FRS Deduction",
+  "mail.frs.intro": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your recent address change to Pelican Town, Stardew Valley has been filed and registered. All future correspondence will be directed to {{farm}} farm.^^We kindly remind you that federal income tax contributions are due end-of-day on the 1st of every season. For your convenience, your due obligations will be automatically deducted from your balance. If your balance is insufficient, you will be fined in accordance with section 501(c)(1) of the Ferngill Revenue Code at the rate of {{fine}} and a loan will be issued in your name with the Bank of Stardew, subject to the nominal interest fee of {{interest}} per annum.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Intro",
+  "mail.frs.notice": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your total due income tax for the closing season in the amount of {{due}}g has been automatically deducted from your balance.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Notice",
+  "mail.frs.outstanding": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your total due income tax for the closing season in the amount of {{due}}g could not be fully deducted from your balance. In accordance with section 501(c)(1) of the Ferngill Revenue Code, you will be fined an additional {{fine}} and all future income to {{farm}} farm will be levied until your outstanding debt, totaling {{outstanding}}g, is completely settled. Please keep in mind that it is in your best interest to clear any outstanding debts as soon as possible to avoid accruing interest at the rate of {{interest}} per annum.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Outstanding",
+  "mail.frs.deduction": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^We are pleased to inform you that, upon review of your environmentalist activities, we have determined that you qualify for an income tax deduction of {{deductible}} as per section 501(c)(3) of the Ferngill Revenue Code.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Deduction",
+  "mail.frs.deduction.max": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^We are pleased to inform you that, upon review of your environmentalist activities, we have determined that you are exempt from Federal income tax as per section 501(c)(3) of the Ferngill Revenue Code. As such, no charges will be made to your balance with respect to the closing season.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Deduction",
 
-  "mail.lewis.notice": "@,^如你所知，作为鹈鹕镇的镇长，我的职责之一是对鹈鹕镇的所有财产征税。在上一财政年度，我们对{{farm}}农场财产的评估价值为{{valuation}}g。因此，您需要在适用的纳税期内承担{{due}}g的总财产税。我冒昧地直接向您的帐户收费。^我代表鹈鹕镇，非常感谢您对我们社区的持续贡献。 ^  真诚地，刘易斯[#]Lewis Taxation Notice",
-  "mail.lewis.outstanding": "@,^如你所知，作为鹈鹕镇的镇长，我的职责之一就是对鹈鹕镇的所有财产征税。在上一财政年度，我们对{{farm}}农场财产的评估价值为{{valuation}}g。因此，您需要在适用的纳税期内承担{{due}}g 的总财产税。^很遗憾，您的帐户没有足够的资金来支付全部金额。根据州政策，我很遗憾通知您将被额外罚款{{fine}}g。您的全部债务总计{{outstanding}}g，将抵押给星露谷银行，该银行有权扣押您的所有收入，直到清偿全部债务，但需支付{{interest}}年利率。^请知道，如果您面临困难，鹈鹕镇的人们会为您提供支持。  ^  真诚地，刘易斯[#]Lewis Taxation Outstanding",
+  "mail.lewis.notice": "@,^As you are aware, one of my duties as mayor of Pelican Town is to levy taxes on all the town's properties. During the preceding fiscal year, the county's assessment of {{farm}} farm's property determined a valuation of {{valuation}}g. As a result, you are liable for {{due}}g in total property taxes for the applicable tax period. I've taken the liberty of charging your account directly. ^On behalf of Pelican Town, I am deeply grateful for your ongoing contributions to our community.  ^  Sincerely, Mr. Lewis[#]Lewis Taxation Notice",
+  "mail.lewis.outstanding": "@,^As you are aware, one my duties as mayor of Pelican Town is to levy taxes on all the town's properties. During the preceding fiscal year, the county's assessment of {{farm}} farm's property determined a valuation of {{valuation}}g. As a result, you are liable for {{due}}g in total property taxes for the applicable tax period. ^Unfortunately, your account was found to have insufficient funds to cover the entire amount. As per county policy, I take no pleasure in informing that you will be fined an additional {{fine}}. The entirety of your deb, totaling {{outstanding}}g, will be sold to the Bank of Stardew, who is authorized to seize all shipping income until the outstanding amount is paid in full, subject to a {{interest}} yearly interest rate. ^Please know that the people of Pelican Town are here to support you if you are facing difficult times.  ^  Sincerely, Mr. Lewis[#]Lewis Taxation Outstanding",
 
-  "mail.debt.debit": "你尚有{{amount}}g的未偿债务。",
+  "mail.debt.debit": "Your balance was debited for {{amount}}g towards outstanding debts.",
 
-  "honorific.male": "尊敬的",
-  "honorific.female": "亲爱的",
+  "honorific.male": "Dear",
+  "honorific.female": "Dear",
 
 
   // ************** //
@@ -389,14 +391,21 @@
   "ui.item_hover.crate": " {{amount}}暴击几率",
   "ui.item_hover.cpow": " {{amount}}暴击伤害",
   "ui.item_hover.knockback": " {{amount}}击退",
-  "ui.item_hover.firespeed": " {{amount}}发射速度",
-  "ui.item_hover.swingspeed": " {{amount}}挥动速度",
+  "ui.item_hover.fire_speed": " {{amount}}发射速度",
+  "ui.item_hover.swing_speed": " {{amount}}挥动速度",
   "ui.item_hover.cdr": " {{amount}}冷却缩减",
   "ui.item_hover.resist": " {{amount}}抗性",
   "ui.item_hover.precision": " {{amount}}精准",
+  "ui.item_hover.light": "它发出光",
+  "ui.item_hover.magnetic": "磁的",
 
-  "ui.buffs.jinxed": "-5 防御",
-  "ui.buffs.warrior": "+{{value}} 攻击",
+  "ui.buffs.burnt.damage": "-50% Damage",
+  "ui.buffs.burnt.dot": "-{{amount}} health every 3 seconds",
+  "ui.buffs.frozen.stuck": "Cannot move",
+  "ui.buffs.frozen.vulnerable": "Vulnerable to the next attack",
+  "ui.buffs.jinxed.defense": "-5 防御",
+  "ui.buffs.confused": "Disoriented",
+  "ui.buffs.warrior.attack": "+{{value}} 攻击",
 
   // ********* //
   // * PONDS * //
@@ -424,8 +433,8 @@
   "gmcm.core.choose": "选择要启用的模块。启用或禁用模块后，必须保存并退出此菜单，这些更改才能生效。对于已启用的模块，下面将显示指向该模块设置页面的链接。\n\n请注意，如果在游戏开始之后再启用或禁用某些模块，可能会导致 JA物品洗牌或其他副作用。",
   "gmcm.core.available": "可用模块：",
   "gmcm.core.modules": "模块设置:",
-  "gmcm.modules.profs.name": "技能大修",
-  "gmcm.modules.profs.desc": "彻底大修职业技能，目标是支持更多样化和有趣的游戏风格。为战斗职业引入全新的声望机制和极限突破。",
+  "gmcm.modules.prfs.name": "技能大修",
+  "gmcm.modules.prfs.desc": "彻底大修职业技能，目标是支持更多样化和有趣的游戏风格。为战斗职业引入全新的声望机制和极限突破。",
   "gmcm.modules.cmbt.name": "战斗大修",
   "gmcm.modules.cmbt.desc": "彻底大修战斗机制，目的是提高原版令人失望的战斗属性。强调倍增防御算法，和击退碰撞伤害。",
   "gmcm.modules.tols.name": "工具大修",
@@ -652,6 +661,8 @@
   "gmcm.cmbt.enemies.defense_summand.desc": "添加到所有敌人（同上）。",
   "gmcm.cmbt.enemies.varied_encounters.title": "多样化的邂逅",
   "gmcm.cmbt.enemies.varied_encounters.desc": "随机分配怪物统计数据，受每日运气偏差影响，增加怪物遭遇的可变性。",
+  "gmcm.cmbt.enemies.spawn_multiplier.title": "Monster Spawn Chance Multiplier",
+  "gmcm.cmbt.enemies.spawn_multiplier.desc": "Multiplies the chance to spawn enemies in dungeons.",
 
   "gmcm.cmbt.controls.auto_selection_range.melee.title": "近战自动",
   "gmcm.cmbt.controls.auto_selection_range.melee.desc": "当怪进入次范围，所选近战武器（如果有的话）将自动装备。",
@@ -659,6 +670,20 @@
   "gmcm.cmbt.controls.auto_selection_range.ranged.desc": "当怪进入次范围，所选远程武器（如果有的话）将自动装备。",
 
   "gmcm.cmbt.ui.color_coded.desc": "是否根据武器的指定等级或唯一状态对武器名称进行着色。",
+  "gmcm.cmbt.ui.color_coded.common.title": "Common Tier Color",
+  "gmcm.cmbt.ui.color_coded.common.desc": "The title color used to identify common-tier weapons",
+  "gmcm.cmbt.ui.color_coded.uncommon.title": "Uncommon Tier Color",
+  "gmcm.cmbt.ui.color_coded.uncommon.desc": "The title color used to identify uncommon-tier weapons",
+  "gmcm.cmbt.ui.color_coded.rare.title": "Rare Tier Color",
+  "gmcm.cmbt.ui.color_coded.rare.desc": "The title color used to identify rare-tier weapons",
+  "gmcm.cmbt.ui.color_coded.epic.title": "Epic Tier Color",
+  "gmcm.cmbt.ui.color_coded.epic.desc": "The title color used to identify epic-tier weapons",
+  "gmcm.cmbt.ui.color_coded.mythic.title": "Mythiv Tier Color",
+  "gmcm.cmbt.ui.color_coded.mythic.desc": "The title color used to identify mythic-tier weapons",
+  "gmcm.cmbt.ui.color_coded.masterwork.title": "Masterwork Tier Color",
+  "gmcm.cmbt.ui.color_coded.masterwork.desc": "The title color used to identify masterwork-tier weapons",
+  "gmcm.cmbt.ui.color_coded.legendary.title": "Legendary Tier Color",
+  "gmcm.cmbt.ui.color_coded.legendary.desc": "The title color used to identify legendary-tier weapons",
   "gmcm.cmbt.ui.sockets.draw.title": "宝石锻造槽的样式",
   "gmcm.cmbt.ui.sockets.draw.desc": "将武器工具提示中的普通“锻造”文本与实际的宝石插座图标重新封装。",
   "gmcm.cmbt.ui.sockets.style.title": "锻造文本的样式",
@@ -908,8 +933,8 @@
   "gmcm.twx.farming.crop_wither_chance.desc": "作物没有每天浇水枯萎的机会。",
   "gmcm.twx.farming.prevent_fruit_tree_winter_growth.title": "防止果树冬季生长",
   "gmcm.twx.farming.prevent_fruit_tree_winter_growth.desc": "普通树木在冬天不能生长。为什么果树会有所不同？",
-  "gmcm.twx.farming.largedairy_yield.title": "大产品的产量大于质量",
-  "gmcm.twx.farming.largedairy_yield.desc": "一个大鸡蛋或大牛奶产生两个蛋黄酱/奶酪，但质量正常，而不是产生一个黄金质量。",
+  "gmcm.twx.farming.dairy_yield.title": "大产品的产量大于质量",
+  "gmcm.twx.farming.dairy_yield.desc": "一个大鸡蛋或大牛奶产生两个蛋黄酱/奶酪，但质量正常，而不是产生一个黄金质量。",
   "gmcm.twx.farming.spawn_crows.title": "在这些地图上生成乌鸦：",
   "gmcm.twx.maps.islandwest": "姜岛农场",
   "gmcm.twx.maps.custom_garden": "社区花园 (SVE)",

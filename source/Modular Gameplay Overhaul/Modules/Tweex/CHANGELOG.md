@@ -8,6 +8,34 @@ for queries and analysis.**
 
 # TWX Changelog
 
+## 4.0.0
+
+### Changed
+
+* Renamed `DairyYieldsQuantityOverQuality` setting to `ImmersiveDairyYield` to avoid confusion over how this setting affects Ostrich and Gold eggs.
+    * With this setting enabled, Gold Eggs now max out the quality, instead of setting to gold.
+    * Changed the following translation keys:
+        * `gmcm.twx.farming.largedairy_yield.title` -> `gmcm.twx.farming.dairy_yield.title`
+        * `gmcm.twx.farming.largedairy_yield.desc` -> `gmcm.twx.farming.dairy_yield.desc`
+
+<sup><sup>[🔼 Back to top](#twx-changelog)</sup></sup>
+
+## 3.1.9
+
+### Fixed
+
+* Fixed not being able to combine any rings with Glowstone Progression enabled.
+
+<sup><sup>[🔼 Back to top](#twx-changelog)</sup></sup>
+
+## 3.1.7
+
+### Added
+
+* Added ability to follow the Glowstone Ring progression at the Forge (thereby forgoing the essence cost for cinder shards). This might be completely redundant, but I just thought it was weird that you couldn't just combine a Glow and Magnet rings to make Glowstone.
+
+<sup><sup>[🔼 Back to top](#twx-changelog)</sup></sup>
+
 ## 3.1.2
 
 ### Fixed

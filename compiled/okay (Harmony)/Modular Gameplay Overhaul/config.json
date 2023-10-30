@@ -1,11 +1,7 @@
 {
   "EnableProfessions": true,
   "EnableCombat": false,
-  "EnableWeapons": false,
-  "EnableSlingshots": false,
   "EnableTools": false,
-  "EnableEnchantments": false,
-  "EnableRings": false,
   "EnablePonds": false,
   "EnableTaxes": false,
   "EnableTweex": true,
@@ -66,7 +62,6 @@
     "TrashNeededPerTaxDeduction": 100,
     "TrashNeededPerFriendshipPoint": 100,
     "ConservationistTaxDeductionCeiling": 1.0,
-    "PiperBuffCeiling": 10,
     "EnableLimitBreaks": true,
     "LimitBreakKey": "LeftShift, LeftShoulder",
     "HoldKeyToLimitBreak": true,
@@ -157,9 +152,10 @@
     "MonsterDamageSummand": 0,
     "MonsterDefenseSummand": 1,
     "MonsterHealthMultiplier": 1.5,
-    "MonsterDamageMultiplier": 1.0,
-    "MonsterDefenseMultiplier": 2.0,
+    "MonsterDamageMultiplier": 1.5,
+    "MonsterDefenseMultiplier": 1.5,
     "VariedEncounters": true,
+    "MonsterSpawnChanceMultiplier": 1.0,
     "FaceMouseCursor": true,
     "SlickMoves": true,
     "EnableAutoSelection": true,
@@ -168,11 +164,53 @@
     "SelectionKey": "LeftShift, LeftShoulder",
     "SelectionBorderColor": {
       "B": 255,
+      "G": 255,
+      "R": 0,
+      "A": 255
+    },
+    "ColorCodedForYourConvenience": true,
+    "CommonTierColor": {
+      "B": 34,
+      "G": 17,
+      "R": 34,
+      "A": 255
+    },
+    "UncommonTierColor": {
+      "B": 0,
+      "G": 128,
+      "R": 0,
+      "A": 255
+    },
+    "RareTierColor": {
+      "B": 255,
+      "G": 0,
+      "R": 0,
+      "A": 255
+    },
+    "EpicTierColor": {
+      "B": 128,
+      "G": 0,
+      "R": 128,
+      "A": 255
+    },
+    "MythicTierColor": {
+      "B": 0,
       "G": 0,
       "R": 255,
       "A": 255
     },
-    "ColorCodedForYourConvenience": true,
+    "MasterworkTierColor": {
+      "B": 0,
+      "G": 60,
+      "R": 231,
+      "A": 255
+    },
+    "LegendaryTierColor": {
+      "B": 0,
+      "G": 60,
+      "R": 231,
+      "A": 255
+    },
     "DrawForgeSockets": true,
     "SocketStyle": "Diamond",
     "SocketPosition": "AboveSeparator",
@@ -254,11 +292,11 @@
           "Item2": 1
         },
         {
-          "Item1": 5,
+          "Item1": 7,
           "Item2": 2
         },
         {
-          "Item1": 7,
+          "Item1": 8,
           "Item2": 3
         }
       ],
@@ -284,11 +322,11 @@
           "Item2": 1
         },
         {
-          "Item1": 5,
+          "Item1": 7,
           "Item2": 2
         },
         {
-          "Item1": 7,
+          "Item1": 8,
           "Item2": 3
         }
       ],
@@ -318,8 +356,8 @@
     "SelectionKey": "LeftShift, LeftShoulder",
     "SelectionBorderColor": {
       "B": 255,
-      "G": 0,
-      "R": 255,
+      "G": 255,
+      "R": 0,
       "A": 255
     },
     "ColorCodedForYourConvenience": false,
@@ -348,7 +386,7 @@
       0.35,
       0.37
     ],
-    "AnnualInterest": 1.0,
+    "AnnualInterest": 0.72,
     "IncomeTaxLatenessFine": 0.05,
     "DeductibleAnimalExpenses": 1.0,
     "DeductibleBuildingExpenses": 1.0,
@@ -367,7 +405,7 @@
     "PreventFruitTreeWinterGrowth": true,
     "BeeHouseAgingFactor": 1.0,
     "TeaBushAgingFactor": 1.0,
-    "LargeDairyYieldsQuantityOverQuality": true,
+    "ImmersiveDairyYield": true,
     "DairyArtisanMachines": [
       "Butter Churn",
       "Ice Cream Machine",

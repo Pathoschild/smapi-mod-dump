@@ -6,9 +6,9 @@ mods:
    Fashion Sense Outfits
 
 latest commit:
-   commit 34a4ede5fcb0353d22848191d4b3dbda8bdc8a05
+   commit dc0bf0dbc734a55e2431770251d2dc21b0499da7
    Author: Nihilistzsche <nihilistzsche@gmail.com>
-   Date:   Wed Sep 27 06:50:54 2023 -0700
+   Date:   Thu Oct 19 21:05:03 2023 -0700
    
-       Also load new data when an event ends for first-step-out-of-the-house cutscene.
+       Update FashionSenseOutfits.fsproj
    

@@ -52,8 +52,6 @@ internal sealed class MeleeWeaponCtorPatcher : HarmonyPatcher
             {
                 __instance.specialItem = true;
             }
-
-            __instance.AddIntrinsicEnchantments();
         }
 
         if (CombatModule.Config.EnableHeroQuest)
@@ -63,6 +61,8 @@ internal sealed class MeleeWeaponCtorPatcher : HarmonyPatcher
                 __instance.specialItem = true;
             }
         }
+
+        __instance.AddIntrinsicEnchantments();
     }
 
     #endregion harmony patches

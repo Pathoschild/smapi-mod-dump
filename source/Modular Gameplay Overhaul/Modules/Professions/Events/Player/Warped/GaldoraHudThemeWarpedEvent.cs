@@ -20,7 +20,7 @@ using StardewModdingAPI.Events;
 #endregion using directives
 
 [UsedImplicitly]
-[ModRequirement("FlashShifter.StardewValleyExpandedCP")]
+[ModRequirement("FlashShifter.StardewValleyExpandedCP", "Stardew Valley Expanded")]
 [AlwaysEnabledEvent]
 internal sealed class GaldoraHudThemeWarpedEvent : WarpedEvent
 {
@@ -39,7 +39,7 @@ internal sealed class GaldoraHudThemeWarpedEvent : WarpedEvent
             return;
         }
 
-        if (e.NewLocation.NameOrUniqueName.IsIn(
+        if (e.NewLocation.NameOrUniqueName.IsAnyOf(
                 "Custom_CastleVillageOutpost",
                 "Custom_CrimsonBadlands",
                 "Custom_IridiumQuarry",

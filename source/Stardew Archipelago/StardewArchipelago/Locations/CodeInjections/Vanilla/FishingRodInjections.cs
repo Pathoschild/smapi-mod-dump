@@ -193,8 +193,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 return;
             }
 
-            var myActiveHints = _archipelago.GetMyActiveHints();
             var priceMultiplier = _archipelago.SlotData.ToolPriceMultiplier;
+            var myActiveHints = _archipelago.GetMyActiveHints();
             if (_locationChecker.IsLocationMissingAndExists(TRAINING_ROD))
             {
                 var trainingRodAPlocation = new PurchaseableArchipelagoLocation("Training Rod", TRAINING_ROD, _modHelper,

@@ -706,7 +706,7 @@ namespace AlternativeTextures.Framework.UI
                     if (textureIndex < _currentlyDisplayedTextures.Count)
                     {
                         var textureObject = _currentlyDisplayedTextures[textureIndex];
-                        var textureModel = AlternativeTextures.textureManager.GetSpecificTextureModel(textureObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME]);;
+                        var textureModel = AlternativeTextures.textureManager.GetSpecificTextureModel(textureObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_NAME]);
                         var variation = int.Parse(textureObject.modData[ModDataKeys.ALTERNATIVE_TEXTURE_VARIATION]);
 
                         _alternativeTextureButtons[i].item = _currentlyDisplayedTextures[textureIndex];

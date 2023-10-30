@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/chudders1231/SDV-FishingProgression
+   Git: https://github.com/chudders1231/SDV-FishingProgression.git
+
+mods:
+   Fishing Progression
+
+latest commit:
+   commit 893bfc31b51c0aae7594068963419362885bc96d
+   Author: chudders1231 <chad_masters@hotmail.com>
+   Date:   Mon Oct 16 11:30:16 2023 +0100
+   
+       Linux compatibility
+   

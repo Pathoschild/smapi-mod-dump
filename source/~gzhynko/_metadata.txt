@@ -7,13 +7,12 @@ mods:
    Dialogue Box Redesign
    Event Black Bars
    Fish Exclusions
-   Grapes All Year Round
    Incubate Pufferfish Eggs
 
 latest commit:
-   commit 57bc2b7ca790e707dafe2c84846e33d66df7f8c9
-   Author: gzhynko <gleb.zhinko@protonmail.com>
-   Date:   Tue Feb 8 08:17:42 2022 +0300
+   commit 2e5be97ecbd06a377d40360af42fe3f16fb42fba
+   Author: Hleb Zhynko <gleb.zhinko@protonmail.com>
+   Date:   Sat Oct 28 00:52:30 2023 -0500
    
-       update mod version
+       add deprecation notice to GrapesAllYearRound and prepare it for release
    

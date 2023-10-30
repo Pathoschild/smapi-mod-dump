@@ -1,0 +1,29 @@
+﻿{
+  "GreenhouseLevel1": "温室",
+  "GreenhouseLevel1Description": "15x15的农田。增加一个地窖。",
+  
+  "GreenhouseLevel2": "小型温室",
+  "GreenhouseLevel2Description": "30x30的农田。扩大地窖，增加室内温室和自动浇水。",
+  
+  "GreenhouseLevel3": "中型温室",
+  "GreenhouseLevel3Description": "50x50的农田。扩大地窖和室内温室。",
+  
+  "GreenhouseLevel4": "大型温室",
+  "GreenhouseLevel4Description": "75x75的农田。扩大地窖和室内温室，进一步扩大。",
+
+  "GreenhouseLevel5": "特大豪华温室",
+  "GreenhouseLevel5Description": "100x100的农田。扩大地窖，进一步扩大室内温室。",
+
+  "LeftBehindTree": "你留下了树。",
+"LeftBehindCrop": "你留下了作物。",
+"PickUpTreeMessage": "树已拾起！",
+"PlaceTreeMessage": "树已放置！",
+"PickUpCropMessage": "作物已拾起！",
+"PlaceCropMessage": "作物已放置！",
+"EnableTreePickingOption": "收集树木和作物",
+"EnableTreePickingTooltip": "启用或禁用收集。",
+"language-choice-name": "语言",
+"language-choice-tooltip": "选择mod的语言"
+
+
+}

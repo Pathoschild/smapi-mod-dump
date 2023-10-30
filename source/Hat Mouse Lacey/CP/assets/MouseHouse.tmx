@@ -70,8 +70,8 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="2177" name="z_lacey" tilewidth="16" tileheight="16" tilecount="32" columns="8">
-  <image source="lacey-tilesheet.png" width="128" height="64"/>
+ <tileset firstgid="2177" name="z_hatmouselaceyInterior" tilewidth="16" tileheight="16" tilecount="20" columns="5">
+  <image source="hatmouselaceyInterior.png" width="80" height="64"/>
  </tileset>
  <layer id="1" name="Back" width="16" height="18">
   <data encoding="base64" compression="zlib">
@@ -81,39 +81,39 @@
  <objectgroup id="2" name="Back"/>
  <layer id="3" name="Buildings" width="16" height="18">
   <data encoding="base64" compression="zlib">
-   eJxjYMAOGIGYCYiZ0TALVI4QUARiLSziOkCsSoR+RyAOxIFdidRfiIbTgB5KZyJe/1KgR5dBPXsUSLcB9baToB8XIEZ/IhA7A+10wRLYzXj0cTFgxtlhJPlDSOI8WPRjc/ccJPZsJDY2f2CLtz1I8rsZ8McjSP9fYBj/A+LJHAwMUzggcQcDyPEJ0g/yLzcSBvlVFug5OSCeDdQ7B4hzkMKwEmhuN1CshwOiH2SfMxomFsD0J6NhLSb8+jqBdi9hQ+hvYibBUiz2k6r/EisDw2VWiH5QOpvDQlhPI9DNM6EYBHo5IOmQEYoToeqQxWDiGcDwyGTClANhAG14LMY=
+   eJxjYMAOGIGYCYiZ0TALVI4QUARiLSziOkCsSoR+RyAOxIFdidRfiIbTgB5KZyJe/1KgR5dBPXsUSLcB9baToB8XIEZ/IhA7A+10wRLYzXj0cTFgxtlhJPlDSOI8WPRjc/ccJPZsJDY2f2CLtz1I8rsZ8McjSP9fYBj/A+JeDgaGPg5I3MEAcnyC9IP8y42EQX6VBXpODognAfVOBuIcpDCsBJrbARTr5IDoB9nnjIaJBTD9yWhYiwm/vjag3UvYEPqbmEmwFIv9pOq/xMrAcJkVoh+UzuawENbTCHTzBCgGgS4OSDpkhOJEqDpkMZh4BjA8Mpkw5UAYACaALIo=
   </data>
  </layer>
  <objectgroup id="4" name="Buildings">
   <object id="3" name="TileData" x="160" y="256" width="16" height="16">
    <properties>
-    <property name="Action" value="Message &quot;MouseHouse.stepladder&quot;"/>
+    <property name="Action" value="Message &quot;HatMouseLacey.MouseHouse.stepladder&quot;"/>
    </properties>
   </object>
   <object id="4" name="TileData" x="208" y="208" width="16" height="16">
    <properties>
-    <property name="Action" value="Message &quot;MouseHouse.stool&quot;"/>
+    <property name="Action" value="Message &quot;HatMouseLacey.MouseHouse.stool&quot;"/>
    </properties>
   </object>
   <object id="5" name="TileData" x="208" y="240" width="16" height="16">
    <properties>
-    <property name="Action" value="Message &quot;MouseHouse.hatstuff&quot;"/>
+    <property name="Action" value="Message &quot;HatMouseLacey.MouseHouse.hatstuff&quot;"/>
    </properties>
   </object>
   <object id="7" name="TileData" x="176" y="64" width="16" height="16">
    <properties>
-    <property name="Action" value="Message &quot;MouseHouse.drawers&quot;"/>
+    <property name="Action" value="Message &quot;HatMouseLacey.MouseHouse.drawers&quot;"/>
    </properties>
   </object>
   <object id="9" name="TileData" x="192" y="64" width="16" height="16">
    <properties>
-    <property name="Action" value="Message &quot;MouseHouse.photo&quot;"/>
+    <property name="Action" value="Message &quot;HatMouseLacey.MouseHouse.photo&quot;"/>
    </properties>
   </object>
  </objectgroup>
  <layer id="5" name="Front" width="16" height="18">
   <data encoding="base64" compression="zlib">
-   eJxjYKA9mMbIwDCdkXR95kwMDBZM5NvbCrSzDWqvMyuE/kaCecuBeleQ4W4YOA7Ue4IC/cugeDGS2BIi9M0F+nEeBeG2F6h3H1Q/Ixb3YxNDBneBeu9B9StiUYtNDB/wQVIfCTS3mYOBoYWDNDPwgSYORBptItLcFjYEO4mZMvtJ1b8JmJY3s5JuzySg32ZB/deK5M+jDIg0Bkpfyxhwpz1kOXRwFIe9uNSDAAAiviAA
+   eJxjYKA9mMbIwDCdkXR95kwMDBZM5NvbCrSzDWqvMyuE/kaCecuBeleQ4W4YOA7Ue4IC/cugeDGS2BIi9M0F+nEeBeG2F6h3H1Q/Ixb3YxNDBneBeu9B9StiUYtNDB/wQVIfCTS3mYOBoYWDNDPwgSYORBptItLcFjYEO4mZMvtJ1b8JmJY3s5JuTw/QbxOh/mtF8udRBkQaA6WvZQy40x6yHDo4isNeXOpBAAAaNh/x
   </data>
  </layer>
  <objectgroup id="6" name="Front"/>

@@ -1,0 +1,27 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+"Changes": [
+	{
+	 "LogName": "Lorenzo Spirit's Eve Dialogue Change",
+   "Action": "EditData",
+   "Target": "Data/Festivals/fall27",
+	 "When": {
+		 "Shanice": "enabled, festivals only",
+		 "Lorenzo": "enabled, festivals only",
+	 },
+   "Entries": {
+		 "Lorenzo": "{{i18n:SpiritEve.Lorenzo.1}}",
+	   "Lorenzo_y2": "{{i18n:SpiritEve.Lorenzo.2}}",
+		},
+	},
+]
+}

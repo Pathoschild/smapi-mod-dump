@@ -1,7 +1,7 @@
 {
   "Name": "[C#] The Fishmonger fishing",
   "Author": "VoidWitchCult",
-  "Version": "1.2.1",
+  "Version": "1.2.2",
   "Description": "This makes the fishmonger fish and not have her sprite cut off halfway. Credits for the original code go to atravita!",
   "UniqueID": "VoidWitchCult.TheFishmongerFishing",
   "EntryDll": "TheFishmongerFishing.dll",

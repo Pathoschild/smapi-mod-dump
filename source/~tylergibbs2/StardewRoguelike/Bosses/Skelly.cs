@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Netcode;
 using StardewRoguelike.Extensions;
@@ -25,40 +26,28 @@ namespace StardewRoguelike.Bosses
     {
         public string DisplayName => "Arc the Skeleton Mage";
 
-        public string MapPath
-        {
-            get { return "boss-skeleton"; }
-        }
+        public string MapPath => "boss-skeleton";
 
-        public string TextureName
-        {
-            get { return "Characters\\Monsters\\Skeleton"; }
-        }
+        public string TextureName => "Characters\\Monsters\\Skeleton";
 
-        public Vector2 SpawnLocation
-        {
-            get { return new(16, 17); }
-        }
+        public Vector2 SpawnLocation => new(16, 17);
 
         public List<string> MusicTracks
         {
-            get { return new() { "megalovania" }; }
+            get
+            {
+                if (Roguelike.FloorTickCounter <= TicksToChangeMusic)
+                    return new() { "gelus_defensor" };
+
+                return new() { "gelus_defensor_no_intro" };
+            }
         }
 
-        public bool InitializeWithHealthbar
-        {
-            get { return true; }
-        }
+        public bool InitializeWithHealthbar => true;
 
-        private float _difficulty;
+        public float Difficulty { get; set; }
 
-        public float Difficulty
-        {
-            get { return _difficulty; }
-            set { _difficulty = value; }
-        }
-
-        private readonly List<Vector2> mageSpawnLocations = new()
+        private readonly List<Vector2> MageSpawnLocations = new()
         {
             new(16, 9),
             new(24, 15),
@@ -67,37 +56,39 @@ namespace StardewRoguelike.Bosses
             new(8, 15)
         };
 
-        private List<CircularProjectile> activeBones = new();
+        private readonly List<CircularProjectile> ActiveBones = new();
 
-        private bool spottedPlayer;
+        private bool SpottedPlayer;
 
-        private readonly NetBool throwingAnim = new();
+        private readonly NetBool ThrowingAnim = new();
 
-        private readonly NetBool invincible = new();
+        private readonly NetBool Invincible = new();
 
-        private readonly NetBool charging = new();
+        private readonly NetBool Charging = new();
 
-        private bool spawnedMages = false;
-        private bool magesAreDead = false;
+        private bool SpawnedMages = false;
+        private bool CachedMagesAreDead = false;
 
-        private int ticksToAttack = 60 * 5;
-        private int previousAttack = 2;
+        private int TicksToAttack = 60 * 5;
+        private int PreviousAttack = 2;
 
-        private int bonesToThrow = 0;
-        private int nextBoneThrow = 0;
+        private int BonesToThrow = 0;
+        private int NextBoneThrow = 0;
 
-        private int frostBoltsToThrow = 0;
-        private int nextFrostBolt = 0;
+        private int FrostBoltsToThrow = 0;
+        private int NextFrostBolt = 0;
 
-        private int ticksToSpawnBoneCircles = 0;
-        private int ticksToDespawnBoneCircle = 0;
+        private int TicksToSpawnBoneCircles = 0;
+        private int TicksToDespawnBoneCircle = 0;
 
-        private int chargingTicksLeft = 0;
-        private int ticksToFreezeAOE = 11 * 60;
+        private int ChargingTicksLeft = 0;
+        private int TicksToFreezeAOE = 11 * 60;
 
-        public Skelly() { }
+        private readonly double TicksToChangeMusic = (129_706 / 1000) * 60;
 
-        public Skelly(float difficulty) : base(Vector2.Zero)
+        public Skelly() : base(Vector2.Zero) { }
+
+        public Skelly(float difficulty) : this()
         {
             setTileLocation(SpawnLocation);
             Difficulty = difficulty;
@@ -113,19 +104,19 @@ namespace StardewRoguelike.Bosses
         protected override void initNetFields()
         {
             base.initNetFields();
-            NetFields.AddFields(invincible, charging, throwingAnim);
+            NetFields.AddFields(Invincible, Charging, ThrowingAnim);
         }
 
         public override void update(GameTime time, GameLocation location)
         {
-            if (invincible.Value)
+            if (Invincible.Value)
                 startGlowing(Color.Orange, false, 0.1f);
-            else if (charging.Value)
+            else if (Charging.Value)
                 startGlowing(Color.Turquoise, false, 0.1f);
 
-            if (!invincible.Value && glowingColor == Color.Orange)
+            if (!Invincible.Value && glowingColor == Color.Orange)
                 stopGlowing();
-            if (!charging.Value && glowingColor == Color.Turquoise)
+            if (!Charging.Value && glowingColor == Color.Turquoise)
                 stopGlowing();
 
             base.update(time, location);
@@ -133,7 +124,7 @@ namespace StardewRoguelike.Bosses
 
         public override void updateMovement(GameLocation location, GameTime time)
         {
-            if (charging.Value || throwingAnim.Value)
+            if (Charging.Value || ThrowingAnim.Value)
             {
                 faceDirection(2);
                 Halt();
@@ -146,7 +137,7 @@ namespace StardewRoguelike.Bosses
         {
             base.updateMonsterSlaveAnimation(time);
 
-            if (throwingAnim.Value)
+            if (ThrowingAnim.Value)
             {
                 if (invincibleCountdown > 0)
                 {
@@ -163,7 +154,7 @@ namespace StardewRoguelike.Bosses
 
         public override void behaviorAtGameTick(GameTime time)
         {
-            if (throwingAnim.Value && !charging.Value)
+            if (ThrowingAnim.Value && !Charging.Value)
             {
                 if (invincibleCountdown > 0)
                 {
@@ -175,44 +166,44 @@ namespace StardewRoguelike.Bosses
                 Sprite.Animate(time, 20, 5, 150f);
                 if (Sprite.currentFrame == 24)
                 {
-                    throwingAnim.Value = false;
+                    ThrowingAnim.Value = false;
                     Sprite.currentFrame = 23;
                 }
             }
 
-            if (charging.Value)
+            if (Charging.Value)
             {
-                if (chargingTicksLeft > 0)
+                if (ChargingTicksLeft > 0)
                 {
-                    chargingTicksLeft--;
+                    ChargingTicksLeft--;
 
-                    if (chargingTicksLeft == 0)
+                    if (ChargingTicksLeft == 0)
                     {
-                        FreezeAOE(spawnedMages ? 5 : 3);
+                        FreezeAOE(SpawnedMages ? 5 : 3);
                         currentLocation.playSound("coldSpell");
-                        charging.Value = false;
-                        ticksToFreezeAOE = spawnedMages ? 8 * 60 : 14 * 60;
+                        Charging.Value = false;
+                        TicksToFreezeAOE = SpawnedMages ? 8 * 60 : 14 * 60;
                     }
                 }
 
                 return;
             }
 
-            if (ticksToFreezeAOE > 0 && !invincible.Value)
+            if (TicksToFreezeAOE > 0 && !Invincible.Value)
             {
-                ticksToFreezeAOE--;
+                TicksToFreezeAOE--;
 
-                if (ticksToFreezeAOE == 0)
+                if (TicksToFreezeAOE == 0)
                 {
-                    chargingTicksLeft = 80;
-                    charging.Value = true;
+                    ChargingTicksLeft = 80;
+                    Charging.Value = true;
                 }
             }
 
-            if (!spottedPlayer && Utility.doesPointHaveLineOfSightInMine(currentLocation, getTileLocation(), Player.getTileLocation(), 8))
+            if (!SpottedPlayer && Utility.doesPointHaveLineOfSightInMine(currentLocation, getTileLocation(), Player.getTileLocation(), 8))
             {
                 controller = new PathFindController(this, currentLocation, new(Player.getStandingX() / 64, Player.getStandingY() / 64), -1, null, 200);
-                spottedPlayer = true;
+                SpottedPlayer = true;
                 if (controller is null || controller.pathToEndPoint is null || controller.pathToEndPoint.Count == 0)
                 {
                     Halt();
@@ -222,105 +213,105 @@ namespace StardewRoguelike.Bosses
                 IsWalkingTowardPlayer = true;
             }
 
-            if (ticksToDespawnBoneCircle > 0)
+            if (TicksToDespawnBoneCircle > 0)
             {
-                ticksToDespawnBoneCircle--;
+                TicksToDespawnBoneCircle--;
 
-                if (ticksToDespawnBoneCircle == 0)
+                if (TicksToDespawnBoneCircle == 0)
                     DespawnBoneCircles();
             }
 
-            if (ticksToSpawnBoneCircles > 0)
+            if (TicksToSpawnBoneCircles > 0)
             {
-                ticksToSpawnBoneCircles--;
+                TicksToSpawnBoneCircles--;
 
-                if (ticksToSpawnBoneCircles == 60)
-                    currentLocation.playSound("shadowpeep");
+                if (TicksToSpawnBoneCircles == 60)
+                    RoguelikeUtility.DoAttackCue(currentLocation, 60);
 
-                if (ticksToSpawnBoneCircles == 0)
+                if (TicksToSpawnBoneCircles == 0)
                     SpawnBoneCircles();
             }
 
-            if (bonesToThrow > 0)
+            if (BonesToThrow > 0)
             {
-                if (nextBoneThrow == 0)
+                if (NextBoneThrow == 0)
                 {
                     ThrowBone();
-                    bonesToThrow--;
-                    nextBoneThrow = 20;
+                    BonesToThrow--;
+                    NextBoneThrow = 20;
                 }
                 else
-                    nextBoneThrow--;
+                    NextBoneThrow--;
             }
 
-            if (frostBoltsToThrow > 0)
+            if (FrostBoltsToThrow > 0)
             {
-                if (nextFrostBolt == 0)
+                if (NextFrostBolt == 0)
                 {
                     ThrowFrostBolt();
-                    frostBoltsToThrow--;
-                    nextFrostBolt = 20;
+                    FrostBoltsToThrow--;
+                    NextFrostBolt = 20;
                 }
                 else
-                    nextFrostBolt--;
+                    NextFrostBolt--;
             }
 
 
-            if (throwingAnim.Value && bonesToThrow == 0 && frostBoltsToThrow == 0)
-                throwingAnim.Value = false;
+            if (ThrowingAnim.Value && BonesToThrow == 0 && FrostBoltsToThrow == 0)
+                ThrowingAnim.Value = false;
 
-            if (ticksToAttack == 0 && ticksToSpawnBoneCircles == 0)
-                ticksToAttack = spawnedMages ? 60 * 4 : 60 * 5;
+            if (TicksToAttack == 0 && TicksToSpawnBoneCircles == 0)
+                TicksToAttack = SpawnedMages ? 60 * 4 : 60 * 5;
 
-            if (ticksToAttack > 0)
+            if (TicksToAttack > 0)
             {
-                ticksToAttack--;
+                TicksToAttack--;
 
-                if (ticksToAttack == 0)
+                if (TicksToAttack == 0)
                 {
-                    int attack = previousAttack switch
+                    int attack = PreviousAttack switch
                     {
                         0 => 1,
                         1 => 2,
                         2 => 0,
                         _ => throw new NotImplementedException()
                     };
-                    previousAttack = attack;
+                    PreviousAttack = attack;
 
                     if (attack == 0)
                     {
-                        throwingAnim.Value = true;
-                        bonesToThrow = spawnedMages ? 5 : 3;
+                        ThrowingAnim.Value = true;
+                        BonesToThrow = SpawnedMages ? 5 : 3;
                         if (Roguelike.HardMode)
-                            bonesToThrow += 2;
-                        nextBoneThrow = 20;
+                            BonesToThrow += 2;
+                        NextBoneThrow = 20;
                     }
                     else if (attack == 1)
                     {
-                        throwingAnim.Value = true;
-                        frostBoltsToThrow = spawnedMages ? 5 : 3;
+                        ThrowingAnim.Value = true;
+                        FrostBoltsToThrow = SpawnedMages ? 5 : 3;
                         if (Roguelike.HardMode)
-                            bonesToThrow += 2;
-                        nextFrostBolt = 20;
+                            BonesToThrow += 2;
+                        NextFrostBolt = 20;
                     }
                     else
-                        ticksToSpawnBoneCircles = 61;
+                        TicksToSpawnBoneCircles = 61;
                 }
             }
 
-            if (spawnedMages && MagesAreDead())
-                invincible.Value = false;
+            if (SpawnedMages && MagesAreDead())
+                Invincible.Value = false;
 
-            if (Health <= MaxHealth * ((float)1 / 2) && !spawnedMages)
+            if (Health <= MaxHealth * ((float)1 / 2) && !SpawnedMages)
             {
                 SpawnMages();
-                invincible.Value = true;
+                Invincible.Value = true;
             }
         }
 
         private void SpawnMages()
         {
-            foreach (Vector2 tilePosition in mageSpawnLocations)
+            foreach (Vector2 tilePosition in MageSpawnLocations)
             {
                 SkellyMinion mage = new(tilePosition * 64f, Difficulty, isMage: true);
                 if (!Roguelike.HardMode)
@@ -329,13 +320,13 @@ namespace StardewRoguelike.Bosses
             }
 
             Speed++;
-            spawnedMages = true;
+            SpawnedMages = true;
         }
 
         private bool MagesAreDead()
         {
             // cached
-            if (magesAreDead)
+            if (CachedMagesAreDead)
                 return true;
 
             int count = 0;
@@ -348,7 +339,7 @@ namespace StardewRoguelike.Bosses
 
             if (count == 0)
             {
-                magesAreDead = true;
+                CachedMagesAreDead = true;
                 if (!Roguelike.HardMode)
                     Speed--;
 
@@ -432,22 +423,22 @@ namespace StardewRoguelike.Bosses
                         );
                         currentLocation.projectiles.Add(proj);
                         proj.IgnoreLocationCollision = true;
-                        activeBones.Add(proj);
+                        ActiveBones.Add(proj);
                     }
                 }
             }
 
-            ticksToDespawnBoneCircle = 100;
+            TicksToDespawnBoneCircle = 100;
         }
 
         public void DespawnBoneCircles()
         {
             currentLocation.playSound("skeletonHit");
 
-            foreach (CircularProjectile bone in activeBones)
+            foreach (CircularProjectile bone in ActiveBones)
                 currentLocation.projectiles.Remove(bone);
 
-            activeBones.Clear();
+            ActiveBones.Clear();
         }
 
         public void ThrowBone()
@@ -455,7 +446,7 @@ namespace StardewRoguelike.Bosses
             if (Player is null)
                 return;
 
-            float boneSpeed = spawnedMages ? 10f : 8f;
+            float boneSpeed = SpawnedMages ? 10f : 8f;
             Vector2 v = Utility.getVelocityTowardPlayer(new Point((int)Position.X, (int)Position.Y), boneSpeed, Player);
             BasicProjectile projectile = new((int)Math.Round(DamageToFarmer * Difficulty), 4, 0, 0, (float)Math.PI / 16f, v.X, v.Y, new Vector2(Position.X, Position.Y), "skeletonHit", "skeletonStep", explode: false, damagesMonsters: false, currentLocation, this);
             projectile.IgnoreLocationCollision = true;
@@ -465,7 +456,7 @@ namespace StardewRoguelike.Bosses
 
         public void ThrowFrostBolt()
         {
-            float boneSpeed = spawnedMages ? 10f : 8f;
+            float boneSpeed = SpawnedMages ? 10f : 8f;
             Vector2 v = Utility.getVelocityTowardPlayer(new Point((int)Position.X, (int)Position.Y), boneSpeed, Player);
             BasicProjectile projectile = new((int)Math.Round(DamageToFarmer * Difficulty), 9, 0, 4, 0f, v.X, v.Y, new Vector2(Position.X, Position.Y), "flameSpellHit", "flameSpell", explode: false, damagesMonsters: false, currentLocation, this);
             projectile.IgnoreLocationCollision = true;
@@ -488,7 +479,7 @@ namespace StardewRoguelike.Bosses
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
             int actualDamage = Math.Max(1, damage - resilience.Value);
-            if (invincible.Value || charging.Value)
+            if (Invincible.Value || Charging.Value)
             {
                 currentLocation.playSound("crafting");
                 return 0;

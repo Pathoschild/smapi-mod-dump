@@ -8,14 +8,14 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewValley;
 
 namespace StardewRoguelike.Patches
 {
-    internal class EnterMinePatch : Patch
+    [HarmonyPatch(typeof(Game1), nameof(Game1.enterMine))]
+    internal class EnterMinePatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Game1), "enterMine");
-
         public static bool Prefix()
         {
             Roguelike.NextFloor();

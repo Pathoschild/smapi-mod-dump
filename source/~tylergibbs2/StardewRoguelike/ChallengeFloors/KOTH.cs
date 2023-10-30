@@ -111,7 +111,7 @@ namespace StardewRoguelike.ChallengeFloors
                 possibleBoxes.Add(new(30 * 64, 30 * 64, 5 * 64, 5 * 64));
 
                 int level = Roguelike.GetLevelFromMineshaft(mine);
-                bool isDangerous = level % 48 > Roguelike.DangerousThreshold;
+                bool isDangerous = level % 48 > Constants.DangerousThreshold;
 
                 mine.mapImageSource.Value = isDangerous ? "Maps\\Mines\\mine_slime_dangerous" : "Maps\\Mines\\mine_slime";
             }

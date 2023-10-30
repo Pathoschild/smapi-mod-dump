@@ -1,0 +1,254 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "ForageSpawnEnabled": true,
+    "Forage_Spawn_Settings": {
+        "Areas": [
+            {
+                "SpringItemIndex": [
+                    "Halloween Candy"
+                ],
+                "SummerItemIndex": [
+                    "Halloween Candy"
+                ],
+                "FallItemIndex": [
+                    "Halloween Candy"
+                ],
+                "WinterItemIndex": [
+                    "Halloween Candy"
+                ],
+                "IncludeTerrainTypes": [ "All" ],
+                "IncludeCoordinates": [ "20,2;29,6" ],
+                "ExcludeCoordinates": [ "0,0;19,100", "30,0;100,100", "20,7;30,100" ],
+                "StrictTileChecking": "Maximum",
+                "PercentChanceToSpawn": 100,
+                "SpawnWeight": 10000,
+                "MapName": "Custom_drbirbdev_HalloweenSeason_BackwoodsHedge",
+                "UniqueAreaID": "CandyHedge",
+                "MinimumSpawnsPerDay": 15,
+                "MaximumSpawnsPerDay": 15,
+                "DaysUntilSpawnsExpire": 1,
+                "ExtraConditions": {
+                    "CPConditions": {
+                        "Random: {{Range: 3, 10}} |key=halloween_event": "8"
+                    }
+                }
+            },
+            {
+                "SpringItemIndex": [
+                    "Halloween Candy"
+                ],
+                "SummerItemIndex": [
+                    "Halloween Candy"
+                ],
+                "FallItemIndex": [
+                    "Halloween Candy"
+                ],
+                "WinterItemIndex": [
+                    "Halloween Candy"
+                ],
+                "IncludeTerrainTypes": [ "Dirt", "Grass" ],
+                "StrictTileChecking": "Maximum",
+                "PercentChanceToSpawn": 100,
+                "SpawnWeight": 10000,
+                "MapName": "Forest",
+                "UniqueAreaID": "CandyForest",
+                "MinimumSpawnsPerDay": 5,
+                "MaximumSpawnsPerDay": 5,
+                "DaysUntilSpawnsExpire": 1,
+                "ExtraConditions": {
+                    "CPConditions": {
+                        "Random: {{Range: 3, 10}} |key=halloween_event": "3"
+                    }
+                }
+            },
+            {
+                "SpringItemIndex": [
+                    "Halloween Candy"
+                ],
+                "SummerItemIndex": [
+                    "Halloween Candy"
+                ],
+                "FallItemIndex": [
+                    "Halloween Candy"
+                ],
+                "WinterItemIndex": [
+                    "Halloween Candy"
+                ],
+                "IncludeTerrainTypes": [ "Dirt", "Grass" ],
+                "StrictTileChecking": "Maximum",
+                "PercentChanceToSpawn": 100,
+                "SpawnWeight": 10000,
+                "MapName": "Woods",
+                "UniqueAreaID": "CandyWoods",
+                "MinimumSpawnsPerDay": 3,
+                "MaximumSpawnsPerDay": 3,
+                "DaysUntilSpawnsExpire": 1,
+                "ExtraConditions": {
+                    "CPConditions": {
+                        "Random: {{Range: 3, 10}} |key=halloween_event": "3"
+                    }
+                }
+            },
+            {
+                "SpringItemIndex": [
+                    "Halloween Candy"
+                ],
+                "SummerItemIndex": [
+                    "Halloween Candy"
+                ],
+                "FallItemIndex": [
+                    "Halloween Candy"
+                ],
+                "WinterItemIndex": [
+                    "Halloween Candy"
+                ],
+                "IncludeTerrainTypes": [ "Dirt", "Grass" ],
+                "StrictTileChecking": "Maximum",
+                "PercentChanceToSpawn": 100,
+                "SpawnWeight": 10000,
+                "MapName": "Mountain",
+                "UniqueAreaID": "CandyMountain",
+                "MinimumSpawnsPerDay": 4,
+                "MaximumSpawnsPerDay": 4,
+                "DaysUntilSpawnsExpire": 1,
+                "ExtraConditions": {
+                    "CPConditions": {
+                        "Random: {{Range: 3, 10}} |key=halloween_event": "5"
+                    }
+                }
+            },
+            {
+                "SpringItemIndex": [
+                    "Halloween Candy"
+                ],
+                "SummerItemIndex": [
+                    "Halloween Candy"
+                ],
+                "FallItemIndex": [
+                    "Halloween Candy"
+                ],
+                "WinterItemIndex": [
+                    "Halloween Candy"
+                ],
+                "IncludeTerrainTypes": [ "Dirt", "Grass" ],
+                "StrictTileChecking": "Maximum",
+                "PercentChanceToSpawn": 100,
+                "SpawnWeight": 10000,
+                "MapName": "Railroad",
+                "UniqueAreaID": "CandyRailroad",
+                "MinimumSpawnsPerDay": 3,
+                "MaximumSpawnsPerDay": 3,
+                "DaysUntilSpawnsExpire": 1,
+                "ExtraConditions": {
+                    "CPConditions": {
+                        "Random: {{Range: 3, 10}} |key=halloween_event": "5"
+                    }
+                }
+            },
+            {
+                "SpringItemIndex": [
+                    "Halloween Candy"
+                ],
+                "SummerItemIndex": [
+                    "Halloween Candy"
+                ],
+                "FallItemIndex": [
+                    "Halloween Candy"
+                ],
+                "WinterItemIndex": [
+                    "Halloween Candy"
+                ],
+                "IncludeTerrainTypes": [ "Dirt", "Grass" ],
+                "StrictTileChecking": "Maximum",
+                "PercentChanceToSpawn": 100,
+                "SpawnWeight": 10000,
+                "MapName": "Backwoods",
+                "UniqueAreaID": "CandyBackwoods",
+                "MinimumSpawnsPerDay": 2,
+                "MaximumSpawnsPerDay": 2,
+                "DaysUntilSpawnsExpire": 1,
+                "ExtraConditions": {
+                    "CPConditions": {
+                        "Random: {{Range: 3, 10}} |key=halloween_event": "5"
+                    }
+                }
+            },
+            {
+                "SpringItemIndex": [
+                    "Halloween Candy"
+                ],
+                "SummerItemIndex": [
+                    "Halloween Candy"
+                ],
+                "FallItemIndex": [
+                    "Halloween Candy"
+                ],
+                "WinterItemIndex": [
+                    "Halloween Candy"
+                ],
+                "IncludeTerrainTypes": [ "Dirt", "Stone" ],
+                "StrictTileChecking": "Medium",
+                "PercentChanceToSpawn": 100,
+                "SpawnWeight": 10000,
+                "MapName": "Beach",
+                "UniqueAreaID": "CandyBeach",
+                "MinimumSpawnsPerDay": 5,
+                "MaximumSpawnsPerDay": 5,
+                "DaysUntilSpawnsExpire": 1,
+                "ExtraConditions": {
+                    "CPConditions": {
+                        "Random: {{Range: 3, 10}} |key=halloween_event": "4"
+                    }
+                }
+            }
+        ]
+    },
+    "MonsterSpawnEnabled": true,
+    "Monster_Spawn_Settings": {
+        "Areas": [
+            {
+                "MapName": "Forest",
+                "UniqueAreaID": "Forest_Halloween",
+                "IncludeTerrainTypes": [ "All" ],
+                "MinimumSpawnsPerDay": 40,
+                "MaximumSpawnsPerDay": 60,
+                "DaysUntilSpawnsExpire": 1,
+                "MonsterTypes": [
+                    {
+                        "MonsterName": "green slime",
+                        "Settings": {
+                            "Loot": [
+                                "Halloween Candy"
+                            ],
+                            "ExtraLoot": false,
+                            "Sprite": "Characters/Monsters/drbirbdev/PumpkinSlime",
+                            "Color": "255 127 00"
+                        }
+                    }
+                ],
+                "SpawnTiming": {
+                    "StartTime": 610,
+                    "EndTime": 2350,
+                    "MinimumTimeBetweenSpawns": 10,
+                    "MaximumSimultaneousSpawns": 3,
+                    "OnlySpawnIfAPlayerIsPresent": true,
+                    "SpawnSound": ""
+                },
+                "ExtraConditions": {
+                    "CPConditions": {
+                        "Random: {{Range: 3, 10}} |key=halloween_event": "6"
+                    }
+                }
+            }
+        ]
+    }
+}

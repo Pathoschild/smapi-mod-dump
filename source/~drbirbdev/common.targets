@@ -11,11 +11,12 @@
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <EnableHarmony>true</EnableHarmony>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <!--import mod build package-->
     <ItemGroup>
-        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.0" />
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
     </ItemGroup>
 
     <!--common mod build package options-->
@@ -25,7 +26,7 @@
 
     <ItemGroup>
 		<Reference Include="SpaceCore">
-			<HintPath>$(GamePath)\Mods\SpaceCore\SpaceCore.dll</HintPath>
+			<HintPath>$(GamePath)\Mods\__Dependencies\SpaceCore\SpaceCore.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
 	</ItemGroup>

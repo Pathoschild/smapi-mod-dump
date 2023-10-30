@@ -1,0 +1,29 @@
+﻿{
+    "GreenhouseLevel1": "Estufa",
+    "GreenhouseLevel1Description": "Campo 15x15. Adiciona uma adega.",
+    
+    "GreenhouseLevel2": "Estufa Pequena",
+    "GreenhouseLevel2Description": "Campo 30x30. Expande a adega, adiciona uma estufa interna e irrigação automática.",
+    
+    "GreenhouseLevel3": "Estufa Média",
+    "GreenhouseLevel3Description": "Campo 50x50. Expande a adega e a estufa interna.",
+    
+    "GreenhouseLevel4": "Estufa Grande",
+    "GreenhouseLevel4Description": "Campo 75x75. Expande a adega e amplia a estufa interna.",
+  
+    "GreenhouseLevel5": "Estufa Deluxe Extra Grande",
+    "GreenhouseLevel5Description": "Campo 100x100. Expande a adega e amplia ainda mais a estufa interna.",
+
+    "LeftBehindTree": "Você deixou a árvore para trás.",
+    "LeftBehindCrop": "Você deixou a cultura para trás.",
+    "PickUpTreeMessage": "Árvore recolhida!",
+    "PlaceTreeMessage": "Árvore colocada!",
+    "PickUpCropMessage": "Cultura recolhida!",
+    "PlaceCropMessage": "Cultura colocada!",
+    "EnableTreePickingOption": "Coleta de árvores e culturas",
+    "EnableTreePickingTooltip": "Ativar ou desativar a coleta.",
+    "language-choice-name": "Idioma",
+"language-choice-tooltip": "Selecione o idioma do mod"
+
+    
+}

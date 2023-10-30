@@ -1,4 +1,6 @@
 {
+  "RecolorPalette": "Auto",
+  "InteriorPalette": "Auto",
   "AlwaysAdopt": true,
   "DTF": true
 }

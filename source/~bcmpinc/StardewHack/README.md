@@ -35,6 +35,9 @@ This library is used by the following mods:
 Please report bugs on [GitHub](https://github.com/bcmpinc/StardewHack/issues).
 
 ## Changes
+#### 7.0:
+* Localization support.
+
 #### 6.0:
 * Update [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098) bindings.
 

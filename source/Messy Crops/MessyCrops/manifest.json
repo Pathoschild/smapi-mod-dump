@@ -11,7 +11,7 @@
 {
   "Name": "Messy Crops",
   "Author": "Tlitookilakin",
-  "Version": "1.0.2",
+  "Version": "1.2.0",
   "Description": "Randomly offsets crops for a more organic look.",
   "UniqueID": "tlitookilakin.MessyCrops",
   "EntryDll": "MessyCrops.dll",

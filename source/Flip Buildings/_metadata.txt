@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/mouahrara/FlipBuildings
+   Git: https://github.com/mouahrara/FlipBuildings.git
+
+mods:
+   Flip Buildings
+
+latest commit:
+   commit 46607825c01de3b12ea5dd25e2b9f75f4115ad8a
+   Author: mouahrara <mouahrara.noreply@protonmail.com>
+   Date:   Tue Oct 17 11:15:07 2023 +0200
+   
+       Flip Buildings 1.0.2
+   

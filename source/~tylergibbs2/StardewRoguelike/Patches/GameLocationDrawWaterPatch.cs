@@ -8,16 +8,16 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
 
 namespace StardewRoguelike.Patches
 {
-    internal class GameLocationDrawWaterPatch : Patch
+    [HarmonyPatch(typeof(GameLocation), "resetLocalState")]
+    internal class GameLocationDrawWaterPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(GameLocation), "resetLocalState");
-
         public static void Postfix(GameLocation __instance)
         {
             if (__instance is Mine)

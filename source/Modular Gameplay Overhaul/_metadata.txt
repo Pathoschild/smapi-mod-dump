@@ -6,9 +6,9 @@ mods:
    Modular Gameplay Overhaul
 
 latest commit:
-   commit ce2da3b1cebcba8008501bba3e3672a572746176
+   commit 4500dc29dcb9edff4e8fcc43e6ecfdc76e64822c
    Author: Mat L <2775342-daleao@users.noreply.gitlab.com>
-   Date:   Tue Sep 26 12:03:40 2023 -0300
+   Date:   Sat Oct 28 11:47:30 2023 -0300
    
-       Update CMBT FAQ.
+       Update README.md
    

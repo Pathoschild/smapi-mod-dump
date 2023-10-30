@@ -14,6 +14,7 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Rings;
 
 using DaLion.Shared.Harmony;
 using HarmonyLib;
+using Buff = DaLion.Shared.Enums.Buff;
 
 #endregion using directives
 
@@ -30,10 +31,11 @@ internal sealed class FarmerCanBeDamagedPatcher : HarmonyPatcher
 
     /// <summary>Ring of Yoba rebalance.</summary>
     [HarmonyPrefix]
+    // ReSharper disable once RedundantAssignment
     private static bool FarmerCanBeDamagedPostfix(Farmer __instance, ref bool __result)
     {
         __result = !__instance.temporarilyInvincible && !__instance.isEating && !Game1.fadeToBlack &&
-               (!Game1.buffsDisplay.hasBuff(21) || CombatModule.Config.RebalancedRings);
+                   (!Game1.buffsDisplay.hasBuff((int)Buff.YobasBlessing) || CombatModule.Config.RebalancedRings);
         return false; // don't run original logic
     }
 

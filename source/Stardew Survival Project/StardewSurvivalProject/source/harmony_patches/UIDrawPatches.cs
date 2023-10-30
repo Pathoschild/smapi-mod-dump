@@ -64,9 +64,9 @@ namespace StardewSurvivalProject.source.harmony_patches
 
                     //FIXME: not all object info is in objectInformation dict
                     string[] arrInfo = { };
-                    if (Game1.objectInformation.ContainsKey(hoveredItem.parentSheetIndex))
+                    if (Game1.objectInformation.ContainsKey(hoveredItem.ParentSheetIndex))
                     {
-                        arrInfo = Game1.objectInformation[hoveredItem.parentSheetIndex].Split('/');
+                        arrInfo = Game1.objectInformation[hoveredItem.ParentSheetIndex].Split('/');
                         if (arrInfo.Length > 6)
                         {
                             if (arrInfo[6].Equals("drink") && addThirst == 0)

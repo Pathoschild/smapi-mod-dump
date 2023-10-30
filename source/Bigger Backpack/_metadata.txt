@@ -6,9 +6,9 @@ mods:
    Bigger Backpack
 
 latest commit:
-   commit 59012174a9e4beb30fa8910bef694572b936d255
+   commit e89c19842a6abd9ccbe28ccf93902ed9280a8c68
    Author: Bauke Conijn <bcmpinc@users.sourceforge.net>
-   Date:   Fri Dec 16 05:32:23 2022 +0100
+   Date:   Tue Oct 24 01:32:34 2023 +0200
    
-       Updated readme
+       Bump ModBuildConfig package
    

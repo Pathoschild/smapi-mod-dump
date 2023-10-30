@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Objects;
@@ -16,10 +17,9 @@ using System.Reflection;
 
 namespace StardewRoguelike.Patches
 {
-    internal class NoWeedDropsPatch : Patch
+    [HarmonyPatch(typeof(SObject), "cutWeed")]
+    internal class NoWeedDropsPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(SObject), "cutWeed");
-
         public static bool Prefix(SObject __instance, Farmer who, GameLocation? location = null)
         {
             if (location is null && who is not null)
@@ -104,7 +104,7 @@ namespace StardewRoguelike.Patches
 
 			if (!sound.Equals("breakingGlass"))
 			{
-				if (Game1.random.NextDouble() < 0.01)
+				if (Game1.random.NextDouble() < 0.001)
 					location.debris.Add(new Debris(new Hat(40), __instance.TileLocation * 64f + new Vector2(32f, 32f)));
 			}
 

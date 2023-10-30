@@ -15,10 +15,9 @@ using StardewValley.Locations;
 
 namespace StardewRoguelike.Patches
 {
-    internal class InjectMineShaftNetFieldsPatch : Patch
+    [HarmonyPatch(typeof(MineShaft), "initNetFields")]
+    internal class InjectMineShaftNetFieldsPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(MineShaft), "initNetFields");
-
         public static void Postfix(MineShaft __instance)
         {
             __instance.NetFields.AddFields(
@@ -36,10 +35,9 @@ namespace StardewRoguelike.Patches
         }
     }
 
-    internal class InjectFarmerNetFieldsPatch : Patch
+    [HarmonyPatch(typeof(Farmer), "farmerInit")]
+    internal class InjectFarmerNetFieldsPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Farmer), "farmerInit");
-
         public static void Postfix(Farmer __instance)
         {
             __instance.NetFields.AddFields(
@@ -51,10 +49,9 @@ namespace StardewRoguelike.Patches
         }
     }
 
-    internal class InjectDwarfGateNetFieldsPatch : Patch
+    [HarmonyPatch(typeof(DwarfGate), "InitNetFields")]
+    internal class InjectDwarfGateNetFieldsPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(DwarfGate), "InitNetFields");
-
         public static void Postfix(DwarfGate __instance)
         {
             __instance.NetFields.AddFields(
@@ -63,10 +60,9 @@ namespace StardewRoguelike.Patches
         }
     }
 
-    internal class InjectGameLocationNetFields : Patch
+    [HarmonyPatch(typeof(GameLocation), "initNetFields")]
+    internal class InjectGameLocationNetFields
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(GameLocation), "initNetFields");
-
         public static void Postfix(GameLocation __instance)
         {
             __instance.NetFields.AddFields(

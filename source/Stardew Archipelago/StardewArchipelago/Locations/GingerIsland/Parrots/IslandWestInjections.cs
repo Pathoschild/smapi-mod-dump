@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.BellsAndWhistles;
 using StardewValley.Locations;
 
 namespace StardewArchipelago.Locations.GingerIsland.Parrots
@@ -22,14 +21,14 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
         private const string AP_FARM_OBELISK_PARROT = "Farm Obelisk";
         private const string AP_MAILBOX_PARROT = "Island Mailbox";
         private const string AP_FARMHOUSE_PARROT = "Island Farmhouse";
-        private const string AP_FAST_TRAVEL_PARROT = "Parrot Express";
+        private const string AP_PARROT_EXPRESS_PARROT = "Parrot Express";
 
         private static IMonitor _monitor;
         private static IModHelper _modHelper;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
 
-        private IslandLocation _islandLocation;
+        private IslandLocation _islandWest;
 
         public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker)
         {
@@ -41,21 +40,21 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
 
         public IslandWestInjections()
         {
-            _islandLocation = (IslandWest)Game1.getLocationFromName("IslandWest");
+            _islandWest = (IslandWest)Game1.getLocationFromName("IslandWest");
         }
 
         public void ReplaceParrots()
         {
-            _islandLocation.parrotUpgradePerches.Clear();
-            AddFarmObeliskParrot(_islandLocation);
-            AddMailboxParrot(_islandLocation);
-            AddFarmhouseParrot(_islandLocation);
-            AddParrotExpressParrot(_islandLocation);
+            _islandWest.parrotUpgradePerches.Clear();
+            AddFarmObeliskParrot(_islandWest);
+            AddMailboxParrot(_islandWest);
+            AddFarmhouseParrot(_islandWest);
+            AddParrotExpressParrot(_islandWest);
         }
 
-        private static void AddFarmObeliskParrot(IslandLocation __instance)
+        private static void AddFarmObeliskParrot(IslandLocation islandWest)
         {
-            __instance.parrotUpgradePerches.Add(new ParrotUpgradePerch(__instance,
+            islandWest.parrotUpgradePerches.Add(new ParrotUpgradePerchArchipelago(AP_FARM_OBELISK_PARROT, _archipelago, islandWest,
                 new Point(72, 37),
                 new Rectangle(71, 29, 3, 8), 20,
                 PurchaseFarmObeliskParrot,
@@ -74,9 +73,9 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
             return _locationChecker.IsLocationChecked(AP_FARM_OBELISK_PARROT);
         }
         
-        private static void AddMailboxParrot(IslandLocation __instance)
+        private static void AddMailboxParrot(IslandLocation islandWest)
         {
-            __instance.parrotUpgradePerches.Add(new ParrotUpgradePerch(__instance,
+            islandWest.parrotUpgradePerches.Add(new ParrotUpgradePerchArchipelago(AP_MAILBOX_PARROT, _archipelago, islandWest,
                 new Point(81, 40),
                 new Rectangle(80, 39, 3, 2), 
                 5,
@@ -96,9 +95,9 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
             return _locationChecker.IsLocationChecked(AP_MAILBOX_PARROT);
         }
         
-        private static void AddFarmhouseParrot(IslandLocation __instance)
+        private static void AddFarmhouseParrot(IslandLocation islandWest)
         {
-            __instance.parrotUpgradePerches.Add(new ParrotUpgradePerch(__instance,
+            islandWest.parrotUpgradePerches.Add(new ParrotUpgradePerchArchipelago(AP_FARMHOUSE_PARROT, _archipelago, islandWest,
                 new Point(81, 40),
                 new Rectangle(74, 36, 7, 4),
                 20,
@@ -117,9 +116,9 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
             return _locationChecker.IsLocationChecked(AP_FARMHOUSE_PARROT);
         }
         
-        private static void AddParrotExpressParrot(IslandLocation __instance)
+        private static void AddParrotExpressParrot(IslandLocation islandWest)
         {
-            __instance.parrotUpgradePerches.Add(new ParrotUpgradePerch(__instance,
+            islandWest.parrotUpgradePerches.Add(new ParrotUpgradePerchArchipelago(AP_PARROT_EXPRESS_PARROT, _archipelago, islandWest,
                 new Point(72, 10),
                 new Rectangle(73, 5, 3, 5),
                 10,
@@ -130,12 +129,12 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
 
         private static void PurchaseParrotExpressParrot()
         {
-            _locationChecker.AddCheckedLocation(AP_FAST_TRAVEL_PARROT);
+            _locationChecker.AddCheckedLocation(AP_PARROT_EXPRESS_PARROT);
         }
 
         private static bool IsParrotExpressParrotPurchased()
         {
-            return _locationChecker.IsLocationChecked(AP_FAST_TRAVEL_PARROT);
+            return _locationChecker.IsLocationChecked(AP_PARROT_EXPRESS_PARROT);
         }
     }
 }

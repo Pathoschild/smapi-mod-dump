@@ -51,16 +51,11 @@ internal sealed class ToolButtonPressedEvent : ButtonPressedEvent
             player.FaceTowardsTile(Game1.currentCursorTile);
         }
 
-        if (!ToolsModule.Config.EnableAutoSelection ||
-            !ToolsModule.State.SelectableToolByType.ContainsKey(tool.GetType()) ||
-            tool == CombatModule.State.AutoSelectableMelee || tool == CombatModule.State.AutoSelectableRanged)
+        var grabTile = e.Cursor.GrabTile;
+        if (ToolsModule.Config.EnableAutoSelection &&
+            ToolSelector.TryFor(grabTile, player, player.currentLocation, out var selectable1))
         {
-            return;
-        }
-
-        if (ToolSelector.TryFor(e.Cursor.GrabTile, player, player.currentLocation, out var selectable))
-        {
-            player.CurrentToolIndex = selectable.Value.Index;
+            player.CurrentToolIndex = selectable1.Value.Index;
         }
     }
 }

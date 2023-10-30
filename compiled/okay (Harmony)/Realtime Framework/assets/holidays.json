@@ -1,0 +1,63 @@
+﻿{
+    "newyears": {
+        "ComingDays": 0,
+        "PassingDays": 0,
+        "Date": [ 1, 1 ]
+    },
+    "valentines": {
+        "ComingDays": 7,
+        "PassingDays": 1,
+        "Date": [ 2, 14 ]
+    },
+    "halloween": {
+        "ComingDays": 30,
+        "PassingDays": 1,
+        "EndDelayHours": 6,
+        "Date": [ 10, 31 ]
+    },
+    "christmas": {
+        "ComingDays": 25,
+        "PassingDays": 1,
+        "Date": [ 12, 25 ]
+    },
+    "newyearseve": {
+        "ComingDays": 0,
+        "PassingDays": 0,
+        "Date": [ 12, 31 ]
+    },
+
+    "easter": {
+        "ComingDays": 7,
+        "PassingDays": 1,
+        "VaryingDates": {
+            "2023": [ 4, 9 ],
+            "2024": [ 3, 31 ],
+            "2025": [ 4, 20 ],
+            "2026": [ 4, 5 ],
+            "2027": [ 3, 28 ],
+            "2028": [ 4, 16 ],
+            "2029": [ 4, 1 ],
+            "2030": [ 4, 21 ],
+            "2031": [ 4, 13 ],
+            "2032": [ 3, 28 ],
+            "2033": [ 4, 17 ]
+        }
+    },
+    "thanksgiving": {
+        "ComingDays": 7,
+        "PassingDays": 1,
+        "VaryingDates": {
+            "2023": [ 11, 23 ],
+            "2024": [ 11, 28 ],
+            "2025": [ 11, 27 ],
+            "2026": [ 11, 26 ],
+            "2027": [ 11, 25 ],
+            "2028": [ 11, 23 ],
+            "2029": [ 11, 22 ],
+            "2030": [ 11, 28 ],
+            "2031": [ 11, 27 ],
+            "2032": [ 11, 25 ],
+            "2033": [ 11, 24 ]
+        }
+    }
+}

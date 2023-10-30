@@ -60,7 +60,21 @@ namespace StardewSurvivalProject.source.commands
                 }
             }
         }
-        
+
+        public void SetMood(string cmd, string[] args)
+        {
+            if (cmd == "player_setmood")
+            {
+                if (args.Length < 1)
+                    LogHelper.Info("Usage: player_setmood <mood>");
+                else
+                {
+                    instance.setPlayerMood(double.Parse(args[0]));
+                    LogHelper.Info($"Ok, set player mood to {args[0]}");
+                }
+            }
+        }
+
         public void SetEffect(string cmd, string[] args)
         {
             if (cmd == "player_testeffect")

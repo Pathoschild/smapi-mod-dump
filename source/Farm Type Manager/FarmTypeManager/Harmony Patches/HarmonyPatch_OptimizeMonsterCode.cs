@@ -195,7 +195,7 @@ namespace FarmTypeManager
                     if (__result == null) //if this method failed to return a farmer (possible due to other mods' patches, multiplayer/threading issues, etc)
                     {
                         __result = Game1.player; //assign the local player (should never be null because it causes immediate crashes in most contexts, but may still be possible)
-                        
+
                         if (__result == null) //if the result is somehow still null
                         {
                             Utility.Monitor.LogOnce($"Monster.findPlayer and Game1.player both returned null. If errors occur, please share your full log file with this mod's developer.", LogLevel.Debug);

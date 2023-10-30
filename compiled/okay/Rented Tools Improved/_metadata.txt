@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/18909
+IDs: SolusCleansing.RentedToolsImproved
+update keys: Nexus:18909, GitHub:SolusCleansing/RentedToolsImproved

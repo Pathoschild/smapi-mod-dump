@@ -44,6 +44,7 @@ namespace MapEdit
                             mapData.ReplaceWith(EditMap(e.Name.Name, mapData.Data, data));
 
                         });
+                        return;
                     }
                 }
             }
@@ -142,6 +143,7 @@ namespace MapEdit
                     Game1.playSound(Config.ShowMenu ? "bigSelect" : "bigDeSelect");
                     SMonitor.Log($"Toggled menu: {Config.ShowMenu}");
                     SHelper.WriteConfig(Config);
+                    return;
                 }
                 if (MouseInMenu())
                 {

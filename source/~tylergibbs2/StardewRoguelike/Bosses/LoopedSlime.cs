@@ -27,42 +27,21 @@ namespace StardewRoguelike.Bosses
     {
         public string DisplayName => "Goobins' Juniors";
 
-        public string MapPath
-        {
-            get { return "boss-slime"; }
-        }
+        public string MapPath => "boss-slime";
 
-        public string TextureName
-        {
-            get { return "Characters\\Monsters\\Green Slime_dangerous"; }
-        }
+        public string TextureName => "Characters\\Monsters\\Green Slime_dangerous";
 
-        public Vector2 SpawnLocation
-        {
-            get { return new(24, 24); }
-        }
+        public Vector2 SpawnLocation => new(24, 24);
 
-        public List<string> MusicTracks
-        {
-            get { return new() { "jelly_junktion" }; }
-        }
+        public List<string> MusicTracks => new() { "jelly_junktion" };
 
-        public bool InitializeWithHealthbar
-        {
-            get { return true; }
-        }
+        public bool InitializeWithHealthbar => true;
 
-        private float _difficulty;
+        public float Difficulty { get; set; }
 
-        public float Difficulty
-        {
-            get { return _difficulty; }
-            set { _difficulty = value; }
-        }
+        private readonly int TotalSlimes;
 
-        private readonly int totalSlimes;
-
-        private int nextBreakHP;
+        private int NextBreakHP;
 
         public LoopedSlime() { }
 
@@ -78,9 +57,9 @@ namespace StardewRoguelike.Bosses
 
             moveTowardPlayerThreshold.Value = 20;
 
-            nextBreakHP = (int)Math.Round(MaxHealth * (2f / 3f));
+            NextBreakHP = (int)Math.Round(MaxHealth * (2f / 3f));
             stackedSlimes.Value = Roguelike.HardMode ? 4 : 2;
-            totalSlimes = stackedSlimes.Value + 1;
+            TotalSlimes = stackedSlimes.Value + 1;
 
             CalculateNextBreak();
         }
@@ -90,13 +69,13 @@ namespace StardewRoguelike.Bosses
             int slimesLeft = stackedSlimes.Value;
             if (slimesLeft == 0)
             {
-                nextBreakHP = -1;
+                NextBreakHP = -1;
                 return;
             }
 
-            float breakEvery = 1f / totalSlimes;
+            float breakEvery = 1f / TotalSlimes;
             float nextBreakPercentage = Math.Max(breakEvery * slimesLeft, breakEvery);
-            nextBreakHP = (int)(MaxHealth * nextBreakPercentage);
+            NextBreakHP = (int)(MaxHealth * nextBreakPercentage);
         }
 
         public override void OnAttacked(Vector2 trajectory)
@@ -110,7 +89,7 @@ namespace StardewRoguelike.Bosses
                 trajectory.Normalize();
             trajectory *= 16f;
 
-            if (Health > nextBreakHP)
+            if (Health > NextBreakHP)
             {
                 double roll = Game1.random.NextDouble();
                 if (roll <= 0.2)
@@ -236,7 +215,7 @@ namespace StardewRoguelike.Bosses
 
         public override void draw(SpriteBatch b)
         {
-            if (base.IsInvisible || !Utility.isOnScreen(Position, 128))
+            if (IsInvisible || !Utility.isOnScreen(Position, 128))
                 return;
 
             for (int i = 0; i <= stackedSlimes.Value; i++)
@@ -244,7 +223,7 @@ namespace StardewRoguelike.Bosses
                 bool top_slime = i == stackedSlimes.Value;
                 Vector2 stack_adjustment = Vector2.Zero;
                 if (stackedSlimes.Value > 0)
-                    stack_adjustment = new Vector2((float)Math.Sin((double)randomStackOffset + Game1.currentGameTime.TotalGameTime.TotalSeconds * Math.PI * 2.0 + (double)(i * 30)) * 8f * Scale, -30 * i * Scale);
+                    stack_adjustment = new Vector2((float)Math.Sin(randomStackOffset + Game1.currentGameTime.TotalGameTime.TotalSeconds * Math.PI * 2.0 + (i * 30)) * 8f * Scale, -30 * i * Scale);
 
                 int wagTimer = (int)GetType().BaseType!.GetField("wagTimer", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(this)!;
                 int readyToJump = (int)GetType().BaseType!.GetField("readyToJump", BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(this)!;
@@ -257,7 +236,6 @@ namespace StardewRoguelike.Bosses
                     int yDongleSource = ((isMoving() || wagTimer > 0) ? (24 * Math.Min(1, Math.Max(1, Math.Abs(((wagTimer > 0) ? (992 - wagTimer) : (Game1.currentGameTime.TotalGameTime.Milliseconds % 992)) - 496) / 62) / 4)) : 24);
                     if (hasSpecialItem.Value)
                         yDongleSource += 48;
-
 
                     b.Draw(Sprite.Texture, getLocalPosition(Game1.viewport) + stack_adjustment + new Vector2(32f, GetBoundingBox().Height - 24 * Scale + ((readyToJump <= 0) ? (4 * (-2 + Math.Abs(Sprite.currentFrame % 4 - 2))) : (4 + 4 * (Sprite.currentFrame % 4 % 3))) + yOffset) * Scale, new Microsoft.Xna.Framework.Rectangle(xDongleSource, 168 + yDongleSource, 16, 24), hasSpecialItem ? Color.White : color.Value, 0f, new Vector2(8f, 16f), 4f * Math.Max(0.2f, (float)Scale - 0.4f * (ageUntilFullGrown.Value / 120000f)), flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, drawOnTop ? 0.991f : (getStandingY() / 10000f + 0.0001f)));
                 }

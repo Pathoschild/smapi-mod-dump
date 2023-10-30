@@ -33,8 +33,13 @@ namespace StardewSurvivalProject.source.model
             temp = new BodyTemp();
             thirst = new Thirst();
             healthPoint = farmer.maxHealth;
-            mood = new Mood();
+            mood = new Mood(OnFarmerMentalBreak);
             bindedFarmer = farmer;
+        }
+
+        public void OnFarmerMentalBreak()
+        {
+            events.CustomEvents.InvokeOnMentalBreak(bindedFarmer);
         }
 
         //update drain passively, should happen every 10 in-game minutes
@@ -42,10 +47,8 @@ namespace StardewSurvivalProject.source.model
         {
             if (ModConfig.GetInstance().UsePassiveDrain)
             {
-                hunger.value -= ModConfig.GetInstance().PassiveHungerDrainRate;
-                thirst.value -= ModConfig.GetInstance().PassiveThirstDrainRate;
+                updateHungerThirstDrain(-ModConfig.GetInstance().PassiveHungerDrainRate, -ModConfig.GetInstance().PassiveThirstDrainRate);
             }
-            checkIsDangerValue();
         }
 
         public void checkIsDangerValue()
@@ -68,19 +71,33 @@ namespace StardewSurvivalProject.source.model
             }
         }
 
-        public void updateActiveDrain(double deltaHunger, double deltaThirst)
+        public void updateHungerThirstDrain(double deltaHunger, double deltaThirst, bool reduceSaturation = true)
         {
             hunger.value += deltaHunger;
             thirst.value += deltaThirst;
+            if (reduceSaturation)
+            {
+                hunger.saturation = Math.Max(hunger.saturation + deltaHunger * 3, 0);
+            }
             checkIsDangerValue();
         }
 
         //update hunger after eating food
         public void updateEating(double addValue)
         {
+            // modify addValue with saturation
+            if (addValue > 0 && ModConfig.GetInstance().ScaleHungerRestoredWithTimeFromLastMeal)
+            {
+                addValue = addValue * Math.Max(1 - hunger.saturation / 100, 0);
+                // saturation is increased by 21.6 * ln(addValue + 1), capped at 100, if saturation is > 0, attempt to get the addValue from saturation before add the current addValue
+                double saturationAddValue = Math.Min(18.95 * Math.Log(addValue + 1), 100 - hunger.saturation);
+
+                hunger.saturation += saturationAddValue;
+            }
+
             hunger.value = Math.Min(hunger.value + addValue, Hunger.DEFAULT_VALUE);
             if (addValue == 0) return;
-            Game1.addHUDMessage(new HUDMessage($"{(addValue >= 0 ? "+" : "") + addValue} Hunger", (addValue >= 0 ? HUDMessage.stamina_type : HUDMessage.error_type)));
+            Game1.addHUDMessage(new HUDMessage($"{(addValue >= 0 ? "+" : "") + Math.Round(addValue)} Hunger", (addValue >= 0 ? HUDMessage.stamina_type : HUDMessage.error_type)));
             checkIsDangerValue();
         }
 
@@ -132,9 +149,7 @@ namespace StardewSurvivalProject.source.model
         internal void updateRunningDrain()
         {
             double THIRST_DRAIN_ON_RUNNING = ModConfig.GetInstance().RunningThirstDrainRate, HUNGER_DRAIN_ON_RUNNING = ModConfig.GetInstance().RunningHungerDrainRate;
-            hunger.value -= HUNGER_DRAIN_ON_RUNNING;
-            thirst.value -= THIRST_DRAIN_ON_RUNNING;
-            checkIsDangerValue();
+            updateHungerThirstDrain(-HUNGER_DRAIN_ON_RUNNING, -THIRST_DRAIN_ON_RUNNING);
         }
 
         internal void resetPlayerHungerAndThirst()

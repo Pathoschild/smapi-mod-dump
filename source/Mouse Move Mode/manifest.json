@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ylsama/RightClickMoveMode
+**
+*************************************************/
+
+{
+  "Author": "ylsama",
+  "Description": "A simple enchancement for game controls that allow player move your Farmmer by Mouse",
+  "EntryDll": "MouseMoveMode.dll",
+  "MinimumApiVersion": "3.8",
+  "Name": "MouseMoveMode",
+  "UniqueID": "ylsama.MouseMoveMode",
+  "UpdateKeys": [ "Nexus:2614", "Github:ylsama/RightClickMoveMode" ],
+  "Version": "1.2.8"
+}

@@ -99,7 +99,12 @@ namespace StardewSurvivalProject.source.model
                 //special treatment for cave
                 if (location.Name.Contains("UndergroundMine") && ModConfig.GetInstance().UseDefaultCaveTemperatureModifier)
                 {
-                    if (currentMineLevel >= 0 && currentMineLevel < 40)
+                    if (currentMineLevel == 77377)
+                    {
+                        value = DEFAULT_VALUE;
+                        fixedTemp = true;
+                    }
+                    else if (currentMineLevel >= 0 && currentMineLevel < 40)
                     {
                         value = DEFAULT_VALUE + 0.22 * currentMineLevel;
                         fixedTemp = true;
@@ -211,6 +216,7 @@ namespace StardewSurvivalProject.source.model
 
         public void updateLocalEnvTemp(int playerTileX, int playerTileY)
         {
+
             //FIXME: approach can be improved
             //TODO: change to instead keeping track of a list of heating / cooling source (initialize on loading save file)
 

@@ -1,0 +1,27 @@
+﻿{
+    "GreenhouseLevel1": "Invernadero",
+    "GreenhouseLevel1Description": "Tierra para sembrar 15x15. Añade una bodega.",
+    
+    "GreenhouseLevel2": "Invernadero Chico",
+    "GreenhouseLevel2Description": "Tierra para sembrar 30x30. Amplía la bodega. Añade riego automático. Ahora puedes poner árboles frutales dentro.",
+    
+    "GreenhouseLevel3": "Invernadero Mediano",
+    "GreenhouseLevel3Description": "Tierra para sembrar 60x60. Expande aún más la bodega. Añade un invernadero interno.",
+    
+    "GreenhouseLevel4": "Invernadero Grande",
+    "GreenhouseLevel4Description": "Tierra para sembrar 120x120. Expande más la bodega. Más espacio en el invernadero interno.",
+  
+    "GreenhouseLevel5": "Invernadero Enorme Deluxe",
+    "GreenhouseLevel5Description": "Tierra para sembrar 240x240. Aumenta más la bodega. Aún más espacio en el invernadero interno.",
+
+    "LeftBehindTree": "Wey Nmms olvidaste el árbol.",
+    "LeftBehindCrop": "Wey Nmms olvidaste el cultivo.",
+    "PickUpTreeMessage": "¡Recogiste el árbol Wey!",
+    "PlaceTreeMessage": "¡Plantaste el árbol!",
+    "PickUpCropMessage": "¡Recogiste el cultivo Wey!",
+    "PlaceCropMessage": "¡Plantaste el cultivo!",
+    "EnableTreePickingOption": "Recolectar árboles y cultivos",
+    "EnableTreePickingTooltip": "Activa o desactiva la función.",
+    "language-choice-name": "Idioma",
+    "language-choice-tooltip": "Selecciona el idioma del mod"
+}

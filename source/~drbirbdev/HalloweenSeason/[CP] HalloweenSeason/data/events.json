@@ -1,0 +1,102 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "Changes": [
+        // 1: Monster Framework
+        // 2: Custom Tree Tweaks
+        {
+            "Action": "Include",
+            "FromFile": "data/event/tree.json",
+            "When": {
+                "HalloweenEvent": 2
+            }
+        },
+        // 3: FTM
+        // 4: FTM
+        // 5: FTM
+        // 6: FTM
+        {
+            "Action": "Load",
+            "Target": "Characters/Monsters/drbirbdev/PumpkinSlime",
+            "FromFile": "assets/halloweenSlime.png"
+        },
+        // 7: Custom Ore Nodes / Custom Resource Clumps
+        {
+            "Action": "Include",
+            "FromFile": "data/event/mine.json",
+            "When": {
+                "HalloweenEvent": 7
+            }
+        },
+        // 8: Hedge Maze
+        {
+            "Action": "Include",
+            "FromFile": "data/event/hedge.json",
+            "When": {
+                "HalloweenEvent": 8
+            }
+        },
+        // 9: Trash Cans
+        {
+            "Action": "Include",
+            "FromFile": "data/event/trash.json",
+            "When": {
+                "HalloweenEvent": 9
+            }
+        },
+        // 10: Friendship
+        {
+            "Action": "Include",
+            "FromFile": "data/event/friends.json",
+            "When": {
+                "HalloweenEvent": 10
+            }
+        },
+
+
+        // General changes
+        // Add television channel
+        {
+            "Action": "EditData",
+            "Target": "{{Platonymous.CustomTV/Channel:{{TVChannel}}}}",
+            "Entries": {
+                "@Name": "{{i18n:tv.name}}",
+                "@Intro": "{{i18n:tv.intro}}/IntroScreen",
+                "1": "{{i18n:tv.text{{HalloweenEvent}}}}/NewsScreen Overlay"
+            }
+        },
+        {
+            "Action": "Load",
+            "Target": "{{Platonymous.CustomTV/Screen:{{TVChannel}} IntroScreen}}",
+            "FromFile": "assets/tv/intro_screen.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "{{Platonymous.CustomTV/Screen:{{TVChannel}} NewsScreen}}",
+            "FromFile": "assets/tv/news_screen.png"
+        },
+        {
+            "Action": "Load",
+            "Target": "{{Platonymous.CustomTV/Screen:{{TVChannel}} Overlay}}",
+            "FromFile": "assets/tv/overlay{{HalloweenEvent}}.png"
+        },
+
+        // Change title screen
+        {
+            "Action": "EditImage",
+            "Target": "Minigames/TitleButtons",
+            "FromFile": "assets/HalloweenTitle.png"
+        }
+
+
+
+    ]
+}

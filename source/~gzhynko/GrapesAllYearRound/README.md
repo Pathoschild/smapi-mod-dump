@@ -6,17 +6,14 @@ for queries and analysis.**
 
 ----
 
-**GrapesAllYearRound** allows grapes to grow all year round, but produce only in fall.
+**GrapesAllYearRound** is a content pack for [CropGrowthAdjustments](https://www.nexusmods.com/stardewvalley/mods/18914) 
+that allows grapes to grow all year round, but produce only in fall.
 
 ## Install
 1. [Install the latest version of SMAPI](https://smapi.io/).
-
 2. Install Grapes All Year Round [from Nexus mods](https://www.nexusmods.com/stardewvalley/mods/7759).
-
-3. Run the game using SMAPI.
-
-## Uninstall
-Simply removing mod's folder will work.
+3. Install Crop Growth Adjustments [from Nexus mods](https://www.nexusmods.com/stardewvalley/mods/18914).
+4. Run the game using SMAPI.
 
 ## See also
 

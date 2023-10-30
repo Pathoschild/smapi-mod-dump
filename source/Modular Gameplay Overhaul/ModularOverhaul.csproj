@@ -10,7 +10,7 @@
     <RepositoryType>git</RepositoryType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <UpdateKeys>GitHub:daleao/modular-overhaul</UpdateKeys>
-    <Version>3.1.4</Version>
+    <Version>4.0.2</Version>
 
     <!-- build settings -->
     <TargetFramework>net5.0</TargetFramework>
@@ -86,7 +86,7 @@
   <!-- mod dependencies -->
   <ItemGroup>
     <Reference Include="SpaceCore">
-      <HintPath>dependencies\SpaceCore.dll</HintPath>
+      <HintPath>depend\SpaceCore.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <!--<Reference Include="GenericModConfigMenu">
@@ -112,11 +112,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="dependencies\**" />
-    <EmbeddedResource Remove="dependencies\**" />
-    <None Remove="dependencies\**" />
+    <Compile Remove="depend\**" />
+    <EmbeddedResource Remove="depend\**" />
+    <None Remove="depend\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="compat\**" />
+    <EmbeddedResource Update="compat\**" />
+    <None Update="compat\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
   
   <!-- global usings directives -->
   <ItemGroup>

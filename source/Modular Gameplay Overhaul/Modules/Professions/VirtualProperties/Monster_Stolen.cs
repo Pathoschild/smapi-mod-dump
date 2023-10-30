@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Professions.VirtualProperties;
 #region using directives
 
 using System.Runtime.CompilerServices;
+using Netcode;
 using StardewValley.Monsters;
 
 #endregion using directives
@@ -20,20 +21,15 @@ using StardewValley.Monsters;
 // ReSharper disable once InconsistentNaming
 internal static class Monster_Stolen
 {
-    internal static ConditionalWeakTable<Monster, Holder> Values { get; } = new();
+    internal static ConditionalWeakTable<Monster, NetBool> Values { get; } = new();
 
-    internal static bool Get_Stolen(this Monster monster)
+    internal static NetBool Get_Stolen(this Monster monster)
     {
-        return Values.GetOrCreateValue(monster).Stolen;
+        return Values.GetOrCreateValue(monster);
     }
 
-    internal static void Set_Stolen(this Monster monster, bool value)
+    // Net types are readonly
+    internal static void Set_Stolen(this Monster monster, NetBool value)
     {
-        Values.GetOrCreateValue(monster).Stolen = value;
-    }
-
-    internal class Holder
-    {
-        public bool Stolen { get; internal set; }
     }
 }

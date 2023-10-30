@@ -21,7 +21,6 @@ using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Stardew;
-using StardewModdingAPI.Utilities;
 using StardewValley.Buildings;
 using StardewValley.Monsters;
 
@@ -96,7 +95,7 @@ internal static class FarmerExtensions
     /// <param name="farmer">The <see cref="Farmer"/>.</param>
     /// <param name="profession">The <see cref="IProfession"/> to check.</param>
     /// <param name="prestiged">Whether to check for the prestiged variant.</param>
-    /// <returns><see langword="true"/> if either <paramref name="farmer"/> has the specified <paramref name="profession"/>, or <see cref="Config.LaxOwnershipRequirements"/> is enabled and at least one player in the game session has the <paramref name="profession"/>, otherwise <see langword="false"/>.</returns>
+    /// <returns><see langword="true"/> if either <paramref name="farmer"/> has the specified <paramref name="profession"/>, or <see cref="ProfessionConfig.LaxOwnershipRequirements"/> is enabled and at least one player in the game session has the <paramref name="profession"/>, otherwise <see langword="false"/>.</returns>
     internal static bool HasProfessionOrLax(
         this Farmer farmer, IProfession profession, bool prestiged = false)
     {
@@ -200,7 +199,7 @@ internal static class FarmerExtensions
         if (currentIndex > 0 && !ProfessionsModule.Config.EnableLimitBreaks)
         {
             Log.W(
-                $"[PROFS]: {farmer.Name} has non-null Limit Break but Limit Breaks are not enabled. The registered Limit Break will be reset.");
+                $"[PRFS]: {farmer.Name} has non-null Limit Break but Limit Breaks are not enabled. The registered Limit Break will be reset.");
             farmer.Write(DataKeys.UltimateIndex, null);
             return;
         }
@@ -211,14 +210,14 @@ internal static class FarmerExtensions
             case < 0 when farmer.professions.Any(p => p is >= 26 and < 30):
             {
                 Log.W(
-                    $"[PROFS]: {farmer.Name} is eligible for a Limit Break but is not currently registered to any. The registered Limit Break will be set to a default value.");
+                    $"[PRFS]: {farmer.Name} is eligible for a Limit Break but is not currently registered to any. The registered Limit Break will be set to a default value.");
                 newIndex = farmer.professions.First(p => p is >= 26 and < 30);
                 break;
             }
 
             case >= 0 when !farmer.professions.Contains(currentIndex):
             {
-                Log.W($"[PROFS]: {farmer.Name} is registered to Limit Break index {currentIndex} but is missing the corresponding profession. The registered Limit Break will be reset.");
+                Log.W($"[PRFS]: {farmer.Name} is registered to Limit Break index {currentIndex} but is missing the corresponding profession. The registered Limit Break will be reset.");
                 newIndex = farmer.professions.Any(p => p is >= 26 and < 30)
                     ? farmer.professions.First(p => p is >= 26 and < 30)
                     : -1;
@@ -265,8 +264,8 @@ internal static class FarmerExtensions
         }
 
         var fishData = Game1.content
-            .Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Fish"))
-            .Where(p => !p.Key.IsIn(152, 153, 157) && !p.Value.Contains("trap"))
+            .Load<Dictionary<int, string>>("Data\\Fish")
+            .Where(p => !p.Key.IsAnyOf(152, 153, 157) && !p.Value.Contains("trap"))
             .ToDictionary(p => p.Key, p => p.Value);
 
         if (!fishData.TryGetValue(index, out var specificFishData))
@@ -290,7 +289,7 @@ internal static class FarmerExtensions
             var building = buildings[i];
             if ((building.IsOwnedBy(farmer) || ProfessionsModule.Config.LaxOwnershipRequirements) &&
                 !building.isUnderConstruction() && building.buildingType.Contains("Deluxe") &&
-                ((AnimalHouse)building.indoors.Value).isFull())
+                building.indoors.Value is AnimalHouse house && house.isFull())
             {
                 sum += 0.05f;
             }
@@ -305,7 +304,7 @@ internal static class FarmerExtensions
     internal static float GetAnglerPriceBonus(this Farmer farmer)
     {
         var fishData = Game1.content
-            .Load<Dictionary<int, string>>(PathUtilities.NormalizeAssetName("Data/Fish"));
+            .Load<Dictionary<int, string>>("Data\\Fish");
         var bonus = 0f;
         var isPrestiged = farmer.HasProfession(Profession.Angler, true);
         foreach (var (key, value) in farmer.fishCaught.Pairs)
@@ -404,8 +403,8 @@ internal static class FarmerExtensions
             return;
         }
 
-        farmer.health = Math.Min(farmer.health + (int)(farmer.maxHealth * 0.025f), farmer.maxHealth);
-        farmer.Stamina = Math.Min(farmer.Stamina + (farmer.MaxStamina * 0.01f), farmer.MaxStamina);
+        farmer.health = Math.Min(farmer.health + (int)(farmer.maxHealth * 0.05f), farmer.maxHealth);
+        farmer.Stamina = Math.Min(farmer.Stamina + (farmer.MaxStamina * 0.025f), farmer.MaxStamina);
     }
 
     /// <summary>Enumerates the <see cref="GreenSlime"/>s currently inhabiting owned <see cref="SlimeHutch"/>es.</summary>
@@ -427,6 +426,6 @@ internal static class FarmerExtensions
     /// <returns><see langword="true"/> if <see cref="Ultimate.PoacherAmbush"/> is active.</returns>
     internal static bool IsInAmbush(this Farmer farmer)
     {
-        return farmer.Get_Ultimate() == Ultimate.PoacherAmbush && Ultimate.PoacherAmbush.IsActive;
+        return farmer.Get_Ultimate() is Ambush { IsActive: true };
     }
 }

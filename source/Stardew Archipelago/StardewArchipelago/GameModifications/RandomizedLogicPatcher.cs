@@ -8,22 +8,19 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.GameModifications.CodeInjections;
 using StardewArchipelago.GameModifications.EntranceRandomizer;
 using StardewArchipelago.GameModifications.Seasons;
 using StardewArchipelago.Locations;
-using StardewArchipelago.Serialization;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Events;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -64,6 +61,9 @@ namespace StardewArchipelago.GameModifications
             VoidMayoInjections.Initialize(monitor);
             KentInjections.Initialize(monitor, archipelago);
             GoldenEggInjections.Initialize(monitor, archipelago);
+            GoldenClockInjections.Initialize(monitor, archipelago);
+
+            DebugPatchInjections.Initialize(monitor, archipelago);
         }
 
         public void PatchAllGameLogic()
@@ -89,7 +89,10 @@ namespace StardewArchipelago.GameModifications
             PatchVoidMayo();
             PatchKent();
             PatchGoldenEgg();
+            PatchGoldenClock();
             _startingResources.GivePlayerStartingResources();
+
+            PatchDebugMethods();
         }
 
         private void PatchAchievements()
@@ -431,6 +434,18 @@ namespace StardewArchipelago.GameModifications
                 original: AccessTools.Method(typeof(Utility), nameof(Utility.getAnimalShopStock)),
                 prefix: new HarmonyMethod(typeof(GoldenEggInjections), nameof(GoldenEggInjections.GetAnimalShopStock_GoldenEggIfReceived_Postfix))
             );
+        }
+
+        private void PatchGoldenClock()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Building), nameof(Building.doAction)),
+                postfix: new HarmonyMethod(typeof(GoldenClockInjections), nameof(GoldenClockInjections.DoAction_GoldenClockIncreaseTime_Postfix))
+            );
+        }
+
+        private void PatchDebugMethods()
+        {
         }
     }
 }

@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	
+  <PropertyGroup>
+    <AssemblyName>SkillPrestige.LoveOfCooking</AssemblyName>
+    <RootNamespace>SkillPrestige.LoveOfCooking</RootNamespace>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+	  <Nullable>enable</Nullable>
+    <IsPublishable>False</IsPublishable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <Deterministic>False</Deterministic>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+    <Deterministic>False</Deterministic>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LoveOfCooking">
+      <HintPath>..\refs\LoveOfCooking.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SkillPrestige">
+      <HintPath>..\refs\SkillPrestige.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="SpaceCore">
+      <HintPath>..\refs\SpaceCore.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  
+
+</Project>

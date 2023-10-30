@@ -13,7 +13,7 @@ namespace DaLion.Overhaul.Modules.Combat.Enchantments;
 #region using directives
 
 using System.Xml.Serialization;
-using DaLion.Overhaul.Modules.Combat.Events.GameLoop.UpdateTicked;
+using DaLion.Overhaul.Modules.Combat.Events.GameLoop.OneSecondUpdateTicked;
 using DaLion.Shared.Constants;
 using DaLion.Shared.Extensions.Stardew;
 using StardewValley.Monsters;
@@ -23,7 +23,7 @@ using StardewValley.Tools;
 
 /// <summary>The secondary <see cref="BaseWeaponEnchantment"/> which characterizes the Dark Sword.</summary>
 [XmlType("Mods_DaLion_CursedEnchantment")]
-public class CursedEnchantment : BaseWeaponEnchantment
+public sealed class CursedEnchantment : BaseWeaponEnchantment
 {
     /// <inheritdoc />
     public override bool IsSecondaryEnchantment()
@@ -58,14 +58,14 @@ public class CursedEnchantment : BaseWeaponEnchantment
             who.mailReceived.Add("gotDarkSword");
         }
 
-        EventManager.Enable<CurseUpdateTickedEvent>();
+        EventManager.Enable<CurseOneSecondUpdateTickedEvent>();
     }
 
     /// <inheritdoc />
     protected override void _OnUnequip(Farmer who)
     {
         base._OnUnequip(who);
-        EventManager.Disable<CurseUpdateTickedEvent>();
+        EventManager.Disable<CurseOneSecondUpdateTickedEvent>();
     }
 
     /// <inheritdoc />

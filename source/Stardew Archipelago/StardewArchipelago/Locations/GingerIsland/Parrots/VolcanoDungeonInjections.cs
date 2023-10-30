@@ -13,7 +13,6 @@ using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.BellsAndWhistles;
 using StardewValley.Locations;
 
 namespace StardewArchipelago.Locations.GingerIsland.Parrots
@@ -65,9 +64,9 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
             }
         }
 
-        private static void AddVolcanoBridgeParrot(IslandLocation __instance)
+        private static void AddVolcanoBridgeParrot(IslandLocation volcano)
         {
-            __instance.parrotUpgradePerches.Add(new ParrotUpgradePerch(__instance,
+            volcano.parrotUpgradePerches.Add(new ParrotUpgradePerchArchipelago(AP_VOLCANO_BRIDGE_PARROT, _archipelago, volcano,
                 new Point(27, 39),
                 new Rectangle(28, 34, 5, 4),
                 5,
@@ -87,12 +86,12 @@ namespace StardewArchipelago.Locations.GingerIsland.Parrots
             return _locationChecker.IsLocationChecked(AP_VOLCANO_BRIDGE_PARROT);
         }
 
-        private static void AddVolcanoExitShortcutParrot(IslandLocation __instance)
+        private static void AddVolcanoExitShortcutParrot(IslandLocation volcano)
         {
             var shortcutOutPositionField =
                 _modHelper.Reflection.GetField<Point>(typeof(VolcanoDungeon), "shortcutOutPosition");
             var shortcutOutPosition = shortcutOutPositionField.GetValue();
-            __instance.parrotUpgradePerches.Add(new ParrotUpgradePerch(__instance,
+            volcano.parrotUpgradePerches.Add(new ParrotUpgradePerchArchipelago(AP_VOLCANO_EXIT_SHORTCUT_PARROT, _archipelago, volcano,
                 new Point(shortcutOutPosition.X + 1, shortcutOutPosition.Y),
                 new Rectangle(shortcutOutPosition.X - 1, shortcutOutPosition.Y - 1, 3, 3),
                 5,

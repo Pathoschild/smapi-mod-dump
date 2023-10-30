@@ -40,7 +40,7 @@ internal sealed class SpaceCoreIntegration : ModIntegration<SpaceCoreIntegration
             }
 
             SCSkill.Loaded[skillId] = new SCSkill(skillId);
-            Log.D($"[PROFS]: Successfully loaded the custom skill {skillId}.");
+            Log.D($"[PRFS]: Successfully loaded the custom skill {skillId}.");
         }
     }
 
@@ -48,7 +48,7 @@ internal sealed class SpaceCoreIntegration : ModIntegration<SpaceCoreIntegration
     protected override bool RegisterImpl()
     {
         this.LoadSpaceCoreSkills();
-        Log.D("[PROFS]: Registered the SpaceCore integration.");
+        Log.D("[PRFS]: Registered the SpaceCore integration.");
         return base.RegisterImpl();
     }
 }

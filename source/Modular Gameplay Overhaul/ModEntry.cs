@@ -21,6 +21,7 @@ namespace DaLion.Overhaul;
 
 #region using directives
 
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -76,7 +77,7 @@ public sealed class ModEntry : Mod
     internal static IManifest Manifest => Instance.ModManifest;
 
     /// <summary>Gets the <see cref="ITranslationHelper"/> API.</summary>
-    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:Element should begin with upper-case letter", Justification = "Conflicts with Pathoschild.TranslationBuilder")]
+    [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:Element should begin with upper-case letter", Justification = "Distinguish from static Pathoschild.TranslationBuilder")]
     // ReSharper disable once InconsistentNaming
     internal static ITranslationHelper _I18n => ModHelper.Translation;
 
@@ -89,33 +90,39 @@ public sealed class ModEntry : Mod
         Instance = this;
         Log.Init(this.Monitor);
 
+        // pseudo-DRM for low-effort theft
+        if (Manifest.UniqueID != "DaLion.Overhaul")
+        {
+            Log.W(
+                "Woops, looks like you downloaded a clandestine version of this mod! Please make sure to download from the official GitHub repo at https://github.com/daleao/modular-overhaul/releases.");
+            return;
+        }
+
         // check SpaceCore build first of all
         var spaceCoreAssembly = Assembly.Load("SpaceCore");
         if (spaceCoreAssembly.IsDebugBuild())
         {
             Log.E(
-                "The installed version of SpaceCore was built in Debug mode, which is not compatible with this mood. Please ask the author to build in Release mode.");
+                "The installed version of SpaceCore was built in Debug mode, which is not compatible with this mod. Please ask the author to build in Release mode.");
             return;
         }
 
         I18n.Init(helper.Translation);
         ModDataIO.Init();
-
         LocalData = helper.Data.ReadJsonFile<ModData>("data.json") ?? new ModData();
-
         Config = helper.ReadConfig<ModConfig>();
-        Config.Validate(helper);
-        Config.Log();
+        Log.T($"[Entry]: Initializing MARGO with the following config settings:\n{Config}");
 
         PerScreenState = new PerScreen<ModState>(() => new ModState());
         EventManager = new EventManager(helper.Events, helper.ModRegistry);
         Reflector = new Reflector();
         Broadcaster = new Broadcaster(helper.Multiplayer, this.ModManifest.UniqueID);
         EnumerateModules().ForEach(module => module.Activate(helper));
-
         this.ValidateMultiplayer();
         this.StopWatch();
         this.LogTime();
+        this.LogHarmonyStats();
+        EventManager.LogStats();
         Log.I("[Entry]: Version checksum: " + this.GetType().Assembly.CalculateMd5());
     }
 
@@ -141,5 +148,43 @@ public sealed class ModEntry : Mod
     private void LogTime()
     {
         Log.A($"[Entry]: Initialization completed in {this._sw.ElapsedMilliseconds}ms.");
+    }
+
+    [Conditional("DEBUG")]
+    private void LogHarmonyStats()
+    {
+        var patchedMethods = new HashSet<MethodBase>();
+        var appliedPrefixes = 0;
+        var appliedPostfixes = 0;
+        var appliedTranspilers = 0;
+        var appliedFinalizers = 0;
+        foreach (var module in EnumerateModules())
+        {
+            if (module.Harmonizer is not { } harmonizer)
+            {
+                continue;
+            }
+
+            appliedPrefixes += harmonizer.AppliedPrefixes;
+            appliedPostfixes += harmonizer.AppliedPostfixes;
+            appliedTranspilers += harmonizer.AppliedTranspilers;
+            appliedFinalizers += harmonizer.AppliedFinalizers;
+            foreach (var method in harmonizer.Harmony.GetPatchedMethods())
+            {
+                if (method is null)
+                {
+                    continue;
+                }
+
+                patchedMethods.Add(method);
+            }
+        }
+
+        var totalApplied = appliedPrefixes + appliedPostfixes + appliedTranspilers + appliedFinalizers;
+        Log.A($"[Entry]: In total, {totalApplied} patches were applied to {patchedMethods.Count} methods, of which:" +
+              $"\n\t- {appliedPrefixes} prefixes" +
+              $"\n\t- {appliedPostfixes} postfixes" +
+              $"\n\t- {appliedTranspilers} transpilers" +
+              $"\n\t- {appliedFinalizers} finalizers");
     }
 }

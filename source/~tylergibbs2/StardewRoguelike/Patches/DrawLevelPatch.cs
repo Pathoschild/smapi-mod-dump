@@ -18,14 +18,12 @@ using StardewValley.Monsters;
 using StardewRoguelike.VirtualProperties;
 using System;
 using System.Runtime.CompilerServices;
-using System.Reflection;
 
 namespace StardewRoguelike.Patches
 {
-    internal class DrawLevelPatch : Patch
+    [HarmonyPatch(typeof(MineShaft), nameof(MineShaft.drawAboveAlwaysFrontLayer))]
+    internal class DrawLevelPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(MineShaft), "drawAboveAlwaysFrontLayer");
-
         public static bool Prefix(MineShaft __instance, SpriteBatch b)
         {
 			DrawAbovePatch.Reverse(__instance, b);

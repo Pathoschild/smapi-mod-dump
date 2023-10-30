@@ -6,9 +6,9 @@ mods:
    Discord Rich Presence
 
 latest commit:
-   commit 7ca60dc53d0bf887dd66dc678e13408e25f5c913
+   commit aae409f71079fa62d4c76fa97c0448a3a6b7d149
    Author: RuiNtD <RuiNtD@outlook.com>
-   Date:   Sun Mar 19 00:04:10 2023 -0600
+   Date:   Sun Oct 1 09:12:16 2023 -0600
    
-       Merge branch 'main' of https://github.com/FayneAldan/SVRichPresence
+       Bump version
    

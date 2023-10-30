@@ -1,0 +1,24 @@
+{
+  "Name": "SkillPerstige.LoveOfCooking",
+  "Author": "Tondorian",
+  "Version": {
+    "MajorVersion": 1,
+    "MinorVersion": 0,
+    "PatchVersion": 0,
+    "Build": null
+  },
+  "UpdateKeys":  ["Nexus:18605"],
+  "Description": "SkillPrestigel adapter for Love of Cooking",
+  "MinimumApiVersion": "1.14",
+  "UniqueID": "Tondorian.SkillPrestige.LoveOfCooking",
+  "EntryDll": "SkillPrestige.LoveOfCooking.dll",
+  "Dependencies": [
+    {
+      "UniqueID": "blueberry.LoveOfCooking"
+    },
+    {
+      "UniqueID": "alphablackwolf.skillPrestige"
+    },
+  ],
+  
+}

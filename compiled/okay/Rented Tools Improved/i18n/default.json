@@ -1,0 +1,11 @@
+﻿{
+	"Blacksmith_RecycleTools_Menu": "Can you hand me over that rental tool I gave you?",
+	"Blacksmith_RecycleToolsMenu_Confirm": "Sure!",
+	"Blacksmith_RecycleToolsMenu_Leave": "Not now",
+	"Blacksmith_OfferTools_Menu": "You can take my old {{oldToolName}} while I'm upgrading your {{newToolName}}.",
+	"Blacksmith_OfferToolsMenu_Confirm": "Sure!",
+	"Blacksmith_OfferToolsMenu_Leave": "No thanks",
+	"Blacksmith_HowToReturn": "Just bring those rented tools with you if you want to give it back to me.",
+	"Blacksmith_NoInventorySpace": "Your inventory is full.",
+	"Blacksmith_InsufficientFundsToRentTool": "You don't have enough money."
+}

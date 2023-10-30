@@ -46,7 +46,7 @@ internal sealed class AmbushUpdateTickedEvent : UpdateTickedEvent
         else
         {
             ambush.SecondsOutOfAmbush += 1d / 60d;
-            if (ambush.SecondsOutOfAmbush > 1.5d)
+            if (ambush.SecondsOutOfAmbush > 1d)
             {
                 this.Disable();
             }

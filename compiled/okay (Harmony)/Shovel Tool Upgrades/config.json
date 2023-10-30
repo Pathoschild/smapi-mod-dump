@@ -1,4 +1,5 @@
 {
   "ShovelMaxEnergyUsage": 20,
-  "ShovelEnergyDecreasePerLevel": 3
+  "ShovelEnergyDecreasePerLevel": 3,
+  "MargoCompact": false
 }

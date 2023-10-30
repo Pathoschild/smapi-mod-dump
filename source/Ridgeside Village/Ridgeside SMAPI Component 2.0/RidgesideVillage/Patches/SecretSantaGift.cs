@@ -32,7 +32,7 @@ namespace RidgesideVillage
         {
             SecretSantaGift.Helper = helper;
 
-            Helper.ConsoleCommands.Add("RSVGiftTest", "", SecretSantaGift.GiveGift);
+            Helper.ConsoleCommands.Add("RSV_GiftTest", "", SecretSantaGift.GiveGift);
             Log.Trace($"Applying Harmony Patch \"{nameof(SecretSantaGift)}.");
             harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), nameof(Utility.getGiftFromNPC)),

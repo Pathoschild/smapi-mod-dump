@@ -41,7 +41,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
     {
         if (who.IsLocalPlayer)
         {
-            GlobalState.SecondsOutOfCombat = 0;
+            State.SecondsOutOfCombat = 0;
         }
     }
 

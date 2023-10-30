@@ -8,15 +8,15 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewRoguelike.HatQuests;
 using StardewValley;
 
 namespace StardewRoguelike.Patches
 {
-	internal class GoldOreSellPrice : Patch
+    [HarmonyPatch(typeof(SObject), nameof(SObject.sellToStorePrice))]
+	internal class GoldOreSellPrice
 	{
-		protected override PatchDescriptor GetPatchDescriptor() => new(typeof(SObject), "sellToStorePrice");
-
 		public static bool Prefix(SObject __instance, ref int __result)
 		{
 			if (__instance.ParentSheetIndex == 384)

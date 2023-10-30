@@ -101,7 +101,7 @@ internal sealed class MonsterTakeDamagePatcher : HarmonyPatcher
             return;
         }
 
-        damage *= 3;
+        damage *= 2;
         __instance.Defrost();
     }
 
@@ -148,7 +148,7 @@ internal sealed class MonsterTakeDamagePatcher : HarmonyPatcher
                             typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Combat))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
-                            typeof(Config).RequirePropertyGetter(nameof(Config.NewResistanceFormula))),
+                            typeof(CombatConfig).RequirePropertyGetter(nameof(CombatConfig.NewResistanceFormula))),
                         new CodeInstruction(OpCodes.Brfalse_S, doVanillaDefense),
                         new CodeInstruction(OpCodes.Ldarg_0),
                         new CodeInstruction(OpCodes.Ldarg_1),

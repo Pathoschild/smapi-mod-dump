@@ -32,9 +32,9 @@
 			{
                 "Object": 114,
                 "Count": 2
-            },
+            }
         ],
-        "SkillUnlockName": "foraging",
+        "SkillUnlockName": "Foraging",
 		"SkillUnlockLevel": 8
-    },
+    }
 }

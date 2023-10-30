@@ -52,5 +52,22 @@ namespace StardewSurvivalProject.source.harmony_patches
                 return true;
             }
         }
+
+        public static void ItemPlace_PostFix(StardewValley.Object __instance, GameLocation location, int x, int y, Farmer who = null)
+        {
+            try
+            {
+                if (__instance == null || who == null || !who.IsLocalPlayer)
+                    return;
+
+                events.CustomEvents.InvokeOnItemPlaced(__instance);
+                return;
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed in {nameof(ItemPlace_PostFix)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+        }
     }
 }

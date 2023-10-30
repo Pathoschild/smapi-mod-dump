@@ -1,0 +1,36 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "Name": "SlimingSkill",
+    "Author": "drbirbdev",
+    "Version": "0.0.1",
+    "Description": "Adds a skill related to raising and fighting slimes.",
+    "UniqueID": "drbirbdev.SlimingSkill",
+    "EntryDll": "SlimingSkill.dll",
+    "MinimumApiVersion": "3.18.2",
+    "UpdateKeys": [
+        "Nexus:???"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.SpaceCore"
+        },
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "DaLion.Overhaul",
+            "MinimumVersion": "1.1.1",
+            "IsRequired": false
+        }
+    ]
+}

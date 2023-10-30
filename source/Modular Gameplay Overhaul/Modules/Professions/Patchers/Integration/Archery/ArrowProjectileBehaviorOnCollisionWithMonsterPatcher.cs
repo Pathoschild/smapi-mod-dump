@@ -41,14 +41,14 @@ internal sealed class ArrowProjectileBehaviorOnCollisionWithMonsterPatcher : Har
 
     #region harmony patches
 
-    /// <summary>Desperado Ultimate charge + check for piercing effect.</summary>
+    /// <summary>Desperado Ultimate charge + check for arrow pierce.</summary>
     [HarmonyPrefix]
     [HarmonyPriority(Priority.High)]
     [HarmonyBefore("DaLion.Overhaul.Modules.Combat")]
     private static bool ArrowProjectileBehaviorOnCollisionWithMonsterPrefix(
-        BasicProjectile __instance, ref int ____collectiveDamage, ref float ____knockback, Farmer ____owner, NPC n)
+        BasicProjectile __instance, ref (int, float, float, IUltimate?)? __state, ref int ____collectiveDamage, Farmer ____owner, NPC n)
     {
-        if (n is not Monster monster || monster.isInvincible())
+        if (n is not Monster { IsMonster: true } monster || monster.isInvincible())
         {
             return false; // don't run original logic
         }
@@ -58,34 +58,81 @@ internal sealed class ArrowProjectileBehaviorOnCollisionWithMonsterPatcher : Har
             return true; // run original logic
         }
 
-        if (____owner.IsLocalPlayer && ____owner.Get_Ultimate() is DeathBlossom { IsActive: false } blossom &&
-            ProfessionsModule.Config.EnableLimitBreaks)
-        {
-            blossom.ChargeValue +=
-                (__instance.Get_DidPierce() ? 18 : 12) - (10 * ____owner.health / ____owner.maxHealth);
-        }
+        var overcharge = __instance.Get_Overcharge();
+        var ogDamage = ____collectiveDamage;
+        var monsterResistanceModifier = 1f + (monster.resilience.Value / 10f);
+        var inverseResistanceModifer = 1f / monsterResistanceModifier;
+        IUltimate? ultimate = ____owner.IsLocalPlayer && ProfessionsModule.Config.EnableLimitBreaks
+            ? ____owner.Get_Ultimate()
+            : null;
 
-        if (!__instance.Get_CanPierce())
+        // check for quick shot
+        if (ProfessionsModule.State.LastDesperadoTarget is not null &&
+            monster != ProfessionsModule.State.LastDesperadoTarget)
+#pragma warning disable SA1513 // Closing brace should be followed by blank line
         {
-            return true; // run original logic
+            Log.D("Did quick shot!");
+            ____collectiveDamage = (int)(____collectiveDamage * 1.5f);
+            if (ultimate is DeathBlossom { IsActive: false })
+            {
+                ultimate.ChargeValue += 12d;
+            }
         }
-
-        var pierceChance = __instance.Get_Overcharge() - 1f;
-        if (Game1.random.NextDouble() > pierceChance)
+        // check for pierce, which is mutually exclusive with quick shot
+        else if (____owner.HasProfession(Profession.Desperado, true) && __instance.Get_CanPierce() &&
+                 Game1.random.NextDouble() < (overcharge - 1.5f) * inverseResistanceModifer)
         {
-            return true; // run original logic
+            Log.D("Pierced!");
+            __instance.Set_DidPierce(true);
+            if (CombatModule.Config.NewResistanceFormula)
+            {
+                ____collectiveDamage = (int)(____collectiveDamage * monsterResistanceModifier);
+            }
+            else
+            {
+                ____collectiveDamage += monster.resilience.Value;
+            }
         }
+#pragma warning restore SA1513 // Closing brace should be followed by blank line
 
-        ____collectiveDamage = (int)(____collectiveDamage * 0.65f);
-        ____knockback *= 0.65f;
-        __instance.ModiftyOvercharge(0.65f);
-        Reflector.GetUnboundFieldGetter<Projectile, NetFloat>(__instance, "xVelocity")
-            .Invoke(__instance).Value *= 0.65f;
-        Reflector.GetUnboundFieldGetter<Projectile, NetFloat>(__instance, "yVelocity")
-            .Invoke(__instance).Value *= 0.65f;
-        __instance.Set_DidPierce(true);
+        __state = (ogDamage, overcharge, inverseResistanceModifer, ultimate);
         Log.D("Pierced!");
         return true; // run original logic
+    }
+
+    /// <summary>Reduce projectile stats post-pierce.</summary>
+    [HarmonyPostfix]
+    private static void ArrowProjectileBehaviorOnCollisionWithMonsterPostfix(
+        BasicProjectile __instance, (int, float, float, IUltimate?)? __state, ref int ____collectiveDamage, ref float ____knockback, Farmer ____owner, NPC n)
+    {
+        if (!__state.HasValue)
+        {
+            return;
+        }
+
+        ____collectiveDamage = __state.Value.Item1;
+        if (__state.Value.Item2 > 1f)
+        {
+            ____collectiveDamage = (int)(____collectiveDamage * __state.Value.Item3);
+            ____knockback *= __state.Value.Item3;
+            __instance.ModiftyOvercharge(__state.Value.Item3);
+            Reflector.GetUnboundFieldGetter<Projectile, NetFloat>("xVelocity")
+                .Invoke(__instance).Value *= __state.Value.Item3;
+            Reflector.GetUnboundFieldGetter<Projectile, NetFloat>("yVelocity")
+                .Invoke(__instance).Value *= __state.Value.Item3;
+        }
+
+        // Desperado checks
+        if (____owner.HasProfession(Profession.Desperado) && n is Monster { IsMonster: true } monster)
+        {
+            ProfessionsModule.State.LastDesperadoTarget = monster;
+        }
+
+        // increment ultimate meter
+        if (__state.Value.Item4 is DeathBlossom { IsActive: false } ultimate && __state.Value.Item2 >= 1f)
+        {
+            ultimate.ChargeValue += __state.Value.Item2 * 8d;
+        }
     }
 
     #endregion injected subroutines

@@ -1,0 +1,30 @@
+﻿{
+    "GreenhouseLevel1": "بيت زجاجي",
+    "GreenhouseLevel1Description": "15x15 أرض قابلة للزراعة. يضيف قبوًا.",
+    
+    "GreenhouseLevel2": "بيت زجاجي صغير",
+    "GreenhouseLevel2Description": "30x30 أرض قابلة للزراعة. يوسع القبو، ويضيف بيتًا زجاجيًا داخليًا ونظام ري آلي.",
+    
+    "GreenhouseLevel3": "بيت زجاجي متوسط",
+    "GreenhouseLevel3Description": "50x50 أرض قابلة للزراعة. يوسع القبو ويوسع البيت الزجاجي الداخلي.",
+    
+    "GreenhouseLevel4": "بيت زجاجي كبير",
+    "GreenhouseLevel4Description": "75x75 أرض قابلة للزراعة. يوسع القبو ويوسع البيت الزجاجي الداخلي لحجم أكبر.",
+    
+    "GreenhouseLevel5": "بيت زجاجي فاخر ذو حجم إضافي كبير",
+    "GreenhouseLevel5Description": "100x100 أرض قابلة للزراعة. يوسع القبو ويوسع البيت الزجاجي الداخلي لحجم أكبر.",
+
+
+    "LeftBehindTree": "تركت الشجرة خلفك.",
+    "LeftBehindCrop": "تركت المحصول خلفك.",
+    "PickUpTreeMessage": "تم رفع الشجرة!",
+    "PlaceTreeMessage": "تم وضع الشجرة!",
+    "PickUpCropMessage": "تم رفع المحصول!",
+    "PlaceCropMessage": "تم وضع المحصول!",
+    "EnableTreePickingOption": "اختيار الأشجار والمحاصيل",
+    "EnableTreePickingTooltip": "تفعيل/تعطيل الاختيار.",
+    "language-choice-name": "لغة",
+"language-choice-tooltip": "اختر لغة الوضع"
+
+    
+}

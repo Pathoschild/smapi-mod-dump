@@ -13,7 +13,9 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Melee;
 #region using directives
 
 using System.Reflection;
+using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
+using DaLion.Shared.Constants;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Tools;
@@ -44,6 +46,11 @@ internal sealed class MeleeWeaponGetNumberOfDescriptionCategoriesPatcher : Harmo
         {
             __result = __instance.CountNonZeroStats();
             if (__instance.enchantments.Count > 0 && __instance.enchantments[^1] is DiamondEnchantment)
+            {
+                __result++;
+            }
+
+            if (__instance.InitialParentTileIndex == WeaponIds.HolyBlade || __instance.IsInfinityWeapon())
             {
                 __result++;
             }

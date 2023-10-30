@@ -12,7 +12,7 @@
 	"Name": "Hat Mouse Lacey",
 	"Author": "ichortower",
 	"Description": "Makes the hat mouse a real NPC named Lacey.",
-	"Version": "1.0.4",
+	"Version": "1.1.0",
 	"UniqueID": "ichortower.HatMouseLacey",
 	"ContentPackFor": {
 		"UniqueID": "Pathoschild.ContentPatcher"
@@ -21,10 +21,28 @@
 	"Dependencies": [
 		{
 			"UniqueID": "ichortower.HatMouseLacey.Core",
-			"MinimumVersion": "1.0.4"
+			"MinimumVersion": "1.1.0"
 		},
-		{ // SVE overwrites festival set-up fields, so load after it
+		// SVE overwrites festival set-up fields, so load after it
+		{
 			"UniqueID": "FlashShifter.StardewValleyExpandedCP",
+			"IsRequired": false
+		},
+		// load after compatible recolors
+		{
+			"UniqueID": "DaisyNiko.EarthyRecolour",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "grapeponta.VibrantPastoralRecolor",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "Lita.StarblueValley",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "Acerbicon.Recolor",
 			"IsRequired": false
 		}
 	]

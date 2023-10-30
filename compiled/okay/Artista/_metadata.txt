@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/18697
+IDs: Platonymous.Artista
+update keys: Nexus:18697

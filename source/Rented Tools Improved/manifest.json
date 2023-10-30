@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/SolusCleansing/RentedToolsImproved
+**
+*************************************************/
+
+{
+	"Name": "RentedToolsImproved",
+	"Author": "SolusCleansing",
+	"Version": "1.1.0",
+	"Description": "An 'improved' version of the already existing RentedTools mod which changes some things for better QOL",
+	"UniqueID": "SolusCleansing.RentedToolsImproved",
+	"EntryDll": "RentedToolsImproved.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": [ "Nexus:18909" ]
+}

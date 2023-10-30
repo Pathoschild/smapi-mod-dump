@@ -60,6 +60,7 @@ namespace StardewArchipelago.Locations.Patcher
             );
 
             InjectSocializingExperienceMultiplier();
+            InjectArchaeologyExperienceMultiplier();
         }
 
         private void InjectSpaceCoreSkillsPage()
@@ -111,6 +112,32 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.PropertyGetter(socializingConfigType, "BirthdayGiftExpMultiplier"),
                 postfix: new HarmonyMethod(typeof(SocializingConfigCodeInjections), nameof(SocializingConfigCodeInjections.BirthdayGiftExpMultiplier_APMultiplier_Postfix))
+            );
+        }
+
+        private void InjectArchaeologyExperienceMultiplier()
+        {
+            if (!_archipelago.SlotData.Mods.HasMod(ModNames.ARCHAEOLOGY))
+            {
+                return;
+            }
+
+            var excavationConfigType = AccessTools.TypeByName("ExcavationSkill.Config");
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(excavationConfigType, "ExperienceFromArtifactSpots"),
+                postfix: new HarmonyMethod(typeof(ArchaeologyConfigCodeInjections), nameof(ArchaeologyConfigCodeInjections.ExperienceFromArtifactSpots_APMultiplier_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(excavationConfigType, "ExperienceFromMinesDigging"),
+                postfix: new HarmonyMethod(typeof(ArchaeologyConfigCodeInjections), nameof(ArchaeologyConfigCodeInjections.ExperienceFromBuriedAndPannedItem_APMultiplier_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(excavationConfigType, "ExperienceFromBuriedAndPannedItem"),
+                postfix: new HarmonyMethod(typeof(ArchaeologyConfigCodeInjections), nameof(ArchaeologyConfigCodeInjections.ExperienceFromMinesDigging_APMultiplier_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.PropertyGetter(excavationConfigType, "ExperienceFromWaterShifter"),
+                postfix: new HarmonyMethod(typeof(ArchaeologyConfigCodeInjections), nameof(ArchaeologyConfigCodeInjections.ExperienceFromWaterShifter_APMultiplier_Postfix))
             );
         }
 

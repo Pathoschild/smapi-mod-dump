@@ -56,7 +56,8 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
         {
             if (__instance.attachments[0] is null)
             {
-                if (__instance.attachments.Count > 1 && __instance.attachments[1] is not null)
+                if (__instance.attachments.Length > 1 && __instance.attachments[1] is not null &&
+                    __instance.attachments[1].ParentSheetIndex != ObjectIds.MonsterMusk)
                 {
                     __instance.attachments[0] = __instance.attachments[1];
                     __instance.attachments[1] = null;
@@ -155,15 +156,12 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
 
             // calculate overcharge
             var overcharge = who.HasProfession(Profession.Desperado) ? __instance.GetOvercharge() : 1f;
-
-            // adjust velocity
             if (overcharge > 1f)
             {
-                xVelocity *= overcharge;
-                yVelocity *= overcharge;
                 EventManager.Disable<DesperadoUpdateTickedEvent>();
             }
 
+            // adjust velocity
             if (Game1.options.useLegacySlingshotFiring)
             {
                 xVelocity *= -1f;
@@ -244,6 +242,16 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
         {
             Log.E($"Failed in {MethodBase.GetCurrentMethod()?.Name}:\n{ex}");
             return true; // default to original logic
+        }
+    }
+
+    /// <summary>Patch to prevent overcharged auto-fire.</summary>
+    [HarmonyPostfix]
+    private static void SlingshotPerformFirePostfix(Slingshot __instance)
+    {
+        if (__instance.CanAutoFire())
+        {
+            __instance.pullStartTime = Game1.currentGameTime.ElapsedGameTime.TotalSeconds;
         }
     }
 

@@ -1,0 +1,45 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    // Trees have candy
+    "Changes": [
+        {
+            "Action": "EditImage",
+            "Target": "TerrainFeatures/tree1_{{Season}}, TerrainFeatures/tree2_{{Season}}, TerrainFeatures/tree3_{{Season}}, TerrainFeatures/tree3_spring",
+            "FromFile": "assets/halloweenTree.png",
+            "PatchMode": "Overlay"
+        },
+        {
+            "Action": "EditData",
+            "Target": "tree_tweaks_dictionary",
+            "TargetField": [ "1", "items", "#0" ],
+            "Entries": {
+                "id": "Halloween Candy"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "tree_tweaks_dictionary",
+            "TargetField": [ "2", "items", "#0" ],
+            "Entries": {
+                "id": "Halloween Candy"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "tree_tweaks_dictionary",
+            "TargetField": [ "3", "items", "#0" ],
+            "Entries": {
+                "id": "Halloween Candy"
+            }
+        }
+    ]
+}

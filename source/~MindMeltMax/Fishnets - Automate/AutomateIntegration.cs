@@ -14,8 +14,7 @@ using StardewValley.Locations;
 using StardewValley.TerrainFeatures;
 using StardewValley;
 using Microsoft.Xna.Framework;
-
-using Entry = Fishnets.ModEntry;
+using Fishnets.Data;
 
 namespace Fishnets.Automate
 {
@@ -24,9 +23,14 @@ namespace Fishnets.Automate
         void AddFactory(IAutomationFactory factory);
     }
 
+    public interface IFishnetApi
+    {
+        int GetId();
+    }
+
     public class FishNetMachine : IMachine
     {
-        private readonly FishNet fishNet;
+        private readonly Fishnet fishNet;
 
         public GameLocation Location { get; }
 
@@ -34,7 +38,7 @@ namespace Fishnets.Automate
 
         public string MachineTypeID => $"MindMeltMax.Fishnets/FishNet";
 
-        public FishNetMachine(FishNet entity, GameLocation location, in Vector2 tile)
+        public FishNetMachine(Fishnet entity, GameLocation location, in Vector2 tile)
         {
             fishNet = entity;
             Location = location;
@@ -72,7 +76,6 @@ namespace Fishnets.Automate
                 fishNet.bait.Value = (Object)bait.Take();
                 return true;
             }
-
             return false;
         }
     }
@@ -81,8 +84,8 @@ namespace Fishnets.Automate
     {
         public IAutomatable GetFor(Object obj, GameLocation location, in Vector2 tile)
         {
-            if (obj.ParentSheetIndex == Entry.FishNetId)
-                return new FishNetMachine((FishNet)obj, location, tile);
+            if (obj.ParentSheetIndex == ModEntry.FishnetId)
+                return new FishNetMachine((Fishnet)obj, location, tile);
             return null;
         }
 

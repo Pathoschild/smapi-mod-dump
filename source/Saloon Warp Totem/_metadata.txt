@@ -6,9 +6,9 @@ mods:
    Saloon Warp Totem
 
 latest commit:
-   commit c6f0752ff4138fae9544857be809e5a7126b988f
+   commit 1a60d346f76cc1084a4e223246b57105817249cf
    Author: Artinity <31357507+Artinity@users.noreply.github.com>
-   Date:   Wed Apr 26 14:45:49 2023 +0200
+   Date:   Mon Oct 9 22:36:40 2023 +0200
    
-       Merge branch 'main' of https://github.com/Artinity/SaloonWarpTotem
+       Add license
    

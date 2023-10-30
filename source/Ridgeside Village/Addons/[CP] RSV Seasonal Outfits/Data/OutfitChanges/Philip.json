@@ -1,0 +1,94 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Philip Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Philip, Characters/Philip",
+			"FromFile": "Assets/{{Target}}/Philip_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Philip": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Philip Rain Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Philip, Characters/Philip",
+			"FromFile": "Assets/{{Target}}/Philip_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"SeasonalRainToken": "rain",
+				"Philip": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Philip Work Outfit Map",
+			"Action": "EditMap",
+			"Target": "Maps/Custom_Ridgeside_ShiroHouse",
+			"MapProperties":
+			{
+        "UniquePortrait": "Philip",
+				"UniqueSprite": "Philip"
+			},
+			"When": { "Philip": "enabled" }
+		},
+		{
+			"LogName": "RSV Philip Work Outfit",
+			"Action": "Load",
+			"Target": "Portraits/Philip_Custom_Ridgeside_ShiroHouse, Characters/Philip_Custom_Ridgeside_ShiroHouse",
+			"FromFile": "Assets/{{TargetPathOnly}}/Philip/Philip_work.png",
+			"When": { "Philip": "enabled" }
+		},
+		{
+			"LogName": "RSV Philip Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Philip, Characters/Philip",
+			"FromFile": "Assets/{{Target}}/Philip_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Philip": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Philip Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Philip, Characters/Philip",
+			"FromFile": "Assets/{{Target}}/Philip_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Philip": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Philip Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Philip, Characters/Philip",
+			"FromFile": "Assets/{{Target}}/Philip_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Philip": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

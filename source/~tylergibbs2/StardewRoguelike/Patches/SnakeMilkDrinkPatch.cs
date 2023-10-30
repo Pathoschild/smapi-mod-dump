@@ -8,15 +8,15 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewValley;
 using System;
 
 namespace StardewRoguelike.Patches
 {
-    internal class SnakeMilkDrinkPatch : Patch
+    [HarmonyPatch(typeof(Farmer), nameof(Farmer.reduceActiveItemByOne))]
+    internal class SnakeMilkDrinkPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(Farmer), "reduceActiveItemByOne");
-
         public static bool Prefix(Farmer __instance)
         {
             if (__instance.CurrentItem is not null && __instance.CurrentItem.ParentSheetIndex == 803)

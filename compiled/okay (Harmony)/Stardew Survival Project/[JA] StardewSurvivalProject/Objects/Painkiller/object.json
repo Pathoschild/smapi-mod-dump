@@ -1,0 +1,13 @@
+{
+  "Name": "Painkiller",
+  "Description": "Kill pain, make you really tired though",
+  "Category": "ArtisanGoods",
+  "Edibility": -20,
+  "EdibleIsDrink": false,
+  "Price": 100,
+  "IsColored": false,
+  "Recipe": null,
+  "PurchaseFrom": "Harvey",
+  "PurchasePrice": 400,
+  "CanPurchase": true
+}

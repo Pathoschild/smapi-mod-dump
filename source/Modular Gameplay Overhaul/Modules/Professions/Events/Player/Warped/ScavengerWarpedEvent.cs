@@ -41,6 +41,11 @@ internal sealed class ScavengerWarpedEvent : WarpedEvent
     /// <inheritdoc />
     protected override void OnWarpedImpl(object? sender, WarpedEventArgs e)
     {
+        if (!e.IsLocalPlayer)
+        {
+            return;
+        }
+
         var scavengerHunt = e.Player.Get_ScavengerHunt();
         if (scavengerHunt.IsActive)
         {
@@ -86,7 +91,7 @@ internal sealed class ScavengerWarpedEvent : WarpedEvent
             return;
         }
 
-        var split = seasonData.Split(' ');
+        var split = seasonData.Split();
         attempts = r.Next(1, Math.Min(attempts, 100));
         var count = 0;
         for (var i = 0; i < attempts; i++)

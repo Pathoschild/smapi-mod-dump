@@ -19,7 +19,7 @@ namespace DialogueBoxRedesign.Patching
 {
     public static class HarmonyPatchExecutors
     {
-	    private static int widthOfPortraitArea = 444;
+	    private static int _widthOfPortraitArea = 444;
 	    
 	    public static void DrawPortrait(DialogueBox dialogueBox, SpriteBatch spriteBatch)
 	    {
@@ -32,7 +32,7 @@ namespace DialogueBoxRedesign.Patching
 		    }
 		    else
 		    {
-			    xPositionOfPortraitArea = dialogueBox.x + dialogueBox.width - widthOfPortraitArea;
+			    xPositionOfPortraitArea = dialogueBox.x + dialogueBox.width - _widthOfPortraitArea;
 		    }
 		    
 		    var portraitBoxX = xPositionOfPortraitArea + 76;
@@ -44,9 +44,9 @@ namespace DialogueBoxRedesign.Patching
 			    dialogueBox.characterDialogue.getPortraitIndex(), 64, 64);
 
 			/* HD Portraits Compat */
-			if(ModEntry.HDPortraitsAPI != null)
+			if(ModEntry.HdPortraitsApi != null)
             {
-				var data = ModEntry.HDPortraitsAPI.GetTextureAndRegion(
+				var data = ModEntry.HdPortraitsApi.GetTextureAndRegion(
 					dialogueBox.characterDialogue.speaker,
 					dialogueBox.characterDialogue.getPortraitIndex(),
 					Game1.currentGameTime.ElapsedGameTime.Milliseconds
@@ -69,7 +69,7 @@ namespace DialogueBoxRedesign.Patching
 			spriteBatch.Draw(portraitTexture, new Rectangle(portraitBoxX + 16 + xOffset, Game1.uiViewport.Height - 256, 256, 256), 
 				portraitSource, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0.88f);
 
-		    var speakerNameX = xPositionOfPortraitArea + widthOfPortraitArea / 2;
+		    var speakerNameX = xPositionOfPortraitArea + _widthOfPortraitArea / 2;
 		    var speakerNameY = portraitBoxY + 50;
 
 		    /* Speaker name */
@@ -157,7 +157,7 @@ namespace DialogueBoxRedesign.Patching
 			int textX;
 			if (ModEntry.Config.ShowPortraitOnTheLeft)
 			{
-				textX = dialogueBox.x + widthOfPortraitArea;
+				textX = dialogueBox.x + _widthOfPortraitArea;
 			}
 			else
 			{
@@ -166,7 +166,7 @@ namespace DialogueBoxRedesign.Patching
 			
 			var textY = dialogueBox.y + 58;
 
-			var textWidth = dialogueBox.width - widthOfPortraitArea;
+			var textWidth = dialogueBox.width - _widthOfPortraitArea;
 				
 			// shadow
 			SpriteText.drawString(spriteBatch, dialogueBox.getCurrentString(), textX - 4, textY + 4, dialogueBox.characterIndexInDialogue, textWidth, color: 8);

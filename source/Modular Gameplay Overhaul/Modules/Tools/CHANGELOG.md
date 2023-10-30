@@ -8,6 +8,47 @@ for queries and analysis.**
 
 # TOLS Changelog
 
+## 3.1.8
+
+### Changed
+
+* Default auto-selection border color changed from Magenta to Aqua.
+
+### Fixed
+
+* Fixed possible out-of-bounds exception in auto-selection draw.
+* Removed Moon Misadventure's tool upgrades from Clint's shop menu, if Forge Upgrading option is enabled.
+
+<sup><sup>[🔼 Back to top](#tols-changelog)</sup></sup>
+
+## 3.1.7
+
+### Changed
+
+* The auto-selection border now draws behind other elements in the UI, and emulated the shadow effect of the vanilla "current tool" highlight, giving it a much better "vanilla" feel.
+
+### Fixed
+
+* Fixed possible IndexOutOfRangeException in Fishing Rod auto-selection.
+
+<sup><sup>[🔼 Back to top](#tols-changelog)</sup></sup>
+
+## 3.1.5
+
+### Fixed
+
+* Fixed not being able to apply Mythicite upgrade at the Forge.
+* Auto-selection no longer requires that the player be *currently holding an auto-selectable tool*. This was very unintuitive. Now, simply marking a tool will cause it to auto-equip.
+* Fixed some issues with auto-selection of Scythe and Fishing Rod.
+* Fixed power-up colors for Radioactive and Mythicite power levels.
+* Fixed the default area of Radioactive and Mythicite Hoe and Watering Can, which was lower than intended.
+
+### Removed
+
+* Removed the glow on Radioactive ang Mythicite textures for Grandpa's Tools. They made the tools look "boxy" and unimmersive.
+
+<sup><sup>[🔼 Back to top](#tols-changelog)</sup></sup>
+
 ## 3.0.1
 
 ### Added

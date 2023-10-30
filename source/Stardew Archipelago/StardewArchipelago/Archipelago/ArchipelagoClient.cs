@@ -582,7 +582,7 @@ namespace StardewArchipelago.Archipelago
         {
             if (!MakeSureConnected())
             {
-                return "";
+                return _localDataPackage.GetLocalLocationName(locationId);
             }
             
             var locationName = _session.Locations.GetLocationNameFromId(locationId);
@@ -609,7 +609,7 @@ namespace StardewArchipelago.Archipelago
         {
             if (!MakeSureConnected())
             {
-                return -1;
+                return _localDataPackage.GetLocalLocationId(locationName);
             }
 
             var locationId = _session.Locations.GetLocationIdFromName(gameName, locationName);
@@ -625,7 +625,7 @@ namespace StardewArchipelago.Archipelago
         {
             if (!MakeSureConnected())
             {
-                return "";
+                return _localDataPackage.GetLocalItemName(itemId);
             }
 
             var itemName =  _session.Items.GetItemName(itemId);

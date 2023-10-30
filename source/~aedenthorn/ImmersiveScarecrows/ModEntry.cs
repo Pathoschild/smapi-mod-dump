@@ -65,23 +65,26 @@ namespace ImmersiveScarecrows
 
             HarmonyMethod prefix = new(typeof(ModEntry), nameof(ModEntry.Modded_Farm_AddCrows_Prefix));
             Type prismaticPatches = AccessTools.TypeByName("PrismaticTools.Framework.PrismaticPatches");
-            MethodInfo prismaticPrefix = AccessTools.Method(prismaticPatches, "Farm_AddCrows");
-
-            if (prismaticPrefix is not null)
+            if(prismaticPatches is not null)
             {
-                harmony.Patch(prismaticPrefix, prefix: prefix);
-                Monitor.Log("Found Prismatic Tools, patching for compat", LogLevel.Info);
+                MethodInfo prismaticPrefix = AccessTools.Method(prismaticPatches, "Farm_AddCrows");
+                if (prismaticPrefix is not null)
+                {
+                    harmony.Patch(prismaticPrefix, prefix: prefix);
+                    Monitor.Log("Found Prismatic Tools, patching for compat", LogLevel.Info);
+                }
             }
 
             Type radioactivePatches = AccessTools.TypeByName("RadioactiveTools.Framework.RadioactivePatches");
-            MethodInfo radioactivePrefix = AccessTools.Method(radioactivePatches, "Farm_AddCrows");
-
-            if (radioactivePrefix is not null)
+            if (radioactivePatches is not null)
             {
-                harmony.Patch(radioactivePrefix, prefix: prefix);
-                Monitor.Log("Found Radioactive Tools, patching for compat", LogLevel.Info);
+                MethodInfo radioactivePrefix = AccessTools.Method(radioactivePatches, "Farm_AddCrows");
+                if (radioactivePrefix is not null)
+                {
+                    harmony.Patch(radioactivePrefix, prefix: prefix);
+                    Monitor.Log("Found Radioactive Tools, patching for compat", LogLevel.Info);
+                }
             }
-
         }
 
         private void Display_RenderedWorld(object sender, StardewModdingAPI.Events.RenderedWorldEventArgs e)
@@ -116,10 +119,10 @@ namespace ImmersiveScarecrows
                 Game1.getFarm().addCrows();
                 Monitor.Log("Adding crows");
             }
-            if (e.Button == Config.PickupButton && Context.CanPlayerMove && Game1.currentLocation.terrainFeatures.TryGetValue(Game1.currentCursorTile, out var tf) && tf is HoeDirt)
+            if (e.Button == Config.PickupButton && Context.CanPlayerMove)
             {
                 int which = GetMouseCorner();
-                if (ReturnScarecrow(Game1.player, Game1.currentLocation, tf, Game1.currentCursorTile, which))
+                if (ReturnScarecrow(Game1.player, Game1.currentLocation, Game1.currentCursorTile, which))
                 {
                     Helper.Input.Suppress(e.Button);
                 }

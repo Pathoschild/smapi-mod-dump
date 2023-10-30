@@ -1,0 +1,29 @@
+﻿{
+    "GreenhouseLevel1": "Växthus",
+    "GreenhouseLevel1Description": "Fält 15x15. Lägger till en källare.",
+    
+    "GreenhouseLevel2": "Litet Växthus",
+    "GreenhouseLevel2Description": "Fält 30x30. Utvidgar källaren, lägger till ett inomhus växthus och automatisk bevattning.",
+    
+    "GreenhouseLevel3": "Mellan Växthus",
+    "GreenhouseLevel3Description": "Fält 50x50. Utvidgar källaren och inomhus växthuset.",
+    
+    "GreenhouseLevel4": "Stort Växthus",
+    "GreenhouseLevel4Description": "Fält 75x75. Utvidgar källaren och gör inomhus växthuset större.",
+  
+    "GreenhouseLevel5": "Extra Stort Deluxe Växthus",
+    "GreenhouseLevel5Description": "Fält 100x100. Utvidgar källaren och gör inomhus växthuset ännu större.",
+
+    "LeftBehindTree": "Du lämnade trädet bakom dig.",
+    "LeftBehindCrop": "Du lämnade grödan bakom dig.",
+    "PickUpTreeMessage": "Träd upptaget!",
+    "PlaceTreeMessage": "Träd placerat!",
+    "PickUpCropMessage": "Gröda upptaget!",
+    "PlaceCropMessage": "Gröda placerat!",
+    "EnableTreePickingOption": "Träd och skörd insamling",
+    "EnableTreePickingTooltip": "Aktivera/Inaktivera insamling.",
+    "language-choice-name": "Språk",
+"language-choice-tooltip": "Välj mod:s språk"
+
+    
+}

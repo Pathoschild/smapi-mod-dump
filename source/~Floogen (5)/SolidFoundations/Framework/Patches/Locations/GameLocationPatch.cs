@@ -43,7 +43,7 @@ namespace SolidFoundations.Framework.Patches.Buildings
         {
             harmony.Patch(AccessTools.Method(_object, nameof(GameLocation.performAction), new[] { typeof(string), typeof(Farmer), typeof(xTile.Dimensions.Location) }), postfix: new HarmonyMethod(GetType(), nameof(PerformActionPostfix)));
             harmony.Patch(AccessTools.Method(typeof(BuildableGameLocation), nameof(BuildableGameLocation.isBuildingConstructed), new[] { typeof(string) }), postfix: new HarmonyMethod(GetType(), nameof(IsBuildingConstructedPostfix)));
-            harmony.Patch(AccessTools.Method(typeof(BuildableGameLocation), nameof(BuildableGameLocation.buildStructure), new[] { typeof(BluePrint), typeof(Vector2), typeof(Farmer), typeof(bool), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(BuildStructurePrefix)));
+            harmony.Patch(AccessTools.Method(typeof(BuildableGameLocation), nameof(BuildableGameLocation.buildStructure), new[] { typeof(BluePrint), typeof(Vector2), typeof(Farmer), typeof(bool), typeof(bool) }), prefix: new HarmonyMethod(GetType(), nameof(BuildStructureBluePrintPrefix)));
         }
 
         private static void PerformActionPostfix(GameLocation __instance, ref bool __result, string action, Farmer who, xTile.Dimensions.Location tileLocation)
@@ -107,11 +107,11 @@ namespace SolidFoundations.Framework.Patches.Buildings
             }
         }
 
-        private static bool BuildStructurePrefix(BuildableGameLocation __instance, ref bool __result, BluePrint structureForPlacement, Vector2 tileLocation, Farmer who, bool magicalConstruction = false, bool skipSafetyChecks = false)
+        private static bool BuildStructureBluePrintPrefix(BuildableGameLocation __instance, ref bool __result, BluePrint structureForPlacement, Vector2 tileLocation, Farmer who, bool magicalConstruction = false, bool skipSafetyChecks = false)
         {
             if (SolidFoundations.buildingManager.GetSpecificBuildingModel(structureForPlacement.name) is ExtendedBuildingModel model && model is not null)
             {
-                __result = AttemptToBuildStructure(__instance, structureForPlacement, new GenericBuilding(model, structureForPlacement));
+                __result = AttemptToBuildStructure(__instance, structureForPlacement, new GenericBuilding(model, structureForPlacement), tileLocation, skipSafetyChecks);
                 return false;
             }
 
@@ -169,7 +169,6 @@ namespace SolidFoundations.Framework.Patches.Buildings
 
             return true;
         }
-
 
         public static bool CanBuildHere(BuildableGameLocation farm, BluePrint blueprint, Vector2 tileLocation, bool skipFarmerCheck = false)
         {

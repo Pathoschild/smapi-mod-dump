@@ -7,9 +7,9 @@ mods:
    Farm Tablet
 
 latest commit:
-   commit 45cef9577ca91469385efe0ed0e8e531cd1f0397
+   commit f4ca262d5800fb05e5ef3f7e3a803919f13015a4
    Author: Floogen <31755155+Floogen@users.noreply.github.com>
-   Date:   Tue Sep 26 15:14:50 2023 -0500
+   Date:   Sat Oct 28 23:58:37 2023 -0500
    
-       v6.10.0 released
+       v6.10.4 released
    

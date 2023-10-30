@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewRoguelike.VirtualProperties;
 using StardewValley;
@@ -17,10 +18,9 @@ using StardewValley.Tools;
 
 namespace StardewRoguelike.Patches
 {
-    internal class BarrelContentsPatch : Patch
+    [HarmonyPatch(typeof(BreakableContainer), nameof(BreakableContainer.releaseContents))]
+    internal class BarrelContentsPatch
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(BreakableContainer), "releaseContents");
-
         public static bool Prefix(BreakableContainer __instance, GameLocation location, Farmer who)
         {
 			int x = (int)__instance.TileLocation.X;

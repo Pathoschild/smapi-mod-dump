@@ -189,6 +189,7 @@ namespace Custom_Farm_Loader.Lib
 
         private void setDefaultWildCropSeasons()
         {
+            return;
             if (Filter.ChangedSeasons)
                 return;
 

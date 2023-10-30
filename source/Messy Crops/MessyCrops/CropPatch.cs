@@ -8,35 +8,37 @@
 **
 *************************************************/
 
-using HarmonyLib;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace MessyCrops
 {
-	[HarmonyPatch(typeof(Crop))]
 	internal class CropPatch
 	{
 		const float pixelDepth = .0001f;
 
-		private static readonly FieldInfo drawpos = typeof(Crop).FieldNamed("drawPosition");
-		private static readonly FieldInfo layerdepth = typeof(Crop).FieldNamed("layerDepth");
-		internal static readonly Dictionary<Crop, Vector2> offsets = new();
+		private static readonly FieldInfo drawpos = typeof(Crop).GetField("drawPosition", BindingFlags.Instance | BindingFlags.NonPublic);
+		private static readonly FieldInfo layerdepth = typeof(Crop).GetField("layerDepth", BindingFlags.Instance | BindingFlags.NonPublic);
+		internal static readonly ConditionalWeakTable<Crop, Tuple<Vector2>> offsets = new();
 
-		[HarmonyPatch("updateDrawMath")]
-		[HarmonyPostfix]
+		internal static void Setup()
+		{
+			ModEntry.harmony.Patch(typeof(Crop).GetMethod(nameof(Crop.updateDrawMath)), postfix: new(typeof(CropPatch), nameof(AddToList)));
+		}
+
 		public static void AddToList(Crop __instance, Vector2 tileLocation)
 		{
-			var offset = offsets.GetOrAdd(__instance, GetOffset);
+			if (!offsets.TryGetValue(__instance, out var offset))
+				offsets.Add(__instance, offset = new(GetOffset(__instance)));
+
 			if (ModEntry.config.ApplyToTrellis || !__instance.raisedSeeds.Value)
 			{
-				layerdepth.SetValue(__instance, ((tileLocation.Y * 64f + 32f + offset.Y) * pixelDepth + (tileLocation.X % 5) * .00001f) / 
+				layerdepth.SetValue(__instance, ((tileLocation.Y * 64f + 32f + offset.Item1.Y) * pixelDepth + (tileLocation.X % 5) * .00001f) / 
 					((__instance.currentPhase.Value == 0 && __instance.shouldDrawDarkWhenWatered()) ? 2f : 1f));
-				drawpos.SetValue(__instance, (Vector2)drawpos.GetValue(__instance) + offset);
+				drawpos.SetValue(__instance, (Vector2)drawpos.GetValue(__instance) + offset.Item1);
 			}
 		}
 

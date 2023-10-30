@@ -35,7 +35,7 @@ internal sealed class AdvanceQuestCommand : ConsoleCommand
     public override string[] Triggers { get; } = { "advance_quest", "advance", "adv" };
 
     /// <inheritdoc />
-    public override string Documentation => "Forcefully advances the specified quest-line (either Clint's Forge or Viego's Curse / Yoba's Virtues).";
+    public override string Documentation => "Forcefully advances the specified quest-line (either Dwarven Legacy or Hero's Journey).";
 
     /// <inheritdoc />
     public override void Callback(string trigger, string[] args)
@@ -62,14 +62,13 @@ internal sealed class AdvanceQuestCommand : ConsoleCommand
                 if (!player.hasQuest((int)QuestId.ForgeIntro))
                 {
                     player.addQuest((int)QuestId.ForgeIntro);
+                    return;
                 }
-                else
+
+                player.completeQuest((int)QuestId.ForgeIntro);
+                if (!player.mailReceived.Contains("clintForge"))
                 {
-                    player.completeQuest((int)QuestId.ForgeIntro);
-                    if (!player.mailReceived.Contains("clintForge"))
-                    {
-                        player.mailReceived.Add("clintForge");
-                    }
+                    player.mailReceived.Add("clintForge");
                 }
 
                 break;
@@ -80,6 +79,7 @@ internal sealed class AdvanceQuestCommand : ConsoleCommand
             case "viego":
             case "yoba":
             case "virtues":
+            case "trials":
             case "chivalry":
             case "purification":
                 if (player.mailReceived.Contains("gotHolyBlade"))
@@ -115,6 +115,16 @@ internal sealed class AdvanceQuestCommand : ConsoleCommand
                         player.Write(virtue.Name, int.MaxValue.ToString());
                         CombatModule.State.HeroQuest.UpdateTrialProgress(virtue);
                     });
+
+                    return;
+                }
+
+                if (player.Read<HeroQuest.QuestState>(DataKeys.VirtueQuestState) == HeroQuest.QuestState.Completed)
+                {
+                    if (!player.hasQuest((int)QuestId.HeroReward) && !player.mailReceived.Contains("gotHolyBlade"))
+                    {
+                        player.addQuest((int)QuestId.HeroReward);
+                    }
                 }
 
                 break;
@@ -158,7 +168,7 @@ internal sealed class AdvanceQuestCommand : ConsoleCommand
                 {
                     if (args.Length == 1 || !int.TryParse(args[1], out var amount))
                     {
-                        amount = 1;
+                        amount = 1000;
                     }
 
                     player.Increment(Virtue.Generosity.Name, amount);
@@ -174,7 +184,7 @@ internal sealed class AdvanceQuestCommand : ConsoleCommand
                     }
 
                     player.Increment(Virtue.Valor.Name, amount);
-                    CombatModule.State.HeroQuest?.UpdateTrialProgress(Virtue.Generosity);
+                    CombatModule.State.HeroQuest?.UpdateTrialProgress(Virtue.Valor);
                 }
 
                 break;

@@ -101,7 +101,7 @@
   "angler.desc.prestiged": "Fish are again 0.5% more valuable for every unique max-sized species caught.",
   "aquarist.title.male": "Aquarist",
   "aquarist.title.female": "Aquarist",
-  "aquarist.desc": "Fish pond max capacity +2. Catching bar decrease slower for every unique fish species raised in a Fish Pond.",
+  "aquarist.desc": "Fish pond max capacity +2. Catching bar decreases slower for every unique fish species raised in a Fish Pond.",
   "aquarist.desc.prestiged": "Fish pond max capacity +2 >> +4.",
 
   "trapper.title.male": "Trapper",
@@ -126,28 +126,27 @@
   "fighter.desc.prestiged": "Damage +10% >> +15%.",
   "brute.title.male": "Brute",
   "brute.title.female": "Amazon",
-  "brute.desc": "Taking damage builds rage, improving combat prowess. +25 HP.",
-  "brute.desc.prestiged": "Rage also grants attack speed.",
+  "brute.desc": "Become enraged as you suffer damage, gradually increasing your own damage and attack speed. +25 HP.",
+  "brute.desc.prestiged": "Stay enraged for twice as long.",
   "brute.buff.name": "Rage",
-  "brute.buff.desc": "Damage +{{damage}}.",
-  "brute.buff.desc.prestiged": "Damage +{{damage}}. Swing Speed +{{speed}}.",
+  "brute.buff.desc": "Damage +{{damage}}. Attack Speed +{{speed}}.",
   "poacher.title.male": "Bushwhacker",
   "poacher.title.female": "Bushwhacker",
-  "poacher.desc": "Crit. chance +50%. Crit. strikes have a chance to poach items from enemies.",
+  "poacher.desc": "Crit. chance +50%. Chance to poach an item from enemies on each attack.",
   "poacher.desc.prestiged": "Refund special move cooldown on a successful poach.",
 
   "rascal.title.male": "Rascal",
   "rascal.title.female": "Rascal",
   "rascal.desc": "Gain one additional ammo slot. 35% chance to recover spent ammo.",
-  "rascal.desc.prestiged": "35% >> 70% chance to recover spent ammo.",
+  "rascal.desc.prestiged": "35% >> 55% chance to recover spent ammo. Can equip Monster Musk to shoot luring ammo.",
   "desperado.title.male": "Desperado",
   "desperado.title.female": "Desperada",
-  "desperado.desc": "Fire faster at lower HP. Can overcharge the slingshot to increase ammo power and cross-section.",
-  "desperado.desc.prestiged": "Overcharged shots can pierce enemies.",
+  "desperado.desc": "Consecutive shots against different enemies within 1 second deal 50% more damage. Can overcharge the slingshot to increase ammo power and cross-section.",
+  "desperado.desc.prestiged": "Overcharged shots have a chance to pierce enemies.",
   "piper.title.male": "Slimed Piper",
   "piper.title.female": "Slime Enchantress",
-  "piper.desc": "Attract ally Slimes when near enemies. Chance to gain a random buff when a Slime is defeated.",
-  "piper.desc.prestiged": "Chance to also recover some health and energy when a Slime is defeated.",
+  "piper.desc": "Attract ally Slimes when near enemies. Chance to gain a random effect when a Slime is defeated.",
+  "piper.desc.prestiged": "Increased effectiveness and variety of defeated Slime effects.",
   "piper.buff": "Slimed",
 
 
@@ -201,6 +200,9 @@
   // * ARSENAL * //
   // *********** //
 
+  "weapons.sword": "Sword",
+  "weapons.club": "Club",
+  "weapons.dagger": "Dagger",
   "weapons.dwarven.prefix": "Dwarven",
   "weapons.elven.prefix": "Elven",
   "weapons.dark_sword.name": "Blade of Ruin",
@@ -225,9 +227,12 @@
   "slingshots.infinity.desc": "The true form of the Galaxy Slingshot.",
   "objects.galaxy_soul.desc": "The materialized core of a tiny galaxy.",
 
-  "blueprint.found.first": "You found an old Blueprint! It's faded, but you recognize the shape of a {{type}} next to some Dwarvish symbols. Maybe the right craftsman could make some sense out of it.",
-  "blueprint.found.local": "You found a Dwarvish Blueprint.",
-  "blueprint.found.global": "{{who}} has found a Dwarvish Blueprint.",
+  "blueprint.found.first.unknown": "You found an old blueprint! It's faded, but you recognize strange symbols and a rough outline in the shape of a {{type}}. If only you could translate the symbols...",
+  "blueprint.found.first.known": "You found an old blueprint! It's faded, but you recognize faint Dwarvish symbols and a rough outline in the shape of a {{type}}. Maybe the right craftsman could make some sense of it.",
+  "blueprint.found.next.unknown": "You found another old blueprint!",
+  "blueprint.found.next.known": "You found another Dwarvish blueprint!",
+  "blueprint.found.need_guide": "You should probably get around to finding some kind of translation guide.",
+  "blueprint.found.global": "{{who}} has found a Dwarvish blueprint.",
   "blacksmith.forge.option": "Forge",
   "blacksmith.forge.explanation": "I could forge some new weapons based on those blueprints you found. If only I had these strange materials.",
   "blacksmith.forge.confirmation": "Oh, you found some! I'll get started on this as soon as I can. It should be ready in a few days.",
@@ -245,19 +250,19 @@
   "events.100162.no_sword": "MarlonsTheme/21 9/farmer -100 -100 0 Marlon 23 6 2/addQuest 14/skippable/pause 1000/move Marlon 0 2 2/pause 500/showFrame Marlon 4/pause 1000/speak Marlon \"Hmmm... \"/pause 500/warp farmer 18 13/playSound stoneStep/move farmer 0 -3 1/move farmer 5 0 0/pause 500/showFrame Marlon 0/pause 500/speak Marlon \"...I was just peering down into this old mine shaft.#$b#It's been abandoned for decades.\"/pause 500/showFrame Marlon 4/speak Marlon \"Still, there's probably good ore down there.#$b#But a dark place, undisturbed for so long... I'm afraid ore isn't the only thing you'll find...\"/pause 500/showFrame Marlon 0/pause 500/speak Marlon \"You better know how to swing that weapon. You might need it.\"/pause 500/speak Marlon \"Name's Marlon, by the way. I run the adventurer's guild right outside.#$b#I'll keep my eye on you. Prove yourself and I might think about making you a member.\"/pause 500/end",
   "events.100162.sword.sve": "MarlonsTheme/21 9/farmer -100 -100 0 MarlonFay 23 6 2/addQuest 14/skippable/pause 1000/move MarlonFay 0 2 2/pause 500/showFrame MarlonFay 19/pause 1000/speak MarlonFay \"Hmmm... \"/pause 500/warp farmer 18 13/playSound stoneStep/move farmer 0 -3 1/move farmer 5 0 0/pause 500/showFrame MarlonFay 0/pause 500/speak MarlonFay \"...I was just wondering how far down this mine shaft goes.#$b#I'm going to take care of some of the monsters in here before they start climbing out into the valley.$1#$b#You seem concerned. I may be old, but age hasn't robbed me of my skill with a sword, quite yet.$0\"/pause 500/showFrame MarlonFay 18/pause 2000/showFrame MarlonFay 0/pause 500/speak MarlonFay \"As leader of the adventurer's guild I've met a lot of fighters in my time. I recognize that look in your eye.$2\"/pause 1500/speak MarlonFay \"Take this. It's a training weapon. It may not look like much, but you'll be able to battle the monsters here.\"/playSound dwop/faceDirection farmer 1 true/pause 50/faceDirection farmer 2/itemAboveHead sword/pause 3300/awardFestivalPrize sword/pause 300/faceDirection farmer 1 true/pause 100/faceDirection farmer 0/pause 500/speak MarlonFay \"I'll keep my eye on you. Prove yourself and I might think about making you a member.\"/pause 750/end",
   "events.100162.no_sword.sve": "MarlonsTheme/21 9/farmer -100 -100 0 MarlonFay 23 6 2/addQuest 14/skippable/pause 1000/move MarlonFay 0 2 2/pause 500/showFrame MarlonFay 19/pause 1000/speak MarlonFay \"Hmmm... \"/pause 500/warp farmer 18 13/playSound stoneStep/move farmer 0 -3 1/move farmer 5 0 0/pause 500/showFrame MarlonFay 0/pause 500/speak MarlonFay \"...I was just wondering how far down this mine shaft goes.#$b#I'm going to take care of some of the monsters in here before they start climbing out into the valley.$1#$b#You seem concerned. I may be old, but age hasn't robbed me of my skill with a sword, quite yet.$0\"/pause 500/showFrame MarlonFay 18/pause 2000/showFrame MarlonFay 0/pause 500/speak MarlonFay \"As leader of the adventurer's guild I've met a lot of fighters in my time. I recognize that look in your eye.$2\"/pause 300/showFrame MarlonFay 19/pause 1000/showFrame MarlonFat 0/pause 300/speak MarlonFay \"Prove to me that you can swing that weapon and I might think about making you a member.\"/pause 750/end",
-  "events.1337098.no_purchase": "MarlonsTheme/-500 -500/farmer -200 -200 0 MarlonFay 4 11 2/viewport 6 13 true/skippable/pause 2000/warp farmer 6 19/playSound doorClose/pause 500/showFrame MarlonFay 17/pause 150/textAboveHead MarlonFay \"You found something!\"/pause 350/move farmer 0 -5 3/move farmer -2 0 0/move farmer 0 -1 0/showFrame MarlonFay 0/pause 500/speak MarlonFay \"That weapon! There's no mistaking it!$1#$b#You received a Galaxy Sword!\"/pause 1000/showFrame MarlonFay 18/pause 1000/speak MarlonFay \"You have been deemed worthy, @. This is a true honor.$2#$b#I obtained my first Galaxy weapon after a night of harsh battles at Castle Village.#$b#There was a purple blinding light as a sword slowly fell into my hands. I felt the power of the cosmos for a brief second.#$b#Wizards and scholars believe Yoba gifts these weapons to true peacekeepers of humanity.\"/pause 1200/speak MarlonFay \"I'm proud of you!$1\"/showFrame MarlonFay 0/pause 500/end",
+  "events.1337098.no_purchase": "MarlonsTheme/-500 -500/farmer -200 -200 0 MarlonFay 4 11 2/viewport 6 13 true/skippable/pause 2000/warp farmer 6 19/playSound doorClose/pause 500/showFrame MarlonFay 17/pause 150/textAboveHead MarlonFay \"You found something!\"/pause 350/move farmer 0 -5 3/move farmer -2 0 0/move farmer 0 -1 0/showFrame MarlonFay 0/pause 500/speak MarlonFay \"That weapon! There's no mistaking it!$1#$b#You received a Galaxy weapon!\"/pause 1000/showFrame MarlonFay 18/pause 1000/speak MarlonFay \"You have been deemed worthy, @. This is a true honor.$2#$b#I obtained my first Galaxy weapon after a night of harsh battles at Castle Village.#$b#There was a blinding purple light as I felt it materialize within my hands. I felt the power of the cosmos for a brief second.#$b#Wizards and scholars believe Yoba gifts these weapons to true peacekeepers of humanity.\"/pause 1200/speak MarlonFay \"I'm proud of you!$1\"/showFrame MarlonFay 0/pause 500/end",
 
   "fromcsfiles.MeleeWeapon.cs.14122": "The Prismatic Shard's colors intensify.#You feel a magnetic pull as the iridium bars magically lift from your backpack. Before your very eyes, the metal liquefies and melds around the glowing shard, gradually assuming the shape of a {{type}}.^^#     You obtain the ={{galaxyWeapon}}=  ^",
   "locations.Town.DwarfGrave.Translated": "     You translate the dwarvish:     \n\nmidst golden triplets lost in sand\nbring forth a rainbow forged from land\nbeseech the heavens! stake thy claim\nlet thunders bruit and roar thy name\nif heart be pure and conscious clear\nand faith hath neither doubt nor fear\nstars shall rain down yonder seal\nand bestow thee with heaven steel",
   "locations.SeedShop.Yoba": "\"Yoba's blessing, true heroes it shall fortify.      In Genoristy and Compassion, virtues to comply.     With Honor, Valor, Wisdom, their spirits amplify.      A prophecy unfolds, under Yoba's watchful eye.\"",
   "locations.desert.noiridium": "You feel the Prismatic Shard vibrate...#But nothing happens.#Feels like something is missing.",
 
-  "mail.curse.intro": "Dear @, I must speak with you about a matter of utmost urgency.^Please come see me at the tower at your earliest convenience.^   -M. Rasmodius, Wizard[#]Ruined Hero",
-  "mail.curse.intro.witch": "Dear @, I must speak with you about a matter of utmost urgency.^Please come see me at the tower at your earliest convenience.^   -M. Rasmodia, Witch[#]Ruined Hero",
+  "mail.curse.intro": "[letterbg 2]Dear @,^I must speak with you about a matter of utmost urgency.^Please come see me at the tower at your earliest convenience.^   -M. Rasmodius, Wizard[#]The Blade of Ruin",
+  "mail.curse.intro.witch": "[letterbg 2]Dear @,^I must speak with you about a matter of utmost urgency.^Please come see me at the tower at your earliest convenience.^   -M. Rasmodia, Witch[#]The Blade of Ruin",
 
-  "quests.forge.intro": "Basic/A Dwarven Legacy/Clint told you he'd finish translating that old blueprint in a couple of days./Visit Clint to ask about the blueprint./Blacksmith/144702/0/-1/false",
+  "quests.forge.intro": "Basic/A Dwarven Legacy/Clint told you he'd finish translating that old blueprint in a couple of days./Visit Clint to ask about the blueprint./Blacksmith/-1/0/-1/false",
   "quests.forge.next": "Basic/A Dwarven Legacy II/That old blueprint turned out to be a recipe for a powerful ancient weapon! Could there be others?/Find the remaining Dwarvish blueprints./null/-1/0/-1/false",
-  "quests.hero.curse": "Basic/The Blade of the Ruined Hero/The weapon you found carries the curse of the Ruined Hero! You can already feel it draining away your life energy. Better find some way to lift that curse, and fast!/Find a way to lift the Ruined Blade's curse./null/-1/0/-1/false",
+  "quests.hero.curse": "Basic/The Ruined Blade/The weapon you found carries the curse of the Ruined Hero! You can already feel it draining away your life energy. Better find some way to lift that curse, and fast!/Find a way to lift the Ruined Blade's curse./null/-1/0/-1/false",
   "quests.hero.reward": "Basic/A Hero's Reward/You have demonstrated the Five Heroic Virtues many times throughout your journey. It's time to pray for Yoba's blessing./Take the Blade of Ruin to the altar of Yoba./null/-1/0/-1/false",
 
   "quests.hero.journey.name": "A Hero's Journey",
@@ -282,7 +287,7 @@
   "virtues.generosity.objective": "Give freely and share your abundance with your fellow townsfolk.",
   "virtues.valor.name": "Valor",
   "virtues.valor.flavor": "\"Valor doth not inherently bestow goodness, yet how many good men hath thou met in thy life's voyage who bore the mantle of cowardice? Those who do posses valor hesitate not to defy the majority, heedless the outcomes they may befall.\"",
-  "virtues.valor.objective": "Bravely shield your fellow townsfolk by eradicating the creatures that would harm them.",
+  "virtues.valor.objective": "Bravely through against unimaginable odds, or shield your fellow townsfolk by eradicating the creatures that would harm them.",
 
   "virtues.appreciate.singular": "{{name}} appreciates your {{virtue}}.",
   "virtues.appreciate.plural": "{{name1}} and {{name2}} appreciate your {{virtue}}.",
@@ -291,6 +296,7 @@
   "virtues.recognize.yoba": "Yoba recognizes your Valor.",
   "virtues.disapprove.singular": "{{name}} disapproves of your lack of {{virtue}}.",
   "virtues.disapprove.plural": "{{name1}} and {{name2}} disapprove of your lack of {{virtue}}.",
+  "virtues.proven": "{{player}} has proven their {{virtue}}.",
 
   // json assets
   "objects.dwarvish_blueprint.name": "Old Dwarvish Blueprint",
@@ -338,8 +344,6 @@
   // * ENCHANTMENTS * //
   // **************** //
 
-  "enchantments.artful.name": "Artful",
-  "enchantments.artful.parry": "Crit. chance +100%",
   "enchantments.carving.name": "Carving",
   "enchantments.cleaving.name": "Cleaving",
   "enchantments.energized.name": "Energized",
@@ -348,14 +352,11 @@
   "enchantments.explosive.desc": "Blast radius: {{counter}}",
   "enchantments.steadfast.name": "Steadfast",
   "enchantments.bloodthirsty.name": "Bloodthirsty",
-  "enchantments.mammonite.name": "Mammonite's",
+  "enchantments.mammonite.name": "Mammonite",
   "enchantments.wabbajack.name": "Wabbajack",
-  "enchantments.magnum.name": "Magnum",
-  "enchantments.gatling.name": "Gatling",
-  "enchantments.preserving.name": "Preserving",
+  "enchantments.freezing.name": "Freljord",
   "enchantments.quincy.name": "Quincy",
-  "enchantments.spreading.name": "Spreading",
-
+  "enchantments.runaan.name": "Runaan",
 
   // *********** //
   // ** TAXES ** //
@@ -381,17 +382,27 @@
   // ************** //
 
   "ui.item_hover.damage": "{{amount}} Damage",
-  "ui.item_hover.crate": "{{amount}} Crit. Chance",
-  "ui.item_hover.cpow": "{{amount}} Crit. Power",
+  "ui.item_hover.c_rate": "{{amount}} Crit. Chance",
+  "ui.item_hover.c_pow": "{{amount}} Crit. Power",
   "ui.item_hover.knockback": "{{amount}} Knockback",
-  "ui.item_hover.firespeed": "{{amount}} Firing Speed",
-  "ui.item_hover.swingspeed": "{{amount}} Swing Speed",
+  "ui.item_hover.fire_speed": "{{amount}} Firing Speed",
+  "ui.item_hover.swing_speed": "{{amount}} Swing Speed",
+  "ui.item_hover.attack_speed": "{{amount}} Attack Speed",
   "ui.item_hover.cdr": "{{amount}} Cooldown",
   "ui.item_hover.resist": "{{amount}} Resistance",
   "ui.item_hover.precision": "{{amount}} Precision",
+  "ui.item_hover.light": "Emits light",
+  "ui.item_hover.magnetic": "Magnetic",
 
-  "ui.buffs.jinxed": "-5 Defense",
-  "ui.buffs.warrior": "+{{value}} Attack",
+  "ui.buffs.burnt.damage": "-50% Damage",
+  "ui.buffs.burnt.dot": "-{{amount}} health every 3 seconds",
+  "ui.buffs.frozen.stuck": "Can't move",
+  "ui.buffs.frozen.vulnerable": "Vulnerable to the next attack",
+  "ui.buffs.jinxed.defense": "-5 Defense",
+  "ui.buffs.jinxed.special": "Can't use special moves",
+  "ui.buffs.confused": "Disoriented",
+  "ui.buffs.warrior.attack": "+{{value}} Attack",
+
 
   // ********* //
   // * PONDS * //
@@ -419,8 +430,8 @@
   "gmcm.core.choose": "Choose the modules to enable. You must save and exit this menu after enabling or disabling a module for those changes to take effect. Links to specific module settings pages will appear below for enabled modules.\n\nNote that certain modules may cause a JSON shuffle or other side-effects if enabled or disabled mid-playthrough.",
   "gmcm.core.available": "Available modules:",
   "gmcm.core.modules": "Module-specific settings:",
-  "gmcm.modules.profs.name": "Professions",
-  "gmcm.modules.profs.desc": "A complete overhaul of all skill professions with the goal of supporting more diverse and interesting playstyles. Introducing all-new Prestige mechanics and Limit Breaks.",
+  "gmcm.modules.prfs.name": "Professions",
+  "gmcm.modules.prfs.desc": "A complete overhaul of all skill professions with the goal of supporting more diverse and interesting playstyles. Introducing all-new Prestige mechanics and Limit Breaks.",
   "gmcm.modules.cmbt.name": "Combat",
   "gmcm.modules.cmbt.desc": "A complete overhaul of the combat experience, from rebalanced stats, weapons--both melee and ranged--, rings and enchantments, to entirely new mechanics like status effects, weapon combos and gemstone resonances.",
   "gmcm.modules.tols.name": "Tools",
@@ -433,7 +444,7 @@
   "gmcm.modules.twx.desc": "A collection of smaller immersion tweaks and fixes for inconsistencies in vanilla.",
 
   // professions
-  "gmcm.profs.heading": "PROFS Module Settings",
+  "gmcm.profs.heading": "PRFS Module Settings",
   "gmcm.profs.back": "Back to Profession settings",
 
   "gmcm.profs.controls.modkey.desc": "The key used to enable active effects for some professions (used by Prospector, Scavenger and Rascal).",
@@ -647,6 +658,8 @@
   "gmcm.cmbt.enemies.defense_summand.desc": "Adds to the damage resistance of all enemies (before multiplier).",
   "gmcm.cmbt.enemies.varied_encounters.title": "Varied Encounters",
   "gmcm.cmbt.enemies.varied_encounters.desc": "Randomizes monster stats, subject to Daily Luck bias, adding variability to monster encounters.",
+  "gmcm.cmbt.enemies.spawn_multiplier.title": "Monster Spawn Chance Multiplier",
+  "gmcm.cmbt.enemies.spawn_multiplier.desc": "Multiplies the chance to spawn enemies in dungeons.",
 
   "gmcm.cmbt.controls.auto_selection_range.melee.title": "Melee Auto-Selection Range",
   "gmcm.cmbt.controls.auto_selection_range.melee.desc": "The chosen melee weapon, if any, will be automatically equipped when a monster enters this range in tiles.",
@@ -654,6 +667,20 @@
   "gmcm.cmbt.controls.auto_selection_range.ranged.desc": "The chosen ranged weapon, if any, will be automatically equipped when a monster enters this range in tiles.",
 
   "gmcm.cmbt.ui.color_coded.desc": "Whether to colorize item names according to tier or unique status.",
+  "gmcm.cmbt.ui.color_coded.common.title": "Common Tier Color",
+  "gmcm.cmbt.ui.color_coded.common.desc": "The title color used to identify common-tier weapons",
+  "gmcm.cmbt.ui.color_coded.uncommon.title": "Uncommon Tier Color",
+  "gmcm.cmbt.ui.color_coded.uncommon.desc": "The title color used to identify uncommon-tier weapons",
+  "gmcm.cmbt.ui.color_coded.rare.title": "Rare Tier Color",
+  "gmcm.cmbt.ui.color_coded.rare.desc": "The title color used to identify rare-tier weapons",
+  "gmcm.cmbt.ui.color_coded.epic.title": "Epic Tier Color",
+  "gmcm.cmbt.ui.color_coded.epic.desc": "The title color used to identify epic-tier weapons",
+  "gmcm.cmbt.ui.color_coded.mythic.title": "Mythiv Tier Color",
+  "gmcm.cmbt.ui.color_coded.mythic.desc": "The title color used to identify mythic-tier weapons",
+  "gmcm.cmbt.ui.color_coded.masterwork.title": "Masterwork Tier Color",
+  "gmcm.cmbt.ui.color_coded.masterwork.desc": "The title color used to identify masterwork-tier weapons",
+  "gmcm.cmbt.ui.color_coded.legendary.title": "Legendary Tier Color",
+  "gmcm.cmbt.ui.color_coded.legendary.desc": "The title color used to identify legendary-tier weapons",
   "gmcm.cmbt.ui.sockets.draw.title": "Draw Gemstone Forge Sockets",
   "gmcm.cmbt.ui.sockets.draw.desc": "Repalces the generic vanilla \"Forged\" text in weapon tooltips with actual gemstone socket icons.",
   "gmcm.cmbt.ui.sockets.style.title": "Forge Socket Style",
@@ -676,7 +703,7 @@
   "gmcm.cmbt.ui.bullseye_cursor.desc": "Draws a bulls-eye instead of the mouse cursor while firing a slingshot. Does not support pull-back firing for obvious reasons.",
 
   // tools
-  "gmcm.tols.heading": "TOLS Settings",
+  "gmcm.tols.heading": "TOLS Module Settings",
 
   "gmcm.tols.tools": "Tools",
   "gmcm.tols.axe": "Axe",
@@ -830,7 +857,7 @@
   "gmcm.tols.ui.hide_affected_tiles.desc": "Whether to hide the affected tiles overlay while charging tools.",
 
   // ponds
-  "gmcm.pnds.heading": "PNDS Settings",
+  "gmcm.pnds.heading": "PNDS Module Settings",
   "gmcm.pnds.days_until_algae_spawn.title": "Days Until Algae Spawn",
   "gmcm.pnds.days_until_algae_spawn.desc": "The number of days until an empty pond will begin spawning algae.",
   "gmcm.pnds.roe_production_chance_multiplier.title": "Roe Production Chance Multiplier",
@@ -839,7 +866,7 @@
   "gmcm.pnds.roe_always_fish_quality.desc": "If true, then the quality of produced roe is always the same as the quality of the producing fish. If false, then the quality will be a random value less than or equal to that of the producing fish.",
 
   // taxes
-  "gmcm.txs.heading": "TXS Settings",
+  "gmcm.txs.heading": "TXS Module Settings",
   "gmcm.txs.annualinterest.title": "Annual Intereset",
   "gmcm.txs.annualinterest.desc": "The interest rate charged annually over any outstanding debt. Interest is accrued daily at a rate of 1/112 the annual rate.",
 
@@ -872,7 +899,7 @@
   "gmcm.txs.property.exempt_magical_buildings.desc": "Whether or not magical buildings (i.e., those summoned at the Wizard's Tower) are exempt from property taxes.",
 
   // tweex
-  "gmcm.twx.heading": "TWX Settings",
+  "gmcm.twx.heading": "TWX Module Settings",
   "gmcm.twx.headings.farming": "Farming Tweex",
   "gmcm.twx.headings.foraging": "Foraging Tweex",
   "gmcm.twx.headings.fishing": "Fishing Tweex",
@@ -903,8 +930,8 @@
   "gmcm.twx.farming.crop_wither_chance.desc": "The chance for a crop to wither per day left un-watered.",
   "gmcm.twx.farming.prevent_fruit_tree_winter_growth.title": "Prevent Fruit Tree Winter Growth",
   "gmcm.twx.farming.prevent_fruit_tree_winter_growth.desc": "Regular trees can't grow in winter. Why should fruit trees be any different?",
-  "gmcm.twx.farming.largedairy_yield.title": "Large Dairy Yields Quantity Over Quality",
-  "gmcm.twx.farming.largedairy_yield.desc": "Causes one large egg or milk to produce two mayonnaise or cheese but at regular quality, instead of one at gold quality.",
+  "gmcm.twx.farming.dairy_yield.title": "Immersive Dairy Yields",
+  "gmcm.twx.farming.dairy_yield.desc": "Causes one large egg or milk to produce two mayonnaise or cheese but at regular quality, instead of one at gold quality. Ostrich Eggs yield 10 mayonnaise, but do not retain quality without Artisan profession (except when Ostrich Mayo is installed). And Gold Eggs yield a single mayonnaise, but always at the highest quality (except when Golden Mayo is installed).",
   "gmcm.twx.farming.spawn_crows.title": "Spawn Crows on These Maps:",
   "gmcm.twx.maps.islandwest": "Ginger Island Farm",
   "gmcm.twx.maps.custom_garden": "Community Garden (SVE)",
@@ -928,9 +955,9 @@
   "gmcm.controls.slick_moves.title": "Slick Moves",
   "gmcm.controls.slick_moves.desc": "Drift in the current running direction when swinging a weapon.",
   "gmcm.controls.enable_auto_selection.title": "Enable Auto-Selection",
-  "gmcm.controls.enable_auto_selection.desc": "The highlighted {{selected}} will be automatically equipped when appropriate.",
+  "gmcm.controls.enable_auto_selection.desc": "The highlighted tool will be automatically equipped when appropriate.",
   "gmcm.controls.selection_key.title": "Selection Key",
-  "gmcm.controls.selection_key.desc": "Hold this key to toggle a {{tool}} for auto-selection, if enabled.",
+  "gmcm.controls.selection_key.desc": "Hold this key to toggle {{tool}} auto-selection, if enabled.",
   "gmcm.controls.selection_border_color.title": "Selection Border Color",
   "gmcm.controls.selection_border_color.desc": "The color used to indicate the chosen auto-selectable {{chosen}}.",
 

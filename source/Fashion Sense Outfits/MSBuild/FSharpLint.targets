@@ -1,0 +1,12 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <FSharpLint Condition="'$(FSharpLint)' == ''">$(DOTNET_ROOT)/tools/dotnet-fsharplint</FSharpLint>
+    </PropertyGroup>
+    <Target Name="FSharpLint"  Condition="Exists($(FSharpLint))" AfterTargets="BeforeBuild">
+        <Exec
+                Command="$(FSharpLint) -f msbuild lint $(MSBuildProjectFullPath)"
+                ConsoleToMSBuild="true"
+                IgnoreExitCode="false"
+        />
+    </Target>
+</Project>

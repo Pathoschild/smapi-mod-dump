@@ -1,0 +1,25 @@
+﻿{
+    "GreenhouseLevel1": "Skleník",
+    "GreenhouseLevel1Description": "Orné pole 15x15. Přidává sklep.",
+    "GreenhouseLevel2": "Malý Skleník",
+    "GreenhouseLevel2Description": "Orné pole 30x30. Rozšiřuje sklep, přidává vnitřní skleník a automatické zavlažování.",
+    "GreenhouseLevel3": "Střední Skleník",
+    "GreenhouseLevel3Description": "Orné pole 50x50. Dále rozšiřuje sklep a zvětšuje vnitřní skleník.",
+    "GreenhouseLevel4": "Velký Skleník",
+    "GreenhouseLevel4Description": "Orné pole 75x75. Zvětšuje sklep a vnitřní skleník.",
+    "GreenhouseLevel5": "Extra Velký Deluxe Skleník",
+    "GreenhouseLevel5Description": "Orné pole 100x100. Dále rozšiřuje sklep a zvětšuje vnitřní skleník.",
+
+
+    "LeftBehindTree": "Zanechal jste strom.",
+    "LeftBehindCrop": "Zanechal jste plodinu.",
+    "PickUpTreeMessage": "Strom byl sebrán!",
+    "PlaceTreeMessage": "Strom byl umístěn!",
+    "PickUpCropMessage": "Plodina byla sebrána!",
+    "PlaceCropMessage": "Plodina byla umístěna!",
+    "EnableTreePickingOption": "Sběr stromů a plodin",
+    "EnableTreePickingTooltip": "Povolit/zakázat sběr.",
+    "language-choice-name": "Jazyk",
+"language-choice-tooltip": "Vyberte jazyk módu"
+
+}

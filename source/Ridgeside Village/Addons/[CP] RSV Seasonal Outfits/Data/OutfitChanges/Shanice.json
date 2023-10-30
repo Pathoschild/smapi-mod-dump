@@ -1,0 +1,76 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Shanice Seasonal Outfits",
+			"Action": "EditImage",
+			"Target": "Portraits/Shanice, Characters/Shanice",
+			"FromFile": "Assets/{{Target}}/Shanice_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"Shanice": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Shanice Rain Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Shanice, Characters/Shanice",
+			"FromFile": "Assets/{{Target}}/Shanice_{{SeasonalRainToken}}.png",
+			"When":
+			{
+				"SeasonalRainToken": "rain",
+				"Shanice": "enabled"
+			}
+		},
+		{
+			"LogName": "RSV Shanice Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Shanice, Characters/Shanice",
+			"FromFile": "Assets/{{Target}}/Shanice_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Shanice": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Shanice Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Shanice, Characters/Shanice",
+			"FromFile": "Assets/{{Target}}/Shanice_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Shanice": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Shanice Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Shanice, Characters/Shanice",
+			"FromFile": "Assets/{{Target}}/Shanice_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Shanice": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

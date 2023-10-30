@@ -9,18 +9,14 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using HarmonyLib;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Locations.CodeInjections.Initializers;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Quests;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
 using StardewArchipelago.Locations.Festival;
 using StardewArchipelago.Locations.GingerIsland;
-using StardewArchipelago.Locations.GingerIsland.Boat;
-using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Characters;
@@ -559,8 +555,8 @@ namespace StardewArchipelago.Locations.Patcher
             );
 
             _harmony.Patch(
-                original: AccessTools.Method(typeof(Utility), "generateLocalTravelingMerchantStock"),
-                postfix: new HarmonyMethod(typeof(TravelingMerchantInjections), nameof(TravelingMerchantInjections.GenerateLocalTravelingMerchantStock_APStock_Postfix))
+                original: AccessTools.Method(typeof(Utility), nameof(Utility.getTravelingMerchantStock)),
+                prefix: new HarmonyMethod(typeof(TravelingMerchantInjections), nameof(TravelingMerchantInjections.GetTravelingMerchantStock_APStock_Prefix))
             );
         }
 
@@ -646,6 +642,16 @@ namespace StardewArchipelago.Locations.Patcher
                 postfix: new HarmonyMethod(typeof(BeachNightMarketInjections), nameof(BeachNightMarketInjections.GetMagicShopStock_UniqueItemsAndSeeds_Postfix))
             );
 
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Utility), nameof(Utility.getRandomTownNPC), Type.EmptyTypes),
+                prefix: new HarmonyMethod(typeof(WinterStarInjections), nameof(WinterStarInjections.GetRandomTownNPC_ChooseActualRandom_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Utility), nameof(Utility.getRandomTownNPC), new[] { typeof(Random) }),
+                prefix: new HarmonyMethod(typeof(WinterStarInjections), nameof(WinterStarInjections.GetRandomTownNPC_ChooseSecretSantaTarget_Prefix))
+            );
+
             if (_archipelago.SlotData.FestivalLocations == FestivalLocations.Vanilla)
             {
                 return;
@@ -716,6 +722,21 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.Method(typeof(MermaidHouse), nameof(MermaidHouse.playClamTone), new Type[] { typeof(int), typeof(Farmer) }),
                 prefix: new HarmonyMethod(typeof(MermaidHouseInjections), nameof(MermaidHouseInjections.PlayClamTone_SongFinished_Postfix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(BeachNightMarket), nameof(BeachNightMarket.draw)),
+                prefix: new HarmonyMethod(typeof(BeachNightMarketInjections), nameof(BeachNightMarketInjections.Draw_DontDrawOriginalPainting_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(BeachNightMarket), nameof(BeachNightMarket.draw)),
+                postfix: new HarmonyMethod(typeof(BeachNightMarketInjections), nameof(BeachNightMarketInjections.Draw_DrawCorrectPainting_Postfix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(BeachNightMarket), nameof(BeachNightMarket.checkAction)),
+                prefix: new HarmonyMethod(typeof(BeachNightMarketInjections), nameof(BeachNightMarketInjections.CheckAction_LupiniPainting_Prefix))
             );
 
             _harmony.Patch(

@@ -1,0 +1,25 @@
+﻿{
+    "GreenhouseLevel1": "Kas",
+    "GreenhouseLevel1Description": "Teeltveld 15x15. Voegt een kelder toe.",
+    "GreenhouseLevel2": "Kleine Kas",
+    "GreenhouseLevel2Description": "Teeltveld 30x30. Breidt de kelder uit, voegt een binnenkas en automatische bewatering toe.",
+    "GreenhouseLevel3": "Middelgrote Kas",
+    "GreenhouseLevel3Description": "Teeltveld 50x50. Breidt de kelder verder uit en vergroot de binnenkas.",
+    "GreenhouseLevel4": "Grote Kas",
+    "GreenhouseLevel4Description": "Teeltveld 75x75. Vergroot de kelder en de binnenkas.",
+    "GreenhouseLevel5": "Extra Grote Deluxe Kas",
+    "GreenhouseLevel5Description": "Teeltveld 100x100. Breidt de kelder verder uit en vergroot de binnenkas.",
+
+    "LeftBehindTree": "Je hebt de boom achtergelaten.",
+    "LeftBehindCrop": "Je hebt het gewas achtergelaten.",
+    "PickUpTreeMessage": "Boom opgepakt!",
+    "PlaceTreeMessage": "Boom geplaatst!",
+    "PickUpCropMessage": "Gewas opgepakt!",
+    "PlaceCropMessage": "Gewas geplaatst!",
+    "EnableTreePickingOption": "Bomen en gewassen ophalen",
+    "EnableTreePickingTooltip": "Ophalen inschakelen/uitschakelen.",
+    "language-choice-name": "Taal",
+"language-choice-tooltip": "Selecteer de taal van de mod"
+
+    
+}

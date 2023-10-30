@@ -59,7 +59,7 @@ internal sealed class ProjectileDrawPatcher : HarmonyPatcher
                     new[]
                     {
                         new CodeInstruction(OpCodes.Ldarg_0),
-                        new CodeInstruction(OpCodes.Isinst, typeof(LightBeamProjectile)),
+                        new CodeInstruction(OpCodes.Isinst, typeof(BlessedProjectile)),
                         new CodeInstruction(OpCodes.Brtrue, skipShadow), new CodeInstruction(OpCodes.Ldarg_0),
                         new CodeInstruction(OpCodes.Isinst, typeof(InfinityProjectile)),
                         new CodeInstruction(OpCodes.Brtrue, skipShadow),

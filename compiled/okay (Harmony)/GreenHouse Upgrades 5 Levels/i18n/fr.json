@@ -1,0 +1,28 @@
+﻿{
+  "GreenhouseLevel1": "Serre",
+  "GreenhouseLevel1Description": "Champ 15x15. Ajoute une cave.",
+  
+  "GreenhouseLevel2": "Petite Serre",
+  "GreenhouseLevel2Description": "Champ 30x30. Étend la cave, ajoute une serre intérieure et l'arrosage automatique.",
+  
+  "GreenhouseLevel3": "Serre Moyenne",
+  "GreenhouseLevel3Description": "Champ 50x50. Étend la cave et la serre intérieure.",
+  
+  "GreenhouseLevel4": "Grande Serre",
+  "GreenhouseLevel4Description": "Champ 75x75. Étend la cave et agrandit la serre intérieure.",
+
+  "GreenhouseLevel5": "Serre Deluxe Très Grande",
+  "GreenhouseLevel5Description": "Champ 100x100. Étend la cave et agrandit davantage la serre intérieure.",
+
+  "LeftBehindTree": "Vous avez laissé l'arbre derrière.",
+  "LeftBehindCrop": "Vous avez laissé la culture derrière.",
+  "PickUpTreeMessage": "Arbre ramassé!",
+  "PlaceTreeMessage": "Arbre placé!",
+  "PickUpCropMessage": "Culture ramassée!",
+  "PlaceCropMessage": "Culture placée!",
+  "EnableTreePickingOption": "Ramassage d'arbres et de cultures",
+  "EnableTreePickingTooltip": "Activer ou désactiver le ramassage.",
+  "language-choice-name": "Langue",
+  "language-choice-tooltip": "Sélectionnez la langue du mod"
+
+}

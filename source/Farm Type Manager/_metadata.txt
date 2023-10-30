@@ -6,9 +6,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit 552a969e2601f6666f92f680803d51376c3645cf
+   commit fea1906286e8c0f98d6bcdf2635c824982120457
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Wed Sep 20 02:12:18 2023 -0500
+   Date:   Wed Oct 25 16:03:19 2023 -0500
    
-       Refactor dynamic patch to reduce system-dependent errors
+       Set version 1.16.2, trim project file, run code cleanup
    

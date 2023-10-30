@@ -1,0 +1,19 @@
+{
+  "Name": "Canteen",
+  "Description": "An empty canteen. How about putting some water inside",
+  "Category": "Crafting",
+  "Edibility": -300,
+  "Price": 1,
+  "IsColored": false,
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients": [
+      {
+        "Object": 334,
+        "Count": 3
+      }
+    ],
+    "IsDefault": true
+  },
+  "CanPurchase": false
+}

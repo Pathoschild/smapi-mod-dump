@@ -14,7 +14,7 @@ namespace DaLion.Overhaul.Modules.Core.ConfigMenu;
 
 using System;
 using System.Linq;
-using DaLion.Shared.Integrations.GenericModConfigMenu;
+using DaLion.Shared.Integrations.GMCM;
 
 #endregion using directives
 

@@ -11,14 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HarmonyLib;
-using Microsoft.Xna.Framework;
 using StardewArchipelago.Extensions;
 using StardewValley;
 using StardewValley.Objects;
-using xTile.Dimensions;
+using StardewValley.Tools;
 
 namespace StardewArchipelago.Items.Traps
 {
@@ -89,6 +85,11 @@ namespace StardewArchipelago.Items.Traps
                 if (player.Items.Count > i && player.Items[i] != null)
                 {
                     item = player.Items[i];
+                }
+
+                if (item is FishingRod rod && (rod.isReeling || rod.isFishing || rod.pullingOutOfWater))
+                {
+                    continue;
                 }
 
                 var slot = new ItemSlot(player.Items, i);

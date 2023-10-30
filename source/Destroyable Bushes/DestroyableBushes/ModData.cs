@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using StardewModdingAPI.Utilities;
+using StardewValley;
 using StardewValley.TerrainFeatures;
 using System.Collections.Generic;
 
@@ -25,9 +26,25 @@ namespace DestroyableBushes
         /// <summary>The information needed to respawn a destroyed bush.</summary>
         public class DestroyedBush
         {
+            /// <summary>The name of the destroyed bush's <see cref="GameLocation"/>.</summary>
             public string LocationName { get; set; }
+            /// <summary>The destroyed bush's tile location.</summary>
+            /// <remarks>
+            /// This value should be based on the <see cref="Bush"/> instance's tile field, not the player or tool.
+            /// Note that the field's name varies between Stardew versions.
+            /// </remarks>
             public Vector2 Tile { get; set; }
+            /// <summary>The destroyed bush's size.</summary>
             public int Size { get; set; }
+            /// <summary>The destroyed bush's "town bush" flag.</summary>
+            /// <remarks>When true, the bush will use alternate sprites, and medium bushes will not grow berries.</remarks>
+            public bool TownBush { get; set; } = false;
+            /// <summary>The destroyed bush's tilesheet offset value. If null, this mod should not edit the value.</summary>
+            /// <remarks>
+            /// This value affects the sprite used by bushes, and also controls whether medium and walnut bushes currently contain those items.
+            /// This mod should ignore this value when respawning bushes capable of producing items.
+            /// </remarks>
+            public int? TilesheetOffset { get; set; } = null;
 
             [JsonProperty]
             private int day;
@@ -56,11 +73,13 @@ namespace DestroyableBushes
 
             }
 
-            public DestroyedBush(string locationName, Vector2 tile, int size)
+            public DestroyedBush(string locationName, Vector2 tile, int size, bool townBush = false, int? tilesheetOffset = null)
             {
                 LocationName = locationName;
                 Tile = tile;
                 Size = size;
+                TownBush = townBush;
+                TilesheetOffset = tilesheetOffset;
                 DateDestroyed = SDate.Now();
             }
 

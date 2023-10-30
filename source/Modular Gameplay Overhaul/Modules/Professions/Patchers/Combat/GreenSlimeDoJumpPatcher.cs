@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Combat;
 #region using directives
 
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
-using DaLion.Shared.Attributes;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Monsters;
@@ -21,7 +20,6 @@ using StardewValley.Monsters;
 #endregion using directives
 
 [UsedImplicitly]
-[ImplicitIgnore]
 internal sealed class GreenSlimeDoJumpPatcher : HarmonyPatcher
 {
     /// <summary>Initializes a new instance of the <see cref="GreenSlimeDoJumpPatcher"/> class.</summary>
@@ -34,10 +32,9 @@ internal sealed class GreenSlimeDoJumpPatcher : HarmonyPatcher
 
     /// <summary>Patch to detect jumping Slimes.</summary>
     [HarmonyPrefix]
-    private static bool GreenSlimeDoJumpPrefix(GreenSlime __instance)
+    private static void GreenSlimeDoJumpPrefix(GreenSlime __instance)
     {
         __instance.Set_JumpTimer(200);
-        return true; // run original logic
     }
 
     #endregion harmony patches

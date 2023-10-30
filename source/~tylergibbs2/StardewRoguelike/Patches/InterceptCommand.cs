@@ -8,25 +8,24 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using StardewValley;
 using StardewValley.Menus;
 
 namespace StardewRoguelike.Patches
 {
-    internal class InterceptCommand : Patch
+    [HarmonyPatch(typeof(ChatBox), "runCommand")]
+    internal class InterceptCommand
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(ChatBox), "runCommand");
-
         public static bool Prefix(string command)
         {
             return CommandHandler.Handle(command);
         }
     }
 
-    internal class CustomHelp : Patch
+    [HarmonyPatch(typeof(ChatBox), "showHelp")]
+    internal class CustomHelp
     {
-        protected override PatchDescriptor GetPatchDescriptor() => new(typeof(ChatBox), "showHelp");
-
         public static bool Prefix(ChatBox __instance)
         {
             __instance.addInfoMessage(Game1.content.LoadString("Strings\\UI:Chat_Help"));

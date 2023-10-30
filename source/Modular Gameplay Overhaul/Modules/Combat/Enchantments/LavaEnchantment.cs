@@ -21,7 +21,7 @@ using StardewValley.Monsters;
 
 /// <summary>The secondary <see cref="BaseWeaponEnchantment"/> which characterizes the Lava Katana.</summary>
 [XmlType("Mods_DaLion_LavaEnchantment")]
-public class LavaEnchantment : BaseWeaponEnchantment
+public sealed class LavaEnchantment : BaseWeaponEnchantment
 {
     private readonly Random _random = new(Guid.NewGuid().GetHashCode());
 
@@ -66,8 +66,8 @@ public class LavaEnchantment : BaseWeaponEnchantment
             1,
             new Vector2(monsterBox.Center.X - 32, monsterBox.Center.Y - 32),
             flicker: false,
-            flipped: false);
-        sprites.color = Color.OrangeRed;
+            flipped: false)
+            { color = Color.OrangeRed };
 
         Reflector
             .GetStaticFieldGetter<Multiplayer>(typeof(Game1), "multiplayer")

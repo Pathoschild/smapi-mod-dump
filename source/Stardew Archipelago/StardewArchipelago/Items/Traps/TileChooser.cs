@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Extensions;
 using StardewValley;

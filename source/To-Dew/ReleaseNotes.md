@@ -9,6 +9,10 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.14.1
+
+* Add Portugese translation provided by nexusmods user ericofurtado
+
 ## Version 1.14.0
 
 * Repeating items can now specify a number of days to delay before the item

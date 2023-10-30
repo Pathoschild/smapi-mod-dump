@@ -1,14 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\common-nospace.targets" />
-
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
-  </ItemGroup>
-
   <ItemGroup>
     <Reference Include="AWSSDK.Core">
         <HintPath>.\Libraries\AWSSDK.Core.dll</HintPath>

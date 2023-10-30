@@ -21,6 +21,7 @@ using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.Stardew;
 using StardewValley.Tools;
 using static StardewValley.FarmerSprite;
+using Buff = DaLion.Shared.Enums.Buff;
 
 #endregion using directives
 
@@ -36,7 +37,7 @@ internal static class FarmerExtensions
         {
             MeleeWeapon weapon => weapon.Get_EffectiveResilience(),
             Slingshot slingshot => slingshot.Get_EffectiveResilience(),
-            _ => 0f,
+            _ => 1f,
         };
 
         var playerResilience = farmer.resilience + farmer.Get_ResonantResilience();
@@ -112,6 +113,34 @@ internal static class FarmerExtensions
         return darkSword is not null;
     }
 
+    /// <summary>Checks whether the <paramref name="farmer"/> is afflicted with Burn debuff.</summary>
+    /// <param name="farmer">The <see cref="Farmer"/>.</param>
+    /// <returns><see langword="true"/> if the <paramref name="farmer"/> has buff #12, otherwise <see langword="false"/>.</returns>
+    internal static bool IsBurning(this Farmer farmer)
+    {
+        return farmer.hasBuff((int)Buff.Burnt);
+    }
+
+    /// <summary>Checks whether the <paramref name="farmer"/> is afflicted with Freeze debuff.</summary>
+    /// <param name="farmer">The <see cref="Farmer"/>.</param>
+    /// <returns><see langword="true"/> if the <paramref name="farmer"/> has buff #19, otherwise <see langword="false"/>.</returns>
+    internal static bool IsFrozen(this Farmer farmer)
+    {
+        return farmer.hasBuff((int)Buff.Frozen);
+    }
+
+    /// <summary>Removes the Freeze debuff from the <paramref name="farmer"/> if they are the local player.</summary>
+    /// <param name="farmer">The <see cref="Farmer"/>.</param>
+    internal static void Defrost(this Farmer farmer)
+    {
+        if (!farmer.IsLocalPlayer)
+        {
+            return;
+        }
+
+        Game1.buffsDisplay.removeOtherBuff(19);
+    }
+
     /// <summary>Determines whether the <paramref name="farmer"/> is stepping on a snowy tile.</summary>
     /// <param name="farmer">The <see cref="Farmer"/>.</param>
     /// <returns><see langword="true"/> if the corresponding <see cref="FarmerSprite"/> is using snowy step sounds, otherwise <see langword="false"/>.</returns>
@@ -124,7 +153,6 @@ internal static class FarmerExtensions
     internal static void DoStabbingSpecialCooldown(this Farmer user, MeleeWeapon? sword = null)
     {
         sword ??= (MeleeWeapon)user.CurrentTool;
-
         MeleeWeapon.attackSwordCooldown = MeleeWeapon.attackSwordCooldownTime;
         if (!ProfessionsModule.ShouldEnable && user.professions.Contains(Farmer.acrobat))
         {
@@ -141,37 +169,28 @@ internal static class FarmerExtensions
                                                 user.Get_CooldownReduction());
     }
 
-    [Conditional("RELEASE")]
     internal static void DoSlingshotSpecialCooldown(this Farmer user, Slingshot? slingshot = null)
     {
-        slingshot ??= (Slingshot)user.CurrentTool;
-
-        if (slingshot.Get_IsOnSpecial())
+        slingshot ??= user.CurrentTool as Slingshot;
+        if (slingshot is null)
         {
-            const int SlingshotCooldown = 2000;
-            CombatModule.State.SlingshotCooldown = SlingshotCooldown;
-            if (!ProfessionsModule.ShouldEnable && user.professions.Contains(Farmer.acrobat))
-            {
-                CombatModule.State.SlingshotCooldown /= 2;
-            }
-
-            if (slingshot.hasEnchantmentOfType<ArtfulEnchantment>())
-            {
-                CombatModule.State.SlingshotCooldown /= 2;
-            }
-
-            CombatModule.State.SlingshotCooldown = (int)(CombatModule.State.SlingshotCooldown *
-                                                             slingshot.Get_EffectiveCooldownReduction() *
-                                                             user.Get_CooldownReduction());
+            return;
         }
-        else
+
+        CombatModule.State.SlingshotCooldown = slingshot.GetSpecialCooldown();
+        if (!ProfessionsModule.ShouldEnable && user.professions.Contains(Farmer.acrobat))
         {
-            CombatModule.State.SlingshotCooldown -= Game1.currentGameTime.ElapsedGameTime.Milliseconds;
-            if (CombatModule.State.SlingshotCooldown <= 0)
-            {
-                Game1.playSound("objectiveComplete");
-            }
+            CombatModule.State.SlingshotCooldown /= 2;
         }
+
+        if (slingshot.hasEnchantmentOfType<ArtfulEnchantment>())
+        {
+            CombatModule.State.SlingshotCooldown /= 2;
+        }
+
+        CombatModule.State.SlingshotCooldown = (int)(CombatModule.State.SlingshotCooldown *
+                                                         slingshot.Get_EffectiveCooldownReduction() *
+                                                         user.Get_CooldownReduction());
     }
 
     #region combo framework
@@ -330,7 +349,7 @@ internal static class FarmerExtensions
         }
 
         Reflector
-            .GetUnboundFieldSetter<FarmerSprite, int>(sprite, "currentAnimationFrames")
+            .GetUnboundFieldSetter<FarmerSprite, int>("currentAnimationFrames")
             .Invoke(sprite, sprite.CurrentAnimation.Count);
         CombatModule.State.ComboHitQueued++;
         CombatModule.State.FarmerAnimating = true;
@@ -491,7 +510,7 @@ internal static class FarmerExtensions
         }
 
         Reflector
-            .GetUnboundFieldSetter<FarmerSprite, int>(sprite, "currentAnimationFrames")
+            .GetUnboundFieldSetter<FarmerSprite, int>("currentAnimationFrames")
             .Invoke(sprite, sprite.CurrentAnimation.Count);
         CombatModule.State.ComboHitQueued++;
         CombatModule.State.FarmerAnimating = true;
@@ -637,7 +656,7 @@ internal static class FarmerExtensions
         }
 
         Reflector
-            .GetUnboundFieldSetter<FarmerSprite, int>(sprite, "currentAnimationFrames")
+            .GetUnboundFieldSetter<FarmerSprite, int>("currentAnimationFrames")
             .Invoke(sprite, sprite.CurrentAnimation.Count);
         CombatModule.State.ComboHitQueued++;
         CombatModule.State.FarmerAnimating = true;
@@ -744,7 +763,7 @@ internal static class FarmerExtensions
         }
 
         Reflector
-            .GetUnboundFieldSetter<FarmerSprite, int>(sprite, "currentAnimationFrames")
+            .GetUnboundFieldSetter<FarmerSprite, int>("currentAnimationFrames")
             .Invoke(sprite, sprite.CurrentAnimation.Count);
         CombatModule.State.ComboHitQueued++;
         CombatModule.State.FarmerAnimating = true;

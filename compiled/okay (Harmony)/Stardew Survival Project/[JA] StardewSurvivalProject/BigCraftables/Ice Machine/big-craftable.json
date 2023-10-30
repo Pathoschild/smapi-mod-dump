@@ -1,0 +1,26 @@
+{
+    "Name": "Ice Machine",
+    "Description": "Make ice from frozen tier. Fancy.",
+    "Price": 1,
+    "ProvidesLight": false,
+    "ReserveNextIndex": false,
+    "Recipe": {
+        "ResultCount": 1,
+        "Ingredients": [{
+                "Object": 335,
+                "Count": 10
+            }, {
+                "Object": 334,
+                "Count": 10
+            }, {
+                "Object": 787,
+                "Count": 2
+            }
+        ],
+        "CanPurchase": true,
+        "PurchaseFrom": "Pierre",
+        "PurchasePrice": 15000,
+        "PurchaseRequirements": null
+    },
+    "CanPurchase": false
+}

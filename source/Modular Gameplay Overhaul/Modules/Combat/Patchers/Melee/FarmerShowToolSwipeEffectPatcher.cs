@@ -50,7 +50,7 @@ internal sealed class FarmerShowToolSwipeEffectPatcher : HarmonyPatcher
                     {
                         new CodeInstruction(OpCodes.Call, typeof(Color).RequirePropertyGetter(nameof(Color.White))),
                     },
-                    () =>
+                    _ =>
                     {
                         var useWhiteColor = generator.DefineLabel();
                         var resumeExecution = generator.DefineLabel();

@@ -1,0 +1,24 @@
+﻿{
+    "GreenhouseLevel1": "เรือนกระจก",
+    "GreenhouseLevel1Description": "ที่ดินที่สามารถทำการเกษตรได้ 15x15 เพิ่มห้องใต้ดิน",
+    "GreenhouseLevel2": "เรือนกระจกขนาดเล็ก",
+    "GreenhouseLevel2Description": "ที่ดินที่สามารถทำการเกษตรได้ 30x30 ขยายห้องใต้ดิน, เพิ่มเรือนกระจกภายในและระบบน้ำอัตโนมัติ",
+    "GreenhouseLevel3": "เรือนกระจกขนาดกลาง",
+    "GreenhouseLevel3Description": "ที่ดินที่สามารถทำการเกษตรได้ 50x50 เพิ่มพื้นที่ห้องใต้ดินและเรือนกระจกภายในขนาดใหญ่ขึ้น",
+    "GreenhouseLevel4": "เรือนกระจกขนาดใหญ่",
+    "GreenhouseLevel4Description": "ที่ดินที่สามารถทำการเกษตรได้ 75x75 ขยายห้องใต้ดินและเรือนกระจกภายในขนาดใหญ่ขึ้น",
+    "GreenhouseLevel5": "เรือนกระจก Deluxe ขนาดใหญ่มาก",
+    "GreenhouseLevel5Description": "ที่ดินที่สามารถทำการเกษตรได้ 100x100 เพิ่มพื้นที่ห้องใต้ดินและเรือนกระจกภายในขนาดใหญ่ขึ้น",
+
+    "LeftBehindTree": "คุณทิ้งต้นไม้ไว้",
+    "LeftBehindCrop": "คุณทิ้งพืชไว้",
+    "PickUpTreeMessage": "เก็บต้นไม้แล้ว!",
+    "PlaceTreeMessage": "วางต้นไม้แล้ว!",
+    "PickUpCropMessage": "เก็บพืชแล้ว!",
+    "PlaceCropMessage": "วางพืชแล้ว!",
+    "EnableTreePickingOption": "เก็บต้นไม้และพืช",
+    "EnableTreePickingTooltip": "เปิด/ปิด การเก็บ",
+    "language-choice-name": "ภาษา",
+"language-choice-tooltip": "เลือกภาษาของ mod"
+    
+}

@@ -6,11 +6,9 @@ mods:
    Warp Network
 
 latest commit:
-   commit e977a391cd0ab509cf4055d87da3849c579cd386
+   commit d70f7ee9b7394665b71b087821dd856fc8aec003
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Thu Jul 6 15:07:34 2023 -0400
+   Date:   Sun Oct 29 20:22:40 2023 -0400
    
-       Merge pull request #7 from DanielleTlumach/patch-3
-       
-       Update Ukrainian translation
+       Merge branch 'master' of https://github.com/tlitookilakin/WarpNetwork
    

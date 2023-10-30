@@ -1,0 +1,67 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Rafseazz/Ridgeside-Village-Mod
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"LogName": "RSV Kiwi Seasonals",
+			"Action": "EditImage",
+			"Target": "Portraits/Kiwi, Characters/Kiwi",
+			"FromFile": "Assets/{{Target}}/Kiwi_{{season}}.png",
+			"When":
+			{
+				"Kiwi": "enabled",
+				"SeasonalRainToken|contains=rain": false,
+				"Query: {{Random:{{Range:1,10}}|key=KiwiOutfit}}|contains= 1,2,3,4,5": true,
+			}
+		},
+		{
+			"LogName": "RSV Kiwi Flower Dance Outfit",
+			"Action": "EditImage",
+			"Target": "Portraits/Kiwi, Characters/Kiwi",
+			"FromFile": "Assets/{{Target}}/Kiwi_spring24.png",
+			"When":
+			{
+				"DayEvent": "flower dance",
+				"LocationName": "Forest, temp",
+				"Kiwi": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Kiwi Spirit's Eve Outfit Y1",
+			"Action": "EditImage",
+			"Target": "Portraits/Kiwi, Characters/Kiwi",
+			"FromFile": "Assets/{{Target}}/Kiwi_fall27-1.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": true,
+				"Kiwi": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+		{
+			"LogName": "RSV Kiwi Spirit's Eve Outfit Y2",
+			"Action": "EditImage",
+			"Target": "Portraits/Kiwi, Characters/Kiwi",
+			"FromFile": "Assets/{{Target}}/Kiwi_fall27-2.png",
+			"When":
+			{
+				"DayEvent": "spirit's eve",
+				"LocationName": "Town, temp",
+				"IsOddYear": false,
+				"Kiwi": "enabled, festivals only"
+			},
+			"Update": "OnLocationChange",
+		},
+	]
+}

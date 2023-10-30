@@ -13,7 +13,7 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Enchantments;
 #region using directives
 
 using DaLion.Overhaul.Modules.Combat.Enchantments;
-using DaLion.Overhaul.Modules.Combat.Events.GameLoop.UpdateTicked;
+using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -38,7 +38,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
 
     #region harmony patches
 
-    /// <summary>Steadfast enchantment crit. to damage conversion + Artful parry crit. bonus.</summary>
+    /// <summary>Steadfast enchantment crit. to damage conversion.</summary>
     [HarmonyPrefix]
     private static void GameLocationDamageMonsterPrefix(
         ref int minDamage,
@@ -47,34 +47,15 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
         float critMultiplier,
         Farmer who)
     {
-        if (who.CurrentTool is not MeleeWeapon weapon)
+        if (who.CurrentTool is not MeleeWeapon weapon || !weapon.hasEnchantmentOfType<SteadfastEnchantment>())
         {
             return;
         }
 
-        if (weapon.hasEnchantmentOfType<MeleeArtfulEnchantment>() && CombatModule.State.DidArtfulParry)
-        {
-            critChance += 1f;
-        }
-        else if (weapon.hasEnchantmentOfType<SteadfastEnchantment>())
-        {
-            minDamage += (int)(critChance * 100 * critMultiplier);
-            maxDamage += (int)(critChance * 100 * critMultiplier);
-            critChance = 0f;
-        }
-    }
-
-    /// <summary>Reset Artful parry crit. chance.</summary>
-    [HarmonyPostfix]
-    private static void GameLocationDamageMonsterTranspiler()
-    {
-        if (!CombatModule.State.DidArtfulParry)
-        {
-            return;
-        }
-
-        EventManager.Disable<ArtfulParryUpdateTickedEvent>();
-        CombatModule.State.DidArtfulParry = false;
+        var k = weapon.DefaultCritChance() * (weapon.DefaultCritPower() - 1) / weapon.DefaultCritPower();
+        minDamage += (int)(minDamage * critMultiplier * k);
+        maxDamage += (int)(maxDamage * critMultiplier * k);
+        critChance = 0f;
     }
 
     #endregion harmony patches

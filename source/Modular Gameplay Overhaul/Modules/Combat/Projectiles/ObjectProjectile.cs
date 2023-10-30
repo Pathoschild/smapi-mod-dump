@@ -12,10 +12,8 @@ namespace DaLion.Overhaul.Modules.Combat.Projectiles;
 
 #region using directives
 
-using DaLion.Overhaul.Modules.Combat.Enchantments;
 using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
-using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Constants;
@@ -23,6 +21,7 @@ using DaLion.Shared.Enums;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Extensions.Xna;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewValley.Monsters;
 using StardewValley.Objects;
@@ -34,22 +33,16 @@ using StardewValley.Tools;
 /// <summary>An <see cref="SObject"/> fired by a <see cref="Slingshot"/>.</summary>
 internal sealed class ObjectProjectile : BasicProjectile
 {
-    private int _pierceCount;
+    private readonly Action<BasicProjectile, GameLocation> _explosionAnimation = Reflector
+        .GetUnboundMethodDelegate<Action<BasicProjectile, GameLocation>>(typeof(BasicProjectile), "explosionAnimation");
 
-    /// <summary>Initializes a new instance of the <see cref="ObjectProjectile"/> class.</summary>
-    /// <remarks>Required for multiplayer syncing.</remarks>
-    public ObjectProjectile()
-        : base()
-    {
-    }
+    private int _energizedFrame;
 
     /// <summary>Initializes a new instance of the <see cref="ObjectProjectile"/> class.</summary>
     /// <param name="ammo">The <see cref="SObject"/> that was fired.</param>
     /// <param name="index">The index of the fired ammo (this may be different from the index of the <see cref="SObject"/>).</param>
     /// <param name="source">The <see cref="Slingshot"/> which fired this projectile.</param>
     /// <param name="firer">The <see cref="Farmer"/> who fired this projectile.</param>
-    /// <param name="damage">The un-mitigated damage this projectile will cause.</param>
-    /// <param name="knockback">The knockback this projectile will cause.</param>
     /// <param name="overcharge">The amount of overcharge with which the projectile was fired.</param>
     /// <param name="startingPosition">The projectile's starting position.</param>
     /// <param name="xVelocity">The projectile's starting velocity in the horizontal direction.</param>
@@ -60,15 +53,13 @@ internal sealed class ObjectProjectile : BasicProjectile
         int index,
         Slingshot source,
         Farmer firer,
-        float damage,
-        float knockback,
         float overcharge,
         Vector2 startingPosition,
         float xVelocity,
         float yVelocity,
         float rotationVelocity)
         : base(
-            (int)damage,
+            1,
             index,
             0,
             0,
@@ -86,22 +77,42 @@ internal sealed class ObjectProjectile : BasicProjectile
             ammo.ParentSheetIndex == ObjectIds.ExplosiveAmmo ? explodeOnImpact : null)
     {
         this.Ammo = ammo;
-        this.Source = source;
-        this.Firer = firer;
-        this.Overcharge = overcharge;
-        this.Damage = (int)(this.damageToFarmer.Value * source.Get_EffectiveDamageModifier() *
-                            (1f + firer.attackIncreaseModifier) * overcharge);
-        this.Knockback = (knockback + source.Get_EffectiveKnockback()) * (1f + firer.knockbackModifier) *
-                         overcharge;
-
-        this.CritChance = 0f;
-        this.CritPower = 0;
-        if (CombatModule.Config.EnableRangedCriticalHits)
+        if (ammo.ParentSheetIndex is not (ObjectIds.Wood or ObjectIds.Coal or ObjectIds.Stone or ObjectIds.CopperOre
+            or ObjectIds.IronOre or ObjectIds.GoldOre or ObjectIds.IridiumOre))
         {
-            this.CritChance = source.Get_EffectiveCritChance() * (1f + firer.critChanceModifier);
-            this.CritPower = (1f + source.Get_EffectiveCritPower()) * (1f + firer.critPowerModifier);
+            this.startingScale.Value *= 0.8f;
         }
 
+        this.Source = source;
+        this.Firer = firer;
+
+        var ammoDamage = ammo.GetAmmoDamage();
+        this.Damage = (int)((ammoDamage + Game1.random.Next(-ammoDamage / 2, ammoDamage + 2)) *
+            source.Get_EffectiveDamageModifier() * (1f + firer.attackIncreaseModifier) * overcharge);
+        this.Knockback = source.Get_EffectiveKnockback() * (1f + firer.knockbackModifier) * overcharge;
+        this.CritChance = 0f;
+        this.CritPower = 0f;
+        if (CombatModule.Config.EnableRangedCriticalHits)
+        {
+            this.CritChance += source.Get_EffectiveCritChance();
+            this.CritChance *= 1f + firer.critChanceModifier;
+            this.CritPower += source.Get_EffectiveCritPower();
+            this.CritPower *= 1f + firer.critPowerModifier;
+        }
+
+        this.Overcharge = overcharge;
+        if (overcharge > 1f)
+        {
+            this.Damage = (int)(this.Damage * overcharge);
+            this.Knockback *= overcharge;
+            this.xVelocity.Value *= overcharge;
+            this.yVelocity.Value *= overcharge;
+            this.tailLength.Value = (int)((overcharge - 1f) * 5f);
+        }
+
+        this.IsSquishy = this.Ammo.Category is (int)ObjectCategory.Eggs or (int)ObjectCategory.Fruits
+                             or (int)ObjectCategory.Vegetables ||
+                         this.Ammo.ParentSheetIndex == ObjectIds.Slime;
         if (this.IsSquishy)
         {
             Reflector
@@ -109,28 +120,37 @@ internal sealed class ObjectProjectile : BasicProjectile
                 .Invoke(this).Value = "slimedead";
         }
 
-        if (firer.professions.Contains(Farmer.scout) && !this.IsSquishy && ProfessionsModule.Config.ModKey.IsDown() &&
-            !source.CanAutoFire())
-        {
-            this.Damage = (int)(this.Damage * 0.8f);
-            this.Knockback *= 0.8f;
-            this.Overcharge *= 0.8f;
-            this.bouncesLeft.Value++;
-        }
-
         this.ignoreTravelGracePeriod.Value = CombatModule.Config.RemoveSlingshotGracePeriod;
 
-        if (this.Overcharge > 1f)
+        if (source.attachments.Length < 2 || source.attachments[1] is not
+                { ParentSheetIndex: ObjectIds.MonsterMusk } musk)
         {
-            this.tailLength.Value = (int)((this.Overcharge - 1f) * 5f);
+            return;
+        }
+
+        var uses = musk.Read<int>(Professions.DataKeys.MuskUses);
+        if (uses >= 10)
+        {
+            source.attachments[1] = null;
+            return;
+        }
+
+        this.Musked = true;
+        if (++uses >= 10)
+        {
+            source.attachments[1] = null;
+        }
+        else
+        {
+            musk.Write(Professions.DataKeys.MuskUses, uses.ToString());
         }
     }
 
-    public Item? Ammo { get; }
+    public Item Ammo { get; }
 
-    public Farmer? Firer { get; }
+    public Farmer Firer { get; }
 
-    public Slingshot? Source { get; }
+    public Slingshot Source { get; }
 
     public int Damage { get; private set; }
 
@@ -138,19 +158,21 @@ internal sealed class ObjectProjectile : BasicProjectile
 
     public float Knockback { get; private set; }
 
-    public float CritChance { get; }
+    public float CritChance { get; private set; }
 
-    public float CritPower { get; }
+    public float CritPower { get; private set; }
 
     public bool DidBounce { get; private set; }
 
     public bool DidPierce { get; private set; }
 
-    public int Index => this.currentTileSheetIndex.Value;
+    public bool IsSquishy { get; }
 
-    /// <summary>Gets a value indicating whether the projectile should pierce and bounce or make squishy noises upon collision.</summary>
-    public bool IsSquishy => this.Ammo?.Category is (int)ObjectCategory.Eggs or (int)ObjectCategory.Fruits or (int)ObjectCategory.Vegetables ||
-                             this.Ammo?.ParentSheetIndex == ObjectIds.Slime;
+    public bool Musked { get; }
+
+    public bool Energized { get; set; }
+
+    public int TileSheetIndex => this.currentTileSheetIndex.Value;
 
     /// <inheritdoc />
     public override void behaviorOnCollisionWithMineWall(int tileX, int tileY)
@@ -162,10 +184,18 @@ internal sealed class ObjectProjectile : BasicProjectile
     /// <inheritdoc />
     public override void behaviorOnCollisionWithMonster(NPC n, GameLocation location)
     {
-        if (this.Ammo is null || this.Firer is null || this.Source is null || n is not Monster { IsMonster: true } monster)
+        if (n is not Monster { IsMonster: true } monster)
         {
             base.behaviorOnCollisionWithMonster(n, location);
             return;
+        }
+
+        if (this.Ammo.ParentSheetIndex != ObjectIds.ExplosiveAmmo)
+        {
+            if (this.Musked)
+            {
+                monster.Set_Musked(15);
+            }
         }
 
         if (this.Ammo.ParentSheetIndex == ObjectIds.Slime)
@@ -187,19 +217,66 @@ internal sealed class ObjectProjectile : BasicProjectile
                     1f,
                     monster));
                 //Game1.playSound("healSound");
-                Reflector
-                    .GetUnboundMethodDelegate<Action<BasicProjectile, GameLocation>>(this, "explosionAnimation")
-                    .Invoke(this, location);
-
+                this._explosionAnimation(this, location);
                 return;
             }
 
-            if (monster.CanBeSlowed() && CombatModule.ShouldEnable && Game1.random.NextDouble() < 2d / 3d)
+            if (!monster.IsSlime() && monster is not Ghost && CombatModule.ShouldEnable && Game1.random.NextDouble() < 2d / 3d)
             {
                 // do debuff
-                monster.Slow(5123 + (Game1.random.Next(-2, 3) * 456), 1d / 3d);
+                monster.Slow(5123 + (Game1.random.Next(-2, 3) * 456), 1f / 3f);
                 monster.startGlowing(Color.LimeGreen, false, 0.05f);
             }
+        }
+
+        var ogDamage = this.Damage;
+        var monsterResistanceModifier = 1f + (monster.resilience.Value / 10f);
+        var inverseResistanceModifer = 1f / monsterResistanceModifier;
+        IUltimate? ultimate = null;
+        if (ProfessionsModule.ShouldEnable)
+        {
+            // check ultimate
+            if (this.Firer.IsLocalPlayer && ProfessionsModule.Config.EnableLimitBreaks)
+            {
+                ultimate = this.Firer.Get_Ultimate();
+            }
+
+            // check for quick shot
+            if (ProfessionsModule.State.LastDesperadoTarget is not null &&
+                monster != ProfessionsModule.State.LastDesperadoTarget)
+#pragma warning disable SA1513 // Closing brace should be followed by blank line
+            {
+                Log.D("Did quick shot!");
+                this.Damage = (int)(this.Damage * 1.5f);
+                if (ultimate is DeathBlossom { IsActive: false })
+                {
+                    ultimate.ChargeValue += 12d;
+                }
+            }
+            // check for pierce, which is mutually exclusive with quick shot
+            else if (this.Firer.professions.Contains(Farmer.desperado + 100) && !this.IsSquishy &&
+                     this.Ammo.ParentSheetIndex != ObjectIds.ExplosiveAmmo &&
+                     Game1.random.NextDouble() < (this.Overcharge - 1.5f) * inverseResistanceModifer)
+            {
+                Log.D("Pierced!");
+                this.DidPierce = true;
+                if (CombatModule.Config.NewResistanceFormula)
+                {
+                    this.Damage = (int)(this.Damage * monsterResistanceModifier);
+                }
+                else
+                {
+                    this.Damage += monster.resilience.Value;
+                }
+            }
+#pragma warning restore SA1513 // Closing brace should be followed by blank line
+        }
+
+        this._explosionAnimation(this, location);
+        if (this.Energized)
+        {
+            this.DoLightningStrike(monster, location);
+            this.Energized = false;
         }
 
         location.damageMonster(
@@ -214,72 +291,62 @@ internal sealed class ObjectProjectile : BasicProjectile
             true,
             this.Firer);
 
-        if (!ProfessionsModule.ShouldEnable || !this.Firer.professions.Contains(Farmer.desperado))
+        this.Damage = ogDamage;
+        if (this.DidPierce)
         {
-            Reflector
-                .GetUnboundMethodDelegate<Action<BasicProjectile, GameLocation>>(this, "explosionAnimation")
-                .Invoke(this, location);
-            return;
+            this.Damage = (int)(this.Damage * inverseResistanceModifer);
+            this.Knockback *= inverseResistanceModifer;
+            this.Overcharge *= inverseResistanceModifer;
+            this.xVelocity.Value *= inverseResistanceModifer;
+            this.yVelocity.Value *= inverseResistanceModifer;
         }
 
-        // check for piercing
-        if (this.Firer.professions.Contains(Farmer.desperado + 100) && !this.IsSquishy &&
-            this.Ammo.ParentSheetIndex != ObjectIds.ExplosiveAmmo && this._pierceCount < 2 &&
-            Game1.random.NextDouble() < this.Overcharge - 1f)
-        {
-            this.Damage = (int)(this.Damage * 0.65f);
-            this.Knockback *= 0.65f;
-            this.Overcharge *= 0.65f;
-            this.xVelocity.Value *= 0.65f;
-            this.yVelocity.Value *= 0.65f;
-            this.DidPierce = true;
-            this._pierceCount++;
-        }
-        else
-        {
-            Reflector
-                .GetUnboundMethodDelegate<Action<BasicProjectile, GameLocation>>(this, "explosionAnimation")
-                .Invoke(this, location);
-        }
-
-        // check for stun
-        //if (this.Firer.professions.Contains(Farmer.scout + 100) && this.DidBounce)
-        //{
-        //    monster.stunTime = 2000;
-        //}
-
-        // increment Desperado ultimate meter
-        if (this.Firer.IsLocalPlayer && this.Firer.Get_Ultimate() is DeathBlossom { IsActive: false } blossom &&
-            ProfessionsModule.Config.EnableLimitBreaks)
-        {
-            blossom.ChargeValue += (this.DidBounce || this.DidPierce ? 18 : 12) -
-                                   (10 * this.Firer.health / this.Firer.maxHealth);
-        }
-
-        if (this.Source?.hasEnchantmentOfType<PreservingEnchantment>() == true || this.IsSquishy ||
-            this.Ammo.ParentSheetIndex == ObjectIds.ExplosiveAmmo || !this.Firer.professions.Contains(Farmer.scout))
+        if (!ProfessionsModule.ShouldEnable)
         {
             return;
         }
 
-        // try to recover
-        var chance = this.Ammo.ParentSheetIndex is ObjectIds.Wood or ObjectIds.Coal ? 0.175 : 0.35;
-        if (this.Firer.professions.Contains(Farmer.scout + 100))
+        // Desperado checks
+        if (this.Firer.professions.Contains(Farmer.desperado))
         {
-            chance *= 2d;
+            ProfessionsModule.State.LastDesperadoTarget = monster;
         }
 
-        chance -= this._pierceCount * 0.2;
-        if (chance < 0d || Game1.random.NextDouble() > chance)
+        // increment ultimate meter
+        if (ultimate is { IsActive: false })
+        {
+            switch (ultimate)
+            {
+                case DeathBlossom when this.Overcharge >= 1f:
+                    ultimate.ChargeValue += this.Overcharge * 8d;
+                    break;
+                case Concerto when this.Ammo.ParentSheetIndex == ObjectIds.Slime:
+                    ultimate.ChargeValue += Game1.random.Next(8);
+                    break;
+            }
+        }
+
+        if (this.IsSquishy || this.Ammo.ParentSheetIndex == ObjectIds.ExplosiveAmmo ||
+            !this.Firer.professions.Contains(Farmer.scout))
         {
             return;
         }
 
-        location.debris.Add(
-            new Debris(
-                this.Ammo.ParentSheetIndex,
-                new Vector2((int)this.position.X, (int)this.position.Y),
-                this.Firer.getStandingPosition()));
+        // Rascal recovery
+        var recoveryChance = this.Firer.professions.Contains(Farmer.scout + 100) ? 0.55 : 0.35;
+        if (this.Ammo.ParentSheetIndex is ObjectIds.Wood or ObjectIds.Coal)
+        {
+            recoveryChance /= 2d;
+        }
+
+        if (recoveryChance > 0d && Game1.random.NextDouble() < recoveryChance)
+        {
+            location.debris.Add(
+                new Debris(
+                    this.Ammo.ParentSheetIndex,
+                    new Vector2((int)this.position.X, (int)this.position.Y),
+                    this.Firer.getStandingPosition()));
+        }
     }
 
     /// <inheritdoc />
@@ -287,11 +354,20 @@ internal sealed class ObjectProjectile : BasicProjectile
     {
         this.DidPierce = false;
         base.behaviorOnCollisionWithOther(location);
-        if (this.Ammo is null || this.Firer is null || this.Source is null || !ProfessionsModule.ShouldEnable)
+        if (!ProfessionsModule.ShouldEnable)
         {
             return;
         }
 
+        if (this.Ammo.ParentSheetIndex != ObjectIds.ExplosiveAmmo)
+        {
+            if (this.Musked)
+            {
+                location.AddMusk(this.position.Value, 15);
+            }
+        }
+
+        // increment ultimate meter
         if (this.Ammo.ParentSheetIndex == ObjectIds.Slime &&
             this.Firer.Get_Ultimate() is Concerto { IsActive: false } concerto)
         {
@@ -299,40 +375,52 @@ internal sealed class ObjectProjectile : BasicProjectile
             return;
         }
 
-        if (this.Source?.hasEnchantmentOfType<PreservingEnchantment>() == true || this.IsSquishy ||
-            this.Ammo.ParentSheetIndex == ObjectIds.ExplosiveAmmo || !this.Firer.professions.Contains(Farmer.scout))
+        if (this.IsSquishy || this.Ammo.ParentSheetIndex == ObjectIds.ExplosiveAmmo ||
+            !this.Firer.professions.Contains(Farmer.scout))
         {
             return;
         }
 
         // try to recover
-        var chance = this.Ammo.ParentSheetIndex is ObjectIds.Wood or ObjectIds.Coal ? 0.175 : 0.35;
-        if (this.Firer.professions.Contains(Farmer.scout + 100))
+        var recoveryChance = this.Firer.professions.Contains(Farmer.scout + 100) ? 0.55 : 0.35;
+        if (this.Ammo.ParentSheetIndex is ObjectIds.Wood or ObjectIds.Coal)
         {
-            chance *= 2d;
+            recoveryChance /= 2d;
         }
 
-        chance -= this._pierceCount * 0.2;
-        if (chance < 0d || Game1.random.NextDouble() > chance)
+        if (recoveryChance > 0d && Game1.random.NextDouble() < recoveryChance)
         {
-            return;
+            location.debris.Add(
+                new Debris(
+                    this.Ammo.ParentSheetIndex,
+                    new Vector2((int)this.position.X, (int)this.position.Y),
+                    this.Firer.getStandingPosition()));
         }
+    }
 
-        location.debris.Add(
-            new Debris(
-                this.Ammo.ParentSheetIndex,
-                new Vector2((int)this.position.X, (int)this.position.Y),
-                this.Firer.getStandingPosition()));
+    public override void draw(SpriteBatch b)
+    {
+        base.draw(b);
+        if (this.Energized)
+        {
+            b.Draw(
+                Textures.EnergizedTx,
+                Game1.GlobalToLocal(
+                    Game1.viewport,
+                    this.position + new Vector2(0f, 0f - this.height.Value) + new Vector2(32f, 32f)),
+                new Rectangle(this._energizedFrame * 32, 0, 32, 32),
+                Color.White,
+                this.rotation,
+                new Vector2(16f, 16f),
+                this.localScale * 2f,
+                SpriteEffects.None,
+                (this.position.Y + 96f) / 10000f);
+        }
     }
 
     /// <inheritdoc />
     public override bool update(GameTime time, GameLocation location)
     {
-        if (this.Ammo is null || this.Firer is null || this.Source is null)
-        {
-            return base.update(time, location);
-        }
-
         var bounces = this.bouncesLeft.Value;
         var didCollide = base.update(time, location);
         if (!didCollide)
@@ -348,6 +436,11 @@ internal sealed class ObjectProjectile : BasicProjectile
         if (bounces > this.bouncesLeft.Value)
         {
             this.DidBounce = true;
+        }
+
+        if (this.Energized && time.TotalGameTime.Ticks % 5 == 0)
+        {
+            this._energizedFrame = (this._energizedFrame + 1) % 4;
         }
 
         if (this.Overcharge <= 1f || (this.maxTravelDistance.Value > 0 && this.travelDistance >= this.maxTravelDistance.Value))
@@ -392,7 +485,7 @@ internal sealed class ObjectProjectile : BasicProjectile
             }
         }
 
-        if (location.doesPositionCollideWithCharacter(newHitbox) is not Monster monster)
+        if (location.doesPositionCollideWithCharacter(newHitbox) is not Monster { IsMonster: true } monster)
         {
             return didCollide;
         }
@@ -440,13 +533,41 @@ internal sealed class ObjectProjectile : BasicProjectile
         }
 
         var dummyWeapon = new MeleeWeapon { BaseName = string.Empty };
-        Reflector.GetUnboundFieldSetter<Tool, Farmer>(dummyWeapon, "lastUser").Invoke(dummyWeapon, this.Firer ?? Game1.player);
+        Reflector.GetUnboundFieldSetter<Tool, Farmer>("lastUser").Invoke(dummyWeapon, this.Firer);
         if (!container.performToolAction(dummyWeapon, location))
         {
+            if (this.Musked)
+            {
+                location.AddMusk(this.position.Value, 15);
+            }
+
             return true; // if the container did not break, the projectile is stopped
         }
 
         location.Objects.Remove(@object.TileLocation);
         return false; // if the container broke, then the projectile lives on
+    }
+
+    /// <summary>Trigger a lightning strike on the specified <paramref name="monster"/>'s position.</summary>
+    /// <param name="monster">The target <see cref="Monster"/>.</param>
+    /// <param name="location">The current <see cref="GameLocation"/>.</param>
+    private void DoLightningStrike(Monster monster, GameLocation location)
+    {
+        var aoe = monster.GetBoundingBox();
+        aoe.Inflate(12 * Game1.tileSize, 12 * Game1.tileSize);
+        Game1.flashAlpha = (float)(0.5 + Game1.random.NextDouble());
+        location.playSound("thunder");
+        Utility.drawLightningBolt(monster.Position + new Vector2(32f, 32f), location);
+        location.damageMonster(
+            aoe,
+            this.Damage * 3,
+            (this.Damage * 3) + 3,
+            false,
+            1f,
+            0,
+            0f,
+            1f,
+            false,
+            this.Firer);
     }
 }

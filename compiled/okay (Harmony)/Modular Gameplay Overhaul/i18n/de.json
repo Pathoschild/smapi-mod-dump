@@ -6,16 +6,16 @@
   // farming
   "harvester.title.male": "Erntehelfer",
   "harvester.title.female": "Erntehelferin",
-  "harvester.desc": "10% Chance auf einen zusätzlichen Ertrag aus der Ernte.",
-  "harvester.desc.prestiged": "10% >> 20% Chance auf einen zusätzlichen Ertrag der geernteten Pflanzen.",
+  "harvester.desc": "10 % Chance auf einen zusätzlichen Ertrag aus der Ernte.",
+  "harvester.desc.prestiged": "10 % >> 20 % Chance auf einen zusätzlichen Ertrag der geernteten Pflanzen.",
   "agriculturist.title.male": "Landwirt",
   "agriculturist.title.female": "Landwirtin",
-  "agriculturist.desc": "Die Pflanzen wachsen 10% schneller. Baue Pflanzen bester Qualität organisch und ohne Dünger an.",
-  "agriculturist.desc.prestiged": "Die Pflanzen wachsen 10% >> 20% schneller.",
+  "agriculturist.desc": "Die Pflanzen wachsen 10 % schneller. Baue Pflanzen bester Qualität organisch und ohne Dünger an.",
+  "agriculturist.desc.prestiged": "Die Pflanzen wachsen 10 % >> 20 % schneller.",
   "artisan.title.male": "Handwerker",
   "artisan.title.female": "Handwerkerin",
-  "artisan.desc": "Alle handwerklichen Maschinen arbeiten 10% schneller. Die Qualität des Maschinenausgangs kann so gut sein wie die Qualität der Eingangszutaten.",
-  "artisan.desc.prestiged": "Alle handwerklichen Maschinen arbeiten 10% >> 25% schneller.",
+  "artisan.desc": "Alle handwerklichen Maschinen arbeiten 10 % schneller. Die Qualität des Maschinenausgangs kann so gut sein wie die Qualität der Eingangszutaten.",
+  "artisan.desc.prestiged": "Alle handwerklichen Maschinen arbeiten 10 % >> 25 % schneller.",
 
   "rancher.title.male": "Viehzüchter",
   "rancher.title.female": "Viehzüchterin",
@@ -27,18 +27,18 @@
   "breeder.desc.prestiged": "Inkubation 2× >> 3× schneller und natürliche Schwangerschaft 3× >> 5× wahrscheinlicher.",
   "producer.title.male": "Hersteller",
   "producer.title.female": "Herstellerin",
-  "producer.desc": "Glückliche Tiere produzieren 2× so häufig. Produziere 5% mehr für jeden vollen Stall oder jede volle Scheune.",
+  "producer.desc": "Glückliche Tiere produzieren 2× so häufig. Produziere 5 % mehr für jeden vollen Stall oder jede volle Scheune.",
   "producer.desc.prestiged": "Glückliche Tiere produzieren 2× >> 3× so häufig.",
 
   // foraging
   "forager.title.male": "Waldarbeiter",
   "forager.title.female": "Waldarbeiterin",
-  "forager.desc": "20% Chance auf doppelte Ausbeute an erbeuteten Gegenständen.",
-  "forager.desc.prestiged": "20% >> 40% Chance auf doppelte Ausbeute an gesammelten Gegenständen.",
+  "forager.desc": "20 % Chance auf doppelte Ausbeute an erbeuteten Gegenständen.",
+  "forager.desc.prestiged": "20 % >> 40 % Chance auf doppelte Ausbeute an gesammelten Gegenständen.",
   "ecologist.title.male": "Ökologe",
   "ecologist.title.female": "Ökologin",
-  "ecologist.desc": "Wilde Beeren geben 50% mehr Gesundheit und Energie zurück. Erkenne nach und nach Futtermittel von höherer Qualität.",
-  "ecologist.desc.prestiged": "Wilde Beeren stellen 50% >> 100% mehr Gesundheit und Energie wieder her.",
+  "ecologist.desc": "Wilde Beeren geben 50 % mehr Gesundheit und Energie zurück. Erkenne nach und nach Futtermittel von höherer Qualität.",
+  "ecologist.desc.prestiged": "Wilde Beeren stellen 50 % >> 100 % mehr Gesundheit und Energie wieder her.",
   "scavenger.title.male": "Schnitzeljäger",
   "scavenger.title.female": "Schnitzeljägerin",
   "scavenger.desc": "Ort der auffindbaren Gegenstände aufgedeckt. Gelegentlich entdeckst du vergrabene Schätze.",
@@ -48,16 +48,16 @@
 
   "lumberjack.title.male": "Holzfäller",
   "lumberjack.title.female": "Holzfällerin",
-  "lumberjack.desc": "Gefällte Bäume liefern 25% mehr Holz.",
-  "lumberjack.desc.prestiged": "Gefällte Bäume liefern 25% >> 40% mehr Holz.",
+  "lumberjack.desc": "Gefällte Bäume liefern 25 % mehr Holz.",
+  "lumberjack.desc.prestiged": "Gefällte Bäume liefern 25 % >> 40 % mehr Holz.",
   "arborist.title.male": "Baumpfleger",
   "arborist.title.female": "Baumpflegerin",
   "arborist.desc": "Alle Bäume wachsen schneller. Normale Bäume können Laubholz fallen lassen.",
   "arborist.desc.prestiged": "Normale Bäume werfen doppelt so viel Hartholz ab.",
   "tapper.title.male": "Anzapfer",
   "tapper.title.female": "Anzapferin",
-  "tapper.desc": "Anzapfer sind billiger in der Herstellung. Angezapfte Bäume geben 25% schneller Sirup.",
-  "tapper.desc.prestiged": "Angeschlagene Bäume geben 25% >> 50% schneller Sirup.",
+  "tapper.desc": "Anzapfer sind billiger in der Herstellung. Angezapfte Bäume geben 25 % schneller Sirup.",
+  "tapper.desc.prestiged": "Angeschlagene Bäume geben 25 % >> 50 % schneller Sirup.",
 
   // mining
   "miner.title.male": "Bergarbeiter",
@@ -82,13 +82,13 @@
   "blaster.desc.prestiged": "Gesprengte Felsen liefern 2× >> 3× so viel Kohle.",
   "demolitionist.title.male": "Zerstörer",
   "demolitionist.title.female": "Zerstörerin",
-  "demolitionist.desc": "Bombenradius +1. Explodierte Felsen bringen 20% mehr Ressourcen.",
-  "demolitionist.desc.prestiged": "Gesprengte Felsen bringen 20% >> 40% mehr Ressourcen.",
+  "demolitionist.desc": "Bombenradius +1. Explodierte Felsen bringen 20 % mehr Ressourcen.",
+  "demolitionist.desc.prestiged": "Gesprengte Felsen bringen 20 % >> 40 % mehr Ressourcen.",
   "demolitionist.buff.desc": "Sei gespannt!",
   "gemologist.title.male": "Gemmologe",
   "gemologist.title.female": "Gemmologin",
-  "gemologist.desc": "Erkenne nach und nach Mineralien von höherer Qualität. Crystalariums produzieren 25% schneller.",
-  "gemologist.desc.prestiged": "Crystalariums produzieren 25% >> 50% schneller.",
+  "gemologist.desc": "Erkenne nach und nach Mineralien von höherer Qualität. Crystalariums produzieren 25 % schneller.",
+  "gemologist.desc.prestiged": "Crystalariums produzieren 25 % >> 50 % schneller.",
 
   // fishing
   "fisher.title.male": "Fischer",
@@ -122,32 +122,31 @@
   // combat
   "fighter.title.male": "Kämpfer",
   "fighter.title.female": "Kämpferin",
-  "fighter.desc": "Schaden +10%. +15 HP.",
-  "fighter.desc.prestiged": "Schaden +10% >> +15%.",
+  "fighter.desc": "Schaden +10 %. +15 HP.",
+  "fighter.desc.prestiged": "Schaden +10 % >> +15 %.",
   "brute.title.male": "Rohling",
   "brute.title.female": "Amazone",
-  "brute.desc": "Wenn du Schaden nimmst, steigert das deine Wut und deine Kampfkraft. +25 HP.",
-  "brute.desc.prestiged": "Wut gewährt außerdem Angriffstempo.",
+  "brute.desc": "Werden Sie wütend, wenn Sie Schaden erleiden, und erhöhen Sie nach und nach Ihren eigenen Schaden und Ihre Angriffsgeschwindigkeit. +25 HP.",
+  "brute.desc.prestiged": "Bleiben Sie doppelt so lange wütend.",
   "brute.buff.name": "Wut",
-  "brute.buff.desc": "Schaden +{{damage}}.",
-  "brute.buff.desc.prestiged": "Schaden +{{damage}}. Schwunggeschwindigkeit +{{speed}}.",
+  "brute.buff.desc": "Schaden +{{damage}}. Schwunggeschwindigkeit +{{speed}}.",
   "poacher.title.male": "Buschmann",
   "poacher.title.female": "Buschfrau",
-  "poacher.desc": "Kritische Trefferchance +50%. Krit. Schläge haben eine Chance, Gegenstände von Gegnern zu stehlen.",
+  "poacher.desc": "Kritische Trefferchance +50 %. Krit. Schläge haben eine Chance, Gegenstände von Gegnern zu stehlen.",
   "poacher.desc.prestiged": "Erhöhe die Abklingzeit der Spezialbewegung bei erfolgreichem Wildern.",
 
   "rascal.title.male": "Schlitzohr",
   "rascal.title.female": "Schlitzohrin",
-  "rascal.desc": "Erhalte einen zusätzlichen Munitionsplatz. 35% Chance, verbrauchte Munition zurückzugewinnen.",
-  "rascal.desc.prestiged": "35% >> 70% Chance, verbrauchte Munition zurückzugewinnen.",
+  "rascal.desc": "Erhalte einen zusätzlichen Munitionsplatz. 35 % Chance, verbrauchte Munition zurückzugewinnen.",
+  "rascal.desc.prestiged": "35 % >> 55 % Chance, verbrauchte Munition wiederherzustellen. Kann Monster Musk ausrüsten, um verlockende Munition abzufeuern.",
   "desperado.title.male": "Schurke",
   "desperado.title.female": "Schurkein",
-  "desperado.desc": "Feuere bei niedrigeren HP schneller. Du kannst die Schleuder überladen, um die Kraft und den Querschnitt der Munition zu erhöhen.",
+  "desperado.desc": "Aufeinanderfolgende Schüsse gegen verschiedene Feinde innerhalb einer Sekunde verursachen 50 % mehr Schaden. Du kannst die Schleuder überladen, um die Kraft und den Querschnitt der Munition zu erhöhen.",
   "desperado.desc.prestiged": "Überladene Schüsse können Feinde durchbohren.",
   "piper.title.male": "Schleim Rattenfänger",
   "piper.title.female": "Schleim Rattenfängerin",
   "piper.desc": "Ziehe verbündete Slimes an, wenn sie in der Nähe von Feinden sind. Chance, einen zufälligen Stärkungszauber zu erhalten, wenn ein Slime besiegt wird.",
-  "piper.desc.prestiged": "Chance, auch etwas Gesundheit und Energie wiederzuerlangen, wenn ein Schleim besiegt wird.",
+  "piper.desc.prestiged": "Erhöhte Wirksamkeit und Vielfalt der Effekte von besiegtem Schleim.",
   "piper.buff": "Verschleimt",
 
 
@@ -201,6 +200,9 @@
   // * ARSENAL * //
   // *********** //
 
+  "weapons.sword": "Schwert",
+  "weapons.club": "Verein",
+  "weapons.dagger": "Dolch",
   "weapons.dwarven.prefix": "Zwerge",
   "weapons.elven.prefix": "Elfen",
   "weapons.dark_sword.name": "Klinge des Verderbens",
@@ -225,8 +227,11 @@
   "slingshots.infinity.desc": "Die wahre Form der Galaxy Slingshot.",
   "objects.galaxy_soul.desc": "Der materialisierte Kern einer winzigen Galaxie.",
 
-  "blueprint.found.first": "Du hast eine alte Blaupause gefunden! Sie ist verblasst, aber du erkennst die Form eines {{type}} neben ein paar zwergischen Symbolen. Vielleicht kann der richtige Handwerker einen Sinn daraus machen.",
-  "blueprint.found.local": "Du hast eine zwergische Blaupause gefunden.",
+  "blueprint.found.first.unknown": "Du hast einen alten Bauplan gefunden! Es ist verblasst, aber Sie erkennen seltsame Symbole und einen groben Umriss in Form einer(s) {{type}}. Wenn Sie nur die Symbole übersetzen könnten ...",
+  "blueprint.found.first.known": "Du hast einen alten Bauplan gefunden! Es ist verblasst, aber man erkennt schwache Zwergensymbole und einen groben Umriss in Form einer(s) {{Typs}}. Vielleicht könnte der richtige Handwerker daraus einen Sinn machen.",
+  "blueprint.found.next.unknown": "Du hast einen weiteren alten Bauplan gefunden!",
+  "blueprint.found.next.known": "Du hast einen weiteren zwergischen Bauplan gefunden!",
+  "blueprint.found.need_guide": "Sie sollten sich wahrscheinlich um die Suche nach einem Übersetzungsführer kümmern.",
   "blueprint.found.global": "{who} hat einen zwergischen Bauplan gefunden.",
   "blacksmith.forge.option": "Schmiede",
   "blacksmith.forge.explanation": "Ich könnte ein paar neue Waffen aus den Blaupausen schmieden, die du gefunden hast. Wenn ich nur diese seltsamen Materialien hätte.",
@@ -247,15 +252,15 @@
   "events.100162.no_sword.sve": "MarlonsTheme/21 9/farmer -100 -100 0 MarlonFay 23 6 2/addQuest 14/skippable/pause 1000/move MarlonFay 0 2 2/pause 500/showFrame MarlonFay 19/pause 1000/speak MarlonFay \"Hmmm... \"/pause 500/warp farmer 18 13/playSound stoneStep/move farmer 0 -3 1/move farmer 5 0 0/pause 500/showFrame MarlonFay 0/pause 500/speak MarlonFay \"...Ich habe mich gerade gefragt, wie weit dieser Minenschacht in die Tiefe führt.#$b# Ich werde mich um einige der Monster hier drinnen kümmern, bevor sie anfangen, ins Tal zu klettern.$1#$b#Du scheinst besorgt zu sein. Ich mag zwar alt sein, aber das Alter hat mich noch nicht meiner Fähigkeiten mit dem Schwert beraubt.$0\"/pause 500/showFrame MarlonFay 18/pause 2000/showFrame MarlonFay 0/pause 500/speak MarlonFay \"Als Anführer der Abenteurergilde habe ich schon viele Kämpfer kennengelernt. Ich erkenne diesen Blick in deinen Augen.$2\"/pause 300/showFrame MarlonFay 19/pause 1000/showFrame MarlonFat 0/pause 300/speak MarlonFay \"Beweise mir, dass du die Waffe schwingen kannst, und ich denke vielleicht darüber nach, dich als Mitglied aufzunehmen.\"/pause 750/end",
   "events.1337098.no_purchase": "MarlonsTheme/-500 -500/farmer -200 -200 0 MarlonFay 4 11 2/viewport 6 13 true/skippable/pause 2000/warp farmer 6 19/playSound doorClose/pause 500/showFrame MarlonFay 17/pause 150/textAboveHead MarlonFay \"Du hast etwas gefunden!\"/pause 350/move farmer 0 -5 3/move farmer -2 0 0/move farmer 0 -1 0/showFrame MarlonFay 0/pause 500/speak MarlonFay \"THut-Waffe! Es ist nicht zu übersehen!$1#$b#Du hast ein Galaxy-Schwert erhalten!\"/pause 1000/showFrame MarlonFay 18/pause 1000/speak MarlonFay \"Du wurdest für würdig befunden, @. Das ist eine wahre Ehre.$2#$b#Ich erhielt meine erste Galaxy-Waffe nach einer Nacht harter Kämpfe im Burgdorf.#$b#Ein violettes, blendendes Licht fiel langsam in meine Hände, als ich ein Schwert sah. Für eine kurze Sekunde spürte ich die Macht des Kosmos.#$b#Zauberer und Gelehrte glauben, dass Yoba diese Waffen den wahren Friedenswächtern der Menschheit schenkt.\"/pause 1200/speak MarlonFay \"Ich bin stolz auf dich!$1\"/showFrame MarlonFay 0/pause 500/end",
 
-  "fromcsfiles.MeleeWeapon.cs.14122": "Die Farben des Prismasplitters werden intensiver.#Du spürst eine magnetische Anziehungskraft, während sich die Iridiumstäbe auf magische Weise aus deinem Rucksack heben. Vor deinen Augen verflüssigt sich das Metall und verschmilzt mit dem leuchtenden Splitter, der allmählich annimmt die Form eines {{type}}.^^# Sie erhalten das ={{galaxyWeapon}}= ^",
+  "fromcsfiles.MeleeWeapon.cs.14122": "Die Farben des Prismasplitters werden intensiver.#Du spürst eine magnetische Anziehungskraft, während sich die Iridiumstäbe auf magische Weise aus deinem Rucksack heben. Vor deinen Augen verflüssigt sich das Metall und verschmilzt mit dem leuchtenden Splitter, der allmählich annimmt die Form einer(s) {{type}}.^^# Sie erhalten das ={{galaxyWeapon}}= ^",
   "locations.Town.DwarfGrave.Translated": "     Du übersetzt das Zwergenhafte:     \n\n'zwischen goldenen Drillingen, die sich im Sand verirrt haben, einen Regenbogen hervorbringen, der aus dem Land geschmiedet wurde\nWenn das Herz rein und das Bewusstsein klar ist und der Glaube weder Zweifel noch Furcht kennt, dann wird dein Name gebrüllt.\nSterne regnen auf das Siegel dort\nund beschenke dich mit Himmelsstahl.",
   "locations.SeedShop.Yoba": "\"Yobas Segen, wahre Helden, stärken ihren Gang. In Großmut und Mitgefühl, tugendhaft und lang. Mit Ehre, Wagemut, Weisheit, ihr Geist erlangt den Schwung. Eine Prophezeiung offenbart sich, unter Yobas Blick und Drang.\"",
   "locations.desert.noiridium": "Du spürst, wie der Prismasplitter vibriert...#Aber nichts passiert.#Es fühlt sich an, als würde etwas fehlen.",
 
-  "mail.curse.intro": "Lieber @, ich muss dich in einer äußerst dringenden Angelegenheit sprechen.^Bitte komm so bald wie möglich zu mir in den Turm.^ -M. Rasmodius, Zauberer[#]Ruinierter Held",
-  "mail.curse.intro.witch": "Lieber @, ich muss dich in einer äußerst dringenden Angelegenheit sprechen.^Bitte komm so bald wie möglich zu mir in den Turm.^ -M. Rasmoda, Hexe[#]Ruinierter Held",
+  "mail.curse.intro": "[letterbg 2]Lieber @,^Ich muss dich in einer äußerst dringenden Angelegenheit sprechen.^Bitte komm so bald wie möglich zu mir in den Turm.^ -M. Rasmodius, Zauberer[#]The Blade of Ruin",
+  "mail.curse.intro.witch": "[letterbg 2]Lieber @,^Ich muss dich in einer äußerst dringenden Angelegenheit sprechen.^Bitte komm so bald wie möglich zu mir in den Turm.^ -M. Rasmoda, Hexe[#]The Blade of Ruin",
 
-  "quests.forge.intro": "Basic/A Dwarven Legacy/Clint hat dir gesagt, dass er in ein paar Tagen mit der Übersetzung der alten Blaupause fertig ist./Besuche Clint, um ihn nach der Blaupause zu fragen./Blacksmith/144702/0/-1/false",
+  "quests.forge.intro": "Basic/A Dwarven Legacy/Clint hat dir gesagt, dass er in ein paar Tagen mit der Übersetzung der alten Blaupause fertig ist./Besuche Clint, um ihn nach der Blaupause zu fragen./Blacksmith/-1/0/-1/false",
   "quests.forge.next": "Basic/A Dwarven Legacy II/Die alte Blaupause entpuppte sich als Rezept für eine mächtige alte Waffe! Könnte es noch andere geben?/Finde die restlichen zwergischen Blaupausen./null/-1/0/-1/false",
   "quests.hero.intro": "Basic/The Blade of the Ruined Hero/Die Waffe, die du gefunden hast, trägt den Fluch des ruinierten Helden! Du spürst bereits, wie sie dir Lebensenergie entzieht. Du musst einen Weg finden, den Fluch aufzuheben, und zwar schnell!/Finde einen Weg, den Fluch der Ruinenklinge aufzuheben./null/-1/0/-1/false",
   "quests.hero.reward": "Basic/The Blade of the Ruined Hero/Diejenigen, die die Tugenden eines wahren Helden verkörpern, werden durch Yobas göttliche Macht von allem Bösen gereinigt. Bring die Klinge des Verderbens zum Altar von Yoba./null/-1/0/-1/false",
@@ -291,6 +296,7 @@
   "virtues.recognize.yoba": "Yoba erkennt deine Tapferkeit.",
   "virtues.disapprove.singular": "{{name}} missbilligt Ihren Mangel an {{virtue}}.",
   "virtues.disapprove.plural": "{{name1}} und {{name2}} missbilligen Ihren Mangel an {{virtue}}.",
+  "virtues.proven": "{{player}} has proven their {{virtue}}.",
 
   // json assets
   "objects.dwarvish_blueprint.name": "Alter zwergischer Bauplan",
@@ -313,8 +319,8 @@
   "gems.emerald.name": "Smaragd",
   "gems.amethyst.name": "Amethyst",
   "gems.topaz.name": "Topas",
-  "rings.jade.desc": "Erhöht die kritische Schlagkraft um 50%.",
-  "rings.topaz.desc.resist": "Erhöht die Widerstandsfähigkeit um 10%.",
+  "rings.jade.desc": "Erhöht die kritische Schlagkraft um 50 %.",
+  "rings.topaz.desc.resist": "Erhöht die Widerstandsfähigkeit um 10 %.",
   "rings.topaz.desc.defense": "Erhöht die Verteidigung um 1.",
   "rings.immunity.extra_desc": " Gewährt vollständige Immunität gegen Schwächungen.",
   "rings.iridium.desc": "Ein gewöhnliches Band aus Iridium.",
@@ -329,7 +335,7 @@
   "gems.garnet.name": "Granat",
   "gems.garnet.description": "Der Namensvetter einer schönen Prinzessin aus einem fernen Land.",
   "rings.garnet.name": "Granat Ring",
-  "rings.garnet.description": "Verringert die Abklingzeit von Spezialbewegungen um 10%.",
+  "rings.garnet.description": "Verringert die Abklingzeit von Spezialbewegungen um 10 %.",
   "rings.infinity.name": "Unendlichkeitsband",
   "rings.infinity.description": "Ein Gefäß für große Macht.",
 
@@ -338,8 +344,6 @@
   // * ENCHANTMENTS * //
   // **************** //
 
-  "enchantments.artful.name": "Kunstvoll",
-  "enchantments.artful.parry": "Kritik. Chance +100%",
   "enchantments.carving.name": "Schnitzen",
   "enchantments.cleaving.name": "Spalten",
   "enchantments.energized.name": "Elektrisierend",
@@ -350,32 +354,28 @@
   "enchantments.bloodthirsty.name": "Blutdürstig",
   "enchantments.mammonite.name": "Mammonit",
   "enchantments.wabbajack.name": "Wabbajack",
-  "enchantments.magnum.name": "Magnum",
-  "enchantments.gatling.name": "Schrapnell",
-  "enchantments.preserving.name": "Bewahren",
+  "enchantments.freezing.name": "Freljord",
   "enchantments.quincy.name": "Quincy",
-  "enchantments.spreading.name": "Verteilen",
+  "enchantments.runaan.name": "Runaan",
 
 
   // *********** //
   // ** TAXES ** //
   // *********** //
 
-  //// needs revision !!!
+  "mail.frs.intro": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your recent address change to Pelican Town, Stardew Valley has been filed and registered. All future correspondence will be directed to {{farm}} farm.^^We kindly remind you that federal income tax contributions are due end-of-day on the 1st of every season. For your convenience, your due obligations will be automatically deducted from your balance. If your balance is insufficient, you will be fined in accordance with section 501(c)(1) of the Ferngill Revenue Code at the rate of {{fine}} and a loan will be issued in your name with the Bank of Stardew, subject to the nominal interest fee of {{interest}} per annum.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Intro",
+  "mail.frs.notice": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your total due income tax for the closing season in the amount of {{due}}g has been automatically deducted from your balance.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Notice",
+  "mail.frs.outstanding": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your total due income tax for the closing season in the amount of {{due}}g could not be fully deducted from your balance. In accordance with section 501(c)(1) of the Ferngill Revenue Code, you will be fined an additional {{fine}} and all future income to {{farm}} farm will be levied until your outstanding debt, totaling {{outstanding}}g, is completely settled. Please keep in mind that it is in your best interest to clear any outstanding debts as soon as possible to avoid accruing interest at the rate of {{interest}} per annum.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Outstanding",
+  "mail.frs.deduction": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^We are pleased to inform you that, upon review of your environmentalist activities, we have determined that you qualify for an income tax deduction of {{deductible}} as per section 501(c)(3) of the Ferngill Revenue Code.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Deduction",
+  "mail.frs.deduction.max": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^We are pleased to inform you that, upon review of your environmentalist activities, we have determined that you are exempt from Federal income tax as per section 501(c)(3) of the Ferngill Revenue Code. As such, no charges will be made to your balance with respect to the closing season.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Deduction",
 
-  "mail.frs.intro": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Steuerzahler,^^Mit diesem Schreiben möchten wir dich darüber informieren, dass deine kürzlich erfolgte Adressänderung nach Pelican Town, Stardew Valley, eingereicht und registriert worden ist. Alle zukünftige Korrespondenz wird an {{farm}} gerichtet.^^Wir möchten Sie freundlich daran erinnern, dass die Bundeseinkommensteuerbeiträge am 1. jeder Saison am Ende des Tages fällig sind. Zu Ihrer Bequemlichkeit werden Ihre fälligen Verpflichtungen automatisch von Ihrem Guthaben abgezogen. Wenn Ihr Guthaben nicht ausreicht, wird Ihnen gemäß Abschnitt 501(c)(1) des Ferngill Revenue Code eine Geldstrafe in Höhe von {{fine}} auferlegt und ein Darlehen wird in Ihrem Namen bei der Bank von Stardew ausgestellt, unterliegen der nominellen Zinsgebühr von {{interest}} pro Jahr.^^^Mit freundlichen Grüßen,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]Taxation Intro",
-  "mail.frs.notice": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Steuerzahler,^^Dieser Brief informiert Sie darüber, dass Ihre gesamte fällige Einkommenssteuer für die letzte Saison in Höhe von {{due}}g automatisch von Ihrem Guthaben abgezogen wurde.^^Bitte bewahren Sie diesen Brief für den Fall auf, dass Sie Fragen zu Ihrem Steuerstatus klären müssen.^^^Mit freundlichen Grüßen,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]Taxation Notice",
-  "mail.frs.outstanding": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Steuerzahler,^^Mit diesem Schreiben teilen wir dir mit, dass die von dir für die letzte Saison geschuldete Einkommensteuer in Höhe von {{due}}g nicht vollständig von deinem Guthaben abgezogen werden konnte. Daher werden alle zukünftigen Einkünfte aus der {{farm}} beschlagnahmt, bis Ihre ausstehende Schuld in Höhe von {{outstanding}} beglichen ist. Bitte bedenke, dass es in deinem besten Interesse ist, ausstehende Schulden so schnell wie möglich zu begleichen, um zu vermeiden, dass dir Zinsen in Höhe von {{interest}} pro Jahr und Strafgebühren entstehen.^^Bitte bewahre dieses Schreiben in deinen Unterlagen auf, falls du Fragen zu deinem steuerlichen Status klären musst.^^^Mit freundlichen Grüßen,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Outstanding",
-  "mail.frs.deduction": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Steuerzahler,^^Wir freuen uns, dir mitzuteilen, dass wir bei der Überprüfung deiner umweltpolitischen Aktivitäten festgestellt haben, dass du gemäß Abschnitt 501 (c) (3) des Ferngill Revenue Code für einen Einkommenssteuerabzug von {{deductible}} in Frage kommst. Bitte bewahre dieses Schreiben in deinen Unterlagen auf, falls du Fragen zu deinem Steuerstatus klären musst.^^^^Mit freundlichen Grüßen,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Deduction",
-  "mail.frs.deduction.max": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Steuerzahler,^^Wir freuen uns, dir mitzuteilen, dass wir bei der Überprüfung deiner umweltpolitischen Aktivitäten festgestellt haben, dass du gemäß Abschnitt 501(c)(3) des Ferngill Revenue Code von der Bundeseinkommenssteuer befreit bist. Daher wird dein Guthaben für die abschließende Saison nicht belastet.^^Bitte bewahre dieses Schreiben für den Fall auf, dass du Fragen zu deinem Steuerstatus klären musst.^^^Mit freundlichen Grüßen,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Deduction",
+  "mail.lewis.notice": "@,^As you are aware, one of my duties as mayor of Pelican Town is to levy taxes on all the town's properties. During the preceding fiscal year, the county's assessment of {{farm}} farm's property determined a valuation of {{valuation}}g. As a result, you are liable for {{due}}g in total property taxes for the applicable tax period. I've taken the liberty of charging your account directly. ^On behalf of Pelican Town, I am deeply grateful for your ongoing contributions to our community.  ^  Sincerely, Mr. Lewis[#]Lewis Taxation Notice",
+  "mail.lewis.outstanding": "@,^As you are aware, one my duties as mayor of Pelican Town is to levy taxes on all the town's properties. During the preceding fiscal year, the county's assessment of {{farm}} farm's property determined a valuation of {{valuation}}g. As a result, you are liable for {{due}}g in total property taxes for the applicable tax period. ^Unfortunately, your account was found to have insufficient funds to cover the entire amount. As per county policy, I take no pleasure in informing that you will be fined an additional {{fine}}. The entirety of your deb, totaling {{outstanding}}g, will be sold to the Bank of Stardew, who is authorized to seize all shipping income until the outstanding amount is paid in full, subject to a {{interest}} yearly interest rate. ^Please know that the people of Pelican Town are here to support you if you are facing difficult times.  ^  Sincerely, Mr. Lewis[#]Lewis Taxation Outstanding",
 
-  "lewis.notice": "@,^Wie Sie wissen, ist es eine meiner Pflichten als Bürgermeister von Pelikan Stadt, Steuern auf alle Grundstücke der Stadt zu erheben. Während des vorangegangenen Geschäftsjahres wurde die Schätzung der Farm von {{farm}} durch den Landkreis vorgenommen Property ermittelte eine Bewertung von {{valuation}}g. Als Ergebnis sind Sie für den anwendbaren Steuerzeitraum mit insgesamt {{due}}g Grundsteuern haftbar. Ich habe mir erlaubt, Ihr Konto direkt zu belasten. ^Im Namen von Pelikan Stadt möchte ich Ihnen meine tiefste Dankbarkeit für Ihre fortwährenden Beiträge zu unserer Gemeinschaft aussprechen.  ^  Mit freundlichen Grüßen, Mr. Lewis[#]Lewis Taxation Notice",
-  "lewis.outstanding": "@,^Wie Sie wissen, ist es eine meiner Pflichten als Bürgermeister von Pelikan Stadt, Steuern auf alle Grundstücke der Stadt zu erheben. Während des vorangegangenen Geschäftsjahres wurde die Schätzung der Farm von {{farm}} durch den Landkreis vorgenommen Property ermittelte eine Bewertung von {{valuation}}g. Infolgedessen schulden Sie für den anwendbaren Steuerzeitraum insgesamt {{fine}} g Grundsteuern. Gemäß der Distriktrichtlinie freue ich mich nicht, Ihnen mitteilen zu können, dass Ihnen eine zusätzliche {{Geldstrafe}} in Rechnung gestellt wird. Ihre Gesamtschuld von {{outstanding}} g wird an die Bank von Stardew verkauft, die das Recht hat, alle Versandeinnahmen zu beschlagnahmen, bis der ausstehende Betrag vollständig bezahlt ist, vorbehaltlich eines jährlichen Zinssatzes von {{interest}}.  ^  Bitte beachten Sie, dass die Einwohner von Pelikan Stadt hier sind, um Sie in schwierigen Zeiten zu unterstützen. ^ Mit freundlichen Grüßen, Herr Lewis[#]Lewis Taxation Outstanding",
+  "mail.debt.debit": "Your balance was debited for {{amount}}g towards outstanding debts.",
 
-  "mail.debt.debit": "Dein Guthaben wurde in Höhe von {{amount}}g mit ausstehenden Schulden belastet.",
-
-  "honorific.male": "Sehr geehrter Herr",
-  "honorific.female": "Sehr geehrter Frau",
+  "honorific.male": "Dear",
+  "honorific.female": "Dear",
 
 
   // ************** //
@@ -386,14 +386,21 @@
   "ui.item_hover.crate": "{{amount}} Kritik. Chance",
   "ui.item_hover.cpow": "{{amount}} Kritik. Macht",
   "ui.item_hover.knockback": "{{amount}} Rückschlag",
-  "ui.item_hover.firespeed": "{{amount}} Feuergeschwindigkeit",
-  "ui.item_hover.swingspeed": "{{amount}} Swing-Geschwindigkeit",
+  "ui.item_hover.fire_speed": "{{amount}} Geschwindigkeit",
+  "ui.item_hover.swing_speed": "{{amount}} Geschwindigkeit",
   "ui.item_hover.cdr": "{{amount}} Abklingzeit",
   "ui.item_hover.resist": "{{amount}} Widerstand",
   "ui.item_hover.precision": "{{amount}} Präzision",
+  "ui.item_hover.light": "Gibt Licht ab",
+  "ui.item_hover.magnetic": "Magnetisch",
 
-  "ui.buffs.jinxed": "-5 Verteidigung",
-  "ui.buffs.warrior": "+{{value}} Angriff",
+  "ui.buffs.burnt.damage": "-50 % Damage",
+  "ui.buffs.burnt.dot": "-{{amount}} health every 3 seconds",
+  "ui.buffs.frozen.stuck": "Cannot move",
+  "ui.buffs.frozen.vulnerable": "Vulnerable to the next attack",
+  "ui.buffs.jinxed.defense": "-5 Verteidigung",
+  "ui.buffs.confused": "Disoriented",
+  "ui.buffs.warrior.attack": "+{{value}} Angriff",
 
 
   // ********* //
@@ -422,8 +429,8 @@
   "gmcm.core.choose": "Choose the modules to enable. You must save and exit this menu after enabling or disabling a module for those changes to take effect. Links to specific module settings pages will appear below for enabled modules.\n\nNote that certain modules may cause a JSON shuffle or other side-effects if enabled or disabled mid-playthrough.",
   "gmcm.core.available": "Available modules:",
   "gmcm.core.modules": "Module-specific settings:",
-  "gmcm.modules.profs.name": "Professions",
-  "gmcm.modules.profs.desc": "A complete overhaul of all skill professions with the goal of supporting more diverse and interesting playstyles. Introducing all-new Prestige mechanics and Limit Breaks.",
+  "gmcm.modules.prfs.name": "Professions",
+  "gmcm.modules.prfs.desc": "A complete overhaul of all skill professions with the goal of supporting more diverse and interesting playstyles. Introducing all-new Prestige mechanics and Limit Breaks.",
   "gmcm.modules.cmbt.name": "Combat",
   "gmcm.modules.cmbt.desc": "A complete overhaul of the combat experience, from rebalanced stats, weapons--both melee and ranged--, rings and enchantments, to entirely new mechanics like status effects, weapon combos and gemstone resonances.",
   "gmcm.modules.tols.name": "Tools",
@@ -436,7 +443,7 @@
   "gmcm.modules.twx.desc": "A collection of smaller immersion tweaks and fixes for inconsistencies in vanilla.",
 
   // professions
-  "gmcm.profs.heading": "PROFS Module Settings",
+  "gmcm.profs.heading": "PRFS Module Settings",
   "gmcm.profs.back": "Back to Profession settings",
 
   "gmcm.profs.controls.modkey.desc": "The key used to enable active effects for some professions (used by Prospector, Scavenger and Rascal).",
@@ -650,6 +657,8 @@
   "gmcm.cmbt.enemies.defense_summand.desc": "Adds to the damage resistance of all enemies (before multiplier).",
   "gmcm.cmbt.enemies.varied_encounters.title": "Varied Encounters",
   "gmcm.cmbt.enemies.varied_encounters.desc": "Randomizes monster stats, subject to Daily Luck bias, adding variability to monster encounters.",
+  "gmcm.cmbt.enemies.spawn_multiplier.title": "Monster Spawn Chance Multiplier",
+  "gmcm.cmbt.enemies.spawn_multiplier.desc": "Multiplies the chance to spawn enemies in dungeons.",
 
   "gmcm.cmbt.controls.auto_selection_range.melee.title": "Melee Auto-Selection Range",
   "gmcm.cmbt.controls.auto_selection_range.melee.desc": "The chosen melee weapon, if any, will be automatically equipped when a monster enters this range in tiles.",
@@ -657,6 +666,20 @@
   "gmcm.cmbt.controls.auto_selection_range.ranged.desc": "The chosen ranged weapon, if any, will be automatically equipped when a monster enters this range in tiles.",
 
   "gmcm.cmbt.ui.color_coded.desc": "Whether to colorize item names according to tier or unique status.",
+  "gmcm.cmbt.ui.color_coded.common.title": "Common Tier Color",
+  "gmcm.cmbt.ui.color_coded.common.desc": "The title color used to identify common-tier weapons",
+  "gmcm.cmbt.ui.color_coded.uncommon.title": "Uncommon Tier Color",
+  "gmcm.cmbt.ui.color_coded.uncommon.desc": "The title color used to identify uncommon-tier weapons",
+  "gmcm.cmbt.ui.color_coded.rare.title": "Rare Tier Color",
+  "gmcm.cmbt.ui.color_coded.rare.desc": "The title color used to identify rare-tier weapons",
+  "gmcm.cmbt.ui.color_coded.epic.title": "Epic Tier Color",
+  "gmcm.cmbt.ui.color_coded.epic.desc": "The title color used to identify epic-tier weapons",
+  "gmcm.cmbt.ui.color_coded.mythic.title": "Mythiv Tier Color",
+  "gmcm.cmbt.ui.color_coded.mythic.desc": "The title color used to identify mythic-tier weapons",
+  "gmcm.cmbt.ui.color_coded.masterwork.title": "Masterwork Tier Color",
+  "gmcm.cmbt.ui.color_coded.masterwork.desc": "The title color used to identify masterwork-tier weapons",
+  "gmcm.cmbt.ui.color_coded.legendary.title": "Legendary Tier Color",
+  "gmcm.cmbt.ui.color_coded.legendary.desc": "The title color used to identify legendary-tier weapons",
   "gmcm.cmbt.ui.sockets.draw.title": "Draw Gemstone Forge Sockets",
   "gmcm.cmbt.ui.sockets.draw.desc": "Repalces the generic vanilla \"Forged\" text in weapon tooltips with actual gemstone socket icons.",
   "gmcm.cmbt.ui.sockets.style.title": "Forge Socket Style",
@@ -679,7 +702,7 @@
   "gmcm.cmbt.ui.bullseye_cursor.desc": "Draws a bulls-eye instead of the mouse cursor while firing a slingshot. Does not support pull-back firing for obvious reasons.",
 
   // tools
-  "gmcm.tols.heading": "TOLS Settings",
+  "gmcm.tols.heading": "TOLS Module Settings",
 
   "gmcm.tols.tools": "Tools",
   "gmcm.tols.axe": "Axe",
@@ -833,7 +856,7 @@
   "gmcm.tols.ui.hide_affected_tiles.desc": "Whether to hide the affected tiles overlay while charging tools.",
 
   // ponds
-  "gmcm.pnds.heading": "PNDS Settings",
+  "gmcm.pnds.heading": "PNDS Module Settings",
   "gmcm.pnds.days_until_algae_spawn.title": "Days Until Algae Spawn",
   "gmcm.pnds.days_until_algae_spawn.desc": "The number of days until an empty pond will begin spawning algae.",
   "gmcm.pnds.roe_production_chance_multiplier.title": "Roe Production Chance Multiplier",
@@ -842,7 +865,7 @@
   "gmcm.pnds.roe_always_fish_quality.desc": "If true, then the quality of produced roe is always the same as the quality of the producing fish. If false, then the quality will be a random value less than or equal to that of the producing fish.",
 
   // taxes
-  "gmcm.txs.heading": "TXS Settings",
+  "gmcm.txs.heading": "TXS Module Settings",
   "gmcm.txs.annualinterest.title": "Annual Intereset",
   "gmcm.txs.annualinterest.desc": "The interest rate charged annually over any outstanding debt. Interest is accrued daily at a rate of 1/112 the annual rate.",
 
@@ -875,7 +898,7 @@
   "gmcm.txs.property.exempt_magical_buildings.desc": "Whether or not magical buildings (i.e., those summoned at the Wizard's Tower) are exempt from property taxes.",
 
   // tweex
-  "gmcm.twx.heading": "TWX Settings",
+  "gmcm.twx.heading": "TWX Module Settings",
   "gmcm.twx.headings.farming": "Farming Tweex",
   "gmcm.twx.headings.foraging": "Foraging Tweex",
   "gmcm.twx.headings.fishing": "Fishing Tweex",
@@ -906,8 +929,8 @@
   "gmcm.twx.farming.crop_wither_chance.desc": "The chance for a crop to wither per day left un-watered.",
   "gmcm.twx.farming.prevent_fruit_tree_winter_growth.title": "Prevent Fruit Tree Winter Growth",
   "gmcm.twx.farming.prevent_fruit_tree_winter_growth.desc": "Regular trees can't grow in winter. Why should fruit trees be any different?",
-  "gmcm.twx.farming.largedairy_yield.title": "Large Dairy Yields Quantity Over Quality",
-  "gmcm.twx.farming.largedairy_yield.desc": "Causes one large egg or milk to produce two mayonnaise or cheese but at regular quality, instead of one at gold quality.",
+  "gmcm.twx.farming.dairy_yield.title": "Large Dairy Yields Quantity Over Quality",
+  "gmcm.twx.farming.dairy_yield.desc": "Causes one large egg or milk to produce two mayonnaise or cheese but at regular quality, instead of one at gold quality. Ostrich Eggs yield 10 mayonnaise, but do not retain quality without Artisan profession (except when Ostrich Mayo is installed). And Gold Eggs yield a single mayonnaise, but always at the highest quality (except when Golden Mayo is installed).",
   "gmcm.twx.farming.spawn_crows.title": "Spawn Crows on These Maps:",
   "gmcm.twx.maps.islandwest": "Ginger Island Farm",
   "gmcm.twx.maps.custom_garden": "Community Garden (SVE)",
@@ -931,7 +954,7 @@
   "gmcm.controls.slick_moves.title": "Slick Moves",
   "gmcm.controls.slick_moves.desc": "Drift in the current running direction when swinging a weapon.",
   "gmcm.controls.enable_auto_selection.title": "Enable Auto-Selection",
-  "gmcm.controls.enable_auto_selection.desc": "The highlighted {{selected}} will be automatically equipped when appropriate.",
+  "gmcm.controls.enable_auto_selection.desc": "The highlighted tool will be automatically equipped when appropriate.",
   "gmcm.controls.selection_key.title": "Selection Key",
   "gmcm.controls.selection_key.desc": "Hold this key to toggle a {{tool}} for auto-selection, if enabled.",
   "gmcm.controls.selection_border_color.title": "Selection Border Color",

@@ -1,0 +1,7 @@
+﻿{
+	"Carpenter_Flip": "Gebäude wenden",
+	"Carpenter_SelectBuilding_Flip": "Wählen ein Gebäude zum Wenden aus",
+	"Carpenter_CannotFlip": "Dieses Gebäude kann nicht gewendet werden" ,
+	"Carpenter_CannotFlip_Permission": "Du hast nicht die Erlaubnis, dieses Gebäude zu wenden",
+	"Carpenter_CannotFlip_PlayerHere": "Kann nicht wenden, während ein Spieler auf dem Gebäude steht"
+}

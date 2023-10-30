@@ -127,8 +127,7 @@ namespace Custom_Farm_Loader.Lib
                 if (beginnersRod) {
                     chance *= 1.1;
 
-                    string value = ItemObject.GetItemData(fish.Id, 1);
-                    if (value != "" && int.Parse(value) >= 50)
+                    if (Game1.objectData[fish.Id].Price >= 50)
                         continue;
                 }
 

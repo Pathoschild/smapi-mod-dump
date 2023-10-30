@@ -36,7 +36,7 @@ internal sealed class NpcCheckForNewCurrentDialoguePatcher : HarmonyPatcher
     [HarmonyPrefix]
     private static bool NpcCheckForNewCurrentDialoguePrefix(NPC __instance, ref bool __result)
     {
-        if (__instance.Name != "Wizard")
+        if (__instance.Name != "Wizard" || CombatModule.State.SpokeWithWizardToday)
         {
             return true; // run original logic
         }
@@ -48,6 +48,7 @@ internal sealed class NpcCheckForNewCurrentDialoguePatcher : HarmonyPatcher
                 darkSword.Read<int>(DataKeys.CursePoints) >= 100)
             {
                 __instance.CurrentDialogue.Push(new Dialogue(I18n.Dialogue_Wizard_Curse_Toldya(), __instance));
+                CombatModule.State.SpokeWithWizardToday = true;
                 __result = true;
                 return false; // don't run original logic
             }
@@ -56,6 +57,7 @@ internal sealed class NpcCheckForNewCurrentDialoguePatcher : HarmonyPatcher
             {
                 __instance.CurrentDialogue.Push(new Dialogue(I18n.Dialogue_Wizard_Curse_Canthelp(), __instance));
                 __result = true;
+                CombatModule.State.SpokeWithWizardToday = true;
                 return false; // don't run original logic
             }
 

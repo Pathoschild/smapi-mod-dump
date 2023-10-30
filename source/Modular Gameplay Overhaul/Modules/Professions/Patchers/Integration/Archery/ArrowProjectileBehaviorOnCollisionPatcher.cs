@@ -35,10 +35,9 @@ internal sealed class ArrowProjectileBehaviorOnCollisionPatcher : HarmonyPatcher
 
     #region harmony patches
 
-    /// <summary>Reduce projectile stats post-piercing.</summary>
+    /// <summary>Reset pierce flag.</summary>
     [HarmonyPostfix]
-    private static void ArrowProjectileBehaviorOnCollisionWithMonsterPostfix(
-        BasicProjectile __instance, ref bool __result, ref int ____collectiveDamage, ref float ____knockback)
+    private static void ArrowProjectileBehaviorOnCollision(BasicProjectile __instance, ref bool __result)
     {
         if (!__instance.Get_DidPierce())
         {

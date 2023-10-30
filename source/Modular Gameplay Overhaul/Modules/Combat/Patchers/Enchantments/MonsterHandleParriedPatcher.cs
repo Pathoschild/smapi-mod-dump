@@ -14,7 +14,7 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Enchantments;
 
 using System.Reflection;
 using DaLion.Overhaul.Modules.Combat.Enchantments;
-using DaLion.Overhaul.Modules.Combat.Events.GameLoop.UpdateTicked;
+using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Monsters;
@@ -33,7 +33,7 @@ internal sealed class MonsterHandleParriedPatcher : HarmonyPatcher
 
     #region harmony patches
 
-    /// <summary>Implement Artful parry.</summary>
+    /// <summary>Empowered parry.</summary>
     [HarmonyPrefix]
     private static void MonsterHandleParriedPrefix(ref bool __state, object args)
     {
@@ -45,7 +45,7 @@ internal sealed class MonsterHandleParriedPatcher : HarmonyPatcher
                 return;
             }
 
-            __state = who.IsLocalPlayer && weapon.hasEnchantmentOfType<MeleeArtfulEnchantment>();
+            __state = who.IsLocalPlayer && weapon.hasEnchantmentOfType<InfinityEnchantment>();
         }
         catch (Exception ex)
         {
@@ -53,17 +53,14 @@ internal sealed class MonsterHandleParriedPatcher : HarmonyPatcher
         }
     }
 
-    /// <summary>Implement Artful parry.</summary>
+    /// <summary>Empowered parry.</summary>
     [HarmonyPostfix]
     private static void MonsterHandleParriedPostfix(Monster __instance, bool __state)
     {
-        if (!__state)
+        if (__state)
         {
-            return;
+            __instance.Stun(500);
         }
-
-        CombatModule.State.DidArtfulParry = true;
-        EventManager.Enable<ArtfulParryUpdateTickedEvent>();
     }
 
     #endregion harmony patches

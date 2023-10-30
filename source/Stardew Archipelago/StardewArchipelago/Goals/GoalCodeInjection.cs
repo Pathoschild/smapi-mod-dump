@@ -12,7 +12,6 @@ using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
 using StardewValley;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using StardewArchipelago.Locations;
 using StardewValley.Locations;

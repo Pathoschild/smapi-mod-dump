@@ -187,9 +187,9 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
         private static string getRandomBeachDrop(Vector2 v)
         {
-            Game1.stats.incrementStat("beachFarmSpawns", 1);
+            Game1.stats.Increment("beachFarmSpawns", 1);
 
-            if (Game1.random.NextDouble() < 0.15 || Game1.stats.getStat("beachFarmSpawns") % 4u == 0)
+            if (Game1.random.NextDouble() < 0.15 || Game1.stats.Get("beachFarmSpawns") % 4u == 0)
                 return Game1.random.Next(922, 925).ToString();
 
             return Game1.random.NextDouble() switch {

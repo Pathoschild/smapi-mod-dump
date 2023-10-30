@@ -17,6 +17,29 @@ When releasing a format change, don't forget to update the smapi.io/json schema!
 
 
 -->
+## Upcoming release
+* Re-enabled optimizations disabled in 1.30.2.
+* Fixed unhandled exception when loading patches with immutable-but-broken tokens.
+* Fixed `Format` not recognizing version 1.30.0.
+
+## 1.30.2
+Released 04 October 2023 for SMAPI 3.18.1 or later.
+
+* Temporarily disabled 1.30.0 optimizations to fix "_Can't get values from a non-ready token string_" warnings.
+
+## 1.30.1
+Released 03 October 2023 for SMAPI 3.18.1 or later.
+
+* Fixed some edits no longer applied in 1.30.0.
+
+## 1.30.0
+Released 03 October 2023 for SMAPI 3.18.1 or later. See the [release highlights](https://www.patreon.com/posts/90281255).
+
+* Optimized deterministic token input (thanks to SinZ!). This significantly improves performance for content packs which use `Range` for time checks or other large ranges.
+* Fixed `EditMap`'s `MapTiles` removing current tile properties on the tiles being edited.
+* Fixed error setting a property name to a token value when that token isn't ready. The patch will now be correctly marked non-ready instead.
+* Fixed debug overlay on Android.
+
 ## 1.29.4
 Released 27 August 2023 for SMAPI 3.18.1 or later.
 
