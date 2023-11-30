@@ -4,8 +4,7 @@ It's used to update that page, find mods using specific APIs, etc.
 ## Mod stats
 * Last updated 2023-11-29 (SMAPI 3.18.6 and Stardew Valley 1.5.6).
 * 2226 mods in the SMAPI compatibility list.
-* 1508 mods (68%) have a valid Git repository.
-* 767 repositories (51%) contain multiple mods.
+* 1508 mods (68%) have a source code repo, with 872 (58%) in a multi-mod repo and 636 (42%) in a single-mod repo.
 
 ## What's in this repository
 * `compiled` has the latest download for each mod, grouped into these categories:
