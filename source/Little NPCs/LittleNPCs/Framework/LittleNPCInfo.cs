@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 using StardewValley;
 using StardewValley.Characters;
@@ -31,6 +32,8 @@ namespace LittleNPCs.Framework {
 
         public string Gender { get; private set; }
 
+        public SDate Birthday { get; private set; }
+
         public LoadState LoadedFrom { get; private set; }
 
         public LittleNPCInfo(int childIndex, IMonitor monitor) {
@@ -42,6 +45,7 @@ namespace LittleNPCs.Framework {
                     Name = littleNPC.Name;
                     DisplayName = littleNPC.displayName;
                     Gender = littleNPC.Gender == 0 ? "male": "female";
+                    Birthday = littleNPC.GetBirthday();
                     LoadedFrom = LoadState.LittleNPC;
                     monitor_.VerboseLog($"GetLittleNPC({childIndex}) returns {Name}");
                 }
@@ -55,6 +59,7 @@ namespace LittleNPCs.Framework {
                         Name = $"{prefix}{child.Name}";
                         DisplayName = child.Name;
                         Gender = child.Gender == 0 ? "male": "female";
+                        Birthday = LittleNPC.GetBirthday(child);
                         LoadedFrom = LoadState.Child;
                         monitor_.VerboseLog($"Query for convertible child with index {childIndex} returns {Name}");
                     }
@@ -73,6 +78,7 @@ namespace LittleNPCs.Framework {
                     Name = $"{prefix}{child.Name}";
                     DisplayName = child.Name;
                     Gender = child.Gender == 0 ? "male": "female";
+                    Birthday = LittleNPC.GetBirthday(child);
                     LoadedFrom = LoadState.SaveGame;
                     monitor_.VerboseLog($"Query for convertible child with index {childIndex} returns {Name}");
                 }

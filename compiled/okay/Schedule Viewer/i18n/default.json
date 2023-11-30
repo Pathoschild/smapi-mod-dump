@@ -1,0 +1,10 @@
+{
+  "config.option.show_schedule_key.name": "Show NPC Schedules key",
+  "config.option.sort_options.name": "NPC Sort Order",
+  "config.option.sort_options.description": "The order in which to sort the NPCs when viewing the schedule.",
+  "location_hover_text": "At tile ({{x}}, {{y}}) facing {{facingDirection}}",
+  "facing_direction_0": "up",
+  "facing_direction_1": "right",
+  "facing_direction_2": "down",
+  "facing_direction_3": "left"
+}

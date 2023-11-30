@@ -67,6 +67,6 @@ namespace Custom_Farm_Loader.Lib.Enums
         Pineapple = 833, //832
         Taro = 831, //830
         Sweet_Gem_Berry = 347, //417
-        Tea = 251, //815 BUGGED
+        //Tea = 251, //815 BUGGED, tea isn't a crop, it's a bush
     }
 }

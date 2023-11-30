@@ -1,5 +1,6 @@
 {
   "LoadVanillaPack": false,
   "LoadBuiltInPack": true,
-  "LogMissingBiomes": false
+  "LogMissingBiomes": false,
+  "NoBreakOrJam": false
 }

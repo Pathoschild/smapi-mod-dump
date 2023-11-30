@@ -56,7 +56,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
         public Texture2D BackgroundTexture;
         public Texture2D JunimoTexture;
         public Texture2D IconTexture;
-        public Texture2D MoneyTexture;
+        public static Texture2D MoneyTexture;
 
         public List<ClickableRequirementTexture> RequirementSlots = new List<ClickableRequirementTexture>();
         public List<ClickableRequirementTexture> AlreadyPaidSlots = new List<ClickableRequirementTexture>();
@@ -66,6 +66,10 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             Mod = ModEntry.Mod;
             Monitor = Mod.Monitor;
             Helper = Mod.Helper;
+
+            Helper.Events.GameLoop.GameLaunched += delegate {
+                MoneyTexture = UtilityMisc.createSubTexture(Game1.mouseCursors, new Rectangle(280, 412, 15, 14));
+            };
         }
 
         public BundleMenu(Farmer who, Unlockable unlockable, ShopType shopType)
@@ -77,8 +81,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
             Unlockable = unlockable;
             Who = who;
-
-            MoneyTexture = UtilityMisc.createSubTexture(Game1.mouseCursors, new Rectangle(280, 412, 15, 14));
+  
             JunimoTexture = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\JunimoNote");
 
             if (Unlockable.JunimoNoteTexture == "")
@@ -114,7 +117,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             ReturnPartialDonations();
 
             List<Rectangle> ingredientSlotRectangles = new List<Rectangle>();
-            addRectangleRowsToList(ingredientSlotRectangles, Unlockable.BundleSlots, 932, 540);
+            addRectangleRowsToList(ingredientSlotRectangles, Unlockable.BundleSlots, xPositionOnScreen + 932, yPositionOnScreen + 540);
             AlreadyPaidSlots.Clear();
             for (int j = 0; j < ingredientSlotRectangles.Count; j++)
                 AlreadyPaidSlots.Add(new ClickableRequirementTexture(ingredientSlotRectangles[j], BackgroundTexture, new Rectangle(512, 244, 18, 18), 4f) {
@@ -125,15 +128,23 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                     downNeighborID = -99998
                 });
 
+            RequirementSlots = createRequirementTextures(xPositionOnScreen + 932, yPositionOnScreen + 364, Unlockable);
+            customPopulateClickableComponentList();
+
+            updateAlreadyPaidSlots();
+        }
+
+        public static List<ClickableRequirementTexture> createRequirementTextures(int x, int y, Unlockable unlockable)
+        {
+            List<ClickableRequirementTexture> requirementSlots = new();
             List<Rectangle> ingredientListRectangles = new List<Rectangle>();
-            RequirementSlots.Clear();
-            addRectangleRowsToList(ingredientListRectangles, Unlockable._price.Count(), 932, 364);
+            addRectangleRowsToList(ingredientListRectangles, unlockable._price.Count(), x, y);
             for (int i = 0; i < ingredientListRectangles.Count; i++) {
-                var requirement = Unlockable._price.Pairs.ElementAt(i);
+                var requirement = unlockable._price.Pairs.ElementAt(i);
                 var id = Unlockable.getFirstIDFromReqKey(requirement.Key);
 
                 if (id == "money") {
-                    RequirementSlots.Add(new ClickableRequirementTexture("", ingredientListRectangles[i], "", "", MoneyTexture, new Rectangle(0, 0, 15, 14), 4f) {
+                    requirementSlots.Add(new ClickableRequirementTexture("", ingredientListRectangles[i], "", "", MoneyTexture, new Rectangle(0, 0, 15, 14), 4f) {
                         ReqKey = requirement.Key,
                         ReqValue = requirement.Value,
                         ReqItemId = id,
@@ -147,9 +158,9 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                     continue;
                 }
 
-                var obj = Unlockable.parseItem(id, Unlockable._price.Pairs.ElementAt(i).Value, Unlockable.getFirstQualityFromReqKey(requirement.Key));
+                var obj = Unlockable.parseItem(id, unlockable._price.Pairs.ElementAt(i).Value, Unlockable.getFirstQualityFromReqKey(requirement.Key));
 
-                RequirementSlots.Add(new ClickableRequirementTexture("", ingredientListRectangles[i], "", obj.DisplayName, Game1.objectSpriteSheet, Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, obj.ParentSheetIndex, 16, 16), 4f) {
+                requirementSlots.Add(new ClickableRequirementTexture("", ingredientListRectangles[i], "", obj.DisplayName, Game1.objectSpriteSheet, Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, obj.ParentSheetIndex, 16, 16), 4f) {
                     ReqKey = requirement.Key,
                     ReqValue = requirement.Value,
                     ReqItemId = id,
@@ -161,9 +172,8 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                     downNeighborID = -99998
                 });
             }
-            customPopulateClickableComponentList();
 
-            updateAlreadyPaidSlots();
+            return requirementSlots;
         }
 
         private void resetSnappyInventory()
@@ -202,57 +212,57 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             }
         }
 
-        private void addRectangleRowsToList(List<Rectangle> toAddTo, int numberOfItems, int centerX, int centerY)
+        private static void addRectangleRowsToList(List<Rectangle> toAddTo, int numberOfItems, int x, int y)
         {
             switch (numberOfItems) {
                 case 1:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY, 1, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y, 1, 72, 72, 12));
                     break;
                 case 2:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY, 2, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y, 2, 72, 72, 12));
                     break;
                 case 3:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY, 3, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y, 3, 72, 72, 12));
                     break;
                 case 4:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY, 4, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y, 4, 72, 72, 12));
                     break;
                 case 5:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY - 36, 3, 72, 72, 12));
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY + 40, 2, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y - 36, 3, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y + 40, 2, 72, 72, 12));
                     break;
                 case 6:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY - 36, 3, 72, 72, 12));
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY + 40, 3, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y - 36, 3, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y + 40, 3, 72, 72, 12));
                     break;
                 case 7:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY - 36, 4, 72, 72, 12));
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY + 40, 3, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y - 36, 4, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y + 40, 3, 72, 72, 12));
                     break;
                 case 8:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY - 36, 4, 72, 72, 12));
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY + 40, 4, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y - 36, 4, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y + 40, 4, 72, 72, 12));
                     break;
                 case 9:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY - 36, 5, 72, 72, 12));
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY + 40, 4, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y - 36, 5, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y + 40, 4, 72, 72, 12));
                     break;
                 case 10:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY - 36, 5, 72, 72, 12));
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY + 40, 5, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y - 36, 5, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y + 40, 5, 72, 72, 12));
                     break;
                 case 11:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY - 36, 6, 72, 72, 12));
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY + 40, 5, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y - 36, 6, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y + 40, 5, 72, 72, 12));
                     break;
                 case 12:
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY - 36, 6, 72, 72, 12));
-                    toAddTo.AddRange(createRowOfBoxesCenteredAt(xPositionOnScreen + centerX, yPositionOnScreen + centerY + 40, 6, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y - 36, 6, 72, 72, 12));
+                    toAddTo.AddRange(createRowOfBoxesCenteredAt(x, y + 40, 6, 72, 72, 12));
                     break;
             }
         }
 
-        private List<Rectangle> createRowOfBoxesCenteredAt(int xStart, int yStart, int numBoxes, int boxWidth, int boxHeight, int horizontalGap)
+        private static List<Rectangle> createRowOfBoxesCenteredAt(int xStart, int yStart, int numBoxes, int boxWidth, int boxHeight, int horizontalGap)
         {
             List<Rectangle> rectangles = new List<Rectangle>();
             int actualXStart = xStart - numBoxes * (boxWidth + horizontalGap) / 2;
@@ -432,33 +442,23 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         private void heldItemLeftClick(int x, int y)
         {
-            if (isShiftDown()) {
-                for (int k = 0; k < AlreadyPaidSlots.Count; k++) {
+            var shiftDown = isShiftDown();
+
+            for (int k = 0; k < AlreadyPaidSlots.Count; k++)
+                if (AlreadyPaidSlots[k].containsPoint(x, y) || shiftDown)
                     if (canAcceptThisItem(HeldItem, AlreadyPaidSlots[k])) {
-                        if (AlreadyPaidSlots[k].ReqKey == null) {
-                            HeldItem = tryToDepositThisItem(HeldItem, AlreadyPaidSlots[k]);
-                            if (HeldItem != null)
-                                Game1.player.addItemToInventory(HeldItem);
+                        HeldItem = tryToDepositThisItem(HeldItem, AlreadyPaidSlots[k]);
+
+                        if (shiftDown && HeldItem is not null) {
+                            Game1.player.addItemToInventory(HeldItem);
                             HeldItem = null;
-                            checkIfBundleIsComplete();
-                            return;
                         }
+
+                        checkIfBundleIsComplete();
+                        return;
+
                     } else if (AlreadyPaidSlots[k].ReqKey == null)
                         HandlePartialDonation(HeldItem, AlreadyPaidSlots[k]);
-                }
-            }
-
-
-            for (int j = 0; j < AlreadyPaidSlots.Count; j++) {
-                if (AlreadyPaidSlots[j].containsPoint(x, y)) {
-                    if (canAcceptThisItem(HeldItem, AlreadyPaidSlots[j])) {
-                        HeldItem = tryToDepositThisItem(HeldItem, AlreadyPaidSlots[j]);
-                        checkIfBundleIsComplete();
-                    } else if (AlreadyPaidSlots[j].ReqKey == null) {
-                        HandlePartialDonation(HeldItem, AlreadyPaidSlots[j]);
-                    }
-                }
-            }
         }
 
         public override void performHoverAction(int x, int y)
@@ -511,7 +511,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             }
             base.automaticSnapBehavior(direction, oldRegion, oldID);
         }
-        private bool isReadyToClose() => CompletionTimer <= 0 && HeldItem == null;
+        private bool isReadyToClose() => CompletionTimer <= 0; //&& HeldItem == null;
 
         public override void update(GameTime time)
         {
@@ -569,6 +569,9 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public bool canAcceptThisItem(Item item, ClickableRequirementTexture slot, bool ignore_stack_count = false)
         {
+            if (item is null)
+                return false;
+
             for (int i = 0; i < Unlockable._price.Count(); i++)
                 if (IsValidItemForThisRequirement(item, Unlockable._price.Pairs.ElementAt(i))
                     && (ignore_stack_count || Unlockable._price.Pairs.ElementAt(i).Value <= item.Stack)
@@ -636,20 +639,24 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             }
         }
 
-        public virtual void ReturnPartialDonations(bool to_hand = true)
+        public virtual void ReturnPartialDonations(bool to_hand = true, bool includeHeldItem = false)
         {
-            if (PartialDonationComponents.Count > 0) {
-                bool play_sound = true;
-                foreach (Item item in PartialDonationComponents) {
-                    if (HeldItem == null && to_hand) {
-                        Game1.playSound("dwop");
-                        HeldItem = item;
-                    } else {
-                        ReturnPartialDonation(item, play_sound);
-                        play_sound = false;
-                    }
+            bool play_sound = true;
+            foreach (Item item in PartialDonationComponents) {
+                if (HeldItem == null && to_hand) {
+                    Game1.playSound("dwop");
+                    HeldItem = item;
+                } else {
+                    ReturnPartialDonation(item, play_sound);
+                    play_sound = false;
                 }
             }
+
+            if(includeHeldItem && HeldItem is not null) {
+                ReturnPartialDonation(HeldItem, play_sound);
+                HeldItem = null;
+            }
+
             ResetPartialDonation();
         }
 
@@ -819,7 +826,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public new void exitThisMenu(bool playSound = true)
         {
-            ReturnPartialDonations(false);
+            ReturnPartialDonations(false, true);
             Game1.dialogueUp = false;
             Game1.player.CanMove = true;
             base.exitThisMenu(playSound);

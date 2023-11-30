@@ -1,0 +1,14 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/thakyZ/StardewValleyMods
+**
+*************************************************/
+
+{
+    "nopausewheninative.global.option.name": "Do not pause the game globally",
+    "nopausewheninative.global.option.tooltip": "Respects the option per-save in the save game's options menu."
+}

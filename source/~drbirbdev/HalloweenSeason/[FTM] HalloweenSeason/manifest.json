@@ -11,7 +11,7 @@
 {
     "Name": "[FTM] HalloweenSeason",
     "Author": "drbirbdev",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "Description": "Add halloween seasonal event.",
     "UniqueID": "drbirbdev.HalloweenSeason.FTM",
     "ContentPackFor": {

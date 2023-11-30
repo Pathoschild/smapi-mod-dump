@@ -58,7 +58,7 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
                 return false; // don't run original logic
             }
 
-            if (who.HasAllProfessions())
+            if (who.HasAllProfessions(true))
             {
                 OfferRespecOptions(__instance);
                 return false; // don't run original logic

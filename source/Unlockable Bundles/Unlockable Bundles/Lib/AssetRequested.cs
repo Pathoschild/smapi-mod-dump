@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using Microsoft.Xna.Framework.Graphics;
+using StardewValley.GameData;
+using System.IO;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -58,6 +60,15 @@ namespace Unlockable_Bundles.Lib
                         data.TryAdd(entry.Key, entry.Value);
                 });
 
+            } else if(e.NameWithoutLocale.IsEquivalentTo("Data/AudioChanges")) {
+                e.Edit(asset => {
+                    var data = asset.AsDictionary<string, AudioCueData>().Data;
+                    data.Add("ub_pageflip", new AudioCueData() {
+                        Id = "ub_pageflip",
+                        FilePaths = new() { Path.Combine(Helper.DirectoryPath, "assets\\pageflip.ogg") },
+                    });
+
+                });
             }
         }
     }

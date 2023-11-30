@@ -90,7 +90,7 @@
 	"dialogue.winter_Sun6_2": "You know, the hat business isn't exactly making me rich.#$b#But some things you have to do just for the love of the game, right?#$e#At least the fair brings in some money every year.$h",
 	"dialogue.spring_23_1": "Did you get mail about the flower dance like I did?#$b#I'm really excited to see it. It's hard to wait for tomorrow.",
 	"dialogue.spring_23_2": "The flower dance is tomorrow, poke! Are you excited?$h#$b#I like this festival. There are lots of pretty flowers, and it's close to my house.",
-	"dialogue.summer_4_1": "Did you feel the earthquake last night?#$b#It woke me up, and I lost a lot of sleep over it.$s#$e#I'm actually really afraid of earthquakes. Do you think there will be more?$s",
+	"dialogue.summer_3_1": "Did you feel the earthquake last night?#$b#It woke me up, and I lost a lot of sleep over it.$s#$e#I'm actually really afraid of earthquakes. Do you think there will be more?$s",
 	"dialogue.summer_13_1": "Have you been to the beach lately? The water looks really green, and it has a different smell.#$b#I think I heard it was crab mating season?",
 	"dialogue.winter.nightmarket.wait": "Hi, @. I'm waiting here for the night market to open.",
 	"dialogue.winter_15.nightmarket0": "There's a lot to see at this market. But I can't resist a free cup of coffee!",
@@ -353,7 +353,7 @@
 	"mapstrings.MouseHouse.photo": "There's a small, faded photo of four mice. It's probably a family picture.",
 	"mapstrings.MouseHouse.stepladder": "Lacey's stepladder. It's well-worn from use.",
 	"mapstrings.MouseHouse.stool": "A low stool. The legs look to have been sawn short.",
-	"mapstrings.MouseSpouse.drawers": "It has Lacey's clothes and undergarments in it. It's nothing you haven't seen before.",
+	"mapstrings.MouseSpouse.drawers": "It's Lacey's dresser. She keeps her clothes in it.",
 	"mapstrings.MouseSpouse.photo": "The photo of Lacey with her family is here. It's obvious now which one she is.",
 	"mapstrings.MouseSpouse.stool": "It's Lacey's low stool. Best to leave it for her to sit in.",
 	"mapstrings.Forest.frontdoor": "Looks like this used to be the front door.",
@@ -606,6 +606,7 @@
 	"dtf.festival.summer28.married.3": "Let's hurry home after the jellies leave.#$b#It would be a shame to waste a romantic night like this.$6",
 	"dtf.festival.winter25.married.2": "Willy told me that the Winter Star is a good luck symbol specific to this valley.#$b#We could prove him right. Do you feel like getting lucky tonight?$6",
 	"dtf.csfiles.HatMouseLacey_AfterWedding.1": "Save some energy for our wedding-night, okay?$6",
+	"dtf.mapstrings.MouseSpouse.drawers": "It has Lacey's clothes and undergarments in it. It's nothing you haven't seen before.",
 
 	"i18n.EOF": ""
 }

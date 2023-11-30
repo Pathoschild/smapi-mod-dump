@@ -14,6 +14,42 @@
 			"Target": "Maps/Forest",
 			"Action": "EditMap",
 			"MapTiles": [
+				// remove inspection messages from house
+				{
+					"Position": {"X": 30, "Y": 95},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 32, "Y": 95},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 33, "Y": 95},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 35, "Y": 95},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 36, "Y": 95},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 36, "Y": 94},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
+				{
+					"Position": {"X": 36, "Y": 93},
+					"Layer": "Buildings",
+					"SetProperties": {"Message": null}
+				},
 				// grass around the entrance
 				{
 					"Position": {"X": 30, "Y": 95},
@@ -237,6 +273,15 @@
 				"236750400/f HatMouseLacey 1000/p HatMouseLacey": {
 					36: "speak HatMouseLacey \"{{i18n:events.4h.5.Andy}}\""
 				}
+			}
+		},
+		{
+			"Target": "Characters/Dialogue/HatMouseLacey",
+			"Action": "EditData",
+			// Remove earthquake reference on summer 3, year 1.
+			// don't bother replacing it.
+			"Entries": {
+				"summer_3_1": null
 			}
 		}
 	]

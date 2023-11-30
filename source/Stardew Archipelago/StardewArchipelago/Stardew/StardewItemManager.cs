@@ -47,6 +47,15 @@ namespace StardewArchipelago.Stardew
             {182, " (Brown)"},
         };
 
+        public List<List<string>> ItemNameAliases = new()
+        {
+            new List<string> { "L. Goat Milk", "Large Goat Milk", "Goat Milk (Large)" },
+            new List<string> { "L. Milk", "Large Milk", "Milk (Large)" },
+            new List<string> { "Egg (Brown)", "Brown Egg" },
+            new List<string> { "Large Egg (Brown)", "Large Brown Egg" },
+            new List<string> { "Cookie", "Cookies" },
+        };
+
         public StardewItemManager()
         {
             InitializeData();
@@ -279,12 +288,28 @@ namespace StardewArchipelago.Stardew
                 }
 
                 _objectsById.Add(id, stardewItem);
-                _objectsByName.Add(stardewItem.Name, stardewItem);
-                if (stardewItem.Name == "Cookie")
-                {
-                    _objectsByName.Add("Cookies", stardewItem);
-                }
+                AddItemAndAliasesToNamesDictionary(stardewItem);
             }
+        }
+
+        private void AddItemAndAliasesToNamesDictionary(StardewObject stardewItem)
+        {
+            foreach (var aliasGroup in ItemNameAliases)
+            {
+                if (!aliasGroup.Contains(stardewItem.Name))
+                {
+                    continue;
+                }
+
+                foreach (var alias in aliasGroup)
+                {
+                    _objectsByName.Add(alias, stardewItem);
+                }
+
+                return;
+            }
+
+            _objectsByName.Add(stardewItem.Name, stardewItem);
         }
 
         private void InitializeBigCraftables()

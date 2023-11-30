@@ -8,6 +8,7 @@
 	<EnableHarmony>true</EnableHarmony>
 	<Authors>NeroYuki</Authors>
 	<Company>None</Company>
+    <GamePath>E:\sv_backup\Stardew Valley</GamePath>
   </PropertyGroup>
 
   <ItemGroup>

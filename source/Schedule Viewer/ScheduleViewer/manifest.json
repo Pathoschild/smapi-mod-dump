@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/BinaryLip/ScheduleViewer
+**
+*************************************************/
+
+{
+  "Name": "Schedule Viewer",
+  "Author": "BinaryLip",
+  "Version": "1.0.4",
+  "Description": "Shows NPCs' schedule for the current day based on current world conditions.",
+  "UniqueID": "BinaryLip.ScheduleViewer",
+  "EntryDll": "ScheduleViewer.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:19305" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Bouhm.NPCMapLocations",
+      "IsRequired": false
+    }
+  ]
+}

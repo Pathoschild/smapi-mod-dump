@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/18973
+IDs: mouahrara.mouahrarasModuleCollection
+update keys: Nexus:18973, GitHub:mouahrara/mouahrarasModuleCollection

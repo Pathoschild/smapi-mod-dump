@@ -9,11 +9,13 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using xTile;
 using xTile.Layers;
 using xTile.Tiles;
@@ -21,9 +23,8 @@ using xTile.Tiles;
 namespace ichortower_HatMouseLacey
 {
     /*
-     * This class holds functions that handle compatibility with other mods.
-     * Put something here to handle it if it's impossible or slow via other
-     * methods.
+     * This is a bucket to hold functions for compatibility with other mods.
+     * If it's unwieldy in ModEntry, put it here.
      */
     internal class LCCompat
     {
@@ -31,9 +32,9 @@ namespace ichortower_HatMouseLacey
         {
             /*
              * EditMap patch for the forest map.
-             * Doing it here in C# is more powerful than via Content Patcher
-             * (since we can check source tiles) and a little less verbose.
-             * TODO extend this for SVE support
+             * Doing it here in C# lets us check source tiles before updating
+             * them, which makes the patch a little more arcane but hopefully
+             * cuts down on other-mod-specific patches.
              *
              * The loop here checks the Back layer at specific locations and
              * maps tile index values to new ones, mostly to turn yucky grass
@@ -86,7 +87,7 @@ namespace ichortower_HatMouseLacey
                         //{359, -1},
                         //{360, -1},
                     };
-                    /* saved delegate here for if the other two layers are restored
+                    /* saved delegate here for if the other two layers are needed
                     Action<Vector2, Layer> mutate = delegate(Vector2 coords, Layer layer) */
                     foreach (var coords in backList) {
                         Tile t = back.Tiles[(int)coords.X, (int)coords.Y];
@@ -108,5 +109,129 @@ namespace ichortower_HatMouseLacey
                 }, AssetEditPriority.Late);
             }
         }
-    }
-}
+
+        /*
+         * Run the detection for other installed mods and their config.json
+         * settings, to generate best guesses for which patches and palettes
+         * to use.
+         * This is run at save load, and also when our config is updated by
+         * GMCM (except at the title screen).
+         */
+        public static void DetectModMatching()
+        {
+            if (Game1.gameMode == Game1.titleScreenGameMode) {
+                return;
+            }
+            ModEntry.RecolorDetected = "Vanilla";
+            ModEntry.InteriorDetected = "Vanilla";
+            ModEntry.RetextureDetected = "Vanilla";
+
+            Dictionary<string, string> recolorMods = new() {
+                {"DaisyNiko.EarthyRecolour", "Earthy"},
+                {"grapeponta.VibrantPastoralRecolor", "VPR"},
+                {"Lita.StarblueValley", "Starblue"},
+                {"Acerbicon.Recolor", "Wittily"},
+            };
+            foreach (var pair in recolorMods) {
+                var modInfo = ModEntry.HELPER.ModRegistry.Get(pair.Key);
+                if (modInfo != null) {
+                    ModEntry.MONITOR.Log($"Found mod '{pair.Key}'. " +
+                            $"Setting detected palette to '{pair.Value}'.",
+                            LogLevel.Trace);
+                    ModEntry.RecolorDetected = pair.Value;
+                    break;
+                }
+            }
+
+            /* interior recoloring is more complicated. each mod does it
+             * differently, and wittily doesn't do it at all */
+            Dictionary<string, string> interiorMods = new() {
+                {"DaisyNiko.EarthyInteriors", "Earthy"},
+                {"grapeponta.VibrantPastoralRecolor", "Town Interiors:true:VPR"},
+                {"Lita.StarblueValley", "Interiors:true:Starblue"},
+            };
+            foreach (var pair in interiorMods) {
+                var split = pair.Value.Split(":");
+                var modInfo = ModEntry.HELPER.ModRegistry.Get(pair.Key);
+                if (modInfo != null) {
+                    if (split.Length == 1) {
+                        ModEntry.MONITOR.Log($"Found mod '{pair.Key}'. " +
+                                $"Setting detected interior palette to '{split[0]}'.",
+                                LogLevel.Trace);
+                        ModEntry.InteriorDetected = split[0];
+                        break;
+                    }
+                    else if (split.Length == 3) {
+                        var modPath = (string)modInfo.GetType()
+                                .GetProperty("DirectoryPath").GetValue(modInfo);
+                        var jConfig = JObject.Parse(File.ReadAllText(
+                                Path.Combine(modPath, "config.json")));
+                        var cvalue = jConfig.GetValue(split[0])
+                                .Value<string>();
+                        if (cvalue == split[1]) {
+                            ModEntry.MONITOR.Log($"Found active mod '{pair.Key}'. " +
+                                    $"Setting detected interior palette to '{split[2]}'.",
+                                    LogLevel.Trace);
+                            ModEntry.InteriorDetected = split[2];
+                            break;
+                        }
+                    }
+                    else {
+                        ModEntry.MONITOR.Log("Found bad interior detection format: " +
+                                $"'{pair.Key}' -> '{pair.Value}'. " +
+                                "Expected 1 or 3 fields in value. Skipping.",
+                                LogLevel.Warn);
+                    }
+                }
+            }
+
+            /* retextures work like interior recolors: only some use config
+             * values. */
+            Dictionary<string, string> retextureMods = new() {
+                {"Gweniaczek.WayBackPT", "WaybackPT"},
+                {"Elle.TownBuildings", "Hat Mouse House:true:ElleTown"},
+                {"yri.ProjectYellogTownOverhaul",
+                        "HatMouseHouseRestored:true:YriYellog"},
+                {"yri.ProjectYellogTownOverhaulPerformance",
+                        "HatMouseHouseRestored:true:YriYellog"},
+                {"kaya.floralvalley", "FlowerValley"}
+            };
+            foreach (var pair in retextureMods) {
+                var split = pair.Value.Split(":");
+                var modInfo = ModEntry.HELPER.ModRegistry.Get(pair.Key);
+                if (modInfo != null) {
+                    if (split.Length == 1) {
+                        ModEntry.MONITOR.Log($"Found mod '{pair.Key}'. " +
+                                $"Setting detected retexture to '{split[0]}'.",
+                                LogLevel.Trace);
+                        ModEntry.RetextureDetected = split[0];
+                        break;
+                    }
+                    else if (split.Length == 3) {
+                        var modPath = (string)modInfo.GetType()
+                                .GetProperty("DirectoryPath").GetValue(modInfo);
+                        var jConfig = JObject.Parse(File.ReadAllText(
+                                Path.Combine(modPath, "config.json")));
+                        var cvalue = jConfig.GetValue(split[0])
+                                .Value<string>();
+                        if (cvalue == split[1]) {
+                            ModEntry.MONITOR.Log($"Found active mod '{pair.Key}'. " +
+                                    $"Setting detected retexture to '{split[2]}'.",
+                                    LogLevel.Trace);
+                            ModEntry.RetextureDetected = split[2];
+                            break;
+                        }
+                    }
+                    else {
+                        ModEntry.MONITOR.Log("Found bad retexture detection format: " +
+                                $"'{pair.Key}' -> '{pair.Value}'. " +
+                                "Expected 1 or 3 fields in value. Skipping.",
+                                LogLevel.Warn);
+                    }
+                }
+            }
+        }
+
+    } // LCCompat
+
+} // namespace

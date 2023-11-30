@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<Version>1.1.2</Version>
-		<TargetFramework>net5.0</TargetFramework>
+		<Version>2.0.0-alpha.1</Version>
+		<TargetFramework>net6.0</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<EnableHarmony>true</EnableHarmony>
 		<EnableModZip>false</EnableModZip>
@@ -15,7 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.0.1" />
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -39,7 +39,7 @@
 			powershell -Command "(ls *manifest.json -rec | foreach-object { $f=$_.FullName; (gc -LiteralPath \"$f\") -replace 'REPLACE_ME_WITH_VERSION',  '$(Version)' | sc -LiteralPath \"$f\" })"
 
 			powershell Remove-Item -Path 'C:\Users\Floogen\Documents\GitHub Repos\StardewSandbox\StardewSandbox\releases\latest\$(SolutionName)"' -Recurse -Force
-			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\StardewSandbox\StardewSandbox\bin\Debug\net5.0" "C:\Users\Floogen\Documents\GitHub Repos\StardewSandbox\StardewSandbox\releases\latest\$(SolutionName)"
+			xcopy /s /y /i "C:\Users\Floogen\Documents\GitHub Repos\StardewSandbox\StardewSandbox\bin\Debug\$(TargetFramework)" "C:\Users\Floogen\Documents\GitHub Repos\StardewSandbox\StardewSandbox\releases\latest\$(SolutionName)"
 
 			:: Start of specific copy logic block
 			mkdir "$(SolutionDir)releases\latest\temp"

@@ -8,4 +8,4 @@
 **
 *************************************************/
 
-{"festivalWarn":"축제가 곧 종료됩니다!","festivalOver":"페스티벌이 종료되었습니다."}
+{"festivalWarn":"{{festival}} 이벤트가 곧 종료됩니다!","festivalOver":"{{festival}} 사이트가 종료되었습니다.","config.PlayStartSound":"시작 사운드 재생","config.PlayStartSound.tooltip":"축제가 시작될 때 사운드를 재생해야 하나요?","config.StartSound":"사운드 시작","config.StartSound.tooltip":"축제가 시작되면 어떤 사운드가 재생되어야 하나요?","config.WarnHoursAheadOfTime":"몇 시간 전에 미리 경고","config.WarnHoursAheadOfTime.tooltip":"페스티벌이 종료되기 몇 시간 전에 경고가 발생해야 하나요?","config.PlayWarnSound":"경고음 재생","config.PlayWarnSound.tooltip":"페스티벌이 곧 종료될 때 경고음을 재생해야 하나요?","config.ShowWarnNotification":"경고 알림 표시","config.ShowWarnNotification.tooltip":"페스티벌이 곧 종료될 때 경고 알림이 표시되나요?","config.WarnSound":"경고음","config.WarnSound.tooltip":"축제가 곧 끝날 때 어떤 사운드를 재생해야 하나요?","config.PlayOverSound":"사운드 재생","config.PlayOverSound.tooltip":"페스티벌이 종료되면 사운드를 재생해야 하나요?","config.ShowOverNotification":"알림 위에 표시","config.ShowOverNotification.tooltip":"페스티벌이 종료되면 알림이 표시되나요?","config.OverSound":"오버 사운드","config.OverSound.tooltip":"페스티벌이 종료되면 어떤 사운드가 재생되어야 하나요?"}

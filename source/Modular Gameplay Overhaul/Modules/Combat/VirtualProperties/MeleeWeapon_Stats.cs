@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using DaLion.Overhaul.Modules.Combat.Enchantments;
 using DaLion.Overhaul.Modules.Combat.Extensions;
-using DaLion.Shared.Constants;
+using DaLion.Shared.Classes;
 using DaLion.Shared.Exceptions;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Stardew;
@@ -32,13 +32,17 @@ internal static class MeleeWeapon_Stats
 
     internal static int Get_MinDamage(this MeleeWeapon weapon)
     {
-        if (weapon.InitialParentTileIndex == WeaponIds.InsectHead && CombatModule.Config.EnableWeaponOverhaul)
+        if (CombatModule.Config.EnableWeaponOverhaul)
         {
-            var caveInsectsKilled = Game1.stats.getMonstersKilled("Grub") +
-                                    Game1.stats.getMonstersKilled("Fly") +
-                                    Game1.stats.getMonstersKilled("Bug");
-            // ReSharper disable once PossibleLossOfFraction
-            return (int)(caveInsectsKilled / 5 * 0.85);
+            if (weapon.hasEnchantmentOfType<KillerBugEnchantment>())
+            {
+                return (int)(weapon.Get_MaxDamage() * 0.85f);
+            }
+
+            if (weapon.hasEnchantmentOfType<SwordFishEnchantment>())
+            {
+                return (int)(weapon.Get_MaxDamage() * 0.65f);
+            }
         }
 
         var minDamage = Values.GetValue(weapon, Create).MinDamage;
@@ -52,12 +56,38 @@ internal static class MeleeWeapon_Stats
 
     internal static int Get_MaxDamage(this MeleeWeapon weapon)
     {
-        if (weapon.InitialParentTileIndex == WeaponIds.InsectHead && CombatModule.Config.EnableWeaponOverhaul)
+        if (CombatModule.Config.EnableWeaponOverhaul)
         {
-            var caveInsectsKilled = Game1.stats.getMonstersKilled("Grub") +
-                                    Game1.stats.getMonstersKilled("Fly") +
-                                    Game1.stats.getMonstersKilled("Bug");
-            return caveInsectsKilled / 5;
+            if (weapon.hasEnchantmentOfType<KillerBugEnchantment>())
+            {
+                var caveInsectsKilled = Game1.stats.getMonstersKilled("Grub") +
+                                        Game1.stats.getMonstersKilled("Fly") +
+                                        Game1.stats.getMonstersKilled("Bug");
+                return caveInsectsKilled / 5;
+            }
+
+            if (weapon.hasEnchantmentOfType<SwordFishEnchantment>())
+            {
+                var damage = 0;
+                foreach (var (key, _) in Game1.player.fishCaught.Pairs)
+                {
+                    if (key.IsAlgaeIndex() || key.IsTrapFishIndex())
+                    {
+                        continue;
+                    }
+
+                    if (Lookups.FamilyPairs.Contains(key))
+                    {
+                        damage += 10;
+                    }
+                    else
+                    {
+                        damage += 1;
+                    }
+                }
+
+                return damage;
+            }
         }
 
         var maxDamage = Values.GetValue(weapon, Create).MaxDamage;
@@ -97,8 +127,8 @@ internal static class MeleeWeapon_Stats
 
     internal static float Get_EffectiveCritChance(this MeleeWeapon weapon)
     {
-        var critChance = Values.GetValue(weapon, Create).CritChance;
-        return weapon.type.Value != MeleeWeapon.dagger ? critChance : (critChance + 0.005f) * 1.12f;
+        return Values.GetValue(weapon, Create).CritChance;
+        //return weapon.type.Value != MeleeWeapon.dagger ? critChance : (critChance + 0.005f) * 1.12f; <-- this is the vanilla formula, but daggers are already buffed in this mod and this would make them OP
     }
 
     internal static float Get_DisplayedCritChance(this MeleeWeapon weapon)
@@ -232,14 +262,25 @@ internal static class MeleeWeapon_Stats
         var data = ModHelper.GameContent
             .Load<Dictionary<int, string>>("Data/weapons")[weapon.InitialParentTileIndex]
             .SplitWithoutAllocation('/');
+
+        if (!int.TryParse(data[2], out var minDamage) || !int.TryParse(data[3], out var maxDamage))
+        {
+            Log.E(
+                $"Failed to parse damage values for weapon {data[0].ToString()}." +
+                $" One of the data fields {data[2].ToString()} or {data[3].ToString()} is not an integer." +
+                " If this is a modded weapon please consider reporting to the mod author.");
+            minDamage = 0;
+            maxDamage = 1;
+        }
+
         if (weapon.Get_ResonatingChord<RubyEnchantment>() is { } rubyChord)
         {
-            holder.MinDamage = (int)(holder.MinDamage +
-                                     (weapon.Read(DataKeys.BaseMinDamage, int.Parse(data[2])) *
-                                      weapon.GetEnchantmentLevel<RubyEnchantment>() * rubyChord.Amplitude * 0.1f));
-            holder.MaxDamage = (int)(holder.MaxDamage +
-                                     (weapon.Read(DataKeys.BaseMaxDamage, int.Parse(data[3])) *
-                                      weapon.GetEnchantmentLevel<RubyEnchantment>() * rubyChord.Amplitude * 0.1f));
+            holder.MinDamage = (int)(holder.MinDamage + (weapon.Read(DataKeys.BaseMinDamage, minDamage) *
+                                                         weapon.GetEnchantmentLevel<RubyEnchantment>() *
+                                                         rubyChord.Amplitude * 0.1f));
+            holder.MaxDamage = (int)(holder.MaxDamage + (weapon.Read(DataKeys.BaseMaxDamage, maxDamage) *
+                                                         weapon.GetEnchantmentLevel<RubyEnchantment>() *
+                                                         rubyChord.Amplitude * 0.1f));
         }
 
         holder.Knockback = weapon.knockback.Value;
@@ -281,7 +322,7 @@ internal static class MeleeWeapon_Stats
              holder.Resilience += (float)(weapon.GetEnchantmentLevel<TopazEnchantment>() * topazChord.Amplitude);
         }
 
-        var points = weapon.Read(DataKeys.BaseMaxDamage, int.Parse(data[3])) * weapon.type.Value switch
+        var points = weapon.Read(DataKeys.BaseMaxDamage, maxDamage) * weapon.type.Value switch
         {
             MeleeWeapon.stabbingSword or MeleeWeapon.defenseSword => 0.5f,
             MeleeWeapon.dagger => 0.75f,

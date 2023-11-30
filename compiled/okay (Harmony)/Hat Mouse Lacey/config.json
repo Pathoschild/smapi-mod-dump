@@ -1,6 +1,7 @@
 {
   "RecolorPalette": "Auto",
   "InteriorPalette": "Auto",
+  "MatchRetexture": "Auto",
   "AlwaysAdopt": true,
   "DTF": true
 }

@@ -37,6 +37,6 @@ namespace CoreBoy.memory.cart
             return new Regex("(^|_)" + Regex.Escape(segment) + "($|_)").IsMatch(src.ToString());
         }
 
-        public static CartridgeType GetById(int id) => (CartridgeType) id;
+        public static CartridgeType GetById(int id) => (CartridgeType)id;
     }
 }

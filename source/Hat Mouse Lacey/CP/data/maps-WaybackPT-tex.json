@@ -1,0 +1,42 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"Target": "Maps/{{season}}_outdoorsTileSheet",
+			"Action": "EditImage",
+			"FromFile": "assets/waybackhouse_notwinter.png",
+			"FromArea": {"X": 0, "Y": 0, "Width": 101, "Height": 52},
+			"ToArea": {"X": 290, "Y": 1212, "Width": 101, "Height": 52},
+			"PatchMode": "Overlay",
+			"When": {
+				"Season": "spring, summer, fall"
+			}
+		},
+		{
+			"Target": "Maps/{{season}}_outdoorsTileSheet",
+			"Action": "EditImage",
+			"FromFile": "assets/waybackhouse_winter.png",
+			"FromArea": {"X": 0, "Y": 0, "Width": 101, "Height": 52},
+			"ToArea": {"X": 290, "Y": 1212, "Width": 101, "Height": 52},
+			"PatchMode": "Overlay",
+			"When": {
+				"Season": "winter"
+			}
+		},
+		{
+			"Target": "LooseSprites/Cursors",
+			"Action": "EditImage",
+			"FromFile": "assets/waybackstorefront_all.png",
+			"ToArea": {"X": 600, "Y": 1957, "Width": 64, "Height": 32}
+		}
+	]
+}

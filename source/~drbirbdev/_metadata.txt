@@ -10,9 +10,9 @@ mods:
    Ranching Tool Upgrades
 
 latest commit:
-   commit 2cb3eca16676c7963657cd39decf06138563d9b6
+   commit 11f8523900c93959dd5a7b0a59ad0ed795d34bd9
    Author: Drbirbdev <drbirbdev@gmail.com>
-   Date:   Sun Oct 29 14:30:17 2023 -0700
+   Date:   Wed Nov 29 14:34:12 2023 -0800
    
-       Add missing frameworks to manifest
+       Add more textures for BinningSkill, and hats
    

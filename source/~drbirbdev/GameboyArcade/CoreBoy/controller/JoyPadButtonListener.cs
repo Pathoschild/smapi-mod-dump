@@ -20,16 +20,16 @@ namespace CoreBoy.controller
 
         public JoyPadButtonListener(InterruptManager interruptManager, ConcurrentDictionary<Button, Button> buttons)
         {
-            _interruptManager = interruptManager;
-            _buttons = buttons;
+            this._interruptManager = interruptManager;
+            this._buttons = buttons;
         }
 
         public void OnButtonPress(Button button)
         {
             if (button != null)
             {
-                _interruptManager.RequestInterrupt(InterruptManager.InterruptType.P1013);
-                _buttons.TryAdd(button, button);
+                this._interruptManager.RequestInterrupt(InterruptManager.InterruptType.P1013);
+                this._buttons.TryAdd(button, button);
             }
         }
 
@@ -37,7 +37,7 @@ namespace CoreBoy.controller
         {
             if (button != null)
             {
-                _buttons.TryRemove(button, out _);
+                this._buttons.TryRemove(button, out _);
             }
         }
     }

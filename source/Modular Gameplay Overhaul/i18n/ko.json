@@ -126,8 +126,8 @@
   "conservationist.title.female": "환경운동가",
   "conservationist.desc": "미끼 없는 게잡이 통발로 쓰레기를 건질 수 있습니다. 물에서 쓰레기를 제거하여 세금 감면을 받고 마을 사람들과 신뢰를 쌓으십시오.",
   "conservationist.desc.prestiged": "세금 공제가 50% 더 빨리 누적됩니다.",
-  "conservationist.mail": "재무부^펀길 국세청^^^{{honorific}} @,^^귀하의 환경 활동을 검토한 결과 귀하가 국세청 소득 조항 501(c)(3)조에 따라 {{taxBonus}}의 소득공제를 받을 자격이 있다고 결정했음을 알려드립니다. 따라서 {{farm}}의 모든 과세소득은 {{season}} 28일까지 상기한 비율만큼 증가합니다.^^재정 상태에 관한 질문에 답해야 하는 경우 이 문서를 영구 기록으로 보관하십시오.^^^감사합니다.^^Laura D. Pretto^펀길 국세청장[#]Taxation Deduction",
-  "conservationist.mail.max": "재무부^펀길 국세청^^^{{honorific}} @,^^귀하의 환경 활동을 검토한 결과 귀하가 국세청 소득 조항 501(c)(3)조에 따라 최대치인 {{taxBonus}}의 소득공제를 받을 자격이 있다고 결정했음을 알려드립니다. 따라서 {{farm}}의 모든 과세소득은 {{season}} 28일까지 상기한 비율만큼 증가합니다.^^재정 상태에 관한 질문에 답해야 하는 경우 이 문서를 영구 기록으로 보관하십시오.^^^감사합니다.^^Laura D. Pretto^펀길 국세청장[#]Taxation Deduction",
+  "conservationist.mail": "재무부^펀길 국세청^^^{{honorific}} @,^^귀하의 환경 활동을 검토한 결과 귀하가 국세청 소득 조항 501(c)(3)조에 따라 {{taxBonus}}의 소득공제를 받을 자격이 있다고 결정했음을 알려드립니다. 따라서 {{farm}}의 모든 과세소득은 {{season}} 28일까지 상기한 비율만큼 증가합니다.^^재정 상태에 관한 질문에 답해야 하는 경우 이 문서를 영구 기록으로 보관하십시오.^^^감사합니다.^^Laura D. Pretto^펀길 국세청장[#]세금 공제 통지",
+  "conservationist.mail.max": "재무부^펀길 국세청^^^{{honorific}} @,^^귀하의 환경 활동을 검토한 결과 귀하가 국세청 소득 조항 501(c)(3)조에 따라 최대치인 {{taxBonus}}의 소득공제를 받을 자격이 있다고 결정했음을 알려드립니다. 따라서 {{farm}}의 모든 과세소득은 {{season}} 28일까지 상기한 비율만큼 증가합니다.^^재정 상태에 관한 질문에 답해야 하는 경우 이 문서를 영구 기록으로 보관하십시오.^^^감사합니다.^^Laura D. Pretto^펀길 국세청장[#]세금 공제 통지",
 
   // combat
   "fighter.title.male": "싸움꾼",
@@ -139,8 +139,7 @@
   "brute.desc": "피해를 받으면 격노해 자신의 피해량과 공격 속도가 점차 증가합니다. 체력이 25 증가합니다.",
   "brute.desc.prestiged": "분노를 두 배로 유지하세요.",
   "brute.buff.title": "분노",
-  "brute.buff.desc": "대미지 +{{damage}}%.",
-  "brute.buff.desc.prestiged": "대미지 +{{damage}}%, 공격속도 +{{damage}}%.",
+  "brute.buff.desc": "대미지 +{{damage}}%, 공격속도 +{{speed}}%.",
   "poacher.title.male": "약탈자",
   "poacher.title.female": "약탈자",
   "poacher.desc": "치명타 확률 +50%. 치명타시 일정 확률로 적에게서 아이템을 훔칩니다.",
@@ -152,14 +151,20 @@
   "rascal.desc.prestiged": "35% >> 55% 확률로 탄약을 소모하지 않습니다. 몬스터 머스크를 장착하여 유인 탄약을 발사할 수 있습니다.",
   "desperado.title.male": "무법자",
   "desperado.title.female": "무법자",
-  "desperado.desc": "1초 내에 서로 다른 적에게 연속 사격을 가하면 피해가 50% 더 증가합니다. 새총을 과충전하여 더 강력한 힘으로 탄환을 벽 너머까지 발사할 수 있습니다.",
-  "desperado.desc.prestiged": "과충전된 탄환은 적을 관통할 수 있습니다",
+  "desperado.desc": "1초 내에 서로 다른 적에게 연속 사격을 가하면 피해가 50% 더 증가합니다. 새총을 과충전하여 탄약 위력과 단면적을 늘릴 수 있습니다.",
+  "desperado.desc.prestiged": "과충전된 탄환은 적을 관통할 수 있습니다.",
+  "desperado.buff.name": "체인 액션",
+  "desperado.buff.desc": "+50% 탄약 데미지.",
   "piper.title.male": "피리 부는 사나이",
   "piper.title.female": "슬라임 부리미",
   "piper.desc": "적이 근처에 있을 때 슬라임을 매혹합니다. 슬라임 처치 시 확률적으로 랜덤한 버프를 획득합니다.",
   "piper.desc.prestiged": "효과가 증가하고 슬라임 효과를 다양하게 물리칠 수 있습니다.",
   "piper.buff": "슬라임화",
 
+  // other
+  "treasure_hunt.broadcast.started": "{{player}} is hunting for treasure!",
+  "treasure_hunt.broadcast.ended.success": "{{player}} has found the treasure!",
+  "treasure_hunt.broadcast.ended.failure": "{{player}} failed to find the treasure...",
 
   // *************** //
   // ** ULTIMATES ** //
@@ -201,8 +206,8 @@
   "prestige.level_up.question": "현재 {{oldProfession}}의 {{oldUltimate}}(이)가 있습니다. {{newProfession}}의 {{newUltimate}}(으)로 변경할까요?",
   "prestige.level_up.unlocked": "이제 {{skill}} 스킬을 더 발전시킬 수 있습니다.",
   "prestige.level_up.prestige": "특화할 직업을 고르세요:",
-  "prestige.achievement.title.male": "팔방미인",
-  "prestige.achievement.title.female": "팔방미인",
+  "prestige.achievement.title.male": "만능역자",
+  "prestige.achievement.title.female": "만능역자",
   "prestige.achievement.desc": "모든 스킬의 모든 직업을 습득하기",
 
   // *********** //
@@ -269,8 +274,8 @@
   "locations.SeedShop.Yoba": "요바의 축복, 참된 영웅들을 강화할 것이다. 관대함과 동정심으로美德을 따를 것이다. 명예, 용기, 지혜를 지니며 영혼을 높일 것이다. 예언이 펼쳐지는 중, 요바의 주목 아래서.",
   "locations.desert.noiridium": "프리즘 조각이 진동하는 느낌이 듭니다...#아무 일도 일어나지 않습니다.#뭔가 빠진 듯한 느낌이 듭니다.",
 
-  "mail.curse.intro": "[letterbg 2]친애하는 @,^너를 만나야 해. 대단히 급한 일이야.^최대한 빨리 탑으로 와줘.^   -M. 라스모디우스, 마법사[#]The Blade of Ruin",
-  "mail.curse.intro.witch": "[letterbg 2]친애하는 @,^너를 만나야 해. 대단히 급한 일이야.^최대한 빨리 탑으로 와줘.^   -M. 라스모디우스, 마법사[#]The Blade of Ruin",
+  "mail.curse.intro": "[letterbg 2]친애하는 @,^너를 만나야 해. 대단히 급한 일이야.^최대한 빨리 탑으로 와줘.^   -M. 라스모디우스, 마법사[#]긴급 소환",
+  "mail.curse.intro.witch": "[letterbg 2]친애하는 @,^너를 만나야 해. 대단히 급한 일이야.^최대한 빨리 탑으로 와줘.^   -M. 라스모디우스, 마법사[#]긴급 소환",
 
   "quests.forge.intro": "Basic/드워프의 유산/클린트는 설계도 번역이 이틀 뒤에 끝날 것이라고 말했습니다./클린트를 찾아가 설계도에 대해 묻기./Blacksmith/-1/0/-1/false",
   "quests.forge.next": "Basic/드워프의 유산 II/오래된 설계도는 강력한 고대의 무기 설계도였습니다! 다른 설계도들도 있을까요?/나머지 드워프 설계도를 찾아 클린트에게 가져가기./null/-1/0/-1/false",
@@ -369,21 +374,21 @@
   "enchantments.wabbajack.name": "와바잭",
   "enchantments.freezing.name": "프렐요드",
   "enchantments.quincy.name": "퀸시",
-  "enchantments.runaan.name": "루난",
+  "enchantments.runaan.name": "반향하는",
 
 
   // *********** //
   // ** TAXES ** //
   // *********** //
 
-  "mail.frs.intro": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your recent address change to Pelican Town, Stardew Valley has been filed and registered. All future correspondence will be directed to {{farm}} farm.^^We kindly remind you that federal income tax contributions are due end-of-day on the 1st of every season. For your convenience, your due obligations will be automatically deducted from your balance. If your balance is insufficient, you will be fined in accordance with section 501(c)(1) of the Ferngill Revenue Code at the rate of {{fine}} and a loan will be issued in your name with the Bank of Stardew, subject to the nominal interest fee of {{interest}} per annum.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Intro",
-  "mail.frs.notice": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your total due income tax for the closing season in the amount of {{due}}g has been automatically deducted from your balance.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Notice",
-  "mail.frs.outstanding": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your total due income tax for the closing season in the amount of {{due}}g could not be fully deducted from your balance. In accordance with section 501(c)(1) of the Ferngill Revenue Code, you will be fined an additional {{fine}} and all future income to {{farm}} farm will be levied until your outstanding debt, totaling {{outstanding}}g, is completely settled. Please keep in mind that it is in your best interest to clear any outstanding debts as soon as possible to avoid accruing interest at the rate of {{interest}} per annum.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Outstanding",
-  "mail.frs.deduction": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^We are pleased to inform you that, upon review of your environmentalist activities, we have determined that you qualify for an income tax deduction of {{deductible}} as per section 501(c)(3) of the Ferngill Revenue Code.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Deduction",
-  "mail.frs.deduction.max": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^We are pleased to inform you that, upon review of your environmentalist activities, we have determined that you are exempt from Federal income tax as per section 501(c)(3) of the Ferngill Revenue Code. As such, no charges will be made to your balance with respect to the closing season.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Deduction",
+  "mail.frs.intro": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your recent address change to Pelican Town, Stardew Valley has been filed and registered. All future correspondence will be directed to {{farm}} farm.^^We kindly remind you that federal income tax contributions are due end-of-day on the 1st of every season. For your convenience, your due obligations will be automatically deducted from your balance. If your balance is insufficient, you will be fined in accordance with section 501(c)(1) of the Ferngill Revenue Code at the rate of {{fine}} and a loan will be issued in your name with the Bank of Stardew, subject to the nominal interest fee of {{interest}} per annum.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]Address Change Confirmation",
+  "mail.frs.notice": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your total due income tax for the closing season in the amount of {{due}}g has been automatically deducted from your balance.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Monthly Notice",
+  "mail.frs.outstanding": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^This letter is to inform you that your total due income tax for the closing season in the amount of {{due}}g could not be fully deducted from your balance. In accordance with section 501(c)(1) of the Ferngill Revenue Code, you will be fined an additional {{fine}} and all future income to {{farm}} farm will be levied until your outstanding debt, totaling {{outstanding}}g, is completely settled. Please keep in mind that it is in your best interest to clear any outstanding debts as soon as possible to avoid accruing interest at the rate of {{interest}} per annum.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Monthly Notice",
+  "mail.frs.deduction": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^We are pleased to inform you that, upon review of your environmentalist activities, we have determined that you qualify for an income tax deduction of {{deductible}} as per section 501(c)(3) of the Ferngill Revenue Code.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Deduction Notice",
+  "mail.frs.deduction.max": "Department of the Treasury^Ferngill Revenue Service^^^{{honorific}} Taxpayer,^^We are pleased to inform you that, upon review of your environmentalist activities, we have determined that you are exempt from Federal income tax as per section 501(c)(3) of the Ferngill Revenue Code. As such, no charges will be made to your balance with respect to the closing season.^^Please keep this letter in your permanent records should you need to resolve any questions regarding your fiscal status.^^^Sincerely,^^Laura D. Pretto^Executive Directrice, Ferngill Revenue Service[#]FRS Deduction Notice",
 
-  "mail.lewis.notice": "@,^As you are aware, one of my duties as mayor of Pelican Town is to levy taxes on all the town's properties. During the preceding fiscal year, the county's assessment of {{farm}} farm's property determined a valuation of {{valuation}}g. As a result, you are liable for {{due}}g in total property taxes for the applicable tax period. I've taken the liberty of charging your account directly. ^On behalf of Pelican Town, I am deeply grateful for your ongoing contributions to our community.  ^  Sincerely, Mr. Lewis[#]Lewis Taxation Notice",
-  "mail.lewis.outstanding": "@,^As you are aware, one my duties as mayor of Pelican Town is to levy taxes on all the town's properties. During the preceding fiscal year, the county's assessment of {{farm}} farm's property determined a valuation of {{valuation}}g. As a result, you are liable for {{due}}g in total property taxes for the applicable tax period. ^Unfortunately, your account was found to have insufficient funds to cover the entire amount. As per county policy, I take no pleasure in informing that you will be fined an additional {{fine}}. The entirety of your deb, totaling {{outstanding}}g, will be sold to the Bank of Stardew, who is authorized to seize all shipping income until the outstanding amount is paid in full, subject to a {{interest}} yearly interest rate. ^Please know that the people of Pelican Town are here to support you if you are facing difficult times.  ^  Sincerely, Mr. Lewis[#]Lewis Taxation Outstanding",
+  "mail.lewis.notice": "@,^As you are aware, one of my duties as mayor of Pelican Town is to levy taxes on all the town's properties. During the preceding fiscal year, the county's assessment of {{farm}} farm's property determined a valuation of {{valuation}}g. As a result, you are liable for {{due}}g in total property taxes for the applicable tax period. I've taken the liberty of charging your account directly. ^On behalf of Pelican Town, I am deeply grateful for your ongoing contributions to our community.  ^  Sincerely, Mr. Lewis[#]부동산세",
+  "mail.lewis.outstanding": "@,^As you are aware, one my duties as mayor of Pelican Town is to levy taxes on all the town's properties. During the preceding fiscal year, the county's assessment of {{farm}} farm's property determined a valuation of {{valuation}}g. As a result, you are liable for {{due}}g in total property taxes for the applicable tax period. ^Unfortunately, your account was found to have insufficient funds to cover the entire amount. As per county policy, I take no pleasure in informing that you will be fined an additional {{fine}}. The entirety of your deb, totaling {{outstanding}}g, will be sold to the Bank of Stardew, who is authorized to seize all shipping income until the outstanding amount is paid in full, subject to a {{interest}} yearly interest rate. ^Please know that the people of Pelican Town are here to support you if you are facing difficult times.  ^  Sincerely, Mr. Lewis[#]부동산세",
 
   "hud.debt.debit": "Your balance was debited for {{amount}}g towards outstanding debts.",
 
@@ -401,6 +406,7 @@
   "ui.item_hover.knockback": "{{amount}} 넉백",
   "ui.item_hover.fire_speed": "{{amount}} 발사 속도",
   "ui.item_hover.swing_speed": "{{amount}} 공격 속도",
+  "ui.item_hover.attack_speed": "{{amount}} Attack Speed",
   "ui.item_hover.cdr": "{{amount}} 재사용 대기시간",
   "ui.item_hover.resist": "{{amount}} 방어력",
   "ui.item_hover.precision": "{{amount}} 정확도",
@@ -414,6 +420,8 @@
   "ui.buffs.jinxed.defense": "방어력 -5",
   "ui.buffs.confused": "Disoriented",
   "ui.buffs.warrior.attack": "공격력 +{{value}}",
+
+  "ui.pt.farmer_level": "Skills Mastered",
 
 
   // ********* //
@@ -445,7 +453,7 @@
   "gmcm.modules.prfs.name": "Professions",
   "gmcm.modules.prfs.desc": "A complete overhaul of all skill professions with the goal of supporting more diverse and interesting playstyles. Introducing all-new Prestige mechanics and Limit Breaks.",
   "gmcm.modules.cmbt.name": "Combat",
-  "gmcm.modules.cmbt.desc": "A complete overhaul of the combat experience, from rebalanced stats, weapons--both melee and ranged--, rings and enchantments, to entirely new mechanics like status effects, weapon combos and gemstone resonances.",
+  "gmcm.modules.cmbt.desc": "A complete overhaul of the combat experience, from rebalanced stats, weapons both melee and ranged, rings and enchantments, to entirely new mechanics like status effects, weapon combos and gemstone resonances.",
   "gmcm.modules.tols.name": "Tools",
   "gmcm.modules.tols.desc": "A one-stop-shop for tool augmentation, customization and quality-of-life. Adds Radioactive tool upgrades, charging resource tools, automatic tool selection, expanded enchantment pools and more.",
   "gmcm.modules.pnds.name": "Ponds",
@@ -453,7 +461,7 @@
   "gmcm.modules.txs.name": "Taxes",
   "gmcm.modules.txs.desc": "A borderline realistic taxation system for added challenge and end-game gold sink. Pairs well with the new Conservationist profession.",
   "gmcm.modules.twx.name": "Tweex",
-  "gmcm.modules.twx.desc": "A collection of smaller immersion tweaks and fixes for inconsistencies in vanilla.",
+  "gmcm.modules.twx.desc": "A collection of smaller immersion tweaks and fixes for inconsistencies in the vanilla game.",
 
   // professions
   "gmcm.pages.prfs": "Professions",
@@ -465,6 +473,10 @@
   "gmcm.lax_ownership_requirements.desc": "If enabled, machine and building ownership will be ignored when determining whether to apply certain profession bonuses (only relevant in multiplayer).",
   "gmcm.artisan_goods_always_input_quality.title": "Artisan Goods Always Input Quality",
   "gmcm.artisan_goods_always_input_quality.desc": "Enable this if you preferred the old broken Artisan perk without randomization.",
+  "gmcm.artisan_machines.title": "Artisan Machines",
+  "gmcm.artisan_machines.desc": "Machines typically used to make artisan goods. Add to this list the names of artisan machines from other mods you are using in order to make them compatible with Artisan profession perks.",
+  "gmcm.animal_derived_goods.title": "Animal-Derived Goods",
+  "gmcm.animal_derived_goods.desc": "Artisan goods derived from animal products (like dairy or cloth). Add to this list the names of items from other mods you are using which derive from animal products, in order to make them compatible with Producer profession perks.",
   "gmcm.bees_are_animals.title": "Bees Are Animals",
   "gmcm.bees_are_animals.desc": "Whether Bee House products should be affected by Producer bonuses.",
   "gmcm.forages_needed_for_best_quality.title": "Forages Needed for Best Quality",
@@ -475,12 +487,14 @@
   "gmcm.chance_to_start_treasure_hunt.desc": "The chance that your Scavenger or Prospector hunt senses will start to tingling.",
   "gmcm.allow_scavenger_hunts_on_farm.title": "Allow Scavenger Hunts on Farm",
   "gmcm.allow_scavenger_hunts_on_farm.desc": "Whether a Scavenger Hunt can trigger while entering the farm map.",
+  "gmcm.scavenger_detection_distance.title": "Scavenger Detection Distance",
+  "gmcm.scavenger_detection_distance.desc": "How close you must be to the treasure tile to reveal it's location, in tiles.",
   "gmcm.scavenger_hunt_handicap.title": "Scavenger Hunt Handicap",
   "gmcm.scavenger_hunt_handicap.desc": "Increase this number if you find that Scavenger hunts end too quickly.",
+  "gmcm.prospector_detection_distance.title": "Prospector Detection Distance",
+  "gmcm.prospector_detection_distance.desc": "How close you must be to the treasure tile to hear the sound cue, in tiles.",
   "gmcm.prospector_hunt_handicap.title": "Prospector Hunt Handicap",
   "gmcm.prospector_hunt_handicap.desc": "Increase this number if you find that Prospector hunts end too quickly.",
-  "gmcm.treasure_detection_distance.title": "Treasure Detection Distance",
-  "gmcm.treasure_detection_distance.desc": "How close you must be to the treasure tile to reveal it's location, in tiles.",
   "gmcm.spelunker_speed_ceiling.title": "Spelunker Speed Ceiling",
   "gmcm.spelunker_speed_ceiling.desc": "The maximum speed a Spelunker can reach in the mines.",
   "gmcm.demolitionist_get_excited.title": "Enable 'Get Excited' Buff",
@@ -540,6 +554,9 @@
   "gmcm.required_exp_per_extended_level.title": "Required Exp per Extended Level",
   "gmcm.required_exp_per_extended_level.desc": "How much skill experience is required for each level-up above level 10.",
 
+  "gmcm.extended_perfection_requirement.title": "Extended Perfection Requirement",
+  "gmcm.extended_perfection_requirement.desc": "If enabled, the Farmer Level perfection requirement is replaced with Skill Mastery, meaning level 20 in all 5 vanilla skills if Extended Progression is enabled, or have obtained all 30 vanilla professions if not.",
+
   "gmcm.sections.prfs.experience": "Skill Experience Multipliers",
   "gmcm.skill_exp_multipliers.title": "Base {{skill}} Exp Multiplier",
   "gmcm.skill_exp_multipliers.desc": "Multiplies all {{skill}} experience gained from the start of the game.",
@@ -552,6 +569,8 @@
   "gmcm.tracking_pointer_bob_rate.desc": "Changes the size of the pointer used to track objects by Prospector and Scavenger professions.",
   "gmcm.disable_always_track.title": "Disable Constant Tracking Arrows",
   "gmcm.disable_always_track.desc": "If enabled, Prospector and Scavenger will only track off-screen objects while Mod Key is held.",
+  "gmcm.use_legacy_prospector_hunt.title": "Use Legacy Prospector Hunt",
+  "gmcm.use_legacy_prospector_hunt.desc": "Enable to restore the legacy purple arrow for Prospector Hunts, instead of the new audio cues.",
   "gmcm.show_fish_collection_max_icon.title": "Show 'MAX' Icon in Fish Collection",
   "gmcm.show_fish_collection_max_icon.desc": "Toggles whether or not to display the 'Max' icon below fish caught at max size.",
 
@@ -570,22 +589,24 @@
 
   "gmcm.sections.cmbt.weapons": "Melee & Ranged Weapons",
   "gmcm.enable_weapon_overhaul.title": "Enable Weapon Overhaul",
-  "gmcm.enable_weapon_overhaul.desc": "Rebalances every melee weapon and slingshot, in addition to changing Mine chests, monster and container drops, weapon shops and more.",
+  "gmcm.enable_weapon_overhaul.desc": "Rebalances every melee weapon and slingshot, in addition to changing Mine chests, monster and container drops, weapon shops and more. !! Please disable this setting before deactivating the Combat module. !!",
 
   "gmcm.woody_replaces_rusty.title": "Woody Replaces Rusty",
   "gmcm.woody_replaces_rusty.desc": "Replaces the starting Rusty Sword with a Wooden Blade.",
+  "gmcm.enable_stabbing_swords.title": "Enable Stabbing Swords",
+  "gmcm.enable_stabbing_swords.desc": "Replaces the defensive special move of some swords with an offensive lunge move. !! Please disable this setting before deactivating the Combat module. !!",
+  "gmcm.stabbing_swords.title": "Stabbing Swords",
+  "gmcm.stabbing_swords.desc": "Add to this list the names of swords that should be given the Stabbing Sword type.",
   "gmcm.enable_melee_combo_hits.title": "Enable Melee Combo Hits",
   "gmcm.enable_melee_combo_hits.desc": "Replaces vanilla weapon spam with a more strategic combo system.",
-  "gmcm.combo_hits_per_weapon.stabbing_sword.title": "Stabbing Sword Combo Hits",
-  "gmcm.combo_hits_per_weapon.stabbing_sword.desc": "The max. number of consecutive hits in a Stabbing Sword combo (if Stabbing Swords are enabled).",
-  "gmcm.combo_hits_per_weapon.defense_sword.title": "Defense Sword Combo Hits",
-  "gmcm.combo_hits_per_weapon.defense_sword.desc": "The max. number of consecutive hits in a Defensive Sword combo.",
-  "gmcm.combo_hits_per_weapon.club.title": "Club Combo Hits",
-  "gmcm.combo_hits_per_weapon.club.desc": "The max. number of consecutive hits in a Club combo.",
+  "gmcm.combo_hits_per_weapon_type.stabbing_sword.title": "Stabbing Sword Combo Hits",
+  "gmcm.combo_hits_per_weapon_type.stabbing_sword.desc": "The max. number of consecutive hits in a Stabbing Sword combo (if Stabbing Swords are enabled).",
+  "gmcm.combo_hits_per_weapon_type.defense_sword.title": "Defense Sword Combo Hits",
+  "gmcm.combo_hits_per_weapon_type.defense_sword.desc": "The max. number of consecutive hits in a Defensive Sword combo.",
+  "gmcm.combo_hits_per_weapon_type.club.title": "Club Combo Hits",
+  "gmcm.combo_hits_per_weapon_type.club.desc": "The max. number of consecutive hits in a Club combo.",
   "gmcm.swipe_hold.title": "Enable Hold-To-Swipe",
   "gmcm.swipe_hold.desc": "Allows performing combos by simply holding the tool button instead of spam-clicking.",
-  "gmcm.enable_stabbing_swords.title": "Enable Stabbing Swords",
-  "gmcm.enable_stabbing_swords.desc": "Replaces the defensive special move of some swords with an offensive lunge move.",
   "gmcm.defense_improves_parry.title": "Defense Improves Parry Damage",
   "gmcm.defense_improves_parry.desc": "Parry damage will increase for each point in defense.",
   "gmcm.grounded_club_smash.title": "Grounded Club Smash",
@@ -609,6 +630,10 @@
   "gmcm.enable_infinity_band.desc": "Makes Iridium Band useless, but adds the almighty Infinity Band. Required for Gemstone Resonance mechanics.",
   "gmcm.enable_gemstone_resonance.title": "Enable Gemstone Resonance",
   "gmcm.enable_gemstone_resonance.desc": "Allows gemstones to harmonize and resonate in close proximity of each other.",
+  "gmcm.play_chord.title": "Play Chord",
+  "gmcm.play_chord.desc": "Hear the chord formed by the Infinity Band every time it is equipped.",
+  "gmcm.chord_sound_duration.title": "Chord Sound Duration",
+  "gmcm.chord_sound_duration.desc": "How long the chord sound should linger, in milliseconds.",
   "gmcm.colorful_resonances.title": "Colorful Resonance Glow",
   "gmcm.colorful_resonances.desc": "Whether the glow light of resonating chords should take after the root note's color.",
   "gmcm.resonance_lightsource_texture.title": "Resonance Glow Texture",
@@ -624,9 +649,9 @@
 
   "gmcm.sections.cmbt.quests": "Quests",
   "gmcm.dwarven_legacy.title": "Dwarven Legacy",
-  "gmcm.dwarven_legacy.desc": "Allows crafting Masterwork weapons by uncovering ancient Dwarvish blueprints. Requires a restart to take effect.",
+  "gmcm.dwarven_legacy.desc": "Allows crafting Masterwork weapons by uncovering ancient Dwarvish blueprints.",
   "gmcm.enable_hero_quest.title": "Enable Hero Quest",
-  "gmcm.enable_hero_quest.desc": "Introduces a new quest for the ultimate Infinity +1 weapons. Requires a restart to take effect.",
+  "gmcm.enable_hero_quest.desc": "Introduces a new quest for the ultimate Infinity +1 weapons.",
   "gmcm.iridium_bars_per_galaxy_weapon.title": "Iridium Bars per Galaxy Weapon",
   "gmcm.iridium_bars_per_galaxy_weapon.desc": "The number of Iridium Bars required to receive a Galaxy weapon.",
   "gmcm.ruin_blade_dot_multiplier.title": "Ruined Blade DoT Multiplier",
@@ -873,10 +898,12 @@
   "gmcm.pages.txs": "Taxes",
 
   "gmcm.sections.txs.income": "Income Tax",
-  "gmcm.income_brackets.title": "Income Brackets",
-  "gmcm.income_brackets.desc": "The income thresholds that determine each tax bracket. You can set a single very high value to disable income taxes entirely.",
-  "gmcm.tax_per_bracket.title": "Tax per Brackets",
-  "gmcm.tax_per_bracket.desc": "The taxable percentage of income at (up to) each bracket. If there are n brackets, this array should contain n+1 values. You can set all values to zero to disable income taxes entirely.",
+  "gmcm.tax_rate_per_income_bracket.title": "Tax Rates Per Income Bracket",
+  "gmcm.tax_rate_per_income_bracket.desc": "The tax rates applied at each income bracket. In each pair, the first number represents the incoming ceiling for that bracket, and the second number represents the taxable percentage of income within that bracket.",
+  "gmcm.income_bracket.title": "Bracket",
+  "gmcm.income_bracket.desc": "The income ceiling for this bracket. All income between the previous bracket and this number will be taxed at the correponding tax rate.",
+  "gmcm.tax_rate.title": "Tax Rate",
+  "gmcm.tax_rate.desc": "The taxable percentage of income within this bracket.",
   "gmcm.income_tax_lateness_fine.title": "Lateness Fine",
   "gmcm.income_tax_lateness_fine.desc": "A one-time penalty rate charged over the unpaid amount when income taxes are not paid on-time.",
   "gmcm.deductible_animal_expenses.title": "Deductible Animal Expenses",
@@ -889,6 +916,8 @@
   "gmcm.deductible_tool_expenses.desc": "What percentage of gold spent on tool purchases and upgrades should be tax-deductible.",
   "gmcm.deductible_extras.title": "Other Deductibles",
   "gmcm.deductible_extras.desc": "What percentage of gold spent on the specific item should be tax-deductible. Items must be added manually to do this list.",
+  "gmcm.deductible_extras.label.key": "Object Name",
+  "gmcm.deductible_extras.label.value": "Deductible Pct",
 
   "gmcm.sections.txs.property": "Property Tax",
   "gmcm.property_tax_lateness_fine.title": "Lateness Fine",
@@ -921,6 +950,8 @@
   "gmcm.prevent_fruit_tree_winter_growth.desc": "Regular trees can't grow in winter. Why should fruit trees be any different?",
   "gmcm.immersive_dairy_yield.title": "Immersive Dairy Yields",
   "gmcm.immersive_dairy_yield.desc": "Causes one large egg or milk to produce two mayonnaise or cheese but at regular quality, instead of one at gold quality. Ostrich Eggs yield 10 mayonnaise, but do not retain quality without Artisan profession (except when Ostrich Mayo is installed). And Gold Eggs yield a single mayonnaise, but always at the highest quality (except when Golden Mayo is installed).",
+  "gmcm.dairy_artisan_machines.title": "Dairy Artisan Machines",
+  "gmcm.dairy_artisan_machines.desc": "Add to this list the names of artisan machines from mods you are using which take in eggs or milk as input, in order to make them compatible with Immersive Dairy Yield; i.e., their output will be doubled when using large eggs or milk.",
   "gmcm.spawn_crows_on_these_maps.title": "Spawn Crows on These Maps:",
   "gmcm.spawn_crows_on_these_maps.islandwest": "Ginger Island Farm",
   "gmcm.spawn_crows_on_these_maps.custom_garden": "Community Garden (SVE)",

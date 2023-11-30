@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using StardewModdingAPI;
 using System.Text;
 
 namespace WarpNetwork
@@ -23,7 +24,7 @@ namespace WarpNetwork
 		public WarpEnabled WarpsEnabled { get; set; } = WarpEnabled.AfterObelisk;
 		public WarpEnabled FarmWarpEnabled { get; set; } = WarpEnabled.AfterObelisk;
 		public bool AccessFromDisabled { get; set; } = false;
-		public bool AccessFromWand { get; set; } = false;
+		public bool AccessFromWand { get; set; } = true;
 		public bool PatchObelisks { get; set; } = true;
 		public bool MenuEnabled { get; set; } = true;
 		public bool WarpCancelEnabled { get; set; } = false;
@@ -39,6 +40,42 @@ namespace WarpNetwork
 			sb.Append("\tPatchObelisks: ").AppendLine(PatchObelisks.ToString());
 			sb.Append("\tMenuEnabled: ").AppendLine(MenuEnabled.ToString());
 			return sb.ToString();
+		}
+
+		internal void RegisterGMCM(IManifest manifest)
+		{
+			//helper.GameContent.InvalidateCache(pathLocData)
+
+			if (!ModEntry.helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
+				return;
+
+			var gmcm = ModEntry.helper.ModRegistry.GetApi<IGMCMAPI>(manifest.UniqueID);
+			gmcm.Register(manifest, Reset, Save);
+
+			gmcm.AddQuickEnum<WarpEnabled>(this, manifest, nameof(WarpsEnabled));
+			gmcm.AddQuickEnum<WarpEnabled>(this, manifest, nameof(FarmWarpEnabled));
+			gmcm.AddQuickBool(this, manifest, nameof(AccessFromDisabled));
+			gmcm.AddQuickBool(this, manifest, nameof(AccessFromWand));
+			gmcm.AddQuickBool(this, manifest, nameof(PatchObelisks));
+			gmcm.AddQuickBool(this, manifest, nameof(MenuEnabled));
+			gmcm.AddQuickBool(this, manifest, nameof(WarpCancelEnabled));
+			gmcm.AddQuickBool(this, manifest, nameof(WandReturnEnabled));
+		}
+		private void Save()
+		{
+			ModEntry.helper.WriteConfig(this);
+			ModEntry.helper.GameContent.InvalidateCache(ModEntry.pathLocData);
+		}
+		private void Reset()
+		{
+			WarpsEnabled = WarpEnabled.AfterObelisk;
+			FarmWarpEnabled = WarpEnabled.AfterObelisk;
+			AccessFromDisabled = false;
+			AccessFromWand = true;
+			PatchObelisks = true;
+			MenuEnabled = true;
+			WarpCancelEnabled = false;
+			WandReturnEnabled = true;
 		}
 	}
 }

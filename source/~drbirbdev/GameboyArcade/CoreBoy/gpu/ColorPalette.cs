@@ -16,44 +16,44 @@ namespace CoreBoy.gpu
 {
     public class ColorPalette : IAddressSpace
     {
-        private readonly int _indexAddress;
-        private readonly int _dataAddress;
-        private int _index;
-        private bool _autoIncrement;
+        private readonly int IndexAddress;
+        private readonly int DataAddress;
+        private int Index;
+        private bool AutoIncrement;
 
-        private readonly List<List<int>> _palettes;
+        private readonly List<List<int>> Palettes;
 
         public ColorPalette(int offset)
         {
-            _palettes = new List<List<int>>();
-            for (var x = 0; x < 8; x++)
+            this.Palettes = new List<List<int>>();
+            for (int x = 0; x < 8; x++)
             {
                 var row = new List<int>(4);
-                for (var y = 0; y < 4; y++)
+                for (int y = 0; y < 4; y++)
                 {
                     row.Add(0);
                 }
 
-                _palettes.Add(row);
+                this.Palettes.Add(row);
             }
 
-            _indexAddress = offset;
-            _dataAddress = offset + 1;
+            this.IndexAddress = offset;
+            this.DataAddress = offset + 1;
         }
 
-        public bool Accepts(int address) => address == _indexAddress || address == _dataAddress;
+        public bool Accepts(int address) => address == this.IndexAddress || address == this.DataAddress;
 
         public void SetByte(int address, int value)
         {
-            if (address == _indexAddress)
+            if (address == this.IndexAddress)
             {
-                _index = value & 0x3f;
-                _autoIncrement = (value & (1 << 7)) != 0;
+                this.Index = value & 0x3f;
+                this.AutoIncrement = (value & (1 << 7)) != 0;
             }
-            else if (address == _dataAddress)
+            else if (address == this.DataAddress)
             {
-                var color = _palettes[_index / 8][(_index % 8) / 2];
-                if (_index % 2 == 0)
+                int color = this.Palettes[this.Index / 8][this.Index % 8 / 2];
+                if (this.Index % 2 == 0)
                 {
                     color = (color & 0xff00) | value;
                 }
@@ -61,10 +61,10 @@ namespace CoreBoy.gpu
                 {
                     color = (color & 0x00ff) | (value << 8);
                 }
-                _palettes[_index / 8][(_index % 8) / 2] = color;
-                if (_autoIncrement)
+                this.Palettes[this.Index / 8][this.Index % 8 / 2] = color;
+                if (this.AutoIncrement)
                 {
-                    _index = (_index + 1) & 0x3f;
+                    this.Index = (this.Index + 1) & 0x3f;
                 }
             }
             else
@@ -75,18 +75,18 @@ namespace CoreBoy.gpu
 
         public int GetByte(int address)
         {
-            if (address == _indexAddress)
+            if (address == this.IndexAddress)
             {
-                return _index | (_autoIncrement ? 0x80 : 0x00) | 0x40;
+                return this.Index | (this.AutoIncrement ? 0x80 : 0x00) | 0x40;
             }
 
-            if (address != _dataAddress)
+            if (address != this.DataAddress)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Invalid color pallete byte.");
             }
 
-            var color = _palettes[_index / 8][(_index % 8) / 2];
-            if (_index % 2 == 0)
+            int color = this.Palettes[this.Index / 8][this.Index % 8 / 2];
+            if (this.Index % 2 == 0)
             {
                 return color & 0xff;
             }
@@ -96,19 +96,19 @@ namespace CoreBoy.gpu
 
         public int[] GetPalette(int index)
         {
-            return _palettes[index].ToArray();
+            return this.Palettes[index].ToArray();
         }
 
         public override string ToString()
         {
             var b = new StringBuilder();
-            for (var i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 b.Append(i).Append(": ");
 
-                var palette = GetPalette(i);
+                int[] palette = this.GetPalette(i);
 
-                foreach (var c in palette)
+                foreach (int c in palette)
                 {
                     b.Append($"{c:X4}").Append(' ');
                 }
@@ -121,11 +121,11 @@ namespace CoreBoy.gpu
 
         public void FillWithFf()
         {
-            for (var i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
-                for (var j = 0; j < 4; j++)
+                for (int j = 0; j < 4; j++)
                 {
-                    _palettes[i][j] = 0x7fff;
+                    this.Palettes[i][j] = 0x7fff;
                 }
             }
         }

@@ -22,8 +22,6 @@ namespace StardewDruid
 
         public string activeBlessing;
 
-        //public List<string> triggerList;
-
         public Dictionary<string, bool> questList;
 
         public Dictionary<string, int> blessingList;
@@ -34,14 +32,14 @@ namespace StardewDruid
 
         public Dictionary<string, int> toggleList;
 
+        public Dictionary<string, string> characterList;
+
         public StaticData()
         {
 
             staticId = Game1.player.UniqueMultiplayerID;
 
             activeBlessing = "none";
-
-            //triggerList = new();
 
             questList = new();
 
@@ -52,6 +50,8 @@ namespace StardewDruid
             taskList = new();
 
             toggleList = new();
+
+            characterList = new();
 
         }
 

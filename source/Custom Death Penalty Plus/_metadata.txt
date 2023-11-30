@@ -6,9 +6,9 @@ mods:
    Custom Death Penalty Plus
 
 latest commit:
-   commit fe64aea89b1544b1f3ea9c5fb01b3d7565554d7d
-   Author: Amelie <amelie.parkinson.bates@gmail.com>
-   Date:   Wed Sep 6 17:23:34 2023 +1000
+   commit 413d49bbf81eedff480613e80ba1a5b4b7ff09df
+   Author: TheMightyAmondee <72856641+TheMightyAmondee@users.noreply.github.com>
+   Date:   Wed Nov 1 11:38:39 2023 +1100
    
-       fix event repeating ...
+       Update README.md
    

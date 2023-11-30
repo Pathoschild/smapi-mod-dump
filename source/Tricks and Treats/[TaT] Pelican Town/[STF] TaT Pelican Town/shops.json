@@ -1,0 +1,103 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/cl4r3/Halloween-Mod-Jam-2023
+**
+*************************************************/
+
+{
+	"Shops":[
+		// Candy at Pierre's is added automatically bc of JA
+		{
+			"ShopName": "EmilyCostumeShop",
+			"PortraitPath": "portrait.png",
+			"ShopPrice": 0,
+			"Quote": "Various costumes for Spirit's Eve!",
+			"ClosedMessage": "Sorry, the shop is closed for the day!",
+		  "LocalizedQuote": { "en": "Various costumes for Spirit's Eve!", },
+			"LocalizedClosedMessage": { "en": "Sorry, the shop is closed for the day!" },
+			"ItemStocks": [
+				{
+					"ItemType": "Hat",
+					"ItemNames": [ "Alien Mask", ],
+					"StockPrice": 250,
+					"When": ["!z fall/u 18 19 20 21 22 23 24 25 26"],
+				},
+				{
+					"ItemType": "Clothing",
+					"ItemNames": [
+						"TaT.alien-shirt",
+						"TaT.alien-pants",
+						 ],
+					"StockPrice": 500,
+					"When": ["!z fall/u 18 19 20 21 22 23 24 25 26"],
+				},
+				{
+					"ItemType": "Hat",
+					"ItemNames": [ "Ghost Hood", ],
+					"StockPrice": 250,
+					"When": ["!z fall/u 18 19 20 21 22 23 24 25 26"],
+				},
+				{
+					"ItemType": "Clothing",
+					"ItemNames": [
+						"TaT.ghost-shirt",
+						"TaT.ghost-skirt",
+						 ],
+					"StockPrice": 500,
+					"When": ["!z fall/u 18 19 20 21 22 23 24 25 26"],
+				},
+				{
+					"ItemType": "Hat",
+					"ItemNames": [ "Mummy Mask", ],
+					"StockPrice": 250,
+					"When": ["!z fall/u 18 19 20 21 22 23 24 25 26"],
+				},
+				{
+					"ItemType": "Clothing",
+					"ItemNames": [
+						"TaT.mummy-shirt",
+						"TaT.mummy-pants",
+						 ],
+					"StockPrice": 500,
+					"When": ["!z fall/u 18 19 20 21 22 23 24 25 26"],
+				},
+				{
+					"ItemType": "Hat",
+					"ItemNames": [ "Stone Golem Mask", ],
+					"StockPrice": 250,
+					"When": ["!z fall/u 18 19 20 21 22 23 24 25 26"],
+				},
+				{
+					"ItemType": "Clothing",
+					"ItemNames": [
+						"TaT.stone-golem-shirt",
+						"TaT.stone-golem-pants",
+						 ],
+					"StockPrice": 500,
+					"When": ["!z fall/u 18 19 20 21 22 23 24 25 26"],
+				},
+				{
+					"ItemType": "Clothing",
+					"ItemNames": [
+						"TaT.goblin-shirt",
+						"TaT.goblin-pants",
+						 ],
+					"StockPrice": 500,
+					"When": ["!z fall/u 18 19 20 21 22 23 24 25 26"],
+				},
+				{
+					"ItemType": "Clothing",
+					"ItemNames": [
+						"TaT.skeleton-pants",
+						 ],
+					"StockPrice": 500,
+					"When": ["!z fall/u 18 19 20 21 22 23 24 25 26"],
+				},
+			],
+		},
+	],
+}

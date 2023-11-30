@@ -81,14 +81,9 @@ internal static class FarmerExtensions
             return false;
         }
 
-        if (includeCustom && !SCProfession.List
-                .Select(p => p.Id)
-                .All(farmer.professions.Contains))
-        {
-            return false;
-        }
-
-        return true;
+        return !includeCustom || SCProfession.List
+            .Select(p => p.Id)
+            .All(farmer.professions.Contains);
     }
 
     /// <summary>Determines whether this or, if allowed by the module's settings, any <see cref="Farmer"/> instance in the current game session has the specified <paramref name="profession"/>.</summary>
@@ -205,24 +200,20 @@ internal static class FarmerExtensions
         }
 
         var newIndex = currentIndex;
-        switch (currentIndex)
+        if (currentIndex < 0)
         {
-            case < 0 when farmer.professions.Any(p => p is >= 26 and < 30):
+            var expected = farmer.professions.FirstOrDefault(Enumerable.Range(26, 4), -1);
+            if (expected > 0)
             {
                 Log.W(
                     $"[PRFS]: {farmer.Name} is eligible for a Limit Break but is not currently registered to any. The registered Limit Break will be set to a default value.");
-                newIndex = farmer.professions.First(p => p is >= 26 and < 30);
-                break;
+                newIndex = expected;
             }
-
-            case >= 0 when !farmer.professions.Contains(currentIndex):
-            {
-                Log.W($"[PRFS]: {farmer.Name} is registered to Limit Break index {currentIndex} but is missing the corresponding profession. The registered Limit Break will be reset.");
-                newIndex = farmer.professions.Any(p => p is >= 26 and < 30)
-                    ? farmer.professions.First(p => p is >= 26 and < 30)
-                    : -1;
-                break;
-            }
+        }
+        else if (!farmer.professions.Contains(currentIndex))
+        {
+            Log.W($"[PRFS]: {farmer.Name} is registered to Limit Break index {currentIndex} but is missing the corresponding profession. The registered Limit Break will be reset.");
+            newIndex = farmer.professions.FirstOrDefault(Enumerable.Range(26, 4), -1);
         }
 
         if (newIndex != currentIndex)
@@ -243,7 +234,7 @@ internal static class FarmerExtensions
     internal static IEnumerable<Ultimate> GetUnchosenUltimates(this Farmer farmer)
     {
         var chosen = farmer.Get_Ultimate();
-        return new[] { 26, 27, 28, 29 }
+        return Enumerable.Range(26, 4)
             .Intersect(farmer.professions)
             .Except(chosen?.Value.Collect() ?? Enumerable.Empty<int>())
             .Select(Ultimate.FromValue);
@@ -265,7 +256,7 @@ internal static class FarmerExtensions
 
         var fishData = Game1.content
             .Load<Dictionary<int, string>>("Data\\Fish")
-            .Where(p => !p.Key.IsAnyOf(152, 153, 157) && !p.Value.Contains("trap"))
+            .Where(p => !p.Key.IsAlgaeIndex() && !p.Value.Contains("trap"))
             .ToDictionary(p => p.Key, p => p.Value);
 
         if (!fishData.TryGetValue(index, out var specificFishData))
@@ -320,7 +311,7 @@ internal static class FarmerExtensions
                 continue;
             }
 
-            if (Sets.LegendaryFishes.Contains(dataFields[0].ToString()))
+            if (Lookups.LegendaryFishes.Contains(dataFields[0].ToString()))
             {
                 bonus += 0.025f;
             }
@@ -355,7 +346,7 @@ internal static class FarmerExtensions
             }
         }
 
-        return Math.Min(Math.Max(fishTypes.Count, ProfessionsModule.Config.AquaristFishPondCeiling) * 0.000165f, 0.002f);
+        return Math.Min(Math.Min(fishTypes.Count, ProfessionsModule.Config.AquaristFishPondCeiling) * 0.000165f, 0.002f);
     }
 
     /// <summary>Gets the price bonus applied to all items sold by <see cref="Profession.Conservationist"/>.</summary>

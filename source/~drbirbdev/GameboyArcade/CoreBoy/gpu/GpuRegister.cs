@@ -32,10 +32,10 @@ namespace CoreBoy.gpu
 
         public GpuRegister(int address, RegisterType type)
         {
-            Address = address;
-            Type = type;
+            this.Address = address;
+            this.Type = type;
         }
-        
+
         public static IEnumerable<IRegister> Values()
         {
             yield return Stat;

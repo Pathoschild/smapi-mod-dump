@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/18947
+IDs: ch20youk.TricksAndTreats
+update keys: Nexus:18947, GitHub:cl4r3/Halloween-Mod-Jam-2023

@@ -6,9 +6,9 @@ mods:
    Little NPCs
 
 latest commit:
-   commit 635872435ac470fe80fb8c12c7a5bbd935d00d30
+   commit 23083b0333b3d3ed2437cddb9541d513c89e06a5
    Author: Candidus <candidus@xmail.net>
-   Date:   Mon Mar 13 21:30:39 2023 +0100
+   Date:   Tue Nov 28 12:38:10 2023 +0100
    
-       Fix children stuck in wall when there's no bed spot available.
+       Support for GenericModConfigMenu.
    

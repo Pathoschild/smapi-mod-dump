@@ -11,6 +11,7 @@
 namespace DaLion.Overhaul.Modules.Professions.Ultimates;
 
 using DaLion.Overhaul;
+using DaLion.Overhaul.Modules;
 
 #region using directives
 

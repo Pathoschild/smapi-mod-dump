@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/sophiesalacia/StardewMods
+**
+*************************************************/
+
+{
+    "she/her": {
+        "ThirdPersonPronounWithContraction": [ "She's" ]
+    },
+    "he/him": {
+        "ThirdPersonPronounWithContraction": [ "He's" ]
+    },
+    "they/them": {
+        "ThirdPersonPronounWithContraction": [ "They're" ]
+    },
+    "xe/xem": {
+        "ThirdPersonPronounWithContraction": [ "Xe's" ]
+    },
+    "ze/hir": {
+        "ThirdPersonPronounWithContraction": [ "Ze's" ]
+    },
+    "it/it": {
+        "ThirdPersonPronounWithContraction": [ "It's" ]
+    }
+}

@@ -34,105 +34,105 @@ namespace CoreBoy.memory
         private int _dst;
         private int _tick;
 
-        public Hdma(IAddressSpace addressSpace) => _addressSpace = addressSpace;
+        public Hdma(IAddressSpace addressSpace) => this._addressSpace = addressSpace;
         public bool Accepts(int address) => address >= Hdma1 && address <= Hdma5;
 
         public void Tick()
         {
-            if (!IsTransferInProgress())
+            if (!this.IsTransferInProgress())
             {
                 return;
             }
 
-            if (++_tick < 0x20)
+            if (++this._tick < 0x20)
             {
                 return;
             }
 
             for (int j = 0; j < 0x10; j++)
             {
-                _addressSpace.SetByte(_dst + j, _addressSpace.GetByte(_src + j));
+                this._addressSpace.SetByte(this._dst + j, this._addressSpace.GetByte(this._src + j));
             }
 
-            _src += 0x10;
-            _dst += 0x10;
-            if (_length-- == 0)
+            this._src += 0x10;
+            this._dst += 0x10;
+            if (this._length-- == 0)
             {
-                _transferInProgress = false;
-                _length = 0x7f;
+                this._transferInProgress = false;
+                this._length = 0x7f;
             }
-            else if (_hblankTransfer)
+            else if (this._hblankTransfer)
             {
-                _gpuMode = null; // wait until next HBlank
+                this._gpuMode = null; // wait until next HBlank
             }
         }
 
         public void SetByte(int address, int value)
         {
-            if (_hdma1234.Accepts(address))
+            if (this._hdma1234.Accepts(address))
             {
-                _hdma1234.SetByte(address, value);
+                this._hdma1234.SetByte(address, value);
             }
             else if (address == Hdma5)
             {
                 //if (_transferInProgress && (address & (1 << 7)) == 0) // Apparently the second part of this expression is always true
-                if (_transferInProgress)
+                if (this._transferInProgress)
                 {
-                    StopTransfer();
+                    this.StopTransfer();
                 }
                 else
                 {
-                    StartTransfer(value);
+                    this.StartTransfer(value);
                 }
             }
         }
 
         public int GetByte(int address)
         {
-            if (_hdma1234.Accepts(address))
+            if (this._hdma1234.Accepts(address))
             {
                 return 0xff;
             }
 
             if (address == Hdma5)
             {
-                return (_transferInProgress ? 0 : (1 << 7)) | _length;
+                return (this._transferInProgress ? 0 : (1 << 7)) | this._length;
             }
 
             throw new ArgumentException();
         }
 
-        public void OnGpuUpdate(Gpu.Mode newGpuMode) => _gpuMode = newGpuMode;
-        public void OnLcdSwitch(bool lcdEnabled) => _lcdEnabled = lcdEnabled;
+        public void OnGpuUpdate(Gpu.Mode newGpuMode) => this._gpuMode = newGpuMode;
+        public void OnLcdSwitch(bool lcdEnabled) => this._lcdEnabled = lcdEnabled;
 
         public bool IsTransferInProgress()
         {
-            if (!_transferInProgress)
+            if (!this._transferInProgress)
             {
                 return false;
             }
 
-            if (_hblankTransfer && (_gpuMode == Gpu.Mode.HBlank || !_lcdEnabled))
+            if (this._hblankTransfer && (this._gpuMode == Gpu.Mode.HBlank || !this._lcdEnabled))
             {
                 return true;
             }
 
-            return !_hblankTransfer;
+            return !this._hblankTransfer;
         }
 
         private void StartTransfer(int reg)
         {
-            _hblankTransfer = (reg & (1 << 7)) != 0;
-            _length = reg & 0x7f;
+            this._hblankTransfer = (reg & (1 << 7)) != 0;
+            this._length = reg & 0x7f;
 
-            _src = (_hdma1234.GetByte(Hdma1) << 8) | (_hdma1234.GetByte(Hdma2) & 0xf0);
-            _dst = ((_hdma1234.GetByte(Hdma3) & 0x1f) << 8) | (_hdma1234.GetByte(Hdma4) & 0xf0);
-            _src = _src & 0xfff0;
-            _dst = (_dst & 0x1fff) | 0x8000;
+            this._src = (this._hdma1234.GetByte(Hdma1) << 8) | (this._hdma1234.GetByte(Hdma2) & 0xf0);
+            this._dst = ((this._hdma1234.GetByte(Hdma3) & 0x1f) << 8) | (this._hdma1234.GetByte(Hdma4) & 0xf0);
+            this._src = this._src & 0xfff0;
+            this._dst = (this._dst & 0x1fff) | 0x8000;
 
-            _transferInProgress = true;
+            this._transferInProgress = true;
         }
 
-        private void StopTransfer() => _transferInProgress = false;
+        private void StopTransfer() => this._transferInProgress = false;
     }
 }

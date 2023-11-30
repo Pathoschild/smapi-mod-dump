@@ -1,0 +1,445 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "Changes": [
+        {
+            "Action": "EditData",
+            "Target": "Data/GarbageCans",
+            "TargetField": [ "GarbageCans" ],
+            "Entries": {
+                "drbirbdev.BinningSkill_Railroad_Spa": {
+                    "Items": [
+                        {
+                            "Id": "IslandBikini",
+                            "ItemId": "(S)1297",
+                            "IsDoubleMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.005 @multAllLuck"
+                        },
+                        {
+                            "Id": "Bikini",
+                            "ItemId": "(S)1134",
+                            "IsMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.03 @multAllLuck"
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/RailRoad 5 56 Default"
+                    }
+                },
+                "drbirbdev.BinningSkill_Town_Fountain": {
+                    "Items": [
+                        {
+                            "Id": "RandomFish",
+                            "ItemId": "LOCATION_FISH Here 0 100 5", //TODO: broken?
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.2 @addAllLuck"
+                        },
+                        {
+                            "Id": "RandomArtifact",
+                            "ItemId": "RANDOM_ARTIFACT_FOR_DIG_SPOT",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.1 @addAllLuck"
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Town 29 38 Default"
+                    }
+                },
+                "drbirbdev.BinningSkill_Mountain_Robins": {
+                    "Items": [
+                        {
+                            "Id": "ExpertCraftingMaterials",
+                            "RandomItemId": [
+                                "(O)787",
+                                "(O)848",
+                                "(O)910"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.02 @multAllLuck",
+                            "IsMegaSuccess": true
+                        },
+                        {
+                            "Id": "AdvancedCraftingMaterials",
+                            "RandomItemId": [
+                                "(O)709",
+                                "(O)382",
+                                "(O)338"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.1 @multAllLuck"
+                        },
+                        {
+                            "Id": "BasicCraftingMaterials",
+                            "RandomItemId": [
+                                "(O)388",
+                                "(O)390",
+                                "(O)330"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.3 @addAllLuck",
+                            "MinStack": 1,
+                            "MaxStack": 5
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Mountain 20 26 Default"
+                    }
+                },
+                "drbirbdev.BinningSkill_Mountain_AdventurersGuild": {
+                    "Items": [
+                        {
+                            "Id": "GalaxySoul",
+                            "ItemId": "(O)896",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.005 @multAllLuck",
+                            "IsDoubleMegaSuccess": true
+                        },
+                        {
+                            "Id": "GoodRandomWeapon",
+                            "RandomItemId": [
+                                "(W)2",
+                                "(W)45",
+                                "(W)28"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.02 @multAllLuck",
+                            "IsMegaSuccess": true
+                        },
+                        {
+                            "Id": "DecentRandomWeapon",
+                            "RandomItemId": [
+                                "(W)10",
+                                "(W)51",
+                                "(W)46"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.06 @multAllLuck"
+                        },
+                        {
+                            "Id": "BasicRandomWeapon",
+                            "RandomItemId": [
+                                "(W)0",
+                                "(W)11",
+                                "(W)12",
+                                "(W)16",
+                                "(W)17",
+                                "(W)22",
+                                "(W)31",
+                                "(W)24"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.1 @addAllLuck"
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Mountain 80 9 Default"
+                    }
+                },
+                "drbirbdev.BinningSkill_SeedShop_Store": {
+                    "Items": [
+                        {
+                            "Id": "ItemSoldByPlayer",
+                            "ItemId": "ITEMS_SOLD_BY_PLAYER SeedShop",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.3 @addAllLuck"
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/SeedShop 20 28 Default"
+                    }
+                },
+                "drbirbdev.BinningSkill_Forest_Marnie": {
+                    "Items": [
+                        {
+                            "Id": "GoldenEgg",
+                            "ItemId": "(O)928",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.009 @multAllLuck, PLAYER_HAS_FLAG Target Farm_Eternal",
+                            "IsDoubleMegaSuccess": true
+                        },
+                        {
+                            "Id": "WeirdEgg",
+                            "RandomItemId": [
+                                "(O)107",
+                                "(O)305",
+                                "(O)289"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.02 @multAllLuck",
+                            "IsMegaSuccess": true
+                        },
+                        {
+                            "Id": "RandomArtisanAnimalProduce",
+                            "RandomItemId": [
+                                "(O)424",
+                                "(O)426",
+                                "(O)428",
+                                "(O)430",
+                                "(O)306"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.1 @multAllLuck"
+                        },
+                        {
+                            "Id": "RandomBasicAnimalProduce",
+                            "RandomItemId": [
+                                "(O)184",
+                                "(O)176",
+                                "(O)440",
+                                "(O)442",
+                                "(O)436"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.3 @addAllLuck"
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Forest 79 14 Default"
+                    }
+                },
+                "drbirbdev.BinningSkill_BusStop": {
+                    "Items": [
+                        {
+                            "Id": "Alcohol",
+                            "RandomItemId": [
+                                "(O)346",
+                                "(O)303",
+                                "(O)459"
+                            ],
+                            "Condition": "!RANDOM 0.7 @addDailyLuck @addDailyLuck @addDailyLuck @addDailyLuck, TIME 1000 1700, !IS_VISITING_ISLAND Pam"
+                        },
+                        {
+                            "Id": "RandomArtifact",
+                            "ItemId": "RANDOM_ARTIFACT_FOR_DIG_SPOT",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.2 @addDailyLuck"
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/BusStop 3 12 Default"
+                    }
+                },
+                "drbirbdev.BinningSkill_Backwoods_Hidden": {
+                    "Items": [
+                        {
+                            "Id": "Sweet Gem Berry",
+                            "ItemId": "(O)417",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01",
+                            "IsDoubleMegaSuccess": true
+                        },
+                        {
+                            "Id": "Base Season Item",
+                            "ItemId": "RANDOM_BASE_SEASON_ITEM",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.1 @addDailyLuck"
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Backwoods 27 27 Copper"
+                    }
+                },
+                "drbirbdev.BinningSkill_Desert_Sandy": {
+                    "Items": [
+                        {
+                            "Id": "Random Desert Item",
+                            "RandomItemId": [
+                                "(O)88",
+                                "(O)90",
+                                "(O)275"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.1 @addDailyLuck"
+                        },
+                        {
+                            "Id": "Magic Rock Candy",
+                            "ItemId": "(O)279",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.001",
+                            "IsDoubleMegaSuccess": true
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Desert 9 52 Copper"
+                    }
+                },
+                "drbirbdev.BinningSkill_Forest_Wizard": {
+                    "Items": [
+                        {
+                            "Id": "Wizard Gift",
+                            "RandomItemId": [
+                                "(O)768",
+                                "(O)769",
+                                "(O)422"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.1"
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Forest 3 34 Copper"
+                    }
+                },
+                "drbirbdev.BinningSkill_IslandResort": {
+                    "Items": [
+                        {
+                            "Id": "Island Resort Bar",
+                            "RandomItemId": [
+                                "(O)873",
+                                "(O)612",
+                                "(O)459",
+                                "(O)907"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.2 @addDailyLuck"
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Island_Resort 14 5 Copper"
+                    }
+                },
+                "drbirbdev.BinningSkill_Town_JojaNorth": {
+                    "Items": [
+
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Town 102 41 Copper"
+                    }
+                },
+                "drbirbdev.BinningSkill_BugLand": {
+                    "Items": [
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/BugLand 48 46 Iron"
+                    }
+                },
+                "drbirbdev.BinningSkill_IslandN_FieldResearchStation": {
+                    "Items": [
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Island_N 49 48 Iron"
+                    }
+                },
+                "drbirbdev.BinningSkill_IslandSouthEastCave": {
+                    "Items": [
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/IslandSouthEastCave 34 8 Iron"
+                    }
+                },
+                "drbirbdev.BinningSkill_WitchSwamp": {
+                    "Items": [
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/WitchSwamp 22 20 Iron"
+                    }
+                },
+                "drbirbdev.BinningSkill_WoodsIron": {
+                    "Items": [
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Woods 45 18 Iron"
+                    }
+                },
+                "drbirbdev.BinningSkill_Beach_Mariner": {
+                    "Items": [
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Beach 90 4 Gold"
+                    }
+                },
+                "drbirbdev.BinningSkill_Club": {
+                    "Items": [
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Club 14 4 Gold"
+                    }
+                },
+                "drbirbdev.BinningSkill_Forest_HatMouse": {
+                    "Items": [
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Forest 37 94 Gold"
+                    }
+                },
+                "drbirbdev.BinningSkill_MovieTheater": {
+                    "Items": [
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/MovieTheater 19 7 Gold"
+                    }
+                },
+                "drbirbdev.BinningSkill_AbandonedJojaMart": {
+                    "Items": [
+                        // The Missing Bundle items
+                        {
+                            "Id": "Silver_Wine",
+                            "ItemId": "(O)348",
+                            "Quality": 1,
+                            "IsMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @addDailyLuck"
+                        },
+                        {
+                            "Id": "Dinosaur_Mayo",
+                            "ItemId": "(O)807",
+                            "IsMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @addDailyLuck"
+                        },
+                        {
+                            "Id": "Ancient_Fruit",
+                            "ItemId": "(O)454",
+                            "Quality": 2,
+                            "MinStack": 5,
+                            "IsMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @addDailyLuck"
+                        },
+                        {
+                            "Id": "Void_Salmon",
+                            "ItemId": "(O)795",
+                            "Quality": 2,
+                            "IsMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @addDailyLuck"
+                        },
+                        {
+                            "Id": "Caviar",
+                            "ItemId": "(O)445",
+                            "IsMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @addDailyLuck"
+                        },
+                        {
+                            "Id": "Prismatic_Shard",
+                            "ItemId": "(O)74",
+                            "IsDoubleMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @addDailyLuck"
+                        },
+                        {
+                            "Id": "Joja_Cola",
+                            "ItemId": "(O)167",
+                            "CreateMultipleDebris": true,
+                            "MinStack": 10,
+                            "MaxStack": 15,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.05 @addDailyLuck"
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/AbandonedJojaMart 12 7 Iridium"
+                    }
+                },
+                "drbirbdev.BinningSkill_CommunityCenterJoja": {
+                    "Items": [
+                        {
+                            "Id": "Joja_Cola",
+                            "ItemId": "(O)167",
+                            "CreateMultipleDebris": true,
+                            "MinStack": 999
+                        }
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/CommunityCenter_Joja 63 16 Iridium"
+                    }
+                },
+                "drbirbdev.BinningSkill_QiNutRoom": {
+                    "Items": [
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/QiNutRoom 4 6 Radioactive"
+                    }
+                },
+                "drbirbdev.BinningSkill_Railroad_SummitPath": {
+                    "Items": [
+                    ],
+                    "CustomFields": {
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Railroad 31 26 Prismatic"
+                    }
+                }
+            }
+        }
+    ]
+}

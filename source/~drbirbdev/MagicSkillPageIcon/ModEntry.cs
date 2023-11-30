@@ -10,50 +10,43 @@
 
 using System;
 using System.Reflection;
-using BirbShared;
-using BirbShared.Mod;
+using BirbCore.Attributes;
 using HarmonyLib;
 using SpaceCore;
 using StardewModdingAPI;
 
-namespace MagicSkillPageIcon
+namespace MagicSkillPageIcon;
+
+[SMod]
+class ModEntry : Mod
 {
+    [SMod.Instance]
+    internal static ModEntry Instance;
+    internal static Assets Assets;
 
-    class ModEntry : Mod
+    public override void Entry(IModHelper helper)
     {
-        [SmapiInstance]
-        internal static ModEntry Instance;
-        [SmapiAsset]
-        internal static Assets Assets;
+        Parser.ParseAll(this);
+    }
+}
 
-        public override void Entry(IModHelper helper)
-        {
-            ModClass mod = new ModClass();
-            mod.Parse(this, true);
-        }
+[HarmonyPatch("Magic.Framework.Skills.Skill", "GetName")]
+class Skill_Constructor
+{
+    public static bool Prepare()
+    {
+        return ModEntry.Instance.Helper.ModRegistry.IsLoaded("spacechase0.Magic");
     }
 
-    [HarmonyPatch("Magic.Framework.Skills.Skill", "GetName")]
-    class Skill_Constructor
+    public static void Postfix(Skills.Skill __instance)
     {
-        public static bool Prepare()
+        try
         {
-            return ModEntry.Instance.Helper.ModRegistry.IsLoaded("spacechase0.Magic");
+            __instance.SkillsPageIcon ??= ModEntry.Assets.SkillPageIcon;
         }
-
-        public static void Postfix(Skills.Skill __instance)
+        catch (Exception e)
         {
-            try
-            {
-                if (__instance.SkillsPageIcon is null)
-                {
-                    __instance.SkillsPageIcon = ModEntry.Assets.SkillPageIcon;
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
-            }
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
         }
     }
 }

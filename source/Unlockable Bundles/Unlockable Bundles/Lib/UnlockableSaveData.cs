@@ -19,6 +19,7 @@ namespace Unlockable_Bundles.Lib
     public class UnlockableSaveData
     {
         public bool Purchased = false;
+        public bool Discovered = false;
         public int DayPurchased = -1;
         public Dictionary<string, int> Price = new Dictionary<string, int>();
         public Dictionary<string, int> AlreadyPaid = new Dictionary<string, int>();

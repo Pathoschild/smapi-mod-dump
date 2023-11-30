@@ -239,21 +239,21 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
             if (heartIndex >= apHearts)
             {
                 var apLocation = string.Format(FRIENDSANITY_PATTERN, friend.ArchipelagoName, heartNumber);
-                if (_locationChecker.IsLocationChecked(apLocation) || !_archipelago.LocationExists(apLocation))
-                {
-                    textureName = ArchipelagoTextures.WHITE;
-                }
-                else if (_hintedFriendshipLocations.Any(x => x.Contains($"{friend.ArchipelagoName} {heartNumber} ")))
+                if (_hintedFriendshipLocations.Any(x => x.Contains($"{friend.ArchipelagoName} {heartNumber} ")))
                 {
                     textureName = ArchipelagoTextures.PLEADING;
+                }
+                else if(heartIndex >= maxHeartForCurrentRelation)
+                {
+                    textureName = ArchipelagoTextures.BLACK;
+                }
+                else if (_locationChecker.IsLocationChecked(apLocation) || !_archipelago.LocationExists(apLocation))
+                {
+                    textureName = ArchipelagoTextures.WHITE;
                 }
                 else if (heartIndex < maxHeartForCurrentRelation)
                 {
                     textureName = ArchipelagoTextures.COLOR;
-                }
-                else
-                {
-                    textureName = ArchipelagoTextures.BLACK;
                 }
             }
 

@@ -1,0 +1,10 @@
+{
+  "Name": "PlatoUI",
+  "Author": "Platonymous",
+  "Version": "1.11.0",
+  "Description": "UI Toolkit",
+  "UniqueID": "Platonymous.PlatoUI",
+  "EntryDll": "PlatoUI.dll",
+  "MinimumApiVersion": "3.18.0",
+  "UpdateKeys": [ "Nexus:19023" ]
+}

@@ -326,6 +326,8 @@ namespace Custom_Farm_Loader.Menus
 
             if (left == 0 && right == icon.Bounds.Width - 1)
                 return icon;
+            else if (left == icon.Bounds.Width - 1)
+                return icon;
             else
                 return UtilityMisc.createSubTexture(icon, new Rectangle(left, 0, right - left + 1, icon.Bounds.Height));
         }

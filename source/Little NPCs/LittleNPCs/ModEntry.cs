@@ -32,19 +32,32 @@ namespace LittleNPCs {
 
         public static ModConfig config_;
 
-        // We have to track child indices since they change when children are removed.
-        private static Dictionary<string, int> childIndexMap_ = new Dictionary<string, int>();
-
         private int? relativeSeconds_;
 
         // We have to keep track of LittleNPCs vor various reasons.
         public static List<LittleNPC> LittleNPCsList { get; } = new List<LittleNPC>();
 
-        // The ChildGetChildIndexPatch must be enabled or disabled conditionally.
-        internal static bool ChildGetChildIndexPatchEnabled { get; set; }
-
         public override void Entry(IModHelper helper) {
             ModEntry.helper_ = helper;
+
+            // Check for LittleNPC content packs. This is quite heavy but the only way I know so far:
+            // We have to check for ContentPatcher packs that depend on LittleNPCs.
+            var contentPatcherPacks = from entry in helper.ModRegistry.GetAll()
+                                      where entry.IsContentPack && entry.Manifest.ContentPackFor.UniqueID == "Pathoschild.ContentPatcher"
+                                      select entry.Manifest;
+
+            var littleNPCPacks = from pack in contentPatcherPacks
+                                 from dependency in pack.Dependencies
+                                 where dependency.UniqueID == "Candidus42.LittleNPCs"
+                                 select pack.UniqueID;
+
+            if (!littleNPCPacks.Any()) {
+                throw new InvalidOperationException("Could not find a content pack for LittleNPCs");
+            }
+
+            foreach (var pack in littleNPCPacks) {
+                this.Monitor.Log($"Found content pack for LittleNPCs: {pack}", LogLevel.Info);
+            }
 
             // Read config.
             config_ = helper.ReadConfig<ModConfig>();
@@ -60,6 +73,45 @@ namespace LittleNPCs {
 
         private void OnGameLaunched(object sender, GameLaunchedEventArgs e) {
             ContentPatcherTokens.Register(this);
+            
+            // GenericModConfigMenu support.
+            var configMenu = this.Helper.ModRegistry.GetApi<GenericModConfigMenu.IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+            if (configMenu is null) {
+                return;
+            }
+            
+            configMenu.Register(this.ModManifest,
+                                () => config_ = new ModConfig(),
+                                () => this.Helper.WriteConfig(config_));
+            
+            configMenu.AddNumberOption(this.ModManifest,
+                                       () => config_.AgeWhenKidsAreModified,
+                                       (val) => config_.AgeWhenKidsAreModified = val,
+                                       () => "Age when kids are modified",
+                                       min: 1);
+            
+            configMenu.AddBoolOption(this.ModManifest,
+                                     () => config_.DoChildrenWander,
+                                     (val) => config_.DoChildrenWander = val,
+                                     () => "Do children wander");
+            
+            configMenu.AddBoolOption(this.ModManifest,
+                                     () => config_.DoChildrenHaveCurfew,
+                                     (val) => config_.DoChildrenHaveCurfew = val,
+                                     () => "Do children have curfew");
+            
+            configMenu.AddNumberOption(this.ModManifest,
+                                       () => config_.CurfewTime,
+                                       (val) => config_.CurfewTime = val,
+                                       () => "Curfew time",
+                                       min: 1200,
+                                       max: 2400,
+                                       interval: 100);
+            
+            configMenu.AddBoolOption(this.ModManifest,
+                                     () => config_.DoChildrenVisitVolcanoIsland,
+                                     (val) => config_.DoChildrenVisitVolcanoIsland = val,
+                                     () => "Do children visit Volcano Island");
         }
 
         private void OnDayStarted(object sender, DayStartedEventArgs e) {
@@ -72,27 +124,15 @@ namespace LittleNPCs {
                 this.Monitor.Log("There are more than two children, only first and second child will be converted.", LogLevel.Info);
             }
 
-            if (childIndexMap_.Any()) {
-                this.Monitor.Log($"{nameof(childIndexMap_)} is not empty, clearing it.", LogLevel.Error);
-                childIndexMap_.Clear();
-            }
-
-            // ATTENTION: Getting child indices must be done before removing any child and doesn't depend on age.
-            foreach (var c in farmHouse.getChildren()) {
-                childIndexMap_.Add(c.Name, c.GetChildIndex());
-                this.Monitor.Log($"Get child index for {c.Name}: {childIndexMap_[c.Name]}");
-            }
-
             // Put first and second child about to convert into bed.
             foreach (var child in convertibleChildren) {
-                if (childIndexMap_[child.Name] == 0 || childIndexMap_[child.Name] == 1) {
+                if (IsValidLittleNPCIndex(child.GetChildIndex())) {
                     child.setTilePosition(farmHouse.GetChildBedSpot(child.GetChildIndex()));
+                    // Set the original child invisible during the day.
+                    child.IsInvisible = true;
+                    child.HideShadow = true;
                 }
             }
-
-            // Enabling this patch changes the semantics of Child.GetChildIndex() and must be done after filling the map.
-            ChildGetChildIndexPatchEnabled = true;
-            this.Monitor.Log("GetChildIndex patch enabled.");
 
             // Set the counter for OnOneSecondUpdateTicking().
             relativeSeconds_ = 0;
@@ -114,30 +154,33 @@ namespace LittleNPCs {
             var convertibleChildren = farmHouse.getChildren().Where(c => c.daysOld.Value >= config_.AgeWhenKidsAreModified);
 
             var npcs = farmHouse.characters;
-
-            // Plain old for loop because we have to replace list elements.
-            for (int i = 0; i < npcs.Count; ++i) {
-                if (npcs[i] is Child child && convertibleChildren.Contains(child)) {
-                    // Convert only the first two children.
-                    if (childIndexMap_[child.Name] == 0 || childIndexMap_[child.Name] == 1) {
-                        var littleNPC = LittleNPC.FromChild(child, childIndexMap_[child.Name], farmHouse, this.Monitor);
-                        // Replace Child by LittleNPC object.
-                        npcs[i] = littleNPC;
-
-                        // Copy friendship data.
-                        if (Game1.player.friendshipData.TryGetValue(child.Name, out var friendship)) {
-                            Game1.player.friendshipData[littleNPC.Name] = friendship;
-                        }
-
-                        // Add to tracking list.
-                        LittleNPCsList.Add(littleNPC);
-
-                        this.Monitor.Log($"Replaced child {child.Name} by LittleNPC {littleNPC.Name}.", LogLevel.Info);
-                    }
-                    else {
-                        this.Monitor.Log($"Skipping child {child.Name}.", LogLevel.Info);
-                    }
+            
+            var childrenToConvert = new List<Child>();
+            foreach (var child in convertibleChildren) {
+                // Convert only the first two children.
+                if (IsValidLittleNPCIndex(child.GetChildIndex())) {
+                    childrenToConvert.Add(child);
                 }
+                else {
+                    this.Monitor.Log($"Skipping child {child.Name}.", LogLevel.Info);
+                }
+            }
+            foreach (var child in childrenToConvert) {
+                var littleNPC = LittleNPC.FromChild(child, farmHouse, this.Monitor);
+                    // Replace Child by LittleNPC object.
+                    npcs.Add(littleNPC);
+
+                    // Copy friendship data.
+                    if (Game1.player.friendshipData.TryGetValue(child.Name, out var friendship)) {
+                        Game1.player.friendshipData[littleNPC.Name] = friendship;
+                        // Removing friendship data removes the child from the social page which is exactly whet we want.
+                        Game1.player.friendshipData.Remove(child.Name);
+                    }
+
+                    // Add to tracking list.
+                    LittleNPCsList.Add(littleNPC);
+
+                    this.Monitor.Log($"Added LittleNPC {littleNPC.Name}, deactivated child {child.Name}.", LogLevel.Info);
             }
 
             if (config_.DoChildrenVisitVolcanoIsland) {
@@ -151,28 +194,32 @@ namespace LittleNPCs {
 
             // Local function, only needed here.
             void ConvertLittleNPCsToChildren(Netcode.NetCollection<NPC> npcs) {
-                // Plain old for-loop because we have to replace list elements.
-                for (int i = 0; i < npcs.Count; ++i) {
-                    if (npcs[i] is LittleNPC littleNPC) {
-                        var child = littleNPC.WrappedChild;
-                        // ATTENTION: By removing children we prevent them from aging properly so we have call dayUpdate() explicitly.
-                        child.dayUpdate(Game1.dayOfMonth);
-                        // Replace LittleNPC by Child object.
-                        npcs[i] = child;
-
-                        // Copy friendship data.
-                        if (Game1.player.friendshipData.TryGetValue(littleNPC.Name, out var friendship)) {
-                            Game1.player.friendshipData[child.Name] = friendship;
-                        }
-
-                        // Remove NPCDispositions to prevent auto-load on next day.
-                        npcDispositions.Remove(littleNPC.Name);
-
-                        // Remove from tracking list.
-                        LittleNPCsList.Remove(littleNPC);
-
-                        this.Monitor.Log($"Replaced LittleNPC {littleNPC.Name} in {npcs[i].currentLocation.Name} by child {child.Name}.", LogLevel.Info);
+                var littleNPCsToConvert = npcs.OfType<LittleNPC>().ToList();
+                foreach (var littleNPC in littleNPCsToConvert) {
+                    var child = littleNPC.WrappedChild;
+                    // Put hat on (part of the save game).
+                    if (littleNPC.WrappedChildHat is not null) {
+                        child.hat.Value = littleNPC.WrappedChildHat;
                     }
+
+                    // Replace LittleNPC by Child object.
+                    npcs.Remove(littleNPC);
+
+                    // Copy friendship data.
+                    if (Game1.player.friendshipData.TryGetValue(littleNPC.Name, out var friendship)) {
+                        Game1.player.friendshipData[child.Name] = friendship;
+                    }
+
+                    // Set child visible before saving.
+                    child.IsInvisible = false;
+
+                    // Remove NPCDispositions to prevent auto-load on next day.
+                    npcDispositions.Remove(littleNPC.Name);
+
+                    // Remove from tracking list.
+                    LittleNPCsList.Remove(littleNPC);
+
+                    this.Monitor.Log($"Removed LittleNPC {littleNPC.Name} in {littleNPC.currentLocation.Name}, reactivated child {child.Name}.", LogLevel.Info);
                 }
             }
 
@@ -201,22 +248,12 @@ namespace LittleNPCs {
                 LittleNPCsList.Clear();
             }
 
-            childIndexMap_.Clear();
-
-            ChildGetChildIndexPatchEnabled = false;
-            this.Monitor.Log("GetChildIndex patch disabled.");
-
             relativeSeconds_ = null;
         }
 
         private void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e) {
             // Clear state before returning to title.
             LittleNPCsList.Clear();
-
-            childIndexMap_.Clear();
-
-            ChildGetChildIndexPatchEnabled = false;
-            this.Monitor.Log("GetChildIndex patch disabled.");
 
             relativeSeconds_ = null;
         }
@@ -295,19 +332,6 @@ namespace LittleNPCs {
         }
 
         /// <summary>
-        /// Gets the index of the given child name from the cache.
-        /// </summary>
-        /// <param name="childName"></param>
-        /// <returns></returns>
-        internal static int GetChildIndex(string childName) {
-            // Return an invalid index if not found. That might cause an error
-            // when happening at the wrong time but gives a hint for debugging at least.
-            int retval = childIndexMap_.TryGetValue(childName, out int childIndex) ? childIndex : -1;
-
-            return retval;
-        }
-
-        /// <summary>
         /// Gets a LittleNPC by child index.
         /// </summary>
         /// <param name="childIndex"></param>
@@ -315,6 +339,16 @@ namespace LittleNPCs {
         internal static LittleNPC GetLittleNPC(int childIndex) {
             // The list of LittleNPCs is not sorted by child index, thus we need a query.
             return LittleNPCsList.FirstOrDefault(c => c.ChildIndex == childIndex);
+        }
+
+        /// <summary>
+        /// Checks if child index is a valid LittleNPC index.
+        /// </summary>
+        /// <param name="childIndex"></param>
+        /// <returns></returns>
+        internal static bool IsValidLittleNPCIndex(int childIndex) {
+            // Only the first two children can be converted.
+            return (childIndex == 0 || childIndex == 1);
         }
     }
 }

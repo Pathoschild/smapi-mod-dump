@@ -419,7 +419,7 @@ internal sealed class LevelUpMenuUpdatePatcher : HarmonyPatcher
 
     private static bool ShouldProposeChangeUltimate(int chosenProfession)
     {
-        return ProfessionsModule.Config.EnablePrestige && chosenProfession is >= 26 and < 30 &&
+        return ProfessionsModule.Config.EnablePrestige && chosenProfession.IsIn(26..29) &&
                Game1.player.Get_Ultimate() is not null && Game1.player.Get_Ultimate()!.Value != chosenProfession;
     }
 
@@ -484,7 +484,7 @@ internal sealed class LevelUpMenuUpdatePatcher : HarmonyPatcher
             Game1.drawObjectDialogue(I18n.Prestige_LevelUp_Unlocked(Skill.FromValue(chosenProfession / 6).DisplayName));
         }
 
-        if (!Game1.player.HasAllProfessions(true))
+        if (!Game1.player.HasAllProfessions())
         {
             return;
         }

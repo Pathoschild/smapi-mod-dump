@@ -8,18 +8,17 @@
 **
 *************************************************/
 
-using BirbShared.Command;
+using BirbCore.Attributes;
 
-namespace LookToTheSky
+namespace LookToTheSky;
+
+[SCommand("looktothesky")]
+class Command
 {
-    [CommandClass]
-    class Command
-    {
 
-        [CommandMethod("Add a bird to the sky")]
-        public static void AddBird(int yPos = 100, bool moveRight = true)
-        {
-            ModEntry.Instance.SkyObjects.Add(new Bird(yPos, moveRight));
-        }
+    [SCommand.Command("Add a bird to the sky")]
+    public static void AddBird(int yPos = 100, bool moveRight = true)
+    {
+        ModEntry.Instance.SkyObjects.Add(new Bird(yPos, moveRight));
     }
 }

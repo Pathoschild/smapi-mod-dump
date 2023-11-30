@@ -1,0 +1,24 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/cl4r3/Halloween-Mod-Jam-2023
+**
+*************************************************/
+
+{
+  "Name": "[STF] TaT Pelican Town",
+  "Author": "ch20youk, KediDİli, Lumina and Wizadroid",
+  "Version": "1.0.0",
+  "Description": "Shop Tile Framework component for Tricks and Treats base pack",
+  "UniqueID": "ch20youk.TaTPelicanTown.STF",
+  "UpdateKeys": ["Nexus:???"],
+  "ContentPackFor": {
+    "UniqueID": "Cherry.ShopTileFramework"
+  },
+  	"Dependencies": [
+    { "UniqueID": "ch20youk.TaTPelicanTown.JA" }
+  ],
+}

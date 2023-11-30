@@ -102,7 +102,7 @@
 				"Utility.cs.5369": "{{i18n:csfiles.Utility.wedding0}}"
 			},
 			"When": {
-				"Spouse": "HatMouseLacey"
+				"Relationship:HatMouseLacey": "Married"
 			}
 		}
 	]

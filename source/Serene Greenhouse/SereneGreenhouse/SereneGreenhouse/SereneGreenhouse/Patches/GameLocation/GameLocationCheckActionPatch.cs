@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewValley;
 using System.Reflection;
 using StardewModdingAPI;
@@ -127,7 +127,7 @@ namespace SereneGreenhouse.Patches.GameLocation
                         // If it is a vegetable or fruit, prompt to accept the offering
                         if (who.ActiveObject.Category == -75 || who.ActiveObject.Category == -79)
                         {
-                            Game1.drawObjectQuestionDialogue($"Offer the {who.ActiveObject.Stack} {who.ActiveObject.DisplayName}?", offeringResponses);
+                            Game1.drawObjectQuestionDialogue($"Offer the {who.ActiveObject.Stack} {who.ActiveObject.DisplayName}?", offeringResponses.ToArray());
 
                         }
                         else

@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/cl4r3/Halloween-Mod-Jam-2023
+**
+*************************************************/
+
+{
+    "Name": "Tricks and Treats",
+    "Author": "ch20youk, KediDili, Lumina, and Wizadroid",
+    "Description": "Framework for adding costumes, candy, and trick-or-treating to Spirit's Eve.",
+    "Version": "1.0.0",
+    "UniqueID": "ch20youk.TricksAndTreats",
+    "EntryDll": "TricksAndTreats.dll",
+    "UpdateKeys": [ "Nexus:-1" ],
+  	"Dependencies": [
+  		{ "UniqueID": "Pathoschild.ContentPatcher", },
+  		{ "UniqueID": "spacechase0.SpaceCore", },
+	]
+}

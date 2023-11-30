@@ -14,7 +14,7 @@ using System.Text;
 
 namespace CoreBoy.debugging
 {
-	public class CommandArgument
+    public class CommandArgument
     {
 
         private readonly string _name;
@@ -25,53 +25,53 @@ namespace CoreBoy.debugging
 
         public CommandArgument(string name, bool required)
         {
-            _name = name;
-            _required = required;
-            _allowedValues = new List<string>();
+            this._name = name;
+            this._required = required;
+            this._allowedValues = new List<string>();
         }
 
         public CommandArgument(string name, bool required, ICollection<string> allowedValues)
         {
-            _name = name;
-            _required = required;
-            _allowedValues = allowedValues ?? new List<string>();
+            this._name = name;
+            this._required = required;
+            this._allowedValues = allowedValues ?? new List<string>();
         }
 
         public string GetName()
         {
-            return _name;
+            return this._name;
         }
 
         public bool IsRequired()
         {
-            return _required;
+            return this._required;
         }
 
         public ICollection<string> GetAllowedValues()
         {
-            return _allowedValues;
+            return this._allowedValues;
         }
 
         public override string ToString()
         {
             var builder = new StringBuilder();
-            if (!_required)
+            if (!this._required)
             {
                 builder.Append('[');
             }
 
-            if (_allowedValues != null)
+            if (this._allowedValues != null)
             {
                 builder.Append('{');
-                builder.Append(string.Join(",", _allowedValues.ToArray()));
+                builder.Append(string.Join(",", this._allowedValues.ToArray()));
                 builder.Append('}');
             }
             else
             {
-                builder.Append(_name.ToUpper());
+                builder.Append(this._name.ToUpper());
             }
 
-            if (!_required)
+            if (!this._required)
             {
                 builder.Append(']');
             }

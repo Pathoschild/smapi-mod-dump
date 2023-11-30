@@ -27,7 +27,28 @@
   "TheMightyAmondee.CDPP/mailnochargeharvey": "Esta vez no le he facturado sus gastos médicos.",
 
   // Replacements
-  "TheMightyAmondee.CDPP/replacementdialogue":"{0} te ha encontrado inconsciente {1}... ¡Te he tenido que operar de urgencia!#$b#",
-  "TheMightyAmondee.CDPP/replacementmail1":"Le hemos facturado {0}G por este servicio",
-  "TheMightyAmondee.CDPP/replacementmail2":"Te he cobrado {0}G por los gastos médicos"  
+  "TheMightyAmondee.CDPP/replacementdialogue": "{0} te ha encontrado inconsciente {1}... ¡Te he tenido que operar de urgencia!#$b#",
+  "TheMightyAmondee.CDPP/replacementmail1": "Le hemos facturado {0}G por este servicio",
+  "TheMightyAmondee.CDPP/replacementmail2": "Te he cobrado {0}G por los gastos médicos",
+
+  // Config settings
+  "config.option.title.death": "Penas de muerte",
+  "config.option.title.passout": "Pasar sanciones",
+  "config.option.title.other": "Otras sanciones",
+
+  "config.option.death.restoreitems": "Restaurar elementos",
+  "config.option.death.losscap": "Límite de pérdida de dinero",
+  "config.option.death.moneytorestorepercentage": "Porcentaje de restauración de dinero",
+  "config.option.death.energytorestorepercentage": "Energy Restore Percentage",
+  "config.option.death.healthtorestorepercentage": "Health Restore Percentage",
+
+  "config.option.passout.losscap": "Límite de pérdida de dinero",
+  "config.option.passout.moneytorestorepercentage": "Porcentaje de restauración de dinero",
+  "config.option.passout.energytorestorepercentage": "Porcentaje de restauración de energía",
+
+  "config.option.other.wakeupnextdayinclinic": "Despierta al día siguiente en la clínica,",
+  "config.option.other.harveyfriendshipchange": "Harvey Cambio de amistad",
+  "config.option.other.marufriendshipchange": "Maru Cambio de amistad",
+  "config.option.other.morerealisticwarps": "Deformaciones más realistas",
+  "config.option.other.debuffondeath": "Desventaja al morir"
 }

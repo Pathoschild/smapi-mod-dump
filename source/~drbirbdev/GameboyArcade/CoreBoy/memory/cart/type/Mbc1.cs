@@ -21,7 +21,7 @@ namespace CoreBoy.memory.cart.type
             0x00, 0x08, 0x11, 0x1F, 0x88, 0x89, 0x00, 0x0E, 0xDC, 0xCC, 0x6E, 0xE6, 0xDD, 0xDD, 0xD9, 0x99,
             0xBB, 0xBB, 0x67, 0x63, 0x6E, 0x0E, 0xEC, 0xCC, 0xDD, 0xDC, 0x99, 0x9F, 0xBB, 0xB9, 0x33, 0x3E
         };
-        
+
         private readonly int _romBanks;
         private readonly int _ramBanks;
         private readonly int[] _cartridge;
@@ -37,18 +37,18 @@ namespace CoreBoy.memory.cart.type
 
         public Mbc1(int[] cartridge, CartridgeType type, IBattery battery, int romBanks, int ramBanks)
         {
-            _multicart = romBanks == 64 && IsMulticart(cartridge);
-            _cartridge = cartridge;
-            _ramBanks = ramBanks;
-            _romBanks = romBanks;
-            _ram = new int[0x2000 * _ramBanks];
-            for (var i = 0; i < _ram.Length; i++)
+            this._multicart = romBanks == 64 && IsMulticart(cartridge);
+            this._cartridge = cartridge;
+            this._ramBanks = ramBanks;
+            this._romBanks = romBanks;
+            this._ram = new int[0x2000 * this._ramBanks];
+            for (var i = 0; i < this._ram.Length; i++)
             {
-                _ram[i] = 0xff;
+                this._ram[i] = 0xff;
             }
 
-            _battery = battery;
-            battery.LoadRam(_ram);
+            this._battery = battery;
+            battery.LoadRam(this._ram);
         }
 
         public bool Accepts(int address)
@@ -61,10 +61,10 @@ namespace CoreBoy.memory.cart.type
         {
             if (address >= 0x0000 && address < 0x2000)
             {
-                _ramWriteEnabled = (value & 0b1111) == 0b1010;
-                if (!_ramWriteEnabled)
+                this._ramWriteEnabled = (value & 0b1111) == 0b1010;
+                if (!this._ramWriteEnabled)
                 {
-                    _battery.SaveRam(_ram);
+                    this._battery.SaveRam(this._ram);
                 }
 
                 // LOG.trace("RAM write: {}", ramWriteEnabled);
@@ -72,45 +72,45 @@ namespace CoreBoy.memory.cart.type
             else if (address >= 0x2000 && address < 0x4000)
             {
                 // LOG.trace("Low 5 bits of ROM bank: {}", (value & 0b00011111));
-                var bank = _selectedRomBank & 0b01100000;
+                var bank = this._selectedRomBank & 0b01100000;
                 bank = bank | (value & 0b00011111);
-                SelectRomBank(bank);
-                _cachedRomBankFor0X0000 = _cachedRomBankFor0X4000 = -1;
+                this.SelectRomBank(bank);
+                this._cachedRomBankFor0X0000 = this._cachedRomBankFor0X4000 = -1;
             }
-            else if (address >= 0x4000 && address < 0x6000 && _memoryModel == 0)
+            else if (address >= 0x4000 && address < 0x6000 && this._memoryModel == 0)
             {
                 // LOG.trace("High 2 bits of ROM bank: {}", ((value & 0b11) << 5));
-                var bank = _selectedRomBank & 0b00011111;
+                var bank = this._selectedRomBank & 0b00011111;
                 bank = bank | ((value & 0b11) << 5);
-                SelectRomBank(bank);
-                _cachedRomBankFor0X0000 = _cachedRomBankFor0X4000 = -1;
+                this.SelectRomBank(bank);
+                this._cachedRomBankFor0X0000 = this._cachedRomBankFor0X4000 = -1;
             }
-            else if (address >= 0x4000 && address < 0x6000 && _memoryModel == 1)
+            else if (address >= 0x4000 && address < 0x6000 && this._memoryModel == 1)
             {
                 // LOG.trace("RAM bank: {}", (value & 0b11));
                 var bank = value & 0b11;
-                _selectedRamBank = bank;
-                _cachedRomBankFor0X0000 = _cachedRomBankFor0X4000 = -1;
+                this._selectedRamBank = bank;
+                this._cachedRomBankFor0X0000 = this._cachedRomBankFor0X4000 = -1;
             }
             else if (address >= 0x6000 && address < 0x8000)
             {
                 // LOG.trace("Memory mode: {}", (value & 1));
-                _memoryModel = value & 1;
-                _cachedRomBankFor0X0000 = _cachedRomBankFor0X4000 = -1;
+                this._memoryModel = value & 1;
+                this._cachedRomBankFor0X0000 = this._cachedRomBankFor0X4000 = -1;
             }
-            else if (address >= 0xa000 && address < 0xc000 && _ramWriteEnabled)
+            else if (address >= 0xa000 && address < 0xc000 && this._ramWriteEnabled)
             {
-                var ramAddress = GetRamAddress(address);
-                if (ramAddress < _ram.Length)
+                var ramAddress = this.GetRamAddress(address);
+                if (ramAddress < this._ram.Length)
                 {
-                    _ram[ramAddress] = value;
+                    this._ram[ramAddress] = value;
                 }
             }
         }
 
         private void SelectRomBank(int bank)
         {
-            _selectedRomBank = bank;
+            this._selectedRomBank = bank;
             // LOG.trace("Selected ROM bank: {}", selectedRomBank);
         }
 
@@ -118,22 +118,22 @@ namespace CoreBoy.memory.cart.type
         {
             if (address >= 0x0000 && address < 0x4000)
             {
-                return GetRomByte(GetRomBankFor0X0000(), address);
+                return this.GetRomByte(this.GetRomBankFor0X0000(), address);
             }
 
             if (address >= 0x4000 && address < 0x8000)
             {
-                return GetRomByte(GetRomBankFor0X4000(), address - 0x4000);
+                return this.GetRomByte(this.GetRomBankFor0X4000(), address - 0x4000);
             }
 
             if (address >= 0xa000 && address < 0xc000)
             {
-                if (_ramWriteEnabled)
+                if (this._ramWriteEnabled)
                 {
-                    var ramAddress = GetRamAddress(address);
-                    if (ramAddress < _ram.Length)
+                    var ramAddress = this.GetRamAddress(address);
+                    if (ramAddress < this._ram.Length)
                     {
-                        return _ram[ramAddress];
+                        return this._ram[ramAddress];
                     }
 
                     return 0xff;
@@ -147,62 +147,62 @@ namespace CoreBoy.memory.cart.type
 
         private int GetRomBankFor0X0000()
         {
-            if (_cachedRomBankFor0X0000 == -1)
+            if (this._cachedRomBankFor0X0000 == -1)
             {
-                if (_memoryModel == 0)
+                if (this._memoryModel == 0)
                 {
-                    _cachedRomBankFor0X0000 = 0;
+                    this._cachedRomBankFor0X0000 = 0;
                 }
                 else
                 {
-                    var bank = (_selectedRamBank << 5);
-                    if (_multicart)
+                    var bank = this._selectedRamBank << 5;
+                    if (this._multicart)
                     {
                         bank >>= 1;
                     }
 
-                    bank %= _romBanks;
-                    _cachedRomBankFor0X0000 = bank;
+                    bank %= this._romBanks;
+                    this._cachedRomBankFor0X0000 = bank;
                 }
             }
 
-            return _cachedRomBankFor0X0000;
+            return this._cachedRomBankFor0X0000;
         }
 
         private int GetRomBankFor0X4000()
         {
-            if (_cachedRomBankFor0X4000 == -1)
+            if (this._cachedRomBankFor0X4000 == -1)
             {
-                var bank = _selectedRomBank;
+                var bank = this._selectedRomBank;
                 if (bank % 0x20 == 0)
                 {
                     bank++;
                 }
 
-                if (_memoryModel == 1)
+                if (this._memoryModel == 1)
                 {
                     bank &= 0b00011111;
-                    bank |= (_selectedRamBank << 5);
+                    bank |= this._selectedRamBank << 5;
                 }
 
-                if (_multicart)
+                if (this._multicart)
                 {
                     bank = ((bank >> 1) & 0x30) | (bank & 0x0f);
                 }
 
-                bank %= _romBanks;
-                _cachedRomBankFor0X4000 = bank;
+                bank %= this._romBanks;
+                this._cachedRomBankFor0X4000 = bank;
             }
 
-            return _cachedRomBankFor0X4000;
+            return this._cachedRomBankFor0X4000;
         }
 
         private int GetRomByte(int bank, int address)
         {
-            var cartOffset = bank * 0x4000 + address;
-            if (cartOffset < _cartridge.Length)
+            var cartOffset = (bank * 0x4000) + address;
+            if (cartOffset < this._cartridge.Length)
             {
-                return _cartridge[cartOffset];
+                return this._cartridge[cartOffset];
             }
             else
             {
@@ -212,13 +212,13 @@ namespace CoreBoy.memory.cart.type
 
         private int GetRamAddress(int address)
         {
-            if (_memoryModel == 0)
+            if (this._memoryModel == 0)
             {
                 return address - 0xa000;
             }
             else
             {
-                return (_selectedRamBank % _ramBanks) * 0x2000 + (address - 0xa000);
+                return (this._selectedRamBank % this._ramBanks * 0x2000) + (address - 0xa000);
             }
         }
 

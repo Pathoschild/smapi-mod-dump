@@ -1,0 +1,10 @@
+{
+  "Name": "Hat Panning",
+  "Author": "monsoonsheep",
+  "Version": "0.1.0",
+  "Description": "Panning for ore with your hat",
+  "UniqueID": "monsoonsheep.PanWithHats",
+  "EntryDll": "PanWithHats.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

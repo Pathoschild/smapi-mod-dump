@@ -1,0 +1,12 @@
+{
+  "Name": "Refund Staircases",
+  "Author": "Nick Martin",
+  "Version": "1.0.24",
+  "Description": "Staircases used in the mineshafts are refunded on exit.",
+  "UniqueID": "NickMartin.RefundStaircases",
+  "EntryDll": "RefundStaircases.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [
+    "GitHub:nickmartin1ee7/RefundStaircases"
+  ]
+}

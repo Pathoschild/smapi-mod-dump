@@ -16,6 +16,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Survivalistic.Framework.Bars;
 using Survivalistic.Framework.Common;
 using System;
+using StardewValley.Menus;
+using Survivalistic.Framework.Databases;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Survivalistic.Framework.Rendering
 {
@@ -72,6 +76,37 @@ namespace Survivalistic.Framework.Rendering
                     SpriteEffects.None,
                     0f);
             }
+
+            if (Game1.player.ActiveObject != null)
+            {
+                if (Foods.foodDatabase.TryGetValue(Game1.player.ActiveObject.Name, out string food_status_string))
+                {
+                    Vector2 sizeUI = new Vector2(Game1.uiViewport.Width, Game1.uiViewport.Height);
+
+                    List<string> food_status = food_status_string.Split('/').ToList();
+                    string actualString = "";
+                    if (Int32.Parse(food_status[1]) > 0)
+                    {
+                        actualString += $"+{food_status[1]} Hydration";
+                    }
+                    if (Int32.Parse(food_status[1]) > 0 && Int32.Parse(food_status[0]) > 0)
+                    {
+                        actualString += "\n";
+                    }
+                    if (Int32.Parse(food_status[0]) > 0)
+                    {
+                        actualString += $"+{food_status[0]} Hunger";
+                    }
+
+
+
+                    string currentText = actualString;
+                    Vector2 text_size = Game1.smallFont.MeasureString(currentText);
+                    SpriteBatch b = e.SpriteBatch;
+                    IClickableMenu.drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), (int)(sizeUI.X / 2) - (int)(text_size.X / 2 + 25), (int)(sizeUI.Y) - 125 - (int)(text_size.Y + 25), (int)(text_size.X + 50), (int)(text_size.Y + 40), Color.White * 1, 1, false, 1);
+                    Utility.drawTextWithShadow(b, currentText, Game1.smallFont, new Vector2((int)(sizeUI.X / 2) - (int)(text_size.X / 2 + 25) + 25, (int)(sizeUI.Y) - 125 - (int)(text_size.Y + 25) + 20), Game1.textColor);
+                }
+            }
         }
 
         public static void CheckMouseHovering()
@@ -101,6 +136,44 @@ namespace Survivalistic.Framework.Rendering
             {
                 BarsDatabase.render_numerical_thirst = false;
             }
+        }
+
+        public static void OnActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+        {
+            /*
+            if (!Context.IsWorldReady)
+                return;
+
+            
+
+            if (Game1.player.CursorSlotItem != null)
+            {
+                if (Foods.foodDatabase.TryGetValue(Game1.player.CursorSlotItem.Name, out string food_status_string))
+                {
+                    List<string> food_status = food_status_string.Split('/').ToList();
+                    string actualString = "";
+                    if (Int32.Parse(food_status[1]) > 0)
+                    {
+                        actualString += $"+{food_status[1]} Hydration";
+                    }
+                    if (Int32.Parse(food_status[1]) > 0 && Int32.Parse(food_status[0]) > 0)
+                    {
+                        actualString += "\n";
+                    }
+                    if (Int32.Parse(food_status[0]) > 0)
+                    {
+                        actualString += $"+{food_status[0]} Hunger";
+                    }
+
+                    string currentText = actualString;
+                    Vector2 text_size = Game1.smallFont.MeasureString(currentText);
+
+                    SpriteBatch b = e.SpriteBatch;
+                    IClickableMenu.drawTextureBox(b, Game1.menuTexture, new Rectangle(0, 256, 60, 60), Game1.getOldMouseX() - (int)(text_size.X + 82), Game1.getOldMouseY(), (int)(text_size.X + 50), (int)(text_size.Y + 40), Color.White * 1, 1, false, 1);
+                    Utility.drawTextWithShadow(b, currentText, Game1.smallFont, new Vector2(Game1.getOldMouseX() - (int)(text_size.X + 82) + 25, Game1.getOldMouseY() + 20), Game1.textColor);
+                }
+            }
+            */
         }
     }
 }

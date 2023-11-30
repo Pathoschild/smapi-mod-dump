@@ -55,7 +55,7 @@
 				"HatMouseLacey_y3": "{{i18n:dtf.festival.summer28.married.3}}"
 			},
 			"When": {
-				"Spouse": "HatMouseLacey"
+				"Relationship:HatMouseLacey": "Married"
 			}
 		},
 		{
@@ -65,7 +65,7 @@
 				"HatMouseLacey_y2": "{{i18n:dtf.festival.winter25.married.2}}"
 			},
 			"When": {
-				"Spouse": "HatMouseLacey"
+				"Relationship:HatMouseLacey": "Married"
 			}
 		},
 		{
@@ -73,6 +73,13 @@
 			"Action": "EditData",
 			"Entries": {
 				"HatMouseLacey_AfterWedding": "{{i18n:csfiles.HatMouseLacey_AfterWedding.0}}{{i18n:dtf.csfiles.HatMouseLacey_AfterWedding.1}}"
+			}
+		},
+		{
+			"Target": "Strings/StringsFromMaps",
+			"Action": "EditData",
+			"Entries": {
+				"HatMouseLacey.MouseSpouse.drawers": "{{i18n:dtf.mapstrings.MouseSpouse.drawers}}"
 			}
 		}
 	]

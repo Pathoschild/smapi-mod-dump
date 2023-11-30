@@ -21,6 +21,7 @@
   "TileCursorPreciseLeftKey": "LeftShift + Left",
   "ToggleRelativeCursorLockKey": "L",
   "AutoWalkToTileKey": "LeftControl + Enter",
+  "OpenTileInfoMenuKey": "LeftShift + Enter",
   "LimitTileCursorToScreen": false,
   "TileCursorPreciseMovementDistance": 8,
   "Radar": false,

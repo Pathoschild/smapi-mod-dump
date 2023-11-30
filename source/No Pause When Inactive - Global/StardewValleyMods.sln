@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NoPauseWhenInactiveGlobal", "NoPauseWhenInactiveGlobal\NoPauseWhenInactiveGlobal.csproj", "{8B81BD5F-E37E-43E6-BA56-4B3B160095B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{6A73B922-A9D5-454F-B86E-177E96D0839F}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B81BD5F-E37E-43E6-BA56-4B3B160095B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B81BD5F-E37E-43E6-BA56-4B3B160095B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B81BD5F-E37E-43E6-BA56-4B3B160095B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B81BD5F-E37E-43E6-BA56-4B3B160095B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3841CE05-8418-4EB3-AE9E-B3EECA41775A}
+	EndGlobalSection
+EndGlobal

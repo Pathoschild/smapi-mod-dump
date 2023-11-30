@@ -1,0 +1,15 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(SolutionDir)\BirbSharedSpaceCore\BirbSharedSpaceCore.projitems" Label="Shared" />
+
+    <ItemGroup>
+        <Reference Include="SpaceCore">
+            <HintPath>$(GamePath)\Mods\__Dependencies\SpaceCore\SpaceCore.dll</HintPath>
+            <Private>false</Private>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <SMAPIDependency Include="spacechase0.SpaceCore" Required="true" />
+    </ItemGroup>
+
+</Project>

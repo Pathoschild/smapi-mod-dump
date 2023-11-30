@@ -22,69 +22,69 @@ namespace CoreBoy.sound
 
         protected int Nr0, Nr1, Nr2, Nr3, Nr4;
 
-        protected virtual int GetNr0() => Nr0;
-        protected virtual int GetNr1() => Nr1;
-        protected virtual int GetNr2() => Nr2;
-        protected virtual int GetNr3() => Nr3;
-        protected virtual int GetNr4() => Nr4;
+        protected virtual int GetNr0() => this.Nr0;
+        protected virtual int GetNr1() => this.Nr1;
+        protected virtual int GetNr2() => this.Nr2;
+        protected virtual int GetNr3() => this.Nr3;
+        protected virtual int GetNr4() => this.Nr4;
 
-        protected virtual void SetNr0(int value) => Nr0 = value;
-        protected virtual void SetNr1(int value) => Nr1 = value;
-        protected virtual void SetNr2(int value) => Nr2 = value;
-        protected virtual void SetNr3(int value) => Nr3 = value;
+        protected virtual void SetNr0(int value) => this.Nr0 = value;
+        protected virtual void SetNr1(int value) => this.Nr1 = value;
+        protected virtual void SetNr2(int value) => this.Nr2 = value;
+        protected virtual void SetNr3(int value) => this.Nr3 = value;
 
         protected SoundModeBase(int offset, int length, bool gbc)
         {
-            Offset = offset;
-            Length = new LengthCounter(length);
-            Gbc = gbc;
+            this.Offset = offset;
+            this.Length = new LengthCounter(length);
+            this.Gbc = gbc;
         }
 
         public abstract int Tick();
         protected abstract void Trigger();
 
-        public bool IsEnabled() => ChannelEnabled && DacEnabled;
-        public virtual bool Accepts(int address) => address >= Offset && address < Offset + 5;
+        public bool IsEnabled() => this.ChannelEnabled && this.DacEnabled;
+        public virtual bool Accepts(int address) => address >= this.Offset && address < this.Offset + 5;
 
         public virtual void SetByte(int address, int value)
         {
-            var offset = address - Offset;
+            var offset = address - this.Offset;
 
             switch (offset)
             {
                 case 0:
-                    SetNr0(value);
+                    this.SetNr0(value);
                     break;
 
                 case 1:
-                    SetNr1(value);
+                    this.SetNr1(value);
                     break;
 
                 case 2:
-                    SetNr2(value);
+                    this.SetNr2(value);
                     break;
 
                 case 3:
-                    SetNr3(value);
+                    this.SetNr3(value);
                     break;
 
                 case 4:
-                    SetNr4(value);
+                    this.SetNr4(value);
                     break;
             }
         }
 
         public virtual int GetByte(int address)
         {
-            var offset = address - Offset;
+            var offset = address - this.Offset;
 
             return offset switch
             {
-                0 => GetNr0(),
-                1 => GetNr1(),
-                2 => GetNr2(),
-                3 => GetNr3(),
-                4 => GetNr4(),
+                0 => this.GetNr0(),
+                1 => this.GetNr1(),
+                2 => this.GetNr2(),
+                3 => this.GetNr3(),
+                4 => this.GetNr4(),
                 _ => throw new ArgumentException("Illegal address for sound mode: " + Integer.ToHexString(address))
             };
         }
@@ -92,38 +92,38 @@ namespace CoreBoy.sound
 
         protected virtual void SetNr4(int value)
         {
-            Nr4 = value;
-            Length.SetNr4(value);
+            this.Nr4 = value;
+            this.Length.SetNr4(value);
             if ((value & (1 << 7)) != 0)
             {
-                ChannelEnabled = DacEnabled;
-                Trigger();
+                this.ChannelEnabled = this.DacEnabled;
+                this.Trigger();
             }
         }
 
         protected virtual int GetFrequency()
         {
-            return 2048 - (GetNr3() | ((GetNr4() & 0b111) << 8));
+            return 2048 - (this.GetNr3() | ((this.GetNr4() & 0b111) << 8));
         }
 
         public abstract void Start();
 
-        public void Stop() => ChannelEnabled = false;
+        public void Stop() => this.ChannelEnabled = false;
 
         protected bool UpdateLength()
         {
-            Length.Tick();
-            if (!Length.Enabled)
+            this.Length.Tick();
+            if (!this.Length.Enabled)
             {
-                return ChannelEnabled;
+                return this.ChannelEnabled;
             }
 
-            if (ChannelEnabled && Length.Length == 0)
+            if (this.ChannelEnabled && this.Length.Length == 0)
             {
-                ChannelEnabled = false;
+                this.ChannelEnabled = false;
             }
 
-            return ChannelEnabled;
+            return this.ChannelEnabled;
         }
     }
 }

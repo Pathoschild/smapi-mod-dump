@@ -17,6 +17,7 @@ using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Commands;
+using DaLion.Shared.Extensions;
 
 #endregion using directives
 
@@ -57,7 +58,7 @@ internal sealed class SetRegisteredUltimateCommand : ConsoleCommand
             return;
         }
 
-        if (!Game1.player.professions.Any(p => p is >= 26 and < 30))
+        if (!Game1.player.professions.Any(p => p.IsIn(26..29)))
         {
             Log.W("You don't have any 2nd-tier combat professions.");
             return;

@@ -6,9 +6,9 @@ mods:
    Stardew Survival Project
 
 latest commit:
-   commit ab971f900ce2ec3524338bd6df1487476495523a
+   commit aa57d8151a1c5c5ff87a0285bf9af23bec2be16c
    Author: NeroYuki <neroyuki241@gmail.com>
-   Date:   Sun Oct 29 01:26:15 2023 +0700
+   Date:   Mon Nov 20 10:59:31 2023 +0700
    
-       tune down default drain setting
+       bump version
    

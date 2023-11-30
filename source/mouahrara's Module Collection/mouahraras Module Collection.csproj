@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<Import Project="GamePath.targets" />
+	<Import Project="DirectorySeparator.targets" />
+	<PropertyGroup>
+		<ProjectName>mouahraras Module Collection</ProjectName>
+		<AssemblyName>mouahrarasModuleCollection</AssemblyName>
+		<Version>1.0.2</Version>
+		<TargetFramework>net5.0</TargetFramework>
+		<EnableHarmony>true</EnableHarmony>
+		<ProjectDir>$([System.IO.Path]::Combine($(MSBuildThisFileDirectory), $(ProjectName)))</ProjectDir>
+		<GameModsPath>$([System.IO.Path]::Combine($(GamePath), 'Mods', $(ProjectName)))</GameModsPath>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+	</ItemGroup>
+</Project>

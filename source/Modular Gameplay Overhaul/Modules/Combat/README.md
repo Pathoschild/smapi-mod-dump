@@ -180,7 +180,7 @@ Defensive swords retain the vanilla parry special move. Parry damage is changed 
 
 Offensive swords, meanwhile, gain a bran new stabbing thrust move. This move allows quick repositioning while granting invincibility frames. If used while hovering over an enemy, the farmer will attempt to home in on the enemy, turning if necessary. You can always manually turn mid-dash by inputting a perpendicular directional command.
 
-By default, the Galaxy Sword and Infinity Blade are both of the Defensive type, but you can change them into Offensive swords or back at any time, once a day, by taking them to the Sand Pillars.
+By default, the Galaxy Sword and Infinity Blade are both of the Defensive type, but you can change them into Offensive swords and back at any time, once a day, by taking them to the Sand Pillars.
 
 For any other sword (included modded), the type can be changed by adding or removing it from the stabbing swords list in the config json (not available in GMCM).
 
@@ -238,21 +238,27 @@ The known Mythic weapons are:
 | ------ | ---- | ------- |
 | ![](./resources/readme/yetitooth.png) Yeti Tooth | Defense Sword | Can cause Chilled status.* |
 | ![](./resources/readme/neptuneglaive.png) Neptune Glaive | Defense Sword | Like a crashing wave, deals heavy knockback. |
-| ![](./resources/readme/obsidianedge.png) Obsidian Edge | Stabbing Sword | Can cause Bleeding.* |
+| ![](./resources/readme/obsidianedge.png) Obsidian Edge | Stabbing Sword | Ignores enemy resistance. Can cause Bleeding.* |
 | ![](./resources/readme/lavakatana.png) Lava Katana | Stabbing Sword | Can cause Burning.* |
 | ![](./resources/readme/insecthead.png) Insect Head | Dagger | Damage depends on the number of slain bugs. |
 | ![](./resources/readme/iridiumneedle.png) Iridium Needle | Dagger | Always critically strikes. |
+| ![](./resources/readme/swordfish.png) Sword Fish** | Stabbing Sword | Damage depends on the number of caught fish species. |
 </div>
 
-<font size="1">\* *Status effects are explained [further below](#status-effects).*</font>
+<font size="1">
 
-**Masterwork** weapons are relics of the Dwarven race, crafted from long-lost materials. To obtain them you will need to uncovering the **Dwarvish Blueprints**, and kindly ask [a skilled blacksmith](https://stardewvalleywiki.com/Clint) to make sense of them. Having done so, the only thing left will be hunting down the materials:
+\* *Status effects are explained [further below](#status-effects).*
+
+\** *Requires [More New Fish](https://www.nexusmods.com/stardewvalley/mods/3578).*
+</font>
+
+**Masterwork** weapons are relics of the Dwarven race, crafted from long-lost materials. To obtain them you will need to uncover the **Dwarvish Blueprints**, and kindly ask [a skilled blacksmith](https://stardewvalleywiki.com/Clint) to make sense of them. Having done so, the only thing left will be hunting down the materials:
 
 | Weapons | Description | Material | Source |
 | ------- | ----------- | -------- | ------ |
-| ![](./resources/readme/elven_set.png) Elven | Quick, nimble weapons enchanted with forest magic which grants them high reach and knockback. | ![](./resources/readme/elderwood.png) Elderwood | [Scavenger Hunts](../Professions) |
-| ![](./resources/readme/dwarven_set.png) Dwarven | Large, bulky weapons. They grant high defense and knockback, but reduce speed. | ![](./resources/readme/dwarvenscrap.png) Dwarven Scrap Metal | Volcano Chests |
-| ![](./resources/readme/dragontooth_set.png) Dragontooth | Light and sharp, granting the highest raw damage out of any weapon in the game. | ![](./resources/readme/dragontooth.png) Dragon Tooth | Volcano Chests, Dragon Skeletons |
+| <div align="center"> ![](./resources/readme/elven_set.png) <br> Elven </div> | Quick, nimble weapons enchanted with forest magic which grants them high reach and knockback. | <div align="center"> ![](./resources/readme/elderwood.png) <br> Elderwood </div> | [Scavenger Hunts](../Professions) |
+| <div align="center"> ![](./resources/readme/dwarven_set.png) <br> Dwarven </div> | Large, bulky weapons. They grant high defense and knockback, but reduce speed. | <div align="center"> ![](./resources/readme/dwarvenscrap.png) <br> Dwarven Scrap Metal </div> | Volcano Chests |
+| <div align="center"> ![](./resources/readme/dragontooth_set.png) <br> </div> Dragontooth | Light and sharp, granting the highest raw damage out of any weapon in the game. | <div align="center"> ![](./resources/readme/dragontooth.png) <br> Dragon Tooth </div> | Volcano Chests, Dragon Skeletons |
 
 Masterwork weapons can only be obtained if the Dwarven Legacy setting is enabled.
 
@@ -301,7 +307,7 @@ Fresh new weapons require fresh new enchantments! Vanilla enchantments have been
 
 \* *Hard caps at 1000 HP. To prevent cheesing boss monsters from expansion mods, this is implemented as a percentage chance per hit, with the chance being near-zero close to the 1000 HP hard cap and near 100% for regular monsters.*
 
-\** *Examples: damage or heal the enemy; decrease or increase the enemie's stats; transfigure into a different enemy, creature or any random item (note: this can spawn illegal items).*
+\** *Examples: damage or heal the enemy; decrease or increase the enemie's stats; transfigure into a different enemy, creature or any random item (including illegal items).*
 </font>
 
 <sup><sup>[🔼 Back to top](#margo--combat-cmbt)</sup></sup>
@@ -324,14 +330,14 @@ The following ammos have also been tweaked for a bit more immersion and balance:
 <details>
 <summary>Coal: 15 damage >> 2 damage</summary>
 
-Have you ever held a piece of coal? That stuff is brittle, and weaker than raw wood, so the damage has been reduced accordingly. Not that anybody uses this as ammo anyway.
+<font size="2">Have you ever held a piece of coal? That stuff is brittle, and weaker than raw wood, so the damage has been reduced accordingly. Not that anybody uses this as ammo anyway.</font>
 </details>
 
 <details>
 
 <summary>Explosive Ammo: 20 damage >> 2 damage</summary>
 
-Explosive ammo is meant to be used as a mining utility. There's no reason it should also replace your regular ammo. The explosion damage has not been changed. *Combine it with the [Rascal](../Professions) to efficiently switch between different ammo.*
+<font size="2">Explosive ammo is meant to be used as a mining utility. There's no reason it should also replace your regular ammo. The explosion damage has not been changed. *Combine it with the [Rascal](../Professions) to efficiently switch between different ammo.*</font>
 </details>
 
 The following new ammos have also been added:
@@ -361,7 +367,7 @@ It is significantly harder to create interesting ranged effects compared to mele
 | Energized | Moving and shooting generates energy. When fully-energized, the next projectile carries an electric charge, which discharges dealing heavy damage when it hits an enemy. |
 | Freljord | Progressively chill enemies on hit for 2 seconds, freezing after stacking 3 times. |
 | Quincy | Attacks fire an energy projectile if no ammo is equipped. The projectile is stronger at lower health. Only works when enemies are nearby.* |
-| Runaan | Summons two phantom copies of the fired projectile. The phantoms automatically aim at the nearest enemy after a short delay. Only works when enemies are nearby.** |
+| Reverberant | Summons two "echoes" of the fired projectile, that auto-aim at the nearest enemy after a short delay. Only works when enemies are nearby.** |
 
 <font size="1">
 
@@ -438,7 +444,7 @@ The Infinity Band cannot be combined with any non-gemstone ring. In most cases, 
 
 ## Garnet & Gemstone Resonance Theory
 
-To compensate for the [removal of vanilla Acrobat profession](../Professions), this mod introduces a seventh gemstone, the **Garnet**, which can be mined upwards of Mine level 80. Socketed to a ring or a weapon, it will grant 10% cooldown reduction to special moves. [As described above](#craftable-gemstone-rings), the Garnet Ring is craftable at Combat level 7.
+To compensate for the [removal of vanilla Acrobat profession](../Professions), this mod introduces a seventh gemstone, the **Garnet**, which can be mined upwards of Mine level 80. Socketed to a ring or a weapon, it will grant 10% cooldown reduction to special moves. [As shown above](#craftable-gemstone-rings), the Garnet Ring is craftable at Combat level 7.
 
 With the addition of Garnet, the seven gemstones together form a [Diatonic Scale](https://en.wikipedia.org/wiki/Diatonic_scale):
 
@@ -450,7 +456,7 @@ With the addition of Garnet, the seven gemstones together form a [Diatonic Scale
 <br>
 
 <div align="center">
-<font size="1"><i>The Diatonic Gemstone Scale. The dashed lines show the Tertian Tetrads rooted in Ruby (red) and Aquamarine (blue).</i></font>
+<font size="1"><i>The Diatonic Gemstone Scale. The dashed lines show examples of Tertian Tetrad chords rooted in Ruby (red), Aquamarine (blue) and Emerald (green).</i></font>
 </div>
 
 <br>
@@ -461,11 +467,11 @@ Beginning at the top, the scale progresses clockwise and is cyclic; i.e., after 
 
 Like strings in a guitar, each gemstone has a characteristic vibration. When two gemstones are placed side-by-side, these vibrations overlap, causing [interference](https://en.wikipedia.org/wiki/Wave_interference) patterns that can be constructive or destructive. In other words, certain gemstone pairs may amplify each other, while others may instead dampen each other.
 
-A pair of gemstones forms an [Interval](https://en.wikipedia.org/wiki/Interval_(music)). As the name implies, this is simply the distance between the two gemstones in the Diatonic Scale. A distance of 1 is known as a **Second** interval (e.g., from **Rb** to **Aq**), a distance of 2 is known as a **Third** interval (e.g., from **Aq** to **Ga**), and so on. One full rotation of the circle is called an [Octave](https://en.wikipedia.org/wiki/Octave), or [Unisons](https://en.wikipedia.org/wiki/Unison) (an interval of zero), denoting the interval between a gemstone and itself.
+A pair of gemstones forms an [Interval](https://en.wikipedia.org/wiki/Interval_(music)). As the name implies, this is simply the distance between the two gemstones in the Diatonic Scale. A distance of 1 is known as a **Second** interval (e.g., from **Rb** to **Aq**), a distance of 2 is known as a **Third** interval (e.g., from **Aq** to **Ga**), and so on. One full rotation of the circle is called an [Octave](https://en.wikipedia.org/wiki/Octave), or [Unison](https://en.wikipedia.org/wiki/Unison) (an interval of zero), denoting the interval between a gemstone and itself.
 
-Notice that, because the scale is cyclic, certain intervals are complementary. For instance, a **Sixth** (e.g., `Rb - Jd`) is a just a **Third** counted backwards (`Jd - Rb`). Likewise for **Second** and **Seventh**. These intervals are essentially equivalent, as shown by their resonances. The **Fourth** and **Fifth**, while also a complementary pair, are an exception to this rule, and result in different resonances (this is due to some over-simplifications from real life Music Theory).
+Notice that, because the scale is cyclic, certain intervals are complementary. For instance, a **Sixth** (e.g., from **Rb** to **Jd**) is a just a **Third** counted backwards (from **Jd** to **Rb**). Likewise for **Second** and **Seventh**. These intervals are essentially equivalent, as shown by their resonances in the table below. The **Fourth** and **Fifth**, while also a complementary pair, are an exception to this rule, and result in different resonances (this is due to some over-simplifications from real life Music Theory).
 
-As a rule of thumb, stones that are positioned farthest from each other in the scale will resonate more strongly, while those positioned adjacent to each other will dissonate. Gemstones do no resonate with themselves.
+As a rule of thumb, stones that are positioned farthest from each other in the scale will resonate more strongly, while those positioned adjacent to each other will dissonate. Gemstones do not resonate with themselves.
 
 <div align="center">
 
@@ -477,42 +483,44 @@ As a rule of thumb, stones that are positioned farthest from each other in the s
 | Fifth    | 50%       | `Rb - Em`, `Am - Tp`, `Ga - Rb` |
 | Sixth    | 16.6%     | `Rb - Jd`, `Am - Rb`, `Ga - Aq` |
 | Seventh  | -12.5%*   | `Rb - Tp`, `Am - Aq`, `Ga - Am` |
-| Octave   | Ø         | `Rb - Rb`, `Am - Am`, `Ga - Ga` |
+| Octave   | 0         | `Rb - Rb`, `Am - Am`, `Ga - Ga` |
 </div>
+
+Clearly, the **Fifth** is the strongest-resonating interval, for which reason it is also known as the **Dominant** interval. The **Fourth**, its complement, is also known as the **Sub-dominant**.
 
 ### Chords
 
-Multiple intervals can be combined to make [Chords](https://en.wikipedia.org/wiki/Chord_(music)). A chord represents the complex harmonies that arise from all possible intervals between multiple gemstones. Up to 4 gemstones can be placed in any given Infinity Band to produce one chord. The gemstone with the highest amplitude in a chord becomes the **Tonic**, or **Root**. All resonating chords emit light, the color and amplitude of which is determined by that Root.
+When multiple gemstones are placed together, the complex superposition of resonances that results from all possible interval permutations is called a [Chord](https://en.wikipedia.org/wiki/Chord_(music)). Gemstones can only interact in very close proximity, wich means that chords may only be formed by up to 4 gemstones placed together in the same Infinity Band; the chords from different Infinity Bands do not interact.
 
-Chords have also an associated **Richness**, which measures how "interesting" it is. A higher richness is achieved by more complex chords (i.e., avoiding repeated gemstones). The richest of all chords can also manifest **magnetism**.
+The gemstone with the highest amplitude in a chord becomes the **Tonic**, or **Root**. All chords with a prominant Root will emit light of a corresponding color and amplitude.
 
-**Chords will only consider gemstones in the same ring**; those from different Infinity Bands do not interact at all.
+Chords have also an associated **Richness**, which measures how "interesting" it is. A higher richness is achieved by more complex chords (i.e., avoiding repeated gemstones). Some sufficiently rich chords can also exibit **magnetism**.
+
+In case it wasn't clear, **the order in which gemstones are placed in the ring does not matter.**
 
 #### Monad Chords
 
-A 1-note chord is called a **Monad**. A Monad results from up to 4 repeated gemstones. As it only contains Unisons, this chord offers no resonances, but achieves the highest single-stat total from any other chord. The Ruby Monad is shown below:
+A 1-note chord is called a **Monad**. A Monad is the simplest possible chord; it is made by simply repeating the same gemstone up to 4 times. Because it only contains Unisons, this chord offers no resonances and zero richness. As a result, it does not emit light, but achieves the highest single-stat total of any chord. The Ruby Monad is shown below:
 
 <div align="center">
 
 <img src="https://gitlab.com/daleao/modular-overhaul/-/raw/main/resources/screenshots/monad.png" alt="monad.png" width="33%">
 </div>
 
-As there are no resonances, Monad chords also do not emit light.
-
 #### Dyad Chords
 
-A 2-note chord is called a **Dyad**. A Dyad always contains 2 complementary intervals. Given the table above, it should be clear that the best possible Dyad is a I - V configuration, such as `Rb - Em`. This chord contains the intervals Fifth and Fourth (from the inverse, `Em - Rb`), resulting in a +50% resonance for Rb and +33.3% for Em. A double `I - I - V - V` chord is called a [Power Chord](https://en.wikipedia.org/wiki/Power_chord); the simplest possible chord (and a staple of rock music). The Ruby Power Chord is shown below:
+A 2-note chord is called a **Dyad**. A Dyad always contains 2 complementary intervals. Given the table above, it should be clear that the best possible Dyad is the one made from the **Dominant** interval; i.e., a `I - V` configuration, such as `Rb - Em`. This chord contains the intervals Fifth and Fourth (from the inverse, `Em - Rb`), resulting in a +50% resonance for Rb and +33.3% for Em. A double `I - I - V - V` chord is called a [Power Chord](https://en.wikipedia.org/wiki/Power_chord); the simplest resonating chord (and a staple of rock music). The Ruby Power Chord is shown below:
 
 <div align="center">
 
 <img src="https://gitlab.com/daleao/modular-overhaul/-/raw/main/resources/screenshots/dyad.png" alt="dyad.png" width="33%">
 </div>
 
-On the other hand, a `I - II` configuration, like `Aq - Am`, contains the intervals Second and Seventh (from the inverse, `Am - Aq`), resulting in a strong dissonance, and a dampening of both gemstones.
+On the other hand, a `I - II` configuration Dyad, like `Aq - Am`, would contain the intervals Second and Seventh (from the inverse, `Am - Aq`), resulting in a strong dissonance, and a dampening of both gemstones.
 
 #### Triad Chords
 
-A 3-note chord is called a **Triad**. A Triad always contains 9 intervals. There are many possible Triad combinations, but only one that avoids dissonances: the [Tertian](https://en.wikipedia.org/wiki/Tertian). A Tertian chord is formed by stacking sequential Third intervals. Notice that the Third of a Third is simply a Fifth (look at a wheel above to convince yourself of this). This means that a Tertian Triad is actually the configration `I - III - V`. 
+A 3-note chord is called a **Triad**. A Triad always contains 6 intervals. There are many possible Triad combinations, but only one that avoids dissonances: the [Tertian](https://en.wikipedia.org/wiki/Tertian). A Tertian chord is formed by stacking sequential Third intervals. Notice that the Third of a Third is simply a Fifth (look at the wheel above to convince yourself of this). This means that a Tertian Triad is actually the configration `I - III - V`. 
 The Ruby Tertian Triad is shown below:
 
 <div align="center">
@@ -524,18 +532,20 @@ Notice also that, due to the cyclic nature of the scale, the `I - III - V` confi
 
 #### Tetrad Chords
 
-Finally, a 4-note chord is called a **Tetrad**. A Tetrad always contains 16 intervals in total, which makes it impossible find a configuration that avoids any dissonances. But this is okay; if we extend the Tertian Triad by adding another Third interval at the end, we achieve a **Tertian Tetrad**, or `I - III - V - VII` (the `VII` is the Third of the `V`). In this special case, the dissonant Seventh interval becomes resonant, adding +12.5% resonance instead of subtracting it. The Tertian Tetrad achieves the highest possible total resonance, though it forces the distribution of these bonuses among 4 different stats. The Ruby Tertian Tetrad is shown below:
+Finally, a 4-note chord is called a **Tetrad**. A Tetrad always contains 12 intervals in total, which makes it impossible find a configuration that avoids any dissonances. But this is okay; if we extend the Tertian Triad by adding another Third interval at the end, we achieve a **Tertian Tetrad**, or `I - III - V - VII` (the `VII` is the Third of the `V`). In this special case, the dissonant Seventh interval becomes resonant, adding +12.5% resonance instead of subtracting it. The Tertian Tetrad achieves the highest possible total resonance, though it forces the distribution of these bonuses among 4 different stats. For the same reason described previously, the configuration `I - II - IV - VI` is equivalent to a transposed Tertian Tetrad. The Ruby Tertian Tetrad is shown below:
 
 <div align="center">
 
 <img src="https://gitlab.com/daleao/modular-overhaul/-/raw/main/resources/screenshots/tetrad.png" alt="tetrad.png" width="33%">
 </div>
 
-There is no "optimal" gemstone combination. Simple chords are optimal for single-stats, while more complex chords are optimal in terms of resonance. It is up to the player to choose what fits best for the desired build.
+#### Conclusion
+
+There is no one "optimal" gemstone combination. Simpler chords can be used to optimize for a specific stat, while more complex chords optimize total resonance. As you increase the chord's complexity and richness, you essentially trade higher specific stats, for higher overall distributed stats. This system is intended to encourage experimentation and variety. It is up to each player to choose what best fits their desired build.
 
 ### Weapon Forges
 
-If the player's currently held weapon contains forged gemstones, resonating chords from equipped Infinity Bands will also amplify all gemstone forges matching the chord's root note. Note that forged gemstones do not form chords themselves nor share any of the same resonance and dissonance mechanics from Infinity Bands described above.
+If the player's currently held weapon contains forged gemstones, all resonant chords from equipped Infinity Bands will also amplify those gemstone forges which match the chord's root note. Note that forged gemstones do not form chords themselves nor share any of the same resonance and dissonance mechanics from Infinity Bands described above.
 
 <br>
 
@@ -557,7 +567,7 @@ Finally we arrive at the discussion of Legendary weapons, and the most interesti
 
 According to [TV Tropes Wiki][tropes:infinity+1], an Infinity +1 sword is "not only the most powerful of its kind [...] , but its power is matched by how hard it is to acquire". The vanilla Infinity weapons do not quite fit that definition. Let's fix that, shall we?
 
-To obtain your first Galaxy weapon, as in vanilla you must first unlock the desert, acquire a Prismatic Shard and offer it to the Three Sand Sisters. Unlike vanilla, however, the weapon will not materialize out of thin air, but will be shaped out of a configurable amount of Iridium Bars (10 by default), which must be in your inventory. This will prevent a lucky Prismatic Shard drop from the Mines or a Fishing Chest from instantly rewarding one of the strongest weapons in the game before the player has even set foot in the Skull Caverns. Now, some venturing into the Skull Caverns is required.
+To obtain your first Galaxy weapon, as in vanilla you must first unlock the desert, acquire a Prismatic Shard and offer it to the Sand Pillars. Unlike vanilla, however, the weapon will not materialize out of thin air, but will be shaped out of a configurable amount of Iridium Bars (10 by default), which must be in your inventory. This will prevent a lucky Prismatic Shard drop from the Mines or a Fishing Chest from instantly rewarding one of the strongest weapons in the game before the player has even set foot in the Skull Caverns. Now, some venturing into the Skull Caverns is required.
 
 Subsequent Galaxy weapons will no longer be available for purchase at the Adventurer's Guild; one full set, including the slingshot, can now be acquired at the desert, but each weapon will require a larger stack of Prismatic Shards. The order in which the weapons are obtained can be influenced by placing the desired weapon type at the top of the top of the backpack.
 
@@ -575,7 +585,7 @@ In return for all that extra work, the Infinity weapons have extra perks:
 2. Small boost to the weapon's special move:
 	* **Stabing Sword:** Increased dash distance.
 	* **Defense Sword:** Parried enemies are dazed for 1 second.
-	* **Dagger:** Quick-stab deal one additional hit.
+	* **Dagger:** Quick-stab deals one additional hit.
 	* **Club:** Smash AoE is 25% larger.
 	* **Slingshot**: Auto-fire mode lasts for 1 additional second.
 3. **Melee only:** while at full health, every swing fires a mid-range energy beam.
@@ -596,7 +606,7 @@ Taking inspiration from classic RPG and strategy games, this module adds a frame
 | Bleeding | Causes damage every second. Damage increases exponentially with each additional stack. Stacks up to 5x. Does not affect Ghosts, Skeletons, Golems, Dolls or Mechanical enemies (i.e., Dwarven Sentry). | Daggers, Obsidian Edge, Ring of Thorns |
 | Burning | Causes damage equal to 1/16th of max health every 3 seconds, and reduces attack by half. Also causes enemies to move about more randomly. Does not affect fire enemies (i.e., Lava Lurks, Magma Sprites and Magma Sparkers). Insects burn 4x as quickly. Does not affect Magma Sprites or Lava Lurks | Lava Katana |
 | Chilled | Reduces movement speed for the duration. If Chilled is inflicted again during this time, then applies Freeze for 5x the duration. Does not affect Ghosts or Skeleton Mage. | Yeti Tooth, Freljord Enchantment |
-| Frozen | Cannot move or attack. The next hit during the duration deals triple damage and ends the effect. | Chill x2 |
+| Frozen | Cannot move or attack. The next hit during the duration deals double damage and ends the effect. | Chill x2 |
 | Poisoned | Causes damage equal to 1/16 of max health every 3s, stacking up to 3x. Does not affect Ghosts.| *Unused* |
 | Slowed | Reduces movement speed for the duration. | Slime Ammo |
 | Dazed | Cannot move or attack for the duration. | Enhanced Parry |
@@ -780,7 +790,7 @@ If the Hero Quest option enabled, Infinity weapons require also require forging 
 <details>
 <summary><i>To obtain a Hero Soul... (spoiler)</i></summary>
 
-...unforge the Blade of Dawn.
+...unforge the Blade of Dawn. Or alternatively, if using the Deep Woods mod, you can also unforge the Excalibur.
 </details>
 </details>
 

@@ -196,13 +196,13 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             var (locationOriginName, locationDestinationName) = GetLocationNames(desiredWarpKey);
             _checkedEntrancesToday.Add(desiredWarpKey);
 
-            if (!locationOriginName.TryGetClosestWarpPointTo(ref locationDestinationName, out var locationOrigin, out var warpPoint))
+            if (!locationOriginName.TryGetClosestWarpPointTo(ref locationDestinationName, _equivalentAreas, out var locationOrigin, out var warpPoint))
             {
                 warpRequest = null;
                 return false;
             }
 
-            var warpPointTarget = locationOrigin.GetWarpPointTarget(warpPoint, locationDestinationName);
+            var warpPointTarget = locationOrigin.GetWarpPointTarget(warpPoint, locationDestinationName, _equivalentAreas);
             var locationDestination = Game1.getLocationFromName(locationDestinationName);
             var locationRequest = new LocationRequest(locationDestinationName, locationDestination.isStructure.Value, locationDestination);
             (locationRequest, warpPointTarget) = locationRequest.PerformLastLocationRequestChanges(locationOrigin, warpPoint, warpPointTarget);

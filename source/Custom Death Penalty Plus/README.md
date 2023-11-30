@@ -11,6 +11,8 @@ Custom Death Penalty Plus allows the death penalty (and pass out penalty as of 1
 
 Now with translation support as of version 1.5.0. Feel free to translate the mod and send me the files for addition (best place to reach me is on the mod page). Full credit given, obviously!
 
+Generic Mod Config Menu support added in 1.5.1 thanks to ayalfishey!
+
 Current options allow configuration for:
 
 **Death Penalty**
@@ -48,6 +50,7 @@ Current options allow configuration for:
  - Check the mod page for accepted values
  - The mod should automatically use the default values if a config value is invalid. If your changes are not implemented check the SMAPI monitor for errors or messages.
  - Other mods that edit the PlayerKilled event can override the mod's edits. Penalties should still apply however (MoreRealisticWarps will also look really weird)
+ - With GMCM, the mod will not allow MoreRealisticWarps and WakeUpNextDayInClinic to be true at the same time despite it being possible to do in the menu. The mod will disable MoreRealisticWarps when the menu is saved.
 
 ### Versions:
 1.0.0 - Initial release
@@ -67,5 +70,7 @@ Current options allow configuration for:
 1.4.1 - Updated for new content api in SMAPI 3.14.0
 
 1.5.0 - Added translation support, added italian, spanish and french translations thanks to AlixNauts on Nexus!
+
+1.5.1 - Added GMCM support thanks to ayalfishey!
 
 

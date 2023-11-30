@@ -1,0 +1,274 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "Format": "1.29.0",
+    "DynamicTokens": [
+        {
+            "Name": "Friendly",
+            "Value": "1135850449"
+        },
+        {
+            "Name": "Helpful",
+            "Value": "1864539430"
+        },
+        {
+            "Name": "SmoothTalker",
+            "Value": "1807792385"
+        },
+        {
+            "Name": "Gifter",
+            "Value": "311393809"
+        },
+        {
+            "Name": "Haggler",
+            "Value": "1452645616"
+        },
+        {
+            "Name": "Beloved",
+            "Value": "-1856267255"
+        },
+        {
+            "Name": "FriendlyP",
+            "Value": "1135850549"
+        },
+        {
+            "Name": "HelpfulP",
+            "Value": "1864539530"
+        },
+        {
+            "Name": "SmoothTalkerP",
+            "Value": "1807792485"
+        },
+        {
+            "Name": "GifterP",
+            "Value": "311393909"
+        },
+        {
+            "Name": "HagglerP",
+            "Value": "1452645716"
+        },
+        {
+            "Name": "BelovedP",
+            "Value": "-1856267155"
+        }
+    ],
+    "Changes": [
+        {
+            "Action": "Load",
+            "Target": "Mods/drbirbdev.SocializingSkill/Items",
+            "FromFile": "assets/items.png"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/CraftingRecipes",
+            "Entries": {
+                "drbirbdev.SocializingSkill_Bouquet": "-80 3/Field/458/false/drbirbdev.SocializingSkill 3/[LocalizedText Strings\\Objects:Bouquet_Name]",
+                "drbirbdev.SocializingSkill_PerfumeMaker": "334 3 338 2 330 1/Field/drbirbdev.SocializingSkill_PerfumeMaker/true/drbirbdev.SocializingSkill 6/{{i18n:item.PerfumeMaker.name}}",
+                "drbirbdev.SocializingSkill_WrappingStation": "335 5 428 2 787 1/Field/drbirbdev.SocializingSkill_WrappedGift/true/drbirbdev.SocializingSkill 8/{{i18n:item.WrappingStation.name}}",
+                "drbirbdev.SocializingSkill_ConfettiAmmo": "428 1 771 2/Field/drbirbdev.SocializingSkill_ConfettiAmmo/false/drbirbdev.SocializingSkill 9/{{i18n:item.ConfettiAmmo.name}}"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "Entries": {
+                "drbirbdev.SocializingSkill_BirthdayCake": "220 1 93 1//drbirbdev.SocializingSkill_BirthdayCake/drbirbdev.SocializingSkill 2/{{i18n:item.BirthdayCake.name}}",
+                "drbirbdev.SocializingSkill_CheeseSouffle": "426 1 246 1 -5 1 -6 1//drbirbdev.SocializingSkill_CheeseSouffle/drbirbdev.SocializingSkill 4/{{i18n:item.CheeseSouffle.name}}"
+            }
+        },
+
+        // Add BigCraftables
+        {
+            "Action": "EditData",
+            "Target": "Data/BigCraftables",
+            "Entries": {
+                "drbirbdev.SocializingSkill_PerfumeMaker": {
+                    "Name": "PerfumeMaker",
+                    "DisplayName": "{{i18n:item.PerfumeMaker.name}}",
+                    "Description": "{{i18n:item.PerfumeMaker.desc}}",
+                    "Price": 50,
+                    "Texture": "Mods/drbirbdev.SocializingSkill/Items",
+                    "SpriteIndex": 0
+                },
+                "drbirbdev.SocializingSkill_WrappingStation": {
+                    "Name": "WrappingStation",
+                    "DisplayName": "{{i18n:item.WrappingStation.name}}",
+                    "Description": "{{i18n:item.WrappingStation.desc}}",
+                    "Price": 50,
+                    "Texture": "Mods/drbirbdev.SocializingSkill/Items",
+                    "SpriteIndex": 1
+                }
+            }
+        },
+
+        // Add machine logic
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "Entries": {
+                "(BC)drbirbdev.SocializingSkill_PerfumeMaker": {
+                    "OutputRules": [
+                        {
+                            "Id": "Default_Perfume",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredTags": [
+                                        "category_flowers"
+                                    ]
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Default",
+                                    "ItemId": "drbirbdev.BirbCore_CustomFlavoredItem drbirbdev.SocializingSkill_Perfume DROP_IN_ID DROP_IN_PRESERVE",
+                                    "CopyColor": true
+                                }
+                            ]
+                        }
+                    ],
+                    "WobbleWhileWorking": true,
+                    "LoadEffects": [
+                        {
+                            "Sound": "bubbles"
+                        }
+                    ]
+                },
+                "(BC)drbirbdev.SocializingSkill_WrappingStation": {
+                    "OutputRules": [
+                        {
+                            "Id": "Default_WrappingStation",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredTags": [
+                                        "!not_giftable",
+                                        "!prevent_loss_on_death",
+                                        "!category_tool",
+                                        "!category_weapon",
+                                        "!category_ring",
+                                        "!category_hat",
+                                        "!category_equipment"
+                                    ]
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Default",
+                                    "ItemId": "drbirbdev.BirbCore_CustomFlavoredItem drbirbdev.SocializingSkill_Present DROP_IN_ID DROP_IN_PRESERVE"
+                                }
+                            ]
+                        }
+                    ],
+                    "WobbleWhileWorking": true,
+                    "LoadEffects": [
+                        {
+                            "Sound": "Ship"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // Add objects
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "drbirbdev.SocializingSkill_ConfettiAmmo": {
+                    "Name": "Confetti Ammo",
+                    "DisplayName": "{{i18n:item.ConfettiAmmo.name}}",
+                    "Description": "{{i18n:item.ConfettiAmmo.desc}}",
+                    "Type": "Basic",
+                    "Category": 0,
+                    "Price": 20,
+                    "Texture": "Mods/drbirbdev.SocializingSkill/Items",
+                    "SpriteIndex": 0,
+                    "Edibility": -300,
+                    "ContextTags": [
+                        "color_purple"
+                    ]
+                },
+                "drbirbdev.SocializingSkill_BirthdayCake": {
+                    "Name": "Birthday Cake",
+                    "DisplayName": "{{i18n:item.BirthdayCake.name}}",
+                    "Description": "{{i18n:item.BirthdayCake.desc}}",
+                    "Type": "Cooking",
+                    "Category": -7,
+                    "Price": 250,
+                    "Texture": "Mods/drbirbdev.SocializingSkill/Items",
+                    "SpriteIndex": 2,
+                    "Edibility": 60,
+                    "IsDrink": false,
+                    "ContextTags": [
+                        "color_brown",
+                        "food_bakery",
+                        "food_cake",
+                        "food_sweet"
+                    ]
+                },
+                "drbirbdev.SocializingSkill_CheeseSouffle": {
+                    "Name": "Cheese Souffle",
+                    "DisplayName": "{{i18n:item.CheeseSouffle.name}}",
+                    "Description": "{{i18n:item.CheeseSouffle.desc}}",
+                    "Type": "Cooking",
+                    "Category": -7,
+                    "Price": 300,
+                    "Texture": "Mods/drbirbdev.SocializingSkill/Items",
+                    "SpriteIndex": 3,
+                    "Edibility": 50,
+                    "IsDrink": false,
+                    "Buff": {
+                        "IconTexture": "Mods/drbirbdev.SocializingSkill/Items",
+                        "IconSpriteIndex": 4,
+                        "Duration": 600,
+                        "CustomFields": {
+                            "drbirbdev.SocializingSkill": "2"
+                        }
+                    },
+                    "ContextTags": [
+                        "food_bakery"
+                    ]
+                },
+                "drbirbdev.SocializingSkill_Present": {
+                    "Name": "Present",
+                    "DisplayName": "{{i18n:item.Present.name}}",
+                    "Description": "{{i18n:item.Present.desc}}",
+                    "Type": "Basic",
+                    "Category": -26,
+                    "Price": 100,
+                    "Texture": "Mods/drbirbdev.SocializingSkill/Items",
+                    "SpriteIndex": 5,
+                    "Edibility": -300,
+                    "CustomFields": {
+                        "drbirbdev.BirbCore_DefaultName": "{{i18n:item.Present.defaultname}}"
+                    }
+                },
+                "drbirbdev.SocializingSkill_Perfume": {
+                    "Name": "Perfume",
+                    "DisplayName": "{{i18n:item.Perfume.name}}",
+                    "Description": "{{i18n:item.Perfume.desc}}",
+                    "Type": "Basic",
+                    "Category": -26,
+                    "Price": 100,
+                    "Texture": "Mods/drbirbdev.SocializingSkill/Items",
+                    "SpriteIndex": 5,
+                    "Edibility": -300,
+                    "CustomFields": {
+                        "drbirbdev.BirbCore_DefaultName": "{{i18n:item.Perfume.defaultname}}"
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -11,7 +11,7 @@
 {
   "Name": "[CP] Mystical Buildings",
   "Author": "PeacefulEnd",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Content Patcher for the Mystical Buildings.",
   "UniqueID": "PeacefulEnd.ContentPatcher.MysticalBuildings",
   "ContentPackFor": {

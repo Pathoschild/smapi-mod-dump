@@ -20,23 +20,23 @@ namespace CoreBoy.memory
 
         public Ram(int offset, int length)
         {
-            _space = new int[length];
-            _length = length;
-            _offset = offset;
+            this._space = new int[length];
+            this._length = length;
+            this._offset = offset;
         }
 
-        public bool Accepts(int address) => address >= _offset && address < _offset + _length;
-        public void SetByte(int address, int value) => _space[address - _offset] = value;
+        public bool Accepts(int address) => address >= this._offset && address < this._offset + this._length;
+        public void SetByte(int address, int value) => this._space[address - this._offset] = value;
 
         public int GetByte(int address)
         {
-            var index = address - _offset;
-            if (index < 0 || index >= _space.Length)
+            var index = address - this._offset;
+            if (index < 0 || index >= this._space.Length)
             {
                 throw new IndexOutOfRangeException("Address: " + address);
             }
 
-            return _space[index];
+            return this._space[index];
         }
     }
 }

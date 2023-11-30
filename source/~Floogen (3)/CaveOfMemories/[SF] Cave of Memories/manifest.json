@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/MysticalBuildings
+**
+*************************************************/
+
+{
+  "Name": "[SF] Cave of Memories",
+  "Author": "PeacefulEnd",
+  "Version": "1.1.1",
+  "Description": "Solid Foundations for the Cave of Memories pack.",
+  "UniqueID": "PeacefulEnd.SolidFoundations.CaveOfMemories",
+  "UpdateKeys": [ "Nexus:???" ],
+  "ContentPackFor": {
+    "UniqueID": "PeacefulEnd.SolidFoundations",
+    "MinimumVersion": "1.12.4"
+  },
+  "Dependencies": []
+}

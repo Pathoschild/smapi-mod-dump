@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ichortower/NPCGeometry
+   Git: https://github.com/ichortower/NPCGeometry.git
+
+mods:
+   NPC Geometry
+
+latest commit:
+   commit 2ecb3caf0c54d161b0dabd6e4763d487637b48e3
+   Author: ichortower <sudo.ichor@proton.me>
+   Date:   Tue Nov 21 13:29:55 2023 -0500
+   
+       Merge branch 'release-1.0.0-alpha' into main
+   

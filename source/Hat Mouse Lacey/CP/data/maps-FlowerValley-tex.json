@@ -1,0 +1,51 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+{
+	"Changes": [
+		{
+			"Target": "Maps/{{season}}_outdoorsTileSheet",
+			"Action": "EditImage",
+			"FromFile": "assets/flowervalleyhouse_{{season}}.png",
+			"ToArea": {"X": 288, "Y": 1136, "Width": 112, "Height": 128},
+			"PatchMode": "Overlay"
+		},
+		// not an overlay, to fix errors in FV's cursors edit
+		{
+			"Target": "LooseSprites/Cursors",
+			"Action": "EditImage",
+			"FromFile": "assets/flowervalleystorefront_notwinter.png",
+			"ToArea": {"X": 600, "Y": 1957, "Width": 64, "Height": 32},
+			"When": {
+				"Season": "spring, summer, fall"
+			}
+		},
+		{
+			"Target": "LooseSprites/Cursors",
+			"Action": "EditImage",
+			"FromFile": "assets/flowervalleystorefront_winter.png",
+			"ToArea": {"X": 600, "Y": 1957, "Width": 64, "Height": 32},
+			"When": {
+				"Season": "winter"
+			}
+		},
+		// an overlay, to fix FV blasting the english HATS in unconditionally.
+		{
+			"Target": "LooseSprites/Cursors",
+			"Action": "EditImage",
+			"FromFile": "assets/locale/hats_{{language}}.png",
+			"ToArea": {"X": 600, "Y": 1957, "Width": 64, "Height": 32},
+			"PatchMode": "Overlay",
+			"When": {
+				"HasFile:{{FromFile}}": true
+			}
+		}
+	]
+}

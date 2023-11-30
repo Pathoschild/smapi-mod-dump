@@ -23,26 +23,26 @@ namespace CoreBoy.memory
         {
             if (address == 0xff70)
             {
-                _svbk = value;
+                this._svbk = value;
             }
             else
             {
-                _ram[Translate(address)] = value;
+                this._ram[this.Translate(address)] = value;
             }
         }
 
-        public int GetByte(int address) => address == 0xff70 ? _svbk : _ram[Translate(address)];
+        public int GetByte(int address) => address == 0xff70 ? this._svbk : this._ram[this.Translate(address)];
 
         private int Translate(int address)
         {
-            var ramBank = _svbk & 0x7;
+            var ramBank = this._svbk & 0x7;
             if (ramBank == 0)
             {
                 ramBank = 1;
             }
 
-            var result = address - 0xd000 + (ramBank - 1) * 0x1000;
-            if (result < 0 || result >= _ram.Length)
+            var result = address - 0xd000 + ((ramBank - 1) * 0x1000);
+            if (result < 0 || result >= this._ram.Length)
             {
                 throw new ArgumentException();
             }

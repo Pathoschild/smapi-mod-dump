@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace CoreBoy.cpu.op
 {
-	public class Argument
+    public class Argument
     {
         public string Label { get; }
         public int OperandLength { get; }
@@ -32,7 +32,7 @@ namespace CoreBoy.cpu.op
                 new Argument("E").Handle((r, a, args) => r.E, (r, a, i1, value) => r.E = value),
                 new Argument("H").Handle((r, a, args) => r.H, (r, a, i1, value) => r.H = value),
                 new Argument("L").Handle((r, a, args) => r.L, (r, a, i1, value) => r.L = value),
-                
+
                 new Argument("AF", 0, false, DataType.D16)
                     .Handle((r, a, args) => r.AF, (r, a, i1, value) => r.SetAf(value)),
 
@@ -92,28 +92,28 @@ namespace CoreBoy.cpu.op
         private Func<Registers, IAddressSpace, int[], int> _readFunc;
         private Action<Registers, IAddressSpace, int[], int> _writeAction;
 
-        public Argument(string label) 
+        public Argument(string label)
             : this(label, 0, false, DataType.D8)
         {
         }
 
         public Argument(string label, int operandLength, bool isMemory, DataType dataType)
         {
-            Label = label;
-            OperandLength = operandLength;
-            IsMemory = isMemory;
-            DataType = dataType;
+            this.Label = label;
+            this.OperandLength = operandLength;
+            this.IsMemory = isMemory;
+            this.DataType = dataType;
         }
 
-		public Argument Handle(Func<Registers, IAddressSpace, int[], int> readFunc, Action<Registers, IAddressSpace, int[], int> writeAction)
+        public Argument Handle(Func<Registers, IAddressSpace, int[], int> readFunc, Action<Registers, IAddressSpace, int[], int> writeAction)
         {
-            _readFunc = readFunc;
-            _writeAction = writeAction;
+            this._readFunc = readFunc;
+            this._writeAction = writeAction;
             return this;
         }
 
-        public int Read(Registers registers, IAddressSpace addressSpace, int[] args) => _readFunc(registers, addressSpace, args);
-        public void Write(Registers registers, IAddressSpace addressSpace, int[] args, int value) => _writeAction(registers, addressSpace, args, value);
+        public int Read(Registers registers, IAddressSpace addressSpace, int[] args) => this._readFunc(registers, addressSpace, args);
+        public void Write(Registers registers, IAddressSpace addressSpace, int[] args, int value) => this._writeAction(registers, addressSpace, args, value);
 
         public static Argument Parse(string @string)
         {

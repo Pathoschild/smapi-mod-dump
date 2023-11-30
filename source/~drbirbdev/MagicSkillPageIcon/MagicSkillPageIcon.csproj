@@ -1,3 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <Import Project="..\common.targets" />
+    <Import Project="..\common-spacecore.targets"/>
+
+    <PropertyGroup>
+        <Description>Just adds an icon for the Magic Skill to the Skill Page.</Description>
+        <Version>1.0.0</Version>
+        <UpdateKeys>Nexus:???</UpdateKeys>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SMAPIDependency Include="spacechase0.Magic" Required="true" />
+    </ItemGroup>
+    
 </Project>

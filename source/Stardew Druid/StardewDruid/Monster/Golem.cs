@@ -69,9 +69,11 @@ namespace StardewDruid.Monster
 
         public bool partyHats;
 
-        public int spawnBuff;
+        public bool spawnBuff;
 
         public int spawnDamage;
+
+        public double spawnTimeout;
 
         public Golem(Vector2 vector, int combatModifier, bool hats)
             : base(vector*64, true)
@@ -87,7 +89,9 @@ namespace StardewDruid.Monster
 
             spawnDamage = (int)Math.Max(2, combatModifier * 0.075);
 
-            spawnBuff = 60;
+            spawnBuff = true;
+
+            spawnTimeout = Game1.currentGameTime.TotalGameTime.TotalMilliseconds + 600;
 
             // ---------------------------------
 
@@ -316,7 +320,7 @@ namespace StardewDruid.Monster
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
 
-            if (spawnBuff > 0)
+            if (spawnBuff)
             {
                 return 0;
             }
@@ -363,21 +367,17 @@ namespace StardewDruid.Monster
 
         }
 
-        public override void behaviorAtGameTick(GameTime time)
+        public override void update(GameTime time, GameLocation location)
         {
 
-            if (spawnBuff > 0)
+            if (spawnBuff)
             {
-
-                spawnBuff--;
-
-                if (spawnBuff < 1)
+                if (Game1.currentGameTime.TotalGameTime.TotalMilliseconds > spawnTimeout)
                 {
+                    spawnBuff = false;
 
                     DamageToFarmer = spawnDamage;
-
                 }
-
             }
 
             tickCount++;
@@ -385,6 +385,7 @@ namespace StardewDruid.Monster
             if (tickCount >= 200)
             {
                 int dialogueIndex = Game1.random.Next(15);
+                
                 if (dialogueList.Count - 1 >= dialogueIndex)
                 {
                     showTextAboveHead(dialogueList[dialogueIndex], duration: 2000);
@@ -392,9 +393,10 @@ namespace StardewDruid.Monster
                 tickCount = 0;
             }
 
-            base.behaviorAtGameTick(time);
+            base.update(time, location);
 
         }
+
 
     }
 

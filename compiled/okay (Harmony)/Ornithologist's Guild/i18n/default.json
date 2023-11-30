@@ -7,9 +7,10 @@
     "config.logMissingBiomes.name": "Log missing biomes to console *",
     "config.logMissingBiomes.tooltip": "* Requires restart",
     "config.saveOurBirds.title": "Save our birds!",
-    "config.saveOurBirds.content": "The world has lost nearly 3 BILLION birds since 1970. For information on the many ways you can help, please visit:",
+    "config.saveOurBirds.content": "The world has lost nearly 3 BILLION birds since 1970. Going vegan is the single most impactful thing you can do to help. For information on other ways you can help, please visit:",
     "config.aboutKyle.title": "About Kyle",
-    "config.aboutKyle.content": "Kyle the raven was inspired by Kyle, a raven I met at The Raptors in Duncan, BC, Canada.",
+    "config.aboutKyle.content": "Kyle the raven was inspired by Kyle, a rescued raven I met at The Raptors in Duncan, BC, Canada.",
+    "config.noBreakOrJam.title": "Do not break or jam binoculars",
 
     "mail.Introduction": "Dear @, ^^Your grandmother, an avid birder of many years, left you this. We hope you find a way to continue her tradition this spring! ^^Good luck and happy birding, ^The Pelican Town Ornithologist's Guild",
     "mail.LifeList1": "Dear @, ^^Congrats, you've identified your first bird! We think these may be of some help. ^^Good luck and happy birding, ^The Pelican Town Ornithologist's Guild",

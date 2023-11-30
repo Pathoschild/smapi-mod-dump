@@ -1,0 +1,15 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/bcmpinc/StardewHack
+**
+*************************************************/
+
+{
+    SeedChanceName:        "Шанс распространения",         SeedChanceTooltip:        "Шанс, что дерево распространит семена. Обычно это: 0.05 (=5%).",
+    OnlyPreventTappedName: "Вырубленные деревья", OnlyPreventTappedTooltip: "Предотвратить распространение только вырубленных деревьев?",
+    RetainSeedName:        "Хранение семян",         RetainSeedTooltip:        "Следует ли дереву сохранять свои семена для сбора? (ванильная SDV удаляет семена на следующий день, а этот параметр позволяет чаще собирать семена с деревьев)",
+}

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using SereneGreenhouse.API.Interfaces;
 using StardewModdingAPI;
@@ -50,7 +50,7 @@ namespace SereneGreenhouse
             // Load our Harmony patches
             try
             {
-                var harmony = HarmonyInstance.Create(this.ModManifest.UniqueID);
+                var harmony = new Harmony(this.ModManifest.UniqueID);
                 harmony.PatchAll(Assembly.GetExecutingAssembly());
             }
             catch (Exception e)

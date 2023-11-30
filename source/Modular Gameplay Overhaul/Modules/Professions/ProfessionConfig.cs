@@ -97,18 +97,21 @@ public sealed class ProfessionConfig
     [GMCMPriority(2)]
     public bool ArtisanGoodsAlwaysInputQuality { get; internal set; } = false;
 
-    /// <summary>Gets custom mod Artisan machines. Add to this list to make them compatible with the profession.</summary>
+    /// <summary>Gets a set of machines used to create artisan goods. Add to this list the artisan machines from third-party mods you are using to make them compatible with the Artisan profession.</summary>
     [JsonProperty]
-    [GMCMIgnore]
-    public HashSet<string> CustomArtisanMachines { get; internal set; } = new()
+    [GMCMPriority(3)]
+    [GMCMOverride(typeof(GenericModConfigMenu), "ProfessionConfigArtisanMachinesOverride")]
+    public HashSet<string> ArtisanMachines { get; internal set; } = new()
     {
+        "Cheese Press", // vanilla
+        "Keg", // vanilla
+        "Loom", // vanilla
+        "Mayonnaise Machine", // vanilla
+        "Oil Maker", // vanilla
+        "Preserves Jar", // vanilla
         "Alembic", // artisan valley
-        "Artisanal Soda Maker", // artisanal soda makers
         "Butter Churn", // artisan valley
         "Canning Machine", // fresh meat
-        "Carbonator", // artisanal soda makers
-        "Cola Maker", // artisanal soda makers
-        "Cream Soda Maker", // artisanal soda makers
         "DNA Synthesizer", // fresh meat
         "Dehydrator", // artisan valley
         "Drying Rack", // artisan valley
@@ -123,27 +126,66 @@ public sealed class ProfessionConfig
         "Marble Soda Machine", // fizzy drinks
         "Meat Press", // fresh meat
         "Pepper Blender", // artisan valley
-        "Shaved Ice Machine", // shaved ice & frozen treats
         "Smoker", // artisan valley
         "Soap Press", // artisan valley
         "Sorbet Machine", // artisan valley
         "Still", // artisan valley
-        "Syrup Maker", // artisanal soda makers
         "Vinegar Cask", // artisan valley
         "Wax Barrel", // artisan valley
         "Yogurt Jar", // artisan valley
+        "Artisanal Soda Maker", // artisanal soda makers
+        "Carbonator", // artisanal soda makers
+        "Cola Maker", // artisanal soda makers
+        "Cream Soda Maker", // artisanal soda makers
+        "Syrup Maker", // artisanal soda makers
+        "Shaved Ice Machine", // shaved ice & frozen treats
+    };
+
+    /// <summary>Gets a list of artisan goods derived from animal produce. Add to this list the animal-derived goods from third-party mods you are using to make them compatible with the Producer profession.</summary>
+    [JsonProperty]
+    [GMCMPriority(4)]
+    [GMCMOverride(typeof(GenericModConfigMenu), "ProfessionConfigAnimalDerivedGoodsOverride")]
+    public HashSet<string> AnimalDerivedGoods { get; internal set; } = new()
+    {
+        "Mayonnaise", // vanilla
+        "Duck Mayonnaise", // vanilla
+        "Void Mayonnaise", // vanilla
+        "Dinosaur Mayonnaise", // vanilla
+        "Cheese", // vanilla
+        "Goat Cheese", // vanilla
+        "Cloth", // vanilla
+        "Butter", // ppja
+        "Goat Butter", // ppja
+        "Yogurt", // ppja
+        "Goat Yogurt", // ppja
+        "Fruit Yogurt", // ppja
+        "Kefir", // ppja
+        "Kumis", // ppja
+        "Lassi", // ppja
+        "Avocado Mayonnaise", // ppja
+        "Black Pepper Mayonnaise", // ppja
+        "Garlic Mayonnaise", // ppja
+        "Lucky Purple Mayonnaise", // ppja
+        "Olive Oil Mayonnaise", // ppja
+        "Thunder Mayonnaise", // ppja
+        "Wasabi Mayonnaise", // ppja
+        "Delight Mayonnaise", // ostrich mayonnaise
+        "Shiny Mayonnaise", // gold mayonnaise
+        "Slime Butter", // ppja
+        "Slime Cheese", // garden village
+        "Slime Mayonnaise", // garden village
     };
 
     /// <summary>Gets a value indicating whether Bee House products should be affected by Producer bonuses.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(3)]
+    [GMCMPriority(5)]
     public bool BeesAreAnimals { get; internal set; } = true;
 
     /// <summary>Gets the number of items that must be foraged before foraged items become iridium-quality.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(4)]
+    [GMCMPriority(6)]
     [GMCMRange(0, 1000)]
     [GMCMInterval(10)]
     public uint ForagesNeededForBestQuality { get; internal set; } = 100;
@@ -151,7 +193,7 @@ public sealed class ProfessionConfig
     /// <summary>Gets the number of minerals that must be mined before mined minerals become iridium-quality.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(5)]
+    [GMCMPriority(7)]
     [GMCMRange(0, 1000)]
     [GMCMInterval(10)]
     public uint MineralsNeededForBestQuality { get; internal set; } = 100;
@@ -159,7 +201,7 @@ public sealed class ProfessionConfig
     /// <summary>Gets the chance that a scavenger or prospector hunt will trigger in the right conditions.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(6)]
+    [GMCMPriority(8)]
     [GMCMRange(0f, 1f)]
     [GMCMInterval(0.05f)]
     public double ChanceToStartTreasureHunt { get; internal set; } = 0.1;
@@ -167,13 +209,20 @@ public sealed class ProfessionConfig
     /// <summary>Gets a value indicating whether determines whether a Scavenger Hunt can trigger while entering a farm map.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(7)]
+    [GMCMPriority(9)]
     public bool AllowScavengerHuntsOnFarm { get; internal set; } = false;
+
+    /// <summary>Gets the minimum distance to the scavenger hunt target before the indicator appears.</summary>
+    [JsonProperty]
+    [GMCMSection("prfs.general")]
+    [GMCMPriority(10)]
+    [GMCMRange(1, 12)]
+    public uint ScavengerDetectionDistance { get; internal set; } = 3;
 
     /// <summary>Gets a multiplier which is used to extend the duration of Scavenger hunts, in case you feel they end too quickly.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(8)]
+    [GMCMPriority(11)]
     [GMCMRange(0.5f, 3f)]
     [GMCMInterval(0.2f)]
     public float ScavengerHuntHandicap
@@ -185,10 +234,17 @@ public sealed class ProfessionConfig
         }
     }
 
+    /// <summary>Gets the minimum distance to the prospector hunt target before the indicator is heard.</summary>
+    [JsonProperty]
+    [GMCMSection("prfs.general")]
+    [GMCMPriority(12)]
+    [GMCMRange(10, 30)]
+    public uint ProspectorDetectionDistance { get; internal set; } = 20;
+
     /// <summary>Gets a multiplier which is used to extend the duration of Prospector hunts, in case you feel they end too quickly.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(9)]
+    [GMCMPriority(13)]
     [GMCMRange(0.5f, 3f)]
     [GMCMInterval(0.2f)]
     public float ProspectorHuntHandicap
@@ -200,30 +256,23 @@ public sealed class ProfessionConfig
         }
     }
 
-    /// <summary>Gets the minimum distance to the treasure hunt target before the indicator appears.</summary>
-    [JsonProperty]
-    [GMCMSection("prfs.general")]
-    [GMCMPriority(10)]
-    [GMCMRange(1, 10)]
-    public uint TreasureDetectionDistance { get; internal set; } = 3;
-
     /// <summary>Gets the maximum speed bonus a Spelunker can reach.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(11)]
+    [GMCMPriority(14)]
     [GMCMRange(0, 10)]
     public uint SpelunkerSpeedCeiling { get; internal set; } = 10;
 
     /// <summary>Gets a value indicating whether toggles the Get Excited buff when a Demolitionist is hit by an explosion.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(12)]
+    [GMCMPriority(15)]
     public bool DemolitionistGetExcited { get; internal set; } = true;
 
     /// <summary>Gets a value indicating whether to increase the quality of all active Crystalarium minerals when the Gemologist owner gains a quality level-up.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(13)]
+    [GMCMPriority(16)]
     public bool CrystalariumUpgradesWithGemologist { get; internal set; } = true;
 
     /// <summary>
@@ -232,7 +281,7 @@ public sealed class ProfessionConfig
     /// </summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(14)]
+    [GMCMPriority(17)]
     [GMCMRange(0.25f, 4f)]
     [GMCMInterval(0.25f)]
     public float AnglerPriceBonusCeiling
@@ -249,14 +298,14 @@ public sealed class ProfessionConfig
     /// </summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(15)]
+    [GMCMPriority(18)]
     [GMCMRange(0, 24f)]
     public uint AquaristFishPondCeiling { get; internal set; } = 12;
 
     /// <summary>Gets the amount of junk items that must be collected from crab pots for every 1% of tax deduction the following season.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(16)]
+    [GMCMPriority(19)]
     [GMCMRange(10, 1000)]
     [GMCMInterval(10)]
     public uint TrashNeededPerTaxDeduction { get; internal set; } = 100;
@@ -264,7 +313,7 @@ public sealed class ProfessionConfig
     /// <summary>Gets the amount of junk items that must be collected from crab pots for every 1 point of friendship towards villagers.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(17)]
+    [GMCMPriority(20)]
     [GMCMRange(10, 1000)]
     [GMCMInterval(10)]
     public uint TrashNeededPerFriendshipPoint { get; internal set; } = 100;
@@ -272,7 +321,7 @@ public sealed class ProfessionConfig
     /// <summary>Gets the maximum income deduction allowed by the Ferngill Revenue Service.</summary>
     [JsonProperty]
     [GMCMSection("prfs.general")]
-    [GMCMPriority(18)]
+    [GMCMPriority(21)]
     [GMCMRange(0.1f, 1f)]
     [GMCMInterval(0.05f)]
     public float ConservationistTaxDeductionCeiling
@@ -295,6 +344,11 @@ public sealed class ProfessionConfig
         get => this._enableLimitBreaks;
         internal set
         {
+            if (value == this._enableLimitBreaks)
+            {
+                return;
+            }
+
             this._enableLimitBreaks = value;
             if (!Context.IsWorldReady || Game1.player.Get_Ultimate() is not { } ultimate)
             {
@@ -338,9 +392,9 @@ public sealed class ProfessionConfig
     [JsonProperty]
     [GMCMSection("prfs.limit_break")]
     [GMCMPriority(103)]
-    [GMCMRange(250, 4000)]
+    [GMCMRange(250, 2000)]
     [GMCMInterval(50)]
-    public uint LimitBreakHoldDelayMilliseconds { get; internal set; }
+    public uint LimitBreakHoldDelayMilliseconds { get; internal set; } = 250;
 
     /// <summary>
     ///     Gets the rate at which one builds the Limit gauge. Increase this if you feel the gauge raises too
@@ -461,6 +515,11 @@ public sealed class ProfessionConfig
         get => this._progressionStyle;
         internal set
         {
+            if (value == this._progressionStyle)
+            {
+                return;
+            }
+
             this._progressionStyle = value;
             ModHelper.GameContent.InvalidateCache($"{Manifest.UniqueID}/PrestigeProgression");
         }
@@ -480,6 +539,12 @@ public sealed class ProfessionConfig
     [GMCMInterval(500)]
     public uint RequiredExpPerExtendedLevel { get; internal set; } = 5000;
 
+    /// <summary>Gets a value indicating whether to add full skill mastery (level 20) as a requirement for perfection.</summary>
+    [JsonProperty]
+    [GMCMSection("prfs.prestige")]
+    [GMCMPriority(209)]
+    public bool ExtendedPerfectionRequirement { get; internal set; } = true;
+
     #endregion prestige
 
     #region experience
@@ -490,12 +555,17 @@ public sealed class ProfessionConfig
     [GMCMSection("prfs.experience")]
     [GMCMPriority(300)]
     [GMCMRange(0.2f, 2f)]
-    [GMCMOverride(typeof(GenericModConfigMenu), "ProfessionConfigSkillExpMulitpliersOverride")]
+    [GMCMOverride(typeof(GenericModConfigMenu), "ProfessionConfigSkillExpMultipliersOverride")]
     public Dictionary<string, float> SkillExpMultipliers
     {
         get => this._skillExpMultipliers;
         internal set
         {
+            if (value == this._skillExpMultipliers)
+            {
+                return;
+            }
+
             foreach (var pair in value)
             {
                 this._skillExpMultipliers[pair.Key] = Math.Abs(pair.Value);
@@ -551,11 +621,17 @@ public sealed class ProfessionConfig
         }
     }
 
-    /// <summary>Gets a value indicating whether if enabled, Prospector and Scavenger will only track off-screen object while <see cref="ModKey"/> is held.</summary>
+    /// <summary>Gets a value indicating whether Prospector and Scavenger will only track off-screen object while <see cref="ModKey"/> is held.</summary>
     [JsonProperty]
     [GMCMSection("controls_ui")]
     [GMCMPriority(404)]
     public bool DisableAlwaysTrack { get; internal set; } = false;
+
+    /// <summary>Gets a value indicating whether to restore the legacy purple arrow for Prospector Hunts, instead of the new audio cues.</summary>
+    [JsonProperty]
+    [GMCMSection("controls_ui")]
+    [GMCMPriority(405)]
+    public bool UseLegacyProspectorHunt { get; internal set; } = false;
 
     /// <summary>
     ///     Gets a value indicating whether to display the MAX icon below fish in the Collections Menu which have been caught at the
@@ -563,7 +639,7 @@ public sealed class ProfessionConfig
     /// </summary>
     [JsonProperty]
     [GMCMSection("controls_ui")]
-    [GMCMPriority(405)]
+    [GMCMPriority(406)]
     public bool ShowFishCollectionMaxIcon { get; internal set; } = true;
 
     #endregion controls & ui

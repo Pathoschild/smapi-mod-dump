@@ -8,17 +8,16 @@
 **
 *************************************************/
 
-using System;
 using Gaphodil.BetterJukebox.Framework;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
+using GenericModConfigMenu;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI.Events;
-using StardewValley;
+using StardewModdingAPI.Utilities;
+using StardewModdingAPI;
 using StardewValley.Menus;
+using StardewValley;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
-using GenericModConfigMenu;
 
 namespace Gaphodil.BetterJukebox
 {
@@ -80,17 +79,11 @@ namespace Gaphodil.BetterJukebox
                 }
 
                 //Game1.player.songsHeard.Remove("title_day"); // readded at every save load, so...
-                int MTIndex = Game1.player.songsHeard.IndexOf("MainTheme");
-                if (MTIndex.Equals(0) || MTIndex.Equals(-1)) { }
-                else
-                {
-                    Game1.player.songsHeard.RemoveAt(MTIndex);
-                    Game1.player.songsHeard.Insert(0, "MainTheme");
-                }
+                // 1.6: list to hashset means changing maintheme location unnecessary
 
                 Monitor.Log("permanentBlacklist: " + Config.PermanentBlacklist);
                 Monitor.Log("permanentBlacklist converted: " + new FilterListConfig(Config.PermanentBlacklist));
-                FilterListConfig blacklist = new FilterListConfig(Config.PermanentBlacklist);
+                FilterListConfig blacklist = new(Config.PermanentBlacklist);
                 List<string> toRemove = blacklist.content.Distinct().ToList();
                 if (toRemove.Count > 0)
                 {
@@ -116,17 +109,21 @@ namespace Gaphodil.BetterJukebox
             {
                 ChooseFromListMenu.actionOnChoosingListOption action = 
                     Helper.Reflection.GetField<ChooseFromListMenu.actionOnChoosingListOption>(e.NewMenu, "chooseAction").GetValue();
+
+                // easy 1.6 saloon bool
+                bool isSaloon = !Helper.Reflection.GetField<List<string>>(e.NewMenu, "options").GetValue().Contains("random");
                 
                 e.NewMenu.exitThisMenuNoSound(); // is this neccessary? is there a better way?
 
-                // create default list of songs to play - apparently this is how CA hard-copied the list
-                List<string> list = Game1.player.songsHeard.Distinct().ToList();
+                // create default list of songs to play
+                // 1.6: list to hashset - shallow should be fine here?
+                HashSet<string> heardCopy = new(Game1.player.songsHeard);
 
                 // add unheard tracks
                 if (Config.ShowUnheardTracks && !Config.PermanentUnheard)
                 {
                     BetterJukeboxHelper.AddUnheardTracks(
-                        list,
+                        heardCopy,
                         Config.UnheardSoundtrack,
                         Config.UnheardNamed,
                         Config.UnheardRandom,
@@ -135,6 +132,9 @@ namespace Gaphodil.BetterJukebox
                         Config.UnheardMusical
                     );
                 }
+
+                // convert to list here instead
+                List<string> list = heardCopy.ToList();
 
                 // remove specific tracks
                 BetterJukeboxHelper.FilterTracksFromList(list, Config.AmbientTracks, Config.Blacklist, Config.Whitelist);
@@ -163,18 +163,20 @@ namespace Gaphodil.BetterJukebox
                 // speculative fix for Nexus page bug report
                 list.Remove("resetVariable");
 
+                // 1.5.5 asset loading consistency (also it may not have worked off windows anyways)
+                string graphicsKey = PathUtilities.NormalizeAssetName("assets/BetterJukeboxGraphics.png");
 
                 // create and activate the menu
                 Game1.activeClickableMenu = new BetterJukeboxMenu(
                     list,
                     new BetterJukeboxMenu.actionOnChoosingListOption(action),
-                    Helper.Content.Load<Texture2D>(
-                        "assets/BetterJukeboxGraphics.png",
-                        ContentSource.ModFolder
+                    Helper.ModContent.Load<Texture2D>( // 1.6 compatibility
+                        graphicsKey
                     ),
                     key => Helper.Translation.Get(key),
                     Monitor,
                     Config,
+                    isSaloon,
                     Game1.player.currentLocation.miniJukeboxTrack.Value
                 ); 
             }
@@ -189,168 +191,180 @@ namespace Gaphodil.BetterJukebox
                 return;
 
             // register mod configuration
-            api.RegisterModConfig(
+            api.Register(
                 mod: ModManifest,
-                revertToDefault: () => Config = new ModConfig(),
-                saveToFile: () => Helper.WriteConfig(Config)
+                reset: () => Config = new ModConfig(),
+                save: () => Helper.WriteConfig(Config)
             );
-
-            // let players configure your mod in-game (instead of just from the title screen)
-            api.SetDefaultIngameOptinValue(ModManifest, true);
 
             // add some config options
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:ShowMenu"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:ShowMenuDescription"),
-                optionGet: () => Config.ShowMenu,
-                optionSet: value => Config.ShowMenu = value
+                name: () => Helper.Translation.Get("BetterJukebox:ShowMenu"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:ShowMenuDescription"),
+                getValue: () => Config.ShowMenu,
+                setValue: value => Config.ShowMenu = value
             );
-            api.RegisterPageLabel(
-                ModManifest,
-                Helper.Translation.Get("BetterJukebox:ListSettings"),
-                Helper.Translation.Get("BetterJukebox:ListSettingsDescription"),
-                Helper.Translation.Get("BetterJukebox:ListSettings")
+            api.AddPageLink(
+                mod: ModManifest,
+                pageId: Helper.Translation.Get("BetterJukebox:ListSettings"),
+                text: () => Helper.Translation.Get("BetterJukebox:ListSettings"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:ListSettingsDescription")
             );
-            api.RegisterPageLabel(
-                ModManifest,
-                Helper.Translation.Get("BetterJukebox:FunctionalSettings"),
-                Helper.Translation.Get("BetterJukebox:FunctionalSettingsDescription"),
-                Helper.Translation.Get("BetterJukebox:FunctionalSettings")
+            api.AddPageLink(
+                mod: ModManifest,
+                pageId: Helper.Translation.Get("BetterJukebox:FunctionalSettings"),
+                text: () => Helper.Translation.Get("BetterJukebox:FunctionalSettings"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:FunctionalSettingsDescription")
             );
-            api.RegisterPageLabel(
-                ModManifest,
-                Helper.Translation.Get("BetterJukebox:VisualSettings"),
-                Helper.Translation.Get("BetterJukebox:VisualSettingsDescription"),
-                Helper.Translation.Get("BetterJukebox:VisualSettings")
+            api.AddPageLink(
+                mod: ModManifest,
+                pageId: Helper.Translation.Get("BetterJukebox:VisualSettings"),
+                text: () => Helper.Translation.Get("BetterJukebox:VisualSettings"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:VisualSettingsDescription")
             );
 
-            api.StartNewPage(ModManifest, Helper.Translation.Get("BetterJukebox:ListSettings"));
-            api.RegisterClampedOption(
+
+            api.AddPage(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:AmbientTracks"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:AmbientTracksDescription"),
-                optionGet: () => Config.AmbientTracks,
-                optionSet: value => Config.AmbientTracks = value,
+                pageId: Helper.Translation.Get("BetterJukebox:ListSettings"),
+                pageTitle: () => Helper.Translation.Get("BetterJukebox:ListSettings")
+            );
+            api.AddNumberOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("BetterJukebox:AmbientTracks"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:AmbientTracksDescription"),
+                getValue: () => Config.AmbientTracks,
+                setValue: value => Config.AmbientTracks = (int)value,
                 min: 0,
                 max: 2,
                 interval: 1
             );
-            api.RegisterSimpleOption(
+            api.AddTextOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:Blacklist"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:BlacklistDescription"),
-                optionGet: () => Config.Blacklist,
-                optionSet: value => Config.Blacklist = value
+                name: () => Helper.Translation.Get("BetterJukebox:Blacklist"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:BlacklistDescription"),
+                getValue: () => Config.Blacklist,
+                setValue: value => Config.Blacklist = value
             );
-            api.RegisterSimpleOption(
+            api.AddTextOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:Whitelist"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:WhitelistDescription"),
-                optionGet: () => Config.Whitelist,
-                optionSet: value => Config.Whitelist = value
+                name: () => Helper.Translation.Get("BetterJukebox:Whitelist"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:WhitelistDescription"),
+                getValue: () => Config.Whitelist,
+                setValue: value => Config.Whitelist = value
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:ShowLockedSongs"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:ShowLockedSongsDescription"),
-                optionGet: () => Config.ShowLockedSongs,
-                optionSet: value => Config.ShowLockedSongs = value
+                name: () => Helper.Translation.Get("BetterJukebox:ShowLockedSongs"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:ShowLockedSongsDescription"),
+                getValue: () => Config.ShowLockedSongs,
+                setValue: value => Config.ShowLockedSongs = value
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:ShowUnheardTracks"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:ShowUnheardTracksDescription"),
-                optionGet: () => Config.ShowUnheardTracks,
-                optionSet: value => Config.ShowUnheardTracks = value
+                name: () => Helper.Translation.Get("BetterJukebox:ShowUnheardTracks"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:ShowUnheardTracksDescription"),
+                getValue: () => Config.ShowUnheardTracks,
+                setValue: value => Config.ShowUnheardTracks = value
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:UnheardSoundtrack"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:UnheardSoundtrackDescription"),
-                optionGet: () => Config.UnheardSoundtrack,
-                optionSet: value => Config.UnheardSoundtrack = value
+                name: () => Helper.Translation.Get("BetterJukebox:UnheardSoundtrack"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:UnheardSoundtrackDescription"),
+                getValue: () => Config.UnheardSoundtrack,
+                setValue: value => Config.UnheardSoundtrack = value
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:UnheardNamed"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:UnheardNamedDescription"),
-                optionGet: () => Config.UnheardNamed,
-                optionSet: value => Config.UnheardNamed = value
+                name: () => Helper.Translation.Get("BetterJukebox:UnheardNamed"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:UnheardNamedDescription"),
+                getValue: () => Config.UnheardNamed,
+                setValue: value => Config.UnheardNamed = value
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:UnheardRandom"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:UnheardRandomDescription"),
-                optionGet: () => Config.UnheardRandom,
-                optionSet: value => Config.UnheardRandom = value
+                name: () => Helper.Translation.Get("BetterJukebox:UnheardRandom"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:UnheardRandomDescription"),
+                getValue: () => Config.UnheardRandom,
+                setValue: value => Config.UnheardRandom = value
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:UnheardMisc"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:UnheardMiscDescription"),
-                optionGet: () => Config.UnheardMisc,
-                optionSet: value => Config.UnheardMisc = value
+                name: () => Helper.Translation.Get("BetterJukebox:UnheardMisc"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:UnheardMiscDescription"),
+                getValue: () => Config.UnheardMisc,
+                setValue: value => Config.UnheardMisc = value
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:UnheardDupes"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:UnheardDupesDescription"),
-                optionGet: () => Config.UnheardDupes,
-                optionSet: value => Config.UnheardDupes = value
+                name: () => Helper.Translation.Get("BetterJukebox:UnheardDupes"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:UnheardDupesDescription"),
+                getValue: () => Config.UnheardDupes,
+                setValue: value => Config.UnheardDupes = value
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:UnheardMusical"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:UnheardMusicalDescription"),
-                optionGet: () => Config.UnheardMusical,
-                optionSet: value => Config.UnheardMusical = value
+                name: () => Helper.Translation.Get("BetterJukebox:UnheardMusical"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:UnheardMusicalDescription"),
+                getValue: () => Config.UnheardMusical,
+                setValue: value => Config.UnheardMusical = value
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:PermanentUnheard"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:PermanentUnheardDescription"),
-                optionGet: () => Config.PermanentUnheard,
-                optionSet: value => Config.PermanentUnheard = value
+                name: () => Helper.Translation.Get("BetterJukebox:PermanentUnheard"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:PermanentUnheardDescription"),
+                getValue: () => Config.PermanentUnheard,
+                setValue: value => Config.PermanentUnheard = value
             );
-            api.RegisterSimpleOption(
+            api.AddTextOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:PermanentBlacklist"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:PermanentBlacklistDescription"),
-                optionGet: () => Config.PermanentBlacklist,
-                optionSet: value => Config.PermanentBlacklist = value
-            );
-
-            api.StartNewPage(ModManifest, Helper.Translation.Get("BetterJukebox:FunctionalSettings"));
-            api.RegisterSimpleOption(
-                mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:TrueRandom"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:TrueRandomDescription"),
-                optionGet: () => Config.TrueRandom,
-                optionSet: value => Config.TrueRandom = value
-            );
-            api.RegisterSimpleOption(
-                mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:ShowAlternateSorts"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:ShowAlternateSortsDescription"),
-                optionGet: () => Config.ShowAlternateSorts,
-                optionSet: value => Config.ShowAlternateSorts = value
+                name: () => Helper.Translation.Get("BetterJukebox:PermanentBlacklist"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:PermanentBlacklistDescription"),
+                getValue: () => Config.PermanentBlacklist,
+                setValue: value => Config.PermanentBlacklist = value
             );
 
-            api.StartNewPage(ModManifest, Helper.Translation.Get("BetterJukebox:VisualSettings"));
-            api.RegisterSimpleOption(
+
+            api.AddPage(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:ShowInternalId"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:ShowInternalIdDescription"),
-                optionGet: () => Config.ShowInternalId,
-                optionSet: value => Config.ShowInternalId = value
+                pageId: Helper.Translation.Get("BetterJukebox:FunctionalSettings"),
+                pageTitle: () => Helper.Translation.Get("BetterJukebox:FunctionalSettings")
             );
-            api.RegisterSimpleOption(
+            api.AddBoolOption(
                 mod: ModManifest,
-                optionName: Helper.Translation.Get("BetterJukebox:ShowBandcampNames"),
-                optionDesc: Helper.Translation.Get("BetterJukebox:ShowBandcampNamesDescription"),
-                optionGet: () => Config.ShowBandcampNames,
-                optionSet: value => Config.ShowBandcampNames = value
+                name: () => Helper.Translation.Get("BetterJukebox:TrueRandom"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:TrueRandomDescription"),
+                getValue: () => Config.TrueRandom,
+                setValue: value => Config.TrueRandom = value
+            );
+            api.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("BetterJukebox:ShowAlternateSorts"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:ShowAlternateSortsDescription"),
+                getValue: () => Config.ShowAlternateSorts,
+                setValue: value => Config.ShowAlternateSorts = value
+            );
+
+
+            api.AddPage(
+                mod: ModManifest, 
+                pageId: Helper.Translation.Get("BetterJukebox:VisualSettings"),
+                pageTitle: () => Helper.Translation.Get("BetterJukebox:VisualSettings")
+            );
+            api.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("BetterJukebox:ShowInternalId"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:ShowInternalIdDescription"),
+                getValue: () => Config.ShowInternalId,
+                setValue: value => Config.ShowInternalId = value
+            );
+            api.AddBoolOption(
+                mod: ModManifest,
+                name: () => Helper.Translation.Get("BetterJukebox:ShowBandcampNames"),
+                tooltip: () => Helper.Translation.Get("BetterJukebox:ShowBandcampNamesDescription"),
+                getValue: () => Config.ShowBandcampNames,
+                setValue: value => Config.ShowBandcampNames = value
             );
         }
 

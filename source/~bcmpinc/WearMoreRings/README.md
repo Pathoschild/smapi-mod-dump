@@ -41,6 +41,7 @@ Mods adding additional rings most should work out of the box. For backwards comp
 ## Changes
 #### 7.0:
 * Localization support.
+* Russian & Ukrainian translation
 
 #### 6.4:
 * Fixed null pointer error when saving in generic mod config menu.

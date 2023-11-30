@@ -39,7 +39,7 @@ namespace GameboyArcade
 
         private IButtonListener Listener;
         private Dictionary<SButton, Button> Controls;
-        private GameboyMinigame Minigame;
+        private readonly GameboyMinigame Minigame;
         private bool DisablePlayerControls;
 
         public GameboyController(GameboyMinigame minigame)

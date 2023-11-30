@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using DaLion.Overhaul.Modules.Ponds.Extensions;
 using DaLion.Overhaul.Modules.Professions.Extensions;
+using DaLion.Shared.Classes;
 using DaLion.Shared.Constants;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Stardew;
@@ -196,7 +197,7 @@ internal sealed class FishingRodPullFishFromWaterPatcher : HarmonyPatcher
             var lowestFamily = familyQualities.FindIndex(i => i > 0);
             if (lowestFamily < lowestFish || (lowestFamily == lowestFish && Game1.random.NextDouble() < 0.5))
             {
-                index = Maps.ExtendedFamilyPairs[index];
+                index = Lookups.FamilyPairs.TryGet(index, out var pairIndex) ? pairIndex : index;
                 quality = lowestFamily == 3 ? 4 : lowestFamily;
                 familyQualities[lowestFamily]--;
                 pond.Write(DataKeys.FamilyQualities, string.Join(",", familyQualities));

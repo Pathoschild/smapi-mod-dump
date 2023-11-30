@@ -51,8 +51,6 @@ public sealed class WeaponTier : SmartEnum<WeaponTier>
 
     #endregion enum values
 
-    private static readonly Dictionary<int, WeaponTier> TierByWeapon;
-
     static WeaponTier()
     {
 #pragma warning disable SA1509 // Opening braces should not be preceded by blank line
@@ -145,6 +143,9 @@ public sealed class WeaponTier : SmartEnum<WeaponTier>
 
     /// <summary>Gets the sell price of a weapon at this tier.</summary>
     public int Price { get; }
+
+    /// <summary>Gets a lookup dictionary for a weapon's tier given its sheet index.</summary>
+    internal static Dictionary<int, WeaponTier> TierByWeapon { get; }
 
     /// <summary>Gets the corresponding <see cref="WeaponTier"/> for the specified <paramref name="tool"/>.</summary>
     /// <param name="tool">A <see cref="MeleeWeapon"/> or <see cref="Slingshot"/>.</param>

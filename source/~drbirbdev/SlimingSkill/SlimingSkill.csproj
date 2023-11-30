@@ -1,3 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\common.targets" />
+    <Import Project="..\common.targets" />
+    <Import Project="..\common-contentpatcher.targets" />
+    <Import Project="..\common-spacecore.targets" />
+
+    <PropertyGroup>
+        <Description>Adds a skill related to raising and fighting slimes.</Description>
+        <Version>0.0.1</Version>
+        <UpdateKeys>Nexus:???</UpdateKeys>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SMAPIDependency Include="DaLion.Overhaul" MinimumVersion="1.1.1" Required="false" />
+    </ItemGroup>
+    
 </Project>

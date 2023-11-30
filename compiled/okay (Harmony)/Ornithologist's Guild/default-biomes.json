@@ -5,7 +5,7 @@
     "Beach": ["ocean"],
     "BusStop": ["farm", "city"],
     "Mountain": ["wetland"],
-    "Forest": ["forest"],
+    "Forest": ["forest", "wetland"],
     "Mine": ["city"],
     "Desert": ["desert"],
     "Woods": ["forest", "wetland"],

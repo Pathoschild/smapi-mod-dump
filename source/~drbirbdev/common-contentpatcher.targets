@@ -1,0 +1,22 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <GameModsPath>$(GamePath)Mods\$(AssemblyName)</GameModsPath>
+        <EnableModZip>false</EnableModZip>
+    </PropertyGroup>
+
+    <Target Name="DeployPack" AfterTargets="Build">
+        <Message Text="Running DeployPack target..." />
+        <ItemGroup>
+            <_FilesToCopy Include="$(ProjectDir)ContentPatcher/**/*" />
+        </ItemGroup>
+
+        <Copy SourceFiles="@(_FilesToCopy)" DestinationFiles="@(_FilesToCopy->'$(GameModsPath)/$(AssemblyName) [CP]/%(RecursiveDir)%(Filename)%(Extension)')" />
+        <!-- Use ZipDirectory after build. -->
+        <ZipDirectory DestinationFile="$(ModZipPath)/$(AssemblyName) $(Version).zip" SourceDirectory="$(GameModsPath)" Overwrite="True" />
+    </Target>
+
+    <ItemGroup>
+        <SMAPIDependency Include="Pathoschild.ContentPatcher" Required="true" />
+    </ItemGroup>
+
+</Project>

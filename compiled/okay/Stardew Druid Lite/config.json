@@ -1,0 +1,12 @@
+{
+  "riteButtons": "MouseX1, MouseX2, V, LeftShoulder",
+  "actionButtons": "MouseLeft, C, ControllerX",
+  "castBuffs": true,
+  "consumeRoughage": true,
+  "consumeQuicksnack": true,
+  "consumeCaffeine": true,
+  "castAnywhere": false,
+  "disableSeeds": false,
+  "disableFish": false,
+  "disableTrees": false
+}

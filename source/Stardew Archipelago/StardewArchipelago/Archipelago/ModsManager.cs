@@ -18,10 +18,12 @@ namespace StardewArchipelago.Archipelago
 {
     public class ModsManager
     {
+        private IMonitor _monitor;
         private List<string> _activeMods;
 
-        public ModsManager(List<string> activeMods)
+        public ModsManager(IMonitor monitor, List<string> activeMods)
         {
+            _monitor = monitor;
             _activeMods = activeMods;
         }
 
@@ -67,6 +69,12 @@ namespace StardewArchipelago.Archipelago
             var valid = true;
             foreach (var modName in _activeMods)
             {
+                if (!ModVersions.Versions.ContainsKey(modName))
+                {
+                    _monitor.Log($"Unrecognized mod requested by the server's slot data: {modName}", LogLevel.Warn);
+                    continue;
+                }
+
                 var desiredVersion = ModVersions.Versions[modName];
                 if (IsModActiveAndCorrectVersion(loadedModData, modName, desiredVersion, out var existingVersion))
                 {

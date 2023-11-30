@@ -37,6 +37,18 @@ namespace CropGrowthAdjustments.Patching
             }
         }
 
+        public static void HoeDirtPlant(HoeDirt __instance, ref bool __result, int index, int tileX, int tileY, Farmer who, bool isFertilizer, GameLocation location)
+        {
+            try
+            {
+                HarmonyPatchExecutors.HoeDirtPlant(__instance, ref __result, index, tileX, tileY, who, isFertilizer, location);
+            }
+            catch (Exception e)
+            {
+                ModEntry.ModMonitor.Log($"Failed in { nameof(HoeDirtPlant) }:\n{ e }", LogLevel.Error);
+            }
+        }
+
         /// <summary> Patch for the IndoorPot.DayUpdate method </summary>
         public static bool IndoorPotDayUpdate(IndoorPot __instance, GameLocation location)
         {

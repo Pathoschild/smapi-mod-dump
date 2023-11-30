@@ -1,7 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <AssemblyName>DestroyableBushes</AssemblyName>
-    <RootNamespace>DestroyableBushes</RootNamespace>
 	<Version>1.0.0</Version>
 	<TargetFramework>net5.0</TargetFramework>
 	<LangVersion>Latest</LangVersion>
@@ -11,12 +9,6 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="i18n\default.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>

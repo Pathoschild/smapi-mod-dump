@@ -17,13 +17,11 @@ namespace CropGrowthAdjustments.Types
     public class CropAdjustment
     {
         public string CropProduceName { get; set; }
+        public int CropProduceItemId { get; set; } = -1;
         public string SeasonsToGrowIn { get; set; }
         public string SeasonsToProduceIn { get; set; }
         public string LocationsWithDefaultSeasonBehavior { get; set; }
         public List<SpecialSpriteForSeason> SpecialSpritesForSeasons { get; set; } = null;
-        
-        [JsonIgnore]
-        public int CropProduceItemId { get; set; }
         
         [JsonIgnore]
         public int OriginalRowInSpriteSheet { get; set; }

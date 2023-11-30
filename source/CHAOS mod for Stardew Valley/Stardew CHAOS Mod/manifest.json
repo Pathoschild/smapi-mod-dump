@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/DevWithMaj/Stardew-CHAOS
+**
+*************************************************/
+
+{
+    "Name": "Stardew_CHAOS_Mod",
+    "Author": "Majesity",
+    "Version": "1.0.0",
+    "Description": "Random things happen every 60 seconds, good or bad. Similar to GTA5 chaos mod",
+    "UniqueID": "Majesity.Stardew_CHAOS_Mod",
+    "EntryDll": "Stardew CHAOS Mod.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": []
+}

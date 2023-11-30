@@ -1,3 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\common-nospace.targets" />
+    <Import Project="..\common.targets" />
+
+    <PropertyGroup>
+        <Description>Shares JunimoKart Endless Mode scores with the world.</Description>
+        <Version>1.0.4</Version>
+        <UpdateKeys>Nexus:14856</UpdateKeys>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SMAPIDependency Include="drbirbdev.LeaderboardLibrary" Required="true" />
+    </ItemGroup>
+    
 </Project>

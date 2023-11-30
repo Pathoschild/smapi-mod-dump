@@ -661,7 +661,7 @@ namespace ichortower_HatMouseLacey
                 }
                 Game1.playSound("drumkit6");
                 /* reflection abuse */
-                var apam = (Dictionary<string, Vector3>)__instance.GetType()
+                var apam = (Dictionary<string, Vector3>)(typeof(StardewValley.Event))
                         .GetField("actorPositionsAfterMove", BindingFlags.Instance | BindingFlags.NonPublic)
                         .GetValue(__instance);
                 apam.Clear();
@@ -694,7 +694,7 @@ namespace ichortower_HatMouseLacey
                 StardewValley.Event __instance)
         {
             /* more reflection abuse: _commandLookup is protected */
-            var dict = (Dictionary<string, MethodInfo>)__instance.GetType()
+            var dict = (Dictionary<string, MethodInfo>)(typeof(StardewValley.Event))
                     .GetField("_commandLookup", BindingFlags.Static | BindingFlags.NonPublic)
                     .GetValue(__instance);
             MethodInfo[] commands = typeof(LCEventCommands).GetMethods(

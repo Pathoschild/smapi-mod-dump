@@ -62,8 +62,10 @@ namespace StardewHack.MovementSpeed
         void Game1_UpdateControlInput() {
             try {
                 Game1_UpdateControlInput_Chain();
-            } catch (Exception err) {
-                LogException(err, LogLevel.Trace);
+            } catch (InstructionNotFoundException) {
+                // This has been working fine for so long, we don't really need this debug info anymore.
+                // LogException(err, LogLevel.Trace);
+                Monitor.Log("Using chain patch");
                 
                 // The PC version of StardewModdingAPI changed this method and moved its original code into a delegate, hence the chain patching.
                 MethodInfo method = (MethodInfo)FindCode(

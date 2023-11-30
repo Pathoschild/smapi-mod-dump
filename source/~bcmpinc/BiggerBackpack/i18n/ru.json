@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/bcmpinc/StardewHack
+**
+*************************************************/
+
+{
+	SetBackpackSizeCommand: "Устанавливает размер дополнительного рюкзака игрока. Число должно быть кратно 12",
+	Purchase: "Купить ({{cost}} з.)",
+	BackpackUpgrade: "Новый рюкзак -- 48 слотов",
+	PremiumPack: "Рюкзак-премиум",
+	BackpackCostName: "Стоимость рюкзака-премиум", BackpackCostTooltip: "Устанавливает стоимость рюкзака в магазине.",
+}

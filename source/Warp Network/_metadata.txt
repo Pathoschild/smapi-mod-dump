@@ -6,9 +6,9 @@ mods:
    Warp Network
 
 latest commit:
-   commit d70f7ee9b7394665b71b087821dd856fc8aec003
+   commit 92cf9ff0a842fef9ac3a2e46c1c9e88e7ef9a04c
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Sun Oct 29 20:22:40 2023 -0400
+   Date:   Tue Nov 7 10:44:10 2023 -0500
    
-       Merge branch 'master' of https://github.com/tlitookilakin/WarpNetwork
+       update translations
    

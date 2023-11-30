@@ -20,7 +20,7 @@ namespace CoreBoy.sound
         public void SetNr43(int value)
         {
             var clockShift = value >> 4;
-            
+
             var divisor = (value & 0b111) switch
             {
                 0 => 8,
@@ -34,15 +34,15 @@ namespace CoreBoy.sound
                 _ => throw new InvalidOperationException()
             };
 
-            _shiftedDivisor = divisor << clockShift;
-            _i = 1;
+            this._shiftedDivisor = divisor << clockShift;
+            this._i = 1;
         }
 
         public bool Tick()
         {
-            if (--_i == 0)
+            if (--this._i == 0)
             {
-                _i = _shiftedDivisor;
+                this._i = this._shiftedDivisor;
                 return true;
             }
             else

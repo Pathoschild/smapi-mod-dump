@@ -1,0 +1,16 @@
+{
+  "Name": "Schedule Viewer",
+  "Author": "BinaryLip",
+  "Version": "1.0.4",
+  "Description": "Shows NPCs' schedule for the current day based on current world conditions.",
+  "UniqueID": "BinaryLip.ScheduleViewer",
+  "EntryDll": "ScheduleViewer.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:19305" ],
+  "Dependencies": [
+    {
+      "UniqueID": "Bouhm.NPCMapLocations",
+      "IsRequired": false
+    }
+  ]
+}

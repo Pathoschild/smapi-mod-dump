@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Outerwear", "Outerwear\Oute
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterFisher", "MasterFisher\MasterFisher.csproj", "{0C382082-B788-4FC2-A5D8-5847C836BCE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SatoCore", "SatoCore\SatoCore.csproj", "{2009AA6F-8F0A-4941-9D32-FA99C48C35EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SonoCore", "SonoCore\SonoCore.csproj", "{2009AA6F-8F0A-4941-9D32-FA99C48C35EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

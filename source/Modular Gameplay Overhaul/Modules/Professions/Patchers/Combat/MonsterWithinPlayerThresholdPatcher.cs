@@ -13,10 +13,9 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Combat;
 #region using directives
 
 using System.Reflection;
-using DaLion.Overhaul.Modules.Professions.Ultimates;
+using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Harmony;
-using Extensions;
 using HarmonyLib;
 using StardewValley.Monsters;
 
@@ -52,7 +51,6 @@ internal sealed class MonsterWithinPlayerThresholdPatcher : HarmonyPatcher
 
             __result = false;
             return false; // don't run original method
-
         }
         catch (Exception ex)
         {

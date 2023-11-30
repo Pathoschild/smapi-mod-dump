@@ -8,17 +8,64 @@ for queries and analysis.**
 
 # Core Changelog
 
+## 4.1.5
+
+### Fixed
+
+* GMCM Module Selection setting now translates correctly.
+* Fixed an edge case where hitting Save on the menu would reset any DynamicList options that are **not** on the current menu page. Turns out GMCM doesn't quite behave in the way I expected, so had to implement a workaround.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
+
+## 4.1.3
+
+### Fixed
+
+* Fixed GMCM list text boxes being limited to 13 characters.
+* Fixed an edge case in SpanSplitter where splitting would fail if a substring is empty. This fixes an issue with Ridgeside's Fairy Needle weapon, which, for some reason, has no description.
+* Fixed some translations. Added Chinese translation of GMCM strings by [Jumping-notes](https://github.com/Jumping-notes).
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
+
+## 4.1.2
+
+### Changed
+
+* Config options with custom logic now only trigger when the value changes. This avoids unecessarily triggering every single validation logic when saving via GMCM.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
+
+## 4.1.1
+
+### Changed
+
+* Switched from storing menu initialization flag in custom data.json to storing it in config.json. This eliminates the extra file and allows users to set the flag as they wish. This also prevents users who carry over their config from seeing the initial module selection again. Honestly idk why I didn't do this in the first place.
+
+### Fixed
+
+* Fixed Debug objects being instantiated in Release mode.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
+
 ## 4.1.0
+
+### Added
+
+* Added dynamic list options to the GMCM, which means that any list config settings that previously had to be changed manually (like `CustomArtisanMachines`, `StabbingSwords`, `TaxRatePerBracket`, etc.) can now be changed in the menu in-game. With this, all settings are now available in the menu.
 
 ### Changed
 
 * The GMCM is now self-generating (thanks to atravita for the idea and reference code). This does unfortunately mean that absolutely all translation keys for the menu have changed (sorry translators.)
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
 
 ## 4.0.1
 
 ### Added
 
 * Added a warning to re-enable modules if checksum validation fails.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
 
 ## 4.0.0
 

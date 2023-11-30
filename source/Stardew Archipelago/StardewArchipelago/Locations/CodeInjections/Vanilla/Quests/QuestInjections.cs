@@ -55,8 +55,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             _helper = helper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
-            _englishContentManager =
-                new ContentManager(Game1.game1.Content.ServiceProvider, Game1.game1.Content.RootDirectory);
+            _englishContentManager = new ContentManager(Game1.game1.Content.ServiceProvider, Game1.game1.Content.RootDirectory);
         }
 
         public static bool QuestComplete_LocationInsteadOfReward_Prefix(Quest __instance)

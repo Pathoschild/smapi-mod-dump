@@ -25,7 +25,7 @@ internal static class Farmer_TreasureHunt
 
     internal static ConditionalWeakTable<Farmer, ScavengerHunt> ScavengerHunts { get; } = new();
 
-    internal static ConditionalWeakTable<Farmer, NetBool> Values { get; } = new();
+    internal static ConditionalWeakTable<Farmer, NetBool> HuntingState { get; } = new();
 
     internal static ProspectorHunt Get_ProspectorHunt(this Farmer farmer)
     {
@@ -49,7 +49,7 @@ internal static class Farmer_TreasureHunt
 
     internal static NetBool Get_IsHuntingTreasure(this Farmer farmer)
     {
-        return Values.GetOrCreateValue(farmer);
+        return HuntingState.GetOrCreateValue(farmer);
     }
 
     // Net types are readonly

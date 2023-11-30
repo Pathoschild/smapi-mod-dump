@@ -26,23 +26,23 @@ namespace CoreBoy.gui
             0b0010100011000001,
         };
 
-        private readonly ushort[] _pixels;
+        private readonly ushort[] Pixels;
         public bool Enabled { get; set; }
-        private bool _doRefresh;
-        private int _i;
+        private bool DoRefresh;
+        private int Index;
 
         public event FrameProducedEventHandler OnFrameProduced;
 
-        private readonly object _lockObject = new object();
+        private readonly object LockObject = new object();
 
         public BitmapDisplay()
         {
-            _pixels = new ushort[DisplayWidth * DisplayHeight];
+            this.Pixels = new ushort[DisplayWidth * DisplayHeight];
         }
 
         public void PutDmgPixel(int color)
         {
-            _pixels[_i++] = Colors[color];
+            this.Pixels[this.Index++] = Colors[color];
         }
 
         /// <summary>
@@ -55,51 +55,51 @@ namespace CoreBoy.gui
         /// <param name="gbcRgb"></param>
         public void PutColorPixel(int gbcRgb)
         {
-            _pixels[_i++] = (ushort)((gbcRgb >> 9) | (gbcRgb << 11) | (gbcRgb << 1 & 0x7c0) | 0b1);
+            this.Pixels[this.Index++] = (ushort)((gbcRgb >> 9) | (gbcRgb << 11) | ((gbcRgb << 1) & 0x7c0) | 0b1);
         }
 
-        public void RequestRefresh() => SetRefreshFlag(true);
+        public void RequestRefresh() => this.SetRefreshFlag(true);
 
         public void WaitForRefresh()
         {
-            while (_doRefresh)
+            while (this.DoRefresh)
             {
                 Thread.Sleep(1);
             }
         }
-        
+
         public void Run(CancellationToken token)
         {
-            SetRefreshFlag(false);
-            
-            Enabled = true;
-            
+            this.SetRefreshFlag(false);
+
+            this.Enabled = true;
+
             while (!token.IsCancellationRequested)
             {
-                if (!_doRefresh)
+                if (!this.DoRefresh)
                 {
                     Thread.Sleep(1);
                     continue;
                 }
 
-                RefreshScreen();
+                this.RefreshScreen();
 
-                SetRefreshFlag(false);
+                this.SetRefreshFlag(false);
             }
         }
 
         private void RefreshScreen()
         {
-            OnFrameProduced?.Invoke(this, _pixels);
+            OnFrameProduced?.Invoke(this, this.Pixels);
 
-            _i = 0;
+            this.Index = 0;
         }
 
         private void SetRefreshFlag(bool flag)
         {
-            lock (_lockObject)
+            lock (this.LockObject)
             {
-                _doRefresh = flag;
+                this.DoRefresh = flag;
             }
         }
     }

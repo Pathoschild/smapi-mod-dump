@@ -91,7 +91,13 @@ namespace Custom_Farm_Loader.Menus
                prefix: new HarmonyMethod(typeof(_LoadGameMenu), nameof(_LoadGameMenu.setScrollBarToCurrentIndex_Prefix))
             );
 
-            Helper.Events.Content.LocaleChanged += (s, e) => CachedFarmTypeNames.Clear();
+            Helper.Events.Content.LocaleChanged += (s, e) => clearCache();
+        }
+
+        private static void clearCache()
+        {
+            CachedFarmTypeNames.Clear();
+            CachedFarmTypeIcons.Clear();
         }
 
         public static bool setScrollBarToCurrentIndex_Prefix(LoadGameMenu __instance)

@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Threading;
 using CoreBoy.cpu.op;
 using CoreBoy.cpu.opcode;
 using CoreBoy.gpu;
@@ -67,57 +66,57 @@ namespace CoreBoy.cpu
 
         public Cpu(IAddressSpace addressSpace, InterruptManager interruptManager, Gpu gpu, IDisplay display, SpeedMode speedMode)
         {
-            _opcodes = new Opcodes();
-            Registers = new Registers();
-            _addressSpace = addressSpace;
-            _interruptManager = interruptManager;
-            _gpu = gpu;
-            _display = display;
-            _speedMode = speedMode;
+            this._opcodes = new Opcodes();
+            this.Registers = new Registers();
+            this._addressSpace = addressSpace;
+            this._interruptManager = interruptManager;
+            this._gpu = gpu;
+            this._display = display;
+            this._speedMode = speedMode;
         }
 
         public void Tick()
         {
-            _clockCycle++;
-            int speed = _speedMode.GetSpeedMode();
+            this._clockCycle++;
+            int speed = this._speedMode.GetSpeedMode();
 
-            if (_clockCycle >= (4 / speed))
+            if (this._clockCycle >= (4 / speed))
             {
-                _clockCycle = 0;
+                this._clockCycle = 0;
             }
             else
             {
                 return;
             }
 
-            if (State == State.OPCODE || State == State.HALTED || State == State.STOPPED)
+            if (this.State == State.OPCODE || this.State == State.HALTED || this.State == State.STOPPED)
             {
-                if (_interruptManager.IsIme() && _interruptManager.IsInterruptRequested())
+                if (this._interruptManager.IsIme() && this._interruptManager.IsInterruptRequested())
                 {
-                    if (State == State.STOPPED)
+                    if (this.State == State.STOPPED)
                     {
-                        _display.Enabled = true;
+                        this._display.Enabled = true;
                     }
 
-                    State = State.IRQ_READ_IF;
+                    this.State = State.IRQ_READ_IF;
                 }
             }
 
-            switch (State)
+            switch (this.State)
             {
                 case State.IRQ_READ_IF:
                 case State.IRQ_READ_IE:
                 case State.IRQ_PUSH_1:
                 case State.IRQ_PUSH_2:
                 case State.IRQ_JUMP:
-                    HandleInterrupt();
+                    this.HandleInterrupt();
                     return;
-                case State.HALTED when _interruptManager.IsInterruptRequested():
-                    State = State.OPCODE;
+                case State.HALTED when this._interruptManager.IsInterruptRequested():
+                    this.State = State.OPCODE;
                     break;
             }
 
-            if (State == State.HALTED || State == State.STOPPED)
+            if (this.State == State.HALTED || this.State == State.STOPPED)
             {
                 return;
             }
@@ -126,39 +125,39 @@ namespace CoreBoy.cpu
 
             while (true)
             {
-                int pc = Registers.PC;
-                switch (State)
+                int pc = this.Registers.PC;
+                switch (this.State)
                 {
                     case State.OPCODE:
-                        ClearState();
-                        _opcode1 = _addressSpace.GetByte(pc);
+                        this.ClearState();
+                        this._opcode1 = this._addressSpace.GetByte(pc);
                         accessedMemory = true;
-                        if (_opcode1 == 0xcb)
+                        if (this._opcode1 == 0xcb)
                         {
-                            State = State.EXT_OPCODE;
+                            this.State = State.EXT_OPCODE;
                         }
-                        else if (_opcode1 == 0x10)
+                        else if (this._opcode1 == 0x10)
                         {
-                            CurrentOpcode = _opcodes.Commands[_opcode1];
-                            State = State.EXT_OPCODE;
+                            this.CurrentOpcode = this._opcodes.Commands[this._opcode1];
+                            this.State = State.EXT_OPCODE;
                         }
                         else
                         {
-                            State = State.OPERAND;
-                            CurrentOpcode = _opcodes.Commands[_opcode1];
-                            if (CurrentOpcode == null)
+                            this.State = State.OPERAND;
+                            this.CurrentOpcode = this._opcodes.Commands[this._opcode1];
+                            if (this.CurrentOpcode == null)
                             {
-                                throw new InvalidOperationException($"No command for 0x{_opcode1:X2}");
+                                throw new InvalidOperationException($"No command for 0x{this._opcode1:X2}");
                             }
                         }
 
-                        if (!_haltBugMode)
+                        if (!this._haltBugMode)
                         {
-                            Registers.IncrementPc();
+                            this.Registers.IncrementPc();
                         }
                         else
                         {
-                            _haltBugMode = false;
+                            this._haltBugMode = false;
                         }
 
                         break;
@@ -170,20 +169,20 @@ namespace CoreBoy.cpu
                         }
 
                         accessedMemory = true;
-                        _opcode2 = _addressSpace.GetByte(pc);
-                        CurrentOpcode ??= _opcodes.ExtCommands[_opcode2];
+                        this._opcode2 = this._addressSpace.GetByte(pc);
+                        this.CurrentOpcode ??= this._opcodes.ExtCommands[this._opcode2];
 
-                        if (CurrentOpcode == null)
+                        if (this.CurrentOpcode == null)
                         {
-                            throw new InvalidOperationException($"No command for {_opcode2:X}cb 0x{_opcode2:X2}");
+                            throw new InvalidOperationException($"No command for {this._opcode2:X}cb 0x{this._opcode2:X2}");
                         }
 
-                        State = State.OPERAND;
-                        Registers.IncrementPc();
+                        this.State = State.OPERAND;
+                        this.Registers.IncrementPc();
                         break;
 
                     case State.OPERAND:
-                        while (_operandIndex < CurrentOpcode.Length)
+                        while (this._operandIndex < this.CurrentOpcode.Length)
                         {
                             if (accessedMemory)
                             {
@@ -191,67 +190,67 @@ namespace CoreBoy.cpu
                             }
 
                             accessedMemory = true;
-                            _operand[_operandIndex++] = _addressSpace.GetByte(pc);
-                            Registers.IncrementPc();
+                            this._operand[this._operandIndex++] = this._addressSpace.GetByte(pc);
+                            this.Registers.IncrementPc();
                         }
 
-                        _ops = CurrentOpcode.Ops.ToList();
-                        State = State.RUNNING;
+                        this._ops = this.CurrentOpcode.Ops.ToList();
+                        this.State = State.RUNNING;
                         break;
 
                     case State.RUNNING:
-                        if (_opcode1 == 0x10)
+                        if (this._opcode1 == 0x10)
                         {
-                            if (_speedMode.OnStop())
+                            if (this._speedMode.OnStop())
                             {
-                                State = State.OPCODE;
+                                this.State = State.OPCODE;
                             }
                             else
                             {
-                                State = State.STOPPED;
-                                _display.Enabled = false;
+                                this.State = State.STOPPED;
+                                this._display.Enabled = false;
                             }
 
                             return;
                         }
-                        else if (_opcode1 == 0x76)
+                        else if (this._opcode1 == 0x76)
                         {
-                            if (_interruptManager.IsHaltBug())
+                            if (this._interruptManager.IsHaltBug())
                             {
-                                State = State.OPCODE;
-                                _haltBugMode = true;
+                                this.State = State.OPCODE;
+                                this._haltBugMode = true;
                                 return;
                             }
                             else
                             {
-                                State = State.HALTED;
+                                this.State = State.HALTED;
                                 return;
                             }
                         }
 
-                        if (_opIndex < _ops.Count)
+                        if (this._opIndex < this._ops.Count)
                         {
-                            var op = _ops[_opIndex];
+                            var op = this._ops[this._opIndex];
                             bool opAccessesMemory = op.ReadsMemory() || op.WritesMemory();
                             if (accessedMemory && opAccessesMemory)
                             {
                                 return;
                             }
 
-                            _opIndex++;
+                            this._opIndex++;
 
-                            var corruptionType = op.CausesOemBug(Registers, _opContext);
+                            var corruptionType = op.CausesOemBug(this.Registers, this._opContext);
                             if (corruptionType != null)
                             {
-                                HandleSpriteBug(corruptionType.Value);
+                                this.HandleSpriteBug(corruptionType.Value);
                             }
-                            
-                            _opContext = op.Execute(Registers, _addressSpace, _operand, _opContext);
-                            op.SwitchInterrupts(_interruptManager);
 
-                            if (!op.Proceed(Registers))
+                            this._opContext = op.Execute(this.Registers, this._addressSpace, this._operand, this._opContext);
+                            op.SwitchInterrupts(this._interruptManager);
+
+                            if (!op.Proceed(this.Registers))
                             {
-                                _opIndex = _ops.Count;
+                                this._opIndex = this._ops.Count;
                                 break;
                             }
 
@@ -266,11 +265,11 @@ namespace CoreBoy.cpu
                             }
                         }
 
-                        if (_opIndex >= _ops.Count)
+                        if (this._opIndex >= this._ops.Count)
                         {
-                            State = State.OPCODE;
-                            _operandIndex = 0;
-                            _interruptManager.OnInstructionFinished();
+                            this.State = State.OPCODE;
+                            this._operandIndex = 0;
+                            this._interruptManager.OnInstructionFinished();
                             return;
                         }
 
@@ -285,89 +284,89 @@ namespace CoreBoy.cpu
 
         private void HandleInterrupt()
         {
-            switch (State)
+            switch (this.State)
             {
                 case State.IRQ_READ_IF:
-                    _interruptFlag = _addressSpace.GetByte(0xff0f);
-                    State = State.IRQ_READ_IE;
+                    this._interruptFlag = this._addressSpace.GetByte(0xff0f);
+                    this.State = State.IRQ_READ_IE;
                     break;
 
                 case State.IRQ_READ_IE:
-                    _interruptEnabled = _addressSpace.GetByte(0xffff);
-                    _requestedIrq = null;
+                    this._interruptEnabled = this._addressSpace.GetByte(0xffff);
+                    this._requestedIrq = null;
                     foreach (var irq in InterruptManager.InterruptType.Values())
                     {
-                        if ((_interruptFlag & _interruptEnabled & (1 << irq.Ordinal)) != 0)
+                        if ((this._interruptFlag & this._interruptEnabled & (1 << irq.Ordinal)) != 0)
                         {
-                            _requestedIrq = irq;
+                            this._requestedIrq = irq;
                             break;
                         }
                     }
 
-                    if (_requestedIrq == null)
+                    if (this._requestedIrq == null)
                     {
-                        State = State.OPCODE;
+                        this.State = State.OPCODE;
                     }
                     else
                     {
-                        State = State.IRQ_PUSH_1;
-                        _interruptManager.ClearInterrupt(_requestedIrq);
-                        _interruptManager.DisableInterrupts(false);
+                        this.State = State.IRQ_PUSH_1;
+                        this._interruptManager.ClearInterrupt(this._requestedIrq);
+                        this._interruptManager.DisableInterrupts(false);
                     }
 
                     break;
 
                 case State.IRQ_PUSH_1:
-                    Registers.DecrementSp();
-                    _addressSpace.SetByte(Registers.SP, (Registers.PC & 0xff00) >> 8);
-                    State = State.IRQ_PUSH_2;
+                    this.Registers.DecrementSp();
+                    this._addressSpace.SetByte(this.Registers.SP, (this.Registers.PC & 0xff00) >> 8);
+                    this.State = State.IRQ_PUSH_2;
                     break;
 
                 case State.IRQ_PUSH_2:
-                    Registers.DecrementSp();
-                    _addressSpace.SetByte(Registers.SP, Registers.PC & 0x00ff);
-                    State = State.IRQ_JUMP;
+                    this.Registers.DecrementSp();
+                    this._addressSpace.SetByte(this.Registers.SP, this.Registers.PC & 0x00ff);
+                    this.State = State.IRQ_JUMP;
                     break;
 
                 case State.IRQ_JUMP:
-                    Registers.PC = _requestedIrq.Handler;
-                    _requestedIrq = null;
-                    State = State.OPCODE;
+                    this.Registers.PC = this._requestedIrq.Handler;
+                    this._requestedIrq = null;
+                    this.State = State.OPCODE;
                     break;
             }
         }
 
         private void HandleSpriteBug(SpriteBug.CorruptionType type)
         {
-            if (!_gpu.GetLcdc().IsLcdEnabled())
+            if (!this._gpu.GetLcdc().IsLcdEnabled())
             {
                 return;
             }
 
-            int stat = _addressSpace.GetByte(GpuRegister.Stat.Address);
-            if ((stat & 0b11) == (int) Gpu.Mode.OamSearch && _gpu.GetTicksInLine() < 79)
+            int stat = this._addressSpace.GetByte(GpuRegister.Stat.Address);
+            if ((stat & 0b11) == (int)Gpu.Mode.OamSearch && this._gpu.GetTicksInLine() < 79)
             {
-                SpriteBug.CorruptOam(_addressSpace, type, _gpu.GetTicksInLine());
+                SpriteBug.CorruptOam(this._addressSpace, type, this._gpu.GetTicksInLine());
             }
         }
 
         public void ClearState()
         {
-            _opcode1 = 0;
-            _opcode2 = 0;
-            CurrentOpcode = null;
-            _ops = null;
+            this._opcode1 = 0;
+            this._opcode2 = 0;
+            this.CurrentOpcode = null;
+            this._ops = null;
 
-            _operand[0] = 0x00;
-            _operand[1] = 0x00;
-            _operandIndex = 0;
+            this._operand[0] = 0x00;
+            this._operand[1] = 0x00;
+            this._operandIndex = 0;
 
-            _opIndex = 0;
-            _opContext = 0;
+            this._opIndex = 0;
+            this._opContext = 0;
 
-            _interruptFlag = 0;
-            _interruptEnabled = 0;
-            _requestedIrq = null;
+            this._interruptFlag = 0;
+            this._interruptEnabled = 0;
+            this._requestedIrq = null;
         }
     }
 }

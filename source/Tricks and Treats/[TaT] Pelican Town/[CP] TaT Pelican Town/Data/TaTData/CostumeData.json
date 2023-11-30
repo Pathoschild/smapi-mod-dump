@@ -1,0 +1,98 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/cl4r3/Halloween-Mod-Jam-2023
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Data for new costumes",
+      "Action": "EditData",
+      "Target": "Mods/TricksAndTreats.Costumes",
+      "Entries": {
+        /*
+        "(Costume set name)": {
+          // Need at least two of the following
+          "Hat": "(hat name)",
+          "Top": "(top name)",
+          "Bottom": "(pants name)",
+        },
+        */
+        "Alien": {
+          //"Hat": "TaT.alien-mask",
+          "Hat": "Alien Mask",
+          "Top": "TaT.alien-shirt",
+          "Bottom": "TaT.alien-pants",
+        },
+        "Goblin": {
+          "Hat": "Goblin Mask",
+          "Top": "TaT.goblin-shirt",
+          "Bottom": "TaT.goblin-pants",
+        },
+        "Knight": {
+          "Hat": "Knight's Helmet", //There's Squire's Helmet too but its too easy to obtain if you ask me :sweatsmile:
+          "Top": "Steel Breastplate",
+          "Bottom": "TaT.chainmail-pants",
+        },
+        "Skeleton": {
+          "Hat": "Skeleton Mask",
+          "Top": "Skeleton Shirt",
+          "Bottom": "TaT.skeleton-pants",
+        },
+        "Stone Golem": {
+          //"Hat": "TaT.stone-golem-mask",
+          "Hat": "Stone Golem Mask",
+          "Top": "TaT.stone-golem-shirt",
+          "Bottom": "TaT.stone-golem-pants",
+        },
+        "Ghost": {
+          //"Hat": "TaT.ghost-mask",
+          "Hat": "Ghost Hood",
+          "Top": "TaT.ghost-shirt",
+          "Bottom": "TaT.ghost-skirt",
+        },
+        "Mummy": {
+          //"Hat": "TaT.mummy-mask",
+          "Hat": "Mummy Mask",
+          "Top": "TaT.mummy-shirt",
+          "Bottom": "TaT.mummy-pants",
+        },
+        "Caveman": {
+          "Hat": "Hair Bone",
+          "Top": "Caveman Shirt",
+          "Bottom": "Grass Skirt",
+        },
+        "Wizard": {
+          "Hat": "Arcane Hat",
+          "Top": "Arcane Shirt",
+        },
+        "Pirate": {
+          "Hat": "Pirate Hat",
+          "Top": "Red Striped Shirt",
+        },
+        "Deluxe Pirate": {
+          "Hat": "Deluxe Pirate Hat",
+          "Top": "Red Striped Shirt",
+        },
+      },
+    },
+    {
+  		"LogName": "Data for Dino costume",
+  		"Action": "EditData",
+  		"Target": "Mods/TricksAndTreats.Costumes",
+  		"Entries": {
+        "Dino": {
+          "Hat": "Dino Hat",
+          "Shirt": "Dinosaur Shirt",
+          "Bottom": "Dino Pants",
+        },
+  		},
+  		"When": { "HasMod|contains=MouseyPounds.DinosaurShirt": true },
+  	},
+  ]
+}

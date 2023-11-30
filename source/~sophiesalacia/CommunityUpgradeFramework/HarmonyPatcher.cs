@@ -15,7 +15,7 @@ namespace CommunityUpgradeFramework;
 
 internal class HarmonyPatcher
 {
-    internal static readonly Harmony Harmony = new Harmony(Globals.UUID);
+    internal static readonly Harmony Harmony = new(Globals.UUID);
 
     internal static void ApplyPatches()
     {

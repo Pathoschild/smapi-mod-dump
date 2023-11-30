@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewValley;
 using System.Reflection;
 using StardewModdingAPI;
@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using StardewValley.BellsAndWhistles;
 using System;
 using StardewValley.Characters;
+using SereneGreenhouse.SereneGreenhouse.Extensions;
 
 namespace SereneGreenhouse.Patches.GameLocation
 {
@@ -141,10 +142,10 @@ namespace SereneGreenhouse.Patches.GameLocation
 
         internal static void SpawnButterflies(StardewValley.GameLocation location, Vector2 tile, int maxSpawnPerTile)
         {
-            location.critters.Add(new Butterfly(tile));
+            location.critters.Add(new Butterfly(location, tile));
             for (int x = 0; x < Game1.random.Next(1, maxSpawnPerTile); x++)
             {
-                location.critters.Add(new Butterfly(tile + new Vector2(Game1.random.Next(-2, 3), Game1.random.Next(-2, 3))));
+                location.critters.Add(new Butterfly(location, tile + new Vector2(Game1.random.Next(-2, 3), Game1.random.Next(-2, 3))));
             }
         }
 

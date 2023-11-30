@@ -1,4 +1,14 @@
-﻿1.1.0
+﻿1.2.0
+-re-worked fishing
+-added fishing areas in an expansion, each area can have its own fish stock
+-added a default fish stock for expansion, if an area has no stock list of its own
+-added configurable debug logging
+-fixed gui issue when placing or upgrading buildings
+-fixed issue with NPCs running at double time
+-added additional expansion map validation to remove invalid expansions
+-disabled custom buildings on vanilla farm, there are a few bugs that need fixing
+
+1.1.0
 -fixes bug with duplicate seeds types
 -re-fixed backwoods path disappearing issue
 -fixed bug with trying to BFAV code when BFAV is not installed

@@ -27,11 +27,14 @@ namespace OrnithologistsGuild.Game.Items
 
         public override bool performUseAction(GameLocation location)
         {
-            if (Game1.random.NextDouble() < 0.1)
+            if (!ConfigManager.Config.NoBreakOrJam)
             {
-                Game1.drawObjectDialogue(I18n.Items_JojaBinoculars_Message());
+                if (Game1.random.NextDouble() < 0.1)
+                {
+                    Game1.drawObjectDialogue(I18n.Items_JojaBinoculars_Message());
 
-                return false;
+                    return false;
+                }
             }
 
             return base.performUseAction(location);

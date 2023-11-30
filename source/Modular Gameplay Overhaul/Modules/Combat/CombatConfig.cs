@@ -25,6 +25,7 @@ using DaLion.Shared.Integrations.GMCM;
 using DaLion.Shared.Integrations.GMCM.Attributes;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
+using Resonance;
 using StardewModdingAPI.Utilities;
 using StardewValley.Objects;
 
@@ -36,11 +37,14 @@ public sealed class CombatConfig
     private bool _newResistanceFormula = true;
     private bool _enableWeaponOverhaul = true;
     private bool _enableStabbingSwords = true;
+    private bool _enableMeleeComboHits = true;
     private bool _rebalancedRings = true;
     private bool _craftableGemstoneRings = true;
     private bool _enableInfinityBand = true;
+    private uint _chordSoundDuration = 1000;
     private bool _colorfulResonances = true;
     private LightsourceTexture _resonanceLightsourceTexture = LightsourceTexture.Patterned;
+    private bool _newPrismaticEnchantments = true;
     private bool _dwarvenLegacy = true;
     private bool _enableHeroQuest = true;
     private int _iridiumBarsPerGalaxyWeapon = 10;
@@ -138,6 +142,11 @@ public sealed class CombatConfig
         get => this._newResistanceFormula;
         internal set
         {
+            if (value == this._newResistanceFormula)
+            {
+                return;
+            }
+
             this._newResistanceFormula = value;
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/ObjectInformation");
             if (!Context.IsWorldReady)
@@ -187,12 +196,23 @@ public sealed class CombatConfig
         get => this._enableWeaponOverhaul;
         internal set
         {
+            if (value == this._enableWeaponOverhaul)
+            {
+                return;
+            }
+
+            if (!value)
+            {
+                this.EnableStabbingSwords = false;
+                this.EnableMeleeComboHits = false;
+            }
+
             this._enableWeaponOverhaul = value;
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/weapons");
             if (Context.IsWorldReady)
             {
                 CombatModule.RefreshAllWeapons(value
-                    ? WeaponRefreshOption.Randomized
+                    ? WeaponRefreshOption.Initial
                     : WeaponRefreshOption.FromData);
             }
         }
@@ -206,39 +226,26 @@ public sealed class CombatConfig
 
     #region melee
 
-    /// <summary>Gets a value indicating whether to replace vanilla weapon spam with a more strategic combo system.</summary>
-    [JsonProperty]
-    [GMCMSection("cmbt.weapons")]
-    [GMCMPriority(121)]
-    public bool EnableMeleeComboHits { get; internal set; } = true;
-
-    /// <summary>Gets the number of hits in each weapon type's combo.</summary>
-    [JsonProperty]
-    [GMCMSection("cmbt.weapons")]
-    [GMCMPriority(122)]
-    [GMCMRange(0, 10)]
-    public Dictionary<string, int> ComboHitsPerWeaponType { get; internal set; } = new()
-    {
-        { WeaponType.StabbingSword.ToString(), 4 },
-        { WeaponType.DefenseSword.ToString(), 4 },
-        { WeaponType.Club.ToString(), 2 },
-    };
-
-    /// <summary>Gets a value indicating whether to keep swiping while the "use tool" key is held.</summary>
-    [JsonProperty]
-    [GMCMSection("cmbt.weapons")]
-    [GMCMPriority(123)]
-    public bool SwipeHold { get; internal set; } = true;
-
     /// <summary>Gets a value indicating whether replace the defensive special move of some swords with an offensive lunge move.</summary>
     [JsonProperty]
     [GMCMSection("cmbt.weapons")]
-    [GMCMPriority(124)]
+    [GMCMPriority(120)]
     public bool EnableStabbingSwords
     {
         get => this._enableStabbingSwords;
         internal set
         {
+            if (value == this._enableStabbingSwords)
+            {
+                return;
+            }
+
+            if (value && !this.EnableWeaponOverhaul)
+            {
+                Log.W("Stabbing Swords feature requires that Weapon Overhaul be set to true.");
+                return;
+            }
+
             this._enableStabbingSwords = value;
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/weapons");
             if (!Context.IsWorldReady)
@@ -259,7 +266,8 @@ public sealed class CombatConfig
 
     /// <summary>Gets a set of user-defined modded swords which should be treated as Stabby swords.</summary>
     [JsonProperty]
-    [GMCMIgnore]
+    [GMCMPriority(121)]
+    [GMCMOverride(typeof(GenericModConfigMenu), "CombatConfigStabbingSwordsOverride")]
     public HashSet<string> StabbingSwords { get; internal set; } = new()
     {
         "Bone Sword",
@@ -271,8 +279,46 @@ public sealed class CombatConfig
         "Lava Katana",
         "Dragontooth Cutlass",
         "Blade of Ruin",
+        "Sword Fish",
         "Strawblaster",
     };
+
+    /// <summary>Gets a value indicating whether to replace vanilla weapon spam with a more strategic combo system.</summary>
+    [JsonProperty]
+    [GMCMSection("cmbt.weapons")]
+    [GMCMPriority(122)]
+    public bool EnableMeleeComboHits
+    {
+        get => this._enableMeleeComboHits;
+        internal set
+        {
+            if (value && !this.EnableWeaponOverhaul)
+            {
+                Log.W("Melee Combo Framework requires that Weapon Overhaul be set to true.");
+                return;
+            }
+
+            this._enableMeleeComboHits = value;
+        }
+    }
+
+    /// <summary>Gets the number of hits in each weapon type's combo.</summary>
+    [JsonProperty]
+    [GMCMSection("cmbt.weapons")]
+    [GMCMPriority(123)]
+    [GMCMRange(0, 10)]
+    public Dictionary<string, int> ComboHitsPerWeaponType { get; internal set; } = new()
+    {
+        { WeaponType.StabbingSword.ToString(), 4 },
+        { WeaponType.DefenseSword.ToString(), 4 },
+        { WeaponType.Club.ToString(), 2 },
+    };
+
+    /// <summary>Gets a value indicating whether to keep swiping while the "use tool" key is held.</summary>
+    [JsonProperty]
+    [GMCMSection("cmbt.weapons")]
+    [GMCMPriority(124)]
+    public bool SwipeHold { get; internal set; } = true;
 
     /// <summary>Gets a value indicating whether defense should improve parry damage.</summary>
     [JsonProperty]
@@ -327,6 +373,11 @@ public sealed class CombatConfig
         get => this._rebalancedRings;
         internal set
         {
+            if (value == this._rebalancedRings)
+            {
+                return;
+            }
+
             this._rebalancedRings = value;
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/ObjectInformation");
         }
@@ -341,6 +392,11 @@ public sealed class CombatConfig
         get => this._craftableGemstoneRings;
         internal set
         {
+            if (value == this._craftableGemstoneRings)
+            {
+                return;
+            }
+
             this._craftableGemstoneRings = value;
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/CraftingRecipes");
             ModHelper.GameContent.InvalidateCacheAndLocalized("Maps/springobjects");
@@ -356,6 +412,11 @@ public sealed class CombatConfig
         get => this._enableInfinityBand;
         internal set
         {
+            if (value == this._enableInfinityBand)
+            {
+                return;
+            }
+
             this._enableInfinityBand = value;
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/CraftingRecipes");
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/ObjectInformation");
@@ -369,15 +430,45 @@ public sealed class CombatConfig
     [GMCMPriority(203)]
     public bool EnableGemstoneResonance { get; internal set; } = true;
 
-    /// <summary>Gets a value indicating whether the resonance glow should inherit the root note's color.</summary>
+    /// <summary>Gets a value indicating whether to allow gemstone resonance to take place.</summary>
     [JsonProperty]
     [GMCMSection("cmbt.rings_enchantments")]
     [GMCMPriority(204)]
+    public bool PlayChord { get; internal set; } = true;
+
+    /// <summary>Gets a value indicating whether to allow gemstone resonance to take place.</summary>
+    [JsonProperty]
+    [GMCMSection("cmbt.rings_enchantments")]
+    [GMCMPriority(205)]
+    [GMCMRange(500, 2500)]
+    [GMCMInterval(100)]
+    public uint ChordSoundDuration
+    {
+        get => this._chordSoundDuration;
+        internal set
+        {
+            this._chordSoundDuration = value;
+            if (Context.IsWorldReady)
+            {
+                HarmonicInterval.RecalculateLinSpace();
+            }
+        }
+    }
+
+    /// <summary>Gets a value indicating whether the resonance glow should inherit the root note's color.</summary>
+    [JsonProperty]
+    [GMCMSection("cmbt.rings_enchantments")]
+    [GMCMPriority(206)]
     public bool ColorfulResonances
     {
         get => this._colorfulResonances;
         internal set
         {
+            if (value == this._colorfulResonances)
+            {
+                return;
+            }
+
             this._colorfulResonances = value;
             if (Context.IsWorldReady)
             {
@@ -389,12 +480,17 @@ public sealed class CombatConfig
     /// <summary>Gets a value indicating the texture that should be used as the resonance light source.</summary>
     [JsonProperty]
     [GMCMSection("cmbt.rings_enchantments")]
-    [GMCMPriority(205)]
+    [GMCMPriority(207)]
     public LightsourceTexture ResonanceLightsourceTexture
     {
         get => this._resonanceLightsourceTexture;
         internal set
         {
+            if (value == this._resonanceLightsourceTexture)
+            {
+                return;
+            }
+
             this._resonanceLightsourceTexture = value;
             if (Context.IsWorldReady)
             {
@@ -406,14 +502,31 @@ public sealed class CombatConfig
     /// <summary>Gets a value indicating whether to improve certain underwhelming gemstone effects.</summary>
     [JsonProperty]
     [GMCMSection("cmbt.rings_enchantments")]
-    [GMCMPriority(206)]
+    [GMCMPriority(208)]
     public bool RebalancedGemstones { get; internal set; } = true;
 
     /// <summary>Gets a value indicating whether to replace vanilla weapon enchantments with all-new melee and ranged enchantments.</summary>
     [JsonProperty]
     [GMCMSection("cmbt.rings_enchantments")]
-    [GMCMPriority(207)]
-    public bool NewPrismaticEnchantments { get; set; }
+    [GMCMPriority(209)]
+    public bool NewPrismaticEnchantments
+    {
+        get => this._newPrismaticEnchantments;
+        internal set
+        {
+            if (value == this._newPrismaticEnchantments)
+            {
+                return;
+            }
+
+            this._newPrismaticEnchantments = value;
+            if (Context.IsWorldReady)
+            {
+                Reflector.GetStaticFieldSetter<List<BaseEnchantment>?>(typeof(BaseEnchantment), "_enchantments")
+                    .Invoke(null);
+            }
+        }
+    }
 
     #endregion rings & enchantments
 
@@ -428,6 +541,11 @@ public sealed class CombatConfig
         get => this._dwarvenLegacy;
         internal set
         {
+            if (value == this._dwarvenLegacy)
+            {
+                return;
+            }
+
             this._dwarvenLegacy = value;
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/Events/Blacksmith");
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/Quests");
@@ -445,6 +563,11 @@ public sealed class CombatConfig
         get => this._enableHeroQuest;
         internal set
         {
+            if (value == this._enableHeroQuest)
+            {
+                return;
+            }
+
             this._enableHeroQuest = value;
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/Events/WizardHouse");
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/ObjectInformation");
@@ -464,6 +587,7 @@ public sealed class CombatConfig
     [JsonProperty]
     [GMCMSection("cmbt.quests")]
     [GMCMPriority(302)]
+    [GMCMRange(0, 50)]
     public int IridiumBarsPerGalaxyWeapon
     {
         get => this._iridiumBarsPerGalaxyWeapon;
@@ -477,6 +601,7 @@ public sealed class CombatConfig
     [JsonProperty]
     [GMCMSection("cmbt.quests")]
     [GMCMPriority(303)]
+    [GMCMRange(0, 4)]
     public float RuinBladeDotMultiplier
     {
         get => this._ruinBladeDotMultiplier;
@@ -501,6 +626,11 @@ public sealed class CombatConfig
         get => this._heroQuestDifficulty;
         internal set
         {
+            if (value == this._heroQuestDifficulty)
+            {
+                return;
+            }
+
             this._heroQuestDifficulty = value;
             if (Context.IsWorldReady && CombatModule.State.HeroQuest is { } quest)
             {
@@ -644,7 +774,7 @@ public sealed class CombatConfig
         internal set
         {
             this._enableAutoSelection = value;
-            if (value)
+            if (value || !Context.IsWorldReady)
             {
                 return;
             }
@@ -727,6 +857,11 @@ public sealed class CombatConfig
         get => this._forgeSocketStyle;
         internal set
         {
+            if (value == this._forgeSocketStyle)
+            {
+                return;
+            }
+
             this._forgeSocketStyle = value;
             ModHelper.GameContent.InvalidateCache($"{Manifest.UniqueID}/GemstoneSockets");
         }
@@ -742,7 +877,7 @@ public sealed class CombatConfig
     [JsonProperty]
     [GMCMSection("controls_ui")]
     [GMCMPriority(511)]
-    public TooltipStyle WeaponTooltipStyle { get; internal set; } = TooltipStyle.Relative;
+    public TooltipStyle WeaponTooltipStyle { get; internal set; }
 
     /// <summary>Gets a value indicating whether to override the draw method to include the currently-equipped ammo.</summary>
     [JsonProperty]

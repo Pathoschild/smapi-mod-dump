@@ -124,6 +124,36 @@ namespace StardewDruid.Monster
 
         }
 
+        public void HardMode()
+        {
+            Health *= 3;
+
+            Health /= 2;
+
+            MaxHealth = Health;
+
+            DamageToFarmer *= 3;
+
+            DamageToFarmer /= 2;
+
+            dialogueList = new()
+            {
+                "Ah ha ha ha ha",
+                "What pitiful strikes",
+                "My helmet provides +3 Intelligence!",
+                "creep"
+            };
+
+            dialogueList = new()
+            {
+                "CREEP",
+                "I've strengthened since our last battle",
+                "Your only option now... is subjugation",
+                "Kneel Before Tyrannatus!"
+            };
+
+        }
+
         public override Rectangle GetBoundingBox()
         {
             Vector2 vector = Position;

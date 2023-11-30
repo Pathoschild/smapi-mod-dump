@@ -15,6 +15,7 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Archipelago.Gifting;
+using StardewArchipelago.Bundles;
 using StardewArchipelago.GameModifications;
 using StardewArchipelago.GameModifications.CodeInjections;
 using StardewArchipelago.GameModifications.EntranceRandomizer;
@@ -54,7 +55,6 @@ namespace StardewArchipelago
         private Mailman _mail;
         private ChatForwarder _chatForwarder;
         private IGiftHandler _giftHandler;
-        private BundleReader _bundleReader;
         private ItemManager _itemManager;
         private RandomizedLogicPatcher _logicPatcher;
         private MailPatcher _mailPatcher;
@@ -136,7 +136,7 @@ namespace StardewArchipelago
             _harmony.UnpatchAll(ModManifest.UniqueID);
             SeasonsRandomizer.ResetMailKeys();
             _multiSleep = new MultiSleep(Monitor, _helper, _harmony);
-            _advancedOptionsManager = new AdvancedOptionsManager(this, _harmony, _archipelago);
+            _advancedOptionsManager = new AdvancedOptionsManager(this, Monitor, _helper, _harmony, _archipelago);
             _advancedOptionsManager.InjectArchipelagoAdvancedOptions();
             _giftHandler = new CrossGiftHandler();
             _villagerEvents = new ModifiedVillagerEventChecker();
@@ -219,7 +219,6 @@ namespace StardewArchipelago
 
             _stardewItemManager = new StardewItemManager();
             _mail = new Mailman(State.LettersGenerated);
-            _bundleReader = new BundleReader();
             _locationChecker = new LocationChecker(Monitor, _archipelago, State.LocationsChecked);
             _itemPatcher = new ItemPatcher(Monitor, _helper, _harmony, _archipelago);
             _goalManager = new GoalManager(Monitor, _helper, _harmony, _archipelago, _locationChecker);
@@ -262,12 +261,13 @@ namespace StardewArchipelago
             _itemManager = new ItemManager(_helper, _archipelago, _stardewItemManager, _mail, tileChooser, State.ItemsReceived);
             var weaponsManager = new WeaponsManager(_stardewItemManager);
             _mailPatcher = new MailPatcher(Monitor, _harmony, _archipelago, _locationChecker, new LetterActions(_helper, _mail, _archipelago, weaponsManager, _itemManager.TrapManager));
-            _locationsPatcher = new LocationPatcher(Monitor, _helper, _harmony, _archipelago, State, _locationChecker, _bundleReader, _stardewItemManager, weaponsManager);
+            var bundlesManager = new BundlesManager(_helper, _stardewItemManager, _archipelago.SlotData.BundlesData);
+            bundlesManager.ReplaceAllBundles();
+            _locationsPatcher = new LocationPatcher(Monitor, _helper, _harmony, _archipelago, State, _locationChecker, _stardewItemManager, weaponsManager);
             _chatForwarder.ListenToChatMessages();
             _giftHandler.Initialize(Monitor, _archipelago, _stardewItemManager, _mail);
             _logicPatcher.PatchAllGameLogic();
             _mailPatcher.PatchMailBoxForApItems();
-            _archipelago.SlotData.Bundles.ReplaceAllBundles();
             _entranceManager.SetEntranceRandomizerSettings(_archipelago.SlotData);
             _locationsPatcher.ReplaceAllLocationsRewardsWithChecks();
             _itemPatcher.PatchApItems();

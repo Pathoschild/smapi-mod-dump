@@ -21,31 +21,31 @@ namespace CoreBoy.sound
 
         public LengthCounter(int fullLength)
         {
-            _fullLength = fullLength;
+            this._fullLength = fullLength;
         }
 
         public void Start()
         {
-            _i = 8192;
+            this._i = 8192;
         }
 
         public void Tick()
         {
-            _i++;
+            this._i++;
 
-            if (_i == _divider)
+            if (this._i == this._divider)
             {
-                _i = 0;
-                if (Enabled && Length > 0)
+                this._i = 0;
+                if (this.Enabled && this.Length > 0)
                 {
-                    Length--;
+                    this.Length--;
                 }
             }
         }
 
         public void SetLength(int len)
         {
-            Length = len == 0 ? _fullLength : len;
+            this.Length = len == 0 ? this._fullLength : len;
         }
 
         public void SetNr4(int value)
@@ -53,53 +53,53 @@ namespace CoreBoy.sound
             var enable = (value & (1 << 6)) != 0;
             var trigger = (value & (1 << 7)) != 0;
 
-            if (Enabled)
+            if (this.Enabled)
             {
-                if (Length == 0 && trigger)
+                if (this.Length == 0 && trigger)
                 {
-                    if (enable && _i < _divider / 2)
+                    if (enable && this._i < this._divider / 2)
                     {
-                        SetLength(_fullLength - 1);
+                        this.SetLength(this._fullLength - 1);
                     }
                     else
                     {
-                        SetLength(_fullLength);
+                        this.SetLength(this._fullLength);
                     }
                 }
             }
             else if (enable)
             {
-                if (Length > 0 && _i < _divider / 2)
+                if (this.Length > 0 && this._i < this._divider / 2)
                 {
-                    Length--;
+                    this.Length--;
                 }
 
-                if (Length == 0 && trigger && _i < _divider / 2)
+                if (this.Length == 0 && trigger && this._i < this._divider / 2)
                 {
-                    SetLength(_fullLength - 1);
+                    this.SetLength(this._fullLength - 1);
                 }
             }
             else
             {
-                if (Length == 0 && trigger)
+                if (this.Length == 0 && trigger)
                 {
-                    SetLength(_fullLength);
+                    this.SetLength(this._fullLength);
                 }
             }
 
-            Enabled = enable;
+            this.Enabled = enable;
         }
 
         public override string ToString()
         {
-            return $"LengthCounter[l={Length},f={_fullLength},c={_i},{(Enabled ? "enabled" : "disabled")}]";
+            return $"LengthCounter[l={this.Length},f={this._fullLength},c={this._i},{(this.Enabled ? "enabled" : "disabled")}]";
         }
 
         public void Reset()
         {
-            Enabled = true;
-            _i = 0;
-            Length = 0;
+            this.Enabled = true;
+            this._i = 0;
+            this.Length = 0;
         }
     }
 

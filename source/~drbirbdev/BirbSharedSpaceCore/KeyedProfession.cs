@@ -22,37 +22,32 @@ namespace BirbShared
         readonly object Tokens;
         readonly ITranslationHelper I18n;
 
-        readonly bool PrestigeEnabled = false;
+        bool PrestigeEnabled => this.PrestigeIcon != null;
         readonly Texture2D PrestigeIcon;
         readonly Texture2D NormalIcon;
         private bool IsPrestiged = false;
         readonly IModHelper ModHelper;
-
-        public KeyedProfession(Skills.Skill skill, string id, Texture2D icon, ITranslationHelper i18n, object tokens = null) : base(skill, id)
-        {
-            this.Icon = icon;
-            this.I18n = i18n;
-            this.Tokens = tokens;
-        }
 
         public KeyedProfession(Skills.Skill skill, string id, Texture2D icon, Texture2D prestigeIcon, IModHelper modHelper, object tokens = null) : base(skill, id)
         {
             this.Icon = icon;
             this.I18n = modHelper.Translation;
             this.Tokens = tokens;
-
-            this.PrestigeEnabled = true;
-            this.PrestigeIcon = prestigeIcon;
-            this.NormalIcon = icon;
             this.ModHelper = modHelper;
 
-            modHelper.Events.Display.MenuChanged += this.DisplayEvents_MenuChanged_MARGO;
-            modHelper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded_MARGO;
+            if (prestigeIcon != null)
+            {
+                this.PrestigeIcon = prestigeIcon;
+                this.NormalIcon = icon;
+
+                modHelper.Events.Display.MenuChanged += this.DisplayEvents_MenuChanged_MARGO;
+                modHelper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded_MARGO;
+            }
         }
 
         private void GameLoop_SaveLoaded_MARGO(object sender, SaveLoadedEventArgs e)
         {
-            if (Game1.player.HasCustomPrestigeProfession(this))
+            if (Game1.player.HasProfession(this.Id, true))
             {
                 this.Icon = this.PrestigeIcon;
                 this.IsPrestiged = true;
@@ -64,7 +59,7 @@ namespace BirbShared
             // After the upgrade selection menu, unset the prestige description and icon of the profession that wasn't chosen.
             if (e.OldMenu is SkillLevelUpMenu oldMenu && oldMenu.isProfessionChooser)
             {
-                if (Game1.player.HasCustomPrestigeProfession(this))
+                if (Game1.player.HasProfession(this.Id, true))
                 {
                     return;
                 }
@@ -75,13 +70,13 @@ namespace BirbShared
 
         public override string GetDescription()
         {
-            if (CheckPrestigeMenu())
+            if (this.CheckPrestigeMenu())
             {
-                return this.I18n.Get($"{this.Id}.prestige.desc", this.Tokens);
+                return this.I18n.Get($"profession.{this.Id}.pdesc", this.Tokens);
             }
             else
             {
-                return this.I18n.Get($"{this.Id}.desc", this.Tokens);
+                return this.I18n.Get($"profession.{this.Id}.desc", this.Tokens);
             }
         }
 
@@ -103,12 +98,12 @@ namespace BirbShared
             {
                 return false;
             }
-            string currSkill = ModHelper.Reflection.GetField<string>(currMenu, "currentSkill").GetValue();
+            string currSkill = this.ModHelper.Reflection.GetField<string>(currMenu, "currentSkill").GetValue();
             if (currSkill != this.Skill.Id)
             {
                 return false;
             }
-            int currentLevel = ModHelper.Reflection.GetField<int>(currMenu, "currentLevel").GetValue();
+            int currentLevel = this.ModHelper.Reflection.GetField<int>(currMenu, "currentLevel").GetValue();
             if (currentLevel <= 10)
             {
                 return false;
@@ -125,7 +120,7 @@ namespace BirbShared
 
         public override string GetName()
         {
-            return this.I18n.Get($"{this.Id}.name", this.Tokens);
+            return this.I18n.Get($"profession.{this.Id}.name", this.Tokens);
         }
     }
 }

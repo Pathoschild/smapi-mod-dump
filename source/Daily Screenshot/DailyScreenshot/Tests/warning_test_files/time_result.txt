@@ -1,0 +1,23 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/CompSciLauren/stardew-valley-daily-screenshot-mod
+**
+*************************************************/
+
+Times can be ignored.
+Left hand side and right hand side should never both contain a "No Overlap" rule
+
+Example:
+
+[Daily Screenshot] Setting limits on StartTime and EndTime for rule "Time Overlap Fixup 1300 to 1099"
+[Daily Screenshot] Swapping StartTime and EndTime for rule "Time Overlap Fixup 1300 to 1099"
+[Daily Screenshot] StartTime is now "1140" amd EmdTime is now "1300" for rule "Time Overlap Fixup 1300 to 1099"
+[Daily Screenshot] Setting limits on StartTime and EndTime for rule "Time No Overlap Directory"
+[Daily Screenshot] Swapping StartTime and EndTime for rule "Time No Overlap Directory"
+[Daily Screenshot] StartTime is now "1140" amd EmdTime is now "1300" for rule "Time No Overlap Directory"
+[Daily Screenshot] Rules "Time No Overlap Morning" and "Time Overlap Fixup 1300 to 1099" can over write one another.
+[Daily Screenshot] Rules "Location No Overlap Afternoon" and "Time Overlap Fixup 1300 to 1099" can over write one another.

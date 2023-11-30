@@ -14,9 +14,9 @@ mods:
    More Grass
 
 latest commit:
-   commit a27ff68c5e7fb7442b2ca804423a0482b2de029e
+   commit 2da02fd733839cfbd568f531249a8bd21eda5433
    Author: Andy Crocker <atmcrocker@gmail.com>
-   Date:   Wed Feb 15 04:50:49 2023 +0000
+   Date:   Mon Nov 6 03:48:59 2023 +0000
    
-       Update project documentation
+       [SonoCore] Rename SatoCore to SonoCore
    

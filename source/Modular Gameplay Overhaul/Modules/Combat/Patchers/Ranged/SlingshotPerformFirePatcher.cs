@@ -13,7 +13,7 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Ranged;
 #region using directives
 
 using System.Reflection;
-using DaLion.Overhaul;
+using DaLion.Overhaul.Modules;
 using DaLion.Overhaul.Modules.Combat.Enchantments;
 using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.Projectiles;
@@ -110,7 +110,7 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
                 : 1f;
             if (overcharge > 1f)
             {
-                EventManager.Disable<DesperadoUpdateTickedEvent>();
+                EventManager.Disable<DesperadoOverchargeUpdateTickedEvent>();
             }
 
             // adjust velocity
@@ -123,7 +123,7 @@ internal sealed class SlingshotPerformFirePatcher : HarmonyPatcher
             if (__instance.GetEnchantmentOfType<RangedEnergizedEnchantment>() is
                 { Energy: >= RangedEnergizedEnchantment.MaxEnergy })
             {
-                SoundEffectPlayer.PlasmaShot.Play();
+                SoundEffectPlayer.PlasmaShot.Play(location);
             }
 
             // add main projectile

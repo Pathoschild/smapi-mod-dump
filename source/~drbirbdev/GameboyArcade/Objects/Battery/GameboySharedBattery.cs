@@ -17,8 +17,8 @@ namespace GameboyArcade
 {
     class GameboySharedBattery : IBattery
     {
-        private string MinigameId;
-        private bool RemotePlayer = false;
+        private readonly string MinigameId;
+        private readonly bool RemotePlayer = false;
 
         private bool AwaitingMessage = false;
         private SaveState Save;
@@ -49,7 +49,7 @@ namespace GameboyArcade
 
         public void LoadRam(int[] ram)
         {
-            LoadRamWithClock(ram, null);
+            this.LoadRamWithClock(ram, null);
         }
 
         public void LoadRamWithClock(int[] ram, long[] clockData)
@@ -59,19 +59,19 @@ namespace GameboyArcade
                 this.AwaitingMessage = true;
                 ModEntry.Instance.Helper.Events.Multiplayer.ModMessageReceived += this.Multiplayer_ModMessageReceived_LoadReceive;
                 ModEntry.Instance.Helper.Multiplayer.SendMessage<string>(this.MinigameId, "LoadRequest", new string[] { ModEntry.Instance.ModManifest.UniqueID }, new long[] { Game1.MasterPlayer.UniqueMultiplayerID });
-                while(this.AwaitingMessage)
+                while (this.AwaitingMessage)
                 {
                     Thread.Sleep(1);
                 }
-                Save.RAM.CopyTo(ram, 0);
+                this.Save.RAM.CopyTo(ram, 0);
                 if (clockData is not null)
                 {
-                    Save.ClockData.CopyTo(clockData, 0);
+                    this.Save.ClockData.CopyTo(clockData, 0);
                 }
             }
             else
             {
-                SaveState loaded = ModEntry.Instance.Helper.Data.ReadJsonFile<SaveState>($"data/{MinigameId}/{Constants.SaveFolderName}/file.json");
+                SaveState loaded = ModEntry.Instance.Helper.Data.ReadJsonFile<SaveState>($"data/{this.MinigameId}/{Constants.SaveFolderName}/file.json");
                 if (loaded is null)
                 {
                     return;
@@ -86,7 +86,7 @@ namespace GameboyArcade
 
         public void SaveRam(int[] ram)
         {
-            SaveRamWithClock(ram, null);
+            this.SaveRamWithClock(ram, null);
         }
 
         public void SaveRamWithClock(int[] ram, long[] clockData)
@@ -94,11 +94,11 @@ namespace GameboyArcade
             SaveState save = new SaveState { RAM = ram, ClockData = clockData };
             if (this.RemotePlayer)
             {
-                ModEntry.Instance.Helper.Multiplayer.SendMessage<SaveState>(save, $"SaveRequest {MinigameId}", new string[] { ModEntry.Instance.ModManifest.UniqueID }, new long[] { Game1.MasterPlayer.UniqueMultiplayerID });
+                ModEntry.Instance.Helper.Multiplayer.SendMessage<SaveState>(save, $"SaveRequest {this.MinigameId}", new string[] { ModEntry.Instance.ModManifest.UniqueID }, new long[] { Game1.MasterPlayer.UniqueMultiplayerID });
             }
             else
             {
-                ModEntry.Instance.Helper.Data.WriteJsonFile<SaveState>($"data/{MinigameId}/{Constants.SaveFolderName}/file.json", save);
+                ModEntry.Instance.Helper.Data.WriteJsonFile<SaveState>($"data/{this.MinigameId}/{Constants.SaveFolderName}/file.json", save);
             }
         }
     }

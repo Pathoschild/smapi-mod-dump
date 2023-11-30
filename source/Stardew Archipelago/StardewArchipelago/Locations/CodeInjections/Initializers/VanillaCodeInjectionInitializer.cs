@@ -13,6 +13,7 @@ using StardewArchipelago.Locations.Festival;
 using StardewModdingAPI;
 using StardewArchipelago.Stardew;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
+using StardewArchipelago.Locations.CodeInjections.Vanilla.CC;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Quests;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
 using StardewArchipelago.Serialization;
@@ -22,14 +23,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
 {
     public static class VanillaCodeInjectionInitializer
     {
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, ArchipelagoStateDto state, BundleReader bundleReader, LocationChecker locationChecker, StardewItemManager itemManager, WeaponsManager weaponsManager)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, ArchipelagoStateDto state, LocationChecker locationChecker, StardewItemManager itemManager, WeaponsManager weaponsManager)
         {
             var shopReplacer = new ShopReplacer(monitor, modHelper, archipelago, locationChecker);
             BackpackInjections.Initialize(monitor, archipelago, locationChecker);
             ToolInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             ScytheInjections.Initialize(monitor, locationChecker);
             FishingRodInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
-            CommunityCenterInjections.Initialize(monitor, archipelago, bundleReader, locationChecker);
+            CommunityCenterInjections.Initialize(monitor, archipelago, locationChecker);
+            var bundleReader = new BundleReader();
+            JunimoNoteMenuInjections.Initialize(monitor, modHelper, archipelago, bundleReader, locationChecker);
             MineshaftInjections.Initialize(monitor, archipelago, locationChecker);
             SkillInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             QuestInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
@@ -44,6 +47,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             MuseumInjections.Initialize(monitor, modHelper, archipelago, locationChecker, itemManager);
             FriendshipInjections.Initialize(monitor, modHelper, archipelago, locationChecker, itemManager);
             SpecialOrderInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
+            SpouseInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             PregnancyInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             CropsanityInjections.Initialize(monitor, archipelago, locationChecker, itemManager);
             InitializeFestivalPatches(monitor, modHelper, archipelago, locationChecker, shopReplacer);
@@ -56,6 +60,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             RecipeLevelUpInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             RecipeFriendshipInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             CraftingInjections.Initialize(monitor, modHelper, archipelago, locationChecker, itemManager);
+            KrobusShopInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
         }
 
         private static void InitializeFestivalPatches(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer)

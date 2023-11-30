@@ -1,5 +1,5 @@
 {
-  "Singular": true,
+  "Singular": false,
   "SubjectivePronoun": "They",
   "ObjectivePronoun": "Them",
   "PosessivePronoun": "Their",
@@ -9,10 +9,12 @@
   "GenericNoun": "Person",
   "AdultAntiquatedNoun": "Folk",
   "AdultFamilialNoun": "Kid",
+  "AdultInformalNoun": "Person",
   "ElderAntiquatedNoun": "Kid",
   "ElderInformalNoun": "Kid",
   "ElderFamilialNoun": "Child",
   "ChildFamilialNoun": "Cousin",
   "ServiceFormalNoun": "Esteemed Patron",
-  "TraderNoun": "Traveller"
+  "TraderNoun": "Traveller",
+  "ParentalNoun": "Parent"
 }

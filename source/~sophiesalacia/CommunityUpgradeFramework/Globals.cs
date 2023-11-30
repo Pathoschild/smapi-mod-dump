@@ -28,7 +28,7 @@ internal class Globals
     public static IReflectionHelper ReflectionHelper => Helper.Reflection;
     public static ITranslationHelper TranslationHelper => Helper.Translation;
     public static string UUID => Manifest.UniqueID;
-    public static string ContentPath => "sophie.ConversationTopics";
+    public static string CommunityUpgradesPath => "sophie.CommunityUpgradeFramework/CommunityUpgrades";
 
     internal static void InitializeGlobals(ModEntry modEntry)
     {

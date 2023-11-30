@@ -205,7 +205,7 @@ namespace CoreBoy.cpu
             {
                 for (var b = 0; b < 0x08; b++)
                 {
-                    foreach (var t in OpcodesForValues(key + b * 0x08, 0x01, "B", "C", "D", "E", "H", "L", "(HL)", "A"))
+                    foreach (var t in OpcodesForValues(key + (b * 0x08), 0x01, "B", "C", "D", "E", "H", "L", "(HL)", "A"))
                     {
                         if ("BIT".Equals(value) && "(HL)".Equals(t.Value))
                         {
@@ -219,15 +219,15 @@ namespace CoreBoy.cpu
                     }
                 }
             }
-            
+
             var commands = new List<Opcode>(0x100);
             var extCommands = new List<Opcode>(0x100);
 
             commands.AddRange(opcodes.Select(b => b?.Build()));
             extCommands.AddRange(extOpcodes.Select(b => b?.Build()));
 
-            Commands = commands;
-            ExtCommands = extCommands;
+            this.Commands = commands;
+            this.ExtCommands = extCommands;
         }
 
         private static OpcodeBuilder RegLoad(IList<OpcodeBuilder> commands, int opcode, string target, string source)

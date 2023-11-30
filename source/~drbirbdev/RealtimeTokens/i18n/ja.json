@@ -8,33 +8,4 @@
 **
 *************************************************/
 
-{
-    "time.weekday.Sunday": "日曜日",
-    "time.weekday.Monday": "月曜日",
-    "time.weekday.Tuesday": "火曜日",
-    "time.weekday.Wednesday": "水曜日",
-    "time.weekday.Thursday": "木曜日",
-    "time.weekday.Friday": "金曜日",
-    "time.weekday.Saturday": "土曜日",
-
-    "time.month.1": "1月",
-    "time.month.2": "2月",
-    "time.month.3": "3月",
-    "time.month.4": "4月",
-    "time.month.5": "5月",
-    "time.month.6": "6月",
-    "time.month.7": "7月",
-    "time.month.8": "8月",
-    "time.month.9": "9月",
-    "time.month.10": "10月",
-    "time.month.11": "11月",
-    "time.month.12": "12月",
-
-    "holiday.newyears": "元日",
-    "holiday.valentines": "バレンタインデー",
-    "holiday.halloween": "ハロウィーン",
-    "holiday.christmas": "クリスマス",
-    "holiday.newyearseve": "大晦日",
-    "holiday.easter": "イースター",
-    "holiday.thanksgiving": "感謝祭"
-}
+{"time.weekday.Sunday":"日曜日","time.weekday.Monday":"月曜日","time.weekday.Tuesday":"火曜日","time.weekday.Wednesday":"水曜日","time.weekday.Thursday":"木曜日","time.weekday.Friday":"金曜日","time.weekday.Saturday":"土曜日","time.month.1":"1月","time.month.2":"2月","time.month.3":"3月","time.month.4":"4月","time.month.5":"5月","time.month.6":"6月","time.month.7":"7月","time.month.8":"8月","time.month.9":"9月","time.month.10":"10月","time.month.11":"11月","time.month.12":"12月","holiday.newyears":"元旦","holiday.valentines":"バレンタインデー","holiday.halloween":"ハロウィーン","holiday.christmas":"クリスマス","holiday.newyearseve":"大晦日","holiday.easter":"イースター","holiday.thanksgiving":"感謝祭"}

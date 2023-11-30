@@ -13,6 +13,9 @@ My mods for Stardew Valley.
  - [Animals Need Water](https://www.nexusmods.com/stardewvalley/mods/6196/) ([source](https://github.com/gzhynko/StardewMods/tree/master/AnimalsNeedWater))  
    Adds functionality to water troughs located in animal houses. Water them and your animals will be happy!  
 
+ - [Crop Growth Adjustments](https://www.nexusmods.com/stardewvalley/mods/18914/) ([source](https://github.com/gzhynko/StardewMods/tree/master/CropGrowthAdjustments))  
+   Allows you to adjust crop growth parameters through content packs.
+
  - [Dialogue Box Redesign](https://www.nexusmods.com/stardewvalley/mods/8853/) ([source](https://github.com/gzhynko/StardewMods/tree/master/DialogueBoxRedesign))  
    Makes the dialogue box a bit lighter.  
 

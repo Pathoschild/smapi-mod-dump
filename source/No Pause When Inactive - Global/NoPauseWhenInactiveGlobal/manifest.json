@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/thakyZ/StardewValleyMods
+**
+*************************************************/
+
+{
+    "Name": "No Pause When Inactive - Global",
+    "Author": "Neko Boi Nick",
+    "Version": "1.0.0",
+    "MinimumApiVersion": "3.14.0",
+    "Description": "Disables pausing the game when the window is inactive globally, instead of per save.\nWill still respect each save's setting for whether or not to pause the game.",
+    "UniqueID": "NekoBoiNick.NoPauseWhenInactiveGlobal",
+    "EntryDll": "NoPauseWhenInactiveGlobal.dll",
+    "UpdateKeys": [ "Nexus:19250" ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "Required": false
+        }
+    ]
+}

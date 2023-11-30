@@ -27,7 +27,7 @@
   "TheMightyAmondee.CDPP/bereallycareful": "Devi essere veramente più prudente, non mi piace doverti rappezzare dopo che fai qualcosa di pericoloso.$s",
   "TheMightyAmondee.CDPP/easynow1": "Con calma, adesso... fai piano.",
   "TheMightyAmondee.CDPP/easynow2": "Ehi, ragazzino! Stai bene?\\Ehi, ragazzina! Stai bene?",
-  "TheMightyAmondee.CDPP/qi":"Ti ho trovato malconcio e incosciente laggiù, ragazzino... Spero non stessi facendo qualcosa di stupido.$1#$b#Sii più prudente la prossima volta nelle carverne, okay. C'è ancora molto potenziale in te, ragazzino!\\Ti ho trovata malconcia e incosciente laggiù, ragazzina... Spero non stessi facendo qualcosa di stupido.$1#$b#Sii più prudente la prossima volta nelle carverne, okay. C'è ancora molto potenziale in te, ragazzina!",
+  "TheMightyAmondee.CDPP/qi": "Ti ho trovato malconcio e incosciente laggiù, ragazzino... Spero non stessi facendo qualcosa di stupido.$1#$b#Sii più prudente la prossima volta nelle carverne, okay. C'è ancora molto potenziale in te, ragazzino!\\Ti ho trovata malconcia e incosciente laggiù, ragazzina... Spero non stessi facendo qualcosa di stupido.$1#$b#Sii più prudente la prossima volta nelle carverne, okay. C'è ancora molto potenziale in te, ragazzina!",
   "TheMightyAmondee.CDPP/whathappened": "...Che cosa è appena successo?",
   "TheMightyAmondee.CDPP/somethingbad": "Qualcosa di brutto deve essermi accaduto... non ho la minima idea di come sono arrivato qui...\\Qualcosa di brutto deve essermi accaduto... non ho la minima idea di come sono arrivata qui...",
   "TheMightyAmondee.CDPP/moneylost": "Ho perso {{moneylost}}o. Mi domando come sia successo... ",
@@ -36,8 +36,29 @@
   "TheMightyAmondee.CDPP/mailnocharge": "Sii contento di non esser stato addebitato per questo servizio",
   "TheMightyAmondee.CDPP/mailnochargeharvey": "Non ti ho addebitato nulla per le spese mediche questa volta",
 
-   // Replacements
-   "TheMightyAmondee.CDPP/replacementdialogue":"{0} ti ha trovato senza sensi {1} ... Ho dovuto sottoporti a un'operazione d'emergenza!#$b#",
-   "TheMightyAmondee.CDPP/replacementmail1":"Le sono stati addebitati {0} oro per questo servizio",
-   "TheMightyAmondee.CDPP/replacementmail2":"Ti ho fatturato {0} oro per coprire le spese mediche"
+  // Replacements
+  "TheMightyAmondee.CDPP/replacementdialogue": "{0} ti ha trovato senza sensi {1} ... Ho dovuto sottoporti a un'operazione d'emergenza!#$b#",
+  "TheMightyAmondee.CDPP/replacementmail1": "Le sono stati addebitati {0} oro per questo servizio",
+  "TheMightyAmondee.CDPP/replacementmail2": "Ti ho fatturato {0} oro per coprire le spese mediche",
+
+  // Config settings
+  "config.option.title.death": "Pene di morte",
+  "config.option.title.passout": "Penalità di svenimento",
+  "config.option.title.other": "Altre sanzioni",
+
+  "config.option.death.restoreitems": "Ripristina elementi",
+  "config.option.death.losscap": "Tetto per la perdita di denaro",
+  "config.option.death.moneytorestorepercentage": "Percentuale di ripristino del denaro",
+  "config.option.death.energytorestorepercentage": "Percentuale di ripristino energetico",
+  "config.option.death.healthtorestorepercentage": "Percentuale di ripristino della salute",
+
+  "config.option.passout.losscap": "Tetto per la perdita di denaro",
+  "config.option.passout.moneytorestorepercentage": "Percentuale di ripristino del denaro",
+  "config.option.passout.energytorestorepercentage": "Percentuale di ripristino energetico",
+
+  "config.option.other.wakeupnextdayinclinic": "Svegliati il ​​giorno dopo in clinica",
+  "config.option.other.harveyfriendshipchange": "Harvey Cambiamento di amicizia",
+  "config.option.other.marufriendshipchange": "Maru Cambiamento di amicizia",
+  "config.option.other.morerealisticwarps": "Orditi più realistici",
+  "config.option.other.debuffondeath": "Debuff alla morte"
 }

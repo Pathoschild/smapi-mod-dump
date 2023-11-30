@@ -6,14 +6,15 @@ mods:
    Car Warp
    Colored Crystalariums
    Configurable Luck
+   Joja's Dark Secret
    Mines Tokens
    Splash Text
    Sturdy Saplings
 
 latest commit:
-   commit 7b9e6da76640e4d30571bd68a53332de26770b91
+   commit 55564253ccb75e44400499c19383a456e74b238f
    Author: sophiesalacia <sophiesalacia@users.noreply.github.com>
-   Date:   Tue Oct 17 22:26:33 2023 -0400
+   Date:   Tue Nov 28 13:51:28 2023 -0500
    
-       MinesTokens initial commit
+       Fixed another typo.
    

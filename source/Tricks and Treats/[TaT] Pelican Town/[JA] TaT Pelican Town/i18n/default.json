@@ -1,0 +1,96 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/cl4r3/Halloween-Mod-Jam-2023
+**
+*************************************************/
+
+{
+	"objects.ablaze-orbs.name": "Wizad's Ablaze Orbs",
+	"objects.ablaze-orbs.description": "A pack of little red candies filled with cinnamon. They'll burn your tongue away, yet you'll still crave even more.",
+	"objects.raisins.name": "Moe's Raisins",
+	"objects.raisins.description": "A natural and healthy source of fructose!",
+	"objects.vanilla-wafer.name": "K.D. Vanilla Wafer",
+	"objects.vanilla-wafer.description": "Mmm... The sight alone brings back a flood of childhood memories.",
+	"objects.luxurious-truffle.name": "Lux-urious Truffles",
+	"objects.luxurious-truffle.description": "The wrapping job is so chic that you're reluctant to open it.",
+
+	"objects.candy-corn.name": "Candy Corn",
+	"objects.candy-corn.description": "A staple of Spirit's Eve candy, even though it's not very tasty.",
+	"objects.candied-apple.name": "Candied Apple",
+	"objects.candied-apple.description": "A fall classic consisting of an apple covered in caramel on a stick.",
+	"objects.cottonweb-candy.name": "Cottonweb Candy",
+	"objects.cottonweb-candy.description": "A spider's web of candy floss, delicately woven into a tasty treat! (Not actually from spiders.)",
+	"objects.licorice-swirl.name": "Licorice Swirl",
+	"objects.licorice-swirl.description": "Tough and pungent for its stranger. Gives a roller-coaster of various tastes when eaten.",
+	"objects.peanut-butter-eyecup.name": "Peanut Butter Eyecup",
+	"objects.peanut-butter-eyecup.description": "A spooky twist on a Spirit's Eve classic.",
+	"objects.candied-bacon-stick.name": "Candied Bacon Stick",
+	"objects.candied-bacon-stick.description": "A slice of bacon coated in syrup and served kebab-style.",
+	"objects.braincell-gum.name": "Braincell Gum",
+	"objects.braincell-gum.description": "Looks like a tiny brain!",
+	"objects.batsdrop.name": "Batsdrop",
+	"objects.batsdrop.description": "A treat with an excellent taste most won't deny.",
+	"objects.eye-candy.name": "Sour Eye Candy",
+	"objects.eye-candy.description": "Despite the name, it's not very pleasant to look at.",
+	"objects.twisty-taffy.name": "Twisty Taffy",
+	"objects.twisty-taffy.description": "Taffy packaged in a simple wrapper. Or maybe it's hard candy...? No one knows.",
+
+	"objects.ghost-meringue.name": "Ghost Meringue",
+	"objects.ghost-meringue.description": "A vanilla meringue decorated especially for the season!",
+	"objects.witch-cauldron.name": "Witch's Cauldron",
+	"objects.witch-cauldron.description": "A plastic cauldron filled with a sour syrup.",
+	"objects.dino-cookie.name": "Dino Cookie",
+	"objects.dino-cookie.description": "The green crust hides filling as hot as a pepper rex's fire!",
+	"objects.gingerbread-tombstone.name": "Gingerbread Tombstone Cookie",
+	"objects.gingerbread-tombstone.description": "Who said gingerbread is just for winter?",
+
+	"objects.joja-cane.name": "JojaCanes",
+	"objects.joja-cane.description": "Joja-brand candy canes. For some reason, the manufacturer insists that they only ever be held upside down.",
+	"objects.joja-gummies.name": "JojaGummies",
+	"objects.joja-gummies.description": "Joja-brand gummies. Watch everyone's faces pucker from the sourness!",
+
+	"clothes.chainmail-pants.name": "Chainmail Pants",
+	"clothes.chainmail-pants.description": "Perfect for a knightly costume, but what are the other two pieces...?",
+
+	"clothes.skeleton-pants.name": "Skeleton Pants",
+	"clothes.skeleton-pants.description": "Perfect for a spooky costume, but what are the other two pieces...?",
+
+	"clothes.goblin-shirt.name": "Goblin Shirt",
+	"clothes.goblin-shirt.description": "Perfect for a creepy costume -- but where is the mask...?",
+	"clothes.goblin-pants.name": "Goblin Pants",
+	"clothes.goblin-pants.description": "Perfect for a creepy costume -- but where is the mask...?",
+
+	// Mask names aren't working with i18n, so must be hard-coded in
+	//"clothes.alien-mask.name": "Alien Mask",
+	"clothes.alien-mask.description": "Hello, earthman. We are friendlies.",
+	"clothes.alien-shirt.name": "Alien Shirt",
+	"clothes.alien-shirt.description": "Take us to your leader!",
+	"clothes.alien-pants.name": "Alien Pants",
+	"clothes.alien-pants.description": "All your base are belong to us.",
+
+	//"clothes.ghost-mask.name": "Ghost Mask",
+	"clothes.ghost-mask.description": "bOoOoOoOo!",
+	"clothes.ghost-shirt.name": "Ghost Shirt",
+	"clothes.ghost-shirt.description": "bOoOoOoOo!",
+	"clothes.ghost-skirt.name": "Ghost Skirt",
+	"clothes.ghost-skirt.description": "bOoOoOoOo!",
+
+	//"clothes.mummy-mask.name": "Mummy Mask",
+	"clothes.mummy-mask.description": "Do NOT wake me from my slumber again, human.",
+	"clothes.mummy-shirt.name": "Mummy Shirt",
+	"clothes.mummy-shirt.description": "Do NOT wake me from my slumber again, human.",
+	"clothes.mummy-pants.name": "Mummy Pants",
+	"clothes.mummy-pants.description": "Do NOT wake me from my slumber again, human.",
+
+	//"clothes.stone-golem-mask.name": "Stone Golem Mask",
+	"clothes.stone-golem-mask.description": "Oof, this costume's kind of stiff to wear...",
+	"clothes.stone-golem-shirt.name": "Stone Golem Shirt",
+	"clothes.stone-golem-shirt.description": "Oof, this costume's kind of stiff to wear...",
+	"clothes.stone-golem-pants.name": "Stone Golem Pants",
+	"clothes.stone-golem-pants.description": "Oof, this costume's kind of stiff to wear...",
+
+}

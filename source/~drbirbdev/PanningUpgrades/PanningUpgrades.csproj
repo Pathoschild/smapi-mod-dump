@@ -1,3 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<Import Project="..\common.targets" />
+    <Import Project="..\common-contentpatcher.targets" />
+
+    <PropertyGroup>
+        <Description>Add Pan upgrades at the blacksmith.</Description>
+        <Version>1.0.12</Version>
+        <UpdateKeys>Nexus:12242</UpdateKeys>
+    </PropertyGroup>
+    
 </Project>

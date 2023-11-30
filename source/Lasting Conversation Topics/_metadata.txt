@@ -6,9 +6,11 @@ mods:
    Lasting Conversation Topics
 
 latest commit:
-   commit fba4bd84ddd44fa4dceddb5c4c2c446777302d26
-   Author: Zash <zash@fantasymail.de>
-   Date:   Sat Oct 21 21:22:43 2023 +0200
+   commit 4d7a7cc280ca84a6040f30ee4be602d280cfed1a
+   Author: Jeremy Rimpo <jeremy.rimpo@servermonkey.com>
+   Date:   Thu Nov 16 23:07:16 2023 -0600
    
-       Add mapping GameIniFiles: iniFiles() to BasicGame (#123)
+       Merge pull request #127 from ZashIn/cyberpunk-fix-game-update
+       
+       Cyberpunk fix game update
    

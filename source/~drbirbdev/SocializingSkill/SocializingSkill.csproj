@@ -1,3 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\common.targets" />
+    <Import Project="..\common.targets" />
+    <Import Project="..\common-contentpatcher.targets" />
+    <Import Project="..\common-spacecore.targets" />
+
+    <PropertyGroup>
+        <Description>Adds a skill related to befriending villagers.</Description>
+        <Version>1.1.6</Version>
+        <UpdateKeys>Nexus:14142</UpdateKeys>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SMAPIDependency Include="DaLion.Overhaul" MinimumVersion="1.1.1" Required="false" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ContentPatcher\i18n\" />
+      <Folder Include="ContentPatcher\assets\" />
+      <Folder Include="ContentPatcher\data\" />
+    </ItemGroup>
+
+    
 </Project>

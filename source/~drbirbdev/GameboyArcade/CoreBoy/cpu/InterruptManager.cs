@@ -23,68 +23,68 @@ namespace CoreBoy.cpu
 
         public InterruptManager(bool gbc)
         {
-            _gbc = gbc;
+            this._gbc = gbc;
         }
 
         public void EnableInterrupts(bool withDelay)
         {
-            _pendingDisableInterrupts = -1;
+            this._pendingDisableInterrupts = -1;
             if (withDelay)
             {
-                if (_pendingEnableInterrupts == -1)
+                if (this._pendingEnableInterrupts == -1)
                 {
-                    _pendingEnableInterrupts = 1;
+                    this._pendingEnableInterrupts = 1;
                 }
             }
             else
             {
-                _pendingEnableInterrupts = -1;
-                _ime = true;
+                this._pendingEnableInterrupts = -1;
+                this._ime = true;
             }
         }
 
         public void DisableInterrupts(bool withDelay)
         {
-            _pendingEnableInterrupts = -1;
-            if (withDelay && _gbc)
+            this._pendingEnableInterrupts = -1;
+            if (withDelay && this._gbc)
             {
-                if (_pendingDisableInterrupts == -1)
+                if (this._pendingDisableInterrupts == -1)
                 {
-                    _pendingDisableInterrupts = 1;
+                    this._pendingDisableInterrupts = 1;
                 }
             }
             else
             {
-                _pendingDisableInterrupts = -1;
-                _ime = false;
+                this._pendingDisableInterrupts = -1;
+                this._ime = false;
             }
         }
 
-        public void RequestInterrupt(InterruptType type) => _interruptFlag |= 1 << type.Ordinal;
-        public void ClearInterrupt(InterruptType type) => _interruptFlag &= ~(1 << type.Ordinal);
+        public void RequestInterrupt(InterruptType type) => this._interruptFlag |= 1 << type.Ordinal;
+        public void ClearInterrupt(InterruptType type) => this._interruptFlag &= ~(1 << type.Ordinal);
 
         public void OnInstructionFinished()
         {
-            if (_pendingEnableInterrupts != -1)
+            if (this._pendingEnableInterrupts != -1)
             {
-                if (_pendingEnableInterrupts-- == 0)
+                if (this._pendingEnableInterrupts-- == 0)
                 {
-                    EnableInterrupts(false);
+                    this.EnableInterrupts(false);
                 }
             }
 
-            if (_pendingDisableInterrupts != -1)
+            if (this._pendingDisableInterrupts != -1)
             {
-                if (_pendingDisableInterrupts-- == 0)
+                if (this._pendingDisableInterrupts-- == 0)
                 {
-                    DisableInterrupts(false);
+                    this.DisableInterrupts(false);
                 }
             }
         }
 
-        public bool IsIme() => _ime;
-        public bool IsInterruptRequested() => (_interruptFlag & _interruptEnabled) != 0;
-        public bool IsHaltBug() => (_interruptFlag & _interruptEnabled & 0x1f) != 0 && !_ime;
+        public bool IsIme() => this._ime;
+        public bool IsInterruptRequested() => (this._interruptFlag & this._interruptEnabled) != 0;
+        public bool IsHaltBug() => (this._interruptFlag & this._interruptEnabled & 0x1f) != 0 && !this._ime;
         public bool Accepts(int address) => address == 0xff0f || address == 0xffff;
 
         public void SetByte(int address, int value)
@@ -92,11 +92,11 @@ namespace CoreBoy.cpu
             switch (address)
             {
                 case 0xff0f:
-                    _interruptFlag = value | 0xe0;
+                    this._interruptFlag = value | 0xe0;
                     break;
 
                 case 0xffff:
-                    _interruptEnabled = value;
+                    this._interruptEnabled = value;
                     break;
             }
         }
@@ -106,10 +106,10 @@ namespace CoreBoy.cpu
             switch (address)
             {
                 case 0xff0f:
-                    return _interruptFlag;
+                    return this._interruptFlag;
 
                 case 0xffff:
-                    return _interruptEnabled;
+                    return this._interruptEnabled;
 
                 default:
                     return 0xff;
@@ -130,8 +130,8 @@ namespace CoreBoy.cpu
 
             private InterruptType(int handler, int ordinal)
             {
-                Ordinal = ordinal;
-                Handler = handler;
+                this.Ordinal = ordinal;
+                this.Handler = handler;
             }
 
             public static IEnumerable<InterruptType> Values()

@@ -1,0 +1,11 @@
+{
+	"Name": "NPC Geometry",
+	"Author": "ichortower",
+	"Description": "Override hardcoded NPC geometry figures using CustomFields.",
+	"Version": "1.0.0-alpha",
+	"UniqueID": "ichortower.NPCGeometry",
+	"EntryDll": "NPCGeometry.dll",
+	"MinimumApiVersion": "4.0.0-alpha",
+	"UpdateKeys": ["Nexus:19259", "GitHub:ichortower/NPCGeometry"],
+	"Dependencies": []
+}

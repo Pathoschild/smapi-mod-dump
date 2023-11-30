@@ -10,8 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using BirbShared;
+using BirbCore.Attributes;
 using CoreBoy.serial;
 using StardewModdingAPI.Utilities;
 
@@ -34,7 +33,7 @@ namespace GameboyArcade
 
             int incoming = this.ReceivedByte;
             this.ReceivedByte = 0;
-            Log.Debug($"Outgoing {outgoing.ToString("X2")} / Incoming {incoming.ToString("X2")}");
+            Log.Debug($"Outgoing {outgoing:X2} / Incoming {incoming:X2}");
             return incoming;
         }
 

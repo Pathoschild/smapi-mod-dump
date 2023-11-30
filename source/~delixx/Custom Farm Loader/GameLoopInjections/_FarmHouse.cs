@@ -43,6 +43,26 @@ namespace Custom_Farm_Loader.GameLoopInjections
                original: AccessTools.Constructor(typeof(FarmHouse), new[] { typeof(string), typeof(string) }),
                postfix: new HarmonyMethod(typeof(_FarmHouse), nameof(_FarmHouse.FarmHouse_Postfix))
             );
+
+            harmony.Patch(
+               original: AccessTools.Method(typeof(FarmHouse), "AddStarterGiftBox"),
+               prefix: new HarmonyMethod(typeof(_FarmHouse), nameof(_FarmHouse.AddStarterGiftBox_Prefix))
+            );
+        }
+
+        //Since 1.6 the game will always add a StarterGiftbox
+        //I want to keep this as the mod authors choice
+        //It also interferes with starter giftboxes added using StartFurniture
+        public static bool AddStarterGiftBox_Prefix(FarmHouse __instance, Farm farm)
+        {
+            if (!CustomFarm.IsCFLMapSelected())
+                return true;
+
+            if (farm.getMapProperty("FarmHouseStarterSeedsPosition") is  null &&
+                farm.getMapProperty("FarmHouseStarterGift") is null)
+                return false;
+
+            return true;
         }
 
         public static void FarmHouse_Postfix(FarmHouse __instance, string m, string name)

@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/bcmpinc/StardewHack
+**
+*************************************************/
+
+{
+	EachNightName:  "Ежедневно",		EachNightTooltip:  "Настраивает разложение почвы ежедневно",
+	EachSeasonName: "Ежесезонно",		EachSeasonTooltip: "Настраивает разложение почвы ежесезонно",
+	GreenhouseName: "Теплица",		GreenhouseTooltip: "Настраивает разложение почвы в теплице",
+	IslandName:     "Имбирный остров",	IslandTooltip:     "Настраивает разложение почвы на Имбирном острове",
+	NonFarmName:    "Вне фермы",		NonFarmTooltip:    "Настраивает разложение почвы вне фермы",
+	DryingRateName: "Скорость разложения",	DryingRateTooltip: "Вероятность разложения почвы. Обычно это: {{rate}} (={{percentage}}%).",
+	DelayName:      "Задержка разложения",	DelayTooltip:      "Количество дней подряд, за которое почва без полива разлагается.",
+}

@@ -27,7 +27,6 @@ namespace OrnithologistsGuild
         public static PerchType? debug_PerchType = null;
         private static bool debug_EnableBirdWhisperer = false;
         public static Vector2? debug_BirdWhisperer = null;
-        private static bool debug_CanSpawnAtOrRelocateTo = false;
 
         private void RegisterDebugCommands()
         {
@@ -35,7 +34,6 @@ namespace OrnithologistsGuild
             Helper.ConsoleCommands.Add("ogs", "Consistently spawns specified birdie ID", OnDebugCommand);
             Helper.ConsoleCommands.Add("ogp", "Forces birdies to perch on specified perch type", OnDebugCommand);
             Helper.ConsoleCommands.Add("ogw", "Bird Whisperer: ask a random bird (nicely) to relocate to wherever you click", OnDebugCommand);
-            Helper.ConsoleCommands.Add("ogcsr", "Debugs `BetterBirdie.CanSpawnAtOrRelocateTo()`", OnDebugCommand);
         }
 
         private void OnDebugCommand(string cmd, string[] args)
@@ -109,12 +107,6 @@ namespace OrnithologistsGuild
                 if (debug_EnableBirdWhisperer) Monitor.Log($"`ogw` enabled: click a tile", LogLevel.Info);
                 else Monitor.Log($"`ogw` disabled", LogLevel.Warn);
             }
-            else if (cmd.Equals("ogcsr"))
-            {
-                debug_CanSpawnAtOrRelocateTo = !debug_CanSpawnAtOrRelocateTo;
-                if (debug_CanSpawnAtOrRelocateTo) Monitor.Log($"`ogcsr` enabled: click a tile", LogLevel.Info);
-                else Monitor.Log($"`ogcsr` disabled", LogLevel.Warn);
-            }
         }
 
         private void DebugHandleInput(ButtonPressedEventArgs e)
@@ -130,18 +122,6 @@ namespace OrnithologistsGuild
                 if (birdie != null)
                 {
                     ((BetterBirdie)birdie).Frighten();
-                }
-            }
-
-            if (debug_CanSpawnAtOrRelocateTo)
-            {
-                if (debug_AlwaysSpawn == null)
-                {
-                    Monitor.Log("Must call `ogs` first", LogLevel.Error);
-                }
-                else
-                {
-                    Monitor.Log($"{debug_AlwaysSpawn.ID} CanSpawnAtOrRelocateTo {e.Cursor.Tile} = {BetterBirdie.CanSpawnAtOrRelocateTo(Game1.player.currentLocation, e.Cursor.Tile, debug_AlwaysSpawn)}", LogLevel.Info);
                 }
             }
         }

@@ -1,5 +1,7 @@
 {
   "riteButtons": "MouseX1, MouseX2, V, LeftShoulder",
+  "actionButtons": "MouseLeft, C, ControllerX",
+  "slotAttune": false,
   "blessingList": {},
   "questList": {},
   "castBuffs": true,
@@ -7,14 +9,18 @@
   "consumeQuicksnack": true,
   "consumeCaffeine": true,
   "setProgress": -1,
+  "castAnywhere": false,
   "maxDamage": false,
-  "unrestrictedStars": false,
   "combatDifficulty": "medium",
   "weaponAttunement": {
     "15": "earth",
     "14": "water",
-    "9": "stars"
+    "9": "stars",
+    "53": "fates"
   },
-  "checkQuests": false,
-  "partyHats": false
+  "partyHats": false,
+  "disableSeeds": false,
+  "disableFish": false,
+  "disableWildspawn": false,
+  "disableTrees": false
 }

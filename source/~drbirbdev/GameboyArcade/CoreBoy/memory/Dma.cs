@@ -26,9 +26,9 @@ namespace CoreBoy.memory
 
         public Dma(IAddressSpace addressSpace, IAddressSpace oam, SpeedMode speedMode)
         {
-            _addressSpace = new DmaAddressSpace(addressSpace);
-            _speedMode = speedMode;
-            _oam = oam;
+            this._addressSpace = new DmaAddressSpace(addressSpace);
+            this._speedMode = speedMode;
+            this._oam = oam;
         }
 
         public bool Accepts(int address)
@@ -38,29 +38,29 @@ namespace CoreBoy.memory
 
         public void Tick()
         {
-            if (!_transferInProgress) return;
-            if (++_ticks < 648 / _speedMode.GetSpeedMode()) return;
+            if (!this._transferInProgress) return;
+            if (++this._ticks < 648 / this._speedMode.GetSpeedMode()) return;
 
-            _transferInProgress = false;
-            _restarted = false;
-            _ticks = 0;
-            
+            this._transferInProgress = false;
+            this._restarted = false;
+            this._ticks = 0;
+
             for (var i = 0; i < 0xa0; i++)
             {
-                _oam.SetByte(0xfe00 + i, _addressSpace.GetByte(_from + i));
+                this._oam.SetByte(0xfe00 + i, this._addressSpace.GetByte(this._from + i));
             }
         }
 
         public void SetByte(int address, int value)
         {
-            _from = value * 0x100;
-            _restarted = IsOamBlocked();
-            _ticks = 0;
-            _transferInProgress = true;
-            _regValue = value;
+            this._from = value * 0x100;
+            this._restarted = this.IsOamBlocked();
+            this._ticks = 0;
+            this._transferInProgress = true;
+            this._regValue = value;
         }
 
-        public int GetByte(int address) => _regValue;
-        public bool IsOamBlocked() => _restarted || _transferInProgress && _ticks >= 5;
+        public int GetByte(int address) => this._regValue;
+        public bool IsOamBlocked() => this._restarted || (this._transferInProgress && this._ticks >= 5);
     }
 }

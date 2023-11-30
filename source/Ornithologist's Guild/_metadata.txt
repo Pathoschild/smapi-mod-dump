@@ -6,9 +6,9 @@ mods:
    Ornithologist's Guild
 
 latest commit:
-   commit 1d623e72dfb09007008c8f323965f70c17c90799
-   Author: Ivy Grey <ivymisc@posteo.net>
-   Date:   Sun Feb 12 10:53:10 2023 -0800
+   commit 2e555bfa6f2b88eaed785974878e58e73ba06b37
+   Author: Ivy <ivymisc@posteo.net>
+   Date:   Sat Nov 11 20:16:39 2023 -0800
    
-       Merge branch 'main' of https://github.com/greyivy/OrnithologistsGuild
+       Update DEVELOPERS.md
    

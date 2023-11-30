@@ -162,7 +162,7 @@ namespace GiftTasteHelper.Framework
             {
                 return;
             }
-
+            int numItemsPerColumn = numItemsToDraw;
             SVector2 maxNameSize = new SVector2(0, 0);
             for (int i = 0; i < numItemsToDraw; ++i)
             {
@@ -181,13 +181,24 @@ namespace GiftTasteHelper.Framework
 
             int padding = 4; // Chosen by fair dice roll
             int rowHeight = (int)Math.Max(maxTextSize.Y * this.ZoomLevel, scaledSpriteSize.YInt) + padding;
+            int columnWidth = this.AdjustForTileSize((maxTextSize.X * this.ZoomLevel) + scaledSpriteSize.XInt) + padding;
             int width = this.AdjustForTileSize((maxTextSize.X * this.ZoomLevel) + scaledSpriteSize.XInt) + padding;
             int height = this.AdjustForTileSize(rowHeight * (numItemsToDraw + 1)); // Add one to make room for the title
             int x = this.AdjustForTileSize(mouse.X, 0.5f, this.ZoomLevel);
             int y = this.AdjustForTileSize(mouse.Y, 0.5f, this.ZoomLevel);
 
-            int viewportW = Game1.viewport.Width;
-            int viewportH = Game1.viewport.Height;
+            int viewportW = (int)(Game1.viewport.Width * Game1.options.zoomLevel / Game1.options.uiScale);
+            int viewportH = (int)(Game1.viewport.Height * Game1.options.zoomLevel / Game1.options.uiScale);
+
+            // Create new columns of items shown if they will go off screen.
+            if (height > viewportH)
+            {
+                numItemsPerColumn = ((viewportH - spriteRect.Height) / rowHeight) - 1; // Remove an item to make space for the title
+                height = this.AdjustForTileSize(rowHeight * (numItemsPerColumn + 1));
+
+                int columnsToDraw = (numItemsToDraw - 1) / numItemsPerColumn + 1;
+                width = (this.AdjustForTileSize((maxTextSize.X * this.ZoomLevel) + scaledSpriteSize.XInt) + padding) * columnsToDraw;
+            }
 
             // Let derived classes adjust the positioning
             this.AdjustTooltipPosition(ref x, ref y, width, height, viewportW, viewportH);
@@ -200,14 +211,6 @@ namespace GiftTasteHelper.Framework
 
             // Consider the position of the original tooltip and ensure we don't cover it up
             SVector2 tooltipPos = this.ClampToViewport(x - origTToffsetX, y, width, height, viewportW, viewportH, mouse);
-
-            // Reduce the number items shown if it will go off screen.
-            // TODO: perhaps add a second column
-            if (height > viewportH)
-            {
-                numItemsToDraw = (viewportH / rowHeight) - 1; // Remove an item to make space for the title
-                height = this.AdjustForTileSize(rowHeight * numItemsToDraw);
-            }
 
             // Draw the background of the tooltip
             SpriteBatch spriteBatch = Game1.spriteBatch;
@@ -227,6 +230,9 @@ namespace GiftTasteHelper.Framework
             textOffset.Y += rowHeight;
             spriteOffset.Y += rowHeight;
 
+            float initialSpriteY = spriteOffset.Y;
+            float initialTextY = textOffset.Y;
+
             // Draw all the items
             for (int i = 0; i < numItemsToDraw; ++i)
             {
@@ -238,9 +244,20 @@ namespace GiftTasteHelper.Framework
                 this.DrawText(item.DisplayName, textOffset, textColor);
                 this.DrawTexture(Game1.objectSpriteSheet, spriteOffset, item.TileSheetSourceRect, spriteScale);
 
-                // Move to the next row
-                spriteOffset.Y += rowHeight;
-                textOffset.Y += rowHeight;
+                if ((i + 1) % numItemsPerColumn == 0)
+                {
+                    // Move to the next column
+                    spriteOffset.X += columnWidth;
+                    textOffset.X += columnWidth;
+                    spriteOffset.Y = initialSpriteY;
+                    textOffset.Y = initialTextY;
+                }
+                else
+                {
+                    // Move to the next row
+                    spriteOffset.Y += rowHeight;
+                    textOffset.Y += rowHeight;
+                }
             }
         }
 
@@ -285,7 +302,7 @@ namespace GiftTasteHelper.Framework
 
                 // This mimics the regular tooltip behaviour; moving them out of the cursor's way slightly
                 int halfTileSize = this.AdjustForTileSize(0.0f);
-                p.Y = Math.Max(0, p.Y - ((p.X != x) ? halfTileSize : 0));
+                //p.Y = Math.Max(0, p.Y - ((p.X != x) ? halfTileSize : 0));
                 p.X = Math.Max(0, p.X - ((p.Y != y && adjustX) ? halfTileSize : 0));
             }
             return p;
@@ -300,7 +317,7 @@ namespace GiftTasteHelper.Framework
                 int diff = (ca + l1) - l2;
                 ca -= diff;
             }
-            return ca;
+            return Math.Max(0, ca);
         }
         #endregion Drawing
     }

@@ -1,0 +1,10 @@
+{
+    "Name": "Stardew_CHAOS_Mod",
+    "Author": "Majesity",
+    "Version": "1.0.0",
+    "Description": "Random things happen every 60 seconds, good or bad. Similar to GTA5 chaos mod",
+    "UniqueID": "Majesity.Stardew_CHAOS_Mod",
+    "EntryDll": "Stardew CHAOS Mod.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": []
+}

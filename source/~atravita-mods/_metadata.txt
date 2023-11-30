@@ -35,11 +35,11 @@ mods:
    Trash Does Not Consume Bait
 
 latest commit:
-   commit c5f31f15f460f2ac9b12adb5b7dcec99e68d284f
+   commit 2017c2ce5f804d706db34f9a5cbdf00e3c7c4fe1
    Author: atravita-mods <94934860+atravita-mods@users.noreply.github.com>
-   Date:   Thu Jul 27 18:13:22 2023 -0400
+   Date:   Thu Nov 9 22:46:36 2023 -0500
    
-       Merge pull request #38 from angel4killer/patch-1
+       Merge pull request #48 from atravita-mods/dependabot/nuget/JetBrains.Annotations-2023.3.0
        
-       Update ru.json
+       Bump JetBrains.Annotations from 2023.2.0 to 2023.3.0
    

@@ -8,47 +8,32 @@
 **
 *************************************************/
 
-using System.IO;
-using BirbShared;
-using BirbShared.Command;
-using StardewValley;
+using BirbCore.Attributes;
 
-namespace GameboyArcade
+namespace GameboyArcade;
+
+[SCommand("gameboy")]
+class Command
 {
-    [CommandClass(Prefix = "arcade_")]
-    class Command
+    [SCommand.Command("Play a loaded rom")]
+    public static void Play(string game)
     {
-        [CommandMethod("Play a loaded rom")]
-        public static void Play(string game)
-        {
-            if (!ModEntry.LoadedContentPacks.TryGetValue(game, out Content content))
-            {
-                foreach (Content search in ModEntry.LoadedContentPacks.Values)
-                {
-                    if (search.Name == game)
-                    {
-                        content = search;
-                        break;
-                    }
-                }
-            }
-            if (content is null)
-            {
-                Log.Error($"Could not find game {game}");
-                return;
-            }
-            GameboyMinigame.LoadGame(content);
-        }
+        Content gameToPlay = ModEntry.SearchGames(game);
 
-        [CommandMethod("List all loaded roms")]
-        public static void List()
+        if (gameToPlay is null)
         {
-            string list = "\n";
-            foreach (string id in ModEntry.LoadedContentPacks.Keys)
-            {
-                list += $"{id}\n";
-            }
-            Log.Info(list);
+            Log.Error($"Could not find game {game}");
+            return;
+        }
+        GameboyMinigame.LoadGame(gameToPlay);
+    }
+
+    [SCommand.Command("List all loaded roms")]
+    public static void List()
+    {
+        foreach (Content content in ModEntry.AllGames())
+        {
+            Log.Info(content.Name);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Combat.Events.GameLoop.ReturnedToTitle;
 #region using directives
 
 using DaLion.Overhaul.Modules.Combat.StatusEffects;
+using DaLion.Overhaul.Modules.Combat.VirtualProperties;
 using DaLion.Shared.Events;
 using StardewModdingAPI.Events;
 
@@ -45,5 +46,7 @@ internal sealed class CombatReturnedToTitleEvent : ReturnedToTitleEvent
         SlowAnimation.SlowAnimationByMonster.Clear();
         StunAnimation.StunAnimationByMonster.Clear();
         CombatModule.State.HeroQuest = null;
+        MeleeWeapon_Stats.Values.Clear();
+        Slingshot_Stats.Values.Clear();
     }
 }

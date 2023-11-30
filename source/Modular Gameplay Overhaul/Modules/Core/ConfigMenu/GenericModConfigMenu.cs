@@ -40,7 +40,7 @@ internal sealed class GenericModConfigMenu : GMCMBuilder<GenericModConfigMenu>
     protected override void BuildMenu()
     {
         this.SetTitleScreenOnlyForNextOptions(true);
-        if (!LocalData.InitialSetupComplete)
+        if (Config.LaunchInitialSetup)
         {
             this.AddParagraph(I18n.Gmcm_Core_Initial);
         }
@@ -50,7 +50,7 @@ internal sealed class GenericModConfigMenu : GMCMBuilder<GenericModConfigMenu>
         }
 
         this.AddModuleSelectionOption();
-        if (!LocalData.InitialSetupComplete)
+        if (Config.LaunchInitialSetup)
         {
             return;
         }
@@ -62,7 +62,7 @@ internal sealed class GenericModConfigMenu : GMCMBuilder<GenericModConfigMenu>
                 getOptionName: I18n.Gmcm_Core_Modules,
                 pages: EnumerateModules().Skip(1).Where(m => m._ShouldEnable).ToArray(),
                 getPageId: module => module.Namespace,
-                getPageName: module => module.Name,
+                getPageName: module => module.DisplayName,
                 getColumnsFromWidth: _ => 2);
 
         this.BuildImplicitly(() => Config);
@@ -106,7 +106,31 @@ internal sealed class GenericModConfigMenu : GMCMBuilder<GenericModConfigMenu>
     #region GMCM overrides
 
     [UsedImplicitly]
-    private static void ProfessionConfigSkillExpMulitpliersOverride()
+    private static void ProfessionConfigArtisanMachinesOverride()
+    {
+        Instance!.AssertRegistered();
+        Instance.AddDynamicListOption(
+            I18n.Gmcm_ArtisanMachines_Title,
+            I18n.Gmcm_ArtisanMachines_Desc,
+            () => Config.Professions.ArtisanMachines.ToList(),
+            values => Config.Professions.ArtisanMachines = values.ToHashSet(),
+            id: "ArtisanMachines");
+    }
+
+    [UsedImplicitly]
+    private static void ProfessionConfigAnimalDerivedGoodsOverride()
+    {
+        Instance!.AssertRegistered();
+        Instance.AddDynamicListOption(
+            I18n.Gmcm_AnimalDerivedGoods_Title,
+            I18n.Gmcm_AnimalDerivedGoods_Desc,
+            () => Config.Professions.AnimalDerivedGoods.ToList(),
+            values => Config.Professions.AnimalDerivedGoods = values.ToHashSet(),
+            id: "AnimalDerivedGoods");
+    }
+
+    [UsedImplicitly]
+    private static void ProfessionConfigSkillExpMultipliersOverride()
     {
         Instance!.AssertRegistered();
         foreach (var (skillId, multiplier) in Config.Professions.SkillExpMultipliers)
@@ -138,6 +162,18 @@ internal sealed class GenericModConfigMenu : GMCMBuilder<GenericModConfigMenu>
                     id: "SkillExpMultipliers." + scSkill.StringId);
             }
         }
+    }
+
+    [UsedImplicitly]
+    private static void CombatConfigStabbingSwordsOverride()
+    {
+        Instance!.AssertRegistered();
+        Instance.AddDynamicListOption(
+            I18n.Gmcm_StabbingSwords_Title,
+            I18n.Gmcm_StabbingSwords_Desc,
+            () => Config.Combat.StabbingSwords.ToList(),
+            values => Config.Combat.StabbingSwords = values.ToHashSet(),
+            id: "StabbingSwords");
     }
 
     [UsedImplicitly]
@@ -673,126 +709,81 @@ internal sealed class GenericModConfigMenu : GMCMBuilder<GenericModConfigMenu>
     private static void TaxConfigTaxByIncomeBracketOverride()
     {
         Instance!.AssertRegistered();
-        Instance
-            .AddTextBox(
-                I18n.Gmcm_IncomeBrackets_Title,
-                I18n.Gmcm_IncomeBrackets_Desc,
-                config => string.Join(", ", config.Taxes.TaxByIncomeBracket.Keys),
-                (config, value) =>
+        Instance.AddDynamicKeyValuePairListOption(
+            I18n.Gmcm_TaxRatePerIncomeBracket_Title,
+            I18n.Gmcm_TaxRatePerIncomeBracket_Desc,
+            () => Config.Taxes.TaxRatePerIncomeBracket.Select(pair => new KeyValuePair<string, string>($"{pair.Key}", $"{pair.Value}")).ToList(),
+            pairs =>
+            {
+                var parsedPairs = new List<KeyValuePair<int, float>>();
+                for (var i = 0; i < pairs.Count; i++)
                 {
-                    var keys = value.TrimAll()
-                        .Split(new[] { ',', ';' }, StringSplitOptions.None)
-                        .Select(int.Parse)
-                        .ToArray();
-                    var values = config.Taxes.TaxByIncomeBracket.Values.ToArray();
-                    if (keys.Length != values.Length)
+                    var pair = pairs[i];
+                    if (!int.TryParse(pair.Key, out var bracket))
                     {
-                        Log.E(
-                            "Failed updating income brackets. Please make sure that all income brackets have a corresponding tax value.");
-                        return;
+                        Log.W(
+                            $"Failed to change the tax bracket at position {i / 2}. The key `{pair.Key}` is invalid. Please make sure that it is a valid integer.");
                     }
-
-                    var dict = new Dictionary<int, float>();
-                    for (var i = 0; i < keys.Length; i++)
+                    else if (!float.TryParse(pair.Value, out var tax))
                     {
-                        if (dict.TryAdd(keys[i], values[i]))
-                        {
-                            continue;
-                        }
-
-                        Log.E($"Failed adding income bracket {keys[i]}. Please make sure the bracket is unique.");
-                        return;
+                        Log.W(
+                            $"Failed to change the tax rate at position {i / 2}. The value `{pair.Value}` is invalid. Please make sure that it is a valid decimal.");
                     }
-
-                    config.Taxes.TaxByIncomeBracket = dict;
-
-                },
-                () => Config,
-                "TaxPerIncomeBracket.Keys")
-
-            .AddTextBox(
-                I18n.Gmcm_TaxPerBracket_Title,
-                I18n.Gmcm_TaxPerBracket_Desc,
-                config => string.Join(", ", config.TaxByIncomeBracket.Values),
-                (config, value) =>
-                {
-                    var keys = config.TaxByIncomeBracket.Keys.ToArray();
-                    var values = value.TrimAll()
-                        .Split(',')
-                        .Select(float.Parse)
-                        .ToArray();
-                    if (keys.Length != values.Length)
+                    else
                     {
-                        Log.E(
-                            "Failed updating tax per bracket. Please make sure that all income brackets have a corresponding tax value.");
-                        return;
+                        parsedPairs.Add(new KeyValuePair<int, float>(bracket, tax));
                     }
+                }
 
-                    var dict = new Dictionary<int, float>();
-                    for (var i = 0; i < values.Length; i++)
-                    {
-                        if (dict.TryAdd(keys[i], values[i]))
-                        {
-                            continue;
-                        }
-
-                        Log.E($"Failed adding tax value {values[i]}. Please make sure the bracket is unique.");
-                        return;
-                    }
-
-                    config.TaxByIncomeBracket = dict;
-
-                },
-                () => Config.Taxes,
-                "TaxPerIncomeBracket.Values");
+                Config.Taxes.TaxRatePerIncomeBracket = parsedPairs.ToDictionary(pair => pair.Key, value => value.Value);
+            },
+            i => i % 2 == 0 ? I18n.Gmcm_IncomeBracket_Title() : I18n.Gmcm_TaxRate_Title(),
+            i => i % 2 == 0 ? I18n.Gmcm_IncomeBracket_Desc() : I18n.Gmcm_TaxRate_Desc(),
+            enumerateLabels: true,
+            id: "TaxRatePerIncomeBracket");
     }
 
+    //[UsedImplicitly]
+    //private static void TaxConfigDeductibleExtrasOverride()
+    //{
+    //    Instance!.AssertRegistered();
+    //    Instance.AddDynamicKeyValuePairListOption(
+    //        I18n.Gmcm_DeductibleExtras_Title,
+    //        I18n.Gmcm_DeductibleExtras_Desc,
+    //        () => Config.Taxes.DeductibleExtras.Select(pair => new KeyValuePair<string, string>(pair.Key.TrimAll(), $"{pair.Value}")).ToList(),
+    //        pairs =>
+    //        {
+    //            var parsedPairs = new List<KeyValuePair<string, float>>();
+    //            for (var i = 0; i < pairs.Count; i++)
+    //            {
+    //                var pair = pairs[i];
+    //                if (!float.TryParse(pair.Value, out var deductible))
+    //                {
+    //                    Log.W(
+    //                        $"Failed to change the deduction rate for item {pair.Key}. The value `{pair.Value}` is invalid. Please make sure that it is a valid decimal.");
+    //                }
+    //                else
+    //                {
+    //                    parsedPairs.Add(new KeyValuePair<string, float>(pair.Key, deductible));
+    //                }
+    //            }
+
+    //            Config.Taxes.DeductibleExtras = parsedPairs.ToDictionary(pair => pair.Key, value => value.Value);
+    //        },
+    //        i => i % 2 == 0 ? I18n.Gmcm_DeductibleExtras_Label_Key() : I18n.Gmcm_DeductibleExtras_Label_Value(),
+    //        id: "DeductibleExtras");
+    //}
+
     [UsedImplicitly]
-    private static void TweexConfigSpawnCrowsOnTheseMapsOverride()
+    private static void TweexConfigDairyArtisanMachinesOverride()
     {
         Instance!.AssertRegistered();
-
-        var farmMaps = new List<string> { "IslandWest" };
-        if (ModHelper.ModRegistry.IsLoaded("FlashShifter.StardewValleyExpandedCP"))
-        {
-            farmMaps.AddRange(new[] { "Custom_Garden", "Custom_GrampletonFields" });
-        }
-
-        if (ModHelper.ModRegistry.IsLoaded("Rafseazz.RidgesideVillage"))
-        {
-            farmMaps.Add("Custom_Ridgeside_SummitFarm");
-        }
-
-        if (ModHelper.ModRegistry.IsLoaded("LemurKat.EastScarpe.SMAPI"))
-        {
-            farmMaps.Add("Custom_ESMeadowFarm");
-        }
-
-        Instance.AddMultiCheckboxOption(
-            I18n.Gmcm_SpawnCrowsOnTheseMaps_Title,
-            farmMaps.ToArray(),
-            map => TweexModule.Config.SpawnCrowsOnTheseMaps.Contains(map),
-            (map, value) =>
-            {
-                if (value)
-                {
-                    TweexModule.Config.SpawnCrowsOnTheseMaps.Add(map);
-                    if (map == "Custom_GrampletonFields")
-                    {
-                        TweexModule.Config.SpawnCrowsOnTheseMaps.Add("Custom_GrampletonFields_Small");
-                    }
-                }
-                else
-                {
-                    TweexModule.Config.SpawnCrowsOnTheseMaps.Remove(map);
-                    if (map == "Custom_GrampletonFields")
-                    {
-                        TweexModule.Config.SpawnCrowsOnTheseMaps.Remove("Custom_GrampletonFields_Small");
-                    }
-                }
-            },
-            _ => 2,
-            map => Instance._I18n.Get("gmcm.spawn_crows_on_these_maps." + map.ToLower()));
+        Instance.AddDynamicListOption(
+            I18n.Gmcm_DairyArtisanMachines_Title,
+            I18n.Gmcm_DairyArtisanMachines_Desc,
+            () => Config.Tweex.DairyArtisanMachines.ToList(),
+            values => Config.Tweex.DairyArtisanMachines = values.ToHashSet(),
+            id: "DairyArtisanMachines");
     }
 
     #endregion GMCM overrides

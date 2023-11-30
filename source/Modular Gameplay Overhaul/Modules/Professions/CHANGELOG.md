@@ -8,6 +8,146 @@ for queries and analysis.**
 
 # PRFS Changelog
 
+## 4.1.6
+
+### Added
+
+* Added extended prestige levels as part of the requirement for perfection. This replaces the vanilla "Farmer Level" requirement, replacing it with "Skills Mastered". If Extended Level Progression enabled, mastery means having reached level 20. Otherwise, mastery means having obtained all level 10 professions. This is optional, enabled by default, and obviously requires Prestige enabled.
+    * Added the following translation keys:
+        * `ui.pt.farmer_level`
+        * `gmcm.extended_perfection_requirement.title`
+        * `gmcm.extended_perfection_requirement.desc`
+
+### Fixed
+
+* Fixed issue when multiple stones are destroyed at once during a Prospector Hunt, introduced in 4.1.5.
+* Fixed issue with using Magic Bait in Crab Pots.
+
+<sup><sup>[🔼 Back to top](#profs-changelog)</sup></sup>
+
+## 4.1.5
+
+### Added
+
+* Added localization for Treasure Hunt start/end broadcast messages (only releveant in multiplayer).
+* Added the following translation keys:
+    * `gmcm.prospector_detection_distance.title`
+    * `gmcm.prospector_detection_distance.desc`
+    * `gmcm.scavenger_detection_distance.title`
+    * `gmcm.scavenger_detection_distance.desc`
+    * `gmcm.use_legacy_prospector_hunt.title`
+    * `gmcm.use_legacy_prospector_hunt.desc`
+
+### Changed
+
+* Changed the mechanics of Prospector Hunts. They are now unique instead of just a rehash of Scavenger Hunts.
+    * Previously all you had to do was run around until you spotted the purple arrow. This has been removed by default.
+    * Now, the hunt is based on auditory cues resembling a game of hot and cold. The player will have to smash rocks until they hear a 'ding' sound. The pitch of the ding indicates proximity to the treasure; the higher the pitch, the closer it is. This actually forces the player to mine in order to find the reward.
+    * An alert will also be logged to the console for accessibility purposes. The old purple arrow mechanic also remains an option.
+* Tuned down treasure hunt streak impact, which was applying twice and made it way too strong.
+
+### Fixed
+
+* Fixed multiplayer synchronization error caused by object projectiles fired by peers.
+* Fixed issue of farmhands being unable to complete treasure hunts.
+
+### Removed
+
+* Removed the following translation keys:
+    * `gmcm.treasure_detection_distance.title`
+    * `gmcm.treasure_detection_distance.desc`
+
+<sup><sup>[🔼 Back to top](#profs-changelog)</sup></sup>
+
+## 4.1.4
+
+### Fixed
+
+* Fixed typo in `ProspectorHunt.TryStart` which caused SO exception.
+
+<sup><sup>[🔼 Back to top](#profs-changelog)</sup></sup>
+
+## 4.1.3
+
+### Added
+
+* Added a buff to visually indicate Desperado's new quick-shot perk.
+* Treasure Hunts now play quest complete sound on completion.
+
+### Changed
+
+* Improved and cleaned up Treasure Hunt start/end logic. Added MemberNotNull attributes. Changes will need to be reflected in the API.
+
+### Fixed
+
+* Fixed typo in i18n.
+* Fixed an issue where Femur and Ossified Blade rewards from Prospector Hunt would spawn out-of-bounds.
+* Not sure if prestiged Treasure Hunt time freeze was working in Multiplayer before this point, but it now should.
+* Automated Artisan PFM machines now apply Artisan profession perks even if the output is not marked as an Artisan Good.
+* PFM machines no longer apply Artisan perks twice when used manually.
+
+### Removed
+
+* Removed patches to Content Patcher.
+    * If using SVE, certain NPC heart events will not trigger if your skill levels is greater than 10. To fix this, open up the following files, search for `SkillLevel`, and edit the field value to include the extended levels:
+        * In `Stardew Valley Expanded\[CP] Stardew Valley Expanded\code\NPCs\Morgan.json`, there is 1 instance of `SkillLevel:Mining`. Edit so it looks like this:
+        
+        ```json
+        "Action": "EditData",
+        "Target": "data/events/wizardhouse",
+        "When": {
+            "SkillLevel:Mining": "7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20"
+        },
+        ```
+
+        * In `Stardew Valley Expanded\[CP] Stardew Valley Expanded\code\NPCs\Willy.json`, there are 2 instances of `SkillLevel:Fishing`. Edit so they look like this:
+
+        ```json
+        "Action": "EditData",
+        "Target": "data/events/farm",
+        "When": {
+            "SkillLevel:Fishing": "5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20"
+        },
+        ```
+
+        ```json
+        "Action": "EditData",
+        "Target": "data/events/forest",
+        "When": {
+            "SkillLevel:Fishing": "8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20"
+        },
+        ```
+
+<sup><sup>[🔼 Back to top](#profs-changelog)</sup></sup>
+
+## 4.1.2
+
+### Fixed
+
+* Fixed Null-Reference exception caused by `Monster.FindPlayer` patch.
+
+<sup><sup>[🔼 Back to top](#profs-changelog)</sup></sup>
+
+## 4.1.0
+
+### Added
+
+* Added compatibility for [More New Fish](https://www.nexusmods.com/stardewvalley/mods/3578).
+    * Tui and La are now considered Legendary Fish for the Angler perk, and can be raised in Fish Ponds with Aquarist profession.
+* Added `AnimalDerivedProducts` to config settings, so you can now add animal-derived goods from other mods to make them compatible with Producer perks (anything with Mayonnaise, Cheese, Butter, Yogurt, or Ice Cream in the name should work out-of-the-box).
+
+### Changed
+
+* Changed `CustomArtisanMachines` setting to simply `ArtisanMachines`. It now includes the vanilla machines in the list.
+
+### Fixed
+
+* Fixed Aquarist bug causing it to always consider the `FishPondCeiling` setting instead of the actual number of constructed Fish Ponds.
+* Fixed an issue where extended levels (11-20) could cause CP skill level-based conditions not to trigger, depending on how they were written by the mod author. The "fix" has been to cap CP's skill level provider to level 10, so that CP thinks the player's level is 10 even if it is higher than that. This does have the downside of making it impossible for mod's to add specific conditions for extended levels, but I don't think anybody will ever do that anyway.
+    * This also fixes the issue of certain SVE events not triggering (such as Morgan's 8 hearts).
+
+<sup><sup>[🔼 Back to top](#profs-changelog)</sup></sup>
+
 ## 4.0.1
 
 ### Changed

@@ -271,6 +271,7 @@
   ],
 
   "Builder": "Wizard",
+  "MagicalConstruction": true,
   "BuildCondition": "CAN_BUILD_FOR_CABINS PhantomClock",
   "BuildCost": 5000,
   "BuildMaterials": [

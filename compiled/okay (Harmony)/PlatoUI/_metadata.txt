@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19023
+IDs: Platonymous.PlatoUI
+update keys: Nexus:19023

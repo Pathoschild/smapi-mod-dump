@@ -21,6 +21,7 @@ internal class LuckManager
     internal static void SetLuck(Farmer player, double luckValue)
     {
         luckValue = Math.Clamp(luckValue, MIN_LUCK_VALUE, MAX_LUCK_VALUE);
-        player.team.sharedDailyLuck.Value = luckValue;
+
+        player.team.sharedDailyLuck.Value = player.hasSpecialCharm ? luckValue - 0.025f : luckValue;
     }
 }

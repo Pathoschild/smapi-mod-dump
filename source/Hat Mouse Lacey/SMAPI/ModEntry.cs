@@ -58,9 +58,10 @@ namespace ichortower_HatMouseLacey
         public bool DTF { get; set; } = true;
 
         /*
-         * RecolorPalette tells HatMouseLacey which recolor mod to match. The
-         * default is 'Auto', which will detect supported installed recolors
-         * and use the one it thinks is best. Specify one manually to override.
+         * RecolorPalette is for detecting or setting which recolor mod is in
+         * use. This ultimately controls which palette for exterior assets
+         * (mouse house, cursors storefront) will be loaded.
+         * 'Auto' (the default) means use the detected result.
          */
         public Palette RecolorPalette = Palette.Auto;
 
@@ -69,6 +70,13 @@ namespace ichortower_HatMouseLacey
          * Only affects one asset currently (the interior tilesheet).
          */
         public Palette InteriorPalette = Palette.Auto;
+
+        /*
+         * MatchRetexture is like RecolorPalette, but controls which version of
+         * the exterior patches is applied (this loads different assets for the
+         * house and storefront, instead of just different colors).
+         */
+         public Retexture MatchRetexture = Retexture.Auto;
     }
 
     public enum Palette {
@@ -78,6 +86,15 @@ namespace ichortower_HatMouseLacey
         VPR,
         Starblue,
         Wittily,
+    }
+
+    public enum Retexture {
+        Auto,
+        Vanilla,
+        WaybackPT,
+        ElleTown,
+        YriYellog,
+        FlowerValley
     }
 
     internal sealed class ModEntry : Mod
@@ -100,6 +117,11 @@ namespace ichortower_HatMouseLacey
          * Automatically set at save load time.
          */
         public static string InteriorDetected = "Vanilla";
+        /*
+         * Suggests which retexture mod to match for building exteriors.
+         * Automatically set at save load time.
+         */
+        public static string RetextureDetected = "Vanilla";
 
         public static IMonitor MONITOR;
         public static IModHelper HELPER;
@@ -379,11 +401,17 @@ namespace ichortower_HatMouseLacey
             cpapi.RegisterToken(this.ModManifest, "InteriorConfig", () => {
                 return new[] {$"{Config.InteriorPalette.ToString()}"};
             });
+            cpapi.RegisterToken(this.ModManifest, "RetextureConfig", () => {
+                return new[] {$"{Config.MatchRetexture.ToString()}"};
+            });
             cpapi.RegisterToken(this.ModManifest, "RecolorDetected", () => {
                 return new[] {ModEntry.RecolorDetected};
             });
             cpapi.RegisterToken(this.ModManifest, "InteriorDetected", () => {
                 return new[] {ModEntry.InteriorDetected};
+            });
+            cpapi.RegisterToken(this.ModManifest, "RetextureDetected", () => {
+                return new[] {ModEntry.RetextureDetected};
             });
             cpapi.RegisterToken(this.ModManifest, "SVRThreeForest", () => {
                 return new[] {$"{ModEntry.CompatSVR3Forest}"};
@@ -397,7 +425,15 @@ namespace ichortower_HatMouseLacey
                 cmapi.Register(
                     mod: this.ModManifest,
                     reset: () => ModEntry.Config = new ModConfig(),
-                    save: () => this.Helper.WriteConfig(ModEntry.Config)
+                    save: () => {
+                        this.Helper.WriteConfig(ModEntry.Config);
+                        LCCompat.DetectModMatching();
+                    }
+                );
+                cmapi.AddSectionTitle(
+                    mod: this.ModManifest,
+                    text: () => this.Helper.Translation.Get("gmcm.contentsection.text"),
+                    tooltip: null
                 );
                 cmapi.AddBoolOption(
                     mod: this.ModManifest,
@@ -412,6 +448,11 @@ namespace ichortower_HatMouseLacey
                     tooltip: () => this.Helper.Translation.Get("gmcm.dtf.tooltip"),
                     getValue: () => ModEntry.Config.DTF,
                     setValue: value => ModEntry.Config.DTF = value
+                );
+                cmapi.AddSectionTitle(
+                    mod: this.ModManifest,
+                    text: () => this.Helper.Translation.Get("gmcm.appearancesection.text"),
+                    tooltip: null
                 );
                 string[] colorNames = Enum.GetNames<Palette>();
                 cmapi.AddTextOption(
@@ -436,6 +477,17 @@ namespace ichortower_HatMouseLacey
                     setValue: value => {
                         Config.InteriorPalette = (Palette)
                                 Enum.Parse(typeof(Palette), value);
+                    }
+                );
+                cmapi.AddTextOption(
+                    mod: this.ModManifest,
+                    name: () => "MatchRetexture",
+                    tooltip: () => this.Helper.Translation.Get("gmcm.matchretexture.tooltip"),
+                    allowedValues: Enum.GetNames<Retexture>(),
+                    getValue: () => Config.MatchRetexture.ToString(),
+                    setValue: value => {
+                        Config.MatchRetexture = (Retexture)
+                                Enum.Parse(typeof(Retexture), value);
                     }
                 );
                 this.Monitor.Log($"Registered Generic Mod Config Menu entries",
@@ -475,8 +527,7 @@ namespace ichortower_HatMouseLacey
          *
          * Used for:
          *   Stardew Valley Reimagined 3 (forest map edit is a config setting)
-         *   Recolor matching (mostly "is mod present" detection; interior
-         *       palette has to check config toggles on the other mods)
+         *   Recolor and retexture detection and matching (see Compatibility.cs)
          *
          * Later in the save load, check whether we need to run the map repair
          * function, and run it if we do. In this case, we also immediately
@@ -499,67 +550,7 @@ namespace ichortower_HatMouseLacey
                     ModEntry.CompatSVR3Forest = false;
                 }
 
-                ModEntry.RecolorDetected = "Vanilla";
-                ModEntry.InteriorDetected = "Vanilla";
-
-                Dictionary<string, string> recolorMods = new() {
-                    {"DaisyNiko.EarthyRecolour", "Earthy"},
-                    {"grapeponta.VibrantPastoralRecolor", "VPR"},
-                    {"Lita.StarblueValley", "Starblue"},
-                    {"Acerbicon.Recolor", "Wittily"},
-                };
-                foreach (var pair in recolorMods) {
-                    var modInfo = HELPER.ModRegistry.Get(pair.Key);
-                    if (modInfo != null) {
-                        MONITOR.Log($"Found mod '{pair.Key}'. " +
-                                $"Setting detected palette to '{pair.Value}'.",
-                                LogLevel.Trace);
-                        ModEntry.RecolorDetected = pair.Value;
-                        break;
-                    }
-                }
-
-                /* interior recoloring is more complicated. each mod does it
-                 * differently, and wittily doesn't do it at all */
-                Dictionary<string, string> interiorMods = new() {
-                    {"DaisyNiko.EarthyInteriors", "Earthy"},
-                    {"grapeponta.VibrantPastoralRecolor", "Town Interiors:true:VPR"},
-                    {"Lita.StarblueValley", "Interiors:true:Starblue"},
-                };
-                foreach (var pair in interiorMods) {
-                    var split = pair.Value.Split(":");
-                    var modInfo = HELPER.ModRegistry.Get(pair.Key);
-                    if (modInfo != null) {
-                        if (split.Length == 1) {
-                            MONITOR.Log($"Found mod '{pair.Key}'. " +
-                                    $"Setting detected interior palette to '{split[0]}'.",
-                                    LogLevel.Trace);
-                            ModEntry.InteriorDetected = split[0];
-                            break;
-                        }
-                        else if (split.Length == 3) {
-                            var modPath = (string)modInfo.GetType()
-                                    .GetProperty("DirectoryPath").GetValue(modInfo);
-                            var jConfig = JObject.Parse(File.ReadAllText(
-                                    Path.Combine(modPath, "config.json")));
-                            var cvalue = jConfig.GetValue(split[0])
-                                    .Value<string>();
-                            if (cvalue == split[1]) {
-                                MONITOR.Log($"Found active mod '{pair.Key}'. " +
-                                        $"Setting detected interior palette to '{split[2]}'.",
-                                        LogLevel.Trace);
-                                ModEntry.InteriorDetected = split[2];
-                                break;
-                            }
-                        }
-                        else {
-                            MONITOR.Log("Found bad interior detection format: " +
-                                    $"'{pair.Key}' -> '{pair.Value}'. " +
-                                    "Expected 1 or 3 fields in value. Skipping.",
-                                    LogLevel.Warn);
-                        }
-                    }
-                }
+                LCCompat.DetectModMatching();
             }
             if (e.NewStage == LoadStage.Preloaded) {
                 /* check for specific terrain features that should be gone */

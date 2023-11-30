@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using DaLion.Overhaul.Modules.Ponds.Extensions;
+using DaLion.Shared.Classes;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.Reflection;
@@ -230,9 +231,9 @@ internal sealed class FishPondDoActionPatcher : HarmonyPatcher
         return true;
     }
 
-    private static bool IsExtendedFamilyMember(int held, int other)
+    private static bool IsExtendedFamilyMember(int heldIndex, int otherIndex)
     {
-        return Maps.ExtendedFamilyPairs.TryGetValue(other, out var pair) && pair == held;
+        return Lookups.FamilyPairs.TryGet(otherIndex, out var pairIndex) && pairIndex == heldIndex;
     }
 
     #endregion injected subroutines

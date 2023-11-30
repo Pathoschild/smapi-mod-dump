@@ -55,8 +55,9 @@ namespace Unlockable_Bundles.API
         public bool Purchased { get; }
         public int DaysSincePurchase { get; }
         public bool AssetLoaded { get; }
+        public bool Discovered { get; }
 
-        public Bundle(string key, string loc, string unique, Dictionary<string, int>  price, Dictionary<string, int> paid, bool purchased, int daysSincePurchase, bool assetLoaded)
+        public Bundle(string key, string loc, string unique, Dictionary<string, int>  price, Dictionary<string, int> paid, bool purchased, int daysSincePurchase, bool assetLoaded, bool discovered)
         {
             Key = key;
             Location = loc;
@@ -66,6 +67,7 @@ namespace Unlockable_Bundles.API
             Purchased = purchased;
             DaysSincePurchase = daysSincePurchase;
             AssetLoaded = assetLoaded;
+            Discovered = discovered;
         }
     }
 

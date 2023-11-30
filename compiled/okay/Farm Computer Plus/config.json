@@ -1,0 +1,8 @@
+{
+  "AlertOnIslandCropsReady": true,
+  "IslandCropsReadyAlertThreshold": 0,
+  "AlertOnIslandMachinesReady": true,
+  "IslandMachinesReadyAlertThreshold": 0,
+  "AlertOnGreenhouseCropsReady": true,
+  "GreenhouseCropsReadyAlertThreshold": 0
+}

@@ -12,6 +12,8 @@ This mod allows players and modders to customize features from Stardew Valley's 
 ## Contents
 * [Installation](#installation)
 * [Setup](#setup)
+* [Translation](#translation)
+	* [Available Languages](#available-languages)
 * [Examples](#examples)
 * [Commands](#commands)
 	* [whereami](#whereami)
@@ -52,6 +54,20 @@ If you want to customize Farm Type Manager’s settings yourself, follow these i
 5. **Exit your farm and reload it**, or progress to the next in-game day. The mod's settings should now be active.
  
 Note: This mod will be disabled in multiplayer when you play as a farmhand (i.e. join a game hosted by someone else). Its console commands will still function, though.
+
+## Translation
+Farm Type Manager supports translation of its Generic Mod Config Menu (GMCM) setting names and descriptions.
+
+The mod will load a file from the `FarmTypeManager/i18n` folder that matches the current language code. If no matching translation exists, it will use [`default.json`](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/default.json).
+
+See the Stardew Valley Wiki's [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations) page for more information. Please feel free to submit translation files through GitHub, Nexus Mods, ModDrop, or Discord.
+
+### Available Languages
+Language | File | Contributor(s)
+---------|------|------------
+English | [default.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)
+Dutch | [nl.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/nl.json) | [UnrealThingTriesCode](https://github.com/UnrealThingTriesCode)
+Turkish | [tr.json](https://github.com/Esca-MMC/FarmTypeManager/blob/master/FarmTypeManager/i18n/tr.json) | [Rupurudu](https://github.com/Rupurudu)
 
 ## Examples
 Below are a few examples of changes you can make to your character's configuration file, spawning various things on your farm or the other in-game maps.

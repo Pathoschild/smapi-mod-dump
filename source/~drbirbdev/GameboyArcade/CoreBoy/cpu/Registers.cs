@@ -8,10 +8,10 @@
 **
 *************************************************/
 
+using static CoreBoy.cpu.BitUtils;
+
 namespace CoreBoy.cpu
 {
-    using static BitUtils;
-
     public class Registers
     {
         public int A { get; set; }
@@ -26,43 +26,43 @@ namespace CoreBoy.cpu
 
         public Flags Flags { get; } = new Flags();
 
-        public int AF => A << 8 | Flags.FlagsByte;
-        public int BC =>  B << 8 | C;
-        public int DE => D << 8 | E;
-        public int HL =>  H << 8 | L;
+        public int AF => (this.A << 8) | this.Flags.FlagsByte;
+        public int BC => (this.B << 8) | this.C;
+        public int DE => (this.D << 8) | this.E;
+        public int HL => (this.H << 8) | this.L;
 
         public void SetAf(int af)
         {
-            A = GetMsb(af);
-            Flags.SetFlagsByte(GetLsb(af));
+            this.A = GetMsb(af);
+            this.Flags.SetFlagsByte(GetLsb(af));
         }
 
         public void SetBc(int bc)
         {
-            B = GetMsb(bc);
-            C = GetLsb(bc);
+            this.B = GetMsb(bc);
+            this.C = GetLsb(bc);
         }
 
         public void SetDe(int de)
         {
-            D = GetMsb(de);
-            E = GetLsb(de);
+            this.D = GetMsb(de);
+            this.E = GetLsb(de);
         }
 
         public void SetHl(int hl)
         {
-            H = GetMsb(hl);
-            L = GetLsb(hl);
+            this.H = GetMsb(hl);
+            this.L = GetLsb(hl);
         }
 
-        public void IncrementPc() => PC = (PC + 1) & 0xffff;
-        public void IncrementSp() => SP = (SP + 1) & 0xffff;
-        public void DecrementSp() => SP = (SP - 1) & 0xffff;
-        
+        public void IncrementPc() => this.PC = (this.PC + 1) & 0xffff;
+        public void IncrementSp() => this.SP = (this.SP + 1) & 0xffff;
+        public void DecrementSp() => this.SP = (this.SP - 1) & 0xffff;
+
         public override string ToString()
         {
             return
-                $"AF={AF:X4}, BC={BC:X4}, DE={DE:X4}, HL={HL:X4}, SP={SP:X4}, PC={PC:X4}, {Flags}";
+                $"AF={this.AF:X4}, BC={this.BC:X4}, DE={this.DE:X4}, HL={this.HL:X4}, SP={this.SP:X4}, PC={this.PC:X4}, {this.Flags}";
         }
     }
 }

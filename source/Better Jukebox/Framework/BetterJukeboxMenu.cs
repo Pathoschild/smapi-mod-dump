@@ -29,7 +29,7 @@ namespace Gaphodil.BetterJukebox.Framework
         // ---- The parts from ShopMenu:
 
         /// <summary>The list of visible options to choose from.</summary>
-        public List<ClickableComponent> VisibleOptions = new List<ClickableComponent>();
+        public List<ClickableComponent> VisibleOptions = new();
 
         /// <summary>The scroll-up button.</summary>
         public ClickableTextureComponent UpArrow;
@@ -49,7 +49,7 @@ namespace Gaphodil.BetterJukebox.Framework
         // ---- The parts from ChooseFromListMenu:
 
         /// <summary>The list of songs to display.</summary>
-        private readonly List<BetterJukeboxItem> Options = new List<BetterJukeboxItem>();
+        private readonly List<BetterJukeboxItem> Options = new();
 
         /// <summary>The index of the currently active selection from the Options.</summary>
         private int SelectedIndex;
@@ -58,7 +58,7 @@ namespace Gaphodil.BetterJukebox.Framework
         private int LowestVisibleIndex;
 
         /// <summary>The method that will be called when a button is pressed.</summary>
-        private readonly BetterJukeboxMenu.actionOnChoosingListOption ChooseAction;
+        private readonly actionOnChoosingListOption ChooseAction;
 
         // ---- Other parts:
 
@@ -82,7 +82,7 @@ namespace Gaphodil.BetterJukebox.Framework
         public ClickableTextureComponent ReverseSortButton;
 
         /// <summary>The list of tabs, used for switching sorting methods.</summary>
-        public List<ClickableTextureComponent> SortTabs = new List<ClickableTextureComponent>();
+        public List<ClickableTextureComponent> SortTabs = new();
 
         /// <summary>The index of the currently selected tab.</summary>
         private int SelectedTab = 0;
@@ -158,11 +158,12 @@ namespace Gaphodil.BetterJukebox.Framework
         /// <param name="chooseAction">The method that will be called when a button is pressed.</param>
         public BetterJukeboxMenu(
             List<string> options,
-            BetterJukeboxMenu.actionOnChoosingListOption chooseAction,
+            actionOnChoosingListOption chooseAction,
             Texture2D graphics,
             Func<string, Translation> getTranslation,
             IMonitor monitor,
             ModConfig config,
+            bool isSaloon,
             string defaultSelection = "")
             : base (
                 Game1.uiViewport.Width  / 2 - (init_w + borderWidth * 2) / 2, // 1.5: switch from viewport to uiViewport
@@ -182,7 +183,7 @@ namespace Gaphodil.BetterJukebox.Framework
 
             if (Game1.player.currentLocation.miniJukeboxTrack.Value.Equals("")) // no active mini-jukebox 
             {
-                if (Game1.startedJukeboxMusic) // hypothetically only ever true in the saloon
+                if (isSaloon) // 1.6: startedJukeboxMusic removed, workaround
                 {
                     PlayingIndex = Options.FindIndex(item => item.Name.Equals(Game1.getMusicTrackName()));
                     SelectedIndex = PlayingIndex;
@@ -195,6 +196,7 @@ namespace Gaphodil.BetterJukebox.Framework
                 }
             }
             // new in 1.5: value is random
+            // may not be reachable in 1.6
             else if (Game1.player.currentLocation.miniJukeboxTrack.Value.Equals("random"))
             {
                 PlayingIndex = -1;
@@ -277,7 +279,7 @@ namespace Gaphodil.BetterJukebox.Framework
         {
             //Monitor.Log("calling setup");
             // avoid drawing stop and random button in Saloon
-            bool isSaloon = Game1.player.currentLocation.name.Equals("Saloon");
+            bool isSaloon = Game1.player.currentLocation.Name.Equals("Saloon");
             bool hideRandom = isSaloon && !Config.TrueRandom;
             //Monitor.Log("saloon:\t" + isSaloon.ToString());
             //Monitor.Log("truerandom:\t" + Config.TrueRandom.ToString());
@@ -581,7 +583,7 @@ namespace Gaphodil.BetterJukebox.Framework
                     if (options_index >= Options.Count) // of course this needs to be called on the first iteration! don't forget next time!!!
                     {
                         VisibleOptions[i].myID = ClickableComponent.ID_ignore; // these ids should only need to be changed on sort
-                        if (!(UpArrow is null) && UpArrow.myID.Equals(UpArrowID))
+                        if (UpArrow is not null && UpArrow.myID.Equals(UpArrowID))
                         {
                             UpArrow.myID = ClickableComponent.ID_ignore;
                             DownArrow.myID = ClickableComponent.ID_ignore;
@@ -788,7 +790,7 @@ namespace Gaphodil.BetterJukebox.Framework
         /// Used as a poor workaround for differentiating the Saloon jukebox from mini-jukeboxes.
         /// </summary>
         /// <returns>the number of mini-jukeboxes in the current location</returns>
-        private int GetNumberOfLocalMiniJukeboxes()
+        private static int GetNumberOfLocalMiniJukeboxes()
         {
             return Game1.player.currentLocation.miniJukeboxCount.Value;
         }
@@ -874,16 +876,23 @@ namespace Gaphodil.BetterJukebox.Framework
             }
             else
             {
-                ChooseAction("random"); // NOTE: this will not include "typically removed" tracks even if enabled
-                // above sets GameLocation.randomMiniJukeboxTrack.Value
+                ChooseAction("random"); 
+                // NOTE: this will not include "typically removed" tracks even if enabled
+                // pre-1.6: above sets GameLocation.randomMiniJukeboxTrack.Value
                 // vanilla bug(?): only happens IF miniJukeboxTrack is "random", which is set AFTER the randomize attempt is made
 
-                Netcode.NetString randomTrack = Game1.player.currentLocation.randomMiniJukeboxTrack;
-                if (randomTrack.Value is null || randomTrack.Value.Equals(""))
-                    ChooseAction("random"); // do it again
+                //Netcode.NetString randomTrack = Game1.player.currentLocation.randomMiniJukeboxTrack;
+                //if (randomTrack.Value is null || randomTrack.Value.Equals(""))
+                //    ChooseAction("random"); // do it again
+
+                // post-1.6: randomization changed heavily
                 PlayingIndex = -1;
-                IsRandom = true;
-                Monitor.Log("Random selected! Now playing: " + Game1.player.currentLocation.randomMiniJukeboxTrack.Value);
+                IsRandom = true; // leaving unchanged in hope for the future
+                // though now there is a minor visual bug when random pressed
+
+                // 1.6 change prevents getting the song title after random without closing the menu first
+                //Monitor.Log("Random selected! Now playing: " + Game1.player.currentLocation.randomMiniJukeboxTrack.Value);
+                Monitor.Log("Random selected!");
             }
 
             // Game1.playSound("select");
@@ -937,19 +946,19 @@ namespace Gaphodil.BetterJukebox.Framework
                 PlayButtonPressed();
                 Game1.playSound("select");
             }
-            else if (!(StopButton is null) && StopButton.containsPoint(x,y))
+            else if (StopButton is not null && StopButton.containsPoint(x, y))
             {
                 StopButtonPressed();
                 Game1.playSound("select");
             }
             // and now random button
-            else if (!(RandomButton is null) && RandomButton.containsPoint(x,y))
+            else if (RandomButton is not null && RandomButton.containsPoint(x, y))
             {
                 RandomButtonPressed();
                 Game1.playSound("select");
             }
             // button reverse now and
-            else if (!(ReverseSortButton is null) && ReverseSortButton.containsPoint(x, y))
+            else if (ReverseSortButton is not null && ReverseSortButton.containsPoint(x, y))
             {
                 ReverseSort = !ReverseSort;
                 SortOptions();
@@ -1252,7 +1261,8 @@ namespace Gaphodil.BetterJukebox.Framework
             else
             {
                 if (IsRandom)
-                    song_name = GetSongTitle(Game1.player.currentLocation.randomMiniJukeboxTrack.Value);
+                    //song_name = GetSongTitle(Game1.player.currentLocation.randomMiniJukeboxTrack.Value);
+                    song_name = GetSongTitle(Game1.player.currentLocation.miniJukeboxTrack.Value);
                 else
                     song_name = Utility.getSongTitleFromCueName("turn_off");
             }
@@ -1416,6 +1426,7 @@ namespace Gaphodil.BetterJukebox.Framework
                 else
                 {
                     // draw check/cross
+                    // 1.6 leaving in for now
                     if (IsRandom)
                     {
                         b.Draw(

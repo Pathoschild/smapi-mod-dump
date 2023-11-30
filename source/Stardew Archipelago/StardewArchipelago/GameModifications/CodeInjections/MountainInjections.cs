@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using Netcode;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Items.Unlocks;
 using StardewModdingAPI;
@@ -21,14 +22,16 @@ namespace StardewArchipelago.GameModifications.CodeInjections
 {
     public class MountainInjections
     {
-        private const int RAT_PROBLEM_ID = 26;
+        private const string RAILROAD_BOULDER_ITEM = "Railroad Boulder Removed";
 
         private static IMonitor _monitor;
+        private static IModHelper _modHelper;
         private static ArchipelagoClient _archipelago;
 
-        public static void Initialize(IMonitor monitor, ArchipelagoClient archipelago)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago)
         {
             _monitor = monitor;
+            _modHelper = modHelper;
             _archipelago = archipelago;
         }
 
@@ -63,6 +66,43 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 _monitor.Log($"Failed in {nameof(ApplyTreehouseIfNecessary_ApplyTreeHouseIfReceivedApItem_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
             }
+        }
+
+        // public override void DayUpdate(int dayOfMonth)
+        public static void DayUpdate_RailroadDependsOnApItem_Postfix(Mountain __instance, int dayOfMonth)
+        {
+            try
+            {
+                SetRailroadBlockedBasedOnArchipelagoItem(__instance);
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(DayUpdate_RailroadDependsOnApItem_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+        }
+
+        // protected override void resetSharedState()
+        public static void ResetSharedState_RailroadDependsOnApItem_Postfix(Mountain __instance)
+        {
+            try
+            {
+                SetRailroadBlockedBasedOnArchipelagoItem(__instance);
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(ResetSharedState_RailroadDependsOnApItem_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+        }
+
+        public static void SetRailroadBlockedBasedOnArchipelagoItem(Mountain mountain)
+        {
+            // private readonly NetBool railroadAreaBlocked = new NetBool(Game1.stats.DaysPlayed < 31U);
+            var railroadAreaBlockedField = _modHelper.Reflection.GetField<NetBool>(mountain, "railroadAreaBlocked");
+            railroadAreaBlockedField.GetValue().Value = !_archipelago.HasReceivedItem(RAILROAD_BOULDER_ITEM);
         }
     }
 }

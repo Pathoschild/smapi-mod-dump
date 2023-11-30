@@ -8,26 +8,32 @@
 **
 *************************************************/
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+using BirbCore.Attributes;
 using StardewModdingAPI;
 
-namespace GameboyArcade
+namespace GameboyArcade;
+
+[SContent("content.json", false, true)]
+public class Content
 {
-    class Content
-    {
-        public string Name;
-        public string ID;
-        public string FilePath;
-        public string DGAID;
-        public bool EnableEvents = false;
-        public string SaveStyle = "LOCAL";
-        public string LinkStyle = "NONE";
-        public string SoundStyle = "NONE";
+    public string Name;
+    public string FilePath;
+    public bool EnableEvents = false;
+    public string SaveStyle = "LOCAL";
+    public string LinkStyle = "NONE";
+    public string SoundStyle = "NONE";
 
-        [JsonIgnore]
-        public IContentPack ContentPack;
-
-        [JsonIgnore]
-        public string UniqueID;
-    }
+    [JsonIgnore]
+    [SContent.UniqueId]
+    public string UniqueID;
+    [JsonIgnore]
+    [SContent.ModId]
+    public string ModID;
+    [JsonIgnore]
+    [SContent.ContentId]
+    public string GameID;
+    [JsonIgnore]
+    [SContent.ContentPack]
+    public IContentPack ContentPack;
 }

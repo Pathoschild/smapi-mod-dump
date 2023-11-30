@@ -77,7 +77,8 @@ namespace Custom_Farm_Loader.Lib
             ModFarmType = modFarmType;
         }
 
-        public CustomFarm(bool isVanilla, string iconValue, string worldMapOverlayValue) {
+        public CustomFarm(bool isVanilla, string iconValue, string worldMapOverlayValue)
+        {
             IsVanillaMap = isVanilla;
             IconValue = iconValue;
             WorldMapOverlayValue = worldMapOverlayValue;
@@ -339,23 +340,25 @@ namespace Custom_Farm_Loader.Lib
 
             if (worldMapFile == "") return null;
 
-            Helper.GameContent.InvalidateCache("LooseSprites\\map");
-            Texture2D map = Helper.GameContent.Load<Texture2D>("LooseSprites\\map");
-            switch (worldMapFile.ToLower()) {
-                case "standard":
-                    return UtilityMisc.createSubTexture(map, new Rectangle(0, 43, 131, 61));
-                case "riverland":
-                    return UtilityMisc.createSubTexture(map, new Rectangle(0, 180, 131, 61));
-                case "forest":
-                    return UtilityMisc.createSubTexture(map, new Rectangle(131, 180, 131, 61));
-                case "hills":
-                    return UtilityMisc.createSubTexture(map, new Rectangle(0, 241, 131, 61));
-                case "wilderness":
-                    return UtilityMisc.createSubTexture(map, new Rectangle(131, 241, 131, 61));
-                case "four corners":
-                    return UtilityMisc.createSubTexture(map, new Rectangle(0, 302, 131, 61));
-                case "beach":
-                    return UtilityMisc.createSubTexture(map, new Rectangle(131, 302, 131, 61));
+            if (VanillaTypes.Contains(worldMapFile.ToLower())) {
+                Helper.GameContent.InvalidateCache("LooseSprites\\map");
+                Texture2D map = Helper.GameContent.Load<Texture2D>("LooseSprites\\map");
+                switch (worldMapFile.ToLower()) {
+                    case "standard":
+                        return UtilityMisc.createSubTexture(map, new Rectangle(0, 43, 131, 61));
+                    case "riverland":
+                        return UtilityMisc.createSubTexture(map, new Rectangle(0, 180, 131, 61));
+                    case "forest":
+                        return UtilityMisc.createSubTexture(map, new Rectangle(131, 180, 131, 61));
+                    case "hills":
+                        return UtilityMisc.createSubTexture(map, new Rectangle(0, 241, 131, 61));
+                    case "wilderness":
+                        return UtilityMisc.createSubTexture(map, new Rectangle(131, 241, 131, 61));
+                    case "four corners":
+                        return UtilityMisc.createSubTexture(map, new Rectangle(0, 302, 131, 61));
+                    case "beach":
+                        return UtilityMisc.createSubTexture(map, new Rectangle(131, 302, 131, 61));
+                }
             }
 
             try {
@@ -371,7 +374,7 @@ namespace Custom_Farm_Loader.Lib
 
         public static CustomFarm getCurrentCustomFarm()
         {
-            if (Game1.whichModFarm is not null && 
+            if (Game1.whichModFarm is not null &&
                 CurrentCustomFarmId != Game1.whichModFarm.ID) {
                 CurrentCustomFarmId = Game1.whichModFarm.ID;
                 CurrentCustomFarm = get(Game1.whichModFarm.ID);

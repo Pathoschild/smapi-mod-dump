@@ -19,42 +19,42 @@ namespace CoreBoy.memory.cart.battery
 
         public FileBattery(FileInfo saveFile)
         {
-            _saveFile = saveFile;
+            this._saveFile = saveFile;
         }
-        
+
         public void LoadRam(int[] ram)
         {
-            if (!_saveFile.Exists)
+            if (!this._saveFile.Exists)
             {
                 return;
             }
 
-            var loaded = JsonConvert.DeserializeObject<SaveState>(File.ReadAllText(_saveFile.FullName));
+            var loaded = JsonConvert.DeserializeObject<SaveState>(File.ReadAllText(this._saveFile.FullName));
             loaded.RAM.CopyTo(ram, 0);
         }
 
         public void LoadRamWithClock(int[] ram, long[] clockData)
         {
-            if (!_saveFile.Exists)
+            if (!this._saveFile.Exists)
             {
                 return;
             }
 
-            var loaded = JsonConvert.DeserializeObject<SaveState>(File.ReadAllText(_saveFile.FullName));
+            var loaded = JsonConvert.DeserializeObject<SaveState>(File.ReadAllText(this._saveFile.FullName));
             loaded.RAM.CopyTo(ram, 0);
             loaded.ClockData.CopyTo(clockData, 0);
         }
 
         public void SaveRam(int[] ram)
         {
-            SaveRamWithClock(ram, null);
+            this.SaveRamWithClock(ram, null);
         }
 
         public void SaveRamWithClock(int[] ram, long[] clockData)
         {
             var dto = new SaveState { RAM = ram, ClockData = clockData };
             string asText = JsonConvert.SerializeObject(dto);
-            File.WriteAllText(_saveFile.FullName, asText);
+            File.WriteAllText(this._saveFile.FullName, asText);
         }
 
         public class SaveState

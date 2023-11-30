@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,25 +22,11 @@ namespace StardewDruid.Map
     static class WarpData
     {
 
-        public static Dictionary<string, Vector2> WarpPoints()
+        public static Vector2 WarpVectors(GameLocation location)
         {
 
-            int default_x = 48;
-            int default_y = 7;
-
-            if (Game1.whichFarm == 5)
-            {
-                default_x = 48;
-                default_y = 39;
-            }
-            else if (Game1.whichFarm == 6)
-            {
-                default_x = 82;
-                default_y = 29;
-            }
-
-            Point farmWarp = Game1.getFarm().GetMapPropertyPosition("WarpTotemEntry", default_x, default_y);
-
+            /*Point farmWarp = Game1.getFarm().GetMapPropertyPosition("WarpTotemEntry", default_x, default_y);
+            
             Dictionary<string, Vector2> warpPoints = new()
             {
                 ["Farm"] = new Vector2(farmWarp.X, farmWarp.Y),
@@ -49,13 +36,112 @@ namespace StardewDruid.Map
                 ["IslandSouth"] = new Vector2(11, 11)
             };
 
-            return warpPoints;
+            return warpPoints;*/
+
+            if (location is Farm)
+            {
+
+                int default_x = 48;
+                int default_y = 7;
+
+                if (Game1.whichFarm == 5)
+                {
+                    default_x = 48;
+                    default_y = 39;
+                }
+                else if (Game1.whichFarm == 6)
+                {
+                    default_x = 82;
+                    default_y = 29;
+                }
+
+                Point farmWarp = Game1.getFarm().GetMapPropertyPosition("WarpTotemEntry", default_x, default_y);
+
+                return new Vector2(farmWarp.X, farmWarp.Y);
+
+            }
+            else if (location is Mountain)
+            {
+
+                return new Vector2(31, 20);
+
+            }
+            else if (location is Beach)
+            {
+
+                return new Vector2(20, 4);
+
+            }
+            else if (location is Desert)
+            {
+
+                return new Vector2(35, 43);
+
+            }
+            else if (location is IslandSouth)
+            {
+
+                return new Vector2(11, 11);
+
+            }
+
+            return new Vector2(0);
 
         }
 
-        public static Dictionary<string, int> WarpTotems()
+        public static bool WarpExclusions(GameLocation location, Warp warp)
         {
-            Dictionary<string, int> warpTotems = new()
+            
+            Dictionary<string, List<string>> exclusionWarps = new()
+            {
+
+                ["Forest"] = new() { "Beach", },
+                ["Beach"] = new() { "Town", "Forest", },
+                ["Town"] = new() { "Beach","Mountain", },
+                ["Backwoods"] = new() { "BusStop", },
+                ["Mountain"] = new() { "Town" },
+
+            };
+
+            if (exclusionWarps.ContainsKey(location.Name))
+            {
+                if (exclusionWarps[location.Name].Contains(warp.TargetName))
+                {
+
+                    return true;
+
+                }
+
+            }
+
+            return false;
+
+        }
+
+        public static Vector2 WarpReverse(GameLocation location, Warp warp)
+        {
+
+            GameLocation target = Game1.getLocationFromName(warp.TargetName);
+
+            foreach(Warp reverse in target.warps)
+            {
+
+                if(reverse.TargetName == location.Name)
+                {
+
+                    return new Vector2(reverse.TargetX, reverse.TargetY);
+
+                }
+
+            }
+
+            return new Vector2(0);
+
+        }
+
+        public static int WarpTotems(GameLocation location)
+        {
+            /*Dictionary<string, int> warpTotems = new()
             {
                 ["Farm"] = 688,
                 ["Mountain"] = 689,
@@ -64,7 +150,35 @@ namespace StardewDruid.Map
                 ["IslandSouth"] = 886,
             };
 
-            return warpTotems;
+            return warpTotems;*/
+
+            if (location is Farm)
+            {
+
+                return 688;
+
+            }
+            else if (location is Mountain)
+            {
+
+                return 689;
+
+            }
+            else if (location is Beach)
+            {
+
+                return 690;
+
+            }
+            else if (location is Desert)
+            {
+
+                return 261;
+
+            }
+
+            return 886;
+
 
         }
 

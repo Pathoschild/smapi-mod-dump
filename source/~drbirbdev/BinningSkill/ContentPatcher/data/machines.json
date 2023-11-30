@@ -1,0 +1,522 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "Changes": [
+        // Load image files
+        {
+            "Action": "Load",
+            "Target": "Mods/drbirbdev.BinningSkill/BigCraftables",
+            "FromFile": "assets/bigcraftables.png"
+        },
+
+        // Add crafting recipes
+        {
+            "Action": "EditData",
+            "Target": "Data/CraftingRecipes",
+            "Fields": {
+                "Recycling Machine": {
+                    "4": "drbirbdev.Binning 1"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/CraftingRecipes",
+            "Entries": {
+                "drbirbdev.BinningSkill_TrashCan": "335 2 390 30/Field/drbirbdev.BinningSkill_TrashCan/true/drbirbdev.Binning 2/{{i18n: bc.trashcan.name}}",
+                "drbirbdev.BinningSkill_Composter": "388 70 92 20 771 30/Field/drbirbdev.BinningSkill_Composter/true/drbirbdev.Binning 4/{{i18n: bc.composter.name}}",
+                "drbirbdev.BinningSkill_RecyclingBin": "335 3 336 2 771 10/Field/drbirbdev.BinningSkill_RecyclingBin/true/drbirbdev.Binning 7/{{i18n: bc.recyclingbin.name}}",
+                "drbirbdev.BinningSkill_AdvancedRecyclingMachine": "337 5 787 2 338 10/Field/drbirbdev.BinningSkill_AdvancedRecyclingMachine/true/drbirbdev.Binning 9/{{i18n: bc.advancedrecyclingmachine.name}}"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/CookingRecipes",
+            "Entries": {
+                "drbirbdev.BinningSkill_GrilledCheese": "216 1 424 1//drbirbdev.BinningSkill_GrilledCheese/drbirbdev.BinningSkill 1/{{i18n: item.GrilledCheese.name}}",
+                "drbirbdev.BinningSkill_FishCasserol": "-4 1 -6 1 -75 1//drbirbdev.BinningSkill_FishCasserol/drbirbdev.BinningSkill 8/{{i18n: item.FishCasserol.name}}"
+            }
+        },
+
+        // Add BigCraftables
+        {
+            "Action": "EditData",
+            "Target": "Data/BigCraftables",
+            "Entries": {
+                "drbirbdev.BinningSkill_Composter": {
+                    "Name": "Composter",
+                    "DisplayName": "{{i18n:bc.composter.name}}",
+                    "Description": "{{i18n:bc.composter.desc}}",
+                    "Price": 50,
+                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "SpriteIndex": 0
+                },
+                "drbirbdev.BinningSkill_TrashCan": {
+                    "Name": "Trash Can",
+                    "DisplayName": "{{i18n:bc.trashcan.name}}",
+                    "Description": "{{i18n:bc.trashcan.desc}}",
+                    "Price": 50,
+                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "SpriteIndex": 1
+                },
+                "drbirbdev.BinningSkill_RecyclingBin": {
+                    "Name": "Recycling Bin",
+                    "DisplayName": "{{i18n:bc.recyclingbin.name}}",
+                    "Description": "{{i18n:bc.recyclingbin.desc}}",
+                    "Price": 50,
+                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "SpriteIndex": 2
+                },
+                "drbirbdev.BinningSkill_AdvancedRecyclingMachine": {
+                    "Name": "Advanced Recycling Machine",
+                    "DisplayName": "{{i18n:bc.advancedrecyclingmachine.name}}",
+                    "Description": "{{i18n:bc.advancedrecyclingmachine.desc}}",
+                    "Price": 50,
+                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "SpriteIndex": 3
+                }
+            }
+        },
+
+        // Add machine logic
+        {
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "Entries": {
+                "(BC)drbirbdev.BinningSkill_Composter": {
+                    "OutputRules": [
+                        {
+                            "Id": "Default_Composter",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Condition": "ITEM_HAS_EDIBILITY Input 1"
+                                }
+                            ],
+                            "DaysUntilReady": 2,
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "Id": "High Quality",
+                                    "RandomItemId": [ "(O)918", "(O)919", "(O)920" ],
+                                    "Condition": "ITEM_HAS_EDIBILITY Input 70",
+                                    "QuanitityModifierMode": "Stack",
+                                    "QuantityModifiers": [
+                                        {
+                                            "Id": "HighValue",
+                                            "Modification": "Add",
+                                            "Amount": 1,
+                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 450"
+                                        },
+                                        {
+                                            "Id": "MediumValue",
+                                            "Modification": "Add",
+                                            "Amount": 1,
+                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 350"
+                                        },
+                                        {
+                                            "Id": "LowValue",
+                                            "Modification": "Add",
+                                            "Amount": 1,
+                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 250"
+                                        },
+                                        {
+                                            "Id": "CookedItem",
+                                            "Modification": "Add",
+                                            "Amount": 2,
+                                            "Condition": "ITEM_HAS_TAG Input category_cooking"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "Medium Quality",
+                                    "RandomItemId": [ "(O)369", "(O)371", "(O)466" ],
+                                    "Condition": "ITEM_HAS_EDIBILITY Input 30",
+                                    "QuanitityModifierMode": "Stack",
+                                    "QuantityModifiers": [
+                                        {
+                                            "Id": "HighValue",
+                                            "Modification": "Add",
+                                            "Amount": 1,
+                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 450"
+                                        },
+                                        {
+                                            "Id": "MediumValue",
+                                            "Modification": "Add",
+                                            "Amount": 1,
+                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 350"
+                                        },
+                                        {
+                                            "Id": "LowValue",
+                                            "Modification": "Add",
+                                            "Amount": 1,
+                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 250"
+                                        },
+                                        {
+                                            "Id": "CookedItem",
+                                            "Modification": "Add",
+                                            "Amount": 2,
+                                            "Condition": "ITEM_HAS_TAG Input category_cooking"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Id": "Low Quality",
+                                    "RandomItemId": [ "(O)368", "(O)370", "(O)465" ],
+                                    "QuanitityModifierMode": "Stack",
+                                    "QuantityModifiers": [
+                                        {
+                                            "Id": "HighValue",
+                                            "Modification": "Add",
+                                            "Amount": 1,
+                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 450"
+                                        },
+                                        {
+                                            "Id": "MediumValue",
+                                            "Modification": "Add",
+                                            "Amount": 1,
+                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 350"
+                                        },
+                                        {
+                                            "Id": "LowValue",
+                                            "Modification": "Add",
+                                            "Amount": 1,
+                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 250"
+                                        },
+                                        {
+                                            "Id": "CookedItem",
+                                            "Modification": "Add",
+                                            "Amount": 2,
+                                            "Condition": "ITEM_HAS_TAG Input category_cooking"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "WobbleWhileWorking": true,
+                    "LoadEffects": [
+                        {
+                            "Sound": "trashcan"
+                        }
+                    ],
+                    "StatsToIncrementWhenLoaded": [
+                        {
+                            "StatName": "drbirbdev.BinningSkill_FoodComposted"
+                        }
+                    ]
+                },
+                "(BC)drbirbdev.BinningSkill_TrashCan": {
+                    "OutputRules": [
+                        {
+                            "Id": "Default",
+                            "Triggers": [
+                                {
+                                    "Id": "DayUpdate",
+                                    "Trigger": "DayUpdate",
+                                    "Condition": "LOCATION_IS_OUTDOORS target, !LOCATION_NAME target Farm"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Random Trash",
+                                    "RandomItemId": [ "(O)167", "(O)168", "(O)169", "(O)170", "(O)171", "(O)172" ]
+                                }
+                            ]
+                        }
+                    ],
+                    "StatsToIncrementWhenHarvested": [
+                        {
+                            "StatName": "TrashCansChecked"
+                        }
+                    ]
+                },
+                "(BC)drbirbdev.BinningSkill_RecyclingBin": {
+                    "OutputRules": [
+                        {
+                            "Id": "Default",
+                            "Triggers": [
+                                {
+                                    "Id": "DayUpdate",
+                                    "Trigger": "DayUpdate",
+                                    "Condition": "LOCATION_IS_OUTDOORS target, !LOCATION_NAME target Farm"
+                                }
+                            ],
+                            "OutputItem": [
+                                {
+                                    "Id": "Random Geode",
+                                    "RandomItemId": [ "(O)535", "(O)536", "(O)537", "(O)749" ],
+                                    "Condition": "RANDOM 0.2"
+                                },
+                                {
+                                    "Id": "Base Season Item",
+                                    "ItemId": "RANDOM_BASE_SEASON_ITEM",
+                                    "Condition": "RANDOM 0.2"
+                                },
+                                {
+                                    "Id": "Dish of the Day",
+                                    "ItemId": "DISH_OF_THE_DAY",
+                                    "Condition": "RANDOM 0.2"
+                                }
+                            ]
+                        }
+                    ],
+                    "StatsToIncrementWhenHarvested": [
+                        {
+                            "StatName": "drbirbdev.BinningSkill_RecyclingBinsChecked"
+                        }
+                    ]
+                },
+                "(BC)drbirbdev.BinningSkill_AdvancedRecyclingMachine": {
+                    "OutputRules": [
+                        {
+                            "Id": "Default_Trash",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)168",
+                                    "RequiredCount": 3
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "Id": "Gold Ore",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)384",
+                                    "MinStack": 2,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Copper Ore",
+                                    "Condition": "RANDOM 0.4",
+                                    "ItemId": "(O)378",
+                                    "MinStack": 3,
+                                    "MaxStack": 6
+                                },
+                                {
+                                    "Id": "Clay",
+                                    "ItemId": "(O)330",
+                                    "MinStack": 4,
+                                    "MaxStack": 8
+                                }
+                            ],
+                            "MinutesUntilReady": 720
+                        },
+                        {
+                            "Id": "Default_Driftwood",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)169",
+                                    "RequiredCount": 3
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "Id": "Hardwood",
+                                    "Condition": "RANDOM 0.4",
+                                    "ItemId": "(O)709",
+                                    "MinStack": 5,
+                                    "MaxStack": 8
+                                },
+                                {
+                                    "Id": "Sap",
+                                    "Condition": "RANDOM 0.3",
+                                    "ItemId": "(O)92",
+                                    "MinStack": 15,
+                                    "MaxStack": 25
+                                },
+                                {
+                                    "Id": "Wood",
+                                    "ItemId": "(O)388",
+                                    "MinStack": 15,
+                                    "MaxStack": 25
+                                }
+                            ],
+                            "MinutesUntilReady": 720
+                        },
+                        {
+                            "Id": "Default_BrokenGlasses",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)170",
+                                    "RequiredCount": 3
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "Id": "Fairy Dust",
+                                    "Condition": "RANDOM 0.1",
+                                    "ItemId": "(O)872",
+                                    "MinStack": 1,
+                                    "MaxStack": 3
+                                },
+                                {
+                                    "Id": "Cinder Shard",
+                                    "Condition": "RANDOM 0.3",
+                                    "ItemId": "(O)848",
+                                    "MinStack": 2,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Iridium Ore",
+                                    "ItemId": "(O)386",
+                                    "MinStack": 2,
+                                    "MaxStack": 5
+                                }
+                            ],
+                            "MinutesUntilReady": 720
+                        },
+                        {
+                            "Id": "Default_BrokenCd",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)171",
+                                    "RequiredCount": 3
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "Id": "Radioactive Ore",
+                                    "Condition": "RANDOM 0.2",
+                                    "ItemId": "(O)909",
+                                    "MinStack": 1,
+                                    "MaxStack": 3
+                                },
+                                {
+                                    "Id": "Battery Pack",
+                                    "Condition": "RANDOM 0.4",
+                                    "ItemId": "(O)787",
+                                    "MinStack": 1,
+                                    "MaxStack": 1
+                                },
+                                {
+                                    "Id": "Refined Quartz",
+                                    "ItemId": "(O)338",
+                                    "MinStack": 2,
+                                    "MaxStack": 5
+                                }
+                            ],
+                            "MinutesUntilReady": 720
+                        },
+                        {
+                            "Id": "Default_SoggyNewspaper",
+                            "Triggers": [
+                                {
+                                    "Id": "ItemPlacedInMachine",
+                                    "Trigger": "ItemPlacedInMachine",
+                                    "RequiredItemId": "(O)172",
+                                    "RequiredCount": 3
+                                }
+                            ],
+                            "UseFirstValidOutput": true,
+                            "OutputItem": [
+                                {
+                                    "Id": "Squid Ink",
+                                    "Condition": "RANDOM 0.2",
+                                    "ItemId": "(O)814",
+                                    "MinStack": 1,
+                                    "MaxStack": 3
+                                },
+                                {
+                                    "Id": "Cloth",
+                                    "Condition": "RANDOM 0.3",
+                                    "ItemId": "(O)428",
+                                    "MinStack": 3,
+                                    "MaxStack": 5
+                                },
+                                {
+                                    "Id": "Fiber",
+                                    "ItemId": "(O)771",
+                                    "MinStack": 20,
+                                    "MaxStack": 30
+                                }
+                            ],
+                            "MinutesUntilReady": 720
+                        }
+                    ],
+                    "WobbleWhileWorking": true,
+                    "LoadEffects": [
+                        {
+                            "Sound": "trashcan"
+                        }
+                    ],
+                    "StatsToIncrementWhenLoaded": [
+                        {
+                            "StatName": "PiecesOfTrashRecycled"
+                        },
+                        {
+                            "StatName": "PiecesOfTrashRecycled"
+                        },
+                        {
+                            "StatName": "PiecesOfTrashRecycled"
+                        }
+                    ]
+                }
+            }
+        },
+
+        // Add objects
+        {
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "drbirbdev.BinningSkill_GrilledCheese": {
+                    "Name": "Grilled Cheese",
+                    "DisplayName": "{{i18n:item.GrilledCheese.name}}",
+                    "Description": "{{i18n:item.GrilledCheese.desc}}",
+                    "Type": "Cooking",
+                    "Category": -7,
+                    "Price": 100,
+                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "SpriteIndex": 4,
+                    "Edibility": 50,
+                    "IsDrink": false,
+                    "Buff": {
+                        "Duration": 500,
+                        "CustomFields": {
+                            "spacechase.SpaceCore.SkillBuff.drbirbdev.Binning": "1"
+                        }
+                    }
+                },
+                "drbirbdev.BinningSkill_FishCasserol": {
+                    "Name": "Fish Casserol",
+                    "DisplayName": "{{i18n:item.FishCasserol.name}}",
+                    "Description": "{{i18n:item.FishCasserol.desc}}",
+                    "Type": "Cooking",
+                    "Category": -7,
+                    "Price": 150,
+                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "SpriteIndex": 5,
+                    "Edibility": 50,
+                    "IsDrink": false,
+                    "Buff": {
+                        "Duration": 500,
+                        "CustomFields": {
+                            "spacechase.SpaceCore.SkillBuff.drbirbdev.Binning": "3",
+                            "spacechase.SpaceCore.SkillBuff.drbirbdev.Socializing": "2"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

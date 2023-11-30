@@ -11,6 +11,7 @@
 using System;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 
 namespace DailyScreenshot
 {
@@ -81,8 +82,8 @@ namespace DailyScreenshot
             Day_9 = Day_09,
             Day_10 = 1 << 9,
             Day_11 = 1 << 10,
-            Day_12 = 1 << 10,
-            Day_13 = 1 << 10,
+            Day_12 = 1 << 11,
+            Day_13 = 1 << 12,
             Day_14 = 1 << 13,
             Day_15 = 1 << 14,
             Day_16 = 1 << 15,
@@ -102,15 +103,15 @@ namespace DailyScreenshot
             Summer = 1 << 29,
             Fall = 1 << 30,
             Winter = 1 << 31,
-            AnyDay = Sundays | Mondays | Tuesdays | Wednesdays | Thursdays | Fridays | Saturdays,
+            AnyDay = Mondays | Tuesdays | Wednesdays | Thursdays | Fridays | Saturdays | Sundays,
             AnySeason = Spring | Summer | Fall | Winter,
-            Sundays = Day_01 | Day_08 | Day_15 | Day_22,
-            Mondays = Sundays << 1,
-            Tuesdays = Sundays << 2,
-            Wednesdays = Sundays << 3,
-            Thursdays = Sundays << 4,
-            Fridays = Sundays << 5,
-            Saturdays = Sundays << 6,
+            Mondays = Day_01 | Day_08 | Day_15 | Day_22,
+            Tuesdays = Mondays << 1,
+            Wednesdays = Mondays << 2,
+            Thursdays = Mondays << 3,
+            Fridays = Mondays << 4,
+            Saturdays = Mondays << 5,
+            Sundays = Mondays << 6,
             FirstDayOfTheMonth = Day_01,
             LastDayOfTheMonth = Day_28,
             Daily = AnyDay | AnySeason
@@ -184,9 +185,13 @@ namespace DailyScreenshot
             Museum = 1 << 8,
             CommunityCenter = 1 << 10,
             Mountain = 1 << 11,
-            Unknown = 1 << 12,
+            IslandWest = 1 << 12,
+            IslandFarmhouse = 1 << 13,
+            IslandFieldOffice = 1 << 14,
+            Unknown = 1 << 24,
             Any = Farm | GreenHouse | Farmhouse | Beach | Unknown |
-                Mountain | CommunityCenter | Museum | FarmCave | Cellar | Desert
+                Mountain | CommunityCenter | Museum | FarmCave | Cellar | Desert | 
+                IslandWest | IslandFarmhouse | IslandFieldOffice,
         }
 
         /// <summary>
@@ -286,30 +291,24 @@ namespace DailyScreenshot
         /// Finds the user's current location
         /// </summary>
         /// <returns>LocationFlags enum of the location</returns>
-        public LocationFlags GetLocation()
+        public static LocationFlags GetLocation()
         {
-            StardewValley.GameLocation location = Game1.currentLocation;
-            if (location is Farm)
-                return LocationFlags.Farm;
-            if (location is StardewValley.Locations.Beach)
-                return LocationFlags.Beach;
-            if (location is StardewValley.Locations.FarmHouse)
-                return LocationFlags.Farmhouse;
-            if (location is StardewValley.Locations.FarmCave)
-                return LocationFlags.FarmCave;
-            if (location is StardewValley.Locations.Cellar)
-                return LocationFlags.Cellar;
-            if (location is StardewValley.Locations.Desert)
-                return LocationFlags.Desert;
-            if (location is StardewValley.Locations.LibraryMuseum)
-                return LocationFlags.Museum;
-            if (location is StardewValley.Locations.CommunityCenter)
-                return LocationFlags.CommunityCenter;
-            if (location is StardewValley.Locations.Mountain)
-                return LocationFlags.Mountain;
-            if (location.IsGreenhouse)
-                return LocationFlags.GreenHouse;
-            return LocationFlags.Unknown;
+            GameLocation location = Game1.currentLocation;
+            return location switch
+            {
+                Farm => LocationFlags.Farm,
+                FarmHouse => LocationFlags.Farmhouse,
+                Beach => LocationFlags.Beach,
+                FarmCave => LocationFlags.FarmCave,
+                Cellar => LocationFlags.Cellar,
+                Desert => LocationFlags.Desert,
+                LibraryMuseum => LocationFlags.Museum,
+                Mountain => LocationFlags.Mountain,
+                IslandWest => LocationFlags.IslandWest,
+                IslandFarmHouse => LocationFlags.IslandFarmhouse,
+                IslandFieldOffice => LocationFlags.IslandFieldOffice,
+                _ => location.IsGreenhouse ? LocationFlags.GreenHouse : LocationFlags.Unknown,
+            };
         }
         #endregion
 

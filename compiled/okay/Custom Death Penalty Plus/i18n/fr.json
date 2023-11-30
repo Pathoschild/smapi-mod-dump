@@ -26,9 +26,30 @@
   // Mail fragments
   "TheMightyAmondee.CDPP/mailnocharge": "Soyez reconnaissant de ne pas avoir été facturé pour ce service",
   "TheMightyAmondee.CDPP/mailnochargeharvey": "Je ne vous ai pas facturé vos frais médicaux cette fois.",
-  
+
   // Replacements
-  "TheMightyAmondee.CDPP/replacementdialogue":"{0} t’a retrouvé inconscient {1}... J’ai dû t’opérer d’urgence !#$b#",
-  "TheMightyAmondee.CDPP/replacementmail1":"Ce service vous a été facturé. {0} po",
-  "TheMightyAmondee.CDPP/replacementmail2":"Ta facture s'élève à {0} po pour couvrir les frais médicaux"
+  "TheMightyAmondee.CDPP/replacementdialogue": "{0} t’a retrouvé inconscient {1}... J’ai dû t’opérer d’urgence !#$b#",
+  "TheMightyAmondee.CDPP/replacementmail1": "Ce service vous a été facturé. {0} po",
+  "TheMightyAmondee.CDPP/replacementmail2": "Ta facture s'élève à {0} po pour couvrir les frais médicaux",
+
+  // Config settings
+  "config.option.title.death": "Peine de mort",
+  "config.option.title.passout": "Émettre des pénalités",
+  "config.option.title.other": "Autres pénalités",
+
+  "config.option.death.restoreitems": "Restaurer des éléments",
+  "config.option.death.losscap": "Plafond de perte d’argent",
+  "config.option.death.moneytorestorepercentage": "Pourcentage de restauration d'argent",
+  "config.option.death.energytorestorepercentage": "Pourcentage de restauration d'énergie",
+  "config.option.death.healthtorestorepercentage": "Pourcentage de restauration de la santé",
+
+  "config.option.passout.losscap": "Plafond de perte d’argent",
+  "config.option.passout.moneytorestorepercentage": "Pourcentage de restauration d'argent",
+  "config.option.passout.energytorestorepercentage": "Pourcentage de restauration d'énergie",
+
+  "config.option.other.wakeupnextdayinclinic": "Réveillez-vous le lendemain à la clinique",
+  "config.option.other.harveyfriendshipchange": "Harvey Changement d'amitié",
+  "config.option.other.marufriendshipchange": "Maru Changement d'amitié",
+  "config.option.other.morerealisticwarps": "Des déformations plus réalistes",
+  "config.option.other.debuffondeath": "Débuff à la mort"
 }

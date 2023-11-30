@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19132
+IDs: OreIncreaseV3
+update keys: Nexus:19132

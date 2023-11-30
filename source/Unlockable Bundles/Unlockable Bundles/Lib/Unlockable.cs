@@ -415,7 +415,22 @@ namespace Unlockable_Bundles.Lib
 
             var ret = ItemRegistry.Create(id, initialStack, quality: quality);
 
+            if (initialStack == 0)
+                ret.Stack = 0;
+
             return ret;
         }
+
+        public string getDisplayName()
+        {
+            if (BundleName != "")
+                return BundleName;
+
+            if (ShopType == ShopType.ParrotPerch)
+                return "Unnamed Parrot";
+
+            return "Unnamed Bundle";
+        }
+            
     }
 }

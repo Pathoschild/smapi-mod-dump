@@ -89,6 +89,7 @@
   ],
 
   "Builder": "Wizard",
+  "MagicalConstruction": true,
   "BuildCondition": "CAN_BUILD_FOR_CABINS QuizzicalStatue",
   "BuildCost": 5000,
   "BuildMaterials": [

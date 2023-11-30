@@ -8,10 +8,56 @@ for queries and analysis.**
 
 # CMBT Changelog
 
-## 4.0.2
+## 4.1.5
 
 ### Added
 
+* Infinity Bands now play their respective chords when created and equipped (enabled by default). This is just a novelty feature and a sedimentation of the Musical Theory this is based on. But also, this may help non-tone-deaf people notice when a gemstone combination isn't quite working.
+
+### Fixed
+
+* Fixed multiplayer synchronization error caused by custom projectiles fired by peers.
+
+<sup><sup>[🔼 Back to top](#cmbt-changelog)</sup></sup>
+
+## 4.1.3
+
+### Changed
+
+* Stabbing Swords are no longer persisted as such, to avoid the issue of the game freezing if the mod is removed abruptly. Load times might be marginally longer.
+* Weapon Overhaul is now a hard requirement for both Stabbing Swords and Melee Combo Framework. Those features were created and balanced with the overhaul in mind, and could work unpredictably if the full overhaul was not enabled.
+    * This fixes issues with weapon swing speed being extremely low when the overhaul is disabled.
+
+### Fixed
+
+* Small improvement to Infinity Band tooltip width.
+* Removed the crit. boost given to daggers in vanilla. They are already balanced without it.
+* Added failsafes to ensure community upgrades contribute to farmhand Hero Quest.
+
+<sup><sup>[🔼 Back to top](#cmbt-changelog)</sup></sup>
+
+## 4.1.2
+
+### Fixed
+
+* Fixed some issues in weapon stat evaluation.
+
+<sup><sup>[🔼 Back to top](#cmbt-changelog)</sup></sup>
+
+## 4.1.1
+
+### Fixed
+
+* Fixed all weapons being turned into swords when module not enabled. Woops.
+
+<sup><sup>[🔼 Back to top](#cmbt-changelog)</sup></sup>
+
+## 4.1.0
+
+### Added
+
+* Added compatibility for [More New Fish](https://www.nexusmods.com/stardewvalley/mods/3578).
+    * The Sword Fish weapon is now a Mythic-tier Stabing Sword. Similar to the Insect Head, it's damage scales based on the number of caught fish species (+1 for regular species, +10 for legendary).
 * You can now immersively switch Galaxy Sword and Infinity Blade between Defensive and Offensive types by taking them to the Sand Pillars.
 
 ### Changed
@@ -24,6 +70,8 @@ for queries and analysis.**
 
 * Fixed sword type not being set correctly.
 * Hero Quest should now auto-complete if started with all conditions already met.
+
+<sup><sup>[🔼 Back to top](#cmbt-changelog)</sup></sup>
 
 ## 4.0.1
 

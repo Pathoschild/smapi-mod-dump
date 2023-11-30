@@ -1,5 +1,6 @@
 {
   "ShowMenuKey": "I",
   "AllowProblematicItems": false,
-  "ReclaimPriceInMenuTrashCan": true
+  "ReclaimPriceInMenuTrashCan": true,
+  "HideCategories": []
 }

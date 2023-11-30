@@ -8,15 +8,14 @@
 **
 *************************************************/
 
-using BirbShared.Asset;
+using BirbCore.Attributes;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace MagicSkillPageIcon
+namespace MagicSkillPageIcon;
+
+[SAsset]
+public class Assets
 {
-    [AssetClass]
-    public class Assets
-    {
-        [AssetProperty("assets/magicskillpageicon.png")]
-        public Texture2D SkillPageIcon { get; set; }
-    }
+    [SAsset.Asset("assets/magicskillpageicon.png")]
+    public Texture2D SkillPageIcon { get; set; }
 }

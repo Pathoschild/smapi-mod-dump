@@ -449,7 +449,7 @@ namespace StardewSurvivalProject.source
                 player.bindedFarmer.stamina -= staminaDrainOnToolUsed * ((float)(ModConfig.GetInstance().AdditionalPercentageStaminaDrainOnFever / 100));
                 Game1.staminaShakeTimer += 100;
             }
-            else
+            else if (ModConfig.GetInstance().UseStaminaRework)
             {
                 player.bindedFarmer.stamina -= staminaDrainOnToolUsed;
             }

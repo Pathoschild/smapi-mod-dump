@@ -9,7 +9,11 @@
     <Import_RootNamespace>BirbSharedSpaceCore</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BirbSkill.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FarmerExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)KeyedProfession.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)README.md" />
   </ItemGroup>
 </Project>

@@ -19,6 +19,7 @@ using System.Reflection;
 using DaLion.Overhaul.Modules.Combat.Enums;
 using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
+using DaLion.Overhaul.Modules.Core.Debug;
 using DaLion.Shared.Commands;
 using DaLion.Shared.Constants;
 using DaLion.Shared.Extensions.Collections;
@@ -68,8 +69,6 @@ public abstract class OverhaulModule
     {
         this.Name = name;
         this.Namespace = "DaLion.Overhaul.Modules." + name;
-        this.DisplayName = _I18n.Get("gmcm.modules." + entry + ".name");
-        this.Description = _I18n.Get("gmcm.modules." + entry + ".desc");
         this.Ticker = entry;
     }
 
@@ -80,10 +79,10 @@ public abstract class OverhaulModule
     internal string Namespace { get; }
 
     /// <summary>Gets the human-readable and localized name of the module.</summary>
-    internal string DisplayName { get; init; }
+    internal virtual string DisplayName => _I18n.Get("gmcm.modules." + this.Ticker + ".name");
 
     /// <summary>Gets a short localized description of the module.</summary>
-    internal string Description { get; init; }
+    internal virtual string Description => _I18n.Get("gmcm.modules." + this.Ticker + ".desc");
 
     /// <summary>Gets the ticker symbol of the module, which is used as the entry command.</summary>
     internal string Ticker { get; }
@@ -102,6 +101,9 @@ public abstract class OverhaulModule
     /// <summary>Gets a value indicating whether the module is currently active.</summary>
     [MemberNotNullWhen(true, nameof(Harmonizer), nameof(CommandHandler))]
     internal bool IsActive { get; private set; }
+
+    /// <summary>Gets or sets a value indicating whether the module has finished loading.</summary>
+    internal bool HasFinishedLoading { get; set; }
 
     /// <summary>Enumerates all modules.</summary>
     /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="OverhaulModule"/>s.</returns>
@@ -136,10 +138,10 @@ public abstract class OverhaulModule
         Log.T($"[Modules]: Preparing to activate {this.Name} module...");
         EventManager.ManageNamespace(this.Namespace + ".Events");
         this.Harmonizer =
-            Harmonizer.ApplyFromNamespace(helper.ModRegistry, this.Namespace + ".Patchers", this.Namespace);
+            Harmonizer.ApplyFromNamespace(this.Namespace + ".Patchers", helper.ModRegistry, this.Namespace);
         this.CommandHandler ??= CommandHandler.HandleFromNamespace(
-            helper.ConsoleCommands,
             this.Namespace + ".Commands",
+            helper.ConsoleCommands,
             this.DisplayName,
             this.Ticker,
             () => this.IsActive);
@@ -175,10 +177,13 @@ public abstract class OverhaulModule
     /// <summary>Registers module integrations with third-party mods.</summary>
     internal virtual void RegisterIntegrations()
     {
-        if (this.IsActive)
+        if (!this.IsActive)
         {
-            IntegrationRegistry.RegisterFromNamespace(this.Namespace);
+            return;
         }
+
+        IntegrationRegistry.RegisterFromNamespace(this.Namespace);
+        this.HasFinishedLoading = true;
     }
 
     /// <summary>Causes SMAPI to reload all assets edited by this module.</summary>
@@ -194,9 +199,13 @@ public abstract class OverhaulModule
         internal CoreModule()
             : base("Core", "mrg")
         {
-            this.DisplayName = string.Empty;
-            this.Description = string.Empty;
         }
+
+        /// <inheritdoc />
+        internal override string DisplayName => string.Empty;
+
+        /// <inheritdoc />
+        internal override string Description => string.Empty;
 
         /// <inheritdoc />
         internal override bool _ShouldEnable
@@ -215,18 +224,21 @@ public abstract class OverhaulModule
         internal override void Activate(IModHelper helper)
         {
             base.Activate(helper);
-
 #if DEBUG
+            Log.T($"==================== DEBUG START ====================");
             EventManager.ManageNamespace(this.Namespace + ".Debug");
-            this.Harmonizer = Harmonizer.ApplyFromNamespace(helper.ModRegistry, this.Namespace + ".Debug");
-            this.CommandHandler ??= CommandHandler.HandleFromNamespace(
-                helper.ConsoleCommands,
-                this.Namespace + ".Debug",
-                this.DisplayName,
-                this.Ticker,
-                () => this.IsActive);
+            this.Harmonizer = Harmonizer.ApplyFromNamespace(this.Namespace + ".Debug", helper.ModRegistry);
+            this.CommandHandler?.Handle<DebugCommand>();
             Log.I("[Modules]: Debug features activated.");
+            Log.T($"==================== DEBUG END ====================");
 #endif
+
+            Log.D($"==================== SHARED START ====================");
+            EventManager.ManageNamespace("DaLion.Shared");
+            Harmonizer.ApplyFromNamespace("DaLion.Shared", helper.ModRegistry);
+            CommandHandler.HandleFromNamespace("DaLion.Shared", helper.ConsoleCommands, this.DisplayName, this.Ticker);
+            Log.I("[Modules]: Shared features activated.");
+            Log.D($"==================== SHARED START ====================");
         }
 
         /// <inheritdoc />
@@ -266,6 +278,16 @@ public abstract class OverhaulModule
                 ModEntry.Config.EnableProfessions = value;
                 ModHelper.WriteConfig(ModEntry.Config);
             }
+        }
+
+        /// <summary>Gets a pure sine wave. Used by Desperado's slingshot overcharge.</summary>
+        public static Lazy<ICue> OverchargeSinWave { get; } = new(() => Game1.soundBank.GetCue("SinWave"));
+
+        /// <inheritdoc />
+        internal override void RegisterIntegrations()
+        {
+            base.RegisterIntegrations();
+            this.HasFinishedLoading = false;
         }
 
         /// <inheritdoc />
@@ -319,13 +341,8 @@ public abstract class OverhaulModule
             }
         }
 
-        internal static void RevalidateAllWeapons()
+        internal static void RevalidateAllWeapons(WeaponRefreshOption option = WeaponRefreshOption.Initial)
         {
-            if (!Context.IsWorldReady)
-            {
-                return;
-            }
-
             var player = Game1.player;
             Log.I(
                 $"[CMBT]: Performing {(Context.IsMainPlayer ? "global" : "local")} weapon revalidation.");
@@ -335,7 +352,7 @@ public abstract class OverhaulModule
                 {
                     if (item is MeleeWeapon weapon)
                     {
-                        RevalidateSingleWeapon(weapon);
+                        RevalidateSingleWeapon(weapon, option);
                     }
                 });
             }
@@ -345,7 +362,7 @@ public abstract class OverhaulModule
                 {
                     if (player.Items[i] is MeleeWeapon weapon)
                     {
-                        RevalidateSingleWeapon(weapon);
+                        RevalidateSingleWeapon(weapon, option);
                     }
                 }
             }
@@ -354,17 +371,10 @@ public abstract class OverhaulModule
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/weapons");
         }
 
-        internal static void RevalidateSingleWeapon(MeleeWeapon weapon)
+        internal static void RevalidateSingleWeapon(MeleeWeapon weapon, WeaponRefreshOption option = WeaponRefreshOption.Initial)
         {
-            // refresh intrinsic enchantments
-            weapon.RemoveIntrinsicEnchantments();
-            if (ShouldEnable)
-            {
-                weapon.AddIntrinsicEnchantments();
-            }
-
-            // refresh forges and stats
-            weapon.RecalculateAppliedForges();
+            // refresh stats and forges
+            weapon.RefreshStats(option);
 
             // refresh stabby swords
             if (ShouldEnable && weapon.type.Value == MeleeWeapon.defenseSword && weapon.ShouldBeStabbySword())
@@ -372,28 +382,29 @@ public abstract class OverhaulModule
                 weapon.type.Value = MeleeWeapon.stabbingSword;
                 Log.D($"[CMBT]: The type of {weapon.Name} was converted to Stabbing sword.");
             }
-            else if (!ShouldEnable || (weapon.type.Value == MeleeWeapon.stabbingSword && !weapon.ShouldBeStabbySword()))
+            else if (weapon.type.Value == MeleeWeapon.stabbingSword && (!ShouldEnable || !weapon.ShouldBeStabbySword()))
             {
                 weapon.type.Value = MeleeWeapon.defenseSword;
                 Log.D($"[CMBT]: The type of {weapon.Name} was converted to Defense sword.");
             }
 
-            // refresh special status
-            if (ShouldEnable && Config.EnableHeroQuest && (weapon.isGalaxyWeapon() || weapon.IsInfinityWeapon()
-                    || weapon.InitialParentTileIndex is WeaponIds.DarkSword or WeaponIds.HolyBlade or WeaponIds.NeptuneGlaive))
+            // refresh intrinsic enchantments
+            weapon.RemoveIntrinsicEnchantments();
+            if (ShouldEnable)
             {
-                weapon.specialItem = true;
+                weapon.AddIntrinsicEnchantments();
             }
+
+            // refresh special status
+            weapon.MakeSpecialIfNecessary();
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:Element should begin with upper-case letter", Justification = "Preference for internal functions.")]
         internal static void AddAllIntrinsicEnchantments()
         {
             if (Context.IsMainPlayer)
             {
-                Utility.iterateAllItems(item =>
-                {
-                    addIntrinsicEnchantments(item);
-                });
+                Utility.iterateAllItems(addIntrinsicEnchantments);
             }
             else
             {
@@ -407,24 +418,22 @@ public abstract class OverhaulModule
             {
                 switch (item)
                 {
-                    case MeleeWeapon weapon when weapon.ShouldHaveIntrinsicEnchantment():
+                    case MeleeWeapon weapon:
                         weapon.AddIntrinsicEnchantments();
                         break;
-                    case Slingshot slingshot when slingshot.ShouldHaveIntrinsicEnchantment():
+                    case Slingshot slingshot:
                         slingshot.AddIntrinsicEnchantments();
                         break;
                 }
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:Element should begin with upper-case letter", Justification = "Preference for internal functions.")]
         internal static void RemoveAllIntrinsicEnchantments()
         {
             if (Context.IsMainPlayer)
             {
-                Utility.iterateAllItems(item =>
-                {
-                    removeAllIntrinsicEnchantments(item);
-                });
+                Utility.iterateAllItems(removeAllIntrinsicEnchantments);
             }
             else
             {

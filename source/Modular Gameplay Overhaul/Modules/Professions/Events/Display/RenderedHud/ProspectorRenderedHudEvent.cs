@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Professions.Events.Display.RenderedHud;
 
 #region using directives
 
-using DaLion.Overhaul.Modules.Core.Extensions;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions.Stardew;
@@ -61,7 +60,7 @@ internal sealed class ProspectorRenderedHudEvent : RenderedHudEvent
         for (var i = 0; i < Game1.currentLocation.resourceClumps.Count; i++)
         {
             var clump = Game1.currentLocation.resourceClumps[i];
-            if (!Sets.ResourceClumpIds.Contains(clump.parentSheetIndex.Value))
+            if (!Lookups.ResourceClumpIds.Contains(clump.parentSheetIndex.Value))
             {
                 continue;
             }

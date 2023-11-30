@@ -1,0 +1,16 @@
+{
+  "RegenerationAttempts": 3,
+  "MineShaftStopRegenerationOnCopperOre": true,
+  "MineShaftStopRegenerationOnIronOre": true,
+  "MineShaftStopRegenerationOnGoldOre": true,
+  "MineShaftStopRegenerationOnIridiumOre": true,
+  "MineShaftStopRegenerationOnRadioactiveOre": true,
+  "AllowRegenGT100": false,
+  "ShardRegenerationAttempts": 2,
+  "VolcanoDungeonStopRegenerationOnCopperOre": false,
+  "VolcanoDungeonStopRegenerationOnIronOre": false,
+  "VolcanoDungeonStopRegenerationOnGoldOre": false,
+  "VolcanoDungeonStopRegenerationOnIridiumOre": false,
+  "VolcanoDungeonStopRegenerationOnCinderShard": true,
+  "AllowRegenGT3": false
+}

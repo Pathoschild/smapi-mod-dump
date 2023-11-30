@@ -12,20 +12,25 @@
 	"Name": "Hat Mouse Lacey",
 	"Author": "ichortower",
 	"Description": "Makes the hat mouse a real NPC named Lacey.",
-	"Version": "1.1.0",
+	"Version": "1.1.2",
 	"UniqueID": "ichortower.HatMouseLacey",
 	"ContentPackFor": {
 		"UniqueID": "Pathoschild.ContentPatcher"
 	},
-	"UpdateKeys": ["GitHub:ichortower/HatMouseLacey"],
+	"UpdateKeys": ["Nexus:18177", "GitHub:ichortower/HatMouseLacey"],
 	"Dependencies": [
 		{
 			"UniqueID": "ichortower.HatMouseLacey.Core",
-			"MinimumVersion": "1.1.0"
+			"MinimumVersion": "1.1.2"
 		},
 		// SVE overwrites festival set-up fields, so load after it
 		{
 			"UniqueID": "FlashShifter.StardewValleyExpandedCP",
+			"IsRequired": false
+		},
+		// under certain conditions, the lorax breaks Lacey's door
+		{
+			"UniqueID": "CopperSun.TruffulaTreesCP",
 			"IsRequired": false
 		},
 		// load after compatible recolors
@@ -43,6 +48,27 @@
 		},
 		{
 			"UniqueID": "Acerbicon.Recolor",
+			"IsRequired": false
+		},
+		// load after compatible retextures
+		{
+			"UniqueID": "Gweniaczek.WayBackPT",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "Elle.TownBuildings",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "yri.ProjectYellogTownOverhaul",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "yri.ProjectYellogTownOverhaulPerformance",
+			"IsRequired": false
+		},
+		{
+			"UniqueID": "kaya.floralvalley",
 			"IsRequired": false
 		}
 	]

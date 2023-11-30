@@ -41,7 +41,7 @@ internal sealed class MeleeWeaponDoSwipePatcher : HarmonyPatcher
         float swipeSpeed,
         Farmer? f)
     {
-        if (__instance.isScythe())
+        if (!CombatModule.Config.EnableWeaponOverhaul || __instance.isScythe())
         {
             return true; // run original logic
         }
@@ -113,7 +113,11 @@ internal sealed class MeleeWeaponDoSwipePatcher : HarmonyPatcher
                 return false; // don't run original logic
             }
 
-            var sound = __instance.IsClub() ? "clubswipe" : __instance.InitialParentTileIndex == WeaponIds.LavaKatana ? "fireball" : "swordswipe";
+            var sound = __instance.InitialParentTileIndex == WeaponIds.LavaKatana
+                ? "fireball"
+                : __instance.IsClub()
+                    ? "clubswipe"
+                    : "swordswipe";
             f.currentLocation.localSound(sound);
 
             return false; // don't run original logic

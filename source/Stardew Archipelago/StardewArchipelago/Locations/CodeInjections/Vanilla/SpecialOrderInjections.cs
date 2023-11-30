@@ -41,8 +41,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             _modHelper = modHelper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
-            _englishContentManager =
-                new ContentManager(Game1.game1.Content.ServiceProvider, Game1.game1.Content.RootDirectory);
+            _englishContentManager = new ContentManager(Game1.game1.Content.ServiceProvider, Game1.game1.Content.RootDirectory);
         }
 
         // public static bool IsSpecialOrdersBoardUnlocked()
@@ -94,7 +93,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     return;
                 }
 
-                var specialOrderName = __instance.GetName();
+                var specialOrderName = GetEnglishQuestName(__instance.questName.Value);
                 if (_ignoredSpecialOrders.Contains(specialOrderName))
                 {
                     return;
@@ -201,7 +200,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                                 order.Value.Repeatable == "True")
                 .Where(order => order.Value.Duration != "Month" || Game1.dayOfMonth <= 16)
                 .Where(order => CheckTags(order.Value.RequiredTags))
-                .Where(order => Game1.player.team.specialOrders.All(x => x.questKey.Value != order.Key));
+                .Where(order => Game1.player.team.specialOrders.All(x => x.questKey.Value != order.Key))
+                .Where(order => !_archipelago.SlotData.ToolProgression.HasFlag(ToolProgression.Progressive) || !order.Key.StartsWith("Demetrius") || _archipelago.HasReceivedItem("Progressive Fishing Rod"));
             return specialOrdersThatCanBeStartedToday;
         }
 
@@ -269,6 +269,29 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 var order = allOrdersOrdered[i];
                 Game1.player.team.availableSpecialOrders.Add(specialOrders[order]);
             }
+        }
+
+        public static string GetEnglishQuestName(string questNameKey)
+        {
+            var specialOrderStrings = _englishContentManager.Load<Dictionary<string, string>>("Strings\\SpecialOrderStrings");
+            questNameKey = questNameKey.Trim();
+            int startIndex;
+            do
+            {
+                startIndex = questNameKey.LastIndexOf('[');
+                if (startIndex >= 0)
+                {
+                    var num = questNameKey.IndexOf(']', startIndex);
+                    if (num == -1)
+                        return questNameKey;
+                    var str1 = questNameKey.Substring(startIndex + 1, num - startIndex - 1);
+                    var thisString = specialOrderStrings[str1];
+                    questNameKey = questNameKey.Remove(startIndex, num - startIndex + 1);
+                    questNameKey = questNameKey.Insert(startIndex, thisString);
+                }
+            }
+            while (startIndex >= 0);
+            return questNameKey;
         }
     }
 }

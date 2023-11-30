@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using Harmony;
+using HarmonyLib;
 using StardewValley;
 using System.Reflection;
 using StardewModdingAPI;

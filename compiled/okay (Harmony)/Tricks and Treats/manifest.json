@@ -1,0 +1,14 @@
+﻿{
+    "Name": "Tricks and Treats",
+    "Author": "ch20youk, KediDili, Lumina, and Wizadroid",
+    "Description": "Framework for adding costumes, candy, and trick-or-treating to Spirit's Eve.",
+    "Version": "1.0.0",
+    "UniqueID": "ch20youk.TricksAndTreats",
+    "EntryDll": "TricksAndTreats.dll",
+    "UpdateKeys": [ "Nexus:18947" ],
+  	"Dependencies": [
+  		{ "UniqueID": "Pathoschild.ContentPatcher" },
+  		{ "UniqueID": "spacechase0.SpaceCore" },
+      { "UniqueID": "spacechase0.JsonAssets" },
+	]
+}

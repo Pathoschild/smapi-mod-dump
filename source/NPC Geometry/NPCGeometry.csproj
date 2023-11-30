@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<RootNamespace>ichortower.NPCGeometry</RootNamespace>
+		<Version>1.0.0-alpha</Version>
+		<TargetFramework>net6.0</TargetFramework>
+		<Configuration>Release</Configuration>
+
+		<!-- FIXME remove this when 1.6 releases -->
+		<GamePath>$(HOME)/.local/share/Steam/steamapps/common/Stardew Valley</GamePath>
+
+		<ModFolderName>NPCGeometry</ModFolderName>
+		<EnableHarmony>true</EnableHarmony>
+		<EnableModZip>false</EnableModZip>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+	</ItemGroup>
+</Project>

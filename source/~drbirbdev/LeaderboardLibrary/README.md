@@ -120,6 +120,7 @@ These dictionaries include
 
 #### Roadmap
 
+1. UI for displaying all scores (maybe on title screen)
 1. Additional APIs
     1. GetRank (requires more backend infrastructure)
     2. DeleteScore

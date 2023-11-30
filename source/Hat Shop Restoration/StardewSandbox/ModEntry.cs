@@ -9,11 +9,11 @@
 *************************************************/
 
 using HarmonyLib;
-using StardewModdingAPI;
 using HatShopRestoration.Framework.Interfaces;
 using HatShopRestoration.Framework.Patches.Entities;
 using HatShopRestoration.Framework.Patches.Locations;
 using HatShopRestoration.Framework.Patches.xTiles;
+using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
@@ -77,7 +77,7 @@ namespace HatShopRestoration
         {
             if (e.OldLocation is not null && e.OldLocation.Name == "Custom_PeacefulEnd_MouseShop")
             {
-                Game1.stopMusicTrack(Game1.MusicContext.Default);
+                Game1.stopMusicTrack(StardewValley.GameData.MusicContext.Default);
             }
         }
 
@@ -132,7 +132,7 @@ namespace HatShopRestoration
             if (_queuedMessages.Count > 0 && _queuedMessages.TryDequeue(out var message))
             {
                 // Display unlock message
-                Game1.addHUDMessage(new HUDMessage(message, null));
+                Game1.addHUDMessage(new HUDMessage(message) { noIcon = true });
             }
         }
 

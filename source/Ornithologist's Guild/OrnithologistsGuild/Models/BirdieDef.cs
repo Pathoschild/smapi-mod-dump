@@ -14,6 +14,7 @@ using System.IO;
 using ContentPatcher;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using OrnithologistsGuild.Game;
 using OrnithologistsGuild.Models;
 using StardewModdingAPI;
 using StardewValley;
@@ -75,16 +76,21 @@ namespace OrnithologistsGuild.Content
 
         public int Attributes;
 
-        public bool CanBathe = true;
         public int MaxFlockSize = 1;
         public int Cautiousness = 5;
         public int FlapDuration = 500;
         public float FlySpeed = 5f;
 
         public float BaseWt = 0.5f;
-        public Dictionary<string, float> FoodBaseWts;
-        public Dictionary<string, float> FeederBaseWts;
+        public Dictionary<string, float> FoodBaseWts = new Dictionary<string, float>() { };
+        public Dictionary<string, float> FeederBaseWts = new Dictionary<string, float>() { };
         public List<BirdDefCondition> Conditions;
+
+        public bool CanUseBaths = true;
+
+        public float LandPreference = 1f;
+        public float PerchPreference = 0.5f;
+        public float WaterPreference = 0f;
 
         public float GetContextualWeight(bool updateContext = true, FeederDef feederDef = null, FoodDef foodDef = null)
         {
@@ -146,6 +152,14 @@ namespace OrnithologistsGuild.Content
         public bool CanPerchAt(FeederDef feederDef)
         {
             return FeederBaseWts.ContainsKey(feederDef.Type);
+        }
+
+        public bool CanPerchAt(Perch perch)
+        {
+            if (perch.Type == PerchType.Feeder) return CanPerchAt(FeederDef.FromFeeder(perch.Feeder));
+            else if (perch.Type == PerchType.Bath) return CanUseBaths;
+
+            return PerchPreference > 0;
         }
 
         public bool CanEat(FoodDef foodDef)

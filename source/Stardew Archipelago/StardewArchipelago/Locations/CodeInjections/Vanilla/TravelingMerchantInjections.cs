@@ -42,6 +42,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private const string AP_MERCHANT_DISCOUNT = "Traveling Merchant Discount"; // Base Price 140%, 8 x 10% discount
         private const string AP_MERCHANT_LOCATION = "Traveling Merchant {0} Item {1}";
         private const string AP_METAL_DETECTOR = "Traveling Merchant Metal Detector"; // Base Price 140%, 8 x 10% discount
+        private const string AP_WEDDING_RING_RECIPE = "Wedding Ring Recipe";
 
         private static readonly string[] _days = new[]
             { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
@@ -224,6 +225,9 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
             var generateLocalTravelingMerchantStockMethod = _modHelper.Reflection.GetMethod(typeof(Utility), "generateLocalTravelingMerchantStock");
             stock = generateLocalTravelingMerchantStockMethod.Invoke<Dictionary<ISalable, int[]>>(seed);
+
+            AddWeddingRingRecipeToStock(stock);
+
             var priceUpgrades = _archipelago.GetReceivedItemCount(AP_MERCHANT_DISCOUNT);
             var priceMultiplier = BASE_PRICE - (priceUpgrades * DISCOUNT_PER_UPGRADE);
             var random = new Random(seed);
@@ -237,6 +241,37 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             _persistentStock.SetStockForToday(stock);
 
             return stock;
+        }
+
+        private static void AddWeddingRingRecipeToStock(Dictionary<ISalable, int[]> stock)
+        {
+            if (_archipelago.SlotData.Craftsanity == Craftsanity.None)
+            {
+                if (Game1.player.craftingRecipes.ContainsKey("Wedding Ring"))
+                {
+                    return;
+                }
+
+                var weddingRingRecipe = new Object(801, 1, true);
+                stock.Add(weddingRingRecipe, new int[2]
+                {
+                    500,
+                    1
+                });
+                return;
+            }
+
+            if (!_locationChecker.IsLocationMissingAndExists(AP_WEDDING_RING_RECIPE))
+            {
+                return;
+            }
+            var activeHints = _archipelago.GetMyActiveHints();
+            var weddingRingRecipeCheck = new PurchaseableArchipelagoLocation(AP_WEDDING_RING_RECIPE, AP_WEDDING_RING_RECIPE, _modHelper, _locationChecker, _archipelago, activeHints);
+            stock.Add(weddingRingRecipeCheck, new int[2]
+            {
+                500,
+                1
+            });
         }
 
         private static List<ISalable> ChooseItemsToRemove(Dictionary<ISalable, int[]> stock, Random random)
@@ -287,7 +322,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 }
 
                 var archipelagoItem = new TravelingMerchantItem(item, _archipelagoState);
-                stock.Add(archipelagoItem, stock[salable]);
+                stock.Add(archipelagoItem, new []{ stock[salable][0], 1 });
                 stock.Remove(salable);
             }
         }

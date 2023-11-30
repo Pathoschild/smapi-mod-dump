@@ -94,3 +94,4 @@ Language | File | Contributor(s)
 ---------|------|------------
 English | [default.json](https://github.com/Esca-MMC/DestroyableBushes/blob/master/DestroyableBushes/i18n/default.json) | [Esca-MMC](https://github.com/Esca-MMC)
 Korean | [ko.json](https://github.com/Esca-MMC/DestroyableBushes/blob/master/DestroyableBushes/i18n/ko.json) | [wally232](https://github.com/wally232)
+Turkish | [tr.json](https://github.com/Esca-MMC/DestroyableBushes/blob/master/DestroyableBushes/i18n/tr.json) | [Rupurudu](https://github.com/Rupurudu)

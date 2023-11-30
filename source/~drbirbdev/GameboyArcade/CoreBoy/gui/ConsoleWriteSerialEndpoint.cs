@@ -17,7 +17,7 @@ namespace CoreBoy.gui
     {
         public int transfer(int b)
         {
-            Console.Write((char) b);
+            Console.Write((char)b);
             return 0;
         }
     }

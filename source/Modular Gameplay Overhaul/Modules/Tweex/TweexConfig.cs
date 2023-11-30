@@ -107,28 +107,14 @@ public sealed class TweexConfig
     ///     LargeDairyYieldsQuantityOverQuality.
     /// </summary>
     [JsonProperty]
-    [GMCMIgnore]
+    [GMCMPriority(6)]
+    [GMCMOverride(typeof(GenericModConfigMenu), "TweexConfigDairyArtisanMachinesOverride")]
     public HashSet<string> DairyArtisanMachines { get; internal set; } = new()
     {
         "Butter Churn", // artisan valley
         "Ice Cream Machine", // artisan valley
         "Keg", // vanilla, but artisan valley adds "kefir" item
         "Yogurt Jar", // artisan valley
-    };
-
-    /// <summary>Gets a set of maps in which to attempt to spawn crows.</summary>
-    [JsonProperty]
-    [GMCMSection("twx.farming")]
-    [GMCMPriority(6)]
-    [GMCMOverride(typeof(GenericModConfigMenu), "TweexConfigSpawnCrowsOnTheseMapsOverride")]
-    public HashSet<string> SpawnCrowsOnTheseMaps { get; internal set; } = new()
-    {
-        "IslandWest",
-        "Custom_Garden",
-        "Custom_GrampletonFields",
-        "Custom_GrampletonFields_Small",
-        "Custom_Ridgeside_SummitFarm",
-        "Custom_ESMeadowFarm",
     };
 
     #endregion farming
@@ -213,6 +199,11 @@ public sealed class TweexConfig
         get => this._immersiveGlowstoneProgression;
         internal set
         {
+            if (value == this._immersiveGlowstoneProgression)
+            {
+                return;
+            }
+
             this._immersiveGlowstoneProgression = value;
             ModHelper.GameContent.InvalidateCacheAndLocalized("Data/CraftingRecipes");
         }

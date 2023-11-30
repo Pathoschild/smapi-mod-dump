@@ -1,0 +1,11 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{"config.Up":"Up","config.Down":"아래로","config.Right":"오른쪽","config.Left":"왼쪽","config.A":"A","config.B":"B","config.Start":"시작","config.Select":"선택","config.Power":"파워","config.Turbo":"Turbo","config.Turbo.tooltip":"속도 제한 없이 에뮬레이터를 실행합니다.  일반적으로 60fps로 제한되지만 일부 컴퓨터에서는 100fps로 실행할 수 있습니다.","config.MusicSampleRate":"음악 샘플 속도","config.MusicSampleRate.tooltip":"음악 동기화를 위한 실험적 구성입니다.  아마 작동하지 않을 것입니다."}

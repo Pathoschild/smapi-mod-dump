@@ -19,7 +19,6 @@ using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
 
@@ -28,13 +27,6 @@ using StardewValley.Menus;
 [UsedImplicitly]
 internal sealed class ToolbarDrawPatcher : HarmonyPatcher
 {
-    private static readonly Lazy<Texture2D> Pixel = new(() =>
-    {
-        var pixel = new Texture2D(Game1.graphics.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-        pixel.SetData(new[] { Color.White });
-        return pixel;
-    });
-
     /// <summary>Initializes a new instance of the <see cref="ToolbarDrawPatcher"/> class.</summary>
     internal ToolbarDrawPatcher()
     {
@@ -95,7 +87,7 @@ internal sealed class ToolbarDrawPatcher : HarmonyPatcher
             ToolsModule.State.SelectableToolByType.TryGetValue(tool.GetType(), out var selectable) &&
             selectable?.Tool == tool)
         {
-            buttons[j].bounds.DrawBorder(Pixel.Value, ToolsModule.Config.SelectionBorderColor, b);
+            buttons[j].bounds.DrawBorder(ToolsModule.Config.SelectionBorderColor, b);
         }
     }
 

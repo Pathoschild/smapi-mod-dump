@@ -1,10 +1,11 @@
 {
-  "staticVersion": 116,
-  "staticId": -7088158310965622619,
+  "staticVersion": 132,
+  "staticId": 5236834449323262584,
   "activeBlessing": "none",
   "questList": {},
   "blessingList": {},
   "weaponAttunement": {},
   "taskList": {},
-  "toggleList": {}
+  "toggleList": {},
+  "characterList": {}
 }

@@ -69,11 +69,13 @@ namespace Custom_Farm_Loader.Lib
                 Cache = new();
             }
 
-            Monitor.Log("Generating FarmTypeCache, this might take a while initially", isInitial ? LogLevel.Info : LogLevel.Trace);
-
             var saveFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "StardewValley", "Saves");
+            if (!Directory.Exists(saveFilePath))
+                return;
+
             var saveFiles = Directory.GetDirectories(saveFilePath);
 
+            Monitor.Log("Generating FarmTypeCache, this might take a while initially", isInitial ? LogLevel.Info : LogLevel.Trace);
             foreach (var fullFilePath in saveFiles) {
                 var saveFile = Path.GetFileName(fullFilePath);
 

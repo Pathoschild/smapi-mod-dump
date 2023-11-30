@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace StardewDruid
 {
-    internal class ActiveData
+    public class ActiveData
     {
 
         public string activeBlessing = "none";
@@ -29,17 +29,13 @@ namespace StardewDruid
 
         public int castLevel = 0;
 
-        public int cycleLevel = 1;
-
         public List<Type> castLimits = new();
 
-        public bool castInterrupt = false;
+        public bool castInterrupt = true;
 
-        public bool castDoppler = false;
+        public string activeLocation = null;
 
         public int activeDirection = -1;
-
-        public Vector2 originVector = new(0,0);
 
         public Vector2 activeVector = new(0,0);
 

@@ -20,7 +20,7 @@ internal class EventHookManager
 {
     internal static void InitializeEventHooks()
     {
-
+        Globals.EventHelper.Content.AssetRequested += AssetManager.LoadAssets;
     }
     
 }

@@ -24,9 +24,11 @@ namespace StardewDruid.Monster
 
         public List<string> ouchList;
 
-        public int spawnBuff;
+        public bool spawnBuff;
 
         public int spawnDamage;
+
+        public double spawnTimeout;
 
         public Bat(Vector2 vector, int combatModifier)
             : base(vector * 64, combatModifier / 2)
@@ -42,11 +44,13 @@ namespace StardewDruid.Monster
 
             spawnDamage = (int)Math.Max(2, combatModifier * 0.05);
 
+            spawnBuff = true;
+
+            spawnTimeout = Game1.currentGameTime.TotalGameTime.TotalMilliseconds + 600;
+
             objectsToDrop.Clear();
 
             objectsToDrop.Add(767);
-
-            spawnBuff = 60;
 
             if (Game1.random.Next(3) == 0)
             {
@@ -75,16 +79,17 @@ namespace StardewDruid.Monster
             };
 
         }
+
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
 
-            if (spawnBuff > 0)
+            if (spawnBuff)
             {
                 return 0;
             }
             
             int ouchIndex = Game1.random.Next(10);
-
+            
             if (ouchIndex < ouchList.Count)
             {
                 showTextAboveHead(ouchList[ouchIndex], duration: 2000);
@@ -94,24 +99,20 @@ namespace StardewDruid.Monster
 
         }
 
-        public override void behaviorAtGameTick(GameTime time)
+        public override void update(GameTime time, GameLocation location)
         {
 
-            if(spawnBuff > 0)
+            if(spawnBuff)
             {
-
-                spawnBuff--;
-
-                if (spawnBuff < 1)
+                if (Game1.currentGameTime.TotalGameTime.TotalMilliseconds > spawnTimeout)
                 {
+                    spawnBuff = false;
 
                     DamageToFarmer = spawnDamage;
-
                 }
-
             }
 
-            base.behaviorAtGameTick(time);
+            base.update(time, location);
 
         }
 

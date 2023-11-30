@@ -22,29 +22,29 @@ namespace CoreBoy.gpu
 
         public ColorPixelFifo(Lcdc lcdc, IDisplay display, ColorPalette bgPalette, ColorPalette oamPalette)
         {
-            _lcdc = lcdc;
-            _display = display;
-            _bgPalette = bgPalette;
-            _oamPalette = oamPalette;
+            this._lcdc = lcdc;
+            this._display = display;
+            this._bgPalette = bgPalette;
+            this._oamPalette = oamPalette;
         }
 
-        public int GetLength() => _pixels.Size();
-        public void PutPixelToScreen() => _display.PutColorPixel(DequeuePixel());
+        public int GetLength() => this._pixels.Size();
+        public void PutPixelToScreen() => this._display.PutColorPixel(this.DequeuePixel());
 
         private int DequeuePixel()
         {
-            return GetColor(_priorities.Dequeue(), _palettes.Dequeue(), _pixels.Dequeue());
+            return this.GetColor(this._priorities.Dequeue(), this._palettes.Dequeue(), this._pixels.Dequeue());
         }
 
-        public void DropPixel() => DequeuePixel();
+        public void DropPixel() => this.DequeuePixel();
 
         public void Enqueue8Pixels(int[] pixelLine, TileAttributes tileAttributes)
         {
             foreach (int p in pixelLine)
             {
-                _pixels.Enqueue(p);
-                _palettes.Enqueue(tileAttributes.GetColorPaletteIndex());
-                _priorities.Enqueue(tileAttributes.IsPriority() ? 100 : -1);
+                this._pixels.Enqueue(p);
+                this._palettes.Enqueue(tileAttributes.GetColorPaletteIndex());
+                this._priorities.Enqueue(tileAttributes.IsPriority() ? 100 : -1);
             }
         }
 
@@ -75,10 +75,10 @@ namespace CoreBoy.gpu
                     continue; // color 0 is always transparent
                 }
 
-                int oldPriority = _priorities.Get(i);
+                int oldPriority = this._priorities.Get(i);
 
                 bool put = false;
-                if ((oldPriority == -1 || oldPriority == 100) && !_lcdc.IsBgAndWindowDisplay())
+                if ((oldPriority == -1 || oldPriority == 100) && !this._lcdc.IsBgAndWindowDisplay())
                 {
                     // this one takes precedence
                     put = true;
@@ -86,14 +86,14 @@ namespace CoreBoy.gpu
                 else if (oldPriority == 100)
                 {
                     // bg with priority
-                    put = _pixels.Get(i) == 0;
+                    put = this._pixels.Get(i) == 0;
                 }
                 else if (oldPriority == -1 && !spriteAttr.IsPriority())
                 {
                     // bg without priority
                     put = true;
                 }
-                else if (oldPriority == -1 && spriteAttr.IsPriority() && _pixels.Get(i) == 0)
+                else if (oldPriority == -1 && spriteAttr.IsPriority() && this._pixels.Get(i) == 0)
                 {
                     // bg without priority
                     put = true;
@@ -106,25 +106,25 @@ namespace CoreBoy.gpu
 
                 if (put)
                 {
-                    _pixels.Set(i, p);
-                    _palettes.Set(i, spriteAttr.GetColorPaletteIndex());
-                    _priorities.Set(i, oamIndex);
+                    this._pixels.Set(i, p);
+                    this._palettes.Set(i, spriteAttr.GetColorPaletteIndex());
+                    this._priorities.Set(i, oamIndex);
                 }
             }
         }
-        
+
         public void Clear()
         {
-            _pixels.Clear();
-            _palettes.Clear();
-            _priorities.Clear();
+            this._pixels.Clear();
+            this._palettes.Clear();
+            this._priorities.Clear();
         }
 
         private int GetColor(int priority, int palette, int color)
         {
             return priority >= 0 && priority < 10
-                ? _oamPalette.GetPalette(palette)[color]
-                : _bgPalette.GetPalette(palette)[color];
+                ? this._oamPalette.GetPalette(palette)[color]
+                : this._bgPalette.GetPalette(palette)[color];
         }
     }
 }

@@ -8,130 +8,72 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using BirbShared;
-using BirbShared.APIs;
-using BirbShared.Mod;
+using BirbCore.APIs;
+using BirbCore.Attributes;
 using StardewModdingAPI;
 
-namespace GameboyArcade
+namespace GameboyArcade;
+
+[SMod]
+public class ModEntry : Mod
 {
-    public class ModEntry : Mod
+    [SMod.Instance]
+    internal static ModEntry Instance;
+    internal static Config Config;
+    internal static Command Command;
+    internal static Dictionary<string, Dictionary<string, Content>> Content;
+
+    [SMod.Api("spacechase0.DynamicGameAssets", IsRequired = false)]
+    internal static IDynamicGameAssetsApi DynamicGameAssets;
+
+    public override void Entry(IModHelper helper)
     {
-        [SmapiInstance]
-        internal static ModEntry Instance;
-        [SmapiConfig]
-        internal static Config Config;
-        [SmapiCommand]
-        internal static Command Command;
-        [SmapiApi(UniqueID = "spacechase0.DynamicGameAssets")]
-        internal static IDynamicGameAssetsApi DynamicGameAssets;
+        Parser.ParseAll(this);
+    }
 
-        internal static Dictionary<string, Content> LoadedContentPacks = new Dictionary<string, Content>();
-        internal static Dictionary<string, string> BigCraftableIDMap = new Dictionary<string, string>();
+    public override object GetApi()
+    {
+        return new GameboyArcadeAPIImpl();
+    }
 
-
-        public override void Entry(IModHelper helper)
+    public static IEnumerable<Content> AllGames()
+    {
+        foreach (Dictionary<string, Content> modContent in ModEntry.Content.Values)
         {
-            ModClass mod = new ModClass();
-            mod.Parse(this, true);
-            this.Helper.Events.GameLoop.GameLaunched += this.GameLoop_GameLaunched;
-            this.Helper.Events.Multiplayer.ModMessageReceived += this.Multiplayer_ModMessageReceived_SaveRequest;
-            this.Helper.Events.Multiplayer.ModMessageReceived += this.Multiplayer_ModMessageReceived_LoadRequest;
-
-        }
-
-        public override object GetApi()
-        {
-            return new GameboyArcadeAPIImpl();
-        }
-
-        private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
-        {
-            this.LoadContentPacks();
-        }
-
-        /// <summary>
-        /// Allow remote players to load ROM saves which are marked as shared.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Multiplayer_ModMessageReceived_LoadRequest(object sender, StardewModdingAPI.Events.ModMessageReceivedEventArgs e)
-        {
-            if (e.FromModID == this.ModManifest.UniqueID && e.Type == "LoadRequest")
+            foreach (Content content in modContent.Values)
             {
-                string minigameId = e.ReadAs<string>();
-                SaveState loaded = this.Helper.Data.ReadJsonFile<SaveState>($"data/{minigameId}/{Constants.SaveFolderName}/file.json");
-                this.Helper.Multiplayer.SendMessage<SaveState>(loaded, "LoadReceive", new string[] { this.ModManifest.UniqueID }, new long[] { e.FromPlayerID });
+                yield return content;
             }
         }
+        yield break;
+    }
 
-        /// <summary>
-        /// Allow remote players to save ROM saves which are marked as shared.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Multiplayer_ModMessageReceived_SaveRequest(object sender, StardewModdingAPI.Events.ModMessageReceivedEventArgs e)
+    public static Content SearchGames(string search)
+    {
+        foreach (Content content in AllGames())
         {
-            if (e.FromModID == this.ModManifest.UniqueID && e.Type.StartsWith("SaveRequest "))
+            if (content.UniqueID == search || content.ModID == search || content.GameID == search || content.Name == search)
             {
-                string minigameId = e.Type.Substring(12);
-                if (!LoadedContentPacks.ContainsKey(minigameId))
-                {
-                    Log.Error($"{e.FromPlayerID} sent save request for {minigameId}, but no such minigame exists for host computer!");
-                    return;
-                }
-                SaveState save = e.ReadAs<SaveState>();
-                this.Helper.Data.WriteJsonFile<SaveState>($"data/{minigameId}/{Constants.SaveFolderName}/file.json", save);
+                return content;
             }
         }
+        return null;
+    }
 
-        private void LoadContentPacks()
+    public static Content GetGame(string modId, string gameId = null)
+    {
+        if (gameId is null)
         {
-            foreach (IContentPack pack in this.Helper.ContentPacks.GetOwned())
+            string[] parts = modId.Split("_", 2);
+            if (parts.Length != 2)
             {
-                try
-                {
-                    List<Content> contents = pack.ReadJsonFile<List<Content>>("content.json");
-                    if (contents is null || contents.Count == 0)
-                    {
-                        Log.Error($"{pack.Manifest.UniqueID}: content.json was missing!");
-                        continue;
-                    }
-
-                    foreach (Content content in contents)
-                    {
-                        if (content is null || content.Name is null || content.Name == "")
-                        {
-                            Log.Error($"{pack.Manifest.UniqueID}: Content entry was missing name");
-                            continue;
-                        }
-                        if (!pack.HasFile(content.FilePath))
-                        {
-                            Log.Error($"{pack.Manifest.UniqueID}: {content.Name} rom file was missing {content.FilePath}");
-                            continue;
-                        }
-                        content.ContentPack = pack;
-
-                        content.UniqueID = $"{pack.Manifest.UniqueID}.{content.ID}";
-
-                        LoadedContentPacks.Add(content.UniqueID, content);
-
-                        if (content.DGAID is not null && DynamicGameAssets is not null)
-                        {
-                            if (DynamicGameAssets.SpawnDGAItem(content.DGAID) is not null)
-                            {
-                                BigCraftableIDMap.Add(content.DGAID, content.UniqueID);
-                            }
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.Error($"{pack.Manifest.UniqueID}: Failed to parse content.json\n{e}");
-                }
+                Log.Error($"Expected a GameId in the form ModManifest_Game but got something else {modId}");
             }
+            modId = parts[0];
+            gameId = parts[1];
         }
+
+        return Content?[modId]?[gameId];
     }
 }

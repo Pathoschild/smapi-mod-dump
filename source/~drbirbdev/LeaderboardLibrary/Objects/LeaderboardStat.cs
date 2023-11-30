@@ -12,97 +12,97 @@ using System;
 using System.Collections.Generic;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
-using BirbShared;
+using BirbCore.Attributes;
 
-namespace LeaderboardLibrary
+namespace LeaderboardLibrary;
+
+[DynamoDBTable(TABLE_NAME)]
+public class LeaderboardStat : IComparable
 {
-    [DynamoDBTable(TABLE_NAME)]
-    public class LeaderboardStat : IComparable
+    internal const string TABLE_NAME = "StardewStats";
+    internal const string TOP_SCORES_INDEX_NAME = "TopScores";
+
+    [DynamoDBHashKey]
+    public string Stat { get; set; }
+
+    [DynamoDBRangeKey]
+    public string UserUUID { get; set; }
+
+    [DynamoDBLocalSecondaryIndexRangeKey(TOP_SCORES_INDEX_NAME)]
+    public double Score { get; set; }
+
+    [DynamoDBProperty]
+    public string Name { get; set; }
+
+    [DynamoDBProperty]
+    public string Farm { get; set; }
+
+    [DynamoDBProperty]
+    public string Secret { get; set; }
+
+    [DynamoDBProperty]
+    public double DateTime { get; set; }
+
+    public int CompareTo(object obj)
     {
-        internal const string TABLE_NAME = "StardewStats";
-        internal const string TOP_SCORES_INDEX_NAME = "TopScores";
+        LeaderboardStat l = (LeaderboardStat)obj;
+        return this.Score.CompareTo(l.Score);
+    }
 
-        [DynamoDBHashKey]
-        public string Stat { get; set; }
-
-        [DynamoDBRangeKey]
-        public string UserUUID { get; set; }
-
-        [DynamoDBLocalSecondaryIndexRangeKey(TOP_SCORES_INDEX_NAME)]
-        public double Score { get; set; }
-
-        [DynamoDBProperty]
-        public string Name { get; set; }
-
-        [DynamoDBProperty]
-        public string Farm { get; set; }
-
-        [DynamoDBProperty]
-        public string Secret { get; set; }
-
-        [DynamoDBProperty]
-        public double DateTime { get; set; }
-
-        public int CompareTo(object obj)
+    public static LeaderboardStat FromDdbShape(Dictionary<string, AttributeValue> ddb)
+    {
+        if (!int.TryParse(ddb.GetValueOrDefault("Score", new AttributeValue()).N, out int score))
         {
-            LeaderboardStat l = (LeaderboardStat)obj;
-            return this.Score.CompareTo(l.Score);
+            Log.Warn("Failed to parse score from DDB document");
+            score = 0;
+        }
+        if (!int.TryParse(ddb.GetValueOrDefault("DateTime", new AttributeValue()).S, out int time))
+        {
+            Log.Warn("Failed to parse time from DDB document");
+            time = 0;
         }
 
-        public static LeaderboardStat FromDdbShape(Dictionary<string, AttributeValue> ddb)
+        return new LeaderboardStat
         {
-            if (!int.TryParse(ddb.GetValueOrDefault("Score", new AttributeValue()).N, out int score)) {
-                Log.Warn("Failed to parse score from DDB document");
-                score = 0;
-            }
-            if (!int.TryParse(ddb.GetValueOrDefault("DateTime", new AttributeValue()).S, out int time))
-            {
-                Log.Warn("Failed to parse time from DDB document");
-                time = 0;
-            }
+            Stat = ddb.GetValueOrDefault("Stat", new AttributeValue()).S,
+            UserUUID = ddb.GetValueOrDefault("UserUUID", new AttributeValue()).S,
+            Score = score,
+            Name = ddb.GetValueOrDefault("Name", new AttributeValue()).S,
+            Farm = ddb.GetValueOrDefault("Farm", new AttributeValue()).S,
+            DateTime = time,
+        };
+    }
 
-            return new LeaderboardStat
-            {
-                Stat = ddb.GetValueOrDefault("Stat", new AttributeValue()).S,
-                UserUUID = ddb.GetValueOrDefault("UserUUID", new AttributeValue()).S,
-                Score = score,
-                Name = ddb.GetValueOrDefault("Name", new AttributeValue()).S,
-                Farm = ddb.GetValueOrDefault("Farm", new AttributeValue()).S,
-                DateTime = time,
-            };
-        }
-
-        public static List<LeaderboardStat> FromDdbList(List<Dictionary<string, AttributeValue>> ddbList)
+    public static List<LeaderboardStat> FromDdbList(List<Dictionary<string, AttributeValue>> ddbList)
+    {
+        List<LeaderboardStat> result = new();
+        foreach (Dictionary<string, AttributeValue> ddbItem in ddbList)
         {
-            List<LeaderboardStat> result = new();
-            foreach (Dictionary<string, AttributeValue> ddbItem in ddbList)
-            {
-                result.Add(FromDdbShape(ddbItem));
-            }
-            return result;
+            result.Add(FromDdbShape(ddbItem));
         }
+        return result;
+    }
 
-        public Dictionary<string, string> ToApiShape()
+    public Dictionary<string, string> ToApiShape()
+    {
+        return new Dictionary<string, string>
         {
-            return new Dictionary<string, string>
-            {
-                {"Stat", this.Stat.Split(":")[1] },
-                {"Name", this.Name },
-                {"Farm", this.Farm },
-                {"Score", this.Score.ToString() },
-                {"DateTime", this.DateTime.ToString() },
-                {"UserUUID", this.UserUUID },
-            };
-        }
+            {"Stat", this.Stat.Split(":")[1] },
+            {"Name", this.Name },
+            {"Farm", this.Farm },
+            {"Score", this.Score.ToString() },
+            {"DateTime", this.DateTime.ToString() },
+            {"UserUUID", this.UserUUID },
+        };
+    }
 
-        public static List<Dictionary<string, string>> ToApiList(List<LeaderboardStat> leaderboardStats)
+    public static List<Dictionary<string, string>> ToApiList(List<LeaderboardStat> leaderboardStats)
+    {
+        List<Dictionary<string, string>> result = new();
+        foreach (LeaderboardStat leaderboard in leaderboardStats)
         {
-            List<Dictionary<string, string>> result = new();
-            foreach (LeaderboardStat leaderboard in leaderboardStats)
-            {
-                result.Add(leaderboard.ToApiShape());
-            }
-            return result;
+            result.Add(leaderboard.ToApiShape());
         }
+        return result;
     }
 }

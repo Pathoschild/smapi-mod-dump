@@ -19,7 +19,7 @@ using DaLion.Shared.Integrations;
 
 #endregion using directives
 
-[ModRequirement("FlashShifter.StardewValleyExpandedCP", "StardewValleyExpanded")]
+[ModRequirement("FlashShifter.StardewValleyExpandedCP", "Stardew Valley Expanded")]
 internal sealed class StardewValleyExpandedIntegration : ModIntegration<StardewValleyExpandedIntegration>
 {
     /// <summary>Initializes a new instance of the <see cref="StardewValleyExpandedIntegration"/> class.</summary>

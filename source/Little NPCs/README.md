@@ -14,14 +14,24 @@ Mod for [Stardew Valley](http://stardewvalley.net/) which turns your children in
 
 Replacement NPCs for your children must be provided by content packs. See [NPC data](https://stardewvalleywiki.com/Modding:NPC_data). Note that NPCDispositions must not be provided by your content pack, these are generated and handled internally by the mod.
 
-The mod provides 6 ContentPatcher tokens:
+Starting from version 1.1, the mod provides 2 ContentPatcher tokens:
 
-* Candidus42.LittleNPCs/FirstLittleNPCName
-* Candidus42.LittleNPCs/FirstLittleNPCDisplayName
-* Candidus42.LittleNPCs/FirstLittleNPCGender
-* Candidus42.LittleNPCs/SecondLittleNPCName
-* Candidus42.LittleNPCs/SecondLittleNPCDisplayName
-* Candidus42.LittleNPCs/SecondLittleNPCGender
+* Candidus42.LittleNPCs/FirstLittleNPC
+* Candidus42.LittleNPCs/SecondLittleNPC
+
+Every token supports these arguments:
+
+* Name
+* DisplayName
+* Gender
+* BirthSeason
+* BirthDay
+* Age
+
+The 1.0 tokens are still there but shouldn't be used for new development.
+
+Only one argument can be given at a time. Token arguments are passed after a colon. For example, if you want the internal name of FirstLittleNPC, use
+`{{Candidus42.LittleNPCs/FirstLittleNPC: Name}}`
 
 In your content pack, use these tokens instead of hard-coded names and genders.
 
@@ -32,21 +42,27 @@ Content packs for the unmaintained [ChildToNPC](https://www.nexusmods.com/starde
 Remove `Data/NPCDispositions` from your content pack first. For replacing tokens see the following table:
 
 
-| Child2NPC token     | LittleNPC token            | Notes                                                         |
-|:--------------------|:---------------------------|:--------------------------------------------------------------|
-| FirstChildName      | FirstLittleNPCName         | Internal asset name, not suitable for dialogue.               |
-|                     | FirstLittleNPCDisplayName  | Name to show in dialogue.                                     |
-| FirstChildBirthday  |                            | Not needed anymore. Formerly used to provide NPCDispositions. |
-| FirstChildBed       |                            | Not needed anymore. Formerly used to provide NPCDispositions. |
-| FirstChildGender    | FirstLittleNPCGender       |                                                               |
-| FirstChildParent    |                            | Use the standard CP token {{spouse}} instead.                 |
-| SecondChildName     | SecondLittleNPCName        | Internal asset name, not suitable for dialogue.               |
-|                     | SecondLittleNPCDisplayName | Name to show in dialogue.                                     |
-| SecondChildBirthday |                            | Not needed anymore. Formerly used to provide NPCDispositions. |
-| SecondChildBed      |                            | Not needed anymore. Formerly used to provide NPCDispositions. |
-| SecondChildGender   | SecondLittleNPCGender      |                                                               |
-| SecondChildParent   |                            | Use the standard CP token {{spouse}} instead.                 |
-| NumberTotalChildren |                            | Not needed anymore. Number of children is handled internally. |
+| Child2NPC token     | LittleNPC 1.0 token        | LittleNPC 1.1 token and argument | Notes                                                         |
+|:--------------------|:---------------------------|:---------------------------------|:--------------------------------------------------------------|
+| FirstChildName      | FirstLittleNPCName         | FirstLittleNPC: Name             | Internal asset name, not suitable for dialogue.               |
+|                     | FirstLittleNPCDisplayName  | FirstLittleNPC: DisplayName      | Name to show in dialogue.                                     |
+| FirstChildBirthday  |                            |                                  | Not needed anymore. Formerly used to provide NPCDispositions. |
+|                     |                            | FirstLittleNPC: BirthSeason      | Season of birth: spring, summer, fall or winter.              |
+|                     |                            | FirstLittleNPC: BirthDay         | Day of birth: 1 to 28.                                        |
+|                     |                            | FirstLittleNPC: Age              | Age of a LittleNPC in years.                                  |
+| FirstChildBed       |                            |                                  | Not needed anymore. Formerly used to provide NPCDispositions. |
+| FirstChildGender    | FirstLittleNPCGender       | FirstLittleNPC: Gender           |                                                               |
+| FirstChildParent    |                            |                                  | Use the standard CP token {{spouse}} instead.                 |
+| SecondChildName     | SecondLittleNPCName        | SecondLittleNPC: Name            | Internal asset name, not suitable for dialogue.               |
+|                     | SecondLittleNPCDisplayName | SecondLittleNPC: DisplayName     | Name to show in dialogue.                                     |
+| SecondChildBirthday |                            |                                  | Not needed anymore. Formerly used to provide NPCDispositions. |
+|                     |                            | SecondLittleNPC: BirthSeason     | Season of birth: spring, summer, fall or winter.              |
+|                     |                            | SecondLittleNPC: BirthDay        | Day of birth: 1 to 28.                                        |
+|                     |                            | SecondLittleNPC: Age             | Age of a LittleNPC in years.                                  |
+| SecondChildBed      |                            |                                  | Not needed anymore. Formerly used to provide NPCDispositions. |
+| SecondChildGender   | SecondLittleNPCGender      | SecondLittleNPC: Gender          |                                                               |
+| SecondChildParent   |                            |                                  | Use the standard CP token {{spouse}} instead.                 |
+| NumberTotalChildren |                            |                                  | Not needed anymore. Number of children is handled internally. |
 
 **Config options**
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32929.386
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinningSkill", "BinningSkill\BinningSkill.csproj", "{80C3C0C2-F6B1-4F42-93C2-78D72C435978}"
 EndProject
@@ -9,13 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PanningUpgrades", "PanningU
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RanchingToolUpgrades", "RanchingToolUpgrades\RanchingToolUpgrades.csproj", "{D77594C7-ED2D-48B1-9F39-373F20F1B7E9}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "BirbShared", "BirbShared\BirbShared.shproj", "{8F13906D-7E88-45B4-ABBC-617437970163}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_root", "_root", "{7BB5EFE4-05AA-48E1-BA1C-5F7F0599381E}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		common-nospace.targets = common-nospace.targets
+		common-contentpatcher.targets = common-contentpatcher.targets
+		common-spacecore.targets = common-spacecore.targets
 		common.targets = common.targets
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
@@ -45,12 +44,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RealtimeFramework", "Realti
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HalloweenSeason", "HalloweenSeason\HalloweenSeason.shproj", "{100172ED-9F1B-4D78-8B4F-BB5C4F72537B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BirbCore", "BirbCore\BirbCore.csproj", "{8223E80F-03F0-4527-80A9-0D2E7B76A7EE}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GameboyArcadeTests", "GameboyArcadeTests\GameboyArcadeTests.shproj", "{B091A772-70C1-4AA6-B2C2-93E9E06B8C07}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GameboyArcadeTemplate", "GameboyArcadeTemplate\GameboyArcadeTemplate.shproj", "{65C1A80E-01D8-4652-A109-3FB1FCC789BF}"
+EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		HalloweenSeason\HalloweenSeason.projitems*{100172ed-9f1b-4d78-8b4f-bb5c4f72537b}*SharedItemsImports = 13
-		BirbSharedSpaceCore\BirbSharedSpaceCore.projitems*{19cedb88-a912-48da-b35d-fce2509e70e6}*SharedItemsImports = 13
-		BirbShared\BirbShared.projitems*{8f13906d-7e88-45b4-abbc-617437970163}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -108,11 +108,21 @@ Global
 		{A8419860-CE08-4545-A5E7-3BA1F41FFF2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8419860-CE08-4545-A5E7-3BA1F41FFF2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8419860-CE08-4545-A5E7-3BA1F41FFF2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8223E80F-03F0-4527-80A9-0D2E7B76A7EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8223E80F-03F0-4527-80A9-0D2E7B76A7EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8223E80F-03F0-4527-80A9-0D2E7B76A7EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8223E80F-03F0-4527-80A9-0D2E7B76A7EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CC4FC86-39C6-4152-8058-FE3B146896A6}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		HalloweenSeason\HalloweenSeason.projitems*{100172ed-9f1b-4d78-8b4f-bb5c4f72537b}*SharedItemsImports = 13
+		BirbSharedSpaceCore\BirbSharedSpaceCore.projitems*{19cedb88-a912-48da-b35d-fce2509e70e6}*SharedItemsImports = 13
+		GameboyArcadeTemplate\GameboyArcadeTemplate.projitems*{65c1a80e-01d8-4652-a109-3fb1fcc789bf}*SharedItemsImports = 13
+		GameboyArcadeTests\GameboyArcadeTests.projitems*{b091a772-70c1-4aa6-b2c2-93e9e06b8c07}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

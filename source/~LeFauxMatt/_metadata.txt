@@ -18,9 +18,13 @@ mods:
    Toolbar Icons
 
 latest commit:
-   commit 85cef8123349c3b5e995c34916e225e0112ef4af
-   Author: FauxMatt <github@fauxmail.net>
-   Date:   Fri Jan 13 15:58:54 2023 -0800
+   commit 12c89a25da18d74a56d1447eb6e77791fda34db1
+   Author: Arttu Mahlakaarto <arttu.mahlakaarto@gmail.com>
+   Date:   Fri Nov 24 07:06:57 2023 +0200
    
-       chore: Supress styling rules for external code
+       Fixes an NullReference Exception when sorting storages. (#73)
+       
+       Issue was caused by the __instance variable being null.
+       The fix adds a check for that scenario.
+       Additionally, the sorting criteria check was added to prevent a recursion from the OrganizeItems function
    

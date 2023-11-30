@@ -7,6 +7,7 @@ HouseSparrow.wav - Jarek Matusiak - https://xeno-canto.org/contributor/ZNCDXTUOF
 RedWingedBlackbird.wav - Russ Wigh - https://xeno-canto.org/contributor/YBJUQSUJFZ
 SpottedTowhee.wav - Manuel Grosselet - https://xeno-canto.org/contributor/ILUHRFXDNU
 Verdin.wav - Patrick Turgeon - https://xeno-canto.org/contributor/WCNFEBIHCJ
+Mallard.wav - Lars Edenius - https://xeno-canto.org/contributor/MMEJYLOPDO
 
 ---
 

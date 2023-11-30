@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19305
+IDs: BinaryLip.ScheduleViewer
+update keys: Nexus:19305, GitHub:BinaryLip/ScheduleViewer

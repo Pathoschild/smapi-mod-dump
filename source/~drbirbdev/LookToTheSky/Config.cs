@@ -8,21 +8,20 @@
 **
 *************************************************/
 
-using BirbShared.Config;
+using BirbCore.Attributes;
 using StardewModdingAPI;
 
-namespace LookToTheSky
+namespace LookToTheSky;
+
+[SConfig]
+class Config
 {
-    [ConfigClass]
-    class Config
-    {
-        [ConfigOption]
-        public SButton Button { get; set; } = SButton.U;
+    [SConfig.Option]
+    public SButton Button { get; set; } = SButton.U;
 
-        [ConfigOption(Min = 0, Max = 100)]
-        public int SpawnChancePerSecond { get; set; } = 5;
+    [SConfig.Option(Min = 0, Max = 100)]
+    public int SpawnChancePerSecond { get; set; } = 5;
 
-        [ConfigOption]
-        public bool DoNotificationNoise { get; set; } = true;
-    }
+    [SConfig.Option]
+    public bool DoNotificationNoise { get; set; } = true;
 }

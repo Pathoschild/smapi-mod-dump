@@ -1,9 +1,9 @@
 {
   "TeleportKey": "H",
-  "SetHomeLocation": "J",
+  "SetHomeLocation": "NumPad0",
   "HomeLocation": {
-    "X": 25,
-    "Y": 92,
+    "X": 64,
+    "Y": 17,
     "Map": "Farm"
   },
   "StaminaCost": 15,

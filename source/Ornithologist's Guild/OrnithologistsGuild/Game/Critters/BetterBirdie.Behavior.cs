@@ -31,8 +31,6 @@ namespace OrnithologistsGuild.Game.Critters
     {
         public List<BetterBirdieBehavior> GetContextualBehavior()
         {
-            // TODO if (Type == BirdType.Default) {
-
             if (IsRoosting)
             {
                 return new List<BetterBirdieBehavior> {
@@ -40,10 +38,20 @@ namespace OrnithologistsGuild.Game.Critters
                 };
             }
 
-            if (IsBathing || Environment.isWaterTile((int)TileLocation.X, (int)TileLocation.Y))
+            if (IsInBath)
             {
                 return new List<BetterBirdieBehavior> {
                     new BetterBirdieBehavior(1, () => BetterBirdieTrigger.Bathe, true)
+                };
+            }
+
+            if (IsInWater)
+            {
+                return new List<BetterBirdieBehavior> {
+                    new BetterBirdieBehavior(1000, () => BetterBirdieTrigger.Swim, false),
+                    new BetterBirdieBehavior(100, () => BetterBirdieTrigger.Bathe, false),
+                    new BetterBirdieBehavior(25, () => BetterBirdieTrigger.Relocate, false),
+                    new BetterBirdieBehavior(5, () => BetterBirdieTrigger.FlyAway, false)
                 };
             }
 
@@ -65,13 +73,11 @@ namespace OrnithologistsGuild.Game.Critters
                 new BetterBirdieBehavior(200, () => BetterBirdieTrigger.Walk, false),
                 new BetterBirdieBehavior(200, () => BetterBirdieTrigger.Hop, false),
                 new BetterBirdieBehavior(100, () => BetterBirdieTrigger.Peck, false),
-                new BetterBirdieBehavior(50, () => BetterBirdieTrigger.Sleep, false),
                 new BetterBirdieBehavior(25, () => BetterBirdieTrigger.Relocate, false),
-                new BetterBirdieBehavior(5, () => BetterBirdieTrigger.FlyAway, false)
+                new BetterBirdieBehavior(5, () => BetterBirdieTrigger.FlyAway, false),
+                // Birds who cannot perch can sleep on the group
+                new BetterBirdieBehavior(BirdieDef.PerchPreference > 0 ? 0 : 50, () => BetterBirdieTrigger.Sleep, false)
             };
-
-            // TODO Relocate and RelocateToWater? Or a way to specify per birdie so water birds are more likely to be in the water
-            // (I think we can use a WaterPreference that is a double for likelihood to spawn/relocate to water?)
         }
     }
 }

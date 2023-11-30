@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using System.Reflection.PortableExecutable;
 using StardewModdingAPI.Utilities;
 using System.Runtime.CompilerServices;
+using StardewValley.Tools;
 
 namespace StardewDruid
 {
@@ -22,6 +23,12 @@ namespace StardewDruid
     {
 
         public StardewModdingAPI.Utilities.KeybindList riteButtons { get; set; }
+
+        public StardewModdingAPI.Utilities.KeybindList actionButtons { get; set; }
+
+        public bool slotAttune { get; set; }
+
+        //public bool autoLesson { get; set; }
 
         public Dictionary<string, int> blessingList { get; set; }
 
@@ -37,49 +44,38 @@ namespace StardewDruid
 
         public int setProgress { get; set; }
 
-        //public bool masterStart { get; set; }
+        public bool castAnywhere { get; set; }
 
         public bool maxDamage { get; set; }
-
-        public bool unrestrictedStars { get; set; }
 
         public string combatDifficulty { get; set; }
 
         public Dictionary<int, string> weaponAttunement { get; set; }
 
-        public bool checkQuests { get; set; }
-
         public bool partyHats { get; set; }
 
-        public int farmCaveStatueX { get; set; }
+        public bool disableSeeds { get; set; }
 
-        public int farmCaveStatueY { get; set; }
+        public bool disableFish { get; set; }
 
-        public int farmCaveActionX { get; set; }
+        public bool disableWildspawn { get; set; }
 
-        public int farmCaveActionY { get; set; }
+        public bool disableTrees { get; set; }
 
-        public bool farmCaveHideStatue { get; set; }
-
-        public bool farmCaveMakeSpace { get; set; }
-
-        public ModData()
+        public ModData() 
         {
-
+  
             riteButtons = KeybindList.Parse("MouseX1,MouseX2,V,LeftShoulder");
+
+            actionButtons = KeybindList.Parse("MouseLeft,C,ControllerX");
+
+            slotAttune = false;
+
+            //autoLesson = false;
 
             questList = new();
 
             blessingList = new();
-
-            /*blessingList = new()
-            {
-                ["earth"] = 5,
-                ["water"] = 5,
-                ["stars"] = 1,
-                ["levelPickaxe"] = 5,
-                ["levelAxe"] = 5,
-            };*/
 
             setProgress = -1;
 
@@ -91,34 +87,29 @@ namespace StardewDruid
 
             consumeCaffeine = true;
 
-            //masterStart = false;
-
             maxDamage = false;
 
             combatDifficulty = "medium";
 
-            unrestrictedStars = false;
+            castAnywhere = false;
 
             weaponAttunement = new()
             {
                 [15] = "earth",
                 [14] = "water",
                 [9] = "stars",
+                [53] = "fates",
             };
 
             partyHats = false;
 
-            farmCaveActionX = 6;
+            disableSeeds = false;
 
-            farmCaveActionY = 4;
+            disableFish = false;
 
-            farmCaveStatueX = 6;
+            disableWildspawn = false;
 
-            farmCaveStatueY = 3;
-
-            farmCaveHideStatue = false;
-
-            farmCaveMakeSpace = true;
+            disableTrees = false;
 
         }
 

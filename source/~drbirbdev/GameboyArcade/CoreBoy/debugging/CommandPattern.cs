@@ -24,9 +24,9 @@ namespace CoreBoy.debugging
 
         private CommandPattern(Builder builder)
         {
-            _commandNames = builder.CommandNames;
-            _arguments = builder.Arguments;
-            _description = builder.Description;
+            this._commandNames = builder.CommandNames;
+            this._arguments = builder.Arguments;
+            this._description = builder.Description;
         }
 
         public bool Matches(string commandLine)
@@ -43,17 +43,17 @@ namespace CoreBoy.debugging
 
         public List<string> GetCommandNames()
         {
-            return _commandNames;
+            return this._commandNames;
         }
 
         public List<CommandArgument> GetArguments()
         {
-            return _arguments;
+            return this._arguments;
         }
 
         public string GetDescription()
         {
-            return _description;
+            return this._description;
         }
 
         public ParsedCommandLine Parse(string commandLine)
@@ -145,7 +145,7 @@ namespace CoreBoy.debugging
             return split;*/
         }
 
-        public override string ToString() => $"CommandPattern[{_commandNames}]";
+        public override string ToString() => $"CommandPattern[{this._commandNames}]";
 
         public class ParsedCommandLine
         {
@@ -155,18 +155,18 @@ namespace CoreBoy.debugging
 
             private ParsedCommandLine(Dictionary<string, string> argumentMap, List<string> remainingArguments)
             {
-                _argumentMap = argumentMap;
-                _remainingArguments = remainingArguments;
+                this._argumentMap = argumentMap;
+                this._remainingArguments = remainingArguments;
             }
 
             public string GetArgument(string name)
             {
-                return _argumentMap[name];
+                return this._argumentMap[name];
             }
 
             public List<string> GetRemainingArguments()
             {
-                return _remainingArguments;
+                return this._remainingArguments;
             }
         }
 
@@ -178,56 +178,56 @@ namespace CoreBoy.debugging
 
             private Builder(string[] commandNames)
             {
-                CommandNames = new List<string>(commandNames);
-                Arguments = new List<CommandArgument>();
+                this.CommandNames = new List<string>(commandNames);
+                this.Arguments = new List<CommandArgument>();
             }
             public static Builder Create(string longName)
             {
-                return new Builder(new[] {longName});
+                return new Builder(new[] { longName });
             }
 
             public static Builder Create(string longName, string shortName)
             {
-                return new Builder(new[] {longName, shortName});
+                return new Builder(new[] { longName, shortName });
             }
 
             public Builder WithOptionalArgument(string name)
             {
-                AssertNoOptionalLastArgument();
-                Arguments.Add(new CommandArgument(name, false));
+                this.AssertNoOptionalLastArgument();
+                this.Arguments.Add(new CommandArgument(name, false));
                 return this;
             }
 
             public Builder WithRequiredArgument(string name)
             {
-                AssertNoOptionalLastArgument();
-                Arguments.Add(new CommandArgument(name, true));
+                this.AssertNoOptionalLastArgument();
+                this.Arguments.Add(new CommandArgument(name, true));
                 return this;
             }
 
             public Builder WithOptionalValue(string name, string[] values)
             {
-                AssertNoOptionalLastArgument();
-                Arguments.Add(new CommandArgument(name, false, new List<string>(values)));
+                this.AssertNoOptionalLastArgument();
+                this.Arguments.Add(new CommandArgument(name, false, new List<string>(values)));
                 return this;
             }
 
             public Builder WithRequiredValue(string name, string[] values)
             {
-                AssertNoOptionalLastArgument();
-                Arguments.Add(new CommandArgument(name, true, new List<string>(values)));
+                this.AssertNoOptionalLastArgument();
+                this.Arguments.Add(new CommandArgument(name, true, new List<string>(values)));
                 return this;
             }
 
             public Builder WithDescription(string desc)
             {
-                Description = desc;
+                this.Description = desc;
                 return this;
             }
 
             private void AssertNoOptionalLastArgument()
             {
-                if (Arguments.Count > 0 && !Arguments[^1].IsRequired())
+                if (this.Arguments.Count > 0 && !this.Arguments[^1].IsRequired())
                 {
                     throw new InvalidOperationException("Can't add argument after the optional one");
                 }

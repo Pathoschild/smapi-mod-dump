@@ -34,18 +34,18 @@ namespace GameboyArcade
 
         public void Play(int left, int right)
         {
-            if (tick++ != 0)
+            if (this.tick++ != 0)
             {
-                tick %= DIVIDER;
+                this.tick %= this.DIVIDER;
                 return;
             }
 
             // TODO: make play signiture provide bytes
 
-            Buffer[this.i++] = 0;
-            Buffer[this.i++] = (byte)left;
-            Buffer[this.i++] = 0;
-            Buffer[this.i++] = (byte)right;
+            this.Buffer[this.i++] = 0;
+            this.Buffer[this.i++] = (byte)left;
+            this.Buffer[this.i++] = 0;
+            this.Buffer[this.i++] = (byte)right;
 
             if (this.i >= BUFFER_SIZE)
             {
@@ -53,11 +53,11 @@ namespace GameboyArcade
                 this.SoundEffect = new SoundEffect((byte[])this.Buffer.Clone(), ModEntry.Config.MusicSampleRate, AudioChannels.Stereo);
                 // TODO: look into SoundEffect.CreateHandle.  Maybe I can use 8bit PCM natively
                 this.SoundEffect.Play();
-                
+
                 this.i = 0;
                 for (int i = 0; i < BUFFER_SIZE; i++)
                 {
-                    Buffer[i] = 0;
+                    this.Buffer[i] = 0;
                 }
             }
         }
@@ -66,7 +66,7 @@ namespace GameboyArcade
         {
             for (int i = 0; i < BUFFER_SIZE; i++)
             {
-                Buffer[i] = 0;
+                this.Buffer[i] = 0;
             }
             this.SoundEffect = new SoundEffect((byte[])this.Buffer.Clone(), ModEntry.Config.MusicSampleRate, AudioChannels.Stereo);
         }

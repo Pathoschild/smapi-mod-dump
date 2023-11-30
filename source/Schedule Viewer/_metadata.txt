@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/BinaryLip/ScheduleViewer
+   Git: https://github.com/BinaryLip/ScheduleViewer.git
+
+mods:
+   Schedule Viewer
+
+latest commit:
+   commit 8ba72659f09cecdf842efb388dfba2e60b2485cf
+   Author: Phillip Loveland <dev@philliploveland.dev>
+   Date:   Tue Nov 28 20:07:37 2023 -0500
+   
+       Added conditions around when SchedulePage can be opened.
+   

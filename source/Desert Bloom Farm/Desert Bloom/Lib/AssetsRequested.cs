@@ -97,9 +97,6 @@ namespace Desert_Bloom.Lib
                 EditMapMode = EditMapMode.ReplaceByLayer
             });
 
-            if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Oasis_Tunnel"))
-                return;
-
             list.Add(new UnlockableModel() {
                 ID = "DLX.Desert_Bloom.Oasis_1",
                 Location = "Farm",

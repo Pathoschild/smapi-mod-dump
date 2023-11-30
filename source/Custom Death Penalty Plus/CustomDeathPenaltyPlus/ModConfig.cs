@@ -23,16 +23,16 @@ namespace CustomDeathPenaltyPlus
         {
             public bool RestoreItems { get; set; } = true;
             public int MoneyLossCap { get; set; } = 500;
-            public double MoneytoRestorePercentage { get; set; } = 0.95;
-            public double EnergytoRestorePercentage { get; set; } = 0.10;
-            public double HealthtoRestorePercentage { get; set; } = 0.50;
+            public float MoneytoRestorePercentage { get; set; } = 0.95f;
+            public float EnergytoRestorePercentage { get; set; } = 0.10f;
+            public float HealthtoRestorePercentage { get; set; } = 0.50f;
         }
 
         internal class PassOutPenaltyChanges
         {
             public int MoneyLossCap { get; set; } = 500;
-            public double MoneytoRestorePercentage { get; set; } = 0.95;
-            public double EnergytoRestorePercentage { get; set; } = 0.50;
+            public float MoneytoRestorePercentage { get; set; } = 0.95f;
+            public float EnergytoRestorePercentage { get; set; } = 0.50f;
         }
 
         internal class OtherChanges

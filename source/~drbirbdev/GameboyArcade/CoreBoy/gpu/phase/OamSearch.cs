@@ -36,17 +36,17 @@ namespace CoreBoy.gpu.phase
 
             public int GetX()
             {
-                return _x;
+                return this._x;
             }
 
             public int GetY()
             {
-                return _y;
+                return this._y;
             }
 
             public int GetAddress()
             {
-                return _address;
+                return this._address;
             }
         }
 
@@ -65,19 +65,19 @@ namespace CoreBoy.gpu.phase
             this._oemRam = oemRam;
             this._registers = registers;
             this._lcdc = lcdc;
-            _sprites = new SpritePosition[10];
+            this._sprites = new SpritePosition[10];
         }
 
         public OamSearch Start()
         {
-            _spritePosIndex = 0;
-            _state = State.ReadingY;
-            _spriteY = 0;
-            _spriteX = 0;
-            _i = 0;
-            for (var j = 0; j < _sprites.Length; j++)
+            this._spritePosIndex = 0;
+            this._state = State.ReadingY;
+            this._spriteY = 0;
+            this._spriteX = 0;
+            this._i = 0;
+            for (var j = 0; j < this._sprites.Length; j++)
             {
-                _sprites[j] = null;
+                this._sprites[j] = null;
             }
 
             return this;
@@ -86,33 +86,33 @@ namespace CoreBoy.gpu.phase
 
         public bool Tick()
         {
-            var spriteAddress = 0xfe00 + 4 * _i;
-            switch (_state)
+            var spriteAddress = 0xfe00 + (4 * this._i);
+            switch (this._state)
             {
                 case State.ReadingY:
-                    _spriteY = _oemRam.GetByte(spriteAddress);
-                    _state = State.ReadingX;
+                    this._spriteY = this._oemRam.GetByte(spriteAddress);
+                    this._state = State.ReadingX;
                     break;
 
                 case State.ReadingX:
-                    _spriteX = _oemRam.GetByte(spriteAddress + 1);
-                    if (_spritePosIndex < _sprites.Length && Between(_spriteY, _registers.Get(GpuRegister.Ly) + 16,
-                            _spriteY + _lcdc.GetSpriteHeight()))
+                    this._spriteX = this._oemRam.GetByte(spriteAddress + 1);
+                    if (this._spritePosIndex < this._sprites.Length && Between(this._spriteY, this._registers.Get(GpuRegister.Ly) + 16,
+                            this._spriteY + this._lcdc.GetSpriteHeight()))
                     {
-                        _sprites[_spritePosIndex++] = new SpritePosition(_spriteX, _spriteY, spriteAddress);
+                        this._sprites[this._spritePosIndex++] = new SpritePosition(this._spriteX, this._spriteY, spriteAddress);
                     }
 
-                    _i++;
-                    _state = State.ReadingY;
+                    this._i++;
+                    this._state = State.ReadingY;
                     break;
             }
 
-            return _i < 40;
+            return this._i < 40;
         }
 
         public SpritePosition[] GetSprites()
         {
-            return _sprites;
+            return this._sprites;
         }
 
         private static bool Between(int from, int x, int to)

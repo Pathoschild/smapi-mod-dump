@@ -127,9 +127,9 @@ internal interface IComplexToken
             string argName = argSplit[0].Trim();
             string argValue = argSplit[1].Trim();
 
-            if (argName.Equals("player", StringComparison.OrdinalIgnoreCase) && args.ContainsKey("player"))
+            if (args.ContainsKey(argName))
             {
-                error = "Too many player arguments specified";
+                error = $"Too many {argName} arguments specified";
                 return false;
             }
 

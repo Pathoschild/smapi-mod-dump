@@ -9,18 +9,18 @@
 *************************************************/
 
 {
-    HarvestModeSection: "HarvestMode",
+    HarvestModeSection: "Harvest mode",
     Hand:   "Hand",
     Scythe: "Scythe",
     Both:   "Both",
     Gold:   "Gold",
-    // The '\n' are line breaks. The '�' are the dots of an itemized list.
+    // The '\n' are line breaks. The '•' are the dots of an itemized list.
     // The words Hand/Scythe/Both/Gold are tags, use the exact same word as you specified above.
-    HarvestModeDescription: "� Hand: only pluckable; \n � Scythe: only scythable; \n � Both: both pluckable and scythable; \n � Gold: like 'both', but requires the golden scythe.",
-    PluckableCropsName:   "PluckableCrops",     PluckableCropsTooltip:   "How crops that normally can only be harvested by hand can be harvested.", 
-    ScythableCropsName:   "ScythableCrops",     ScythableCropsTooltip:   "How crops that normally can only be harvested with a scythe can be harvested.",
-    FlowersName:          "Flowers",            FlowersTooltip:          "How flowers can be harvested.",
-    ForageName:           "Forage",             ForageTooltip:           "How forage can be harvested.",
-    SpringOnionName:      "SpringOnion",        SpringOnionTooltip:      "How spring onions can be harvested.",
-    HarvestWithSwordName: "Harvest With Sword", HarvestWithSwordTooltip: "Whether a sword can be used instead of a normal scythe.",
+    HarvestModeDescription: "• Hand: only pluckable; \n • Scythe: only scythable; \n • Both: both pluckable and scythable; \n • Gold: like 'both', but requires the golden scythe.",
+    PluckableCropsName:   "Hand harvested crops",   PluckableCropsTooltip:   "How crops that normally can only be harvested by hand can be harvested.", 
+    ScythableCropsName:   "Scythe harvested crops", ScythableCropsTooltip:   "How crops that normally can only be harvested with a scythe can be harvested.",
+    FlowersName:          "Flowers",                FlowersTooltip:          "How flowers can be harvested.",
+    ForageName:           "Forage",                 ForageTooltip:           "How forage can be harvested.",
+    SpringOnionName:      "Spring onion",           SpringOnionTooltip:      "How spring onions can be harvested.",
+    HarvestWithSwordName: "Harvest with sword",     HarvestWithSwordTooltip: "Whether a sword can be used as a scythe.",
 }

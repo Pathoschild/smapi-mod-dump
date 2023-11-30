@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Floogen/MysticalBuildings
+**
+*************************************************/
+
+{
+  // Cave of Memories
+  "Dialogue.Memory.CharacterName": "A memory of {0} slowly fills your mind as the world fades around you...",
+  "Dialogue.Memory.DontKnow": "You don't know this person!",
+  "Dialogue.Memory.NoEvents": "There are no events to remember from {0}.",
+  "Dialogue.Memory.Stare": "You stare into the mirror, gazing back at your reflection.",
+
+  "Dialogue.Event.Hearts": "{0} Heart Event",
+
+  "Menu.Event.Title": "What Event to Remember?",
+  "Menu.Character.Title": "Who to Remember?"
+}

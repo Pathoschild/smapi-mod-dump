@@ -119,6 +119,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             Helper.Events.GameLoop.ReturnedToTitle -= returnedToTitle;
             Helper.Events.GameLoop.DayEnding -= dayEnding;
             Helper.Events.GameLoop.UpdateTicked -= updateTicked;
+
         }
 
         public void assignNextItem()

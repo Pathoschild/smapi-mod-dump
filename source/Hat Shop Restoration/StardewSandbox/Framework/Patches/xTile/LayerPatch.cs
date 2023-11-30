@@ -10,7 +10,6 @@
 
 using HarmonyLib;
 using StardewModdingAPI;
-using HatShopRestoration.Framework.Patches;
 using StardewValley;
 using System;
 using xTile.Dimensions;
@@ -30,10 +29,10 @@ namespace HatShopRestoration.Framework.Patches.xTiles
 
         internal override void Apply(Harmony harmony)
         {
-            harmony.Patch(AccessTools.Method(_object, nameof(Layer.Draw), new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(bool), typeof(int) }), postfix: new HarmonyMethod(GetType(), nameof(DrawPostfix)));
+            harmony.Patch(AccessTools.Method(_object, nameof(Layer.Draw), new[] { typeof(IDisplayDevice), typeof(xTile.Dimensions.Rectangle), typeof(xTile.Dimensions.Location), typeof(bool), typeof(int), typeof(float) }), postfix: new HarmonyMethod(GetType(), nameof(DrawPostfix)));
         }
 
-        private static void DrawPostfix(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom)
+        private static void DrawPostfix(Layer __instance, IDisplayDevice displayDevice, xTile.Dimensions.Rectangle mapViewport, Location displayOffset, bool wrapAround, int pixelZoom, float sort_offset)
         {
             if (__instance is null || String.IsNullOrEmpty(__instance.Id))
             {

@@ -49,62 +49,62 @@ namespace CoreBoy.gpu
 
         public Gpu(IDisplay display, InterruptManager interruptManager, Dma dma, Ram oamRam, bool gbc)
         {
-            _r = new MemoryRegisters(GpuRegister.Values().ToArray());
-            _lcdc = new Lcdc();
-            _interruptManager = interruptManager;
-            _gbc = gbc;
-            _videoRam0 = new Ram(0x8000, 0x2000);
-            _videoRam1 = gbc ? new Ram(0x8000, 0x2000) : null;
-            _oamRam = oamRam;
-            _dma = dma;
+            this._r = new MemoryRegisters(GpuRegister.Values().ToArray());
+            this._lcdc = new Lcdc();
+            this._interruptManager = interruptManager;
+            this._gbc = gbc;
+            this._videoRam0 = new Ram(0x8000, 0x2000);
+            this._videoRam1 = gbc ? new Ram(0x8000, 0x2000) : null;
+            this._oamRam = oamRam;
+            this._dma = dma;
 
-            _bgPalette = new ColorPalette(0xff68);
-            _oamPalette = new ColorPalette(0xff6a);
-            _oamPalette.FillWithFf();
+            this._bgPalette = new ColorPalette(0xff68);
+            this._oamPalette = new ColorPalette(0xff6a);
+            this._oamPalette.FillWithFf();
 
-            _oamSearchPhase = new OamSearch(oamRam, _lcdc, _r);
-            _pixelTransferPhase = new PixelTransfer(_videoRam0, _videoRam1, oamRam, display, _lcdc, _r, gbc, _bgPalette,
-                _oamPalette);
-            _hBlankPhase = new HBlankPhase();
-            _vBlankPhase = new VBlankPhase();
+            this._oamSearchPhase = new OamSearch(oamRam, this._lcdc, this._r);
+            this._pixelTransferPhase = new PixelTransfer(this._videoRam0, this._videoRam1, oamRam, display, this._lcdc, this._r, gbc, this._bgPalette,
+                this._oamPalette);
+            this._hBlankPhase = new HBlankPhase();
+            this._vBlankPhase = new VBlankPhase();
 
-            _mode = Mode.OamSearch;
-            _phase = _oamSearchPhase.Start();
+            this._mode = Mode.OamSearch;
+            this._phase = this._oamSearchPhase.Start();
 
-            _display = display;
+            this._display = display;
         }
 
         private IAddressSpace GetAddressSpace(int address)
         {
-            if (_videoRam0.Accepts(address) /* && mode != Mode.PixelTransfer*/)
+            if (this._videoRam0.Accepts(address) /* && mode != Mode.PixelTransfer*/)
             {
-                return GetVideoRam();
+                return this.GetVideoRam();
             }
 
-            if (_oamRam.Accepts(address) &&
-                !_dma.IsOamBlocked() /* && mode != Mode.OamSearch && mode != Mode.PixelTransfer*/)
+            if (this._oamRam.Accepts(address) &&
+                !this._dma.IsOamBlocked() /* && mode != Mode.OamSearch && mode != Mode.PixelTransfer*/)
             {
-                return _oamRam;
+                return this._oamRam;
             }
 
-            if (_lcdc.Accepts(address))
+            if (this._lcdc.Accepts(address))
             {
-                return _lcdc;
+                return this._lcdc;
             }
 
-            if (_r.Accepts(address))
+            if (this._r.Accepts(address))
             {
-                return _r;
+                return this._r;
             }
 
-            if (_gbc && _bgPalette.Accepts(address))
+            if (this._gbc && this._bgPalette.Accepts(address))
             {
-                return _bgPalette;
+                return this._bgPalette;
             }
 
-            if (_gbc && _oamPalette.Accepts(address))
+            if (this._gbc && this._oamPalette.Accepts(address))
             {
-                return _oamPalette;
+                return this._oamPalette;
             }
 
             return null;
@@ -112,28 +112,28 @@ namespace CoreBoy.gpu
 
         private IAddressSpace GetVideoRam()
         {
-            if (_gbc && (_r.Get(GpuRegister.Vbk) & 1) == 1)
+            if (this._gbc && (this._r.Get(GpuRegister.Vbk) & 1) == 1)
             {
-                return _videoRam1;
+                return this._videoRam1;
             }
 
-            return _videoRam0;
+            return this._videoRam0;
         }
 
-        public bool Accepts(int address) => GetAddressSpace(address) != null;
+        public bool Accepts(int address) => this.GetAddressSpace(address) != null;
 
         public void SetByte(int address, int value)
         {
             if (address == GpuRegister.Stat.Address)
             {
-                SetStat(value);
+                this.SetStat(value);
                 return;
             }
 
-            var space = GetAddressSpace(address);
-            if (space == _lcdc)
+            var space = this.GetAddressSpace(address);
+            if (space == this._lcdc)
             {
-                SetLcdc(value);
+                this.SetLcdc(value);
                 return;
             }
 
@@ -144,10 +144,10 @@ namespace CoreBoy.gpu
         {
             if (address == GpuRegister.Stat.Address)
             {
-                return GetStat();
+                return this.GetStat();
             }
 
-            var space = GetAddressSpace(address);
+            var space = this.GetAddressSpace(address);
             if (space == null)
             {
                 return 0xff;
@@ -155,7 +155,7 @@ namespace CoreBoy.gpu
 
             if (address == GpuRegister.Vbk.Address)
             {
-                return _gbc ? 0xfe : 0xff;
+                return this._gbc ? 0xfe : 0xff;
             }
 
             return space.GetByte(address);
@@ -163,32 +163,32 @@ namespace CoreBoy.gpu
 
         public Mode? Tick()
         {
-            if (!_lcdEnabled)
+            if (!this._lcdEnabled)
             {
-                if (_lcdEnabledDelay != -1)
+                if (this._lcdEnabledDelay != -1)
                 {
-                    if (--_lcdEnabledDelay == 0)
+                    if (--this._lcdEnabledDelay == 0)
                     {
-                        _display.Enabled = true;
-                        _lcdEnabled = true;
+                        this._display.Enabled = true;
+                        this._lcdEnabled = true;
                     }
                 }
             }
 
-            if (!_lcdEnabled)
+            if (!this._lcdEnabled)
             {
                 return null;
             }
 
-            var oldMode = _mode;
-            _ticksInLine++;
-            if (_phase.Tick())
+            var oldMode = this._mode;
+            this._ticksInLine++;
+            if (this._phase.Tick())
             {
                 // switch line 153 to 0
-                if (_ticksInLine == 4 && _mode == Mode.VBlank && _r.Get(GpuRegister.Ly) == 153)
+                if (this._ticksInLine == 4 && this._mode == Mode.VBlank && this._r.Get(GpuRegister.Ly) == 153)
                 {
-                    _r.Put(GpuRegister.Ly, 0);
-                    RequestLycEqualsLyInterrupt();
+                    this._r.Put(GpuRegister.Ly, 0);
+                    this.RequestLycEqualsLyInterrupt();
                 }
             }
             else
@@ -196,131 +196,131 @@ namespace CoreBoy.gpu
                 switch (oldMode)
                 {
                     case Mode.OamSearch:
-                        _mode = Mode.PixelTransfer;
-                        _phase = _pixelTransferPhase.Start(_oamSearchPhase.GetSprites());
+                        this._mode = Mode.PixelTransfer;
+                        this._phase = this._pixelTransferPhase.Start(this._oamSearchPhase.GetSprites());
                         break;
 
                     case Mode.PixelTransfer:
-                        _mode = Mode.HBlank;
-                        _phase = _hBlankPhase.Start(_ticksInLine);
-                        RequestLcdcInterrupt(3);
+                        this._mode = Mode.HBlank;
+                        this._phase = this._hBlankPhase.Start(this._ticksInLine);
+                        this.RequestLcdcInterrupt(3);
                         break;
 
                     case Mode.HBlank:
-                        _ticksInLine = 0;
-                        if (_r.PreIncrement(GpuRegister.Ly) == 144)
+                        this._ticksInLine = 0;
+                        if (this._r.PreIncrement(GpuRegister.Ly) == 144)
                         {
-                            _mode = Mode.VBlank;
-                            _phase = _vBlankPhase.Start();
-                            _interruptManager.RequestInterrupt(InterruptManager.InterruptType.VBlank);
-                            RequestLcdcInterrupt(4);
+                            this._mode = Mode.VBlank;
+                            this._phase = this._vBlankPhase.Start();
+                            this._interruptManager.RequestInterrupt(InterruptManager.InterruptType.VBlank);
+                            this.RequestLcdcInterrupt(4);
                         }
                         else
                         {
-                            _mode = Mode.OamSearch;
-                            _phase = _oamSearchPhase.Start();
+                            this._mode = Mode.OamSearch;
+                            this._phase = this._oamSearchPhase.Start();
                         }
 
-                        RequestLcdcInterrupt(5);
-                        RequestLycEqualsLyInterrupt();
+                        this.RequestLcdcInterrupt(5);
+                        this.RequestLycEqualsLyInterrupt();
                         break;
 
                     case Mode.VBlank:
-                        _ticksInLine = 0;
-                        if (_r.PreIncrement(GpuRegister.Ly) == 1)
+                        this._ticksInLine = 0;
+                        if (this._r.PreIncrement(GpuRegister.Ly) == 1)
                         {
-                            _mode = Mode.OamSearch;
-                            _r.Put(GpuRegister.Ly, 0);
-                            _phase = _oamSearchPhase.Start();
-                            RequestLcdcInterrupt(5);
+                            this._mode = Mode.OamSearch;
+                            this._r.Put(GpuRegister.Ly, 0);
+                            this._phase = this._oamSearchPhase.Start();
+                            this.RequestLcdcInterrupt(5);
                         }
                         else
                         {
-                            _phase = _vBlankPhase.Start();
+                            this._phase = this._vBlankPhase.Start();
                         }
 
-                        RequestLycEqualsLyInterrupt();
+                        this.RequestLycEqualsLyInterrupt();
                         break;
                 }
             }
 
-            if (oldMode == _mode)
+            if (oldMode == this._mode)
             {
                 return null;
             }
 
-            return _mode;
+            return this._mode;
         }
 
         public int GetTicksInLine()
         {
-            return _ticksInLine;
+            return this._ticksInLine;
         }
 
         private void RequestLcdcInterrupt(int statBit)
         {
-            if ((_r.Get(GpuRegister.Stat) & (1 << statBit)) != 0)
+            if ((this._r.Get(GpuRegister.Stat) & (1 << statBit)) != 0)
             {
-                _interruptManager.RequestInterrupt(InterruptManager.InterruptType.Lcdc);
+                this._interruptManager.RequestInterrupt(InterruptManager.InterruptType.Lcdc);
             }
         }
 
         private void RequestLycEqualsLyInterrupt()
         {
-            if (_r.Get(GpuRegister.Lyc) == _r.Get(GpuRegister.Ly))
+            if (this._r.Get(GpuRegister.Lyc) == this._r.Get(GpuRegister.Ly))
             {
-                RequestLcdcInterrupt(6);
+                this.RequestLcdcInterrupt(6);
             }
         }
 
         private int GetStat()
         {
-            return _r.Get(GpuRegister.Stat) | (int) _mode |
-                   (_r.Get(GpuRegister.Lyc) == _r.Get(GpuRegister.Ly) ? (1 << 2) : 0) | 0x80;
+            return this._r.Get(GpuRegister.Stat) | (int)this._mode |
+                   (this._r.Get(GpuRegister.Lyc) == this._r.Get(GpuRegister.Ly) ? (1 << 2) : 0) | 0x80;
         }
 
         private void SetStat(int value)
         {
-            _r.Put(GpuRegister.Stat, value & 0b11111000); // last three bits are read-only
+            this._r.Put(GpuRegister.Stat, value & 0b11111000); // last three bits are read-only
         }
 
         private void SetLcdc(int value)
         {
-            _lcdc.Set(value);
+            this._lcdc.Set(value);
             if ((value & (1 << 7)) == 0)
             {
-                DisableLcd();
+                this.DisableLcd();
             }
             else
             {
-                EnableLcd();
+                this.EnableLcd();
             }
         }
 
         private void DisableLcd()
         {
-            _r.Put(GpuRegister.Ly, 0);
-            _ticksInLine = 0;
-            _phase = _hBlankPhase.Start(250);
-            _mode = Mode.HBlank;
-            _lcdEnabled = false;
-            _lcdEnabledDelay = -1;
-            _display.Enabled = false;
+            this._r.Put(GpuRegister.Ly, 0);
+            this._ticksInLine = 0;
+            this._phase = this._hBlankPhase.Start(250);
+            this._mode = Mode.HBlank;
+            this._lcdEnabled = false;
+            this._lcdEnabledDelay = -1;
+            this._display.Enabled = false;
         }
 
         private void EnableLcd()
         {
-            _lcdEnabledDelay = 244;
+            this._lcdEnabledDelay = 244;
         }
 
         public bool IsLcdEnabled()
         {
-            return _lcdEnabled;
+            return this._lcdEnabled;
         }
 
         public Lcdc GetLcdc()
         {
-            return _lcdc;
+            return this._lcdc;
         }
     }
 }

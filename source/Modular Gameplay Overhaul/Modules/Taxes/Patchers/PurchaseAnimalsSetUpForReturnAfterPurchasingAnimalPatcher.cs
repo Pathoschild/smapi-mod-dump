@@ -49,7 +49,7 @@ internal sealed class PurchaseAnimalsSetUpForReturnAfterPurchasingAnimalPatcher 
         {
             Broadcaster.MessageHost(
                 deductible.ToString(),
-                OverhaulModule.Taxes.Namespace + DataKeys.BusinessExpenses);
+                OverhaulModule.Taxes.Namespace + '/' + DataKeys.BusinessExpenses);
         }
     }
 

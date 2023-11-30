@@ -11,13 +11,13 @@
 {
   "Name": "[SF] Mystical Buildings",
   "Author": "PeacefulEnd",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Description": "Solid Foundations for the Mystical Buildings.",
   "UniqueID": "PeacefulEnd.SolidFoundations.MysticalBuildings",
   "UpdateKeys": [ "Nexus:???" ],
   "ContentPackFor": {
     "UniqueID": "PeacefulEnd.SolidFoundations",
-    "MinimumVersion": "1.5.0"
+    "MinimumVersion": "1.12.4"
   },
   "Dependencies": []
 }

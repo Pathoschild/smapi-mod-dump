@@ -8,6 +8,9 @@
 **
 *************************************************/
 
+using System;
+using Microsoft.Xna.Framework.Graphics;
+
 using HarmonyLib;
 
 using StardewValley;
@@ -46,15 +49,10 @@ namespace LittleNPCs.Framework {
                 original: AccessTools.Method(typeof(PathFindController), nameof(PathFindController.handleWarps)),
                 prefix:   new HarmonyMethod(typeof(Patches.PFCHandleWarpsPatch), nameof(Patches.PFCHandleWarpsPatch.Prefix))
             );
-            // Dialogue.checkForSpecialCharacters patch (prefix).
+            // Child.checkAction patch (prefix).
             harmony.Patch(
-                original: AccessTools.Method(typeof(Dialogue), nameof(Dialogue.checkForSpecialCharacters)),
-                prefix:   new HarmonyMethod(typeof(Patches.DialogueCheckForSpecialCharactersPatch), nameof(Patches.DialogueCheckForSpecialCharactersPatch.Prefix))
-            );
-            // Child.GetChildIndex patch (prefix).
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Child), nameof(Child.GetChildIndex)),
-                prefix:   new HarmonyMethod(typeof(Patches.ChildGetChildIndexPatch), nameof(Patches.ChildGetChildIndexPatch.Prefix))
+                original: AccessTools.Method(typeof(Child), nameof(Child.checkAction)),
+                prefix:   new HarmonyMethod(typeof(Patches.ChildCheckActionPatch), nameof(Patches.ChildCheckActionPatch.Prefix))
             );
         }
     }

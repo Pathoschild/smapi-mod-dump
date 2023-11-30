@@ -17,14 +17,14 @@ namespace CoreBoy.gpu.phase
 
         public HBlankPhase Start(int ticksInLine)
         {
-            _ticks = ticksInLine;
+            this._ticks = ticksInLine;
             return this;
         }
 
         public bool Tick()
         {
-            _ticks++;
-            return _ticks < 456;
+            this._ticks++;
+            return this._ticks < 456;
         }
 
     }

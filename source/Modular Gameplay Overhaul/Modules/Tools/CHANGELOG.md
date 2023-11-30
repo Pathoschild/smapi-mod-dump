@@ -8,6 +8,14 @@ for queries and analysis.**
 
 # TOLS Changelog
 
+## 4.1.3
+
+### Fixed
+
+* Axe and Pickaxe shockwave no longer cost stamina with Efficient enchantment.
+
+<sup><sup>[🔼 Back to top](#tols-changelog)</sup></sup>
+
 ## 3.1.8
 
 ### Changed

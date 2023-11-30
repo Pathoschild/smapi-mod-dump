@@ -6,11 +6,9 @@ mods:
    Zoom Level
 
 latest commit:
-   commit 5f73b37adae5cb9086a3a84557b88fe8f568888a
+   commit 62ba4f375811cd014a0ef6c4c0a47d5d99fff5b9
    Author: thespbgamer <30112696+thespbgamer@users.noreply.github.com>
-   Date:   Sat Sep 2 14:13:13 2023 +0100
+   Date:   Sun Nov 12 14:33:19 2023 +0000
    
-       Optimizations and can press hold and press ui when moving camera
-       
-       Requirements updated
+       Update CHANGELOG.md
    

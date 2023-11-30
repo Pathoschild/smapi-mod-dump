@@ -31,100 +31,100 @@ namespace CoreBoy.sound
 
         public void Start()
         {
-            _counterEnabled = false;
-            _i = 8192;
+            this._counterEnabled = false;
+            this._i = 8192;
         }
 
         public void Trigger()
         {
-            _negging = false;
-            _overflow = false;
+            this._negging = false;
+            this._overflow = false;
 
-            _shadowFreq = _nr13 | ((_nr14 & 0b111) << 8);
-            _timer = _period == 0 ? 8 : _period;
-            _counterEnabled = _period != 0 || _shift != 0;
+            this._shadowFreq = this._nr13 | ((this._nr14 & 0b111) << 8);
+            this._timer = this._period == 0 ? 8 : this._period;
+            this._counterEnabled = this._period != 0 || this._shift != 0;
 
-            if (_shift > 0)
+            if (this._shift > 0)
             {
-                Calculate();
+                this.Calculate();
             }
         }
 
         public void SetNr10(int value)
         {
-            _period = (value >> 4) & 0b111;
-            _negate = (value & (1 << 3)) != 0;
-            _shift = value & 0b111;
-            if (_negging && !_negate)
+            this._period = (value >> 4) & 0b111;
+            this._negate = (value & (1 << 3)) != 0;
+            this._shift = value & 0b111;
+            if (this._negging && !this._negate)
             {
-                _overflow = true;
+                this._overflow = true;
             }
         }
 
-        public void SetNr13(int value) => _nr13 = value;
+        public void SetNr13(int value) => this._nr13 = value;
 
         public void SetNr14(int value)
         {
-            _nr14 = value;
+            this._nr14 = value;
             if ((value & (1 << 7)) != 0)
             {
-                Trigger();
+                this.Trigger();
             }
         }
 
-        public int GetNr13() => _nr13;
-        public int GetNr14() => _nr14;
+        public int GetNr13() => this._nr13;
+        public int GetNr14() => this._nr14;
 
         public void Tick()
         {
-            _i++;
+            this._i++;
 
-            if (_i != Divider) return;
+            if (this._i != Divider) return;
 
-            _i = 0;
+            this._i = 0;
 
-            if (!_counterEnabled) return;
-            
-            _timer--;
+            if (!this._counterEnabled) return;
 
-            if (_timer != 0) return;
+            this._timer--;
 
-            _timer = _period == 0 ? 8 : _period;
+            if (this._timer != 0) return;
 
-            if (_period == 0) return;
+            this._timer = this._period == 0 ? 8 : this._period;
 
-            var newFreq = Calculate();
+            if (this._period == 0) return;
 
-            if (_overflow || _shift == 0) return;
+            var newFreq = this.Calculate();
 
-            _shadowFreq = newFreq;
-            _nr13 = _shadowFreq & 0xff;
-            _nr14 = (_shadowFreq & 0x700) >> 8;
+            if (this._overflow || this._shift == 0) return;
 
-            Calculate();
+            this._shadowFreq = newFreq;
+            this._nr13 = this._shadowFreq & 0xff;
+            this._nr14 = (this._shadowFreq & 0x700) >> 8;
+
+            this.Calculate();
         }
 
         private int Calculate()
         {
-            var freq = _shadowFreq >> _shift;
-            if (_negate)
+            var freq = this._shadowFreq >> this._shift;
+            if (this._negate)
             {
-                freq = _shadowFreq - freq;
-                _negging = true;
+                freq = this._shadowFreq - freq;
+                this._negging = true;
             }
             else
             {
-                freq = _shadowFreq + freq;
+                freq = this._shadowFreq + freq;
             }
 
             if (freq > 2047)
             {
-                _overflow = true;
+                this._overflow = true;
             }
 
             return freq;
         }
 
-        public bool IsEnabled() => !_overflow;
+        public bool IsEnabled() => !this._overflow;
     }
 }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/18965
+IDs: monsoonsheep.PanWithHats
+update keys: Nexus:18965

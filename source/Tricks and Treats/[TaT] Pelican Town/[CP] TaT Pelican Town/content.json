@@ -1,0 +1,57 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/cl4r3/Halloween-Mod-Jam-2023
+**
+*************************************************/
+
+{
+  "Format": "1.29.0",
+
+  "CustomLocations": [
+    {
+      "Name": "Custom_TaT_Maze-Dwarf",
+      "FromMapFile": "Assets/DwarfMaze.tmx"
+    },
+    {
+      "Name": "Custom_TaT_Maze-Krobus",
+      "FromMapFile": "Assets/KrobusMaze.tmx"
+    },
+  ],
+
+  "Changes": [
+    {
+      "LogName": "Include TaT data",
+      "Action": "Include",
+      "FromFile": "Data/TaTData/CostumeData.json, Data/TaTData/NPCData.json, Data/TaTData/TreatData.json",
+    },
+    {
+      "LogName": "Include vanilla changes",
+      "Action": "Include",
+      "FromFile": "Data/VanillaChanges/Dialogue.json, Data/VanillaChanges/Events.json, Data/VanillaChanges/MapEdits.json",
+    },
+    {
+      "LogName": "Add Emily's letter",
+  		"Action": "EditData",
+  		"Target": "Data/mail",
+  		"Entries": {
+  			"TaTLetter": "{{i18n:emilyletter}}",
+      },
+    },
+    {
+      "LogName": "Include vanilla schedule changes",
+      "Action": "Include",
+      "FromFile": "Data/VanillaChanges/Schedules.json",
+      "When": { "HasMod|contains=FlashShifter.StardewValleyExpandedCP": false },
+    },
+    {
+      "LogName": "Include SVE schedule changes",
+      "Action": "Include",
+      "FromFile": "Data/VanillaChanges/Schedules_SVE.json",
+      "When": { "HasMod|contains=FlashShifter.StardewValleyExpandedCP": true },
+    },
+  ]
+}

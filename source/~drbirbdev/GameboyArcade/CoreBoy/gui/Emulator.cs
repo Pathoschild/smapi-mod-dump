@@ -19,7 +19,7 @@ using CoreBoy.sound;
 
 namespace CoreBoy.gui
 {
-    public class Emulator: IRunnable
+    public class Emulator : IRunnable
     {
         public Gameboy Gameboy { get; set; }
         public IDisplay Display { get; set; } = new BitmapDisplay();
@@ -33,68 +33,68 @@ namespace CoreBoy.gui
 
         public Emulator(GameboyOptions options)
         {
-            _runnables = new List<Thread>();
-            Options = options;
+            this._runnables = new List<Thread>();
+            this.Options = options;
         }
 
         public void Run(CancellationToken token)
         {
-            if (!Options.RomSpecified || !Options.RomFile.Exists)
+            if (!this.Options.RomSpecified || !this.Options.RomFile.Exists)
             {
-                throw new ArgumentException("The ROM path doesn't exist: " + Options.RomFile);
+                throw new ArgumentException("The ROM path doesn't exist: " + this.Options.RomFile);
             }
 
-            var rom = new Cartridge(Options);
-            Gameboy = CreateGameboy(rom);
+            var rom = new Cartridge(this.Options);
+            this.Gameboy = this.CreateGameboy(rom);
 
-            if (Options.Headless)
+            if (this.Options.Headless)
             {
-                Gameboy.Run(token);
+                this.Gameboy.Run(token);
                 return;
             }
 
-            if (Display is IRunnable runnableDisplay)
+            if (this.Display is IRunnable runnableDisplay)
             {
-                _runnables.Add(new Thread(() => runnableDisplay.Run(token))
+                this._runnables.Add(new Thread(() => runnableDisplay.Run(token))
                 {
                     Priority = ThreadPriority.AboveNormal
                 });
             }
 
-            _runnables.Add(new Thread(() => Gameboy.Run(token))
+            this._runnables.Add(new Thread(() => this.Gameboy.Run(token))
             {
                 Priority = ThreadPriority.AboveNormal
             });
 
-            _runnables.ForEach(t => t.Start());
-            Active = true;
+            this._runnables.ForEach(t => t.Start());
+            this.Active = true;
         }
 
         public void Stop(CancellationTokenSource source)
         {
-            if (!Active)
+            if (!this.Active)
             {
                 return;
             }
 
             source.Cancel();
-            _runnables.Clear();
+            this._runnables.Clear();
         }
 
         public void TogglePause()
         {
-            if (Gameboy != null)
-                Gameboy.Pause = !Gameboy.Pause;
+            if (this.Gameboy != null)
+                this.Gameboy.Pause = !this.Gameboy.Pause;
         }
 
         private Gameboy CreateGameboy(Cartridge rom)
         {
-            if (Options.Headless)
+            if (this.Options.Headless)
             {
-                return new Gameboy(Options, rom, new NullDisplay(), new NullController(), new NullSoundOutput(), new NullSerialEndpoint());
+                return new Gameboy(this.Options, rom, new NullDisplay(), new NullController(), new NullSoundOutput(), new NullSerialEndpoint());
             }
 
-            return new Gameboy(Options, rom, Display, Controller, SoundOutput, SerialEndpoint);
+            return new Gameboy(this.Options, rom, this.Display, this.Controller, this.SoundOutput, this.SerialEndpoint);
         }
     }
 }

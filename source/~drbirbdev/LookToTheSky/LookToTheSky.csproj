@@ -1,3 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\common-nospace.targets" />
+    <Import Project="..\common.targets" />
+
+    <PropertyGroup>
+        <Description>Adds a slingshot minigame when outdoors and things can be heard overhead.</Description>
+        <Version>1.0.4</Version>
+        <UpdateKeys>Nexus:15262</UpdateKeys>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BirbCore\BirbCore.csproj" />
+    </ItemGroup>
+    
 </Project>

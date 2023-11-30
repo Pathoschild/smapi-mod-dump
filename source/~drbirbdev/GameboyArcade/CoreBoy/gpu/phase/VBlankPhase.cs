@@ -16,13 +16,13 @@ namespace CoreBoy.gpu.phase
 
         public VBlankPhase Start()
         {
-            _ticks = 0;
+            this._ticks = 0;
             return this;
         }
 
         public bool Tick()
         {
-            return ++_ticks < 456;
+            return ++this._ticks < 456;
         }
     }
 }

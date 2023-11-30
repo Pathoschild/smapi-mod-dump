@@ -40,6 +40,8 @@ namespace Unlockable_Bundles.Lib
             UtilityMisc.Initialize();
             UnsafeMap.Initialize();
             UBEvent.Initialize();
+            _InventoryPage.Initialize();
+            BundleOverviewMenu.Initialize();
         }
     }
 }

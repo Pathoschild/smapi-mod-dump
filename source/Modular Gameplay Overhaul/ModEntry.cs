@@ -48,9 +48,6 @@ public sealed class ModEntry : Mod
     /// <summary>Gets or sets the <see cref="ModConfig"/> instance.</summary>
     internal static ModConfig Config { get; set; } = null!; // set in Entry
 
-    /// <summary>Gets or sets the <see cref="ModData"/> instance.</summary>
-    internal static ModData LocalData { get; set; } = null!; // set in Entry
-
     /// <summary>Gets the <see cref="PerScreen{T}"/> <see cref="ModState"/>.</summary>
     internal static PerScreen<ModState> PerScreenState { get; private set; } = null!; // set in Entry
 
@@ -91,7 +88,7 @@ public sealed class ModEntry : Mod
         Log.Init(this.Monitor);
 
         // pseudo-DRM for low-effort theft
-        if (Manifest.UniqueID != "DaLion.Overhaul")
+        if (Manifest.Author != "DaLion" || Manifest.UniqueID != this.GetType().Namespace)
         {
             Log.W(
                 "Woops, looks like you downloaded a clandestine version of this mod! Please make sure to download from the official GitHub repo at https://github.com/daleao/modular-overhaul/releases.");
@@ -109,7 +106,6 @@ public sealed class ModEntry : Mod
 
         I18n.Init(helper.Translation);
         ModDataIO.Init();
-        LocalData = helper.Data.ReadJsonFile<ModData>("data.json") ?? new ModData();
         Config = helper.ReadConfig<ModConfig>();
         Log.T($"[Entry]: Initializing MARGO with the following config settings:\n{Config}");
 

@@ -1,0 +1,33 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+This is the list of files **NOT** covered by this mod's MIT license. You
+**MAY NOT** redistribute these files, modified or otherwise, without express
+permission of their original authors.
+
+Derived from Gweniaczek's Way Back Pelican Town:
+
+* CP/assets/waybackhouse_notwinter.png
+* CP/assets/waybackhouse_winter.png
+* CP/assets/waybackstorefront_all.png
+
+Derived from YriKururu's Project Yellog:
+
+* CP/assets/yelloghouse_all.png
+* CP/assets/yellogstorefront_all.png
+
+Containing assets copied and/or derived from other mods:
+
+* source/wayback_house.xcf (Gweniaczek)
+* source/wayback_storefront.xcf (Gweniaczek)
+* source/yellog_house.xcf (YriKururu)
+* source/yellog_storefront.xcf (YriKururu)
+* source/flowervalley_house.xcf (Kaya)
+* source/flowervalley_storefront.xcf (Kaya)

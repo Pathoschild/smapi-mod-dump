@@ -16,8 +16,9 @@ namespace CoreBoy
 {
     public class GameboyOptions
     {
-        public FileInfo? RomFile => string.IsNullOrWhiteSpace(Rom) ? null : new FileInfo(Rom);
-
+#nullable enable
+        public FileInfo? RomFile => string.IsNullOrWhiteSpace(this.Rom) ? null : new FileInfo(this.Rom);
+#nullable disable
         public string Rom { get; set; }
 
         public IBattery Battery { get; set; }
@@ -36,11 +37,11 @@ namespace CoreBoy
 
         public bool Interactive { get; set; }
 
-        public bool ShowUi => !Headless;
+        public bool ShowUi => !this.Headless;
 
-        public bool IsSupportBatterySaves() => !DisableBatterySaves;
+        public bool IsSupportBatterySaves() => !this.DisableBatterySaves;
 
-        public bool RomSpecified => !string.IsNullOrWhiteSpace(Rom);
+        public bool RomSpecified => !string.IsNullOrWhiteSpace(this.Rom);
 
         public GameboyOptions()
         {
@@ -48,7 +49,7 @@ namespace CoreBoy
 
         public void Verify()
         {
-            if (ForceDmg && ForceCgb)
+            if (this.ForceDmg && this.ForceCgb)
             {
                 throw new ArgumentException("force-dmg and force-cgb options are can't be used together");
             }

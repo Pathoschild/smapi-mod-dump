@@ -61,6 +61,7 @@
   ],
 
   "Builder": "Wizard",
+  "MagicalConstruction": true,
   "BuildCondition": "CAN_BUILD_FOR_CABINS CrumblingMineshaft",
   "BuildCost": 10000,
   "BuildMaterials": [

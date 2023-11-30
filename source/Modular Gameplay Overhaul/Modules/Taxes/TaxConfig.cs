@@ -23,7 +23,10 @@ using Newtonsoft.Json;
 /// <summary>The user-configurable settings for TXS.</summary>
 public sealed class TaxConfig
 {
-    private readonly Dictionary<string, float> _deductibleExtras = new();
+    private readonly Dictionary<string, float> _deductibleExtras = new()
+    {
+        { "Example Object and Percentage", 1f },
+    };
 
     private float _incomeLatenessFine = 0.05f;
     private float _deductibleAnimalExpenses = 1f;
@@ -38,7 +41,7 @@ public sealed class TaxConfig
 
     #region income
 
-    private Dictionary<int, float> _taxByIncomeBracket = new()
+    private Dictionary<int, float> _taxRatePerIncomeBracket = new()
     {
         { 9950, 0.1f },
         { 40525, 0.12f },
@@ -54,16 +57,21 @@ public sealed class TaxConfig
     [GMCMSection("txs.income")]
     [GMCMPriority(0)]
     [GMCMOverride(typeof(GenericModConfigMenu), "TaxConfigTaxByIncomeBracketOverride")]
-    public Dictionary<int, float> TaxByIncomeBracket
+    public Dictionary<int, float> TaxRatePerIncomeBracket
     {
-        get => this._taxByIncomeBracket;
+        get => this._taxRatePerIncomeBracket;
         internal set
         {
+            if (value == this._taxRatePerIncomeBracket)
+            {
+                return;
+            }
+
             var previous = (0, 0f);
             foreach (var pair in value)
             {
                 if (pair.Key <= 0 || pair.Key <= previous.Item1 || pair.Value is <= 0f or >= 1f ||
-                    pair.Value <= previous.Item2)
+                    pair.Value < previous.Item2)
                 {
                     return;
                 }
@@ -71,7 +79,7 @@ public sealed class TaxConfig
                 previous = (pair.Key, pair.Value);
             }
 
-            this._taxByIncomeBracket = value;
+            this._taxRatePerIncomeBracket = value;
             if (Context.IsWorldReady)
             {
                 RevenueService.TaxByIncomeBracket = value.ToImmutableDictionary();
@@ -160,6 +168,8 @@ public sealed class TaxConfig
     [GMCMPriority(6)]
     [GMCMRange(0f, 1f)]
     [GMCMInterval(0.01f)]
+    //[GMCMOverride(typeof(GenericModConfigMenu), "TaxConfigDeductibleExtrasOverride")]
+    [GMCMIgnore]
     public Dictionary<string, float> DeductibleExtras
     {
         get => this._deductibleExtras;

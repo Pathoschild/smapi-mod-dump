@@ -1,0 +1,9 @@
+﻿{
+  "Name": "FoodStore",
+  "Author": "d5a1lamdtd",
+  "Version": "1.0.2",
+  "Description": "FoodStore.",
+  "UniqueID": "d5a1lamdtd.FoodStore",
+  "EntryDll": "FoodStore.dll",
+  "MinimumApiVersion": "3.15.0"
+}

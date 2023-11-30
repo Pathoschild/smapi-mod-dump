@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.IO;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -18,7 +17,7 @@ using ZoomLevel.GenericModConfigMenu;
 
 namespace ZoomLevel
 {
-    public class ModEntry : Mod
+    public partial class ModEntry : Mod
     {
         private ModConfig configsForTheMod = new();
 
@@ -518,31 +517,6 @@ namespace ZoomLevel
 
                 UpdateZoomLevel(zoomLevelValue);
                 this.Monitor.Log(Helper.Translation.Get("consoleMessages.resetZoom.message", new { value = currentZoomLevel.ToString() }), LogLevel.Info);
-            }
-        }
-
-        private class CommonHelper
-        {
-            internal static void RemoveObsoleteFiles(IMod mod, params string[] relativePaths)
-            {
-                string basePath = mod.Helper.DirectoryPath;
-
-                foreach (string relativePath in relativePaths)
-                {
-                    string fullPath = Path.Combine(basePath, relativePath);
-                    if (File.Exists(fullPath))
-                    {
-                        try
-                        {
-                            File.Delete(fullPath);
-                            mod.Monitor.Log($"Removed obsolete file '{relativePath}'.");
-                        }
-                        catch (Exception ex)
-                        {
-                            mod.Monitor.Log($"Failed deleting obsolete file '{relativePath}':\n{ex}");
-                        }
-                    }
-                }
             }
         }
     }

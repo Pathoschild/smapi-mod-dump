@@ -20,500 +20,293 @@ using xTile.Dimensions;
 using System.Xml.Serialization;
 using StardewValley.Monsters;
 using StardewValley.Objects;
+using StardewModdingAPI;
+using System.IO;
+using StardewDruid.Cast;
+using StardewValley.TerrainFeatures;
 
 namespace StardewDruid.Character
 {
-    public class Effigy : StardewValley.NPC
+    public class Effigy : StardewDruid.Character.Character
     {
 
-        private Mod mod;
+        public List<Vector2> ritesDone;
 
-        public int attendPlayer;
-
-        public int wanderAway;
-
-        public int movementChange;
-
-        public bool moveToPlayer;
-
-        public Effigy(Mod Mod, AnimatedSprite sprite, Vector2 position, string defaultMap, int facingDir, string name, Dictionary<int, int[]> schedule, Texture2D portrait) 
-           : base(sprite, position, defaultMap, facingDir, name, schedule, portrait, false)
+        public Effigy()
+            : base()
         {
-            mod = Mod;
 
         }
 
-        public override void reloadData()
+        public Effigy(Vector2 position, string map)
+            : base(position, map, "Effigy")
         {
 
-            CharacterDisposition disposition = CharacterData.CharacterDisposition(name);
-
-            Age = disposition.Age;
-            
-            Manners = disposition.Manners;
-            
-            SocialAnxiety = disposition.SocialAnxiety;
-            
-            Optimism = disposition.Optimism;
-            
-            Gender = disposition.Gender;
-            
-            datable.Value = disposition.datable;
-            
-            Birthday_Season = disposition.Birthday_Season;
-            
-            Birthday_Day = disposition.Birthday_Day;
-            
-            id = disposition.id;
-
-            speed = disposition.speed;
-
-        }
-
-        public override void reloadDefaultLocation()
-        {
+            ritesDone = new();
         
-            DefaultMap = CharacterData.CharacterDefaultMap(name);
-
-            DefaultPosition = CharacterData.CharacterPosition(name);
-        
-        }
-
-        protected override string translateName(string name)
-        { 
-            return name;
-        
-        }
-
-        public override void tryToReceiveActiveObject(Farmer who)
-        {
-            return;
         }
 
         public override bool checkAction(Farmer who, GameLocation l)
         {
            
-            Halt();
+            base.checkAction(who, l);
 
-            attendPlayer = 120;
+            if (!Mod.instance.dialogue.ContainsKey("Effigy"))
+            {
 
-            faceGeneralDirection(who.Position);
+                Mod.instance.dialogue["Effigy"] = new Dialogue.Effigy() { npc = this };
 
-            mod.druidEffigy.DialogueApproach();
+            }
+
+            Mod.instance.dialogue["Effigy"].DialogueApproach();
 
             return true;
 
         }
 
-        public override void performTenMinuteUpdate(int timeOfDay, GameLocation l)
-        {
-            if(wanderAway > 0)
-            {
-
-                wanderAway--;
-
-            }
-
-        }
-
-        public override void Halt()
-        {
-            
-            moveUp = false;
-
-            moveDown = false;
-
-            moveRight = false;
-
-            moveLeft = false;
-
-            Sprite.StopAnimation();
-
-
-        }
-
-        public Dictionary<int,float> PlayerProximity()
+        public override List<Vector2> RoamAnalysis()
         {
 
-            Dictionary<int, float> proximity = new() { [0] = -1f };
+            List<Vector2> scarecrows = new();
 
-            if (Game1.player.currentLocation != currentLocation)
+            foreach(SerializableDictionary<Vector2,StardewValley.Object> objDictionary in currentLocation.Objects)
             {
-                return proximity;
-            }
-
-            if (currentLocation.map.GetLayer("Back").Tiles[(int)Game1.player.getTileLocation().X, (int)Game1.player.getTileLocation().Y] == null)
-            {
-                return proximity;
-            }
-
-            if (currentLocation.map.GetLayer("Back").Tiles[(int)Game1.player.getTileLocation().X, (int)Game1.player.getTileLocation().Y].Properties.ContainsKey("NPCBarrier"))
-            {
-                return proximity;
-            }
-
-            Vector2 targetPosition = Game1.player.GetBoundingBox().Center.ToVector2();
-
-            Vector2 currentPosition = GetBoundingBox().Center.ToVector2();
-
-            float targetDistance = Vector2.Distance(targetPosition, currentPosition);
-
-            if (targetDistance > 480)
-            {
-
-                return proximity;
-
-            }
-
-            float differentialX = targetPosition.X - currentPosition.X;
-
-            float differentialY = targetPosition.Y - currentPosition.Y;
-
-            if (Math.Abs(differentialX) < Math.Abs(differentialY))
-            {
-
-                if (differentialY < 0)
+                
+                foreach (KeyValuePair<Vector2,StardewValley.Object> objPair in objDictionary)
                 {
 
-                    proximity[0] = 0f;
+                    if (objPair.Value.IsScarecrow())
+                    {
 
+                        scarecrows.Add(objPair.Key * 64);
 
-                }
-                else
-                {
-
-                    proximity[0] = 2f;
+                    }
 
                 }
 
-            }
-            else
-            {
-
-                if (differentialX < 0)
+                if(scarecrows.Count >= 20)
                 {
 
-                    proximity[0] = 3f;
-
-                }
-                else
-                {
-
-                    proximity[0] = 1f;
+                    break;
 
                 }
 
             }
 
-            proximity[1] = targetDistance;
+            List<Vector2> roampoints = base.RoamAnalysis();
 
-            proximity[2] = differentialX;
+            scarecrows.AddRange(roampoints);
 
-            proximity[3] = differentialY;
-
-            return proximity;
+            return scarecrows;
 
         }
 
-        public override void update(GameTime time, GameLocation location)
+        public void AnimateCast()
         {
 
-            if (attendPlayer > 0)
+            switch (moveDirection)
             {
 
-                attendPlayer--;
+                case 0:
 
-                if(attendPlayer == 0)
-                {
+                    string blessing = Mod.instance.ActiveBlessing();
 
-                    wanderAway = 3;
+                    switch (blessing)
+                    {
 
-                }
+                        case "water":
+                            Sprite.currentFrame = 26;
+                            break;
 
-                return;
+                        case "stars":
+                            Sprite.currentFrame = 34;
+                            break;
+
+                        case "fates":
+                            Sprite.currentFrame = 42;
+                            break;
+
+                        default: // earth
+                            Sprite.currentFrame = 18;
+                            break;
+
+                    }
+
+                    break;
+
+                case 1:
+
+                    Sprite.currentFrame = 17;
+                    break;
+
+                case 2:
+
+                    Sprite.currentFrame = 16;
+                    break;
+
+                case 3:
+
+                    Sprite.currentFrame = 19;
+                    break;
 
             }
 
-            updateMovement(location, time);
-
-            MovePosition(time, Game1.viewport, location);
+            Sprite.UpdateSourceRect();
 
         }
 
-        public override void updateMovement(GameLocation location, GameTime time)
+        public override void AnimateMovement(GameTime time)
         {
 
-            if (Game1.IsClient)
-            {
-                return;
-            }
-
-            if (movementChange > 0)
+            if (timers.ContainsKey("cast"))
             {
 
-                movementChange--;
+                AnimateCast();
 
                 return;
 
             }
 
-            MoveTowardsPlayer(location);
-
-            MoveRandomDirection(location);
-
-            movementChange = 60;
-
-        }
-
-        public void MoveTowardsPlayer(GameLocation location)
-        {
-            
-            if (wanderAway > 0)
-            {
-                return;
-            }
-
-            Dictionary<int, float> proximity = PlayerProximity();
-
-            if (proximity[0] < 0f)
-            {
-
-                return;
-
-            }
-
-            if (proximity[1] <= 80f)
-            {
-
-                Halt();
-
-                attendPlayer = 120;
-
-                faceDirection((int)proximity[0]);
-
-                return;
-
-            }
-
-            switch ((int)proximity[0])
+            switch (moveDirection)
             {
                 case 0:
 
-                    SetMovingOnlyUp();
-
-                    break;
-
-                case 1: 
-                    
-                    SetMovingOnlyRight();
-                    
-                    break;
-                case 2:
-                    
-                    SetMovingOnlyDown();
-                    
-                    break;
-                
-                default:
-                    
-                    SetMovingOnlyLeft();
-                    
-                    break;
-
-            }
-
-            return;
-
-        }
-
-        public void MoveRandomDirection(GameLocation location)
-        {
-
-            if (isMoving())
-            {
-                return;
-
-            }
-            int num = Game1.random.Next(5);
-
-            if (num != (FacingDirection + 2) % 4)
-            {
-                if (num < 4)
-                {
-                        
-                    int direction = FacingDirection;
-                        
-                    faceDirection(num);
-                        
-                    if (currentLocation.isCollidingPosition(nextPosition(num), Game1.viewport, this))
-                    {
-                            
-                        faceDirection(direction);
-                            
-                        return;
-                        
-                    }
-                    
-                }
-
-                switch (num)
-                {
-                    case 0:
-                        SetMovingUp(b: true);
-                        break;
-                    case 1:
-                        SetMovingRight(b: true);
-                        break;
-                    case 2:
-                        SetMovingDown(b: true);
-                        break;
-                    case 3:
-                        SetMovingLeft(b: true);
-                        break;
-                    default:
-                        Halt();
-                        Sprite.StopAnimation();
-                        break;
-                }
-            }
-
-            return;
-
-        }
-
-
-        public override void MovePosition(GameTime time, xTile.Dimensions.Rectangle viewport, GameLocation currentLocation)
-        {
-            
-            if (Game1.IsClient)
-            {
-                return;
-            }
-
-            Location location = nextPositionTile();
-
-            Microsoft.Xna.Framework.Rectangle next;
-
-            if (moveUp)
-            {
-                next = nextPosition(0);
-
-                if (!currentLocation.isCollidingPosition(next, Game1.viewport, isFarmer: false, 0, glider: false, this, pathfinding: false))
-                {
-                    position.Y -= base.speed;
                     Sprite.AnimateUp(time);
-                }
-                else if (!HandleCollision(next, 0))
-                {
-                    Halt();
-  
-                    if (Game1.random.NextDouble() < 0.6)
-                    {
-                        SetMovingDown(b: true);
+
+                    if (Sprite.currentFrame >= 8 && Sprite.currentFrame < 12) {
+
+                        string blessing = Mod.instance.ActiveBlessing();
+
+                        switch (blessing)
+                        {
+
+                            case "earth": // return
+
+                                return;
+
+                            case "water":
+
+                                Sprite.currentFrame += 12;
+
+                                break;
+
+                            case "stars":
+
+                                Sprite.currentFrame += 20;
+
+                                break;
+
+                            case "fates":
+
+                                Sprite.currentFrame += 28;
+
+                                break;
+
+                        }
+
                     }
-                }
 
-                faceDirection(0);
-            }
-            else if (moveRight)
-            {
+                    Sprite.UpdateSourceRect();
 
-                next = nextPosition(1);
+                    break;
 
-                if (!currentLocation.isCollidingPosition(next, Game1.viewport, isFarmer: false, 0, glider: false, this))
-                {
-                    position.X += base.speed;
+                case 1:
                     Sprite.AnimateRight(time);
-                }
-                else if (!HandleCollision(next, 1))
-                {
-                    Halt();
+                    break;
 
-                    if (Game1.random.NextDouble() < 0.6)
-                    {
-                        SetMovingLeft(b: true);
-                    }
-                }
-
-                faceDirection(1);
-            }
-            else if (moveDown)
-            {
-
-                next = nextPosition(2);
-
-                if (!currentLocation.isCollidingPosition(next, Game1.viewport, isFarmer: false, 0, glider: false, this))
-                {
-                    position.Y += base.speed;
+                case 2:
                     Sprite.AnimateDown(time);
-                }
-                else if (!HandleCollision(next, 2))
-                {
-                    Halt();
+                    break;
 
-                    if (Game1.random.NextDouble() < 0.6)
-                    {
-                        SetMovingUp(b: true);
-                    }
-                }
-
-                faceDirection(2);
-            }
-            else
-            {
-                if (!moveLeft)
-                {
-                    return;
-                }
-                next = nextPosition(3);
-
-                if (!currentLocation.isCollidingPosition(next, Game1.viewport, isFarmer: false, 0, glider: false, this))
-                {
-                    position.X -= base.speed;
-                    Sprite.AnimateRight(time);
-                }
-                else if (!HandleCollision(next, 3))
-                {
-                    Halt();
-
-                    if (Game1.random.NextDouble() < 0.6)
-                    {
-                        SetMovingRight(b: true);
-                    }
-                }
-
-                faceDirection(3);
+                default:
+                    Sprite.AnimateLeft(time);
+                    break;
 
             }
+
+            return;
+
         }
 
-        public virtual bool HandleCollision(Microsoft.Xna.Framework.Rectangle next, int direction = 0)
+        public override void ReachedRoamPosition()
         {
 
-            Dictionary<int, float> proximity = PlayerProximity();
+            Vector2 scareVector = roamVectors[roamIndex] / 64;
 
-            if (proximity[0] < 0f)
+            if (ritesDone.Contains(scareVector))
             {
 
-                return false;
+                return;
 
             }
 
-            if (proximity[1] <= 80f && (int)proximity[0] == direction)
+            if (!currentLocation.Objects.ContainsKey(scareVector))
             {
-
-                Halt();
-
-                attendPlayer = 120;
-
-                return true;
+                return;
 
             }
 
-            return false;
+            if (!currentLocation.Objects[scareVector].IsScarecrow())
+            {
+                return;
+
+            }
+
+            Halt();
+
+            AnimateCast();
+
+            timers["cast"] = 30;
+
+            Rite effigyRite = Mod.instance.NewRite(false);
+
+            for (int i = 1; i < 5; i++)
+            {
+
+                List<Vector2> tileVectors = ModUtility.GetTilesWithinRadius(currentLocation, scareVector, i);
+
+                foreach (Vector2 tileVector in tileVectors)
+                {
+
+                    if (currentLocation.terrainFeatures.ContainsKey(tileVector))
+                    {
+
+                        TerrainFeature terrainFeature = currentLocation.terrainFeatures[tileVector];
+
+                        switch (terrainFeature.GetType().Name.ToString())
+                        {
+
+                            case "HoeDirt":
+
+                                effigyRite.effectCasts[tileVector] = new Cast.Earth.Crop(tileVector, effigyRite, true, true);
+
+                                break;
+
+                        }
+
+                        continue;
+
+                    }
+
+                }
+
+            }
+
+            if (currentLocation.Name == Game1.player.currentLocation.Name && Utility.isOnScreen(Position, 128))
+            {
+
+                ModUtility.AnimateRadiusDecoration(currentLocation, scareVector, "Earth", 1f, 1f, 1500);
+
+                Game1.player.currentLocation.playSoundPitched("discoverMineral", 1000);
+
+            }
+
+            effigyRite.CastEffect(false);
+
+            ritesDone.Add(scareVector);
 
         }
-
 
     }
+
 }

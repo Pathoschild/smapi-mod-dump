@@ -373,6 +373,14 @@
         "HasFlag": "Ivy_OrinothlogistsGuild_PowerUp"
       },
       "Update": "OnLocationChange"
-    }
+    },
+    // CustomNPCExclusions
+    {
+      "Action": "EditData",
+      "Target": "Data/CustomNPCExclusions",
+      "Entries": {
+         "OrinothlogistsGuild_Kyle": "WinterStar"
+      }
+   }
   ]
 }

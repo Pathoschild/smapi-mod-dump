@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Melee;
 #region using directives
 
 using DaLion.Overhaul.Modules.Combat.Extensions;
-using DaLion.Shared.Constants;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Tools;
@@ -35,34 +34,19 @@ internal sealed class MeleeWeaponCtorPatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void MeleeWeaponCtorPostfix(MeleeWeapon __instance)
     {
+        if (__instance.isScythe())
+        {
+            return;
+        }
+
         if (__instance.ShouldBeStabbySword())
         {
             __instance.type.Value = MeleeWeapon.stabbingSword;
-            Log.D($"The type of {__instance.Name} was converted to Stabbing sword.");
-        }
-
-        if (CombatModule.Config.EnableWeaponOverhaul)
-        {
-            if (__instance.InitialParentTileIndex == WeaponIds.InsectHead)
-            {
-                __instance.type.Value = MeleeWeapon.dagger;
-            }
-
-            if (__instance.InitialParentTileIndex is WeaponIds.NeptuneGlaive)
-            {
-                __instance.specialItem = true;
-            }
-        }
-
-        if (CombatModule.Config.EnableHeroQuest)
-        {
-            if (__instance.isGalaxyWeapon() || __instance.IsInfinityWeapon() || __instance.IsCursedOrBlessed())
-            {
-                __instance.specialItem = true;
-            }
+            Log.D($"The type of {__instance.Name} was changed to Stabbing sword.");
         }
 
         __instance.AddIntrinsicEnchantments();
+        __instance.MakeSpecialIfNecessary();
     }
 
     #endregion harmony patches

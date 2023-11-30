@@ -25,6 +25,8 @@ namespace StardewDruid.Monster
         
         public bool posturing;
 
+        public bool dropHat;
+
         public Texture2D hatsTexture;
 
         public Rectangle hatSourceRect;
@@ -58,6 +60,8 @@ namespace StardewDruid.Monster
 
             //hatSourceRect = Game1.getSourceRectForStandardTileSheet(hatsTexture, 151, 20, 20);
             hatSourceRect = Game1.getSourceRectForStandardTileSheet(hatsTexture, 192, 20, 20);
+
+            dropHat = true;
 
             base.speed = (int)(speed *2);
 
@@ -142,9 +146,14 @@ namespace StardewDruid.Monster
             {
                 deathAnimation();
 
-                Item happyHat = new Hat(48);
+                if (dropHat)
+                {
 
-                who.dropItem(happyHat);
+                    Item happyHat = new Hat(48);
+
+                    who.dropItem(happyHat);
+
+                }
 
             }
 

@@ -63,9 +63,24 @@ namespace Unlockable_Bundles.Lib
         {
             ensureExist(key, location);
 
-            Instance.UnlockableSaveData[key][location].AlreadyPaid.Add(requirement, value);
+            Instance.UnlockableSaveData[key][location].AlreadyPaid.TryAdd(requirement, value); //TryAdd because this code can run twice in splitscreen
             if (index != -1)
-                Instance.UnlockableSaveData[key][location].AlreadyPaidIndex.Add(requirement, index);
+                Instance.UnlockableSaveData[key][location].AlreadyPaidIndex.TryAdd(requirement, index);
+        }
+
+        public static void setDiscovered(string key, string location, bool value = true)
+        {
+            ensureExist(key, location);
+
+            Instance.UnlockableSaveData[key][location].Discovered = value;
+            API.UnlockableBundlesAPI.clearCache();
+        }
+
+        public static bool getDiscovered(string key, string location, bool value = true)
+        {
+            ensureExist(key, location);
+
+            return Instance.UnlockableSaveData[key][location].Discovered;
         }
 
         //Returns the most recent purchase day spawn of an unlockable or -1

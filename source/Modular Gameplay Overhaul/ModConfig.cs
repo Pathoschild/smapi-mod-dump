@@ -13,6 +13,7 @@ namespace DaLion.Overhaul;
 #region using directives
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using DaLion.Shared.Extensions.SMAPI;
 using DaLion.Shared.Integrations.GMCM.Attributes;
 using Newtonsoft.Json;
@@ -64,27 +65,27 @@ public sealed class ModConfig
 
     /// <summary>Gets a value indicating whether the Combat module is enabled.</summary>
     [JsonProperty]
-    [GMCMImplicitIgnore]
+    [GMCMIgnore]
     public bool EnableCombat { get; internal set; } = false;
 
     /// <summary>Gets a value indicating whether the Tools module is enabled.</summary>
     [JsonProperty]
-    [GMCMImplicitIgnore]
+    [GMCMIgnore]
     public bool EnableTools { get; internal set; } = false;
 
     /// <summary>Gets a value indicating whether the Ponds module is enabled.</summary>
     [JsonProperty]
-    [GMCMImplicitIgnore]
+    [GMCMIgnore]
     public bool EnablePonds { get; internal set; } = false;
 
     /// <summary>Gets a value indicating whether the Taxes module is enabled.</summary>
     [JsonProperty]
-    [GMCMImplicitIgnore]
+    [GMCMIgnore]
     public bool EnableTaxes { get; internal set; } = false;
 
     /// <summary>Gets a value indicating whether the Tweex module is enabled.</summary>
     [JsonProperty]
-    [GMCMImplicitIgnore]
+    [GMCMIgnore]
     public bool EnableTweex { get; internal set; } = true;
 
 #endif
@@ -134,6 +135,11 @@ public sealed class ModConfig
     [JsonProperty]
     [GMCMIgnore]
     public KeybindList DebugKey { get; internal set; } = KeybindList.Parse("OemQuotes, OemTilde");
+
+    /// <summary>Gets a value indicating whether to launch the first-time launch setup.</summary>
+    [JsonProperty]
+    [GMCMIgnore]
+    public bool LaunchInitialSetup { get; internal set; } = true;
 
     /// <inheritdoc />
     public override string ToString()

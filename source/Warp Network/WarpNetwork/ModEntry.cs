@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -34,7 +35,6 @@ namespace WarpNetwork
 		internal static IModHelper helper;
 		internal static IMonitor monitor;
 		internal static ITranslationHelper i18n;
-		internal static AeroCore.API.IAeroCoreAPI AeroAPI;
 		public static API api = new();
 
 		public override void Entry(IModHelper helper)
@@ -51,11 +51,15 @@ namespace WarpNetwork
 		[MethodImpl(MethodImplOptions.NoInlining)]
 		public void GameLaunched(object sender, GameLaunchedEventArgs ev)
 		{
-			AeroAPI = helper.ModRegistry.GetApi<AeroCore.API.IAeroCoreAPI>("tlitookilakin.AeroCore");
-			AeroAPI.RegisterGMCMConfig(ModManifest, helper, config, 
-				() => helper.GameContent.InvalidateCache(pathLocData)
-			);
-			AeroAPI.InitAll();
+			config.RegisterGMCM(ModManifest);
+			var harmony = new Harmony(ModManifest.UniqueID);
+			Patches.Patch(harmony);
+			helper.Events.Player.Warped += ObeliskPatch.MoveAfterWarp;
+			helper.ConsoleCommands.Add(
+				"warpnet",
+				"Master command for Warp Network mod. Use 'warpnet' or 'warpnet help' to see a list of subcommands.",
+				CommandHandler.Main);
+			DataPatcher.Init();
 			CPIntegration.AddTokens(ModManifest);
 		}
 		public override object GetApi() => api;

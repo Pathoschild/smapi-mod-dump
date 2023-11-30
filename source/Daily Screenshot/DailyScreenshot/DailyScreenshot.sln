@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.779
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyScreenshot", "DailyScreenshot.csproj", "{77E16595-24B8-4066-BBEB-3FCE307E06FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DailyScreenshot", "DailyScreenshot.csproj", "{77E16595-24B8-4066-BBEB-3FCE307E06FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DailyScreenshotTest", "..\DailyScreenshotTest\DailyScreenshotTest.csproj", "{DCDD1797-EA2D-4F70-A513-87FDCA0B84E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{77E16595-24B8-4066-BBEB-3FCE307E06FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77E16595-24B8-4066-BBEB-3FCE307E06FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77E16595-24B8-4066-BBEB-3FCE307E06FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCDD1797-EA2D-4F70-A513-87FDCA0B84E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCDD1797-EA2D-4F70-A513-87FDCA0B84E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCDD1797-EA2D-4F70-A513-87FDCA0B84E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCDD1797-EA2D-4F70-A513-87FDCA0B84E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

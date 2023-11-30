@@ -8,8 +8,6 @@
 **
 *************************************************/
 
-using AeroCore;
-using AeroCore.Utils;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
@@ -23,10 +21,8 @@ using WarpNetwork.models;
 
 namespace WarpNetwork
 {
-	[ModInit]
 	class WarpHandler
 	{
-		internal static readonly PerScreen<Point?> DesertWarp = new();
 		internal static readonly PerScreen<string> wandLocation = new();
 		internal static readonly PerScreen<Point> wandTile = new();
 		private static readonly WarpNetHandler returnHandler = new(
@@ -37,16 +33,27 @@ namespace WarpNetwork
 		
 		internal static void Init()
 		{
-			ModEntry.AeroAPI.RegisterAction("warpnetwork", (w, s, t, g) => ShowWarpMenu(s));
-			ModEntry.AeroAPI.RegisterAction("warpnetworkto", (w, s, t, g) => DirectWarp(s));
-			ModEntry.AeroAPI.RegisterTouchAction("warpnetworkto", (w, s, t, g) => DirectWarp(s));
+			GameLocation.RegisterTileAction("warpnetwork", WarpNetAction);
+			GameLocation.RegisterTileAction("warpnetworkto", WarpToAction);
+			GameLocation.RegisterTouchAction("warpnetworkto", (w, s, f, l) => DirectWarp(s.Length is 0 ? string.Empty : s[0]));
 			ModEntry.helper.Events.GameLoop.DayEnding += Cleanup;
 			ModEntry.helper.Events.GameLoop.ReturnedToTitle += Cleanup;
 		}
 		private static void Cleanup(object sender, object ev){
 			wandTile.ResetAllScreens();
 			wandLocation.ResetAllScreens();
-			DesertWarp.ResetAllScreens();
+		}
+		private static bool WarpNetAction(GameLocation where, string[] split, Farmer who, Point tile)
+		{
+			var id = split.Length is 0 ? string.Empty : split[0];
+			ShowWarpMenu(id);
+			return true;
+		}
+		private static bool WarpToAction(GameLocation where, string[] split, Farmer who, Point tile)
+		{
+			var id = split.Length is 0 ? string.Empty : split[0];
+			DirectWarp(id);
+			return true;
 		}
 		public static void ShowWarpMenu(string exclude = "", bool consume = false)
 		{
@@ -104,6 +111,7 @@ namespace WarpNetwork
 				if (consume)
 					Game1.player.reduceActiveItemByOne();
 			});
+			return;
 		}
 		internal static void ShowFailureText()
 			=> Game1.drawObjectDialogue(Game1.parseText(ModEntry.i18n.Get("ui-fail")));
@@ -146,7 +154,7 @@ namespace WarpNetwork
 			{
 				if (Game1.getLocationFromName(loc.Location) is not null)
 				{
-					if (!Misc.IsFestivalAtLocation(loc.Location) || Misc.IsFestivalReady())
+					if (Game1.whereIsTodaysFest != loc.Location || Utility.getStartTimeOfFestival() < Game1.timeOfDay)
 					{
 						if (force || loc.Enabled)
 						{
@@ -161,21 +169,21 @@ namespace WarpNetwork
 					}
 					else
 					{
-						ModEntry.monitor.Log("Failed to warp to '" + loc.Location + "': Festival at location not ready.", LogLevel.Debug);
+						ModEntry.monitor.Log($"Failed to warp to '{loc.Location}': Festival at location not ready.", LogLevel.Debug);
 						ShowFestivalNotReady();
 						return false;
 					}
 				}
 				else
 				{
-					ModEntry.monitor.Log("Failed to warp to '" + loc.Location + "': Location with that name does not exist!", LogLevel.Error);
+					ModEntry.monitor.Log($"Failed to warp to '{loc.Location}': Location with that name does not exist!", LogLevel.Error);
 					ShowFailureText();
 					return false;
 				}
 			}
 			else
 			{
-				ModEntry.monitor.Log("Warp to '" + location + "' failed: warp network location not registered with that name", LogLevel.Warn);
+				ModEntry.monitor.Log($"Warp to '{location}' failed: warp network location not registered with that name", LogLevel.Warn);
 				ShowFailureText();
 				return false;
 			}
@@ -185,7 +193,7 @@ namespace WarpNetwork
 			if (where is CustomWarpLocation custom)
 			{
 				var name = Game1.currentLocation.NameOrUniqueName;
-				var tile = Game1.player.getTileLocationPoint();
+				var tile = Game1.player.TilePoint;
 				custom.handler.Warp();
 				if (custom.handler == returnHandler)
 				{
@@ -201,7 +209,7 @@ namespace WarpNetwork
 			if (Game1.currentLocation.Name != "Temp")
 			{
 				wandLocation.Value = Game1.currentLocation.NameOrUniqueName;
-				wandTile.Value = Game1.player.getTileLocationPoint();
+				wandTile.Value = Game1.player.TilePoint;
 			}
 			int x = where.X;
 			int y = where.Y;
@@ -217,22 +225,9 @@ namespace WarpNetwork
 				x = farmTotem.X;
 				y = farmTotem.Y;
 			}
-			if (where.Location == "Desert")
-			{
-				//desert has bus scene hardcoded. Must warp to hardcoded spot, then use obelisk patch to move the player afterwards.
-				if (!where.OverrideMapProperty)
-				{
-					DesertWarp.Value = Game1.getLocationFromName("Desert").GetMapPropertyPosition("WarpNetworkEntry", where.X, where.Y);
-				}
-				else
-				{
-					DesertWarp.Value = new Point(where.X, where.Y);
-				}
-				DoWarpEffects(() => Game1.warpFarmer("Desert", 35, 43, false));
-			}
 			if (!where.OverrideMapProperty)
 			{
-				Point coords = Game1.getLocationFromName(where.Location).GetMapPropertyPosition("WarpNetworkEntry", x, y);
+				Point coords = Game1.getLocationFromName(where.Location).GetPropertyPosition("WarpNetworkEntry", new(x, y));
 				DoWarpEffects(() => Game1.warpFarmer(where.Location, coords.X, coords.Y, false));
 			}
 			else
@@ -243,11 +238,9 @@ namespace WarpNetwork
 		private static Point GetFrontDoor(Farmer who)
 		{
 			FarmHouse home = Utility.getHomeOfFarmer(who);
-			if (!(home is null))
-			{
+			if (home is not null)
 				return home.getFrontDoorSpot();
-			}
-			return Game1.getLocationFromName("Farm").GetMapPropertyPosition("FarmHouseEntry", 64, 15);
+			return Game1.getLocationFromName("Farm").GetPropertyPosition("FarmHouseEntry", new(64, 15));
 		}
 		private static void DoWarpEffects(Action action)
 		{
@@ -263,7 +256,7 @@ namespace WarpNetwork
 					false,
 					Game1.random.NextDouble() < 0.5)
 					);
-			who.currentLocation.playSound("wand", NetAudio.SoundContext.Default);
+			who.currentLocation.playSound("wand", who.Position);
 			Game1.displayFarmer = false;
 			who.temporarilyInvincible = true;
 			who.temporaryInvincibilityTimer = -2000;
@@ -281,9 +274,10 @@ namespace WarpNetwork
 			}), 1000);
 			new Rectangle(who.GetBoundingBox().X, who.GetBoundingBox().Y, 64, 64).Inflate(192, 192);
 			int num = 0;
-			for (int index = who.getTileX() + 8; index >= who.getTileX() - 8; --index)
+			var tile = who.TilePoint;
+			for (int index = tile.X + 8; index >= tile.X - 8; --index)
 			{
-				mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite(6, new Vector2(index, who.getTileY()) * 64f, Color.White, 8, false, 50f, 0, -1, -1f, -1, 0)
+				mp.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite(6, new Vector2(index, tile.Y) * 64f, Color.White, 8, false, 50f, 0, -1, -1f, -1, 0)
 				{
 					layerDepth = 1f,
 					delayBeforeAnimationStart = num * 25,

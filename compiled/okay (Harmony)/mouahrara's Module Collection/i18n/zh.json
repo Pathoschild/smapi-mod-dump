@@ -1,0 +1,107 @@
+{
+	// 街机游戏-付费游戏
+	"ArcadeGames.PayToPlay.JunimoKart_InsertCoin": "插入硬币",
+	"ArcadeGames.PayToPlay.JunimoKart_PressAnyButton": "按下任何按钮",
+	"ArcadeGames.PayToPlay.JunimoKart_Loading": "正在加载...",
+	"ArcadeGames.PayToPlay.JunimoKart_Credit0": "信用: 0",
+	"ArcadeGames.PayToPlay.JunimoKart_Credit1": "信用: 1",
+	"ArcadeGames.PayToPlay.JunimoKart_Free": "自由",
+
+	// GMCM-截面
+	"GMCM.Sections.Tweaks&Features.Title": "调整和功能",
+	"GMCM.Sections.Tweaks&Features.Description": "本节包含的模块添加了一些小的调整和功能,旨在提高生活质量并提供功能细节.",
+	"GMCM.Sections.Additions.Title": "附加物",
+	"GMCM.Sections.Additions.Description": "此部分包含添加内容（如事件或对象）的模块,旨在引入新功能、增强游戏可玩性并提供功能详细信息.",
+	"GMCM.Sections.Overhauls.Title": "检修.",
+	"GMCM.Sections.Overhauls.Description": "本节包含对各种游戏元素进行全面修改的模块,旨在引入新功能、增强游戏可玩性并提供功能细节.",
+
+	// GMCM-模块
+	"GMCM.Modules.ArcadeGames.Title": "街机游戏",
+	"GMCM.Modules.ArcadeGames.Description": "这个模块为街机游戏增加了一些小的调整和功能..",
+	"GMCM.Modules.ArcadeGames.BackTo": "回到街机游戏",
+	"GMCM.Modules.ClintsShop.Title": "克林特的店",
+	"GMCM.Modules.ClintsShop.Description": "该模块为克林特的商店添加了一些小的调整和功能..",
+	"GMCM.Modules.ClintsShop.BackTo": "回到克林特的店里",
+	"GMCM.Modules.Crystalariums.Title": "Crystalariums",
+	"GMCM.Modules.Crystalariums.Description": "This module adds minor tweaks and features to Crystalariums.",
+	"GMCM.Modules.Crystalariums.BackTo": "Back to Crystalariums",
+	"GMCM.Modules.FarmView.Title": "农场景观",
+	"GMCM.Modules.FarmView.Description": "此模块为农场视图添加了一些小的调整和功能.",
+	"GMCM.Modules.FarmView.BackTo": "返回农场视图",
+	"GMCM.Modules.Festivals.Title": "节日",
+	"GMCM.Modules.Festivals.Description": "这个模块为节日添加了一些小的调整和功能..",
+	"GMCM.Modules.Festivals.BackTo": "回到节日.",
+	"GMCM.Modules.MarniesShop.Title": "玛妮的店",
+	"GMCM.Modules.MarniesShop.Description": "此模块为玛妮的店添加了一些小的调整和功能.\n",
+	"GMCM.Modules.MarniesShop.BackTo": "返回玛尼的商店",
+
+	// GMCM-通用-子模块
+	"GMCM.SubModules.Generic.Enabled.Title": "已启用",
+	"GMCM.SubModules.Generic.Enabled.Tooltip": "子模块是否启用.",
+
+	// GMCM-街机游戏-子模块
+	"GMCM.SubModules.KonamiCode.Title": "作弊代码",
+	"GMCM.SubModules.KonamiCode.Tooltip": "输入代码获得无限生命.",
+	"GMCM.SubModules.KonamiCode.Description": "这个子模块允许你输入作弊代码来获得无限的生命.",
+	"GMCM.SubModules.KonamiCode.AdditionalInformation": "/!\\ 在无限生命模式中,击败街机游戏的成就和特殊奖励被禁用.",
+	"GMCM.SubModules.NonRealisticLeaderboard.Title": "不现实的排行榜",
+	"GMCM.SubModules.NonRealisticLeaderboard.Tooltip": "从排行榜中删除同一玩家的多个高分.",
+	"GMCM.SubModules.NonRealisticLeaderboard.Description": "该子模块从排行榜中删除同一玩家的多个高分.",
+	"GMCM.SubModules.PayToPlay.Title": "付费游戏",
+	"GMCM.SubModules.PayToPlay.Tooltip": "付费玩街机游戏.",
+	"GMCM.SubModules.PayToPlay.Description": "此子模块需要游戏币才能玩街机游戏.",
+	"GMCM.SubModules.PayToPlay.CoinPerJotPKGame.Title": "每个草原之王游戏需要的硬币",
+	"GMCM.SubModules.PayToPlay.CoinPerJotPKGame.Tooltip": "玩草原之王（JOTPK）游戏所需的金币数量（$）.",
+	"GMCM.SubModules.PayToPlay.CoinPerJKGame.Title": "每个祝你魔卡丁车游戏需要的游戏币",
+	"GMCM.SubModules.PayToPlay.CoinPerJKGame.Tooltip": "玩祝你魔卡丁车（JK）游戏所需的金币数（$）.",
+
+	// GMCM-克林特车间-子模块
+	"GMCM.SubModules.GeodesAutoProcess.Title": "晶洞自动处理",
+	"GMCM.SubModules.GeodesAutoProcess.Tooltip": "自动快速处理多个晶洞.",
+	"GMCM.SubModules.GeodesAutoProcess.Description": "此子模块允许您自动快速处理多个晶洞.",
+	"GMCM.SubModules.GeodesAutoProcess.SpeedMultiplier.Title": "处理速度倍增器",
+	"GMCM.SubModules.GeodesAutoProcess.SpeedMultiplier.Tooltip": "用于调节处理速度的乘法器.",
+	"GMCM.SubModules.SimultaneousServices.Title": "同时服务",
+	"GMCM.SubModules.SimultaneousServices.Tooltip": "即使在升级工具时,也要对晶洞进行加工和处理.",
+	"GMCM.SubModules.SimultaneousServices.Description": "此子模块允许您购买和处理晶洞,即使在升级工具时也是如此..",
+
+	// GMCM - Crystalariums - Sub-modules
+	"GMCM.SubModules.SafeReplacement.Title": "Safe replacement",
+	"GMCM.SubModules.SafeReplacement.Tooltip": "Automatically retrieves the content of a crystalarium when you insert a new one",
+	"GMCM.SubModules.SafeReplacement.Description": "This sub-module automatically retrieves the content of a crystalarium when you insert a new one.",
+
+	// GMCM-农场视图-子模块
+	"GMCM.SubModules.FastScrolling.Title": "快速滚动",
+	"GMCM.SubModules.FastScrolling.Tooltip": "在建造、移动、粉刷或摧毁建筑物以及购买或移动农场动物时,滚动速度更快.",
+	"GMCM.SubModules.FastScrolling.Description": "此子模块允许您在建造、移动、绘画或破坏建筑物以及购买或移动农场动物时更快地滚动.",
+	"GMCM.SubModules.FastScrolling.SpeedMultiplier.Title": "滚动速度乘数.",
+   "GMCM.Submodules.FastScrolling.SpeedMultiplier.Tooltip": "调整滚动速度的乘数.",
+	"GMCM.SubModules.Zoom.Title": "变焦",
+	"GMCM.SubModules.Zoom.Tooltip": "在建造、移动、粉刷或毁坏建筑物以及购买或移动农场动物时放大和缩小.",
+	"GMCM.SubModules.Zoom.Description": "该子模块允许您在建造、移动、粉刷或破坏建筑物以及购买或移动农场动物时进行放大和缩小.",
+	"GMCM.SubModules.Zoom.SecondaryZoomInKey.Title": "辅助放大键.",
+	"GMCM.SubModules.Zoom.SecondaryZoomInKey.Tooltip": "除了鼠标向上滚动之外,还有一个用于放大的辅助键.",
+	"GMCM.SubModules.Zoom.SecondaryZoomOutKey.Title": "辅助缩小键",
+	"GMCM.SubModules.Zoom.SecondaryZoomOutKey.Tooltip": "除了鼠标向下滚动外,还有一个辅助键用于缩小.",
+	"GMCM.SubModules.Zoom.SpeedMultiplier.Title": "缩放速度倍增器",
+	"GMCM.SubModules.Zoom.SpeedMultiplier.Tooltip": "用于调整缩放速度的倍增器.",
+
+	// GMCM-农场视图-子模块
+	"GMCM.SubModules.EndTime.Title": "结束时间",
+	"GMCM.SubModules.EndTime.Tooltip": "在节日结束的时候回家..",
+	"GMCM.SubModules.EndTime.Description": "这个子模块允许你在节日结束的时候回家..",
+	"GMCM.SubModules.EndTime.AdditionalInformation": "节日结束时间由到达结束时间与节日持续时间之和与凌晨1点之间的最小值确定.\n\n公式为:MIN（1AM,ArrivalEndTime+FestivalDuration）.\n\n例如,鸡蛋节的到达结束时间为2PM.考虑到默认持续时间为2小时,节日结束时间为下午4点.",
+	"GMCM.SubModules.EndTime.AdditionalTime.Title": "持续时间（小时）",
+	"GMCM.SubModules.EndTime.AdditionalTime.Tooltip": "节日持续时间,与到达结束时间相加得到节日结束时间.",
+
+	// GMCM-动物-子模块
+	"GMCM.SubModules.AnimalPurchase.Title": "动物购买",
+	"GMCM.SubModules.AnimalPurchase.Tooltip": "连续购买几只动物.",
+	"GMCM.SubModules.AnimalPurchase.Description": "此子模块允许您连续购买多只动物.",
+
+	// 控制台命令
+	"ConsoleCommands.NoSaveLoaded": "必须加载保存才能运行此命令.",
+	"ConsoleCommands.NotMasterplayer": "您必须是MasterPlayer才能运行此命令.",
+	"ConsoleCommands.DisableModulesSuccess": "已成功禁用模块.",
+	"ConsoleCommands.CompleteUninstallation": "要完成卸载,请保存游戏并从{{modsFolder}}文件夹中删除{{modName}}."
+}

@@ -1,0 +1,134 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/cl4r3/Halloween-Mod-Jam-2023
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "LogName": "Data for new treats",
+      "Action": "EditData",
+      "Target": "Mods/TricksAndTreats.Treats",
+      "Entries": {
+        /*
+        "(Treat Name)": {
+          "HalloweenOnly": false, // If false, can only give this item to villagers on Spirit's Eve
+          "Universal": "love", // Optional. Valid values are love, neutral, or hate. Will override any other taste info listed below
+          // Valid flavors: "sweet", "sour", "salty", "hot", "gourmet", "candy", "healthy", "joja", "fatty"
+          "Flavors": [ "sweet", "joja" ], // Optional. Flavors associated with this item
+          // No Universal or Flavors -> universal neutral
+        },
+        */
+
+        // Vanilla items
+        "Cookie": {
+          "HalloweenOnly": false,
+          "Flavors": [ "sweet", ],
+        },
+        "Magic Rock Candy": {
+          "HalloweenOnly": false,
+          "Universal": "love",
+        },
+        "Maple Bar": {
+          "HalloweenOnly": false,
+          "Flavors": [ "sweet", ],
+        },
+        "Miner's Treat": {
+          "HalloweenOnly": false,
+          "Flavors": [ "candy", ],
+        },
+        "Strange Bun": {
+          "HalloweenOnly": false,
+          "Flavors": [ "salty", "sour", "hot" ],
+        },
+
+        // Mod items
+    		"TaT.ablaze-orbs": {
+          "HalloweenOnly": true,
+          "Flavors": [ "candy", "hot", ],
+        },
+        "TaT.batsdrop": {
+          "HalloweenOnly": true,
+          "Universal": "love",
+        },
+        "TaT.braincell-gum": {
+          "HalloweenOnly": true,
+          "Flavors": [ "candy", "sweet", ],
+        },
+    		"TaT.candied-apple": {
+          "HalloweenOnly": true,
+          "Flavors": [ "healthy", "sweet", ],
+        },
+        "TaT.candied-bacon-stick": {
+          "HalloweenOnly": true,
+          "Flavors": [ "fatty", "salty", ],
+        },
+        "TaT.candy-corn": {
+          "HalloweenOnly": true,
+          "Flavors": [ "candy", ],
+        },
+        "TaT.cottonweb-candy": {
+          "HalloweenOnly": true,
+          "Flavors": [ "candy", "sweet", ],
+        },
+        "TaT.dino-cookie": {
+          "HalloweenOnly": true,
+          "Flavors": [ "hot" ],
+        },
+    		"TaT.eye-candy": {
+          "HalloweenOnly": true,
+          "Flavors": [ "candy", "sour", ],
+        },
+        "TaT.ghost-meringue": {
+          "HalloweenOnly": true,
+          "Flavors": [ "gourmet", "sweet" ],
+        },
+        "TaT.gingerbread-tombstone": {
+          "HalloweenOnly": true,
+          "Flavors": [ "hot", "sweet", ],
+        },
+    		"TaT.joja-cane": {
+          "HalloweenOnly": true,
+          "Flavors": [ "candy", "joja", "sweet", ],
+        },
+    		"TaT.joja-gummies": {
+          "HalloweenOnly": true,
+          "Flavors": [ "candy", "joja", "sour", ],
+        },
+        "TaT.licorice-swirl": {
+          "HalloweenOnly": true,
+          "Flavors": [ "healthy", "sweet", ],
+        },
+    		"TaT.luxurious-truffle": {
+          "HalloweenOnly": true,
+          "Flavors": [ "gourmet", "salty", "sweet", ],
+        },
+        "TaT.peanut-butter-eyecup": {
+          "HalloweenOnly": true,
+          "Flavors": [ "salty", "sweet", ],
+        },
+        "TaT.raisins": {
+          "HalloweenOnly": true,
+          "Universal": "hate",
+        },
+        "TaT.twisty-taffy": {
+          "HalloweenOnly": true,
+          "Flavors": [ "candy", ],
+        },
+        "TaT.vanilla-wafer": {
+          "HalloweenOnly": true,
+          "Flavors": [ "gourmet", "sweet", ],
+        },
+    		"TaT.witch-cauldron": {
+          "HalloweenOnly": true,
+          "Flavors": [ "sour", ],
+        },
+      },
+    },
+  ]
+}

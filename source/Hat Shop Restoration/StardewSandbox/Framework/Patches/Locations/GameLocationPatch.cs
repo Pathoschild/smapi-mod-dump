@@ -9,14 +9,13 @@
 *************************************************/
 
 using HarmonyLib;
-using StardewModdingAPI;
-using HatShopRestoration.Framework.Patches;
 using HatShopRestoration.Framework.UI;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
-using StardewValley.Characters;
+using StardewValley.GameData.Shops;
+using StardewValley.Internal;
 using StardewValley.Locations;
-using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -133,14 +132,14 @@ namespace HatShopRestoration.Framework.Patches.Locations
             }
             else if (questionAndAnswer == "carpenter_RepairHatShop_Answer_Yes")
             {
-                if (Game1.player.Money >= 10000 && Game1.player.hasItemInInventory(388, 250) && Game1.player.hasItemInInventory(428, 10))
+                if (Game1.player.Money >= 10000 && Game1.player.Items.ContainsId("(O)388", 250) && Game1.player.Items.ContainsId("(O)428", 10))
                 {
                     ModEntry.SetActiveSpecialProjectId("RepairHatShop");
 
                     (Game1.getLocationFromName("Town") as Town).daysUntilCommunityUpgrade.Value = 3;
                     Game1.player.Money -= 10000;
-                    Game1.player.removeItemsFromInventory(388, 250);
-                    Game1.player.removeItemsFromInventory(428, 10);
+                    Game1.player.Items.ReduceId("(O)388", 250);
+                    Game1.player.Items.ReduceId("(O)428", 10);
                     Game1.getCharacterFromName("Robin").setNewDialogue(Game1.content.LoadString("Data\\ExtraDialogue:Robin_HouseUpgrade_Accepted"));
                     Game1.drawDialogue(Game1.getCharacterFromName("Robin"));
                     ModEntry.multiplayer.globalChatInfoMessage("RepairHatShop", Game1.player.Name, Lexicon.getPossessivePronoun(Game1.player.IsMale));
@@ -149,11 +148,11 @@ namespace HatShopRestoration.Framework.Patches.Locations
                 {
                     Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\UI:NotEnoughMoney3"));
                 }
-                else if (Game1.player.hasItemInInventory(388, 250) is false)
+                else if (Game1.player.Items.ContainsId("(O)388", 250) is false)
                 {
                     Game1.drawObjectDialogue(ModEntry.i18n.Get("dialogue.chat.missing_wood"));
                 }
-                else if (Game1.player.hasItemInInventory(428, 10) is false)
+                else if (Game1.player.Items.ContainsId("(O)428", 10) is false)
                 {
                     Game1.drawObjectDialogue(ModEntry.i18n.Get("dialogue.chat.missing_cloth"));
                 }
@@ -161,12 +160,16 @@ namespace HatShopRestoration.Framework.Patches.Locations
             else if (questionAndAnswer == "mouseDialogue_mouseShop")
             {
                 __result = true;
-                Game1.activeClickableMenu = new ShopMenu(Utility.getHatStock(), 0, "HatMouse");
+                Utility.TryOpenShopMenu("HatMouse", "HatMouse");
             }
             else if (questionAndAnswer == "mouseDialogue_mouseFashionSense")
             {
                 __result = true;
-                Game1.activeClickableMenu = new MouseShopMenu(Utility.getHatStock());
+
+                if (Game1.content.Load<Dictionary<string, ShopData>>("Data\\Shops").TryGetValue("HatMouse", out var shop))
+                {
+                    Game1.activeClickableMenu = new MouseShopMenu(ShopBuilder.GetShopStock("HatMouse", shop));
+                }
             }
             else if (questionAndAnswer == "mouseDialogue_leave")
             {

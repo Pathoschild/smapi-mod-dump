@@ -6,9 +6,11 @@ mods:
    Gift Taste Helper Continued
 
 latest commit:
-   commit aa7807e185269b822cf25b5d35c8af16f8e67dc2
-   Author: Just-Chaldea <contact@chaldea.gg>
-   Date:   Mon Oct 23 15:17:37 2023 +0100
+   commit 7b77d0710c4d1dcce65a5a1abeebfa97d00b68d8
+   Author: Chaldea <89628331+Just-Chaldea@users.noreply.github.com>
+   Date:   Sun Nov 5 23:45:19 2023 +0000
    
-       Fix UI scale and zoom level adversely affecting hover positioning in the social list.
+       Merge pull request #3 from nguyenquyhy/column
+       
+       Implement columns of items
    

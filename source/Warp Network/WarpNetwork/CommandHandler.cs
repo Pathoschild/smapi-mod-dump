@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using AeroCore;
 using StardewModdingAPI;
 using StardewValley;
 using System;
@@ -19,18 +18,9 @@ using WarpNetwork.models;
 
 namespace WarpNetwork
 {
-	[ModInit]
 	class CommandHandler
 	{
-		internal static void Init()
-		{
-			ModEntry.helper.ConsoleCommands.Add(
-				"warpnet", 
-				"Master command for Warp Network mod. Use 'warpnet' or 'warpnet help' to see a list of subcommands.", 
-				Main);
-		}
-
-		private static readonly Dictionary<string, string> CmdDescs = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+		private static readonly Dictionary<string, string> CmdDescs = new (StringComparer.InvariantCultureIgnoreCase)
 		{
 			{"help", "Displays a list of commands and their descriptions. Type 'warpnet help <subcommand>' to view help for a specific command."},
 			{"tp", "Teleport to a registered destination."},
@@ -42,7 +32,7 @@ namespace WarpNetwork
 			{"debug", "Outputs diagnostic information."},
 			{"objects", "Lists registered warp objects."}
 		};
-		private static readonly Dictionary<string, string> CmdHelp = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase)
+		private static readonly Dictionary<string, string> CmdHelp = new (StringComparer.InvariantCultureIgnoreCase)
 		{
 			{"help", "Type 'warpnet help <subcommand>' to view help for a specific command, or leave empty to show a list of commands."},
 			{"tp", "Takes one argument, the id of the warp location. Teleports you to that destination."},
@@ -54,7 +44,7 @@ namespace WarpNetwork
 			{"debug", "Outputs diagnostic information."},
 			{"objects", "Lists registered warp objects."}
 		};
-		private static readonly Dictionary<string, Action<string[]>> Cmds = new Dictionary<string, Action<string[]>>(StringComparer.InvariantCultureIgnoreCase)
+		private static readonly Dictionary<string, Action<string[]>> Cmds = new (StringComparer.InvariantCultureIgnoreCase)
 		{
 			{"help", ShowHelp},
 			{"tp", TP},
@@ -159,8 +149,8 @@ namespace WarpNetwork
 			StringBuilder builder = new();
 			builder.AppendLine("\"warpid\": {");
 			builder.Append("\t\"Location\": \"").Append(loc.Name).AppendLine("\",");
-			builder.Append("\t\"X\": ").Append(who.getTileX()).AppendLine(",");
-			builder.Append("\t\"Y\": ").Append(who.getTileY()).AppendLine(",");
+			builder.Append("\t\"X\": ").Append(who.TilePoint.X).AppendLine(",");
+			builder.Append("\t\"Y\": ").Append(who.TilePoint.Y).AppendLine(",");
 			builder.AppendLine("\t\"Enabled\": true,");
 			builder.AppendLine("\t\"Label\": \"label\"");
 			builder.Append('}');
@@ -199,8 +189,7 @@ namespace WarpNetwork
 			StringBuilder sb = new();
 			sb.AppendLine();
 			sb.Append("Location: ").AppendLine(Game1.player.currentLocation.Name);
-			sb.Append("Position: ").AppendLine(Game1.player.getTileLocationPoint().ToString());
-			sb.Append("DesertWarp: ").AppendLine(WarpHandler.DesertWarp.Value.ToString());
+			sb.Append("Position: ").AppendLine(Game1.player.TilePoint.ToString());
 			sb.Append("WarpNetworkEntry: ").AppendLine(Game1.player.currentLocation.getMapProperty("WarpNetworkEntry"));
 			sb.Append("Is Multiplayer: ").AppendLine(Game1.IsMultiplayer.ToString());
 			sb.Append("Is Host: ").AppendLine(Game1.IsMasterGame.ToString());

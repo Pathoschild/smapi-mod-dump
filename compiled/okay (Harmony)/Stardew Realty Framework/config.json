@@ -1,10 +1,11 @@
 {
   "UseParallel": false,
   "enableCrows": true,
+  "enableDebug": false,
   "useBackwoodsEntrance": true,
   "AlwaysShowMagicMenu": true,
   "SkipRequirements": false,
-  "BuildCustomOnHomeFarm": true,
+  "BuildCustomOnHomeFarm": false,
   "WarpRoomKey": "Z + LeftControl, Z + RightControl",
   "useNorthWestEntrance": true,
   "useSouthWestEntrance": true,

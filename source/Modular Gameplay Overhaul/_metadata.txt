@@ -6,9 +6,9 @@ mods:
    Modular Gameplay Overhaul
 
 latest commit:
-   commit 4500dc29dcb9edff4e8fcc43e6ecfdc76e64822c
+   commit 1c606f58f507d766811a8093eccedb23e40eeaea
    Author: Mat L <2775342-daleao@users.noreply.gitlab.com>
-   Date:   Sat Oct 28 11:47:30 2023 -0300
+   Date:   Tue Nov 28 19:18:55 2023 -0300
    
-       Update README.md
+       4.1.6-Revision
    

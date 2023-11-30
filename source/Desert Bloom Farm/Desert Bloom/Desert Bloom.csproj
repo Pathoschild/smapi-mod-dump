@@ -13,6 +13,7 @@
   <ItemGroup>
     <Reference Include="Unlockable Bundles">
       <HintPath>D:\SteamLibrary\steamapps\common\Stardew Valley\Mods\Unlockable Bundles\Unlockable Bundles.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
 

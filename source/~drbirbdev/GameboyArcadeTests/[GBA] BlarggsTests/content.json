@@ -8,50 +8,41 @@
 **
 *************************************************/
 
-[
-    {
+{
+    "cgb_sound": {
         "Name": "cgb_sound",
-        "ID": "cgb_sound",
         "FilePath": "assets/cgb_sound.gb"
     },
-    {
+    "cpu_instrs": {
         "Name": "cpu_instrs",
-        "ID": "cpu_instrs",
         "FilePath": "assets/cpu_instrs.gb"
     },
-    {
+    "dmg_sound": {
         "Name": "dmg_sound",
-        "ID": "dmg_sound",
         "FilePath": "assets/dmg_sound.gb"
     },
-    {
+    "halt_bug": {
         "Name": "halt_bug",
-        "ID": "halt_bug",
         "FilePath": "assets/halt_bug.gb"
     },
-    {
+    "instr_timing": {
         "Name": "instr_timing",
-        "ID": "instr_timing",
         "FilePath": "assets/instr_timing.gb"
     },
-    {
+    "interrupt_time": {
         "Name": "interrupt_time",
-        "ID": "interrupt_time",
         "FilePath": "assets/interrupt_time.gb"
     },
-    {
+    "mem_timing": {
         "Name": "mem_timing",
-        "ID": "mem_timing",
         "FilePath": "assets/mem_timing.gb"
     },
-    {
+    "mem_timing_2": {
         "Name": "mem_timing_2",
-        "ID": "mem_timing_2",
         "FilePath": "assets/mem_timing_2.gb"
     },
-    {
+    "oam_bug": {
         "Name": "oam_bug",
-        "ID": "oam_bug",
         "FilePath": "assets/oam_bug.gb"
     }
-]
+}

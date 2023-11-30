@@ -15,11 +15,11 @@ namespace CoreBoy.gpu
         public static TileAttributes Empty { get; }
         private static readonly TileAttributes[] Attributes;
         private readonly int _value;
-        
+
         static TileAttributes()
         {
             Attributes = new TileAttributes[256];
-            
+
             for (var i = 0; i < 256; i++)
             {
                 Attributes[i] = new TileAttributes(i);
@@ -28,13 +28,13 @@ namespace CoreBoy.gpu
             Empty = Attributes[0];
         }
 
-        private TileAttributes(int value) => _value = value;
+        private TileAttributes(int value) => this._value = value;
         public static TileAttributes ValueOf(int value) => Attributes[value];
-        public bool IsPriority() => (_value & (1 << 7)) != 0;
-        public bool IsYFlip() => (_value & (1 << 6)) != 0;
-        public bool IsXFlip() => (_value & (1 << 5)) != 0;
-        public GpuRegister GetDmgPalette() => (_value & (1 << 4)) == 0 ? GpuRegister.Obp0 : GpuRegister.Obp1;
-        public int GetBank() => (_value & (1 << 3)) == 0 ? 0 : 1;
-        public int GetColorPaletteIndex() => _value & 0x07;
+        public bool IsPriority() => (this._value & (1 << 7)) != 0;
+        public bool IsYFlip() => (this._value & (1 << 6)) != 0;
+        public bool IsXFlip() => (this._value & (1 << 5)) != 0;
+        public GpuRegister GetDmgPalette() => (this._value & (1 << 4)) == 0 ? GpuRegister.Obp0 : GpuRegister.Obp1;
+        public int GetBank() => (this._value & (1 << 3)) == 0 ? 0 : 1;
+        public int GetColorPaletteIndex() => this._value & 0x07;
     }
 }

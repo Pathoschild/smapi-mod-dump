@@ -15,7 +15,6 @@ namespace DaLion.Overhaul.Modules.Combat.Events.GameLoop.SaveLoaded;
 using System.Linq;
 using DaLion.Overhaul.Modules.Combat.Enums;
 using DaLion.Overhaul.Modules.Combat.Events.GameLoop.DayStarted;
-using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Shared.Constants;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions.Collections;
@@ -45,18 +44,7 @@ internal sealed class CombatSaveLoadedEvent : SaveLoadedEvent
         CombatModule.State.ContainerDropAccumulator = player.Read(DataKeys.ContainerDropAccumulator, 0.05);
         CombatModule.State.MonsterDropAccumulator = player.Read<double>(DataKeys.MonsterDropAccumulator);
 
-        Utility.iterateAllItems(item =>
-        {
-            switch (item)
-            {
-                case MeleeWeapon weapon when weapon.ShouldHaveIntrinsicEnchantment():
-                    weapon.AddIntrinsicEnchantments();
-                    break;
-                case Slingshot slingshot when slingshot.ShouldHaveIntrinsicEnchantment():
-                    slingshot.AddIntrinsicEnchantments();
-                    break;
-            }
-        });
+        CombatModule.ConvertAllStabbingSwords();
 
         // patch clint event
         if (!string.IsNullOrEmpty(player.Read(DataKeys.BlueprintsFound)) && player.canUnderstandDwarves)
@@ -91,6 +79,21 @@ internal sealed class CombatSaveLoadedEvent : SaveLoadedEvent
             else
             {
                 CombatModule.State.HeroQuest = new HeroQuest();
+                if (!Context.IsMainPlayer)
+                {
+                    if (Game1.MasterPlayer.mailReceived.Contains("pamHouseUpgrade") &&
+                        player.Read<int>(Virtue.Generosity.Name) < 5e5)
+                    {
+                        player.Increment(Virtue.Generosity.Name, 5e5);
+                        CombatModule.State.HeroQuest.UpdateTrialProgress(Virtue.Generosity);
+                    }
+                    else if (Game1.MasterPlayer.mailReceived.Contains("communityUpgradeShortcuts") &&
+                             player.Read<int>(Virtue.Generosity.Name) < 3e5)
+                    {
+                        player.Increment(Virtue.Generosity.Name, 3e3);
+                        CombatModule.State.HeroQuest.UpdateTrialProgress(Virtue.Generosity);
+                    }
+                }
             }
         }
         else if (player.Read<HeroQuest.QuestState>(DataKeys.VirtueQuestState) == HeroQuest.QuestState.Completed)
@@ -105,7 +108,7 @@ internal sealed class CombatSaveLoadedEvent : SaveLoadedEvent
         if (Game1.options.useLegacySlingshotFiring)
         {
             CombatModule.Config.BullseyeReplacesCursor = false;
-            ModHelper.WriteConfig(ModEntry.Config);
+            ModHelper.WriteConfig(Config);
             Log.W(
                 "[CMBT]: Bullseye cursor settings is not compatible with pull-back firing mode. Switch to hold-and-release to use this option.");
         }

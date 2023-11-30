@@ -23,12 +23,12 @@ namespace CoreBoy.cpu.opcode
 
         public Opcode(OpcodeBuilder builder)
         {
-            Value = builder.GetOpcode();
-            Label = builder.GetLabel();
-            Ops = builder.GetOps();
-            Length = Ops.Count <= 0 ? 0 : Ops.Max(o => o.OperandLength());
+            this.Value = builder.GetOpcode();
+            this.Label = builder.GetLabel();
+            this.Ops = builder.GetOps();
+            this.Length = this.Ops.Count <= 0 ? 0 : this.Ops.Max(o => o.OperandLength());
         }
 
-        public override string ToString() => $"{Value:X2} {Label}";
+        public override string ToString() => $"{this.Value:X2} {this.Label}";
     }
 }

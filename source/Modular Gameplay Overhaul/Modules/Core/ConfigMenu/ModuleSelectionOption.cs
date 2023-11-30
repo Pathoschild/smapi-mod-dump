@@ -30,7 +30,6 @@ internal class ModuleSelectionOption : MultiCheckboxOption<OverhaulModule>
         checkboxes: EnumerateModules().Skip(1).ToArray(),
         getCheckboxValue: module => module._ShouldEnable,
         setCheckboxValue: (module, value) => module._ShouldEnable = value,
-        getColumnsFromWidth: _ => 2,
         getCheckboxLabel: module => module.DisplayName,
         getCheckboxTooltip: module => module.Description,
         onValueUpdated: (module, newValue) =>
@@ -52,8 +51,10 @@ internal class ModuleSelectionOption : MultiCheckboxOption<OverhaulModule>
     /// <inheritdoc />
     protected override void AfterSave()
     {
-        if (this.updatedValues.Any())
+        if (this.updatedValues.Any() || Config.LaunchInitialSetup)
         {
+            Config.LaunchInitialSetup = false;
+            ModHelper.WriteConfig(Config);
             this._reloadMenu();
         }
 

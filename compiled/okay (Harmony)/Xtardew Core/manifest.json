@@ -1,0 +1,16 @@
+{
+  "Name": "Xtardew Core",
+  "Author": "hixega",
+  "Version": "0.3.0",
+  "Description": "Core event framework for Xtardew mods.",
+  "UniqueID": "hixega.XtardewCore",
+  "EntryDll": "XtardewCore.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:19096"],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

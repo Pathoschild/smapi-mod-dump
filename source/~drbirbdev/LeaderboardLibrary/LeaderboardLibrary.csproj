@@ -1,18 +1,25 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\common-nospace.targets" />
-  <ItemGroup>
-    <Reference Include="AWSSDK.Core">
-        <HintPath>.\Libraries\AWSSDK.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.CognitoIdentity">
-        <HintPath>.\Libraries\AWSSDK.CognitoIdentity.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.SecurityToken">
-        <HintPath>.\Libraries\AWSSDK.SecurityToken.dll</HintPath>
-    </Reference>
-    <Reference Include="AWSSDK.DynamoDBv2">
-        <HintPath>.\Libraries\AWSSDK.DynamoDBv2.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+    <Import Project="..\common.targets" />
+
+    <PropertyGroup>
+        <Description>A library for creating and managing leaderboards.</Description>
+        <Version>0.1.10</Version>
+        <UpdateKeys>Nexus:15102</UpdateKeys>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Reference Include="AWSSDK.Core">
+            <HintPath>.\Libraries\AWSSDK.Core.dll</HintPath>
+        </Reference>
+        <Reference Include="AWSSDK.CognitoIdentity">
+            <HintPath>.\Libraries\AWSSDK.CognitoIdentity.dll</HintPath>
+        </Reference>
+        <Reference Include="AWSSDK.SecurityToken">
+            <HintPath>.\Libraries\AWSSDK.SecurityToken.dll</HintPath>
+        </Reference>
+        <Reference Include="AWSSDK.DynamoDBv2">
+            <HintPath>.\Libraries\AWSSDK.DynamoDBv2.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 
 </Project>

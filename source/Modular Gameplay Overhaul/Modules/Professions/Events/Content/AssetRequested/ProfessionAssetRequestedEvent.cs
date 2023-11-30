@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Professions.Events.Content.AssetRequested;
 using System.Collections.Generic;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Integrations;
+using DaLion.Shared.Constants;
 using DaLion.Shared.Content;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions;
@@ -42,6 +43,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
         this.Edit("Data/mail", new AssetEditor(EditMailData));
         this.Edit("LooseSprites/Cursors", new AssetEditor(EditCursorsLooseSprites));
         this.Edit("TileSheets/BuffsIcons", new AssetEditor(EditBuffsIconsTileSheets));
+        this.Edit("Strings/UI", new AssetEditor(EditUiStrings));
 
         this.Provide(
             $"{Manifest.UniqueID}/HudPointer",
@@ -96,7 +98,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.1f,
-                        ItemID = 378,
+                        ItemID = ObjectIds.CopperOre,
                         MinQuantity = 10,
                         MaxQuantity = 15,
                     },
@@ -104,7 +106,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.01f,
-                        ItemID = 768,
+                        ItemID = ObjectIds.SolarEssence,
                         MinQuantity = 10,
                         MaxQuantity = 20,
                     },
@@ -112,7 +114,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 1.0f,
-                        ItemID = 812,
+                        ItemID = ObjectIds.Roe,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -120,7 +122,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.8f,
-                        ItemID = 812,
+                        ItemID = ObjectIds.Roe,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -140,7 +142,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.05f,
-                        ItemID = 536,
+                        ItemID = ObjectIds.FrozenGeode,
                         MinQuantity = 5,
                         MaxQuantity = 10,
                     },
@@ -148,7 +150,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.075f,
-                        ItemID = 84,
+                        ItemID = ObjectIds.FrozenTear,
                         MinQuantity = 5,
                         MaxQuantity = 10,
                     },
@@ -156,7 +158,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.1f,
-                        ItemID = 380,
+                        ItemID = ObjectIds.IronOre,
                         MinQuantity = 10,
                         MaxQuantity = 10,
                     },
@@ -164,7 +166,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.01f,
-                        ItemID = 72,
+                        ItemID = ObjectIds.Diamond,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -172,7 +174,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 1.0f,
-                        ItemID = 812,
+                        ItemID = ObjectIds.Roe,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -180,7 +182,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.8f,
-                        ItemID = 812,
+                        ItemID = ObjectIds.Roe,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -200,7 +202,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.05f,
-                        ItemID = 537,
+                        ItemID = ObjectIds.MagmaGeode,
                         MinQuantity = 5,
                         MaxQuantity = 10,
                     },
@@ -208,7 +210,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.075f,
-                        ItemID = 82,
+                        ItemID = ObjectIds.FireQuartz,
                         MinQuantity = 5,
                         MaxQuantity = 10,
                     },
@@ -216,7 +218,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.1f,
-                        ItemID = 384,
+                        ItemID = ObjectIds.GoldOre,
                         MinQuantity = 10,
                         MaxQuantity = 10,
                     },
@@ -224,7 +226,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.033f,
-                        ItemID = 286,
+                        ItemID = ObjectIds.CherryBomb,
                         MinQuantity = 1,
                         MaxQuantity = 3,
                     },
@@ -232,7 +234,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.02f,
-                        ItemID = 441,
+                        ItemID = ObjectIds.ExplosiveAmmo,
                         MinQuantity = 1,
                         MaxQuantity = 3,
                     },
@@ -240,7 +242,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.01f,
-                        ItemID = 288,
+                        ItemID = ObjectIds.MegaBomb,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -248,7 +250,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 1.0f,
-                        ItemID = 812,
+                        ItemID = ObjectIds.Roe,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -256,7 +258,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.8f,
-                        ItemID = 812,
+                        ItemID = ObjectIds.Roe,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -276,7 +278,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.1f,
-                        ItemID = 386,
+                        ItemID = ObjectIds.IridiumOre,
                         MinQuantity = 5,
                         MaxQuantity = 10,
                     },
@@ -284,7 +286,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 1.0f,
-                        ItemID = 812,
+                        ItemID = ObjectIds.Roe,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -292,7 +294,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.8f,
-                        ItemID = 812,
+                        ItemID = ObjectIds.Roe,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -312,23 +314,15 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.1f,
-                        ItemID = 909,
+                        ItemID = ObjectIds.RadioactiveOre,
                         MinQuantity = 5,
                         MaxQuantity = 15,
                     },
                     new()
                     {
                         RequiredPopulation = 0,
-                        Chance = 0.02f,
-                        ItemID = 910,
-                        MinQuantity = 1,
-                        MaxQuantity = 5,
-                    },
-                    new()
-                    {
-                        RequiredPopulation = 0,
                         Chance = 1.0f,
-                        ItemID = 812,
+                        ItemID = ObjectIds.Roe,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -336,7 +330,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                     {
                         RequiredPopulation = 0,
                         Chance = 0.8f,
-                        ItemID = 812,
+                        ItemID = ObjectIds.Roe,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -354,8 +348,64 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
                 {
                     new()
                     {
+                        RequiredPopulation = 0,
                         Chance = 1f,
-                        ItemID = 812, // roe
+                        ItemID = ObjectIds.SolarEssence,
+                        MinQuantity = 1,
+                        MaxQuantity = 1,
+                    },
+                    new()
+                    {
+                        RequiredPopulation = 0,
+                        Chance = 0.8f,
+                        ItemID = ObjectIds.SolarEssence,
+                        MinQuantity = 1,
+                        MaxQuantity = 1,
+                    },
+                },
+                RequiredTags = new List<string>
+                {
+                    "item_tui",
+                },
+                SpawnTime = 999999,
+            },
+            new()
+            {
+                PopulationGates = null,
+                ProducedItems = new List<FishPondReward>
+                {
+                    new()
+                    {
+                        RequiredPopulation = 0,
+                        Chance = 1f,
+                        ItemID = ObjectIds.VoidEssence,
+                        MinQuantity = 1,
+                        MaxQuantity = 1,
+                    },
+                    new()
+                    {
+                        RequiredPopulation = 0,
+                        Chance = 0.8f,
+                        ItemID = ObjectIds.VoidEssence,
+                        MinQuantity = 1,
+                        MaxQuantity = 1,
+                    },
+                },
+                RequiredTags = new List<string>
+                {
+                    "item_la",
+                },
+                SpawnTime = 999999,
+            },
+            new()
+            {
+                PopulationGates = null,
+                ProducedItems = new List<FishPondReward>
+                {
+                    new()
+                    {
+                        Chance = 1f,
+                        ItemID = ObjectIds.Roe,
                         MinQuantity = 1,
                         MaxQuantity = 1,
                     },
@@ -430,6 +480,13 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
 
         var targetArea = new Rectangle(0, 48, 96, 32);
         editor.PatchImage(ModHelper.ModContent.Load<Texture2D>("assets/sprites/interface/buffs"), null, targetArea);
+    }
+
+    /// <summary>Patches "Farmer Level" text in perfection tracker.</summary>
+    private static void EditUiStrings(IAssetData asset)
+    {
+        var data = asset.AsDictionary<string, string>().Data;
+        data["PT_FarmerLevel"] = I18n.Ui_Pt_FarmerLevel();
     }
 
     #endregion editor callbacks

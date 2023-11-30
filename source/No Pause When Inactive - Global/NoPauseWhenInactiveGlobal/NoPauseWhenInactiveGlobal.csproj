@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Title>No Pause When Inactive - Global</Title>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyName>NoPauseWhenInactiveGlobal</AssemblyName>
+    <Product>$(AssemblyName)</Product>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RootNamespace>NoPauseWhenInactiveGlobal</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Neko Boi Nick</Authors>
+    <Company>$(Authors)</Company>
+    <Copyright>Copyright (c) 2023 Neko Boi Nick</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>$(AssemblyVersion)</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>Disables pausing the game when the window is inactive globally, instead of per save.</Description>
+    <PackageProjectUrl>https://github.com/thakyz/StardewValleyMods/NoPauseWhenInactiveGlobal</PackageProjectUrl>
+    <PackageReadmeFile>$(ProjectDir)README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/thakyz/StardewValleyMods</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>StardewValley</PackageTags>
+    <PackageLicenseFile>$(SolutionDir)LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+    <EnableHarmony>True</EnableHarmony>
+    <Nullable>Enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenericModConfigMenu Condition="!Exists('$(GenericModConfigMenu)')">$(GamePath)\Mods\GenericModConfigMenu\GenericModConfigMenu.dll</GenericModConfigMenu>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(SolutionDir)LICENSE" Pack="True" PackagePath="\" />
+    <None Include="$(SolutionDir)README.md" Pack="True" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
+    <Reference Include="GenericModConfigMenu" HintPath="$(GenericModConfigMenu)" Private="False" />
+  </ItemGroup>
+</Project>

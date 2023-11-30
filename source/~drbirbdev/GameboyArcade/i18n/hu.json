@@ -1,0 +1,11 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{"config.Up":"Fel","config.Down":"Lefelé","config.Right":"Jobbra","config.Left":"Balra","config.A":"A","config.B":"B","config.Start":"Indítsa el a  oldalt","config.Select":"Válassza ki a  címet","config.Power":"Teljesítmény","config.Turbo":"Turbo","config.Turbo.tooltip":"Emulátor futtatása sebességkorlátozás nélkül.  Normál esetben 60 fps sebességkorlátozással működik, de néhány számítógépen valószínűleg 100 fps sebességgel is futhat.","config.MusicSampleRate":"Zene Mintavételi sebesség","config.MusicSampleRate.tooltip":"Kísérleti konfiguráció a zenei szinkronizáláshoz.  Valószínűleg nem működik."}

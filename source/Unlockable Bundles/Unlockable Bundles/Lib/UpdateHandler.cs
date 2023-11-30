@@ -118,6 +118,8 @@ namespace Unlockable_Bundles.Lib
             if (location.Name != location.NameOrUniqueName && Game1.currentLocation.NameOrUniqueName != location.NameOrUniqueName)
                 return;
 
+            //You could alternatively achieve the same thing using V, but my version was faster during testing, so I'll keep it for now
+            //Helper.ModContent.GetPatchHelper(location.Map).AsMap().PatchMap(map, patchMode: (PatchMapMode)unlockable.EditMapMode);
             applyOverlay(location, unlockable, map);
 
             if (location.Name == Game1.currentLocation.Name)

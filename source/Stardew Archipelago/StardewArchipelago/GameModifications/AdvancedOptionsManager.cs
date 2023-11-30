@@ -21,12 +21,16 @@ namespace StardewArchipelago.GameModifications
     public class AdvancedOptionsManager
     {
         private static ModEntry _modEntry;
+        private static IMonitor _console;
+        private static IModHelper _modHelper;
         private Harmony _harmony;
         private static ArchipelagoClient _archipelago;
 
-        public AdvancedOptionsManager(ModEntry modEntry, Harmony harmony, ArchipelagoClient archipelago)
+        public AdvancedOptionsManager(ModEntry modEntry, IMonitor console, IModHelper modHelper, Harmony harmony, ArchipelagoClient archipelago)
         {
             _modEntry = modEntry;
+            _console = console;
+            _modHelper = modHelper;
             _harmony = harmony;
             _archipelago = archipelago;
         }
@@ -95,8 +99,9 @@ namespace StardewArchipelago.GameModifications
                 }
 
                 ForceGameSeedToArchipelagoProvidedSeed();
+                ForceFarmTypeToArchipelagoProvidedFarm();
                 Game1.bundleType = Game1.BundleType.Default;
-                Game1.game1.SetNewGameOption<bool>("YearOneCompletable", true);
+                Game1.game1.SetNewGameOption<bool>("YearOneCompletable", false);
 
                 return true; // run original logic
             }
@@ -115,6 +120,28 @@ namespace StardewArchipelago.GameModifications
             Game1.startingGameSeed = (ulong)result;
         }
 
+        private static void ForceFarmTypeToArchipelagoProvidedFarm()
+        {
+            var farmTypes = new[]
+            {
+                "Standard Farm", "Riverland Farm", "Forest Farm", "Hill-top Farm", "Wilderness Farm", "Four Corners Farm", "Beach Farm",
+            };
+
+            for (var i = 0; i < farmTypes.Length; i++)
+            {
+                if (_archipelago.HasReceivedItem(farmTypes[i]))
+                {
+                    Game1.whichFarm = i;
+                    Game1.spawnMonstersAtNight = i == 4;
+                    return;
+                }
+            }
+
+            _console.Log($"There was no farm type in the player's Archipelago inventory. Defaulting to standard farm.", LogLevel.Warn);
+            Game1.whichFarm = 0;
+            Game1.spawnMonstersAtNight = false;
+        }
+
         public static void TitleMenuUpdate_ReplaceCharacterMenu_Postfix(TitleMenu __instance, GameTime time)
         {
             try
@@ -124,7 +151,7 @@ namespace StardewArchipelago.GameModifications
                     return;
                 }
 
-                var apCharacterMenu = new CharacterCustomizationArchipelago(characterMenu);
+                var apCharacterMenu = new CharacterCustomizationArchipelago(characterMenu, _modHelper);
                 TitleMenu.subMenu = apCharacterMenu;
             }
             catch (Exception ex)

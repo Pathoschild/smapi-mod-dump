@@ -38,6 +38,17 @@
 				"ichortower.HatMouseLacey.Core/InteriorConfig": "Auto"
 			}
 		},
+		{
+			"Name": "MatchRetexture",
+			"Value": "{{ichortower.HatMouseLacey.Core/RetextureConfig}}"
+		},
+		{
+			"Name": "MatchRetexture",
+			"Value": "{{ichortower.HatMouseLacey.Core/RetextureDetected}}",
+			"When": {
+				"ichortower.HatMouseLacey.Core/RetextureConfig": "Auto"
+			}
+		},
 		// default festival positions
 		{ "Name": "festival_spring13_setUp",     "Value": "24 64 down" },
 		{ "Name": "festival_spring13_mainEvent", "Value": "32 74 up" },
@@ -77,7 +88,7 @@
 		{ "Name": "festival_fall16_stallY",      "Value": "62",
 			"When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true}},
 		// spirit's eve: SVE year 2 is totally different
-		{ "Name": "festival_fall27_setUp",       "Value": "26 63 right",
+		{ "Name": "festival_fall27_setUp",       "Value": "26 64 right",
 			"When": {"HasMod|contains=FlashShifter.StardewValleyExpandedCP": true,
 				"Query: {{Year}} % 2 = 1": false}},
 		// ice fest: campfire is relocated (SVE)

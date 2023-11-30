@@ -1,0 +1,20 @@
+{
+  "ArcadeGamesPayToPlay": true,
+  "ArcadeGamesPayToPlayCoinPerJotPKGame": 1,
+  "ArcadeGamesPayToPlayCoinPerJKGame": 1,
+  "ArcadeGamesPayToPlayKonamiCode": true,
+  "ArcadeGamesPayToPlayNonRealisticLeaderboard": true,
+  "ClintsShopSimultaneousServices": true,
+  "ClintsShopGeodesAutoProcess": true,
+  "ClintsShopGeodesAutoProcessSpeedMultiplier": 2,
+  "CrystalariumsSafeReplacement": true,
+  "FestivalsEndTime": true,
+  "FestivalsEndTimeAdditionalTime": 200,
+  "FarmViewZoom": true,
+  "FarmViewZoomInKey": "RightThumbstickUp",
+  "FarmViewZoomOutKey": "RightThumbstickDown",
+  "FarmViewZoomMultiplier": 1.0,
+  "FarmViewFastScrolling": true,
+  "FarmViewFastScrollingMultiplier": 3.0,
+  "MarniesShopAnimalPurchase": true
+}

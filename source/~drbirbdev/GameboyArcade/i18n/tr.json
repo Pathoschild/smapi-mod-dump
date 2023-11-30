@@ -1,0 +1,11 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{"config.Up":"Yukarı","config.Down":"Aşağı","config.Right":"Doğru","config.Left":"Sol","config.A":"A","config.B":"B","config.Start":"Başlangıç","config.Select":"Seçiniz","config.Power":"Güç","config.Turbo":"Turbo","config.Turbo.tooltip":"Emülatörü hız sınırı olmadan çalıştırın.  Normalde 60 fps'de sınırlanır, ancak muhtemelen bazı bilgisayarlarda 100 fps'de çalışabilir.","config.MusicSampleRate":"Müzik Örnek Hızı","config.MusicSampleRate.tooltip":"Müzik senkronizasyonu için deneysel yapılandırma.  Muhtemelen çalışmıyor."}

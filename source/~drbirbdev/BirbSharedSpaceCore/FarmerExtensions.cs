@@ -8,16 +8,21 @@
 **
 *************************************************/
 
-using SpaceCore;
 using StardewValley;
+using static SpaceCore.Skills.Skill;
 
 namespace BirbShared
 {
     static class FarmerExtensions
     {
-        public static bool HasCustomPrestigeProfession(this Farmer player, Skills.Skill.Profession profession)
+        public static bool HasProfession(this Farmer player, string profession, bool checkPrestiged = false)
         {
-            return player.professions.Contains(profession.GetVanillaId() + 100);
+            Profession p = BirbSkill.KeyedProfessions?[profession];
+            if (p is null)
+            {
+                return false;
+            }
+            return player.professions.Contains(p.GetVanillaId() + (checkPrestiged ? 100 : 0));
         }
     }
 }

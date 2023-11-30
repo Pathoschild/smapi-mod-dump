@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19250
+IDs: NekoBoiNick.NoPauseWhenInactiveGlobal
+update keys: Nexus:19250, GitHub:thakyZ/StardewValleyMods

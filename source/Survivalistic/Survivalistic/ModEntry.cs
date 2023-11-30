@@ -43,6 +43,7 @@ namespace Survivalistic
             helper.Events.Multiplayer.ModMessageReceived += OnMessageReceived;
 
             helper.Events.Display.RenderingHud += Renderer.OnRenderingHud;
+            //helper.Events.Display.RenderedActiveMenu += Renderer.OnActiveMenu;
             helper.Events.GameLoop.ReturnedToTitle += OnReturnToTitle;
 
             helper.ConsoleCommands.Add("survivalistic_feed", "Feeds a player.\nUsage: survivalistic_feed 'player_name'", Commands.Feed);

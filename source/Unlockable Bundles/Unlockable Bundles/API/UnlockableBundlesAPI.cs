@@ -127,7 +127,8 @@ namespace Unlockable_Bundles.API
                             new Dictionary<string, int>(location.Value.AlreadyPaid),
                             location.Value.Purchased,
                             location.Value.DayPurchased == -1 ? -1 :Game1.Date.TotalDays - location.Value.DayPurchased,
-                            bundle != null
+                            bundle != null,
+                            location.Value.Discovered
                         ));
 
                 result.Add(key, list);

@@ -33,10 +33,15 @@ internal sealed class ProspectorHuntUpdateTickedEvent : UpdateTickedEvent
     }
 
     /// <inheritdoc />
-    protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
+    protected override void OnEnabled()
     {
         this._hunt ??= Game1.player.Get_ProspectorHunt();
-        this._hunt.Update(e.Ticks);
+    }
+
+    /// <inheritdoc />
+    protected override void OnUpdateTickedImpl(object? sender, UpdateTickedEventArgs e)
+    {
+        this._hunt!.Update(e.Ticks);
         if (Game1.player.HasProfession(Profession.Prospector, true))
         {
             Game1.gameTimeInterval = 0;

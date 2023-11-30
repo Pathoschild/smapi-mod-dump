@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using OrnithologistsGuild.Content;
 using StardewValley;
 using StateMachine;
 
@@ -26,7 +27,8 @@ namespace OrnithologistsGuild.Game.Critters
         Sleeping,
         FlyingAway,
         Relocating,
-        Bathing
+        Bathing,
+        Swimming
     }
 
     public enum BetterBirdieTrigger
@@ -38,14 +40,15 @@ namespace OrnithologistsGuild.Game.Critters
         FlyAway,
         Sleep,
         Relocate,
-        Bathe
+        Bathe,
+        Swim
     }
 
     public partial class BetterBirdie : StardewValley.BellsAndWhistles.Critter
     {
         private Func<BetterBirdieTrigger> NextAction;
 
-        // Timers
+        // Walk
         private int WalkTimer;
 
         // Relocate
@@ -54,6 +57,13 @@ namespace OrnithologistsGuild.Game.Critters
         private float? RelocateDistance;
         private int? RelocateDuration;
         private int? RelocateElapsed;
+
+        // Swim
+        private Vector2? SwimFrom;
+        private Vector2? SwimTo;
+        private float? SwimDistance;
+        private int? SwimDuration;
+        private int? SwimElapsed;
 
         private void InitializeStateMachine()
         {
@@ -72,10 +82,11 @@ namespace OrnithologistsGuild.Game.Critters
                     .TransitionTo(BetterBirdieState.Walking).On(BetterBirdieTrigger.Walk)
                     .TransitionTo(BetterBirdieState.Hopping).On(BetterBirdieTrigger.Hop)
                     .TransitionTo(BetterBirdieState.Bathing).On(BetterBirdieTrigger.Bathe)
+                    .TransitionTo(BetterBirdieState.Swimming).On(BetterBirdieTrigger.Swim)
                     .OnEnter(e =>
                     {
                         // Reset animation to base frame
-                        sprite.currentFrame = baseFrame;
+                        sprite.currentFrame = IsInWater ? baseFrame + 9 : baseFrame;
 
                         var contextualBehavior = GetContextualBehavior();
                         var nextBehavior = Utilities.WeightedRandom(contextualBehavior, b => b.Weight);
@@ -172,6 +183,7 @@ namespace OrnithologistsGuild.Game.Critters
                         }
 
                         // Move left and right
+                        // TODO sometimes bird flip rapidly
                         if (!flip)
                         {
                             if (canWalkLeft) position.X -= 1f;
@@ -196,6 +208,88 @@ namespace OrnithologistsGuild.Game.Critters
                                 break;
                         }
                     })
+                .State(BetterBirdieState.Swimming)
+                    .TransitionTo(BetterBirdieState.Stopping).On(BetterBirdieTrigger.Stop)
+                    .OnEnter(e =>
+                    {
+                        var maxSwimDistance = 3f * Game1.tileSize;
+
+                        // Get a random position somewhere within a circle around the bird
+                        var r = maxSwimDistance * MathF.Sqrt(Utility.RandomFloat(0f, 1f));
+                        var theta = Utility.RandomFloat(0f, 1f) * 2 * MathF.PI;
+
+                        var swimTo = new Vector2(position.X + r * MathF.Cos(theta), position.Y + r * MathF.Sin(theta));
+
+                        for (int trial = 0; trial < 5; trial++)
+                        {
+                            if (Environment.isOpenWater((int)swimTo.X / Game1.tileSize, (int)swimTo.Y / Game1.tileSize))
+                            {
+                                SwimTo = swimTo;
+                                break;
+                            }
+                        }
+
+                        if (SwimTo.HasValue)
+                        {
+                            SwimFrom = position;
+
+                            SwimDistance = Vector2.Distance(position, SwimTo.Value);
+
+                            SwimDuration = (int)(SwimDistance.Value / Utility.RandomFloat(0.02f, 0.06f));
+                            SwimElapsed = 0;
+
+                            if (position.X > SwimTo.Value.X) flip = false;
+                            else flip = true;
+
+                            Splash(
+                                0.5f + ((int)SwimDistance / maxSwimDistance),
+                                flip ? 0.75f : -0.75f
+                            );
+
+                            sprite.currentFrame = baseFrame + 10;
+                        }
+                        else
+                        {
+                            StateMachine.Trigger(BetterBirdieTrigger.Stop);
+                        }
+                    })
+                    .OnExit(e =>
+                    {
+                        if (SwimTo.HasValue)
+                        {
+                            // Clean up
+                            SwimFrom = null;
+                            SwimTo = null;
+
+                            SwimDistance = null;
+
+                            SwimDuration = null;
+                            SwimElapsed = null;
+                        }
+                    })
+                    .Update(a =>
+                    {
+                        if (SwimTo.HasValue)
+                        {
+                            // Swim to tile
+                            SwimElapsed += a.ElapsedTimeSpan.Milliseconds;
+                            if (SwimElapsed <= SwimDuration)
+                            {
+                                var factor = (float)SwimElapsed.Value / (float)SwimDuration.Value;
+
+                                position = Vector2.Lerp(SwimFrom.Value, SwimTo.Value, Utilities.EaseOutSine(factor));
+                            }
+                            else
+                            {
+                                // Relocation complete
+                                Position3 = new Vector3(SwimTo.Value, yOffset);
+                                startingPosition = position;
+
+                                StateMachine.Trigger(BetterBirdieTrigger.Stop);
+                            }
+                        }
+
+                    })
                 .State(BetterBirdieState.Pecking)
                     .TransitionTo(BetterBirdieState.Stopping).On(BetterBirdieTrigger.Stop)
                     .Update(a =>
@@ -214,7 +308,7 @@ namespace OrnithologistsGuild.Game.Critters
                                 list.Add(new FarmerSprite.AnimationFrame((short)(baseFrame + 4), 100, secondaryArm: false, flip, (Farmer who) =>
                                 {
                                     // Play pecking noise
-                                    if (Utility.isOnScreen(position, Game1.tileSize)) Game1.playSound("shiny4");
+                                    Environment.localSoundAt("shiny4", TileLocation);
                                 }));
                             }
 
@@ -280,7 +374,7 @@ namespace OrnithologistsGuild.Game.Critters
                         Tuple<Vector3, Perch> relocateTo;
                         if (!ModEntry.debug_BirdWhisperer.HasValue)
                         {
-                            relocateTo = GetRandomRelocationTileOrPerch();
+                            relocateTo = GetRandomPositionOrPerch();
                         } else
                         {
                             relocateTo = new Tuple<Vector3, Perch>(new Vector3(ModEntry.debug_BirdWhisperer.Value.X, ModEntry.debug_BirdWhisperer.Value.Y, 0), null);
@@ -341,7 +435,7 @@ namespace OrnithologistsGuild.Game.Critters
                             RelocateElapsed += a.ElapsedTimeSpan.Milliseconds;
                             if (RelocateElapsed <= RelocateDuration)
                             {
-                                var factor = ((float)RelocateElapsed.Value / (float)RelocateDuration.Value);
+                                var factor = (float)RelocateElapsed.Value / (float)RelocateDuration.Value;
 
                                 var midPointZ = ((RelocateFrom.Value.Z + RelocateTo.Item1.Z) / 2) - (RelocateDistance.Value / 6f); // Midpoint of Z values + (distance / 6)
 
@@ -374,6 +468,8 @@ namespace OrnithologistsGuild.Game.Critters
                                     ModEntry.Instance.Helper.Reflection.GetMethod(Perch.Tree, "shake").Invoke(Perch.Tree.currentTileLocation, false, Game1.player.currentLocation);
                                 }
 
+                                if (IsInWater) Splash(1.75f);
+
                                 StateMachine.Trigger(BetterBirdieTrigger.Stop);
                             }
                         }
@@ -381,11 +477,6 @@ namespace OrnithologistsGuild.Game.Critters
                 .State(BetterBirdieState.Bathing)
                     .OnEnter(e =>
                     {
-                        if (!BirdieDef.CanBathe) {
-                            StateMachine.Trigger(BetterBirdieTrigger.Relocate);
-                            return;
-                        }
-
                         sprite.setCurrentAnimation(GetBathingAnimation());
                         sprite.loop = true;
                     })
@@ -396,7 +487,7 @@ namespace OrnithologistsGuild.Game.Critters
                     })
                     .Update(a =>
                     {
-                        if (Game1.random.NextDouble() < 0.0025) Flip();
+                        if (Game1.random.NextDouble() < 0.0020) Flip();
                         else if (Game1.random.NextDouble() < 0.005) StateMachine.Trigger(BetterBirdieTrigger.Relocate);
                     })
                 .GlobalTransitionTo(BetterBirdieState.FlyingAway).OnGlobal(BetterBirdieTrigger.FlyAway)

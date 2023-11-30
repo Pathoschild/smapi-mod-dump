@@ -2,11 +2,56 @@
   "FormatVersion": 1,
   "Birdies": [
     {
+      "ID": "Mallard",
+      "AssetPath": "assets/Mallard.png",
+      "SoundAssetPath": "assets/Mallard.wav",
+      "Attributes": 2,
+      "MaxFlockSize": 5,
+      "Cautiousness": 2,
+      "FlapDuration": 350,
+      "FlySpeed": 4,
+      "BaseWt": 0.025,
+      "PerchPreference": 0,
+      "WaterPreference": 1,
+      "CanUseBaths": false,
+      "Conditions": [
+        {
+          "When": {
+            "Time": "{{Range: 1800, 2600}}"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Ivy.OrnithologistsGuild/LocationBiome": "void, desert"
+          },
+          "NilWt": true
+        },
+        {
+          "When": {
+            "Ivy.OrnithologistsGuild/LocationBiome": "wetland"
+          },
+          "AddWt": 0.5
+        },
+        {
+          "When": {
+            "Ivy.OrnithologistsGuild/LocationBiome": "forest, farm"
+          },
+          "AddWt": 0.25
+        },
+        {
+          "When": {
+            "Ivy.OrnithologistsGuild/LocationBiome": "city"
+          },
+          "AddWt": 0.25
+        }
+      ]
+    },
+    {
       "ID": "AmericanGoldfinch",
       "AssetPath": "assets/AmericanGoldfinch.png",
       "SoundAssetPath": "assets/AmericanGoldfinch.wav",
       "Attributes": 3,
-      "CanBathe": true,
       "MaxFlockSize": 7,
       "Cautiousness": 6,
       "FlapDuration": 400,
@@ -52,7 +97,6 @@
       "AssetPath": "assets/AmericanRobin.png",
       "SoundAssetPath": "assets/AmericanRobin.wav",
       "Attributes": 2,
-      "CanBathe": true,
       "MaxFlockSize": 3,
       "Cautiousness": 4,
       "FlapDuration": 400,
@@ -91,7 +135,6 @@
       "AssetPath": "assets/BlackCappedChickadee.png",
       "SoundAssetPath": "assets/BlackCappedChickadee.wav",
       "Attributes": 3,
-      "CanBathe": true,
       "MaxFlockSize": 3,
       "Cautiousness": 3,
       "FlapDuration": 500,
@@ -138,7 +181,6 @@
       "AssetPath": "assets/AmericanBushtit.png",
       "SoundAssetPath": "assets/AmericanBushtit.wav",
       "Attributes": 2,
-      "CanBathe": true,
       "MaxFlockSize": 9,
       "Cautiousness": 5,
       "FlapDuration": 400,
@@ -184,7 +226,6 @@
       "AssetPath": "assets/HouseFinch.png",
       "SoundAssetPath": "assets/HouseFinch.wav",
       "Attributes": 2,
-      "CanBathe": true,
       "MaxFlockSize": 3,
       "Cautiousness": 5,
       "FlapDuration": 400,
@@ -219,7 +260,6 @@
       "AssetPath": "assets/HouseSparrow.png",
       "SoundAssetPath": "assets/HouseSparrow.wav",
       "Attributes": 2,
-      "CanBathe": true,
       "MaxFlockSize": 5,
       "Cautiousness": 2,
       "FlapDuration": 450,
@@ -261,7 +301,6 @@
       "AssetPath": "assets/RedWingedBlackbird.png",
       "SoundAssetPath": "assets/RedWingedBlackbird.wav",
       "Attributes": 3,
-      "CanBathe": true,
       "MaxFlockSize": 1,
       "Cautiousness": 4,
       "FlapDuration": 400,
@@ -301,7 +340,6 @@
       "AssetPath": "assets/SpottedTowhee.png",
       "SoundAssetPath": "assets/SpottedTowhee.wav",
       "Attributes": 3,
-      "CanBathe": true,
       "MaxFlockSize": 1,
       "Cautiousness": 4,
       "FlapDuration": 550,
@@ -341,7 +379,6 @@
       "AssetPath": "assets/Verdin.png",
       "SoundAssetPath": "assets/Verdin.wav",
       "Attributes": 3,
-      "CanBathe": true,
       "MaxFlockSize": 3,
       "Cautiousness": 5,
       "FlapDuration": 400,

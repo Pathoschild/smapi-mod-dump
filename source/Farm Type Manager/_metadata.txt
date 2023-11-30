@@ -6,9 +6,9 @@ mods:
    Farm Type Manager
 
 latest commit:
-   commit fea1906286e8c0f98d6bcdf2635c824982120457
+   commit 323296426c1c555d88627ae9a173d2b68a0cbac6
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Wed Oct 25 16:03:19 2023 -0500
+   Date:   Wed Nov 29 19:33:44 2023 -0600
    
-       Set version 1.16.2, trim project file, run code cleanup
+       Add Dutch translation credit to readme
    

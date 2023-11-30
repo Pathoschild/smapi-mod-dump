@@ -10,7 +10,7 @@
 
 using System;
 using StardewArchipelago.Locations;
-using StardewArchipelago.Locations.CodeInjections.Vanilla;
+using StardewArchipelago.Locations.CodeInjections.Vanilla.CC;
 using StardewModdingAPI;
 using StardewValley;
 

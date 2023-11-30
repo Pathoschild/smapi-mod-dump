@@ -23,6 +23,7 @@ using Archipelago.MultiClient.Net.Packets;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using StardewArchipelago.Extensions;
+using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using Color = Microsoft.Xna.Framework.Color;
@@ -103,13 +104,15 @@ namespace StardewArchipelago.Archipelago
             }
             catch (Exception e)
             {
-                result = new LoginFailure(e.GetBaseException().Message);
+                var message = e.GetBaseException().Message;
+                result = new LoginFailure(message);
+                _console.Log($"An error occured trying to connect to archipelago. Message: {message}", LogLevel.Error);
             }
 
             if (!result.Successful)
             {
                 var failure = (LoginFailure)result;
-                errorMessage = $"Failed to Connect to {_connectionInfo.HostUrl}:{_connectionInfo.Port} as {_connectionInfo.SlotName}:";
+                errorMessage = $"Failed to Connect to {_connectionInfo?.HostUrl}:{_connectionInfo?.Port} as {_connectionInfo?.SlotName}:";
                 foreach (var error in failure.Errors)
                 {
                     errorMessage += $"\n    {error}";
@@ -245,7 +248,7 @@ namespace StardewArchipelago.Archipelago
                     return;
                 }
                 case CommandResultLogMessage:
-                case LogMessage:
+                case not null:
                 {
                     var color = Color.Gray;
                     Game1.chatBox?.addMessage(fullMessage, color);
@@ -293,12 +296,22 @@ namespace StardewArchipelago.Archipelago
 
         public int GetTeam()
         {
+            if (!MakeSureConnected())
+            {
+                return -1;
+            }
+
             return _session.ConnectionInfo.Team;
         }
 
         public string GetPlayerName(int playerSlot)
         {
-            return _session.Players.GetPlayerName(playerSlot) ?? "Archipelago";
+            if (!MakeSureConnected())
+            {
+                return "Archipelago Player";
+            }
+
+            return _session.Players.GetPlayerName(playerSlot) ?? "Archipelago Player";
         }
 
         public string GetPlayerAlias(string playerName)
@@ -319,11 +332,21 @@ namespace StardewArchipelago.Archipelago
 
         public bool PlayerExists(string playerName)
         {
+            if (!MakeSureConnected())
+            {
+                return false;
+            }
+
             return _session.Players.AllPlayers.Any(x => x.Name == playerName) || _session.Players.AllPlayers.Any(x => x.Alias == playerName);
         }
 
         public string GetPlayerGame(string playerName)
         {
+            if (!MakeSureConnected())
+            {
+                return null;
+            }
+
             var player = _session.Players.AllPlayers.FirstOrDefault(x => x.Name == playerName);
             if (player == null)
             {
@@ -335,6 +358,11 @@ namespace StardewArchipelago.Archipelago
 
         public string GetPlayerGame(int playerSlot)
         {
+            if (!MakeSureConnected())
+            {
+                return null;
+            }
+
             var player = _session.Players.AllPlayers.FirstOrDefault(x => x.Slot == playerSlot);
             return player?.Game;
         }
@@ -563,6 +591,11 @@ namespace StardewArchipelago.Archipelago
 
         public Hint[] GetMyActiveHints()
         {
+            if (!MakeSureConnected())
+            {
+                return Array.Empty<Hint>();
+            }
+
             return GetHints().Where(x => !x.Found && GetPlayerName(x.FindingPlayer) == SlotData.SlotName).ToArray();
         }
 
@@ -603,6 +636,16 @@ namespace StardewArchipelago.Archipelago
 
             var id = GetLocationId(locationName);
             return _session.Locations.AllLocations.Contains(id);
+        }
+
+        public IReadOnlyCollection<long> GetAllMissingLocations()
+        {
+            if (!MakeSureConnected())
+            {
+                return new List<long>();
+            }
+
+            return _session.Locations.AllMissingLocations;
         }
 
         public long GetLocationId(string locationName, string gameName = GAME_NAME)

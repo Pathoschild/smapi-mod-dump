@@ -1,0 +1,95 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{
+    "Format": "1.29.0",
+    "DynamicTokens": [
+        {
+            "Name": "Recycler",
+            "Value": "478510818"
+        },
+        {
+            "Name": "Sneak",
+            "Value": "474424029"
+        },
+        {
+            "Name": "Environmentalist",
+            "Value": "533769641"
+        },
+        {
+            "Name": "Salvager",
+            "Value": "1341935126"
+        },
+        {
+            "Name": "Upseller",
+            "Value": "-279655609"
+        },
+        {
+            "Name": "Reclaimer",
+            "Value": "-1224100547"
+        },
+        {
+            "Name": "RecyclerP",
+            "Value": "478510918"
+        },
+        {
+            "Name": "SneakP",
+            "Value": "474424129"
+        },
+        {
+            "Name": "EnvironmentalistP",
+            "Value": "533769741"
+        },
+        {
+            "Name": "SalvagerP",
+            "Value": "1341935226"
+        },
+        {
+            "Name": "UpsellerP",
+            "Value": "-279655509"
+        },
+        {
+            "Name": "ReclaimerP",
+            "Value": "-1224100447"
+        }
+    ],
+    "Changes": [
+        // Load new hats
+        {
+            "Action": "Include",
+            "FromFile": "data/hats.json"
+        },
+        // Load machine data
+        {
+            "Action": "Include",
+            "FromFile": "data/machines.json"
+        },
+        // Add new cans to maps
+        {
+            "Action": "Include",
+            "FromFile": "data/garbagecans.json"
+        },
+        // Profession related patches
+        {
+            "Action": "Include",
+            "FromFile": "data/recycler.json",
+            "When": {
+                "HasProfession": "{{Recycler}}"
+            }
+        },
+        {
+            "Action": "Include",
+            "FromFile": "data/salvager.json",
+            "When": {
+                "HasProfession": "{{Salvager}}"
+            }
+        }
+    ]
+}

@@ -10,8 +10,10 @@
 
 using System;
 using HarmonyLib;
+using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
+using StardewArchipelago.Locations.CodeInjections.Vanilla.CC;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Quests;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
@@ -74,15 +76,32 @@ namespace StardewArchipelago.Locations.Patcher
             AddShipsanityLocations();
             PatchMonstersanity();
             AddCooksanityLocations();
-            AddChefsanityLocations();
-            AddCraftsanityLocations();
+            PatchChefAndCraftsanity();
+            PatchKrobusShop();
         }
 
         private void ReplaceCommunityCenterBundlesWithChecks()
         {
             _harmony.Patch(
                 original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.checkForRewards)),
-                postfix: new HarmonyMethod(typeof(CommunityCenterInjections), nameof(CommunityCenterInjections.CheckForRewards_PostFix))
+                postfix: new HarmonyMethod(typeof(JunimoNoteMenuInjections), nameof(JunimoNoteMenuInjections.CheckForRewards_SendBundleChecks_PostFix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.getRewardNameForArea)),
+                prefix: new HarmonyMethod(typeof(JunimoNoteMenuInjections), nameof(JunimoNoteMenuInjections.GetRewardNameForArea_ScoutRoomRewards_Prefix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.setUpMenu)),
+                postfix: new HarmonyMethod(typeof(JunimoNoteMenuInjections), nameof(JunimoNoteMenuInjections.SetupMenu_AddTextureOverrides_Postfix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.receiveLeftClick)),
+                prefix: new HarmonyMethod(typeof(JunimoNoteMenuInjections), nameof(JunimoNoteMenuInjections.ReceiveLeftClick_PurchaseCurrencyBundle_Prefix))
+            );
+            var drawParameters = new[] { typeof(SpriteBatch) };
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.draw), drawParameters),
+                postfix: new HarmonyMethod(typeof(JunimoNoteMenuInjections), nameof(JunimoNoteMenuInjections.Draw_AddCurrencyBoxes_Postfix))
             );
             _harmony.Patch(
                 original: AccessTools.Method(typeof(CommunityCenter), nameof(CommunityCenter.shouldNoteAppearInArea)),
@@ -93,8 +112,8 @@ namespace StardewArchipelago.Locations.Patcher
                 prefix: new HarmonyMethod(typeof(CommunityCenterInjections), nameof(CommunityCenterInjections.CheckAction_BulletinBoardNoRequirements_Prefix))
             );
             _harmony.Patch(
-                original: AccessTools.Method(typeof(JunimoNoteMenu), nameof(JunimoNoteMenu.getRewardNameForArea)),
-                prefix: new HarmonyMethod(typeof(CommunityCenterInjections), nameof(CommunityCenterInjections.GetRewardNameForArea_ScoutRoomRewards_Prefix))
+                original: AccessTools.Method(typeof(CommunityCenter), "checkForMissedRewards"),
+                prefix: new HarmonyMethod(typeof(CommunityCenterInjections), nameof(CommunityCenterInjections.CheckForMissedRewards_DontBother_Prefix))
             );
         }
 
@@ -347,6 +366,16 @@ namespace StardewArchipelago.Locations.Patcher
 
         private void ReplaceChildrenWithChecks()
         {
+            if (_archipelago.SlotData.Friendsanity == Friendsanity.None)
+            {
+                return;
+            }
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(NPC), nameof(NPC.checkAction)),
+                prefix: new HarmonyMethod(typeof(SpouseInjections), nameof(SpouseInjections.CheckAction_SpouseStardrop_Prefix))
+            );
+
             _harmony.Patch(
                 original: AccessTools.Method(typeof(NPC), nameof(NPC.canGetPregnant)),
                 prefix: new HarmonyMethod(typeof(PregnancyInjections), nameof(PregnancyInjections.CanGetPregnant_ShuffledPregnancies_Prefix))
@@ -833,7 +862,22 @@ namespace StardewArchipelago.Locations.Patcher
             );
         }
 
-        private void AddChefsanityLocations()
+        private void PatchChefAndCraftsanity()
+        {
+            PatchStartingRecipes();
+            PatchChefsanity();
+            PatchCraftsanity();
+        }
+
+        private void PatchStartingRecipes()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Farmer), "farmerInit"),
+                postfix: new HarmonyMethod(typeof(StartingRecipesInjections), nameof(StartingRecipesInjections.FarmerInit_RemoveStartingRecipes_Postfix))
+            );
+        }
+
+        private void PatchChefsanity()
         {
             _harmony.Patch(
                 original: AccessTools.Method(typeof(TV), "getWeeklyRecipe"),
@@ -879,7 +923,7 @@ namespace StardewArchipelago.Locations.Patcher
             );
         }
 
-        private void AddCraftsanityLocations()
+        private void PatchCraftsanity()
         {
             if (_archipelago.SlotData.Craftsanity == Craftsanity.None)
             {
@@ -904,6 +948,14 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Sewer), nameof(Sewer.getShadowShopStock)),
                 postfix: new HarmonyMethod(typeof(CraftingInjections), nameof(CraftingInjections.GetShadowShopStock_PurchasableRecipeChecks_Postfix))
+            );
+        }
+
+        private void PatchKrobusShop()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Sewer), nameof(Sewer.getShadowShopStock)),
+                postfix: new HarmonyMethod(typeof(KrobusShopInjections), nameof(KrobusShopInjections.GetShadowShopStock_StardropCheck_Postfix))
             );
         }
     }

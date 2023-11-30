@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/ichortower/SecretWoodsSnorlax
+   Git: https://github.com/ichortower/SecretWoodsSnorlax.git
+
+mods:
+   Secret Woods Snorlax
+
+latest commit:
+   commit 67f6efba17af0fa672fcb1101b997118cd8b6e19
+   Author: ichortower <sudo.ichor@proton.me>
+   Date:   Sun Nov 26 21:07:47 2023 -0500
+   
+       Merge branch 'hotfix-1.1.1' into main
+   

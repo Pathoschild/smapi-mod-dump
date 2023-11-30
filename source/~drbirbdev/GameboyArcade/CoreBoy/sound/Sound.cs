@@ -30,66 +30,66 @@ namespace CoreBoy.sound
         private readonly Ram _ram = new Ram(0xff24, 0x03);
         private readonly ISoundOutput _output;
         private readonly int[] _channels = new int[4];
-        private readonly bool[] _overridenEnabled = {true, true, true, true};
+        private readonly bool[] _overridenEnabled = { true, true, true, true };
         private bool _enabled;
 
         public Sound(ISoundOutput output, bool gbc)
         {
-            _allModes[0] = new SoundMode1(gbc);
-            _allModes[1] = new SoundMode2(gbc);
-            _allModes[2] = new SoundMode3(gbc);
-            _allModes[3] = new SoundMode4(gbc);
-            _output = output;
+            this._allModes[0] = new SoundMode1(gbc);
+            this._allModes[1] = new SoundMode2(gbc);
+            this._allModes[2] = new SoundMode3(gbc);
+            this._allModes[3] = new SoundMode4(gbc);
+            this._output = output;
         }
 
         public void Tick()
         {
-            if (!_enabled)
+            if (!this._enabled)
             {
                 return;
             }
 
-            for (int i = 0; i < _allModes.Length; i++)
+            for (int i = 0; i < this._allModes.Length; i++)
             {
-                var abstractSoundMode = _allModes[i];
+                var abstractSoundMode = this._allModes[i];
                 int channel = abstractSoundMode.Tick();
-                _channels[i] = channel;
+                this._channels[i] = channel;
             }
 
-            int selection = _ram.GetByte(0xff25);
+            int selection = this._ram.GetByte(0xff25);
             int left = 0;
             int right = 0;
             for (int i = 0; i < 4; i++)
             {
-                if (!_overridenEnabled[i])
+                if (!this._overridenEnabled[i])
                 {
                     continue;
                 }
 
-                if ((selection & (1 << i + 4)) != 0)
+                if ((selection & (1 << (i + 4))) != 0)
                 {
-                    left += _channels[i];
+                    left += this._channels[i];
                 }
 
                 if ((selection & (1 << i)) != 0)
                 {
-                    right += _channels[i];
+                    right += this._channels[i];
                 }
             }
 
             left /= 4;
             right /= 4;
 
-            int volumes = _ram.GetByte(0xff24);
-            left *= ((volumes >> 4) & 0b111);
-            right *= (volumes & 0b111);
+            int volumes = this._ram.GetByte(0xff24);
+            left *= (volumes >> 4) & 0b111;
+            right *= volumes & 0b111;
 
-            _output.Play((byte) left, (byte) right);
+            this._output.Play((byte)left, (byte)right);
         }
 
         private IAddressSpace GetAddressSpace(int address)
         {
-            foreach (var m in _allModes)
+            foreach (var m in this._allModes)
             {
                 if (m.Accepts(address))
                 {
@@ -97,15 +97,15 @@ namespace CoreBoy.sound
                 }
             }
 
-            if (_ram.Accepts(address))
+            if (this._ram.Accepts(address))
             {
-                return _ram;
+                return this._ram;
             }
 
             return null;
         }
 
-        public bool Accepts(int address) => GetAddressSpace(address) != null;
+        public bool Accepts(int address) => this.GetAddressSpace(address) != null;
 
         public void SetByte(int address, int value)
         {
@@ -113,25 +113,25 @@ namespace CoreBoy.sound
             {
                 if ((value & (1 << 7)) == 0)
                 {
-                    if (_enabled)
+                    if (this._enabled)
                     {
-                        _enabled = false;
-                        Stop();
+                        this._enabled = false;
+                        this.Stop();
                     }
                 }
                 else
                 {
-                    if (!_enabled)
+                    if (!this._enabled)
                     {
-                        _enabled = true;
-                        Start();
+                        this._enabled = true;
+                        this.Start();
                     }
                 }
 
                 return;
             }
 
-            var s = GetAddressSpace(address);
+            var s = this.GetAddressSpace(address);
             if (s == null)
             {
                 throw new ArgumentException();
@@ -147,16 +147,16 @@ namespace CoreBoy.sound
             if (address == 0xff26)
             {
                 result = 0;
-                for (int i = 0; i < _allModes.Length; i++)
+                for (int i = 0; i < this._allModes.Length; i++)
                 {
-                    result |= _allModes[i].IsEnabled() ? (1 << i) : 0;
+                    result |= this._allModes[i].IsEnabled() ? (1 << i) : 0;
                 }
 
-                result |= _enabled ? (1 << 7) : 0;
+                result |= this._enabled ? (1 << 7) : 0;
             }
             else
             {
-                result = GetUnmaskedByte(address);
+                result = this.GetUnmaskedByte(address);
             }
 
             return result | Masks[address - 0xff10];
@@ -164,7 +164,7 @@ namespace CoreBoy.sound
 
         private int GetUnmaskedByte(int address)
         {
-            var s = GetAddressSpace(address);
+            var s = this.GetAddressSpace(address);
             if (s == null)
             {
                 throw new ArgumentException();
@@ -182,34 +182,34 @@ namespace CoreBoy.sound
                 if (i == 0xff11 || i == 0xff16 || i == 0xff20)
                 {
                     // channel 1, 2, 4 lengths
-                    v = GetUnmaskedByte(i) & 0b00111111;
+                    v = this.GetUnmaskedByte(i) & 0b00111111;
                 }
                 else if (i == 0xff1b)
                 {
                     // channel 3 length
-                    v = GetUnmaskedByte(i);
+                    v = this.GetUnmaskedByte(i);
                 }
 
-                SetByte(i, v);
+                this.SetByte(i, v);
             }
 
-            foreach (var m in _allModes)
+            foreach (var m in this._allModes)
             {
                 m.Start();
             }
 
-            _output.Start();
+            this._output.Start();
         }
 
         private void Stop()
         {
-            _output.Stop();
-            foreach (var s in _allModes)
+            this._output.Stop();
+            foreach (var s in this._allModes)
             {
                 s.Stop();
             }
         }
 
-        public void EnableChannel(int i, bool enabled) => _overridenEnabled[i] = enabled;
+        public void EnableChannel(int i, bool enabled) => this._overridenEnabled[i] = enabled;
     }
 }

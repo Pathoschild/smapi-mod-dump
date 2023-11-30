@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19112
+IDs: ichortower.SecretWoodsSnorlax
+update keys: Nexus:19112, GitHub:ichortower/SecretWoodsSnorlax

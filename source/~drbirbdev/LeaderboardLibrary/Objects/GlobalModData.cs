@@ -10,11 +10,11 @@
 
 using System;
 
-namespace LeaderboardLibrary
+namespace LeaderboardLibrary;
+
+
+public sealed class GlobalModData
 {
-    public sealed class GlobalModData
-    {
-        public string UserUUID { get; set; } = Guid.NewGuid().ToString();
-        public string Secret { get; set; } = Guid.NewGuid().ToString();
-    }
+    public string UserUUID { get; set; } = Guid.NewGuid().ToString();
+    public string Secret { get; set; } = Guid.NewGuid().ToString();
 }

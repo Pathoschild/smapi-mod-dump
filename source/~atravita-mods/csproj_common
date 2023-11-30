@@ -47,7 +47,7 @@
     <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta08"
       PrivateAssets="all" ExcludeAssets="runtime" />
 
-    <PackageReference Include="JetBrains.Annotations" Version="2023.2.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2023.3.0" />
 
     <PackageReference Include="Microsoft.Win32.Registry" Version ="5.0.0" />
   </ItemGroup>

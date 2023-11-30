@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Ranged;
 #region using directives
 
 using DaLion.Overhaul.Modules.Combat.Extensions;
+using DaLion.Shared.Constants;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Tools;
@@ -32,15 +33,13 @@ internal sealed class SlingshotCtorPatcher : HarmonyPatcher
 
     /// <summary>Add Infinity Slingshot enchant.</summary>
     [HarmonyPostfix]
-    private static void MeleeWeaponCtorPostfix(Slingshot __instance)
+    private static void SlingshotCtorPostfix(Slingshot __instance)
     {
-        if (!__instance.ShouldHaveIntrinsicEnchantment())
-        {
-            return;
-        }
-
         __instance.AddIntrinsicEnchantments();
-        __instance.specialItem = true;
+        if (__instance.InitialParentTileIndex is WeaponIds.GalaxySlingshot or WeaponIds.InfinitySlingshot)
+        {
+            __instance.specialItem = true;
+        }
     }
 
     #endregion harmony patches

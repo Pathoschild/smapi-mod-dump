@@ -1,5 +1,7 @@
 {
-    "bakeoff.judgePrompt": "$q -1 null#Hello, @. Are you ready for me to start judging the entries?#$r -1 0 yes#Yes, I'm ready!#$r -1 0 no#Not yet.",
+    "bakeoff.judgePrompt": "Hello, @. Are you ready for me to start judging the entries?",
+    "bakeoff.judgeYes": "Yes, I'm ready!",
+    "bakeoff.judgeNo": "Not yet.",
     "bakeoff.winners": "Well done everyone! It's time to announce our winners of this year's Great Stardew Valley Bake-Off!$1#$b#In third place this year we have {{third}}!$1#$b#And in second place, is {{second}}!$1#$b#And our grand prize winner is...$1#$b#{{first}}!",
     "bakeoff.dropOff.title": "Bake-Off Entry"
 }

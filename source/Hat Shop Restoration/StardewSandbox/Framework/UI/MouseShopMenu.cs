@@ -13,21 +13,18 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
+using StardewValley.ItemTypeDefinitions;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Object = StardewValley.Object;
 
 namespace HatShopRestoration.Framework.UI
 {
     internal class MouseShopMenu : ShopMenu
     {
-        private const int CHEESE_ID = 424;
-        public MouseShopMenu(Dictionary<ISalable, int[]> itemPriceAndStock, Func<ISalable, Farmer, int, bool> on_purchase = null, Func<ISalable, bool> on_sell = null) : base(itemPriceAndStock, 0, "Hat Mouse", on_purchase, on_sell)
+        private const string CHEESE_ID = "(O)424";
+        public MouseShopMenu(Dictionary<ISalable, ItemStockInformation> itemPriceAndStock, Func<ISalable, Farmer, int, bool> on_purchase = null, Func<ISalable, bool> on_sell = null) : base("Hat Mouse", itemPriceAndStock: itemPriceAndStock, who: "Hat Mouse")
         {
             var unlockedHats = ModEntry.GetUnlockedHats(Game1.player);
             foreach (var pair in itemPriceAndStock)
@@ -39,8 +36,11 @@ namespace HatShopRestoration.Framework.UI
                     continue;
                 }
 
-                pair.Value[0] = 1;
-                pair.Value[1] = 1;
+                var stockInformation = pair.Value;
+                stockInformation.Price = 1;
+                stockInformation.Stock = 1;
+
+                itemPriceAndStock[pair.Key] = stockInformation;
             }
 
             base.setItemPriceAndStock(itemPriceAndStock);
@@ -56,7 +56,7 @@ namespace HatShopRestoration.Framework.UI
             int amountOfCheese = 0;
             foreach (var item in who.Items)
             {
-                if (item is null || item.ParentSheetIndex != CHEESE_ID)
+                if (item is null || item.QualifiedItemId != CHEESE_ID)
                 {
                     continue;
                 }
@@ -75,7 +75,7 @@ namespace HatShopRestoration.Framework.UI
             }
             if (held_item == null)
             {
-                if (this.itemPriceAndStock[item][1] == 0)
+                if (itemPriceAndStock[item].Stock == 0)
                 {
                     this.hoveredItem = null;
                     return true;
@@ -84,84 +84,34 @@ namespace HatShopRestoration.Framework.UI
                 {
                     numberToBuy = Math.Max(1, item.GetSalableInstance().maximumStackSize());
                 }
-                int price2 = this.itemPriceAndStock[item][0] * numberToBuy;
-                int extraTradeItem2 = -1;
+                int price2 = this.itemPriceAndStock[item].Price * numberToBuy;
+                string extraTradeItem2 = null;
                 int extraTradeItemCount2 = 5;
-                if (this.itemPriceAndStock[item].Length > 2)
+                if (this.itemPriceAndStock[item].TradeItem is not null)
                 {
-                    extraTradeItem2 = this.itemPriceAndStock[item][2];
-                    if (this.itemPriceAndStock[item].Length > 3)
+                    extraTradeItem2 = this.itemPriceAndStock[item].TradeItem;
+                    if (this.itemPriceAndStock[item].TradeItemCount is not null)
                     {
-                        extraTradeItemCount2 = this.itemPriceAndStock[item][3];
+                        extraTradeItemCount2 = this.itemPriceAndStock[item].TradeItemCount.Value;
                     }
                     extraTradeItemCount2 *= numberToBuy;
                 }
-                if (GetCheeseInInventory(Game1.player) >= price2 && (extraTradeItem2 == -1 || Game1.player.hasItemInInventory(extraTradeItem2, extraTradeItemCount2)))
+                if (GetCheeseInInventory(Game1.player) >= price2 && (extraTradeItem2 is null || Game1.player.Items.ContainsId(extraTradeItem2, extraTradeItemCount2)))
                 {
                     this.heldItem = null;
-                    if (this.itemPriceAndStock[item][1] != int.MaxValue && !item.IsInfiniteStock())
-                    {
-                        this.itemPriceAndStock[item][1] -= numberToBuy;
-                        this.forSale[indexInForSaleList].Stack -= numberToBuy;
-                    }
 
                     // Remove cheese from inventory
-                    Game1.player.removeItemsFromInventory(CHEESE_ID, 1);
+                    Game1.player.Items.ReduceId(CHEESE_ID, 1);
 
                     // Unlock the hat
                     ModEntry.UnlockFashionableHat(Game1.player, GetFashionableName(item.Name));
 
-                    if (extraTradeItem2 != -1)
+                    if (this.purchaseSound != null)
                     {
-                        Game1.player.removeItemsFromInventory(extraTradeItem2, extraTradeItemCount2);
+                        Game1.playSound(this.purchaseSound);
                     }
-                    if (!this._isStorageShop && item.actionWhenPurchased())
-                    {
-                        if (this.heldItem is Object && (bool)(this.heldItem as Object).IsRecipe)
-                        {
-                            string recipeName = this.heldItem.Name.Substring(0, this.heldItem.Name.IndexOf("Recipe") - 1);
-                            try
-                            {
-                                if ((this.heldItem as Object).Category == -7)
-                                {
-                                    Game1.player.cookingRecipes.Add(recipeName, 0);
-                                }
-                                else
-                                {
-                                    Game1.player.craftingRecipes.Add(recipeName, 0);
-                                }
-                                Game1.playSound("newRecipe");
-                            }
-                            catch (Exception)
-                            {
-                            }
-                        }
-                        held_item = null;
-                        this.heldItem = null;
-                    }
-                    else
-                    {
-                        if (this.heldItem != null && this.heldItem is Object && (this.heldItem as Object).ParentSheetIndex == 858)
-                        {
-                            Game1.player.team.addQiGemsToTeam.Fire(this.heldItem.Stack);
-                            this.heldItem = null;
-                        }
-                        if (Game1.mouseClickPolling > 300)
-                        {
-                            if (this.purchaseRepeatSound != null)
-                            {
-                                Game1.playSound(this.purchaseRepeatSound);
-                            }
-                        }
-                        else if (this.purchaseSound != null)
-                        {
-                            Game1.playSound(this.purchaseSound);
-                        }
-                    }
-                    if (this.onPurchase != null && this.onPurchase(item, Game1.player, numberToBuy))
-                    {
-                        base.exitThisMenu();
-                    }
+
+                    return true;
                 }
                 else
                 {
@@ -173,15 +123,15 @@ namespace HatShopRestoration.Framework.UI
                 numberToBuy = Math.Min(numberToBuy, held_item.maximumStackSize() - held_item.Stack);
                 if (numberToBuy > 0)
                 {
-                    int price = this.itemPriceAndStock[item][0] * numberToBuy;
-                    int extraTradeItem = -1;
+                    int price = this.itemPriceAndStock[item].Price * numberToBuy;
+                    string extraTradeItem = null;
                     int extraTradeItemCount = 5;
-                    if (this.itemPriceAndStock[item].Length > 2)
+                    if (this.itemPriceAndStock[item].TradeItem is not null)
                     {
-                        extraTradeItem = this.itemPriceAndStock[item][2];
-                        if (this.itemPriceAndStock[item].Length > 3)
+                        extraTradeItem = this.itemPriceAndStock[item].TradeItem;
+                        if (this.itemPriceAndStock[item].TradeItemCount is not null)
                         {
-                            extraTradeItemCount = this.itemPriceAndStock[item][3];
+                            extraTradeItemCount = this.itemPriceAndStock[item].TradeItemCount.Value;
                         }
                         extraTradeItemCount *= numberToBuy;
                     }
@@ -193,18 +143,19 @@ namespace HatShopRestoration.Framework.UI
                         Game1.playSound("cancel");
                         return false;
                     }
+
                     item.Stack = tmp;
-                    if (GetCheeseInInventory(Game1.player) >= price && (extraTradeItem == -1 || Game1.player.hasItemInInventory(extraTradeItem, extraTradeItemCount)))
+                    if (GetCheeseInInventory(Game1.player) >= price && (extraTradeItem is null || Game1.player.Items.ContainsId(extraTradeItem, extraTradeItemCount)))
                     {
                         int amountAddedToStack = numberToBuy;
-                        if (this.itemPriceAndStock[item][1] == int.MaxValue && item.Stack != int.MaxValue)
+                        if (itemPriceAndStock[item].Stock == int.MaxValue && item.Stack != int.MaxValue)
                         {
                             amountAddedToStack *= item.Stack;
                         }
                         this.heldItem.Stack += amountAddedToStack;
-                        if (this.itemPriceAndStock[item][1] != int.MaxValue && !item.IsInfiniteStock())
+                        if (itemPriceAndStock[item].Stock != int.MaxValue && !item.IsInfiniteStock())
                         {
-                            this.itemPriceAndStock[item][1] -= numberToBuy;
+                            itemPriceAndStock[item].ItemToSyncStack.Stack -= numberToBuy;
                             this.forSale[indexInForSaleList].Stack -= numberToBuy;
                         }
                         if (this.CanBuyback() && this.buyBackItems.Contains(item))
@@ -223,11 +174,11 @@ namespace HatShopRestoration.Framework.UI
                         {
                             Game1.playSound(this.purchaseSound);
                         }
-                        if (extraTradeItem != -1)
+                        if (extraTradeItem is not null)
                         {
-                            Game1.player.removeItemsFromInventory(extraTradeItem, extraTradeItemCount);
+                            Game1.player.Items.ReduceId(extraTradeItem, extraTradeItemCount);
                         }
-                        if (!this._isStorageShop && item.actionWhenPurchased())
+                        if (!this._isStorageShop && item.actionWhenPurchased(null))
                         {
                             this.heldItem = null;
                         }
@@ -242,7 +193,7 @@ namespace HatShopRestoration.Framework.UI
                     }
                 }
             }
-            if (this.itemPriceAndStock[item][1] <= 0)
+            if (itemPriceAndStock[item].Stock <= 0)
             {
                 if (this.buyBackItems.Contains(item))
                 {
@@ -266,11 +217,7 @@ namespace HatShopRestoration.Framework.UI
                 int index = this.currentItemIndex + i;
                 if (this.forSale[index] != null)
                 {
-                    int toBuy = ((!Game1.oldKBState.IsKeyDown(Keys.LeftShift)) ? 1 : Math.Min(Math.Min(Game1.oldKBState.IsKeyDown(Keys.LeftControl) ? 25 : 5, GetCheeseInInventory(Game1.player) / Math.Max(1, this.itemPriceAndStock[this.forSale[index]][0])), Math.Max(1, this.itemPriceAndStock[this.forSale[index]][1])));
-                    if (this.storeContext == "ReturnedDonations")
-                    {
-                        toBuy = this.itemPriceAndStock[this.forSale[index]][1];
-                    }
+                    int toBuy = ((!Game1.oldKBState.IsKeyDown(Keys.LeftShift)) ? 1 : Math.Min(Math.Min(Game1.oldKBState.IsKeyDown(Keys.LeftControl) ? 25 : 5, GetCheeseInInventory(Game1.player) / Math.Max(1, this.itemPriceAndStock[this.forSale[index]].Price)), Math.Max(1, this.itemPriceAndStock[this.forSale[index]].Stock)));
                     toBuy = Math.Min(toBuy, this.forSale[index].maximumStackSize());
                     if (toBuy == -1)
                     {
@@ -318,9 +265,9 @@ namespace HatShopRestoration.Framework.UI
                     return;
                 }
                 int toBuy = 1;
-                if (this.itemPriceAndStock[this.forSale[index]][0] > 0)
+                if (this.itemPriceAndStock[this.forSale[index]].Price > 0)
                 {
-                    toBuy = ((!Game1.oldKBState.IsKeyDown(Keys.LeftShift)) ? 1 : Math.Min(Math.Min(Game1.oldKBState.IsKeyDown(Keys.LeftControl) ? 25 : 5, GetCheeseInInventory(Game1.player) / this.itemPriceAndStock[this.forSale[index]][0]), this.itemPriceAndStock[this.forSale[index]][1]));
+                    toBuy = ((!Game1.oldKBState.IsKeyDown(Keys.LeftShift)) ? 1 : Math.Min(Math.Min(Game1.oldKBState.IsKeyDown(Keys.LeftControl) ? 25 : 5, GetCheeseInInventory(Game1.player) / this.itemPriceAndStock[this.forSale[index]].Price), this.itemPriceAndStock[this.forSale[index]].Stock));
                 }
                 if (this.canPurchaseCheck == null || this.canPurchaseCheck(index))
                 {
@@ -348,23 +295,15 @@ namespace HatShopRestoration.Framework.UI
             {
                 b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.75f);
             }
+
+            ShopCachedTheme theme = this.VisualTheme;
             Texture2D purchase_texture = Game1.mouseCursors;
             Rectangle purchase_window_border = new Rectangle(384, 373, 18, 18);
             Rectangle purchase_item_rect = new Rectangle(384, 396, 15, 15);
-            int purchase_item_text_color = -1;
+            Color? purchase_item_text_color = theme.ItemRowTextColor;
             bool purchase_draw_item_background = true;
             Rectangle purchase_item_background = new Rectangle(296, 363, 18, 18);
             Color purchase_selected_color = Color.Wheat;
-            if (this.storeContext == "QiGemShop")
-            {
-                purchase_texture = Game1.mouseCursors2;
-                purchase_window_border = new Rectangle(0, 256, 18, 18);
-                purchase_item_rect = new Rectangle(18, 256, 15, 15);
-                purchase_item_text_color = 4;
-                purchase_selected_color = Color.Blue;
-                purchase_draw_item_background = true;
-                purchase_item_background = new Rectangle(33, 256, 18, 18);
-            }
             IClickableMenu.drawTextureBox(b, Game1.mouseCursors, new Rectangle(384, 373, 18, 18), base.xPositionOnScreen + base.width - this.inventory.width - 32 - 24, base.yPositionOnScreen + base.height - 256 + 40, this.inventory.width + 56, base.height - 448 + 20, Color.White, 4f);
             IClickableMenu.drawTextureBox(b, purchase_texture, purchase_window_border, base.xPositionOnScreen, base.yPositionOnScreen, base.width, base.height - 256 + 32 + 4, Color.White, 4f);
 
@@ -383,14 +322,10 @@ namespace HatShopRestoration.Framework.UI
                 bool scrolling = ModEntry.modHelper.Reflection.GetField<bool>(this, "scrolling").GetValue();
                 IClickableMenu.drawTextureBox(b, purchase_texture, purchase_item_rect, this.forSaleButtons[k].bounds.X, this.forSaleButtons[k].bounds.Y, this.forSaleButtons[k].bounds.Width, this.forSaleButtons[k].bounds.Height, (this.forSaleButtons[k].containsPoint(Game1.getOldMouseX(), Game1.getOldMouseY()) && !scrolling) ? purchase_selected_color : Color.White, 4f, drawShadow: false);
                 ISalable item = this.forSale[this.currentItemIndex + k];
-                bool buyInStacks = item.Stack > 1 && item.Stack != int.MaxValue && this.itemPriceAndStock[item][1] == int.MaxValue;
+                bool buyInStacks = item.Stack > 1 && item.Stack != int.MaxValue && itemPriceAndStock[item].Stock == int.MaxValue;
                 StackDrawType stackDrawType;
-                if (this.storeContext == "QiGemShop")
-                {
-                    stackDrawType = StackDrawType.HideButShowQuality;
-                    buyInStacks = item.Stack > 1;
-                }
-                else if (this.itemPriceAndStock[item][1] == int.MaxValue)
+
+                if (itemPriceAndStock[item].Stock == int.MaxValue)
                 {
                     stackDrawType = StackDrawType.HideButShowQuality;
                 }
@@ -424,26 +359,29 @@ namespace HatShopRestoration.Framework.UI
                 {
                     SpriteText.drawString(b, displayName, this.forSaleButtons[k].bounds.X + 32 + 8, this.forSaleButtons[k].bounds.Y + 28, 999999, -1, 999999, failedCanPurchaseCheck ? 0.5f : 1f, 0.88f, junimoText: false, -1, "", purchase_item_text_color);
                 }
-                if (this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]][0] > 0)
+                if (this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]].Price > 0)
                 {
-                    SpriteText.drawString(b, this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]][0] + " ", this.forSaleButtons[k].bounds.Right - SpriteText.getWidthOfString(this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]][0] + " ") - 60, this.forSaleButtons[k].bounds.Y + 28, 999999, -1, 999999, (GetCheeseInInventory(Game1.player) >= this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]][0] && !failedCanPurchaseCheck) ? 1f : 0.5f, 0.88f, junimoText: false, -1, "", purchase_item_text_color);
+                    SpriteText.drawString(b, this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]].Price + " ", this.forSaleButtons[k].bounds.Right - SpriteText.getWidthOfString(this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]].Price + " ") - 60, this.forSaleButtons[k].bounds.Y + 28, 999999, -1, 999999, (GetCheeseInInventory(Game1.player) >= this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]].Price && !failedCanPurchaseCheck) ? 1f : 0.5f, 0.88f, junimoText: false, -1, "", purchase_item_text_color);
                     Utility.drawWithShadow(b, Game1.objectSpriteSheet, new Vector2(this.forSaleButtons[k].bounds.Right - 78, this.forSaleButtons[k].bounds.Y + 10), new Rectangle(256, 272, 16, 16), Color.White * ((!failedCanPurchaseCheck) ? 1f : 0.25f), 0f, Vector2.Zero, 4f, flipped: false, 1f, -1, -1, (!failedCanPurchaseCheck) ? 0.35f : 0f);
                 }
-                else if (this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]].Length > 2)
+                else if (this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]].TradeItem != null)
                 {
                     int required_item_count = 5;
-                    int requiredItem = this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]][2];
-                    if (this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]].Length > 3)
+                    string requiredItem = this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]].TradeItem;
+                    if (this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]].TradeItemCount.HasValue)
                     {
-                        required_item_count = this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]][3];
+                        required_item_count = this.itemPriceAndStock[this.forSale[this.currentItemIndex + k]].TradeItemCount.Value;
                     }
-                    bool hasEnoughToTrade = Game1.player.hasItemInInventory(requiredItem, required_item_count);
+                    bool hasEnoughToTrade = Game1.player.Items.ContainsId(requiredItem, required_item_count);
                     if (this.canPurchaseCheck != null && !this.canPurchaseCheck(this.currentItemIndex + k))
                     {
                         hasEnoughToTrade = false;
                     }
                     float textWidth = SpriteText.getWidthOfString("x" + required_item_count);
-                    Utility.drawWithShadow(b, Game1.objectSpriteSheet, new Vector2((float)(this.forSaleButtons[k].bounds.Right - 88) - textWidth, this.forSaleButtons[k].bounds.Y + 28 - 4), Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, requiredItem, 16, 16), Color.White * (hasEnoughToTrade ? 1f : 0.25f), 0f, Vector2.Zero, -1f, flipped: false, -1f, -1, -1, hasEnoughToTrade ? 0.35f : 0f);
+                    ParsedItemData dataOrErrorItem = ItemRegistry.GetDataOrErrorItem(requiredItem);
+                    Texture2D texture = dataOrErrorItem.GetTexture();
+                    Rectangle sourceRect = dataOrErrorItem.GetSourceRect();
+                    Utility.drawWithShadow(b, Game1.objectSpriteSheet, new Vector2((float)(this.forSaleButtons[k].bounds.Right - 88) - textWidth, this.forSaleButtons[k].bounds.Y + 28 - 4), sourceRect, Color.White * (hasEnoughToTrade ? 1f : 0.25f), 0f, Vector2.Zero, -1f, flipped: false, -1f, -1, -1, hasEnoughToTrade ? 0.35f : 0f);
                     SpriteText.drawString(b, "x" + required_item_count, this.forSaleButtons[k].bounds.Right - (int)textWidth - 16, this.forSaleButtons[k].bounds.Y + 44, 999999, -1, 999999, hasEnoughToTrade ? 1f : 0.5f, 0.88f, junimoText: false, -1, "", purchase_item_text_color);
                 }
             }
@@ -453,7 +391,7 @@ namespace HatShopRestoration.Framework.UI
             }
             this.inventory.draw(b);
 
-            List<TemporaryAnimatedSprite> animations = ModEntry.modHelper.Reflection.GetField<List<TemporaryAnimatedSprite>>(this, "animations").GetValue();
+            TemporaryAnimatedSpriteList animations = ModEntry.modHelper.Reflection.GetField<TemporaryAnimatedSpriteList>(this, "animations").GetValue();
             for (int j = animations.Count - 1; j >= 0; j--)
             {
                 if (animations[j].update(Game1.currentGameTime))
@@ -487,10 +425,10 @@ namespace HatShopRestoration.Framework.UI
 
             string hoverText = ModEntry.modHelper.Reflection.GetField<string>(this, "hoverText").GetValue();
             string boldTitleText = ModEntry.modHelper.Reflection.GetField<string>(this, "boldTitleText").GetValue();
-            int hoveredItemExtraItemIndex = ModEntry.modHelper.Reflection.GetMethod(this, "getHoveredItemExtraItemIndex").Invoke<int>();
+            string hoveredItemExtraItemIndex = ModEntry.modHelper.Reflection.GetMethod(this, "getHoveredItemExtraItemIndex").Invoke<string>();
             if (!hoverText.Equals(""))
             {
-                IClickableMenu.drawToolTip(b, $"{hoverText}\n\nEquipped via the Hand Mirror.", GetFashionableName(boldTitleText), this.hoveredItem as Item, this.heldItem != null, -1, 3, hoveredItemExtraItemIndex, hoveredItemExtraItemIndex, null, -1);
+                IClickableMenu.drawToolTip(b, $"{hoverText}\n\nEquipped via the Hand Mirror.", GetFashionableName(boldTitleText), this.hoveredItem as Item, this.heldItem != null, -1, 3, hoveredItemExtraItemIndex, -1, null, -1);
             }
             if (this.heldItem != null)
             {
@@ -505,20 +443,17 @@ namespace HatShopRestoration.Framework.UI
             int portrait_draw_position = base.xPositionOnScreen - 320;
             if (portrait_draw_position > 0 && Game1.options.showMerchantPortraits)
             {
-                if (this.portraitPerson != null)
+                Utility.drawWithShadow(b, Game1.mouseCursors, new Vector2(portrait_draw_position, base.yPositionOnScreen), new Rectangle(603, 414, 74, 74), Color.White, 0f, Vector2.Zero, 4f, flipped: false, 0.91f);
+                if (this.portraitTexture != null)
                 {
-                    Utility.drawWithShadow(b, Game1.mouseCursors, new Vector2(portrait_draw_position, base.yPositionOnScreen), new Rectangle(603, 414, 74, 74), Color.White, 0f, Vector2.Zero, 4f, flipped: false, 0.91f);
-                    if (this.portraitPerson.Portrait != null)
-                    {
-                        b.Draw(this.portraitPerson.Portrait, new Vector2(portrait_draw_position + 20, base.yPositionOnScreen + 20), new Rectangle(0, 0, 64, 64), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.92f);
-                    }
+                    b.Draw(this.portraitTexture, new Vector2(portrait_draw_position + 20, base.yPositionOnScreen + 20), new Rectangle(0, 0, 64, 64), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.92f);
                 }
                 if (this.potraitPersonDialogue != null)
                 {
                     portrait_draw_position = base.xPositionOnScreen - (int)Game1.dialogueFont.MeasureString(this.potraitPersonDialogue).X - 64;
                     if (portrait_draw_position > 0)
                     {
-                        IClickableMenu.drawHoverText(b, this.potraitPersonDialogue, Game1.dialogueFont, 0, 0, -1, null, -1, null, null, 0, -1, -1, portrait_draw_position, base.yPositionOnScreen + ((this.portraitPerson != null) ? 312 : 0));
+                        IClickableMenu.drawHoverText(b, this.potraitPersonDialogue, Game1.dialogueFont, 0, 0, -1, null, -1, null, null, 0, null, -1, portrait_draw_position, base.yPositionOnScreen + ((this.portraitTexture != null) ? 312 : 0));
                     }
                 }
             }

@@ -11,6 +11,7 @@
 {
 	"Changes": [
 		{
+			"LogName": "House exterior tiles",
 			"Target": "Maps/Forest",
 			"Action": "EditMap",
 			"MapTiles": [
@@ -101,6 +102,7 @@
 			]
 		},
 		{
+			"LogName": "Stardew Valley Fair hat stall",
 			"Target": "Maps/Town-Fair",
 			"Action": "EditMap",
 			"FromFile": "assets/FairStall.tmx",
@@ -113,50 +115,23 @@
 			"PatchMode": "Overlay"
 		},
 		{
+			"LogName": "Fair stall tilesheet",
 			"Target": "Maps/hatmouseLaceyStall",
 			"Action": "Load",
 			"FromFile": "assets/hatmouseLaceyStall_{{RecolorPalette}}_all.png"
 		},
 		{
+			"LogName": "Interior tilesheet",
 			"Target": "Maps/hatmouseLaceyInterior",
 			"Action": "Load",
 			"FromFile": "assets/hatmouseLaceyInterior_{{InteriorPalette}}_all.png"
 		},
 		{
-			"Target": "Maps/{{season}}_outdoorsTileSheet",
-			"Action": "EditImage",
-			"FromFile": "assets/house_{{RecolorPalette}}_{{season}}.png",
-			"FromArea": {"X": 0, "Y": 64, "Width": 112, "Height": 64},
-			"ToArea": {"X": 288, "Y": 1200, "Width": 112, "Height": 64}
+			"Action": "Include",
+			"FromFile": "data/maps-{{MatchRetexture}}-tex.json"
 		},
 		{
-			"Target": "Maps/{{season}}_outdoorsTileSheet",
-			"Action": "EditImage",
-			"FromFile": "assets/house_{{RecolorPalette}}_{{season}}.png",
-			"FromArea": {"X": 32, "Y": 32, "Width": 80, "Height": 32},
-			"ToArea": {"X": 320, "Y": 1168, "Width": 80, "Height": 32}
-		},
-		{
-			"Target": "Maps/{{season}}_outdoorsTileSheet",
-			"Action": "EditImage",
-			"FromFile": "assets/house_{{RecolorPalette}}_{{season}}.png",
-			"FromArea": {"X": 48, "Y": 0, "Width": 64, "Height": 32},
-			"ToArea": {"X": 336, "Y": 1136, "Width": 64, "Height": 32}
-		},
-		{
-			"Target": "Maps/{{season}}_outdoorsTileSheet",
-			"Action": "EditImage",
-			"FromFile": "assets/house_{{RecolorPalette}}_{{season}}.png",
-			"FromArea": {"X": 32, "Y": 16, "Width": 16, "Height": 16},
-			"ToArea": {"X": 336, "Y": 1120, "Width": 16, "Height": 16}
-		},
-		{
-			"Target": "LooseSprites/Cursors",
-			"Action": "EditImage",
-			"FromFile": "assets/storefront_{{RecolorPalette}}_{{season}}.png",
-			"ToArea": {"X": 627, "Y": 1958, "Width": 23, "Height": 31}
-		},
-		{
+			"LogName": "Map inspection point strings",
 			"Target": "Strings/StringsFromMaps",
 			"Action": "EditData",
 			"Entries": {
@@ -172,6 +147,7 @@
 			}
 		},
 		{
+			"LogName": "Remove items from cabin when vacant",
 			"Target": "Maps/Custom_HatMouseLacey_MouseHouse",
 			"Action": "EditMap",
 			"MapTiles": [

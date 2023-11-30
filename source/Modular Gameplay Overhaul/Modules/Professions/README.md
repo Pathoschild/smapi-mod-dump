@@ -36,9 +36,9 @@ for queries and analysis.**
 	<li><a href="#prestige">Prestige</a></li>
 	<li><a href="#limit-breaks">Limit Breaks</a></li>
 	<li><a href="#compatibility">Compatibility</a></li>
-	<li><a href="#faq">F.A.Q.</a></li>
-	<li><a href="#for-c-developers">For C# Developers</a></li>
 	<li><a href="#recommended-mods">Recommended Mods</a></li>
+	<li><a href="#for-c-developers">For C# Developers</a></li>
+	<li><a href="#faq">F.A.Q.</a></li>
 </ol>
 </details>
 
@@ -71,7 +71,7 @@ The perks within ⭐<font color="gold">star text</font>⭐ refer to <font color=
 <ul>
 <font size="2">
 
-Yields an equivalent 10% monetary bonus to vanilla on average, but also provides value if you choose not to sell raw crops.
+- Yields an equivalent 10% monetary bonus to vanilla on average, but also provides value if you choose not to sell raw crops.
 </font>
 </ul>
 </details>
@@ -83,7 +83,7 @@ Yields an equivalent 10% monetary bonus to vanilla on average, but also provides
 <ul>
 <font size="2">
 
-Allows harvesting iridium-quality crops, normally only possible with Deluxe Fertilizer. The chance is equivalent to half of that with Deluxe Fertilizer, which means that fertilizers are **by no means** obsolete.
+- Allows harvesting iridium-quality crops, normally only possible with Deluxe Fertilizer. The chance is equivalent to half of that with Deluxe Fertilizer, which means that fertilizers are **by no means** obsolete.
 </font>
 </ul>
 </details>
@@ -102,13 +102,13 @@ Allows harvesting iridium-quality crops, normally only possible with Deluxe Fert
 </details>
 
 <details>
-<summary><img src="./resources/assets/sprites/loose/miner.png"/> <b>Rancher (Lv5)</b> - Befriend animals 2× <font color="gold"><i>(⭐3×⭐)</i></font> quicker.
+<summary><img src="./resources/assets/sprites/loose/rancher.png"/> <b>Rancher (Lv5)</b> - Befriend animals 2× <font color="gold"><i>(⭐3×⭐)</i></font> quicker.
 </summary>
 
 <ul>
 <font size="2">
 
-Gain double mood *and* friendship points from petting. Newborn animals are also born with a non-zero, random initial friendship.
+- Gain double mood *and* friendship points from petting. Newborn animals are also born with a non-zero, random initial friendship.
 </font>
 </ul>
 </details>
@@ -120,7 +120,7 @@ Gain double mood *and* friendship points from petting. Newborn animals are also 
 <ul>
 <font size="2">
 
-At max friendship animals are worth 2.5x their base price, instead of vanilla 1.3x. If Animal Husbandry is installed, gestation following insemination is also 2x <font color="gold"><i>(3x)</i></font> faster.
+- At max friendship animals are worth 2.5x their base price, instead of vanilla 1.3x. If Animal Husbandry is installed, gestation following insemination is also 2x <font color="gold"><i>(3x)</i></font> faster.
 </font>
 </ul>
 </details>
@@ -135,7 +135,7 @@ At max friendship animals are worth 2.5x their base price, instead of vanilla 1.
 - Note that happiness, or [mood](https://stardewvalleywiki.com/Animals#Mood), is **not** the same as friendship.
 - This will **not** allow certain animals that already produce every day (i.e., cows and chickens) to produce more that once per day.
 - The bonus produce value also applies to artisan goods derived from animal products (such as cheeses, mayos and cloth), honey (bees are animals too), and meat from Animal Husbandry or PPJA Fresh Meat.
-- Only deluxe buildings can be considered full, and only barns and coops owned by the Producer will be considered (ownership requirements can be turned off in the configs). 
+- Only deluxe buildings can be considered full, and only barns and coops owned by the Producer will be considered (ownership requirements can be turned off in the configs).
 - There is no limit to the bonus value.
 </font>
 </ul>
@@ -154,7 +154,7 @@ At max friendship animals are worth 2.5x their base price, instead of vanilla 1.
 <ul>
 <font size="2">
 
-Other than the name, this profession is unchanged from vanilla.
+- Other than the name, this profession is unchanged from vanilla.
 </font>
 </ul>
 </details>
@@ -194,7 +194,7 @@ Other than the name, this profession is unchanged from vanilla.
 <ul>
 <font size="2">
 
-Other than the name, this profession is unchanged from vanilla.
+- Other than the name, this profession is unchanged from vanilla.
 </font>
 </ul>
 </details>
@@ -206,7 +206,8 @@ Other than the name, this profession is unchanged from vanilla.
 <ul>
 <font size="2">
 
-Bonus tree growth works as a global buff; i.e., all trees in the world are affected as long as any player in the session has this profession, and the effect will stack for all additional online players that share this profession. The hardwood bonus is inherited and uchanged from vanilla.
+- Bonus tree growth works as a global buff; i.e., all trees in the world are affected as long as any player in the session has this profession, and the effect will stack for all additional online players that share this profession.
+- The hardwood bonus is inherited and uchanged from vanilla.
 </font>
 </ul>
 </details>
@@ -237,7 +238,7 @@ Bonus tree growth works as a global buff; i.e., all trees in the world are affec
 <ul>
 <font size="2">
 
-Completely unchanged from vanilla.
+- Completely unchanged from vanilla.
 </font>
 </ul>
 </details>
@@ -249,7 +250,7 @@ Completely unchanged from vanilla.
 <ul>
 <font size="2">
 
-Plus 0.5% ladder chance per level. Bonus ladder chance resets each time you leave the mines. **This includes taking the stairs back to the mine entrance.**
+- Plus 0.5% ladder chance per level. Bonus ladder chance resets each time you leave the mines. **This includes taking the stairs back to the mine entrance.**
 </font>
 </ul>
 </details>
@@ -279,7 +280,7 @@ Plus 0.5% ladder chance per level. Bonus ladder chance resets each time you leav
 <ul>
 <font size="2">
 
-Provides a new style of mining while attempting to compensate for the lack of coal without the vanilla Prospector profession.
+- Provides a new style of mining while attempting to compensate for the lack of coal without the vanilla Prospector profession.
 </font>
 </ul>
 </details>
@@ -416,7 +417,7 @@ Provides a new style of mining while attempting to compensate for the lack of co
 <ul>
 <font size="2">
 
-Completely unchanged from vanilla.
+- Completely unchanged from vanilla.
 </font>
 </ul>
 </details>
@@ -428,7 +429,7 @@ Completely unchanged from vanilla.
 <ul>
 <font size="2">
 
-**Rage:** Damage +1% and Attack Speed +0.5% per stack*. Max 100 stacks. Rage slowly decays after not dealing or taking damage for 20 seconds (40 when prestiged).
+- **Rage:** Damage +1% and Attack Speed +0.5% per stack*. Max 100 stacks. Rage slowly decays after not dealing or taking damage for 20 seconds (40 when prestiged).
 </font>
 </ul>
 </details>
@@ -440,13 +441,13 @@ Completely unchanged from vanilla.
 <ul>
 <font size="2">
 
-**Poaching:** Each monster can only be poached once. Poach chance is increased by your critical strike chance and luck (**not** Daily Luck!), and decreased by the enemy's resistance and jitteriness (yes, that's a real stat which monsters have). Any item from the monster's available loot table can be obtained by this method.
+- **Poaching:** Each monster can only be poached once. Poach chance is increased by your critical strike chance and luck (**not** Daily Luck!), and decreased by the enemy's resistance and jitteriness (yes, that's a real stat which monsters have). Any item from the monster's available loot table can be obtained by this method.
 </font>
 </ul>
 </details>
 
 <details>
-<summary><img src="./resources/assets/sprites/loose/rascal.png"/> <b>Rascal (Lv5)</b> - Gain one additional ammo slot. 35% <font color="gold"><i>(⭐55%⭐)</i></font> chance to recover spent ammo. <font color="gold"><i>Can equip Monster Musk to shoot alluring ammo.</i></font>
+<summary><img src="./resources/assets/sprites/loose/rascal.png"/> <b>Rascal (Lv5)</b> - Gain one additional ammo slot. 35% <font color="gold"><i>(⭐55%⭐)</i></font> chance to recover spent ammo. <font color="gold"><i>⭐Can equip Monster Musk to shoot alluring ammo.⭐</i></font>
 </summary>
 
 <ul>
@@ -461,7 +462,7 @@ Completely unchanged from vanilla.
 </details>
 
 <details>
-<summary><img src="./resources/assets/sprites/loose/desperado.png"/> <b>Desperado (Lv10)</b> - Consecutive shots against different enemies within 1 second deal 50% more damage. Gain the ability to overcharge. <font color="gold"><i>⭐Overcharged shots have a chance to pierce through enemies.⭐</i></font>
+<summary><img src="./resources/assets/sprites/loose/desperado.png"/> <b>Desperado (Lv10)</b> - Consecutive shots within 1 second deal 50% more damage if they hit different enemies. Gain the ability to overcharge. <font color="gold"><i>⭐Overcharged shots have a chance to pierce through enemies.⭐</i></font>
 </summary>
 
 <ul>
@@ -589,7 +590,7 @@ After all possible skills have had their level cap raised, the Statue of Prestig
 ## Compatibility
 
 <details>
-<summary> 🟩 <b><font color="green">The following mods are fully integrated:</font></b> 🟩 </summary>
+<summary> 🟩 <b><font color="green">Click here to expand the list of mods which are compatible and have added integration:</font></b> 🟩 </summary>
 
 - All [SpaceCore][mod:spacecore] custom skills are fully supported by the skill reset systems, including but not limited to: [Luck Skill][mod:luck], [Cooking Skill][mod:cooking], [Magic][mod:magic], [Love Of Cooking][mod:loc], [Binning Skill][mod:binning] and [Socializing Skill][mod:socializing]. However, **only skills which explicitly provide prestiged professions will be supported by the Prestige system**. An [API](../../ModApi.cs) is provided for mod authors to register their custom skills for prestige. Authors are responsible for providing the prestige perks and functionality of their own professions, as well as corresponding prestige icons and descriptions.
 - [Automate][mod:automate] machines will apply Artisan, Ecologist and Gemologist perks to all appropriate machines which meet the ownership requirements (if that setting is enabled). In the case of machines that are not crafted, such as the Farm Cave Mushroom Boxes and terrain features like Berry Bushes and Fruit Trees, only the session host's professions will apply. In cases which consider the professions of the user, and not of the owner, then the owner of the closest chest in the automation group is used.
@@ -609,10 +610,12 @@ After all possible skills have had their level cap raised, the Statue of Prestig
 - [Stardew Valley Expanded][mod:sve] will also change the look of the Limit gauge in Galdora maps to match the Galdoran UI theme.
 - [CJB Cheats Menu][mod:cjb-cheats], if you download the optional translation files, will display this mod's profession names under Skill Cheats menu.
 - [Archery][mod:archery] bows and crossbows will also apply Rascal and Desperado perks.
+- Legendary fish from [Stardew Aquarium][mod:aquarium], [More New Fish][mod:more-new-fish] and [Ridgeside Village][mod:ridgeside] can be raised in ponds with the Aquarist profession.
+
 </details>
 
 <details>
-<summary> 🟨 <b><font color="yellow">The following mods are compatible without integration:</font></b> 🟨 </summary>
+<summary> 🟨 <b><font color="yellow">Click here to expand the list of mods which are compatible without integration:</font></b> 🟨 </summary>
 
 - [Multi Yield Crops][mod:myc]
 - [Craftable Mushroom Boxes][mod:mushroom-boxes]
@@ -622,15 +625,43 @@ After all possible skills have had their level cap raised, the Statue of Prestig
 </details>
 
 <details>
-<summary> 🟥 <b><font color="red">The following mods are NOT compatible:</font></b> 🟥 </summary>
+<summary> 🟥 <b><font color="red">Click here to expand the list of mods which are NOT compatible:</font></b> 🟥 </summary>
 
 - Any mods that change vanilla skills.
 - [Better Crab Pots][mod:better-crab-pots], [Crab Pot Loot Has Quality And Bait Effects][mod:crab-pot-loot] or any mod that affects Crab Pot behavior.
 - [Better Slingshots][mod:better-slingshots], [Ring Overhaul][mod:ring-overhaul], or any mod that affects Slingshot behavior.
 - [Quality Artisan Products][mod:qap] and [Quality Artisan Products for Artisan Valley][mod:qap-av], as they will be overriden by this mod's changes to the Artisan profession (use [Flower Meads][mod:flower-meads] instead for the namesake feature).
 - [All Professions][mod:all-professions] and [Skill Prestige][mod:prestige], as they conflict with this mod's Prestige system. You could potentially use them if you disable this mod's Prestige system, but I will not provide support in case of bugs.
-- [Yet Another Harvest With Scythe Mod][mod:yahwsm] will not apply modded profession perks. Use instead the feature included in CJB Cheats Menu.
+- [Yet Another Harvest With Scythe Mod][mod:yahwsm] will not apply modded profession perks. This feature is included in the [TOLS](../Tools) module; use that or the embedded feature in CJB Cheats Menu.
 </details>
+
+<sup><sup>[🔼 Back to top](#margo--professions-prfs)</sup></sup>
+
+## Recommended Mods
+
+- [Artisan Valley][mod:artisan-valley] to add more variety to Artisan and Producer products.
+- [Slime Produce][mod:slime-produce] for even more interesting and profitable Slime Hutches.
+- [Ostrich Mayo and Golden Mayo][mod:new-mayo] for better consistency of Ostrich and Golden egg processing with the Artisan profession.
+- [Skill Training][mod:skill-training] to immersively speed-up your skill resets.
+- [Tap Giant Crops][mod:tap-giant-crops] to get way more out of the Tapper profession.
+
+<sup><sup>[🔼 Back to top](#margo--professions-prfs)</sup></sup>
+
+## For C# Developers
+
+The module exposes an API to facilitate integration with other mods. Currently exposed endpoints include:
+
+- Checking the current quality of Ecologist forage or Gemologist minerals.
+- Checking the current tax deduction bracket for Conservationist.
+- Forcing new Treasure Hunt events, or interrupting active Treasure Hunts.
+- Triggering events when a Treasure Hunt starts or ends.
+- Checking a player's registered Ultimate ability.
+- Triggering events when a player's Ultimate gains charge, becomes active or inactive.
+- Checking whether the Ultimate HUD element is currently being displayed (useful for UI mods to decide whether to reposition their own HUD elements).
+- Checking the player's config settings for this mod.
+- Registering custom skills for Prestige.
+
+To consume the API, copy both interfaces from the [API folder](../../API/) namespace to your project and [ask SMAPI for a proxy][wiki:integrations-api].
 
 <sup><sup>[🔼 Back to top](#margo--professions-prfs)</sup></sup>
 
@@ -674,35 +705,6 @@ Obviously not.
 They will produce ores, gems and other valuables fitting to the fish's theme, as well as, obviously, roe.
 With the exception of Angler when placed together with Ms. Angler (requires [PNDS](../Ponds)), they do not reproduce.
 </details>
-
-<sup><sup>[🔼 Back to top](#margo--professions-prfs)</sup></sup>
-
-## For C# Developers
-
-The module exposes an API to facilitate integration with other mods. Currently exposed endpoints include:
-
-- Checking the current quality of Ecologist forage or Gemologist minerals.
-- Checking the current tax deduction bracket for Conservationist.
-- Forcing new Treasure Hunt events, or interrupting active Treasure Hunts.
-- Triggering events when a Treasure Hunt starts or ends.
-- Checking a player's registered Ultimate ability.
-- Triggering events when a player's Ultimate gains charge, becomes active or inactive.
-- Checking whether the Ultimate HUD element is currently being displayed (useful for UI mods to decide whether to reposition their own HUD elements).
-- Checking the player's config settings for this mod.
-- Registering custom skills for Prestige.
-
-To consume the API, copy both interfaces from the [API folder](../../API/) namespace to your project and [ask SMAPI for a proxy][wiki:integrations-api].
-
-<sup><sup>[🔼 Back to top](#margo--professions-prfs)</sup></sup>
-
-## Recommended Mods
-
-- [Artisan Valley][mod:artisan-valley] to add more variety to Artisan and Producer products.
-- [Slime Produce][mod:slime-produce] for even more interesting and profitable Slime Hutches.
-- [Ostrich Mayo and Golden Mayo][mod:new-mayo] for better consistency of Ostrich and Golden egg processing with the Artisan profession.
-- [Skill Training][mod:skill-training] to immersively speed-up your skill resets.
-- [Tap Giant Crops][mod:tap-giant-crops] to get way more out of the Tapper profession.
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [shield:prestige]: https://img.shields.io/badge/Prestige-yellow?style=flat
@@ -755,6 +757,9 @@ To consume the API, copy both interfaces from the [API folder](../../API/) names
 [mod:skill-training]: <https://www.nexusmods.com/stardewvalley/mods/14452> "Skill Training"
 [mod:yahwsm]: <https://www.nexusmods.com/stardewvalley/mods/2731> "Yet Another Harvest With Scythe Mod"
 [mod:archery]: <https://www.nexusmods.com/stardewvalley/mods/16767> "Archery"
+[mod:aquarium]: <https://www.nexusmods.com/stardewvalley/mods/6372> "Stardew Aquarium"
+[mod:more-new-fish]: <https://www.nexusmods.com/stardewvalley/mods/3578> "More New Fish"
+[mod:ridgeside]: <https://www.nexusmods.com/stardewvalley/mods/7286> "Ridgeside Village"
 
 <!-- USER LINKS -->
 [user:enai]: <https://www.nexusmods.com/skyrimspecialedition/users/3959191> "Enai Siaion"

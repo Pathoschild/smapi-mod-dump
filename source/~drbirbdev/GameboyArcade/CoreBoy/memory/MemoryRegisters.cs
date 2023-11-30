@@ -18,8 +18,8 @@ namespace CoreBoy.memory
     {
         private readonly Dictionary<int, IRegister> _registers;
         private readonly Dictionary<int, int> _values = new Dictionary<int, int>();
-        private readonly RegisterType[] _allowsWrite = {RegisterType.W, RegisterType.RW};
-        private readonly RegisterType[] _allowsRead = {RegisterType.R, RegisterType.RW};
+        private readonly RegisterType[] _allowsWrite = { RegisterType.W, RegisterType.RW };
+        private readonly RegisterType[] _allowsRead = { RegisterType.R, RegisterType.RW };
 
         public MemoryRegisters(params IRegister[] registers)
         {
@@ -32,28 +32,28 @@ namespace CoreBoy.memory
                 }
 
                 map.Add(r.Address, r);
-                _values.Add(r.Address, 0);
+                this._values.Add(r.Address, 0);
             }
 
-            _registers = map;
+            this._registers = map;
         }
 
         private MemoryRegisters(MemoryRegisters original)
         {
-            _registers = original._registers;
-            _values = new Dictionary<int, int>(original._values);
+            this._registers = original._registers;
+            this._values = new Dictionary<int, int>(original._values);
         }
 
         public int Get(IRegister reg)
         {
-            return _registers.ContainsKey(reg.Address)
-                ? _values[reg.Address]
+            return this._registers.ContainsKey(reg.Address)
+                ? this._values[reg.Address]
                 : throw new ArgumentException("Not valid register: " + reg);
         }
 
         public void Put(IRegister reg, int value)
         {
-            _values[reg.Address] = _registers.ContainsKey(reg.Address)
+            this._values[reg.Address] = this._registers.ContainsKey(reg.Address)
                 ? value
                 : throw new ArgumentException("Not valid register: " + reg);
         }
@@ -62,31 +62,31 @@ namespace CoreBoy.memory
 
         public int PreIncrement(IRegister reg)
         {
-            if (!_registers.ContainsKey(reg.Address))
+            if (!this._registers.ContainsKey(reg.Address))
             {
                 throw new ArgumentException("Not valid register: " + reg);
             }
 
-            var value = _values[reg.Address] + 1;
-            _values[reg.Address] = value;
+            var value = this._values[reg.Address] + 1;
+            this._values[reg.Address] = value;
             return value;
         }
 
-        public bool Accepts(int address) => _registers.ContainsKey(address);
+        public bool Accepts(int address) => this._registers.ContainsKey(address);
 
         public void SetByte(int address, int value)
         {
-            var regType = _registers[address].Type;
-            if (_allowsWrite.Contains(regType))
+            var regType = this._registers[address].Type;
+            if (this._allowsWrite.Contains(regType))
             {
-                _values[address] = value;
+                this._values[address] = value;
             }
         }
 
         public int GetByte(int address)
         {
-            var regType = _registers[address].Type; 
-            return _allowsRead.Contains(regType) ? _values[address] : 0xff;
+            var regType = this._registers[address].Type;
+            return this._allowsRead.Contains(regType) ? this._values[address] : 0xff;
         }
     }
 }

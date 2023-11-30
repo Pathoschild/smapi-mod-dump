@@ -16,6 +16,7 @@ using System.Linq;
 using DaLion.Overhaul.Modules.Professions.TreasureHunts;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Events;
+using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Stardew;
 using StardewModdingAPI.Events;
 
@@ -34,6 +35,12 @@ internal sealed class ProspectorHuntObjectListChangedEvent : ObjectListChangedEv
     }
 
     /// <inheritdoc />
+    protected override void OnEnabled()
+    {
+        this._hunt ??= Game1.player.Get_ProspectorHunt();
+    }
+
+    /// <inheritdoc />
     protected override void OnObjectListChangedImpl(object? sender, ObjectListChangedEventArgs e)
     {
         if (!e.IsCurrentLocation)
@@ -41,20 +48,39 @@ internal sealed class ProspectorHuntObjectListChangedEvent : ObjectListChangedEv
             return;
         }
 
-        this._hunt ??= Game1.player.Get_ProspectorHunt();
-        if (!this._hunt.TreasureTile.HasValue)
+        if (!this._hunt!.TreasureTile.HasValue)
         {
             this.Disable();
             return;
         }
 
-        var removed = e.Removed.ToList();
-        if (!removed.Any(r => r.Value.IsStone() && r.Key == this._hunt.TreasureTile.Value))
+        if (!e.Location.Objects.ContainsKey(this._hunt.TreasureTile.Value))
+        {
+            this._hunt.Complete();
+            this.Disable();
+            return;
+        }
+
+        if (ProfessionsModule.Config.UseLegacyProspectorHunt)
         {
             return;
         }
 
-        this._hunt.Complete();
-        this.Disable();
+        var removed = e.Removed.Where(r => r.Value.IsStone()).ToList();
+        if (removed.Count != 1)
+        {
+            return;
+        }
+
+        var distanceToTreasure = (int)removed.Single().Value.DistanceTo(this._hunt!.TreasureTile.Value);
+        var detectionDistance = (int)ProfessionsModule.Config.ProspectorDetectionDistance;
+        if (detectionDistance > 0 && !distanceToTreasure.IsIn(1..detectionDistance))
+        {
+            return;
+        }
+
+        var pitch = (int)(2400f * (1f - ((float)distanceToTreasure / detectionDistance)));
+        Game1.playSoundPitched("detector", pitch);
+        Log.A($"Beeped at frequency {pitch} Hz");
     }
 }

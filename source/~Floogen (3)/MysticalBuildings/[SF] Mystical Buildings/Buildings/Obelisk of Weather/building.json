@@ -401,6 +401,7 @@
   ],
 
   "Builder": "Wizard",
+  "MagicalConstruction": true,
   "BuildCondition": "CAN_BUILD_FOR_CABINS ObeliskofWeather",
   "BuildCost": 5000,
   "BuildMaterials": [

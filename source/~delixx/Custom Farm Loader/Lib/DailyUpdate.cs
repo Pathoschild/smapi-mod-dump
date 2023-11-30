@@ -20,6 +20,8 @@ using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewValley.TerrainFeatures;
 
+using W = Custom_Farm_Loader.Lib.Enums.WildCropType;
+
 namespace Custom_Farm_Loader.Lib
 {
     public class DailyUpdate
@@ -189,22 +191,28 @@ namespace Custom_Farm_Loader.Lib
 
         private void setDefaultWildCropSeasons()
         {
-            return;
             if (Filter.ChangedSeasons)
                 return;
 
             if (new WildCropType[] {
-                WildCropType.Spring_Onion, WildCropType.Garlic, WildCropType.Potato, WildCropType.Blue_Jazz, WildCropType.Tulip, WildCropType.Parsnip
+                W.Spring_Onion, W.Garlic, W.Potato, W.Blue_Jazz, W.Tulip, W.Parsnip,
+                W.Cauliflower, W.Coffee, W.Kale, W.Rhubarb, W.Strawberry, W.Rice,
+                W.Ancient_Fruit, W.Mixed_Seeds,
             }.Contains(WildCropID))
                 Filter.Seasons.Add("Spring");
 
             if (new WildCropType[] {
-                WildCropType.Ginger, WildCropType.Radish, WildCropType.Wheat, WildCropType.Poppy, WildCropType.Summer_Spangle, WildCropType.Sunflower
+                W.Ginger, W.Radish, W.Wheat, W.Poppy, W.Summer_Spangle, W.Sunflower,
+                W.Coffee, W.Blueberry, W.Corn, W.Hops, W.Hot_Pepper, W.Melon, W.Red_Cabbage,
+                W.Starfruit, W.Tomato, W.Ancient_Fruit, W.Mixed_Seeds, W.Pineapple, W.Taro,
             }.Contains(WildCropID))
                 Filter.Seasons.Add("Summer");
 
             if (new WildCropType[] {
-                WildCropType.Wheat, WildCropType.Bok_Choy, WildCropType.Sunflower, WildCropType.Amaranth, WildCropType.Fairy_Rose
+                W.Wheat, W.Bok_Choy, W.Sunflower, W.Amaranth, W.Fairy_Rose, W.Corn,
+                W.Artichoke, W.Beet, W.Cranberry, W.Eggplant, W.Grape, W.Pumpkin, W.Yam,
+                W.Ancient_Fruit, W.Mixed_Seeds, W.Sweet_Gem_Berry,
+
             }.Contains(WildCropID))
                 Filter.Seasons.Add("Fall");
         }

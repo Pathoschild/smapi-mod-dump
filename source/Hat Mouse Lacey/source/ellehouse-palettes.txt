@@ -1,0 +1,129 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ichortower/HatMouseLacey
+**
+*************************************************/
+
+vanilla spring
+83351c be5f1d d78431 f0a343
+390a12 4e190e 5c2119 6a2b1b 7a371d a25224
+538baf 94d4e4 dbfdff
+380909 491009 491009 491009 7a260d a13c19 ce5628 f36e38
+---
+vanilla summer
+83351c be5f1d d78431 f0a343
+390a12 4e190e 5c2119 6a2b1b 7a371d a25224
+538baf 94d4e4 dbfdff
+380909 491009 491009 491009 7a260d a13c19 ce5628 f36e38
+---
+vanilla fall
+852a1b bf571c d87e30 f09f43
+3a0811 50130d 5e1918 6c221a 7c2d1b a34923
+5588ae 95d3e3 dbfdff
+390708 4a0b08 4a0b08 4a0b08 7c1c0c a23118 cf4c28 f36538
+---
+vanilla winter
+7a3728 bc683f d68a53 efa866
+320e1f 471a1d 532022 612825 713729 9d5737
+4484ab 8cd2e3 dafdff
+63abf2 9fefff c9fbff ffffff c9fbff ffffff ffffff ffffff
+---
+earthy spring
+6c402d a47457 c69776 dbb396
+3b221b 4c2b22 543025 683d2d 794833 9b6643
+5b89a1 94d2e0 dafbfc
+210c0d 351618 351618 351618 622928 7d3630 96483b a95643
+---
+earthy summer
+6c402d a47457 c69776 dbb396
+3b221b 4c2b22 543025 683d2d 794833 9b6643
+5b89a1 94d2e0 dafbfc
+210c0d 351618 351618 351618 622928 7d3630 96483b a95643
+---
+earthy fall
+6e3c2b a67155 c79575 dcb295
+3d201a 4e2821 562d24 6a3a2b 7b4431 9d6342
+5d89a0 95d2df dafbfc
+220b0c 361417 361417 361417 642427 7f302e 984239 aa5042
+---
+earthy winter
+684432 a1785a c49a79 dab598
+381f1f 482b27 50312a 644032 754d38 986c48
+51869e 8fd1df d9fbfc
+7278a6 b1c0d6 e3ebef ffffff e3ebef ffffff ffffff ffffff
+---
+vpr spring
+6c402d a47457 c69776 dbb396
+3b221b 4c2b22 543025 683d2d 794833 9b6643
+5b89a1 94d2e0 dafbfc
+210c0d 351618 351618 351618 622928 7d3630 96483b a95643
+---
+vpr summer
+6c402d a47457 c69776 dbb396
+3b221b 4c2b22 543025 683d2d 794833 9b6643
+5b89a1 94d2e0 dafbfc
+210c0d 351618 351618 351618 622928 7d3630 96483b a95643
+---
+vpr fall
+6e3c2b a67155 c79575 dcb295
+3d201a 4e2821 562d24 6a3a2b 7b4431 9d6342
+5d89a0 95d2df dafbfc
+220b0c 361417 361417 361417 642427 7f302e 984239 aa5042
+---
+vpr winter
+684432 a1785a c49a79 dab598
+381f1f 482b27 50312a 644032 754d38 986c48
+51869e 8fd1df d9fbfc
+7278a6 b1c0d6 e3ebef ffffff e3ebef ffffff ffffff ffffff
+---
+starblue spring
+6c402d a47457 c69776 dbb396
+3e160e 4c2b22 58281e 683225 7b3e2b 975d3d
+6c8696 a1ccd7 dbfdff
+350118 500d21 500d21 500d21 862a34 98343a b84644 c34c48
+---
+starblue summer
+6c402d a47457 c69776 dbb396
+3e160e 4c2b22 58281e 683225 7b3e2b 975d3d
+6c8696 a1ccd7 dbfdff
+350118 500d21 500d21 500d21 862a34 98343a b84644 c34c48
+---
+starblue fall
+6e3726 a66d50 c79271 dcb093
+3f110c 4e241c 5a2018 6a291e 7d3423 995436
+6f8191 a2cad5 dbfdff
+360115 52091c 52091c 52091c 881d2d 992733 b9393f c43f43
+---
+starblue winter
+673d31 a1705a c49379 dab198
+3c1617 482726 552825 64332b 773f31 945a43
+617f92 9dcad6 dafdff
+7da1de b9dcf8 def3fc fdffff def3fc fdffff fdffff fdffff
+---
+wittily spring
+6c402d a47457 c69776 dbb396
+3b221b 4c2b22 543025 683d2d 794833 9b6643
+5b89a1 94d2e0 dafbfc
+210c0d 351618 351618 351618 622928 7d3630 96483b a95643
+---
+wittily summer
+6c402d a47457 c69776 dbb396
+3b221b 4c2b22 543025 683d2d 794833 9b6643
+5b89a1 94d2e0 dafbfc
+210c0d 351618 351618 351618 622928 7d3630 96483b a95643
+---
+wittily fall
+6e3c2b a67155 c79575 dcb295
+3d201a 4e2821 562d24 6a3a2b 7b4431 9d6342
+5d89a0 95d2df dafbfc
+220b0c 361417 361417 361417 642427 7f302e 984239 aa5042
+---
+wittily winter
+684432 a1785a c49a79 dab598
+381f1f 482b27 50312a 644032 754d38 986c48
+51869e 8fd1df d9fbfc
+7278a6 b1c0d6 e3ebef ffffff e3ebef ffffff ffffff ffffff

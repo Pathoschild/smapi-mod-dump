@@ -29,7 +29,13 @@ namespace StardewDruid.Cast
 
         public int objectQuality;
 
-        public Throw(int ObjectIndex, int ObjectQuality)
+        public Vector2 throwPosition;
+
+        public Vector2 catchPosition;
+
+        public bool itemDebris;
+
+        public Throw(Farmer Player, Vector2 Position, int ObjectIndex, int ObjectQuality)
         {
             
             objectIndex = ObjectIndex;
@@ -38,9 +44,30 @@ namespace StardewDruid.Cast
 
             objectInstance = new StardewValley.Object(objectIndex, 1, false, -1, objectQuality);
 
+            targetPlayer = Player;
+
+            throwPosition = Position;
+
+            catchPosition = targetPlayer.Position;
+
+        }
+        
+        public Throw(Farmer Player, Vector2 Catch, StardewValley.Object Extract, Vector2 Throw)
+        {
+
+            objectIndex = Extract.ParentSheetIndex;
+            
+            targetPlayer = Player;
+
+            throwPosition = Throw;
+
+            objectInstance = Extract;
+
+            catchPosition = Catch;
+
         }
 
-        public void ThrowObject(Farmer TargetPlayer, Vector2 targetVector)
+        public void ThrowObject()
         {
 
             /*
@@ -52,21 +79,15 @@ namespace StardewDruid.Cast
              * 
              */
 
-            targetPlayer = TargetPlayer;
-
             Vector2 motionPlayer = targetPlayer.getMostRecentMovementVector() / 33.33f;
 
             Rectangle targetRectangle = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, objectIndex, 16, 16);
 
-            Vector2 targetPosition = new(targetVector.X * 64, targetVector.Y * 64);
-
-            Vector2 playerPosition = targetPlayer.Position;
-
             float animationInterval = 1000f;
 
-            float xOffset = (playerPosition.X - targetPosition.X);
+            float xOffset = (catchPosition.X - throwPosition.X);
 
-            float yOffset = (playerPosition.Y - targetPosition.Y);
+            float yOffset = (catchPosition.Y - throwPosition.Y);
 
             float motionX =  xOffset / 1000;
 
@@ -74,7 +95,7 @@ namespace StardewDruid.Cast
 
             float motionY = ( yOffset / 1000) - compensate;
 
-            TemporaryAnimatedSprite throwAnimation = new("Maps\\springobjects", targetRectangle, animationInterval, 1, 0, targetPosition, flicker: false, flipped: false, targetPosition.Y / 10000f, 0.001f, Color.White, 3f, 0f, 0f, 0f)
+            TemporaryAnimatedSprite throwAnimation = new("Maps\\springobjects", targetRectangle, animationInterval, 1, 0, throwPosition, flicker: false, flipped: false, throwPosition.Y / 10000f, 0.001f, Color.White, 3f, 0f, 0f, 0f)
             {
 
                 motion = new Vector2(motionX, motionY) + motionPlayer,
@@ -93,6 +114,15 @@ namespace StardewDruid.Cast
 
         public void InventoriseObject(int endBehaviour)
         {
+
+            if(itemDebris && objectInstance is StardewValley.Object)
+            {
+
+                Game1.createItemDebris(objectInstance.getOne(), catchPosition + new Vector2(32, 32), -1);
+
+                return;
+
+            }
 
             if (!targetPlayer.addItemToInventoryBool(objectInstance)) // if unable to add to inventory spawn as debris
             {

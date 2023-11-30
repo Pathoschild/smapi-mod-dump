@@ -10,9 +10,9 @@ mods:
    Incubate Pufferfish Eggs
 
 latest commit:
-   commit 2e5be97ecbd06a377d40360af42fe3f16fb42fba
+   commit f81ce2a42acc9515f06a25f4257e3d1743182cc3
    Author: Hleb Zhynko <gleb.zhinko@protonmail.com>
-   Date:   Sat Oct 28 00:52:30 2023 -0500
+   Date:   Thu Nov 9 22:48:14 2023 -0600
    
-       add deprecation notice to GrapesAllYearRound and prepare it for release
+       fix special sprites not showing up and prepare for release
    

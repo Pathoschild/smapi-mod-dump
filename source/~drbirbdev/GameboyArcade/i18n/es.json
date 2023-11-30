@@ -1,0 +1,11 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/drbirbdev/StardewValley
+**
+*************************************************/
+
+{"config.Up":"Arriba","config.Down":"Abajo","config.Right":"Derecha","config.Left":"Izquierda","config.A":"A","config.B":"B","config.Start":"Inicio","config.Select":"Seleccione","config.Power":"Potencia","config.Turbo":"Turbo","config.Turbo.tooltip":"Ejecuta el emulador sin límite de velocidad.  Normalmente funciona a 60 fps, pero en algunos ordenadores puede funcionar a 100 fps.","config.MusicSampleRate":"Frecuencia de muestreo de música","config.MusicSampleRate.tooltip":"Configuración experimental para la sincronización de música.  Probablemente no funcione."}

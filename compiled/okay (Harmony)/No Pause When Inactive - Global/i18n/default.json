@@ -1,0 +1,4 @@
+﻿{
+    "nopausewheninative.global.option.name": "Do not pause the game globally",
+    "nopausewheninative.global.option.tooltip": "Respects the option per-save in the save game's options menu."
+}

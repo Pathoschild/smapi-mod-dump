@@ -8,11 +8,9 @@
 **
 *************************************************/
 
-using AeroCore.Utils;
-using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
-using StardewModdingAPI;
 using xTile.Dimensions;
 
 namespace WarpNetwork.models
@@ -40,5 +38,7 @@ namespace WarpNetwork.models
 			RequiredBuilding is null || DataPatcher.buildingTypes.Contains(RequiredBuilding.Collapse()));
 		public void Reload()
 			=> cachedIcon = null;
+
+		public static implicit operator Point(WarpLocation where) => new(where.X, where.Y);
 	}
 }

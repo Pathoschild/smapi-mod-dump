@@ -58,17 +58,9 @@ namespace Unlockable_Bundles.Lib
         //We delete them during Saving to keep the savefiles clean from custom objects
         private static void clearUnlockableShops()
         {
-            var farm = Game1.getFarm();
-
-            /*
-            if (farm.isThereABuildingUnderConstruction()
-                && farm.getBuildingUnderConstruction().indoors.Value != null
-                && !ShopPlacement.ModifiedLocations.Contains(farm.getBuildingUnderConstruction().indoors.Value))
-                ShopPlacement.ModifiedLocations.Add(farm.getBuildingUnderConstruction().indoors.Value);
-            */
-
             foreach (var loc in Game1.locations)
-                foreach (var building in loc.buildings.Where(el => el.isUnderConstruction() && el.indoors.Value != null && !ShopPlacement.ModifiedLocations.Contains(el.indoors.Value)))
+                foreach (var building in loc.buildings.Where(el => el.isUnderConstruction() && el.indoors.Value is not null))
+                    if(!ShopPlacement.ModifiedLocations.Contains(building.indoors.Value))
                         ShopPlacement.ModifiedLocations.Add(building.indoors.Value);
 
 

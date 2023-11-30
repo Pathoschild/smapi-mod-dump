@@ -12,17 +12,36 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace CommunityUpgradeFramework
+namespace CommunityUpgradeFramework;
+
+internal class CommunityUpgrade
 {
-    internal class CommunityUpgrade
+    public static StringBuilder StringBuilder = new();
+
+    public string Location;
+    public string Name;
+    public string Description;
+    public Dictionary<int, int> ItemPriceDict;
+    public Dictionary<string, int> CurrencyPriceDict;
+    public string ThumbnailPath = "";
+    public int DaysToBuild;
+
+    public override string ToString()
     {
-        public string Location;
-        public string Name;
-        public string Description;
-        public Dictionary<int, int> ItemPriceDict;
-        public Dictionary<string, int> CurrencyPriceDict;
-        public string ThumbnailPath;
+        StringBuilder.Clear();
+        StringBuilder.AppendLine($"\n\t{Name}");
+        StringBuilder.AppendLine($"\t\tLocation: {Location}");
+        StringBuilder.AppendLine($"\t\tDescription: {Description}");
+        StringBuilder.AppendLine($"\t\tItemPrices:");
+        StringBuilder.AppendLine($"\t\t\t" + string.Join("\n\t\t\t",
+            ItemPriceDict.Select(price => $"{price.Key}: {price.Value}")));
+        StringBuilder.AppendLine($"\t\tCurrencyPrices:");
+        StringBuilder.AppendLine($"\t\t\t" + string.Join("\n\t\t\t",
+            CurrencyPriceDict.Select(price => $"{price.Key}: {price.Value}")));
+        StringBuilder.AppendLine($"\t\tThumbnailPath: {ThumbnailPath}");
+        StringBuilder.AppendLine($"\t\tDaysToBuild: {DaysToBuild}");
+
+        return StringBuilder.ToString();
     }
 }

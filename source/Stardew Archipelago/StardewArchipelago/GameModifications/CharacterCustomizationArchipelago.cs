@@ -12,6 +12,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -31,13 +32,14 @@ namespace StardewArchipelago.GameModifications
         private ClickableComponent slotNameLabel;
         private ClickableComponent passwordLabel;
 
-        public CharacterCustomizationArchipelago(CharacterCustomization parent)
+        public CharacterCustomizationArchipelago(CharacterCustomization parent, IModHelper modHelper)
         :base(parent.source)
         {
             height += 48;
             SetupArchipelagoFieldsPositions();
             var bounds = Game1.graphics.GraphicsDevice.Viewport.Bounds;
             gameWindowSizeChanged(bounds, bounds);
+            SetDefaultValues(modHelper);
         }
 
         public sealed override void gameWindowSizeChanged(Rectangle oldBounds, Rectangle newBounds)
@@ -148,6 +150,11 @@ namespace StardewArchipelago.GameModifications
             base.receiveKeyPress(key);
         }
 
+        public override void RefreshFarmTypeButtons()
+        {
+            farmTypeButtons.Clear();
+        }
+
         private void SetupArchipelagoFieldsPositions()
         {
             var xOffset = xPositionOnScreen + spaceToClearSideBorder + borderWidth;
@@ -163,10 +170,6 @@ namespace StardewArchipelago.GameModifications
 
         private void SetupIpFieldPosition(int xOffset, int yOffset, Texture2D texture)
         {
-            var defaultserver = "archipelago.gg:";
-#if DEBUG
-            defaultserver = "localhost:38281";
-#endif
             var xPosition = xOffset + 256 + 64 + 16;
             var yPosition = yOffset - 16;
             IpAddressTextBox = new TextBox(texture, null, Game1.smallFont, Game1.textColor)
@@ -175,7 +178,6 @@ namespace StardewArchipelago.GameModifications
                 Y = yPosition,
             };
             IpAddressTextBox.limitWidth = false;
-            IpAddressTextBox.Text = defaultserver;
             var ipAddressRectangle = new Rectangle(xPosition, yPosition, 192, 48);
             ipAddressCC = new ClickableComponent(ipAddressRectangle, "")
             {
@@ -200,7 +202,6 @@ namespace StardewArchipelago.GameModifications
                 Y = yPosition,
             };
             SlotNameTextBox.limitWidth = false;
-            SlotNameTextBox.Text = "";
             var ipAddressRectangle = new Rectangle(xPosition, yPosition, 192, 48);
             slotNameCC = new ClickableComponent(ipAddressRectangle, "")
             {
@@ -225,7 +226,6 @@ namespace StardewArchipelago.GameModifications
                 Y = yPosition,
             };
             PasswordTextBox.limitWidth = false;
-            PasswordTextBox.Text = "";
             var ipAddressRectangle = new Rectangle(xPosition, yPosition, 192, 48);
             passwordCC = new ClickableComponent(ipAddressRectangle, "")
             {
@@ -238,6 +238,45 @@ namespace StardewArchipelago.GameModifications
             var languageOffset = LocalizedContentManager.CurrentLanguageCode is LocalizedContentManager.LanguageCode.ru or LocalizedContentManager.LanguageCode.es or LocalizedContentManager.LanguageCode.pt ? -4 : 0;
             passwordLabel = new ClickableComponent(new Rectangle(xOffset + languageOffset + 16 + 192 + 4, yOffset - 8, 1, 1), "Password");
             labels.Add(passwordLabel);
+        }
+
+        private void SetDefaultValues(IModHelper modHelper)
+        {
+            var defaultIp = "archipelago.gg:";
+            var defaultSlotName = "";
+#if DEBUG
+            defaultIp = "localhost:38281";
+            defaultSlotName = "Tester";
+            SetDebugDefaultValues(modHelper);
+#endif
+            IpAddressTextBox.Text = defaultIp;
+            SlotNameTextBox.Text = defaultSlotName;
+            PasswordTextBox.Text = "";
+        }
+
+        private void SetDebugDefaultValues(IModHelper modHelper)
+        {
+            // private TextBox nameBox;
+            var nameBoxField = modHelper.Reflection.GetField<TextBox>(this, "nameBox");
+            var nameBox = nameBoxField.GetValue();
+
+            // private TextBox farmnameBox;
+            var farmnameBoxField = modHelper.Reflection.GetField<TextBox>(this, "farmnameBox");
+            var farmnameBox = farmnameBoxField.GetValue();
+
+            // private TextBox favThingBox;
+            var favThingBoxField = modHelper.Reflection.GetField<TextBox>(this, "favThingBox");
+            var favThingBox = favThingBoxField.GetValue();
+
+            // private bool skipIntro;
+            var skipIntroField = modHelper.Reflection.GetField<bool>(this, "skipIntro");
+
+            nameBox.Text = "Tester";
+            farmnameBox.Text = "Testing Farm";
+            favThingBox.Text = "No Bugs";
+            skipIntroField.SetValue(true);
+            skipIntroButton.sourceRect.X = 236;
+
         }
     }
 }

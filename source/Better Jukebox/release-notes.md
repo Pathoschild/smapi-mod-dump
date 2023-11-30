@@ -9,6 +9,18 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 2.0.0
+Released 06 Nov 2023.
+
+* Migration to Stardew 1.6-alpha and SMAPI 4.0.0-alpha
+* Note: Change to random button is vanilla
+ 
+## 1.3.3
+Released 06 Nov 2023.
+
+* Maybe fixes a crash with getting Bandcamp song titles (maybe)
+* Partial preparation for SMAPI and GMCM deprecation warnings
+
 ## 1.3.2
 Released 16 Aug 2021.
 

@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit be161604eb5749a5ab48791575bbddbdce3a2d48
+   commit 82693c62c6742973960c9d7995e0e1cb1112263c
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Sat Oct 14 11:35:25 2023 -0400
+   Date:   Wed Nov 1 17:38:35 2023 -0400
    
-       fix Content Patcher not recognizing version 1.30.0
+       Merge branch 'develop' into stable
    

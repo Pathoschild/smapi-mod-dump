@@ -13,7 +13,7 @@ namespace DaLion.Overhaul.Modules.Combat.Extensions;
 #region using directives
 
 using System.Collections.Generic;
-using DaLion.Overhaul;
+using DaLion.Overhaul.Modules;
 using DaLion.Overhaul.Modules.Combat.StatusEffects;
 using DaLion.Shared.Enums;
 using DaLion.Shared.Extensions;
@@ -245,7 +245,7 @@ internal static class MonsterExtensions
             monster.SetOrIncrement_Slowed(duration, 0.5f);
             if (playSoundEffect)
             {
-                SoundEffectPlayer.ChillingShot.Play();
+                SoundEffectPlayer.ChillingShot.Play(monster.currentLocation);
             }
         }
 

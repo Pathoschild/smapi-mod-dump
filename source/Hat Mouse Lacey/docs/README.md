@@ -25,9 +25,38 @@ I also recommend not snooping around in the mod files, since you may find
 spoilers in there, and I think it's fun to discover things and be surprised.
 Of course, if you like spoilers, be my guest; I can't stop you.
 
-Gracious acknowledgement goes to
-[this Reddit post](https://old.reddit.com/r/StardewValley/comments/12crela/thought_i_knew_stardew_well_but_evidently_not_who/jf2sjk0/)
-for inspiring me to make this mod.
+## Special Thanks and Acknowledgements
+This mod was inspired by a [single Reddit post](https://old.reddit.com/r/StardewValley/comments/12crela/thought_i_knew_stardew_well_but_evidently_not_who/jf2sjk0/).
+
+My heartfelt thanks to all the other weirdos (affectionate) in the
+[Stardew Valley Discord server](https://discord.gg/stardewvalley) who like to
+hang out and talk about mods and give help and advice to fellow modders.
+
+Special thanks to **ElizaPhantomhive** on the Discord for doing a heroic
+amount of work helping me find and fix a compatibility problem (with
+[The Lorax](https://www.nexusmods.com/stardewvalley/mods/15012)).
+
+Special thanks to Nexus user
+[MriaMoonrose](https://www.nexusmods.com/stardewvalley/users/133194498)
+for finding and reporting the bugs in multiplayer.
+
+Thanks to the following contributors for providing translations:
+
+* Turkish: [Rupurudu](https://github.com/Rupurudu)
+
+My thanks as well to the following mod authors:
+
+* **Gweniaczek** of [Way Back Pelican Town](https://www.nexusmods.com/stardewvalley/mods/7332)
+* **Elle** of [Elle's Town Buildings](https://www.nexusmods.com/stardewvalley/mods/14524)
+* **YriKururu** of [Project Yellog](https://www.nexusmods.com/stardewvalley/mods/14765)
+
+... who have given me their gracious permission to, where necessary, include
+derived versions of some of their mod assets in this mod. These files are
+**NOT** covered by this mod's MIT license, since they are derivative works
+used by permission.
+
+For a full list of files which this mod's permissive license **DOES NOT** 
+cover, see the file [nonlicensed.txt](nonlicensed.txt).
 
 ## Requirements
 This mod has only two dependencies:
@@ -54,7 +83,7 @@ Because the Core mod loads the music I wrote for Lacey's events, that folder
 contains the music files.
 
 ## Configuration
-At this time, Hat Mouse Lacey supports four config settings:
+At this time, Hat Mouse Lacey supports five config settings:
 
 * `DTF`: true/false (default true). If true, enables some suggestive dialogue
 (nothing more so than Emily's sleeping bag). Set to false to keep it G-rated.
@@ -62,13 +91,21 @@ At this time, Hat Mouse Lacey supports four config settings:
 children when married to the farmer. If false, she can become pregnant with a
 male farmer.
 * `RecolorPalette`: one of `Auto`, `Vanilla`, `Earthy`, `VPR`, `Starblue`, or
-`Wittily`. (default Auto). If set to Auto, this mod will attempt to detect
+`Wittily` (default Auto). If set to Auto, this mod will attempt to detect
 which recolor mod you are using and match it. If you get the wrong result, you
 can manually set it to the desired value.
 * `InteriorPalette`: one of `Auto`, `Vanilla`, `Earthy`, `VPR`, or `Starblue`
 (default Auto). This is just like RecolorPalette, but attempts to detect and
 match enabled interior recolors. (Wittily does not recolor interiors, so it is
 not listed as an option)
+* `MatchRetexture`: one of `Auto`, `Vanilla`, `WaybackPT`, `ElleTown`,
+`YriYellog`, or `FlowerValley` (default Auto). This is like RecolorPalette,
+but it matches active building retextures that apply to the mouse house. As
+with the others, set manually if Auto does not detect your situation.\
+**NOTE**: Elle's Town Buildings and Yri's Project Yellog will only be detected
+by `Auto` if you have set their respective config settings to retexture the
+mouse house (for Yellog, you will need `HatMouseHouseRestored`). Otherwise,
+you'll get the vanilla appearance.
 
 **These config settings will be read from the HatMouseLacey_Core mod's
 config.json.** The Core mod will appear in the Generic Mod Config Menu, if you
@@ -78,12 +115,13 @@ More config settings may be added in future releases.
 
 ## Roadmap
 * ~~`1.0`: Initial release.~~
-* `1.1`: Current release. Now on 1.1.0.
-* `1.2`: The Content Update. Add extra dialogue, seasonal outfits, beach
-visits, etc.
-* `1.6`: Update the mod to work with Stardew Valley 1.6.
-
-Subject to change, especially if 1.6's release date appears.
+* `1.1`: Current release. Now on 1.1.1.
+* `1.6`: Update the mod to work with Stardew Valley 1.6.\
+Since 1.6 is now imminent, this milestone now takes priority over additional
+content. If I have time for incremental content updates, they may see backports
+into 1.1 during the run up to release.
+* `1.7+`: Content updates. Extra dialogue, seasonal outfits, beach visits,
+inter-mod events and shoutouts, etc.
 
 ## Compatibility
 &check; Fully supported\
@@ -108,13 +146,18 @@ game, but please let me know if they do.
     [Starblue Valley](https://www.nexusmods.com/stardewvalley/mods/1869)\
     [A Wittily Named Recolor](https://www.nexusmods.com/stardewvalley/mods/2995)\
     Additional recolors may be supported in the future.
+* &check; Multiple popular building retextures:\
+    [Way Back Pelican Town](https://www.nexusmods.com/stardewvalley/mods/7332)\
+    [Elle's Town Buildings](https://www.nexusmods.com/stardewvalley/mods/14524)\
+    [Yri's Project Yellog](https://www.nexusmods.com/stardewvalley/mods/14765)\
+    [Flower Valley](https://kayainsdv.postype.com/post/10220280)\
+    Additional retextures may be supported in the future.\
+    **NOTE**: for Elle's Town Buildings and Project Yellog, you will need to
+    set their config values for the mouse house. See **Configuration**, above.
 * &check; [NPC Map Locations](https://www.nexusmods.com/stardewvalley/mods/239)
 * &check; [Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098)
 * &check; [Stardew Valley Reimagined 3](https://www.nexusmods.com/stardewvalley/mods/13497)
 * &check; [Community Center Reimagined](https://www.nexusmods.com/stardewvalley/mods/6966)
-* &cross; Reskins\
-    I am awaiting permission to provide full support for several town building
-    retexture mods.
 * &cross; Map mods which alter the terrain near the shack
 * &cross; Mods which add an interior map to the shack\
     (incompatible vision; EWONTFIX)
@@ -125,6 +168,8 @@ game, but please let me know if they do.
 * &cross; [Fashion Mouse](https://www.nexusmods.com/stardewvalley/mods/17502)\
     (incompatible vision; EWONTFIX)
 * &cross; Any other mods which <details><summary>Spoiler</summary>add other mouse characters (lore conflict; EWONTFIX)</details>
+* &cross; [Unique Children](https://nexusmods.com/stardewvalley/mods/6278)<details><summary>Spoiler</summary>\
+    This mod reimplements child sprites entirely, overriding my patch to provide custom sprites. EWONTFIX, manual compatibility only; see that mod's instructions.</details>
 
 ## Other Questions You May Have
 
@@ -146,17 +191,15 @@ crash your game or break much of it, but there may be asset conflicts, weird
 behavior, or lore clashes.
 
 This even applies to mods above which I have listed as incompatible and/or
-EWONTFIX (for example, reskins). Your game should still run and most things
-should still work. But it may be jarring, especially if those kinds of errors
-greatly bother you.
+EWONTFIX. Your game should still run and most things should still work. But it
+may be jarring, especially if those kinds of errors greatly bother you.
 
 If you find any compatibility problems with mods not listed above, I would be
 much obliged to you if you let me know.
 
 ### What about multiplayer?
-It should be compatible now. Special thanks to Nexus user
-[MriaMoonrose](https://www.nexusmods.com/stardewvalley/users/133194498) for
-being the multiplayer guinea pig who found (and reported!) the bugs.
+Everything works correctly, as far as I know. Special thanks to MriaMoonrose
+for helping out.
 
 ### kind of a weird decision to make the mouse datable
 That's not a question.

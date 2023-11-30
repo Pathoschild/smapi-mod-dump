@@ -14,17 +14,15 @@ namespace DaLion.Overhaul.Modules.Professions.TreasureHunts;
 
 using System.Collections.Generic;
 using System.Linq;
-using DaLion.Overhaul.Modules.Core.UI;
 using DaLion.Overhaul.Modules.Professions.Events.Display.RenderedHud;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.UpdateTicked;
 using DaLion.Overhaul.Modules.Professions.Events.World.ObjectListChanged;
 using DaLion.Overhaul.Modules.Professions.Extensions;
-using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Constants;
 using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.Stardew;
-using DaLion.Shared.Networking;
 using Microsoft.Xna.Framework;
+using Shared.Extensions;
 using StardewValley.Locations;
 using StardewValley.Tools;
 
@@ -46,86 +44,64 @@ internal sealed class ProspectorHunt : TreasureHunt
     /// <inheritdoc />
     public override bool TryStart(GameLocation location)
     {
-        if (!location.Objects.Any() || !this.TryStart())
+        if (!location.Objects.Any() || !base.TryStart(location))
         {
             return false;
         }
 
-        this.TreasureTile = this.ChooseTreasureTile(location);
-        if (this.TreasureTile is null)
-        {
-            return false;
-        }
-
-        this.Location = location;
 #if DEBUG
         this.TimeLimit = int.MaxValue;
 #elif RELEASE
         this.TimeLimit = (uint)(location.Objects.Count() * ProfessionsModule.Config.ProspectorHuntHandicap);
         this.TimeLimit = Math.Max(this.TimeLimit, 30);
 #endif
-        this.Elapsed = 0;
         EventManager.Enable(
-            typeof(ProspectorHuntObjectListChangedEvent),
-            typeof(ProspectorHuntRenderedHudEvent),
+            Context.IsMainPlayer
+                ? typeof(ProspectorHuntObjectListChangedEvent)
+                : typeof(FarmhandProspectorHuntUpdateTickedEvent),
             typeof(ProspectorHuntUpdateTickedEvent));
-        HudPointer.Instance.Value.ShouldBob = true;
-        Game1.addHUDMessage(new HuntNotification(this.HuntStartedMessage, this.IconSourceRect));
-        if (Context.IsMultiplayer)
+        if (ProfessionsModule.Config.UseLegacyProspectorHunt)
         {
-            Broadcaster.SendPublicChat($"{Game1.player.Name} is hunting for treasure.");
-
-            if (Game1.player.HasProfession(Profession.Prospector, true))
-            {
-                Game1.player.Get_IsHuntingTreasure().Value = true;
-                if (!Context.IsMainPlayer)
-                {
-                    ModEntry.Broadcaster.MessagePeer("HuntIsOn", "RequestEvent", Game1.MasterPlayer.UniqueMultiplayerID);
-                }
-                else
-                {
-                    EventManager.Enable<PrestigeTreasureHuntUpdateTickedEvent>();
-                }
-            }
+            EventManager.Enable<ProspectorHuntRenderedHudEvent>();
         }
 
-        this.OnStarted();
+        Game1.addHUDMessage(new HuntNotification(this.HuntStartedMessage, this.IconSourceRect));
+        if (Game1.player.HasProfession(Profession.Prospector, true) && (!Context.IsMultiplayer || Context.IsMainPlayer))
+        {
+            EventManager.Enable<PrestigeTreasureHuntUpdateTickedEvent>();
+        }
+        else
+        {
+            Broadcaster.MessageHost("true", OverhaulModule.Professions.Namespace + "/HuntingForTreasure/Prospector");
+        }
+
         return true;
     }
 
     /// <inheritdoc />
     public override void ForceStart(GameLocation location, Vector2 target)
     {
-        this.ForceStart();
-        this.TreasureTile = target;
-        this.Location = location;
+        base.ForceStart(location, target);
         this.TimeLimit = (uint)(location.Objects.Count() * ProfessionsModule.Config.ProspectorHuntHandicap);
-        this.Elapsed = 0;
         EventManager.Enable(
-            typeof(ProspectorHuntObjectListChangedEvent),
-            typeof(ProspectorHuntRenderedHudEvent),
+            Context.IsMainPlayer
+                ? typeof(ProspectorHuntObjectListChangedEvent)
+                : typeof(FarmhandProspectorHuntUpdateTickedEvent),
             typeof(ProspectorHuntUpdateTickedEvent));
-        HudPointer.Instance.Value.ShouldBob = true;
-        Game1.addHUDMessage(new HuntNotification(this.HuntStartedMessage, this.IconSourceRect));
-        if (Context.IsMultiplayer)
+        if (ProfessionsModule.Config.UseLegacyProspectorHunt)
         {
-            Broadcaster.SendPublicChat($"{Game1.player.Name} is hunting for treasure.");
-
-            if (Game1.player.HasProfession(Profession.Prospector, true))
-            {
-                Game1.player.Get_IsHuntingTreasure().Value = true;
-                if (!Context.IsMainPlayer)
-                {
-                    ModEntry.Broadcaster.MessagePeer("HuntIsOn", "RequestEvent", Game1.MasterPlayer.UniqueMultiplayerID);
-                }
-                else
-                {
-                    EventManager.Enable<PrestigeTreasureHuntUpdateTickedEvent>();
-                }
-            }
+            EventManager.Enable<ProspectorHuntRenderedHudEvent>();
         }
 
-        this.OnStarted();
+        Game1.addHUDMessage(new HuntNotification(this.HuntStartedMessage, this.IconSourceRect));
+        if (Game1.player.HasProfession(Profession.Prospector, true) && (!Context.IsMultiplayer || Context.IsMainPlayer))
+        {
+            EventManager.Enable<PrestigeTreasureHuntUpdateTickedEvent>();
+        }
+        else
+        {
+            Broadcaster.MessageHost("true", OverhaulModule.Professions.Namespace + "/HuntingForTreasure/Prospector");
+        }
     }
 
     /// <inheritdoc />
@@ -157,6 +133,7 @@ internal sealed class ProspectorHunt : TreasureHunt
                 break;
         }
 
+        Game1.playSound("questcomplete");
         Game1.player.Increment(DataKeys.ProspectorHuntStreak);
         this.End(true);
     }
@@ -190,24 +167,19 @@ internal sealed class ProspectorHunt : TreasureHunt
     }
 
     /// <inheritdoc />
-    protected override void End(bool found)
+    protected override void End(bool success)
     {
-        Game1.player.Get_IsHuntingTreasure().Value = false;
-        EventManager.Disable<ProspectorHuntRenderedHudEvent>();
-        EventManager.Disable<ProspectorHuntUpdateTickedEvent>();
-        HudPointer.Instance.Value.ShouldBob = false;
-        this.TreasureTile = null;
+        base.End(success);
+        EventManager.Disable(
+            typeof(ProspectorHuntRenderedHudEvent),
+            typeof(ProspectorHuntUpdateTickedEvent));
         if (!Context.IsMultiplayer || Context.IsMainPlayer ||
             !Game1.player.HasProfession(Profession.Prospector, true))
         {
             return;
         }
 
-        Broadcaster.SendPublicChat(found
-            ? $"{Game1.player.Name} has found the treasure!"
-            : $"{Game1.player.Name} failed to find the treasure.");
-        ModEntry.Broadcaster.MessagePeer("HuntIsOff", "RequestEvent", Game1.MasterPlayer.UniqueMultiplayerID);
-        this.OnEnded(found);
+        Broadcaster.MessageHost("false", OverhaulModule.Professions.Namespace + "/HuntingForTreasure/Prospector");
     }
 
     /// <summary>Spawns hunt spoils as debris. Applies to <see cref="MineShaft"/>.</summary>
@@ -259,7 +231,7 @@ internal sealed class ProspectorHunt : TreasureHunt
                 case -1:
                     Game1.createItemDebris(
                         new MeleeWeapon(31),
-                        new Vector2(this.TreasureTile!.Value.X, this.TreasureTile.Value.Y) + new Vector2(32f, 32f),
+                        (this.TreasureTile!.Value * Game1.tileSize) + new Vector2(32f, 32f),
                         this.Random.Next(4),
                         Game1.currentLocation);
                     break;
@@ -267,7 +239,7 @@ internal sealed class ProspectorHunt : TreasureHunt
                 case -2:
                     Game1.createItemDebris(
                         new MeleeWeapon(60),
-                        new Vector2(this.TreasureTile!.Value.X, this.TreasureTile.Value.Y) + new Vector2(32f, 32f),
+                        (this.TreasureTile!.Value * Game1.tileSize) + new Vector2(32f, 32f),
                         this.Random.Next(4),
                         Game1.currentLocation);
                     break;
@@ -464,7 +436,7 @@ internal sealed class ProspectorHunt : TreasureHunt
 
     private void AddMineralsToTreasures(Dictionary<int, int> treasuresAndQuantities, int mineLevel = -1)
     {
-        if (mineLevel is > 0 and < 20)
+        if (mineLevel.IsIn(1..19))
         {
             treasuresAndQuantities.AddOrUpdate(ObjectIds.Coal, this.Random.Next(1, 4), (a, b) => a + b);
             return;
@@ -518,17 +490,13 @@ internal sealed class ProspectorHunt : TreasureHunt
     private void AddSpecialTreasureItems(Dictionary<int, int> treasuresAndQuantities, int mineLevel = -1)
     {
         var luckModifier = Math.Max(0, 1.0 + (Game1.player.DailyLuck * Math.Max(mineLevel / 4, 1)));
-        var streak = Game1.player.Read<uint>(DataKeys.ProspectorHuntStreak);
         if (mineLevel > 0)
         {
-            if (this.Random.NextDouble() < 0.025 * luckModifier * streak &&
-                !Game1.player.specialItems.Contains(31))
+            if (this.Random.NextDouble() < 0.025 * luckModifier)
             {
                 treasuresAndQuantities.TryAdd(-1, 1); // femur
             }
-
-            if (this.Random.NextDouble() < 0.01 * luckModifier * streak &&
-                !Game1.player.specialItems.Contains(60))
+            else if (this.Random.NextDouble() < 0.01 * luckModifier)
             {
                 treasuresAndQuantities.TryAdd(-2, 1); // ossified blade
             }
@@ -545,7 +513,7 @@ internal sealed class ProspectorHunt : TreasureHunt
                 (a, b) => a + b);
         }
 
-        if (this.Random.NextDouble() < 0.01 * luckModifier * Math.Pow(2, streak))
+        if (this.Random.NextDouble() < 0.01 * luckModifier)
         {
             treasuresAndQuantities.AddOrUpdate(ObjectIds.PrismaticShard, 1, (a, b) => a + b);
         }

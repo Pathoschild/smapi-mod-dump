@@ -35,9 +35,11 @@ namespace StardewDruid.Monster
 
         public bool partyHats;
 
-        public int spawnBuff;
+        public bool spawnBuff;
 
         public int spawnDamage;
+
+        public double spawnTimeout;
 
         public Slime(Vector2 position, int combatModifier,bool hats)
             : base(position * 64, combatModifier / 2)
@@ -53,7 +55,9 @@ namespace StardewDruid.Monster
 
             spawnDamage = (int)Math.Max(2, combatModifier * 0.075);
 
-            spawnBuff = 60;
+            spawnBuff = true;
+
+            spawnTimeout = Game1.currentGameTime.TotalGameTime.TotalMilliseconds + 600;
 
             objectsToDrop.Clear();
 
@@ -121,7 +125,7 @@ namespace StardewDruid.Monster
 
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
-            if (spawnBuff > 0)
+            if (spawnBuff)
             {
                 return 0;
             }
@@ -198,26 +202,24 @@ namespace StardewDruid.Monster
             }
 
         }
-        public override void behaviorAtGameTick(GameTime time)
+
+        public override void update(GameTime time, GameLocation location)
         {
 
-            if (spawnBuff > 0)
+            if (spawnBuff)
             {
-
-                spawnBuff--;
-
-                if (spawnBuff < 1)
+                if (Game1.currentGameTime.TotalGameTime.TotalMilliseconds > spawnTimeout)
                 {
+                    spawnBuff = false;
 
                     DamageToFarmer = spawnDamage;
-
                 }
-
             }
 
-            base.behaviorAtGameTick(time);
+            base.update(time, location);
 
         }
+
     }
 
 }

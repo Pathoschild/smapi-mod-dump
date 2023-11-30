@@ -85,7 +85,10 @@
   "gmcm.autograb.GrabberRange": "Grabber radius (tiles)",
   "gmcm.autograb.GrabberRange.tt": "How many tiles away the Grabber harvests items.",
   "gmcm.autograb.DoHarvestTruffles": "Harvest Truffles",
-  "gmcm.autograb.DoHarvestTruffles.tt": "Enable the Deluxe Autograbber to collect Truffles"
-
+  "gmcm.autograb.DoHarvestTruffles.tt": "Enable the Deluxe Autograbber to collect Truffles",
+  // debug
+  "gmcm.debug.title": "Debug Options",
+  "gmcm.debug": "Enable Debug Mode",
+  "gmcm.debug.tt": "Turns on extended logging for troubleshooting issues."
 
 }

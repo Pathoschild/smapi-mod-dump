@@ -49,7 +49,8 @@ namespace StardewArchipelago.GameModifications
             AchievementInjections.Initialize(monitor, _archipelago);
             EntranceInjections.Initialize(monitor, _archipelago, entranceManager);
             ForestInjections.Initialize(monitor, _archipelago);
-            MountainInjections.Initialize(monitor, _archipelago);
+            MountainInjections.Initialize(monitor, helper, _archipelago);
+            TownInjections.Initialize(monitor, helper, archipelago);
             SeedShopsInjections.Initialize(monitor, helper, archipelago, locationChecker);
             LostAndFoundInjections.Initialize(monitor, archipelago);
             TVInjections.Initialize(monitor, archipelago);
@@ -73,6 +74,7 @@ namespace StardewArchipelago.GameModifications
             PatchDefinitionOfCommunityCenterComplete();
             PatchGrandpaNote();
             PatchDebris();
+            PatchTown();
             PatchForest();
             PatchMountain();
             PatchEntrances();
@@ -177,6 +179,15 @@ namespace StardewArchipelago.GameModifications
             );
         }
 
+        private void PatchTown()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Town), nameof(Town.MakeMapModifications)),
+                prefix: new HarmonyMethod(typeof(TownInjections), nameof(TownInjections.MakeMapModifications_JojamartAndTheater_Prefix)),
+                postfix: new HarmonyMethod(typeof(TownInjections), nameof(TownInjections.MakeMapModifications_JojamartAndTheater_Postfix))
+            );
+        }
+
         private void PatchForest()
         {
             _harmony.Patch(
@@ -191,6 +202,18 @@ namespace StardewArchipelago.GameModifications
                 original: AccessTools.Method(typeof(Mountain), nameof(Mountain.ApplyTreehouseIfNecessary)),
                 prefix: new HarmonyMethod(typeof(MountainInjections), nameof(MountainInjections.ApplyTreehouseIfNecessary_ApplyTreeHouseIfReceivedApItem_Prefix))
             );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Mountain), nameof(Mountain.DayUpdate)),
+                postfix: new HarmonyMethod(typeof(MountainInjections), nameof(MountainInjections.DayUpdate_RailroadDependsOnApItem_Postfix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Mountain), "resetSharedState"),
+                postfix: new HarmonyMethod(typeof(MountainInjections), nameof(MountainInjections.ResetSharedState_RailroadDependsOnApItem_Postfix))
+            );
+
+            MountainInjections.SetRailroadBlockedBasedOnArchipelagoItem((Mountain)Game1.getLocationFromName("Mountain"));
         }
 
         private void PatchEntrances()
@@ -432,7 +455,7 @@ namespace StardewArchipelago.GameModifications
         {
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), nameof(Utility.getAnimalShopStock)),
-                prefix: new HarmonyMethod(typeof(GoldenEggInjections), nameof(GoldenEggInjections.GetAnimalShopStock_GoldenEggIfReceived_Postfix))
+                postfix: new HarmonyMethod(typeof(GoldenEggInjections), nameof(GoldenEggInjections.GetAnimalShopStock_GoldenEggIfReceived_Postfix))
             );
         }
 

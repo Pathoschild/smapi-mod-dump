@@ -1,0 +1,9 @@
+{
+	"gmcm.contentsection.text": "İçerik",
+	"gmcm.alwaysadopt.tooltip": "Ayarlanırsa, Lacey çiftçinin cinsiyeti ne olursa olsun her zaman çiftçiden çocuk evlat edinir. Eğer ayarlanmamışsa Lacey erkek bir çiftçiden hamile kalabilir.",
+	"gmcm.dtf.tooltip": "Bazı müstehcen diyalog satırlarını etkinleştirir.",
+	"gmcm.appearancesection.text": "Görünüm",
+	"gmcm.recolorpalette.tooltip": "Hangi yeniden renklendirme modunun eşleştirileceğini seçin (dış mekan varlıkları için). 'Otomatik' hangi paletin kullanılacağını tespit etmeye çalışır; yanlış sonuç alırsanız, tercihinizi buradan seçin.",
+	"gmcm.interiorpalette.tooltip": "Hangi yeniden renklendirme modunun eşleştirileceğini seçin (iç mekan varlıkları için). 'Otomatik' hangi paletin kullanılacağını tespit etmeye çalışır; yanlış sonuç alırsanız, tercihinizi buradan seçin.",
+	"gmcm.matchretexture.tooltip": "Hangi bina retexture modunun eşleştirileceğini seçin (fare evi için). 'Otomatik' hangi modun eşleştirileceğini tespit etmeye çalışır; yanlış sonuç alırsanız, tercihinizi buradan seçin."
+}

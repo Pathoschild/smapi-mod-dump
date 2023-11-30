@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="12" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="56">
+ <properties>
+  <property name="AmbientLight" value="105 25 25"/>
+  <property name="Music" value="EmilyDream"/>
+  <property name="Warp" value="6 16 IslandWest 61 5"/>
+ </properties>
+ <tileset firstgid="1" name="p" tilewidth="16" tileheight="16" tilecount="36" columns="4">
+  <image source="paths" width="64" height="144"/>
+ </tileset>
+ <tileset firstgid="37" name="untitled tile sheet" tilewidth="16" tileheight="16" tilecount="72" columns="6">
+  <image source="cave" width="96" height="192"/>
+  <tile id="48">
+   <animation>
+    <frame tileid="48" duration="150"/>
+    <frame tileid="50" duration="150"/>
+    <frame tileid="52" duration="150"/>
+   </animation>
+  </tile>
+  <tile id="54">
+   <animation>
+    <frame tileid="54" duration="150"/>
+    <frame tileid="56" duration="150"/>
+    <frame tileid="58" duration="150"/>
+   </animation>
+  </tile>
+  <tile id="60">
+   <animation>
+    <frame tileid="60" duration="150"/>
+    <frame tileid="62" duration="150"/>
+    <frame tileid="64" duration="150"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="109" name="z_memories" tilewidth="16" tileheight="16" tilecount="24" columns="4">
+  <image source="z_memories.png" width="64" height="96"/>
+ </tileset>
+ <layer id="1" name="Back" width="12" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+50,50,50,50,50,50,50,50,50,50,50,50,
+50,50,50,50,50,50,50,50,50,50,50,50,
+50,50,50,50,50,50,37,50,50,50,50,50,
+50,50,50,50,50,50,0,50,50,50,50,0,
+50,50,50,50,50,50,0,50,50,50,50,0,
+50,50,50,50,50,51,42,52,50,50,50,0,
+50,50,50,50,50,57,42,58,50,50,50,0,
+50,50,50,50,50,57,42,58,50,50,50,0,
+50,50,50,50,50,57,42,58,50,50,50,0,
+50,50,50,50,50,57,42,58,50,50,50,0,
+50,50,50,50,50,56,42,59,50,50,50,0,
+50,50,50,50,50,50,53,50,50,50,50,50
+</data>
+ </layer>
+ <layer id="11" name="Mirrors" width="12" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,123,0,0,0,0,0,
+0,0,0,0,0,0,127,0,0,0,0,0,
+0,0,0,0,0,0,131,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="2" name="Buildings" width="12" height="16">
+  <data encoding="csv">
+37,37,37,37,37,37,37,37,37,37,37,37,
+37,37,37,37,37,37,37,37,37,37,37,37,
+37,37,37,37,37,37,37,37,37,37,37,37,
+37,37,37,37,37,37,37,37,37,37,37,37,
+37,37,37,37,37,37,37,37,37,37,37,37,
+37,37,37,37,37,37,37,37,37,37,37,37,
+37,37,37,37,37,37,37,37,37,37,37,37,
+37,37,37,38,40,41,122,39,40,41,37,37,
+37,37,43,44,46,47,126,45,46,47,48,37,
+37,37,49,0,0,0,130,0,0,0,60,37,
+37,37,55,0,0,0,0,0,0,0,54,37,
+37,37,61,0,0,0,0,0,0,0,60,37,
+37,37,37,0,0,0,0,0,0,0,66,37,
+37,37,37,37,0,0,0,0,0,0,37,37,
+37,37,37,37,0,0,0,0,0,37,37,37,
+37,37,37,37,37,37,0,37,37,37,37,37
+</data>
+ </layer>
+ <layer id="3" name="Front" width="12" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,118,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,37,62,0,0,0,0,0,0,0,0,
+0,0,0,37,0,0,0,0,0,65,37,0,
+0,0,0,37,63,62,0,65,63,37,0,0,
+0,37,37,37,37,37,63,37,37,37,37,37
+</data>
+ </layer>
+ <layer id="9" name="AlwaysFront" width="12" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,37,62,0,0,0,0,0,2147483710,2147483685,0,
+0,0,0,37,62,0,0,0,2147483710,2147483685,37,0,
+0,0,0,37,37,62,0,65,2147483685,2147483685,0,0,
+0,37,37,37,37,37,63,37,2147483685,2147483685,2147483685,37
+</data>
+ </layer>
+ <layer id="4" name="Paths" width="12" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="5" name="Back"/>
+ <objectgroup id="12" name="Mirrors">
+  <object id="53" name="TileData" x="96" y="144" width="16" height="16">
+   <properties>
+    <property name="IsMirrorBase" value="T"/>
+    <property name="MirrorHeight" type="int" value="3"/>
+    <property name="MirrorWidth" type="int" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="6" name="Buildings" visible="0">
+  <object id="43" name="TileData" x="96" y="144" width="16" height="16">
+   <properties>
+    <property name="Action" value="Mirror"/>
+   </properties>
+  </object>
+  <object id="44" name="TileData" x="96" y="128" width="16" height="16">
+   <properties>
+    <property name="Action" value="Mirror"/>
+   </properties>
+  </object>
+  <object id="45" name="TileData" x="96" y="112" width="16" height="16">
+   <properties>
+    <property name="Action" value="Mirror"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="Front"/>
+ <objectgroup id="8" name="Paths"/>
+</map>
