@@ -19,17 +19,13 @@ namespace mouahrarasModuleCollection.Crystalariums.SafeReplacement.Utilities
 
 		internal static void Reset()
 		{
-			SetObjectToRecover(null);
+			ObjectToRecover = null;
 		}
 
-		internal static void SetObjectToRecover(Item value)
+		internal static Item ObjectToRecover
 		{
-			objectToRecover.Value = value;
-		}
-
-		internal static Item GetObjectToRecover()
-		{
-			return objectToRecover.Value;
+			get => objectToRecover.Value;
+			set => objectToRecover.Value = value;
 		}
 	}
 }

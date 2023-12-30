@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Custom_Farm_Loader.Menus;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
@@ -107,7 +108,9 @@ namespace Custom_Farm_Loader.Lib
             CustomFarm customFarm = new CustomFarm();
             customFarm.ContentPackDirectory = contentPackDirectory.Split(Path.DirectorySeparatorChar).Last();
             string relativeMapJsonPath = mapJson.Substring(contentPackDirectory.Count() + 1);
-            customFarm.RelativeMapDirectoryPath = relativeMapJsonPath.Substring(0, (relativeMapJsonPath.Count() - relativeMapJsonPath.Split(Path.DirectorySeparatorChar).Last().Count() - 1));
+            customFarm.RelativeMapDirectoryPath = relativeMapJsonPath.Contains(Path.DirectorySeparatorChar)
+                ? relativeMapJsonPath.Substring(0, (relativeMapJsonPath.Count() - relativeMapJsonPath.Split(Path.DirectorySeparatorChar).Last().Count() - 1))
+                : "";
             customFarm.RelativeContentPackPath = Path.GetRelativePath(Helper.DirectoryPath + Path.DirectorySeparatorChar, contentPackDirectory + Path.DirectorySeparatorChar);
 
             customFarm.UniqueModID = manifest.UniqueID;
@@ -294,7 +297,7 @@ namespace Custom_Farm_Loader.Lib
             if (Icon == null)
                 Icon = Helper.GameContent.Load<Texture2D>(asModFarmType().IconTexture);
 
-            Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo("asModFarmType().WorldMapTexture"));
+            Helper.GameContent.InvalidateCache(asset => asset.NameWithoutLocale.IsEquivalentTo(asModFarmType().WorldMapTexture));
             WorldMapOverlay = Helper.GameContent.Load<Texture2D>(asModFarmType().WorldMapTexture);
         }
 
@@ -325,7 +328,8 @@ namespace Custom_Farm_Loader.Lib
             }
 
             try {
-                return Helper.ModContent.Load<Texture2D>($"{path}\\{IconValue}");
+                var icon = Helper.ModContent.Load<Texture2D>($"{path}\\{IconValue}");
+                return CustomFarmSelection.cropIcon(icon);
 
             } catch (Exception ex) {
                 Monitor.LogOnce($"Unable to load the map icon in:\n{path}\\{IconValue}", LogLevel.Warn);

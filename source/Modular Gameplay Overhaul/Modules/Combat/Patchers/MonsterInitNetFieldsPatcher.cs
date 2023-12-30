@@ -12,7 +12,7 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers;
 
 #region using directives
 
-using DaLion.Overhaul.Modules.Combat.StatusEffects;
+using DaLion.Overhaul.Modules.Core.StatusEffects;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Monsters;

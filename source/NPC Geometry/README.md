@@ -20,16 +20,25 @@ positions, and they don't work out.
 
 ## Important Considerations
 
+Compatible with alpha build 23334 (2023-11-29 nightly) or newer, as that build
+introduced this change:
+
+    - Split `NPC.draw` into smaller methods.
+
+For older alpha builds, use the 1.0.0-alpha release.
+
 This mod **will have some of its functionality crippled by SpaceCore**, a
 widely-used dependency mod. This mod uses Harmony transpilers to patch the game
-code; two important segments of code go into the method `NPC.draw`.
+code; two important targeted subroutines (`NPC.DrawEmote` and
+`NPC.DrawBreathing`) are called by the method `NPC.draw`.
 
-SpaceCore applies a Harmony prefix patch to `NPC.draw` which prevents all
-subsequent prefixes and all transpilers from executing. I have no control over
-this and cannot work around it without breaking SpaceCore in turn.
+SpaceCore applies a Harmony prefix patch to `NPC.draw` which replaces the body
+of that method and prevents the calls to those subroutines; this means my
+patches have no effect. I have no control over this and cannot work around it
+without breaking SpaceCore in turn.
 
 If you also use SpaceCore in 1.6, `BreatheRect` will not work at all and
-`EmoteHeight` will not work in normal gameplay (event emotes may still work).
+`EmoteHeight` will not work in normal gameplay (event emotes will still work).
 
 ## How To Use
 

@@ -21,10 +21,10 @@ namespace CropGrowthAdjustments.Types
         public string SeasonsToGrowIn { get; set; }
         public string SeasonsToProduceIn { get; set; }
         public string LocationsWithDefaultSeasonBehavior { get; set; }
-        public List<SpecialSpriteForSeason> SpecialSpritesForSeasons { get; set; } = null;
+        public List<SpecialSprites> SpecialSpritesForSeasons { get; set; } = null;
         
         [JsonIgnore]
-        public int OriginalRowInSpriteSheet { get; set; }
+        public int RowInCropSpriteSheet { get; set; }
         
         public List<string> GetSeasonsToGrowIn()
         {

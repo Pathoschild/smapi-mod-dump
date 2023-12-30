@@ -11,11 +11,7 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StardewDruid.Map
 {
@@ -91,13 +87,13 @@ namespace StardewDruid.Map
 
         public static bool WarpExclusions(GameLocation location, Warp warp)
         {
-            
+
             Dictionary<string, List<string>> exclusionWarps = new()
             {
 
                 ["Forest"] = new() { "Beach", },
                 ["Beach"] = new() { "Town", "Forest", },
-                ["Town"] = new() { "Beach","Mountain", },
+                ["Town"] = new() { "Beach", "Mountain", },
                 ["Backwoods"] = new() { "BusStop", },
                 ["Mountain"] = new() { "Town" },
 
@@ -123,10 +119,10 @@ namespace StardewDruid.Map
 
             GameLocation target = Game1.getLocationFromName(warp.TargetName);
 
-            foreach(Warp reverse in target.warps)
+            foreach (Warp reverse in target.warps)
             {
 
-                if(reverse.TargetName == location.Name)
+                if (reverse.TargetName == location.Name)
                 {
 
                     return new Vector2(reverse.TargetX, reverse.TargetY);

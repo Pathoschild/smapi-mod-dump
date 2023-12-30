@@ -42,13 +42,13 @@ namespace mouahrarasModuleCollection.ArcadeGames.NonRealisticLeaderboard.Patches
 				return true;
 
 			__result = new()
-            {
-                new KeyValuePair<string, int>(Game1.getCharacterFromName("Lewis").displayName, 50000),
-                new KeyValuePair<string, int>(Game1.getCharacterFromName("Shane").displayName, 25000),
-                new KeyValuePair<string, int>(Game1.getCharacterFromName("Sam").displayName, 10000),
-                new KeyValuePair<string, int>(Game1.getCharacterFromName("Abigail").displayName, 5000),
-                new KeyValuePair<string, int>(Game1.getCharacterFromName("Vincent").displayName, 250)
-            };
+			{
+				new KeyValuePair<string, int>(Game1.getCharacterFromName("Lewis").displayName, 50000),
+				new KeyValuePair<string, int>(Game1.getCharacterFromName("Shane").displayName, 25000),
+				new KeyValuePair<string, int>(Game1.getCharacterFromName("Sam").displayName, 10000),
+				new KeyValuePair<string, int>(Game1.getCharacterFromName("Abigail").displayName, 5000),
+				new KeyValuePair<string, int>(Game1.getCharacterFromName("Vincent").displayName, 250)
+			};
 
 			foreach (NetLeaderboardsEntry entry in __instance.entries)
 			{

@@ -9,6 +9,7 @@
 *************************************************/
 
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Goals;
 using StardewArchipelago.Locations.Festival;
 using StardewModdingAPI;
 using StardewArchipelago.Stardew;
@@ -23,17 +24,17 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
 {
     public static class VanillaCodeInjectionInitializer
     {
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, ArchipelagoStateDto state, LocationChecker locationChecker, StardewItemManager itemManager, WeaponsManager weaponsManager)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, ArchipelagoStateDto state, LocationChecker locationChecker, StardewItemManager itemManager, WeaponsManager weaponsManager, ShopReplacer shopReplacer, Friends friends)
         {
-            var shopReplacer = new ShopReplacer(monitor, modHelper, archipelago, locationChecker);
             BackpackInjections.Initialize(monitor, archipelago, locationChecker);
             ToolInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             ScytheInjections.Initialize(monitor, locationChecker);
             FishingRodInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
-            CommunityCenterInjections.Initialize(monitor, archipelago, locationChecker);
             var bundleReader = new BundleReader();
-            JunimoNoteMenuInjections.Initialize(monitor, modHelper, archipelago, bundleReader, locationChecker);
-            MineshaftInjections.Initialize(monitor, archipelago, locationChecker);
+            GoalCodeInjection.Initialize(monitor, modHelper, archipelago, locationChecker, bundleReader);
+            CommunityCenterInjections.Initialize(monitor, archipelago, locationChecker, bundleReader);
+            JunimoNoteMenuInjections.Initialize(monitor, modHelper, archipelago, state, locationChecker, bundleReader);
+            MineshaftInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             SkillInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             QuestInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             DarkTalismanInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
@@ -45,31 +46,30 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             TravelingMerchantInjections.Initialize(monitor, modHelper, archipelago, locationChecker, state);
             FishingInjections.Initialize(monitor, modHelper, archipelago, locationChecker, itemManager);
             MuseumInjections.Initialize(monitor, modHelper, archipelago, locationChecker, itemManager);
-            FriendshipInjections.Initialize(monitor, modHelper, archipelago, locationChecker, itemManager);
+            FriendshipInjections.Initialize(monitor, modHelper, archipelago, locationChecker, friends, itemManager);
             SpecialOrderInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             SpouseInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             PregnancyInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             CropsanityInjections.Initialize(monitor, archipelago, locationChecker, itemManager);
-            InitializeFestivalPatches(monitor, modHelper, archipelago, locationChecker, shopReplacer);
-            ShippingInjections.Initialize(monitor, archipelago, locationChecker);
+            InitializeFestivalPatches(monitor, modHelper, archipelago, state, locationChecker, shopReplacer);
             MonsterSlayerInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             CookingInjections.Initialize(monitor, archipelago, locationChecker, itemManager);
             QueenOfSauceInjections.Initialize(monitor, modHelper, archipelago, state, locationChecker, itemManager);
             RecipePurchaseInjections.Initialize(monitor, modHelper, archipelago, locationChecker, itemManager);
-            RecipeDataInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             RecipeLevelUpInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             RecipeFriendshipInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
-            CraftingInjections.Initialize(monitor, modHelper, archipelago, locationChecker, itemManager);
+            CraftingInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             KrobusShopInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
+            FarmCaveInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
         }
 
-        private static void InitializeFestivalPatches(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer)
+        private static void InitializeFestivalPatches(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, ArchipelagoStateDto state, LocationChecker locationChecker, ShopReplacer shopReplacer)
         {
             EggFestivalInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             FlowerDanceInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer);
             LuauInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             MoonlightJelliesInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer);
-            FairInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer);
+            FairInjections.Initialize(monitor, modHelper, archipelago, state, locationChecker, shopReplacer);
             SpiritEveInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer);
             IceFestivalInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer);
             MermaidHouseInjections.Initialize(monitor, modHelper, archipelago, locationChecker);

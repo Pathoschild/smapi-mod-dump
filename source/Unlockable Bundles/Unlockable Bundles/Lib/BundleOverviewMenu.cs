@@ -476,7 +476,8 @@ namespace Unlockable_Bundles.Lib
                 SpriteText.drawString(b, unlockable.getDisplayName(), le.bounds.X + 82, le.bounds.Y + 28, 999999, -1, 999999, 1f, 0.88f, junimoText: false, -1, "");
 
                 //Location + Coordinates
-                var locationDisplay = $"{unlockable.Location} X{bundle.TileLocation.X} Y{bundle.TileLocation.Y}";
+                var loc = unlockable.getGameLocation();
+                var locationDisplay = $"{loc.DisplayName} X{bundle.TileLocation.X} Y{bundle.TileLocation.Y}";
                 b.DrawString(Game1.smallFont, locationDisplay, new Vector2(le.bounds.X + le.bounds.Width - 14 - Game1.smallFont.MeasureString(locationDisplay).Length(), le.bounds.Y + 60), Color.Gray);
 
                 //Progress
@@ -513,12 +514,16 @@ namespace Unlockable_Bundles.Lib
             drawRequirementIcons(b);
 
             //Location + Coordinates
-            var locationDisplay = $"{u.Location} X{CurrentBundle.TileLocation.X} Y{CurrentBundle.TileLocation.Y}";
+            var loc = u.getGameLocation();
+            var locationDisplay = $"{loc.DisplayName} X{CurrentBundle.TileLocation.X} Y{CurrentBundle.TileLocation.Y}";
             b.DrawString(Game1.dialogueFont, locationDisplay, new Vector2(xPositionOnScreen + 42, yPositionOnScreen + height - 186), Color.DarkSlateGray);
 
             //Progress
             var progressDisplay = $"{u._alreadyPaid.Count()}/{(u.ShopType is ShopType.CCBundle or ShopType.AltCCBundle ? u.BundleSlots : u._price.Count())}";
-            b.DrawString(Game1.dialogueFont, progressDisplay, new Vector2(xPositionOnScreen + 700 - Game1.smallFont.MeasureString(progressDisplay).Length(), yPositionOnScreen + height - 186), Color.DarkSlateGray);
+            var progressPos = Game1.dialogueFont.MeasureString(locationDisplay).X < 699 - Game1.smallFont.MeasureString(progressDisplay).Length()
+                    ? new Vector2(xPositionOnScreen + 700 - Game1.smallFont.MeasureString(progressDisplay).Length(), yPositionOnScreen + height - 186)
+                    : new Vector2(xPositionOnScreen + 42, yPositionOnScreen + height - 220);
+            b.DrawString(Game1.dialogueFont, progressDisplay, progressPos, Color.DarkSlateGray);
 
             var moneyString = u.ShopType == ShopType.ParrotPerch ? Helper.Translation.Get("ub_parrot_money") : Helper.Translation.Get("ub_speech_money");
             var description = u.getTranslatedShopDescription();

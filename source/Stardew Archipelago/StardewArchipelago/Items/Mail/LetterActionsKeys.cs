@@ -22,7 +22,6 @@ namespace StardewArchipelago.Items.Mail
         public const string IridiumSnakeMilk = "IridiumSnakeMilk";
         public const string DarkTalisman = "DarkTalisman";
         public const string KeyToTheTown = "KeyToTheTown";
-        public const string AdventurerGuild = "AdventurerGuild";
         public const string GoldenScythe = "GoldenScythe";
         public const string PierreStocklist = "PierreStocklist";
         public const string BeachBridge = "BeachBridge";
@@ -31,13 +30,15 @@ namespace StardewArchipelago.Items.Mail
         public const string ReturnScepter = "ReturnScepter";
         public const string GiveBigCraftable = "GiveBigCraftable";
         public const string GiveRing = "GiveRing";
-        public const string GiveBoots = "GiveBoots";
+        public const string GiveSpecificBoots = "GiveSpecificBoots";
+        public const string GiveProgressiveBoots = "GiveProgressiveBoots";
         public const string GiveMeleeWeapon = "GiveMeleeWeapon";
         public const string GiveWeapon = "GiveWeapon";
         public const string GiveSword = "GiveSword";
         public const string GiveClub = "GiveClub";
         public const string GiveDagger = "GiveDagger";
         public const string GiveSlingshot = "GiveSlingshot";
+        public const string GiveProgressiveSlingshot = "GiveProgressiveSlingshot";
         public const string GiveBed = "GiveBed";
         public const string GiveFishTank = "GiveFishTank";
         public const string GiveTV = "GiveTV";
@@ -47,5 +48,10 @@ namespace StardewArchipelago.Items.Mail
         public const string SpawnBaby = "SpawnBaby";
         public const string Trap = "Trap";
         public const string LearnCookingRecipe = "LearnCookingRecipe";
+        public const string LearnSpecialCraftingRecipe = "LearnSpecialCraftingRecipe"; // used if the item's name has underscores
+        public const string MovieTheater = "Repair Movie Theater";
+        public const string FruitBats = "FruitBats";
+        public const string MushroomBoxes = "MushroomBoxes";
+        public const string DiamondWand = "Diamond Wand";
     }
 }

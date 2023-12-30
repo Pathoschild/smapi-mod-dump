@@ -6,9 +6,9 @@ mods:
    Schedule Viewer
 
 latest commit:
-   commit 8ba72659f09cecdf842efb388dfba2e60b2485cf
-   Author: Phillip Loveland <dev@philliploveland.dev>
-   Date:   Tue Nov 28 20:07:37 2023 -0500
+   commit 2d0ed031aa89e88f6d514824b937901a592ba190
+   Author: BinaryLip <dev@philliploveland.dev>
+   Date:   Fri Dec 29 18:57:06 2023 -0500
    
-       Added conditions around when SchedulePage can be opened.
+       Added black fade around menu.
    

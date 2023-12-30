@@ -46,7 +46,7 @@ namespace StardewArchipelago.Stardew
 
         public override LetterAttachment GetAsLetter(ReceivedItem receivedItem, int amount = 1)
         {
-            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveBoots, Id.ToString());
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveSpecificBoots, Id.ToString());
         }
     }
 }

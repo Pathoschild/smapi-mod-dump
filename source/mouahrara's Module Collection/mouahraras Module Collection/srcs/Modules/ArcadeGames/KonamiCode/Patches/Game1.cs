@@ -29,9 +29,9 @@ namespace mouahrarasModuleCollection.ArcadeGames.KonamiCode.Patches
 			);
 		}
 
-		private static bool AddMailForTomorrowPrefix(Game1 __instance, string mailName)
+		private static bool AddMailForTomorrowPrefix(string mailName)
 		{
-			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.GetInfiniteLivesMode())
+			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.InfiniteLivesMode)
 				return true;
 
 			if (mailName.Equals("Beat_PK") || mailName.Equals("JunimoKart"))
@@ -39,9 +39,9 @@ namespace mouahrarasModuleCollection.ArcadeGames.KonamiCode.Patches
 			return true;
 		}
 
-		private static bool GetSteamAchievementPrefix(Game1 __instance, string which)
+		private static bool GetSteamAchievementPrefix(string which)
 		{
-			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.GetInfiniteLivesMode())
+			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.InfiniteLivesMode)
 				return true;
 
 			if (which.Equals("Achievement_PrairieKing") || which.Equals("Achievement_FectorsChallenge"))

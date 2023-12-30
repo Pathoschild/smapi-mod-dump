@@ -11,6 +11,7 @@ mods:
    Draw Fish Ponds Over Grass
    Easier Cave Puzzle
    Easier Dart Puzzle
+   Event Tester
    Farm Cave Spawns More Tree Fruit
    Farm Combat Grants XP Too
    Fix Pig Random

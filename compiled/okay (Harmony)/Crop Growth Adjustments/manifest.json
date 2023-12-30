@@ -1,7 +1,7 @@
 {
   "Name": "CropGrowthAdjustments",
   "Author": "GZhynko",
-  "Version": "1.1.1",
+  "Version": "1.2.0",
   "Description": "Allows adjusting crop growth parameters through content packs.",
   "UniqueID": "GZhynko.CropGrowthAdjustments",
   "EntryDll": "CropGrowthAdjustments.dll",

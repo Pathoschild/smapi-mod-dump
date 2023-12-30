@@ -87,7 +87,7 @@ namespace StardewArchipelago.Locations.Festival
         {
             try
             {
-                var paintingMailKey = $"NightMarketYear{Game1.year}Day{__instance.getDayOfNightMarket()}_paintingSold";
+                var paintingMailKey = $"NightMarketYear{Game1.year}Day{GetDayOfNightMarket()}_paintingSold";
                 if (!Game1.player.mailReceived.Contains(paintingMailKey))
                 {
                     Game1.player.mailReceived.Add(paintingMailKey);
@@ -110,7 +110,7 @@ namespace StardewArchipelago.Locations.Festival
                 var shopClosedTextureField = _modHelper.Reflection.GetField<Texture2D>(__instance, "shopClosedTexture");
                 var shopClosedTexture = shopClosedTextureField.GetValue();
                 var position = Game1.GlobalToLocal(new Vector2(41f, 33f) * 64f + new Vector2(2f, 2f) * 4f);
-                var day = __instance.getDayOfNightMarket();
+                var day = GetDayOfNightMarket();
                 var month = GetNightMarketMonth();
                 var sourceRectangle = new Rectangle?(new Rectangle(144 + (day - 1 + (month - 1) % 3 * 3) * 28, 201, 28, 13));
                 var paintingLocationSoldToday = GetPaintingLocationToday(__instance);
@@ -211,6 +211,10 @@ namespace StardewArchipelago.Locations.Festival
             }
 
             return (int)((Game1.stats.daysPlayed / 28) % 3) + 1;
+        }
+        public static int GetDayOfNightMarket()
+        {
+            return (Game1.dayOfMonth % 3) + 1;
         }
 
         private static Dictionary<int, Dictionary<int, string>> GetPaintingLocations()

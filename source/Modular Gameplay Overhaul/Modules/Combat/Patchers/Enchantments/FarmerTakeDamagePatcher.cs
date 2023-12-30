@@ -41,7 +41,7 @@ internal sealed class FarmerTakeDamagePatcher : HarmonyPatcher
     {
         __state = false;
         if (__instance.CurrentTool is not Slingshot slingshot || !slingshot.hasEnchantmentOfType<TopazEnchantment>() ||
-            !CombatModule.Config.RebalancedGemstones)
+            !CombatModule.Config.RingsEnchantments.RebalancedGemstones)
         {
             return;
         }

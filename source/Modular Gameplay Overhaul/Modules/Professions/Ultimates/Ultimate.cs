@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Professions.Ultimates;
 #region using directives
 
 using Ardalis.SmartEnum;
-using DaLion.Overhaul.Modules;
 using DaLion.Overhaul.Modules.Professions.Events.Display.RenderedWorld;
 using DaLion.Overhaul.Modules.Professions.Events.Display.RenderingHud;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.UpdateTicked;
@@ -37,16 +36,16 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
 
     #region enum entries
 
-    /// <summary>The <see cref="Ultimate"/> of <see cref="Modules.Professions.Profession.Brute"/>.</summary>
+    /// <summary>The <see cref="Ultimate"/> of <see cref="Profession.Brute"/>.</summary>
     public static readonly Ultimate BruteFrenzy = new Frenzy();
 
-    /// <summary>The <see cref="Ultimate"/> of <see cref="Modules.Professions.Profession.Poacher"/>.</summary>
+    /// <summary>The <see cref="Ultimate"/> of <see cref="Profession.Poacher"/>.</summary>
     public static readonly Ultimate PoacherAmbush = new Ambush();
 
-    /// <summary>The <see cref="Ultimate"/> of <see cref="Modules.Professions.Profession.Piper"/>.</summary>
+    /// <summary>The <see cref="Ultimate"/> of <see cref="Profession.Piper"/>.</summary>
     public static readonly Ultimate PiperConcerto = new Concerto();
 
-    /// <summary>The <see cref="Ultimate"/> of <see cref="Modules.Professions.Profession.Desperado"/>.</summary>
+    /// <summary>The <see cref="Ultimate"/> of <see cref="Profession.Desperado"/>.</summary>
     public static readonly Ultimate DesperadoBlossom = new DeathBlossom();
 
     #endregion enum entires
@@ -62,7 +61,7 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
     protected Ultimate(string name, IProfession profession, Color meterColor, Color overlayColor)
         : base(name, profession.Id)
     {
-        this.Profession = profession;
+        this.ParentProfession = profession;
         this.BuffId = Manifest.UniqueID.GetHashCode() + profession.Id + 4;
         this.BuffSheetIndex = profession.Id + 22;
         this.Hud = new UltimateHud(this, meterColor);
@@ -88,7 +87,7 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
     internal static event EventHandler<IUltimateEmptiedEventArgs>? Emptied;
 
     /// <inheritdoc />
-    public IProfession Profession { get; }
+    public IProfession ParentProfession { get; }
 
     /// <inheritdoc />
     public abstract string DisplayName { get; }
@@ -108,7 +107,7 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
         get => this._chargeValue;
         set
         {
-            if (!ProfessionsModule.Config.EnableLimitBreaks)
+            if (!ProfessionsModule.Config.Limit.EnableLimitBreaks)
             {
                 return;
             }
@@ -140,8 +139,8 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
             {
                 var delta = value - this._chargeValue;
                 var scaledDelta = delta * ((double)this.MaxValue / BaseMaxValue) * (delta >= 0
-                    ? ProfessionsModule.Config.LimitGainFactor
-                    : ProfessionsModule.Config.LimitDrainFactor);
+                    ? ProfessionsModule.Config.Limit.LimitGainFactor
+                    : ProfessionsModule.Config.Limit.LimitDrainFactor);
                 value = Math.Min(scaledDelta + this._chargeValue, this.MaxValue);
 
                 if (this._chargeValue == 0f)
@@ -196,7 +195,7 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
     /// <summary>Gets the glow color applied to the player while this Ultimate is active.</summary>
     internal abstract Color GlowColor { get; }
 
-    private static int ActivationTimerMax => (int)Math.Round(ProfessionsModule.Config.LimitBreakHoldDelayMilliseconds * 6d / 100d);
+    private static int ActivationTimerMax => (int)Math.Round(ProfessionsModule.Config.Limit.HoldDelayMilliseconds * 6d / 100d);
 
     /// <summary>Activates the <see cref="Ultimate"/> for the local player.</summary>
     internal virtual void Activate()
@@ -251,14 +250,14 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
     /// <summary>Detects and handles activation input.</summary>
     internal void CheckForActivation()
     {
-        if (!ProfessionsModule.Config.EnableLimitBreaks)
+        if (!ProfessionsModule.Config.Limit.EnableLimitBreaks)
         {
             return;
         }
 
-        if (ProfessionsModule.Config.LimitBreakKey.JustPressed())
+        if (ProfessionsModule.Config.Limit.LimitBreakKey.JustPressed())
         {
-            if (ProfessionsModule.Config.HoldKeyToLimitBreak)
+            if (ProfessionsModule.Config.Limit.HoldKeyToLimitBreak)
             {
                 this._activationTimer = ActivationTimerMax;
                 EventManager.Enable<UltimateInputUpdateTickedEvent>();
@@ -272,7 +271,7 @@ public abstract class Ultimate : SmartEnum<Ultimate>, IUltimate
                 Game1.playSound("cancel");
             }
         }
-        else if (ProfessionsModule.Config.LimitBreakKey.GetState() == SButtonState.Released && this._activationTimer > 0)
+        else if (ProfessionsModule.Config.Limit.LimitBreakKey.GetState() == SButtonState.Released && this._activationTimer > 0)
         {
             this._activationTimer = -1;
             EventManager.Disable<UltimateInputUpdateTickedEvent>();

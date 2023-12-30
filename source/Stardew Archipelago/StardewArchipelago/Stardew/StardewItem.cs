@@ -38,5 +38,10 @@ namespace StardewArchipelago.Stardew
         public abstract void GiveToFarmer(Farmer farmer, int amount = 1);
 
         public abstract LetterAttachment GetAsLetter(ReceivedItem receivedItem, int amount = 1);
+
+        public override string ToString()
+        {
+            return $"{Name} [{Id}]";
+        }
     }
 }

@@ -36,7 +36,7 @@ internal sealed class MonsterHandleParriedPatcher : HarmonyPatcher
     [HarmonyPrefix]
     private static void MonsterHandleParriedPrefix(ref bool __state, object args)
     {
-        if (!CombatModule.Config.DefenseImprovesParry)
+        if (!CombatModule.Config.WeaponsSlingshots.DefenseImprovesParry)
         {
             return;
         }

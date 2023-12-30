@@ -14,7 +14,6 @@ namespace DaLion.Overhaul.Modules;
 
 using System.IO;
 using Ardalis.SmartEnum;
-using DaLion.Overhaul.Modules.Professions;
 using DaLion.Shared.Exceptions;
 using Microsoft.Xna.Framework.Audio;
 

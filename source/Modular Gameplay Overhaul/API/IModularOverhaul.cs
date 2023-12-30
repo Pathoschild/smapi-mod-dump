@@ -28,26 +28,24 @@ public interface IModularOverhaul
         /// <summary>Gets a string that uniquely identifies this profession.</summary>
         string StringId { get; }
 
-        /// <summary>Gets the localized and gendered name for this profession.</summary>
-        string DisplayName { get; }
-
         /// <summary>Gets the index used in-game to track professions acquired by the player.</summary>
         int Id { get; }
+
+        /// <summary>Gets the localized and gendered title for this profession.</summary>
+        string Title { get; }
+
+        /// <summary>Gets the localized description text for this profession.</summary>
+        string Description { get; }
 
         /// <summary>Gets the level at which this profession is offered.</summary>
         /// <remarks>Either 5 or 10.</remarks>
         int Level { get; }
 
         /// <summary>Gets the <see cref="ISkill"/> which offers this profession.</summary>
-        ISkill Skill { get; }
+        ISkill ParentSkill { get; }
 
         /// <summary>Gets the professions which branch off from this profession, if any.</summary>
         IEnumerable<int> BranchingProfessions { get; }
-
-        /// <summary>Gets the localized description text for this profession.</summary>
-        /// <param name="prestiged">Whether to get the prestiged or normal variant.</param>
-        /// <returns>A human-readability <see cref="string"/> description of the profession.</returns>
-        string GetDescription(bool prestiged = false);
     }
 
     /// <summary>Interface for all of the <see cref="Farmer"/>'s skills.</summary>
@@ -65,8 +63,14 @@ public interface IModularOverhaul
         /// <summary>Gets the current level for this skill.</summary>
         int CurrentLevel { get; }
 
+        /// <summary>Gets the highest allowed level for this skill.</summary>
+        int MaxLevel { get; }
+
         /// <summary>Gets the amount of experience required for the next level-up.</summary>
         int ExperienceToNextLevel { get; }
+
+        /// <summary>Gets the amount of experience required to reach the max level.</summary>
+        int ExperienceToMaxLevel { get; }
 
         /// <summary>Gets the base experience multiplier set by the player for this skill.</summary>
         float BaseExperienceMultiplier { get; }
@@ -91,6 +95,9 @@ public interface IModularOverhaul
         ///     in the latter, and elements 2 and 3 correspond to branches of element 1.
         /// </remarks>
         IEnumerable<int> TierTwoProfessionIds { get; }
+
+        /// <summary>Gets the local player's acquired professions from this skill.</summary>
+        IProfession[] AcquiredProfessions { get; }
     }
 
     /// <summary>Interface for an event wrapper allowing dynamic enabling / disabling.</summary>
@@ -208,6 +215,9 @@ public interface IModularOverhaul
     /// <summary>Interface for Ultimate abilities.</summary>
     public interface IUltimate
     {
+        /// <summary>Gets the corresponding combat profession which offers this <see cref="IUltimate"/>.</summary>
+        IProfession ParentProfession { get; }
+
         /// <summary>Gets the localized and gendered name for this <see cref="IUltimate"/>.</summary>
         string DisplayName { get; }
 

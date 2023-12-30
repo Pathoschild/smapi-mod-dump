@@ -19,7 +19,7 @@ using StardewValley.TerrainFeatures;
 
 namespace CropGrowthAdjustments.Patching
 {
-    internal class HarmonyPatches
+    internal static class HarmonyPatches
     {
         /// <summary> Patch for the HoeDirt.dayUpdate method </summary>
         public static bool HoeDirtDayUpdate(HoeDirt __instance, GameLocation environment, Vector2 tileLocation)
@@ -34,18 +34,6 @@ namespace CropGrowthAdjustments.Patching
                 
                 // run the original method if the patch fails
                 return true;
-            }
-        }
-
-        public static void HoeDirtPlant(HoeDirt __instance, ref bool __result, int index, int tileX, int tileY, Farmer who, bool isFertilizer, GameLocation location)
-        {
-            try
-            {
-                HarmonyPatchExecutors.HoeDirtPlant(__instance, ref __result, index, tileX, tileY, who, isFertilizer, location);
-            }
-            catch (Exception e)
-            {
-                ModEntry.ModMonitor.Log($"Failed in { nameof(HoeDirtPlant) }:\n{ e }", LogLevel.Error);
             }
         }
 
@@ -76,6 +64,18 @@ namespace CropGrowthAdjustments.Patching
             catch (Exception e)
             {
                 ModEntry.ModMonitor.Log($"Failed in { nameof(CropNewDay) }:\n{ e }", LogLevel.Error);
+            }
+        }
+
+        public static void GameLocationResetLocalState(Game1 __instance)
+        {
+            try
+            {
+                HarmonyPatchExecutors.GameLocationResetLocalState(__instance);
+            }
+            catch (Exception e)
+            {
+                ModEntry.ModMonitor.Log($"Failed in { nameof(GameLocationResetLocalState) }:\n{ e }", LogLevel.Error);
             }
         }
     }

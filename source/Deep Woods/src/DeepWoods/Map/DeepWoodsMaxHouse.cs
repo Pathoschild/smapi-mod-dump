@@ -13,7 +13,9 @@ using DeepWoodsMod.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Netcode;
+using StardewModdingAPI.Utilities;
 using StardewValley;
+using System;
 using System.Linq;
 using xTile.Dimensions;
 
@@ -23,17 +25,17 @@ namespace DeepWoodsMod
     {
         private NetVector2 internalMaxHutLocation = new NetVector2();
 
-        private static Vector2 maxHutLocation;
+        private static PerScreen<Vector2> maxHutLocation = new();
 
         public static Vector2 MaxHutLocation
         {
             get
             {
-                return maxHutLocation;
+                return maxHutLocation.Value;
             }
             set
             {
-                maxHutLocation = value;
+                maxHutLocation.Value = value;
                 if (Game1.getLocationFromName("DeepWoodsMaxHouse") is DeepWoodsMaxHouse deepWoodsMaxHouse)
                 {
                     deepWoodsMaxHouse.internalMaxHutLocation.Value = value;
@@ -138,10 +140,10 @@ namespace DeepWoodsMod
 
         private void openDeepWoodsMaxBooks()
         {
-            DeepWoodsQuestMenu.OpenQuestMenu(I18N.BooksMessage, new Response[2]
+            var bookText = I18N.BookTexts.Get(new Random().Next(1, I18N.BookTexts.textIDs.Length));
+            DeepWoodsQuestMenu.OpenQuestMenu(bookText, new Response[1]
             {
-                new Response("ReadRandomBook", I18N.BooksAnswerRead).SetHotKey(Keys.Y),
-                new Response("No", I18N.BooksAnswerNevermind).SetHotKey(Keys.Escape)
+                new Response("No", I18N.CloseBook).SetHotKey(Keys.Escape)
             });
         }
 
@@ -150,7 +152,7 @@ namespace DeepWoodsMod
             // TODO: Display quest board
             DeepWoodsQuestMenu.OpenQuestMenu(I18N.QuestsEmptyMessage, new Response[1]
             {
-                new Response("No", I18N.MessageBoxOK).SetHotKey(Keys.Escape)
+                new Response("No", I18N.MessageBoxClose).SetHotKey(Keys.Escape)
             });
         }
 
@@ -159,7 +161,7 @@ namespace DeepWoodsMod
             // TODO: Add a shop
             DeepWoodsQuestMenu.OpenQuestMenu(I18N.ShopEmptyMessage, new Response[1]
             {
-                new Response("No", I18N.MessageBoxOK).SetHotKey(Keys.Escape)
+                new Response("No", I18N.MessageBoxClose).SetHotKey(Keys.Escape)
             });
         }
     }

@@ -11,23 +11,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Cast;
-using StardewDruid.Cast.Earth;
-using StardewDruid.Event.Challenge;
-using StardewDruid.Map;
-using StardewDruid.Monster;
+using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Monsters;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using xTile.Dimensions;
-using xTile.Layers;
-using xTile.Tiles;
-using static StardewValley.Minigames.TargetGame;
 
 namespace StardewDruid.Event.World
 {
@@ -48,9 +38,13 @@ namespace StardewDruid.Event.World
 
         public bool complete;
 
+        public int origin;
+
+        public List<TemporaryAnimatedSprite> animation;
+
         //public List<TemporaryAnimatedSprite> animation;
 
-        public Daze(Vector2 target, Rite rite, StardewValley.Monsters.Monster Monster, int Slot)
+        public Daze(Vector2 target, Rite rite, StardewValley.Monsters.Monster Monster, int Slot, int Origin)
             : base(target, rite)
         {
 
@@ -78,19 +72,28 @@ namespace StardewDruid.Event.World
                 Mod.instance.UpdateTask("lessonDaze", 1);
 
             }
-            
+
             morph = (!Map.MonsterData.CustomMonsters().Contains(Monster.GetType()) && riteData.castTask.ContainsKey("masterDaze"));
 
-            //animation = new();
+            animation = new List<TemporaryAnimatedSprite>();
 
-            //WarpAnimation();
+            origin = Origin;
+
+            if (origin != 1)
+            {
+
+                return;
+
+            }
+
+            WarpAnimation();
 
         }
 
         public void CleanUp()
         {
-            
-            if(victim == null)
+
+            if (victim == null)
             {
 
                 return;
@@ -99,7 +102,7 @@ namespace StardewDruid.Event.World
 
             if (!ModUtility.MonsterVitals(victim, targetLocation))
             {
-                
+
                 return;
 
             }
@@ -117,7 +120,7 @@ namespace StardewDruid.Event.World
 
             if (morph && !complete)
             {
-                
+
                 Vector2 currentVector = victim.getTileLocation();
 
                 int monsterIndex = riteData.randomIndex.Next(2) == 0 ? 51 : 52;
@@ -128,8 +131,6 @@ namespace StardewDruid.Event.World
                 {
 
                     targetLocation.characters.Remove(victim);
-
-                    //ModUtility.AnimateQuickWarp(targetLocation, spawnAttempt.Position, "Void");
 
                     victim = null;
 
@@ -142,13 +143,19 @@ namespace StardewDruid.Event.World
         public override void EventTrigger()
         {
 
-            Mod.instance.RegisterEvent(this, "daze"+slot.ToString());
+            Mod.instance.RegisterEvent(this, "daze" + slot.ToString());
 
         }
 
         public override bool EventActive()
         {
 
+            if (!ModUtility.MonsterVitals(victim, targetLocation))
+            {
+
+                return false;
+
+            }
 
             if (victim is StardewValley.Monsters.Mummy mummy)
             {
@@ -156,7 +163,7 @@ namespace StardewDruid.Event.World
                 if (mummy.reviveTimer.Value > 0)
                 {
 
-                    ModUtility.HitMonster(targetLocation,targetPlayer,mummy,1,false);
+                    ModUtility.HitMonster(targetLocation, targetPlayer, mummy, 1, false);
 
                     victim = null;
 
@@ -180,27 +187,21 @@ namespace StardewDruid.Event.World
 
             }
 
-            if (expireTime <= Game1.currentGameTime.TotalGameTime.TotalSeconds)
+            if (expireTime > Game1.currentGameTime.TotalGameTime.TotalSeconds)
             {
 
-                MorphVictim();
 
-                return false;
+
+                return true;
 
             }
 
-            if (!ModUtility.MonsterVitals(victim, targetLocation))
-            {
+            MorphVictim();
 
-                return false;
-
-            }
-
-            return true;
-
+            return false;
         }
 
-        public override bool EventPerformAction()
+        public override bool EventPerformAction(SButton Button)
         {
 
             if (complete)
@@ -212,7 +213,7 @@ namespace StardewDruid.Event.World
 
             if (!EventActive())
             {
-                
+
                 return false;
 
             }
@@ -226,7 +227,7 @@ namespace StardewDruid.Event.World
 
                 List<Vector2> strikeVectors = ModUtility.GetTilesWithinRadius(targetLocation, victim.getTileLocation(), 2, true, direction);
 
-                if(victim.Position.Y > targetPlayer.Position.Y)
+                if (victim.Position.Y > targetPlayer.Position.Y)
                 {
 
                     if (targetPlayer.facingDirection == 1)
@@ -273,10 +274,7 @@ namespace StardewDruid.Event.World
                 foreach (Vector2 strikeVector in strikeVectors)
                 {
 
-                    //Dictionary<Vector2, string> groundCheck = ModUtility.GroundCheck(targetLocation, strikeVector, 0);
-
-                    //if (!safeGround.Contains(groundCheck[strikeVector]))
-                    if(!ModUtility.GroundCheck(targetLocation, strikeVector, false))
+                    if (ModUtility.GroundCheck(targetLocation, strikeVector) != "ground")
                     {
 
                         continue;
@@ -316,7 +314,7 @@ namespace StardewDruid.Event.World
 
             }
 
-            if(validVector.Count == 0)
+            if (validVector.Count == 0)
             {
 
                 return false;
@@ -327,11 +325,36 @@ namespace StardewDruid.Event.World
 
             targetPlayer.temporarilyInvincible = true;
 
-            targetPlayer.temporaryInvincibilityTimer = 1000;
+            targetPlayer.temporaryInvincibilityTimer = 0;
+
+            targetPlayer.currentTemporaryInvincibilityDuration = 1200;
 
             ModUtility.AnimateQuickWarp(targetLocation, targetPlayer.Position, "Void");
 
-            ModUtility.HitMonster(targetLocation, targetPlayer, victim, riteData.castDamage * 2, true);
+            if(targetPlayer.CurrentTool is MeleeWeapon meleeWeapon)
+            {
+
+                List<int> diff = new() { 0,0 };
+
+                int damage = riteData.castDamage * 2;
+
+                if (meleeWeapon.knockback.Value > 0)
+                {
+
+                    diff = ModUtility.CalculatePush(targetLocation, victim, targetPlayer.Position, 64);
+
+                }
+
+                if(meleeWeapon.critMultiplier.Value > 0)
+                {
+
+                    damage += (int)(riteData.castDamage / 100 * meleeWeapon.critMultiplier.Value);
+
+                }
+
+                ModUtility.HitMonster(targetLocation, targetPlayer, victim, damage, true, diffX: diff[0], diffY: diff[1]);
+
+            }
 
             CleanUp();
 
@@ -353,8 +376,15 @@ namespace StardewDruid.Event.World
 
         }
 
-        /*public override void EventDecimal()
+        public override void EventDecimal()
         {
+
+            if (origin == 1)
+            {
+
+                return;
+
+            }
 
             if (complete)
             {
@@ -369,12 +399,10 @@ namespace StardewDruid.Event.World
 
             }
 
-            if(animation.Count <= 0)
+            if (animation.Count <= 0)
             {
 
                 WarpAnimation();
-
-                return;
 
             }
 
@@ -385,20 +413,18 @@ namespace StardewDruid.Event.World
 
                 WarpAnimation();
 
-                return;
-
             }
 
             Microsoft.Xna.Framework.Rectangle box = victim.GetBoundingBox();
 
             Point center = box.Center;
 
-            animation[0].Position = (center.ToVector2() - new Vector2(32, 0)) + new Vector2(0, 32);
+            animation[0].Position = center.ToVector2() + new Vector2(-32, 32);
 
             animation[0].reset();
 
         }
-        
+
         public void WarpAnimation()
         {
 
@@ -406,7 +432,7 @@ namespace StardewDruid.Event.World
 
             Point center = box.Center;
 
-            TemporaryAnimatedSprite warpTarget = new(0, 100f, 1, 1, (center.ToVector2() - new Vector2(16,0)) + new Vector2(0,32), false, false)
+            TemporaryAnimatedSprite warpTarget = new(0, 100f, 1, 1, (center.ToVector2() - new Vector2(16, 0)) + new Vector2(0, 32), false, false)
             {
 
                 sourceRect = new(0, 0, 32, 32),
@@ -431,7 +457,7 @@ namespace StardewDruid.Event.World
 
             animation.Add(warpTarget);
 
-        }*/
+        }
 
     }
 

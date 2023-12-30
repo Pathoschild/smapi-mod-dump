@@ -255,7 +255,6 @@ namespace StardewArchipelago.GameModifications.Seasons
         private static readonly Dictionary<string, string> _alternateMailKeys = new()
         {
             {"spring_2_1", "year_1_day_2"},
-            {"spring_1_2", "year_2_day_1"},
             {"spring_6_2", "spring_6_1"},
             {"spring_15_2", "spring_16_1"},
             {"spring_21_2", "spring_21_1"},
@@ -309,6 +308,11 @@ namespace StardewArchipelago.GameModifications.Seasons
             for (var i = 1; i <= year; i++)
             {
                 var key = seasonName + "_" + Game1.dayOfMonth + "_" + i;
+                if (key.Equals("spring_1_2"))
+                {
+                    continue;
+                }
+
                 SendMailIfNeverReceivedBefore(mailData, key);
             }
         }

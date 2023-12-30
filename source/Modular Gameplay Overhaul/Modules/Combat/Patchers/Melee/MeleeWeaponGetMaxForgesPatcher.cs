@@ -35,7 +35,7 @@ internal sealed class MeleeWeaponGetMaxForgesPatcher : HarmonyPatcher
     [HarmonyPrefix]
     private static bool MeleeWeaponGetMaxForgesPrefix(MeleeWeapon __instance, ref int __result)
     {
-        if (!CombatModule.Config.EnableWeaponOverhaul)
+        if (!CombatModule.Config.WeaponsSlingshots.EnableOverhaul)
         {
             return true; // run original logic
         }

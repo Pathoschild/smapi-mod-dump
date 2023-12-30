@@ -226,10 +226,10 @@ points = (
 )
 
 
-def commands(locs):
+def commands(locs: list[Location]):
     import server
 
-    commands = {}
+    commands: dict[str, Location] = {}
     for loc in locs:
         for cmd in loc.commands:
             if cmd in commands:

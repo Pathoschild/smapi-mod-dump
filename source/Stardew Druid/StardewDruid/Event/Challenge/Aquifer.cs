@@ -10,13 +10,10 @@
 
 using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
-using StardewDruid.Cast.Earth;
 using StardewDruid.Map;
 using StardewDruid.Monster;
 using StardewValley;
-using StardewValley.BellsAndWhistles;
 using StardewValley.Objects;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using xTile.Dimensions;
@@ -34,27 +31,38 @@ namespace StardewDruid.Event.Challenge
 
         public BossBat bossMonster;
 
+        public List<Vector2> ladderPlacement;
+
         public Aquifer(Vector2 target, Rite rite, Quest quest)
             : base(target, rite, quest)
         {
-
+            ladderPlacement = new List<Vector2>();
         }
 
         public override void EventTrigger()
         {
 
             challengeSpawn = new() { 99, };
-            challengeFrequency = 1;
+
+            challengeFrequency = 2;
+
             challengeAmplitude = 1;
+
             challengeSeconds = 60;
+
             challengeWithin = new(17, 10);
+
             challengeRange = new(9, 9);
+
             challengeTorches = new() { new(20, 13), };
 
             if (questData.name.Contains("Two"))
             {
-                challengeFrequency = 2;
-                challengeAmplitude = 3;
+                
+                challengeFrequency = 1;
+                
+                challengeAmplitude = 1;
+            
             }
 
             SetupSpawn();
@@ -125,7 +133,7 @@ namespace StardewDruid.Event.Challenge
         public override bool EventExpire()
         {
 
-            if(eventLinger == -1)
+            if (eventLinger == -1)
             {
 
                 if (trashCollected < 12)
@@ -154,8 +162,6 @@ namespace StardewDruid.Event.Challenge
 
                         Mod.instance.dialogue["Effigy"].specialDialogue["journey"] = new() { "I sense a change", "The rite disturbed the bats. ALL the bats." };
 
-                        Mod.instance.LevelBlessing("earth");
-
                     }
 
                 }
@@ -172,6 +178,23 @@ namespace StardewDruid.Event.Challenge
 
         }
 
+        public override void EventRemove()
+        {
+            if (ladderPlacement.Count > 0)
+            {
+                Layer layer = targetLocation.map.GetLayer("Buildings");
+                int x = (int)ladderPlacement.First<Vector2>().X;
+                int y = (int)ladderPlacement.First<Vector2>().Y;
+                if (layer.Tiles[x, y] == null)
+                {
+                    layer.Tiles[x, y] = new StaticTile(layer, targetLocation.map.TileSheets[0], 0, 173);
+                    Game1.player.TemporaryPassableTiles.Add(new Microsoft.Xna.Framework.Rectangle(x * 64, y * 64, 64, 64));
+                    Mod.instance.CastMessage("A way down has appeared");
+                }
+            }
+            base.EventRemove();
+        }
+
         public override void EventInterval()
         {
 
@@ -183,7 +206,7 @@ namespace StardewDruid.Event.Challenge
                 return;
 
             }
-
+            RemoveLadders();
             monsterHandle.SpawnInterval();
 
             if (randomIndex.Next(2) == 0)
@@ -251,7 +274,7 @@ namespace StardewDruid.Event.Challenge
 
                     case 57:
 
-                        Rockfall rockFall = new(bossMonster.getTileLocation(), riteData);
+                        Cast.Weald.Rockfall rockFall = new(bossMonster.getTileLocation(), riteData);
 
                         rockFall.challengeCast = true;
 
@@ -355,6 +378,24 @@ namespace StardewDruid.Event.Challenge
 
             trashCollected++;
 
+        }
+
+        public void RemoveLadders()
+        {
+            Layer layer = targetLocation.map.GetLayer("Buildings");
+            for (int index1 = 0; index1 < layer.LayerHeight; ++index1)
+            {
+                for (int index2 = 0; index2 < layer.LayerWidth; ++index2)
+                {
+                    if (layer.Tiles[index2, index1] != null && layer.Tiles[index2, index1].TileIndex == 173)
+                    {
+                        layer.Tiles[index2, index1] = null;
+                        Game1.player.TemporaryPassableTiles.Clear();
+                        if (ladderPlacement.Count == 0)
+                            ladderPlacement.Add(new Vector2(index2, index1));
+                    }
+                }
+            }
         }
 
     }

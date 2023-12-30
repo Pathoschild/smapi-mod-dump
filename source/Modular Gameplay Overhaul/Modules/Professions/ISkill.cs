@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Professions;
 #region using directives
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Extensions;
@@ -44,17 +43,17 @@ public interface ISkill
     int MaxLevel { get; }
 
     /// <summary>Gets the amount of experience required for the next level-up.</summary>
-    int ExperienceToNextLevel => this.CurrentLevel == this.MaxLevel ? 0 : ExperienceByLevel[this.CurrentLevel + 1];
+    int ExperienceToNextLevel => this.CurrentLevel == this.MaxLevel ? 0 : ExperienceCurve[this.CurrentLevel + 1];
+
+    /// <summary>Gets the amount of experience required to reach the max level.</summary>
+    int ExperienceToMaxLevel => ExperienceCurve[this.MaxLevel];
 
     /// <summary>Gets the base experience multiplier set by the player for this skill.</summary>
     float BaseExperienceMultiplier { get; }
 
-    /// <summary>Gets this skill's prestige level.</summary>
-    int PrestigeLevel => Game1.player.GetProfessionsForSkill(this, true).Length;
-
     /// <summary>Gets the experience multiplier due to this skill's prestige level.</summary>
     float PrestigeExperienceMultiplier =>
-        (float)Math.Pow(1f + ProfessionsModule.Config.ExpBonusPerSkillReset, this.PrestigeLevel);
+        (float)Math.Pow(1f + ProfessionsModule.Config.Prestige.ExpBonusPerSkillReset, this.AcquiredProfessions.Length);
 
     /// <summary>Gets the new levels gained during the current game day, which have not yet been accomplished by an overnight menu.</summary>
     IEnumerable<int> NewLevels { get; }
@@ -66,11 +65,11 @@ public interface ISkill
     IDictionary<int, ProfessionPair> ProfessionPairs { get; }
 
     /// <summary>Gets integer ids used in-game to track professions acquired by the player.</summary>
-    virtual IEnumerable<int> ProfessionIds => this.Professions.Select(p => p.Id);
+    IEnumerable<int> ProfessionIds => this.Professions.Select(p => p.Id);
 
     /// <summary>Gets subset of <see cref="ProfessionIds"/> containing only the level five profession ids.</summary>
     /// <remarks>Should always contain exactly 2 elements.</remarks>
-    virtual IEnumerable<int> TierOneProfessionIds => this.ProfessionIds.Take(2);
+    IEnumerable<int> TierOneProfessionIds => this.ProfessionIds.Take(2);
 
     /// <summary>Gets subset of <see cref="ProfessionIds"/> containing only the level ten profession ids.</summary>
     /// <remarks>
@@ -78,33 +77,36 @@ public interface ISkill
     ///     <see cref="TierOneProfessionIds"/>, such that elements 0 and 1 in this array correspond to branches of element 0
     ///     in the latter, and elements 2 and 3 correspond to branches of element 1.
     /// </remarks>
-    virtual IEnumerable<int> TierTwoProfessionIds => this.ProfessionIds.TakeLast(4);
+    IEnumerable<int> TierTwoProfessionIds => this.ProfessionIds.TakeLast(4);
 
-    /// <summary>Gets the experience required for each level.</summary>
-    internal static ImmutableDictionary<int, int> ExperienceByLevel { get; } = new Dictionary<int, int>
+    /// <summary>Gets the local player's acquired professions from this skill.</summary>
+    IProfession[] AcquiredProfessions => Game1.player.GetProfessionsForSkill(this, true);
+
+    /// <summary>Gets the experience required for each level up.</summary>
+    internal static int[] ExperienceCurve { get; } =
     {
-        { 0, 0 },
-        { 1, 100 },
-        { 2, 380 },
-        { 3, 770 },
-        { 4, 1300 },
-        { 5, 2150 },
-        { 6, 3300 },
-        { 7, 4800 },
-        { 8, 6900 },
-        { 9, 10000 },
-        { 10, ExpAtLevel10 },
-        { 11, ExpAtLevel10 + (int)ProfessionsModule.Config.RequiredExpPerExtendedLevel },
-        { 12, ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 2) },
-        { 13, ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 3) },
-        { 14, ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 4) },
-        { 15, ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 5) },
-        { 16, ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 6) },
-        { 17, ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 7) },
-        { 18, ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 8) },
-        { 19, ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 9) },
-        { 20, ExpAtLevel10 + ((int)ProfessionsModule.Config.RequiredExpPerExtendedLevel * 10) },
-    }.ToImmutableDictionary();
+        0,
+        100,
+        380,
+        770,
+        1300,
+        2150,
+        3300,
+        4800,
+        6900,
+        10000,
+        ExpAtLevel10,
+        ExpAtLevel10 + (int)ProfessionsModule.Config.Prestige.ExpPerPrestigeLevel,
+        ExpAtLevel10 + ((int)ProfessionsModule.Config.Prestige.ExpPerPrestigeLevel * 2),
+        ExpAtLevel10 + ((int)ProfessionsModule.Config.Prestige.ExpPerPrestigeLevel * 3),
+        ExpAtLevel10 + ((int)ProfessionsModule.Config.Prestige.ExpPerPrestigeLevel * 4),
+        ExpAtLevel10 + ((int)ProfessionsModule.Config.Prestige.ExpPerPrestigeLevel * 5),
+        ExpAtLevel10 + ((int)ProfessionsModule.Config.Prestige.ExpPerPrestigeLevel * 6),
+        ExpAtLevel10 + ((int)ProfessionsModule.Config.Prestige.ExpPerPrestigeLevel * 7),
+        ExpAtLevel10 + ((int)ProfessionsModule.Config.Prestige.ExpPerPrestigeLevel * 8),
+        ExpAtLevel10 + ((int)ProfessionsModule.Config.Prestige.ExpPerPrestigeLevel * 9),
+        ExpAtLevel10 + ((int)ProfessionsModule.Config.Prestige.ExpPerPrestigeLevel * 10),
+    };
 
     /// <summary>Adds experience points for this skill.</summary>
     /// <param name="amount">The amount of experience to add.</param>
@@ -115,9 +117,9 @@ public interface ISkill
     /// <remarks>Will not affect professions or recipes.</remarks>
     void SetLevel(int level);
 
-    /// <summary>Determines whether this skill can be reset for prestige.</summary>
+    /// <summary>Determines whether this skill can be reset for Prestige.</summary>
     /// <returns><see langword="true"/> if the local player meets all reset conditions, otherwise <see langword="false"/>.</returns>
-    virtual bool CanReset()
+    bool CanReset()
     {
         var farmer = Game1.player;
 
@@ -155,15 +157,15 @@ public interface ISkill
 
     /// <summary>Gets the cost of resetting this skill.</summary>
     /// <returns>A sum of gold to be paid.</returns>
-    virtual int GetResetCost()
+    int GetResetCost()
     {
-        var multiplier = ProfessionsModule.Config.SkillResetCostMultiplier;
+        var multiplier = ProfessionsModule.Config.Prestige.SkillResetCostMultiplier;
         if (multiplier <= 0f)
         {
             return 0;
         }
 
-        var baseCost = this.PrestigeLevel switch
+        var baseCost = this.AcquiredProfessions.Length switch
         {
             1 => 10000,
             2 => 50000,
@@ -174,27 +176,31 @@ public interface ISkill
         return (int)(baseCost * multiplier);
     }
 
-    /// <summary>Resets the skill for prestige.</summary>
+    /// <summary>Resets the skill for Prestige.</summary>
     void Reset();
 
     /// <summary>Removes all recipes associated with this skill from the local player.</summary>
     /// <param name="saveForRecovery">Whether to store crafted quantities for later recovery.</param>
     void ForgetRecipes(bool saveForRecovery = true);
 
+    /// <summary>Determines whether this skill can gain Prestige Levels.</summary>
+    /// <returns><see langword="true"/> if the local player meets all Prestige conditions, otherwise <see langword="false"/>.</returns>
+    bool CanGainPrestigeLevels();
+
     /// <summary>Determines whether this skill's level matches the expected level for the current experience, and if not fixes those levels.</summary>
     void Revalidate();
 
-    /// <summary>Determines whether any skill at all can be reset for prestige.</summary>
+    /// <summary>Determines whether any skill at all can be reset for Prestige.</summary>
     /// <returns><see langword="true"/> if at least one vanilla or loaded custom skill can be reset, otherwise <see langword="false"/>.</returns>
     internal static bool CanResetAny()
     {
-        return Skill.List.Any(s => ((ISkill)s).CanReset()) || SCSkill.Loaded.Values.Any(s => s.CanReset());
+        return Skill.List.Any(s => ((ISkill)s).CanReset()) || CustomSkill.Loaded.Values.Any(s => s.CanReset());
     }
 
     /// <summary>Revalidates all vanilla and custom skills.</summary>
     internal static void RevalidateAll()
     {
         Skill.List.ForEach(s => s.Revalidate());
-        SCSkill.Loaded.Values.ForEach(s => s.Revalidate());
+        CustomSkill.Loaded.Values.ForEach(s => s.Revalidate());
     }
 }

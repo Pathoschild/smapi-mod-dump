@@ -61,14 +61,14 @@ namespace mouahrarasModuleCollection.ArcadeGames.KonamiCode.Patches
 
 		private static void ResetStatePostfix(MineCart __instance)
 		{
-			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.GetInfiniteLivesMode())
+			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.InfiniteLivesMode)
 				return;
 			typeof(MineCart).GetField("livesLeft", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, 5);
 		}
 
 		private static void RestartLevelPostfix(MineCart __instance)
 		{
-			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.GetInfiniteLivesMode())
+			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.InfiniteLivesMode)
 				return;
 			typeof(MineCart).GetField("livesLeft", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, 5);
 		}
@@ -76,27 +76,27 @@ namespace mouahrarasModuleCollection.ArcadeGames.KonamiCode.Patches
 		private static void ReceiveKeyPressPostfix(MineCart __instance, Keys k)
 		{
 			KonamiCodeUtility.ReceiveKeyPressPostfix(k);
-			if (KonamiCodeUtility.GetInfiniteLivesMode())
+			if (KonamiCodeUtility.InfiniteLivesMode)
 				typeof(MineCart).GetField("livesLeft", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, 5);;
 		}
 
 		private static void UpdateFruitsSummaryPostfix(MineCart __instance)
 		{
-			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.GetInfiniteLivesMode())
+			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.InfiniteLivesMode)
 				return;
 			typeof(MineCart).GetField("livesLeft", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, 5);
 		}
 
 		private static void CollectCoinPostfix(MineCart __instance)
 		{
-			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.GetInfiniteLivesMode())
+			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.InfiniteLivesMode)
 				return;
 			typeof(MineCart).GetField("livesLeft", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, 5);
 		}
 
 		private static bool DiePrefix(MineCart __instance)
 		{
-			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.GetInfiniteLivesMode())
+			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.InfiniteLivesMode)
 				return true;
 			typeof(MineCart).GetField("livesLeft", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, 5);
 			return true;
@@ -104,21 +104,21 @@ namespace mouahrarasModuleCollection.ArcadeGames.KonamiCode.Patches
 
 		private static void DiePostfix(MineCart __instance)
 		{
-			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.GetInfiniteLivesMode())
+			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.InfiniteLivesMode)
 				return;
 			typeof(MineCart).GetField("livesLeft", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, 5);
 		}
 
-		private static void QuitGamePostfix(MineCart __instance)
+		private static void QuitGamePostfix()
 		{
-			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.GetInfiniteLivesMode())
+			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.InfiniteLivesMode)
 				return;
 			KonamiCodeUtility.Reset();
 		}
 
-		private static void ForceQuitPostfix(MineCart __instance, bool __result)
+		private static void ForceQuitPostfix(bool __result)
 		{
-			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.GetInfiniteLivesMode())
+			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || !KonamiCodeUtility.InfiniteLivesMode)
 				return;
 
 			if (__result == true)

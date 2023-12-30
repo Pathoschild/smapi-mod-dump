@@ -22,15 +22,16 @@ namespace StardewArchipelago.Items.Unlocks
     public class VanillaUnlockManager : IUnlockManager
     {
         public const string PROGRESSIVE_TOOL_AP_PREFIX = "Progressive ";
-        public const string PROGRESSIVE_MINE_ELEVATOR_AP_NAME = "Progressive Mine Elevator";
-        public const string PROGRESSIVE_FISHING_ROD_AP_NAME = "Progressive Fishing Rod";
+        public const string PROGRESSIVE_MINE_ELEVATOR = "Progressive Mine Elevator";
+        public const string PROGRESSIVE_FISHING_ROD = "Progressive Fishing Rod";
         public const string RETURN_SCEPTER_AP_NAME = "Return Scepter";
         public const string GOLDEN_SCYTHE_AP_NAME = "Golden Scythe";
         public const string BEACH_BRIDGE_AP_NAME = "Beach Bridge";
+        public const string FRUIT_BATS = "Fruit Bats";
+        public const string MUSHROOM_BOXES = "Mushroom Boxes";
         public const string SPECIAL_ORDER_BOARD_AP_NAME = "Special Order Board";
         public const string QI_WALNUT_ROOM = "Qi Walnut Room";
         public const string PIERRE_STOCKLIST = "Pierre's Missing Stocklist";
-        public const string ADVENTURE_GUILD = "Adventurer's Guild";
         public const string ISLAND_FARMHOUSE = "Island Farmhouse";
         public const string ISLAND_MAILBOX = "Island Mailbox";
         public const string TREEHOUSE = "Treehouse";
@@ -39,7 +40,7 @@ namespace StardewArchipelago.Items.Unlocks
         public const string PROGRESSIVE_CLUB = "Progressive Club";
         public const string PROGRESSIVE_DAGGER = "Progressive Dagger";
         public const string PROGRESSIVE_BOOTS = "Progressive Footwear";
-        public const string PROGRESSIVE_THEATER = "Progressive Movie Theater";
+        public const string PROGRESSIVE_SLINGSHOT = "Progressive Slingshot";
 
         private Dictionary<string, Func<ReceivedItem, LetterAttachment>> _unlockables;
 
@@ -84,8 +85,7 @@ namespace StardewArchipelago.Items.Unlocks
             _unlockables.Add("Dwarvish Translation Guide", SendDwarvishTranslationGuideLetter);
             _unlockables.Add("Skull Key", SendSkullKeyLetter);
             _unlockables.Add("Rusty Key", SendRustyKeyLetter);
-
-            _unlockables.Add(ADVENTURE_GUILD, SendAdventurerGuildLetter);
+            
             _unlockables.Add("Club Card", SendClubCardLetter);
             _unlockables.Add("Magnifying Glass", SendMagnifyingGlassLetter);
             _unlockables.Add("Iridium Snake Milk", SendIridiumSnakeMilkLetter);
@@ -109,7 +109,7 @@ namespace StardewArchipelago.Items.Unlocks
             _unlockables.Add($"{PROGRESSIVE_TOOL_AP_PREFIX}Hoe", SendProgressiveHoeLetter);
             _unlockables.Add($"{PROGRESSIVE_TOOL_AP_PREFIX}Watering Can", SendProgressiveWateringCanLetter);
             _unlockables.Add($"{PROGRESSIVE_TOOL_AP_PREFIX}Trash Can", SendProgressiveTrashCanLetter);
-            _unlockables.Add(PROGRESSIVE_FISHING_ROD_AP_NAME, SendProgressiveFishingRodLetter);
+            _unlockables.Add(PROGRESSIVE_FISHING_ROD, SendProgressiveFishingRodLetter);
             _unlockables.Add(RETURN_SCEPTER_AP_NAME, SendReturnScepterLetter);
         }
 
@@ -122,6 +122,8 @@ namespace StardewArchipelago.Items.Unlocks
         private void RegisterIsolatedEventsItems()
         {
             _unlockables.Add(BEACH_BRIDGE_AP_NAME, SendBeachBridgeLetter);
+            _unlockables.Add(FRUIT_BATS, SendFruitBatsLetter);
+            _unlockables.Add(MUSHROOM_BOXES, SendMushroomBoxesLetter);
         }
 
         private void RegisterGingerIslandRepairs()
@@ -150,7 +152,7 @@ namespace StardewArchipelago.Items.Unlocks
 
         private void RegisterMineElevators()
         {
-            _unlockables.Add(PROGRESSIVE_MINE_ELEVATOR_AP_NAME, SendProgressiveMineElevatorLetter);
+            _unlockables.Add(PROGRESSIVE_MINE_ELEVATOR, SendProgressiveMineElevatorLetter);
         }
 
         private void RegisterEquipment()
@@ -160,6 +162,7 @@ namespace StardewArchipelago.Items.Unlocks
             _unlockables.Add(PROGRESSIVE_CLUB, SendProgressiveClubLetter);
             _unlockables.Add(PROGRESSIVE_DAGGER, SendProgressiveDaggerLetter);
             _unlockables.Add(PROGRESSIVE_BOOTS, SendProgressiveBootsLetter);
+            _unlockables.Add(PROGRESSIVE_SLINGSHOT, SendProgressiveSlingshotLetter);
         }
 
         private LetterVanillaAttachment RepairBridge(ReceivedItem receivedItem)
@@ -293,11 +296,6 @@ namespace StardewArchipelago.Items.Unlocks
             return new LetterActionAttachment(receivedItem, LetterActionsKeys.RustyKey);
         }
 
-        private LetterActionAttachment SendAdventurerGuildLetter(ReceivedItem receivedItem)
-        {
-            return new LetterActionAttachment(receivedItem, LetterActionsKeys.AdventurerGuild);
-        }
-
         private LetterActionAttachment SendClubCardLetter(ReceivedItem receivedItem)
         {
             return new LetterActionAttachment(receivedItem, LetterActionsKeys.ClubCard);
@@ -337,6 +335,16 @@ namespace StardewArchipelago.Items.Unlocks
         private LetterActionAttachment SendBeachBridgeLetter(ReceivedItem receivedItem)
         {
             return new LetterActionAttachment(receivedItem, LetterActionsKeys.BeachBridge);
+        }
+
+        private LetterActionAttachment SendFruitBatsLetter(ReceivedItem receivedItem)
+        {
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.FruitBats);
+        }
+
+        private LetterActionAttachment SendMushroomBoxesLetter(ReceivedItem receivedItem)
+        {
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.MushroomBoxes);
         }
 
         private LetterActionAttachment SendProgressiveAxeLetter(ReceivedItem receivedItem)
@@ -457,7 +465,12 @@ namespace StardewArchipelago.Items.Unlocks
 
         private LetterActionAttachment SendProgressiveBootsLetter(ReceivedItem receivedItem)
         {
-            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveBoots);
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveProgressiveBoots);
+        }
+
+        private LetterActionAttachment SendProgressiveSlingshotLetter(ReceivedItem receivedItem)
+        {
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveProgressiveSlingshot);
         }
     }
 }

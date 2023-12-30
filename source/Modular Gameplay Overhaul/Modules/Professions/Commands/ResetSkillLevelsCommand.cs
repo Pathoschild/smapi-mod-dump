@@ -41,7 +41,7 @@ internal sealed class ResetSkillLevelsCommand : ConsoleCommand
         if (args.Length == 0 || string.IsNullOrEmpty(args[0]))
         {
             Skill.List.ForEach(s => s.Reset());
-            SCSkill.Loaded.ForEach(s => s.Value.Reset());
+            CustomSkill.Loaded.ForEach(s => s.Value.Reset());
         }
         else
         {
@@ -53,7 +53,7 @@ internal sealed class ResetSkillLevelsCommand : ConsoleCommand
                 }
                 else
                 {
-                    var customSkill = SCSkill.Loaded.Values.FirstOrDefault(s =>
+                    var customSkill = CustomSkill.Loaded.Values.FirstOrDefault(s =>
                         string.Equals(s.DisplayName, args[i], StringComparison.CurrentCultureIgnoreCase));
                     if (customSkill is null)
                     {

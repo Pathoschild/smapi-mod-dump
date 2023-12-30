@@ -40,6 +40,7 @@ namespace StardewArchipelago.Locations
         {
             var prefix = locationDisplayName.Length < 18 ? ARCHIPELAGO_PREFIX : ARCHIPELAGO_SHORT_PREFIX;
             _locationDisplayName = $"{prefix}{locationDisplayName}";
+            Name = _locationDisplayName;
             ApLocationName = apLocationName;
             var scoutedLocation = archipelago.ScoutSingleLocation(ApLocationName);
             _description = scoutedLocation == null ? ScoutedLocation.GenericItemName() : scoutedLocation.ToString();
@@ -84,9 +85,11 @@ namespace StardewArchipelago.Locations
         public override void drawInMenu(SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth,
             StackDrawType drawStackNumber, Color color, bool drawShadow)
         {
-            spriteBatch.Draw(_archipelagoTexture, location + new Vector2(16f, 16f),
-                new Rectangle(0, 0, 48, 48),
-                color * transparency, 0.0f, new Vector2(8f, 8f), scaleSize, SpriteEffects.None, layerDepth);
+            var position = location + new Vector2(16f, 16f);
+            var sourceRectangle = new Rectangle(0, 0, 48, 48);
+            var transparentColor = color * transparency;
+            var origin = new Vector2(8f, 8f);
+            spriteBatch.Draw(_archipelagoTexture, position, sourceRectangle, transparentColor, 0.0f, origin, scaleSize, SpriteEffects.None, layerDepth);
         }
 
         public override string getDescription()

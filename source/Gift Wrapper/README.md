@@ -6,28 +6,45 @@ for queries and analysis.**
 
 ----
 
-![](https://i.imgur.com/SWoC0w6.png)
+![](https://i.imgur.com/N43WztL.png)
 
-It's festivus in Pelican Town! Celebrate the feast of the Winter Star with a little extra novelty in multiplayer.  
-Someone unfortunate enough to have Vincent as a Secret Friend? Put some quality stone under the tree to go with that clay.  
-Crushed everyone else in the egg hunt? Give them the straw hat so they'll forgive you when you do it again next year.  
-Really just give everyone an Unmilled Rice Juice and wave goodbye to another productive year.
+![](https://i.imgur.com/RdvaIwe.png)
 
-![](https://i.imgur.com/s2OyOeW.png) Buy Gift Wrap from Pierre throughout the second half of Winter, place it on the ground, and wrap something up!
+**1.** Download ![SpaceCore](https://www.nexusmods.com/stardewvalley/mods/1348),  
+**2.** Drop it in your **Mods** folder along with ![Gift Wrapper](https://www.nexusmods.com/stardewvalley/mods/4721),  
+**3.** Make sure **everyone in multiplayer** has this mod installed,  
+**4.** Done!
 
-![](https://i.imgur.com/vjDXCIH.png) Gift other players (almost!) anything you like: but no tools!  
-You can give anything like hats, clothes, rings, items, swords, hammers, furniture, beds, crafting machines, ...  
-Squeeze up to 999 of any item in a gift at once to spread that holiday cheer.
+-  To change your preferences, launch the game and edit this mod's config file.
+-  To change features in-game, try playing with spacechase's ![Generic Mod Config Menu](https://www.nexusmods.com/stardewvalley/mods/5098).
+-  If you want to remove this mod and all of its effects, simply remove it from your Mods folder.
 
-![](https://i.imgur.com/ykgRbMA.png) It's not entirely useless in singleplayer!  
-Gift-wrapped presents will give a modest bonus to friendship with villagers, in addition to whatever's inside.  
-You can't gift villagers anything you couldn't normally: no tools, no item stacks, no furniture!
+![](https://i.imgur.com/wOkwPew.png)
 
-## How to install
+- **Celebrate the feast of the Winter Star with a new item at Pierre's!**  
+**Wrapping Paper appears in his stock after you receive the Secret Friend mail.**  
+Pierre sells it until the end of the year, so stock up while you can!
 
-1. Install the latest versions of [SMAPI](https://smapi.io/) and [Json Assets](https://www.nexusmods.com/stardewvalley/mods/1720),
-2. Install this mod via [Nexus Mods](https://www.nexusmods.com/stardewvalley/mods/4721),
-3. Run the game using SMAPI
+- Use **Wrapping Paper** to wrap-up items in your inventory into a colourful present.  
+Place them around your home as decorations, or give them to your friends.  
+Choose from 16+ colourful styles when wrapping your gifts!
 
+- **Wrapping Paper** works in singleplayer, but it's made for multiplayer!  
+You can wrap-up any items you like, with any number of them inside.  
+Your friends can open any gifts you've placed on the floor. Click on a gift to tear it open!  
+Noone can see what's inside a gift except the person who wrapped it.
+
+- **Wrapped Gifts** can be gifted to villagers in town at any time of year.  
+Giving a **Wrapped Gift** gives a little extra friendship in addition to what's inside!  
+Perfect for birthdays and Winter Star presents.
+
+- **Fully gamepad-ready menu!**  
+Use whatever controller you like when wrapping gifts.  
+Navigate with thumbsticks, shoulders, and buttons.
+
+- **You can't give villagers any items they couldn't normally be gifted!**  
+**You can't give villagers a gift with more than 1 item inside!**  
+If you mess up your gift, you can rip it open yourself to get the item back.  
+Have fun giving your friends your best Straw Hats and Unmilled Rice Juice!
 
 ![](https://i.imgur.com/EVsTfJl.png)

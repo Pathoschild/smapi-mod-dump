@@ -69,7 +69,7 @@ namespace StardewArchipelago.GameModifications
                 var possibleResponses = new Response[3]
                 {
                     new Response("Yes", Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_Yes")).SetHotKey(Keys.Y),
-                    new Response("Many", "Sleep for multiple days").SetHotKey(Keys.None),
+                    new Response("Many", "Sleep for multiple days").SetHotKey(Keys.U),
                     new Response("No", Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No")).SetHotKey(Keys.Escape),
                 };
                 

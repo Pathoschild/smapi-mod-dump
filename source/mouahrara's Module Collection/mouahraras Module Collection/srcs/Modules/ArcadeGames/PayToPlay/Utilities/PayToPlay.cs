@@ -19,28 +19,20 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Utilities
 
 		internal static void Reset()
 		{
-			SetOnInsertCoinMenu(true);
-			SetTriedToInsertCoin(true);
+			OnInsertCoinMenu = true;
+			TriedToInsertCoin = true;
 		}
 
-		internal static void SetOnInsertCoinMenu(bool value)
+		internal static bool OnInsertCoinMenu
 		{
-			onInsertCoinMenu.Value = value;
+			get => onInsertCoinMenu.Value;
+			set => onInsertCoinMenu.Value = value;
 		}
 
-		internal static bool GetOnInsertCoinMenu()
+		internal static bool TriedToInsertCoin
 		{
-			return onInsertCoinMenu.Value;
-		}
-
-		internal static void SetTriedToInsertCoin(bool value)
-		{
-			triedToInsertCoin.Value = value;
-		}
-
-		internal static bool GetTriedToInsertCoin()
-		{
-			return triedToInsertCoin.Value;
+			get => triedToInsertCoin.Value;
+			set => triedToInsertCoin.Value = value;
 		}
 	}
 }

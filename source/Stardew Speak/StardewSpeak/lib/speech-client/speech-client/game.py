@@ -7,7 +7,12 @@ import json
 import collections
 import contextlib
 import asyncio
-import server, constants, async_timeout, events
+import server
+import logger
+import constants
+
+import async_timeout
+import events
 
 last_faced_east_west = constants.WEST
 last_faced_north_south = constants.SOUTH
@@ -274,7 +279,7 @@ async def gather_items_on_ground(radius):
             test_tiles = sort_test_tiles(test_tiles_set, start_tile, current_tile, items_to_gather)
             path, invalid = await pathfind_to_resource(test_tiles, location, stream, cutoff=250)
             if path is None:
-                server.log(f"Unable to gather {len(test_tiles)} in radius {radius}")
+                logger.trace(f"Unable to gather {len(test_tiles)} in radius {radius}")
                 return
             for tile in path.tiles:
                 tile_blacklist.add(tile)
@@ -318,12 +323,12 @@ async def pathfind_to_resource(tiles, location, stream, cutoff=-1):
 
 
 async def move_to_location(location: str, stream: server.Stream):
-    server.log(f"moving to {location}")
+    logger.debug(f"moving to {location}")
     await ensure_not_moving()
     route = await request_route(location)
     for i, location in enumerate(route[:-1]):
         next_location = route[i + 1]
-        server.log(f"Getting path to next location {next_location}")
+        logger.debug(f"Getting path to next location {next_location}")
         await pathfind_to_next_location(next_location, stream)
 
 
@@ -485,7 +490,6 @@ def stop_moving():
 async def ensure_not_moving():
     stop_moving()
     await events.wait_for_update_ticked()
-
 
 async def face_direction(direction: int, stream: server.Stream, move_cursor=False):
     await ensure_not_moving()
@@ -793,7 +797,6 @@ async def get_grabble_visible_objects(loc):
 
 
 def disallow_previous_item(previous, current):
-    server.log(previous, current, level=2)
     return not previous or previous == current
 
 
@@ -857,7 +860,7 @@ def set_context_menu(menu):
     context_variables["ACTIVE_MENU"] = menu
 
 
-def get_context_menu(menu_type=None):
+def get_context_menu(menu_type: str | None = None):
     import menu_utils
 
     menu = context_variables["ACTIVE_MENU"]
@@ -890,6 +893,7 @@ async def go_outside():
     if outdoor_connections:
         with server.player_status_stream() as pss:
             player_status = await pss.next()
+            server.log(player_status)
             current_location = player_status["location"]
             if not current_location['TargetIsOutdoors']:
                 current_tile = await get_current_tile(pss)

@@ -18,6 +18,7 @@ using System.Text;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Commands;
 using DaLion.Shared.Extensions;
+using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.SMAPI;
 using StardewValley.Menus;
 
@@ -67,7 +68,7 @@ internal sealed class AddProfessionsCommand : ConsoleCommand
                 }
 
                 range = range
-                    .Concat(SCProfession.List.Select(p => p.Id))
+                    .Concat(CustomProfession.List.Select(p => p.Id))
                     .ToArray();
                 professionsToAdd.AddRange(range);
                 Log.I($"Added all {(prestige ? "prestiged " : string.Empty)}professions to {Game1.player.Name}.");
@@ -94,7 +95,7 @@ internal sealed class AddProfessionsCommand : ConsoleCommand
             }
             else
             {
-                var customProfession = SCProfession.List.FirstOrDefault(p =>
+                var customProfession = CustomProfession.List.FirstOrDefault(p =>
                     string.Equals(args[i], p.StringId.TrimAll(), StringComparison.InvariantCultureIgnoreCase) ||
                     string.Equals(args[i], p.Title.TrimAll(), StringComparison.InvariantCultureIgnoreCase));
                 if (customProfession is null)
@@ -123,8 +124,10 @@ internal sealed class AddProfessionsCommand : ConsoleCommand
         LevelUpMenu levelUpMenu = new();
         foreach (var pid in professionsToAdd.Distinct().Except(Game1.player.professions))
         {
-            Game1.player.professions.Add(pid);
-            levelUpMenu.getImmediateProfessionPerk(pid);
+            if (Game1.player.professions.AddOrReplace(pid))
+            {
+                levelUpMenu.getImmediateProfessionPerk(pid);
+            }
         }
 
         LevelUpMenu.RevalidateHealth(Game1.player);

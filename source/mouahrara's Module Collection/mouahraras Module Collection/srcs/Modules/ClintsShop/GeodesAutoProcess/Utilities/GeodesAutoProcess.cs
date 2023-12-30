@@ -22,69 +22,57 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Utilities
 		private static readonly PerScreen<Item>			geodeBeingProcessed = new(() => null);
 		private static readonly PerScreen<Item>			foundArtifact = new(() => null);
 
-		internal static void SetGeodeMenu(GeodeMenu value)
+		internal static GeodeMenu GeodeMenu
 		{
-			geodeMenu.Value = value;
+			get => geodeMenu.Value;
+			set => geodeMenu.Value = value;
 		}
 
-		internal static GeodeMenu GetGeodeMenu()
+		internal static Item GeodeBeingProcessed
 		{
-			return geodeMenu.Value;
+			get => geodeBeingProcessed.Value;
+			set => geodeBeingProcessed.Value = value;
 		}
 
-		internal static void SetGeodeBeingProcessed(Item value)
+		internal static Item FoundArtifact
 		{
-			geodeBeingProcessed.Value = value;
-		}
-
-		internal static Item GetGeodeBeingProcessed()
-		{
-			return geodeBeingProcessed.Value;
-		}
-
-		internal static void SetFoundArtifact(Item value)
-		{
-			foundArtifact.Value = value;
-		}
-
-		internal static Item GetFoundArtifact()
-		{
-			return foundArtifact.Value;
+			get => foundArtifact.Value;
+			set => foundArtifact.Value = value;
 		}
 
 		internal static void InitializeAfterOpeningGeodeMenu(GeodeMenu __instance)
 		{
-			SetGeodeMenu(__instance);
-			SetFoundArtifact(null);
+			GeodeMenu = __instance;
+			FoundArtifact = null;
 		}
 
 		internal static void CleanBeforeClosingGeodeMenu()
 		{
 			EndGeodeProcessing();
-			SetFoundArtifact(null);
-			SetGeodeMenu(null);
+			FoundArtifact = null;
+			GeodeMenu = null;
 		}
 
 		internal static void StartGeodeProcessing()
 		{
-			SetGeodeBeingProcessed(GetGeodeMenu().heldItem);
-			GetGeodeMenu().heldItem = null;
-			GetGeodeMenu().inventory.highlightMethod = (Item _) => false;
+			GeodeBeingProcessed = GeodeMenu.heldItem;
+			GeodeMenu.heldItem = null;
+			GeodeMenu.inventory.highlightMethod = (Item _) => false;
 			ModEntry.Helper.Events.GameLoop.UpdateTicking += UpdateTickingHook.Apply;
 		}
 
 		internal static void EndGeodeProcessing()
 		{
 			ModEntry.Helper.Events.GameLoop.UpdateTicking -= UpdateTickingHook.Apply;
-			GetGeodeMenu().inventory.highlightMethod = GetGeodeMenu().highlightGeodes;
+			GeodeMenu.inventory.highlightMethod = GeodeMenu.highlightGeodes;
 			if (IsProcessing())
-				Game1.player.addItemToInventory(GetGeodeBeingProcessed());
-			SetGeodeBeingProcessed(null);
+				Game1.player.addItemToInventory(GeodeBeingProcessed);
+			GeodeBeingProcessed = null;
 		}
 
 		internal static bool IsProcessing()
 		{
-			return GetGeodeBeingProcessed() != null && GetGeodeBeingProcessed().Stack > 0;
+			return GeodeBeingProcessed != null && GeodeBeingProcessed.Stack > 0;
 		}
 
 		internal static void CrackGeodeSecure()
@@ -92,17 +80,17 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Utilities
 			if (!CanProcess())
 				return;
 
-			GeodeMenu geodeMenu = GetGeodeMenu();
-			Item geodeBeingProcessed = GetGeodeBeingProcessed();
+			GeodeMenu geodeMenu = GeodeMenu;
+			Item geodeBeingProcessed = GeodeBeingProcessed;
 
-			geodeMenu.geodeSpot.item = new Object(geodeBeingProcessed.ParentSheetIndex, geodeBeingProcessed.Stack);
-			if (geodeMenu.geodeSpot.item.ParentSheetIndex == 791 && !Game1.netWorldState.Value.GoldenCoconutCracked.Value)
+			geodeMenu.geodeSpot.item = ItemRegistry.Create(geodeBeingProcessed.QualifiedItemId);
+			if (geodeMenu.geodeSpot.item.QualifiedItemId == "(O)791" && !Game1.netWorldState.Value.GoldenCoconutCracked)
 			{
 				geodeMenu.waitingForServerResponse = true;
 				Game1.player.team.goldenCoconutMutex.RequestLock(delegate
 				{
 					geodeMenu.waitingForServerResponse = false;
-					geodeMenu.geodeTreasureOverride = new Object(73, 1);
+					geodeMenu.geodeTreasureOverride = ItemRegistry.Create("(O)73");
 					CrackGeode();
 				}, delegate
 				{
@@ -119,8 +107,8 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Utilities
 
 		private static bool CanProcess()
 		{
-			GeodeMenu geodeMenu = GetGeodeMenu();
-			Item geodeBeingProcessed = GetGeodeBeingProcessed();
+			GeodeMenu geodeMenu = GeodeMenu;
+			Item geodeBeingProcessed = GeodeBeingProcessed;
 
 			if (geodeMenu.waitingForServerResponse)
 			{
@@ -144,8 +132,8 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Utilities
 
 		private static void CrackGeode()
 		{
-			GeodeMenu geodeMenu = GetGeodeMenu();
-			Item geodeBeingProcessed = GetGeodeBeingProcessed();
+			GeodeMenu geodeMenu = GeodeMenu;
+			Item geodeBeingProcessed = GeodeBeingProcessed;
 
 			geodeBeingProcessed.Stack--;
 			Game1.player.Money -= 25;

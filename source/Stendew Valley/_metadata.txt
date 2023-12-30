@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/HauntedPineapple/Stendew-Valley
+   Git: https://github.com/HauntedPineapple/Stendew-Valley.git
+
+mods:
+   Stendew Valley
+
+latest commit:
+   commit e1081177494f5bd48c0f86e12fb198ac0f6e96d7
+   Author: HauntedPineapple <aam6039@rit.edu>
+   Date:   Mon Dec 11 10:43:05 2023 -0500
+   
+       Updated manifests
+   

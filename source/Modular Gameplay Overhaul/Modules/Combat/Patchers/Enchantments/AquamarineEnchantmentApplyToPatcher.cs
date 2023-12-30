@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Enchantments;
 #region using directives
 
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
-using DaLion.Shared.Attributes;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Tools;
@@ -35,7 +34,7 @@ internal sealed class AquamarineEnchantmentApplyToPatcher : HarmonyPatcher
     [HarmonyPrefix]
     private static bool AquamarineEnchantmentApplyToPrefix(AquamarineEnchantment __instance, Item item)
     {
-        if (item is not MeleeWeapon weapon || !CombatModule.Config.RebalancedGemstones)
+        if (item is not MeleeWeapon weapon || !CombatModule.Config.RingsEnchantments.RebalancedGemstones)
         {
             return true; // run original logic
         }

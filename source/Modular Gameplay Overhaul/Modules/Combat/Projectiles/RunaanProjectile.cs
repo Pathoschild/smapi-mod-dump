@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Combat.Projectiles;
 using System.Linq;
 using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
+using DaLion.Overhaul.Modules.Core.Extensions;
 using DaLion.Shared.Constants;
 using DaLion.Shared.Enums;
 using DaLion.Shared.Extensions.Stardew;
@@ -95,7 +96,7 @@ internal sealed class RunaanProjectile : BasicProjectile
         this.Knockback = source.Get_EffectiveKnockback() * (1f + firer.knockbackModifier) * overcharge;
         this.CritChance = 0.025f;
         this.CritPower = 1.5f;
-        if (CombatModule.Config.EnableRangedCriticalHits)
+        if (CombatModule.Config.WeaponsSlingshots.EnableRangedCriticalHits)
         {
             this.CritChance += source.Get_EffectiveCritChance();
             this.CritChance *= 1f + firer.critChanceModifier;
@@ -125,7 +126,7 @@ internal sealed class RunaanProjectile : BasicProjectile
         this.color.Value *= 0.5f;
         this._finalSpeed = finalSpeed;
         this._timer = 750 + (Game1.random.Next(-25, 26) * 10); // delay before motion
-        this.ignoreTravelGracePeriod.Value = CombatModule.Config.RemoveSlingshotGracePeriod;
+        this.ignoreTravelGracePeriod.Value = CombatModule.Config.WeaponsSlingshots.RemoveSlingshotGracePeriod;
     }
 
     public Item Ammo { get; } = null!;

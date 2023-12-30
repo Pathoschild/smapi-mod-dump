@@ -155,10 +155,6 @@ Some spell effects have damage modifiers that consider player combat level, high
 Enable to cast at max damage and effect everytime, as was the case in versions up to 1.1.3
 
 -----------------------------------------
-Cast Anywhere "castAnywhere"
-Disables cast restrictions so that any rite can be cast anywhere. Proceed with caution!
-
------------------------------------------
 Ostentatious Hats "partyHats"
 Enable to put cute hats on some mod-spawned monsters. Cosmetic effect only.
 

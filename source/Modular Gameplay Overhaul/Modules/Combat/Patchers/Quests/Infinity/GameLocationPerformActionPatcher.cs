@@ -15,7 +15,6 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Quests.Infinity;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using DaLion.Overhaul.Modules;
 using DaLion.Overhaul.Modules.Combat.Enums;
 using DaLion.Overhaul.Modules.Combat.Events.GameLoop.OneSecondUpdateTicked;
 using DaLion.Overhaul.Modules.Combat.Extensions;
@@ -44,7 +43,7 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
     [HarmonyPrefix]
     private static bool GameLocationPerformActionPrefix(GameLocation __instance, string? action, Farmer who)
     {
-        if (!CombatModule.Config.EnableHeroQuest || action is null || !who.IsLocalPlayer)
+        if (!CombatModule.Config.Quests.EnableHeroQuest || action is null || !who.IsLocalPlayer)
         {
             return true; // run original logic
         }

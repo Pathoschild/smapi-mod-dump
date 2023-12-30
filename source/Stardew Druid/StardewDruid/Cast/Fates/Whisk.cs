@@ -9,15 +9,6 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewDruid.Cast.Earth;
-using StardewModdingAPI;
-using StardewValley;
-using StardewValley.Menus;
-using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
-using System;
-using System.Collections.Generic;
-using static StardewValley.Menus.CharacterCustomization;
 
 namespace StardewDruid.Cast.Fates
 {
@@ -36,9 +27,6 @@ namespace StardewDruid.Cast.Fates
 
         public override void CastEffect()
         {
-
-            ModUtility.AnimateFateTarget(targetLocation, targetVector*64, destination*64);
-
             Event.World.Whisk whiskEvent = new(targetVector, riteData, destination);
 
             whiskEvent.EventTrigger();

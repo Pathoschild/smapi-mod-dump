@@ -11,14 +11,9 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.Characters;
 using StardewValley.Monsters;
-using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StardewDruid.Monster
 {
@@ -76,7 +71,7 @@ namespace StardewDruid.Monster
         public double spawnTimeout;
 
         public Golem(Vector2 vector, int combatModifier, bool hats)
-            : base(vector*64, true)
+            : base(vector * 64, true)
         {
 
             focusedOnFarmers = true;
@@ -106,13 +101,16 @@ namespace StardewDruid.Monster
             if (Game1.random.Next(3) == 0)
             {
                 objectsToDrop.Add(378);
-            } else if (Game1.random.Next(4) == 0 && combatModifier >= 120)
+            }
+            else if (Game1.random.Next(4) == 0 && combatModifier >= 120)
             {
                 objectsToDrop.Add(380);
-            } else if (Game1.random.Next(5) == 0 && combatModifier >= 240)
+            }
+            else if (Game1.random.Next(5) == 0 && combatModifier >= 240)
             {
                 objectsToDrop.Add(384);
-            } else if (Game1.random.Next(6) == 0 && combatModifier >= 360)
+            }
+            else if (Game1.random.Next(6) == 0 && combatModifier >= 360)
             {
                 objectsToDrop.Add(386); // iridium
             }
@@ -145,7 +143,7 @@ namespace StardewDruid.Monster
             if (hats)
             {
 
-                hatList.Add(3); 
+                hatList.Add(3);
                 hatList.Add(149);
 
             }
@@ -269,7 +267,7 @@ namespace StardewDruid.Monster
 
                 Vector2 localPosition = getLocalPosition(Game1.viewport) + new Vector2(56f, 16 + yJumpOffset);
 
-                float depth = (float)GetBoundingBox().Center.Y / 10000f + 0.00005f;
+                float depth = GetBoundingBox().Center.Y / 10000f + 0.00005f;
 
                 b.Draw(
                     hatsTexture,
@@ -385,7 +383,7 @@ namespace StardewDruid.Monster
             if (tickCount >= 200)
             {
                 int dialogueIndex = Game1.random.Next(15);
-                
+
                 if (dialogueList.Count - 1 >= dialogueIndex)
                 {
                     showTextAboveHead(dialogueList[dialogueIndex], duration: 2000);

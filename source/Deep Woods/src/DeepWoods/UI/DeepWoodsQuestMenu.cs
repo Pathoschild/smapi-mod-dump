@@ -12,10 +12,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using StardewValley;
 using StardewValley.Menus;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using static DeepWoodsMod.I18N;
 
 namespace DeepWoodsMod.UI
 {
@@ -34,28 +36,33 @@ namespace DeepWoodsMod.UI
         private static readonly string ModInfoText =
             "Hi, I am Max! < I make DeepWoods.^" +
             "^" +
-            "I am working on a compelling story involving mystery and greed. Get ready for = new locations, = new characters, and = new secrets.^" +
-            "^" +
-            "While waiting, I invite you to join me on Discord and Youtube, where I post updates and engage with my community.^" +
+            "If you love this mod, I invite you to join me on Discord and Youtube, where I post updates and engage with my community.^" +
             "^" +
             "Thank you! < ~Max";
 
-        public static void OpenQuestMenu(string text, ICollection<Response> responses, GameLocation.afterQuestionBehavior responseHandler = null)
-        {
-            List<Response> responsesWithModInfo = new();
-            responsesWithModInfo.AddRange(responses);
-            responsesWithModInfo.Add(new Response("ModInfo", "Mod Info").SetHotKey(Keys.I));
-            MakeTheThing(text, responsesWithModInfo, responseHandler ?? modInfoResponse);
-        }
-
-        public static void ShowModInfo()
+        private static void ShowModInfo()
         {
             MakeTheThing(ModInfoText, new Response[3]
             {
                 new Response("Youtube", "> youtube.com/MaxMakesMods"),
                 new Response("Discord", "> discord.gg/jujwEGf62K"),
-                new Response("No", I18N.MessageBoxOK).SetHotKey(Keys.Escape)
-            }, modInfoResponse);
+                new Response("No", I18N.MessageBoxClose).SetHotKey(Keys.Escape)
+            }, ModInfoResponse);
+        }
+
+
+
+        public static void OpenQuestMenu(string text, ICollection<Response> responses, GameLocation.afterQuestionBehavior responseHandler = null)
+        {
+            MakeTheThing(text, responses, responseHandler ?? ModInfoResponse);
+        }
+
+        public static void OpenQuestMenuWithModInfo(string text, ICollection<Response> responses, GameLocation.afterQuestionBehavior responseHandler = null)
+        {
+            List<Response> responsesWithModInfo = new();
+            responsesWithModInfo.AddRange(responses);
+            responsesWithModInfo.Add(new Response("ModInfo", "Mod Info").SetHotKey(Keys.I));
+            MakeTheThing(text, responsesWithModInfo, responseHandler ?? ModInfoResponse);
         }
 
         private static void MakeTheThing(string text, ICollection<Response> responses, GameLocation.afterQuestionBehavior responseHandler)
@@ -72,7 +79,7 @@ namespace DeepWoodsMod.UI
             Game1.currentLocation.afterQuestion = responseHandler;
         }
 
-        private static void modInfoResponse(Farmer who, string answer)
+        private static void ModInfoResponse(Farmer who, string answer)
         {
             switch (answer)
             {
@@ -81,10 +88,6 @@ namespace DeepWoodsMod.UI
 
                 case "SearchThroughStuff":
                     searchThroughStuff();
-                    return;
-
-                case "ReadRandomBook":
-                    readRandomBook();
                     return;
 
                 case "Youtube":
@@ -109,12 +112,6 @@ namespace DeepWoodsMod.UI
         {
             // TODO: Random message + low chance to get one item per day
             Game1.showRedMessage(I18N.StuffNothing);
-        }
-
-        private static void readRandomBook()
-        {
-            // TODO: Random book + low chance to get skill increase
-            Game1.showRedMessage(I18N.BooksInteresting);
         }
 
         private static void OpenURL(string url)

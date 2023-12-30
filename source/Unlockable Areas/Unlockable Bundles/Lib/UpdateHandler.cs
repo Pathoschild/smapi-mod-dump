@@ -181,7 +181,7 @@ namespace Unlockable_Bundles.Lib
                 var last = unlockable._alreadyPaid.Pairs.Last();
                 var index = unlockable._alreadyPaidIndex.ContainsKey(last.Key) ? unlockable._alreadyPaidIndex[last.Key] : -1;
                 ModData.setPartiallyPurchased(unlockable.ID, unlockable.LocationUnique, last.Key, last.Value, index);
-                ModEntry._API.raiseShopContributed(new API.BundlePurchasedEventArgs(Game1.player, unlockable.Location, unlockable.LocationUnique, unlockable.ID, false));
+                ModEntry._API.raiseShopContributed(new API.BundleContributedEventArgs(Game1.player, new KeyValuePair<string, int> (last.Key, last.Value), unlockable.Location, unlockable.LocationUnique, unlockable.ID, false));
             } else if (e.Type == "UpdateMailData") {
                 AssetRequested.MailData = e.ReadAs<Dictionary<string, string>>();
                 Helper.GameContent.InvalidateCache("Data/Mail");

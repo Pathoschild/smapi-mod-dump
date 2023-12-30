@@ -11,13 +11,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BirbCore.Attributes;
-using StardewValley.GameData.GarbageCans;
 using StardewValley;
-using StardewValley.Internal;
-using SpaceCore;
+using StardewValley.GameData.GarbageCans;
 
 namespace BinningSkill.BinningSkill;
 
@@ -26,46 +22,193 @@ internal class Command
 {
 
     [SCommand.Command]
-    public static void SimulateGarbageDrops(string id, int rounds = 10000)
+    public static void CanInfo(string id)
+    {
+        if (!TryGetGarbageCan(id, out string key, out GameLocation canLocation))
+        {
+            Log.Error($"Could not find garbage can {id}");
+            return;
+        }
+
+        GarbageCanData allData = Game1.content.Load<GarbageCanData>("Data\\GarbageCans");
+        if (!allData.GarbageCans.TryGetValue(key, out var data))
+        {
+            data = null;
+        }
+
+        List<GarbageCanItemData> items = new List<GarbageCanItemData>();
+        items.AddRange(allData.BeforeAll);
+        if (data is not null && data.Items is not null)
+        {
+            items.AddRange(data.Items);
+        }
+        items.AddRange(allData.AfterAll);
+
+        float chance = data.BaseChance == -1 ? allData.DefaultBaseChance : data.BaseChance;
+        Log.Info($"Can {key} at location {canLocation?.Name ?? "unknown"}");
+        Log.Info($"Base chance: {chance}");
+        Log.Info("Item Data (including global item data):");
+        foreach (GarbageCanItemData item in items)
+        {
+            if (item.IsMegaSuccess)
+            {
+                Log.Warn($"\t{item.Id}");
+            }
+            else if (item.IsDoubleMegaSuccess)
+            {
+                Log.Error($"\t{item.Id}");
+            }
+            else
+            {
+                Log.Info($"\t{item.Id}");
+            }
+
+            Log.Info($"\t\tPossible Items: {item.ItemId ?? string.Join(" ", item.RandomItemId)}");
+            bool pass = GameStateQuery.CheckConditions(item.Condition, canLocation);
+            if (pass)
+            {
+                Log.Info($"\t\tConditions:");
+            }
+            else
+            {
+                Log.Trace($"\t\tConditions:");
+            }
+            string[] rawQueries = GameStateQuery.SplitRaw(item.Condition);
+            foreach (string query in rawQueries)
+            {
+                pass = GameStateQuery.CheckConditions(query, canLocation);
+                if (pass)
+                {
+                    Log.Info($"\t\t\t{query}");
+                }
+                else
+                {
+                    Log.Trace($"\t\t\t{query}");
+                }
+            }
+            Log.Info("");
+        }
+
+        Log.Info("Custom Data:");
+        foreach (KeyValuePair<string, string> values in data.CustomFields)
+        {
+            Log.Info($"\t\"{values.Key}\": \"{values.Value}\"");
+        }
+    }
+
+    [SCommand.Command]
+    public static void Simulate(string id, int rounds = 10000)
+    {
+        if (!TryGetGarbageCan(id, out string key, out GameLocation canLocation))
+        {
+            Log.Error($"Could not find garbage can {id}");
+            return;
+        }
+
+        Dictionary<string, int> itemDataCounts = new Dictionary<string, int>();
+        Dictionary<string, int> itemCounts = new Dictionary<string, int>();
+
+        uint daysPlayed = Game1.stats.DaysPlayed;
+        uint noItem = 0;
+        for (uint i = daysPlayed; i < rounds + daysPlayed; i++)
+        {
+            Game1.stats.DaysPlayed = i;
+            if (!canLocation.TryGetGarbageItem(key, Game1.player.DailyLuck, out Item item, out GarbageCanItemData selected, out Random garbageRandom1))
+            {
+                Log.Warn("Checking garbage failed, make sure Binning level is appropriate, and no NPCs are near garbage can.");
+                Game1.stats.DaysPlayed = daysPlayed;
+                return;
+            }
+            if (item == null)
+            {
+                noItem++;
+                continue;
+            }
+
+            if (!itemDataCounts.ContainsKey(selected.Id))
+            {
+                itemDataCounts[selected.Id] = 0;
+            }
+            itemDataCounts[selected.Id]++;
+
+            if (!itemCounts.ContainsKey(item.Name))
+            {
+                itemCounts[item.Name] = 0;
+            }
+            itemCounts[item.Name]++;
+        }
+        Game1.stats.DaysPlayed = daysPlayed;
+
+        Log.Info("==== Selected Item Entries ====");
+        List<KeyValuePair<string, int>> sortedItemDataCounts = itemDataCounts.ToList();
+        sortedItemDataCounts.Sort((a, b) => b.Value - a.Value);
+
+        Log.Info($"{noItem,10}\t{100.0f * noItem / rounds,10}%\tnothing found...");
+        foreach (var entry in sortedItemDataCounts)
+        {
+            Log.Info($"{entry.Value,10}\t{100.0f * entry.Value / rounds,10}%\t{entry.Key}");
+        }
+
+        Log.Info("==== Selected Items ====");
+        List<KeyValuePair<string, int>> sortedItemCounts = itemCounts.ToList();
+        sortedItemCounts.Sort((a, b) => b.Value - a.Value);
+
+        Log.Info($"{noItem,10}\t{100.0f * noItem / rounds,10}%\tnothing found...");
+        foreach (var entry in sortedItemCounts)
+        {
+            Log.Info($"{entry.Value,10}\t{100.0f * entry.Value / rounds,10}%\t{entry.Key}");
+        }
+
+    }
+
+    public static bool TryGetGarbageCan(string search, out string entryKey, out GameLocation entryLocation)
     {
         GarbageCanData allData = Game1.content.Load<GarbageCanData>("Data\\GarbageCans");
-        string entryKey = null;
-        if (!allData.GarbageCans.TryGetValue(id, out var data))
+        entryKey = null;
+        entryLocation = null;
+        if (!allData.GarbageCans.TryGetValue(search, out GarbageCanEntryData entryData))
         {
-            Log.Info("Command didn't find exact id match, searching...");
+            Log.Debug($"Command didn't find exact id match for {search}, searching...");
             foreach (var entry in allData.GarbageCans)
             {
-                if (entry.Key.Contains(id))
+                if (entry.Key.Contains(search))
                 {
-                    Log.Info($"Found {entry.Key}");
+                    Log.Debug($"Found {entry.Key}");
                     entryKey = entry.Key;
-                    data = entry.Value;
+                    entryData = entry.Value;
                     break;
                 }
             }
-            if (data is null)
+            if (entryData is null)
             {
-                Log.Info($"Found no garbage cans, using only defaults.");
+                Log.Debug($"Found no garbage cans...");
+                return false;
             }
         }
+        else
+        {
+            entryKey = search;
+        }
 
-        GameLocation canLocation = Game1.player.currentLocation;
+        string id = entryKey;
+        Log.Debug($"Searching for location of {entryKey}");
+        GameLocation canLocation = null;
         if (entryKey is not null)
         {
             Utility.ForEachLocation(location =>
             {
                 foreach (var tile in location.Map.GetLayer("Buildings").Tiles.Array)
                 {
-                    if (tile is null || tile.Properties.Count() == 0)
+                    if (tile is null || tile.Properties.Count == 0)
                     {
                         continue;
                     }
 
                     foreach (var property in tile.Properties)
                     {
-                        if (property.Key == "Action" &&  property.Value == $"Garbage {entryKey}")
+                        if (property.Key == "Action" && property.Value == $"Garbage {id}")
                         {
-                            Log.Info($"Found map {location.Name} for garbage can {entryKey}");
+                            Log.Debug($"Found map {location.Name} for garbage can {id}");
                             canLocation = location;
                             return false;
                         }
@@ -74,68 +217,7 @@ internal class Command
                 return true;
             });
         }
-
-
-        Dictionary<string, int> itemCounts = new Dictionary<string, int>();
-        int noItem = 0;
-
-        double dailyLuck = Game1.player.DailyLuck + ModEntry.Config.PerLevelBaseDropChanceBonus * Game1.player.GetCustomSkillLevel("drbirbdev.Binning");
-        for (int i = 0; i < rounds; i++)
-        {
-            float baseChance = ((data != null && data.BaseChance > 0f) ? data.BaseChance : allData.DefaultBaseChance);
-            baseChance += (float)dailyLuck;
-            Random garbageRandom = Utility.CreateDaySaveRandom(i + Utility.GetDeterministicHashCode(id));
-            GarbageCanItemData selected = null;
-            Item item = null;
-            bool baseChancePassed = garbageRandom.NextDouble() < (double)baseChance;
-            ItemQueryContext itemQueryContext = new ItemQueryContext(canLocation, Game1.player, garbageRandom);
-            List<GarbageCanItemData>[] array = new List<GarbageCanItemData>[3]
-            {
-                allData.BeforeAll,
-                data?.Items,
-                allData.AfterAll
-            };
-            foreach (List<GarbageCanItemData> itemList in array)
-            {
-                if (itemList == null)
-                {
-                    continue;
-                }
-                foreach (GarbageCanItemData entry in itemList)
-                {
-                    if ((baseChancePassed || entry.IgnoreBaseChance) && GameStateQuery.CheckConditions(entry.Condition, Game1.currentLocation))
-                    {
-                        Item result = ItemQueryResolver.TryResolveRandomItem(entry, itemQueryContext, avoidRepeat: false);
-                        selected = entry;
-                        item = result;
-                        break;
-                    }
-                }
-                if (selected != null)
-                {
-                    break;
-                }
-            }
-            if (item == null)
-            {
-                noItem++;
-                continue;
-            }
-            if (!itemCounts.ContainsKey(item.Name))
-            {
-                itemCounts[item.Name] = 0;
-            }
-            itemCounts[item.Name]++;
-        }
-
-        List<KeyValuePair<string, int>> sortedItemCounts = itemCounts.ToList();
-        sortedItemCounts.Sort((a, b) => b.Value - a.Value);
-
-        Log.Info($"{noItem,10}\t{100.0f * noItem / rounds,10}%\tnothing found...");
-        foreach(var entry in sortedItemCounts)
-        {
-            Log.Info($"{entry.Value,10}\t{100.0f * entry.Value / rounds,10}%\t{entry.Key}");
-        }
-
+        entryLocation = canLocation;
+        return true;
     }
 }

@@ -28,9 +28,15 @@ namespace StardewArchipelago.Stardew
             InitAreaBundleConversions();
         }
 
+        public bool IsCommunityCenterComplete()
+        {
+            var communityCenter = GetCommunityCenter();
+            return communityCenter.areAllAreasComplete();
+        }
+
         public List<string> GetAllCompletedBundles()
         {
-            var communityCenter = Game1.locations.OfType<CommunityCenter>().First();
+            var communityCenter = GetCommunityCenter();
             var completedBundles = new List<string>();
             foreach (var (bundleId, bundleName) in _bundleIdToName)
             {
@@ -42,6 +48,11 @@ namespace StardewArchipelago.Stardew
             }
 
             return completedBundles;
+        }
+
+        private CommunityCenter GetCommunityCenter()
+        {
+            return Game1.locations.OfType<CommunityCenter>().First();
         }
 
         private bool IsBundleComplete(CommunityCenter communityCenter, int bundleId)

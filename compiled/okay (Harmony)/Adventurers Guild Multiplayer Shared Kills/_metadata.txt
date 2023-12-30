@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19442
+IDs: Veniamin-Arefev.AdventurersGuildMultiplayerSharedKills
+update keys: Nexus:19442, GitHub:Veniamin-Arefev/StardewMods

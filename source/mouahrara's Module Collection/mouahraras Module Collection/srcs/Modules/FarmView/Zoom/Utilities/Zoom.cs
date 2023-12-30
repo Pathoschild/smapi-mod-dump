@@ -23,6 +23,18 @@ namespace mouahrarasModuleCollection.FarmView.Zoom.Utilities
 			zoomLevelMinReached.Value = false;
 		}
 
+		internal static int ZoomLevel
+		{
+			get => zoomLevel.Value;
+			set => zoomLevel.Value = value;
+		}
+
+		internal static bool ZoomLevelMinReached
+		{
+			get => zoomLevelMinReached.Value;
+			set => zoomLevelMinReached.Value = value;
+		}
+
 		internal static void AddZoomLevel(int direction)
 		{
 			if (direction < 0 && zoomLevelMinReached.Value)
@@ -30,22 +42,6 @@ namespace mouahrarasModuleCollection.FarmView.Zoom.Utilities
 			if (direction > 0 && zoomLevel.Value + direction > 0)
 				return;
 			zoomLevel.Value += direction;
-		}
-
-		internal static int GetZoomLevel()
-		{
-			return zoomLevel.Value;
-		}
-
-
-		internal static void SetZoomLevelMinReached(bool value)
-		{
-			zoomLevelMinReached.Value = value;
-		}
-
-		internal static bool GetZoomLevelMinReached()
-		{
-			return zoomLevelMinReached.Value;
 		}
 	}
 }

@@ -1,3 +1,4 @@
+from __future__ import annotations
 import time
 import logging
 import args
@@ -9,13 +10,16 @@ import functools
 import queue
 import sys
 import asyncio
+import asyncio.queues
 import threading
 import uuid
 import json
 from dragonfly import *
 from srabuilder import rules
+from typing import Any, Coroutine
+from asyncio.futures import Future
+import logger
 
-import constants
 
 if args.args.named_pipe:
     named_pipe_file = open(rf"\\.\pipe\{args.args.named_pipe}Reader", "r+b", 0)
@@ -25,34 +29,10 @@ else:
     named_pipe_file_read = None
 
 loop = None
-streams = {}
-mod_requests = {}
+streams: dict[str, Stream] = {}
+mod_requests: dict[str, Future] = {}
 
 ongoing_tasks = {}  # not connected to an objective, slide mouse, swing sword etc
-
-
-async def start_ongoing_task(name, str, async_fn):
-    await stop_ongoing_task(name)
-
-    async def to_call(awaitable):
-        try:
-            await awaitable
-        except (Exception, BaseException):
-            raise
-        finally:
-            del ongoing_tasks[name]
-
-    wrapped_coro = async_fn()
-    coro = to_call(wrapped_coro)
-    task_wrapper = TaskWrapper(coro)
-    ongoing_tasks[task_wrapper]
-
-
-async def stop_ongoing_task(name):
-    task = ongoing_tasks.get(name)
-    if task:
-        await task.cancel()
-
 
 async def stop_all_ongoing_tasks():
     cancel_awaitables = [t.cancel() for t in ongoing_tasks.values()]
@@ -68,7 +48,8 @@ async def stop_everything():
 
 
 class Stream:
-    def __init__(self, name, data=None):
+    
+    def __init__(self, name: str, data=None):
         self.has_value = False
         self.latest_value = None
         self.future = loop.create_future()
@@ -196,13 +177,13 @@ def setup_async_loop():
     global loop
     loop = asyncio.new_event_loop()
 
-    def async_setup(l):
-        l.set_exception_handler(exception_handler)
-        l.create_task(menu_changed())
-        l.create_task(async_readline())
-        l.create_task(heartbeat(300))
-        l.create_task(populate_initial_game_event())
-        l.run_forever()
+    def async_setup():
+        loop.set_exception_handler(exception_handler)
+        if args.args.named_pipe:
+            loop.create_task(async_readline())
+        loop.create_task(heartbeat(2))
+        loop.create_task(populate_initial_game_event())
+        loop.run_forever()
 
     def exception_handler(loop, context):
         # This only works when there are no references to the above tasks.
@@ -210,9 +191,9 @@ def setup_async_loop():
         # get_engine().disconnect()
         # sys.exit(context.get("exception", "bad"))
         # return
-        raise context.get("exception", "task shutdown error")
+        raise context.get("exception", RuntimeError(f"task shutdown error {context}"))
 
-    async_thread = threading.Thread(target=async_setup, daemon=True, args=(loop,))
+    async_thread = threading.Thread(target=async_setup, daemon=True)
     async_thread.start()
 
 
@@ -221,34 +202,20 @@ def graceful_exit(msg):
     sys.exit(msg)
 
 
-async def request_active_menu_with_delay():
+async def request_and_update_active_menu():
     import menu_utils
-
-    await asyncio.sleep(1)
-    menu = await menu_utils.get_active_menu()
-    return menu
+    new_menu = await menu_utils.get_active_menu()
+    await handle_new_menu(new_menu)
 
 
-async def menu_changed():
+async def handle_new_menu(new_menu):
     import game
-
-    async with on_menu_changed_stream() as mcs:
-        while True:
-            changed_event_coro, active_menu_coro = mcs.next(), request_active_menu_with_delay()
-            done, pending = await asyncio.wait(
-                [changed_event_coro, active_menu_coro], return_when=asyncio.FIRST_COMPLETED
-            )
-            done_task = list(done)[0]
-            done_coro = done_task.get_coro()
-            if done_coro == changed_event_coro:
-                new_menu = done_task.result()["newMenu"]
-            else:
-                new_menu = done_task.result()
-            current_menu = game.context_variables["ACTIVE_MENU"]
-            is_new_menu = not is_same_menu(current_menu, new_menu)
-            game.set_context_menu(new_menu)
-            if is_new_menu:
-                await stop_everything()
+    current_menu = game.context_variables["ACTIVE_MENU"]
+    is_new_menu = not is_same_menu(current_menu, new_menu)
+    game.set_context_menu(new_menu)
+    if is_new_menu:
+        logger.debug(f"Got new menu {new_menu['menuType']}")
+        await stop_everything()
 
 
 def is_same_menu(menu1, menu2):
@@ -272,11 +239,7 @@ async def populate_initial_game_event():
     game.set_context_value("GAME_EVENT", game_event)
 
 
-async def heartbeat(timeout):
-    # await asyncio.sleep(20)
-    # get_engine().disconnect()
-    # sys.exit(1)
-    # raise RuntimeError('aasdasdad')
+async def heartbeat(timeout: int):
     while True:
         fut = request("HEARTBEAT")
         try:
@@ -288,22 +251,21 @@ async def heartbeat(timeout):
 
 async def async_readline():
     # Is there a better way to read async stdin on Windows?
-    q = queue.Queue()
-
-    def _run(future_queue):
+    q: queue.Queue[Future[str]] = queue.Queue()
+    def _run():
         while True:
-            fut = future_queue.get()
+            fut = q.get()
             try:
                 n = struct.unpack("I", named_pipe_file_read.read(4))[0]  # Read str length
                 line = named_pipe_file_read.read(n).decode("utf8")  # Read str
                 named_pipe_file_read.seek(0)
                 loop.call_soon_threadsafe(fut.set_result, line)
-            except:
+            except Exception as e:
                 graceful_exit("pipe disconnected")
 
-    threading.Thread(target=_run, daemon=True, args=(q,)).start()
+    threading.Thread(target=_run, daemon=True).start()
     while True:
-        fut = loop.create_future()
+        fut: Future[str] = loop.create_future()
         q.put(fut)
         line = await fut
         on_message(line)
@@ -331,7 +293,7 @@ class RequestBuilder:
             if isinstance(r, RequestBuilder):
                 msg = {"type": r.request_type, "data": r.data}
             else:
-                msg = {"type": msg[0], data: msg[1]}
+                msg = {"type": msg[0], "data": msg[1]}
             batched.append(msg)
         return cls("REQUEST_BATCH", batched)
 
@@ -349,7 +311,6 @@ def send_message(msg_type: str, msg=None):
     msg_id = str(uuid.uuid4())
     full_msg = {"type": msg_type, "id": msg_id, "data": msg}
     msg_str = json.dumps(full_msg)
-    # print(msg_str, flush=True)
     if named_pipe_file:
         try:
             named_pipe_file.write(struct.pack("I", len(msg_str)) + msg_str.encode("utf8"))  # Write str length and str
@@ -361,13 +322,13 @@ def send_message(msg_type: str, msg=None):
     return full_msg
 
 
-def on_message(msg_str):
+def on_message(msg_str: str):
     import events
 
     try:
         msg = json.loads(msg_str)
     except json.JSONDecodeError:
-        log(f"Got invalid message from mod {msg_str}", level=1)
+        logger.trace(f"Got invalid message from mod {msg_str}")
         return
     msg_type = msg["type"]
     msg_data = msg["data"]
@@ -394,7 +355,7 @@ def on_message(msg_str):
         stream_value = msg_data["value"]
         stream_error = msg_data.get("error")
         if stream_error is not None:
-            log(f"Stream {stream_id} error: {stream_value}")
+            logger.debug(f"Stream {stream_id} error: {stream_value}")
             stream.close()
             return
         stream.set_value(stream_value)
@@ -459,16 +420,19 @@ async def cancel_task(task):
 
 
 class TaskWrapper:
-    def __init__(self, coro):
+
+    done: bool
+
+    def __init__(self, coro: Coroutine):
         self.result = None
-        self.exception = None
-        self.exception_trace = None
+        self.exception: BaseException | None = None
+        self.exception_trace: str | None = None
         self.done = False
-        self.task = loop.create_task(self.wrap_coro(coro))
+        self.task = loop.create_task(self._wrap_coro(coro))
 
     # I don't understand asyncio task exception handling. So let's just catch any coroutine exceptions here and expose
     # the result/exception through self.result and self.exception
-    async def wrap_coro(self, coro):
+    async def _wrap_coro(self, coro: Coroutine):
         try:
             self.result = await coro
         except (asyncio.CancelledError, Exception) as e:
@@ -482,3 +446,13 @@ class TaskWrapper:
             await self.task
         except asyncio.CancelledError:
             pass
+
+def read_queue(q): 
+    items = [q.get()]
+    while not q.empty():
+        try:
+            next_item = q.get(block=False)
+            items.append(next_item)
+        except TypeError:
+            continue
+    return items

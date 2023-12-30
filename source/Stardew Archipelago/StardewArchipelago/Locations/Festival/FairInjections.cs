@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Serialization;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -24,14 +25,16 @@ namespace StardewArchipelago.Locations.Festival
         private static IMonitor _monitor;
         private static IModHelper _modHelper;
         private static ArchipelagoClient _archipelago;
+        private static ArchipelagoStateDto _state;
         private static LocationChecker _locationChecker;
         private static ShopReplacer _shopReplacer;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, ArchipelagoStateDto state, LocationChecker locationChecker, ShopReplacer shopReplacer)
         {
             _monitor = monitor;
             _modHelper = modHelper;
             _archipelago = archipelago;
+            _state = state;
             _locationChecker = locationChecker;
             _shopReplacer = shopReplacer;
         }
@@ -109,6 +112,28 @@ namespace StardewArchipelago.Locations.Festival
             catch (Exception ex)
             {
                 _monitor.Log($"Failed in {nameof(Update_HandleFairItemsFirstTimeOnly_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+        }
+
+
+
+        // public void forceEndFestival(Farmer who)
+        public static void ForceEndFestival_KeepStarTokens_Postfix(Event __instance, Farmer who)
+        {
+            try
+            {
+                if (!__instance.FestivalName.Equals("Stardew Valley Fair"))
+                {
+                    return;
+                }
+
+                _state.StoredStarTokens += who.festivalScore;
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(ForceEndFestival_KeepStarTokens_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
         }

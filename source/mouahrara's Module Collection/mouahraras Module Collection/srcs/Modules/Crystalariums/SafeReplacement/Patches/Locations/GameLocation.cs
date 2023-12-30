@@ -25,14 +25,14 @@ namespace mouahrarasModuleCollection.Crystalariums.SafeReplacement.Patches
 			);
 		}
 
-		private static void CheckActionPostfix(GameLocation __instance)
+		private static void CheckActionPostfix()
 		{
 			if (!ModEntry.Config.CrystalariumsSafeReplacement)
 				return;
-			if (SafeReplacementUtility.GetObjectToRecover() == null)
+			if (SafeReplacementUtility.ObjectToRecover == null)
 				return;
 
-			Game1.player.addItemToInventory(SafeReplacementUtility.GetObjectToRecover());
+			Game1.player.addItemToInventory(SafeReplacementUtility.ObjectToRecover);
 			SafeReplacementUtility.Reset();
 		}
 	}

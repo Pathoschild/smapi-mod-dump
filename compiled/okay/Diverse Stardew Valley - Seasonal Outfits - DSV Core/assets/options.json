@@ -1574,6 +1574,11 @@
 		"Default": "False",
 		"Type": "bool"
 	},
+	/*{
+		"Name": "MaruBlackHair",
+		"Default": "False",
+		"Type": "bool"
+	},*/
 	{
 		"Name": "SebGlasses",
 		"AllowedValues": "Always,Dynamic,Off",

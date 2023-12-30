@@ -12,19 +12,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Cast;
 using StardewDruid.Map;
-using StardewDruid.Monster;
-using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Characters;
-using StardewValley.Locations;
-using StardewValley.Quests;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
-using xTile.Dimensions;
-using static StardewValley.Minigames.TargetGame;
+
 
 namespace StardewDruid.Event
 {
@@ -47,7 +40,7 @@ namespace StardewDruid.Event
 
         public bool animationRotate;
 
-        public List<StardewDruid.Character.Character> actors;
+        public List<StardewDruid.Character.Actor> actors;
 
         public Vector2 voicePosition;
 
@@ -68,7 +61,7 @@ namespace StardewDruid.Event
 
             animationColor = new Color(0, 1f, 0, 1f);
 
-            if(quest.triggerColour != Color.White)
+            if (quest.triggerColour != Color.White)
             {
 
                 animationColor = quest.triggerColour;
@@ -135,8 +128,10 @@ namespace StardewDruid.Event
 
             }
 
-            if (questData.triggerAnywhere || Vector2.Distance(rite.castVector, targetVector) <= 3f)
+            if (questData.triggerAnywhere || Vector2.Distance(rite.castVector, targetVector) <= 5f)
             {
+
+                EventRemove();
 
                 Mod.instance.triggerList.Remove(questData.name);
 
@@ -158,7 +153,7 @@ namespace StardewDruid.Event
 
         public void RemoveAnimations()
         {
-            
+
             if (targets.Count > 0)
             {
 
@@ -272,65 +267,13 @@ namespace StardewDruid.Event
 
                 color = animationColor,
 
-                rotation = animationRotate ? 3.16f : 0f,
+                rotation = animationRotate ? (float)Math.PI : 0f,
 
             };
 
             targetLocation.temporarySprites.Add(targetAnimation);
 
             targets.Add(targetAnimation);
-
-            /*if (activeCounter % 10 >= 5)
-            {
-
-                activeCycle = 5 - activeCycle;
-
-            }
-
-            TemporaryAnimatedSprite newAnimation = new(
-                "LooseSprites\\Cursors",
-                new Rectangle(395, 497, 3, 8),
-                500f,
-                1,
-                1,
-                targetVector * 64 - new Vector2(8, 2 * activeCycle),
-                flicker: false,
-                flipped: false,
-                0.0001f,
-                0f,
-                Color.White,
-                5f,
-                0,
-                0f,
-                0f
-            );
-
-            targetLocation.temporarySprites.Add(newAnimation);
-
-            TemporaryAnimatedSprite secondAnimation = new(
-                "LooseSprites\\Cursors",
-                new Rectangle(395, 497, 3, 8),
-                500f,
-                1,
-                1,
-                targetVector * 64 - new Vector2(8, 2 * activeCycle + 1),
-                flicker: false,
-                flipped: false,
-                0.0001f,
-                0f,
-                Color.White,
-                5f,
-                0,
-                0f,
-                0f
-            )
-            {
-
-                delayBeforeAnimationStart = 500
-
-            };
-
-            targetLocation.temporarySprites.Add(secondAnimation);*/
 
         }
 
@@ -340,7 +283,7 @@ namespace StardewDruid.Event
             if (actors.Count <= 0)
             {
 
-                StardewDruid.Character.Character disembodied = CharacterData.DisembodiedVoice(targetLocation, voicePosition);
+                StardewDruid.Character.Actor disembodied = CharacterData.DisembodiedVoice(targetLocation, voicePosition);
 
                 targetLocation.characters.Add(disembodied);
 

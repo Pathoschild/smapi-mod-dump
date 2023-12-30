@@ -6,9 +6,9 @@ mods:
    NPC Geometry
 
 latest commit:
-   commit 2ecb3caf0c54d161b0dabd6e4763d487637b48e3
+   commit 481d28ea0d896c9b6d4a7a6414d18ed70a192b79
    Author: ichortower <sudo.ichor@proton.me>
-   Date:   Tue Nov 21 13:29:55 2023 -0500
+   Date:   Thu Nov 30 13:30:06 2023 -0500
    
-       Merge branch 'release-1.0.0-alpha' into main
+       Merge branch 'release-1.0.1-alpha' into main
    

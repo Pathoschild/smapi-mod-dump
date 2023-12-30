@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19500
+IDs: d5a1lamdtd.InviteFriend
+update keys: Nexus:19500

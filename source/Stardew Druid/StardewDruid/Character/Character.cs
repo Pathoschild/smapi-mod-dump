@@ -8,189 +8,127 @@
 **
 *************************************************/
 
-using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using StardewDruid.Map;
+using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using xTile.Dimensions;
-using System.Xml.Serialization;
-using StardewValley.Monsters;
-using StardewValley.Objects;
-using StardewModdingAPI;
-using System.IO;
-using xTile;
-using System.Threading;
-using StardewValley.Locations;
-using static System.Net.Mime.MediaTypeNames;
-using System.Net.WebSockets;
-using StardewDruid.Map;
-using Microsoft.VisualBasic;
-using static StardewValley.Minigames.TargetGame;
-using StardewValley.Network;
 
 namespace StardewDruid.Character
 {
-    public class Character : StardewValley.NPC
+    public class Character : NPC
     {
-
-        //---------------------------------------------------------
-        // Behaviour
-        //---------------------------------------------------------
-
         public List<Vector2> moveVectors;
-
-        //public Dictionary<int, float> moveData;
-
         public int moveDirection;
-
         public int altDirection;
-
         public Dictionary<string, int> timers;
-
         public List<string> priorities;
-
         public float gait;
-
-        //---------------------------------------------------------
-        // Opponent
-        //---------------------------------------------------------
-
         public List<StardewValley.Monsters.Monster> targetOpponents;
-
         public int opponentThreshold;
-
-        //---------------------------------------------------------
-        // Roam Mode
-        //---------------------------------------------------------
-
         public int roamIndex;
-
         public List<Vector2> roamVectors;
-
         public double roamLapse;
+        public List<Vector2> eventVectors;
 
         public Character()
         {
-
         }
 
         public Character(Vector2 position, string map, string Name)
-            : base(
-            CharacterData.CharacterSprite(Name),
-            position,
-            map,
-            2,
-            Name,
-            new(),
-            CharacterData.CharacterPortrait(Name),
-            false
-            )
+          : base(CharacterData.CharacterSprite(Name), position, map, 2, Name, new Dictionary<int, int[]>(), CharacterData.CharacterPortrait(Name), false, null)
         {
-
             willDestroyObjectsUnderfoot = false;
-
-            roamVectors = new();
-
-            priorities = new();
-
-            timers = new();
-
-            moveVectors = new();
-
+            priorities = new List<string>();
+            timers = new Dictionary<string, int>();
+            moveVectors = new List<Vector2>();
+            roamVectors = new List<Vector2>();
+            eventVectors = new List<Vector2>();
             moveDirection = 0;
-
             targetOpponents = new();
-
             opponentThreshold = 640;
-
-            roamLapse = Game1.currentGameTime.TotalGameTime.TotalMinutes;
-
             gait = 1.2f;
-
+            DefaultMap = map;
+            DefaultPosition = position;
         }
-
-        // =================================================
-        // Base Overrides
-        // =================================================
 
         public override void reloadSprite()
         {
-            
             Sprite = CharacterData.CharacterSprite(Name);
-
             Portrait = CharacterData.CharacterPortrait(Name);
-
         }
 
         public override void reloadData()
         {
-
-            CharacterDisposition disposition = CharacterData.CharacterDisposition(name);
-
-            Age = disposition.Age;
-            
-            Manners = disposition.Manners;
-            
-            SocialAnxiety = disposition.SocialAnxiety;
-            
-            Optimism = disposition.Optimism;
-            
-            Gender = disposition.Gender;
-            
-            datable.Value = disposition.datable;
-            
-            Birthday_Season = disposition.Birthday_Season;
-            
-            Birthday_Day = disposition.Birthday_Day;
-            
-            id = disposition.id;
-
+            CharacterDisposition characterDisposition = CharacterData.CharacterDisposition(Name);
+            Age = characterDisposition.Age;
+            Manners = characterDisposition.Manners;
+            SocialAnxiety = characterDisposition.SocialAnxiety;
+            Optimism = characterDisposition.Optimism;
+            Gender = characterDisposition.Gender;
+            datable.Value = characterDisposition.datable;
+            Birthday_Season = characterDisposition.Birthday_Season;
+            Birthday_Day = characterDisposition.Birthday_Day;
+            id = characterDisposition.id;
         }
 
         public override void reloadDefaultLocation()
         {
-
-            DefaultMap = Mod.instance.CharacterMap(name);
-
-            if(DefaultMap == null)
-            {
-
-                DefaultMap = "Farm";
-
-            }
-
-            DefaultPosition = Mod.instance.CharacterPosition(name);
-
+            DefaultMap = Mod.instance.CharacterMap(Name);
+            if (DefaultMap == null)
+                DefaultMap = "FarmCave";
+            DefaultPosition = CharacterData.CharacterPosition(DefaultMap);
         }
 
-        protected override string translateName(string name)
-        { 
-            return name;
-        
-        }
+        protected override string translateName(string name) => name;
 
         public override void tryToReceiveActiveObject(Farmer who)
         {
-            return;
         }
 
         public override bool checkAction(Farmer who, GameLocation l)
         {
-
-            if (timers.ContainsKey("busy"))
+            if (Mod.instance.eventRegister.ContainsKey("transform"))
             {
-
                 return false;
 
+            }
+                
+            foreach (NPC character in currentLocation.characters)
+            {
+                
+                if (character is StardewValley.Monsters.Monster monster && (double)Vector2.Distance(Position, monster.Position) <= 1280.0)
+                {
+                    
+                    return false;
+               
+                }
+                    
             }
 
             Halt();
 
-            faceGeneralDirection(who.Position);
+            faceGeneralDirection(who.Position, 0, false);
+
+            moveDirection = FacingDirection;
+
+            switch (moveDirection)
+            {
+                case 0:
+                    moveUp = true;
+                    break;
+                case 1:
+                    moveRight = true;
+                    break;
+                case 2:
+                    moveDown = true;
+                    break;
+                default:
+                    moveLeft = true;
+                    break;
+            }
 
             return true;
 
@@ -198,35 +136,31 @@ namespace StardewDruid.Character
 
         public override void performTenMinuteUpdate(int timeOfDay, GameLocation l)
         {
-
         }
 
         public override void behaviorOnFarmerPushing()
         {
-
-            //if (behaviour.ContainsKey("frozen"))
-            if(priorities.Contains("frozen"))
+            if (!Context.IsMainPlayer || priorities.Contains("frozen"))
             {
-
+                
                 return;
 
             }
-
+                
             if (timers.ContainsKey("push"))
             {
-
                 timers["push"] += 2;
 
-                if (timers["push"] > 10)
+                if (timers["push"] <= 10)
                 {
-
-                    moveVectors.Clear();
-
-                    TargetDirection(findPlayer().facingDirection, 2);
-
-                    timers.Remove("Push");
-
+                    return;
                 }
+                    
+                moveVectors.Clear();
+
+                TargetDirection(findPlayer().facingDirection, 2);
+
+                timers.Remove("Push");
 
             }
             else
@@ -235,222 +169,127 @@ namespace StardewDruid.Character
                 timers["push"] = 2;
 
             }
-
+                
         }
 
         public override void Halt()
         {
-
-            moveVectors.Clear();
-
-            timers.Clear();
-
-            timers["stop"] = 60;
-
-            //Sprite.StopAnimation();
-
-            int frameDiff = Sprite.currentFrame % 4;
-
-            Sprite.currentFrame -= frameDiff;
-
+            if (Context.IsMainPlayer)
+            {
+                moveVectors.Clear();
+                timers.Clear();
+                timers["stop"] = 60;
+            }
+            moveDown = false;
+            moveLeft = false;
+            moveRight = false;
+            moveUp = false;
+            Sprite.currentFrame -= Sprite.currentFrame % Sprite.framesPerAnimation;
             Sprite.UpdateSourceRect();
+        }
 
+        public virtual void normalUpdate(GameTime time, GameLocation location)
+        {
+            if (Sprite.loadedTexture == null || Sprite.loadedTexture.Length == 0)
+            {
+                Sprite.spriteTexture = CharacterData.CharacterTexture(Name);
+                Sprite.loadedTexture = Sprite.textureName.Value;
+                Portrait = CharacterData.CharacterPortrait(Name);
+            }
+
+            if (!Context.IsMainPlayer)
+            {
+                updateSlaveAnimation(time);
+            }
+            else
+            {
+                if (shakeTimer > 0)
+                    shakeTimer = 0;
+                if (textAboveHeadTimer > 0)
+                {
+                    if (textAboveHeadPreTimer > 0)
+                    {
+                        textAboveHeadPreTimer -= time.ElapsedGameTime.Milliseconds;
+                    }
+                    else
+                    {
+                        textAboveHeadTimer -= time.ElapsedGameTime.Milliseconds;
+                        if (textAboveHeadTimer > 500)
+                            textAboveHeadAlpha = Math.Min(1f, textAboveHeadAlpha + 0.1f);
+                        else
+                            textAboveHeadAlpha = Math.Max(0.0f, textAboveHeadAlpha - 0.04f);
+                    }
+                }
+                updateEmote(time);
+            }
         }
 
         public override void update(GameTime time, GameLocation location)
         {
 
+            normalUpdate(time, location);
             if (!Context.IsMainPlayer)
-            {
-
-                if (Sprite.loadedTexture == null || Sprite.loadedTexture.Length == 0)
-                {
-
-                    Sprite.spriteTexture = CharacterData.CharacterTexture(name);
-
-                    Sprite.loadedTexture = Sprite.textureName.Value;
-
-                    Portrait = CharacterData.CharacterPortrait("Effigy");
-
-                }
-
-                updateSlaveAnimation(time);
-
                 return;
-
-            }
-
-            if (shakeTimer > 0)
+            for (int index = timers.Count - 1; index >= 0; --index)
             {
-                shakeTimer = 0;
+                KeyValuePair<string, int> keyValuePair = timers.ElementAt(index);
+                timers[keyValuePair.Key]--;
+                if (timers[keyValuePair.Key] <= 0)
+                    timers.Remove(keyValuePair.Key);
             }
-
-            if (textAboveHeadTimer > 0)
-            {
-                if (textAboveHeadPreTimer > 0)
-                {
-                    textAboveHeadPreTimer -= time.ElapsedGameTime.Milliseconds;
-                }
-                else
-                {
-                    textAboveHeadTimer -= time.ElapsedGameTime.Milliseconds;
-
-                    if (textAboveHeadTimer > 500)
-                    {
-                        textAboveHeadAlpha = Math.Min(1f, textAboveHeadAlpha + 0.1f);
-                    }
-                    else
-                    {
-                        textAboveHeadAlpha = Math.Max(0f, textAboveHeadAlpha - 0.04f);
-                    }
-                }
-            }
-
-            updateEmote(time);
-
-            foreach(KeyValuePair<string,int> timer in timers)
-            {
-                timers[timer.Key]--;
-
-                if (timers[timer.Key] <= 0)
-                {
-
-                    timers.Remove(timer.Key);
-
-                }
-
-            }
-
             if (!timers.ContainsKey("stop"))
             {
-
-                if(moveVectors.Count > 0)
-                {
-                    
-                    Vector2 nextPosition = moveVectors.First();
-
-                    float moveDistance = Vector2.Distance(nextPosition, Position);
-
-                    if (moveDistance <= 16f)
-                    {
-
-                        moveVectors.RemoveAt(0);
-
-                    }
-
-                }
-
+                if (moveVectors.Count > 0 && (double)Vector2.Distance(moveVectors.First(), Position) <= 16.0)
+                    moveVectors.RemoveAt(0);
                 if (moveVectors.Count <= 0)
-                {
-
                     UpdateTarget();
-
-                }
-
                 MoveTowardsTarget(time);
-
             }
-
             Sprite.animateOnce(time);
 
         }
 
-        public virtual void WarpToDefault()
-        {
-
-            string defaultMap = Mod.instance.CharacterMap(Name);
-
-            Vector2 startPosition = CharacterData.CharacterPosition(defaultMap);
-
-            DefaultMap = defaultMap;
-
-            DefaultPosition = startPosition;
-
-            Position = startPosition;
-
-            currentLocation.characters.Remove(this);
-
-            currentLocation = Game1.getLocationFromName(defaultMap);
-
-            currentLocation.characters.Add(this);
-
-            update(Game1.currentGameTime, currentLocation);
-
-        }
-
-        public virtual void SwitchFrozenMode()
-        {
-
-            SwitchDefaultMode();
-
-            priorities = new()
-            {
-
-                "frozen",
-
-            };
-
-        }
-
-        public virtual void SwitchFollowMode()
-        {
-
-            SwitchDefaultMode();
-
-            Mod.instance.trackRegister.Add(name, new(name));
-
-            priorities = new()
-            {
-
-                "attack",
-                "track",
-
-            };
-
-        }
-
-        public virtual void SwitchRoamMode()
-        {
-
-            SwitchDefaultMode();
-
-            priorities = new()
-            {
-
-                "roam",
-
-            };
-
-        }
-
-        public virtual void SwitchDefaultMode()
-        {
-            
-            Halt();
-
-            Mod.instance.trackRegister.Remove(name);
-
-        }
-
-        // =================================================
-        // Movement Behaviour
-        // =================================================
+        public virtual Rectangle GetHitBox() => GetBoundingBox();
 
         public virtual void UpdateTarget()
         {
             if (Game1.IsClient)
             {
+                
                 return;
+
             }
+
             foreach (string priority in priorities)
             {
-
+                
                 switch (priority)
                 {
+                    
+                    case "event":
+                        
+                        if (TargetEvent())
+                        {
+
+                            return;
+
+                        }
+                            
+                        break;
 
                     case "frozen":
+                    case "idle":
 
-                        timers["stop"] = 9999;
+                        timers["stop"] = 1000;
+
+                        Sprite.CurrentFrame = 0;
+
+                        if (new Random().Next(2) == 0 || priorities.Contains("idle"))
+                        {
+                            
+                            timers["idle"] = 1000;
+
+                        }
 
                         return;
 
@@ -458,9 +297,7 @@ namespace StardewDruid.Character
 
                         if (TargetOpponent())
                         {
-
                             return;
-
                         }
 
                         break;
@@ -486,13 +323,38 @@ namespace StardewDruid.Character
                         }
 
                         break;
-
+                
                 }
-
+            
             }
 
             TargetRandom();
+        
+        }
 
+        public virtual bool TargetEvent()
+        {
+            if (eventVectors.Count <= 0)
+            {
+                return false;
+
+            }
+
+            Vector2 target = eventVectors.First();
+
+            if (Vector2.Distance(target, Position) <= 32f)
+            {
+                
+                ReachedEventPosition();
+                
+                return true;
+            
+            }
+            
+            VectorForTarget(target, 4f);
+
+            return true;
+        
         }
 
         public virtual bool TargetOpponent()
@@ -500,39 +362,32 @@ namespace StardewDruid.Character
             
             if (timers.ContainsKey("cooldown"))
             {
+                return false;
+            }
                 
-                return false;
-            
-            }
-
-            for(int i = targetOpponents.Count - 1; i >= 0; i--)
+            for (int index = targetOpponents.Count - 1; index >= 0; --index)
             {
-
-                if (!ModUtility.MonsterVitals(targetOpponents[i], currentLocation))
+                
+                if (!ModUtility.MonsterVitals(targetOpponents[index], currentLocation))
                 {
-
-                    targetOpponents.RemoveAt(i);
-
-                }
-                else if (Vector2.Distance(targetOpponents[i].Position,Position) >= opponentThreshold)
+                    
+                    targetOpponents.RemoveAt(index);
+                
+                }  
+                else if ((double)Vector2.Distance(targetOpponents[index].Position, Position) >= opponentThreshold)
                 {
-
-                    targetOpponents.RemoveAt(i);
-
+                    
+                    targetOpponents.RemoveAt(index);
+                
                 }
-
+                    
             }
-
-            if(targetOpponents.Count == 0)
+            if (targetOpponents.Count == 0)
             {
-
                 return false;
-            
             }
-
+                
             VectorForTarget(targetOpponents.First().Position);
-
-            timers["busy"] = 180;
 
             timers["attack"] = 120;
 
@@ -542,176 +397,114 @@ namespace StardewDruid.Character
 
         public virtual bool TargetTrack()
         {
-
-            if (Mod.instance.trackRegister[name].trackVectors.Count == 0)
-            {
-
+            if (!Mod.instance.trackRegister.ContainsKey(Name) || Mod.instance.trackRegister[Name].trackVectors.Count == 0)
                 return false;
-
-            }
-
-            float separation = Vector2.Distance(Position, Game1.player.Position);
-
-            if (separation <= 180f && !timers.ContainsKey("track"))
-            {
-
+            float num = Vector2.Distance(Position, Game1.player.Position);
+            if ((double)num <= 180.0 && !timers.ContainsKey("track"))
                 return false;
-
-            }
-
-            if (Vector2.Distance(Mod.instance.trackRegister[name].trackVectors.First(),Position) >= 180f)
-            {
-
+            if ((double)Vector2.Distance(Mod.instance.trackRegister[Name].trackVectors.First<Vector2>(), Position) >= 180.0)
                 WarpToTarget();
-            
-            }
-
-
-            if (Mod.instance.trackRegister[name].trackVectors.Count == 0)
+            if (Mod.instance.trackRegister[Name].trackVectors.Count == 0)
             {
-
-                return false;
-
+                if (new Random().Next(2) != 0)
+                    return false;
+                timers["stop"] = 300;
+                timers["idle"] = 300;
+                return true;
             }
-
-            Vector2 trackVector = Mod.instance.trackRegister[name].NextVector();
-
-            VectorForTarget(trackVector, -1, false);
-
-            //moveVectors.Add(trackVector);
-
+            VectorForTarget(Mod.instance.trackRegister[Name].NextVector(), -1f, false);
             timers["track"] = 120;
-
-            if (separation > 480f)
-            {
-
+            if ((double)num > 480.0)
                 timers["sprint"] = 180;
-
-            }
             else
-            {
-
                 timers["hurry"] = 120;
-
-            }
-
             return true;
-
         }
 
         public virtual void WarpToTarget()
         {
-
             if (currentLocation.Name != Game1.player.currentLocation.Name)
             {
-
                 Halt();
-
                 currentLocation.characters.Remove(this);
-
                 currentLocation = Game1.player.currentLocation;
-
                 currentLocation.characters.Add(this);
-
             }
-
-            if (Mod.instance.trackRegister[name].trackVectors.Count > 0)
+            if (Mod.instance.trackRegister[Name].trackVectors.Count > 0)
             {
-
-                Mod.instance.trackRegister[name].TruncateTo(3);
-
-                Position = Mod.instance.trackRegister[name].NextVector();
-
+                Mod.instance.trackRegister[Name].TruncateTo(3);
+                Position = Mod.instance.trackRegister[Name].NextVector();
             }
             else
             {
 
-                Position = Game1.player.Position + new Vector2(0, 64);
+                Position = new Vector2(Position.X, Position.Y + 64f);//Vector2.op_Addition(((StardewValley.Character)Game1.player).Position, new Vector2(0.0f, 64f));
 
             }
 
-            ModUtility.AnimateQuickWarp(currentLocation, position - new Vector2(0, 32), "Solar");
+            Vector2 warpPosition = new(Position.X, Position.Y + 32f);
 
+            ModUtility.AnimateQuickWarp(currentLocation, warpPosition, "Solar");
         }
 
         public virtual bool TargetRoam()
         {
-
             if (roamVectors.Count == 0)
             {
-
+                roamLapse = Game1.currentGameTime.TotalGameTime.TotalMinutes + 1.0;
                 roamVectors = RoamAnalysis();
-
             }
-
-            float roamDistance = Vector2.Distance(roamVectors[roamIndex], Position);
-
-            if (roamDistance <= 120f)
+            Vector2 roamVector = roamVectors[roamIndex];
+            if (roamVector == new Vector2(-1f))
             {
-
-                ReachedRoamPosition();
-
+                ReachedIdlePosition();
                 UpdateRoam(true);
-
                 return true;
-
             }
-            else if(roamDistance >= 1200f)
+            float num = Vector2.Distance(roamVector, Position);
+            if ((double)num <= 120.0)
             {
-
-                timers["hurry"] = 300;
-
+                ReachedRoamPosition();
+                UpdateRoam(true);
+                return true;
             }
-
+            if ((double)num >= 1200.0)
+                timers["hurry"] = 300;
             UpdateRoam();
-
-            VectorForTarget(roamVectors[roamIndex], 4);
-
+            VectorForTarget(roamVectors[roamIndex], 4f);
             return true;
-
         }
-        
+
         public void UpdateRoam(bool reset = false)
         {
-            //Mod.instance.Monitor.Log("Roam: " + name + " " + roamLapse + " " + Game1.currentGameTime.TotalGameTime.TotalMinutes, LogLevel.Debug);
-            if (roamLapse < Game1.currentGameTime.TotalGameTime.TotalMinutes || reset)
-            {
-
-                roamLapse = Game1.currentGameTime.TotalGameTime.TotalMinutes + 1;
-
-                roamIndex++;
-
-                if (roamIndex == roamVectors.Count)
-                {
-
-                    roamIndex = 0;
-
-                }
-
-            }
-            
+            if (!(roamLapse < Game1.currentGameTime.TotalGameTime.TotalMinutes | reset))
+                return;
+            roamLapse = Game1.currentGameTime.TotalGameTime.TotalMinutes + 1.0;
+            ++roamIndex;
+            if (roamIndex == roamVectors.Count)
+                roamIndex = 0;
         }
 
         public void VectorForTarget(Vector2 target, float ahead = 1.5f, bool check = true)
         {
 
-            Vector2 targetVector = target;
+            Vector2 moveTarget = target;
 
             float distance = Vector2.Distance(Position, target);
-
-            Vector2 diffPosition = target - Position;
-
-            float absX = Math.Abs(diffPosition.X); // x position
-
-            float absY = Math.Abs(diffPosition.Y); // y position
-
-            int signX = diffPosition.X < 0.01f ? -1 : 1; // x sign
-
-            int signY = diffPosition.Y < 0.01f ? -1 : 1; // y sign
-
-            if (absX > absY)
+            
+            Vector2 difference = new(target.X - Position.X, target.Y - Position.Y);//Vector2.op_Subtraction(target, Position);
+            
+            float absoluteX = Math.Abs(difference.X);
+            
+            float absoluteY = Math.Abs(difference.Y);
+            
+            int signX = difference.X < 0.001f ? -1 : 1;
+            
+            int signY = difference.Y < 0.001f ? -1 : 1;
+            
+            if (absoluteX > absoluteY)
             {
-
+                
                 moveDirection = 2 - signX;
 
                 altDirection = 1 + signY;
@@ -719,114 +512,122 @@ namespace StardewDruid.Character
             }
             else
             {
-
                 moveDirection = 1 + signY;
 
                 altDirection = 2 - signX;
 
             }
-
-            if (distance >= 128f && check)
+            
+            if (distance >= 128.0 & check)
             {
+                
+                float checkAhead = Math.Min(64f * ahead, distance);
+                
+                Vector2 checkTarget;
 
-                Vector2 moveVector;
-
-                float far = Math.Min((64 * ahead), distance);
-
-                if (absX > absY)
+                if (absoluteX > absoluteY)
                 {
 
-                    moveDirection = 2 - signX;
+                    float ratio = absoluteY / absoluteX;
 
-                    altDirection = 1 + signY;
+                    float checkX = signX * checkAhead;
 
-                    moveVector = new Vector2(signX, (int)(absY / absX * signY)) * far;
+                    float checkY = ratio * signY * checkAhead;
+
+                    checkTarget = new(checkX, checkY);
 
                 }
                 else
                 {
 
-                    moveDirection = 1 + signY;
+                    float ratio = absoluteX / absoluteY;
 
-                    altDirection = 2 - signX;
+                    float checkX = ratio * signX * checkAhead;
 
-                    moveVector = new Vector2((int)(absX / absY * signX), signY) * far;
+                    float checkY = signY * checkAhead;
+
+                    checkTarget = new(checkX, checkY);
 
                 }
 
-                targetVector = Position + moveVector;
-
+                moveTarget = new Vector2(Position.X + checkTarget.X, Position.Y + checkTarget.Y);
+            
             }
-
-            moveVectors.Add(targetVector);
-
-            return;
+            
+            moveVectors.Add(moveTarget);
 
         }
 
         public virtual void TargetRandom()
         {
-
+            
             moveVectors.Clear();
-
+            
             timers.Clear();
+            
+            Random random = new Random();
 
-            Random random = new();
+            int randomInt = random.Next(4);
 
-            if(random.Next(2) == 0)
+            switch(randomInt)
             {
-                
-                TargetDirection(random.Next(4), random.Next(1, 4));
+                case 0:
+                case 1:
+                case 2:
+
+                    TargetDirection(random.Next(4), random.Next(1, 4));
+
+                    break;
+
+                case 3:
+                case 4:
+
+                    Halt();
+
+                    break;
+
+                case 5:
+
+                    Halt();
+
+                    timers["stop"] = 400;
+
+                    timers["idle"] = 400;
+
+                    break;
 
             }
-            else
-            {
-
-                Halt();
-
-            }
-
+            
         }
 
         public virtual void TargetDirection(int direction, int distance)
         {
             
-            int offset = 64 * distance;
-
-            Vector2 target;
-
+            int num = 64 * distance;
+            
+            Vector2 vector2;
+            
             switch (direction)
             {
                 case 0:
-
-                    target = Position - new Vector2(0, offset);
-
+                    vector2 = new(Position.X, Position.Y - num);
                     break;
-
                 case 1:
-
-                    target = Position + new Vector2(offset, 0);
-                    
+                    vector2 = new(Position.X + num, Position.Y);
                     break;
-
                 case 2:
-
-                    target = Position + new Vector2(0, offset);
-
+                    vector2 = new(Position.X, Position.Y + num);
                     break;
-
                 default:
-
-                    target = Position - new Vector2(offset, 0);
-
+                    vector2 = new(Position.X - num, Position.Y);
                     break;
             }
-
+            
             moveDirection = direction;
 
-            altDirection = moveDirection + 1 % 4;
+            altDirection = moveDirection + 1;
 
-            moveVectors.Add(target);
+            moveVectors.Add(vector2);
 
         }
 
@@ -837,9 +638,10 @@ namespace StardewDruid.Character
                 return;
             }
 
-            if(moveVectors.Count == 0)
+            if (moveVectors.Count == 0)
             {
-                Sprite.StopAnimation();
+                Sprite.currentFrame -= Sprite.currentFrame % Sprite.framesPerAnimation;
+                Sprite.UpdateSourceRect();
 
                 return;
 
@@ -855,7 +657,7 @@ namespace StardewDruid.Character
 
             float absY = Math.Abs(diffPosition.Y); // y position
 
-            int signX  = diffPosition.X < 0.001f ? -1 : 1; // x sign
+            int signX = diffPosition.X < 0.001f ? -1 : 1; // x sign
 
             int signY = diffPosition.Y < 0.001f ? -1 : 1; // y sign
 
@@ -866,33 +668,11 @@ namespace StardewDruid.Character
             if (absX > absY)
             {
 
-                /*if (!timers.ContainsKey("direction"))
-                {
-
-                    moveDirection = 2 - signX;
-
-                    altDirection = 1 + signY;
-
-                    timers.Add("direction", 40);
-                }*/
-
                 moveY = (absY < 0.05f) ? 0 : (int)(absY / absX * signY);
 
             }
             else
             {
-
-                /*if (!timers.ContainsKey("direction"))
-                {
-
-                    moveDirection = 1 + signY;
-
-                    altDirection = 2 - signX;
-
-                    timers.Add("direction", 40);
-
-                }*/
-
                 moveX = (absX < 0.05f) ? 0 : (int)(absX / absY * signX);
 
             }
@@ -906,7 +686,7 @@ namespace StardewDruid.Character
                 moveSpeed = gait * 5;
 
             }
-            else if(timers.ContainsKey("hurry"))
+            else if (timers.ContainsKey("hurry"))
             {
 
                 moveSpeed = gait * 2;
@@ -937,6 +717,7 @@ namespace StardewDruid.Character
 
             Microsoft.Xna.Framework.Rectangle boundingBox = GetBoundingBox();
 
+
             boundingBox.X += (int)movement.X;
             boundingBox.Y += (int)movement.Y;
 
@@ -950,6 +731,12 @@ namespace StardewDruid.Character
                 collision = true;
 
             }
+
+            Rectangle hitBox = GetHitBox();
+            
+            hitBox.X += (int)movement.X;
+            
+            hitBox.Y += (int)movement.Y;
 
             List<StardewValley.Monsters.Monster> damageMonsters = new();
 
@@ -968,30 +755,33 @@ namespace StardewDruid.Character
                     if (monsterCharacter.Health > 0 && !monsterCharacter.IsInvisible)
                     {
 
-                        if (boundingBox2.Intersects(boundingBox))
+                        if (boundingBox2.Intersects(hitBox))
                         {
 
                             damageMonsters.Add(monsterCharacter);
 
-                    
+
                         }
 
-                        monsterDistance = Vector2.Distance(Position, monsterCharacter.Position);
+                        if (!timers.ContainsKey("attack")) {
 
-                        if (monsterDistance < opponentThreshold)
-                        {
+                            monsterDistance = Vector2.Distance(Position, monsterCharacter.Position);
 
-                            if (monsterDistance < closestDistance)
+                            if (monsterDistance < opponentThreshold)
                             {
 
-                                closestDistance = monsterDistance;
+                                if (monsterDistance < closestDistance)
+                                {
 
-                                targetOpponents.Clear();
+                                    closestDistance = monsterDistance;
 
-                                targetOpponents.Add(monsterCharacter);
+                                    targetOpponents.Clear();
+
+                                    targetOpponents.Add(monsterCharacter);
+
+                                }
 
                             }
-
                         }
 
                     }
@@ -1000,7 +790,7 @@ namespace StardewDruid.Character
 
                 }
 
-                if(nonPlayableCharacter != this)
+                if (nonPlayableCharacter != this)
                 {
 
                     if (boundingBox2.Intersects(boundingBox))
@@ -1031,7 +821,7 @@ namespace StardewDruid.Character
                 return;
 
             }
-            
+
             if (collision && !timers.ContainsKey("collide"))
             {
 
@@ -1051,10 +841,10 @@ namespace StardewDruid.Character
 
             Vector2 nextTile = new((int)(nextSpace.X / 64), (int)(nextSpace.Y / 64));
 
-            if(thisTile != nextTile)
+            if (thisTile != nextTile)
             {
 
-                if(!ModUtility.GroundCheck(currentLocation, nextTile, true))
+                if (ModUtility.GroundCheck(currentLocation, nextTile, npc:true) != "ground")
                 {
 
                     TargetRandom();
@@ -1075,144 +865,230 @@ namespace StardewDruid.Character
 
         public virtual void AnimateMovement(GameTime time)
         {
-
-            switch(moveDirection)
+            moveDown = false;
+            moveLeft = false;
+            moveRight = false;
+            moveUp = false;
+            FacingDirection = moveDirection;
+            switch (moveDirection)
             {
                 case 0:
-                    Sprite.AnimateUp(time);
+                    moveUp = true;
+                    Sprite.AnimateUp(time, 0, "");
                     break;
-
                 case 1:
-                    Sprite.AnimateRight(time);
+                    moveRight = true;
+                    Sprite.AnimateRight(time, 0, "");
                     break;
-
                 case 2:
-                    Sprite.AnimateDown(time);
+                    moveDown = true;
+                    Sprite.AnimateDown(time, 0, "");
                     break;
-
                 default:
-                    Sprite.AnimateLeft(time);
+                    moveLeft = true;
+                    Sprite.AnimateLeft(time, 0, "");
                     break;
-
             }
+        }
+
+        public virtual void WarpToDefault()
+        {
+            Halt();
+            if (currentLocation.Name != DefaultMap)
+            {
+                currentLocation.characters.Remove(this);
+                currentLocation = Game1.getLocationFromName(DefaultMap);
+                currentLocation.characters.Add(this);
+            }
+            Position = DefaultPosition;
+            update(Game1.currentGameTime, currentLocation);
+        }
+
+        public virtual void SwitchEventMode()
+        {
+            
+            SwitchDefaultMode();
+
+            priorities = new List<string>()
+            {
+                "event",
+                "frozen"
+            };
 
         }
 
-        // =================================================
-        // Priority Presets
-        // =================================================
+        public virtual void SwitchFrozenMode()
+        {
+            SwitchDefaultMode();
+            priorities = new List<string>() { "frozen" };
+        }
+
+        public virtual void SwitchFollowMode()
+        {
+            SwitchDefaultMode();
+            Mod.instance.trackRegister.Add(Name, new TrackHandle(Name));
+            priorities = new List<string>()
+              {
+                "attack",
+                "track"
+              };
+        }
+
+        public virtual void SwitchRoamMode()
+        {
+            
+            SwitchDefaultMode();
+
+            roamVectors.Clear();
+            
+            roamLapse = Game1.currentGameTime.TotalGameTime.TotalMinutes + 1.0;
+            
+            priorities = new List<string>() { "roam" };
+        
+        }
+
+        public virtual void SwitchDefaultMode()
+        {
+            Halt();
+            priorities = new List<string>();
+            Mod.instance.trackRegister.Remove(Name);
+        }
 
         public virtual List<Vector2> RoamAnalysis()
         {
+            
+            int layerWidth = currentLocation.map.Layers[0].LayerWidth;
+            
+            int layerHeight = currentLocation.map.Layers[0].LayerHeight;
+            
+            int num = layerWidth / 8;
 
-            int mapWidth = currentLocation.map.Layers[0].LayerWidth;
+            int midWidth = (layerWidth / 2) * 64;
+            
+            int eighthWidth = (layerWidth / 8) * 64;
+            
+            int nextWidth = (layerWidth * 64) - eighthWidth;
+            
+            int midHeight = (layerHeight / 2) * 64;
+            
+            int eighthHeight = (layerHeight / 8) * 64;
+            
+            int nextHeight = (layerHeight * 64) - eighthHeight;
 
-            int mapHeight = currentLocation.map.Layers[0].LayerHeight;
-
-            int mapDivision = mapWidth / 8;
-
-            List<Vector2> roamIndexes = new()
+            List<Vector2> roamList = new()
             {
-
-                new Vector2(mapWidth / 2, mapHeight / 2) * 64,
-
-                new Vector2(mapWidth - mapDivision, mapDivision) * 64,
-
-                new Vector2(mapWidth / 2, mapHeight / 2) * 64,
-
-                new Vector2(mapWidth - mapDivision, mapHeight - mapDivision) * 64,
-
-                new Vector2(mapWidth / 2, mapHeight / 2) * 64,
-
-                new Vector2(mapDivision, mapHeight - mapDivision) * 64,
-
-                new Vector2(mapWidth / 2, mapHeight / 2) * 64,
-
-                new Vector2(mapDivision, mapDivision) * 64,
+                new(midWidth,midHeight),
+                new(midWidth,midHeight),
+                new(midWidth,midHeight),
+                new(midWidth,midHeight),
+                new(nextWidth,nextHeight),
+                new(nextWidth,eighthHeight),
+                new(eighthWidth,nextHeight),
+                new(eighthWidth,eighthHeight),
 
             };
 
-            return roamIndexes;
+            if(currentLocation.IsOutdoors)
+            {
+                roamList = new()
+                {
+                    new(midWidth, midHeight),
+                    new(midWidth,midHeight),
+                    new(midWidth,midHeight),
+                    new(midWidth,midHeight),
+                    new(nextWidth,nextHeight),
+                    new(nextWidth,eighthHeight),
+                    new(eighthWidth,nextHeight),
+                    new(eighthWidth,eighthHeight),
+                    new(-1f),
+                    new(-1f),
+                    new(-1f),
+                    new(-1f),
+                };
+
+            }
+
+            List<Vector2> randomList = new();
+
+            Random random = new Random();
+
+            for(int i = 0; i < 12; i++)
+            {
+
+                randomList.Add(roamList[random.Next(randomList.Count)]);
+
+            }
+
+            return randomList;
 
         }
 
-
-        // =================================================
-        // Destination Behaviour
-        // =================================================
-
-        public virtual void DealDamageToMonster(StardewValley.Monsters.Monster monsterCharacter)
+        public virtual void DealDamageToMonster(StardewValley.Monsters.Monster monsterCharacter,bool kill = false,int damage = -1,bool push = true)
         {
+            if (damage == -1)
+            {
+                damage = Mod.instance.DamageLevel() / 2;
 
-            int damage = Math.Min(Mod.instance.DamageLevel() / 2, (monsterCharacter.Health - 1));
-
-            int diffX = 0;
-
-            int diffY = 0;
-
-            if (!monsterCharacter.isGlider.Value)
+            }
+                
+            if (!kill)
             {
 
-                float differentialX = monsterCharacter.Position.X - Position.X;
+                damage = Math.Min(damage, monsterCharacter.Health - 1);
 
-                float differentialY = monsterCharacter.Position.Y - Position.Y;
-
-                int signY = 1;
-
-                int signX = 1;
-
-                float differentialFactor;
-
-                if (differentialY < 0)
-                {
-
-                    signY = -1;
-
-                }
-
-                if (differentialX < 0)
-                {
-
-                    signX = -1;
-
-                }
-
-                if (Math.Abs(differentialX) < Math.Abs(differentialY))
-                {
-                    differentialFactor = Math.Abs(differentialX) / Math.Abs(differentialY);
-
-                    diffX = (int)(128 * signX * differentialFactor);
-
-                    diffY = 128 * signY;
-
-                }
-                else
-                {
-                    differentialFactor = Math.Abs(differentialY) / Math.Abs(differentialX);
-
-                    diffX = 128 * signX;
-
-                    diffY = (int)(128 * signY * differentialFactor);
-
-                }
             }
 
-            monsterCharacter.takeDamage(damage, diffX, diffY, false, 1.00, Game1.player);
+            List<int> pushList = new() { 0, 0 };
 
-            currentLocation.removeDamageDebris(monsterCharacter);
+            if (push)
+            {
 
-            Microsoft.Xna.Framework.Rectangle boundingBox = monsterCharacter.GetBoundingBox();
+                pushList = ModUtility.CalculatePush(currentLocation, monsterCharacter, Position);
 
-            currentLocation.debris.Add(new Debris(damage, new Vector2(boundingBox.Center.X + 16, boundingBox.Center.Y), new Color(255, 130, 0), 1f, monsterCharacter));
+            }
 
+            ModUtility.HitMonster(currentLocation, Game1.player, monsterCharacter, damage, false, diffX: pushList[0], diffY: pushList[1]);
+
+        }
+
+        public virtual void ReachedEventPosition()
+        {
+
+            Halt();
+            
+            eventVectors.RemoveAt(0);
+        
         }
 
         public virtual void ReachedRoamPosition()
         {
-
         }
 
+        public virtual void ReachedIdlePosition()
+        {
+            
+            Halt();
+            
+            timers["stop"] = 1000;
+            
+            timers["idle"] = 1000;
+        
+        }
 
+        public virtual void LeftClickAction(SButton Button)
+        {
+        }
+
+        public virtual void RightClickAction(SButton Button)
+        {
+        }
+
+        public virtual void ShutDown()
+        {
+        }
+
+        public virtual void PlayerBusy()
+        {
+        }
     }
-
 }

@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/spajus/stardew-valley-fast-loads
+**
+*************************************************/
+
+{
+  "Name": "FastLoads",
+  "Author": "spajus",
+  "Version": "1.0.3",
+  "Description": "Fixes core performance issue that makes Stardew Valley slow to load with large expansions",
+  "UniqueID": "spajus.fastloads",
+  "EntryDll": "FastLoads.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": ["Nexus:19454", "GitHub:spajus/stardew-valley-fast-loads"],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

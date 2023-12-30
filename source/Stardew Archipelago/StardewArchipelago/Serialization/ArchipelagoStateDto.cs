@@ -25,6 +25,7 @@ namespace StardewArchipelago.Serialization
         public bool HideEmptyArchipelagoLetters { get; set; }
         public TrapItemsDifficulty? TrapDifficultyOverride { get; set; }
         public int TravelingMerchantPurchases { get; set; }
+        public int StoredStarTokens { get; set; }
 
         public ArchipelagoStateDto()
         {
@@ -37,6 +38,7 @@ namespace StardewArchipelago.Serialization
             HideEmptyArchipelagoLetters = false;
             TrapDifficultyOverride = null;
             TravelingMerchantPurchases = 0;
+            StoredStarTokens = 0;
         }
     }
 }

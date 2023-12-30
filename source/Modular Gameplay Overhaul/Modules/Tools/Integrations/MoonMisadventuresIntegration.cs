@@ -12,7 +12,6 @@ namespace DaLion.Overhaul.Modules.Tools.Integrations;
 
 #region using directives
 
-using DaLion.Overhaul.Modules.Core.ConfigMenu;
 using DaLion.Shared.Attributes;
 using DaLion.Shared.Integrations;
 

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Custom_The_Northern_Gulf",
+  "Author": "The commission of The Northern Gulf",
+  "Version": "1.0.3", // fixed locally
+  "Description": "One or two sentences about the mod.",
+  "UniqueID": "TcTHG.Custom_The_Northern_Gulf",
+  "EntryDll": "TheNorthernGulf.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

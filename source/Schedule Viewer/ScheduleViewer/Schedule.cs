@@ -9,91 +9,134 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Network;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace ScheduleViewer
 {
-    internal class ScheduleEntry
-    {
-        public int Time { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int FacingDirection { get; set; }
-        public string Location { get; set; }
-        public string Animation { get; set; }
-        public string Message { get; set; }
-        public bool IsArrivalTime { get; set; }
-
-
-        public ScheduleEntry(int time, int x, int y, int facingDirection, string location, string animation, string message, bool isArrivalTime = false)
-        {
-            this.Time = time;
-            this.X = x;
-            this.Y = y;
-            this.FacingDirection = facingDirection;
-            this.Location = location;
-            this.Animation = animation;
-            this.Message = message;
-            this.IsArrivalTime = isArrivalTime;
-        }
-
-        public override string ToString()
-        {
-            return $"{(this.IsArrivalTime ? "@" : String.Empty)}{Game1.getTimeOfDayString(this.Time != 0 ? this.Time : 600)} {(this.Location ?? "Unknown")}";
-        }
-
-        public string GetHoverText()
-        {
-            string facingDirection = ModEntry.ModHelper.Translation.Get($"facing_direction_{this.FacingDirection}");
-            List<string> lines = new()
-            {
-                ModEntry.ModHelper.Translation.Get("location_hover_text", new { x = X, y = Y, facingDirection })
-            };
-            if (this.Animation != null)
-            {
-                lines.Add(this.Animation);
-            }
-            //if (this.Message != null)
-            //{
-            //    lines.Add(this.Message);
-            //}
-            return string.Join(Environment.NewLine, lines);
-        }
-    }
-
-    internal class NPCSchedule
-    {
-        public NPC NPC { get; set; }
-        public List<ScheduleEntry> Entries { get; set; }
-        public bool IsIgnoringSchedule { get; set; }
-
-        public NPCSchedule(NPC npc, List<ScheduleEntry> entries, bool isIgnoringSchedule = false)
-        {
-            this.NPC = npc;
-            this.Entries = entries;
-            this.IsIgnoringSchedule = isIgnoringSchedule;
-        }
-    }
-
-    static internal class Schedule
+    static public class Schedule
     {
         private static WorldDate Date;
         private static Dictionary<string, NPCSchedule> NpcsWithSchedule;
         private static Dictionary<string, string> LocationNames;
+        public static bool HasHostSchedules;
 
-        public static Dictionary<string, NPCSchedule> getSchedules()
+        public record ScheduleEntry(
+            int Time,
+            int X,
+            int Y,
+            int FacingDirection,
+            string Location,
+            string Animation,
+            bool IsArrivalTime = false
+        )
         {
-            if (Game1.Date == Date && NpcsWithSchedule != null) return NpcsWithSchedule;
-            //ModEntry.Console?.Log($"Needed to generate schedules. Dates match? {Game1.Date == Date} Schedules exists? {NpcsWithSchedule != null}", LogLevel.Info);
+            public override string ToString()
+            {
+                return $"{(this.IsArrivalTime ? "@" : String.Empty)}{Game1.getTimeOfDayString(this.Time != 0 ? this.Time : 600)} {(this.Location ?? "Unknown")}";
+            }
+
+            public string GetHoverText()
+            {
+                string facingDirection = ModEntry.ModHelper.Translation.Get($"facing_direction_{this.FacingDirection}");
+                List<string> lines = new()
+            {
+                ModEntry.ModHelper.Translation.Get("location_hover_text", new { x = X, y = Y, facingDirection })
+            };
+                if (this.Animation != null)
+                {
+                    lines.Add(this.Animation);
+                }
+                return string.Join(Environment.NewLine, lines);
+            }
+        };
+
+        public class NPCSchedule
+        {
+            public string DisplayName { get; init; }
+            /// <summary>The schedule entries for today. If null, then the NPC is not following a schedule.</summary>
+            public List<ScheduleEntry> Entries { get; init; }
+            public bool CanSocialize { get; init; }
+            /// <summary>If not null, then the NPC is either not following a schedule or they are ignoring it today.</summary>
+            public string CurrentLocation { get; set; }
+            public AnimatedSprite Sprite { get; set; }
+            public Rectangle? MugShotSourceRect { get; set; }
+
+            public NPCSchedule(string displayName, List<ScheduleEntry> entries, bool canSocialize, string currentLocation, AnimatedSprite sprite = null, Rectangle? mugShotSourceRect = null)
+            {
+                DisplayName = displayName;
+                Entries = entries;
+                CanSocialize = canSocialize;
+                CurrentLocation = currentLocation;
+                Sprite = sprite;
+                MugShotSourceRect = mugShotSourceRect;
+            }
+
+            public NPCSchedule GetSerializableObject()
+            {
+                return new NPCSchedule(DisplayName, Entries, CanSocialize, CurrentLocation);
+            }
+
+            internal void Deconstruct(out string displayName, out List<ScheduleEntry> entries, out string currentLocation)
+            {
+                displayName = DisplayName;
+                entries = Entries;
+                currentLocation = CurrentLocation;
+            }
+        }
+
+        internal static void SendSchedules()
+        {
+            // clear sprite related fields and send
+            ModEntry.ModHelper.Multiplayer.SendMessage((Game1.Date.TotalDays + 1, GetSchedules().ToDictionary(x => x.Key, x => x.Value.GetSerializableObject())), ModEntry.ModMessageSchedule);
+        }
+
+        internal static void ReceiveSchedules((int, Dictionary<string, NPCSchedule>) Message)
+        {
+            HasHostSchedules = true;
+            Date = SDate.FromDaysSinceStart(Message.Item1).ToWorldDate();
+            NpcsWithSchedule = Message.Item2;
+        }
+
+        internal static void UpdateCurrentLocation((string, string) Message)
+        {
+            try
+            {
+                NpcsWithSchedule[Message.Item1].CurrentLocation = Message.Item2;
+            }
+            catch
+            {
+                ModEntry.Console.Log($"Error when trying to update the current location for ${Message.Item1}.", LogLevel.Warn);
+            }
+        }
+
+        public static bool HasSchedules() => Game1.Date == Date && NpcsWithSchedule != null;
+
+
+        /// <summary>
+        /// Get, parse, and filter NPCs with a schedule. 
+        /// </summary>
+        /// <param name="onlyShowSocializableNPCs">Filter out NPCs the player can't socialize with (ex: Gunther or Sandy before the bus is repaired)</param>
+        /// <param name="onlyShowMetNPCs">Filter out NPCs the player hasn't talked to before.</param>
+        /// <returns></returns>
+        public static IEnumerable<KeyValuePair<string, NPCSchedule>> GetSchedules(bool onlyShowSocializableNPCs = false, bool onlyShowMetNPCs = false)
+        {
+            if (HasSchedules())
+            {
+                return FilterNPCSchedules(onlyShowSocializableNPCs, onlyShowMetNPCs);
+            }
+            ModEntry.Console.Log($"Calculating the NPCs' schedule for {Game1.Date}.", LogLevel.Debug);
             List<NPC> npcs = new();
             foreach (var npc in Utility.getAllCharacters())
             {
-                if (npc.Schedule != null)
+                if (!npc.followSchedule || (npc.Schedule != null && npc.Schedule.Any()))
                 {
                     npcs.Add(npc);
                 }
@@ -101,24 +144,47 @@ namespace ScheduleViewer
             NpcsWithSchedule = new();
             foreach (var npc in npcs)
             {
-                Dictionary<string, string> rawMasterSchedule = npc.getMasterScheduleRawData();
-                string dayScheduleName = npc.dayScheduleName.Value;
-                string rawSchedule = rawMasterSchedule[dayScheduleName];
-
-                List<ScheduleEntry> scheduleEntries = ParseMasterSchedule(rawSchedule, npc);
+                string name = npc.getName();
+                string dayScheduleName = string.Empty;
+                List<ScheduleEntry> scheduleEntries = null;
                 try
                 {
-                    NpcsWithSchedule.Add(npc.getName(), new NPCSchedule(npc, scheduleEntries, npc.ignoreScheduleToday));
+                    if (npc.followSchedule)
+                    {
+                        Dictionary<string, string> rawMasterSchedule = npc.getMasterScheduleRawData();
+                        dayScheduleName = npc.dayScheduleName.Value ?? ModEntry.ModHelper.Reflection.GetField<string>(npc, "_lastLoadedScheduleKey").GetValue();
+                        string rawSchedule = rawMasterSchedule[dayScheduleName];
+
+                        scheduleEntries = ParseMasterSchedule(rawSchedule, npc);
+                    }
+                    NpcsWithSchedule.Add(npc.Name, new NPCSchedule(name, scheduleEntries, npc.CanSocialize, !npc.followSchedule || npc.ignoreScheduleToday ? PrettyPrintLocationName(npc.currentLocation) : null, npc.Sprite, npc.getMugShotSourceRect()));
+                }
+                catch (ArgumentNullException)
+                {
+                    ModEntry.Console.Log($"Warning! Couldn't find a schedule for {name}. Does the host not have Schedule Viewer installed?", LogLevel.Warn);
                 }
                 catch (ArgumentException)
                 {
-                    ModEntry.Console.Log($"Warning! Found an NPC whose name is already in the list. This means you have 2 or more NPCs with the same name. The schedule for \"{npc.getName()}\" might not be accurate.", LogLevel.Warn);
+                    ModEntry.Console.Log($"Warning! Found an NPC whose name is already in the list. This means you have 2 or more NPCs with the same name. The schedule for {name} might not be accurate.", LogLevel.Warn);
+                }
+                catch (KeyNotFoundException)
+                {
+                    ModEntry.Console.Log($"Warning! Couldn't find the schedule called \"{dayScheduleName}\" for {name}. One of your other mods must be messing with {name}'s schedule.", LogLevel.Warn);
                 }
             }
 
             Date = Game1.Date;
-            return NpcsWithSchedule;
+            return FilterNPCSchedules(onlyShowSocializableNPCs, onlyShowMetNPCs);
         }
+
+        private static IEnumerable<KeyValuePair<string, NPCSchedule>> FilterNPCSchedules(bool onlyShowSocializableNPCs = false, bool onlyShowMetNPCs = false) =>
+            onlyShowSocializableNPCs || onlyShowMetNPCs ?
+                NpcsWithSchedule.Where(s =>
+                {
+                    bool hasMet = Game1.player.friendshipData.ContainsKey(s.Key);
+                    return (s.Value.CanSocialize || !onlyShowSocializableNPCs) && (hasMet || !onlyShowMetNPCs);
+                }) :
+                NpcsWithSchedule.AsEnumerable();
 
         /// <summary>Slightly adjusted version on the original in-game method NPC::parseMasterSchedule</summary>
         /// <param name="rawData">The raw string data for the days' schedule.</param>
@@ -219,7 +285,7 @@ namespace ScheduleViewer
                 }
                 int index = 0;
                 string[] newDestinationDescription = split[i].Split(' ');
-                int time = 0;
+                int time;
                 bool time_is_arrival_time = false;
                 string time_string = newDestinationDescription[index];
                 if (time_string.Length > 0 && newDestinationDescription[index][0] == 'a')
@@ -231,7 +297,6 @@ namespace ScheduleViewer
                 index++;
                 string location = newDestinationDescription[index];
                 string endOfRouteAnimation = null;
-                string endOfRouteMessage = null;
                 int xLocation = 0;
                 int yLocation = 0;
                 int localFacingDirection = 2;
@@ -334,18 +399,9 @@ namespace ScheduleViewer
                 }
                 if (index < newDestinationDescription.Length)
                 {
-                    if (newDestinationDescription[index].Length > 0 && newDestinationDescription[index][0] == '"')
-                    {
-                        endOfRouteMessage = split[i].Substring(split[i].IndexOf('"'));
-                    }
-                    else
+                    if (newDestinationDescription[index].Length > 0 && newDestinationDescription[index][0] != '"')
                     {
                         endOfRouteAnimation = newDestinationDescription[index];
-                        index++;
-                        if (index < newDestinationDescription.Length && newDestinationDescription[index].Length > 0 && newDestinationDescription[index][0] == '"')
-                        {
-                            endOfRouteMessage = split[i].Substring(split[i].IndexOf('"')).Replace("\"", "");
-                        }
                     }
                 }
                 if (time == 0)
@@ -359,13 +415,9 @@ namespace ScheduleViewer
                     previousPosition.Y = yLocation;
                     continue;
                 }
-                endOfRouteMessage = endOfRouteMessage?.Replace("\"", "");
-                //string parsedMessage = string.IsNullOrEmpty(endOfRouteMessage) ? null : Game1.content.LoadString(endOfRouteMessage);
-
-                entries.Add(new ScheduleEntry(time, xLocation, yLocation, localFacingDirection, PrettyPrintLocationName(location), endOfRouteAnimation, endOfRouteMessage, time_is_arrival_time));
+                entries.Add(new ScheduleEntry(time, xLocation, yLocation, localFacingDirection, PrettyPrintLocationName(location), endOfRouteAnimation, time_is_arrival_time));
             }
-
-            entries.Insert(0, new ScheduleEntry(0, default_x, default_y, default_facingDirection, PrettyPrintLocationName(default_map), null, null));
+            entries.Insert(0, new ScheduleEntry(0, default_x, default_y, default_facingDirection, PrettyPrintLocationName(default_map), null));
             return entries;
         }
 
@@ -376,8 +428,13 @@ namespace ScheduleViewer
             {
                 ModEntry.Console.LogOnce($"Couldn't find a display name for location: {location}", LogLevel.Debug);
             }
-            return locationDisplayName ?? (location.StartsWith("Custom") ? SplitCamelCase(location.Substring(7)) : location);
+            return locationDisplayName ?? GetUnknownLocationName(location);
         }
+
+        public static string PrettyPrintLocationName(GameLocation location) =>
+            location.IsFarm && location.isStructure.Value ?
+                $"{PrettyPrintLocationName("Farm")} - {location.Name}" :
+                PrettyPrintLocationName(location.Name);
 
         public static string SplitCamelCase(this string str)
         {
@@ -390,6 +447,25 @@ namespace ScheduleViewer
                 @"(\p{Ll})(\P{Ll})",
                 "$1 $2"
             );
+        }
+
+        public static string GetFarmName() => Game1.content.LoadString("Strings\\StringsFromCSFiles:MapPage.cs.11064", Game1.player.IsLocalPlayer ? Game1.player.farmName.Value : "")?.Trim();
+
+        public static string GetUnknownLocationName(string location)
+        {
+            if (location.StartsWith("Custom"))
+            {
+                return SplitCamelCase(location.Substring(7));
+            }
+            if (location.Equals("FarmHouse"))
+            {
+                return $"{GetFarmName()} - {ModEntry.ModHelper.Translation.Get("farmhouse")}";
+            }
+            if (location.StartsWith("Island"))
+            {
+                return $"{Game1.content.LoadString("Strings\\StringsFromCSFiles:IslandName")} - {SplitCamelCase(location.Substring(6))}";
+            }
+            return SplitCamelCase(location);
         }
 
         public static Dictionary<string, string> GetLocationNames()
@@ -411,6 +487,7 @@ namespace ScheduleViewer
                 { "CommunityCenter", Game1.content.LoadString("Strings\\StringsFromCSFiles:MapPage.cs.11117") },
                 { "Desert", Game1.content.LoadString("Strings\\StringsFromCSFiles:MapPage.cs.11062") },
                 { "ElliottHouse", Game1.content.LoadString("Strings\\StringsFromCSFiles:MapPage.cs.11088") },
+                { "Farm", GetFarmName() },
                 { "FishShop", Game1.content.LoadString("Strings\\StringsFromCSFiles:MapPage.cs.11107") },
                 { "Forest", Game1.content.LoadString("Strings\\StringsFromCSFiles:MapPage.cs.11186") },
                 { "HaleyHouse", Game1.content.LoadString("Strings\\StringsFromCSFiles:MapPage.cs.11073") },

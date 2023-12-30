@@ -27,11 +27,6 @@ namespace stardew_access.Patches
                     new Type[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.DrawPatch))
             );
-
-            harmony.Patch(
-                original: AccessTools.Method(typeof(DialogueBox), nameof(DialogueBox.receiveLeftClick)),
-                postfix: new HarmonyMethod(typeof(DialogueBoxPatch), nameof(DialogueBoxPatch.RecieveLeftClickPatch))
-            );
         }
 
         private static void DrawPatch(DialogueBox __instance)
@@ -48,14 +43,6 @@ namespace stardew_access.Patches
             {
                 Log.Error($"An error occurred in dialogue box patch:\n{e.StackTrace}\n{e.Message}");
             }
-        }
-
-        private static void RecieveLeftClickPatch()
-        {
-            // TODO see if there are any bugs reported if the cleanup is not performed
-
-            // CLears the currentDialogue string on closing dialog
-            // Cleanup();
         }
 
         private static bool NarrateCharacterDialogue(DialogueBox __instance)

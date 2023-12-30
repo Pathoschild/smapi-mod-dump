@@ -17,6 +17,7 @@ using System.Reflection;
 using DaLion.Overhaul.Modules.Combat.Integrations;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
 using DaLion.Shared.Constants;
+using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Netcode;
@@ -41,7 +42,7 @@ internal sealed class RingCombinePatcher : HarmonyPatcher
     [HarmonyPriority(Priority.HigherThanNormal)]
     private static bool RingCombinePrefix(Ring __instance, ref Ring __result, Ring ring)
     {
-        if (!CombatModule.Config.EnableInfinityBand || !JsonAssetsIntegration.InfinityBandIndex.HasValue ||
+        if (!CombatModule.Config.RingsEnchantments.EnableInfinityBand || !JsonAssetsIntegration.InfinityBandIndex.HasValue ||
             __instance.ParentSheetIndex != JsonAssetsIntegration.InfinityBandIndex)
         {
             return true; // run original logic
@@ -68,6 +69,7 @@ internal sealed class RingCombinePatcher : HarmonyPatcher
                 .Set(JsonAssetsIntegration.InfinityBandIndex.Value);
             combinedRing.UpdateDescription();
             combinedRing.Get_Chord()?.PlayCues();
+            Game1.player.WriteIfNotExists(DataKeys.HasMadeInfinityBand, "true");
             __result = combinedRing;
             return false; // don't run original logic
         }

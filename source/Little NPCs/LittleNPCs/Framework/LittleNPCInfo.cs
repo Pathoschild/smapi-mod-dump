@@ -54,9 +54,7 @@ namespace LittleNPCs.Framework {
                     var children = GetChildrenFromFarmHouse(false, out FarmHouse farmHouse);
                     Child child = children.FirstOrDefault(c => c.daysOld.Value >= ModEntry.config_.AgeWhenKidsAreModified && c.GetChildIndex() == childIndex);
                     if (child is not null) {
-                        // Internal asset name to create a LittleNPC from needs a prefix.
-                        string prefix = childIndex == 0 ? "FirstLittleNPC" : "SecondLittleNPC";
-                        Name = $"{prefix}{child.Name}";
+                        Name = CreateInternalAssetName(childIndex, child.Name);
                         DisplayName = child.Name;
                         Gender = child.Gender == 0 ? "male": "female";
                         Birthday = LittleNPC.GetBirthday(child);
@@ -73,9 +71,7 @@ namespace LittleNPCs.Framework {
                 var children = GetChildrenFromFarmHouse(true, out FarmHouse farmHouse);
                 Child child = children.FirstOrDefault(c => c.daysOld.Value >= ModEntry.config_.AgeWhenKidsAreModified && c.GetChildIndex() == childIndex);
                 if (child is not null) {
-                    // Internal asset name to create a LittleNPC from needs a prefix.
-                    string prefix = childIndex == 0 ? "FirstLittleNPC" : "SecondLittleNPC";
-                    Name = $"{prefix}{child.Name}";
+                    Name = CreateInternalAssetName(childIndex, child.Name);
                     DisplayName = child.Name;
                     Gender = child.Gender == 0 ? "male": "female";
                     Birthday = LittleNPC.GetBirthday(child);
@@ -94,6 +90,16 @@ namespace LittleNPCs.Framework {
             
             return farmHouse is not null ? farmHouse.getChildren()
                                          : Enumerable.Empty<Child>();
+        }
+
+        public static string CreateInternalAssetName(int childIndex, string childName) {
+            // Internal asset name to create a LittleNPC from needs a prefix.
+            string prefix = childIndex == 0 ? "FirstLittleNPC" : "SecondLittleNPC";
+            
+            // Remove spaces. This could to equal names but there's still the prefix to distinguish them. 
+            string sanitizedChildName = childName.Replace(' ', '_');
+            
+            return $"{prefix}{sanitizedChildName}";
         }
     }
 }

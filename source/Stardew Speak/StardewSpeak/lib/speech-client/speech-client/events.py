@@ -5,6 +5,7 @@ import inspect
 import collections
 from dragonfly import  get_engine
 import dragonfly.engines.base.engine
+import logger
 
 def on_key_pressed(data):
     import game
@@ -17,7 +18,7 @@ async def on_speech_mimicked(data):
     try:
         engine.mimic(data['said'].lower())
     except dragonfly.engines.base.engine.MimicFailure as e:
-        server.log(str(e), level=2)
+        logger.info(str(e))
 
 async def on_save_loaded(data):
     pass

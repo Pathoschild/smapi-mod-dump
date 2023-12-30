@@ -16,6 +16,8 @@ import server
 from dragonfly import *
 from srabuilder import rules
 
+import logger
+
 import constants, server, game, df_utils
 
 active_objective = None
@@ -53,18 +55,18 @@ class Objective:
         raise NotImplementedError
 
     async def wrap_run(self):
-        name = self.__class__.__name__
-        server.log(f"Starting objective {name}", level=1)
+        name = self.fn.__name__ if isinstance(self, FunctionObjective) else self.__class__.__name__
+        logger.trace(f"Starting objective {name}")
         self.run_task = server.TaskWrapper(self.run())
         await self.run_task.task
         if self.run_task.exception:
             if isinstance(self.run_task.exception, (Exception, ObjectiveFailedError)):
-                server.log(f"Objective {name} errored: \n{self.run_task.exception_trace}", level=1)
+                logger.trace(f"Objective {name} errored: \n{self.run_task.exception_trace}")
             elif isinstance(self.run_task.exception, asyncio.CancelledError):
-                server.log(f"Canceling objective {name}", level=1)
+                logger.trace(f"Canceling objective {name}")
             await game.release_all_keys()
         else:
-            server.log(f"Successfully completed objective {name}", level=1)
+            logger.trace(f"Successfully completed objective {name}")
         for task_wrapper in self.tasks:
             await task_wrapper.cancel()
 
@@ -82,6 +84,9 @@ class FunctionObjective(Objective):
 
     async def run(self):
         await self.fn(*self.a, **self.kw)
+
+    def __repr__(self):
+        return "banana"
 
 class HoldKeyObjective(Objective):
     def __init__(self, keys):
@@ -112,7 +117,8 @@ class MoveNTilesObjective(Objective):
 
 class MoveToLocationObjective(Objective):
     def __init__(self, location):
-        self.location = location
+        import locations
+        self.location: locations.Location = location
 
     async def run(self):
         async with server.player_status_stream() as stream:
@@ -190,7 +196,11 @@ class ClearDebrisObjective(Objective):
         self.debris_type = debris_type
 
     async def get_debris(self, location):
-        debris_objects, resource_clumps, tools = await asyncio.gather(self.get_debris_objects(location), game.get_resource_clump_pieces(location), game.get_tools(), loop=server.loop)
+        debris_objects, resource_clumps, tools = await asyncio.gather(
+            self.get_debris_objects(location), 
+            game.get_resource_clump_pieces(location),
+            game.get_tools(), 
+        )
         debris = debris_objects + resource_clumps
         clearable_debris = []
         for d in debris:

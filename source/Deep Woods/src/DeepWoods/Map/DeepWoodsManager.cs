@@ -13,7 +13,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Buildings;
+using StardewValley.Characters;
 using StardewValley.Locations;
 using xTile.Dimensions;
 using xTile.Layers;
@@ -26,12 +29,55 @@ namespace DeepWoodsMod
 {
     public class DeepWoodsManager
     {
-        public static DeepWoods currentDeepWoods = null;
-        public static string currentWarpRequestName = null;
-        public static Vector2? currentWarpRequestLocation = null;
+        private class PerScreenStuff
+        {
+            public DeepWoods currentDeepWoods = null;
+            public string currentWarpRequestName = null;
+            public Vector2? currentWarpRequestLocation = null;
+            public DeepWoodsMaxHouse maxHut = null;
+            public DeepWoods rootDeepWoodsBackup = null;
+            public bool lostMessageDisplayedToday = false;
+            public int nextRandomizeTime = 0;
+        }
 
+        private static readonly PerScreen<PerScreenStuff> _perScreenStuff = new(() => new PerScreenStuff());
 
-        private static DeepWoodsMaxHouse maxHut = null;
+        public static DeepWoods currentDeepWoods
+        {
+            get => _perScreenStuff.Value.currentDeepWoods;
+            set => _perScreenStuff.Value.currentDeepWoods = value;
+        }
+        public static string currentWarpRequestName
+        {
+            get => _perScreenStuff.Value.currentWarpRequestName;
+            set => _perScreenStuff.Value.currentWarpRequestName = value;
+        }
+        public static Vector2? currentWarpRequestLocation
+        {
+            get => _perScreenStuff.Value.currentWarpRequestLocation;
+            set => _perScreenStuff.Value.currentWarpRequestLocation = value;
+        }
+        private static DeepWoodsMaxHouse maxHut
+        {
+            get => _perScreenStuff.Value.maxHut;
+            set => _perScreenStuff.Value.maxHut = value;
+        }
+        public static DeepWoods rootDeepWoodsBackup
+        {
+            get => _perScreenStuff.Value.rootDeepWoodsBackup;
+            set => _perScreenStuff.Value.rootDeepWoodsBackup = value;
+        }
+        public static bool lostMessageDisplayedToday
+        {
+            get => _perScreenStuff.Value.lostMessageDisplayedToday;
+            set => _perScreenStuff.Value.lostMessageDisplayedToday = value;
+        }
+        public static int nextRandomizeTime
+        {
+            get => _perScreenStuff.Value.nextRandomizeTime;
+            set => _perScreenStuff.Value.nextRandomizeTime = value;
+        }
+
 
         public static void AddMaxHut()
         {
@@ -53,13 +99,6 @@ namespace DeepWoodsMod
         {
             RemoveGameLocation(maxHut);
         }
-
-
-        private static DeepWoods rootDeepWoodsBackup = null;
-
-        private static bool lostMessageDisplayedToday = false;
-        private static int nextRandomizeTime = 0;
-
 
         public static void AddExitLocation(DeepWoods deepWoods, Location tile, DeepWoodsExit exit)
         {
@@ -83,14 +122,12 @@ namespace DeepWoodsMod
             deepWoods.RemoveExitLocation(tile);
         }
 
-
-
         public static void WarpFarmerIntoDeepWoods(int level)
         {
             // Warp into root level if appropriate.
             if (level <= 1)
             {
-                Game1.warpFarmer("DeepWoods", Settings.Map.RootLevelEnterLocation.X, Settings.Map.RootLevelEnterLocation.Y, false);
+                Game1.warpFarmer("DeepWoods", Settings.Map.RootLevelEnterLocation.X, Settings.Map.RootLevelEnterLocation.Y, 2);
             }
             else if (!Game1.IsMasterGame)
             {
@@ -117,7 +154,7 @@ namespace DeepWoodsMod
             }
 
             // Otherwise create a new level.
-            DeepWoods deepWoods = new DeepWoods(level);
+            DeepWoods deepWoods = new DeepWoods(null, level, EnterDirection.FROM_TOP, true);
             DeepWoodsManager.AddDeepWoodsToGameLocations(deepWoods);
             return deepWoods;
         }
@@ -185,14 +222,42 @@ namespace DeepWoodsMod
 
         public static void RemoveDeepWoodsFromGameLocations(DeepWoods deepWoods)
         {
-            RemoveGameLocation(deepWoods);
-
             if (Game1.IsMasterGame)
             {
+                // Teleport abandoned horses out of the level
+                var horses = deepWoods.characters.Where(c => c is Horse).Select(c => c as Horse).ToList();
+                if (horses.Count > 0)
+                {
+                    var stables = Game1.getFarm().buildings.Where(b => b is Stable && b.daysOfConstructionLeft.Value <= 0).Select(b => b as Stable).ToList();
+                    foreach (var horse in horses)
+                    {
+                        if (horse.rider != null)
+                        {
+                            horse.dismount();
+                        }
+
+                        foreach (var stable in stables)
+                        {
+                            if (stable.HorseId == horse.HorseId)
+                            {
+                                stable.grabHorse();
+                            }
+                        }
+                    }
+                }
+
+                // Tell clients to remove the level
                 foreach (Farmer who in Game1.otherFarmers.Values)
+                {
                     if (who != Game1.player)
+                    {
                         ModEntry.SendMessage(deepWoods.Name, MessageId.RemoveLocation, who.UniqueMultiplayerID);
+                    }
+                }
             }
+
+            // Remove the level
+            RemoveGameLocation(deepWoods);
         }
 
         public static void AddBlankDeepWoodsToGameLocations(string name)
@@ -213,6 +278,14 @@ namespace DeepWoodsMod
             else if (Game1.getLocationFromName(name) is DeepWoodsMaxHouse maxHouse)
             {
                 RemoveGameLocation(maxHouse);
+            }
+        }
+
+        public static void DeInfestDeepWoods(string name)
+        {
+            if (Game1.getLocationFromName(name) is DeepWoods deepWoods)
+            {
+                deepWoods.DeInfest();
             }
         }
 
@@ -240,7 +313,7 @@ namespace DeepWoodsMod
                     Remove();
                     AddMaxHut();
                     DeepWoodsManager.rootDeepWoodsBackup = null;
-                    DeepWoodsManager.AddDeepWoodsToGameLocations(new DeepWoods(null, 1, EnterDirection.FROM_TOP));
+                    DeepWoodsManager.AddDeepWoodsToGameLocations(new DeepWoods(null, 1, EnterDirection.FROM_TOP, false));
                 }
             }
 
@@ -295,6 +368,8 @@ namespace DeepWoodsMod
                 Remove();
                 Restore();
             }
+
+            WoodsObelisk.SendLetterIfNecessaryAndPossible();
         }
 
         // This is called by every client everytime the time of day changes (10 ingame minute intervals)

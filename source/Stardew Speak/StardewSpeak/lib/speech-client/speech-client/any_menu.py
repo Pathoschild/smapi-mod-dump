@@ -40,7 +40,6 @@ async def move_cursor_to_next_component(menu, direction, n=1):
         if not right_direction:
             break
         current_position = res
-    server.log(current_position)
     await menu_utils.focus_component(current_position)
 
 

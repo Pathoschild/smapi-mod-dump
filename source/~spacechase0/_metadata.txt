@@ -76,9 +76,11 @@ mods:
    Throwable Axe
 
 latest commit:
-   commit 02a2404d6be968dc91f3cc6328d9ddd1b49ad194
-   Author: Casey Warrington <spacechase0.and.cat@gmail.com>
-   Date:   Sun Oct 22 15:21:55 2023 -0400
+   commit 0ae0329a54bae63492c73c60a2023e70ce4ca78d
+   Author: Casey W <spacechase0@users.noreply.github.com>
+   Date:   Fri Dec 8 14:26:38 2023 -0500
    
-       JA changes I never committed
+       Merge pull request #380 from Rupurudu/turkish
+       
+       Add Turkish translation.
    

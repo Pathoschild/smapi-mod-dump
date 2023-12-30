@@ -13,8 +13,6 @@ namespace DaLion.Overhaul.Modules.Professions.Ultimates;
 #region using directives
 
 using System.Linq;
-using DaLion.Overhaul;
-using DaLion.Overhaul.Modules;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.UpdateTicked;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Extensions.Stardew;
@@ -29,7 +27,7 @@ public sealed class Concerto : Ultimate
 {
     /// <summary>Initializes a new instance of the <see cref="Concerto"/> class.</summary>
     internal Concerto()
-        : base("Concerto", Professions.Profession.Piper, Color.LimeGreen, Color.DarkGreen)
+        : base("Concerto", Profession.Piper, Color.LimeGreen, Color.DarkGreen)
     {
     }
 
@@ -46,7 +44,7 @@ public sealed class Concerto : Ultimate
 
     /// <inheritdoc />
     internal override int MillisecondsDuration =>
-        (int)(30000 * ((double)this.MaxValue / BaseMaxValue) / ProfessionsModule.Config.LimitDrainFactor);
+        (int)(30000 * ((double)this.MaxValue / BaseMaxValue) / ProfessionsModule.Config.Limit.LimitDrainFactor);
 
     /// <inheritdoc />
     internal override SoundEffectPlayer ActivationSfx => SoundEffectPlayer.PiperConcerto;

@@ -10,14 +10,8 @@
 
 using Microsoft.Xna.Framework;
 using StardewValley;
-using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
-using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
-using System.Runtime.Intrinsics;
-using System.Xml.Linq;
-using xTile;
 
 namespace StardewDruid.Cast.Stars
 {
@@ -48,7 +42,7 @@ namespace StardewDruid.Cast.Stars
             ModUtility.AnimateMeteor(targetLocation, targetVector, targetDirection < 2);
 
             DelayedAction.functionAfterDelay(MeteorImpact, 600);
-
+            if (randomIndex.Next(2) == 0) { Game1.currentLocation.playSound("fireball"); }
             castFire = true;
 
         }
@@ -63,9 +57,16 @@ namespace StardewDruid.Cast.Stars
 
             }
 
-            ModUtility.Explode(targetLocation, targetVector, targetPlayer, meteorRange, riteData.castDamage, 2, Mod.instance.virtualPick, Mod.instance.virtualAxe);
+            List<Vector2> impactVectors = ModUtility.Explode(targetLocation, targetVector, targetPlayer, meteorRange, (int)(riteData.castDamage * 1.5), powerLevel:2);
 
-            if (randomIndex.Next(3) == 0) { Game1.currentLocation.playSound("fireball"); }
+            foreach(Vector2 vector in impactVectors)
+            {
+                
+                ModUtility.ImpactVector(targetLocation, vector);
+
+            }
+
+            if (randomIndex.Next(2) == 0) { Game1.currentLocation.playSound("flameSpellHit"); }
 
             castFire = true;
 

@@ -1,0 +1,11 @@
+// This Displays Mod Information To Console On Launch
+{
+  "Name": "Catastrophic Hunger Code",
+  "Author": "StarCat",
+  "Version": "0.0.1",
+  "Description": "<One or two sentences about the mod>",
+  "UniqueID": "StarCat.CatastrophicHungerCode",
+  "EntryDll": "StarcatCode.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

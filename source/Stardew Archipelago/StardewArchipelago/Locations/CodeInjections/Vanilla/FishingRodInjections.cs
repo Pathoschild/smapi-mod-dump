@@ -218,7 +218,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static void AddFishingTools(Dictionary<ISalable, int[]> fishShopStock)
         {
             var modData = Game1.getFarm().modData;
-            var receivedFishingRodLevel = _archipelago.GetReceivedItemCount(VanillaUnlockManager.PROGRESSIVE_FISHING_ROD_AP_NAME);
+            var receivedFishingRodLevel = _archipelago.GetReceivedItemCount(VanillaUnlockManager.PROGRESSIVE_FISHING_ROD);
             var isVanillaTools = !_archipelago.SlotData.ToolProgression.HasFlag(ToolProgression.Progressive);
             var fishingLevel = Game1.player.fishingLevel.Value;
             var priceMultiplier = _archipelago.SlotData.ToolPriceMultiplier;

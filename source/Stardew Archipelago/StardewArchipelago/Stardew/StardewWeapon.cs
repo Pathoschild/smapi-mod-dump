@@ -67,5 +67,20 @@ namespace StardewArchipelago.Stardew
         {
             return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveMeleeWeapon, Id.ToString());
         }
+
+        public override string ToString()
+        {
+            return $"{Name} [Level {((MeleeWeapon)PrepareForGivingToFarmer()).getItemLevel()} {GetWeaponType()}]";
+        }
+
+        private string GetWeaponType()
+        {
+            return Type switch
+            {
+                1 => "Dagger",
+                2 => "Club",
+                _ => "Sword",
+            };
+        }
     }
 }

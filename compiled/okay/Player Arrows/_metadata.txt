@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19479
+IDs: TheShamanLord.PlayerArrows
+update keys: Nexus:19479, GitHub:Jwaad/Stardew_Player_Arrows

@@ -9,6 +9,9 @@
 *************************************************/
 
 using System;
+using System.Diagnostics;
+using System.IO;
+using BirbCore.Attributes;
 using CoreBoy;
 using CoreBoy.sound;
 using Microsoft.Xna.Framework.Audio;
@@ -18,70 +21,122 @@ namespace GameboyArcade
 {
     class GameboySoundOutput : ISoundOutput, IDisposable
     {
-        private const int BUFFER_SIZE = 2048;
+        private const int BUFFER_SIZE = 1024;
         private readonly int DIVIDER = Gameboy.TicksPerSec / 22050;
 
-        private byte[] Buffer;
-        private SoundEffect SoundEffect;
+        const int RIFF_ENCODING = 0x46464952;
+        const int WAVE_ENCODING = 0x45564157;
+        const int FMT_ENCODING = 0x20746D66;
+        const int DATA_ENCODING = 0x61746164;
+        const int FORMAT_CHUNK_SIZE = 16;
+        const int HEADER_SIZE = 8;
+        const short FORMAT_TYPE = 1;
+        const short CHANNELS = 2;
+        const int SAMPLES_PER_SECOND = 12000;
+        const short BITS_PER_SAMPLE = 8;
+        const short FRAME_SIZE = CHANNELS * ((BITS_PER_SAMPLE + 7) / 8);
+        const int BYTES_PER_SECOND = SAMPLES_PER_SECOND * CHANNELS * BITS_PER_SAMPLE / 8;
+        const int WAVE_SIZE = 4;
+        const int SAMPLES = BUFFER_SIZE / 2;
+        const int DATA_CHUNK_SIZE = SAMPLES * FRAME_SIZE;
+        const int FILE_SIZE = WAVE_SIZE + HEADER_SIZE + FORMAT_CHUNK_SIZE + HEADER_SIZE + DATA_CHUNK_SIZE;
 
-        private int i;
-        private int tick;
+
+        private int I;
+        private long Generated = 0;
+        private int Tick;
+        private readonly Stopwatch Stopwatch = new Stopwatch();
+        private MemoryStream Stream;
+        private BinaryWriter Writer;
+        private SoundEffectInstance Sound;
 
         public GameboySoundOutput()
         {
-            this.Buffer = new byte[BUFFER_SIZE];
+            this.Stream = new MemoryStream(FILE_SIZE);
+            this.Writer = new BinaryWriter(this.Stream);
+            this.Writer.Write(RIFF_ENCODING);
+            this.Writer.Write(FILE_SIZE);
+            this.Writer.Write(WAVE_ENCODING);
+            this.Writer.Write(FMT_ENCODING);
+            this.Writer.Write(FORMAT_CHUNK_SIZE);
+            this.Writer.Write(FORMAT_TYPE);
+            this.Writer.Write(CHANNELS);
+            this.Writer.Write(SAMPLES_PER_SECOND);
+            this.Writer.Write(BYTES_PER_SECOND);
+            this.Writer.Write(FRAME_SIZE);
+            this.Writer.Write(BITS_PER_SAMPLE);
+            this.Writer.Write(DATA_ENCODING);
+            this.Writer.Write(DATA_CHUNK_SIZE);
         }
 
-        public void Play(int left, int right)
+        public void Play(byte left, byte right)
         {
-            if (this.tick++ != 0)
+            if (this.Tick++ != 0)
             {
-                this.tick %= this.DIVIDER;
+                this.Tick %= this.DIVIDER;
                 return;
             }
 
-            // TODO: make play signiture provide bytes
+            // TODO: correct conversion to unsigned waveform
+            this.Writer.Write((byte)(left + 127));
+            this.Writer.Write((byte)(right + 127));
+            this.I += 2;
 
-            this.Buffer[this.i++] = 0;
-            this.Buffer[this.i++] = (byte)left;
-            this.Buffer[this.i++] = 0;
-            this.Buffer[this.i++] = (byte)right;
-
-            if (this.i >= BUFFER_SIZE)
+            if (this.I >= BUFFER_SIZE)
             {
-                this.SoundEffect.Dispose();
-                this.SoundEffect = new SoundEffect((byte[])this.Buffer.Clone(), ModEntry.Config.MusicSampleRate, AudioChannels.Stereo);
-                // TODO: look into SoundEffect.CreateHandle.  Maybe I can use 8bit PCM natively
-                this.SoundEffect.Play();
+                this.Stream.Seek(0, SeekOrigin.Begin);
 
-                this.i = 0;
-                for (int i = 0; i < BUFFER_SIZE; i++)
+                while (this.Sound is not null && this.Sound.State == SoundState.Playing)
                 {
-                    this.Buffer[i] = 0;
+                    continue;
+                }
+                this.Sound?.Dispose();
+
+                this.Sound = SoundEffect.FromStream(this.Stream).CreateInstance();
+                this.Sound.Play();
+
+                this.Stream.DisposeAsync();
+                this.Stream = new MemoryStream(FILE_SIZE);
+                this.Writer.DisposeAsync();
+                this.Writer = new BinaryWriter(this.Stream);
+
+                this.Writer.Write(RIFF_ENCODING);
+                this.Writer.Write(FILE_SIZE);
+                this.Writer.Write(WAVE_ENCODING);
+                this.Writer.Write(FMT_ENCODING);
+                this.Writer.Write(FORMAT_CHUNK_SIZE);
+                this.Writer.Write(FORMAT_TYPE);
+                this.Writer.Write(CHANNELS);
+                this.Writer.Write(SAMPLES_PER_SECOND);
+                this.Writer.Write(BYTES_PER_SECOND);
+                this.Writer.Write(FRAME_SIZE);
+                this.Writer.Write(BITS_PER_SAMPLE);
+                this.Writer.Write(DATA_ENCODING);
+                this.Writer.Write(DATA_CHUNK_SIZE);
+
+                this.I = 0;
+                this.Generated++;
+                if (this.Generated % 100 == 0)
+                {
+                    Log.Info($"{this.Stopwatch.Elapsed.TotalMilliseconds / 100} ms per sound frame");
+                    this.Stopwatch.Restart();
                 }
             }
+
         }
 
         public void Start()
         {
-            for (int i = 0; i < BUFFER_SIZE; i++)
-            {
-                this.Buffer[i] = 0;
-            }
-            this.SoundEffect = new SoundEffect((byte[])this.Buffer.Clone(), ModEntry.Config.MusicSampleRate, AudioChannels.Stereo);
         }
 
         public void Stop()
         {
-            this.SoundEffect.Dispose();
         }
 
         public void Dispose()
         {
-            if (this.SoundEffect is not null && !this.SoundEffect.IsDisposed)
-            {
-                this.SoundEffect.Dispose();
-            }
+            //this.Stream.Dispose();
+            //this.Writer.Dispose();
         }
     }
 }

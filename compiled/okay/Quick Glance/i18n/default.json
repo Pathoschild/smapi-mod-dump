@@ -1,0 +1,6 @@
+{
+	"config.zoomlevel": "Zoom level",
+	"config.togglezoom": "Toggle on press",
+	"config.zoomkeys": "Keybinds",
+	"config.warn": "Generic Mod Config Menu is outdated! Please update to {{v}} or newer!"
+}

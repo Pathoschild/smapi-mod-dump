@@ -23,7 +23,7 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Hooks
 			if (!ModEntry.Config.ClintsShopGeodesAutoProcess)
 				return;
 
-			if (GeodesAutoProcessUtility.IsProcessing() && GeodesAutoProcessUtility.GetGeodeMenu().geodeAnimationTimer <= 0)
+			if (GeodesAutoProcessUtility.IsProcessing() && GeodesAutoProcessUtility.GeodeMenu.geodeAnimationTimer <= 0)
 				GeodesAutoProcessUtility.CrackGeodeSecure();
 		}
 	}

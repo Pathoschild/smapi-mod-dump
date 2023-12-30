@@ -22,7 +22,7 @@ namespace Swim
         private string myCollisionSound;
         private bool myExplode;
 
-        public AbigailProjectile(int damageToFarmer, int ParentSheetIndex, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, Character firer = null, bool spriteFromObjectSheet = false, BasicProjectile.onCollisionBehavior collisionBehavior = null) : base(damageToFarmer, ParentSheetIndex, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, firingSound, explode, true, location, firer, true, null)
+        public AbigailProjectile(int damageToFarmer, int ParentSheetIndex, int bouncesTillDestruct, int tailLength, float rotationVelocity, float xVelocity, float yVelocity, Vector2 startingPosition, string collisionSound, string bounceSound, string firingSound, bool explode, bool damagesMonsters = false, GameLocation location = null, Character firer = null, onCollisionBehavior collisionBehavior = null, string shotItemId = null) : base(damageToFarmer, ParentSheetIndex, bouncesTillDestruct, tailLength, rotationVelocity, xVelocity, yVelocity, startingPosition, collisionSound, bounceSound, firingSound, explode, true, location, firer, null, null)
         {
             IgnoreLocationCollision = true;
             myCollisionSound = collisionSound;
@@ -38,9 +38,9 @@ namespace Swim
                 return;
             }
         }
-        private void explosionAnimation(GameLocation location)
+        protected override void explosionAnimation(GameLocation location)
         {
-            Rectangle sourceRect = Game1.getSourceRectForStandardTileSheet(spriteFromObjectSheet.Value ? Game1.objectSpriteSheet : Projectile.projectileSheet, currentTileSheetIndex.Value, -1, -1);
+            Rectangle sourceRect = GetSourceRect();
             sourceRect.X += 28;
             sourceRect.Y += 28;
             sourceRect.Width = 8;
@@ -76,9 +76,9 @@ namespace Swim
                     }
                     break;
             }
-            if (spriteFromObjectSheet.Value)
+            if (itemId.Value != null)
             {
-                Game1.createRadialDebris(location, whichDebris, (int)(position.X + 32f) / 64, (int)(position.Y + 32f) / 64, 6, false, -1, false, -1);
+                Game1.createRadialDebris(location, whichDebris, (int)(position.X + 32f) / 64, (int)(position.Y + 32f) / 64, 6, false, -1, false);
             }
             else
             {
@@ -86,7 +86,7 @@ namespace Swim
             }
             if (myCollisionSound != null && !myCollisionSound.Equals(""))
             {
-                location.playSound(myCollisionSound, NetAudio.SoundContext.Default);
+                location.playSound(myCollisionSound);
             }
             destroyMe = true;
 

@@ -38,14 +38,11 @@
 
   "sign.text.welcome": "Derin Ormana giriyorsunuz. Hazır değilseniz çok derine inmeyin. Sizden önceki birçok kişi kayboldu ya da daha kötüsünü yaşadı. Uyarıldınız.",
 
-  "sign.text.random.1": "Bu bölgede salyangoz var.",
-  "sign.text.random.2": "Çok dikkatli ve çok şanslıysanız, güneşli bir günde tek boynuzlu atla karşılaşabilirsiniz.",
-  "sign.text.random.3": "Bu ormanda bir yerlerde taşa saplanmış bir kılıç var. Yüzyıllardır orada. Kimse onu çıkaramayacak gibi görünüyor.",
-  "sign.text.random.4": "Geri dönüş yolunu bulamıyorum. Belki tabela asmak bana yardımcı olur. Yoksa sen de mi kayboldun?",
-  "sign.text.random.5": "O dikenli çalılarla uğraşma. Bence yıkılamazlar. Onlardan kurtulmak için ancak bir bomba gerekir. Ama ormana kim bomba getirir ki...",
-  "sign.text.random.6": "Bu ormanlar perili. Yemin ederim bir gece hayalet gördüm.",
-  "sign.text.random.7": "Yiyeceklerden yapılmış bir ev buldum. Hem de ormanın ortasında! Hepsini kestim, bu hafta da karnımızı doyurduk.",
-  "sign.text.random.8": "Joja'nın ormandaki otoyol planlarına HAYIR! YIKIMI DURDURUN!",
+  "maxhouse.books.random.1": "Çok dikkatli ve çok şanslıysanız, güneşli bir günde tek boynuzlu atla karşılaşabilirsiniz.",
+  "maxhouse.books.random.2": "Bu ormanda bir yerlerde taşa saplanmış bir kılıç var. Yüzyıllardır orada. Kimse onu çıkaramayacak gibi görünüyor.",
+  "maxhouse.books.random.3": "O dikenli çalılarla uğraşma. Onlardan kurtulmak için ancak bir bomba gerekir. Ama ormana kim bomba getirir ki...",
+  "maxhouse.books.random.4": "Bu ormanlar perili. Yemin ederim bir gece hayalet gördüm.",
+  "maxhouse.books.random.5": "Yiyeceklerden yapılmış bir ev buldum. Hem de ormanın ortasında! Hepsini kestim, bu hafta da karnımızı doyurduk.",
 
   "sign.text.item-marker": "Bu işareti gezginler için bırakıyorum. Artık yaşlandım ve hafızam siliniyor, ama buralarda bir yere {item} gömdüğümü hala hatırlıyorum.",
   "sign.text.clearing-marker": "{NSWE} yönünde bir açıklık gördüm. Ne kadar uzaktaydı hatırlayamıyorum. Sağlıcakla kal, dostum.",

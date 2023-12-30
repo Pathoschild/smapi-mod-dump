@@ -36,8 +36,7 @@ internal static class FarmerExtensions
     /// <returns><see langword="true"/> if the <paramref name="farmer"/> has the specified <paramref name="profession"/>, otherwise <see langword="false"/>.</returns>
     internal static bool HasProfession(this Farmer farmer, IProfession profession, bool prestiged = false)
     {
-        if (prestiged && !(profession is Profession ||
-                           (profession is SCProfession custom && ((SCSkill)custom.Skill).CanPrestige)))
+        if (prestiged && !profession.ParentSkill.CanGainPrestigeLevels())
         {
             return false;
         }
@@ -71,7 +70,7 @@ internal static class FarmerExtensions
 
     /// <summary>Determines whether the <paramref name="farmer"/> has all available professions (vanilla + modded).</summary>
     /// <param name="farmer">The <see cref="Farmer"/>.</param>
-    /// <param name="includeCustom">Whether to include <see cref="SCProfession"/>s in the count.</param>
+    /// <param name="includeCustom">Whether to include <see cref="CustomProfession"/>s in the count.</param>
     /// <returns><see langword="true"/> only if the <paramref name="farmer"/> has all 30 vanilla professions, otherwise <see langword="false"/>.</returns>
     internal static bool HasAllProfessions(this Farmer farmer, bool includeCustom = false)
     {
@@ -81,7 +80,7 @@ internal static class FarmerExtensions
             return false;
         }
 
-        return !includeCustom || SCProfession.List
+        return !includeCustom || CustomProfession.List
             .Select(p => p.Id)
             .All(farmer.professions.Contains);
     }
@@ -96,7 +95,7 @@ internal static class FarmerExtensions
     {
         return farmer.HasProfession(profession, prestiged) ||
                (ProfessionsModule.Config.LaxOwnershipRequirements &&
-                Game1.game1.DoesAnyPlayerHaveProfession(profession, out _, prestiged));
+                Game1.game1.DoesAnyPlayerHaveProfession(profession, prestiged));
     }
 
     /// <summary>
@@ -123,7 +122,7 @@ internal static class FarmerExtensions
     /// <param name="farmer">The <see cref="Farmer"/>.</param>
     /// <param name="branch">The branch (level 5 <see cref="IProfession"/>) to check.</param>
     /// <returns>The last acquired profession index, or -1 if none was found.</returns>
-    internal static int GetCurrentProfessionForBranch(this Farmer farmer, IProfession branch)
+    internal static int GetCurrentLeafProfessionForBranch(this Farmer farmer, IProfession branch)
     {
         var current = farmer.professions
             .Intersect(branch.BranchingProfessions
@@ -133,7 +132,7 @@ internal static class FarmerExtensions
             .DefaultIfEmpty(-1)
             .Last();
 
-        var allPrestiged = Profession.GetRange(true).Concat(SCProfession.GetAllIds(true)).ToHashSet();
+        var allPrestiged = Profession.GetRange(true).Concat(CustomProfession.GetAllIds(true)).ToHashSet();
         return allPrestiged.Contains(current) ? current - 100 : current;
     }
 
@@ -148,8 +147,8 @@ internal static class FarmerExtensions
         return farmer.professions
             .Intersect(excludeTierOneProfessions ? skill.TierTwoProfessionIds : skill.ProfessionIds)
             .Select<int, IProfession>(id =>
-                SCSkill.Loaded.ContainsKey(skill.StringId)
-                    ? SCProfession.Loaded[id]
+                CustomSkill.Loaded.ContainsKey(skill.StringId)
+                    ? CustomProfession.Loaded[id]
                     : Profession.FromValue(id)).ToArray();
     }
 
@@ -191,7 +190,7 @@ internal static class FarmerExtensions
     internal static void RevalidateUltimate(this Farmer farmer)
     {
         var currentIndex = farmer.Read(DataKeys.UltimateIndex, -1);
-        if (currentIndex > 0 && !ProfessionsModule.Config.EnableLimitBreaks)
+        if (currentIndex > 0 && !ProfessionsModule.Config.Limit.EnableLimitBreaks)
         {
             Log.W(
                 $"[PRFS]: {farmer.Name} has non-null Limit Break but Limit Breaks are not enabled. The registered Limit Break will be reset.");

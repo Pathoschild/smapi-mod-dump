@@ -42,7 +42,7 @@ internal sealed class CrabPotDayUpdatePatcher : HarmonyPatcher
         {
             var owner = __instance.GetOwner();
             var isConservationist = ProfessionsModule.Config.LaxOwnershipRequirements
-                ? Game1.game1.DoesAnyPlayerHaveProfession(Profession.Conservationist, out _)
+                ? Game1.game1.DoesAnyPlayerHaveProfession(Profession.Conservationist)
                 : owner.HasProfession(Profession.Conservationist);
             if ((__instance.bait.Value is null && !isConservationist) || __instance.heldObject.Value is not null)
             {
@@ -53,7 +53,7 @@ internal sealed class CrabPotDayUpdatePatcher : HarmonyPatcher
             var fishData =
                 Game1.content.Load<Dictionary<int, string>>("Data\\Fish");
             var isLuremaster = ProfessionsModule.Config.LaxOwnershipRequirements
-                ? Game1.game1.DoesAnyPlayerHaveProfession(Profession.Luremaster, out _)
+                ? Game1.game1.DoesAnyPlayerHaveProfession(Profession.Luremaster)
                 : owner.HasProfession(Profession.Luremaster);
             var whichFish = -1;
             if (__instance.bait.Value is not null)
@@ -89,16 +89,39 @@ internal sealed class CrabPotDayUpdatePatcher : HarmonyPatcher
             {
                 if (__instance.bait.Value is not null || isConservationist)
                 {
-                    whichFish = __instance.GetTrash(location, r);
-                    if (isConservationist && whichFish.IsTrashIndex())
+                    if (owner.HasProfession(Profession.Conservationist, true))
                     {
-                        var isPrestiged = owner.HasProfession(Profession.Conservationist, true);
-                        owner.Increment(DataKeys.ConservationistTrashCollectedThisSeason, isPrestiged ? 1.5f : 1f);
-                        if ((int)owner.Read<float>(DataKeys.ConservationistTrashCollectedThisSeason) %
-                            ProfessionsModule.Config.TrashNeededPerFriendshipPoint ==
-                            0)
+                        var isSpecialOceanographerCondition =
+                            Game1.IsRainingHere(location) || Game1.IsLightningHere(location) ||
+                            Game1.dayOfMonth == 15;
+                        if (isSpecialOceanographerCondition || r.NextDouble() < 0.1)
                         {
-                            Utility.improveFriendshipWithEveryoneInRegion(owner, 1, 2);
+                            whichFish = __instance.ChooseTrapFish(fishData, location, r, false);
+                        }
+
+                        if (whichFish >= 0 && isSpecialOceanographerCondition)
+                        {
+                            fishQuantity = __instance.GetTrapQuantity(whichFish, owner, r, true);
+                            fishQuality = __instance.GetTrapQuality(whichFish, owner, r, false) + 1;
+                            if (fishQuality is 3 or > 4)
+                            {
+                                fishQuality = 4;
+                            }
+                        }
+                    }
+
+                    if (whichFish < 0)
+                    {
+                        whichFish = __instance.GetTrash(location, r);
+                        if (isConservationist && whichFish.IsTrashIndex())
+                        {
+                            owner.Increment(DataKeys.ConservationistTrashCollectedThisSeason, 1f);
+                            if ((int)owner.Read<float>(DataKeys.ConservationistTrashCollectedThisSeason) %
+                                ProfessionsModule.Config.TrashNeededPerFriendshipPoint ==
+                                0)
+                            {
+                                Utility.improveFriendshipWithEveryoneInRegion(owner, 1, 2);
+                            }
                         }
                     }
                 }
@@ -111,8 +134,19 @@ internal sealed class CrabPotDayUpdatePatcher : HarmonyPatcher
                          .IsAnyOf(14, 51, 516, 517, 518, 519, 527, 529, 530, 531, 532, 533, 534))
             {
                 // not ring or weapon
+                var isSpecialOceanographerCondition = owner.HasProfession(Profession.Conservationist, true) &&
+                    (Game1.IsRainingHere(location) || Game1.IsLightningHere(location) ||
+                    Game1.dayOfMonth == 15);
+                fishQuantity = __instance.GetTrapQuantity(whichFish, owner, r, isSpecialOceanographerCondition);
                 fishQuality = __instance.GetTrapQuality(whichFish, owner, r, isLuremaster);
-                fishQuantity = __instance.GetTrapQuantity(whichFish, owner, r);
+                if (isSpecialOceanographerCondition)
+                {
+                    fishQuantity += 1;
+                    if (fishQuality is 3 or > 4)
+                    {
+                        fishQuality = 4;
+                    }
+                }
             }
 
             __instance.heldObject.Value = new SObject(whichFish, fishQuantity, quality: fishQuality);

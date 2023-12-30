@@ -9,9 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
-using StardewValley.TerrainFeatures;
 using System;
 
 namespace StardewDruid.Cast
@@ -57,8 +55,8 @@ namespace StardewDruid.Cast
         }
 
         public virtual void CastEffect()
-        { 
-        
+        {
+
         }
 
 

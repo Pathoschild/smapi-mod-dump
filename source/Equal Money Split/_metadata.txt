@@ -6,11 +6,11 @@ mods:
    Equal Money Split
 
 latest commit:
-   commit 3845aa0ac6763de811f9328e1fe5343898ff2b33
+   commit 73b0f677d526b66257f92f60a07547a89d9a1264
    Author: James Pfluger <me@jamespfluger.com>
-   Date:   Tue Jun 28 23:03:58 2022 -0700
+   Date:   Fri Dec 29 21:39:41 2023 -0800
    
-       Merge pull request #29 from jamespfluger/dependabot/nuget/EqualMoneySplit/Newtonsoft.Json-13.0.1
+       Merge pull request #30 from jamespfluger/update-for-v1.6
        
-       Bump Newtonsoft.Json from 12.0.3 to 13.0.1 in /EqualMoneySplit
+       update for upcoming SDV update
    

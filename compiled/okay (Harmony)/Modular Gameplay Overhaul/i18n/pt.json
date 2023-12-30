@@ -52,7 +52,7 @@
   "lumberjack.desc.prestiged": "Árvores derrubadas rendem 25% >> 40% mais madeira.",
   "arborist.title.male": "Arborista",
   "arborist.title.female": "Arborista",
-  "arborist.desc": "Todas as árvores crescem mais rápido. Árvores normais podem render madeira da lei.",
+  "arborist.desc": "As árvores crescem mais rápido se plantadas manualmente. Todas as árvores podem render madeira da lei.",
   "arborist.desc.prestiged": "Árvores normais rendem o dobro de madeira da lei.",
   "tapper.title.male": "Seringueiro",
   "tapper.title.female": "Seringueira",
@@ -93,10 +93,10 @@
   // fishing
   "fisher.title.male": "Pescador",
   "fisher.title.female": "Pescadora",
-  "fisher.desc": "As iscas são 2x mais eficazes na pesca.",
-  "fisher.desc.prestiged": "As iscas são 2x >> 3x mais eficazes na pesca.",
-  "angler.title.male": "Mestre pescador",
-  "angler.title.female": "Mestra pescadora",
+  "fisher.desc": "As iscas são 2× mais eficazes na pesca.",
+  "fisher.desc.prestiged": "As iscas são 2× >> 3× mais eficazes na pesca.",
+  "angler.title.male": "Pescante",
+  "angler.title.female": "Pescanta",
   "angler.desc": "Os peixes são 0,5% mais valiosos para cada espécie única de peixe capturada. Gastar totalmente um equipamento faz com que seus efeitos permaneçam na vara de pescar.",
   "angler.desc.prestiged": "Os peixes são outros 0,5% mais valiosos para cada espécie única de peixe de tamanho máximo capturada.",
   "aquarist.title.male": "Aquarista",
@@ -111,11 +111,11 @@
   "luremaster.title.male": "Mestre da isca",
   "luremaster.title.female": "Mestra da isca",
   "luremaster.desc": "Covos com iscas podem capturar peixes duas vezes por dia. Permite o desfruto de novos efeitos de isca.",
-  "luremaster.desc.prestiged": "Covos com iscas podem capturar peixes 2x >> 3x por dia.",
+  "luremaster.desc.prestiged": "Covos com iscas podem capturar peixes 2× >> 3× por dia.",
   "conservationist.title.male": "Ambientalista",
   "conservationist.title.female": "Ambientalista",
   "conservationist.desc": "Covos sem isca podem prender lixo. Limpar as águas do Vale confere deduções fiscais e o favor da aldeia.",
-  "conservationist.desc.prestiged": "As deduções fiscais acumulam 50% mais rápido.",
+  "conservationist.desc.prestiged": "Covos sem isca podem capturar peixes. Durante dias chuvosos ou de lua cheia, podem capturar grandes cardumes de peixes.",
   "conservationist.mail": "Ministério da Fazenda^Secretaría da Receita Federal de Ferngill^^^{{honorific}} @,^^Temos o prazer de informar que, após análise de suas atividades ambientalistas, determinamos que você se qualifica para uma dedução de imposto de renda de {{taxBonus}} de acordo com a seção 501(c)(3) do Código de Receita de Tributos e Contribuições de Ferngill. Como tal, todos os rendimentos tributáveis ​​de {{farm}} serão aumentados pelo valor supracitado, válido durante a atual temporada de {{season}}.^^Por favor, mantenha esta carta em seus registros permanentes caso precise resolver quaisquer questões sobre sua situação fiscal.^^^Atenciosamente,^^Laura D. Pretto^Diretora Executiva, Secretaría da Receita Federal de Ferngill[#]Aviso de dedução",
   "conservationist.mail.max": "Ministério da Fazenda^Secretaría da Receita Federal de Ferngill^^^{{honorific}} @,^^Temos o prazer de informar que, após análise de suas atividades ambientalistas, determinamos que você se qualifica para a dedução máxima de imposto de renda de {{taxBonus}} acordo com a seção 501(c)(3) do Código de Receita de Tributos e Contribuições de Ferngill. Como tal, todos os rendimentos tributáveis ​​de {{farm}} serão aumentados pelo valor supracitado, válido durante a atual temporada de {{season}}.^^Por favor, mantenha esta carta em seus registros permanentes caso precise resolver quaisquer questões sobre sua situação fiscal.^^^Atenciosamente,^^Laura D. Pretto^Diretora Executiva, Secretaría da Receita Federal de Ferngill[#]Aviso de dedução",
 
@@ -133,7 +133,7 @@
   "poacher.title.male": "Guerrilheiro",
   "poacher.title.female": "Guerrilheira",
   "poacher.desc": "Chance crítica +50%. Chance de afanar um item dos inimigos a cada ataque.",
-  "poacher.desc.prestiged": "Restaura o tempo de recarga dos golpes especiais ao afanar um item.",
+  "poacher.desc.prestiged": "Os inimigos podem ser afanados duas vezes. Inflinge envenenamento ao afanar um inimigo.",
 
   "rascal.title.male": "Patife",
   "rascal.title.female": "Patife",
@@ -195,11 +195,14 @@
   "prestige.level_up.tooltip:5": "Você já possui todas as profissões neste ramo.",
   "prestige.level_up.tooltip:10": "Você já possui esta profissão.",
   "prestige.level_up.question": "Você está usando o(a) {{oldUltimate}} da profissão {{oldProfession}}. Deseja trocar pela(o) {{newUltimate}} da profissão {{newProfession}}?",
-  "prestige.level_up.unlocked": "Você agora pode continuar desenvolvendo a sua habilidade {{skill}} ainda mais.",
-  "prestige.level_up.prestige": "Escolha uma profissão para prestigiar:",
+  "prestige.level_up.unlocked.standard": "Você agora pode continuar desenvolvendo a sua habilidade {{skill}} ainda mais.",
+  "prestige.level_up.unlocked.challenge": "Você agora pode continuar desenvolvendo as suas habilidades ainda mais.",
+  "prestige.level_up.choose": "Escolha uma profissão para prestigiar:",
+  "prestige.level_up.streamlined": "Gained Prestige",
   "prestige.achievement.title.male": "Mestre dos Cinco Ofícios",
   "prestige.achievement.title.female": "Mestra dos Cinco Ofícios",
-  "prestige.achievement.desc": "Adquira todas as profissões em todas as habilidades.",
+  "prestige.achievement.desc.male": "Transcenda os limites de um fazendeiro comum.",
+  "prestige.achievement.desc.female": "Transcenda os limites de uma fazendeira comum.",
 
 
   // *********** //
@@ -342,6 +345,13 @@
   "global.infinitycraft": "{{who}} forjou um Anel do Infinito.",
   "resonance": "Resonância",
 
+  "dialogue.emily.gemstones.first": "Have you ever noticed how gemstones can evoke different feelings? Like the calmness of a topaz or the vibrant energy of a ruby.#$b#Gemstones have this incredible way of resonating with our energies. It's like nature's palette of emotions.",
+  "dialogue.emily.gemstones.second": "Every gemstone has a different vibration. When you connect with a gemstone, it resonates with the frequencies of our internal emotions.#$b#If you listen closely, you can even hear it!",
+  "dialogue.emily.gemstones.third": "How do you connect with a gemstone?#$b#$h#By keeping it close to you, of course!#$b#$0$#You can wear it as a ring or a necklace and carry it around with you. It's like having a little piece of nature's harmony with you wherever you go!",
+  "dialogue.emily.gemstones.fourth": "Most jewelry can only house one gemstone.#$b#Clint says it's because most metals aren't strong enough to resist the vibrations of multiple gemstones.",
+  "dialogue.qi.gemstones.first": "I see you've made yourself a couple of Iridium Bands.#$b#Have you discovered their true purpose?",
+  "dialogue.qi.gemstones.second": "It may not seem like much, but combined wth some cosmic power the Iridium Band can become extraordinarily powerful...",
+
   // json-assets
   "gems.garnet.name": "Granada",
   "gems.garnet.description": "O homônimo de uma linda princesa de uma terra distante.",
@@ -463,6 +473,9 @@
 
   // professions
   "gmcm.pages.prfs": "Professions",
+  "gmcm.pages.prfs.limit": "Limit Break Settings",
+  "gmcm.pages.prfs.prestige": "Prestige Settings",
+  "gmcm.pages.prfs.experience": "Experience Settings",
 
   "gmcm.sections.prfs.general": "General Profession Settings",
   "gmcm.should_junimos_inherit_professions.title": "Should Junimos Inherit Professions",
@@ -517,8 +530,8 @@
   "gmcm.limit_break_key.desc": "The key used to activate the Limit Break.",
   "gmcm.hold_key_to_limit_break.title": "Hold-To-Activate",
   "gmcm.hold_key_to_limit_break.desc": "If enabled, the Limit Break will be activated by holding the Activation Key for a short interval, instead of activating immediately.",
-  "gmcm.limit_break_hold_delay_milliseconds.title": "Activation Delay",
-  "gmcm.limit_break_hold_delay_milliseconds.desc": "How long the key should be held before the Limit Break is activated, in seconds.",
+  "gmcm.hold_delay_milliseconds.title": "Activation Delay",
+  "gmcm.hold_delay_milliseconds.desc": "How long the key should be held before the Limit Break is activated, in seconds.",
   "gmcm.limit_gain_factor.title": "Gain Factor",
   "gmcm.limit_gain_factor.desc": "Affects the rate at which one builds the Limit Break gauge (higher is faster).",
   "gmcm.limit_drain_factor.title": "Drain Factor",
@@ -529,8 +542,13 @@
   "gmcm.limit_gauge_offset.desc": "Use this to adjust the X and Y coordinates of the Limit Gauge if using other mods which also add HUD bars.",
 
   "gmcm.sections.prfs.prestige": "Skill Reset & Prestige",
-  "gmcm.enable_prestige.title": "Enable Prestige",
-  "gmcm.enable_prestige.desc": "Must be enabled to allow all prestige modifications.",
+  "gmcm.mode.title": "Prestige Mode",
+  "gmcm.mode.desc": "Determines whether the Prestige system is enabled, and if so, the paradigms of how it should function.\nNone - All prestige systems disabled.\nStandard - Prestige levels for each skill unlocked after acquiring all professions in that skill.\nChallenge - Prestige levels for all skills unlocked after acquiring all professions in every skill.\nStreamlined - Prestige levels unlocked immediately at level 10, but can only acquire one profession per skill.\nAll Professions - Prestige levels disabled, but can still reset to acquire all professions.",
+  "gmcm.prestige_mode.none": "None",
+  "gmcm.prestige_mode.standard": "Standard",
+  "gmcm.prestige_mode.streamlined": "Streamlined",
+  "gmcm.prestige_mode.challenge": "Challenge",
+  "gmcm.prestige_mode.capped": "Capped",
   "gmcm.skill_reset_cost_multiplier.title": "Skill Reset Cost Multiplier",
   "gmcm.skill_reset_cost_multiplier.desc": "Multiplies the base cost reseting a skill at the Statue of Prestige. Set to 0 to reset for free.",
   "gmcm.forget_recipes_on_skill_reset.title": "Forget Recipes on Skill Reset",
@@ -541,19 +559,15 @@
   "gmcm.exp_bonus_per_skill_reset.desc": "A percentage bonus applied to a skill's experience gain after a respective skill prestige. Negative values mean it becomes harder to regain those levels.",
   "gmcm.prestige_respec_cost.title": "Cost of Prestige Respec",
   "gmcm.prestige_respec_cost.desc": "Monetary cost of respecing prestige profession choices for a skill. Set to 0 to respec for free.",
-  "gmcm.prestige_progression_style.title": "Progression Style",
-  "gmcm.prestige_progression_style.desc": "Determines the style of the sprite that appears next to skill bars, and indicates the skill reset progression.",
-  "gmcm.progression_style.stackedstars": "Stacked Stars",
-  "gmcm.progression_style.gen3ribbons": "Gen 3 Ribbons",
-  "gmcm.progression_style.gen4ribbons": "Gen 4 Ribbons",
-
-  "gmcm.enable_extended_progression.title": "Enable Extended Progression",
-  "gmcm.enable_extended_progression.desc": "Must be enabled to allow progression until level 20.",
-  "gmcm.required_exp_per_extended_level.title": "Required Exp per Extended Level",
-  "gmcm.required_exp_per_extended_level.desc": "How much skill experience is required for each level-up above level 10.",
-
-  "gmcm.extended_perfection_requirement.title": "Extended Perfection Requirement",
-  "gmcm.extended_perfection_requirement.desc": "If enabled, the Farmer Level perfection requirement is replaced with Skill Mastery, meaning level 20 in all 5 vanilla skills if Extended Progression is enabled, or have obtained all 30 vanilla professions if not.",
+  "gmcm.ribbon.title": "Progression Style",
+  "gmcm.ribbon.desc": "Determines the style of the sprite that appears next to skill bars, and indicates the skill reset progression.",
+  "gmcm.ribbon_style.stacked_stars": "Stacked Stars",
+  "gmcm.ribbon_style.gen3_ribbons": "Gen 3 Ribbons",
+  "gmcm.ribbon_style.gen4_ribbons": "Gen 4 Ribbons",
+  "gmcm.exp_per_extended_level.title": "Required Exp per Extended Level",
+  "gmcm.exp_per_extended_level.desc": "How much skill experience is required for each level-up above level 10.",
+  "gmcm.is_perfection_requirement.title": "Extended Perfection Requirement",
+  "gmcm.is_perfection_requirement.desc": "If enabled, the Farmer Level perfection requirement is replaced with Skill Mastery, meaning level 20 in all 5 vanilla skills if Extended Progression is enabled, or have obtained all 30 vanilla professions if not.",
 
   "gmcm.sections.prfs.experience": "Skill Experience Multipliers",
   "gmcm.skill_exp_multipliers.title": "Base {{skill}} Exp Multiplier",
@@ -572,8 +586,17 @@
   "gmcm.show_fish_collection_max_icon.title": "Show 'MAX' Icon in Fish Collection",
   "gmcm.show_fish_collection_max_icon.desc": "Toggles whether or not to display the 'Max' icon below fish caught at max size.",
 
+  "gmcm.go_to.prfs.limit": "Go to Limit Break Settings",
+  "gmcm.go_to.prfs.prestige": "Go to Prestige Settings",
+  "gmcm.go_to.prfs.experience": "Go to Experience Settings",
+  "gmcm.back_to.prfs": "Back to Profession settings",
+
   // combat
   "gmcm.pages.cmbt": "Combat",
+  "gmcm.pages.cmbt.enemies": "Enemy Encounter Settings",
+  "gmcm.pages.cmbt.quests": "Quest Settings",
+  "gmcm.pages.cmbt.rings_enchantments": "Ring & Enchantment Settings",
+  "gmcm.pages.cmbt.weapons_slingshots": "Weapon & Slingshot Settings",
 
   "gmcm.sections.cmbt.general": "General Combat Mechanics",
   "gmcm.new_resistance_formula.title": "New Resistance Formula",
@@ -585,9 +608,10 @@
   "gmcm.enable_status_conditions.title": "Enable Status Conditions",
   "gmcm.enable_status_conditions.desc": "Whether to enable status conditions like Burn and Stun on enemies. These are used by other modules.",
 
-  "gmcm.sections.cmbt.weapons": "Melee & Ranged Weapons",
-  "gmcm.enable_weapon_overhaul.title": "Enable Weapon Overhaul",
-  "gmcm.enable_weapon_overhaul.desc": "Rebalances every melee weapon and slingshot, in addition to changing Mine chests, monster and container drops, weapon shops and more. !! Please disable this setting before deactivating the Combat module. !!",
+  "gmcm.sections.cmbt.melee": "Melee Weapons",
+
+  "gmcm.enable_overhaul.title": "Enable Weapon Overhaul",
+  "gmcm.enable_overhaul.desc": "Rebalances every melee weapon and slingshot, in addition to changing Mine chests, monster and container drops, weapon shops and more. !! Please disable this setting before deactivating the Combat module. !!",
 
   "gmcm.woody_replaces_rusty.title": "Woody Replaces Rusty",
   "gmcm.woody_replaces_rusty.desc": "Replaces the starting Rusty Sword with a Wooden Blade.",
@@ -595,8 +619,8 @@
   "gmcm.enable_stabbing_swords.desc": "Replaces the defensive special move of some swords with an offensive lunge move. !! Please disable this setting before deactivating the Combat module. !!",
   "gmcm.stabbing_swords.title": "Stabbing Swords",
   "gmcm.stabbing_swords.desc": "Add to this list the names of swords that should be given the Stabbing Sword type.",
-  "gmcm.enable_melee_combo_hits.title": "Enable Melee Combo Hits",
-  "gmcm.enable_melee_combo_hits.desc": "Replaces vanilla weapon spam with a more strategic combo system.",
+  "gmcm.enable_combo_hits.title": "Enable Melee Combo Hits",
+  "gmcm.enable_combo_hits.desc": "Replaces vanilla weapon spam with a more strategic combo system.",
   "gmcm.combo_hits_per_weapon_type.stabbing_sword.title": "Stabbing Sword Combo Hits",
   "gmcm.combo_hits_per_weapon_type.stabbing_sword.desc": "The max. number of consecutive hits in a Stabbing Sword combo (if Stabbing Swords are enabled).",
   "gmcm.combo_hits_per_weapon_type.defense_sword.title": "Defense Sword Combo Hits",
@@ -609,6 +633,8 @@
   "gmcm.defense_improves_parry.desc": "Parry damage will increase for each point in defense.",
   "gmcm.grounded_club_smash.title": "Grounded Club Smash",
   "gmcm.grounded_club_smash.desc": "A club smash AoE will inflict guaranteed critical damage on burrowed enemies, but completely miss flying enemies.",
+
+  "gmcm.sections.cmbt.ranged": "Slingshots",
 
   "gmcm.enable_ranged_critical_hits.title": "Enable Ranged Critical Hits",
   "gmcm.enable_ranged_critical_hits.desc": "Allows slingshots to deal critical damage and be affected by critical modifiers.",
@@ -628,8 +654,8 @@
   "gmcm.enable_infinity_band.desc": "Makes Iridium Band useless, but adds the almighty Infinity Band. Required for Gemstone Resonance mechanics.",
   "gmcm.enable_gemstone_resonance.title": "Enable Gemstone Resonance",
   "gmcm.enable_gemstone_resonance.desc": "Allows gemstones to harmonize and resonate in close proximity of each other.",
-  "gmcm.play_chord.title": "Play Chord",
-  "gmcm.play_chord.desc": "Hear the chord formed by the Infinity Band every time it is equipped.",
+  "gmcm.audible_gemstones.title": "Audible Gemstones",
+  "gmcm.audible_gemstones.desc": "Hear the chord formed by the Infinity Band every time it is equipped.",
   "gmcm.chord_sound_duration.title": "Chord Sound Duration",
   "gmcm.chord_sound_duration.desc": "How long the chord sound should linger, in milliseconds.",
   "gmcm.colorful_resonances.title": "Colorful Resonance Glow",
@@ -710,7 +736,7 @@
   "gmcm.forge_socket_position.title": "Forge Socket Position",
   "gmcm.forge_socket_position.desc": "Determines the relative position where forge sockets should be drawn, if enabled.",
   "gmcm.socket_position.standard": "Standard",
-  "gmcm.socket_position.aboveseparator": "Above Separator",
+  "gmcm.socket_position.above_separator": "Above Separator",
   "gmcm.weapon_tooltip_style.title": "Weapon Tooltip Style",
   "gmcm.weapon_tooltip_style.desc": "Whether to display weapon stats as their absolute values or as relative to other weapons of the same type.",
   "gmcm.tooltip_style.vanilla": "Vanilla",
@@ -720,6 +746,12 @@
   "gmcm.draw_current_ammo.desc": "Draws the currently-selected ammo for a ranged weapon. Useful when equipping multiple ammo.",
   "gmcm.bullseye_replaces_cursor.title": "Bullseye Replaces Cursor",
   "gmcm.bullseye_replaces_cursor.desc": "Draws a bulls-eye instead of the mouse cursor while firing a slingshot. Does not support pull-back firing for obvious reasons.",
+
+  "gmcm.go_to.cmbt.enemies": "Go to Enemy Encounter Settings",
+  "gmcm.go_to.cmbt.quests": "Go to Quest Settings",
+  "gmcm.go_to.cmbt.rings_enchantments": "Go to Ring & Enchantment Settings",
+  "gmcm.go_to.cmbt.weapons_slingshots": "Go to Weapon & Slingshot Settings",
+  "gmcm.back_to.cmbt": "Back to Combat settings",
 
   // tools
   "gmcm.pages.tols": "Tools",
@@ -985,6 +1017,7 @@
   "gmcm.deterministic_age_quality.desc": "Whether age-dependent qualities should be deterministic (true) or stochastic (false).",
 
   // control & ui
+  "gmcm.pages.controls_ui": "Control & UI Settings",
   "gmcm.sections.controls_ui": "Controls & UI",
   "gmcm.face_mouse_cursor.title": "Face Towards Mouse Cursor",
   "gmcm.face_mouse_cursor.desc": "If using mouse and keyboard, turn to face towards the current cursor position before swinging.",

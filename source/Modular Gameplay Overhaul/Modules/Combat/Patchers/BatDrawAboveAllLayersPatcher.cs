@@ -14,7 +14,7 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers;
 
 using System.Collections.Generic;
 using System.Reflection;
-using DaLion.Overhaul.Modules.Combat.Extensions;
+using DaLion.Overhaul.Modules.Core.Extensions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;

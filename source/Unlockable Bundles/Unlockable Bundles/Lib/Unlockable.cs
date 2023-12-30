@@ -305,7 +305,7 @@ namespace Unlockable_Bundles.Lib
             _alreadyPaid.Add(requirement.Key, requirement.Value);
             _alreadyPaidIndex.Add(requirement.Key, index);
             ModData.setPartiallyPurchased(ID, LocationUnique, requirement.Key, requirement.Value, index);
-            ModEntry._API.raiseShopContributed(new API.BundlePurchasedEventArgs(Game1.player, Location, LocationUnique, ID, true));
+            ModEntry._API.raiseShopContributed(new API.BundleContributedEventArgs(Game1.player, new KeyValuePair<string, int>(requirement.Key, requirement.Value), Location, LocationUnique, ID, true));
             ModEntry._Helper.Multiplayer.SendMessage((UnlockableModel)this, "BundleContributed", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
         }
 

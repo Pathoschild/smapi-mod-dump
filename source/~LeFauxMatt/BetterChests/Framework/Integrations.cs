@@ -104,8 +104,8 @@ internal sealed class Integrations
         }
 
         if (Integrations.ModRegistry.IsLoaded(Integrations.WearMoreRingsId)
-         && location is Farm
-         && location.Objects.TryGetValue(new(0, -50), out var obj))
+            && location is Farm
+            && location.Objects.TryGetValue(new(0, -50), out var obj))
         {
             excluded.Add(obj);
         }
@@ -176,7 +176,7 @@ internal sealed class Integrations
     private static IEnumerable<Storage> ExpandedFridge_FromLocation(GameLocation location, ISet<object> excluded)
     {
         if (!Integrations.ModRegistry.IsLoaded(Integrations.ExpandedFridgeId)
-         || location is not FarmHouse { upgradeLevel: > 0 })
+            || location is not FarmHouse { upgradeLevel: > 0 })
         {
             yield break;
         }
@@ -201,10 +201,10 @@ internal sealed class Integrations
         foreach (var stable in farm.buildings.OfType<Stable>())
         {
             if (!stable.modData.TryGetValue($"{Integrations.HorseOverhaulId}/stableID", out var stableId)
-             || !int.TryParse(stableId, out var x)
-             || !farm.Objects.TryGetValue(new(x, 0), out var obj)
-             || obj is not Chest chest
-             || !chest.modData.ContainsKey($"{Integrations.HorseOverhaulId}/isSaddleBag"))
+                || !int.TryParse(stableId, out var x)
+                || !farm.Objects.TryGetValue(new(x, 0), out var obj)
+                || obj is not Chest chest
+                || !chest.modData.ContainsKey($"{Integrations.HorseOverhaulId}/isSaddleBag"))
             {
                 continue;
             }
@@ -242,11 +242,11 @@ internal sealed class Integrations
         var farm = Game1.getFarm();
         var stable = farm.buildings.OfType<Stable>().FirstOrDefault(stable => stable.HorseId == player.mount.HorseId);
         if (stable is null
-         || !stable.modData.TryGetValue($"{Integrations.HorseOverhaulId}/stableID", out var stableId)
-         || !int.TryParse(stableId, out var x)
-         || !farm.Objects.TryGetValue(new(x, 0), out var obj)
-         || obj is not Chest chest
-         || !chest.modData.ContainsKey($"{Integrations.HorseOverhaulId}/isSaddleBag"))
+            || !stable.modData.TryGetValue($"{Integrations.HorseOverhaulId}/stableID", out var stableId)
+            || !int.TryParse(stableId, out var x)
+            || !farm.Objects.TryGetValue(new(x, 0), out var obj)
+            || obj is not Chest chest
+            || !chest.modData.ContainsKey($"{Integrations.HorseOverhaulId}/isSaddleBag"))
         {
             yield break;
         }
@@ -258,8 +258,8 @@ internal sealed class Integrations
     private static bool HorseOverhaul_TryGetOne(object? context, [NotNullWhen(true)] out Storage? storage)
     {
         if (!Integrations.ModRegistry.IsLoaded(Integrations.HorseOverhaulId)
-         || context is not Chest chest
-         || !chest.modData.ContainsKey($"{Integrations.HorseOverhaulId}/isSaddleBag"))
+            || context is not Chest chest
+            || !chest.modData.ContainsKey($"{Integrations.HorseOverhaulId}/isSaddleBag"))
         {
             storage = default;
             return false;
@@ -269,9 +269,9 @@ internal sealed class Integrations
         foreach (var stable in farm.buildings.OfType<Stable>())
         {
             if (!stable.modData.TryGetValue($"{Integrations.HorseOverhaulId}/stableID", out var stableId)
-             || !int.TryParse(stableId, out var x)
-             || !farm.Objects.TryGetValue(new(x, 0), out var obj)
-             || !ReferenceEquals(chest, obj))
+                || !int.TryParse(stableId, out var x)
+                || !farm.Objects.TryGetValue(new(x, 0), out var obj)
+                || !ReferenceEquals(chest, obj))
             {
                 continue;
             }
@@ -302,7 +302,7 @@ internal sealed class Integrations
         Storages.StorageTypeRequested += this.OnStorageTypeRequested;
 
         if (Integrations.ModRegistry.IsLoaded(Integrations.HorseOverhaulId)
-         && !this._config.VanillaStorages.ContainsKey("SaddleBag"))
+            && !this._config.VanillaStorages.ContainsKey("SaddleBag"))
         {
             this._config.VanillaStorages.Add(
                 "SaddleBag",
@@ -318,8 +318,8 @@ internal sealed class Integrations
         switch (e.Context)
         {
             case Chest chest when Integrations.ModRegistry.IsLoaded(Integrations.HorseOverhaulId)
-                               && chest.modData.ContainsKey($"{Integrations.HorseOverhaulId}/isSaddleBag")
-                               && this._config.VanillaStorages.TryGetValue("SaddleBag", out var saddleBagData):
+                && chest.modData.ContainsKey($"{Integrations.HorseOverhaulId}/isSaddleBag")
+                && this._config.VanillaStorages.TryGetValue("SaddleBag", out var saddleBagData):
                 e.Load(saddleBagData, -1);
                 return;
         }

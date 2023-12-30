@@ -9,15 +9,13 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Goals;
+using StardewArchipelago.Locations.Modded.SVE;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
-using StardewValley.Menus;
 using xTile.Dimensions;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
@@ -35,12 +33,14 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
         private static IMonitor _monitor;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
+        private static FriendshipReleaser _friendshipReleaser;
 
-        public static void Initialize(IMonitor monitor, ArchipelagoClient archipelago, LocationChecker locationChecker)
+        public static void Initialize(IMonitor monitor, ArchipelagoClient archipelago, LocationChecker locationChecker, BundleReader bundleReader)
         {
             _monitor = monitor;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
+            _friendshipReleaser = new FriendshipReleaser(locationChecker, bundleReader);
         }
 
         public static bool DoAreaCompleteReward_AreaLocations_Prefix(CommunityCenter __instance, int whichArea)
@@ -75,13 +75,19 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
                         AreaAPLocationName = AP_LOCATION_BULLETIN_BOARD;
                         mailToSend = "apccBulletin";
                         break;
+                    case Area.AbandonedJojaMart:
+                        AreaAPLocationName = AP_LOCATION_ABANDONED_JOJA_MART;
+                        mailToSend = "apccMovieTheater";
+                        break;
                 }
 
                 if (!Game1.player.mailReceived.Contains(mailToSend))
                 {
                     Game1.player.mailForTomorrow.Add(mailToSend + "%&NL&%");
                 }
+
                 _locationChecker.AddCheckedLocation(AreaAPLocationName);
+                _friendshipReleaser.ReleaseMorrisHeartsIfNeeded();
                 GoalCodeInjection.CheckCommunityCenterGoalCompletion();
 
                 return false; // don't run original logic
@@ -118,13 +124,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
                         __result = !Game1.player.hasOrWillReceiveMail("apccBulletin"); // _locationChecker.IsLocationNotChecked(AP_LOCATION_BULLETIN_BOARD);
                         return false; // don't run original logic
                     case Area.AbandonedJojaMart:
-                        if (Utility.HasAnyPlayerSeenEvent(191393))
-                        {
-                            __result = true;
-                            return false; // don't run original logic
-                        }
-
-                        break;
+                        __result = !Game1.player.hasOrWillReceiveMail("apccMovieTheater"); // _locationChecker.IsLocationNotChecked(AP_LOCATION_BULLETIN_BOARD);
+                        return false; // don't run original logic
                 }
                 __result = false;
                 return false; // don't run original logic

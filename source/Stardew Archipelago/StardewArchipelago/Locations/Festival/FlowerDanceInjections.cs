@@ -50,7 +50,7 @@ namespace StardewArchipelago.Locations.Festival
                     return;
                 }
 
-                _locationChecker.AddCheckedLocation(FestivalLocationNames.FLOWER_DANCE);
+                _locationChecker.AddCheckedLocation(FestivalLocationNames.DANCE_WITH_SOMEONE);
                 return;
             }
             catch (Exception ex)
@@ -67,20 +67,17 @@ namespace StardewArchipelago.Locations.Festival
             try
             {
                 // We only run this once for each menu
-                if (_lastShopMenuUpdated == __instance)
+                if (_lastShopMenuUpdated == __instance || __instance.storeContext != "Temp" || !Game1.CurrentEvent.isSpecificFestival("spring24"))
                 {
                     return;
                 }
 
                 _lastShopMenuUpdated = __instance;
                 var myActiveHints = _archipelago.GetMyActiveHints();
-                foreach (var salableItem in __instance.itemPriceAndStock.Keys.ToArray())
-                {
-                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.RARECROW_5, item => _shopReplacer.IsRarecrow(item, 5), myActiveHints);
-                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.TUB_O_FLOWERS_RECIPE, item => item.IsRecipe && item.Name.Equals("Tub o' Flowers", StringComparison.InvariantCultureIgnoreCase), myActiveHints);
-                }
+                _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, FestivalLocationNames.RARECROW_5, item => _shopReplacer.IsRarecrow(item, 5), myActiveHints);
+                _shopReplacer.PlaceShopRecipeCheck(__instance.itemPriceAndStock, FestivalLocationNames.TUB_O_FLOWERS_RECIPE, "Tub o' Flowers", myActiveHints, new []{1000, 1});
 
-                __instance.forSale = __instance.itemPriceAndStock.Keys.ToList();
+                    __instance.forSale = __instance.itemPriceAndStock.Keys.ToList();
                 return;
             }
             catch (Exception ex)

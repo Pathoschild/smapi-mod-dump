@@ -6,16 +6,13 @@ A mod for Stardew Valley that adds a procedurally generated infinite forest with
 A vast and deep forest generated anew in every game and on every visit on-the-fly. You never know what the next corner, the next level, and the next path might bring.
 
 - **Multiplayer Support**  
-Explore, forage, and the forest with your friends! But make sure you don't lose each other.
+Explore, forage, and discover the forest with your friends! But make sure you don't lose each other.
 
 - **Highly Configurable**  
 The config file lets you change hundreds of settings and values, that control level generation, monster strengths, chances for loot, and more.
 
 - **Danger with Great Rewards**  
 The deeper you go, the more there is to discover. But the forest can be ruthless. Strong and fast monsters, unique infested levels, and more dangers are waiting for you.
-
-- **Mysticism and Lore**
-A compelling story about magic and greed is in the works. You may find certain hints and story elements already, but no big spoilers until the full story releases in the future.
 
 #### Support the Mod!
 

@@ -24,9 +24,6 @@ The config file lets you change hundreds of settings and values, that control le
 - **Danger with Great Rewards**  
 The deeper you go, the more there is to discover. But the forest can be ruthless. Strong and fast monsters, unique infested levels, and more dangers are waiting for you.
 
-- **Mysticism and Lore**
-A compelling story about magic and greed is in the works. You may find certain hints and story elements already, but no big spoilers until the full story releases in the future.
-
 #### Support the Mod!
 
 [🍵 Ko-Fi](https://www.ko-fi.com/maxmakesmods)

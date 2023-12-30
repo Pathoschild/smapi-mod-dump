@@ -69,8 +69,8 @@ internal sealed class BetterColorPicker : Feature
         {
             Data: IColorable and Storage storageObject, CustomColorPicker: FeatureOption.Enabled,
         }
-     && (!storageObject.ModData.TryGetValue("AlternativeTextureOwner", out var atOwner)
-      || atOwner == "Stardew.Default");
+        && (!storageObject.ModData.TryGetValue("AlternativeTextureOwner", out var atOwner)
+            || atOwner == "Stardew.Default");
 
     private HslColorPicker ColorPicker => this._colorPicker.Value;
 
@@ -203,8 +203,8 @@ internal sealed class BetterColorPicker : Feature
     private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
         if (e.Button is not (SButton.MouseLeft or SButton.ControllerA)
-         || !BetterColorPicker.ShouldBeActive
-         || Game1.activeClickableMenu is not ItemGrabMenu { colorPickerToggleButton: not null } itemGrabMenu)
+            || !BetterColorPicker.ShouldBeActive
+            || Game1.activeClickableMenu is not ItemGrabMenu { colorPickerToggleButton: not null } itemGrabMenu)
         {
             return;
         }

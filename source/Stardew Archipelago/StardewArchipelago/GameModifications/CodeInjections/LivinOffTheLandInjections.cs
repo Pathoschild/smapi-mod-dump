@@ -78,13 +78,13 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         private static readonly Dictionary<string, Func<bool>> ArchipelagoTips = new()
         {
             { "You may be used to this show airing on Mondays and Thursdays, but we are now airing on Tuesdays and Fridays as well! Tune in for brand new tips!", Always },
-            // { "Did you know that we're not the only station with an extended schedule? Our friends at The Queen of Sauce are now airing an extra episode every Saturday!", Always },
+            { "Did you know that we're not the only station with an extended schedule? Our friends at The Queen of Sauce are now airing an extra episode every Saturday!", Always },
             { "Today we have a special guest in our studio! Please welcome... 'Rasmodius, Explorer of the Arcane'..? Sure thing buddy, the floor is yours!^^A very precious item was taken from me. It looks like ordinary ink, but it has power beyond your imagination. If you were to stumble upon it, please deliver it back to me. You will be generously rewarded. Make sure you speak to me directly!^^You heard the man folks, keep an eye out and you might earn something good!", Always },
             { "A friend of mine once told me of a story. Late in fall, they turned on their TV, and it seemed to be... haunted? I'm not sure I believe such a fairytale, but I thought it was interesting. There's something sinister about the signals you can receive on there. But the guy is kind of a deadbeat, so he was probably just pulling my leg.", Always },
             { "Some farmers enjoy going to the mines in their free time. That's fine, it's a good way to get ores and other valuable trinkets! Make sure you bring a weapon with you though, there are some nasty creatures down there. If you lost your weapon, check out your local adventure guild, I'm sure they'll be happy to help. You can even phone them! They do deliveries!", Always },
             { "Animal or Human, everyone enjoys a good cuddle at night!", Always },
             { "If you steal from your friends, they might resent you. But if you're close enough, usually they won't mind sharing some of their favorite items with you!", Always },
-            { "I heard a rumor going around that some magically-attuned people have invented magical clock that can skip time ahead. That sounds crazy, but I'm a big fan of folklore!", Always },
+            { "I heard a rumor going around that some magically-attuned people have invented a magical clock that can skip time ahead. That sounds crazy, but I'm a big fan of folklore!", Always },
             { "Ever wanna take a long nap and wake up to a bunch of days gone by? We've all been there. Just remember, while you're snoozin', your friends and pets might feel a mite neglected. Balance, that's the name of the game!", HasMultiSleep },
             { "A backpack is a farmer's best friend. Out there somewhere, there's one for you too, just waitin' to be found. No fuss, no muss, just keep yours wits about ya, and maybe you'll stumble upon it!", HasEarlyBackpack },
             { "The climate can be a bit unpredictable these days. Sometimes it can be hot for months in a row. Don't hesitate to make the most of it with regrowing crops!", HasSeasonRandomizer },
@@ -102,7 +102,9 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             { "I've heard a good story the other day. Apparently, there's a white-haired woman hiding in Cindersap forest. She only comes out at night, and it seems she's quite the troublemaker. But I'm sure that's just a myth to scare the kiddos into going to bed!", HasJuna },
             { "Brave adventurers are always talking about myths and legends. Rumor has it that, if you go deep into the woods, and you're lucky enough, you might encounter magical beings. The experience of petting a unicorn is unrivaled! But also, some people just dump their trash there. Try your luck!", HasDeepWoods },
             { "We got a letter from a folk all the way back in {2}. They recommend completing a... '{0}'?. I don't know what that is, but apparently, it's great! You should really get on that!", HasActiveHints },
-        };
+            { "...and that folks is how an ol' goblin changed my friend's life around.  Who knew a crayfish dish would be the thing to do it!  I say pay it forward.  Who knows, even goblins might teach ya a thing or two!", HasDistantLands},
+            { "Now here's an odd rumor from an ol' miss up in Grampleton.  Mystics capable of turning the weave so thoroughly you can even hear their whispers over the radio!  Might help in a pinch I say!", HasMagic},
+        };  
 
         private static bool Always()
         {
@@ -187,6 +189,16 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         private static bool HasActiveHints()
         {
             return _myActiveHints.Any();
+        }
+
+        private static bool HasDistantLands()
+        {
+            return _archipelago.SlotData.Mods.HasMod(ModNames.DISTANT_LANDS);
+        }
+
+        private static bool HasMagic()
+        {
+            return _archipelago.SlotData.Mods.HasMod(ModNames.MAGIC);
         }
     }
 }

@@ -12,9 +12,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Netcode;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Goals;
 using StardewArchipelago.Locations;
+using StardewArchipelago.Serialization;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -27,14 +31,16 @@ namespace StardewArchipelago.Items.Mail
         private readonly Harmony _harmony;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
+        private static ArchipelagoStateDto _state;
         private static LetterActions _letterActions;
 
-        public MailPatcher(IMonitor monitor, Harmony harmony, ArchipelagoClient archipelago, LocationChecker locationChecker, LetterActions letterActions)
+        public MailPatcher(IMonitor monitor, Harmony harmony, ArchipelagoClient archipelago, LocationChecker locationChecker, ArchipelagoStateDto state, LetterActions letterActions)
         {
             _monitor = monitor;
             _harmony = harmony;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
+            _state = state;
             _letterActions = letterActions;
         }
 
@@ -42,19 +48,24 @@ namespace StardewArchipelago.Items.Mail
         {
             _harmony.Patch(
                 original: AccessTools.Method(typeof(IClickableMenu), nameof(IClickableMenu.exitThisMenu)),
-                postfix: new HarmonyMethod(typeof(MailPatcher), nameof(MailPatcher.ExitThisMenu_ApplyLetterAction_Postfix))
+                postfix: new HarmonyMethod(typeof(MailPatcher), nameof(ExitThisMenu_ApplyLetterAction_Postfix))
             );
 
             _harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
-                prefix: new HarmonyMethod(typeof(MailPatcher), nameof(MailPatcher.Mailbox_HideEmptyApLetters_Prefix))
+                prefix: new HarmonyMethod(typeof(MailPatcher), nameof(Mailbox_HideEmptyApLetters_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Farm), nameof(Farm.draw)),
+                postfix: new HarmonyMethod(typeof(MailPatcher), nameof(Draw_AddMailNumber_Postfix))
             );
 
             if (_archipelago.SlotData.Fishsanity != Fishsanity.None)
             {
                 _harmony.Patch(
                     original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
-                    prefix: new HarmonyMethod(typeof(MailPatcher), nameof(MailPatcher.Mailbox_RemoveMasterAnglerStardropOnFishsanity_Prefix))
+                    prefix: new HarmonyMethod(typeof(MailPatcher), nameof(Mailbox_RemoveMasterAnglerStardropOnFishsanity_Prefix))
                 );
             }
 
@@ -62,7 +73,7 @@ namespace StardewArchipelago.Items.Mail
             {
                 _harmony.Patch(
                     original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.mailbox)),
-                    prefix: new HarmonyMethod(typeof(MailPatcher), nameof(MailPatcher.Mailbox_RemoveRarecrowSocietyRecipeOnFestivals_Prefix))
+                    prefix: new HarmonyMethod(typeof(MailPatcher), nameof(Mailbox_RemoveRarecrowSocietyRecipeOnFestivals_Prefix))
                 );
             }
         }
@@ -118,9 +129,16 @@ namespace StardewArchipelago.Items.Mail
                     return true; // run original logic
                 }
 
+                var mailData = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+                if (!mailData.ContainsKey(nextLetter))
+                {
+                    mailData.Add(nextLetter, _state.LettersGenerated[nextLetter]);
+                }
+
                 // We force add the letter because it can contain custom content that can be then considered "to not be remembered" by the base game.
                 // So if it's an ap letter, always remember it
                 Game1.player.mailReceived.Add(nextLetter);
+
                 return true; // run original logic
             }
             catch (Exception ex)
@@ -245,6 +263,34 @@ namespace StardewArchipelago.Items.Mail
             mailContent[RARECROW_SOCIETY_LETTER] = masterAnglerLetterContent
                 .Replace(deluxeScarecrowRecipeItemText, recipeReplacementText)
                 .Replace(deluxeScarecrowRecipeText, replacementText);
+        }
+
+        // public override void draw(SpriteBatch b)
+        public static void Draw_AddMailNumber_Postfix(Farm __instance, SpriteBatch b)
+        {
+            try
+            {
+                if (Game1.mailbox.Count <= 0)
+                {
+                    return;
+                }
+
+                var animationOffsetY = (float)(4.0 * Math.Round(Math.Sin(Game1.currentGameTime.TotalGameTime.TotalMilliseconds / 250.0), 2));
+                var mailboxPositionTile = Game1.player.getMailboxPosition();
+                var mailBoxPositionPixel = new Vector2(mailboxPositionTile.X * 64, mailboxPositionTile.Y * 64);
+                var globalPosition = new Vector2(mailBoxPositionPixel.X + 8, mailBoxPositionPixel.Y - 96 - 48 + animationOffsetY + 8);
+                var localPosition = Game1.GlobalToLocal(Game1.viewport, globalPosition);
+                var numLetters = Game1.mailbox.Count;
+                const float scale = 1f;
+                Utility.drawTinyDigits(numLetters, b, localPosition + new Vector2(64 - Utility.getWidthOfTinyDigitString(numLetters, 3f * scale) + 3f * scale, (float)(64.0 - 18.0 * scale + 1.0)), 3f * scale, 1f, Color.Red);
+
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(Draw_AddMailNumber_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
+            }
         }
     }
 }

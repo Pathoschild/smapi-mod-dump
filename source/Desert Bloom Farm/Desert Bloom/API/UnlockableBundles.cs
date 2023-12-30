@@ -41,7 +41,7 @@ namespace Desert_Bloom.API
             unlockableBundlesAPI.IsReadyEvent += isReady;
         }
 
-        private static void isReady(object sender, IsReadyEventArgs e)
+        private static void isReady(object sender, IIsReadyEventArgs e)
         {
             if (!ModEntry.IsMyFarm())
                 return;
@@ -59,14 +59,14 @@ namespace Desert_Bloom.API
             }
         }
 
-        private static void onShopPurchased(object source, BundlePurchasedEventArgs e)
+        private static void onShopPurchased(object source, IBundlePurchasedEventArgs e)
         {
             if (!ModEntry.IsMyFarm())
                 return;
 
-            if (e.BundleKey.StartsWith("DLX.Desert_Bloom.Mill_Tier"))
+            if (e.Bundle.Key.StartsWith("DLX.Desert_Bloom.Mill_Tier"))
                 Task.Delay(6000).ContinueWith(t =>
-                    Lib.Mill.Tier = int.Parse(e.BundleKey.Last().ToString()));
+                    Lib.Mill.Tier = int.Parse(e.Bundle.Key.Last().ToString()));
 
         }
 

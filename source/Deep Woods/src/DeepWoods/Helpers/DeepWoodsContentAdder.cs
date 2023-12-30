@@ -17,6 +17,13 @@ using DeepWoodsMod.API.Impl;
 using StardewModdingAPI.Enums;
 using Microsoft.Xna.Framework.Graphics;
 using xTile;
+using System;
+using System.Collections;
+using System.Linq;
+using StardewValley.Menus;
+using StardewValley;
+using System.Reflection;
+using DeepWoodsMod.Stuff;
 
 namespace DeepWoodsMod.Helpers
 {
@@ -96,6 +103,46 @@ namespace DeepWoodsMod.Helpers
             {
                 e.LoadFrom(() => { return DeepWoodsTextures.Textures.InfestedOutdoorsTilesheet; }, AssetLoadPriority.Medium);
             }
+            else if (e.NameWithoutLocale.IsEquivalentTo("MinecartPatcher.Minecarts"))
+            {
+                e.Edit(a => EditMinecartPatcherMinecarts(a.GetData<IDictionary>()));
+            }
+        }
+
+        private static void EditMinecartPatcherMinecarts(IDictionary data)
+        {
+            if (DeepWoodsState.LowestLevelReached == 0)
+            {
+                return;
+            }
+
+            if (data.Keys.Count == 0 || data.Values.Count == 0)
+            {
+                return;
+            }
+
+            object[] keys = new object[data.Keys.Count];
+            data.Keys.CopyTo(keys, 0);
+
+            object[] values = new object[data.Values.Count];
+            data.Values.CopyTo(values, 0);
+
+            var minecartInstance = values[0];
+            var minecartInstanceType = minecartInstance.GetType();
+
+            object deepWoodsMinecartInstance = Activator.CreateInstance(minecartInstanceType);
+
+            SetProperty(deepWoodsMinecartInstance, "LocationName", "DeepWoods");
+            SetProperty(deepWoodsMinecartInstance, "DisplayName", I18N.DeepWoodsMineCartText);
+            SetProperty(deepWoodsMinecartInstance, "LandingPointX", (int)DeepWoodsMineCart.MineCartLocation.X);
+            SetProperty(deepWoodsMinecartInstance, "LandingPointY", (int)DeepWoodsMineCart.MineCartLocation.Y + 1);
+
+            data.Add("maxvollmer.deepwoodsmod.deepwoods", deepWoodsMinecartInstance);
+        }
+
+        private static void SetProperty(object minecartInstance, string propertyName, object propertyValue)
+        {
+            minecartInstance.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance).SetValue(minecartInstance, propertyValue);
         }
 
         public static void EditMail(IDictionary<string, string> mailData)

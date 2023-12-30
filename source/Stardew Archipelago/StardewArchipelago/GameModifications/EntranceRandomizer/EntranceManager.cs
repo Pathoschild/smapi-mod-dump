@@ -26,15 +26,17 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
 
         private readonly IMonitor _monitor;
         private readonly EquivalentWarps _equivalentAreas;
+        private readonly ModEntranceManager _modEntranceManager;
 
         private Dictionary<string, string> _modifiedEntrances;
         private HashSet<string> _checkedEntrancesToday;
         private Dictionary<string, WarpRequest> generatedWarps;
 
-        public EntranceManager(IMonitor monitor)
+        public EntranceManager(IMonitor monitor, ArchipelagoClient archipelago)
         {
             _monitor = monitor;
-            _equivalentAreas = new EquivalentWarps();
+            _equivalentAreas = new EquivalentWarps(archipelago);
+            _modEntranceManager = new ModEntranceManager();
             generatedWarps = new Dictionary<string, WarpRequest>(StringComparer.OrdinalIgnoreCase);
         }
 
@@ -73,6 +75,11 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             if (slotData.EntranceRandomization == EntranceRandomization.Disabled)
             {
                 return;
+            }
+
+            foreach (var (locationName, locationAlias)  in _modEntranceManager.GetModLocationAliases(slotData))
+            {
+                _locationAliases[locationName] = locationAlias;
             }
 
             foreach (var (originalEntrance, replacementEntrance) in slotData.ModifiedEntrances)
@@ -156,12 +163,14 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             var defaultLocationRequestName = _equivalentAreas.GetDefaultEquivalentEntrance(locationRequestName);
             targetPosition = targetPosition.CheckSpecialVolcanoEdgeCaseWarp(defaultLocationRequestName);
             var key = GetKeys(defaultCurrentLocationName, defaultLocationRequestName, targetPosition);
+            // return false;
             if (!TryGetModifiedWarpName(key, out var desiredWarpName))
             {
                 return false;
             }
+            
+            var correctDesiredWarpName =_equivalentAreas.GetCorrectEquivalentEntrance(desiredWarpName);
 
-            var correctDesiredWarpName = _equivalentAreas.GetCorrectEquivalentEntrance(desiredWarpName);
             if (_checkedEntrancesToday.Contains(correctDesiredWarpName))
             {
                 if (generatedWarps.ContainsKey(correctDesiredWarpName))
@@ -276,7 +285,7 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             return (split[0], split[1]);
         }
 
-        private static string TurnAliased(string key)
+        private string TurnAliased(string key)
         {
             if (key.Contains(TRANSITIONAL_STRING))
             {
@@ -284,27 +293,43 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
                 var aliased1 = TurnAliased(parts[0]);
                 var aliased2 = TurnAliased(parts[1]);
                 var newEntrance = $"{aliased1}{TRANSITIONAL_STRING}{aliased2}";
-                var newEntranceAliased = TurnAliased(newEntrance, _entranceAliases);
+                var newEntranceAliased = TurnAliased(newEntrance, _entranceAliases, false);
                 return newEntranceAliased;
             }
 
-            var modifiedString = TurnAliased(key, _locationAliases);
-
+            var modifiedString = TurnAliased(TurnAliased(key, _locationAliases, false), _locationsSingleWordAliases, true);
+            //modifiedString = ModTurnAliased(key, modifiedString);
             return modifiedString;
         }
 
-        private static string TurnAliased(string key, Dictionary<string, string> aliases)
+        private string TurnAliased(string key, Dictionary<string, string> aliases, bool singleWord)
         {
             var modifiedString = key;
-            foreach (var (oldString, newString) in aliases)
+            foreach (var oldString in aliases.Keys.OrderByDescending(x => x.Length))
             {
+                var newString = aliases[oldString];
                 var customizedNewString = newString;
                 if (customizedNewString.Contains("{0}"))
                 {
                     customizedNewString = string.Format(newString, Game1.player.isMale ? "Mens" : "Womens");
                 }
 
-                modifiedString = modifiedString.Replace(oldString, customizedNewString);
+                if (singleWord)
+                {
+                    modifiedString = modifiedString.Replace(oldString, customizedNewString);
+                }
+                else
+                {
+                    if (modifiedString.Contains(oldString) && !modifiedString.Equals(oldString))
+                    {
+                        // throw new ArgumentException($"This string is a partial replacement! {oldString}");
+                    }
+
+                    if (modifiedString.Equals(oldString))
+                    {
+                        modifiedString = customizedNewString;
+                    }
+                }
             }
 
             return modifiedString;
@@ -316,21 +341,21 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             { "ScienceHouse|6|24 to SebastianRoom", "ScienceHouse to SebastianRoom" }, // LockedDoorWarp 6 24 ScienceHouse 900 2000S–
         };
 
-        private static readonly Dictionary<string, string> _locationAliases = new()
+        private Dictionary<string, string> _locationAliases = new()
         {
             { "Mayor's Manor", "ManorHouse" },
             { "Pierre's General Store", "SeedShop" },
             { "Clint's Blacksmith", "Blacksmith" },
-            { "Alex", "Josh" },
+            { "Alex's House", "JoshHouse" },
             { "Tunnel Entrance", "Backwoods" },
             { "Marnie's Ranch", "AnimalShop" },
-            { "Cottage", "House" },
-            { "Tower", "House" },
+            { "Leah's Cottage", "LeahHouse" },
+            { "Wizard Tower", "WizardHouse" },
             { "Sewers", "Sewer" },
             { "Bus Tunnel", "Tunnel" },
             { "Carpenter Shop", "ScienceHouse|6|24" }, // LockedDoorWarp 6 24 ScienceHouse 900 2000S–
             { "Maru's Room", "ScienceHouse|3|8" }, // LockedDoorWarp 3 8 ScienceHouse 900 2000 Maru 500N
-            { "Adventurer", "Adventure" },
+            { "Adventurer's Guild", "AdventureGuild" },
             { "Willy's Fish Shop", "FishShop" },
             { "Museum", "ArchaeologyHouse" },
             { "Wizard Basement", "WizardHouseBasement"},
@@ -358,17 +383,18 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             { "Professor Snail Cave", "IslandNorthCave1"},
             { "Qi Walnut Room", "QiNutRoom" },
             { "Mutant Bug Lair", "BugLand"},
-            { "Eugene's Garden", "Custom_EugeneNPC_EugeneHouse" },
-            { "Eugene's Bedroom", "Custom_EugeneNPC_EugeneRoom" },
-            { "Deep Woods House", "DeepWoodsMaxHouse" },
-            { "Alec's Pet Shop", "Custom_AlecsPetShop" },
-            { "Alec's Bedroom", "Custom_AlecsRoom" },
-            { "Juna's Cave", "Custom_JunaNPC_JunaCave" },
-            { "Jasper's Bedroom", "Custom_LK_Museum2" },
-            { "Ayeisha's Mail Van", "Custom_AyeishaVanRoad" },
-            { "Yoba's Clearing", "Custom_Woods3" },
+        };
+
+        private Dictionary<string, string> _locationsSingleWordAliases = new()
+        {
             { "'s", "" },
             { " ", "" },
+        };
+
+        private static readonly Dictionary<string, Dictionary<string,string>> _modifiedAliases = new()
+        {
+            { "Stardew Valley Expanded", new(){{"WizardHouseBasement", "Custom_WizardBasement"}}
+            }
         };
     }
 

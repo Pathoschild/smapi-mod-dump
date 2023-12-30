@@ -17,9 +17,8 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
-using DaLion.Overhaul;
-using DaLion.Overhaul.Modules;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
+using DaLion.Overhaul.Modules.Core.Extensions;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.DayEnding;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
@@ -302,7 +301,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
 
     private static void HandleBrute(Monster monster, Farmer who, Ultimate? ultimate)
     {
-        if (!ProfessionsModule.Config.EnableLimitBreaks || who.CurrentTool is not MeleeWeapon weapon ||
+        if (!ProfessionsModule.Config.Limit.EnableLimitBreaks || who.CurrentTool is not MeleeWeapon weapon ||
             ultimate is not Frenzy frenzy || monster.Health > 0)
         {
             return;
@@ -323,10 +322,10 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
     private static void HandlePoacher(bool didCrit, float critMultiplier, Monster monster, Farmer who, Ultimate? ultimate, Random r)
     {
         // try to steal
-        var stolen = TrySteal(monster, who, r);
+        var poached = TryPoach(monster, who, r);
 
         // increment Poacher ultimate meter
-        if (!ProfessionsModule.Config.EnableLimitBreaks || ultimate is not Ambush { IsActive: false } ambush)
+        if (!ProfessionsModule.Config.Limit.EnableLimitBreaks || ultimate is not Ambush { IsActive: false } ambush)
         {
             return;
         }
@@ -337,7 +336,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
             ambush.SecondsOutOfAmbush = double.MaxValue;
         }
 
-        if (stolen)
+        if (poached)
         {
             ambush.ChargeValue += critMultiplier;
         }
@@ -420,7 +419,7 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
         }
 
         // increment Piper ultimate meter
-        if (ProfessionsModule.Config.EnableLimitBreaks &&
+        if (ProfessionsModule.Config.Limit.EnableLimitBreaks &&
             ultimate is Concerto { IsActive: false } concerto)
         {
             var increment = monster switch
@@ -434,9 +433,9 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
         }
     }
 
-    private static bool TrySteal(Monster monster, Farmer who, Random r)
+    private static bool TryPoach(Monster monster, Farmer who, Random r)
     {
-        if (who.CurrentTool is not MeleeWeapon weapon || monster.Get_Stolen().Value)
+        if (who.CurrentTool is not MeleeWeapon weapon)
         {
             return false;
         }
@@ -458,10 +457,21 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
             effectiveCritChance *= 1f + who.critChanceModifier;
         }
 
-        var actualResistance = (monster.resilience.Value - CombatModule.Config.MonsterDefenseSummand) /
-                               CombatModule.Config.MonsterDefenseMultiplier;
+        var actualResistance = (monster.resilience.Value - CombatModule.Config.Enemies.MonsterDefenseSummand) /
+                               CombatModule.Config.Enemies.MonsterDefenseMultiplier;
         var poachChance = effectiveCritChance - ((actualResistance - who.LuckLevel) * monster.jitteriness.Value);
         if (r.NextDouble() > poachChance)
+        {
+            return false;
+        }
+
+        var maxPoachCount = 1;
+        if (who.HasProfession(Profession.Poacher, true))
+        {
+            maxPoachCount++;
+        }
+
+        if (monster.Get_Poached().Value >= maxPoachCount)
         {
             return false;
         }
@@ -475,21 +485,18 @@ internal sealed class GameLocationDamageMonsterPatcher : HarmonyPatcher
             return false;
         }
 
-        monster.Get_Stolen().Value = true;
-
-        // play sound effect
+        monster.IncrementPoached();
         SoundEffectPlayer.PoacherSteal.Play(who.currentLocation);
-
-        if (!who.HasProfession(Profession.Poacher, true))
+        if (who.HasProfession(Profession.Poacher, true))
         {
-            return true;
+            monster.Poison(who, intensity: 2);
         }
 
         // if prestiged, reset cooldown
-        MeleeWeapon.attackSwordCooldown = 0;
-        MeleeWeapon.daggerCooldown = 0;
-        MeleeWeapon.clubCooldown = 0;
-        CombatModule.State.SlingshotCooldown = 0;
+        //MeleeWeapon.attackSwordCooldown = 0;
+        //MeleeWeapon.daggerCooldown = 0;
+        //MeleeWeapon.clubCooldown = 0;
+        //CombatModule.State.SlingshotCooldown = 0;
         return true;
     }
 

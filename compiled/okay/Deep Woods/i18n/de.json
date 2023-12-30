@@ -10,7 +10,7 @@
   "woods-obelisk.name": "Wald-Obelisk",
   "woods-obelisk.wizard-mail": "Ich konnte deine Anwesenheit in den Tiefen des Waldes spüren.^Eine starke und alte Magie wankt in den Baumwurzeln und der Erde.^Es ist schwierig, aber mit den richtigen Zutaten kann ich einen Obelisk manifestieren, welcher diese Magie nutzt, um dich noch viel tiefer in den Wald zu bringen.^Komm in meinen Turm wenn du bereit bist.^   -M. Rasmodius, Zauberer",
 
-  "messagebox.ok": "Okay",
+  "messagebox.close": "Schließen",
 
   "maxhouse.puzzle.nope": "Du hörst ein Klicken, aber nichts passiert...",
 
@@ -19,35 +19,18 @@
   "maxhouse.stuff.answer.nevermind": "Nee, lieber nicht",
   "maxhouse.stuff.nothing": "Du konntest nichts sinnvolles finden. Vielleicht ein ander mal...",
 
-  "maxhouse.books.question": "Ein Sammelsurium an Büchern.",
-  "maxhouse.books.answer.read": "Lies ein Buch",
-  "maxhouse.books.answer.nevermind": "Nee, lieber nicht",
-  "maxhouse.books.interesting": "Das war ein interessantes Buch!",
-
   "maxhouse.shop.empty": "Der Laden hat aktuell keine Ware. Komm später wieder.",
   "maxhouse.quests.empty": "Im Moment gibt es keine Aufgaben. Komm später wieder.",
 
-  "sign.text.welcome": "Du betrittst den tiefen Wald. Laufe nicht zu weit, wenn du nicht vorbereitet bist. Viele vor dir sind verschollen oder schlimmeres. Du bist gewarnt.",
-
-  "sign.text.random.1": "Schnecken in dieser Region.",
-  "sign.text.random.2": "Wenn du sehr vorsichtig und sehr glücklich bist, kannst du vielleicht an einem sonnigen Tag ein Einhorn treffen.",
-  "sign.text.random.3": "Irgendwo in diesem Wald ist ein Schwert in einem Stein. Ist da seit Jahrhunderten. Niemand scheint es herausziehen zu können.",
-  "sign.text.random.4": "Ich finde nicht mehr zurück. Vielleicht hilft es wenn ich diese Schilder aufstelle. Bist du auch verirrt?",
-  "sign.text.random.5": "Versuchs gar nicht erst mit diesen Dornenbüschen. Ich glaub die sind unzerstörbar. Da brauchts vermutlich eine Bombe um durchzukommen. Aber wer bringt schon Bomben in den Wald...",
-  "sign.text.random.6": "In diesen Wälder spukt es. Ich schwöre ich hab ein Gespenst gesehen.",
-  "sign.text.random.7": "Hab ein Haus aus Essen gefunden. Mitten im Wald! Habs komplett zerhackt, hat mir gut eine Woche gereicht.",
-  "sign.text.random.8": "NEIN zu Jojas Autobahnplänen im Wald! STOPP die Zerstörung!",
-
-  "sign.text.item-marker": "Ich hinterlasse dieses Schild für andere Abenteuerlustige. Ich bin alt und mein Gedächtnis will nicht mehr so, aber irgendwo hier habe ich {item} vergraben.",
-  "sign.text.clearing-marker": "Ich habe eine Lichtung im {NSWE} von hier gesehen. Ich weiß nicht mehr wie weit. Sei vorsichtig.",
-  "sign.text.mystical-force-marker": "Dieser Wald hat eine mystische Aura. Ich habe leider keine Quelle finden können, aber dieses Gebiet ist besonders stark. Ich markiere diesen Ort, vielleicht hat jemand anderes mehr Glück.",
+  "maxhouse.books.random.1": "= Einhorn Legenden =^^Einhörner sind scheue und flüchtige Wesen. Solltest du jemals auf ein Einhorn treffen, was, ganz ehrlich, viel Glück erfordert, nähere dich nur mit äußerster Vorsicht. Ein Schritt zu schnell und es wird sich erschrecken, was furchtbares Unglück über dich bringen wird!",
+  "maxhouse.books.random.2": "= Sagenhafte Schwerter =^^Legenden sagen irgendwo in diesem Wald sei ein uraltes magisches Schwert versteckt, tief in einen Stein getrieben. Nur die mit dem größten Geschick, den meisten Errungenschaften, und dem höchsten Glück werden es schaffen, es herauszuziehen.",
+  "maxhouse.books.random.3": "= Unkrautvernichtung Für Den Harten Garten =^^Wenn du jemals mit einem Befall von dornigen Büschen zu kämpfen hast, die einfach nicht verschwinden wollen, gibt es ein bewährtes Hilfsmittel: Bomben. Jeder Garten braucht ab und an eine gute Portion Sprengstoff. Und wie immer gilt: Viel hilft viel!",
+  "maxhouse.books.random.4": "= Nachttierchen Und Andere Sichtungen =^^Geister und Fledermäuse sind nur einige der vielen faszinierenden Kreaturen, die spät nach Sonnenuntergang beobachtet werden können.",
+  "maxhouse.books.random.5": "= Ernährung Und Architektur =^^Vor Jahrhunderten, als Baumaterialien schwer zu finden waren, behalfen sich die Menschen in der Not ihre Häuser aus Brot, Süßigkeiten und anderen Lebensmitteln zu bauen. Auch wenn dies heute nicht mehr gängige Praxis ist, könnten einige solcher verlassenen Häuser immer noch in unerforschten Gebieten gefunden werden. Eine gute Nahrungsquelle!",
+  "maxhouse.books.closebook": "Buch schließen",
 
   "bigsign.message": "Willkommen im Tiefen Wald! Wo Natur und Magie in Harmony existieren!^== Monsterjagd für die ganze Familie ==^== Wanderrouten für jedes Niveau ==^== Abenteuer und Spaß für alle ==^^Warnung: Sehr gefährlich. Keine Haftung für tote, verfluchte, oder vermisste Abenteuerlustige.",
-
-  "sign.NSWE.north": "Norden",
-  "sign.NSWE.south": "Süden",
-  "sign.NSWE.west": "Westen",
-  "sign.NSWE.east": "Osten",
+  "entrysign.message": "Du betrittst den tiefen Wald. Laufe nicht zu weit, wenn du nicht vorbereitet bist. Viele vor dir sind verschollen oder schlimmeres. Du bist gewarnt.",
 
   "orb-stone.question": "Du fühlst dich zu diesem Stein hingezogen. Du weißt nicht warum. Traust du dich ihn zu berühren?",
   "orb-stone.yes": "Ja!",
@@ -55,6 +38,7 @@
   "orb-stone.touch-message": "Du berührst den Stein behutsam. Du fühlst ein Summen, aber nichts passiert.",
   "orb-stone.touch-message-no-orb": "Du berührst den Stein behutsam. Der Stein fühlt sich sehnsüchtig an. Es ist eine seltsame Erfahrung.",
 
-  "cave-entrance.caved-in.message": "Der Eingang ist eingestürzt. Es scheint keinen Weg hinein zu geben."
+  "cave-entrance.caved-in.message": "Der Eingang ist eingestürzt. Es scheint keinen Weg hinein zu geben.",
 
+  "minecart.destination.deepwoods": "DeepWoods"
 }

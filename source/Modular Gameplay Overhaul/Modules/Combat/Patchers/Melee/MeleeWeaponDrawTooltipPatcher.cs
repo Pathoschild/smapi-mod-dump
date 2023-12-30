@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Melee;
 #region using directives
 
 using System.Reflection;
+using DaLion.Overhaul.Modules.Combat.Configs;
 using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
 using DaLion.Shared.Constants;
@@ -40,8 +41,8 @@ internal sealed class MeleeWeaponDrawTooltipPatcher : HarmonyPatcher
     private static bool MeleeWeaponDrawTooltipPrefix(
         MeleeWeapon __instance, SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha)
     {
-        if (!CombatModule.Config.EnableWeaponOverhaul ||
-            CombatModule.Config.WeaponTooltipStyle == CombatConfig.TooltipStyle.Vanilla || __instance.isScythe())
+        if (!CombatModule.Config.WeaponsSlingshots.EnableOverhaul ||
+            CombatModule.Config.ControlsUi.WeaponTooltipStyle == ControlsUiConfig.TooltipStyle.Vanilla || __instance.isScythe())
         {
             return true; // run original logic
         }

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SteamDew", "SteamDew\SteamDew.csproj", "{1AA4211E-B9FC-4405-A5E7-AFC0E8F142DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1AA4211E-B9FC-4405-A5E7-AFC0E8F142DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AA4211E-B9FC-4405-A5E7-AFC0E8F142DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AA4211E-B9FC-4405-A5E7-AFC0E8F142DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AA4211E-B9FC-4405-A5E7-AFC0E8F142DF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3CBF5306-32CA-43FC-90AD-EE25D00654A6}
+	EndGlobalSection
+EndGlobal

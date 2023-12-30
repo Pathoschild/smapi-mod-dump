@@ -13,8 +13,6 @@ namespace DaLion.Overhaul.Modules.Professions.Ultimates;
 #region using directives
 
 using System.Linq;
-using DaLion.Overhaul;
-using DaLion.Overhaul.Modules;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.UpdateTicked;
 using Microsoft.Xna.Framework;
 using Netcode;
@@ -29,7 +27,7 @@ public sealed class Ambush : Ultimate
 
     /// <summary>Initializes a new instance of the <see cref="Ambush"/> class.</summary>
     internal Ambush()
-        : base("Ambush", Professions.Profession.Poacher, Color.MediumPurple, Color.MidnightBlue)
+        : base("Ambush", Profession.Poacher, Color.MediumPurple, Color.MidnightBlue)
     {
     }
 
@@ -41,7 +39,7 @@ public sealed class Ambush : Ultimate
 
     /// <inheritdoc />
     internal override int MillisecondsDuration =>
-        (int)(15000 * ((double)this.MaxValue / BaseMaxValue) / ProfessionsModule.Config.LimitDrainFactor);
+        (int)(15000 * ((double)this.MaxValue / BaseMaxValue) / ProfessionsModule.Config.Limit.LimitDrainFactor);
 
     /// <inheritdoc />
     internal override SoundEffectPlayer ActivationSfx => SoundEffectPlayer.PoacherAmbush;

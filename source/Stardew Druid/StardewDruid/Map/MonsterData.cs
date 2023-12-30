@@ -10,17 +10,9 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewDruid.Cast;
-using StardewDruid.Event;
 using StardewDruid.Monster;
-using StardewValley.Locations;
-using StardewValley.Monsters;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StardewDruid.Map
 {
@@ -114,7 +106,7 @@ namespace StardewDruid.Map
 
                 case 14: // Dino Monster
 
-                    theMonster = new BossDragon(spawnVector, combatModifier);
+                    theMonster = new BossDino(spawnVector, combatModifier);
 
                     break;
 
@@ -124,12 +116,17 @@ namespace StardewDruid.Map
 
                     break;
 
-                case 16: 
+                case 16:
 
-                    theMonster = new RedDragon(spawnVector, combatModifier);
+                    theMonster = new Boss(spawnVector, combatModifier);
 
                     break;
 
+                case 17:
+
+                    theMonster = new Reaper(spawnVector, combatModifier);
+
+                    break;
 
                 // ------------------ Solaris
 
@@ -155,7 +152,9 @@ namespace StardewDruid.Map
             List<System.Type> customMonsters = new()
             {
                 typeof(StardewDruid.Monster.BossBat),
-                typeof(StardewDruid.Monster.BossDragon),
+                typeof (BossDino),
+                typeof (Boss),
+                typeof (Reaper),
                 typeof(StardewDruid.Monster.BossShooter),
                 typeof(StardewDruid.Monster.BossSlime),
                 typeof(StardewDruid.Monster.Firebird),
@@ -180,15 +179,15 @@ namespace StardewDruid.Map
 
             StardewValley.AnimatedSprite characterSprite = new();
 
-            characterSprite.textureName.Value = "18465_" + characterName + "_Sprite";
+            characterSprite.textureName.Value = "18465_" + characterName;
 
             characterSprite.spriteTexture = MonsterTexture(characterName);
 
-            characterSprite.loadedTexture = "18465_" + characterName + "_Sprite";
+            characterSprite.loadedTexture = "18465_" + characterName;
 
             if (characterName.Contains("Zero"))
             {
-                
+
                 characterSprite.SpriteHeight = 16;
 
                 characterSprite.SpriteWidth = 16;
@@ -201,6 +200,12 @@ namespace StardewDruid.Map
 
                 characterSprite.SpriteWidth = 64;
 
+            }
+            else if (characterName.Contains("Reaper"))
+            {
+                characterSprite.SpriteHeight = 48;
+
+                characterSprite.SpriteWidth = 64;
             }
             else
             {

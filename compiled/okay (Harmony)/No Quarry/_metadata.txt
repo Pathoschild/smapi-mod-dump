@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19410
+IDs: mlambley.NoQuarry
+update keys: Nexus:19410

@@ -55,7 +55,7 @@ namespace mouahrarasModuleCollection.MarniesShop.AnimalPurchase.Patches
 			return false;
 		}
 
-		private static bool ReceiveLeftClickPrefix(PurchaseAnimalsMenu __instance, int x, int y, bool playSound = true)
+		private static bool ReceiveLeftClickPrefix(PurchaseAnimalsMenu __instance, int x, int y)
 		{
 			if (!ModEntry.Config.MarniesShopAnimalPurchase)
 				return true;
@@ -70,7 +70,7 @@ namespace mouahrarasModuleCollection.MarniesShop.AnimalPurchase.Patches
 			FarmAnimal animalBeingPurchased = (FarmAnimal)typeof(PurchaseAnimalsMenu).GetField("animalBeingPurchased", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
 			int priceOfAnimal = (int)typeof(PurchaseAnimalsMenu).GetField("priceOfAnimal", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
 
-			Vector2 tile = new Vector2((int)((Utility.ModifyCoordinateFromUIScale(x) + (float)Game1.viewport.X) / 64f), (int)((Utility.ModifyCoordinateFromUIScale(y) + (float)Game1.viewport.Y) / 64f));
+			Vector2 tile = new((int)((Utility.ModifyCoordinateFromUIScale(x) + Game1.viewport.X) / 64f), (int)((Utility.ModifyCoordinateFromUIScale(y) + Game1.viewport.Y) / 64f));
 			Building buildingAt = (Game1.getLocationFromName("Farm") as Farm).getBuildingAt(tile);
 			if (buildingAt != null && !namingAnimal)
 			{

@@ -9,17 +9,16 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewDruid.Cast;
-using StardewValley;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
-using System.IO;
-using StardewValley.Locations;
-using System.Reflection;
-using System;
-using StardewValley.Tools;
-using System.Text.RegularExpressions;
+using StardewDruid.Cast;
 using StardewDruid.Map;
+using StardewValley;
+using StardewValley.Locations;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace StardewDruid.Event.World
 {
@@ -42,7 +41,7 @@ namespace StardewDruid.Event.World
 
             escapeAnchor = targetVector;
 
-            escapeCorner = escapeAnchor - new Vector2(64,64);
+            escapeCorner = escapeAnchor - new Vector2(64, 64);
 
         }
 
@@ -63,7 +62,7 @@ namespace StardewDruid.Event.World
 
             }
 
-            if(targetPlayer.currentLocation.Name != targetLocation.Name)
+            if (targetPlayer.currentLocation.Name != targetLocation.Name)
             {
 
                 return false;
@@ -102,7 +101,7 @@ namespace StardewDruid.Event.World
         public override void EventInterval()
         {
 
-            if (Vector2.Distance(targetVector,riteData.caster.Position) <= 32 && Mod.instance.activeData.castLevel > activeCounter)
+            if (Vector2.Distance(targetVector, riteData.caster.Position) <= 32 && Mod.instance.activeData.castLevel > activeCounter)
             {
 
                 activeCounter++;
@@ -110,7 +109,7 @@ namespace StardewDruid.Event.World
             }
             else
             {
-                
+
                 EventRemove();
 
                 expireEarly = true;
@@ -119,7 +118,7 @@ namespace StardewDruid.Event.World
 
             }
 
-            if(activeCounter == 3)
+            if (activeCounter == 3)
             {
 
                 TemporaryAnimatedSprite startAnimation = new(0, 1000f, 1, 1, escapeAnchor, false, false)
@@ -225,9 +224,9 @@ namespace StardewDruid.Event.World
 
             }
 
-            if(activeCounter == 5)
+            if (activeCounter == 5)
             {
-                if(targetLocation is MineShaft)
+                if (targetLocation is MineShaft)
                 {
 
                     if (PerformXzone())
@@ -251,7 +250,7 @@ namespace StardewDruid.Event.World
 
                     }
                 }
-            
+
             }
 
         }
@@ -282,22 +281,22 @@ namespace StardewDruid.Event.World
                 if (WarpData.WarpExclusions(targetLocation, warp))
                 {
 
-                        continue;
+                    continue;
 
                 }
 
-                Vector2 destination = WarpData.WarpReverse(targetLocation,warp);
+                Vector2 destination = WarpData.WarpReverse(targetLocation, warp);
 
-                if(destination == Vector2.Zero)
+                if (destination == Vector2.Zero)
                 {
-                    
+
                     continue;
 
                 }
 
                 Vector2 possibility = destination * 64;
 
-                if(destinations.Count == 0)
+                if (destinations.Count == 0)
                 {
 
                     destinations.Add(possibility);
@@ -322,8 +321,8 @@ namespace StardewDruid.Event.World
                 }
 
             }
-            
-            if(destinations.Count > 0)
+
+            if (destinations.Count > 0)
             {
                 Game1.flashAlpha = 1;
 
@@ -332,7 +331,7 @@ namespace StardewDruid.Event.World
                 ModUtility.AnimateQuickWarp(targetLocation, destinations[0], "Escape");
 
                 return true;
-            
+
             }
 
             return false;
@@ -369,7 +368,7 @@ namespace StardewDruid.Event.World
 
             int tileY = Convert.ToInt32(m.Groups[2].Value);
 
-            Vector2 destination = new Vector2(tileX,tileY) * 64;
+            Vector2 destination = new Vector2(tileX, tileY) * 64;
 
             Game1.flashAlpha = 1;
 

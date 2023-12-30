@@ -1,0 +1,58 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HauntedPineapple/Stendew-Valley
+**
+*************************************************/
+
+{
+  "Name": "Stendew Valley",
+  "Author": "Haunted Pineapple",
+  "Version": "1.0.1",
+  "Description": "Stendew Valley SMAPI mod",
+  "UniqueID": "HauntedPineapple.StendewValley",
+  "EntryDll": "StendewValley.dll",
+  "MinimumApiVersion": "3.0.0",
+  "Dependencies": [
+    {
+      "UniqueID": "PurrplingCat.QuestEssentials"
+    },
+    {
+      "UniqueID": "PurrplingCat.QuestFramework"
+    },
+    {
+      "UniqueID": "spacechase0.JsonAssets"
+    },
+    {
+      "UniqueID": "Cherry.ExpandedPreconditionsUtility"
+    },
+    {
+      "UniqueID": "spacechase0.SpaceCore"
+    },
+    {
+      "UniqueID": "Pathoschild.ContentPatcher"
+    },
+    {
+      "UniqueID": "HauntedPineapple.StendewValley_Sten"
+    },
+    {
+      "UniqueID": "HauntedPineapple.StendewValley_Sofia"
+    },
+    {
+      "UniqueID": "HauntedPineapple.StendewValley_Paul"
+    },
+    {
+      "UniqueID": "HauntedPineapple.StendewValley_Locations"
+    },
+    {
+      "UniqueID": "HauntedPineapple.StendewValley_Items"
+    },
+    {
+      "UniqueID": "HauntedPineapple.StendewValley_Quests"
+    }
+  ],
+  "UpdateKeys": [ "Nexus:19483" ]
+}

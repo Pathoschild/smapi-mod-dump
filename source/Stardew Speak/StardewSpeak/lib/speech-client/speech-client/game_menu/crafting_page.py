@@ -11,7 +11,6 @@ def get_crafting_page(menu):
 
 
 async def focus_item(page, item):
-    server.log(str(item))
     for cmp, serialized_item in page["currentRecipePage"]:
         if item.name == serialized_item["name"]:
             await menu_utils.focus_component(cmp)

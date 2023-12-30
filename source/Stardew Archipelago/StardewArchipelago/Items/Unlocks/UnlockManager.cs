@@ -34,6 +34,10 @@ namespace StardewArchipelago.Items.Unlocks
             {
                 _specificUnlockManagers.Add(new MagicUnlockManager());
             }
+            if (archipelago.SlotData.Mods.HasMod(ModNames.SVE))
+            {
+                _specificUnlockManagers.Add(new SVEUnlockManager());
+            }
         }
 
         public bool IsUnlock(string unlockName)

@@ -7,9 +7,9 @@ mods:
    Easy Farm Switcher
 
 latest commit:
-   commit 571a4eb0ddddd4ef7a4a464f58465224191a2a88
+   commit 1d035fc00299b245a6edcceaa1edb1f9bb1cc533
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Thu Nov 23 20:50:46 2023 +0100
+   Date:   Mon Dec 11 23:42:46 2023 +0100
    
-       refactoring
+       updated to 23345
    

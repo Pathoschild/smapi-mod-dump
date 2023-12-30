@@ -169,7 +169,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
             foreach (var levelFinished in levelsFinishedThisRun.GetValue())
             {
-                _locationChecker.AddCheckedLocation(JK_LEVEL_LOCATIONS[levelFinished]);
+                var location = JK_LEVEL_LOCATIONS[levelFinished];
+                _locationChecker.AddCheckedLocation(location);
+                if (location == JK_VICTORY)
+                {
+                    Game1.chatBox?.addMessage("You can now type '!!arcade_release jk' to release all remaining Junimo Kart checks", Color.Green);
+                }
             }
         }
 
@@ -259,6 +264,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 if (which == -3)
                 {
                     _locationChecker.AddCheckedLocation(JOTPK_VICTORY);
+                    Game1.chatBox?.addMessage("You can now type '!!arcade_release jotpk' to release all remaining Prairie King checks", Color.Green);
                     return true; // run original logic
                 }
 

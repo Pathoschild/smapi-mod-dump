@@ -54,13 +54,38 @@ namespace StardewArchipelago.Archipelago.Gifting
 
             foreach (var (receivedGift, amount) in giftAmounts)
             {
-                var relatedGiftIds = giftIds.Where(x => x.Value == receivedGift).Select(x => x.Key).ToArray();
-                var mailKey = GetMailKey(relatedGiftIds);
-                var senderGame = _archipelago.GetPlayerGame(receivedGift.SenderName);
-                var item = _itemManager.GetItemByName(receivedGift.ItemName);
-                var embed = GetEmbed(item, amount);
-                _mail.SendArchipelagoGiftMail(mailKey, receivedGift.ItemName, receivedGift.SenderName, senderGame, embed);
+                var amountRemaining = amount;
+                while (amountRemaining > 0)
+                {
+                    amountRemaining = SendGiftMail(giftIds, receivedGift, amountRemaining);
+                }
             }
+        }
+
+        /// <summary>
+        /// Sends a Gift Mail for the received gift item and the specified amount.
+        /// </summary>
+        /// <param name="giftIds"></param>
+        /// <param name="receivedGift"></param>
+        /// <param name="amount"></param>
+        /// <returns>The amount of item remaining that needs to be sent after this gift, if the amount was too high</returns>
+        private int SendGiftMail(Dictionary<string, ReceivedGift> giftIds, ReceivedGift receivedGift, int amount)
+        {
+            var relatedGiftIds = giftIds.Where(x => x.Value == receivedGift).Select(x => x.Key).ToArray();
+            var senderGame = _archipelago.GetPlayerGame(receivedGift.SenderName);
+            var item = _itemManager.GetItemByName(receivedGift.ItemName);
+            var amountInGift = amount;
+            if (amount > 999)
+            {
+                amountInGift = 999;
+            }
+
+            var amountRemainingAfterGift = amount - amountInGift;
+            var mailKey = GetMailKey(relatedGiftIds, amountRemainingAfterGift);
+            var embed = GetEmbed(item, amount);
+            _mail.SendArchipelagoGiftMail(mailKey, receivedGift.ItemName, receivedGift.SenderName, senderGame, embed);
+
+            return amountRemainingAfterGift;
         }
 
         private void ParseGift(Gift gift, Dictionary<ReceivedGift, int> giftAmounts, Dictionary<string, ReceivedGift> giftIds)
@@ -95,9 +120,9 @@ namespace StardewArchipelago.Archipelago.Gifting
             return $"%item object {item.Id} {amount} %%";
         }
 
-        private string GetMailKey(IEnumerable<string> ids)
+        private string GetMailKey(IEnumerable<string> ids, int amount)
         {
-            return $"APGift;{string.Join(";", ids)}";
+            return $"APGift;{string.Join(";", ids)};{amount}";
         }
     }
 }

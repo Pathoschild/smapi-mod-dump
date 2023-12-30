@@ -16,7 +16,7 @@ namespace stardew_access.Patches
     {
         public static void PatchAll(Harmony harmony)
         {
-            List<IPatch> allPatches = new List<IPatch>()
+            List<IPatch> allPatches = new()
             {
                 // Bundle Menu Patches
                 new JojaCDMenuPatch(),
@@ -36,17 +36,20 @@ namespace stardew_access.Patches
                 new ForgeMenuPatch(),
                 new GeodeMenuPatch(),
                 new ItemGrabMenuPatch(),
+                new QuestContainerMenuPatch(),
                 new ShopMenuPatch(),
                 new TailoringMenuPatch(),
                 // Misc Patches
                 new ChatBoxPatch(),
                 new DialogueBoxPatch(),
                 new Game1Patch(),
+                new GameLocationPatch(),
                 new IClickableMenuPatch(),
                 new InstanceGamePatch(),
                 new NPCPatch(),
                 new TextBoxPatch(),
                 new TextEntryMenuPatch(),
+                new TileMapPatch(),
                 new TrashBearPatch(),
                 // Other Menu Patches
                 new AnimalQueryMenuPatch(),

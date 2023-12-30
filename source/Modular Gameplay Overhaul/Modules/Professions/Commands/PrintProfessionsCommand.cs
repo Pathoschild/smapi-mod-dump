@@ -45,10 +45,10 @@ internal sealed class PrintProfessionsCommand : ConsoleCommand
             ISkill skill;
             if (!Skill.TryFromName(skillName, true, out var vanillaSkill))
             {
-                var found = SCSkill.Loaded.Values.FirstOrDefault(s =>
+                var found = CustomSkill.Loaded.Values.FirstOrDefault(s =>
                     string.Equals(s.StringId, skillName, StringComparison.CurrentCultureIgnoreCase) ||
                     string.Equals(s.DisplayName, skillName, StringComparison.CurrentCultureIgnoreCase));
-                if (found is not SCSkill customSkill)
+                if (found is not CustomSkill customSkill)
                 {
                     Log.W($"{args[0]} is not a valid skill name.");
                     return;
@@ -91,15 +91,15 @@ internal sealed class PrintProfessionsCommand : ConsoleCommand
             {
                 name.Append(profession.StringId + (pid >= 100 ? " (P)" : Empty));
             }
-            else if (SCProfession.Loaded.TryGetValue(pid, out var scProfession) || SCProfession.Loaded.TryGetValue(pid - 100, out scProfession))
+            else if (CustomProfession.Loaded.TryGetValue(pid, out var customProfession) || CustomProfession.Loaded.TryGetValue(pid - 100, out customProfession))
             {
-                name.Append(scProfession.StringId);
-                if (!SCProfession.Loaded.ContainsKey(pid))
+                name.Append(customProfession.StringId);
+                if (!CustomProfession.Loaded.ContainsKey(pid))
                 {
                     name.Append(" (P)");
                 }
 
-                name.Append(" (" + scProfession.Skill.StringId + ')');
+                name.Append(" (" + customProfession.ParentSkill.StringId + ')');
             }
             else
             {

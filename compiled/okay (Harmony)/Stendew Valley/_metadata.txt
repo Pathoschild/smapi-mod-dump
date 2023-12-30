@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19483
+IDs: HauntedPineapple.StendewValley
+update keys: Nexus:19483, GitHub:HauntedPineapple/Stendew-Valley

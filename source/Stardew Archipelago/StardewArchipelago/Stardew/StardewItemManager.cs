@@ -13,8 +13,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using StardewArchipelago.Constants;
 using StardewValley;
 using Object = StardewValley.Object;
+using StardewArchipelago.Stardew.NameMapping;
 
 namespace StardewArchipelago.Stardew
 {
@@ -45,15 +47,6 @@ namespace StardewArchipelago.Stardew
             {126, " (Green)"},
             {180, " (Brown)"},
             {182, " (Brown)"},
-        };
-
-        public List<List<string>> ItemNameAliases = new()
-        {
-            new List<string> { "L. Goat Milk", "Large Goat Milk", "Goat Milk (Large)" },
-            new List<string> { "L. Milk", "Large Milk", "Milk (Large)" },
-            new List<string> { "Egg (Brown)", "Brown Egg" },
-            new List<string> { "Large Egg (Brown)", "Large Brown Egg" },
-            new List<string> { "Cookie", "Cookies" },
         };
 
         public StardewItemManager()
@@ -294,7 +287,7 @@ namespace StardewArchipelago.Stardew
 
         private void AddItemAndAliasesToNamesDictionary(StardewObject stardewItem)
         {
-            foreach (var aliasGroup in ItemNameAliases)
+            foreach (var aliasGroup in NameAliases.ItemNameAliasGroups)
             {
                 if (!aliasGroup.Contains(stardewItem.Name))
                 {
@@ -429,6 +422,10 @@ namespace StardewArchipelago.Stardew
                 }
 
                 _cookingRecipesByName.Add(recipe.ItemName, recipe);
+                if (NameAliases.RecipeNameAliases.ContainsKey(recipe.ItemName))
+                {
+                    _cookingRecipesByName.Add(NameAliases.RecipeNameAliases[recipe.ItemName], recipe);
+                }
             }
         }
 

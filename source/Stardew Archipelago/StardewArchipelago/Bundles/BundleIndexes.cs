@@ -8,11 +8,7 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StardewArchipelago.Bundles
 {
@@ -71,7 +67,7 @@ namespace StardewArchipelago.Bundles
 
             {"Orchard", 254},
             {"Island Crops", 255},
-            {"Agronomist", 256},
+            {"Agronomist's", 256},
 
             {"Tackle", 257},
             {"Recycling", 258},
@@ -82,27 +78,35 @@ namespace StardewArchipelago.Bundles
             {"Rain Fishing", 263},
             {"Legendary Fish", 266},
             {"Island Fish", 267},
-            {"Master Baiter", 12},
+            {"Master Baiter", 268},
 
             {"Bartender's", 277},
 
             {"Demolition", 272},
 
-            { "500g", 23 },
-            { "1,500g", 23 },
-            { "2,500g", 23 },
-            { "3,500g", 23 },
-            { "1,000g", 24 },
-            { "3,000g", 24 },
-            { "5,000g", 24 },
-            { "7,000g", 24 },
-            { "2,000g", 25 },
-            { "6,000g", 25 },
-            { "10,000g", 25 },
-            { "14,000g", 25 },
-            { "15,000g", 26 },
-            { "25,000g", 26 },
-            { "35,000g", 26 },
+            { "250g", 2301 },
+            { "500g", 2302 },
+            { "1,000g", 2303 },
+            { "1,500g", 2304 },
+            { "2,000g", 2305 },
+            { "2,500g", 2306 },
+            { "3,000g", 2401 },
+            { "3,500g", 2402 },
+            { "4,500g", 2403 },
+            { "5,000g", 2404 },
+            { "6,000g", 2405 },
+            { "7,000g", 2501 },
+            { "9,000g", 2502 },
+            { "10,000g", 2503 },
+            { "14,000g", 2504 },
+            { "15,000g", 2505 },
+            { "18,000g", 2506 },
+            { "20,000g", 2601 },
+            { "25,000g", 2602 },
+            { "35,000g", 2603 },
+            { "40,000g", 2604 },
+            { "45,000g", 2605 },
+            { "100,000g", 2606 },
 
             {"Gambler's", 292},
             {"Carnival", 293},
@@ -171,7 +175,7 @@ namespace StardewArchipelago.Bundles
 
             {"Orchard", BUNDLE_RED},
             {"Island Crops", BUNDLE_YELLOW},
-            {"Agronomist", 256},
+            {"Agronomist's", BUNDLE_GREEN},
 
             {"Tackle", BUNDLE_YELLOW},
             {"Recycling", BUNDLE_GREEN},
@@ -188,21 +192,29 @@ namespace StardewArchipelago.Bundles
 
             {"Demolition", BUNDLE_RED},
 
-            { "500g", BUNDLE_YELLOW},
-            { "1,500g", BUNDLE_YELLOW},
-            { "2,500g",  BUNDLE_YELLOW},
-            { "3,500g", BUNDLE_YELLOW },
+            { "250g", BUNDLE_YELLOW },
+            { "500g", BUNDLE_YELLOW },
             { "1,000g", BUNDLE_YELLOW },
-            { "3,000g", BUNDLE_YELLOW },
-            { "5,000g",  BUNDLE_YELLOW},
-            { "7,000g", BUNDLE_YELLOW },
+            { "1,500g", BUNDLE_YELLOW },
             { "2,000g", BUNDLE_YELLOW },
+            { "2,500g", BUNDLE_YELLOW },
+            { "3,000g", BUNDLE_YELLOW },
+            { "3,500g", BUNDLE_YELLOW },
+            { "4,500g", BUNDLE_YELLOW },
+            { "5,000g", BUNDLE_YELLOW },
             { "6,000g", BUNDLE_YELLOW },
+            { "7,000g", BUNDLE_YELLOW },
+            { "9,000g", BUNDLE_YELLOW },
             { "10,000g", BUNDLE_YELLOW },
             { "14,000g", BUNDLE_YELLOW },
             { "15,000g", BUNDLE_YELLOW },
+            { "18,000g", BUNDLE_YELLOW },
+            { "20,000g", BUNDLE_YELLOW },
             { "25,000g", BUNDLE_YELLOW },
             { "35,000g", BUNDLE_YELLOW },
+            { "40,000g", BUNDLE_YELLOW },
+            { "45,000g", BUNDLE_YELLOW },
+            { "100,000g", BUNDLE_YELLOW },
 
             {"Gambler's", BUNDLE_PURPLE},
             {"Carnival", BUNDLE_ORANGE},

@@ -9,14 +9,12 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewDruid.Cast.Earth;
-using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Menus;
-using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
-using System;
 using System.Collections.Generic;
+using System;
+using xTile.Dimensions;
+using System.IO;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace StardewDruid.Cast.Fates
 {
@@ -25,17 +23,20 @@ namespace StardewDruid.Cast.Fates
 
         NPC riteWitness;
 
-        int source;
+        //int source;
 
         int friendship;
 
-        public Trick(Vector2 target, Rite rite, NPC witness, int Source)
+        private string trick;
+
+        //public Trick(Vector2 target, Rite rite, NPC witness, int Source)
+        public Trick(Vector2 target, Rite rite, NPC witness)
             : base(target, rite)
         {
 
             riteWitness = witness;
 
-            source = Source;
+            //source = Source;
 
         }
 
@@ -48,7 +49,7 @@ namespace StardewDruid.Cast.Fates
 
             DelayedAction.functionAfterDelay(CastAfterDelay, 1000);
 
-            ModUtility.AnimateFate(targetLocation, targetPlayer.getTileLocation(), riteWitness.getTileLocation(), source);
+            ModUtility.AnimateFateTarget(targetLocation, targetPlayer.Position, riteWitness.Position);
 
             castFire = true;
 
@@ -76,78 +77,110 @@ namespace StardewDruid.Cast.Fates
 
             int reaction = 500;
 
-            switch (source)
+            trick = "butterflies";
+
+            //switch (source)
+            //{
+            //  case 768:
+
+            int interval = 2000;
+
+            int trickInt = randomIndex.Next(6);
+
+            //trickInt = 3;
+
+            switch (trickInt)
             {
-                case 768:
 
-                    switch (randomIndex.Next(3))
-                    {
+                case 0:
 
-                        case 0:
+                    ModUtility.AnimateMeteor(targetLocation, riteWitness.getTileLocation() - new Vector2(0, 1), true);
 
-                            ModUtility.AnimateMeteor(targetLocation, riteWitness.getTileLocation() - new Vector2(0,1), true);
+                    DelayedAction.functionAfterDelay(DeathSpray, 200);
 
-                            DelayedAction.functionAfterDelay(DeathSpray, 200);
+                    friendship = -10;
 
-                            friendship = -10;
+                    trick = "meteors";
 
-                            break;
+                    break;
 
-                        case 1:
+                case 1:
 
-                            ModUtility.AnimateRandomCritter(targetLocation, riteWitness.getTileLocation());
+                    ModUtility.AnimateBolt(targetLocation, riteWitness.getTileLocation() - new Vector2(0, 1));
 
-                            friendship = randomIndex.Next(1,friendshipRatio) * 25;
+                    DelayedAction.functionAfterDelay(DeathSpray, 200);
 
-                            break;
+                    trick = "bolts of lightning";
 
-                        default:
+                    friendship = -10;
 
-                            ModUtility.AnimateButterflySpray(targetLocation, riteWitness.getTileLocation());
+                    break;
 
-                            friendship = randomIndex.Next(1,friendshipRatio) * 25;
+                case 2:
 
-                            break;
-                    
-                    }
-                    
+                    ModUtility.AnimateRandomCritter(targetLocation, riteWitness.getTileLocation());
+
+                    friendship = randomIndex.Next(1, friendshipRatio) * 25;
+
+                    trick = "critters";
+
+                    break;
+
+                case 3:
+
+                    Event.World.Levitate levitation = new(targetVector, riteData, riteWitness);
+
+                    levitation.EventTrigger();
+
+                    friendship = randomIndex.Next(1, friendshipRatio) * 25;
+
+                    trick = "levitations";
+
+                    break;
+
+                case 4:
+
+                    ModUtility.AnimateRandomFish(targetLocation, riteWitness.getTileLocation());
+
+                    friendship = randomIndex.Next(1, friendshipRatio) * 25;
+
+                    trick = "fishies";
+
                     break;
 
                 default:
 
-                    switch (randomIndex.Next(3))
-                    {
+                    ModUtility.AnimateButterflySpray(targetLocation, riteWitness.getTileLocation());
 
-                        case 0:
-
-                            ModUtility.AnimateBolt(targetLocation, riteWitness.getTileLocation() - new Vector2(0, 1));
-
-                            DelayedAction.functionAfterDelay(DeathSpray, 200);
-
-                            friendship = -10;
-
-                            break;
-
-                        case 1:
-
-                            ModUtility.AnimateRandomCritter(targetLocation, riteWitness.getTileLocation());
-
-                            friendship = randomIndex.Next(1, friendshipRatio) * 25;
-
-                            break;
-
-                        default:
-
-                            ModUtility.AnimateRandomFish(targetLocation, riteWitness.getTileLocation());
-
-                            friendship = randomIndex.Next(1, friendshipRatio) * 25;
-
-                            break;
-                    }
-                    
+                    friendship = randomIndex.Next(1, friendshipRatio) * 25;
                     break;
-            
             }
+
+
+            TemporaryAnimatedSprite radiusAnimation = new(0, interval, 1, 1, riteWitness.Position - new Microsoft.Xna.Framework.Vector2(64,64), false, false)
+            {
+
+                sourceRect = new(0, 0, 64, 64),
+
+                sourceRectStartingPos = new Vector2(0, 0),
+
+                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images","Warp.png")),
+
+                scale = 3f, //* size,
+
+                timeBasedMotion = true,
+
+                layerDepth = 0.0001f,
+
+                rotationChange = 0.06f,
+
+            };
+
+            targetLocation.temporarySprites.Add(radiusAnimation);
+
+            //break;
+
+            //}
 
             DelayedAction.functionAfterDelay(VillagerReaction, reaction);
 
@@ -156,39 +189,19 @@ namespace StardewDruid.Cast.Fates
         public void VillagerReaction()
         {
 
-            if(friendship >= 75)
-            {
-
-                riteWitness.doEmote(20);
-
-            }
-            else if (friendship >= 50)
-            {
-
-                riteWitness.doEmote(32);
-
-            }
-            else if (friendship >= 25)
-            {
-
-                riteWitness.doEmote(24);
-
-            }
-            else
-            {
-
-                riteWitness.doEmote(28);
-
-            }
-
             ModUtility.GreetVillager(targetPlayer, riteWitness, friendship);
+
+            StardewDruid.Dialogue.Reaction.ReactTo(riteWitness, "Fates", friendship, new List<string>()
+              {
+                trick
+              });
 
         }
 
         public void DeathSpray()
         {
 
-            ModUtility.AnimateDeathSpray(targetLocation, riteWitness.GetBoundingBox().Center.ToVector2(), Color.Gray * 0.5f);
+            ModUtility.AnimateDeathSpray(targetLocation, riteWitness.Position, Color.Gray * 0.5f);
 
         }
 

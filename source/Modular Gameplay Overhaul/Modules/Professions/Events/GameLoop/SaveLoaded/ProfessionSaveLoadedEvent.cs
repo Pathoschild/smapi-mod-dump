@@ -15,7 +15,6 @@ namespace DaLion.Overhaul.Modules.Professions.Events.GameLoop.SaveLoaded;
 using System.Collections.Generic;
 using DaLion.Overhaul.Modules.Professions.Events.Display.RenderedHud;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.DayStarted;
-using DaLion.Overhaul.Modules.Professions.Events.GameLoop.OneSecondUpdateTicked;
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.TimeChanged;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Comparers;
@@ -47,7 +46,7 @@ internal sealed class ProfessionSaveLoadedEvent : SaveLoadedEvent
         player.professions.OnElementChanged += this.OnElementChanged;
 
         Skill.List.ForEach(s => s.Revalidate());
-        if (ProfessionsModule.Config.EnableLimitBreaks)
+        if (ProfessionsModule.Config.Limit.EnableLimitBreaks)
         {
             player.RevalidateUltimate();
         }
@@ -56,7 +55,7 @@ internal sealed class ProfessionSaveLoadedEvent : SaveLoadedEvent
 
         if (Context.IsMainPlayer)
         {
-            if (Game1.game1.DoesAnyPlayerHaveProfession(Profession.Luremaster, out _))
+            if (Game1.game1.DoesAnyPlayerHaveProfession(Profession.Luremaster))
             {
                 this.Manager.Enable<LuremasterTimeChangedEvent>();
             }
@@ -76,7 +75,10 @@ internal sealed class ProfessionSaveLoadedEvent : SaveLoadedEvent
             this.Manager.Enable<ScavengerRenderedHudEvent>();
         }
 
-        this.Manager.Enable<PrestigeAchievementOneSecondUpdateTickedEvent>();
+        if (ProfessionsModule.EnablePrestigeLevels)
+        {
+            this.Manager.Enable<PrestigeAchievementDayStartedEvent>();
+        }
     }
 
     /// <summary>Invoked when the value list is replaced.</summary>

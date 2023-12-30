@@ -10,11 +10,8 @@
 
 using Microsoft.Xna.Framework;
 using StardewValley;
-using StardewValley.Monsters;
-using System.Collections.Generic;
 using System;
-using Microsoft.Xna.Framework.Graphics;
-using Netcode;
+using System.Collections.Generic;
 
 namespace StardewDruid.Monster
 {
@@ -87,9 +84,9 @@ namespace StardewDruid.Monster
             {
                 return 0;
             }
-            
+
             int ouchIndex = Game1.random.Next(10);
-            
+
             if (ouchIndex < ouchList.Count)
             {
                 showTextAboveHead(ouchList[ouchIndex], duration: 2000);
@@ -102,7 +99,7 @@ namespace StardewDruid.Monster
         public override void update(GameTime time, GameLocation location)
         {
 
-            if(spawnBuff)
+            if (spawnBuff)
             {
                 if (Game1.currentGameTime.TotalGameTime.TotalMilliseconds > spawnTimeout)
                 {

@@ -124,9 +124,9 @@ public sealed class ModEntry : Mod
         foreach (var (name, storage) in ModEntry.Storages)
         {
             if (storage.BetterChestsData is null
-             || e.Context is not Chest chest
-             || !chest.modData.TryGetValue("furyx639.ExpandedStorage/Storage", out var storageName)
-             || !storageName.Equals(name, StringComparison.OrdinalIgnoreCase))
+                || e.Context is not Chest chest
+                || !chest.modData.TryGetValue("furyx639.ExpandedStorage/Storage", out var storageName)
+                || !storageName.Equals(name, StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
@@ -144,8 +144,8 @@ public sealed class ModEntry : Mod
         foreach (var (name, _) in unlock)
         {
             if (recipes.ContainsKey(name)
-             && !Game1.player.craftingRecipes.ContainsKey(name)
-             && ModEntry.Storages.ContainsKey(name))
+                && !Game1.player.craftingRecipes.ContainsKey(name)
+                && ModEntry.Storages.ContainsKey(name))
             {
                 Game1.player.craftingRecipes.Add(name, 0);
             }

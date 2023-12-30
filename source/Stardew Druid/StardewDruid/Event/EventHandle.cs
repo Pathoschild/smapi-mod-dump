@@ -15,10 +15,8 @@ using StardewDruid.Map;
 using StardewDruid.Monster;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Characters;
 using System;
 using System.Collections.Generic;
-using xTile.Dimensions;
 
 namespace StardewDruid.Event
 {
@@ -49,13 +47,13 @@ namespace StardewDruid.Event
 
         public List<Torch> torchList;
 
-        //public NPC disembodiedVoice;
-
-        public List<StardewDruid.Character.Character> actors;
+        public List<Actor> actors;
 
         public Vector2 voicePosition;
 
         public bool soundTrack;
+
+        public bool eventSync;
 
         public EventHandle(Vector2 target, Rite rite)
         {
@@ -134,7 +132,7 @@ namespace StardewDruid.Event
 
         }
 
-        public virtual bool EventPerformAction()
+        public virtual bool EventPerformAction(SButton Button)
         {
 
             return false;
@@ -156,7 +154,7 @@ namespace StardewDruid.Event
 
         public virtual void EventAbort()
         {
-            
+
             eventLinger = 0;
 
         }
@@ -186,7 +184,7 @@ namespace StardewDruid.Event
                 monsterHandle.ShutDown();
 
             }
-        
+
         }
 
         public virtual void EventRemove()
@@ -225,14 +223,14 @@ namespace StardewDruid.Event
 
             }
 
-            if(actors.Count > 0)
+            if (actors.Count > 0)
             {
-                
+
                 foreach (StardewDruid.Character.Character actor in actors)
                 {
 
                     actor.currentLocation.characters.Remove(actor);
-                
+
                 }
 
                 actors.Clear();
@@ -273,14 +271,10 @@ namespace StardewDruid.Event
         public void CastVoice(string message, int duration = 2000)
         {
 
-            if(actors.Count <= 0)
+            if (actors.Count <= 0)
             {
 
-                StardewDruid.Character.Character disembodied = CharacterData.DisembodiedVoice(targetLocation,voicePosition);
-
-                targetLocation.characters.Add(disembodied);
-
-                actors.Add(disembodied);
+                this.AddActor(this.voicePosition);
 
             }
 
@@ -295,6 +289,14 @@ namespace StardewDruid.Event
 
             soundTrack = true;
 
+        }
+
+        public void AddActor(Vector2 position, bool slave = false)
+        {
+            Actor actor = CharacterData.DisembodiedVoice(this.targetLocation, position);
+            actor.drawSlave = slave;
+            targetLocation.characters.Add(actor);
+            actors.Add(actor);
         }
 
     }

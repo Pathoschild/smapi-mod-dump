@@ -39,14 +39,11 @@
 
   "sign.text.welcome": "Estás entrando en el Bosque Profundo. No se adentre demasiado si no está preparado. Muchos aventureros antes de ti se han perdido o les a pasado algo mucho peor. Usted ha sido advertido.",
 
-  "sign.text.random.1": "Caracoles en esta zona.",
-  "sign.text.random.2": "Si tienes mucho cuidado y mucha suerte, puedes encontrarte con un unicornio en un día soleado.",
-  "sign.text.random.3": "En algún lugar de este bosque hay una espada en una piedra. Ha estado allí durante siglos. Nadie parece ser capaz de sacarlo.",
-  "sign.text.random.4": "No puedo encontrar mi camino de regreso. Quizá poner letreros me ayude. ¿También estás perdido?",
-  "sign.text.random.5": "No te molestes con esos arbustos espinosos. Creo que son indestructibles. Se necesitaría una bomba para deshacerse de ellos. Pero quien trae bombas a un bosque...",
-  "sign.text.random.6": "Estos bosques están embrujados. Juro que vi un fantasma una noche.",
-  "sign.text.random.7": "Encontré una casa hecha de comida. ¡En medio del bosque! Despedasando todo, me duró una buena semana.",
-  "sign.text.random.8": "¡NO a los planes de carretera de Joja en el bosque! ¡PARA la destrucción!",
+  "maxhouse.books.random.1": "Si tienes mucho cuidado y mucha suerte, puedes encontrarte con un unicornio en un día soleado.",
+  "maxhouse.books.random.2": "En algún lugar de este bosque hay una espada en una piedra. Ha estado allí durante siglos. Nadie parece ser capaz de sacarlo.",
+  "maxhouse.books.random.3": "No te molestes con esos arbustos espinosos. Se necesitaría una bomba para deshacerse de ellos. Pero quien trae bombas a un bosque...",
+  "maxhouse.books.random.4": "Estos bosques están embrujados. Juro que vi un fantasma una noche.",
+  "maxhouse.books.random.5": "Encontré una casa hecha de comida. ¡En medio del bosque! Despedasando todo, me duró una buena semana.",
 
   "sign.text.item-marker": "Dejo este cartel para los Viajeros. Soy viejo ahora y mi memoria se está desvaneciendo, pero en algún lugar aquí enterré {item}.",
   "sign.text.clearing-marker": "Vi un claro {NSWE} de aquí. ¿Qué tan grande? no recuerdo. Anda con cuidado, amigo.",

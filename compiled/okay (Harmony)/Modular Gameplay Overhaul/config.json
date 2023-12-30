@@ -6,6 +6,51 @@
   "EnableTaxes": false,
   "EnableTweex": true,
   "Professions": {
+    "Limit": {
+      "EnableLimitBreaks": true,
+      "LimitBreakKey": "LeftShift, LeftShoulder",
+      "HoldKeyToLimitBreak": true,
+      "HoldDelayMilliseconds": 250,
+      "LimitGainFactor": 1.0,
+      "LimitDrainFactor": 1.0,
+      "LimitRespecCost": 0,
+      "LimitGaugeOffset": "0, 0"
+    },
+    "Prestige": {
+      "Mode": "Standard",
+      "SkillResetCostMultiplier": 1.0,
+      "ForgetRecipesOnSkillReset": true,
+      "AllowMultipleResets": false,
+      "ExpBonusPerSkillReset": 0.1,
+      "PrestigeRespecCost": 20000,
+      "Ribbon": "StackedStars",
+      "ExpPerPrestigeLevel": 5000,
+      "IsPerfectionRequirement": true
+    },
+    "Experience": {
+      "Multipliers": {
+        "Farming": 1.0,
+        "Fishing": 1.0,
+        "Foraging": 1.0,
+        "Mining": 1.0,
+        "Combat": 1.0,
+        "Luck": 1.0,
+        "blueberry.LoveOfCooking.CookingSkill": 1.0,
+        "spacechase0.Cooking": 1.0,
+        "spacechase0.Magic": 1.0,
+        "drbirbdev.Binning": 1.0,
+        "drbirbdev.Socializing": 1.0,
+        "moonslime.Excavation": 1.0
+      }
+    },
+    "ControlsUi": {
+      "ModKey": "LeftShift, LeftShoulder",
+      "TrackingPointerScale": 1.2,
+      "TrackingPointerBobRate": 1.0,
+      "DisableAlwaysTrack": false,
+      "UseLegacyProspectorHunt": false,
+      "ShowFishCollectionMaxIcon": true
+    },
     "ShouldJunimosInheritProfessions": false,
     "LaxOwnershipRequirements": false,
     "ArtisanGoodsAlwaysInputQuality": false,
@@ -92,184 +137,140 @@
     "AquaristFishPondCeiling": 12,
     "TrashNeededPerTaxDeduction": 100,
     "TrashNeededPerFriendshipPoint": 100,
-    "ConservationistTaxDeductionCeiling": 1.0,
-    "EnableLimitBreaks": true,
-    "LimitBreakKey": "LeftShift, LeftShoulder",
-    "HoldKeyToLimitBreak": true,
-    "LimitBreakHoldDelayMilliseconds": 250,
-    "LimitGainFactor": 1.0,
-    "LimitDrainFactor": 1.0,
-    "LimitRespecCost": 0,
-    "LimitGaugeOffset": "0, 0",
-    "EnablePrestige": true,
-    "SkillResetCostMultiplier": 1.0,
-    "ForgetRecipesOnSkillReset": true,
-    "AllowMultipleResets": false,
-    "ExpBonusPerSkillReset": 0.1,
-    "PrestigeRespecCost": 20000,
-    "PrestigeProgressionStyle": "StackedStars",
-    "EnableExtendedProgression": true,
-    "RequiredExpPerExtendedLevel": 5000,
-    "ExtendedPerfectionRequirement": true,
-    "SkillExpMultipliers": {
-      "Farming": 1.0,
-      "Fishing": 1.0,
-      "Foraging": 1.0,
-      "Mining": 1.0,
-      "Combat": 1.0,
-      "Luck": 1.0,
-      "blueberry.LoveOfCooking.CookingSkill": 1.0,
-      "spacechase0.Cooking": 1.0,
-      "spacechase0.Magic": 1.0,
-      "drbirbdev.Binning": 1.0,
-      "drbirbdev.Socializing": 1.0,
-      "moonslime.Excavation": 1.0
-    },
-    "ModKey": "LeftShift, LeftShoulder",
-    "TrackingPointerScale": 1.2,
-    "TrackingPointerBobRate": 1.0,
-    "DisableAlwaysTrack": false,
-    "UseLegacyProspectorHunt": false,
-    "ShowFishCollectionMaxIcon": true
+    "ConservationistTaxDeductionCeiling": 1.0
   },
   "Combat": {
+    "WeaponsSlingshots": {
+      "EnableOverhaul": true,
+      "EnableStabbingSwords": true,
+      "StabbingSwords": [
+        "Bone Sword",
+        "Steel Smallsword",
+        "Cutlass",
+        "Rapier",
+        "Steel Falchion",
+        "Pirate's Sword",
+        "Lava Katana",
+        "Dragontooth Cutlass",
+        "Blade of Ruin",
+        "Sword Fish",
+        "Strawblaster"
+      ],
+      "EnableComboHits": true,
+      "ComboHitsPerWeaponType": {
+        "StabbingSword": 4,
+        "DefenseSword": 4,
+        "Club": 2
+      },
+      "SwipeHold": true,
+      "DefenseImprovesParry": true,
+      "GroundedClubSmash": true,
+      "EnableRangedCriticalHits": true,
+      "EnableSlingshotSpecialMove": true,
+      "EnableInfinitySlingshot": true,
+      "RemoveSlingshotGracePeriod": true
+    },
+    "RingsEnchantments": {
+      "RebalancedRings": true,
+      "CraftableGemstoneRings": true,
+      "EnableInfinityBand": true,
+      "EnableGemstoneResonance": true,
+      "AudibleGemstones": true,
+      "ChordSoundDuration": 1000,
+      "ColorfulResonances": true,
+      "ResonanceLightsourceTexture": "Patterned",
+      "RebalancedGemstones": true,
+      "NewPrismaticEnchantments": true
+    },
+    "Quests": {
+      "DwarvenLegacy": true,
+      "EnableHeroQuest": true,
+      "IridiumBarsPerGalaxyWeapon": 10,
+      "RuinBladeDotMultiplier": 1.0,
+      "CanStoreRuinBlade": false,
+      "HeroQuestDifficulty": "Medium",
+      "WoodyReplacesRusty": true
+    },
+    "Enemies": {
+      "VariedEncounters": true,
+      "MonsterSpawnChanceMultiplier": 1.0,
+      "MonsterHealthMultiplier": 1.0,
+      "MonsterDamageMultiplier": 1.0,
+      "MonsterDefenseMultiplier": 1.0,
+      "MonsterHealthSummand": 0,
+      "MonsterDamageSummand": 0,
+      "MonsterDefenseSummand": 1
+    },
+    "ControlsUi": {
+      "SlickMoves": true,
+      "FaceMouseCursor": true,
+      "EnableAutoSelection": true,
+      "MeleeAutoSelectionRange": 2,
+      "RangedAutoSelectionRange": 4,
+      "SelectionKey": "LeftShift, LeftShoulder",
+      "SelectionBorderColor": {
+        "B": 255,
+        "G": 255,
+        "R": 0,
+        "A": 255
+      },
+      "ColorCodedForYourConvenience": true,
+      "ColorByTier": [
+        {
+          "B": 34,
+          "G": 17,
+          "R": 34,
+          "A": 255
+        },
+        {
+          "B": 0,
+          "G": 128,
+          "R": 0,
+          "A": 255
+        },
+        {
+          "B": 255,
+          "G": 0,
+          "R": 0,
+          "A": 255
+        },
+        {
+          "B": 128,
+          "G": 0,
+          "R": 128,
+          "A": 255
+        },
+        {
+          "B": 0,
+          "G": 0,
+          "R": 255,
+          "A": 255
+        },
+        {
+          "B": 0,
+          "G": 60,
+          "R": 231,
+          "A": 255
+        },
+        {
+          "B": 0,
+          "G": 60,
+          "R": 231,
+          "A": 255
+        }
+      ],
+      "ForgeSocketStyle": "Diamond",
+      "ForgeSocketPosition": "AboveSeparator",
+      "WeaponTooltipStyle": "Absolute",
+      "DrawCurrentAmmo": true,
+      "BullseyeReplacesCursor": true
+    },
     "NewResistanceFormula": true,
     "KnockbackHurts": true,
     "CriticalBackAttacks": true,
-    "EnableStatusConditions": true,
-    "EnableWeaponOverhaul": true,
-    "WoodyReplacesRusty": true,
-    "EnableStabbingSwords": true,
-    "StabbingSwords": [
-      "Bone Sword",
-      "Steel Smallsword",
-      "Cutlass",
-      "Rapier",
-      "Steel Falchion",
-      "Pirate's Sword",
-      "Lava Katana",
-      "Dragontooth Cutlass",
-      "Blade of Ruin",
-      "Sword Fish",
-      "Strawblaster"
-    ],
-    "EnableMeleeComboHits": true,
-    "ComboHitsPerWeaponType": {
-      "StabbingSword": 4,
-      "DefenseSword": 4,
-      "Club": 2
-    },
-    "SwipeHold": true,
-    "DefenseImprovesParry": true,
-    "GroundedClubSmash": true,
-    "EnableRangedCriticalHits": true,
-    "EnableSlingshotSpecialMove": true,
-    "EnableInfinitySlingshot": true,
-    "RemoveSlingshotGracePeriod": true,
-    "RebalancedRings": true,
-    "CraftableGemstoneRings": true,
-    "EnableInfinityBand": true,
-    "EnableGemstoneResonance": true,
-    "PlayChord": true,
-    "ChordSoundDuration": 1000,
-    "ColorfulResonances": true,
-    "ResonanceLightsourceTexture": "Patterned",
-    "RebalancedGemstones": true,
-    "NewPrismaticEnchantments": true,
-    "DwarvenLegacy": true,
-    "EnableHeroQuest": true,
-    "IridiumBarsPerGalaxyWeapon": 10,
-    "RuinBladeDotMultiplier": 1.0,
-    "CanStoreRuinBlade": false,
-    "HeroQuestDifficulty": "Medium",
-    "VariedEncounters": true,
-    "MonsterSpawnChanceMultiplier": 1.0,
-    "MonsterHealthMultiplier": 1.0,
-    "MonsterDamageMultiplier": 1.0,
-    "MonsterDefenseMultiplier": 1.0,
-    "MonsterHealthSummand": 0,
-    "MonsterDamageSummand": 0,
-    "MonsterDefenseSummand": 1,
-    "SlickMoves": true,
-    "FaceMouseCursor": true,
-    "EnableAutoSelection": true,
-    "MeleeAutoSelectionRange": 2,
-    "RangedAutoSelectionRange": 4,
-    "SelectionKey": "LeftShift, LeftShoulder",
-    "SelectionBorderColor": {
-      "B": 255,
-      "G": 255,
-      "R": 0,
-      "A": 255
-    },
-    "ColorCodedForYourConvenience": true,
-    "ColorByTier": [
-      {
-        "B": 34,
-        "G": 17,
-        "R": 34,
-        "A": 255
-      },
-      {
-        "B": 0,
-        "G": 128,
-        "R": 0,
-        "A": 255
-      },
-      {
-        "B": 255,
-        "G": 0,
-        "R": 0,
-        "A": 255
-      },
-      {
-        "B": 128,
-        "G": 0,
-        "R": 128,
-        "A": 255
-      },
-      {
-        "B": 0,
-        "G": 0,
-        "R": 255,
-        "A": 255
-      },
-      {
-        "B": 0,
-        "G": 60,
-        "R": 231,
-        "A": 255
-      },
-      {
-        "B": 0,
-        "G": 60,
-        "R": 231,
-        "A": 255
-      }
-    ],
-    "ForgeSocketStyle": "Diamond",
-    "ForgeSocketPosition": "AboveSeparator",
-    "WeaponTooltipStyle": "Absolute",
-    "DrawCurrentAmmo": true,
-    "BullseyeReplacesCursor": true
+    "EnableStatusConditions": true
   },
   "Tools": {
-    "PlayShockwaveAnimation": true,
-    "TicksBetweenCrests": 4,
-    "EnableForgeUpgrading": true,
-    "HoldToCharge": true,
-    "ChargeKey": "LeftShift, LeftShoulder",
-    "FaceMouseCursor": true,
-    "EnableAutoSelection": true,
-    "SelectionKey": "LeftShift, LeftShoulder",
-    "SelectionBorderColor": {
-      "B": 255,
-      "G": 255,
-      "R": 0,
-      "A": 255
-    },
-    "ColorCodedForYourConvenience": false,
-    "HideAffectedTiles": false,
     "Axe": {
       "BaseStaminaCostMultiplier": 1.0,
       "EnableCharging": true,
@@ -406,7 +407,23 @@
       "HarvestForage": false,
       "GoldScytheOnlyHarvest": false,
       "AllowHaymakerEnchantment": true
-    }
+    },
+    "PlayShockwaveAnimation": true,
+    "TicksBetweenCrests": 4,
+    "EnableForgeUpgrading": true,
+    "HoldToCharge": true,
+    "ChargeKey": "LeftShift, LeftShoulder",
+    "FaceMouseCursor": true,
+    "EnableAutoSelection": true,
+    "SelectionKey": "LeftShift, LeftShoulder",
+    "SelectionBorderColor": {
+      "B": 255,
+      "G": 255,
+      "R": 0,
+      "A": 255
+    },
+    "ColorCodedForYourConvenience": false,
+    "HideAffectedTiles": false
   },
   "Ponds": {
     "DaysUntilAlgaeSpawn": 3,

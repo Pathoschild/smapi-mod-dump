@@ -17,6 +17,9 @@ using System.Collections.Generic;
 using StardewValley.BellsAndWhistles;
 using System.Reflection.Emit;
 using System.Linq;
+using StardewValley.GameData.Objects;
+using StardewValley.Internal;
+using StardewValley.GameData;
 
 namespace Gacha_Geodes
 {
@@ -48,16 +51,23 @@ namespace Gacha_Geodes
         public static IEnumerable<CodeInstruction> getTreasureFromGeode_Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             CodeInstruction last = null;
+            CodeInstruction ldfld = null;
 
             foreach (var instruction in instructions) {
-                if (instruction.opcode == OpCodes.Stloc_S && last.Calls(typeof(Convert).GetMethod(nameof(Convert.ToInt32), new[] { typeof(string) }))) {
-                    //Pop value from stack into parentSheetIndex variable to empty stack. We used this as an anchor anyway
-                    yield return instruction;
+                if (instruction.opcode == OpCodes.Ldfld)
+                    ldfld = instruction;
 
-                    //Load array of possible rewards into stack for method call
-                    //We know this variable is declared right above parentsheetindex so its LocalIndex is one less
-                    var ldArr = new CodeInstruction(OpCodes.Ldloc, ((LocalBuilder)instruction.operand).LocalIndex - 1);
-                    yield return ldArr;
+                if (instruction.opcode == OpCodes.Stloc_S
+                    && last.Calls(
+                        typeof(ItemQueryResolver).GetMethod(nameof(ItemQueryResolver.TryResolveRandomItem),
+                        new[] { typeof(ISpawnItemData), typeof(ItemQueryContext), typeof(bool), typeof(HashSet<string>),
+                                typeof(Func<string, string>), typeof(Item), typeof(Action<string, string>) }))) {
+
+                    //We know this variable is declared right above Item so its LocalIndex is one less
+                    //Weirdly enough this gets its own wrapper object, so we have to get our object out of the wrapper
+                    var ldDropObj = new CodeInstruction(OpCodes.Ldloc_S, ((LocalBuilder)instruction.operand).LocalIndex - 1);
+                    yield return ldDropObj;
+                    yield return ldfld;
 
                     var call = new CodeInstruction(OpCodes.Call, typeof(ModEntry).GetMethod(nameof(getWeightedTreasure)));
                     yield return call;
@@ -70,21 +80,26 @@ namespace Gacha_Geodes
         }
 
 
-        public static int getWeightedTreasure(string[] array)
+        public static Item getWeightedTreasure(Item baseGameItem, ObjectGeodeDropData drop)
         {
+            if (drop.RandomItemId is null || drop.RandomItemId.Count == 0)
+                return baseGameItem;
+
             var sum = 0;
             var dic = new Dictionary<string, int>();
 
-            foreach (var item in array) {
+            foreach (var itemId in drop.RandomItemId) {
+                var item = ItemRegistry.Create(itemId);
+
                 //I am expecting only minerals or artifacts
-                var i = Game1.player.mineralsFound.ContainsKey(int.Parse(item)) ? Game1.player.mineralsFound[int.Parse(item)] : 0;
-                i = Game1.player.archaeologyFound.ContainsKey(int.Parse(item)) ? Game1.player.archaeologyFound[int.Parse(item)][0] : i;
+                var i = Game1.player.mineralsFound.ContainsKey(item.ItemId) ? Game1.player.mineralsFound[item.ItemId] : 0;
+                i = Game1.player.archaeologyFound.ContainsKey(item.ItemId) ? Game1.player.archaeologyFound[item.ItemId][0] : i;
                 sum += i + Config.BaseFound;
 
                 //Setting a base found to reduce weight impact per geode
                 //Must be BaseFound > 0
                 //The higher BaseFound, the less each found delta impacts weight
-                dic.Add(item, i + Config.BaseFound);
+                dic.Add(itemId, i + Config.BaseFound);
             }
 
             var weightedSum = 0;
@@ -98,11 +113,11 @@ namespace Gacha_Geodes
 
             foreach (var item in dic)
                 if (k + item.Value >= r)
-                    return int.Parse(item.Key);
+                    return ItemRegistry.Create(item.Key);
                 else
                     k += item.Value;
 
-            return int.Parse(dic.Last().Key);
+            return ItemRegistry.Create(dic.Last().Key);
         }
     }
 }

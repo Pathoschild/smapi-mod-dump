@@ -1,0 +1,21 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HauntedPineapple/Stendew-Valley
+**
+*************************************************/
+
+{
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "data/NPCDispositions",
+      "Entries": {
+        "Sten": "adult/rude/neutral/negative/male/non-datable/null/Other/summer 1//Town 27 49/Sten"
+      }
+    }
+  ]
+}

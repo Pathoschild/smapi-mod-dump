@@ -108,8 +108,8 @@
                                     "Id": "High Quality",
                                     "RandomItemId": [ "(O)918", "(O)919", "(O)920" ],
                                     "Condition": "ITEM_HAS_EDIBILITY Input 70",
-                                    "QuanitityModifierMode": "Stack",
-                                    "QuantityModifiers": [
+                                    "StackModifierMode": "Stack",
+                                    "StackModifiers": [
                                         {
                                             "Id": "HighValue",
                                             "Modification": "Add",
@@ -140,8 +140,8 @@
                                     "Id": "Medium Quality",
                                     "RandomItemId": [ "(O)369", "(O)371", "(O)466" ],
                                     "Condition": "ITEM_HAS_EDIBILITY Input 30",
-                                    "QuanitityModifierMode": "Stack",
-                                    "QuantityModifiers": [
+                                    "StackModifierMode": "Stack",
+                                    "StackModifiers": [
                                         {
                                             "Id": "HighValue",
                                             "Modification": "Add",
@@ -171,8 +171,8 @@
                                 {
                                     "Id": "Low Quality",
                                     "RandomItemId": [ "(O)368", "(O)370", "(O)465" ],
-                                    "QuanitityModifierMode": "Stack",
-                                    "QuantityModifiers": [
+                                    "StackModifierMode": "Stack",
+                                    "StackModifiers": [
                                         {
                                             "Id": "HighValue",
                                             "Modification": "Add",

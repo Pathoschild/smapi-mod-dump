@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Bundles;
+using StardewArchipelago.Serialization;
 using StardewArchipelago.Stardew;
 using StardewArchipelago.Textures;
 using StardewModdingAPI;
@@ -34,16 +35,18 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
         private static IMonitor _monitor;
         private static IModHelper _modHelper;
         private static ArchipelagoClient _archipelago;
-        private static BundleReader _bundleReader;
+        private static ArchipelagoStateDto _state;
         private static LocationChecker _locationChecker;
+        private static BundleReader _bundleReader;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, BundleReader bundleReader, LocationChecker locationChecker)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, ArchipelagoStateDto state, LocationChecker locationChecker, BundleReader bundleReader)
         {
             _monitor = monitor;
             _modHelper = modHelper;
             _archipelago = archipelago;
-            _bundleReader = bundleReader;
+            _state = state;
             _locationChecker = locationChecker;
+            _bundleReader = bundleReader;
         }
 
         // public void checkForRewards()
@@ -104,6 +107,17 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
                             continue;
                         }
 
+                        var bundleIndexString = bundle.bundleIndex.ToString();
+                        if (bundleIndexString.Length == 4)
+                        {
+                            if (TryGetBundleName(bundleIndexString, out var moneyBundleName))
+                            {
+                                bundle.bundleTextureOverride = BundleIcons.GetBundleIcon(_modHelper, moneyBundleName);
+                                bundle.bundleTextureIndexOverride = 0;
+                                continue;
+                            }
+                        }
+
                         textureOverride = ArchipelagoTextures.GetColoredLogo(_modHelper, 32, ArchipelagoTextures.COLOR);
                     }
 
@@ -117,6 +131,28 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
             {
                 _monitor.Log($"Failed in {nameof(SetupMenu_AddTextureOverrides_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
+            }
+        }
+
+        private static bool TryGetBundleName(string bundleIndexString, out string moneyBundleName)
+        {
+            switch (bundleIndexString[..2])
+            {
+                case "23":
+                    moneyBundleName = "money_cheap";
+                    return true;
+                case "24":
+                    moneyBundleName = "money_medium";
+                    return true;
+                case "25":
+                    moneyBundleName = "money_expensive";
+                    return true;
+                case "26":
+                    moneyBundleName = "money_rich";
+                    return true;
+                default:
+                    moneyBundleName = "";
+                    return false;
             }
         }
 
@@ -166,13 +202,19 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
             }
         }
 
+        // private bool specificBundlePage;
+        private static IReflectedField<bool> _specificBundlePageField;
+
         // public override void draw(SpriteBatch b)
         public static void Draw_AddCurrencyBoxes_Postfix(JunimoNoteMenu __instance, SpriteBatch b)
         {
             try
             {
-                if (__instance.purchaseButton == null || !Game1.player.hasOrWillReceiveMail("canReadJunimoText"))
+                var specificBundlePageField = _modHelper.Reflection.GetField<bool>(__instance, "specificBundlePage");
+                var specificBundlePage = specificBundlePageField.GetValue();
+                if (!specificBundlePage || !Game1.player.hasOrWillReceiveMail("canReadJunimoText"))
                 {
+                    Game1.specialCurrencyDisplay.ShowCurrency(null);
                     return;
                 }
 
@@ -198,6 +240,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
                     SpriteText.drawStringWithScrollBackground(b, Game1.player.clubCoins.ToString(), 64, 16);
                     amountText += " Qi Coins";
                 }
+                else if (ingredientIndex == CurrencyBundle.CurrencyIds["Star Token"])
+                {
+                    DrawStarTokenCurrency();
+                    amountText += " Star Tokens";
+                }
                 else
                 {
                     Game1.specialCurrencyDisplay.ShowCurrency(null);
@@ -215,6 +262,29 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
                 _monitor.Log($"Failed in {nameof(Draw_AddCurrencyBoxes_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
+        }
+
+        private static void DrawStarTokenCurrency()
+        {
+            var spriteBatch = Game1.spriteBatch;
+            spriteBatch.End();
+            Game1.PushUIMode();
+            spriteBatch.Begin(blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp);
+            var tokenAmount = _state.StoredStarTokens;
+            spriteBatch.Draw(Game1.fadeToBlackRect, new Rectangle(16, 16, 128 + (tokenAmount > 999 ? 16 : 0), 64), Color.Black * 0.75f);
+            spriteBatch.Draw(Game1.mouseCursors, new Vector2(32f, 32f), new Rectangle(338, 400, 8, 8), Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 1f);
+            Game1.drawWithBorder(tokenAmount.ToString() ?? "", Color.Black, Color.White, new Vector2(72f, (float)(21 + (LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.en ? 8 : (LocalizedContentManager.CurrentLanguageLatin ? 16 : 8)))), 0.0f, 1f, 1f, false);
+            //if (Game1.activeClickableMenu == null)
+            //{
+            // Game1.dayTimeMoneyBox.drawMoneyBox(spriteBatch, Game1.dayTimeMoneyBox.xPositionOnScreen, 4);
+            //}
+            spriteBatch.End();
+            Game1.PopUIMode();
+            spriteBatch.Begin(blendState: BlendState.AlphaBlend, samplerState: SamplerState.PointClamp);
+            //if (Game1.IsMultiplayer)
+            //{
+            //    Game1.player.team.festivalScoreStatus.Draw(spriteBatch, new Vector2(32f, (float)(Game1.viewport.Height - 32)), draw_layer: 0.99f, vertical_origin: PlayerStatusList.VerticalAlignment.Bottom);
+            //}
         }
 
         // public override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -263,6 +333,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
                 TryPurchaseCurrentBundleWithQiCoins(junimoNote, ingredient, currentPageBundle);
                 return;
             }
+
+            if (ingredient.index == CurrencyBundle.CurrencyIds["Star Token"])
+            {
+                TryPurchaseCurrentBundleWithStarTokens(junimoNote, ingredient, currentPageBundle);
+                return;
+            }
         }
 
         private static void TryPurchaseCurrentBundleWithQiGems(JunimoNoteMenu junimoNote, BundleIngredientDescription ingredient, Bundle currentPageBundle)
@@ -287,6 +363,19 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.CC
             }
 
             Game1.player.clubCoins -= ingredient.stack;
+
+            PerformCurrencyPurchase(junimoNote, currentPageBundle);
+        }
+
+        private static void TryPurchaseCurrentBundleWithStarTokens(JunimoNoteMenu junimoNote, BundleIngredientDescription ingredient, Bundle currentPageBundle)
+        {
+            if (_state.StoredStarTokens < ingredient.stack)
+            {
+                Game1.dayTimeMoneyBox.moneyShakeTimer = 600;
+                return;
+            }
+
+            _state.StoredStarTokens -= ingredient.stack;
 
             PerformCurrencyPurchase(junimoNote, currentPageBundle);
         }

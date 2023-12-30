@@ -39,7 +39,13 @@ public class SAsset : ClassHandler
         }
 
         instance = Activator.CreateInstance(type);
-        this.ModAssets.GetSetter()(mod, instance);
+        Action<object?, object?>? setter = this.ModAssets.GetSetter();
+        if (setter is null)
+        {
+            Log.Error("SAsset had a null setter");
+            return;
+        }
+        setter(mod, instance);
         base.Handle(type, instance, mod, args);
         return;
     }

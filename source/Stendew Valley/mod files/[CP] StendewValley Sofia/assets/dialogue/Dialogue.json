@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HauntedPineapple/Stendew-Valley
+**
+*************************************************/
+
+{
+  "Introduction": "So you want to ride the yacht to get to the private island?#$b# You poor unfortunate soul.#$b# I used to work for them you know, and even now that I'm not employed I'm still helping#$b# Good luck cause you're gonna need it.",
+  "Sofia_StenTA": "You know, as Sten’s TA the work was simple. I just had to grade and help students.#$b#Now, the man is just like: 'Oh you need to drive a boat... you don’t know how to do that? Then figure it out!'#$b#So, uh, sorry if it’s a bumpy ride.",
+  "Sofia_Paul": "There’s a monkey on the island who’s Sten’s best friend. Have you met him yet?#$b#His name is Paul, he’s a pretty cool dude. Sten hated him initially, but nobody can hate Paul for long.#$b#He’s just a little guy!",
+  "Sofia_ItemTalk": "Oh, you want to know what the item is?#$b#Well, don’t look at me, I don’t know anything about that. I’m just here driving a boat for minimum wage.",
+  "Sofia_StenBanished": "I hope Sten tells you about how he got kicked out of the mainland, it’s a really funny story.#$b#He thinks it’s a joke between him and Mayor Lewis but... no, he’s actually banished from here.#$b#That’s why I drive the boat.",
+  "Sofia_Manga": "Oh, if you end up going into Sten’s house, could you look for a Junji Ito manga?#$b#He borrowed it a while ago from me but he lost it in his house.#$b#I tried going in there once, but it was disgusting... Maybe you shouldn’t go in there, actually.##$b#I’ll just buy a new copy.",
+  "Sofia_FunFact": "Fun fact: did you know the first mod Sten ever installed in Skyrim was Killable Children?#$b#I mean, I can’t blame him if I played Skyrim I would probably get it too... but that should tell you a bit about the guy you’re dealing with.",
+  "Mon": "Hey, what's up?",
+  "Tue": "Don't forget to buckle your seatbelt for the ride.",
+  "Wed": "Hey, what's up?",
+  "Thur": "Hey, what's up?",
+  "Fri": "Don't forget to buckle your seatbelt for the ride.",
+  "Sat": "Hey, what's up?",
+  "Sun": "Hey, what's up?"
+}

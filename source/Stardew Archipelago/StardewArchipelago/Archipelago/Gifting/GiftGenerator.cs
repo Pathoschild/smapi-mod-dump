@@ -31,14 +31,14 @@ namespace StardewArchipelago.Archipelago.Gifting
             _itemManager = itemManager;
         }
 
-        public bool TryCreateGiftItem(Object giftObject, bool isTrap, out GiftItem giftItem, out GiftTrait[] traits)
+        public bool TryCreateGiftItem(Object giftObject, bool isTrap, out GiftItem giftItem, out GiftTrait[] traits, out string failureMessage)
         {
             giftItem = null;
             traits = null;
             var giftOrTrap = isTrap ? "trap" : "gift";
             if (giftObject == null)
             {
-                Game1.chatBox?.addMessage($"You must hold an item in your hand to {giftOrTrap} it", Color.Gold);
+                failureMessage = $"You must hold an item in your hand to {giftOrTrap} it";
                 return false;
             }
 
@@ -46,13 +46,14 @@ namespace StardewArchipelago.Archipelago.Gifting
 
             if (!_itemManager.ObjectExists(name) || giftObject.questItem.Value)
             {
-                Game1.chatBox?.addMessage($"{name} cannot be sent to other players", Color.Gold);
+                failureMessage = $"{name} cannot be sent to other players";
                 return false;
             }
 
 
             giftItem = new GiftItem(name, giftObject.Stack, giftObject.salePrice() * BankHandler.EXCHANGE_RATE);
             traits = GenerateGiftTraits(giftObject, isTrap);
+            failureMessage = $"";
             return true;
         }
 

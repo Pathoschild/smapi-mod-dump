@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<RootNamespace>ichortower.NPCGeometry</RootNamespace>
-		<Version>1.0.0-alpha</Version>
+		<Version>1.0.1-alpha</Version>
 		<TargetFramework>net6.0</TargetFramework>
 		<Configuration>Release</Configuration>
 

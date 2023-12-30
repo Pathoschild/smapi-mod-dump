@@ -301,12 +301,13 @@ namespace Custom_Farm_Loader.Menus
             return mostLikelyMod.Item1;
         }
 
-        //Some custom farm maps have transparent pixels on the side.
+        //Some custom farm maps have transparent pixels on the side to imitate vanilla behaviour
         //This trims them away
         public static Texture2D loadCroppedIcon(ModFarmType modFarm)
-        {
-            Texture2D icon = Helper.GameContent.Load<Texture2D>(modFarm.IconTexture);
+            => cropIcon(Helper.GameContent.Load<Texture2D>(modFarm.IconTexture));
 
+        public static Texture2D cropIcon(Texture2D icon)
+        {
             int count = icon.Bounds.Width * icon.Bounds.Height;
             Color[] data = new Color[count];
             icon.GetData(0, icon.Bounds, data, 0, count);
@@ -333,57 +334,57 @@ namespace Custom_Farm_Loader.Menus
         }
 
 
-        //Some custom farm maps have complicated logic where they want to display the world map depending on season and whether SVE is installed
-        //This is a hard coded way for CFL to still be able to display them properly during farm selection
-        //despite not really having access to CP logic
-        private Texture2D loadKnownWorldMapExceptions(ModFarmType modFarm)
-        {
-            Dictionary<string, string[]> knownWorldMapExceptions
-             = new Dictionary<string, string[]> {
+            //Some custom farm maps have complicated logic where they want to display the world map depending on season and whether SVE is installed
+            //This is a hard coded way for CFL to still be able to display them properly during farm selection
+            //despite not really having access to CP logic
+            private Texture2D loadKnownWorldMapExceptions(ModFarmType modFarm)
+            {
+                Dictionary<string, string[]> knownWorldMapExceptions
+                 = new Dictionary<string, string[]> {
                  { "A_TK.FarmProjectForaging/WaFF", new[] { "A_TK.FarmProjectForaging", "../[CP] - Waterfall Forest - Xtra Content/assets/world_map/_default_SV/all_WaFF.png" } },
                  { "A_TK.FarmProjectForaging/WaFFLE", new[] { "A_TK.FarmProjectForaging", "../[CP] - Waterfall Forest - Xtra Content/assets/world_map/_default_SV/all_WaFFLE.png" } }
-             };
+                 };
 
-            if (!knownWorldMapExceptions.ContainsKey(modFarm.ID))
+                if (!knownWorldMapExceptions.ContainsKey(modFarm.ID))
+                    return null;
+
+                var map = knownWorldMapExceptions[modFarm.ID];
+                var path = UtilityMisc.getRelativeModDirectory(map[0]);
+
+                Monitor.LogOnce($"Found '{modFarm.ID}' as part of known world map exceptions. Attempting hard coded load in '{path}\\{map[1]}'");
+
+                try {
+                    return Helper.ModContent.Load<Texture2D>($"{path}\\{map[1]}");
+                } catch (Exception ex) {
+                    Monitor.LogOnce($"Unable to load hard coded world map asset for '{modFarm.ID}'");
+                }
+
                 return null;
-
-            var map = knownWorldMapExceptions[modFarm.ID];
-            var path = UtilityMisc.getRelativeModDirectory(map[0]);
-
-            Monitor.LogOnce($"Found '{modFarm.ID}' as part of known world map exceptions. Attempting hard coded load in '{path}\\{map[1]}'");
-
-            try {
-                return Helper.ModContent.Load<Texture2D>($"{path}\\{map[1]}");
-            } catch (Exception ex) {
-                Monitor.LogOnce($"Unable to load hard coded world map asset for '{modFarm.ID}'");
             }
 
-            return null;
-        }
+            private void assignCurrentFarmPreview()
+            {
+                CurrentFarmPreview = null;
 
-        private void assignCurrentFarmPreview()
-        {
-            CurrentFarmPreview = null;
+                if (CurrentCustomFarm == null || CurrentCustomFarm.Preview == "")
+                    return;
 
-            if (CurrentCustomFarm == null || CurrentCustomFarm.Preview == "")
-                return;
+                try {
+                    CurrentFarmPreview = ModEntry._Helper.ModContent.Load<Texture2D>(CurrentCustomFarm.Preview);
+                } catch (Exception ex) {
+                    ModEntry._Monitor.LogOnce($"Unable to load the map preview in:\n{CurrentCustomFarm.Preview}", LogLevel.Warn);
+                }
 
-            try {
-                CurrentFarmPreview = ModEntry._Helper.ModContent.Load<Texture2D>(CurrentCustomFarm.Preview);
-            } catch (Exception ex) {
-                ModEntry._Monitor.LogOnce($"Unable to load the map preview in:\n{CurrentCustomFarm.Preview}", LogLevel.Warn);
+
             }
 
-
-        }
-
-        public void updatePosition()
-        {
-            width = 1000 + IClickableMenu.borderWidth * 2;
-            height = 600 + IClickableMenu.borderWidth * 2;
-            xPositionOnScreen = Game1.uiViewport.Width / 2 - (1000 + IClickableMenu.borderWidth * 2) / 2;
-            yPositionOnScreen = Game1.uiViewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2;
-        }
+            public void updatePosition()
+            {
+                width = 1000 + IClickableMenu.borderWidth * 2;
+                height = 600 + IClickableMenu.borderWidth * 2;
+                xPositionOnScreen = Game1.uiViewport.Width / 2 - (1000 + IClickableMenu.borderWidth * 2) / 2;
+                yPositionOnScreen = Game1.uiViewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2;
+            }
 
         public override void snapToDefaultClickableComponent()
         {

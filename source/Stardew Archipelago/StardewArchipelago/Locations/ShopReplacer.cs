@@ -36,15 +36,57 @@ namespace StardewArchipelago.Locations
             _locationChecker = locationChecker;
         }
 
+        public void PlaceShopRecipeCheck(Dictionary<ISalable, int[]> itemPriceAndStock, string apLocation, string recipeItemName, Hint[] myActiveHints, int[] price, bool removeOriginal = true)
+        {
+            if (removeOriginal)
+            {
+                RemoveShopRecipe(itemPriceAndStock, recipeItemName);
+            }
+
+            AddArchipelagoCheckToStock(itemPriceAndStock, apLocation, myActiveHints, price);
+        }
+
+        private static void RemoveShopRecipe(Dictionary<ISalable, int[]> itemPriceAndStock, string recipeItemName)
+        {
+            foreach (var itemOnSale in itemPriceAndStock.Keys.ToArray())
+            {
+                if (itemOnSale is not Object salableObject || !salableObject.IsRecipe || !salableObject.Name.Contains(recipeItemName))
+                {
+                    continue;
+                }
+
+                itemPriceAndStock.Remove(itemOnSale);
+            }
+        }
+
+        public void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, string apLocation, Func<Object, bool> conditionToMeet, Hint[] myActiveHints)
+        {
+            foreach (var itemOnSale in itemPriceAndStock.Keys.ToArray())
+            {
+                if (itemOnSale is not Object salableObject || !conditionToMeet(salableObject))
+                {
+                    continue;
+                }
+
+                ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, myActiveHints, salableObject);
+                return;
+            }
+        }
+
         public void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, ISalable itemOnSale, string apLocation, Func<Object, bool> conditionToMeet, Hint[] myActiveHints)
         {
             if (itemOnSale is not Object salableObject || !conditionToMeet(salableObject))
             {
                 return;
             }
-            
+
+            ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, myActiveHints, salableObject);
+        }
+
+        private void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, ISalable itemOnSale, string apLocation, Hint[] myActiveHints, Object salableObject)
+        {
             var apName = BigCraftable.ConvertToApName(salableObject);
-            var shouldRemoveOriginal = !_archipelago.HasReceivedItem(apName);
+            var shouldRemoveOriginal = apName == "Stardrop" || !_archipelago.HasReceivedItem(apName);
 
             ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, shouldRemoveOriginal, myActiveHints);
         }
@@ -69,6 +111,21 @@ namespace StardewArchipelago.Locations
             ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, true, myActiveHints);
         }
 
+        public void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, ISalable itemOnSale, string apLocation, string itemName, Hint[] myActiveHints)
+        {
+            ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, item => item.Name == itemName, myActiveHints);
+        }
+
+        public void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, ISalable itemOnSale, string apLocation, Func<Item, bool> conditionToMeet, Hint[] myActiveHints)
+        {
+            if (itemOnSale is not Item salableItem || !conditionToMeet(salableItem))
+            {
+                return;
+            }
+
+            ReplaceShopItem(itemPriceAndStock, itemOnSale, apLocation, true, myActiveHints);
+        }
+
         private void ReplaceShopItem(Dictionary<ISalable, int[]> itemPriceAndStock, ISalable itemOnSale, string apLocationName, bool removeOriginal, Hint[] myActiveHints)
         {
             var itemPrice = itemPriceAndStock[itemOnSale][0];
@@ -77,7 +134,12 @@ namespace StardewArchipelago.Locations
                 itemPriceAndStock.Remove(itemOnSale);
             }
 
-            if (_locationChecker.IsLocationChecked(apLocationName))
+            AddArchipelagoCheckToStock(itemPriceAndStock, apLocationName, myActiveHints, new[] { itemPrice, 1 });
+        }
+
+        private void AddArchipelagoCheckToStock(Dictionary<ISalable, int[]> itemPriceAndStock, string apLocationName, Hint[] myActiveHints, int[] itemPrice)
+        {
+            if (!_locationChecker.IsLocationMissingAndExists(apLocationName))
             {
                 return;
             }
@@ -88,7 +150,7 @@ namespace StardewArchipelago.Locations
             }
 
             var purchaseableLocation = new PurchaseableArchipelagoLocation(apLocationName, apLocationName, _modHelper, _locationChecker, _archipelago, myActiveHints);
-            itemPriceAndStock.Add(purchaseableLocation, new[] { itemPrice, 1 });
+            itemPriceAndStock.Add(purchaseableLocation, itemPrice);
         }
 
         private bool IsRarecrow(Object item)

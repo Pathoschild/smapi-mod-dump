@@ -8,15 +8,12 @@
 **
 *************************************************/
 
+using Force.DeepCloner;
 using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
-using StardewDruid.Map;
-using StardewDruid.Monster;
 using StardewValley;
-using System.Collections.Generic;
 using System;
-using Force.DeepCloner;
-using StardewDruid.Event.Challenge;
+using System.Collections.Generic;
 
 namespace StardewDruid.Event.World
 {
@@ -145,7 +142,7 @@ namespace StardewDruid.Event.World
         public override bool EventExpire()
         {
 
-            if(eventLinger == -1)
+            if (eventLinger == -1)
             {
 
                 if (!riteData.castTask.ContainsKey("masterPortal"))
@@ -158,8 +155,6 @@ namespace StardewDruid.Event.World
                 int tileX = (int)targetVector.X;
 
                 int tileY = (int)targetVector.Y;
-
-                Dictionary<string, int> blessingList = Mod.instance.BlessingList();
 
                 switch (portalConfig[0])
                 {
@@ -187,7 +182,7 @@ namespace StardewDruid.Event.World
                         CastVoice("superb", 2000);
                         break;
                     case 7:
-                        if (!blessingList.ContainsKey("shardPortal"))
+                        if (riteData.randomIndex.Next(3) == 0)
                         {
                             Game1.createObjectDebris(74, tileX, tileY);
                         }

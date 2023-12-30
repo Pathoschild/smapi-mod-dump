@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HauntedPineapple/Stendew-Valley
+**
+*************************************************/
+
+{
+	"Name": "Bald Cap", //The name you would like your hat to have, this should be identical to the subfolder name.
+	"Description": "Gives you invisibility to hostile mobs.",
+	"CanPurchase": false, 
+	"ShowHair": false, 
+	"IgnoreHairstyleOffset": true
+}

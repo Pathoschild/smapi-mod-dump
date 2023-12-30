@@ -6,9 +6,9 @@ mods:
    Skillful Clothes
 
 latest commit:
-   commit 6281ba58ec0232bad9be0fcd220279cfcd814d9a
-   Author: LunaticShade <lunaticshade@googlemail.com>
-   Date:   Thu Sep 28 13:44:39 2023 +0200
+   commit 2574b2ed5207006d9e19b2983501afd8fb36ab5f
+   Author: LunaticShade <82759433+LunaticShade@users.noreply.github.com>
+   Date:   Wed Dec 13 09:00:44 2023 +0100
    
-       also set version of assembly to 1.4.0
+       Create LICENSE
    

@@ -54,7 +54,7 @@ public sealed class ModEntry : Mod
     private static bool TryToPlaceHole()
     {
         if (Game1.currentLocation is not MineShaft { mineLevel: > 120 } mineShaft
-         || !mineShaft.shouldCreateLadderOnThisLevel())
+            || !mineShaft.shouldCreateLadderOnThisLevel())
         {
             return false;
         }
@@ -92,8 +92,8 @@ public sealed class ModEntry : Mod
     private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
         if (!e.Button.IsUseToolButton()
-         || Game1.player.CurrentItem is not SObject { bigCraftable.Value: true, ParentSheetIndex: 71 } obj
-         || !obj.modData.ContainsKey($"{this.ModManifest.UniqueID}/PortableHole"))
+            || Game1.player.CurrentItem is not SObject { bigCraftable.Value: true, ParentSheetIndex: 71 } obj
+            || !obj.modData.ContainsKey($"{this.ModManifest.UniqueID}/PortableHole"))
         {
             return;
         }

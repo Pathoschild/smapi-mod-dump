@@ -10,12 +10,13 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Netcode;
+using StardewDruid.Map;
 using StardewValley;
-using StardewValley.Monsters;
 using StardewValley.Projectiles;
 using System;
 using System.Collections.Generic;
-using static StardewValley.IslandGemBird;
+using static StardewValley.Objects.BedFurniture;
 
 namespace StardewDruid.Monster
 {
@@ -55,7 +56,7 @@ namespace StardewDruid.Monster
 
         public float alpha = 1f;
 
-        public string birdType;
+        public NetString netBirdType;
 
         public Color birdColor;
 
@@ -67,11 +68,18 @@ namespace StardewDruid.Monster
 
         public Texture2D birdTexture;
 
-        public Firebird(Vector2 vector, int combatModifier)
-            : base("Shadow Brute",vector * 64)
+        public bool loadedOut;
+
+        public Firebird()
         {
 
-            birdTexture = Game1.content.Load<Texture2D>("LooseSprites\\GemBird");
+        }
+
+        public Firebird(Vector2 vector, int combatModifier)
+            : base("Shadow Brute", vector * 64)
+        {
+
+            //birdTexture = Game1.content.Load<Texture2D>("LooseSprites\\GemBird");
 
             Health = combatModifier * 10;
 
@@ -81,11 +89,11 @@ namespace StardewDruid.Monster
 
             DamageToFarmer = (int)(combatModifier * 0.1);
 
+            objectsToDrop.Clear();
+
             birdColor = new Color(255, 38, 38);
 
             birdItem = 64;
-
-            objectsToDrop.Clear();
 
             firingTimer = Game1.random.Next(2, 6) * 1000f;
 
@@ -96,17 +104,15 @@ namespace StardewDruid.Monster
 
             };
 
+            netBirdType.Set("Ruby");
+
+            LoadOut();
         }
 
-        public override void reloadSprite()
+        public void LoadOut()
         {
 
-        }
-
-        public void setBirdType(string newType)
-        {
-
-            birdType = newType;
+            string birdType = netBirdType.Value;
 
             birdColor = birdType switch
             {
@@ -118,7 +124,7 @@ namespace StardewDruid.Monster
                 _ => Color.White,
             };
 
-            birdItem = birdType switch 
+            birdItem = birdType switch
             {
                 "Emerald" => 60,
                 "Aquamarine" => 62,
@@ -127,6 +133,24 @@ namespace StardewDruid.Monster
                 "Topaz" => 68,
                 _ => 0,
             };
+
+            birdTexture = Game1.content.Load<Texture2D>("LooseSprites\\GemBird");
+
+            loadedOut = true;
+
+        }
+
+        public override void reloadSprite()
+        {
+
+        }
+
+        public void setBirdType(string birdType)
+        {
+
+            netBirdType.Set(birdType);
+
+            LoadOut();
 
         }
 
@@ -142,21 +166,21 @@ namespace StardewDruid.Monster
 
                 currentTickIndex++;
 
-                if(currentTickIndex == 8)
+                if (currentTickIndex == 8)
                 {
 
                     if (currentAnimation == flyAnimation)
                     {
 
                         alpha -= 0.1f;
-                        
+
                     }
 
                     currentFrameIndex++;
 
                     if (currentFrameIndex == currentAnimation.Length)
                     {
-                        
+
                         if (currentAnimation == flyAnimation)
                         {
 
@@ -165,7 +189,7 @@ namespace StardewDruid.Monster
                             Health = 0;
 
                         }
-                        else if(currentAnimation == scratchAnimation)
+                        else if (currentAnimation == scratchAnimation)
                         {
 
                             currentAnimation = idleAnimation;
@@ -188,7 +212,7 @@ namespace StardewDruid.Monster
 
                 if (currentAnimation == flyAnimation)
                 {
-                    
+
                     height += 4f;
 
                     position.X -= 3f;
@@ -198,9 +222,16 @@ namespace StardewDruid.Monster
 
             }
 
+            if (!loadedOut)
+            {
+
+                LoadOut();
+
+            }
+
             b.Draw(birdTexture, Game1.GlobalToLocal(Game1.viewport, position.Value + new Vector2(0f, 0f - height)), new Rectangle(num * 32, 0, 32, 32), Color.White * alpha, 0f, new Vector2(8f, 0), 4f, SpriteEffects.None, (position.Value.Y - 1f) / 10000f);
 
-            b.Draw(birdTexture, Game1.GlobalToLocal(Game1.viewport, position.Value + new Vector2(0f, 0f - height)), new Rectangle(num * 32, 32, 32, 32), birdColor * alpha, 0f, new Vector2(8f,0), 4f, SpriteEffects.None, position.Value.Y / 10000f);
+            b.Draw(birdTexture, Game1.GlobalToLocal(Game1.viewport, position.Value + new Vector2(0f, 0f - height)), new Rectangle(num * 32, 32, 32, 32), birdColor * alpha, 0f, new Vector2(8f, 0), 4f, SpriteEffects.None, position.Value.Y / 10000f);
 
             b.Draw(Game1.shadowTexture, Game1.GlobalToLocal(Game1.viewport, position.Value), Game1.shadowTexture.Bounds, Color.White * alpha, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 3f, SpriteEffects.None, (position.Y - 2f) / 10000f);
 
@@ -211,7 +242,7 @@ namespace StardewDruid.Monster
         {
             Vector2 vector = Position;
 
-            return new Rectangle((int)vector.X, (int)vector.Y+16, 64, 112);
+            return new Rectangle((int)vector.X, (int)vector.Y + 16, 64, 112);
 
         }
 
@@ -222,12 +253,12 @@ namespace StardewDruid.Monster
             if (currentAnimation == null)
             {
                 currentAnimation = scratchAnimation;
-            
+
                 currentFrameIndex = 0;
-            
+
             }
 
-            if(currentAnimation == flyAnimation)
+            if (currentAnimation == flyAnimation)
             {
 
                 return 0;
@@ -279,7 +310,7 @@ namespace StardewDruid.Monster
 
         public override void defaultMovementBehavior(GameTime time)
         {
-            
+
         }
 
         protected override void sharedDeathAnimation()
@@ -304,22 +335,22 @@ namespace StardewDruid.Monster
                 {
 
                     base.IsWalkingTowardPlayer = false;
-                    
+
                     Vector2 vector = new Vector2(base.Position.X, base.Position.Y + 64f);
-                    
+
                     Halt();
-                    
+
                     Vector2 velocityTowardPoint = Utility.getVelocityTowardPoint(getStandingPosition(), new Vector2(base.Player.GetBoundingBox().X, base.Player.GetBoundingBox().Y) + new Vector2(Game1.random.Next(-128, 128)), 8f);
-                    
+
                     BasicProjectile basicProjectile = new BasicProjectile(damageToFarmer, 10, 2, 4, 0f, velocityTowardPoint.X, velocityTowardPoint.Y, getStandingPosition() - new Vector2(32f, 0f), "", "", explode: true, damagesMonsters: false, base.currentLocation, this);
-                    
+
                     basicProjectile.height.Value = 48f;
-                    
+
                     base.currentLocation.projectiles.Add(basicProjectile);
-                    
+
                     base.currentLocation.playSound("fireball");
-                    
-                    firingTimer = Game1.random.Next(2,6) * 1000f;
+
+                    firingTimer = Game1.random.Next(2, 6) * 1000f;
 
                 }
 

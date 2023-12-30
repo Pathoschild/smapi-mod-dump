@@ -21,8 +21,8 @@ using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.Memory;
 using DaLion.Shared.Extensions.Stardew;
 using Microsoft.Xna.Framework;
+using Shared.Enums;
 using StardewValley.Locations;
-using StardewValley.Menus;
 using StardewValley.Objects;
 
 #endregion using directives
@@ -287,13 +287,17 @@ internal static class CrabPotExtensions
             return SObject.lowQuality;
         }
 
-        return owner.HasProfession(Profession.Trapper, true) && r.NextDouble() < owner.FishingLevel / 60d
-            ? SObject.bestQuality
-            : r.NextDouble() < owner.FishingLevel / 30d
-                ? SObject.highQuality
-                : r.NextDouble() < owner.FishingLevel / 15d
-                    ? SObject.medQuality
-                    : SObject.lowQuality;
+        var quality = r.NextDouble() < owner.FishingLevel / 30d
+            ? ObjectQuality.Gold
+            : r.NextDouble() < owner.FishingLevel / 15d
+                ? ObjectQuality.Silver
+                : ObjectQuality.Regular;
+        if (owner.HasProfession(Profession.Trapper, true))
+        {
+            quality = quality.Increment();
+        }
+
+        return (int)quality;
     }
 
     /// <summary>Gets initial stack for the chosen <paramref name="trap"/> fish.</summary>
@@ -301,14 +305,17 @@ internal static class CrabPotExtensions
     /// <param name="trap">The chosen trap fish.</param>
     /// <param name="owner">The player.</param>
     /// <param name="r">A random number generator.</param>
+    /// <param name="isSpecialOceanographerCondition">Whether to apply special Oceanographer conditions.</param>
     /// <returns>The stack value.</returns>
-    internal static int GetTrapQuantity(this CrabPot crabPot, int trap, Farmer owner, Random r)
+    internal static int GetTrapQuantity(this CrabPot crabPot, int trap, Farmer owner, Random r, bool isSpecialOceanographerCondition)
     {
-        return crabPot.HasWildBait() && r.NextDouble() < 0.5 + (owner.DailyLuck / 2.0)
-            ? 2
-            : TrapperPirateTreasureTable.TryGetValue(trap, out var treasureData)
-                ? r.Next(Convert.ToInt32(treasureData[1]), Convert.ToInt32(treasureData[2]) + 1)
-                : 1;
+        return isSpecialOceanographerCondition
+            ? r.Next(20)
+            : crabPot.HasWildBait() && r.NextDouble() < 0.5 + (owner.DailyLuck / 2.0)
+                ? 2
+                : TrapperPirateTreasureTable.TryGetValue(trap, out var treasureData)
+                    ? r.Next(Convert.ToInt32(treasureData[1]), Convert.ToInt32(treasureData[2]) + 1)
+                    : 1;
     }
 
     /// <summary>Chooses a random, <paramref name="location"/>-appropriate, trash.</summary>

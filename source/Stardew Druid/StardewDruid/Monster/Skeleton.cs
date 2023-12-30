@@ -11,16 +11,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using StardewValley.Characters;
-using StardewValley.Monsters;
-using StardewValley.Network;
-using StardewValley.Objects;
-using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StardewDruid.Monster
 {
@@ -78,7 +70,7 @@ namespace StardewDruid.Monster
         public double spawnTimeout;
 
         public Skeleton(Vector2 vector, int combatModifier, bool hats)
-            : base(vector*64, false)
+            : base(vector * 64, false)
         {
 
             focusedOnFarmers = true;
@@ -263,7 +255,7 @@ namespace StardewDruid.Monster
 
                 Vector2 localPosition = getLocalPosition(Game1.viewport) + new Vector2(56f, 16 + yJumpOffset);
 
-                float depth = (float)GetBoundingBox().Center.Y / 10000f + 0.00005f;
+                float depth = GetBoundingBox().Center.Y / 10000f + 0.00005f;
 
                 b.Draw(
                     hatsTexture,
@@ -276,7 +268,7 @@ namespace StardewDruid.Monster
                     flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
                     depth
                  );
-                
+
                 // ------------------ swords
 
                 swordOffset = swordOffsets[spriteDirection];
@@ -301,7 +293,7 @@ namespace StardewDruid.Monster
                     swordSourceRect,
                     Color.White,
                     swordRotate,
-                    new(0,0),
+                    new(0, 0),
                     2.25f,
                     swordFlip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
                     swordDepth
@@ -367,7 +359,7 @@ namespace StardewDruid.Monster
             if (tickCount >= 200)
             {
                 int dialogueIndex = Game1.random.Next(15);
-                
+
                 if (dialogueList.Count - 1 >= dialogueIndex)
                 {
                     showTextAboveHead(dialogueList[dialogueIndex], duration: 2000);

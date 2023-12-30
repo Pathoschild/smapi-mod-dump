@@ -1,0 +1,10 @@
+{
+    "Name": "NoQuarry",
+    "Author": "mlambley",
+    "Version": "1.0.0",
+    "Description": "Prevents quarry levels from spawning in the mines.",
+    "UniqueID": "mlambley.NoQuarry",
+    "EntryDll": "NoQuarry.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:19410" ]
+  }

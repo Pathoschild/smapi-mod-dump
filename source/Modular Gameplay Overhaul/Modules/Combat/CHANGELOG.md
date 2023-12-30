@@ -8,6 +8,30 @@ for queries and analysis.**
 
 # CMBT Changelog
 
+## 4.2.0
+
+### Added
+
+* Added some flavor dialogue to Emily and Mr. Qi dropping some hints about the Infinity Band.
+
+### Removed
+
+* Status Effect framework moved to Core module.
+
+<sup><sup>[🔼 Back to top](#cmbt-changelog)</sup></sup>
+
+## 4.1.7
+
+### Added
+
+* Building on top of the audible chords introduced in the previous update (see below), lone gemstones now also faintly play their frequencies when held for a while.
+
+### Changed
+
+* `PlayChord` setting has been renamed to `AudibleGemstones`.
+
+<sup><sup>[🔼 Back to top](#cmbt-changelog)</sup></sup>
+
 ## 4.1.5
 
 ### Added
@@ -152,7 +176,7 @@ for queries and analysis.**
 * Slightly increased the base damage of Quincy projectile, and it becomes stronger below 2/3 and again below 1/3 of max health.
 * Slingshots now have a base 2.5% crit. chance and x1.5 crit. power.
 * Slingshot special attack changed from stunning smack attack to gatling effect. Press and hold the action key to quickly auto-fire for a few seconds. You can release the key at any moment to interrupt the move.
-* Energized enchantment now charges slightly slower per hit. Damage increased by 3x.
+* Energized enchantment now charges slightly slower per hit. Damage increased by 3×.
 * Spreading enchantment has been overhauled as the Runaan enchantment:
     * **Runaan:** Firing creates two additional projectiles which fly towards the nearest enemy after a short delay and deal 40% of the main projectile's damage.
 * The following translation **keys** have been changed:

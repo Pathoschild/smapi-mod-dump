@@ -12,6 +12,7 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Prestige;
 
 #region using directives
 
+using DaLion.Overhaul.Modules.Professions.Configs;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
@@ -37,15 +38,23 @@ internal sealed class SkillsPageCtorPatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void SkillsPageCtorPostfix(SkillsPage __instance)
     {
-        if (!ProfessionsModule.Config.EnablePrestige)
+        if (!ProfessionsModule.EnablePrestige)
         {
             return;
         }
 
-        __instance.width += 48;
-        if (ProfessionsModule.Config.PrestigeProgressionStyle == ProfessionConfig.ProgressionStyle.StackedStars)
+        if (ProfessionsModule.EnableSkillReset)
         {
-            __instance.width += 24;
+            __instance.width += 48;
+            if (ProfessionsModule.Config.Prestige.Ribbon == PrestigeConfig.RibbonStyle.StackedStars)
+            {
+                __instance.width += 24;
+            }
+        }
+
+        if (!ProfessionsModule.EnablePrestigeLevels)
+        {
+            return;
         }
 
         var sourceRect = new Rectangle(16, 0, 14, 9);

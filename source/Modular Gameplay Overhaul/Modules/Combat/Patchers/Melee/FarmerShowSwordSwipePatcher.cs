@@ -41,7 +41,7 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
     [HarmonyPrefix]
     private static bool FarmerShowSwordSwipePrefix(Farmer who)
     {
-        if (!CombatModule.Config.EnableWeaponOverhaul || !CombatModule.Config.EnableMeleeComboHits ||
+        if (!CombatModule.Config.WeaponsSlingshots.EnableOverhaul || !CombatModule.Config.WeaponsSlingshots.EnableComboHits ||
             who.CurrentTool is not MeleeWeapon weapon || weapon.isScythe())
         {
             return true; // run original logic
@@ -206,7 +206,7 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
                 return false; // don't run original logic
             }
 
-            if (CombatModule.Config.EnableWeaponOverhaul)
+            if (CombatModule.Config.WeaponsSlingshots.EnableOverhaul)
             {
                 tempSprite.color = weapon.InitialParentTileIndex switch
                 {
@@ -216,7 +216,7 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
                 };
             }
 
-            if (CombatModule.Config.EnableHeroQuest)
+            if (CombatModule.Config.Quests.EnableHeroQuest)
             {
                 tempSprite.color = weapon.IsInfinityWeapon()
                     ? Color.HotPink
@@ -287,7 +287,7 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
 
     private static Color GetSwipeColor(TemporaryAnimatedSprite tempSprite, MeleeWeapon weapon)
     {
-        if (CombatModule.Config.EnableWeaponOverhaul)
+        if (CombatModule.Config.WeaponsSlingshots.EnableOverhaul)
         {
             return weapon.InitialParentTileIndex switch
             {
@@ -297,7 +297,7 @@ internal sealed class FarmerShowSwordSwipePatcher : HarmonyPatcher
             };
         }
 
-        if (CombatModule.Config.EnableHeroQuest)
+        if (CombatModule.Config.Quests.EnableHeroQuest)
         {
             return weapon.InitialParentTileIndex switch
                 {

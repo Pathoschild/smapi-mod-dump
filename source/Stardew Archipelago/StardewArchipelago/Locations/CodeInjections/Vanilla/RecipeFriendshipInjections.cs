@@ -10,7 +10,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -47,7 +49,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 var friendship = who.friendshipData[__instance.Name];
                 var currentHearts = friendship.Points / 250;
                 CheckCookingRecipeLocations(__instance.Name, currentHearts);
-                // CheckCraftingRecipeLocations(__instance.Name, currentHearts);
+                CheckCraftingRecipeLocations(__instance.Name, currentHearts);
 
                 return;
             }
@@ -74,7 +76,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 }
 
                 var unlockConditions = recipeFields[3];
-                var unlockConditionFields = unlockConditions.Split(" ");
+                var unlockConditionFields = unlockConditions.Split(":").Last().Split(" ");
                 if (unlockConditionFields.Length != 3 ||
                     !unlockConditionFields[0].Equals("f", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -93,13 +95,30 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     continue;
                 }
 
-                _locationChecker.AddCheckedLocation($"{RecipePurchaseInjections.CHEFSANITY_LOCATION_PREFIX}{recipeName}");
+                var aliasedRecipeName = GetAliased(recipeName);
+
+                _locationChecker.AddCheckedLocation($"{aliasedRecipeName}{RecipePurchaseInjections.CHEFSANITY_LOCATION_SUFFIX}");
             }
+        }
+
+        private static string GetAliased(string recipeName)
+        {
+            var aliasedRecipeName = recipeName;
+
+            foreach (var (internalName, realName) in NameAliases.RecipeNameAliases)
+            {
+                if (aliasedRecipeName.Contains(internalName))
+                {
+                    aliasedRecipeName = aliasedRecipeName.Replace(internalName, realName);
+                }
+            }
+
+            return aliasedRecipeName;
         }
 
         private static void CheckCraftingRecipeLocations(string friendName, int currentHearts)
         {
-            throw new NotImplementedException();
+            // There are no crafting recipe learning checks yet
         }
     }
 }

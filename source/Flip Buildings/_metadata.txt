@@ -6,7 +6,7 @@ mods:
    Flip Buildings
 
 latest commit:
-   commit d26ba26c1aae30ac92eb1f7f2978e744b31d9cc0
+   commit 31e5755d4c0cebb6720505093bef8f78232c074c
    Author: mouahrara <mouahrara.noreply@protonmail.com>
    Date:   Wed Nov 1 17:56:55 2023 +0100
    

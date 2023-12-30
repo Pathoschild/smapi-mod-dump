@@ -47,7 +47,7 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 			);
 		}
 
-		private static void DrawPostfix(AbigailGame __instance, SpriteBatch b)
+		private static void DrawPostfix(SpriteBatch b)
 		{
 			if (!ModEntry.Config.ArcadeGamesPayToPlay)
 				return;
@@ -67,7 +67,7 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 			b.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp);
 			if (Game1.currentLocation.Name.Equals("Saloon"))
 			{
-				if (PayToPlayUtility.GetOnInsertCoinMenu())
+				if (PayToPlayUtility.OnInsertCoinMenu)
 				{
 					b.Draw(AssetManager.JourneyOfThePrairieKing, new Vector2(Game1.viewport.Width / 2 - insertCoinSourceRectangle.Width * scale / 2, Game1.viewport.Height / 2 - insertCoinSourceRectangle.Height * scale / 2 + 8 * AbigailGame.baseTileSize), insertCoinSourceRectangle, Color.White * (Game1.currentGameTime.TotalGameTime.Seconds % 2 == 0 ? 0.5f : 1f), 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
 					b.Draw(AssetManager.JourneyOfThePrairieKing, new Vector2(AbigailGame.topLeftScreenCoordinate.X + AbigailGame.baseTileSize, AbigailGame.topLeftScreenCoordinate.Y + 384 * 2 - credit0SourceRectangle.Height * scale - AbigailGame.baseTileSize), credit0SourceRectangle, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
@@ -82,7 +82,7 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 			}
 			else
 			{
-				if (PayToPlayUtility.GetOnInsertCoinMenu())
+				if (PayToPlayUtility.OnInsertCoinMenu)
 				{
 					b.Draw(AssetManager.JourneyOfThePrairieKing, new Vector2(Game1.viewport.Width / 2 - pressAnyButtonSourceRectangle.Width * scale / 2, Game1.viewport.Height / 2 - pressAnyButtonSourceRectangle.Height * scale / 2 + 8 * AbigailGame.baseTileSize), pressAnyButtonSourceRectangle, Color.White * (Game1.currentGameTime.TotalGameTime.Seconds % 2 == 0 ? 0.5f : 1f), 0f, Vector2.Zero, scale, SpriteEffects.None, 1f);
 				}
@@ -104,10 +104,10 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 			RestartIfRequired(__instance);
 			if (Game1.player.jotpkProgress.Value != null)
 			{
-				PayToPlayUtility.SetOnInsertCoinMenu(false);
+				PayToPlayUtility.OnInsertCoinMenu = false;
 				return true;
 			}
-			if (!AbigailGame.onStartMenu || !PayToPlayUtility.GetOnInsertCoinMenu())
+			if (!AbigailGame.onStartMenu || !PayToPlayUtility.OnInsertCoinMenu)
 				return true;
 
 			AbigailGame.startTimer = int.MaxValue;
@@ -155,7 +155,7 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 				|| Game1.input.GetGamePadState().IsButtonDown(Buttons.A)
 				|| Game1.input.GetGamePadState().IsButtonDown(Buttons.B);
 
-			if (justTryToInsertCoin && !PayToPlayUtility.GetTriedToInsertCoin())
+			if (justTryToInsertCoin && !PayToPlayUtility.TriedToInsertCoin)
 			{
 				if (Game1.currentLocation.Name.Equals("Saloon"))
 				{
@@ -169,20 +169,20 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 						Game1.player.Money -= ModEntry.Config.ArcadeGamesPayToPlayCoinPerJotPKGame;
 						Game1.playSound("Pickup_Coin15");
 						AbigailGame.startTimer = 1500;
-						PayToPlayUtility.SetOnInsertCoinMenu(false);
+						PayToPlayUtility.OnInsertCoinMenu = false;
 					}
 				}
 				else
 				{
 					Game1.playSound("Pickup_Coin15");
 					AbigailGame.startTimer = 1500;
-					PayToPlayUtility.SetOnInsertCoinMenu(false);
+					PayToPlayUtility.OnInsertCoinMenu = false;
 				}
 			}
-			PayToPlayUtility.SetTriedToInsertCoin(justTryToInsertCoin);
+			PayToPlayUtility.TriedToInsertCoin = justTryToInsertCoin;
 		}
 
-		private static void TickPostfix(AbigailGame __instance, bool __result)
+		private static void TickPostfix(bool __result)
 		{
 			if (!ModEntry.Config.ArcadeGamesPayToPlay)
 				return;
@@ -204,7 +204,7 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 				__instance.quit = true;
 		}
 
-		private static void ForceQuitPostfix(AbigailGame __instance, bool __result)
+		private static void ForceQuitPostfix(bool __result)
 		{
 			if (!ModEntry.Config.ArcadeGamesPayToPlay)
 				return;

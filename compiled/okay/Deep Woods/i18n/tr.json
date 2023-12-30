@@ -1,0 +1,55 @@
+﻿{
+  "easter-egg.hatched-message": "Yeni bir... bir dakika, tavşan yumurtadan çıktı?!",
+  "easter-egg.name": "Paskalya Yumurtası",
+  "excalibur.description": "Bu silahı kuşanmak kadar umut yeşerten çok az şey vardır.",
+  "excalibur.name": "Excalibur",
+  "lost-message": "Eyvah, ormanın derinliklerinde kayıp olmuş gibisin...",
+  "healing-fountain.drink-message": "Tazelenmiş, enerji dolmuş, ve her nasılsa şanslı hissediyorsun.",
+  "woods-obelisk.description": "Ormanın derinliklerine ışınlar.",
+  "woods-obelisk.name": "Derin Orman Dikilitaşı",
+  "woods-obelisk.wizard-mail": "Ormanın derinliklerinde varlığını sezebiliyorum.^Bu ağaç kökleri ve topraklar altında kadim ve güçlü bir büyü yatıyor.^Zor bir ihtimal ancak doğru malzemelerle bu büyüyü kullanıp seni ormanın çok daha derinliklerine gönderebilecek bir dikilitaş üretebilirim.^Hazır olduğunda kuleme gel.^   -M. Rasmodius, Büyücü",
+
+  "messagebox.ok": "Tamam",
+
+  "maxhouse.puzzle.nope": "Bir tıkırdama duyuyorsun, ama hiçbir şey olmuyor...",
+
+  "maxhouse.stuff.question": "Çok ama çok şey.",
+  "maxhouse.stuff.answer.search": "Bir şeyleri ara",
+  "maxhouse.stuff.answer.nevermind": "Boş ver",
+  "maxhouse.stuff.nothing": "Çok da önemli bir şey bulamadın. Belki başka zaman...",
+
+  "maxhouse.books.question": "Kitap çeşitleri.",
+  "maxhouse.books.answer.read": "Kitap oku",
+  "maxhouse.books.answer.nevermind": "Boş ver",
+  "maxhouse.books.interesting": "Bu ilginç bir okuma oldu!",
+
+  "maxhouse.shop.empty": "Dükkanda şu anda stok yok. Daha sonra tekrar uğra.",
+  "maxhouse.quests.empty": "Şu an herhangi bir görev yok. Daha sonra tekrar uğra.",
+
+  "sign.text.welcome": "Derin Ormana giriyorsunuz. Hazır değilseniz çok derine inmeyin. Sizden önceki birçok kişi kayboldu ya da daha kötüsünü yaşadı. Uyarıldınız.",
+
+  "maxhouse.books.random.1": "Çok dikkatli ve çok şanslıysanız, güneşli bir günde tek boynuzlu atla karşılaşabilirsiniz.",
+  "maxhouse.books.random.2": "Bu ormanda bir yerlerde taşa saplanmış bir kılıç var. Yüzyıllardır orada. Kimse onu çıkaramayacak gibi görünüyor.",
+  "maxhouse.books.random.3": "O dikenli çalılarla uğraşma. Onlardan kurtulmak için ancak bir bomba gerekir. Ama ormana kim bomba getirir ki...",
+  "maxhouse.books.random.4": "Bu ormanlar perili. Yemin ederim bir gece hayalet gördüm.",
+  "maxhouse.books.random.5": "Yiyeceklerden yapılmış bir ev buldum. Hem de ormanın ortasında! Hepsini kestim, bu hafta da karnımızı doyurduk.",
+
+  "sign.text.item-marker": "Bu işareti gezginler için bırakıyorum. Artık yaşlandım ve hafızam siliniyor, ama buralarda bir yere {item} gömdüğümü hala hatırlıyorum.",
+  "sign.text.clearing-marker": "{NSWE} yönünde bir açıklık gördüm. Ne kadar uzaktaydı hatırlayamıyorum. Sağlıcakla kal, dostum.",
+  "sign.text.mystical-force-marker": "Bu ormanın içinde mistik bir güç var. Kaynağını bulmakta yetersiz kaldım, ama bu bölge bayağı bir güçlü. Burayı belki başkalarının şansı döner diye işaretliyorum.",
+
+  "bigsign.message": "Derin Ormana Hoş Geldiniz! Doğa ve büyünün uyum içinde var olduğu yer!^== Aile dostu canavar avı ==^== Her kabiliyete göre yürüyüş patikaları ==^== Herkes için macera ve eğlence ==^^Uyarı: Çok tehlikeli. Ölen, lanetlenen veya kaybolan maceracılar için sorumluluk kabul edilmez.",
+
+  "sign.NSWE.north": "Kuzey",
+  "sign.NSWE.south": "Güney",
+  "sign.NSWE.west": "Batı",
+  "sign.NSWE.east": "Doğu",
+
+  "orb-stone.question": "Bu taşa doğru çekildiğini hissediyorsun. Nedenini bilmiyorsun. Dokunmaya cesaretin var mı?",
+  "orb-stone.yes": "Evet!",
+  "orb-stone.no": "Eeehh, yapmasan iyi olur.",
+  "orb-stone.touch-message": "Taşa dikkatlice dokunuyorsun. Bir uğultu hissediyorsun ama hiçbir şey olmuyor.",
+  "orb-stone.touch-message-no-orb": "Taşa dikkatlice dokunuyorsun. Taşın bir şeye hasreti olduğunu hissediyorsun. Bu garip bir his.",
+
+  "cave-entrance.caved-in.message": "Giriş çökmüş. İçeri girmenin bir yolu yok gibi görünüyor."
+}

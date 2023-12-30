@@ -62,7 +62,7 @@
   "lumberjack.desc.prestiged": "나무를 자를 때 목재를 25% >> 40% 더 얻습니다.",
   "arborist.title.male": "수목 재배가",
   "arborist.title.female": "수목 재배가",
-  "arborist.desc": "모든 나무가 더 빠르게 자랍니다. 모든 나무에서 단단한 나무를 얻을 확률이 생깁니다.",
+  "arborist.desc": "나무는 손으로 심으면 더 빨리 자랍니다. 모든 나무는 단단한 나무를 떨어뜨릴 확률이 있습니다.",
   "arborist.desc.prestiged": "모든 나무에서 단단한 나무를 두 배 얻습니다.",
   "tapper.title.male": "수액 채취자",
   "tapper.title.female": "수액 채취자",
@@ -125,7 +125,7 @@
   "conservationist.title.male": "환경운동가",
   "conservationist.title.female": "환경운동가",
   "conservationist.desc": "미끼 없는 게잡이 통발로 쓰레기를 건질 수 있습니다. 물에서 쓰레기를 제거하여 세금 감면을 받고 마을 사람들과 신뢰를 쌓으십시오.",
-  "conservationist.desc.prestiged": "세금 공제가 50% 더 빨리 누적됩니다.",
+  "conservationist.desc.prestiged": "미끼가 없는 게 통발에 물고기가 걸릴 확률이 있습니다. 비가 오거나 보름달이 뜨는 날에는 큰 물고기 떼가 갇힐 수 있습니다.",
   "conservationist.mail": "재무부^펀길 국세청^^^{{honorific}} @,^^귀하의 환경 활동을 검토한 결과 귀하가 국세청 소득 조항 501(c)(3)조에 따라 {{taxBonus}}의 소득공제를 받을 자격이 있다고 결정했음을 알려드립니다. 따라서 {{farm}}의 모든 과세소득은 {{season}} 28일까지 상기한 비율만큼 증가합니다.^^재정 상태에 관한 질문에 답해야 하는 경우 이 문서를 영구 기록으로 보관하십시오.^^^감사합니다.^^Laura D. Pretto^펀길 국세청장[#]세금 공제 통지",
   "conservationist.mail.max": "재무부^펀길 국세청^^^{{honorific}} @,^^귀하의 환경 활동을 검토한 결과 귀하가 국세청 소득 조항 501(c)(3)조에 따라 최대치인 {{taxBonus}}의 소득공제를 받을 자격이 있다고 결정했음을 알려드립니다. 따라서 {{farm}}의 모든 과세소득은 {{season}} 28일까지 상기한 비율만큼 증가합니다.^^재정 상태에 관한 질문에 답해야 하는 경우 이 문서를 영구 기록으로 보관하십시오.^^^감사합니다.^^Laura D. Pretto^펀길 국세청장[#]세금 공제 통지",
 
@@ -143,7 +143,7 @@
   "poacher.title.male": "약탈자",
   "poacher.title.female": "약탈자",
   "poacher.desc": "치명타 확률 +50%. 치명타시 일정 확률로 적에게서 아이템을 훔칩니다.",
-  "poacher.desc.prestiged": "약탈에 성공하면 필살기 재사용 대기시간을 초기화합니다.",
+  "poacher.desc.prestiged": "적을 두 번 밀렵할 수 있습니다. 밀렵에 성공하면 치명적인 독을 가합니다.",
 
   "rascal.title.male": "악동",
   "rascal.title.female": "악동",
@@ -204,11 +204,14 @@
   "prestige.level_up.tooltip:5": "이미 이 계통의 모든 직업을 습득했습니다.",
   "prestige.level_up.tooltip:10": "이미 이 직업을 습득했습니다.",
   "prestige.level_up.question": "현재 {{oldProfession}}의 {{oldUltimate}}(이)가 있습니다. {{newProfession}}의 {{newUltimate}}(으)로 변경할까요?",
-  "prestige.level_up.unlocked": "이제 {{skill}} 스킬을 더 발전시킬 수 있습니다.",
-  "prestige.level_up.prestige": "특화할 직업을 고르세요:",
+  "prestige.level_up.unlocked.standard": "이제 {{skill}} 스킬을 더 발전시킬 수 있습니다.",
+  "prestige.level_up.unlocked.challenge": "이제 스킬을 더 발전시킬 수 있습니다.",
+  "prestige.level_up.choose": "특화할 직업을 고르세요:",
+  "prestige.level_up.streamlined": "Gained Prestige",
   "prestige.achievement.title.male": "만능역자",
   "prestige.achievement.title.female": "만능역자",
-  "prestige.achievement.desc": "모든 스킬의 모든 직업을 습득하기",
+  "prestige.achievement.desc.male": "평범한 농부의 한계를 뛰어넘으세요.",
+  "prestige.achievement.desc.female": "평범한 농부의 한계를 뛰어넘으세요.",
 
   // *********** //
   // * ARSENAL * //
@@ -349,6 +352,13 @@
   "global.infinitycraft": "{{who}}가 인피니티 밴드를 제작했습니다.",
   "resonance": "공명",
 
+  "dialogue.emily.gemstones.first": "Have you ever noticed how gemstones can evoke different feelings? Like the calmness of a topaz or the vibrant energy of a ruby.#$b#Gemstones have this incredible way of resonating with our energies. It's like nature's palette of emotions.",
+  "dialogue.emily.gemstones.second": "Every gemstone has a different vibration. When you connect with a gemstone, it resonates with the frequencies of our internal emotions.#$b#If you listen closely, you can even hear it!",
+  "dialogue.emily.gemstones.third": "How do you connect with a gemstone?#$b#$h#By keeping it close to you, of course!#$b#$0$#You can wear it as a ring or a necklace and carry it around with you. It's like having a little piece of nature's harmony with you wherever you go!",
+  "dialogue.emily.gemstones.fourth": "Most jewelry can only house one gemstone.#$b#Clint says it's because most metals aren't strong enough to resist the vibrations of multiple gemstones.",
+  "dialogue.qi.gemstones.first": "I see you've made yourself a couple of Iridium Bands.#$b#Have you discovered their true purpose?",
+  "dialogue.qi.gemstones.second": "It may not seem like much, but combined wth some cosmic power the Iridium Band can become extraordinarily powerful...",
+
   // json-assets
   "gems.garnet.name": "가넷",
   "gems.garnet.description": "머나먼 나라의 아름다운 공주의 이름을 딴 보석.",
@@ -465,6 +475,9 @@
 
   // professions
   "gmcm.pages.prfs": "Professions",
+  "gmcm.pages.prfs.limit": "Limit Break Settings",
+  "gmcm.pages.prfs.prestige": "Prestige Settings",
+  "gmcm.pages.prfs.experience": "Experience Settings",
 
   "gmcm.sections.prfs.general": "General Profession Settings",
   "gmcm.should_junimos_inherit_professions.title": "Should Junimos Inherit Professions",
@@ -519,8 +532,8 @@
   "gmcm.limit_break_key.desc": "The key used to activate the Limit Break.",
   "gmcm.hold_key_to_limit_break.title": "Hold-To-Activate",
   "gmcm.hold_key_to_limit_break.desc": "If enabled, the Limit Break will be activated by holding the Activation Key for a short interval, instead of activating immediately.",
-  "gmcm.limit_break_hold_delay_milliseconds.title": "Activation Delay",
-  "gmcm.limit_break_hold_delay_milliseconds.desc": "How long the key should be held before the Limit Break is activated, in seconds.",
+  "gmcm.hold_delay_milliseconds.title": "Activation Delay",
+  "gmcm.hold_delay_milliseconds.desc": "How long the key should be held before the Limit Break is activated, in seconds.",
   "gmcm.limit_gain_factor.title": "Gain Factor",
   "gmcm.limit_gain_factor.desc": "Affects the rate at which one builds the Limit Break gauge (higher is faster).",
   "gmcm.limit_drain_factor.title": "Drain Factor",
@@ -531,8 +544,13 @@
   "gmcm.limit_gauge_offset.desc": "Use this to adjust the X and Y coordinates of the Limit Gauge if using other mods which also add HUD bars.",
 
   "gmcm.sections.prfs.prestige": "Skill Reset & Prestige",
-  "gmcm.enable_prestige.title": "Enable Prestige",
-  "gmcm.enable_prestige.desc": "Must be enabled to allow all prestige modifications.",
+  "gmcm.mode.title": "Prestige Mode",
+  "gmcm.mode.desc": "Determines whether the Prestige system is enabled, and if so, the paradigms of how it should function.\nNone - All prestige systems disabled.\nStandard - Prestige levels for each skill unlocked after acquiring all professions in that skill.\nChallenge - Prestige levels for all skills unlocked after acquiring all professions in every skill.\nStreamlined - Prestige levels unlocked immediately at level 10, but can only acquire one profession per skill.\nAll Professions - Prestige levels disabled, but can still reset to acquire all professions.",
+  "gmcm.prestige_mode.none": "None",
+  "gmcm.prestige_mode.standard": "Standard",
+  "gmcm.prestige_mode.streamlined": "Streamlined",
+  "gmcm.prestige_mode.challenge": "Challenge",
+  "gmcm.prestige_mode.capped": "Capped",
   "gmcm.skill_reset_cost_multiplier.title": "Skill Reset Cost Multiplier",
   "gmcm.skill_reset_cost_multiplier.desc": "Multiplies the base cost reseting a skill at the Statue of Prestige. Set to 0 to reset for free.",
   "gmcm.forget_recipes_on_skill_reset.title": "Forget Recipes on Skill Reset",
@@ -543,19 +561,15 @@
   "gmcm.exp_bonus_per_skill_reset.desc": "A percentage bonus applied to a skill's experience gain after a respective skill prestige. Negative values mean it becomes harder to regain those levels.",
   "gmcm.prestige_respec_cost.title": "Cost of Prestige Respec",
   "gmcm.prestige_respec_cost.desc": "Monetary cost of respecing prestige profession choices for a skill. Set to 0 to respec for free.",
-  "gmcm.prestige_progression_style.title": "Progression Style",
-  "gmcm.prestige_progression_style.desc": "Determines the style of the sprite that appears next to skill bars, and indicates the skill reset progression.",
-  "gmcm.progression_style.stackedstars": "Stacked Stars",
-  "gmcm.progression_style.gen3ribbons": "Gen 3 Ribbons",
-  "gmcm.progression_style.gen4ribbons": "Gen 4 Ribbons",
-
-  "gmcm.enable_extended_progression.title": "Enable Extended Progression",
-  "gmcm.enable_extended_progression.desc": "Must be enabled to allow progression until level 20.",
-  "gmcm.required_exp_per_extended_level.title": "Required Exp per Extended Level",
-  "gmcm.required_exp_per_extended_level.desc": "How much skill experience is required for each level-up above level 10.",
-
-  "gmcm.extended_perfection_requirement.title": "Extended Perfection Requirement",
-  "gmcm.extended_perfection_requirement.desc": "If enabled, the Farmer Level perfection requirement is replaced with Skill Mastery, meaning level 20 in all 5 vanilla skills if Extended Progression is enabled, or have obtained all 30 vanilla professions if not.",
+  "gmcm.ribbon.title": "Progression Style",
+  "gmcm.ribbon.desc": "Determines the style of the sprite that appears next to skill bars, and indicates the skill reset progression.",
+  "gmcm.ribbon_style.stacked_stars": "Stacked Stars",
+  "gmcm.ribbon_style.gen3_ribbons": "Gen 3 Ribbons",
+  "gmcm.ribbon_style.gen4_ribbons": "Gen 4 Ribbons",
+  "gmcm.exp_per_extended_level.title": "Required Exp per Extended Level",
+  "gmcm.exp_per_extended_level.desc": "How much skill experience is required for each level-up above level 10.",
+  "gmcm.is_perfection_requirement.title": "Extended Perfection Requirement",
+  "gmcm.is_perfection_requirement.desc": "If enabled, the Farmer Level perfection requirement is replaced with Skill Mastery, meaning level 20 in all 5 vanilla skills if Extended Progression is enabled, or have obtained all 30 vanilla professions if not.",
 
   "gmcm.sections.prfs.experience": "Skill Experience Multipliers",
   "gmcm.skill_exp_multipliers.title": "Base {{skill}} Exp Multiplier",
@@ -574,8 +588,17 @@
   "gmcm.show_fish_collection_max_icon.title": "Show 'MAX' Icon in Fish Collection",
   "gmcm.show_fish_collection_max_icon.desc": "Toggles whether or not to display the 'Max' icon below fish caught at max size.",
 
+  "gmcm.go_to.prfs.limit": "Go to Limit Break Settings",
+  "gmcm.go_to.prfs.prestige": "Go to Prestige Settings",
+  "gmcm.go_to.prfs.experience": "Go to Experience Settings",
+  "gmcm.back_to.prfs": "Back to Profession settings",
+
   // combat
   "gmcm.pages.cmbt": "Combat",
+  "gmcm.pages.cmbt.enemies": "Enemy Encounter Settings",
+  "gmcm.pages.cmbt.quests": "Quest Settings",
+  "gmcm.pages.cmbt.rings_enchantments": "Ring & Enchantment Settings",
+  "gmcm.pages.cmbt.weapons_slingshots": "Weapon & Slingshot Settings",
 
   "gmcm.sections.cmbt.general": "General Combat Mechanics",
   "gmcm.new_resistance_formula.title": "New Resistance Formula",
@@ -587,9 +610,10 @@
   "gmcm.enable_status_conditions.title": "Enable Status Conditions",
   "gmcm.enable_status_conditions.desc": "Whether to enable status conditions like Burn and Stun on enemies. These are used by other modules.",
 
-  "gmcm.sections.cmbt.weapons": "Melee & Ranged Weapons",
-  "gmcm.enable_weapon_overhaul.title": "Enable Weapon Overhaul",
-  "gmcm.enable_weapon_overhaul.desc": "Rebalances every melee weapon and slingshot, in addition to changing Mine chests, monster and container drops, weapon shops and more. !! Please disable this setting before deactivating the Combat module. !!",
+  "gmcm.sections.cmbt.melee": "Melee Weapons",
+
+  "gmcm.enable_overhaul.title": "Enable Weapon Overhaul",
+  "gmcm.enable_overhaul.desc": "Rebalances every melee weapon and slingshot, in addition to changing Mine chests, monster and container drops, weapon shops and more. !! Please disable this setting before deactivating the Combat module. !!",
 
   "gmcm.woody_replaces_rusty.title": "Woody Replaces Rusty",
   "gmcm.woody_replaces_rusty.desc": "Replaces the starting Rusty Sword with a Wooden Blade.",
@@ -597,8 +621,8 @@
   "gmcm.enable_stabbing_swords.desc": "Replaces the defensive special move of some swords with an offensive lunge move. !! Please disable this setting before deactivating the Combat module. !!",
   "gmcm.stabbing_swords.title": "Stabbing Swords",
   "gmcm.stabbing_swords.desc": "Add to this list the names of swords that should be given the Stabbing Sword type.",
-  "gmcm.enable_melee_combo_hits.title": "Enable Melee Combo Hits",
-  "gmcm.enable_melee_combo_hits.desc": "Replaces vanilla weapon spam with a more strategic combo system.",
+  "gmcm.enable_combo_hits.title": "Enable Melee Combo Hits",
+  "gmcm.enable_combo_hits.desc": "Replaces vanilla weapon spam with a more strategic combo system.",
   "gmcm.combo_hits_per_weapon_type.stabbing_sword.title": "Stabbing Sword Combo Hits",
   "gmcm.combo_hits_per_weapon_type.stabbing_sword.desc": "The max. number of consecutive hits in a Stabbing Sword combo (if Stabbing Swords are enabled).",
   "gmcm.combo_hits_per_weapon_type.defense_sword.title": "Defense Sword Combo Hits",
@@ -611,6 +635,8 @@
   "gmcm.defense_improves_parry.desc": "Parry damage will increase for each point in defense.",
   "gmcm.grounded_club_smash.title": "Grounded Club Smash",
   "gmcm.grounded_club_smash.desc": "A club smash AoE will inflict guaranteed critical damage on burrowed enemies, but completely miss flying enemies.",
+
+  "gmcm.sections.cmbt.ranged": "Slingshots",
 
   "gmcm.enable_ranged_critical_hits.title": "Enable Ranged Critical Hits",
   "gmcm.enable_ranged_critical_hits.desc": "Allows slingshots to deal critical damage and be affected by critical modifiers.",
@@ -630,8 +656,8 @@
   "gmcm.enable_infinity_band.desc": "Makes Iridium Band useless, but adds the almighty Infinity Band. Required for Gemstone Resonance mechanics.",
   "gmcm.enable_gemstone_resonance.title": "Enable Gemstone Resonance",
   "gmcm.enable_gemstone_resonance.desc": "Allows gemstones to harmonize and resonate in close proximity of each other.",
-  "gmcm.play_chord.title": "Play Chord",
-  "gmcm.play_chord.desc": "Hear the chord formed by the Infinity Band every time it is equipped.",
+  "gmcm.audible_gemstones.title": "Audible Gemstones",
+  "gmcm.audible_gemstones.desc": "Hear the chord formed by the Infinity Band every time it is equipped.",
   "gmcm.chord_sound_duration.title": "Chord Sound Duration",
   "gmcm.chord_sound_duration.desc": "How long the chord sound should linger, in milliseconds.",
   "gmcm.colorful_resonances.title": "Colorful Resonance Glow",
@@ -712,7 +738,7 @@
   "gmcm.forge_socket_position.title": "Forge Socket Position",
   "gmcm.forge_socket_position.desc": "Determines the relative position where forge sockets should be drawn, if enabled.",
   "gmcm.socket_position.standard": "Standard",
-  "gmcm.socket_position.aboveseparator": "Above Separator",
+  "gmcm.socket_position.above_separator": "Above Separator",
   "gmcm.weapon_tooltip_style.title": "Weapon Tooltip Style",
   "gmcm.weapon_tooltip_style.desc": "Whether to display weapon stats as their absolute values or as relative to other weapons of the same type.",
   "gmcm.tooltip_style.vanilla": "Vanilla",
@@ -722,6 +748,12 @@
   "gmcm.draw_current_ammo.desc": "Draws the currently-selected ammo for a ranged weapon. Useful when equipping multiple ammo.",
   "gmcm.bullseye_replaces_cursor.title": "Bullseye Replaces Cursor",
   "gmcm.bullseye_replaces_cursor.desc": "Draws a bulls-eye instead of the mouse cursor while firing a slingshot. Does not support pull-back firing for obvious reasons.",
+
+  "gmcm.go_to.cmbt.enemies": "Go to Enemy Encounter Settings",
+  "gmcm.go_to.cmbt.quests": "Go to Quest Settings",
+  "gmcm.go_to.cmbt.rings_enchantments": "Go to Ring & Enchantment Settings",
+  "gmcm.go_to.cmbt.weapons_slingshots": "Go to Weapon & Slingshot Settings",
+  "gmcm.back_to.cmbt": "Back to Combat settings",
 
   // tools
   "gmcm.pages.tols": "Tools",
@@ -987,6 +1019,7 @@
   "gmcm.deterministic_age_quality.desc": "Whether age-dependent qualities should be deterministic (true) or stochastic (false).",
 
   // control & ui
+  "gmcm.pages.controls_ui": "Control & UI Settings",
   "gmcm.sections.controls_ui": "Controls & UI",
   "gmcm.face_mouse_cursor.title": "Face Towards Mouse Cursor",
   "gmcm.face_mouse_cursor.desc": "If using mouse and keyboard, turn to face towards the current cursor position before swinging.",

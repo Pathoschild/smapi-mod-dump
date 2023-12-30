@@ -14,7 +14,6 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Prestige;
 
 using System.Linq;
 using System.Reflection;
-using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -36,7 +35,7 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
     [HarmonyPrefix]
     private static bool GameLocationPerformActionPrefix(GameLocation __instance, string? action, Farmer who)
     {
-        if (!ProfessionsModule.Config.EnablePrestige || action?.Contains("DogStatue") != true ||
+        if (!ProfessionsModule.EnableSkillReset || action?.Contains("DogStatue") != true ||
             !who.IsLocalPlayer)
         {
             return true; // run original logic
@@ -45,22 +44,15 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
         try
         {
             string message;
-            if (!ProfessionsModule.Config.AllowMultipleResets && ProfessionsModule.State.SkillsToReset.Count > 0)
+            if (!ProfessionsModule.Config.Prestige.AllowMultipleResets && ProfessionsModule.State.SkillsToReset.Count > 0)
             {
                 message = I18n.Prestige_DogStatue_Dismiss();
                 Game1.drawObjectDialogue(message);
                 return false; // don't run original logic
             }
 
-            if (ISkill.CanResetAny())
+            if (TryOfferSkillReset(__instance) || TryOfferRespecOptions(__instance))
             {
-                OfferSkillReset(__instance);
-                return false; // don't run original logic
-            }
-
-            if (who.HasAllProfessions(true))
-            {
-                OfferRespecOptions(__instance);
                 return false; // don't run original logic
             }
 
@@ -79,25 +71,30 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
 
     #region dialog handlers
 
-    private static void OfferSkillReset(GameLocation location)
+    private static bool TryOfferSkillReset(GameLocation location)
     {
+        if (!ISkill.CanResetAny())
+        {
+            return false;
+        }
+
         var message = I18n.Prestige_DogStatue_First();
-        if (ProfessionsModule.Config.ForgetRecipesOnSkillReset)
+        if (ProfessionsModule.Config.Prestige.ForgetRecipesOnSkillReset)
         {
             message += I18n.Prestige_DogStatue_Forget();
         }
 
         message += I18n.Prestige_DogStatue_Offer();
-
         location.createQuestionDialogue(message, location.createYesNoResponses(), "dogStatue");
+        return true;
     }
 
-    private static void OfferRespecOptions(GameLocation location)
+    private static bool TryOfferRespecOptions(GameLocation location)
     {
         var message = I18n.Prestige_DogStatue_What();
         var options = Array.Empty<Response>();
 
-        if (ProfessionsModule.Config.EnableLimitBreaks &&
+        if (ProfessionsModule.Config.Limit.EnableLimitBreaks &&
             Game1.player.Get_Ultimate() is not null)
         {
             options = options.Concat(new Response[]
@@ -105,8 +102,8 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
                 new(
                     "changeUlt",
                     I18n.Prestige_DogStatue_Changeult() +
-                    (ProfessionsModule.Config.LimitRespecCost > 0
-                        ? ' ' + I18n.Prestige_DogStatue_Cost(ProfessionsModule.Config.LimitRespecCost)
+                    (ProfessionsModule.Config.Limit.LimitRespecCost > 0
+                        ? ' ' + I18n.Prestige_DogStatue_Cost(ProfessionsModule.Config.Limit.LimitRespecCost)
                         : string.Empty)),
             }).ToArray();
         }
@@ -118,13 +115,19 @@ internal sealed class GameLocationPerformActionPatcher : HarmonyPatcher
                 new(
                     "prestigeRespec",
                     I18n.Prestige_DogStatue_Respec() +
-                    (ProfessionsModule.Config.PrestigeRespecCost > 0
-                        ? ' ' + I18n.Prestige_DogStatue_Cost(ProfessionsModule.Config.PrestigeRespecCost)
+                    (ProfessionsModule.Config.Prestige.PrestigeRespecCost > 0
+                        ? ' ' + I18n.Prestige_DogStatue_Cost(ProfessionsModule.Config.Prestige.PrestigeRespecCost)
                         : string.Empty)),
             }).ToArray();
         }
 
+        if (options.Length <= 0)
+        {
+            return false;
+        }
+
         location.createQuestionDialogue(message, options, "dogStatue");
+        return true;
     }
 
     #endregion dialog handlers

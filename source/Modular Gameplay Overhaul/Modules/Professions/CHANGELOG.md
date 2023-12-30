@@ -8,6 +8,107 @@ for queries and analysis.**
 
 # PRFS Changelog
 
+## 4.2.2
+
+### Changed
+
+* Buffed the Prestiged Trapper perk.
+    * Before: Adds `FishingLevel / 60` chance to find Iridium-quality fish.
+    * Now: All qualities from regular Trapper are increased by 1 level; i.e. Iridium is now the highest with `FishingLevel / 30` chance, and Silver is the lowest.
+* Reworded Spelunker description.
+
+## 4.2.1
+
+### Changed
+
+* Arborist growth speed perk now applies only to Trees and Fruit Trees manually planted by the Arborist. This is a noticeable nerf, but it makes more sense and is more in line with how other professions work, like Agriculturist and Artisan.
+* Reworded Agriculturist description to clarify that the perk applies **on harvest**, and not a moment before that.
+
+### Fixed
+
+* Fixed double level-up bug.
+* Updated the localizations for prestiged Conservationist.
+
+<sup><sup>[🔼 Back to top](#profs-changelog)</sup></sup>
+
+## 4.2.0
+
+### Added
+
+* Added new Prestige mode options:
+    * **Standard** - Prestige levels (11-20) are unlocked individually per skill by resetting the skill 3 times to acquire all 10th-level professions within that skill. *This is the standard paradigm that has been available until this point.**
+    * **Challenge** - Prestige levels (11-20) are unlocked simultaneously for all skills only after all skills have been reset 3 times each and all 10th-level professions have been acquired across all skills. *This was my original plan, before receving mostly negative feedback.*
+    * **Streamlined** - Prestige levels (11-20) are unlocked immediately upon reaching level 10. The Skill Reset mechanic is eliminated altogether. But this also means you can obtain only one profession per skill. *This is meant for casual players who don't appreciate the grind, or anyone who wants the extended progression but without becoming overpowered by having all professions.*
+    * **Capped** - This is the opposite of Streamlined; Prestige levels are eliminated altogether, but the Skill Reset mechanic is maintained. The level cap remains at the regular 10, but the Statue of Prestige will still allow you to obtain all the non-prestige professions.
+
+* Added the following translation keys:
+    * "gmcm.prestige_progression_mode.title"
+    * "gmcm.prestige_progression_mode.desc"
+    * "gmcm.prestige_mode.none"
+    * "gmcm.prestige_mode.standard"
+    * "gmcm.prestige_mode.challenge"
+    * "gmcm.prestige_mode.streamlined"
+    * "gmcm.prestige_mode.all_professions"
+    * "prestige.level_up.unlocked.challenge"
+
+### Changed
+
+* The Oceanographer (Prestiged Conservationist) perk has been changed to fit the profession's title.
+    * ~~Tax deductions build 50% faster~~ Crab pots without bait have a chance to trap fish. Special conditions apply during rainy or full-moon nights.
+
+    *Your deep knowledge of current and tidal patterns allow your crab pots to catch entire schools of fish during days when the weather is rainy or stormy, or during the day of the full-moon (15th). All fish caught during these days receive a dramatic boost to quantity and a +1 boost to quality.*
+
+* The Saboteur (Prestiged Conservationist) perk has been changed to fit the profession's title.
+    * ~~Reset the cooldown of special moves on a successful poach~~ Enemies can be poached twice. Inflict deadly poison on a successful poach.
+
+    *Finally put some use to the Poison status effect, and a final reference to the Thief job from RO.*
+
+    <div align="center">
+
+    \*~~ With this, I think I am finally happy with all 60 profession perks. ~~\*
+    </div>
+
+* Changed the Aquarist profession icon that of fish Roe, instead of the vanilla Pirate's treasure chest. This should better reflect the theme of the profession. Seems like such an obvious change, I honestly don't know why I never thought of it.
+* The Prestige achievement "Master of the Five Trades" is now awarded when all 5 vanilla skills have reached level 20 (previously was level 10).
+* Changed the following translation keys (asterisk indicates a wildcard):
+    * ~~"gmcm.progression_style.\*"~~ -> "gmcm.ribbon_style.\*"
+    * ~~"prestige.level_up.unlocked"~~ -> "prestige.level_up.unlocked.standard"
+* Renamed the Profession and Skill enums for better consistency with SpaceCore variants.
+
+### Fixed
+
+* Fixed SpaceCore skill levels being offset by -1.
+* `Monster.FindPlayer` optimization was actually not applying at all! The optimization now applies correctly, reducing time spent on this method by ~3.6x. *This is the method which determines monster AI, and called for every monster on the map. In maps like SVE's Crimson Badlands an Highlands, it was the biggest culprit behind people's performance complaints. So this should give a noticeable performance boost for those people.*
+
+### Removed
+
+* Removed the following translation keys:
+    * "gmcm.enable_prestige.title"
+    * "gmcm.enable_prestige.desc"
+    * "gmcm.enable_extended_progression.title"
+    * "gmcm.enable_extended_progression.desc"
+
+<sup><sup>[🔼 Back to top](#profs-changelog)</sup></sup>
+
+## 4.1.7
+
+### Added
+
+* Added new titles for Prestiged profession variants.
+  (**English only!! Translations will NOT show in-game, so please don't even try.**)
+
+### Changed
+
+* Female counterpart to Slimed Piper has been renamed to Slimed Siren.
+* Experience curve is now an Array instead of a Dictionary.
+
+### Fixed
+
+* `ForgetRecipesOnSkillReset` setting should now apply to SpaceCore skills when ebaled.
+* SpaceCore skills should now be properly capped at level 10 when not fully reset.
+
+<sup><sup>[🔼 Back to top](#profs-changelog)</sup></sup>
+
 ## 4.1.6
 
 ### Added
@@ -353,8 +454,8 @@ Major changes to the Fishing tree:
     * New prestige perk: pond capacity +4. *More useful and in-line with the Prestige theme.*
     * Default value for LegendaryPondPopulationCeiling lowered from 6 to 5.
 * **Luremaster:**
-    * Now also allows **baited** Crab Pots to produce 2x per day. Previous effects remain unchanged. *Huge and desperately needed buff. Also establishes a neat analogy to Producer.*
-    * New prestige perk: produce 3x per day. *The natural progression.*
+    * Now also allows **baited** Crab Pots to produce 2× per day. Previous effects remain unchanged. *Huge and desperately needed buff. Also establishes a neat analogy to Producer.*
+    * New prestige perk: produce 3× per day. *The natural progression.*
 * **Conservationist:**
     * Village favor can now be gained without prestige. *This perk was pretty useless at extremely late game. It now gives further incentive to pick this profession early.*
     * New prestige effect: 50% faster trash build-up. *Not great, but the best I could come up with.*

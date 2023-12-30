@@ -9,6 +9,8 @@
 *************************************************/
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Goals;
@@ -27,6 +29,13 @@ namespace StardewArchipelago.GameModifications.CodeInjections
 {
     internal class FarmInjections
     {
+        private static readonly List<string> _locationsWithGoldenClockEffect = new()
+        {
+            "Farm",
+            "IslandWest",
+            "Custom_GrandpasShedOutside",
+        };
+
         private static IMonitor _monitor;
         private static ArchipelagoClient _archipelago;
 
@@ -79,9 +88,14 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         {
             try
             {
-                if (numDebris < 0)
+                if (numDebris <= 0)
                 {
                     return true; // run original logic;
+                }
+
+                if (Game1.getFarm().isBuildingConstructed("Gold Clock") && _locationsWithGoldenClockEffect.Contains(__instance.Name))
+                {
+                    numDebris = 0;
                 }
 
                 switch (_archipelago.SlotData.DebrisMultiplier)
@@ -196,7 +210,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
         {
             try
             {
-                if (!_archipelago.SlotData.BuildingProgression.HasFlag(BuildingProgression.EarlyShippingBin) || !_archipelago.HasReceivedItem("Shipping Bin"))
+                if (!_archipelago.HasReceivedItem("Shipping Bin"))
                 {
                     return;
                 }
@@ -297,7 +311,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                 return "What would your grandfather say if you abandoned this poor animal?";
             }
 
-            var location = string.Format(FriendshipInjections.FRIENDSANITY_PATTERN, Friends.PET_NAME, 5);
+            var location = string.Format(FriendshipInjections.FRIENDSANITY_PATTERN, Locations.CodeInjections.Vanilla.Relationship.Friends.PET_NAME, 5);
             var scouted = _archipelago.ScoutSingleLocation(location);
             return $"After all, what would {scouted.PlayerName} do without their {scouted.ItemName}?";
         }

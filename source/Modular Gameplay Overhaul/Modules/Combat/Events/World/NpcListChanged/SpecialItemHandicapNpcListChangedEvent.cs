@@ -34,7 +34,7 @@ internal sealed class SpecialItemHandicapNpcListChangedEvent : NpcListChangedEve
     }
 
     /// <inheritdoc />
-    public override bool IsEnabled => CombatModule.Config.EnableWeaponOverhaul;
+    public override bool IsEnabled => CombatModule.Config.WeaponsSlingshots.EnableOverhaul;
 
     /// <inheritdoc />
     protected override void OnNpcListChangedImpl(object? sender, NpcListChangedEventArgs e)

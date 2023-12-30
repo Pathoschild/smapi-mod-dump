@@ -9,16 +9,15 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Cast;
+using StardewDruid.Map;
 using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
 using System.IO;
-using System.Xml.Linq;
-using xTile.Dimensions;
 
 namespace StardewDruid.Event.World
 {
@@ -39,7 +38,7 @@ namespace StardewDruid.Event.World
 
         public List<StardewValley.Monsters.Monster> gravityVictims;
 
-        public Dictionary<int,TemporaryAnimatedSprite> gravityAnimations;
+        public Dictionary<int, TemporaryAnimatedSprite> gravityAnimations;
 
         public Gravity(Vector2 target, Rite rite, int type)
             : base(target, rite)
@@ -80,7 +79,7 @@ namespace StardewDruid.Event.World
             if (activeCounter == 9) // gravity limit
             {
                 return false;
-            
+
             }
 
             if (expireEarly)
@@ -90,7 +89,7 @@ namespace StardewDruid.Event.World
 
             }
 
-            if(targetPlayer.currentLocation.Name != targetLocation.Name)
+            if (targetPlayer.currentLocation.Name != targetLocation.Name)
             {
 
                 return false;
@@ -117,63 +116,28 @@ namespace StardewDruid.Event.World
         {
 
             GravityEnd();
-        
+
         }
 
         public void GravityEnd()
         {
-            
-            if(gravityAnimations.Count > 0)
+
+            if (gravityAnimations.Count > 0)
             {
-                
-                foreach(KeyValuePair<int,TemporaryAnimatedSprite> animation in gravityAnimations)
+
+                foreach (KeyValuePair<int, TemporaryAnimatedSprite> animation in gravityAnimations)
                 {
-                    
+
                     targetLocation.temporarySprites.Remove(animation.Value);
-                
+
                 }
-                
+
             }
 
             gravityVictims.Clear();
 
             if (gravityAnimations.ContainsKey(2))
             {
-
-                /*TemporaryAnimatedSprite GravityAnimation = new(0, 100f, 4, 1, gravityCorner, false, false)
-                {
-
-                    sourceRect = new(0, 64, 32, 32),
-
-                    sourceRectStartingPos = new Vector2(0, 64),
-
-                    texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Gravity" + gravityType + ".png")),
-
-                    scale = 4f,
-
-                    layerDepth = 0.0002f,
-
-                };
-
-                targetLocation.temporarySprites.Add(GravityAnimation);
-
-                TemporaryAnimatedSprite nightAnimation = new(0, 400f, 1, 1, gravityCorner, false, false)
-                {
-
-                    sourceRect = new(0, 0, 32, 32),
-
-                    sourceRectStartingPos = new Vector2(0, 0),
-
-                    texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Blackhole.png")),
-
-                    scale = 4f,
-
-                    layerDepth = 0.0001f,
-
-                    rotationChange = -0.12f,
-                };
-
-                targetLocation.temporarySprites.Add(nightAnimation);*/
 
                 TemporaryAnimatedSprite nightAnimation = new(0, 1000f, 1, 1, gravityCorner, false, false)
                 {
@@ -196,6 +160,8 @@ namespace StardewDruid.Event.World
 
                     scaleChange = -0.002f,
 
+                    alpha = 0.75f,
+
                 };
 
                 targetLocation.temporarySprites.Add(nightAnimation);
@@ -213,7 +179,7 @@ namespace StardewDruid.Event.World
             if (gravityVictims.Count > 0)
             {
 
-                for(int m = gravityVictims.Count - 1; m >= 0; m--)
+                for (int m = gravityVictims.Count - 1; m >= 0; m--)
                 {
 
                     StardewValley.Monsters.Monster victim = gravityVictims[m];
@@ -287,7 +253,7 @@ namespace StardewDruid.Event.World
                     WarpAnimation(position);
 
                 }
-            
+
             }
 
         }
@@ -304,69 +270,6 @@ namespace StardewDruid.Event.World
             if (activeCounter == 1)
             {
 
-                /*TemporaryAnimatedSprite startAnimation = new(0, 100f, 4, 1, gravityCorner, false, false)
-                {
-
-                    sourceRect = new(0, 0, 32, 32),
-
-                    texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Gravity" + gravityType + ".png")),
-
-                    scale = 4f,
-
-                    layerDepth = 0.0002f,
-
-                };
-
-                targetLocation.temporarySprites.Add(startAnimation);
-
-                gravityAnimations[0] = startAnimation;
-
-                TemporaryAnimatedSprite nightAnimation = new(0, 9999f, 1, 1, gravityCorner, false, false)
-                {
-
-                    sourceRect = new(0, 0, 32, 32),
-
-                    sourceRectStartingPos = new Vector2(0, 0),
-
-                    texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Blackhole.png")),
-
-                    scale = 4f,
-
-                    layerDepth = 0.0001f,
-
-                    rotationChange = -0.12f,
-
-                };
-
-                targetLocation.temporarySprites.Add(nightAnimation);
-
-                gravityAnimations[1] = nightAnimation;
-
-                TemporaryAnimatedSprite initialAnimation = new(0, 9999f, 1, 1, gravityCorner, false, false)
-                {
-
-                    sourceRect = new(0, 32, 32, 32),
-
-                    sourceRectStartingPos = new Vector2(0, 32),
-
-                    texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Gravity" + gravityType + ".png")),
-
-                    scale = 4f,
-
-                    delayBeforeAnimationStart = 400,
-
-                    layerDepth = 0.0003f,
-
-                    rotationChange = -0.08f,
-
-                };
-
-                targetLocation.temporarySprites.Add(initialAnimation);
-
-                gravityAnimations[2] = initialAnimation;
-
-                return;*/
-
                 Vector2 targetPosition = gravityCorner;
 
                 Vector2 playerPosition = riteData.caster.Position - new Vector2(0, 32);
@@ -377,9 +280,6 @@ namespace StardewDruid.Event.World
 
                 float motionX = xOffset / 1000;
 
-                //float compensate = 0.555f;
-
-                //float motionY = (yOffset / 1000) - compensate;
                 float motionY = yOffset / 1000;
 
                 float animationSort = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString()) + 2;
@@ -405,6 +305,8 @@ namespace StardewDruid.Event.World
 
                     rotationChange = -0.06f,
 
+                    alpha = 0.75f,
+
                 };
 
                 targetLocation.temporarySprites.Add(startAnimation);
@@ -429,6 +331,8 @@ namespace StardewDruid.Event.World
                     timeBasedMotion = true,
 
                     delayBeforeAnimationStart = 1000,
+
+                    alpha = 0.75f,
 
                 };
 
@@ -460,10 +364,10 @@ namespace StardewDruid.Event.World
                         if (hoeDirt.crop != null)
                         {
                             if (
-                                (int)hoeDirt.crop.currentPhase.Value >= hoeDirt.crop.phaseDays.Count - 1 &&
-                                (!hoeDirt.crop.fullyGrown.Value || (int)hoeDirt.crop.dayOfCurrentPhase.Value <= 0)
+                                hoeDirt.crop.currentPhase.Value >= hoeDirt.crop.phaseDays.Count - 1 &&
+                                (!hoeDirt.crop.fullyGrown.Value || hoeDirt.crop.dayOfCurrentPhase.Value <= 0)
                                 && !hoeDirt.crop.dead.Value
-                                && (int)hoeDirt.crop.indexOfHarvest.Value != 0)
+                                && hoeDirt.crop.indexOfHarvest.Value != 0)
                             {
 
                                 if (ExtractCrop(hoeDirt, hoeDirt.crop, tileVector))
@@ -493,7 +397,7 @@ namespace StardewDruid.Event.World
                 foreach (NPC riteWitness in targetLocation.characters)
                 {
 
-                    if(riteWitness is not StardewValley.Monsters.Monster monster)
+                    if (riteWitness is not StardewValley.Monsters.Monster monster)
                     {
 
                         continue;
@@ -507,12 +411,12 @@ namespace StardewDruid.Event.World
 
                     float pullDistance = Vector2.Distance(monster.Position, gravityCenter);
 
-                    float pullLimit = 720f;
+                    float pullLimit = 560f;
 
                     if (riteData.castTask.ContainsKey("masterGravity"))
                     {
 
-                        pullLimit = 960f;
+                        pullLimit = 720f;
 
                     }
 
@@ -523,14 +427,15 @@ namespace StardewDruid.Event.World
 
                     gravityVictims.Add(monster);
 
-                    monster.Halt();
-
-                    monster.stunTime = 1000 * (6 - activeCounter);
-
-                    if (riteData.blessingList["fates"] >= 5)
+                    if (!MonsterData.CustomMonsters().Contains(monster.GetType()))
+                    {
+                        monster.Halt();
+                        monster.stunTime = 1000 * (6 - this.activeCounter);
+                    }
+                    if (Mod.instance.CurrentProgress() >= 25)
                     {
 
-                        for(int i = 0; i < 5;  i++)
+                        for (int i = 0; i < 5; i++)
                         {
 
                             string eventName = "daze" + i.ToString();
@@ -538,12 +443,12 @@ namespace StardewDruid.Event.World
                             if (!Mod.instance.eventRegister.ContainsKey(eventName))
                             {
 
-                                Event.World.Daze dazeEvent = new(targetVector,riteData,monster,i);
+                                Event.World.Daze dazeEvent = new(targetVector, riteData, monster, i, 0);
 
                                 dazeEvent.EventTrigger();
-                                
+
                                 break;
-                            
+
                             }
 
                         }
@@ -560,10 +465,10 @@ namespace StardewDruid.Event.World
         {
 
             int qualityMax = 0;
-            
+
             int quantityMax = 0;
 
-            if(crop.chanceForExtraCrops.Value > 0)
+            if (crop.chanceForExtraCrops.Value > 0)
             {
                 quantityMax++;
             }
@@ -598,14 +503,14 @@ namespace StardewDruid.Event.World
 
             int quantity = randomIndex.Next(1, 2 + quantityMax);
 
-            for(int i = 0; i < quantity; i++)
+            for (int i = 0; i < quantity; i++)
             {
 
                 int quality = randomIndex.Next(0, 3 + qualityMax);
 
                 if (quality >= 3) { quality = 4; }
 
-                if ((int)crop.indexOfHarvest.Value == 771 || (int)crop.indexOfHarvest.Value == 889)
+                if (crop.indexOfHarvest.Value == 771 || crop.indexOfHarvest.Value == 889)
                 {
 
                     quality = 0;
@@ -618,18 +523,18 @@ namespace StardewDruid.Event.World
                     Quality = quality
 
                 } : new StardewValley.Object(crop.indexOfHarvest.Value, 1, isRecipe: false, -1, quality));
-                
-                PopulateObject(extract,tileVector);
+
+                PopulateObject(extract, tileVector);
 
             }
 
             int num6 = Convert.ToInt32(Game1.objectInformation[crop.indexOfHarvest.Value].Split('/')[1]);
 
-            float num7 = (float)(16.0 * Math.Log(0.018 * (double)num6 + 1.0, Math.E));
+            float num7 = (float)(16.0 * Math.Log(0.018 * num6 + 1.0, Math.E));
 
             Game1.player.gainExperience(0, (int)Math.Round(num7));
 
-            if ((int)crop.regrowAfterHarvest.Value == -1)
+            if (crop.regrowAfterHarvest.Value == -1)
             {
 
                 return true;
@@ -638,10 +543,10 @@ namespace StardewDruid.Event.World
 
             crop.fullyGrown.Value = true;
 
-            if (crop.dayOfCurrentPhase.Value == (int)crop.regrowAfterHarvest.Value)
+            if (crop.dayOfCurrentPhase.Value == crop.regrowAfterHarvest.Value)
             {
 
-                crop.updateDrawMath(tileVector*64);
+                crop.updateDrawMath(tileVector * 64);
 
             }
 
@@ -653,13 +558,13 @@ namespace StardewDruid.Event.World
 
         public void PopulateObject(StardewValley.Object extract, Vector2 extractVector)
         {
-            
+
             Cast.Throw throwObject = new(Game1.player, gravityCenter, extract, extractVector * 64);
 
             throwObject.itemDebris = true;
 
             throwObject.ThrowObject();
-        
+
         }
 
         public void WarpAnimation(Vector2 position)

@@ -165,11 +165,11 @@ internal sealed class Configurator : Feature
         };
 
         var stepSize = Game1.tileSize
-                     + buttons.Count switch
-                       {
-                           >= 4 => 8,
-                           _ => 16,
-                       };
+            + buttons.Count switch
+            {
+                >= 4 => 8,
+                _ => 16,
+            };
 
         for (var index = 0; index < buttons.Count; ++index)
         {
@@ -223,8 +223,8 @@ internal sealed class Configurator : Feature
     private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
         if (!Context.IsPlayerFree
-         || !this._config.ControlScheme.Configure.JustPressed()
-         || Storages.CurrentItem is null)
+            || !this._config.ControlScheme.Configure.JustPressed()
+            || Storages.CurrentItem is null)
         {
             return;
         }
@@ -238,7 +238,7 @@ internal sealed class Configurator : Feature
     private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
     {
         if (e.NewMenu is ItemGrabMenu { shippingBin: false } itemGrabMenu and not ItemSelectionMenu
-         && BetterItemGrabMenu.Context is not null)
+            && BetterItemGrabMenu.Context is not null)
         {
             this.CurrentMenu = itemGrabMenu;
             this.CurrentStorage = BetterItemGrabMenu.Context;

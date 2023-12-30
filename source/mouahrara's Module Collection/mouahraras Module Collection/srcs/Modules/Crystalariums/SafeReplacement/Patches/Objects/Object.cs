@@ -41,12 +41,12 @@ namespace mouahrarasModuleCollection.Crystalariums.SafeReplacement.Patches
 				{
 					if (who.freeSpotsInInventory() > 0 || (who.freeSpotsInInventory() == 0 && dropInItem.Stack == 1))
 					{
-						SafeReplacementUtility.SetObjectToRecover(__instance.heldObject.Value);
+						SafeReplacementUtility.ObjectToRecover = __instance.heldObject.Value;
 						return true;
 					}
 					if (who.couldInventoryAcceptThisItem(__instance.heldObject.Value))
 					{
-						SafeReplacementUtility.SetObjectToRecover(__instance.heldObject.Value);
+						SafeReplacementUtility.ObjectToRecover = __instance.heldObject.Value;
 						return true;
 					}
 					__result = false;

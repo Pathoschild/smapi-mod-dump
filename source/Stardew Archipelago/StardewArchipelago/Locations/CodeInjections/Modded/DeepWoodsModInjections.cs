@@ -24,7 +24,10 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
 {
     public static class DeepWoodsModInjections
     {
-        //private const string EXCALIBUR_AP_LOCATION = "Pull Excalibur From the Stone";
+        private const string PENDANT_DEPTHS_ITEM = "Pendant of Depths";
+        private const string PENDANT_COMMUNITY_ITEM = "Pendant of Community";
+        private const string PENDANT_ELDERS_ITEM = "Pendant of Elders";
+        private const string EXCALIBUR_AP_LOCATION = "The Sword in the Stone";
         private const string MEET_UNICORN_AP_LOCATION = "Pet the Deep Woods Unicorn";
         private const string DESTROY_HOUSE_AP_LOCATION = "Breaking Up Deep Woods Gingerbread House";
         private const string DESTROY_TREE_AP_LOCATION = "Chop Down a Deep Woods Iridium Tree";
@@ -34,6 +37,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         private const string DEINFEST_AP_LOCATION = "Purify an Infested Lichtung";
         private const string WOODS_OBELISK_SIGILS = "Progressive Woods Obelisk Sigils";
         private const string WOODS_DEPTH_LOCATION = "The Deep Woods: Depth {0}";
+        private const string EXCALIBUR_FAIL = "With only {0}/7 Luck, {1}/40 total base skills and {2}/3 pendants, it won't budge.";
+        private const string EXCALIBUR_WIN = "{0} has been freed from the stone.  You are worthy.";
         private const int LEVEL_STEP = 10;
         private static IMonitor _monitor;
         private static IModHelper _helper;
@@ -52,10 +57,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
             _locationChecker = locationChecker;
         }
 
-         // Future Goal; Currently Unimplemented - Albrekka
-        //public class ExcaliburStone : LargeTerrainFeature
         //public override bool performUseAction(Vector2 tileLocation, GameLocation location)
-        /*public static bool PerformUseAction_ExcaliburLocation_Prefix(LargeTerrainFeature __instance, Vector2 tileLocation, GameLocation location, bool __result)
+        public static bool PerformUseAction_ExcaliburLocation_Prefix(LargeTerrainFeature __instance, Vector2 tileLocation, GameLocation location, bool __result)
         {
             try
             {
@@ -64,27 +67,35 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 if (swordPulledOut.Value)
                     return false; //don't run original logic
 
-                if (Game1.player.DailyLuck >= 0.07f
-                    && Game1.player.LuckLevel >= 8
-                    && Game1.player.MiningLevel >= 10
-                    && Game1.player.ForagingLevel >= 10
-                    && Game1.player.FishingLevel >= 10
-                    && Game1.player.FarmingLevel >= 10
-                    && Game1.player.CombatLevel >= 10
-                    && (Game1.player.timesReachedMineBottom >= 1 || Game1.MasterPlayer.timesReachedMineBottom >= 1)
-                    && Game1.getFarm().grandpaScore.Value >= 4
-                    && (!Game1.player.mailReceived.Contains("JojaMember"))
-                    && (Game1.player.hasCompletedCommunityCenter()))
+                var playerLuck = Game1.player.LuckLevel;
+                playerLuck = Math.Min(playerLuck, 7);
+                var totalSkill = Game1.player.MiningLevel + Game1.player.ForagingLevel + Game1.player.FishingLevel + Game1.player.FarmingLevel + Game1.player.CombatLevel;
+                totalSkill = Math.Min(totalSkill, 40);
+                var hasPendantElders = _archipelago.HasReceivedItem(PENDANT_ELDERS_ITEM);
+                var hasPendantDepths = _archipelago.HasReceivedItem(PENDANT_DEPTHS_ITEM);
+                var hasPendantCommunity = _archipelago.HasReceivedItem(PENDANT_COMMUNITY_ITEM);
+
+                if (Game1.player.LuckLevel == 7
+                    && totalSkill == 40
+                    && hasPendantElders
+                    && hasPendantDepths
+                    && hasPendantCommunity)
                 {
                     Game1.playSound("yoba");
+                    var swordItem = _archipelago.ScoutSingleLocation(EXCALIBUR_AP_LOCATION).ItemName;
+                    if (swordItem.Length > 20)
+                    {
+                        swordItem = swordItem.Substring(0, 20); //Lets make it readable for the Archipidle enjoyers.
+                    }
                     _locationChecker.AddCheckedLocation(EXCALIBUR_AP_LOCATION);
+                    Game1.addHUDMessage(new HUDMessage(string.Format(EXCALIBUR_WIN, swordItem)) { noIcon = true });
                     swordPulledOut.Value = true;
+                    return false; //don't run original logic
                 }
-                else
-                {
-                    Game1.playSound("thudStep");
-                    Game1.showRedMessage("It won't budge.");
-                }
+
+                Game1.playSound("thudStep");
+                var totalPendants = BoolToInt(hasPendantCommunity) + BoolToInt(hasPendantDepths) + BoolToInt(hasPendantElders);
+                Game1.showRedMessage(string.Format(EXCALIBUR_FAIL, playerLuck, totalSkill, totalPendants));
                 return false; //don't run original logic
             }
             catch (Exception ex)
@@ -92,11 +103,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 _monitor.Log($"Failed in {nameof(PerformUseAction_ExcaliburLocation_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; //run original logic
             }
-        }*/
+        }
+
+        private static int BoolToInt(bool value)
+        {
+            return value ? 1 : 0;
+        }
 
         //public class DeepWoods
-        //public DeepWoods(DeepWoods parent, int level, EnterDirection enterDir)
-        public static void Constructor_WoodsDepthChecker_Postfix(GameLocation __instance, int level, Enum enterDir)
+        //public DeepWoods(DeepWoods parent, int level, EnterDirection enterDir, bool spawnedFromObelisk)
+        public static void Constructor_WoodsDepthChecker_Postfix(GameLocation __instance, int level, Enum enterDir, bool spawnedFromObelisk)
         {
             try
             {
@@ -110,7 +126,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 lowestLevelReachedField.SetValue(10 * _archipelago.GetReceivedItemCount(WOODS_OBELISK_SIGILS));
                 var levelIndexedAt1 = level - 1;
 
-                if (levelIndexedAt1 % LEVEL_STEP != 0)
+                if (levelIndexedAt1 % LEVEL_STEP != 0 || levelIndexedAt1 == 0)
                 {
                     return;
                 }

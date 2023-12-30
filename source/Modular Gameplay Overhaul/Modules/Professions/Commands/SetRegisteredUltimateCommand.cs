@@ -74,7 +74,7 @@ internal sealed class SetRegisteredUltimateCommand : ConsoleCommand
             return;
         }
 
-        if (!Game1.player.HasProfession(ultimate.Profession))
+        if (!Game1.player.HasProfession(ultimate.ParentProfession))
         {
             Log.W("You don't have this profession.");
             return;

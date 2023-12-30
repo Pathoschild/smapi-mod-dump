@@ -3,6 +3,7 @@ from menus import (
     social_page,
     collections_page,
 )
+import logger
 
 
 def list_imported_modules():
@@ -19,5 +20,5 @@ def load_all_grammars():
     menu_modules = list_imported_modules()
     for module in menu_modules:
         grammar = module.get_grammar()
-        server.log(f"Loading grammar from module {module.__name__}")
+        logger.trace(f"Loading grammar from module {module.__name__}")
         grammar.load()

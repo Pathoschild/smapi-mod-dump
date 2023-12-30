@@ -49,7 +49,7 @@ internal sealed class SlingshotCanThisBeAttachedPatcher : HarmonyPatcher
     [HarmonyPostfix]
     private static void SlingshotCanThisBeAttachedPostfix(ref bool __result, SObject? o)
     {
-        if (!CombatModule.Config.EnableWeaponOverhaul || o is null || o.bigCraftable.Value)
+        if (!CombatModule.Config.WeaponsSlingshots.EnableOverhaul || o is null || o.bigCraftable.Value)
         {
             return;
         }

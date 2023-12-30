@@ -45,7 +45,7 @@ internal sealed class GameLocationGetGalaxySwordPatcher : HarmonyPatcher
     [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:Element should begin with upper-case letter", Justification = "Preference for inner functions.")]
     private static bool GameLocationGetGalaxySwordPrefix()
     {
-        if (!CombatModule.Config.EnableHeroQuest)
+        if (!CombatModule.Config.Quests.EnableHeroQuest)
         {
             return true; // run original logic
         }
@@ -153,10 +153,10 @@ internal sealed class GameLocationGetGalaxySwordPatcher : HarmonyPatcher
                 player.reduceActiveItemByOne();
             }
 
-            if (CombatModule.Config.IridiumBarsPerGalaxyWeapon > 0)
+            if (CombatModule.Config.Quests.IridiumBarsPerGalaxyWeapon > 0)
             {
                 player.Items.First(i => i?.ParentSheetIndex == ObjectIds.IridiumBar).Stack -=
-                    CombatModule.Config.IridiumBarsPerGalaxyWeapon;
+                    CombatModule.Config.Quests.IridiumBarsPerGalaxyWeapon;
             }
 
             player.Append(DataKeys.GalaxyArsenalObtained, chosen.Value.ToString());

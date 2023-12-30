@@ -2,8 +2,13 @@ import dragonfly as df
 from srabuilder import rules
 import server
 import title_menu, menu_utils, server, df_utils, game, container_menu, objective
+from typing import Literal
 
 TITLE = "purchaseAnimalsMenu"
+
+class PurchaseAnimalsMenu(menu_utils.BaseMenu):
+    title: Literal["purchaseAnimalsMenu"]
+    animalsToPurchase: list[menu_utils.ClickableComponent]
 
 animals = {
     "[a] chicken": 0,

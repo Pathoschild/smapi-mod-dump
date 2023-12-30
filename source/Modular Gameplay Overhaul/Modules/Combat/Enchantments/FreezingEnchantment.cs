@@ -13,10 +13,7 @@ namespace DaLion.Overhaul.Modules.Combat.Enchantments;
 #region using directives
 
 using System.Xml.Serialization;
-using DaLion.Overhaul;
-using DaLion.Overhaul.Modules;
-using DaLion.Overhaul.Modules.Combat.Events.GameLoop.UpdateTicked;
-using DaLion.Overhaul.Modules.Combat.Extensions;
+using DaLion.Overhaul.Modules.Core.Extensions;
 using StardewValley.Monsters;
 
 #endregion using directives
@@ -29,12 +26,6 @@ using StardewValley.Monsters;
 [XmlType("Mods_DaLion_FreezingEnchantment")]
 public sealed class FreezingEnchantment : BaseSlingshotEnchantment
 {
-    /// <summary>Finalizes an instance of the <see cref="FreezingEnchantment"/> class.</summary>
-    ~FreezingEnchantment()
-    {
-        EventManager.Disable<EnergizedUpdateTickedEvent>();
-    }
-
     /// <inheritdoc />
     public override string GetName()
     {

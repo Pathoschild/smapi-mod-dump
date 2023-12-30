@@ -50,7 +50,7 @@ internal sealed class RingDrawTooltipPatcher : HarmonyPatcher
             return false; // don't run original logic
         }
 
-        if (!CombatModule.Config.RebalancedRings)
+        if (!CombatModule.Config.RingsEnchantments.RebalancedRings)
         {
             return true; // run original logic
         }

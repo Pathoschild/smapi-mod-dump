@@ -19,10 +19,10 @@ namespace mouahrarasModuleCollection.Utilities
 	{
 		internal static void Load()
 		{
-			ModEntry.Helper.ConsoleCommands.Add("mmc_uninstall", $"Usage: mmc_uninstall\nUninstall the mouahrara's Module Collection mod", (_, _) => mmc_uninstall());
+			ModEntry.Helper.ConsoleCommands.Add("mmc_uninstall", $"Usage: mmc_uninstall\nUninstall the mouahrara's Module Collection mod", (_, _) => MMC_uninstall());
 		}
 
-		private static void mmc_uninstall()
+		private static void MMC_uninstall()
 		{
 			if (!Context.IsWorldReady)
 			{

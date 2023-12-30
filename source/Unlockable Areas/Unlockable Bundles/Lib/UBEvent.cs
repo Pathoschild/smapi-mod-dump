@@ -34,7 +34,7 @@ namespace Unlockable_Bundles.Lib
             Monitor = Mod.Monitor;
             Helper = Mod.Helper;
 
-            RegisterCustomCommand("ub_applyPatch", delegate { ub_applyPatch(); });
+            RegisterCommand("ub_applyPatch", delegate { ub_applyPatch(); });
         }
         public UBEvent(Unlockable unlockable, string eventString, Farmer farmerActor = null) : base(eventString, farmerActor)
         {

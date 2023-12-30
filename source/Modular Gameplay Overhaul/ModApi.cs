@@ -12,9 +12,9 @@ namespace DaLion.Overhaul;
 
 #region using directives
 
-using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Overhaul.Modules.Combat.Resonance;
 using DaLion.Overhaul.Modules.Combat.VirtualProperties;
+using DaLion.Overhaul.Modules.Core.Extensions;
 using DaLion.Overhaul.Modules.Professions;
 using DaLion.Overhaul.Modules.Professions.Events.TreasureHunt.TreasureHuntEnded;
 using DaLion.Overhaul.Modules.Professions.Events.TreasureHunt.TreasureHuntStarted;
@@ -110,12 +110,12 @@ public sealed class ModApi
     /// <param name="id">The SpaceCore skill id.</param>
     public void RegisterCustomSkillForPrestige(string id)
     {
-        if (!SCSkill.Loaded.TryGetValue(id, out var skill))
+        if (!CustomSkill.Loaded.TryGetValue(id, out var skill))
         {
             ThrowHelper.ThrowInvalidOperationException($"The custom skill {id} is not loaded.");
         }
 
-        ((SCSkill)skill).CanPrestige = true;
+        ((CustomSkill)skill).RegisterPrestige();
     }
 
     #endregion professions
@@ -533,6 +533,20 @@ public sealed class ModApi
     public ModConfig GetConfig()
     {
         return ModEntry.Config;
+    }
+
+    /// <summary>Determines whether the player can gain levels above 10.</summary>
+    /// <returns><see langword="true"/> if the Professions module is enabled with Prestige settings allowing extended levels, otherwise <see langword="false"/>.</returns>
+    public bool ArePrestigeLevelsEnabled()
+    {
+        return ProfessionsModule.ShouldEnable && ProfessionsModule.EnablePrestigeLevels;
+    }
+
+    /// <summary>Determines whether the player can reset skills to acquire multiple professions.</summary>
+    /// <returns><see langword="true"/> if the Professions module is enabled with Prestige settings allowing skill reset, otherwise <see langword="false"/>.</returns>
+    public bool AreSkillResetsEnabled()
+    {
+        return ProfessionsModule.ShouldEnable && ProfessionsModule.EnableSkillReset;
     }
 
     #endregion configs

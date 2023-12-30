@@ -25,7 +25,7 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 			);
 		}
 
-		private static bool ReceiveKeyPressPrefix(MenuWithInventory __instance, int x, int y, bool playSound = true)
+		private static bool ReceiveKeyPressPrefix(MenuWithInventory __instance, int x, int y)
 		{
 			if (!ModEntry.Config.ClintsShopGeodesAutoProcess)
 				return true;

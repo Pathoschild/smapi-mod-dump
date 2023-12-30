@@ -12,11 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Archipelago.MultiClient.Net.Models;
+using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using Object = StardewValley.Object;
+using StardewArchipelago.Stardew.NameMapping;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
@@ -50,15 +51,15 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static IModHelper _helper;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
-        private static StardewItemManager _itemManager;
+        private static CompoundNameMapper _nameMapper;
 
-        public static void Initialize(IMonitor monitor, IModHelper helper, ArchipelagoClient archipelago, LocationChecker locationChecker, StardewItemManager itemManager)
+        public static void Initialize(IMonitor monitor, IModHelper helper, ArchipelagoClient archipelago, LocationChecker locationChecker)
         {
             _monitor = monitor;
             _helper = helper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
-            _itemManager = itemManager;
+            _nameMapper = new CompoundNameMapper(archipelago.SlotData);
         }
 
         // public void checkForCraftingAchievements()
@@ -73,8 +74,9 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     {
                         continue;
                     }
+                    var recipeName = _nameMapper.GetEnglishName(recipe); // Some names are iffy
 
-                    var location = $"{CRAFTING_LOCATION_PREFIX}{recipe}";
+                    var location = $"{CRAFTING_LOCATION_PREFIX}{recipeName}";
                     _locationChecker.AddCheckedLocation(location);
                 }
                 
@@ -84,6 +86,26 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             {
                 _monitor.Log($"Failed in {nameof(CheckForCraftingAchievements_CheckCraftsanityLocation_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
+            }
+        }
+
+        // public virtual void command_addCraftingRecipe(GameLocation location, GameTime time, string[] split)
+        public static bool CommandAddCraftingRecipe_SkipLearning_Prefix(Event __instance, GameLocation location, GameTime time, string[] split)
+        {
+            try
+            {
+                if (!__instance.eventCommands[__instance.CurrentCommand].Contains("Furnace"))
+                {
+                    return true; // run original logic
+                }
+
+                ++__instance.CurrentCommand;
+                return false; // don't run original logic
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(CommandAddCraftingRecipe_SkipLearning_Prefix)}:\n{ex}", LogLevel.Error);
+                return true; // run original logic
             }
         }
 
@@ -148,6 +170,25 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
+        // public static Dictionary<ISalable, int[]> getDesertMerchantTradeStock(Farmer who)
+        public static void GetDesertMerchantTradeStock_PurchasableRecipeChecks_Postfix(Farmer who, ref Dictionary<ISalable, int[]> __result)
+        {
+            try
+            {
+                RemoveRecipesFromStock(__result);
+
+                var activeHints = _archipelago.GetMyActiveHints();
+                AddTradeRecipeCheckToStock(__result, "Warp Totem: Desert", 337, 10, activeHints);
+
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(GetDesertMerchantTradeStock_PurchasableRecipeChecks_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
+            }
+        }
+
         private static void RemoveRecipesFromStock(Dictionary<ISalable, int[]> stock)
         {
             foreach (var salable in stock.Keys.ToArray())
@@ -173,6 +214,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         private static void AddRecipeCheckToStock(Dictionary<ISalable, int[]> stock, string recipeName, int price, Hint[] activeHints)
         {
+            AddRecipeCheckToStock(stock, recipeName, new[] { price, 1 }, activeHints);
+        }
+
+        private static void AddTradeRecipeCheckToStock(Dictionary<ISalable, int[]> stock, string recipeName, int tradeItem, int tradeAmount, Hint[] activeHints)
+        {
+            AddRecipeCheckToStock(stock, recipeName, new[] { 0, 1, tradeItem, tradeAmount }, activeHints);
+        }
+
+        private static void AddRecipeCheckToStock(Dictionary<ISalable, int[]> stock, string recipeName, int[] price, Hint[] activeHints)
+        {
             var apLocation = $"{recipeName} Recipe";
             if (!_locationChecker.IsLocationMissingAndExists(apLocation))
             {
@@ -180,7 +231,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
 
             var purchasableCheck = new PurchaseableArchipelagoLocation(recipeName, apLocation, _helper, _locationChecker, _archipelago, activeHints);
-            stock.Add(purchasableCheck, new[] { price, 1 });
+            stock.Add(purchasableCheck, price);
         }
     }
 }

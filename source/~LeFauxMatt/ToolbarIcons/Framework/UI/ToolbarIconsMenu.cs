@@ -40,7 +40,7 @@ internal sealed class ToolbarIconsMenu : IClickableMenu
     {
         this.Icons = icons;
         var textBounds = components.Values.Select(component => Game1.dialogueFont.MeasureString(component.hoverText))
-                                   .ToList();
+            .ToList();
         this.TextHeight = textBounds.Max(textBound => textBound.Y);
         this.MaxItems = (int)(this.height / this.TextHeight);
         foreach (var icon in this.Icons)
@@ -134,8 +134,8 @@ internal sealed class ToolbarIconsMenu : IClickableMenu
 
             this._index = value;
             this.ScrollBar.bounds.Y = this.ScrollBarRunner.Top
-                                    + (int)((this.ScrollBarRunner.Height - this.ScrollBar.bounds.Height)
-                                          * ((float)this._index / (this.Components.Count - this.MaxItems)));
+                + (int)((this.ScrollBarRunner.Height - this.ScrollBar.bounds.Height)
+                    * ((float)this._index / (this.Components.Count - this.MaxItems)));
             for (var index = 0; index < this.Components.Count; ++index)
             {
                 this.Components[index].bounds.Y =
@@ -271,7 +271,7 @@ internal sealed class ToolbarIconsMenu : IClickableMenu
 
         var oldY = this.ScrollBar.bounds.Y;
         var percentage = (y - this.ScrollBarRunner.Y)
-                       / (float)(this.ScrollBarRunner.Height - this.ScrollBar.bounds.Height);
+            / (float)(this.ScrollBarRunner.Height - this.ScrollBar.bounds.Height);
         this.Index = (int)((this.Components.Count - this.MaxItems) * percentage);
         if (oldY != this.ScrollBar.bounds.Y)
         {
@@ -319,8 +319,8 @@ internal sealed class ToolbarIconsMenu : IClickableMenu
             this.HoverText = I18n.Config_MoveUp_Tooltip();
         }
         else if (x >= this.xPositionOnScreen + Game1.tileSize / 2 + 4
-              && x <= this.xPositionOnScreen + Game1.tileSize / 2 + 36
-              && index < this.Components.Count - 1)
+            && x <= this.xPositionOnScreen + Game1.tileSize / 2 + 36
+            && index < this.Components.Count - 1)
         {
             this.HoverText = I18n.Config_MoveDown_Tooltip();
         }
@@ -403,8 +403,8 @@ internal sealed class ToolbarIconsMenu : IClickableMenu
             this.Components[index - 1] = currentComponent;
         }
         else if (x >= this.xPositionOnScreen + Game1.tileSize / 2 + 4
-              && x <= this.xPositionOnScreen + Game1.tileSize / 2 + 36
-              && index < this.Components.Count - 1)
+            && x <= this.xPositionOnScreen + Game1.tileSize / 2 + 36
+            && index < this.Components.Count - 1)
         {
             // Move Down
             var nextIcon = this.Icons.First(

@@ -99,8 +99,8 @@ internal sealed class ModPatches
         var slotNumber = int.Parse(component.name);
 
         if (__result is SObject obj
-         && Integrations.StackQuality.IsLoaded
-         && Integrations.StackQuality.Api.SplitStacks(obj, out var items))
+            && Integrations.StackQuality.IsLoaded
+            && Integrations.StackQuality.Api.SplitStacks(obj, out var items))
         {
             foreach (var item in items)
             {
@@ -151,8 +151,8 @@ internal sealed class ModPatches
         var slotNumber = int.Parse(component.name);
 
         if (__result is SObject obj
-         && Integrations.StackQuality.IsLoaded
-         && Integrations.StackQuality.Api.SplitStacks(obj, out var items))
+            && Integrations.StackQuality.IsLoaded
+            && Integrations.StackQuality.Api.SplitStacks(obj, out var items))
         {
             foreach (var item in items)
             {

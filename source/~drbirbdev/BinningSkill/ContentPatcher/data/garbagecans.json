@@ -31,7 +31,7 @@
                         }
                     ],
                     "CustomFields": {
-                        "drbirbdev.BinningSkill_AddToMap": "Maps/RailRoad 5 56 Default"
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Railroad 5 56 Default"
                     }
                 },
                 "drbirbdev.BinningSkill_Town_Fountain": {
@@ -215,13 +215,13 @@
                 "drbirbdev.BinningSkill_Backwoods_Hidden": {
                     "Items": [
                         {
-                            "Id": "Sweet Gem Berry",
+                            "Id": "SweetGemBerry",
                             "ItemId": "(O)417",
                             "Condition": "drbirbdev.BinningSkill_RANDOM 0.01",
-                            "IsDoubleMegaSuccess": true
+                            "IsMegaSuccess": true
                         },
                         {
-                            "Id": "Base Season Item",
+                            "Id": "BaseSeasonItem",
                             "ItemId": "RANDOM_BASE_SEASON_ITEM",
                             "Condition": "drbirbdev.BinningSkill_RANDOM 0.1 @addDailyLuck"
                         }
@@ -233,7 +233,7 @@
                 "drbirbdev.BinningSkill_Desert_Sandy": {
                     "Items": [
                         {
-                            "Id": "Random Desert Item",
+                            "Id": "RandomDesertItem",
                             "RandomItemId": [
                                 "(O)88",
                                 "(O)90",
@@ -242,7 +242,7 @@
                             "Condition": "drbirbdev.BinningSkill_RANDOM 0.1 @addDailyLuck"
                         },
                         {
-                            "Id": "Magic Rock Candy",
+                            "Id": "MagicRockCandy",
                             "ItemId": "(O)279",
                             "Condition": "drbirbdev.BinningSkill_RANDOM 0.001",
                             "IsDoubleMegaSuccess": true
@@ -255,13 +255,32 @@
                 "drbirbdev.BinningSkill_Forest_Wizard": {
                     "Items": [
                         {
-                            "Id": "Wizard Gift",
+                            "Id": "WizardGift",
                             "RandomItemId": [
                                 "(O)768",
                                 "(O)769",
                                 "(O)422"
                             ],
                             "Condition": "drbirbdev.BinningSkill_RANDOM 0.1"
+                        },
+                        {
+                            "Id": "MagicalItem",
+                            "RandomItemId": [
+                                "(O)852",
+                                "(O)917",
+                                "(O)872"
+                            ],
+                            "IsMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01"
+                        },
+                        {
+                            "Id": "LocalWarpTotem",
+                            "RandomItemId": [
+                                "(O)688",
+                                "(O)689",
+                                "(O)690"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.05"
                         }
                     ],
                     "CustomFields": {
@@ -286,8 +305,12 @@
                     }
                 },
                 "drbirbdev.BinningSkill_Town_JojaNorth": {
+                    "BaseChance": 1.0,
                     "Items": [
-
+                        {
+                            "Id": "JojaCola",
+                            "ItemId": "(O)167"
+                        }
                     ],
                     "CustomFields": {
                         "drbirbdev.BinningSkill_AddToMap": "Maps/Town 102 41 Copper"
@@ -295,6 +318,24 @@
                 },
                 "drbirbdev.BinningSkill_BugLand": {
                     "Items": [
+                        {
+                            "Id": "BugMeat",
+                            "ItemId": "(O)684",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.3 @addAllLuck",
+                            "MaxStack": 4,
+                            "CreateMultipleDebris": true
+                        },
+                        {
+                            "Id": "BugSteak",
+                            "ItemId": "(O)874",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.1 @addAllLuck"
+                        },
+                        {
+                            "Id": "Slimejack",
+                            "ItemId": "(O)796",
+                            "IsMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @multAllLuck"
+                        }
                     ],
                     "CustomFields": {
                         "drbirbdev.BinningSkill_AddToMap": "Maps/BugLand 48 46 Iron"
@@ -302,6 +343,18 @@
                 },
                 "drbirbdev.BinningSkill_IslandN_FieldResearchStation": {
                     "Items": [
+                        {
+                            "Id": "RandomDonation",
+                            "ItemId": "RANDOM_ITEMS @has_id_in_base_range 820 828",
+                            "IsMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01"
+                        },
+                        {
+                            "Id": "OstrichEggIncubator",
+                            "ItemId": "(BC)254",
+                            "IsDoubleMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.001"
+                        }
                     ],
                     "CustomFields": {
                         "drbirbdev.BinningSkill_AddToMap": "Maps/Island_N 49 48 Iron"
@@ -309,6 +362,18 @@
                 },
                 "drbirbdev.BinningSkill_IslandSouthEastCave": {
                     "Items": [
+                        {
+                            "Id": "TreasureChest",
+                            "ItemId": "(O)166",
+                            "IsDoubleMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.003"
+                        },
+                        {
+                            "Id": "FishingTackle",
+                            "ItemId": "RANDOM_ITEMS @has_category category_tackle",
+                            "IsMegaSuccess": true,
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @multAllLuck"
+                        }
                     ],
                     "CustomFields": {
                         "drbirbdev.BinningSkill_AddToMap": "Maps/IslandSouthEastCave 34 8 Iron"
@@ -316,6 +381,9 @@
                 },
                 "drbirbdev.BinningSkill_WitchSwamp": {
                     "Items": [
+                        {
+
+                        }
                     ],
                     "CustomFields": {
                         "drbirbdev.BinningSkill_AddToMap": "Maps/WitchSwamp 22 20 Iron"
@@ -436,7 +504,7 @@
                     "Items": [
                     ],
                     "CustomFields": {
-                        "drbirbdev.BinningSkill_AddToMap": "Maps/Railroad 31 26 Prismatic"
+                        "drbirbdev.BinningSkill_AddToMap": "Maps/Railroad 31 25 Prismatic"
                     }
                 }
             }

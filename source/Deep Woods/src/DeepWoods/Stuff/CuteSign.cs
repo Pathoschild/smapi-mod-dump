@@ -24,27 +24,23 @@ namespace DeepWoodsMod.Stuff
     public class CuteSign : LargeTerrainFeature
     {
         private NetInt row = new NetInt(0);
-        private NetInt textIndex = new NetInt(0);
 
         public CuteSign()
            : base(false)
         {
             InitNetFields();
             this.row.Value = new Random().Next(0, 4);
-            this.textIndex.Value = new Random().Next(1, I18N.SignTexts.textIDs.Length);
         }
 
-        public CuteSign(Vector2 tileLocation, int? textIndex = null)
+        public CuteSign(Vector2 tileLocation)
             : this()
         {
             this.tilePosition.Value = tileLocation;
-            this.textIndex.Value = textIndex ?? new Random().Next(1, I18N.SignTexts.textIDs.Length);
         }
 
         private void InitNetFields()
         {
             this.NetFields.AddFields(this.row);
-            this.NetFields.AddFields(this.textIndex);
         }
 
         public override bool isActionable()
@@ -64,11 +60,9 @@ namespace DeepWoodsMod.Stuff
 
         public override bool performUseAction(Vector2 tileLocation, GameLocation location)
         {
-            // TODO: Signs should actually mark interesting/dangerous/etc locations and paths
-
-            DeepWoodsQuestMenu.OpenQuestMenu(I18N.SignTexts.Get(textIndex.Value), new Response[1]
+            DeepWoodsQuestMenu.OpenQuestMenu(I18N.EntrySignMessage, new Response[1]
             {
-                new Response("No", I18N.MessageBoxOK).SetHotKey(Keys.Escape)
+                new Response("No", I18N.MessageBoxClose).SetHotKey(Keys.Escape)
             });
 
             return true;

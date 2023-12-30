@@ -16,20 +16,6 @@
         "StartTime": 600,
         "EndTime": 2600
       }
-    },
-    {
-      "Name": "Unnamed Rule 2",
-      "ZoomLevel": 0.25,
-      "Directory": "Default",
-      "FileName": "Default",
-      "Trigger": {
-        "Days": "Daily",
-        "Weather": "Any",
-        "Location": "Farm",
-        "Key": "None",
-        "StartTime": 600,
-        "EndTime": 2600
-      }
     }
   ]
 }

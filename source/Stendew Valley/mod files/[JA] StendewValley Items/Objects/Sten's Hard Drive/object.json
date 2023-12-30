@@ -1,0 +1,19 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HauntedPineapple/Stendew-Valley
+**
+*************************************************/
+
+{
+    "Name": "Sten's Hard Drive", //The name you would like your object to have, this should be identical to the subfolder name.
+    "Description": "The precious hard drive where Sten keeps his Skyrim mods.", 
+    "Category": "Junk", 
+    "CategoryTextOverride": "Misc",
+    "Edibility": -300, 
+    "CanSell": false,
+    "Recipe": null
+}

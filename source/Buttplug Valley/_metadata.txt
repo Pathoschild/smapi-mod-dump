@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/DryIcedTea/Buttplug-Valley
+   Git: https://github.com/DryIcedTea/Buttplug-Valley.git
+
+mods:
+   Buttplug Valley
+
+latest commit:
+   commit b329e1c7e79d8623ebab00f6c796716045e18e0a
+   Author: TheSaltyGaming <38183890+TheSaltyGaming@users.noreply.github.com>
+   Date:   Fri Sep 22 15:02:14 2023 +0200
+   
+       README
+   

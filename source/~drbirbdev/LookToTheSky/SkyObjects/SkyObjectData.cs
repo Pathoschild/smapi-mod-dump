@@ -9,7 +9,6 @@
 *************************************************/
 
 using System.Collections.Generic;
-using BirbCore.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
@@ -23,7 +22,6 @@ public class SkyObjectData
     public string OnExitBottom { get; set; }
     public string OnExitSide { get; set; }
     public string OnExit { get; set; }
-
 
     public float AccelerationX { get; set; } = 0f;
     public float AccelerationY { get; set; } = 0f;
@@ -80,54 +78,56 @@ public class SkyObjectData
 
     public TemporaryAnimatedSprite GetSprite()
     {
-        TemporaryAnimatedSprite sprite = new TemporaryAnimatedSprite();
-        sprite.acceleration = new Vector2(this.AccelerationX, this.AccelerationY);
-        sprite.accelerationChange = new Vector2(this.AccelerationChangeX, this.AccelerationChangeY);
-        sprite.alpha = this.Alpha;
-        sprite.alphaFade = this.AlphaFade;
-        sprite.alphaFadeFade = this.AlphaFadeFade;
-        sprite.animationLength = this.AnimationLength;
-        sprite.color = Utility.StringToColor(this.Color) ?? Microsoft.Xna.Framework.Color.White;
-        sprite.delayBeforeAnimationStart = this.DelayBeforeAnimationStart;
-        sprite.endFunction = null; // TODO: end function
-        sprite.endSound = this.EndSound;
-        sprite.extraInfoForEndBehavior = 0;
-        sprite.flash = this.Flash;
-        sprite.flicker = this.Flicker;
-        sprite.holdLastFrame = this.HoldLastFrame;
-        sprite.interval = this.Interval;
-        sprite.motion = new Vector2(this.MotionX, this.MotionY);
-        sprite.paused = this.Paused;
-        sprite.pingPong = this.PingPong;
-        sprite.pingPongMotion = this.PingPongMotion;
-        sprite.pulse = this.Pulse;
-        sprite.pulseAmount = this.PulseAmount;
-        sprite.pulseTime = this.PulseTime;
-        sprite.reachedStopCoordinate = null; // TODO: endfunction
-        sprite.rotation = this.Rotation;
-        sprite.rotationChange = this.RotationChange;
-        sprite.scale = this.Scale;
-        sprite.scaleChange = this.ScaleChange;
-        sprite.scaleChangeChange = this.ScaleChangeChange;
-        sprite.shakeIntensity = this.ShakeIntensity;
-        sprite.shakeIntensityChange = this.ShakeIntensityChange;
-        sprite.sourceRect = new Rectangle(this.SourceRectX, this.SourceRectY, this.SourceRectWidth, this.SourceRectHeight);
-        sprite.sourceRectStartingPos = new Vector2(this.SourceRectStartingX, this.SourceRectStartingY);
-        sprite.startSound = this.StartSound;
-        sprite.stopAcceleratingWhenVelocityIsZero = this.StopAcceleratingWhenVelocityIsZero;
-        sprite.texture = ModEntry.Instance.Helper.GameContent.Load<Texture2D>(this.TextureName);
-        sprite.textureName = this.TextureName;
-        sprite.ticksBeforeAnimationStart = this.TicksBeforeAnimationStart;
-        sprite.totalNumberOfLoops = this.TotalNumberOfLoops;
-        sprite.verticalFlipped = this.VerticalFlipped;
-        sprite.xPeriodic = this.XPeriodic;
-        sprite.xPeriodicLoopTime = this.XPeriodicLoopTime;
-        sprite.xPeriodicRange = this.XPeriodicRange;
-        sprite.xStopCoordinate = this.XStopCoordinate;
-        sprite.yPeriodic = this.YPeriodic;
-        sprite.yPeriodicLoopTime = this.YPeriodicLoopTime;
-        sprite.yPeriodicRange = this.YPeriodicRange;
-        sprite.yStopCoordinate = this.YStopCoordinate;
+        TemporaryAnimatedSprite sprite = new TemporaryAnimatedSprite
+        {
+            acceleration = new Vector2(this.AccelerationX, this.AccelerationY),
+            accelerationChange = new Vector2(this.AccelerationChangeX, this.AccelerationChangeY),
+            alpha = this.Alpha,
+            alphaFade = this.AlphaFade,
+            alphaFadeFade = this.AlphaFadeFade,
+            animationLength = this.AnimationLength,
+            color = Utility.StringToColor(this.Color) ?? Microsoft.Xna.Framework.Color.White,
+            delayBeforeAnimationStart = this.DelayBeforeAnimationStart,
+            endFunction = null, // TODO: end function
+            endSound = this.EndSound,
+            extraInfoForEndBehavior = 0,
+            flash = this.Flash,
+            flicker = this.Flicker,
+            holdLastFrame = this.HoldLastFrame,
+            interval = this.Interval,
+            motion = new Vector2(this.MotionX, this.MotionY),
+            paused = this.Paused,
+            pingPong = this.PingPong,
+            pingPongMotion = this.PingPongMotion,
+            pulse = this.Pulse,
+            pulseAmount = this.PulseAmount,
+            pulseTime = this.PulseTime,
+            reachedStopCoordinate = null, // TODO: endfunction
+            rotation = this.Rotation,
+            rotationChange = this.RotationChange,
+            scale = this.Scale,
+            scaleChange = this.ScaleChange,
+            scaleChangeChange = this.ScaleChangeChange,
+            shakeIntensity = this.ShakeIntensity,
+            shakeIntensityChange = this.ShakeIntensityChange,
+            sourceRect = new Rectangle(this.SourceRectX, this.SourceRectY, this.SourceRectWidth, this.SourceRectHeight),
+            sourceRectStartingPos = new Vector2(this.SourceRectStartingX, this.SourceRectStartingY),
+            startSound = this.StartSound,
+            stopAcceleratingWhenVelocityIsZero = this.StopAcceleratingWhenVelocityIsZero,
+            texture = ModEntry.Instance.Helper.GameContent.Load<Texture2D>(this.TextureName),
+            textureName = this.TextureName,
+            ticksBeforeAnimationStart = this.TicksBeforeAnimationStart,
+            totalNumberOfLoops = this.TotalNumberOfLoops,
+            verticalFlipped = this.VerticalFlipped,
+            xPeriodic = this.XPeriodic,
+            xPeriodicLoopTime = this.XPeriodicLoopTime,
+            xPeriodicRange = this.XPeriodicRange,
+            xStopCoordinate = this.XStopCoordinate,
+            yPeriodic = this.YPeriodic,
+            yPeriodicLoopTime = this.YPeriodicLoopTime,
+            yPeriodicRange = this.YPeriodicRange,
+            yStopCoordinate = this.YStopCoordinate
+        };
         return sprite;
     }
 

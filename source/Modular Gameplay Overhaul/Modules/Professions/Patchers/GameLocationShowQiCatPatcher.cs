@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using DaLion.Overhaul.Modules.Professions.Configs;
 using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -51,13 +52,7 @@ internal sealed class GameLocationShowQiCatPatcher : HarmonyPatcher
                     {
                         new CodeInstruction(
                             OpCodes.Call,
-                            typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
-                        new CodeInstruction(
-                            OpCodes.Callvirt,
-                            typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Professions))),
-                        new CodeInstruction(
-                            OpCodes.Callvirt,
-                            typeof(ProfessionConfig).RequirePropertyGetter(nameof(ProfessionConfig.EnablePrestige))),
+                            typeof(ProfessionsModule).RequirePropertyGetter(nameof(ProfessionsModule.EnablePrestige))),
                         new CodeInstruction(OpCodes.Brfalse_S, vanilla),
                         new CodeInstruction(
                             OpCodes.Call,
@@ -67,8 +62,11 @@ internal sealed class GameLocationShowQiCatPatcher : HarmonyPatcher
                             typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Professions))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
-                            typeof(ProfessionConfig).RequirePropertyGetter(
-                                nameof(ProfessionConfig.ExtendedPerfectionRequirement))),
+                            typeof(ProfessionConfig).RequirePropertyGetter(nameof(ProfessionConfig.Prestige))),
+                        new CodeInstruction(
+                            OpCodes.Callvirt,
+                            typeof(PrestigeConfig).RequirePropertyGetter(
+                                nameof(PrestigeConfig.IsPerfectionRequirement))),
                         new CodeInstruction(OpCodes.Brfalse_S, vanilla),
                         new CodeInstruction(OpCodes.Ldstr, "/5^"),
                         new CodeInstruction(OpCodes.Br_S, resumeExecution),

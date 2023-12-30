@@ -35,4 +35,4 @@ Thanks to Nurio from Stardew Valley Community Forums for grammatical and phrasin
 
 # Legal:
 * You may use this code without explicit permission as long as you credit the original creator (Kathryn Hazuka)
-* If you would like to add this mod to a bundle, please contact me first through discord: GosuKitten#6039, and credit the original creator (Kathryn Hazuka)
+* If you would like to add this mod to a bundle, please contact me first and credit the original creator (Kathryn Hazuka)

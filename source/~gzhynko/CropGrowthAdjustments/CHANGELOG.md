@@ -8,6 +8,10 @@ for queries and analysis.**
 
 # Version history for CropGrowthAdjustments
 
+## 1.2.0
+Released December 30, 2023.
+- Reworked the way special sprites are handled, removing the hard limit on the number of active sprite replacements.
+
 ## 1.1.1
 Released November 9, 2023.
 - Fixed special sprites not showing up properly when multiple sprites are defined.

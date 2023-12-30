@@ -220,7 +220,7 @@ internal sealed class BetterCrafting : Feature
         bool playSound)
     {
         if (___cooking
-         || !BetterCrafting.TryCrafting(__instance.pagesOfCraftingRecipes[___currentCraftingPage][c], ___heldItem))
+            || !BetterCrafting.TryCrafting(__instance.pagesOfCraftingRecipes[___currentCraftingPage][c], ___heldItem))
         {
             return true;
         }
@@ -274,7 +274,7 @@ internal sealed class BetterCrafting : Feature
     private static void OnCraftingStoragesLoading(object? sender, CraftingStoragesLoadingEventArgs e)
     {
         if (!BetterCrafting.InWorkbench
-         || BetterCrafting.Config.CraftFromWorkbench is FeatureOptionRange.Default or FeatureOptionRange.Disabled)
+            || BetterCrafting.Config.CraftFromWorkbench is FeatureOptionRange.Default or FeatureOptionRange.Disabled)
         {
             return;
         }
@@ -284,12 +284,12 @@ internal sealed class BetterCrafting : Feature
         foreach (var storage in Storages.All)
         {
             if (storage.CraftFromChest is FeatureOptionRange.Disabled or FeatureOptionRange.Default
-             || storage.CraftFromChestDisableLocations.Contains(Game1.player.currentLocation.Name)
-             || (storage.CraftFromChestDisableLocations.Contains("UndergroundMine")
-              && Game1.player.currentLocation is MineShaft mineShaft
-              && mineShaft.Name.StartsWith("UndergroundMine"))
-             || storage is not { Data: Storage { Source: { } } storageObject }
-             || !BetterCrafting.Config.CraftFromWorkbench.WithinRangeOfPlayer(
+                || storage.CraftFromChestDisableLocations.Contains(Game1.player.currentLocation.Name)
+                || (storage.CraftFromChestDisableLocations.Contains("UndergroundMine")
+                    && Game1.player.currentLocation is MineShaft mineShaft
+                    && mineShaft.Name.StartsWith("UndergroundMine"))
+                || storage is not { Data: Storage { Source: { } } storageObject }
+                || !BetterCrafting.Config.CraftFromWorkbench.WithinRangeOfPlayer(
                     BetterCrafting.Config.CraftFromWorkbenchDistance,
                     storageObject.Location,
                     storageObject.Position))
@@ -306,8 +306,8 @@ internal sealed class BetterCrafting : Feature
     private static void OnMenuChanged(object? sender, MenuChangedEventArgs e)
     {
         if (e.OldMenu is not (CraftingPage or GameMenu)
-         && (!Integrations.BetterCrafting.IsLoaded
-          || e.OldMenu?.GetType() != Integrations.BetterCrafting.Api.GetMenuType()))
+            && (!Integrations.BetterCrafting.IsLoaded
+                || e.OldMenu?.GetType() != Integrations.BetterCrafting.Api.GetMenuType()))
         {
             return;
         }
@@ -315,8 +315,8 @@ internal sealed class BetterCrafting : Feature
         foreach (var storage in BetterCrafting.EligibleStorages)
         {
             if (storage is not { Data: Storage storageObject }
-             || storageObject.Mutex is null
-             || !storageObject.Mutex.IsLockHeld())
+                || storageObject.Mutex is null
+                || !storageObject.Mutex.IsLockHeld())
             {
                 continue;
             }
@@ -361,8 +361,8 @@ internal sealed class BetterCrafting : Feature
         foreach (var storage in BetterCrafting.MaterialStorages)
         {
             if (storage is not { Data: Storage storageObject }
-             || storageObject.Mutex is null
-             || !storageObject.Mutex.IsLockHeld())
+                || storageObject.Mutex is null
+                || !storageObject.Mutex.IsLockHeld())
             {
                 return;
             }
@@ -381,8 +381,8 @@ internal sealed class BetterCrafting : Feature
                 {
                     return item is SObject { bigCraftable.Value: false } obj
                         && (item.ParentSheetIndex == id
-                         || item.Category == id
-                         || CraftingRecipe.isThereSpecialIngredientRule(obj, id));
+                            || item.Category == id
+                            || CraftingRecipe.isThereSpecialIngredientRule(obj, id));
                 }
 
                 var required = quantity * amount;
@@ -474,8 +474,8 @@ internal sealed class BetterCrafting : Feature
         else
         {
             if (!heldItem.Name.Equals(crafted.Name)
-             || !heldItem.getOne().canStackWith(crafted.getOne())
-             || heldItem.Stack + recipe.numberProducedPerCraft - 1 >= heldItem.maximumStackSize())
+                || !heldItem.getOne().canStackWith(crafted.getOne())
+                || heldItem.Stack + recipe.numberProducedPerCraft - 1 >= heldItem.maximumStackSize())
             {
                 return;
             }
@@ -528,14 +528,14 @@ internal sealed class BetterCrafting : Feature
 
         BetterCrafting.MaterialStorages.Clear();
         var amount = BetterCrafting.Instance._helper.Input.IsDown(SButton.LeftShift)
-                  || BetterCrafting.Instance._helper.Input.IsDown(SButton.RightShift)
-            ? 5
-            : 1;
+            || BetterCrafting.Instance._helper.Input.IsDown(SButton.RightShift)
+                ? 5
+                : 1;
         var crafted = recipe.createItem();
         if (heldItem is not null
-         && (!heldItem.Name.Equals(crafted.Name)
-          || !heldItem.getOne().canStackWith(crafted.getOne())
-          || heldItem.Stack + recipe.numberProducedPerCraft * amount > heldItem.maximumStackSize()))
+            && (!heldItem.Name.Equals(crafted.Name)
+                || !heldItem.getOne().canStackWith(crafted.getOne())
+                || heldItem.Stack + recipe.numberProducedPerCraft * amount > heldItem.maximumStackSize()))
         {
             return false;
         }
@@ -546,8 +546,8 @@ internal sealed class BetterCrafting : Feature
             {
                 return item is SObject { bigCraftable.Value: false } obj
                     && (item.ParentSheetIndex == id
-                     || item.Category == id
-                     || CraftingRecipe.isThereSpecialIngredientRule(obj, id));
+                        || item.Category == id
+                        || CraftingRecipe.isThereSpecialIngredientRule(obj, id));
             }
 
             var required = quantity * amount;
@@ -615,8 +615,8 @@ internal sealed class BetterCrafting : Feature
     private static bool Workbench_checkForAction_prefix(bool justCheckingForActivity)
     {
         if (justCheckingForActivity
-         || BetterCrafting.Instance._config.CraftFromWorkbench is (FeatureOptionRange.Disabled
-                                                                   or FeatureOptionRange.Default))
+            || BetterCrafting.Instance._config.CraftFromWorkbench is (FeatureOptionRange.Disabled
+                or FeatureOptionRange.Default))
         {
             return true;
         }

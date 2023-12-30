@@ -9,6 +9,8 @@
 *************************************************/
 
 using System.Collections.Generic;
+using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants;
 using StardewArchipelago.Stardew;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
@@ -19,19 +21,19 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
 
         public Dictionary<string, Dictionary<StardewObject, int>> GrabberItems { get; private set; }
 
-        public VillagerGrabber(StardewItemManager itemManager)
+        public VillagerGrabber(ArchipelagoClient archipelago, StardewItemManager itemManager)
         {
             _itemManager = itemManager;
-            InitializeGrabberItems();
+            InitializeGrabberItems(archipelago);
         }
 
-        private void InitializeGrabberItems()
+        private void InitializeGrabberItems(ArchipelagoClient archipelago)
         {
             GrabberItems = new Dictionary<string, Dictionary<StardewObject, int>>();
 
             AddGrabberItem("Abigail", new[] { "Amethyst", "Pumpkin" });
             AddGrabberItem("Alex", new[] { "Complete Breakfast", "Egg", "Egg (Brown)" });
-            AddGrabberItem("Caroline", new[] { "Cauliflower", "Potato", "Parsnip" });
+            AddGrabberItem("Caroline", new[] { "Cauliflower", "Potato", "Parsnip", "Tea Set" });
             AddGrabberItem("Clint", new[] { "Copper Bar", "Iron Bar", "Gold Bar" });
             AddGrabberItem("Demetrius", new[] { "Nautilus Shell", "Rainbow Shell", "Bream", "Amethyst" });
             AddGrabberItem("Dwarf", new[] { "Omni Geode", "Dwarf Scroll I", "Dwarf Scroll II", "Dwarf Scroll III", "Dwarf Scroll IV" });
@@ -69,6 +71,46 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
             AddGrabberItem("Willy", new[] { "Magic Bait" });
             AddGrabberItem("Willy", new[] { "Trout Soup", "Chub", "Carp" });
             AddGrabberItem("Wizard", new[] { "Purple Mushroom", "Fire Quartz", "Frozen Tear", "Jade" });
+
+            InitializeModGrabberItems(archipelago);
+        }
+
+        private void InitializeModGrabberItems(ArchipelagoClient archipelago)
+        {
+            InitializeSVEGrabberItems(archipelago);
+            InitializeJunaGrabberItems(archipelago);
+        }
+
+        private void InitializeSVEGrabberItems(ArchipelagoClient archipelago)
+        {
+            if (!archipelago.SlotData.Mods.HasMod(ModNames.SVE))
+            {
+                return;
+            }
+
+            AddGrabberItem("Andy", new[] { "Beer", "Mead", "Pale Ale", "Farmer's Lunch", "Butterfish", "Blackberry Cobbler" });
+            AddGrabberItem("Apples", new[] { "Starfruit" });
+            AddGrabberItem("Claire", new[] { "Green Tea", "Energy Tonic", "Sunflower", "Bruschetta", "Apricot", "Ocean Stone", "Glazed Butterfish" });
+            AddGrabberItem("Gunther", new[] { "Bean Hotpot", "Petrified Slime", "Salmon Dinner", "Elvish Jewelry", "Ornamental Fan", "Dinosaur Egg", "Rare Disc", "Ancient Sword", "Dwarvish Helm", "Dwarf Gadget", "Star Shards" });
+            AddGrabberItem("Lance", new[] { "Aged Blue Moon Wine", "Daggerfish", "Galaxy Soul", "Gemfish", "Golden Pumpkin", "Green Mushroom", "Monster Mushroom", "Swirl Stone", "Torpedo Trout", "Tropical Curry", "Void Shard", "Ornate Treasure Chest" });
+            AddGrabberItem("Martin", new[] { "Juice", "Ice Cream", "Big Bark Burger" });
+            AddGrabberItem("Morgan", new[] { "Iridium Bar", "Void Egg", "Void Mayonnaise", "Frog", "Kittyfish" });
+            AddGrabberItem("Morris", new[] { "Lobster Bisque", "Chowder", "Truffle Oil", "Star Shards", "Aged Blue Moon Wine" });
+            AddGrabberItem("Olivia", new[] { "Wine", "Chowder", "Chocolate Cake", "Blue Moon Wine", "Aged Blue Moon Wine" });
+            AddGrabberItem("Scarlett", new[] { "Goat Cheese", "Duck Feather", "Cherry", "Maple Syrup", "Honey", "Chocolate Cake", "Pink Cake", "Jade", "Glazed Yams" });
+            AddGrabberItem("Sophia", new[] { "Fairy Rose", "Fairy Stone", "Grampleton Orange Chicken", "Puppyfish", "Wine", "Blue Moon Wine", "Grape", "Aged Blue Moon Wine" });
+            AddGrabberItem("Susan", new[] { "Pancakes", "Chocolate Cake", "Pink Cake", "Cookie", "Pumpkin Pie", "Rhubarb Pie", "Blueberry Tart", "Ice Cream", "Blackberry Cobbler", "Cranberry Candy", "Red Plate" });
+            AddGrabberItem("Victor", new[] { "Spaghetti", "Battery Pack", "Duck Feather", "Blue Moon Wine", "Aged Blue Moon Wine", "Butterfish" });
+        }
+
+        private void InitializeJunaGrabberItems(ArchipelagoClient archipelago)
+        {
+            if (!archipelago.SlotData.Mods.HasMod(ModNames.JUNA))
+            {
+                return;
+            }
+
+            AddGrabberItem("Juna", new[] { "Ancient Doll", "Cherry", "Dinosaur Egg", "Elvish Jewelry", "Joja Cola", "Prehistoric Scapula" });
         }
 
         private void AddGrabberItem(string npc, IEnumerable<string> items, int amount = 1)

@@ -34,7 +34,7 @@ internal sealed class FarmerGetProfessionForSkillPatcher : HarmonyPatcher
     private static bool FarmerGetProfessionForSkillPrefix(
         Farmer __instance, ref int __result, int skillType, int skillLevel)
     {
-        if (!ProfessionsModule.Config.EnablePrestige || skillType == Farmer.luckSkill)
+        if (!ProfessionsModule.EnablePrestige || skillType == Farmer.luckSkill)
         {
             return true; // run original logic
         }
@@ -61,7 +61,7 @@ internal sealed class FarmerGetProfessionForSkillPatcher : HarmonyPatcher
         __result = skillLevel switch
         {
             5 => tierOneIndex,
-            10 => __instance.GetCurrentProfessionForBranch(tierOneProfession),
+            10 => __instance.GetCurrentLeafProfessionForBranch(tierOneProfession),
             _ => -1,
         };
 

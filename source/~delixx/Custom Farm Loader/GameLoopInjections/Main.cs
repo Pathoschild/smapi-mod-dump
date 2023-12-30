@@ -50,6 +50,8 @@ namespace Custom_Farm_Loader.GameLoopInjections
             Helper.Events.GameLoop.DayStarted += DayStarted;
         }
 
+        //Trying to run after CP patches
+        [EventPriority(EventPriority.Low)]
         public static void DayStarted(object sender, DayStartedEventArgs e)
         {
             if (!CustomFarm.IsCFLMapSelected())

@@ -15,6 +15,7 @@ namespace DaLion.Overhaul.Modules.Combat.VirtualProperties;
 
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using DaLion.Overhaul.Modules.Combat.Configs;
 using DaLion.Overhaul.Modules.Combat.Enchantments;
 using DaLion.Overhaul.Modules.Combat.Extensions;
 using DaLion.Shared.Classes;
@@ -32,7 +33,7 @@ internal static class MeleeWeapon_Stats
 
     internal static int Get_MinDamage(this MeleeWeapon weapon)
     {
-        if (CombatModule.Config.EnableWeaponOverhaul)
+        if (CombatModule.Config.WeaponsSlingshots.EnableOverhaul)
         {
             if (weapon.hasEnchantmentOfType<KillerBugEnchantment>())
             {
@@ -56,7 +57,7 @@ internal static class MeleeWeapon_Stats
 
     internal static int Get_MaxDamage(this MeleeWeapon weapon)
     {
-        if (CombatModule.Config.EnableWeaponOverhaul)
+        if (CombatModule.Config.WeaponsSlingshots.EnableOverhaul)
         {
             if (weapon.hasEnchantmentOfType<KillerBugEnchantment>())
             {
@@ -113,15 +114,15 @@ internal static class MeleeWeapon_Stats
             return 0f;
         }
 
-        switch (CombatModule.Config.WeaponTooltipStyle)
+        switch (CombatModule.Config.ControlsUi.WeaponTooltipStyle)
         {
-            case CombatConfig.TooltipStyle.Absolute:
+            case ControlsUiConfig.TooltipStyle.Absolute:
                 return knockback - @default;
-            case CombatConfig.TooltipStyle.Relative:
+            case ControlsUiConfig.TooltipStyle.Relative:
                 return (knockback / @default) - 1f;
             default:
-                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<CombatConfig.TooltipStyle, float>(
-                    CombatModule.Config.WeaponTooltipStyle);
+                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<ControlsUiConfig.TooltipStyle, float>(
+                    CombatModule.Config.ControlsUi.WeaponTooltipStyle);
         }
     }
 
@@ -140,15 +141,15 @@ internal static class MeleeWeapon_Stats
             return 0f;
         }
 
-        switch (CombatModule.Config.WeaponTooltipStyle)
+        switch (CombatModule.Config.ControlsUi.WeaponTooltipStyle)
         {
-            case CombatConfig.TooltipStyle.Absolute:
+            case ControlsUiConfig.TooltipStyle.Absolute:
                 return critChance - @default;
-            case CombatConfig.TooltipStyle.Relative:
+            case ControlsUiConfig.TooltipStyle.Relative:
                 return (critChance / @default) - 1f;
             default:
-                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<CombatConfig.TooltipStyle, float>(
-                    CombatModule.Config.WeaponTooltipStyle);
+                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<ControlsUiConfig.TooltipStyle, float>(
+                    CombatModule.Config.ControlsUi.WeaponTooltipStyle);
         }
     }
 
@@ -166,15 +167,15 @@ internal static class MeleeWeapon_Stats
             return 0f;
         }
 
-        switch (CombatModule.Config.WeaponTooltipStyle)
+        switch (CombatModule.Config.ControlsUi.WeaponTooltipStyle)
         {
-            case CombatConfig.TooltipStyle.Absolute:
+            case ControlsUiConfig.TooltipStyle.Absolute:
                 return critPower - @default;
-            case CombatConfig.TooltipStyle.Relative:
+            case ControlsUiConfig.TooltipStyle.Relative:
                 return (critPower / @default) - 1f;
             default:
-                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<CombatConfig.TooltipStyle, float>(
-                    CombatModule.Config.WeaponTooltipStyle);
+                return ThrowHelperExtensions.ThrowUnexpectedEnumValueException<ControlsUiConfig.TooltipStyle, float>(
+                    CombatModule.Config.ControlsUi.WeaponTooltipStyle);
         }
     }
 
@@ -301,7 +302,7 @@ internal static class MeleeWeapon_Stats
         if (weapon.Get_ResonatingChord<JadeEnchantment>() is { } jadeChord)
         {
             holder.CritPower += (float)(weapon.GetEnchantmentLevel<JadeEnchantment>() * jadeChord.Amplitude *
-                                        (CombatModule.Config.RebalancedGemstones ? 0.5f : 0.1f));
+                                        (CombatModule.Config.RingsEnchantments.RebalancedGemstones ? 0.5f : 0.1f));
         }
 
         holder.SwingSpeed = weapon.speed.Value;

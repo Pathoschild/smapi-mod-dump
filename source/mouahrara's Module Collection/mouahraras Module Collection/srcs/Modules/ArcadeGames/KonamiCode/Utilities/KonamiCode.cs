@@ -16,94 +16,86 @@ namespace mouahrarasModuleCollection.ArcadeGames.KonamiCode.Utilities
 {
 	internal class KonamiCodeUtility
 	{
-		private static readonly PerScreen<bool>	InfiniteLivesMode = new(() => false);
-		private static readonly PerScreen<int>	Step = new(() => 0);
+		private static readonly PerScreen<bool>	infiniteLivesMode = new(() => false);
+		private static readonly PerScreen<int>	step = new(() => 0);
 
 		internal static void Reset()
 		{
-			SetInfiniteLivesMode(false);
-			SetStep(0);
+			InfiniteLivesMode = false;
+			Step = 0;
 		}
 
-		internal static void SetInfiniteLivesMode(bool value)
+		internal static bool InfiniteLivesMode
 		{
-			InfiniteLivesMode.Value = value;
+			get => infiniteLivesMode.Value;
+			set => infiniteLivesMode.Value = value;
 		}
 
-		internal static bool GetInfiniteLivesMode()
+		internal static int Step
 		{
-			return InfiniteLivesMode.Value;
-		}
-
-		internal static void SetStep(int value)
-		{
-			Step.Value = value;
-		}
-
-		internal static int GetStep()
-		{
-			return Step.Value;
+			get => step.Value;
+			set => step.Value = value;
 		}
 
 		internal static void ReceiveKeyPressPostfix(Keys k)
 		{
-			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || GetInfiniteLivesMode())
+			if (!ModEntry.Config.ArcadeGamesPayToPlayKonamiCode || InfiniteLivesMode)
 				return;
 
-			if (GetStep() == 0 && (k.Equals(Keys.Up) || k.Equals(Keys.W)))
+			if (Step == 0 && (k.Equals(Keys.Up) || k.Equals(Keys.W)))
 			{
-				SetStep(1);
+				Step = 1;
 				return;
 			}
-			else if (GetStep() == 1 && (k.Equals(Keys.Up) || k.Equals(Keys.W)))
+			else if (Step == 1 && (k.Equals(Keys.Up) || k.Equals(Keys.W)))
 			{
-				SetStep(2);
+				Step = 2;
 				return;
 			}
-			else if (GetStep() == 2 && (k.Equals(Keys.Down) || k.Equals(Keys.S)))
+			else if (Step == 2 && (k.Equals(Keys.Down) || k.Equals(Keys.S)))
 			{
-				SetStep(3);
+				Step = 3;
 				return;
 			}
-			else if (GetStep() == 3 && (k.Equals(Keys.Down) || k.Equals(Keys.S)))
+			else if (Step == 3 && (k.Equals(Keys.Down) || k.Equals(Keys.S)))
 			{
-				SetStep(4);
+				Step = 4;
 				return;
 			}
-			else if (GetStep() == 4 && (k.Equals(Keys.Left) || k.Equals(Keys.A)))
+			else if (Step == 4 && (k.Equals(Keys.Left) || k.Equals(Keys.A)))
 			{
-				SetStep(5);
+				Step = 5;
 				return;
 			}
-			else if (GetStep() == 5 && (k.Equals(Keys.Right) || k.Equals(Keys.D)))
+			else if (Step == 5 && (k.Equals(Keys.Right) || k.Equals(Keys.D)))
 			{
-				SetStep(6);
+				Step = 6;
 				return;
 			}
-			else if (GetStep() == 6 && (k.Equals(Keys.Left) || k.Equals(Keys.A)))
+			else if (Step == 6 && (k.Equals(Keys.Left) || k.Equals(Keys.A)))
 			{
-				SetStep(7);
+				Step = 7;
 				return;
 			}
-			else if (GetStep() == 7 && (k.Equals(Keys.Right) || k.Equals(Keys.D)))
+			else if (Step == 7 && (k.Equals(Keys.Right) || k.Equals(Keys.D)))
 			{
-				SetStep(8);
+				Step = 8;
 				return;
 			}
-			else if (GetStep() == 8 && (k.Equals(Keys.B) || k.Equals(Keys.E)))
+			else if (Step == 8 && (k.Equals(Keys.B) || k.Equals(Keys.E)))
 			{
-				SetStep(9);
+				Step = 9;
 				return;
 			}
-			else if (GetStep() == 9 && (k.Equals(Keys.A) || k.Equals(Keys.X)))
+			else if (Step == 9 && (k.Equals(Keys.A) || k.Equals(Keys.X)))
 			{
-				SetInfiniteLivesMode(true);
+				InfiniteLivesMode = true;
 				Game1.playSound("Cowboy_Secret");
 				return;
 			}
 			else
 			{
-				SetStep(0);
+				Step = 0;
 				return;
 			}
 		}

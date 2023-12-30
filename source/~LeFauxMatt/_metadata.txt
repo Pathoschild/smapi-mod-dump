@@ -18,13 +18,12 @@ mods:
    Toolbar Icons
 
 latest commit:
-   commit 12c89a25da18d74a56d1447eb6e77791fda34db1
-   Author: Arttu Mahlakaarto <arttu.mahlakaarto@gmail.com>
-   Date:   Fri Nov 24 07:06:57 2023 +0200
+   commit d615aab8e691efc70bd9a75c1dd2fa92ec6b6d03
+   Author: FauxMatt <github@fauxmail.net>
+   Date:   Thu Nov 23 21:08:19 2023 -0800
    
-       Fixes an NullReference Exception when sorting storages. (#73)
+       Merge remote-tracking branch 'origin/develop' into develop
        
-       Issue was caused by the __instance variable being null.
-       The fix adds a check for that scenario.
-       Additionally, the sorting criteria check was added to prevent a recursion from the OrganizeItems function
+       # Conflicts:
+       #       BetterChests/Framework/Features/OrganizeChest.cs
    

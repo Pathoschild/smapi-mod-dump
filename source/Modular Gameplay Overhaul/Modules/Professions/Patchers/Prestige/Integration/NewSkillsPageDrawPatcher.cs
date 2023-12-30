@@ -17,6 +17,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using DaLion.Overhaul.Modules.Professions.Configs;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Integrations;
 using DaLion.Overhaul.Modules.Professions.Patchers.Prestige;
@@ -53,7 +54,7 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
     {
         var helper = new ILHelper(original, instructions);
 
-        // Inject: x -= ProfessionsModule.Config.PrestigeProgressionStyle == ProgressionStyle.Stars ? Textures.STARS_WIDTH_I : Textures.RIBBON_WIDTH_I;
+        // Inject: x -= ProfessionsModule.Config.Prestige.PrestigeRibbonStyle == RibbonStyle.Stars ? Textures.STARS_WIDTH_I : Textures.RIBBON_WIDTH_I;
         // After: x = ...
         try
         {
@@ -65,13 +66,9 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
                 .Insert(
                     new[]
                     {
-                        new CodeInstruction(OpCodes.Call, typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
                         new CodeInstruction(
-                            OpCodes.Callvirt,
-                            typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Professions))),
-                        new CodeInstruction(
-                            OpCodes.Callvirt,
-                            typeof(ProfessionConfig).RequirePropertyGetter(nameof(ProfessionConfig.EnablePrestige))),
+                            OpCodes.Call,
+                            typeof(ProfessionsModule).RequirePropertyGetter(nameof(ProfessionsModule.EnableSkillReset))),
                         new CodeInstruction(OpCodes.Brfalse_S, resumeExecution),
                         new CodeInstruction(OpCodes.Call, typeof(ModEntry).RequirePropertyGetter(nameof(ModEntry.Config))),
                         new CodeInstruction(
@@ -79,8 +76,11 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
                             typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Professions))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
-                            typeof(ProfessionConfig).RequirePropertyGetter(
-                                nameof(ProfessionConfig.PrestigeProgressionStyle))),
+                            typeof(ProfessionConfig).RequirePropertyGetter(nameof(ProfessionConfig.Prestige))),
+                        new CodeInstruction(
+                            OpCodes.Callvirt,
+                            typeof(PrestigeConfig).RequirePropertyGetter(
+                                nameof(PrestigeConfig.Ribbon))),
                         new CodeInstruction(OpCodes.Ldc_I4_0),
                         new CodeInstruction(OpCodes.Beq_S, notRibbons),
                         new CodeInstruction(
@@ -338,7 +338,7 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
     internal static void DrawExtendedLevelBars(
         int levelIndex, int indexWithLuckSkill, int x, int y, int addedX, int skillLevel, SpriteBatch b)
     {
-        if (!ProfessionsModule.Config.EnablePrestige)
+        if (!ProfessionsModule.EnablePrestigeLevels)
         {
             return;
         }
@@ -367,7 +367,7 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
 
     internal static void DrawRibbons(NewSkillsPage page, SpriteBatch b, int skillScrollOffset)
     {
-        if (!ProfessionsModule.Config.EnablePrestige)
+        if (!ProfessionsModule.EnableSkillReset)
         {
             return;
         }
@@ -376,7 +376,7 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
             new Vector2(
                 page.xPositionOnScreen + page.width + Textures.ProgressionHorizontalOffset,
                 page.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + Textures.ProgressionVerticalOffset);
-        if (ProfessionsModule.Config.PrestigeProgressionStyle == ProfessionConfig.ProgressionStyle.StackedStars)
+        if (ProfessionsModule.Config.Prestige.Ribbon == PrestigeConfig.RibbonStyle.StackedStars)
         {
             position.X -= 22;
             position.Y -= 4;
@@ -409,17 +409,17 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
             }
 
             Rectangle sourceRect;
-            switch (ProfessionsModule.Config.PrestigeProgressionStyle)
+            switch (ProfessionsModule.Config.Prestige.Ribbon)
             {
-                case ProfessionConfig.ProgressionStyle.Gen3Ribbons:
-                case ProfessionConfig.ProgressionStyle.Gen4Ribbons:
+                case PrestigeConfig.RibbonStyle.Gen3Ribbons:
+                case PrestigeConfig.RibbonStyle.Gen4Ribbons:
                     sourceRect = new Rectangle(
                         i * Textures.RibbonWidth,
                         (count - 1) * Textures.RibbonWidth,
                         Textures.RibbonWidth,
                         Textures.RibbonWidth);
                     break;
-                case ProfessionConfig.ProgressionStyle.StackedStars:
+                case PrestigeConfig.RibbonStyle.StackedStars:
                     sourceRect = new Rectangle(0, (count - 1) * 16, Textures.StarsWidth, 16);
                     break;
                 default:
@@ -434,27 +434,27 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
                 Color.White,
                 0f,
                 Vector2.Zero,
-                ProfessionsModule.Config.PrestigeProgressionStyle == ProfessionConfig.ProgressionStyle.StackedStars
+                ProfessionsModule.Config.Prestige.Ribbon == PrestigeConfig.RibbonStyle.StackedStars
                     ? Textures.StarsScale
                     : Textures.RibbonScale,
                 SpriteEffects.None,
                 1f);
         }
 
-        if (SCSkill.Loaded.Count == 0)
+        if (CustomSkill.Loaded.Count == 0)
         {
             return;
         }
 
-        if (ProfessionsModule.Config.PrestigeProgressionStyle is ProfessionConfig.ProgressionStyle.Gen3Ribbons
-            or ProfessionConfig.ProgressionStyle.Gen4Ribbons)
+        if (ProfessionsModule.Config.Prestige.Ribbon is PrestigeConfig.RibbonStyle.Gen3Ribbons
+            or PrestigeConfig.RibbonStyle.Gen4Ribbons)
         {
             position.X += 2; // not sure why but custom skill ribbons render with a small offset
         }
 
         var customSkills = SpaceCoreIntegration.Instance!.ModApi!
             .GetCustomSkills()
-            .Select(name => SCSkill.Loaded[name]);
+            .Select(name => CustomSkill.Loaded[name]);
         if (LuckSkill.Instance is not null)
         {
             // luck skill must be enumerated first
@@ -481,14 +481,14 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
                 continue;
             }
 
-            var sourceRect = ProfessionsModule.Config.PrestigeProgressionStyle switch
+            var sourceRect = ProfessionsModule.Config.Prestige.Ribbon switch
             {
-                ProfessionConfig.ProgressionStyle.Gen3Ribbons or ProfessionConfig.ProgressionStyle.Gen4Ribbons => new Rectangle(
+                PrestigeConfig.RibbonStyle.Gen3Ribbons or PrestigeConfig.RibbonStyle.Gen4Ribbons => new Rectangle(
                     skill.StringId == "blueberry.LoveOfCooking.CookingSkill" ? 111 : 133,
                     (count - 1) * Textures.RibbonWidth,
                     Textures.RibbonWidth,
                     Textures.RibbonWidth),
-                ProfessionConfig.ProgressionStyle.StackedStars =>
+                PrestigeConfig.RibbonStyle.StackedStars =>
                     new Rectangle(0, (count - 1) * 16, Textures.StarsWidth, 16),
                 _ => Rectangle.Empty,
             };
@@ -500,7 +500,7 @@ internal sealed class NewSkillsPageDrawPatcher : HarmonyPatcher
                 Color.White,
                 0f,
                 Vector2.Zero,
-                ProfessionsModule.Config.PrestigeProgressionStyle == ProfessionConfig.ProgressionStyle.StackedStars
+                ProfessionsModule.Config.Prestige.Ribbon == PrestigeConfig.RibbonStyle.StackedStars
                     ? Textures.StarsScale
                     : Textures.RibbonScale,
                 SpriteEffects.None,

@@ -10,58 +10,52 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Goals;
+using StardewArchipelago.Stardew.NameMapping;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
+using Object = StardewValley.Object;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
-    public static class ShippingInjections
+    public class NightShippingBehaviors
     {
-        private static IMonitor _monitor;
-        private static ArchipelagoClient _archipelago;
-        private static LocationChecker _locationChecker;
+        private IMonitor _monitor;
+        private ArchipelagoClient _archipelago;
+        private LocationChecker _locationChecker;
+        private NameSimplifier _nameSimplifier;
 
-        public static void Initialize(IMonitor monitor, ArchipelagoClient archipelago, LocationChecker locationChecker)
+        public NightShippingBehaviors(IMonitor monitor, ArchipelagoClient archipelago, LocationChecker locationChecker, NameSimplifier nameSimplifier)
         {
             _monitor = monitor;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
+            _nameSimplifier = nameSimplifier;
         }
 
         // private static IEnumerator<int> _newDayAfterFade()
-        public static bool NewDayAfterFade_CheckShipsanityLocations_Prefix(ref IEnumerator<int> __result)
+        public void CheckShipsanityLocationsBeforeSleep()
         {
             try
             {
+                if (_archipelago.SlotData.Shipsanity == Shipsanity.None)
+                {
+                    return;
+                }
+
+                _monitor.Log($"Currently attempting to check shipsanity locations for the current day", LogLevel.Info);
                 var allShippedItems = GetAllItemsShippedToday();
+                _monitor.Log($"{allShippedItems.Count} items shipped", LogLevel.Info);
                 CheckAllShipsanityLocations(allShippedItems);
-                
-                return true; // run original logic
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(NewDayAfterFade_CheckShipsanityLocations_Prefix)}:\n{ex}", LogLevel.Error);
-                return true; // run original logic
-            }
-        }
-
-        // private static IEnumerator<int> _newDayAfterFade()
-        public static void NewDayAfterFade_CheckGoalCompletion_Postfix(ref IEnumerator<int> __result)
-        {
-            try
-            {
-                GoalCodeInjection.CheckFullShipmentGoalCompletion();
-                return;
-            }
-            catch (Exception ex)
-            {
-                _monitor.Log($"Failed in {nameof(NewDayAfterFade_CheckGoalCompletion_Postfix)}:\n{ex}", LogLevel.Error);
-                return;
+                _monitor.Log($"Failed in {nameof(CheckShipsanityLocationsBeforeSleep)}:\n{ex}", LogLevel.Error);
             }
         }
 
@@ -102,15 +96,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        private static void CheckAllShipsanityLocations(List<Item> allShippedItems)
+        private void CheckAllShipsanityLocations(List<Item> allShippedItems)
         {
             foreach (var shippedItem in allShippedItems)
             {
-                var name = shippedItem.Name;
-                if (_renamedItems.ContainsKey(shippedItem.ParentSheetIndex))
-                {
-                    name = _renamedItems[shippedItem.ParentSheetIndex];
-                }
+                var name = _nameSimplifier.GetSimplifiedName(shippedItem);
 
                 var apLocation = $"Shipsanity: {name}";
                 if (_archipelago.GetLocationId(apLocation) > -1)
@@ -123,12 +113,5 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 }
             }
         }
-
-        private static readonly Dictionary<int, string> _renamedItems = new()
-        {
-            { 180, "Egg (Brown)" },
-            { 182, "Large Egg (Brown)" },
-            { 438, "Large Goat Milk" },
-        };
     }
 }

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19528
+IDs: StarCat.CatastrophicHungerCode
+update keys: Nexus:19528

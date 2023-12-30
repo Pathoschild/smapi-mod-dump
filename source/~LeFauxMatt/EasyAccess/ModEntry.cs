@@ -41,12 +41,12 @@ public sealed class ModEntry : Mod
     {
         var (pX, pY) = Game1.player.getTileLocation();
         for (var tY = (int)(pY - this.Config.CollectOutputDistance);
-             tY <= (int)(pY + this.Config.CollectOutputDistance);
-             ++tY)
+            tY <= (int)(pY + this.Config.CollectOutputDistance);
+            ++tY)
         {
             for (var tX = (int)(pX - this.Config.CollectOutputDistance);
-                 tX <= (int)(pX + this.Config.CollectOutputDistance);
-                 ++tX)
+                tX <= (int)(pX + this.Config.CollectOutputDistance);
+                ++tX)
             {
                 if (Math.Abs(tX - pX) + Math.Abs(tY - pY) > this.Config.CollectOutputDistance)
                 {
@@ -76,9 +76,9 @@ public sealed class ModEntry : Mod
                         // Vanilla Logic
                         var r = new Random(
                             (int)Game1.uniqueIDForThisGame / 2
-                          + (int)Game1.stats.DaysPlayed
-                          + (int)pos.X
-                          + (int)pos.Y * 777);
+                            + (int)Game1.stats.DaysPlayed
+                            + (int)pos.X
+                            + (int)pos.Y * 777);
                         if (Game1.player.professions.Contains(16))
                         {
                             obj.Quality = 4;
@@ -157,12 +157,12 @@ public sealed class ModEntry : Mod
 
         var (pX, pY) = Game1.player.getTileLocation();
         for (var tY = (int)(pY - this.Config.DispenseInputDistance);
-             tY <= (int)(pY + this.Config.DispenseInputDistance);
-             ++tY)
+            tY <= (int)(pY + this.Config.DispenseInputDistance);
+            ++tY)
         {
             for (var tX = (int)(pX - this.Config.DispenseInputDistance);
-                 tX <= (int)(pX + this.Config.DispenseInputDistance);
-                 ++tX)
+                tX <= (int)(pX + this.Config.DispenseInputDistance);
+                ++tX)
             {
                 if (Math.Abs(tX - pX) + Math.Abs(tY - pY) > this.Config.CollectOutputDistance)
                 {
@@ -173,8 +173,8 @@ public sealed class ModEntry : Mod
 
                 // Big Craftables
                 if (!Game1.currentLocation.Objects.TryGetValue(pos, out var obj)
-                 || (obj.Type?.Equals("Crafting") != true && obj.Type?.Equals("interactive") != true)
-                 || !obj.performObjectDropInAction(Game1.player.CurrentItem, false, Game1.player))
+                    || (obj.Type?.Equals("Crafting") != true && obj.Type?.Equals("interactive") != true)
+                    || !obj.performObjectDropInAction(Game1.player.CurrentItem, false, Game1.player))
                 {
                     continue;
                 }

@@ -369,7 +369,7 @@ internal sealed class ChestMenuTabs : Feature
         this.CurrentMenu = menu;
         this.Components.Clear();
         if (this.CurrentMenu is null or { shippingBin: true }
-         || BetterItemGrabMenu.Context?.ChestMenuTabs is not FeatureOption.Enabled)
+            || BetterItemGrabMenu.Context?.ChestMenuTabs is not FeatureOption.Enabled)
         {
             return;
         }
@@ -377,7 +377,7 @@ internal sealed class ChestMenuTabs : Feature
         foreach (var (name, tab) in ChestMenuTabs.AllTabs)
         {
             if (BetterItemGrabMenu.Context.ChestMenuTabSet.Any()
-             && !BetterItemGrabMenu.Context.ChestMenuTabSet.Contains(name))
+                && !BetterItemGrabMenu.Context.ChestMenuTabSet.Contains(name))
             {
                 continue;
             }
@@ -421,8 +421,8 @@ internal sealed class ChestMenuTabs : Feature
                 ? this.Components[i - 1].bounds.Right
                 : this.CurrentMenu.ItemsToGrabMenu.inventory[0].bounds.Left;
             this.Components[i].bounds.Y = this.CurrentMenu.ItemsToGrabMenu.yPositionOnScreen
-                                        + Game1.tileSize * this.CurrentMenu.ItemsToGrabMenu.rows
-                                        + IClickableMenu.borderWidth;
+                + Game1.tileSize * this.CurrentMenu.ItemsToGrabMenu.rows
+                + IClickableMenu.borderWidth;
         }
 
         BetterItemGrabMenu.ItemsToGrabMenu?.AddTransformer(this.FilterByTab);

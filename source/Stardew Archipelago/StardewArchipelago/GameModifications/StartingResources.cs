@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Extensions;
 using StardewArchipelago.GameModifications.CodeInjections;
+using StardewArchipelago.Locations;
 using StardewArchipelago.Stardew;
 using StardewValley;
 using StardewValley.Locations;
@@ -27,11 +28,13 @@ namespace StardewArchipelago.GameModifications
         private const int MINIMUM_UNLIMITED_MONEY = 1000000;
         private ArchipelagoClient _archipelago;
         private StardewItemManager _stardewItemManager;
+        private StartingRecipes _startingRecipes;
 
-        public StartingResources(ArchipelagoClient archipelago, StardewItemManager stardewItemManager)
+        public StartingResources(ArchipelagoClient archipelago, LocationChecker locationChecker, StardewItemManager stardewItemManager)
         {
             _archipelago = archipelago;
             _stardewItemManager = stardewItemManager;
+            _startingRecipes = new StartingRecipes(archipelago, locationChecker);
         }
 
         public void GivePlayerStartingResources()
@@ -44,6 +47,7 @@ namespace StardewArchipelago.GameModifications
 
             RemoveShippingBin();
             SendGilTelephoneLetter();
+            _startingRecipes.SynchronizeStartingRecipes(Game1.player);
         }
 
         private void GivePlayerStartingMoney()
@@ -74,13 +78,15 @@ namespace StardewArchipelago.GameModifications
             CreateGiftBoxItemInEmptySpot(farmhouse, seeds);
             var telephone = _stardewItemManager.GetItemByName("Telephone").PrepareForGivingToFarmer(1);
             CreateGiftBoxItemInEmptySpot(farmhouse, telephone);
+            var calendar = _stardewItemManager.GetItemByName("Calendar").PrepareForGivingToFarmer(1);
+            CreateGiftBoxItemInEmptySpot(farmhouse, calendar);
 
             if (!_archipelago.SlotData.QuickStart)
             {
                 return;
             }
 
-            var chest = _stardewItemManager.GetItemByName("Chest").PrepareForGivingToFarmer(4);
+            var chest = _stardewItemManager.GetItemByName("Chest").PrepareForGivingToFarmer(5);
             var iridiumBand = _stardewItemManager.GetItemByName("Iridium Band").PrepareForGivingToFarmer(1);
             var qualitySprinklers = _stardewItemManager.GetItemByName("Quality Sprinkler").PrepareForGivingToFarmer(4);
             var autoPetters = _stardewItemManager.GetItemByName("Auto-Petter").PrepareForGivingToFarmer(2);

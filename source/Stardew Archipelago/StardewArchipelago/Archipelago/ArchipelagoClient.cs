@@ -9,6 +9,7 @@
 *************************************************/
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -23,7 +24,6 @@ using Archipelago.MultiClient.Net.Packets;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using StardewArchipelago.Extensions;
-using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
 using Color = Microsoft.Xna.Framework.Color;
@@ -84,6 +84,12 @@ namespace StardewArchipelago.Archipelago
 
 #if RELEASE
             if (!SlotData.Mods.IsModStateCorrect(_modHelper, out errorMessage))
+            {
+                DisconnectPermanently();
+                return;
+            }
+
+            if (!SlotData.Mods.IsPatcherStateCorrect(_modHelper, out errorMessage))
             {
                 DisconnectPermanently();
                 return;
@@ -291,8 +297,6 @@ namespace StardewArchipelago.Archipelago
 
             _session.Locations.CompleteLocationChecks(locationIds);
         }
-
-        public PlayerInfo CurrentPlayer => _session.Players.AllPlayers.FirstOrDefault(x => x.Slot == _session.ConnectionInfo.Slot);
 
         public int GetTeam()
         {
@@ -867,6 +871,26 @@ namespace StardewArchipelago.Archipelago
             var multiworldMinor = multiworldVersionParts[1];
             var multiworldFix = multiworldVersionParts[2];
             return majorVersion == multiworldMajor;
+        }
+
+        public IEnumerable<PlayerInfo> GetAllPlayers()
+        {
+            if (!MakeSureConnected())
+            {
+                return Enumerable.Empty<PlayerInfo>();
+            }
+
+            return Session.Players.AllPlayers;
+        }
+
+        public PlayerInfo? GetCurrentPlayer()
+        {
+            if (!MakeSureConnected())
+            {
+                return null;
+            }
+
+            return GetAllPlayers().FirstOrDefault(x => x.Slot == _session.ConnectionInfo.Slot);
         }
     }
 }

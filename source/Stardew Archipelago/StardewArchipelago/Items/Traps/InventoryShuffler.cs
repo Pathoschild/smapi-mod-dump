@@ -11,15 +11,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using StardewArchipelago.Archipelago.Gifting;
 using StardewArchipelago.Extensions;
+using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.Tools;
+using Object = StardewValley.Object;
 
 namespace StardewArchipelago.Items.Traps
 {
     public class InventoryShuffler
     {
+        private const double GIFTING_RATE = 0.25;
+
         private class ItemSlot
         {
             public IList<Item> Inventory { get; set; }
@@ -43,6 +49,14 @@ namespace StardewArchipelago.Items.Traps
 
         private const int CRAFTING_CATEGORY = -9;
         private const string CRAFTING_TYPE = "Crafting";
+        private IMonitor _monitor;
+        private GiftSender _giftSender;
+
+        public InventoryShuffler(IMonitor monitor, GiftSender giftSender)
+        {
+            _monitor = monitor;
+            _giftSender = giftSender;
+        }
 
         public void ShuffleInventories(ShuffleInventoryTarget targets)
         {
@@ -53,16 +67,34 @@ namespace StardewArchipelago.Items.Traps
 
             var slotsToShuffle = new Dictionary<ItemSlot, Item>();
 
+            _monitor.Log($"Executing a Shuffle Trap...", LogLevel.Debug);
+
             AddItemSlotsFromPlayerInventory(slotsToShuffle, targets == ShuffleInventoryTarget.Hotbar);
-            if (targets == ShuffleInventoryTarget.InventoryAndChests)
+            if (targets >= ShuffleInventoryTarget.InventoryAndChests)
             {
                 AddItemSlotsFromChestsInEntireWorld(slotsToShuffle);
+                if (targets >= ShuffleInventoryTarget.InventoryAndChestsAndFriends)
+                {
+                    AddItemSlotsFromFridges(slotsToShuffle);
+                    // AddItemSlotsFromJunimoChest(slotsToShuffle);
+                }
             }
 
+            var numberItemsToShuffle = slotsToShuffle.Count;
+            _monitor.Log($"Found {numberItemsToShuffle} items to shuffle", LogLevel.Debug);
+            var random = new Random((int)(Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed));
+
+            if (targets >= ShuffleInventoryTarget.InventoryAndChestsAndFriends)
+            {
+                SendRandomGifts(slotsToShuffle, random, GIFTING_RATE);
+            }
+
+            _monitor.Log($"Sent {numberItemsToShuffle - slotsToShuffle.Count} items as random gifts", LogLevel.Debug);
             var allSlots = slotsToShuffle.Keys.ToList();
             var allItems = slotsToShuffle.Values.ToList();
-            var random = new Random((int)(Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed));
             var allItemsShuffled = allItems.Shuffle(random);
+
+            _monitor.Log($"Shuffling the remaining {slotsToShuffle.Count} items locally", LogLevel.Debug);
 
             for (var i = 0; i < allSlots.Count; i++)
             {
@@ -72,6 +104,55 @@ namespace StardewArchipelago.Items.Traps
             foreach (var chest in FindAllChests())
             {
                 chest.clearNulls();
+            }
+
+            _monitor.Log($"Finished the shuffle trap!", LogLevel.Debug);
+        }
+
+        private void SendRandomGifts(Dictionary<ItemSlot, Item> slotsToShuffle, Random random, double giftingRate)
+        {
+            var giftsToSend = new Dictionary<string, List<Object>>();
+            var slotsToClear = new Dictionary<Object, ItemSlot>();
+            var validTargets = _giftSender.GetAllPlayersThatCanReceiveShuffledItems();
+
+            if (validTargets == null || !validTargets.Any())
+            {
+                _monitor.Log($"Found no players to gift to", LogLevel.Debug);
+                return;
+            }
+
+            _monitor.Log($"Found {validTargets.Count} players that can receive random gifts!", LogLevel.Debug);
+            foreach (var (itemSlot, item) in slotsToShuffle)
+            {
+                if (item is not Object objectToGift || !_giftSender.CanGiftObject(objectToGift) || random.NextDouble() > giftingRate)
+                {
+                    continue;
+                }
+
+                var chosenTarget = validTargets[random.Next(validTargets.Count)];
+                if (!giftsToSend.ContainsKey(chosenTarget))
+                {
+                    giftsToSend.Add(chosenTarget, new List<Object>());
+                }
+
+                _monitor.Log($"{chosenTarget} has been chosen as a recipient for {objectToGift.Stack} {objectToGift.Name}", LogLevel.Trace);
+                giftsToSend[chosenTarget].Add(objectToGift);
+                slotsToClear.Add(objectToGift, itemSlot);
+            }
+
+            var failedToSendGifts = _giftSender.SendShuffleGifts(giftsToSend);
+
+            _monitor.Log($"Finished sending gifts, {failedToSendGifts.Count} failed to send and will stay local", LogLevel.Debug);
+
+            foreach (var (gift, slot) in slotsToClear)
+            {
+                if (failedToSendGifts.Contains(gift))
+                {
+                    continue;
+                }
+
+                slotsToShuffle.Remove(slot);
+                slot.SetItem(null);
             }
         }
 
@@ -97,7 +178,7 @@ namespace StardewArchipelago.Items.Traps
             }
         }
 
-        private static void AddItemSlotsFromChestsInEntireWorld(Dictionary<ItemSlot, Item> slotsToShuffle)
+        private void AddItemSlotsFromChestsInEntireWorld(Dictionary<ItemSlot, Item> slotsToShuffle)
         {
             foreach (var chest in FindAllChests())
             {
@@ -121,7 +202,7 @@ namespace StardewArchipelago.Items.Traps
             {
                 foreach (var (tile, gameObject) in gameLocation.Objects.Pairs)
                 {
-                    if (gameObject is not Chest { SpecialChestType: Chest.SpecialChestTypes.None, Category: CRAFTING_CATEGORY, Type: CRAFTING_TYPE } chest || chest.giftbox.Value)
+                    if (gameObject is not Chest { SpecialChestType: Chest.SpecialChestTypes.None or Chest.SpecialChestTypes.AutoLoader, Category: CRAFTING_CATEGORY, Type: CRAFTING_TYPE } chest || chest.giftbox.Value)
                     {
                         continue;
                     }
@@ -144,6 +225,81 @@ namespace StardewArchipelago.Items.Traps
 
                 var slot = new ItemSlot(chest.items, i);
                 slotsToShuffle.Add(slot, item);
+            }
+        }
+
+        private void AddItemSlotsFromFridges(Dictionary<ItemSlot, Item> slotsToShuffle)
+        {
+            AddItemSlotsFromFridge(slotsToShuffle);
+            AddItemSlotsFromIslandFridge(slotsToShuffle);
+        }
+
+        private void AddItemSlotsFromFridge(Dictionary<ItemSlot, Item> slotsToShuffle)
+        {
+            try
+            {
+                if (Game1.getLocationFromName("FarmHouse") is not FarmHouse location)
+                {
+                    return;
+                }
+
+                var fridge = location.fridge.Value;
+                if (fridge == null)
+                {
+                    return;
+                }
+
+                AddItemSlotsFromChest(slotsToShuffle, fridge);
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log("Could not find a fridge in the farmhouse", LogLevel.Warn);
+            }
+        }
+
+        private void AddItemSlotsFromIslandFridge(Dictionary<ItemSlot, Item> slotsToShuffle)
+        {
+            try
+            {
+                if (Game1.getLocationFromName("IslandFarmHouse") is not IslandFarmHouse location)
+                {
+                    return;
+                }
+
+                var fridge = location.fridge.Value;
+                if (fridge == null)
+                {
+                    return;
+                }
+
+                AddItemSlotsFromChest(slotsToShuffle, fridge);
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log("Could not find a fridge in the island farmhouse", LogLevel.Warn);
+            }
+        }
+
+        private void AddItemSlotsFromJunimoChest(Dictionary<ItemSlot, Item> slotsToShuffle)
+        {
+            try
+            {
+                var capacity = Game1.player.team.junimoChest.Count;
+                for (var i = 0; i < capacity; i++)
+                {
+                    Item item = null;
+                    if (Game1.player.team.junimoChest.Count > i && Game1.player.team.junimoChest[i] != null)
+                    {
+                        item = Game1.player.team.junimoChest[i];
+                    }
+
+                    var slot = new ItemSlot(Game1.player.team.junimoChest, i);
+                    slotsToShuffle.Add(slot, item);
+                }
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log("Could not update the junimo chest properly", LogLevel.Warn);
             }
         }
     }

@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using StardewValley.Tools;
 using StardewValley;
 using System.IO;
+using StardewValley.TerrainFeatures;
 
 namespace DeepWoodsMod
 {
@@ -174,6 +175,9 @@ namespace DeepWoodsMod
     {
         public int MinLevelForFlowers { get; set; } = 3;
         public int MinLevelForFruits { get; set; } = 5;
+        public int MinLevelForSilverFruits { get; set; } = 25;
+        public int MinLevelForGoldFruits { get; set; } = 75;
+        public int MinLevelForIridiumFruits { get; set; } = 100;
         public int MinLevelForThornyBushes { get; set; } = 10;
         public int MinLevelForDangerousMonsters { get; set; } = 15;
         public int MinLevelForBuffedMonsters { get; set; } = 15;
@@ -309,6 +313,9 @@ namespace DeepWoodsMod
         public Chance ChanceForSmallTree { get; set; } = new Chance(10);
         public Chance ChanceForGrownFruitTree { get; set; } = new Chance(1);
         public Chance ChanceForSmallFruitTree { get; set; } = new Chance(5);
+        public Chance ChanceForSilverFruits { get; set; } = new Chance(new LuckValue(15, 25));
+        public Chance ChanceForGoldFruits { get; set; } = new Chance(new LuckValue(5, 35));
+        public Chance ChanceForIridiumFruits { get; set; } = new Chance(new LuckValue(0, 45));
         public Chance ChanceForWeed { get; set; } = new Chance(20);
         public Chance ChanceForTwig { get; set; } = new Chance(10);
         public Chance ChanceForStone { get; set; } = new Chance(10);
@@ -316,7 +323,25 @@ namespace DeepWoodsMod
         public Chance ChanceForFlower { get; set; } = new Chance(7);
         public Chance ChanceForFlowerInWinter { get; set; } = new Chance(3);
         public Chance ChanceForFlowerOnClearing { get; set; } = new Chance(5);
+        public Chance ChanceForExtraForageable { get; set; } = new Chance(0);
         public ResourceClumpLuckSettings ResourceClump { get; set; } = new ResourceClumpLuckSettings();
+
+        public WeightedInt[] TreeTypes { get; set; } = new WeightedInt[]{
+            new WeightedInt(Tree.bushyTree, 300),
+            new WeightedInt(Tree.leafyTree, 300),
+            new WeightedInt(Tree.pineTree, 300),
+            new WeightedInt(Tree.mahoganyTree, 100),
+        };
+
+        public WeightedInt[] FruitTreeTypes { get; set; } = new WeightedInt[]{
+            new WeightedInt(628, 200),  // apricot
+            new WeightedInt(629, 200),  // cherry
+            new WeightedInt(630, 200),  // orange
+            new WeightedInt(631, 200),  // peach
+            new WeightedInt(632, 200),  // apple
+            new WeightedInt(633, 200),  // pomegrenade
+            new WeightedInt(835, 200),  // mango
+        };
 
         public WeightedInt[] FruitCount { get; set; } = new WeightedInt[]{
             new WeightedInt(0, 60),
@@ -337,6 +362,11 @@ namespace DeepWoodsMod
             new WeightedInt(453, 50),  // 376, // Poppy, summer (140g)
             new WeightedInt(425, 30),  // 595, // FairyRose, fall (290g)
         };
+
+        public WeightedInt[] WinterForageables { get; set; } = new WeightedInt[] { };
+        public WeightedInt[] SummerForageables { get; set; } = new WeightedInt[] { };
+        public WeightedInt[] FallForageables { get; set; } = new WeightedInt[] { };
+        public WeightedInt[] SpringForageables { get; set; } = new WeightedInt[] { };
     }
 
     public class ClearingLuckSettings
@@ -512,6 +542,7 @@ namespace DeepWoodsMod
     public class DeepWoodsStateData
     {
         private int lowestLevelReached = 0;
+        private int orbStonesSaved = 0;
 
         public HashSet<long> PlayersWhoGotStardropFromUnicorn { get; set; } = new HashSet<long>();
         public HashSet<XY> WoodsObeliskLocations { get; set; } = new HashSet<XY>();
@@ -536,6 +567,29 @@ namespace DeepWoodsMod
                     }
                 }
                 lowestLevelReached = value;
+            }
+        }
+
+        public int OrbStonesSaved
+        {
+            get
+            {
+                return orbStonesSaved;
+            }
+
+            set
+            {
+                if (value > orbStonesSaved && Game1.IsMasterGame)
+                {
+                    foreach (Farmer who in Game1.otherFarmers.Values)
+                    {
+                        if (who != Game1.player)
+                        {
+                            ModEntry.SendMessage(value, MessageId.SetOrbStonesSaved, who.UniqueMultiplayerID);
+                        }
+                    }
+                }
+                orbStonesSaved = value;
             }
         }
     }

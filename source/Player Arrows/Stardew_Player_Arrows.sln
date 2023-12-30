@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33801.468
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stardew_Player_Arrows", "Stardew_Player_Arrows\Stardew_Player_Arrows.csproj", "{DA31431F-9E28-47C2-A73C-A0F70A6B2D09}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA31431F-9E28-47C2-A73C-A0F70A6B2D09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA31431F-9E28-47C2-A73C-A0F70A6B2D09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA31431F-9E28-47C2-A73C-A0F70A6B2D09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA31431F-9E28-47C2-A73C-A0F70A6B2D09}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {449D90CA-DF7A-44F6-AD5B-2C7386D4B2B5}
+	EndGlobalSection
+EndGlobal

@@ -12,6 +12,7 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Prestige;
 
 #region using directives
 
+using DaLion.Overhaul.Modules.Professions.Configs;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Extensions;
 using DaLion.Shared.Harmony;
@@ -39,24 +40,24 @@ internal sealed class SkillsPagePerformHoverActionPatcher : HarmonyPatcher
     {
         ___hoverText = ___hoverText.Truncate(90);
 
-        if (!ProfessionsModule.Config.EnablePrestige)
+        if (!ProfessionsModule.EnableSkillReset)
         {
             return;
         }
 
-        var bounds = ProfessionsModule.Config.PrestigeProgressionStyle switch
+        var bounds = ProfessionsModule.Config.Prestige.Ribbon switch
         {
-            ProfessionConfig.ProgressionStyle.StackedStars => new Rectangle(
+            PrestigeConfig.RibbonStyle.StackedStars => new Rectangle(
                 __instance.xPositionOnScreen + __instance.width + Textures.ProgressionHorizontalOffset - 14,
                 __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + Textures.ProgressionVerticalOffset - 4,
                 (int)(Textures.StarsWidth * Textures.StarsScale),
                 (int)(Textures.StarsWidth * Textures.StarsScale)),
-            ProfessionConfig.ProgressionStyle.Gen3Ribbons => new Rectangle(
+            PrestigeConfig.RibbonStyle.Gen3Ribbons => new Rectangle(
                 __instance.xPositionOnScreen + __instance.width + Textures.ProgressionHorizontalOffset,
                 __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + Textures.ProgressionVerticalOffset,
                 (int)(Textures.RibbonWidth * Textures.RibbonScale),
                 (int)(Textures.RibbonWidth * Textures.RibbonScale)),
-            ProfessionConfig.ProgressionStyle.Gen4Ribbons => new Rectangle(
+            PrestigeConfig.RibbonStyle.Gen4Ribbons => new Rectangle(
                 __instance.xPositionOnScreen + __instance.width + Textures.ProgressionHorizontalOffset,
                 __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + IClickableMenu.borderWidth + Textures.ProgressionVerticalOffset,
                 (int)(Textures.RibbonWidth * Textures.RibbonScale),
@@ -75,6 +76,7 @@ internal sealed class SkillsPagePerformHoverActionPatcher : HarmonyPatcher
                 3 => Skill.Fishing,
                 _ => Skill.FromValue(i),
             };
+
             var professionsForThisSkill = Game1.player.GetProfessionsForSkill(skill, true);
             var count = professionsForThisSkill.Length;
             if (count == 0)
@@ -82,8 +84,8 @@ internal sealed class SkillsPagePerformHoverActionPatcher : HarmonyPatcher
                 continue;
             }
 
-            bounds.Width = ProfessionsModule.Config.PrestigeProgressionStyle is ProfessionConfig.ProgressionStyle.Gen3Ribbons
-                or ProfessionConfig.ProgressionStyle.Gen4Ribbons
+            bounds.Width = ProfessionsModule.Config.Prestige.Ribbon is PrestigeConfig.RibbonStyle.Gen3Ribbons
+                or PrestigeConfig.RibbonStyle.Gen4Ribbons
                 ? (int)(Textures.RibbonWidth * Textures.RibbonScale)
                 : (int)(((Textures.SingleStarWidth / 2 * count) + 4) * Textures.StarsScale);
             if (!bounds.Contains(x, y))

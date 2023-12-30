@@ -11,8 +11,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Items.Unlocks;
+using StardewArchipelago.Textures;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
@@ -20,21 +22,28 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.Tools;
 using xTile.Dimensions;
-using Rectangle = xTile.Dimensions.Rectangle;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
     public static class MineshaftInjections
     {
+        private const string TREASURE_LOCATION = "The Mines Floor {0} Treasure";
+        private const string ELEVATOR_LOCATION = "Floor {0} Elevator";
+
         private static IMonitor _monitor;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
+        private static Texture2D _miniArchipelagoIcon;
 
-        public static void Initialize(IMonitor monitor, ArchipelagoClient archipelago, LocationChecker locationChecker)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker)
         {
             _monitor = monitor;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
+
+            var desiredTextureName = ArchipelagoTextures.COLOR;
+            _miniArchipelagoIcon = ArchipelagoTextures.GetColoredLogo(modHelper, 12, desiredTextureName);
         }
 
         public static bool CheckForAction_MineshaftChest_Prefix(Chest __instance, Farmer who, bool justCheckingForActivity, ref bool __result)
@@ -62,8 +71,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 __instance.items[0] = null;
                 __instance.items.RemoveAt(0);
                 __result = true;
-
-                _locationChecker.AddCheckedLocation($"The Mines Floor {Game1.mine.mineLevel} Treasure");
+                
+                _locationChecker.AddCheckedLocation(string.Format(TREASURE_LOCATION, Game1.mine.mineLevel));
 
                 return false; // don't run original logic
 
@@ -122,7 +131,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     return;
                 }
 
-                _locationChecker.AddCheckedLocation($"Floor {whatLevel} Elevator");
+                _locationChecker.AddCheckedLocation(string.Format(ELEVATOR_LOCATION, whatLevel));
             }
             catch (Exception ex)
             {
@@ -153,7 +162,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        public static bool CheckAction_LoadElevatorMenu_Prefix(MineShaft __instance, Location tileLocation, Rectangle viewport, Farmer who, ref bool __result)
+        public static bool CheckAction_LoadElevatorMenu_Prefix(MineShaft __instance, Location tileLocation, xTile.Dimensions.Rectangle viewport, Farmer who, ref bool __result)
         {
             try
             {
@@ -178,15 +187,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         private static void CreateElevatorMenuIfUnlocked()
         {
-            var numberOfMineElevatorReceived =
-                _archipelago.GetReceivedItemCount(VanillaUnlockManager.PROGRESSIVE_MINE_ELEVATOR_AP_NAME);
+            var numberOfMineElevatorReceived = _archipelago.GetReceivedItemCount(VanillaUnlockManager.PROGRESSIVE_MINE_ELEVATOR);
             var mineLevelUnlocked = numberOfMineElevatorReceived * 5;
             mineLevelUnlocked = Math.Min(120, Math.Max(0, mineLevelUnlocked));
 
             if (mineLevelUnlocked < 5)
             {
-                Game1.drawObjectDialogue(
-                    Game1.parseText(Game1.content.LoadString("Strings\\Locations:Mines_MineElevator_NotWorking")));
+                Game1.drawObjectDialogue(Game1.parseText(Game1.content.LoadString("Strings\\Locations:Mines_MineElevator_NotWorking")));
             }
             else
             {
@@ -194,6 +201,40 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 MineShaft.lowestLevelReached = mineLevelUnlocked;
                 Game1.activeClickableMenu = new MineElevatorMenu();
                 MineShaft.lowestLevelReached = previousMaxLevel;
+            }
+        }
+
+        // public override void draw(SpriteBatch b)
+        public static void Draw_AddArchipelagoIndicators_Postfix(MineElevatorMenu __instance, SpriteBatch b)
+        {
+            try
+            {
+                foreach (var button in __instance.elevators)
+                {
+                    var floor = Convert.ToInt32(button.name);
+                    var elevatorLocation = string.Format(ELEVATOR_LOCATION, floor);
+                    var treasureLocation = string.Format(TREASURE_LOCATION, floor);
+                    var checkRemainingOnThatFloor = _locationChecker.IsLocationMissingAndExists(elevatorLocation) || _locationChecker.IsLocationMissingAndExists(treasureLocation);
+
+                    if (!checkRemainingOnThatFloor)
+                    {
+                        continue;
+                    }
+
+                    var buttonLocation = new Vector2(button.bounds.X, button.bounds.Y);
+                    var position = buttonLocation + new Vector2(12f, 12f);
+                    var sourceRectangle = new Rectangle(0, 0, 12, 12);
+                    var color = Color.White;
+                    var origin = new Vector2(8f, 8f);
+                    b.Draw(_miniArchipelagoIcon, position, sourceRectangle, color, 0.0f, origin, 1f, SpriteEffects.None, 0.86f);
+                }
+                
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(Draw_AddArchipelagoIndicators_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
             }
         }
     }

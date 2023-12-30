@@ -13,8 +13,6 @@ using StardewDruid.Cast;
 using StardewDruid.Map;
 using StardewDruid.Monster;
 using StardewValley;
-using StardewValley.Locations;
-using System;
 using System.Collections.Generic;
 using static StardewValley.IslandGemBird;
 
@@ -74,22 +72,18 @@ namespace StardewDruid.Event.Challenge
 
         public override bool EventExpire()
         {
-                
-            if(eventLinger == -1)
+
+            if (eventLinger == -1)
             {
                 if (expireEarly)
                 {
 
                     CastVoice("you have the Island... for now", 3000);
 
-                    Dictionary<string, int> blessingList = Mod.instance.BlessingList();
-
                     if (!questData.name.Contains("Two"))
                     {
 
                         Game1.createObjectDebris(74, 24, 21);
-
-                        //mod.UpdateBlessing("shardGemShrine");
 
                     }
 

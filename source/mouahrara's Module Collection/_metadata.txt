@@ -6,9 +6,9 @@ mods:
    mouahrara's Module Collection
 
 latest commit:
-   commit 39241211dda5b494becdd1ac66472340cd9e88d7
+   commit c6a9fa7b6efe3cfdbe63a92156c803f5fb43cf31
    Author: mouahrara <mouahrara.noreply@protonmail.com>
-   Date:   Sat Nov 25 16:35:02 2023 +0100
+   Date:   Thu Dec 14 04:51:34 2023 +0100
    
-       mouahrara's Module Collection 1.0.2
+       Update default controller keys
    

@@ -16,6 +16,7 @@ using DeepWoodsMod.Stuff;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
+using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
@@ -200,9 +201,11 @@ namespace DeepWoodsMod
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("SMAPI.CommonErrors", "AvoidNetField")]
-        public DeepWoods(DeepWoods parent, int level, EnterDirection enterDir)
+        public DeepWoods(DeepWoods parent, int level, EnterDirection enterDir, bool spawnedFromObelisk)
             : this()
         {
+            this.spawnedFromObelisk.Value = spawnedFromObelisk;
+
             base.isOutdoors.Value = true;
             base.ignoreDebrisWeather.Value = true;
             base.ignoreOutdoorLighting.Value = true;
@@ -222,11 +225,9 @@ namespace DeepWoodsMod
             this.parentName.Value = parent?.Name;
             this.ParentExitLocation = parent?.GetExit(EnterDirToExitDir(enterDir))?.Location ?? new Location();
             this.level.Value = level;
-            DeepWoodsState.LowestLevelReached = Math.Max(DeepWoodsState.LowestLevelReached, this.level.Value - 1);
+            DeepWoodsState.LowestLevelReached = Math.Max(DeepWoodsState.LowestLevelReached, this.level.Value);
             this.EnterDir = enterDir;
             this.spawnTime.Value = Game1.timeOfDay;
-
-            this.spawnedFromObelisk.Value = parent?.spawnedFromObelisk?.Value ?? false;
 
             ModEntry.GetAPI().CallOnCreate(this);
 
@@ -247,16 +248,10 @@ namespace DeepWoodsMod
             }
         }
 
-        public DeepWoods(int level)
-            : this(null, level, EnterDirection.FROM_TOP)
-        {
-            this.spawnedFromObelisk.Value = true;
-        }
-
         protected override void initNetFields()
         {
             base.initNetFields();
-            this.NetFields.AddFields(parentName, parentExitLocation, hasReceivedNetworkData, enterDir, enterLocation, exits, uniqueMultiplayerID, level, mapWidth, mapHeight, isLichtung, lichtungHasLake, lichtungCenter, spawnedFromObelisk, hasEverBeenVisited, spawnTime, abandonedByParentTime, playerCount, isLichtungSetByAPI, isMapSizeSetByAPI, canGetLost, additionalExitLocations, isOverrideMap);
+            this.NetFields.AddFields(parentName, parentExitLocation, hasReceivedNetworkData, isInfested, enterDir, enterLocation, exits, uniqueMultiplayerID, level, mapWidth, mapHeight, isLichtung, lichtungHasLake, lichtungCenter, spawnedFromObelisk, hasEverBeenVisited, spawnTime, abandonedByParentTime, playerCount, isLichtungSetByAPI, isMapSizeSetByAPI, canGetLost, additionalExitLocations, isOverrideMap);
         }
 
         private void FillLevel()
@@ -425,7 +420,7 @@ namespace DeepWoodsMod
                 || mapHeight.Value == 0)
                 return;
 
-            ModEntry.Log($"FixPlayerPosAfterWarp: {this.Name}, mapWidth: {mapWidth}", LogLevel.Trace);
+            ModEntry.Log($"FixPlayerPosAfterWarp: {this.Name}, mapWidth: {mapWidth}, pos: {who.Position.X}, {who.Position.Y}", LogLevel.Trace);
 
             // First check for current warp request (stored globally for local player):
             if (DeepWoodsManager.currentWarpRequestName == this.Name
@@ -435,9 +430,14 @@ namespace DeepWoodsMod
                 DeepWoodsManager.currentWarpRequestName = null;
                 DeepWoodsManager.currentWarpRequestLocation = null;
             }
+            // then check if we spawned at the minecart (no action needed):
+            else if (Level == 1 && who.Position.X == DeepWoodsMineCart.MineCartLocation.X && who.Position.Y == (DeepWoodsMineCart.MineCartLocation.Y + 1))
+            {
+                // noop
+            }
+            // Otherwise we will heuristically determine the nearest valid location:
             else
             {
-                // If no current warp request is known, we will heuristically determine the nearest valid location:
                 Vector2 nearestEnterLocation = new Vector2(EnterLocation.X * 64, EnterLocation.Y * 64);
                 float nearestEnterLocationDistance = (nearestEnterLocation - who.Position).Length();
                 int faceDirection = EnterDirToFacingDirection(this.EnterDir);
@@ -453,7 +453,6 @@ namespace DeepWoodsMod
                     }
                 }
                 who.Position = nearestEnterLocation;
-                // who.faceDirection(faceDirection); // Keep original face direction
             }
 
             // Finally fix any errors on the border (this still happens according to some bug reports)
@@ -501,7 +500,7 @@ namespace DeepWoodsMod
                 DeepWoods exitDeepWoods = Game1.getLocationFromName(exit.TargetLocationName) as DeepWoods;
                 if (exitDeepWoods == null)
                 {
-                    exitDeepWoods = new DeepWoods(this, this.level.Value + 1, ExitDirToEnterDir(exit.ExitDir));
+                    exitDeepWoods = new DeepWoods(this, this.level.Value + 1, ExitDirToEnterDir(exit.ExitDir), false);
                     DeepWoodsManager.AddDeepWoodsToGameLocations(exitDeepWoods);
                 }
                 exit.TargetLocationName = exitDeepWoods.Name;
@@ -1175,11 +1174,30 @@ namespace DeepWoodsMod
         {
             base.updateCharacters(time);
 
-            if (this.isInfested.Value && !this.characters.Any(c => c is Monster))
+            if (Context.IsMainPlayer && this.isInfested.Value && !this.characters.Any(c => c is Monster))
             {
-                // not infested anymore!
-                this.isInfested.Value = false;
+                DeInfest();
+            }
+        }
 
+        public void DeInfest()
+        {
+            if (Context.IsMainPlayer)
+            {
+                foreach (Farmer who in Game1.otherFarmers.Values)
+                {
+                    if (who != Game1.player)
+                    {
+                        ModEntry.SendMessage(Name, MessageId.DeInfest, who.UniqueMultiplayerID);
+                    }
+                }
+            }
+
+            // not infested anymore!
+            this.isInfested.Value = false;
+
+            if (Game1.player.currentLocation == this)
+            {
                 // audible feedback
                 Game1.playSound(Sounds.YOBA);
 
@@ -1188,24 +1206,24 @@ namespace DeepWoodsMod
                 {
                     Game1.changeMusicTrack("woodsTheme");
                 }
-
-                // restore good debris
-                ModEntry.GetAPI().CallBeforeDebrisCreation(this);
-                if (!ModEntry.GetAPI().CallOverrideDebrisCreation(this))
-                {
-                    DeepWoodsDebris.Initialize(this);
-                }
-                ModEntry.GetAPI().CallAfterDebrisCreation(this);
-
-                // remove infested look
-                DeepWoodsBuilder.RemoveInfested(this, this.map);
-
-                // spawn a gift
-                DeepWoodsStuffCreator.ClearAndGiftInfestedLevel(this, new DeepWoodsRandom(this, this.seed ^ Game1.currentGameTime.TotalGameTime.Milliseconds ^ Game1.random.Next()));
-
-                // spawn critters
-                tryToAddCritters(false);
             }
+
+            // restore good debris
+            ModEntry.GetAPI().CallBeforeDebrisCreation(this);
+            if (!ModEntry.GetAPI().CallOverrideDebrisCreation(this))
+            {
+                DeepWoodsDebris.Initialize(this);
+            }
+            ModEntry.GetAPI().CallAfterDebrisCreation(this);
+
+            // remove infested look
+            DeepWoodsBuilder.RemoveInfested(this, this.map);
+
+            // spawn a gift
+            DeepWoodsStuffCreator.ClearAndGiftInfestedLevel(this, new DeepWoodsRandom(this, this.seed ^ Game1.currentGameTime.TotalGameTime.Milliseconds ^ Game1.random.Next()));
+
+            // spawn critters
+            tryToAddCritters(false);
         }
     }
 }

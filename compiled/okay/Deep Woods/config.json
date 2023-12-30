@@ -62,6 +62,9 @@
   "Level": {
     "MinLevelForFlowers": 3,
     "MinLevelForFruits": 5,
+    "MinLevelForSilverFruits": 25,
+    "MinLevelForGoldFruits": 75,
+    "MinLevelForIridiumFruits": 100,
     "MinLevelForThornyBushes": 10,
     "MinLevelForDangerousMonsters": 15,
     "MinLevelForBuffedMonsters": 15,
@@ -484,6 +487,60 @@
           }
         }
       },
+      "ChanceForSilverFruits": {
+        "Value": {
+          "BadLuck": 15,
+          "Neutral": 20,
+          "GoodLuck": 25
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForGoldFruits": {
+        "Value": {
+          "BadLuck": 5,
+          "Neutral": 20,
+          "GoodLuck": 35
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
+      "ChanceForIridiumFruits": {
+        "Value": {
+          "BadLuck": 0,
+          "Neutral": 22,
+          "GoodLuck": 45
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
       "ChanceForWeed": {
         "Value": {
           "BadLuck": 20,
@@ -610,6 +667,24 @@
           }
         }
       },
+      "ChanceForExtraForageable": {
+        "Value": {
+          "BadLuck": 0,
+          "Neutral": 0,
+          "GoodLuck": 0
+        },
+        "Range": 100,
+        "RangeLevelModifier": {
+          "Min": {
+            "Level": 0,
+            "Modifier": 0
+          },
+          "Max": {
+            "Level": 0,
+            "Modifier": 0
+          }
+        }
+      },
       "ResourceClump": {
         "ChanceForMeteorite": {
           "Value": {
@@ -684,6 +759,98 @@
           }
         }
       },
+      "TreeTypes": [
+        {
+          "Value": 1,
+          "Weight": {
+            "BadLuck": 300,
+            "Neutral": 300,
+            "GoodLuck": 300
+          }
+        },
+        {
+          "Value": 2,
+          "Weight": {
+            "BadLuck": 300,
+            "Neutral": 300,
+            "GoodLuck": 300
+          }
+        },
+        {
+          "Value": 3,
+          "Weight": {
+            "BadLuck": 300,
+            "Neutral": 300,
+            "GoodLuck": 300
+          }
+        },
+        {
+          "Value": 8,
+          "Weight": {
+            "BadLuck": 100,
+            "Neutral": 100,
+            "GoodLuck": 100
+          }
+        }
+      ],
+      "FruitTreeTypes": [
+        {
+          "Value": 628,
+          "Weight": {
+            "BadLuck": 200,
+            "Neutral": 200,
+            "GoodLuck": 200
+          }
+        },
+        {
+          "Value": 629,
+          "Weight": {
+            "BadLuck": 200,
+            "Neutral": 200,
+            "GoodLuck": 200
+          }
+        },
+        {
+          "Value": 630,
+          "Weight": {
+            "BadLuck": 200,
+            "Neutral": 200,
+            "GoodLuck": 200
+          }
+        },
+        {
+          "Value": 631,
+          "Weight": {
+            "BadLuck": 200,
+            "Neutral": 200,
+            "GoodLuck": 200
+          }
+        },
+        {
+          "Value": 632,
+          "Weight": {
+            "BadLuck": 200,
+            "Neutral": 200,
+            "GoodLuck": 200
+          }
+        },
+        {
+          "Value": 633,
+          "Weight": {
+            "BadLuck": 200,
+            "Neutral": 200,
+            "GoodLuck": 200
+          }
+        },
+        {
+          "Value": 835,
+          "Weight": {
+            "BadLuck": 200,
+            "Neutral": 200,
+            "GoodLuck": 200
+          }
+        }
+      ],
       "FruitCount": [
         {
           "Value": 0,
@@ -777,7 +944,11 @@
             "GoodLuck": 30
           }
         }
-      ]
+      ],
+      "WinterForageables": [],
+      "SummerForageables": [],
+      "FallForageables": [],
+      "SpringForageables": []
     },
     "Clearings": {
       "ChanceForClearing": {

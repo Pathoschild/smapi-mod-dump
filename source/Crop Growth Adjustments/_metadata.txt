@@ -6,9 +6,9 @@ mods:
    Crop Growth Adjustments
 
 latest commit:
-   commit f81ce2a42acc9515f06a25f4257e3d1743182cc3
+   commit c9ac2c96dec92da7c98b7ea37324cfcb8231f8fc
    Author: Hleb Zhynko <gleb.zhinko@protonmail.com>
-   Date:   Thu Nov 9 22:48:14 2023 -0600
+   Date:   Sat Dec 30 01:31:02 2023 +0100
    
-       fix special sprites not showing up and prepare for release
+       fix error in CropNewDay when a crop has no phases
    

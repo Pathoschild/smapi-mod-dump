@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers;
 #region using directives
 
 using System.Collections.Generic;
-using DaLion.Overhaul.Modules.Professions;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Constants;
 using DaLion.Shared.Extensions;

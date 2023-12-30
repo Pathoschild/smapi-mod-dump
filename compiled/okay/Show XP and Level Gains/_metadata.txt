@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19501
+IDs: Adverserath.ShowXP
+update keys: Nexus:19501

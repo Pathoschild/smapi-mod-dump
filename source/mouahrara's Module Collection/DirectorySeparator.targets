@@ -1,6 +1,0 @@
-<Project>
-	<PropertyGroup>
-		<DirectorySeparator Condition="'$(OS)' == 'Windows_NT'">\</DirectorySeparator>
-		<DirectorySeparator Condition="'$(OS)' != 'Windows_NT'">/</DirectorySeparator>
-	</PropertyGroup>
-</Project>

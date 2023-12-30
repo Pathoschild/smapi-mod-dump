@@ -72,9 +72,9 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 
 			if (__instance.GetType() == typeof(GeodeMenu))
 			{
-				if (GeodesAutoProcessUtility.GetFoundArtifact() != null)
+				if (GeodesAutoProcessUtility.FoundArtifact != null)
 				{
-					Game1.player.holdUpItemThenMessage(GeodesAutoProcessUtility.GetFoundArtifact());
+					Game1.player.holdUpItemThenMessage(GeodesAutoProcessUtility.FoundArtifact);
 				}
 				GeodesAutoProcessUtility.CleanBeforeClosingGeodeMenu();
 			}

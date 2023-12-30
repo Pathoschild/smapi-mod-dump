@@ -10,41 +10,39 @@
 
 using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
-using StardewDruid.Event.Challenge;
-using StardewDruid.Map;
+using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Tools;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using xTile.Dimensions;
-using xTile.Layers;
-using xTile.Tiles;
 
 namespace StardewDruid.Event.World
 {
     public class Whisk : EventHandle
     {
 
-        //public int source;
+        public Vector2 origin;
 
-        Vector2 destination;
+        public Vector2 destination;
 
-        //public Whisk(Vector2 target, Rite rite, Vector2 Destination, int Source)
+        public List<TemporaryAnimatedSprite> animationList;
+
         public Whisk(Vector2 target, Rite rite, Vector2 Destination)
             : base(target, rite)
         {
 
             expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 2;
 
-            //source = Source;
+            origin = targetVector * 64f;
 
             destination = Destination * 64;
+
+            animationList = new();
 
         }
 
         public override void EventTrigger()
         {
+
+            animationList.Add(ModUtility.AnimateFateTarget(targetLocation, origin, destination));
 
             Mod.instance.RegisterEvent(this, "whisk");
 
@@ -60,7 +58,7 @@ namespace StardewDruid.Event.World
 
             }
 
-            if(targetPlayer.currentLocation.Name != targetLocation.Name)
+            if (targetPlayer.currentLocation.Name != targetLocation.Name)
             {
 
                 return false;
@@ -77,8 +75,19 @@ namespace StardewDruid.Event.World
             return true;
 
         }
+        public void RemoveAnimations()
+        {
+            if (animationList.Count > 0)
+            {
+                foreach (TemporaryAnimatedSprite animation in animationList)
+                {
+                    targetLocation.temporarySprites.Remove(animation);
+                }
+            }
 
-        public override bool EventPerformAction()
+        }
+
+        public override bool EventPerformAction(SButton Button)
         {
 
             if (!EventActive())
@@ -103,7 +112,7 @@ namespace StardewDruid.Event.World
 
         public override void EventInterval()
         {
-            
+
             if (riteData.caster.isRidingHorse())
             {
 
@@ -120,7 +129,9 @@ namespace StardewDruid.Event.World
 
             riteData.caster.Position = destination;
 
-            ModUtility.AnimateQuickWarp(targetLocation, destination - new Vector2(0,32));
+            ModUtility.AnimateQuickWarp(targetLocation, destination - new Vector2(0, 32), "Solar");
+
+            RemoveAnimations();
 
             expireEarly = true;
 

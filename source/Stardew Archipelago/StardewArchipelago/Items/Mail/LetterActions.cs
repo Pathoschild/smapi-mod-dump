@@ -25,6 +25,8 @@ using Object = StardewValley.Object;
 using StardewArchipelago.Items.Unlocks;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer;
 using StardewArchipelago.Stardew;
+using StardewArchipelago.GameModifications.Modded;
+using StardewArchipelago.Stardew.NameMapping;
 
 namespace StardewArchipelago.Items.Mail
 {
@@ -36,23 +38,25 @@ namespace StardewArchipelago.Items.Mail
         private WeaponsManager _weaponsManager;
         private readonly TrapManager _trapManager;
         private readonly BabyBirther _babyBirther;
+        private readonly ToolUpgrader _toolUpgrader;
         private Dictionary<string, Action<string>> _letterActions;
 
-        public LetterActions(IModHelper modHelper, Mailman mail, ArchipelagoClient archipelago, WeaponsManager weaponsManager, TrapManager trapManager)
+        public LetterActions(IModHelper modHelper, Mailman mail, ArchipelagoClient archipelago, WeaponsManager weaponsManager, TrapManager trapManager, BabyBirther babyBirther)
         {
             _modHelper = modHelper;
             _mail = mail;
             _archipelago = archipelago;
             _weaponsManager = weaponsManager;
             _trapManager = trapManager;
-            _babyBirther = new BabyBirther();
+            _babyBirther = babyBirther;
+            _toolUpgrader = new ToolUpgrader();
+            var modLetterActions = new ModLetterActions();
             _letterActions = new Dictionary<string, Action<string>>();
             _letterActions.Add(LetterActionsKeys.Friendship, IncreaseFriendshipWithEveryone);
             _letterActions.Add(LetterActionsKeys.Backpack, (_) => IncreaseBackpackLevel());
             _letterActions.Add(LetterActionsKeys.DwarvishTranslationGuide, (_) => ReceiveDwarvishTranslationGuide());
             _letterActions.Add(LetterActionsKeys.SkullKey, (_) => ReceiveSkullKey());
             _letterActions.Add(LetterActionsKeys.RustyKey, (_) => ReceiveRustyKey());
-            _letterActions.Add(LetterActionsKeys.AdventurerGuild, (_) => ReceiveAdventurerGuild());
             _letterActions.Add(LetterActionsKeys.ClubCard, (_) => ReceiveClubCard());
             _letterActions.Add(LetterActionsKeys.MagnifyingGlass, (_) => ReceiveMagnifyingGlass());
             _letterActions.Add(LetterActionsKeys.IridiumSnakeMilk, (_) => ReceiveIridiumSnakeMilk());
@@ -61,18 +65,22 @@ namespace StardewArchipelago.Items.Mail
             _letterActions.Add(LetterActionsKeys.GoldenScythe, (_) => ReceiveGoldenScythe());
             _letterActions.Add(LetterActionsKeys.PierreStocklist, (_) => ReceivePierreStocklist());
             _letterActions.Add(LetterActionsKeys.BeachBridge, (_) => RepairBeachBridge());
+            _letterActions.Add(LetterActionsKeys.FruitBats, (_) => SetupFruitBats());
+            _letterActions.Add(LetterActionsKeys.MushroomBoxes, (_) => SetupMushroomBoxes());
             _letterActions.Add(LetterActionsKeys.ProgressiveTool, ReceiveProgressiveTool);
             _letterActions.Add(LetterActionsKeys.FishingRod, (_) => GetFishingRodOfNextLevel());
             _letterActions.Add(LetterActionsKeys.ReturnScepter, (_) => GetReturnScepter());
             _letterActions.Add(LetterActionsKeys.GiveBigCraftable, ReceiveBigCraftable);
             _letterActions.Add(LetterActionsKeys.GiveRing, ReceiveRing);
-            _letterActions.Add(LetterActionsKeys.GiveBoots, ReceiveBoots);
+            _letterActions.Add(LetterActionsKeys.GiveSpecificBoots, ReceiveBoots);
             _letterActions.Add(LetterActionsKeys.GiveMeleeWeapon, ReceiveMeleeWeapon);
             _letterActions.Add(LetterActionsKeys.GiveWeapon, (_) => GetWeaponOfNextTier());
             _letterActions.Add(LetterActionsKeys.GiveSword, (_) => GetSwordOfNextTier());
             _letterActions.Add(LetterActionsKeys.GiveClub, (_) => GetClubOfNextTier());
             _letterActions.Add(LetterActionsKeys.GiveDagger, (_) => GetDaggerOfNextTier());
+            _letterActions.Add(LetterActionsKeys.GiveProgressiveBoots, (_) => GetBootsOfNextTier());
             _letterActions.Add(LetterActionsKeys.GiveSlingshot, ReceiveSlingshot);
+            _letterActions.Add(LetterActionsKeys.GiveProgressiveSlingshot, (_) => GetSlingshotOfNextTier());
             _letterActions.Add(LetterActionsKeys.GiveBed, ReceiveBed);
             _letterActions.Add(LetterActionsKeys.GiveFishTank, ReceiveFishTank);
             _letterActions.Add(LetterActionsKeys.GiveTV, ReceiveTV);
@@ -82,6 +90,8 @@ namespace StardewArchipelago.Items.Mail
             _letterActions.Add(LetterActionsKeys.SpawnBaby, (_) => _babyBirther.SpawnNewBaby());
             _letterActions.Add(LetterActionsKeys.Trap, ExecuteTrap);
             _letterActions.Add(LetterActionsKeys.LearnCookingRecipe, LearnCookingRecipe);
+            _letterActions.Add(LetterActionsKeys.LearnSpecialCraftingRecipe, LearnSpecialCraftingRecipe);
+            modLetterActions.AddModLetterActions(_letterActions);
         }
 
         public void ExecuteLetterAction(string key, string parameter)
@@ -184,11 +194,6 @@ namespace StardewArchipelago.Items.Mail
             Game1.player.HasTownKey = true;
         }
 
-        private void ReceiveAdventurerGuild()
-        {
-            Game1.player.mailReceived.Add("guildMember");
-        }
-
         private void ReceiveGoldenScythe()
         {
             Game1.playSound("parry");
@@ -213,6 +218,17 @@ namespace StardewArchipelago.Items.Mail
             Beach.fixBridge(beach);
         }
 
+        private void SetupFruitBats()
+        {
+            Game1.MasterPlayer.caveChoice.Value = 1;
+        }
+
+        private void SetupMushroomBoxes()
+        {
+            var farmCave = Game1.getLocationFromName("FarmCave") as FarmCave;
+            farmCave.setUpMushroomHouse();
+        }
+
         private void ReceiveProgressiveTool(string toolGenericName)
         {
             if (toolGenericName.Contains("Trash_Can"))
@@ -221,7 +237,7 @@ namespace StardewArchipelago.Items.Mail
                 return;
             }
 
-            var upgradedTool = UpgradeToolInEntireWorld(toolGenericName);
+            var upgradedTool = _toolUpgrader.UpgradeToolInEntireWorld(toolGenericName);
 
             if (upgradedTool == null)
             {
@@ -229,119 +245,6 @@ namespace StardewArchipelago.Items.Mail
             }
 
             Game1.player.holdUpItemThenMessage(upgradedTool);
-        }
-
-        private static Tool UpgradeToolInEntireWorld(string toolGenericName)
-        {
-            var player = Game1.player;
-            var toolName = toolGenericName.Replace(" ", "_");
-            if (TryUpgradeToolInInventory(player, toolName, out var upgradedTool))
-            {
-                return upgradedTool;
-            }
-
-            if (TryUpgradeToolInChests(toolName, out upgradedTool))
-            {
-                return upgradedTool;
-            }
-
-            if (TryUpgradeToolInLostAndFoundBox(player, toolName, out upgradedTool))
-            {
-                return upgradedTool;
-            }
-
-            return null;
-        }
-
-        private static bool TryUpgradeToolInInventory(Farmer player, string toolName, out Tool upgradedTool)
-        {
-            foreach (var playerItem in player.Items)
-            {
-                if (TryUpgradeCorrectTool(toolName, playerItem, out upgradedTool))
-                {
-                    return true;
-                }
-            }
-
-            upgradedTool = null;
-            return false;
-        }
-
-        private static bool TryUpgradeToolInChests(string toolName, out Tool upgradedTool)
-        {
-            var locations = Game1.locations.ToList();
-
-            foreach (var building in Game1.getFarm().buildings)
-            {
-                if (building?.indoors.Value == null)
-                {
-                    continue;
-                }
-                locations.Add(building.indoors.Value);
-            }
-
-            foreach (var gameLocation in locations)
-            {
-                foreach (var (tile, gameObject) in gameLocation.Objects.Pairs)
-                {
-                    if (gameObject is not Chest chest)
-                    {
-                        continue;
-                    }
-
-                    foreach (var chestItem in chest.items)
-                    {
-                        if (TryUpgradeCorrectTool(toolName, chestItem, out upgradedTool))
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            foreach (var junimoChestItem in Game1.player.team.junimoChest)
-            {
-                if (TryUpgradeCorrectTool(toolName, junimoChestItem, out upgradedTool))
-                {
-                    return true;
-                }
-            }
-
-            upgradedTool = null;
-            return false;
-        }
-
-        private static bool TryUpgradeToolInLostAndFoundBox(Farmer player, string toolName, out Tool upgradedTool)
-        {
-            foreach (var lostAndFoundItem in player.team.returnedDonations)
-            {
-                if (TryUpgradeCorrectTool(toolName, lostAndFoundItem, out upgradedTool))
-                {
-                    return true;
-                }
-            }
-
-            upgradedTool = null;
-            return false;
-        }
-
-        private static bool TryUpgradeCorrectTool(string toolName, Item item, out Tool upgradedTool)
-        {
-            if (item is not Tool toolToUpgrade || !toolToUpgrade.Name.Replace(" ", "_").Contains(toolName))
-            {
-                upgradedTool = null;
-                return false;
-            }
-
-            if (toolToUpgrade.UpgradeLevel < 4)
-            {
-                toolToUpgrade.UpgradeLevel++;
-            }
-
-            {
-                upgradedTool = toolToUpgrade;
-                return true;
-            }
         }
 
         private static void ReceiveTrashCanUpgrade()
@@ -359,7 +262,7 @@ namespace StardewArchipelago.Items.Mail
         private void GetFishingRodOfNextLevel()
         {
             // This includes the current letter due to the timing of this patch
-            var numberOfPreviousFishingRodLetters = _mail.OpenedMailsContainingKey(VanillaUnlockManager.PROGRESSIVE_FISHING_ROD_AP_NAME);
+            var numberOfPreviousFishingRodLetters = _mail.OpenedMailsContainingKey(VanillaUnlockManager.PROGRESSIVE_FISHING_ROD);
 
             // received 1 -> training rod [1]
             // received 2 -> bamboo [0]
@@ -387,11 +290,13 @@ namespace StardewArchipelago.Items.Mail
             Game1.player.addItemByMenuIfNecessary(itemToAdd);
         }
 
-        private void ReceiveBigCraftable(string bigCraftableId)
+        private void ReceiveBigCraftable(string bigCraftableIdAndAmount)
         {
-            var id = int.Parse(bigCraftableId);
+            var parts = bigCraftableIdAndAmount.Split(BigCraftable.BIG_CRAFTABLE_SEPARATOR);
+            var id = int.Parse(parts[0]);
+            var amount = parts.Length > 1 ? int.Parse(parts[1]) : 1;
             var bigCraftable = new Object(Vector2.Zero, id);
-            bigCraftable.Stack = 1;
+            bigCraftable.Stack = amount;
             ReceiveItem(bigCraftable);
         }
 
@@ -599,8 +504,6 @@ namespace StardewArchipelago.Items.Mail
 
         private static void RepairParrotExpress()
         {
-            var islandWest = FindLocation<IslandWest>(_islandWest);
-
             Game1.addMailForTomorrow("Island_UpgradeParrotPlatform", true, true);
             Game1.netWorldState.Value.ParrotPlatformsUnlocked.Value = true;
         }
@@ -672,30 +575,25 @@ namespace StardewArchipelago.Items.Mail
             GetProgressiveEquipmentOfNextTier(VanillaUnlockManager.PROGRESSIVE_BOOTS, _weaponsManager.BootsByTier);
         }
 
+        private void GetSlingshotOfNextTier()
+        {
+            GetProgressiveEquipmentOfNextTier(VanillaUnlockManager.PROGRESSIVE_SLINGSHOT, _weaponsManager.SlingshotsByTier);
+        }
+
         private void GetProgressiveEquipmentOfNextTier(string apUnlock, Dictionary<int, List<StardewItem>> equipmentsByTier)
         {
             // This includes the current letter due to the timing of this patch
             var tier = _mail.OpenedMailsContainingKey(apUnlock);
-            tier = Math.Max(1, Math.Min(5, tier));
+            tier = Math.Max(1, tier);
 
-            var equipmentsOfTier = equipmentsByTier[tier];
-            if (!equipmentsOfTier.Any())
+            while (!equipmentsByTier.ContainsKey(tier) || !equipmentsByTier[tier].Any())
             {
-                while (tier > 1 && !equipmentsOfTier.Any())
-                {
-                    tier--;
-                    equipmentsOfTier = equipmentsByTier[tier];
-                }
-
-                if (!equipmentsOfTier.Any())
-                {
-                    return;
-                }
+                tier--;
             }
 
+            var equipmentsOfTier = equipmentsByTier[tier];
             var chosenEquipmentIndex = Game1.random.Next(0, equipmentsOfTier.Count);
             var chosenEquipment = equipmentsOfTier[chosenEquipmentIndex];
-
             var equipmentToGive = chosenEquipment.PrepareForGivingToFarmer();
 
             Game1.player.holdUpItemThenMessage(equipmentToGive);
@@ -704,7 +602,26 @@ namespace StardewArchipelago.Items.Mail
 
         private void LearnCookingRecipe(string recipeItemName)
         {
-            Game1.player.cookingRecipes.Add(recipeItemName, 0);
+            var realRecipeName = recipeItemName.Replace("_", " ");
+            if (Game1.player.cookingRecipes.ContainsKey(realRecipeName))
+            {
+                Game1.player.cookingRecipes[realRecipeName] = 0;
+                return;
+            }
+            Game1.player.cookingRecipes.Add(realRecipeName, 0);
+        }
+
+        private void LearnSpecialCraftingRecipe(string recipeItemName)
+        {
+            // When more mods start to need name mapping, we can make a generic version of this
+            var nameMapper = new CompoundNameMapper(_archipelago.SlotData);
+            var internalName = nameMapper.GetInternalName(recipeItemName.Replace("_", " "));
+            if (Game1.player.craftingRecipes.ContainsKey(internalName))
+            {
+                Game1.player.craftingRecipes[internalName] = 0;
+                return;
+            }
+            Game1.player.craftingRecipes.Add(internalName, 0);
         }
     }
 }

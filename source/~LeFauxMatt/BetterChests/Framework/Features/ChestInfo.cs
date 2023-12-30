@@ -173,8 +173,8 @@ internal sealed class ChestInfo : Feature
         }
 
         if (Game1.activeClickableMenu is not ItemGrabMenu
-         || BetterItemGrabMenu.Context is null
-         || this._config.ChestInfo is FeatureOption.Disabled)
+            || BetterItemGrabMenu.Context is null
+            || this._config.ChestInfo is FeatureOption.Disabled)
         {
             return;
         }
@@ -196,7 +196,7 @@ internal sealed class ChestInfo : Feature
         var x = itemGrabMenu.xPositionOnScreen - IClickableMenu.borderWidth / 2 - 384;
         var y = itemGrabMenu.yPositionOnScreen;
         if (BetterItemGrabMenu.Context?.CustomColorPicker is FeatureOption.Enabled
-         && this._config.CustomColorPickerArea is ComponentArea.Left)
+            && this._config.CustomColorPickerArea is ComponentArea.Left)
         {
             x -= 2 * Game1.tileSize;
         }
@@ -231,7 +231,7 @@ internal sealed class ChestInfo : Feature
     private void OnInventoryChanged(object? sender, InventoryChangedEventArgs e)
     {
         if (Game1.activeClickableMenu is not ItemGrabMenu
-         || BetterItemGrabMenu.Context is not { ChestInfo: FeatureOption.Enabled } context)
+            || BetterItemGrabMenu.Context is not { ChestInfo: FeatureOption.Enabled } context)
         {
             this.Info.Clear();
             this.Dims.Clear();
@@ -244,7 +244,7 @@ internal sealed class ChestInfo : Feature
     private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
     {
         if (e.NewMenu is not ItemGrabMenu
-         || BetterItemGrabMenu.Context is not { ChestInfo: FeatureOption.Enabled } context)
+            || BetterItemGrabMenu.Context is not { ChestInfo: FeatureOption.Enabled } context)
         {
             this.Info.Clear();
             this.Dims.Clear();

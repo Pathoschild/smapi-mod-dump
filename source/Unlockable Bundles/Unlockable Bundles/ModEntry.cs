@@ -140,7 +140,7 @@ namespace Unlockable_Bundles
             api.BundlePurchasedEvent += evenTestMethod;
         }
 
-        private void evenTestMethod(object source, BundlePurchasedEventArgs e)
+        private void evenTestMethod(object source, IBundlePurchasedEventArgs e)
         {
             if (System.Diagnostics.Debugger.IsAttached)
                 System.Diagnostics.Debugger.Break();

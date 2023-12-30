@@ -18,7 +18,6 @@ using DaLion.Overhaul.Modules.Combat.Enums;
 using DaLion.Overhaul.Modules.Professions;
 using DaLion.Overhaul.Modules.Tools;
 using DaLion.Overhaul.Modules.Tools.Integrations;
-using DaLion.Shared.Extensions;
 using DaLion.Shared.Integrations.GMCM;
 
 #endregion using directives
@@ -62,8 +61,7 @@ internal sealed class GenericModConfigMenu : GMCMBuilder<GenericModConfigMenu>
                 getOptionName: I18n.Gmcm_Core_Modules,
                 pages: EnumerateModules().Skip(1).Where(m => m._ShouldEnable).ToArray(),
                 getPageId: module => module.Namespace,
-                getPageName: module => module.DisplayName,
-                getColumnsFromWidth: _ => 2);
+                getPageName: module => module.DisplayName);
 
         this.BuildImplicitly(() => Config);
 
@@ -133,15 +131,15 @@ internal sealed class GenericModConfigMenu : GMCMBuilder<GenericModConfigMenu>
     private static void ProfessionConfigSkillExpMultipliersOverride()
     {
         Instance!.AssertRegistered();
-        foreach (var (skillId, multiplier) in Config.Professions.SkillExpMultipliers)
+        foreach (var (skillId, multiplier) in Config.Professions.Experience.Multipliers)
         {
             if (Skill.TryFromName(skillId, out var skill))
             {
                 Instance.AddFloatSlider(
                     () => I18n.Gmcm_SkillExpMultipliers_Title(skill.DisplayName),
                     () => I18n.Gmcm_SkillExpMultipliers_Desc(skill.DisplayName),
-                    config => config.SkillExpMultipliers[skill.Name],
-                    (config, value) => config.SkillExpMultipliers[skill.Name] = value,
+                    config => config.Experience.Multipliers[skill.Name],
+                    (config, value) => config.Experience.Multipliers[skill.Name] = value,
                     () => Config.Professions,
                     0.2f,
                     2f,
@@ -149,17 +147,17 @@ internal sealed class GenericModConfigMenu : GMCMBuilder<GenericModConfigMenu>
                 continue;
             }
 
-            if (SCSkill.Loaded.TryGetValue(skillId, out var scSkill))
+            if (CustomSkill.Loaded.TryGetValue(skillId, out var customSkill))
             {
                 Instance.AddFloatSlider(
-                    () => I18n.Gmcm_SkillExpMultipliers_Title(scSkill.DisplayName),
-                    () => I18n.Gmcm_SkillExpMultipliers_Desc(scSkill.DisplayName),
-                    config => config.SkillExpMultipliers[scSkill.StringId],
-                    (config, value) => config.SkillExpMultipliers[scSkill.StringId] = value,
+                    () => I18n.Gmcm_SkillExpMultipliers_Title(customSkill.DisplayName),
+                    () => I18n.Gmcm_SkillExpMultipliers_Desc(customSkill.DisplayName),
+                    config => config.Experience.Multipliers[customSkill.StringId],
+                    (config, value) => config.Experience.Multipliers[customSkill.StringId] = value,
                     () => Config.Professions,
                     0.2f,
                     2f,
-                    id: "SkillExpMultipliers." + scSkill.StringId);
+                    id: "SkillExpMultipliers." + customSkill.StringId);
             }
         }
     }
@@ -171,8 +169,8 @@ internal sealed class GenericModConfigMenu : GMCMBuilder<GenericModConfigMenu>
         Instance.AddDynamicListOption(
             I18n.Gmcm_StabbingSwords_Title,
             I18n.Gmcm_StabbingSwords_Desc,
-            () => Config.Combat.StabbingSwords.ToList(),
-            values => Config.Combat.StabbingSwords = values.ToHashSet(),
+            () => Config.Combat.WeaponsSlingshots.StabbingSwords.ToList(),
+            values => Config.Combat.WeaponsSlingshots.StabbingSwords = values.ToHashSet(),
             id: "StabbingSwords");
     }
 
@@ -180,15 +178,15 @@ internal sealed class GenericModConfigMenu : GMCMBuilder<GenericModConfigMenu>
     private static void CombatConfigColorByTierOverride()
     {
         Instance!.AssertRegistered();
-        for (var i = 0; i < Config.Combat.ColorByTier.Length; i++)
+        for (var i = 0; i < Config.Combat.ControlsUi.ColorByTier.Length; i++)
         {
             var tier = (WeaponTier)i;
-            var @default = Config.Combat.ColorByTier[i];
+            var @default = Config.Combat.ControlsUi.ColorByTier[i];
             Instance.AddColorPicker(
                 () => Instance._I18n.Get($"gmcm.color_by_tier.{tier.Name.ToLower()}.title"),
                 () => Instance._I18n.Get($"gmcm.color_by_tier.{tier.Name.ToLower()}.desc"),
-                config => config.ColorByTier[tier],
-                (config, value) => config.ColorByTier[tier] = value,
+                config => config.ControlsUi.ColorByTier[tier],
+                (config, value) => config.ControlsUi.ColorByTier[tier] = value,
                 () => Config.Combat,
                 @default,
                 false,

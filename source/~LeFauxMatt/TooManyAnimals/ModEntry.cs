@@ -74,8 +74,8 @@ public sealed class ModEntry : Mod
 
     [MemberNotNullWhen(true, nameof(ModEntry.Stock))]
     private bool ShowOverlay => Game1.activeClickableMenu is PurchaseAnimalsMenu
-                             && this.Stock is not null
-                             && this.Stock.Count > this.Config.AnimalShopLimit;
+        && this.Stock is not null
+        && this.Stock.Count > this.Config.AnimalShopLimit;
 
     private List<SObject>? Stock { get; set; }
 
@@ -107,8 +107,8 @@ public sealed class ModEntry : Mod
 
         // Limit stock
         stock = ModEntry.Instance.Stock.Skip(ModEntry.Instance.CurrentPage * ModEntry.Instance.Config.AnimalShopLimit)
-                        .Take(ModEntry.Instance.Config.AnimalShopLimit)
-                        .ToList();
+            .Take(ModEntry.Instance.Config.AnimalShopLimit)
+            .ToList();
     }
 
     private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
@@ -119,14 +119,14 @@ public sealed class ModEntry : Mod
         }
 
         if (e.Button is not SButton.MouseLeft or SButton.MouseRight
-         && !(e.Button.IsActionButton() || e.Button.IsUseToolButton()))
+            && !(e.Button.IsActionButton() || e.Button.IsUseToolButton()))
         {
             return;
         }
 
         var (x, y) = Game1.getMousePosition(true);
         if (this.NextPage.containsPoint(x, y)
-         && (this.CurrentPage + 1) * this.Config.AnimalShopLimit < this.Stock.Count)
+            && (this.CurrentPage + 1) * this.Config.AnimalShopLimit < this.Stock.Count)
         {
             ++this.CurrentPage;
         }
@@ -145,7 +145,7 @@ public sealed class ModEntry : Mod
         }
 
         if (this.Config.ControlScheme.NextPage.JustPressed()
-         && (this.CurrentPage + 1) * this.Config.AnimalShopLimit < this.Stock.Count)
+            && (this.CurrentPage + 1) * this.Config.AnimalShopLimit < this.Stock.Count)
         {
             ++this.CurrentPage;
             return;
@@ -240,15 +240,13 @@ public sealed class ModEntry : Mod
         var maxY = menu.animalsToPurchase.Max(component => component.bounds.Y);
         var bottomComponents = menu.animalsToPurchase.Where(component => component.bounds.Y == maxY).ToList();
         this.PreviousPage.upNeighborID = bottomComponents
-                                         .OrderBy(
-                                             component => Math.Abs(
-                                                 component.bounds.Center.X - this.PreviousPage.bounds.X))
-                                         .First()
-                                         .myID;
+            .OrderBy(component => Math.Abs(component.bounds.Center.X - this.PreviousPage.bounds.X))
+            .First()
+            .myID;
         this.NextPage.upNeighborID = bottomComponents
-                                     .OrderBy(component => Math.Abs(component.bounds.Center.X - this.NextPage.bounds.X))
-                                     .First()
-                                     .myID;
+            .OrderBy(component => Math.Abs(component.bounds.Center.X - this.NextPage.bounds.X))
+            .First()
+            .myID;
         foreach (var component in bottomComponents)
         {
             component.downNeighborID = component.bounds.Center.X <= menu.xPositionOnScreen + menu.width / 2

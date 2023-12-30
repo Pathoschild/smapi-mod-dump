@@ -37,12 +37,12 @@ namespace StardewArchipelago.GameModifications
 
         private void CleanInitiation(Quest quest)
         {
-            if (quest.id.Value != INITIATION_ID_SECOND_PART)
+            if (Game1.player.mailReceived.Contains("guildMember"))
             {
                 return;
             }
 
-            quest.questComplete();
+            Game1.player.mailReceived.Add("guildMember");
         }
 
         private void CleanRatProblem(Farmer player, Quest quest)

@@ -350,5 +350,35 @@
 				<property name="Action" value="DeepWoodsMaxStuff"/>
 			</properties>
 		</object>
+		<object id="27" name="TileData" x="576" y="336" width="16" height="16">
+			<properties>
+				<property name="Action" value="DeepWoodsMaxBooks"/>
+			</properties>
+		</object>
+		<object id="28" name="TileData" x="528" y="336" width="16" height="16">
+			<properties>
+				<property name="Action" value="DeepWoodsMaxBooks"/>
+			</properties>
+		</object>
+		<object id="29" name="TileData" x="544" y="336" width="16" height="16">
+			<properties>
+				<property name="Action" value="DeepWoodsMaxBooks"/>
+			</properties>
+		</object>
+		<object id="30" name="TileData" x="560" y="336" width="16" height="16">
+			<properties>
+				<property name="Action" value="DeepWoodsMaxBooks"/>
+			</properties>
+		</object>
+		<object id="31" name="TileData" x="448" y="288" width="16" height="16">
+			<properties>
+				<property name="Action" value="DeepWoodsMaxBooks"/>
+			</properties>
+		</object>
+		<object id="27" name="TileData" x="560" y="64" width="16" height="16">
+			<properties>
+				<property name="Action" value="DeepWoodsMaxBooks"/>
+			</properties>
+		</object>
 	</objectgroup>
 </map>

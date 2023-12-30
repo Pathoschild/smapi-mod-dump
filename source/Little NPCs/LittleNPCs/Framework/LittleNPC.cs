@@ -90,19 +90,17 @@ namespace LittleNPCs.Framework {
                 monitor.Log($"No bed spot for {child.Name} found, setting it to random point {Utility.Vector2ToPoint(bedSpot / 64f)}", LogLevel.Warn);
             }
 
-            string prefix = child.GetChildIndex() == 0 ? "FirstLittleNPC" : "SecondLittleNPC";
-
             var npcDispositions = Game1.content.Load<Dictionary<string, string>>("Data/NPCDispositions");
 
-            var sprite = new AnimatedSprite($"Characters/{prefix}{child.Name}", 0, 16, 32);
-            var portrait = Game1.content.Load<Texture2D>($"Portraits/{prefix}{child.Name}");
+            var sprite = new AnimatedSprite($"Characters/{LittleNPCInfo.CreateInternalAssetName(child.GetChildIndex(), child.Name)}", 0, 16, 32);
+            var portrait = Game1.content.Load<Texture2D>($"Portraits/{LittleNPCInfo.CreateInternalAssetName(child.GetChildIndex(), child.Name)}");
             var npc = new LittleNPC(monitor,
                                     child,
                                     sprite,
                                     bedSpot,
                                     child.DefaultMap,
                                     child.FacingDirection,
-                                    $"{prefix}{child.Name}",
+                                    LittleNPCInfo.CreateInternalAssetName(child.GetChildIndex(), child.Name),
                                     child.Name,
                                     null,
                                     portrait,

@@ -28,7 +28,7 @@ internal class Delegates
             !ArgUtility.TryGet(splitArgs, 1, out string ingredientItemId, out error) ||
             !ArgUtility.TryGetOptional(splitArgs, 2, out string ingredientPreservedItemId, out error))
         {
-            return ItemQueryResolver.DefaultResolvers.ErrorResult(key, arguments, logError, error);
+            return ItemQueryResolver.Helpers.ErrorResult(key, arguments, logError, error);
         }
 
         StardewValley.Object ingredient = ItemRegistry.Create(ingredientPreservedItemId ?? ingredientItemId) as StardewValley.Object;

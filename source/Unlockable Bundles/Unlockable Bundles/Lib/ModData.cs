@@ -66,6 +66,7 @@ namespace Unlockable_Bundles.Lib
             Instance.UnlockableSaveData[key][location].AlreadyPaid.TryAdd(requirement, value); //TryAdd because this code can run twice in splitscreen
             if (index != -1)
                 Instance.UnlockableSaveData[key][location].AlreadyPaidIndex.TryAdd(requirement, index);
+            API.UnlockableBundlesAPI.clearCache();
         }
 
         public static void setDiscovered(string key, string location, bool value = true)
@@ -98,6 +99,13 @@ namespace Unlockable_Bundles.Lib
                 return -1;
 
             return Game1.Date.TotalDays - entries.OrderBy(e => e.Value.DayPurchased).First().Value.DayPurchased;
+        }
+
+        public static UnlockableSaveData getUnlockableSaveData(string key, string location)
+        {
+            ensureExist(key, location);
+
+            return Instance.UnlockableSaveData[key][location];
         }
 
         public static void checkLegacySaveData()

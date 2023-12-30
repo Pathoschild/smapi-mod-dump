@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using System;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using xTile.Dimensions;
@@ -21,7 +22,7 @@ namespace mouahrarasModuleCollection.ClintsShop.SimultaneousServices.Patches
 		internal static void Apply(Harmony harmony)
 		{
 			harmony.Patch(
-				original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.blacksmith)),
+				original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.blacksmith), new Type[] { typeof(Location) }),
 				prefix: new HarmonyMethod(typeof(GameLocationPatch), nameof(BlacksmithPrefix))
 			);
 		}
@@ -34,15 +35,29 @@ namespace mouahrarasModuleCollection.ClintsShop.SimultaneousServices.Patches
 			foreach (NPC character in __instance.characters)
 			{
 				if (!character.Name.Equals("Clint"))
+				{
 					continue;
-				if (!character.getTileLocation().Equals(new Vector2(tileLocation.X, tileLocation.Y - 1)))
-					character.getTileLocation().Equals(new Vector2(tileLocation.X - 1, tileLocation.Y - 1));
+				}
+				if (character.Tile != new Vector2(tileLocation.X, tileLocation.Y - 1))
+				{
+					_ = character.Tile != new Vector2(tileLocation.X - 1, tileLocation.Y - 1);
+				}
 				character.faceDirection(2);
 				if (Game1.player.toolBeingUpgraded.Value != null && Game1.player.daysLeftForToolUpgrade.Value > 0)
 				{
-					if (!Game1.player.hasItemInInventory(535, 1) && !Game1.player.hasItemInInventory(536, 1) && !Game1.player.hasItemInInventory(537, 1) && !Game1.player.hasItemInInventory(749, 1) && !Game1.player.hasItemInInventory(275, 1) && !Game1.player.hasItemInInventory(791, 1))
+					bool flag = false;
+
+					foreach (Item item in Game1.player.Items)
 					{
-						Game1.activeClickableMenu = new ShopMenu(Utility.getBlacksmithStock(), 0, "Clint");
+						if (Utility.IsGeode(item))
+						{
+							flag = true;
+							break;
+						}
+					}
+					if (!flag)
+					{
+						Utility.TryOpenShopMenu("Blacksmith", "Clint");
 					}
 					else
 					{

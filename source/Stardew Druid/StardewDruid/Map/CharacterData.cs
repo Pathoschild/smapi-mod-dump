@@ -13,21 +13,43 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Character;
 using StardewModdingAPI;
 using StardewValley;
-using System;
+using StardewValley.Quests;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace StardewDruid.Map
 {
     public static class CharacterData
     {
 
+        public static void CharacterCheck(int progress)
+        {
+
+            if(progress >= 1 && !Mod.instance.characters.ContainsKey("Effigy"))
+            {
+
+                Mod.instance.CharacterRegister("Effigy", "FarmCave");
+
+            }
+
+            if (progress >= 20 && !Mod.instance.characters.ContainsKey("Jester"))
+            {
+
+                Mod.instance.CharacterRegister("Jester", "FarmCave");
+
+            }
+
+        }
+
+
         public static void CharacterLoad(string characterName, string startMap)
         {
+            if (!Context.IsMainPlayer) { 
+            
+                return; 
+            
+            }
 
             if (Mod.instance.characters.ContainsKey(characterName))
             {
@@ -50,6 +72,8 @@ namespace StardewDruid.Map
                 GameLocation startLocation = Game1.getLocationFromName(startMap);
 
                 startLocation.characters.Add(npcEffigy);
+
+                npcEffigy.currentLocation = startLocation;
 
                 npcEffigy.update(Game1.currentGameTime, startLocation);
 
@@ -87,6 +111,8 @@ namespace StardewDruid.Map
 
                 startLocation.characters.Add(npcJester);
 
+                npcJester.currentLocation = startLocation;
+
                 npcJester.update(Game1.currentGameTime, startLocation);
 
                 if (startMap == "Farm")
@@ -118,11 +144,11 @@ namespace StardewDruid.Map
 
             AnimatedSprite characterSprite = new();
 
-            characterSprite.textureName.Value = "18465_" + characterName + "_Sprite";
-
             characterSprite.spriteTexture = CharacterTexture(characterName);
 
-            characterSprite.loadedTexture = "18465_" + characterName + "_Sprite";
+            characterSprite.textureName.Value = "18465_" + characterName;
+
+            characterSprite.loadedTexture = "18465_" + characterName;
 
             switch (characterName)
             {
@@ -146,12 +172,21 @@ namespace StardewDruid.Map
 
                     break;
 
-                default:
+                case "Effigy":
 
 
                     characterSprite.SpriteHeight = 32;
 
                     characterSprite.SpriteWidth = 16;
+
+                    break;
+
+                default:
+
+
+                    characterSprite.SpriteHeight = 64;
+
+                    characterSprite.SpriteWidth = 64;
 
                     break;
 
@@ -163,8 +198,22 @@ namespace StardewDruid.Map
 
         public static Texture2D CharacterPortrait(string characterName)
         {
+            Texture2D characterPortrait;
 
-            Texture2D characterPortrait = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", characterName + "Portrait.png"));
+            switch (characterName)
+            {
+                case "Jester":
+                case "Effigy":
+
+                    characterPortrait = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", characterName + "Portrait.png"));
+
+                    break;
+
+                default:
+                    characterPortrait = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "DisembodiedPortrait.png"));
+                    break;
+
+            }
 
             return characterPortrait;
 
@@ -221,11 +270,7 @@ namespace StardewDruid.Map
 
                             Vector2 cavePosition = new Vector2(warp.TargetX, warp.TargetY - 2) * 64;
 
-                            //Vector2 caveOffset = (cavePosition.Y <= 512) ? new(0, 64) : new(0, -64);
-
                             Vector2 farmPosition = new Vector2(warp.X, warp.Y + 4) * 64;
-
-                            //Vector2 farmOffset = (farmPosition.Y <= 512) ? new(0, 64) : new(0, -64);
 
                             farmPositions = new() { ["FarmCave"] = cavePosition, ["Farm"] = farmPosition, };
 
@@ -239,89 +284,19 @@ namespace StardewDruid.Map
 
         }
 
-        public static StardewDruid.Character.Character DisembodiedVoice(GameLocation location, Vector2 position)
+        public static StardewDruid.Character.Actor DisembodiedVoice(GameLocation location, Vector2 position)
         {
 
-            StardewDruid.Character.Character disembodied = new(position, location.Name, "Disembodied");
-
-            //disembodied.frozenMode = true;
-
-            disembodied.SwitchFrozenMode();
-
-            disembodied.IsInvisible = true;
-
-            disembodied.eventActor = true;
-
-            //disembodied.forceUpdateTimer = 9999;
-
-            disembodied.collidesWithOtherCharacters.Value = true;
-
-            disembodied.farmerPassesThrough = true;
-
-            return disembodied;
+            Actor actor = new Actor(position, location.Name, "Disembodied");
+            actor.SwitchFrozenMode();
+            actor.IsInvisible = true;
+            actor.eventActor = true;
+            actor.collidesWithOtherCharacters.Value = true;
+            actor.farmerPassesThrough = true;
+            return actor;
 
         }
 
-
-        /*public static NPC RetrieveVoice(GameLocation location, Vector2 position)
-        {
-
-            if (Mod.instance.characters.ContainsKey("Disembodied"))
-            {
-
-                Character.Character disembodied = Mod.instance.characters["Disembodied"];
-
-                GameLocation previous = disembodied.currentLocation;
-
-                if (previous != null)
-                {
-
-                    if (previous != location)
-                    {
-
-                        previous.characters.Remove(disembodied);
-
-                        location.characters.Add(disembodied);
-
-                    }
-
-                }
-                else
-                {
-                    location.characters.Add(disembodied);
-
-                }
-
-            }
-            else
-            {
-
-                Character.Character disembodied = new(position, location.Name, "Disembodied");
-
-                //disembodied.frozenMode = true;
-
-                disembodied.SwitchFrozenMode();
-
-                disembodied.IsInvisible = true;
-
-                disembodied.eventActor = true;
-
-                //disembodied.forceUpdateTimer = 9999;
-
-                disembodied.collidesWithOtherCharacters.Value = true;
-
-                disembodied.farmerPassesThrough = true;
-
-                location.characters.Add(disembodied);
-
-                Mod.instance.characters["Disembodied"] = disembodied;
-
-            }
-
-            return Mod.instance.characters["Disembodied"];
-
-        }
-        */
 
     }
 

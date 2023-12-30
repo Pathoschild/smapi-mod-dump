@@ -1,0 +1,16 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HauntedPineapple/Stendew-Valley
+**
+*************************************************/
+
+{
+  "spring": "610 Custom_MainIsland 58 43 2/700 Custom_MainIsland 58 43 2 Strings\\schedules\\Sten:spring.000",
+  "summer": "610 Custom_MainIsland 58 43 2/700 Custom_MainIsland 62 43 2 Strings\\schedules\\Sten:summer.000",
+  "fall": "610 Custom_MainIsland 58 43 2/700 Custom_MainIsland 62 43 2 Strings\\schedules\\Sten:fall.000",
+  "winter": "610 Custom_MainIsland 58 43 2/700 Custom_MainIsland 62 43 2 Strings\\schedules\\Sten:winter.000"
+}

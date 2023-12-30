@@ -41,36 +41,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             _weaponsManager = weaponsManager;
         }
 
-        // protected override void resetLocalState()
-        public static void ResetLocalState_GuildMemberOnlyIfReceived_Postfix(AdventureGuild __instance)
-        {
-            try
-            {
-                const string guildMemberLetter = "guildMember";
-                var hasLetter = Game1.player.mailReceived.Contains(guildMemberLetter);
-                var deservesLetter = _archipelago.HasReceivedItem(VanillaUnlockManager.ADVENTURE_GUILD);
-
-                if (hasLetter == deservesLetter)
-                {
-                    return;
-                }
-
-                if (hasLetter)
-                {
-                    Game1.player.mailReceived.Remove(guildMemberLetter);
-                }
-                else
-                {
-                    Game1.player.mailReceived.Add(guildMemberLetter);
-                }
-            }
-            catch (Exception ex)
-            {
-                _monitor.Log($"Failed in {nameof(ResetLocalState_GuildMemberOnlyIfReceived_Postfix)}:\n{ex}", LogLevel.Error);
-                return;
-            }
-        }
-
         // public virtual bool answerDialogueAction(string questionAndAnswer, string[] questionParams)
         public static bool TelephoneAdventureGuild_AddReceivedEquipments_Prefix(GameLocation __instance, string questionAndAnswer, string[] questionParams, bool __result)
         {
@@ -94,21 +64,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 var random = new Random(seed);
                 foreach (var equipmentApItem in equipmentsToRecover)
                 {
-                    var received = Math.Min(5, _archipelago.GetReceivedItemCount(equipmentApItem));
+                    var received = Math.Min(6, _archipelago.GetReceivedItemCount(equipmentApItem));
                     if (received <= 0)
                     {
                         continue;
                     }
 
-                    var candidates = equipmentApItem switch
-                    {
-                        VanillaUnlockManager.PROGRESSIVE_WEAPON => _weaponsManager.WeaponsByTier[received],
-                        VanillaUnlockManager.PROGRESSIVE_SWORD => _weaponsManager.WeaponsByCategoryByTier[WeaponsManager.TYPE_SWORD][received],
-                        VanillaUnlockManager.PROGRESSIVE_CLUB => _weaponsManager.WeaponsByCategoryByTier[WeaponsManager.TYPE_CLUB][received],
-                        VanillaUnlockManager.PROGRESSIVE_DAGGER => _weaponsManager.WeaponsByCategoryByTier[WeaponsManager.TYPE_DAGGER][received],
-                        VanillaUnlockManager.PROGRESSIVE_BOOTS => _weaponsManager.BootsByTier[received],
-                        _ => new List<StardewItem>(),
-                    };
+                    var candidates = GetRecoveryCandidates(equipmentApItem, received);
 
                     if (!candidates.Any())
                     {
@@ -139,21 +101,47 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
+        private static List<StardewItem> GetRecoveryCandidates(string equipmentApItem, int tier)
+        {
+            var candidates = equipmentApItem switch
+            {
+                VanillaUnlockManager.PROGRESSIVE_WEAPON => GetRecoveryCandidates(_weaponsManager.WeaponsByTier, tier),
+                VanillaUnlockManager.PROGRESSIVE_SWORD => GetRecoveryCandidates(_weaponsManager.WeaponsByCategoryByTier[WeaponsManager.TYPE_SWORD], tier),
+                VanillaUnlockManager.PROGRESSIVE_CLUB => GetRecoveryCandidates(_weaponsManager.WeaponsByCategoryByTier[WeaponsManager.TYPE_CLUB], tier),
+                VanillaUnlockManager.PROGRESSIVE_DAGGER => GetRecoveryCandidates(_weaponsManager.WeaponsByCategoryByTier[WeaponsManager.TYPE_DAGGER], tier),
+                VanillaUnlockManager.PROGRESSIVE_BOOTS => GetRecoveryCandidates(_weaponsManager.BootsByTier, tier),
+                _ => new List<StardewItem>(),
+            };
+            return candidates;
+        }
+
+        private static List<StardewItem> GetRecoveryCandidates(Dictionary<int, List<StardewItem>> itemsByTier, int tier)
+        {
+            if (tier <= 0)
+            {
+                return new List<StardewItem>();
+            }
+
+            if (!itemsByTier.ContainsKey(tier) || !itemsByTier[tier].Any())
+            {
+                return GetRecoveryCandidates(itemsByTier, tier - 1);
+            }
+
+            return itemsByTier[tier];
+        }
+
         public static void RemoveExtraItemsFromItemsLostLastDeath()
         {
             foreach (var lostItem in Game1.player.itemsLostLastDeath.ToArray())
             {
-                if (lostItem is not MeleeWeaponToRecover)
+                if (lostItem is MeleeWeaponToRecover || lostItem is BootsToRecover)
                 {
-                    continue;
+                    Game1.player.itemsLostLastDeath.Remove(lostItem);
                 }
-
-                Game1.player.itemsLostLastDeath.Remove(lostItem);
             }
         }
 
-        public static bool GetAdventureShopStock_ShopBasedOnReceivedItems_Prefix(
-            ref Dictionary<ISalable, int[]> __result)
+        public static bool GetAdventureShopStock_ShopBasedOnReceivedItems_Prefix(ref Dictionary<ISalable, int[]> __result)
         {
             try
             {

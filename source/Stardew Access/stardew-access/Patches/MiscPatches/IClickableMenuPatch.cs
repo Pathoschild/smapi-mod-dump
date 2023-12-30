@@ -42,7 +42,8 @@ namespace stardew_access.Patches
             typeof(ShopMenu),
             typeof(TailoringMenu),
             typeof(SpecialOrdersBoard),
-            typeof(NumberSelectionMenu)
+            typeof(NumberSelectionMenu),
+            typeof(QuestContainerMenu)
         };
 
         private static readonly HashSet<Type> SkipGameMenuPageTypes = new()
@@ -53,6 +54,8 @@ namespace stardew_access.Patches
             typeof(OptionsPage),
             typeof(SocialPage)
         };
+
+        internal static HashSet<string> ManuallyPatchedCustomMenus = new();
 
         public void Apply(Harmony harmony)
         {
@@ -78,8 +81,25 @@ namespace stardew_access.Patches
         {
             try
             {
+                #region Skip narrating hover info for manually patched custom menus
+
+                if (Game1.activeClickableMenu != null)
+                {
+                    foreach (var fullNameOfCustomMenu in ManuallyPatchedCustomMenus)
+                    {
+                        if (Game1.activeClickableMenu.GetType().FullName == fullNameOfCustomMenu)
+                            return;
+                    }
+                }
+
+                #endregion
+                
                 #region Skip narrating hover text for certain menus
-                if (Game1.activeClickableMenu != null && SkipMenuTypes.Contains(Game1.activeClickableMenu.GetType()))
+                var activeClickableMenu = Game1.activeClickableMenu.GetType();
+                var activeGameMenuPage = Game1.activeClickableMenu is GameMenu gameMenu ? gameMenu.GetCurrentPage().GetType() : null;
+                // Check both sets as game menu pages can sometimes be stand alone menus
+                // E.G. CraftingPage is stand alone menu at stove.
+                if (SkipMenuTypes.Contains(activeClickableMenu) || SkipGameMenuPageTypes.Contains(activeClickableMenu))
                 {
                     return;
                 }
@@ -89,13 +109,12 @@ namespace stardew_access.Patches
                     return;
                 }
 
-                if (Game1.activeClickableMenu is GameMenu gameMenu && SkipGameMenuPageTypes.Contains(gameMenu.GetCurrentPage().GetType()))
+                if (activeGameMenuPage != null && (SkipGameMenuPageTypes.Contains(activeGameMenuPage)))
                 {
                     return;
                 }
                 #endregion
 
-                // TODO Use InventoryUtils.cs
                 string toSpeak = "";
 
                 if (hoveredItem != null)
@@ -183,6 +202,9 @@ namespace stardew_access.Patches
                     break;
                 case NumberSelectionMenu:
                     NumberSelectionMenuPatch.Cleanup();
+                    break;
+                case NamingMenu:
+                    NamingMenuPatch.Cleanup();
                     break;
             }
 

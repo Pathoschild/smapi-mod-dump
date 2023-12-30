@@ -59,8 +59,8 @@ public class SEvent : ClassHandler
                 Log.Error("DoAfterTick had null Mod or Method");
                 return;
             }
-            this.Mod.Helper.Events.GameLoop.UpdateTicked -= DoAfterTick;
-            Method.Invoke(Instance, new object[] { this, new GameLaunchedEventArgs() });
+            this.Mod.Helper.Events.GameLoop.UpdateTicked -= this.DoAfterTick;
+            this.Method.Invoke(this.Instance, new object[] { this, new GameLaunchedEventArgs() });
         }
     }
 

@@ -46,6 +46,8 @@ namespace DeepWoodsMod
             public const string SetUnicornStardropReceived = nameof(MessageId.SetUnicornStardropReceived);
             public const string AddLocation = nameof(MessageId.AddLocation);
             public const string RemoveLocation = nameof(MessageId.RemoveLocation);
+            public const string SetOrbStonesSaved = nameof(MessageId.SetOrbStonesSaved);
+            public const string DeInfest = nameof(MessageId.DeInfest);
         }
     }
 }

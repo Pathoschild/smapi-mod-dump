@@ -21,6 +21,7 @@ using static DeepWoodsMod.DeepWoodsTileDefinitions;
 using static DeepWoodsMod.DeepWoodsSettings;
 using static DeepWoodsMod.DeepWoodsGlobals;
 using StardewValley;
+using DeepWoodsMod.Stuff;
 
 namespace DeepWoodsMod
 {
@@ -285,6 +286,11 @@ namespace DeepWoodsMod
 
             if (deepWoods.lichtungHasLake.Value)
                 AddLakeToLichtung();
+
+            if (deepWoods.Level == 1)
+            {
+                DeepWoodsMineCart.AddDeepWoodsMineCart(deepWoods);
+            }
         }
 
         private int GetRandomWaterTileIndex()

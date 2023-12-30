@@ -43,7 +43,7 @@ internal sealed class GameLocationMonsterDropPatcher : HarmonyPatcher
         int y,
         Farmer who)
     {
-        if (!CombatModule.Config.EnableWeaponOverhaul)
+        if (!CombatModule.Config.WeaponsSlingshots.EnableOverhaul)
         {
             return;
         }

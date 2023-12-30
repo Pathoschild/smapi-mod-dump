@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Veniamin-Arefev/StardewMods
+   Git: https://github.com/Veniamin-Arefev/StardewMods.git
+
+mods:
+   Adventurers Guild Multiplayer Shared Kills
+
+latest commit:
+   commit c6e9dee235d7d68238757b666f43446a9ac71dc3
+   Author: Veniamin Arefev <veniamin.arefev@mail.ru>
+   Date:   Thu Dec 7 19:39:41 2023 +0300
+   
+       First mod
+   

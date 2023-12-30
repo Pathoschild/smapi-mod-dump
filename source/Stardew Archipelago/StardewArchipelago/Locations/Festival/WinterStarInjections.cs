@@ -133,7 +133,7 @@ namespace StardewArchipelago.Locations.Festival
 
                 if (response.responseKey == "quickResponse1")
                 {
-                    _locationChecker.AddCheckedLocation("The Legend of the Winter Star");
+                    _locationChecker.AddCheckedLocation(FestivalLocationNames.LEGEND_OF_THE_WINTER_STAR);
                 }
             }
             catch (Exception ex)

@@ -135,6 +135,9 @@ namespace Custom_Farm_Loader.Lib
             }
 
             if (Type == FishType.Location) {
+                if (Id.ToLower() == "farm")
+                    Id = "Farm_Standard";
+
                 Dictionary<string, LocationData> locationData = Game1.content.Load<Dictionary<string, LocationData>>("Data\\Locations");
                 var fishLocationData = locationData.FirstOrDefault(el => el.Key.ToLower() == Id.ToLower());
 
@@ -142,8 +145,7 @@ namespace Custom_Farm_Loader.Lib
                     return;
             }
 
-            Monitor.Log($"Item/Fish/Furniture/Location not found: {Id}", LogLevel.Error);
-            throw new Exception($"Item/Fish/Furniture/Location not found: {Id}");
+            throw new Exception($"Fish ID not found: {Id}");
         }
 
         private static List<Fish> checkGroups(JObject obj)

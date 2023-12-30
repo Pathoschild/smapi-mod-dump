@@ -9,6 +9,12 @@ for queries and analysis.**
 [← back to readme](README.md)
 
 # Release notes
+## 2.0.1-alpha.20231216
+Released 16 Dec 2023.
+
+ * Re-introduce code for fixed random button.
+ * Late switch to alpha versioning.
+
 ## 2.0.0
 Released 06 Nov 2023.
 

@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using Force.DeepCloner;
+using StardewArchipelago.Serialization;
 using StardewValley;
 
 namespace StardewArchipelago.Items.Mail
@@ -20,12 +21,12 @@ namespace StardewArchipelago.Items.Mail
         private static readonly Random _random = new Random();
         private bool _sendForTomorrow = true;
 
-        private Dictionary<string, string> _lettersGenerated;
+        private ArchipelagoStateDto _state;
 
-        public Mailman(Dictionary<string, string> lettersGenerated)
+        public Mailman(ArchipelagoStateDto state)
         {
-            _lettersGenerated = lettersGenerated.DeepClone();
-            foreach (var (mailKey, mailContent) in lettersGenerated)
+            _state = state;
+            foreach (var (mailKey, mailContent) in _state.LettersGenerated)
             {
                 var mailData = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
                 mailData[mailKey] = mailContent;
@@ -87,13 +88,13 @@ namespace StardewArchipelago.Items.Mail
             mailContent = mailContent.Replace("<3", "<");
             var mailData = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
             mailData[mailKey] = mailContent;
-            if (_lettersGenerated.ContainsKey(mailKey))
+            if (_state.LettersGenerated.ContainsKey(mailKey))
             {
-                _lettersGenerated[mailKey] = mailContent;
+                _state.LettersGenerated[mailKey] = mailContent;
             }
             else
             {
-                _lettersGenerated.Add(mailKey, mailContent);
+                _state.LettersGenerated.Add(mailKey, mailContent);
             }
         }
 
@@ -111,11 +112,6 @@ namespace StardewArchipelago.Items.Mail
             }
 
             return numberReceived;
-        }
-
-        public Dictionary<string, string> GetAllLettersGenerated()
-        {
-            return _lettersGenerated.DeepClone();
         }
 
         public void SendToday()
@@ -237,7 +233,7 @@ namespace StardewArchipelago.Items.Mail
             "Who ordered the {0} from {2}? Oh, you did.^^    -{1}",
             "I sold my best podracer for this {0}. You're free now^^    -{1}",
             "The {2} animal shelter didn't have any cats, so I got you a {0} out of their dumpster instead.^^    -{1}",
-            "{1} went on vacation to {2}and all they came back with was {0}",
+            "{1} went on vacation to {2} and all they came back with was {0}",
             "Hey, have you heard about the legendary power of the {0}? They say if you share it with someone you really care for, it binds you together forever and ever, through eternity.^^    -{1}",
             "The {0} is a tool that can unlock any lock, whether on a door, a chest, or a heart. It is a powerful weapon that chooses it's owner. It did not choose me.^^It chose you.^^    -{1}",
             "You must use the {0} to defeat the darkness",

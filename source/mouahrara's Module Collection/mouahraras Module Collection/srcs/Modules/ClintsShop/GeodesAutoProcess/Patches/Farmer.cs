@@ -26,13 +26,13 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 			);
 		}
 
-		private static bool HoldUpItemThenMessagePrefix(Farmer __instance, Item item, bool showMessage)
+		private static bool HoldUpItemThenMessagePrefix(Item item)
 		{
 			if (!ModEntry.Config.ClintsShopGeodesAutoProcess)
 				return true;
 			if (Game1.activeClickableMenu == null || Game1.activeClickableMenu.GetType() != typeof(GeodeMenu))
 				return true;
-			GeodesAutoProcessUtility.SetFoundArtifact(item);
+			GeodesAutoProcessUtility.FoundArtifact = item;
 			return false;
 		}
 	}

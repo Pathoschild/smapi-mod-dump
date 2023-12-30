@@ -26,6 +26,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private const int ORNATE_NECKLACE = 191;
         private const int GOLDEN_WALNUT = 73;
         private const int SECRET_NOTE = 79;
+        private const int PEARL = 797;
         private const int FOSSILIZED_SPINE = 821;
         private const int SNAKE_SKULL = 825;
         private const int JOURNAL_SCRAP = 842;
@@ -33,7 +34,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         private static readonly int[] _fishsanityExceptions = new[]
         {
-            GREEN_ALGAE, WHITE_ALGAE, SEAWEED, ORNATE_NECKLACE, GOLDEN_WALNUT, SECRET_NOTE, FOSSILIZED_SPINE, SNAKE_SKULL, JOURNAL_SCRAP,
+            GREEN_ALGAE, WHITE_ALGAE, SEAWEED, ORNATE_NECKLACE, GOLDEN_WALNUT, SECRET_NOTE, FOSSILIZED_SPINE, PEARL, SNAKE_SKULL, JOURNAL_SCRAP,
             QI_BEAN,
         };
         private const string FISHSANITY_PREFIX = "Fishsanity: ";

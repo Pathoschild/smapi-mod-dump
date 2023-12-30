@@ -1,0 +1,10 @@
+{
+    "Name": "[C#] FurnitureTweaks",
+	"Author": "KediDili",
+	"Version": "1.0.0",
+	"Description": "Will most players even read this?",
+	"MinimumApiVersion": "3.14.0",
+	"UniqueID": "KediDili.FurnitureTweaks.DLL",
+    "UpdateKeys": ["Nexus:19375"],
+    "EntryDLL": "FurnitureTweaks.dll"
+}

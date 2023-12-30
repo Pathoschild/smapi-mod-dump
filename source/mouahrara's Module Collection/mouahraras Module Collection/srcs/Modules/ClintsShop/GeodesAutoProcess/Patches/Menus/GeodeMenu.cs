@@ -115,7 +115,7 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 			__instance.drawMouse(b);
 		}
 
-		private static void PerformHoverActionPostfix(GeodeMenu __instance, int x, int y)
+		private static void PerformHoverActionPostfix(int x, int y)
 		{
 			if (!ModEntry.Config.ClintsShopGeodesAutoProcess)
 				return;
@@ -173,7 +173,7 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 			return false;
 		}
 
-		private static void ReadyToClosePostfix(GeodeMenu __instance, ref bool __result)
+		private static void ReadyToClosePostfix(ref bool __result)
 		{
 			if (!ModEntry.Config.ClintsShopGeodesAutoProcess)
 				return;
@@ -182,7 +182,7 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 				__result = false;
 		}
 
-		private static void EmergencyShutDownPostfix(GeodeMenu __instance)
+		private static void EmergencyShutDownPostfix()
 		{
 			if (!ModEntry.Config.ClintsShopGeodesAutoProcess)
 				return;

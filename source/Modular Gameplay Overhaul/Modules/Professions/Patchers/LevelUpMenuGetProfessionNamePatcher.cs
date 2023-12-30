@@ -13,7 +13,6 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers;
 #region using directives
 
 using System.Reflection;
-using DaLion.Overhaul.Modules.Professions;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
 using StardewValley.Menus;

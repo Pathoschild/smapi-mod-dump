@@ -29,28 +29,16 @@ namespace StardewArchipelago.Textures
 
         public static Texture2D GetColoredLogo(IModHelper modHelper, int size, string color)
         {
-            if (!(Game1.content.ServiceProvider.GetService(typeof(IGraphicsDeviceService)) is IGraphicsDeviceService
-                    service))
-            {
-                throw new InvalidOperationException("No Graphics Device Service");
-            }
-
-            var currentModFolder = modHelper.DirectoryPath;
-            if (!Directory.Exists(currentModFolder))
-            {
-                throw new InvalidOperationException("Could not find StardewArchipelago folder");
-            }
-
-            var texturesFolder = "Textures";
             var archipelagoFolder = "Archipelago";
             var fileName = $"{size}x{size} {color} icon.png";
-            var relativePathToTexture = Path.Combine(currentModFolder, texturesFolder, archipelagoFolder, fileName);
-            if (!File.Exists(relativePathToTexture))
+            var relativePathToTexture = Path.Combine(archipelagoFolder, fileName);
+            var texture = TexturesLoader.GetTexture(modHelper, relativePathToTexture);
+            if (texture == null)
             {
-                throw new InvalidOperationException($"Could not find archipelago logo size for color '{color}' and size '{size}x{size}'");
+                throw new InvalidOperationException($"Could not find texture {fileName}");
             }
 
-            return Texture2D.FromFile(service.GraphicsDevice, relativePathToTexture);
+            return texture;
         }
     }
 }

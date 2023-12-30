@@ -113,6 +113,9 @@ namespace Unlockable_Bundles.Lib
 
         public override bool checkForAction(Farmer who, bool justCheckingForActivity = false)
         {
+            if (Game1.activeClickableMenu is not null || justCheckingForActivity)
+                return false;
+
             if (!WasDiscovered)
                 WasDiscovered = true;
 
@@ -197,7 +200,7 @@ namespace Unlockable_Bundles.Lib
                 resetAnimationFrames();
             }
 
-            if (AnimationSequence.Count > 0)
+            if (AnimationSequence.Count > 0 && (Texture.Width/32) > 1)
                 sourceRectangle.X = sourceRectangle.Width * AnimationSequence.ElementAt(AnimationFrame).Key;
 
             return sourceRectangle;

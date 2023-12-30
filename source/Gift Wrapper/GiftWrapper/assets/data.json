@@ -1,0 +1,552 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/b-b-blueberry/GiftWrapper
+**
+*************************************************/
+
+{
+    "Audio": {
+        "Mods.blueberry.GiftWrapper.Paper": [
+            "paper-1",
+            "paper-2",
+            "paper-3"
+        ],
+        "Mods.blueberry.GiftWrapper.TearPaper": [
+            "paper-torn-1",
+            "paper-torn-2",
+            "paper-torn-3"
+        ],
+        "Mods.blueberry.GiftWrapper.Box": [
+            "box-1",
+            "box-2"
+        ],
+        "Mods.blueberry.GiftWrapper.None": [
+            "none"
+        ]
+    },
+    "Definitions": {
+        "AddedFriendship": 1.1,
+        "WrapValue": 80,
+        "GiftValue": 60,
+        "HitCount": [
+            3,
+            5
+        ],
+        "HitShake": 300,
+        "HitSound": "Mods.blueberry.GiftWrapper.TearPaper",
+        "LastHitSound": "Mods.blueberry.GiftWrapper.Box",
+        "OpenSound": "newRecord",
+        "RemoveSound": "hammer",
+        "InvalidGiftStringPath": "Strings\\StringsFromCSFiles:Event.cs.1803",
+        "InvalidGiftSound": "cancel",
+        "EventConditionId": -4721,
+        "CategoryNumber": -4721,
+        "CategoryTextColour": {
+            "R": 120,
+            "G": 0,
+            "B": 210,
+            "A": 255
+        },
+        "SecretTextColour": {
+            "R": 120,
+            "G": 0,
+            "B": 210,
+            "A": 230
+        },
+        "DefaultTextColour": null,
+        "WrapItemTexture": "Mods/blueberry.GiftWrapperAssets/Wrap",
+        "WrapItemSource": {
+            "X": 0,
+            "Y": 0,
+            "Width": 20,
+            "Height": 20
+        }
+    },
+    "Shops": [
+        {
+            // Wrapping is sold by Pierre during the Secret Friend period,
+            // appearing at the top of the shop menu
+            "Context": "Pierre",
+            "AddAtItem": [],
+            "Conditions": [
+                "z spring/z summer/z fall/u 18 19 20 21 22 23 24"
+            ]
+        },
+        {
+            // If any shops happen to be open during the festival,
+            // they get a reduced stock with a higher price
+            "Conditions": [
+                "z spring/z summer/z fall/u 25"
+            ],
+            "PriceMultiplier": 2
+        },
+        {
+            // Wrapping is sold at clearance price after the festival until the end of the year
+            // For an 80g base price, clearance price is 80 * 0.4 = 30g
+            "Context": "Pierre",
+            "Conditions": [
+                "z spring/z summer/z fall/u 26 27 28"
+            ],
+            "PriceMultiplier": 0.4
+        },
+        {
+            // Wrapping is sold by Pierre regardless of any conditions if enabled in config
+            "Context": "Pierre",
+            "AddAtItem": [
+                "Catalogue"
+            ],
+            "IfAlwaysAvailable": true
+        }
+    ],
+    "Styles": {
+        "blueberry.gw.peach": {
+            "Texture": null,
+            "Area": {
+                "X": 0,
+                "Y": 0,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.blue": {
+            "Texture": null,
+            "Area": {
+                "X": 16,
+                "Y": 0,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.pink": {
+            "Texture": null,
+            "Area": {
+                "X": 32,
+                "Y": 0,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.red": {
+            "Texture": null,
+            "Area": {
+                "X": 48,
+                "Y": 0,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.confetti": {
+            "Texture": null,
+            "Area": {
+                "X": 64,
+                "Y": 0,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.banana": {
+            "Texture": null,
+            "Area": {
+                "X": 80,
+                "Y": 0,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.paper": {
+            "Texture": null,
+            "Area": {
+                "X": 96,
+                "Y": 0,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.cardboard": {
+            "Texture": null,
+            "Area": {
+                "X": 112,
+                "Y": 0,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.chest": {
+            "Texture": null,
+            "Area": {
+                "X": 0,
+                "Y": 18,
+                "Width": 16,
+                "Height": 18
+            },
+            "HitSound": "woodWhack",
+            "LastHitSound": "barrelBreak",
+            "OpenSound": "newRecord",
+            "RemoveSound": "woodWhack"
+        },
+        "blueberry.gw.peppermint": {
+            "Texture": null,
+            "Area": {
+                "X": 16,
+                "Y": 18,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.royal": {
+            "Texture": null,
+            "Area": {
+                "X": 32,
+                "Y": 18,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.flat": {
+            "Texture": null,
+            "Area": {
+                "X": 48,
+                "Y": 18,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.tower": {
+            "Texture": null,
+            "Area": {
+                "X": 64,
+                "Y": 18,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.zigzag": {
+            "Texture": null,
+            "Area": {
+                "X": 80,
+                "Y": 18,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.orange": {
+            "Texture": null,
+            "Area": {
+                "X": 96,
+                "Y": 18,
+                "Width": 16,
+                "Height": 18
+            }
+        },
+        "blueberry.gw.dotty": {
+            "Texture": null,
+            "Area": {
+                "X": 112,
+                "Y": 18,
+                "Width": 16,
+                "Height": 18
+            }
+        }
+    },
+    "UI": {
+        "Scale": 4,
+
+        // Crafting animation
+
+        "CraftingMotionRate": 1.5,
+        "CraftingStartDuration": 600,
+        "CraftingEndDuration": 1750,
+        "CraftingSparkleCount": [ 16, 20 ],
+
+        // Cues
+
+        "CraftingStartSound": "throwDownITem",
+        "CraftingMotionSound": "fallDown",
+        "CraftingEndSound": "Ship",
+        "NoSound": "Mods.blueberry.GiftWrapper.None",
+        "OpenSound": "newRecipe",
+        "SuccessSound": "give_gift",
+        "FailureSound": "cancel",
+        "StyleSound": "newRecipe",
+        "ItemSound": "coin",
+        "ItemSounds": {
+            "Weeds": "sheep",
+            "Tea Set": "button1",
+            "Lucky Purple Shorts": "fishSlap",
+            "Trimmed Lucky Purple Shorts": "yoba",
+            "Prismatic Shard": "yoba",
+            "Golden Coconut": "yoba",
+            "Golden Pumpkin": "yoba",
+            "Galaxy Soul": "shadowpeep"
+        },
+        "CategorySounds": {
+            "sandyStep": [
+                -20, // Junk
+                -95, // Hat
+                -97, // Boots
+                -100 // Clothing
+            ],
+            "Ship": [
+                -9, // BigCraftable
+                -24 // Furniture
+            ],
+            "parry": [
+                -98, // Weapon
+                -99 // Tool
+            ],
+            "leafrustle": [
+                -80, // Flowers
+                -81 // Greens
+            ],
+            "harvest": [
+                -25, // Ingredients
+                -74, // Seeds
+                -75, // Vegetable
+                -79 // Fruits
+            ],
+            "stoneStep": [
+                -8, // Crafting
+                -12, // Minerals
+                -22, // Tackle
+                -29, // Equipment
+                -96 // Ring
+            ],
+            "tinyWhip": [
+                -2, // Gem
+                -5, // Egg
+                -6, // Milk
+                -7, // Cooking
+                -26, // ArtisanGoods
+                -27 // Syrup
+            ],
+            "slimeHit": [
+                -4, // Fish
+                -14, // Meat
+                -19, // Fertiliser
+                -21, // Bait
+                -28 // MonsterLoot
+            ]
+        },
+        "ShakeCategories": [
+            -9, // BigCraftable
+            -24, // Furniture
+            -98, // Weapon
+            -99 // Tool
+        ],
+
+        // Strings
+
+        "InfoTextPath": null,
+        "InfoTextKey": null,
+
+        // Colours
+
+        "InventoryInvalidGiftColour": {
+            "R": 35,
+            "G": 25,
+            "B": 25,
+            "A": 100
+        },
+        "CraftingSparkleColours": [
+            {
+                // Red
+                "R": 205,
+                "G": 92,
+                "B": 92,
+                "A": 255
+            },
+            {
+                // Blue
+                "R": 100,
+                "G": 149,
+                "B": 237,
+                "A": 255
+            },
+            {
+                // Green
+                "R": 124,
+                "G": 225,
+                "B": 22,
+                "A": 255
+            }
+        ],
+
+        // Animations
+
+        "CraftingPuffFrameTime": 50,
+        "CraftingPuffFrames": 8,
+        "ShortShakeDuration": 400,
+        "LongShakeDuration": 200,
+        "WrapButtonFrames": 4,
+        "WrapButtonFrameTime": 100,
+
+        // Regions
+
+        "CraftingSparkleSources": [
+            {
+                "X": 359,
+                "Y": 1437,
+                "Width": 14,
+                "Height": 14
+            },
+            {
+                "X": 377,
+                "Y": 1438,
+                "Width": 9,
+                "Height": 9
+            }
+        ],
+        "CraftingPuffSource": {
+            "X": 0,
+            "Y": 320,
+            "Width": 64,
+            "Height": 64
+        },
+        "SceneBackgroundSource": {
+            "X": 0,
+            "Y": 0,
+            "Width": 128,
+            "Height": 80
+        },
+        "InfoBackgroundSource": {
+            "X": 84,
+            "Y": 80,
+            "Width": 20,
+            "Height": 20
+        },
+        "InventorySlotSource": {
+            "X": 32,
+            "Y": 152,
+            "Width": 16,
+            "Height": 16
+        },
+        "InventoryLockedSlotSource": {
+            "X": 48,
+            "Y": 152,
+            "Width": 16,
+            "Height": 16
+        },
+        "ItemSlotSource": {
+            "X": 104,
+            "Y": 80,
+            "Width": 24,
+            "Height": 24
+        },
+        "WrapButtonSource": {
+            "X": 548,
+            "Y": 262,
+            "Width": 18,
+            "Height": 20
+        },
+        "Decorations": [
+            // Box
+            {
+                "Position": {
+                    "X": 36,
+                    "Y": 42
+                },
+                "Source": {
+                    "X": 0,
+                    "Y": 80,
+                    "Width": 64,
+                    "Height": 48
+                }
+            },
+            // Spangle
+            {
+                "Position": {
+                    "X": 4,
+                    "Y": 4
+                },
+                "Source": {
+                    "X": 0,
+                    "Y": 128,
+                    "Width": 32,
+                    "Height": 32
+                }
+            },
+            // Brumble
+            {
+                "Position": {
+                    "X": 126,
+                    "Y": 76
+                },
+                "Source": {
+                    "X": 32,
+                    "Y": 128,
+                    "Width": 32,
+                    "Height": 24
+                }
+            },
+            // Scissors
+            {
+                "Position": {
+                    "X": 218,
+                    "Y": 106
+                },
+                "Source": {
+                    "X": 64,
+                    "Y": 104,
+                    "Width": 64,
+                    "Height": 76
+                }
+            },
+            // Tape
+            {
+                "Position": {
+                    "X": 4,
+                    "Y": 144
+                },
+                "Source": {
+                    "X": 0,
+                    "Y": 160,
+                    "Width": 32,
+                    "Height": 20
+                }
+            }
+        ],
+
+        // Assets
+
+        "CraftingSparkleSpriteSheetPath": "LooseSprites/Cursors",
+        "CraftingPuffSpriteSheetPath": "TileSheets/animations",
+        "MenuSpriteSheetPath": "Mods/blueberry.GiftWrapper.Assets/Menu",
+        "CardSpriteSheetPath": "Mods/blueberry.GiftWrapper.Assets/Card",
+        "WrapButtonSpriteSheetPath": "LooseSprites/JunimoNote",
+
+        // Dimensions
+
+        "BorderSourceAt": {
+            "X": 64,
+            "Y": 80
+        },
+        "BorderSize": {
+            "X": 9,
+            "Y": 8
+        },
+        "BorderOffset": {
+            "X": 1,
+            "Y": 1
+        },
+        "CardOffset": {
+            "X": 40,
+            "Y": 34
+        },
+        "InfoTextMargin": {
+            "X": 4,
+            "Y": 4
+        },
+        "InventoryMargin": {
+            "X": 6,
+            "Y": 4
+        },
+
+        // Sizes
+
+        "InfoBackgroundWidth": 74
+    }
+}

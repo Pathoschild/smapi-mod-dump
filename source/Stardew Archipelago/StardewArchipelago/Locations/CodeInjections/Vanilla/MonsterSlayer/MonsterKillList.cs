@@ -81,31 +81,44 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer
             {
                 case Monstersanity.None:
                     MonsterGoals = DefaultMonsterGoals.DeepClone();
-                    return;
+                    break;
                 case Monstersanity.OnePerCategory:
                     MonsterGoals = DefaultMonsterGoals.ToDictionary(x => x.Key, _ => 1);
-                    return;
+                    break;
                 case Monstersanity.OnePerMonster:
                     MonsterGoals = MonstersByCategory.SelectMany(x => x.Value).ToDictionary(x => x, _ => 1);
-                    return;
+                    break;
                 case Monstersanity.Goals:
                     MonsterGoals = DefaultMonsterGoals.DeepClone();
-                    return;
+                    break;
                 case Monstersanity.ShortGoals:
                     MonsterGoals = DefaultMonsterGoals.ToDictionary(x => x.Key, x => (int)(x.Value * 0.4));
-                    return;
+                    break;
                 case Monstersanity.VeryShortGoals:
                     MonsterGoals = DefaultMonsterGoals.ToDictionary(x => x.Key, x => (int)(x.Value * 0.1));
-                    return;
+                    break;
                 case Monstersanity.ProgressiveGoals:
                     MonsterGoals = DefaultMonsterGoals.DeepClone();
-                    return;
+                    break;
                 case Monstersanity.SplitGoals:
                     MonsterGoals = GenerateSplitGoals();
-                    return;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            if (!_archipelago.SlotData.ExcludeGingerIsland)
+            {
+                return;
+            }
+
+            MonsterGoals.Remove(MonsterCategory.MAGMA_SPRITES);
+            MonsterGoals.Remove(MonsterName.MAGMA_SPRITE);
+            MonsterGoals.Remove(MonsterName.MAGMA_SPARKER);
+            MonsterGoals.Remove(MonsterName.ROYAL_SERPENT);
+            MonsterGoals.Remove(MonsterName.SKELETON_MAGE);
+            MonsterGoals.Remove(MonsterName.SHADOW_SNIPER);
+            MonsterGoals.Remove(MonsterName.TIGER_SLIME);
         }
 
         private Dictionary<string, int> GenerateSplitGoals()

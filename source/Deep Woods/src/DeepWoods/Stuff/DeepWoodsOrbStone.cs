@@ -18,13 +18,26 @@ using Netcode;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 using System;
+using static DeepWoodsMod.DeepWoodsSettings;
 
 namespace DeepWoodsMod.Stuff
 {
     public class DeepWoodsOrbStone : LargeTerrainFeature
     {
+        public static readonly Color[] SavedColors = {
+            Color.Red,
+            Color.Orange,
+            Color.Green,
+            Color.Blue,
+            Color.Purple
+        };
+
+        // only local
+        private bool didHaveOrb = false;
+
         private NetBool hasOrb = new NetBool(false);
         private NetColor orbColor = new NetColor(Color.White);
+        private NetInt orbIndex = new NetInt(-1);
 
         public bool HasOrb
         {
@@ -38,21 +51,79 @@ namespace DeepWoodsMod.Stuff
             }
         }
 
+        public Color OrbColor
+        {
+            get
+            {
+                return orbColor.Value;
+            }
+            set
+            {
+                orbColor.Value = value;
+            }
+        }
+
         public DeepWoodsOrbStone()
            : base(false)
         {
             InitNetFields();
         }
 
-        public DeepWoodsOrbStone(Vector2 tileLocation)
+        public DeepWoodsOrbStone(Vector2 tileLocation, int orbIndex = -1)
             : this()
         {
             this.tilePosition.Value = tileLocation;
+            this.orbIndex.Value = orbIndex;
         }
 
         private void InitNetFields()
         {
-            this.NetFields.AddFields(this.hasOrb, this.orbColor);
+            this.NetFields.AddFields(this.hasOrb, this.orbColor, this.orbIndex);
+        }
+
+        private bool IsMainOrbStone(GameLocation location)
+        {
+            if (orbIndex.Value < 0 || orbIndex.Value >= SavedColors.Length)
+                return false;
+
+            if (location is not DeepWoods deepWoods)
+                return false;
+
+            if (deepWoods.Level != 1)
+                return false;
+
+            return true;
+        }
+
+        public override bool tickUpdate(GameTime time, Vector2 tileLocation, GameLocation location)
+        {
+            if (IsMainOrbStone(location))
+            {
+                if (Game1.IsMasterGame)
+                {
+                    if (orbIndex.Value < DeepWoodsState.OrbStonesSaved)
+                    {
+                        if (hasOrb.Value == false)
+                        {
+                            hasOrb.Value = true;
+                            orbColor.Value = SavedColors[orbIndex.Value];
+                        }
+                    }
+                }
+
+                if (hasOrb.Value == true && didHaveOrb == false)
+                {
+                    if (Game1.player.currentLocation == location)
+                    {
+                        // audible feedback
+                        Game1.playSound(Sounds.YOBA);
+                    }
+                    (location as DeepWoods).lightSources.Add(new LightSource(LightSource.sconceLight, tileLocation - new Vector2(0, 2), 6, new Color(1f, 0f, 0f)));
+                    didHaveOrb = true;
+                }
+            }
+
+            return base.tickUpdate(time, tileLocation, location);
         }
 
         public override bool isActionable()
@@ -88,20 +159,16 @@ namespace DeepWoodsMod.Stuff
                 {
                     DeepWoodsQuestMenu.OpenQuestMenu(I18N.OrbStoneTouchMessage, new Response[1]
                     {
-                        new Response("No", I18N.MessageBoxOK).SetHotKey(Keys.Escape)
+                        new Response("No", I18N.MessageBoxClose).SetHotKey(Keys.Escape)
                     });
                 }
                 else
                 {
                     DeepWoodsQuestMenu.OpenQuestMenu(I18N.OrbStoneTouchMessageNoOrb, new Response[1]
                     {
-                        new Response("No", I18N.MessageBoxOK).SetHotKey(Keys.Escape)
+                        new Response("No", I18N.MessageBoxClose).SetHotKey(Keys.Escape)
                     });
                 }
-            }
-            else if (whichAnswer == "ModInfo")
-            {
-                DeepWoodsQuestMenu.ShowModInfo();
             }
         }
 

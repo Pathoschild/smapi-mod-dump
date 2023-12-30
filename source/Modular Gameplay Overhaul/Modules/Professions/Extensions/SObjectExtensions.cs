@@ -64,7 +64,7 @@ internal static class SObjectExtensions
     /// <param name="obj">The <see cref="SObject"/>.</param>
     /// <param name="profession">Either <see cref="Profession.Scavenger"/> or <see cref="Profession.Prospector"/>.</param>
     /// <returns><see langword="true"/> if the <paramref name="obj"/> should be tracked by the <paramref name="profession"/>, otherwise <see langword="false"/>.</returns>
-    internal static bool ShouldBeTrackedBy(this SObject obj, Profession profession)
+    internal static bool ShouldBeTrackedBy(this SObject obj, VanillaProfession profession)
     {
         return (profession == Profession.Scavenger && ((obj.IsSpawnedObject && !obj.IsForagedMineral()) ||
                                                        obj.IsSpringOnion() || obj.IsArtifactSpot())) ||
@@ -82,12 +82,12 @@ internal static class SObjectExtensions
         return obj.GetOwner().HasProfession(profession, prestiged);
     }
 
-    /// <summary>Determines whether the owner of the <paramref name="obj"/> has the <see cref="Profession"/> corresponding to <paramref name="index"/>.</summary>
+    /// <summary>Determines whether the owner of the <paramref name="obj"/> has the <see cref="VanillaProfession"/> corresponding to <paramref name="index"/>.</summary>
     /// <param name="obj">The <see cref="SObject"/>.</param>
     /// <param name="index">A valid profession index.</param>
     /// <param name="prestiged">Whether to check for the prestiged variant.</param>
-    /// <returns><see langword="true"/> if the owner of <paramref name="obj"/> the <see cref="Profession"/> with the specified <paramref name="index"/>, otherwise <see langword="false"/>.</returns>
-    /// <remarks>This overload exists only to be called by emitted ILCode. Expects a vanilla <see cref="Profession"/>.</remarks>
+    /// <returns><see langword="true"/> if the owner of <paramref name="obj"/> the <see cref="VanillaProfession"/> with the specified <paramref name="index"/>, otherwise <see langword="false"/>.</returns>
+    /// <remarks>This overload exists only to be called by emitted ILCode. Expects a vanilla <see cref="VanillaProfession"/>.</remarks>
     internal static bool DoesOwnerHaveProfession(this SObject obj, int index, bool prestiged = false)
     {
         return Profession.TryFromValue(index, out var profession) &&

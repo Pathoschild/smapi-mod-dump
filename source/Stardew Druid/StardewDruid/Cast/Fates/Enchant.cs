@@ -9,14 +9,10 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
-using static StardewValley.Minigames.CraneGame;
 
 
 namespace StardewDruid.Cast.Fates
@@ -36,7 +32,7 @@ namespace StardewDruid.Cast.Fates
             targetObject = machine;
 
             source = Source;
-        
+
         }
 
         public override void CastEffect()
@@ -44,7 +40,7 @@ namespace StardewDruid.Cast.Fates
 
             DelayedAction.functionAfterDelay(CastAfterDelay, 1000);
 
-            ModUtility.AnimateFate(targetLocation,targetPlayer.getTileLocation(), targetVector, source);
+            ModUtility.AnimateFate(targetLocation, targetPlayer.getTileLocation(), targetVector, source);
 
             castFire = true;
 
@@ -70,7 +66,7 @@ namespace StardewDruid.Cast.Fates
                 DelayedAction.functionAfterDelay(delegate { targetObject.minutesElapsed(10, targetLocation); }, 50);
 
             }
-            else if(targetObject.heldObject.Value == null)
+            else if (targetObject.heldObject.Value == null)
             {
                 switch (targetObject.name)
                 {
@@ -91,8 +87,6 @@ namespace StardewDruid.Cast.Fates
 
                     case "Oil Maker": FillOilMaker(); break;
 
-                    case "Recycling Machine": FillRecyclingMachine(); break;
-
                     case "Furnace": FillFurnace(); break;
 
                     case "Geode Crusher": FillGeodeCrusher(); break;
@@ -106,7 +100,7 @@ namespace StardewDruid.Cast.Fates
         public void FillDeconstructor()
         {
 
-            KeyValuePair<string,string> craftingRecipe = CraftingRecipe.craftingRecipes.ElementAt(randomIndex.Next(CraftingRecipe.craftingRecipes.Count));
+            KeyValuePair<string, string> craftingRecipe = CraftingRecipe.craftingRecipes.ElementAt(randomIndex.Next(CraftingRecipe.craftingRecipes.Count));
 
             string[] array = craftingRecipe.Value.Split('/')[0].Split(' ');
 
@@ -129,9 +123,9 @@ namespace StardewDruid.Cast.Fates
             targetObject.MinutesUntilReady = 240;
 
             Game1.playSound("furnace");
-            
-        }        
-        
+
+        }
+
         public void FillBoneMill()
         {
 
@@ -165,9 +159,9 @@ namespace StardewDruid.Cast.Fates
             targetObject.heldObject.Value = new StardewValley.Object(num2, num3);
 
             targetObject.MinutesUntilReady = 240;
-            
+
             targetLocation.playSound("skeletonStep");
-            
+
             DelayedAction.playSoundAfterDelay("skeletonHit", 150);
 
         }
@@ -175,8 +169,62 @@ namespace StardewDruid.Cast.Fates
         public void FillKeg()
         {
 
+            Dictionary<int, int> cropList = new()
+            {
+
+                [0] = 24,
+                [1] = 188,
+                [2] = 190,
+                [3] = 248,
+                [4] = 250,
+                [5] = 256,
+                [6] = 264,
+                [7] = 266,
+                [8] = 272,
+                [9] = 274,
+                [10] = 276,
+                [11] = 278,
+                [12] = 280,
+                [13] = 284,
+                [14] = 300,
+                [15] = 304,
+                [16] = 830,
+                [17] = 259,
+                [18] = 270,
+                [19] = 486,
+                [20] = 262,
+                [21] = 304,
+                [22] = 815,
+                [23] = 340,
+                [24] = 91,
+                [25] = 832,
+                [26] = 834,
+                [27] = 634,
+                [28] = 635,
+                [29] = 636,
+                [30] = 637,
+                [31] = 638,
+                [32] = 613,
+                [33] = 400,
+                [34] = 398,
+                [35] = 282,
+                [36] = 260,
+                [37] = 258,
+                [38] = 254,
+                [39] = 252,
+                [40] = 88,
+                [41] = 90
+
+            };
+
+            int cropIndex = cropList[randomIndex.Next(cropList.Count)];
+
+            StardewValley.Object input = new(cropIndex, 0);
+
+            if (input == null) { return; }
+
             targetLocation.playSound("Ship");
-            
+
             targetLocation.playSound("bubbles");
 
             TemporaryAnimatedSprite temporarySprite = new("TileSheets\\animations", new Microsoft.Xna.Framework.Rectangle(256, 1856, 64, 128), 80f, 6, 999999, targetVector * 64f + new Vector2(0f, -128f), flicker: false, flipped: false, (targetVector.Y + 1f) * 64f / 10000f + 0.0001f, 0f, Color.Yellow * 0.75f, 1f, 0f, 0f, 0f)
@@ -186,43 +234,9 @@ namespace StardewDruid.Cast.Fates
 
             targetLocation.temporarySprites.Add(temporarySprite);
 
-            Dictionary<int, int> cropList = new()
-            {
-
-                [0] = 478, // rhubarb
-                [1] = 476, // garlic
-                [2] = 433, // coffee
-                [3] = 745, // strawberry
-                [4] = 473, // bean
-                [5] = 477, // kale
-                [6] = 479, // melon
-                [7] = 485, // red cabbage
-                [8] = 433, // coffee
-                [9] = 481, // blueberry
-                [10] = 302, // hops
-                [11] = 483, // wheat
-                [12] = 490, // pumpkin
-                [13] = 492, // yam
-                [14] = 299, // amaranth
-                [15] = 493, // cranberry
-                [16] = 301, // grape
-                [17] = 259, // fern
-                [18] = 270, // corn
-                [19] = 486, // starfruit
-                [20] = 262, // wheat
-                [21] = 304, // potato
-                [22] = 815, // green tea
-                [23] = 340, // honey
-
-            };
-
-            int cropIndex = cropList[randomIndex.Next(cropList.Count)];
-
-            StardewValley.Object input = new(cropIndex,0);
-
             targetObject.MinutesUntilReady = 1000;
 
-            switch ((int)@input.ParentSheetIndex)
+            switch (@input.ParentSheetIndex)
             {
                 case 262:
                     targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 346, "Beer", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
@@ -251,7 +265,7 @@ namespace StardewDruid.Cast.Fates
             {
                 case -75:
                     targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 350, @input.Name + " Juice", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
-                    targetObject.heldObject.Value.Price = (int)((double)@input.Price * 2.25);
+                    targetObject.heldObject.Value.Price = (int)(@input.Price * 2.25);
                     targetObject.heldObject.Value.name = @input.Name + " Juice";
                     targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Juice;
                     targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
@@ -265,12 +279,69 @@ namespace StardewDruid.Cast.Fates
                     targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
                     targetObject.MinutesUntilReady = 10000;
                     return;
+                default:
+                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 346, "Beer", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value.name = "Beer";
+                    return;
+
             }
 
         }
 
         public void FillPreservesJar()
         {
+
+            Dictionary<int, int> cropList = new()
+            {
+
+                [0] = 24,
+                [1] = 188,
+                [2] = 190,
+                [3] = 248,
+                [4] = 250,
+                [5] = 256,
+                [6] = 264,
+                [7] = 266,
+                [8] = 272,
+                [9] = 274,
+                [10] = 276,
+                [11] = 278,
+                [12] = 280,
+                [13] = 284,
+                [14] = 300,
+                [15] = 304,
+                [16] = 830,
+                [17] = 259,
+                [18] = 270,
+                [19] = 486,
+                [20] = 262,
+                [21] = 304,
+                [24] = 91,
+                [25] = 832,
+                [26] = 834,
+                [27] = 634,
+                [28] = 635,
+                [29] = 636,
+                [30] = 637,
+                [31] = 638,
+                [32] = 613,
+                [33] = 400,
+                [34] = 398,
+                [35] = 282,
+                [36] = 260,
+                [37] = 258,
+                [38] = 254,
+                [39] = 252,
+                [40] = 88,
+                [41] = 90
+
+            };
+
+            int cropIndex = cropList[randomIndex.Next(cropList.Count)];
+
+            StardewValley.Object input = new(cropIndex, 0);
+
+            if (input == null) { return; }
 
             targetLocation.playSound("Ship");
 
@@ -282,36 +353,6 @@ namespace StardewDruid.Cast.Fates
             };
 
             targetLocation.temporarySprites.Add(temporarySprite);
-
-            Dictionary<int, int> cropList = new()
-            {
-
-                [0] = 478, // rhubarb
-                [1] = 476, // garlic
-                [2] = 433, // coffee
-                [3] = 745, // strawberry
-                [4] = 473, // bean
-                [5] = 477, // kale
-                [6] = 479, // melon
-                [7] = 485, // red cabbage
-                [8] = 433, // coffee
-                [9] = 481, // blueberry
-                [10] = 302, // hops
-                [11] = 483, // wheat
-                [12] = 490, // pumpkin
-                [13] = 492, // yam
-                [14] = 299, // amaranth
-                [15] = 493, // cranberry
-                [16] = 301, // grape
-                [17] = 259, // fern
-                [18] = 270, // corn
-                [19] = 486, // starfruit
-
-            };
-
-            int cropIndex = cropList[randomIndex.Next(cropList.Count)];
-
-            StardewValley.Object input = new(cropIndex, 0);
 
             targetObject.MinutesUntilReady = 4000;
 
@@ -370,7 +411,7 @@ namespace StardewDruid.Cast.Fates
                 305,
                 107,
                 928,
-            
+
             };
 
             int eggIndex = eggList[randomIndex.Next(eggList.Count)];
@@ -494,26 +535,6 @@ namespace StardewDruid.Cast.Fates
 
         }
 
-        public void FillRecyclingMachine()
-        {
-
-            targetObject.MinutesUntilReady = 1000;
-
-            StardewValley.Object newObject = null;
-
-            while(newObject != null)
-            {
-
-                newObject = new StardewValley.Object(randomIndex.Next(1, 922), randomIndex.Next(1, 5));
-
-            }
-
-            targetObject.heldObject.Value = newObject;
-
-            targetLocation.playSound("trashcan");
-
-        }
-        
         public void FillFurnace()
         {
 
@@ -526,7 +547,6 @@ namespace StardewDruid.Cast.Fates
                 386,
                 80,
                 82,
-                458,
                 909,
 
             };
@@ -574,20 +594,20 @@ namespace StardewDruid.Cast.Fates
             targetObject.MinutesUntilReady = 240;
 
         }
-        
+
         public void FillGeodeCrusher()
         {
-            
-            targetObject.heldObject.Value = (StardewValley.Object)Utility.getTreasureFromGeode(new StardewValley.Object(749,1));
+
+            targetObject.heldObject.Value = (StardewValley.Object)Utility.getTreasureFromGeode(new StardewValley.Object(749, 1));
 
             Game1.stats.GeodesCracked++;
 
             targetObject.MinutesUntilReady = 240;
-            
+
             Game1.playSound("drumkit4");
-            
+
             Game1.playSound("stoneCrack");
-            
+
             DelayedAction.playSoundAfterDelay("steam", 200);
 
         }

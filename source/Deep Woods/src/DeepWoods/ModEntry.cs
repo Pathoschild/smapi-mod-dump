@@ -14,35 +14,50 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using static DeepWoodsMod.DeepWoodsSettings;
 using static DeepWoodsMod.DeepWoodsGlobals;
-using System.Collections.Concurrent;
 using Microsoft.Xna.Framework;
 using System.Linq;
 using Omegasis.SaveAnywhere.API;
 using DeepWoodsMod.API.Impl;
 using DeepWoodsMod.Framework.Messages;
 using DeepWoodsMod.Helpers;
+using DeepWoodsMod.Stuff;
+using StardewModdingAPI.Utilities;
 
 namespace DeepWoodsMod
 {
     public class ModEntry : Mod
     {
+        private class PerScreenStuff
+        {
+            public bool isDeepWoodsGameRunning = false;
+            public Dictionary<long, GameLocation> playerLocations = new Dictionary<long, GameLocation>();
+            public int beforeSaveCount = 0;
+        }
+
         private static DeepWoodsAPI api = new DeepWoodsAPI();
         private static ModEntry mod;
         private static Multiplayer multiplayer;
 
-        private bool isDeepWoodsGameRunning = false;
-        private Dictionary<long, GameLocation> playerLocations = new Dictionary<long, GameLocation>();
+        private static readonly PerScreen<PerScreenStuff> _perScreenStuff = new(() => new PerScreenStuff());
 
-        private static ConcurrentQueue<string> queuedErrorMessages = new ConcurrentQueue<string>();
-
-        private static void WorkErrorMessageQueue()
+        public static bool IsDeepWoodsGameRunning
         {
-            string msg;
-            while (queuedErrorMessages.TryDequeue(out msg))
-            {
-                Log(msg, LogLevel.Error);
-            }
+            get => _perScreenStuff.Value.isDeepWoodsGameRunning;
+            private set => _perScreenStuff.Value.isDeepWoodsGameRunning = value;
         }
+        private static Dictionary<long, GameLocation> PlayerLocations
+        {
+            get => _perScreenStuff.Value.playerLocations;
+            set => _perScreenStuff.Value.playerLocations = value;
+        }
+        private static int BeforeSaveCount
+        {
+            get => _perScreenStuff.Value.beforeSaveCount;
+            set => _perScreenStuff.Value.beforeSaveCount = value;
+        }
+
+
+
 
         public static void Log(string message, LogLevel level = LogLevel.Trace)
         {
@@ -93,8 +108,6 @@ namespace DeepWoodsMod
             return api;
         }
 
-        public static bool IsDeepWoodsGameRunning { get => ModEntry.mod.isDeepWoodsGameRunning; }
-
         private void RegisterEvents(IModEvents events)
         {
             events.GameLoop.Saving += this.OnSaving;
@@ -129,7 +142,6 @@ namespace DeepWoodsMod
             }
         }
 
-        private int isBeforeSaveCount = 0;
         private void OnSaving(object sender, SavingEventArgs args)
         {
             this.CleanupBeforeSave();
@@ -154,16 +166,12 @@ namespace DeepWoodsMod
         {
             ModEntry.Log("SaveEvents_BeforeSave", StardewModdingAPI.LogLevel.Trace);
 
-            isBeforeSaveCount++;
-            if (isBeforeSaveCount > 1)
+            BeforeSaveCount++;
+            if (BeforeSaveCount > 1)
             {
                 ModEntry.Log("BeforeSave event was called twice in a row. Ignoring second call.", StardewModdingAPI.LogLevel.Warn);
                 return;
             }
-
-            DeepWoodsManager.Remove();
-            WoodsObelisk.RemoveAllFromGame();
-            DeepWoodsSettings.DoSave();
 
             foreach (var who in Game1.getAllFarmers())
             {
@@ -173,21 +181,25 @@ namespace DeepWoodsMod
                     who.Position = new Vector2(DeepWoodsSettings.Settings.WoodsPassage.WoodsWarpLocation.X * 64, DeepWoodsSettings.Settings.WoodsPassage.WoodsWarpLocation.Y * 64);
                 }
             }
+
+            DeepWoodsManager.Remove();
+            WoodsObelisk.RemoveAllFromGame();
+            DeepWoodsSettings.DoSave();
         }
 
         private void RestoreAfterSave()
         {
             ModEntry.Log("SaveEvents_AfterSave", StardewModdingAPI.LogLevel.Trace);
 
-            isBeforeSaveCount--;
+            BeforeSaveCount--;
 
-            if (isBeforeSaveCount > 0)
+            if (BeforeSaveCount > 0)
             {
                 ModEntry.Log("AfterSave event was called before save has finished. Ignoring.", StardewModdingAPI.LogLevel.Warn);
                 return;
             }
 
-            if (isBeforeSaveCount < 0)
+            if (BeforeSaveCount < 0)
             {
                 ModEntry.Log("AfterSave event was called without previous BeforeSave call. Mod is now in unknown state, all hell might break lose.", StardewModdingAPI.LogLevel.Error);
                 return;
@@ -201,16 +213,16 @@ namespace DeepWoodsMod
         {
             ModEntry.Log("GameEvents_AfterReturnToTitle", StardewModdingAPI.LogLevel.Trace);
 
-            isDeepWoodsGameRunning = false;
+            IsDeepWoodsGameRunning = false;
         }
 
         private void InitGameIfNecessary()
         {
-            ModEntry.Log("InitGameIfNecessary(" + isDeepWoodsGameRunning + ")", StardewModdingAPI.LogLevel.Trace);
+            ModEntry.Log("InitGameIfNecessary(" + IsDeepWoodsGameRunning + ")", StardewModdingAPI.LogLevel.Trace);
 
             DeepWoodsManager.AddMaxHut();
 
-            if (isDeepWoodsGameRunning)
+            if (IsDeepWoodsGameRunning)
                 return;
 
             if (Game1.IsMasterGame)
@@ -218,7 +230,7 @@ namespace DeepWoodsMod
                 DeepWoodsSettings.DoLoad();
                 DeepWoodsManager.Add();
                 WoodsObelisk.RestoreAllInGame();
-                isDeepWoodsGameRunning = true;
+                IsDeepWoodsGameRunning = true;
             }
             else
             {
@@ -236,7 +248,7 @@ namespace DeepWoodsMod
         {
             ModEntry.Log("SaveEvents_AfterLoad", StardewModdingAPI.LogLevel.Trace);
 
-            isDeepWoodsGameRunning = false;
+            IsDeepWoodsGameRunning = false;
             InitGameIfNecessary();
         }
 
@@ -249,7 +261,7 @@ namespace DeepWoodsMod
 
             DeepWoodsManager.AddAll(deepWoodsLevelNames);
             // WoodsObelisk.RestoreAllInGame(); <- Not needed, server already sends correct building
-            mod.isDeepWoodsGameRunning = true;
+            IsDeepWoodsGameRunning = true;
         }
 
         private void OnDayStarted(object sender, DayStartedEventArgs args)
@@ -258,7 +270,7 @@ namespace DeepWoodsMod
 
             InitGameIfNecessary();
 
-            if (!isDeepWoodsGameRunning)
+            if (!IsDeepWoodsGameRunning)
                 return;
 
             DeepWoodsManager.LocalDayUpdate(Game1.dayOfMonth);
@@ -266,7 +278,7 @@ namespace DeepWoodsMod
 
         private void OnTimeChanged(object sender, TimeChangedEventArgs args)
         {
-            if (!isDeepWoodsGameRunning)
+            if (!IsDeepWoodsGameRunning)
                 return;
 
             DeepWoodsManager.LocalTimeUpdate(Game1.timeOfDay);
@@ -274,10 +286,8 @@ namespace DeepWoodsMod
 
         private void OnUpdateTicked(object sender, UpdateTickedEventArgs args)
         {
-            if (!isDeepWoodsGameRunning)
+            if (!IsDeepWoodsGameRunning)
                 return;
-
-            WorkErrorMessageQueue();
 
             Dictionary<long, GameLocation> newPlayerLocations = new Dictionary<long, GameLocation>();
             foreach (Farmer farmer in Game1.getAllFarmers())
@@ -286,7 +296,7 @@ namespace DeepWoodsMod
             }
 
             // Detect any farmer who left, joined or changed location.
-            foreach (var playerLocation in playerLocations)
+            foreach (var playerLocation in PlayerLocations)
             {
                 if (!newPlayerLocations.ContainsKey(playerLocation.Key))
                 {
@@ -302,7 +312,7 @@ namespace DeepWoodsMod
 
             foreach (var newPlayerLocation in newPlayerLocations)
             {
-                if (!playerLocations.ContainsKey(newPlayerLocation.Key))
+                if (!PlayerLocations.ContainsKey(newPlayerLocation.Key))
                 {
                     // player joined
                     PlayerWarped(Game1.getFarmer(newPlayerLocation.Key), null, newPlayerLocation.Value);
@@ -310,7 +320,7 @@ namespace DeepWoodsMod
             }
 
             // Update cache
-            playerLocations = newPlayerLocations;
+            PlayerLocations = newPlayerLocations;
 
             // 
             DeepWoodsManager.LocalTick();
@@ -321,6 +331,9 @@ namespace DeepWoodsMod
             // Add woods obelisk to wizard shop if possible and necessary,
             // intercept Building.obeliskWarpForReal() calls.
             WoodsObelisk.InjectWoodsObeliskIntoGame();
+
+            // Add DeepWoods Minecart if possible and necessary
+            DeepWoodsMineCart.InjectDeepWoodsMineCartIntoGame();
         }
 
         private void OnRendered(object sender, RenderedEventArgs e)
@@ -331,7 +344,7 @@ namespace DeepWoodsMod
 
         private void PlayerWarped(Farmer who, GameLocation prevLocation, GameLocation newLocation)
         {
-            if (!isDeepWoodsGameRunning)
+            if (!IsDeepWoodsGameRunning)
                 return;
 
             if (prevLocation is DeepWoods dw1 && newLocation is DeepWoods dw2 && dw1.Name == dw2.Name)
@@ -411,6 +424,12 @@ namespace DeepWoodsMod
                         DeepWoodsState.LowestLevelReached = e.ReadAs<int>();
                     break;
 
+                // host sent 'orb stones saved' update
+                case MessageId.SetOrbStonesSaved:
+                    if (!Context.IsMainPlayer)
+                        DeepWoodsState.OrbStonesSaved = e.ReadAs<int>();
+                    break;
+
                 // host sent 'received stardrop from unicorn' update
                 case MessageId.SetUnicornStardropReceived:
                     if (Context.IsMainPlayer)
@@ -430,6 +449,14 @@ namespace DeepWoodsMod
                     {
                         string name = e.ReadAs<string>();
                         DeepWoodsManager.RemoveDeepWoodsFromGameLocations(name);
+                    }
+                    break;
+
+                case MessageId.DeInfest:
+                    if (!Context.IsMainPlayer)
+                    {
+                        string name = e.ReadAs<string>();
+                        DeepWoodsManager.DeInfestDeepWoods(name);
                     }
                     break;
 

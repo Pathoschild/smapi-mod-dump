@@ -54,7 +54,7 @@ internal sealed class ClearNewLevelsCommand : ConsoleCommand
                 }
                 else
                 {
-                    var customSkill = SCSkill.Loaded.Values.FirstOrDefault(s =>
+                    var customSkill = CustomSkill.Loaded.Values.FirstOrDefault(s =>
                         string.Equals(s.DisplayName, args[i], StringComparison.CurrentCultureIgnoreCase));
                     if (customSkill is null)
                     {

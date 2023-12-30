@@ -1,0 +1,47 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/HauntedPineapple/Stendew-Valley
+**
+*************************************************/
+
+{
+  "Format": "1.23.0",
+
+  "CustomLocations": [
+    {
+      "Name": "Custom_MainIsland",
+      "FromMapFile": "MapAssets/MainIsland.tmx"
+    },
+    {
+      "Name": "Custom_MainIslandCave",
+      "FromMapFile": "MapAssets/MainIslandCave.tmx"
+    },
+    {
+      "Name": "Custom_StenHouse",
+      "FromMapFile": "MapAssets/StenHouse.tmx"
+    }
+
+  ],
+
+  "Changes": [
+    /* MAPS */
+
+    /*When loading the beach map it now loads the tmx file in MapAssets folder instead of xmb file in content/maps*/
+    {
+      "Action": "Load",
+      "Target": "Maps/Beach",
+      "FromFile": "MapAssets/Beach.tmx"
+    },
+    /*Adds warp to our custom island in beach*/
+    {
+      "Action": "EditMap",
+      "Target": "Maps/Beach",
+      "AddWarps": [ "83 39 Custom_MainIsland 29 72" ]
+    },
+    
+  ]
+}

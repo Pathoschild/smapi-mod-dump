@@ -11,7 +11,7 @@
 {
     "Name": "StardewDruid",
     "Author": "Neosinf",
-    "Version": "1.4.6",
+    "Version": "1.7.3",
     "Description": "Stardew Druid Mod for Stardew Valley",
     "UniqueID": "neosinf.StardewDruid",
     "EntryDll": "StardewDruid.dll",

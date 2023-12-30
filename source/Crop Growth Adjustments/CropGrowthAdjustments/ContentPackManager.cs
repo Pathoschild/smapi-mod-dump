@@ -12,13 +12,12 @@ using System;
 using System.Collections.Generic;
 using CropGrowthAdjustments.Types;
 using StardewModdingAPI;
-using StardewValley;
 
 namespace CropGrowthAdjustments
 {
     public class ContentPackManager
     {
-        public List<Adjustments> ContentPacks = new List<Adjustments>();
+        public List<Adjustments> ContentPacks = new();
 
         private const string ContentJsonName = "adjustments.json";
 
@@ -89,7 +88,7 @@ namespace CropGrowthAdjustments
                     if (adjustment.CropProduceItemId == -1)
                     {
                         ModEntry.ModMonitor.Log($"{contentPack.ContentPack.Manifest.Name} - Unable to assign ID to {adjustment.CropProduceName}. " + 
-                                                $"Make sure the name you specified matches the desired crop name exactly. Otherwise, if this crop had its produce item name" +
+                                                $"Make sure the name you specified matches the desired crop name. Otherwise, if this crop had its produce item name" +
                                                 $"edited (e.g. via ContentPatcher), make sure to specify the CropProduceItemId in adjustments.json.", LogLevel.Warn);
                         continue; 
                     }
@@ -99,7 +98,7 @@ namespace CropGrowthAdjustments
             }
         }
 
-        public void AssignCropOriginalRowsInSpritesheet(IModHelper helper)
+        public void AssignCropRowsInSpritesheet(IModHelper helper)
         {
             foreach (var contentPack in ContentPacks)
             {
@@ -114,7 +113,7 @@ namespace CropGrowthAdjustments
                         continue;
                     }
                     
-                    adjustment.OriginalRowInSpriteSheet = int.Parse(cropData[2]);
+                    adjustment.RowInCropSpriteSheet = int.Parse(cropData[2]);
                 }
             }
         }

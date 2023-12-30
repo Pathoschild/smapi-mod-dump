@@ -52,8 +52,8 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
             $"{Manifest.UniqueID}/MaxIcon",
             new ModTextureProvider(() => "assets/sprites/interface/max.png"));
         this.Provide(
-            $"{Manifest.UniqueID}/PrestigeProgression",
-            new ModTextureProvider(() => $"assets/sprites/interface/{ProfessionsModule.Config.PrestigeProgressionStyle}.png"));
+            $"{Manifest.UniqueID}/PrestigeRibbon",
+            new ModTextureProvider(() => $"assets/sprites/interface/{ProfessionsModule.Config.Prestige.Ribbon}.png"));
         this.Provide(
             $"{Manifest.UniqueID}/SkillBars",
             new ModTextureProvider(ProvideSkillBars));
@@ -69,10 +69,8 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
     {
         var data = asset.AsDictionary<int, string>().Data;
 
-        string title =
-            _I18n.Get("prestige.achievement.title" +
-                              (Game1.player.IsMale ? ".male" : ".female"));
-        var desc = I18n.Prestige_Achievement_Desc();
+        string title = _I18n.Get("prestige.achievement.title" + (Game1.player.IsMale ? ".male" : ".female"));
+        string desc = _I18n.Get("prestige.achievement.desc" + (Game1.player.IsMale ? ".male" : ".female"));
 
         const string shouldDisplayBeforeEarned = "false";
         const string prerequisite = "-1";
@@ -460,7 +458,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
         foreach (var profession in Profession.List)
         {
             if (!Game1.player.HasProfession(profession, true) &&
-                (Game1.activeClickableMenu is not LevelUpMenu || profession.Skill.CurrentLevel <= 10))
+                (Game1.activeClickableMenu is not LevelUpMenu || profession.ParentSkill.CurrentLevel <= 10))
             {
                 continue;
             }
@@ -510,15 +508,15 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
     private static string ProvideUltimateMeter()
     {
         var path = "assets/sprites/interface/gauge";
-        if (StardewValleyExpandedIntegration.Instance?.IsLoaded == true)
+        if (SVExpandedIntegration.Instance?.IsLoaded == true)
         {
-            if (!StardewValleyExpandedIntegration.Instance.DisabeGaldoranTheme &&
+            if (!SVExpandedIntegration.Instance.DisabeGaldoranTheme &&
                 (Game1.currentLocation?.NameOrUniqueName.IsAnyOf(
                      "Custom_CastleVillageOutpost",
                      "Custom_CrimsonBadlands",
                      "Custom_IridiumQuarry",
                      "Custom_TreasureCave") == true ||
-                 StardewValleyExpandedIntegration.Instance.UseGaldoranThemeAllTimes))
+                 SVExpandedIntegration.Instance.UseGaldoranThemeAllTimes))
             {
                 return path + "_galdora.png";
             }

@@ -80,18 +80,16 @@ namespace StardewArchipelago.Locations.Festival
             try
             {
                 // We only run this once for each menu
-                if (_lastShopMenuUpdated == __instance)
+                if (_lastShopMenuUpdated == __instance || __instance.storeContext != "Temp" || !Game1.CurrentEvent.isSpecificFestival("fall27"))
                 {
                     return;
                 }
 
                 _lastShopMenuUpdated = __instance;
                 var myActiveHints = _archipelago.GetMyActiveHints();
-                foreach (var salableItem in __instance.itemPriceAndStock.Keys.ToArray())
-                {
-                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.RARECROW_2, item => _shopReplacer.IsRarecrow(item, 2), myActiveHints);
-                    _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, salableItem, FestivalLocationNames.JACK_O_LANTERN_RECIPE, item => item.IsRecipe && item.Name.Equals("Jack-O-Lantern", StringComparison.InvariantCultureIgnoreCase), myActiveHints);
-                }
+
+                _shopReplacer.ReplaceShopItem(__instance.itemPriceAndStock, FestivalLocationNames.RARECROW_2, item => _shopReplacer.IsRarecrow(item, 2), myActiveHints);
+                _shopReplacer.PlaceShopRecipeCheck(__instance.itemPriceAndStock, FestivalLocationNames.JACK_O_LANTERN_RECIPE, "Jack-O-Lantern", myActiveHints, new[] { 2000, 1 });
 
                 __instance.forSale = __instance.itemPriceAndStock.Keys.ToList();
                 return;

@@ -18,7 +18,7 @@ A mod for Stardew Valley that adds a procedurally generated infinite forest with
 
 ### Copyright
 
-Copyright (c) 2017-2022 Max Vollmer (if not otherwise stated)
+Copyright (c) 2017-2023 Max Vollmer (if not otherwise stated)
 
 DeepWoods is a mod for Stardew Valley using SMAPI. Not affiliated with their respective owners/authors. All rights reserved.
 

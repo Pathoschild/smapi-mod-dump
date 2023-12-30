@@ -40,11 +40,18 @@ namespace ichortower.NPCGeometry
                     "Character_DrawShadow__Transpiler")
             );
             harmony.Patch(
-                original: typeof(NPC).GetMethod("draw",
+                original: typeof(NPC).GetMethod("DrawEmote",
+                    BindingFlags.Instance | BindingFlags.Public,
+                    new Type[]{typeof(SpriteBatch)}),
+                transpiler: new HarmonyMethod(typeof(ModEntry),
+                    "NPC_DrawEmote__Transpiler")
+            );
+            harmony.Patch(
+                original: typeof(NPC).GetMethod("DrawBreathing",
                     BindingFlags.Instance | BindingFlags.Public,
                     new Type[]{typeof(SpriteBatch), typeof(float)}),
                 transpiler: new HarmonyMethod(typeof(ModEntry),
-                    "NPC_draw__Transpiler")
+                    "NPC_DrawBreathing__Transpiler")
             );
             harmony.Patch(
                 original: typeof(Game1).GetMethod("DrawCharacterEmotes",
@@ -171,65 +178,19 @@ namespace ichortower.NPCGeometry
 
 
         /*
-         * The NPC.draw transpiler adds two patches for two different geometry
-         * fields: EmoteHeight and BreatheRect.
-         * EmoteHeight replaces the emote bubble height calculation with a
-         * custom offset.
-         * BreatheRect picks a custom rectangle on the sprite to animate to
-         * show breathing, instead of calculating it with heuristics.
+	 * For NPC.DrawEmote, EmoteHeight replaces the emote bubble height
+	 * calculation with a custom offset.
          */
-        public static IEnumerable<CodeInstruction> NPC_draw__Transpiler(
+        public static IEnumerable<CodeInstruction> NPC_DrawEmote__Transpiler(
                 IEnumerable<CodeInstruction> instructions,
                 ILGenerator generator,
                 MethodBase original)
         {
             LocalBuilder emoteHeight = generator.DeclareLocal(typeof(int));
             LocalBuilder emoteStringVal = generator.DeclareLocal(typeof(string));
-            LocalBuilder breatheStringVal = generator.DeclareLocal(typeof(string));
             Label noHeightField = generator.DefineLabel();
             Label foundHeightField = generator.DefineLabel();
-            Label noBreatheRectField = generator.DefineLabel();
-            Label foundBreatheRectField = generator.DefineLabel();
             var codes = new List<CodeInstruction>(instructions);
-
-            /* The breathe rect code.
-             * Most of the work is farmed out to the two helper functions. */
-            var breatheInjection = new List<CodeInstruction>(){
-                new(OpCodes.Ldarg_0),
-                new(OpCodes.Ldstr, Prefix + "/BreatheRect"),
-                new(OpCodes.Call, typeof(ModEntry).GetMethod("GetCustomFieldValue",
-                        BindingFlags.Public | BindingFlags.Static)),
-                new(OpCodes.Stloc, breatheStringVal),
-                new(OpCodes.Ldloc, breatheStringVal),
-                new(OpCodes.Brfalse, noBreatheRectField),
-                new(OpCodes.Ldloc, breatheStringVal),
-                new(OpCodes.Ldloca_S, (short)5),
-                new(OpCodes.Ldloca_S, (short)6),
-                new(OpCodes.Call, typeof(ModEntry).GetMethod("TryParseBreatheRect",
-                        BindingFlags.Public | BindingFlags.Static)),
-                new(OpCodes.Brfalse, noBreatheRectField),
-                new(OpCodes.Br, foundBreatheRectField),
-            };
-            /* the anchor for it is the store to local index 5 (chestBox) */
-            int breatheTarget = -1;
-            for (int i = 0; i < codes.Count - 1; ++i) {
-                if (codes[i].opcode == OpCodes.Stloc_S &&
-                        (codes[i].operand as LocalBuilder).LocalIndex == 5) {
-                    breatheTarget = i+1;
-                    codes[breatheTarget].labels.Add(noBreatheRectField);
-                    break;
-                }
-            }
-            /* find the instruction after the block, so we can skip the
-             * vanilla code if we found a valid BreatheRect field. */
-            for (int i = breatheTarget+1; i < codes.Count; ++i) {
-                if (codes[i].opcode == OpCodes.Ldc_R4 &&
-                        codes[i].operand.Equals(0.0f)) {
-                    codes[i].labels.Add(foundBreatheRectField);
-                    break;
-                }
-            }
-            codes.InsertRange(breatheTarget, breatheInjection);
 
             /* The emote height code. */
             var heightInjection = new List<CodeInstruction>(){
@@ -251,7 +212,7 @@ namespace ichortower.NPCGeometry
                 new(OpCodes.Sub),
                 new(OpCodes.Br_S, foundHeightField),
             };
-            /* The anchor is loading the constant 32 near the end. */
+            /* The anchor is loading the constant 32 */
             int heightTarget = -1;
             for (int i = codes.Count - 5; i >= 0; --i) {
                 if (codes[i].opcode == OpCodes.Ldc_I4_S &&
@@ -265,6 +226,64 @@ namespace ichortower.NPCGeometry
             codes.InsertRange(heightTarget, heightInjection);
             return codes;
         }
+
+
+	/*
+	 * In NPC.DrawBreathing, BreatheRect picks a custom rectangle on the
+	 * sprite to animate to show breathing, instead of calculating it with
+	 * heuristics.
+	 */
+        public static IEnumerable<CodeInstruction> NPC_DrawBreathing__Transpiler(
+                IEnumerable<CodeInstruction> instructions,
+                ILGenerator generator,
+                MethodBase original)
+        {
+            LocalBuilder breatheStringVal = generator.DeclareLocal(typeof(string));
+            Label noBreatheRectField = generator.DefineLabel();
+            Label foundBreatheRectField = generator.DefineLabel();
+            var codes = new List<CodeInstruction>(instructions);
+
+            /* The breathe rect code (see the helper functions).
+	     * Note: 0 and 1 are local indexes for chestBox and chestPosition */
+            var breatheInjection = new List<CodeInstruction>(){
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldstr, Prefix + "/BreatheRect"),
+                new(OpCodes.Call, typeof(ModEntry).GetMethod("GetCustomFieldValue",
+                        BindingFlags.Public | BindingFlags.Static)),
+                new(OpCodes.Stloc, breatheStringVal),
+                new(OpCodes.Ldloc, breatheStringVal),
+                new(OpCodes.Brfalse, noBreatheRectField),
+                new(OpCodes.Ldloc, breatheStringVal),
+                new(OpCodes.Ldloca_S, (short)0),
+                new(OpCodes.Ldloca_S, (short)1),
+                new(OpCodes.Call, typeof(ModEntry).GetMethod("TryParseBreatheRect",
+                        BindingFlags.Public | BindingFlags.Static)),
+                new(OpCodes.Brfalse, noBreatheRectField),
+                new(OpCodes.Br, foundBreatheRectField),
+            };
+            /* inject right after initial setting (chestBox = SourceRect).
+	     * that means stloc.0 */
+            int breatheTarget = -1;
+            for (int i = 0; i < codes.Count - 1; ++i) {
+                if (codes[i].opcode == OpCodes.Stloc_0) {
+                    breatheTarget = i+1;
+                    codes[breatheTarget].labels.Add(noBreatheRectField);
+                    break;
+                }
+            }
+	    /* add a label at the 'float breathScale =' line so we can skip
+	     * to it if we found a valid BreatheRect. we need ldc.r4 0.0 */
+            for (int i = breatheTarget+1; i < codes.Count; ++i) {
+                if (codes[i].opcode == OpCodes.Ldc_R4 &&
+                        codes[i].operand.Equals(0.0f)) {
+                    codes[i].labels.Add(foundBreatheRectField);
+                    break;
+                }
+            }
+            codes.InsertRange(breatheTarget, breatheInjection);
+
+	    return codes;
+	}
 
 
         /*

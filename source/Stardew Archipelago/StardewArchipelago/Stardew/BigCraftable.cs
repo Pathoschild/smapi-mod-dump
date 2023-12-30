@@ -20,6 +20,8 @@ namespace StardewArchipelago.Stardew
 {
     public class BigCraftable : StardewItem
     {
+        public const string BIG_CRAFTABLE_SEPARATOR = ":";
+
         public int Edibility { get; private set; }
         public string ObjectType { get; private set; }
         public string Category { get; private set; }
@@ -39,9 +41,7 @@ namespace StardewArchipelago.Stardew
 
             if (Name == "Rarecrow")
             {
-                var pattern = @"\((\d) of \d\)"; // (# of 8)
-                var match = Regex.Match(Description, pattern);
-                var rarecrowNumber = match.Groups[1].Value;
+                var rarecrowNumber = GetRarecrowNumber(id);
                 Name += $" #{rarecrowNumber}";
             }
         }
@@ -59,7 +59,19 @@ namespace StardewArchipelago.Stardew
 
         private static int GetRarecrowNumber(Object salableItem)
         {
-            return salableItem.ParentSheetIndex switch
+            try
+            {
+                return GetRarecrowNumber(salableItem.ParentSheetIndex);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException($"{salableItem.Name} is not a recognized rarecrow!");
+            }
+        }
+
+        private static int GetRarecrowNumber(int id)
+        {
+            return id switch
             {
                 110 => 1,
                 113 => 2,
@@ -69,7 +81,7 @@ namespace StardewArchipelago.Stardew
                 138 => 6,
                 139 => 7,
                 140 => 8,
-                _ => throw new ArgumentException($"{salableItem.Name} is not a recognized rarecrow!")
+                _ => throw new ArgumentException($"{id} is not a recognized rarecrow!")
             };
         }
 
@@ -93,7 +105,7 @@ namespace StardewArchipelago.Stardew
 
         public override LetterAttachment GetAsLetter(ReceivedItem receivedItem, int amount = 1)
         {
-            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveBigCraftable, Id.ToString());
+            return new LetterActionAttachment(receivedItem, LetterActionsKeys.GiveBigCraftable, $"{Id}{BIG_CRAFTABLE_SEPARATOR}{amount}");
         }
     }
 }

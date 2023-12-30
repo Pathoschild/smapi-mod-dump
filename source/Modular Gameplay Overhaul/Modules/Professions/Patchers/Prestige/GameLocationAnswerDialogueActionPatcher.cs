@@ -15,8 +15,7 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers.Prestige;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using DaLion.Overhaul;
-using DaLion.Overhaul.Modules;
+using DaLion.Overhaul.Modules.Professions.Configs;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Overhaul.Modules.Professions.Ultimates;
 using DaLion.Overhaul.Modules.Professions.VirtualProperties;
@@ -43,8 +42,10 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
     [HarmonyPrefix]
     private static bool GameLocationAnswerDialogueActionPrefix(GameLocation __instance, ref bool __result, string? questionAndAnswer)
     {
-        if (!ProfessionsModule.Config.EnablePrestige ||
-            questionAndAnswer?.StartsWithAnyOf("dogStatue", "prestigeRespec", "skillReset") != true)
+        if ((!ProfessionsModule.EnableSkillReset ||
+             questionAndAnswer?.StartsWithAnyOf("dogStatue", "prestigeRespec", "skillReset") != true) &&
+            (ProfessionsModule.Config.Prestige.Mode != PrestigeConfig.PrestigeMode.Streamlined ||
+             questionAndAnswer?.StartsWith("professionForget") != true))
         {
             return true; // run original logic
         }
@@ -95,20 +96,20 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
                         {
                             HandleSkillReset(skill);
                         }
-                        else if (questionAndAnswer.Contains("prestigeRespec_"))
+                        else if (questionAndAnswer.ContainsAnyOf("prestigeRespec_", "professionForget_"))
                         {
                             HandlePrestigeRespec(skill);
                         }
                     }
-                    else if (SCSkill.Loaded.TryGetValue(skillName, out var customSkill))
+                    else if (CustomSkill.Loaded.TryGetValue(skillName, out var customSkill))
                     {
                         if (questionAndAnswer.Contains("skillReset_"))
                         {
                             HandleSkillReset(customSkill);
                         }
-                        else if (questionAndAnswer.Contains("prestigeRespec_"))
+                        else if (questionAndAnswer.ContainsAnyOf("prestigeRespec_", "professionForget_"))
                         {
-                            HandlePrestigeRespec((SCSkill)customSkill);
+                            HandlePrestigeRespec((CustomSkill)customSkill);
                         }
                     }
 
@@ -133,7 +134,7 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
     private static void OfferSkillResetChoices(GameLocation location)
     {
         var skillResponses = (
-            from skill in Skill.List.Except(Skill.Luck.Collect()).Concat(SCSkill.Loaded.Values)
+            from skill in Skill.List.Except(Skill.Luck.Collect()).Concat(CustomSkill.Loaded.Values)
             where skill.CanReset()
             let costVal = skill.GetResetCost()
             let costStr = costVal > 0
@@ -152,7 +153,7 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
 
     private static void OfferPrestigeRespecChoices(GameLocation location)
     {
-        if (ProfessionsModule.Config.PrestigeRespecCost > 0 && Game1.player.Money < ProfessionsModule.Config.PrestigeRespecCost)
+        if (ProfessionsModule.Config.Prestige.PrestigeRespecCost is var cost and > 0 && Game1.player.Money < cost)
         {
             Game1.drawObjectDialogue(
                 Game1.content.LoadString("Strings\\Locations:BusStop_NotEnoughMoneyForTicket"));
@@ -195,7 +196,7 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
                 Game1.content.LoadString("Strings\\StringsFromCSFiles:SkillsPage.cs.11608")));
         }
 
-        foreach (var customSkill in SCSkill.Loaded.Values)
+        foreach (var customSkill in CustomSkill.Loaded.Values)
         {
             if (customSkill.CurrentLevel >= 15 && !customSkill.NewLevels.Any(level => level is 15 or 20))
             {
@@ -216,7 +217,7 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
 
     private static void OfferChangeUltiChoices(GameLocation location)
     {
-        if (ProfessionsModule.Config.LimitRespecCost > 0 && Game1.player.Money < ProfessionsModule.Config.LimitRespecCost)
+        if (ProfessionsModule.Config.Limit.LimitRespecCost is var cost and > 0 && Game1.player.Money < cost)
         {
             Game1.drawObjectDialogue(Game1.content.LoadString("Strings\\Locations:BusStop_NotEnoughMoneyForTicket"));
             return;
@@ -226,12 +227,12 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
         var choices = (
             from unchosenUltimate in Game1.player.GetUnchosenUltimates()
             orderby unchosenUltimate
-            let choice = I18n.Prestige_DogStatue_Choice(unchosenUltimate.Profession.Title, unchosenUltimate.DisplayName)
+            let choice = I18n.Prestige_DogStatue_Choice(unchosenUltimate.ParentProfession.Title, unchosenUltimate.DisplayName)
             select new Response("Choice_" + unchosenUltimate, choice)).ToList();
         choices.Add(new Response("Cancel", I18n.Prestige_DogStatue_Cancel())
             .SetHotKey(Keys.Escape));
 
-        var message = I18n.Prestige_DogStatue_Replace(chosenUltimate.Profession.Title, chosenUltimate.DisplayName);
+        var message = I18n.Prestige_DogStatue_Replace(chosenUltimate.ParentProfession.Title, chosenUltimate.DisplayName);
         location.createQuestionDialogue(message, choices.ToArray(), HandleChangeUlti);
     }
 
@@ -268,10 +269,10 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
         ProfessionsModule.State.UsedStatueToday = true;
     }
 
-    private static void HandlePrestigeRespec(Skill skill)
+    private static void HandlePrestigeRespec(VanillaSkill skill)
     {
         var player = Game1.player;
-        player.Money = Math.Max(0, player.Money - (int)ProfessionsModule.Config.PrestigeRespecCost);
+        player.Money = Math.Max(0, player.Money - (int)ProfessionsModule.Config.Prestige.PrestigeRespecCost);
 
         // remove all prestige professions for this skill
         for (var i = 0; i < 6; i++)
@@ -279,7 +280,28 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
             GameLocation.RemoveProfession(100 + (skill * 6) + i);
         }
 
-        var currentLevel = Farmer.checkForLevelGain(0, player.experiencePoints[0]);
+        var currentLevel = skill.CurrentLevel;
+        if (ProfessionsModule.Config.Prestige.Mode == PrestigeConfig.PrestigeMode.Streamlined)
+        {
+            // also remove regular professions
+            for (var i = 0; i < 6; i++)
+            {
+                GameLocation.RemoveProfession((skill * 6) + i);
+            }
+
+            // re-add levels
+            if (currentLevel >= 5)
+            {
+                player.newLevels.Add(new Point(skill, 5));
+            }
+
+            if (currentLevel >= 10)
+            {
+                player.newLevels.Add(new Point(skill, 10));
+            }
+        }
+
+        // re-add prestige levels
         if (currentLevel >= 15)
         {
             player.newLevels.Add(new Point(skill, 15));
@@ -303,10 +325,10 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
         ProfessionsModule.State.UsedStatueToday = true;
     }
 
-    private static void HandlePrestigeRespec(SCSkill skill)
+    private static void HandlePrestigeRespec(CustomSkill skill)
     {
         var player = Game1.player;
-        player.Money = Math.Max(0, player.Money - (int)ProfessionsModule.Config.PrestigeRespecCost);
+        player.Money = Math.Max(0, player.Money - (int)ProfessionsModule.Config.Prestige.PrestigeRespecCost);
 
         // remove all prestige professions for this skill
         for (var i = 0; i < 6; i++)
@@ -315,6 +337,29 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
         }
 
         var currentLevel = Farmer.checkForLevelGain(0, player.experiencePoints[0]);
+        if (ProfessionsModule.Config.Prestige.Mode == PrestigeConfig.PrestigeMode.Streamlined)
+        {
+            // also remove regular professions
+            for (var i = 0; i < 6; i++)
+            {
+                GameLocation.RemoveProfession(100 + skill.Professions[i].Id);
+            }
+
+            // re-add levels
+            if (currentLevel >= 5)
+            {
+                Reflector.GetStaticFieldGetter<List<KeyValuePair<string, int>>>(typeof(SpaceCore.Skills), "NewLevels")
+                    .Invoke().Add(new KeyValuePair<string, int>(skill.StringId, 5));
+            }
+
+            if (currentLevel >= 10)
+            {
+                Reflector.GetStaticFieldGetter<List<KeyValuePair<string, int>>>(typeof(SpaceCore.Skills), "NewLevels")
+                    .Invoke().Add(new KeyValuePair<string, int>(skill.StringId, 10));
+            }
+        }
+
+        // re-add presige levels
         if (currentLevel >= 15)
         {
             Reflector.GetStaticFieldGetter<List<KeyValuePair<string, int>>>(typeof(SpaceCore.Skills), "NewLevels")
@@ -348,7 +393,7 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
         }
 
         var player = Game1.player;
-        player.Money = Math.Max(0, player.Money - (int)ProfessionsModule.Config.LimitRespecCost);
+        player.Money = Math.Max(0, player.Money - (int)ProfessionsModule.Config.Limit.LimitRespecCost);
 
         // change ultimate
         var chosenUltimate = Ultimate.FromName(choice.SplitWithoutAllocation('_')[1].ToString());
@@ -358,7 +403,7 @@ internal sealed class GameLocationAnswerDialogueActionPatcher : HarmonyPatcher
         SoundEffectPlayer.DogStatuePrestige.Play(player.currentLocation);
 
         // tell the player
-        Game1.drawObjectDialogue(I18n.Prestige_DogStatue_Fledged(chosenUltimate.Profession.Title));
+        Game1.drawObjectDialogue(I18n.Prestige_DogStatue_Fledged(chosenUltimate.ParentProfession.Title));
 
         // woof woof
         DelayedAction.playSoundAfterDelay("dog_bark", 1300);

@@ -42,28 +42,28 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
 
         private static string[] _notImmediatelyAccessible = new[]
         {
-            "Leo", "Krobus", "Dwarf", "Sandy", "Kent", "Yoba",
+            "Leo", "Krobus", "Dwarf", "Sandy", "Kent", "Yoba", "Lance", "Apples", "Scarlett", "Morgan", "Goblin", "Alecto"
         };
 
         private static IMonitor _monitor;
         private static IModHelper _helper;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
-        private static VillagerGrabber _grabber;
         private static Friends _friends;
+        private static VillagerGrabber _grabber;
         private static Dictionary<string, double> _friendshipPoints = new();
         private static Dictionary<string, Dictionary<int, Texture2D>> _apLogos;
 
         private static string[] _hintedFriendshipLocations;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, StardewItemManager itemManager)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, Friends friends, StardewItemManager itemManager)
         {
             _monitor = monitor;
             _helper = modHelper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
-            _grabber = new VillagerGrabber(itemManager);
-            _friends = new Friends();
+            _friends = friends;
+            _grabber = new VillagerGrabber(archipelago, itemManager);
             _apLogos = new Dictionary<string, Dictionary<int, Texture2D>>();
 
             foreach (var logoName in ArchipelagoTextures.ValidLogos)
@@ -190,6 +190,10 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
             {
                 var name = __instance.names[i] as string;
                 var friend = _friends.GetFriend(name);
+                if (friend == null)
+                {
+                    return;
+                }
                 var apPoints = (int)GetFriendshipPoints(friend.StardewName);
                 var maxShuffled = friend.ShuffledUpTo(_archipelago);
                 var heartSize = _archipelago.SlotData.FriendsanityHeartSize;

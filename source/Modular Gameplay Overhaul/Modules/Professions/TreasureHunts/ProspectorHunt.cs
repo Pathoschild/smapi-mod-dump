@@ -19,10 +19,10 @@ using DaLion.Overhaul.Modules.Professions.Events.GameLoop.UpdateTicked;
 using DaLion.Overhaul.Modules.Professions.Events.World.ObjectListChanged;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Constants;
+using DaLion.Shared.Extensions;
 using DaLion.Shared.Extensions.Collections;
 using DaLion.Shared.Extensions.Stardew;
 using Microsoft.Xna.Framework;
-using Shared.Extensions;
 using StardewValley.Locations;
 using StardewValley.Tools;
 
@@ -60,7 +60,7 @@ internal sealed class ProspectorHunt : TreasureHunt
                 ? typeof(ProspectorHuntObjectListChangedEvent)
                 : typeof(FarmhandProspectorHuntUpdateTickedEvent),
             typeof(ProspectorHuntUpdateTickedEvent));
-        if (ProfessionsModule.Config.UseLegacyProspectorHunt)
+        if (ProfessionsModule.Config.ControlsUi.UseLegacyProspectorHunt)
         {
             EventManager.Enable<ProspectorHuntRenderedHudEvent>();
         }
@@ -88,7 +88,7 @@ internal sealed class ProspectorHunt : TreasureHunt
                 ? typeof(ProspectorHuntObjectListChangedEvent)
                 : typeof(FarmhandProspectorHuntUpdateTickedEvent),
             typeof(ProspectorHuntUpdateTickedEvent));
-        if (ProfessionsModule.Config.UseLegacyProspectorHunt)
+        if (ProfessionsModule.Config.ControlsUi.UseLegacyProspectorHunt)
         {
             EventManager.Enable<ProspectorHuntRenderedHudEvent>();
         }
@@ -504,7 +504,7 @@ internal sealed class ProspectorHunt : TreasureHunt
         else if (this.Random.NextDouble() < 0.25 * luckModifier)
         {
             treasuresAndQuantities.AddOrUpdate(
-                CombatModule.ShouldEnable && CombatModule.Config.DwarvenLegacy &&
+                CombatModule.ShouldEnable && CombatModule.Config.Quests.DwarvenLegacy &&
                 Combat.Integrations.JsonAssetsIntegration.DwarvenScrapIndex is { } dwarvenScrapIndex &&
                 this.Random.NextDouble() < 0.4
                     ? dwarvenScrapIndex

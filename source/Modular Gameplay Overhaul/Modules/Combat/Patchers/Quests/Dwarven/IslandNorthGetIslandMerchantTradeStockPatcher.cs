@@ -36,7 +36,7 @@ internal sealed class IslandNorthGetIslandMerchantTradeStockPatcher : HarmonyPat
     [HarmonyPostfix]
     private static void IslandNorthGetIslandMerchantTradeStockPostfix(Dictionary<ISalable, int[]> __result)
     {
-        if (!CombatModule.Config.DwarvenLegacy)
+        if (!CombatModule.Config.Quests.DwarvenLegacy)
         {
             return;
         }

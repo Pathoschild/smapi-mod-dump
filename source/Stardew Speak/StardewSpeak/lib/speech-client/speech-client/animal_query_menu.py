@@ -1,5 +1,4 @@
 import dragonfly as df
-from srabuilder import rules
 import menu_utils, server, df_utils, game, objective, server, constants, letters
 
 ANIMAL_QUERY_MENU = 'animalQueryMenu'

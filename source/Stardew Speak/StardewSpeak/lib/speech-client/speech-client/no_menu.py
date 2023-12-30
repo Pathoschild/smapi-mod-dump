@@ -2,7 +2,6 @@ import dragonfly as df
 import functools
 from srabuilder import rules
 import characters, locations, fishing_menu, title_menu, menu_utils, server, df_utils, game, container_menu, objective, constants, items
-import tts
 
 mouse_directions = {
     "up": "up",
@@ -102,7 +101,7 @@ mapping = {
     "harvest crops": objective.objective_action(objective.HarvestCropsObjective),
     "[open | read] (quests | journal | quest log)": df_utils.async_action(game.press_key, constants.JOURNAL_BUTTON),
     "face <direction_nums>": objective.objective_action(objective.FaceDirectionObjective, "direction_nums"),
-    "stop": df_utils.async_action(server.stop_everything),
+    "halt": df_utils.async_action(server.stop_everything),
     "swing": df_utils.async_action(game.press_key, constants.USE_TOOL_BUTTON),
     "next toolbar": df_utils.async_action(game.press_key, constants.TOOLBAR_SWAP),
     "<points>": objective.function_objective(objective.move_to_point, "points"),

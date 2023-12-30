@@ -10,9 +10,9 @@ mods:
    Ranching Tool Upgrades
 
 latest commit:
-   commit 11f8523900c93959dd5a7b0a59ad0ed795d34bd9
+   commit a8f3feea6c06dfeab4cb8c56e691c27d574770d5
    Author: Drbirbdev <drbirbdev@gmail.com>
-   Date:   Wed Nov 29 14:34:12 2023 -0800
+   Date:   Fri Dec 8 14:20:40 2023 -0800
    
-       Add more textures for BinningSkill, and hats
+       Some fixes to SEdit
    

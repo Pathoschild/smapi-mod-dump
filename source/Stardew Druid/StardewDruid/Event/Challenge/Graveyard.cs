@@ -14,9 +14,6 @@ using StardewDruid.Map;
 using StardewDruid.Monster;
 using StardewValley;
 using System.Collections.Generic;
-using xTile.Dimensions;
-using xTile.Layers;
-using xTile.Tiles;
 
 namespace StardewDruid.Event.Challenge
 {
@@ -83,7 +80,7 @@ namespace StardewDruid.Event.Challenge
         public override bool EventExpire()
         {
 
-            if(eventLinger == -1)
+            if (eventLinger == -1)
             {
 
                 List<string> NPCIndex = VillagerData.VillagerIndex("town");
@@ -98,8 +95,6 @@ namespace StardewDruid.Event.Challenge
                     UpdateFriendship(NPCIndex);
 
                     Mod.instance.dialogue["Effigy"].specialDialogue["journey"] = new() { "I sense a change", "The graveyard has a few less shadows." };
-
-                    Mod.instance.LevelBlessing("water");
 
                 }
 
@@ -120,7 +115,7 @@ namespace StardewDruid.Event.Challenge
 
             activeCounter++;
 
-            if(eventLinger != -1)
+            if (eventLinger != -1)
             {
 
                 return;

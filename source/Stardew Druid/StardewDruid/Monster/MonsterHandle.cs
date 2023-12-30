@@ -12,19 +12,9 @@ using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
 using StardewDruid.Map;
 using StardewValley;
-using StardewValley.Locations;
 using StardewValley.Monsters;
-using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using xTile.Layers;
-using xTile.Tiles;
-using static StardewValley.Minigames.TargetGame;
 
 namespace StardewDruid.Monster
 {
@@ -56,6 +46,8 @@ namespace StardewDruid.Monster
         public bool firstSpawn;
 
         public List<MonsterSpawn> spawnHandles;
+
+        public int spawnTotal;
 
         public MonsterHandle(Vector2 target, Rite rite)
         {
@@ -90,7 +82,7 @@ namespace StardewDruid.Monster
 
             Vector2 playerVector = riteData.caster.getTileLocation();
 
-            spawnWithin = playerVector + ((target - playerVector) / 2) - new Vector2(2,2);
+            spawnWithin = playerVector + ((target - playerVector) / 2) - new Vector2(2, 2);
 
             spawnRange = new Vector2(5, 5);
 
@@ -123,7 +115,7 @@ namespace StardewDruid.Monster
         public void SpawnCheck()
         {
 
-            for(int i = spawnHandles.Count - 1; i >= 0; --i)
+            for (int i = spawnHandles.Count - 1; i >= 0; --i)
             {
 
                 if (spawnHandles[i].spawnComplete)
@@ -142,7 +134,9 @@ namespace StardewDruid.Monster
 
                 if (monsterSpawns[i].Health <= 0 && (monsterSpawns[i].currentLocation == null || !monsterSpawns[i].currentLocation.characters.Contains(monsterSpawns[i])))
                 {
+                    
                     monsterSpawns.RemoveAt(i);
+
                 }
 
             }
@@ -181,18 +175,20 @@ namespace StardewDruid.Monster
 
                 spawnVector = SpawnVector();
 
-                if(spawnVector != new Vector2(-1))
+                if (spawnVector != new Vector2(-1))
                 {
 
                     SpawnGround(spawnVector);
 
                     spawnAmount++;
 
+                    spawnTotal++;
+
                 }
 
             }
 
-            if(specialCounter > 30 && spawnSpecial > 0)
+            if (specialCounter > 30 && spawnSpecial > 0)
             {
 
                 spawnVector = SpawnVector();
@@ -216,121 +212,63 @@ namespace StardewDruid.Monster
 
         }
 
-        public Vector2 SpawnVector()
+        public Vector2 SpawnVector(int spawnLimit = 4, int fromX = -1, int fromY = -1, int spawnX = -1, int spawnY = -1)
         {
 
             Vector2 spawnVector = new(-1);
 
-            //Layer buildingLayer = riteData.castLocation.Map.GetLayer("Buildings");
-
-            //Layer backLayer = riteData.castLocation.Map.GetLayer("Back");
-
-            //Tile buildingTile;
-
-            //Tile backTile;
-
             Vector2 playerVector = riteData.caster.getTileLocation();
 
             int spawnAttempt = 0;
+            
+            Vector2 fromVector = new(fromX, fromY); 
 
-            while (spawnAttempt++ < 4)
+            if (fromX == -1)
             {
 
-                int offsetX = riteData.randomIndex.Next((int)spawnRange.X);
+                fromVector = spawnWithin;
 
-                int offsetY = riteData.randomIndex.Next((int)spawnRange.Y);
+            }
+
+            if (spawnX == -1)
+            {
+
+                spawnX = (int)spawnRange.X;
+
+                spawnY = (int)spawnRange.Y;
+
+            }
+
+            while (spawnAttempt++ < spawnLimit)
+            {
+
+                int offsetX = riteData.randomIndex.Next(spawnX);
+
+                int offsetY = riteData.randomIndex.Next(spawnY);
 
                 Vector2 offsetVector = new(offsetX, offsetY);
 
-                spawnVector = spawnWithin + offsetVector;
+                spawnVector = fromVector + offsetVector;
 
                 if (Math.Abs(spawnVector.X - playerVector.X) <= 1 && Math.Abs(spawnVector.Y - playerVector.Y) <= 1)
                 {
                     continue;
                 }
 
-                if (!ModUtility.GroundCheck(riteData.castLocation, spawnVector))
+                if (ModUtility.GroundCheck(riteData.castLocation, spawnVector) != "ground")
                 {
                     continue;
                 }
 
-                if(ModUtility.NeighbourCheck(riteData.castLocation, spawnVector, 0).Count > 0)
+                if (ModUtility.NeighbourCheck(riteData.castLocation, spawnVector, 0).Count > 0)
                 {
                     continue;
                 }
-
-                /*backTile = backLayer.PickTile(new xTile.Dimensions.Location((int)spawnVector.X * 64, (int)spawnVector.Y * 64), Game1.viewport.Size);
-                
-                if (backTile == null)
-                {
-                    continue;
-                }
-
-                if (backTile.TileIndexProperties.TryGetValue("Water", out _))
-                {
-                    continue;
-                }
-
-                buildingTile = buildingLayer.PickTile(new xTile.Dimensions.Location((int)spawnVector.X * 64, (int)spawnVector.Y * 64), Game1.viewport.Size);
-
-                if (buildingTile != null)
-                {
-                    continue;
-                }
-
-                foreach (ResourceClump resourceClump in riteData.castLocation.resourceClumps)
-                {
-                    if (resourceClump.occupiesTile((int)spawnVector.X, (int)spawnVector.Y))
-                    {
-                        continue;
-                    }
-                }
-
-                if(riteData.castLocation.objects.TryGetValue(spawnVector, out var objectValue))
-                {
-                    continue;
-                }
-
-                Rectangle spawnRectangle = new((int)spawnVector.X * 64 + 1, (int)spawnVector.Y * 64 + 1, 62, 62);
-
-                for (int i = 0; i < riteData.castLocation.characters.Count; i++)
-                {
-                    if (riteData.castLocation.characters[i] != null && riteData.castLocation.characters[i].GetBoundingBox().Intersects(spawnRectangle))
-                    {
-                        continue;
-                    }
-                }
-
-
-                if (riteData.castLocation.terrainFeatures.TryGetValue(spawnVector, out var terrainValue))
-                {
-                    if(terrainValue is not StardewValley.TerrainFeatures.Grass)
-                    {
-                        continue;
-                    }
-
-                }
-
-                if (riteData.castLocation.isBehindBush(spawnVector))
-                {
-
-                    continue;
-
-                }
-
-                foreach (Furniture item in riteData.castLocation.furniture)
-                {
-                    if (item.getBoundingBox(item.TileLocation).Contains(spawnRectangle.Center))
-                    {
-                        continue;
-                    }
-
-                }*/
 
                 return spawnVector;
 
             }
-  
+
             return spawnVector;
 
         }
@@ -354,6 +292,8 @@ namespace StardewDruid.Monster
             StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(spawnMob, spawnVector, riteData.combatModifier, Mod.instance.PartyHats());
 
             monsterSpawns.Add(theMonster);
+
+            spawnTotal++;
 
             MonsterSpawn monsterSpawn = new(riteData.castLocation, theMonster);
 

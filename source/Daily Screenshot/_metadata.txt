@@ -6,9 +6,15 @@ mods:
    Daily Screenshot
 
 latest commit:
-   commit 3a5903305721232ed1121394de804bf10dc97e21
-   Author: Daniel Vu <dvv297@gmail.com>
-   Date:   Wed Nov 29 19:01:34 2023 -0600
+   commit 6bbec8879892ef4064ed398aea1d963c284f4d78
+   Author: Lauren Vu <compscilauren@gmail.com>
+   Date:   Thu Dec 7 21:10:01 2023 -0600
    
-       Add initial test (#74)
+       DS-85 Update documentation (#86)
+       
+       * DS-85 Update documentation related to contributing, release process, and some content on readme
+       
+       * DS-85 Update release version
+       
+       * DS-85 Update README
    

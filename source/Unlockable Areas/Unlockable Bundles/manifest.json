@@ -11,7 +11,7 @@
 {
   "Name": "Unlockable Bundles",
   "Author": "DeLiXx",
-  "Version": "2.1.0-alpha.23329",
+  "Version": "2.1.0-alpha.23350",
   "Description": "Framework for custom bundles",
   "UniqueID": "DLX.Bundles",
   "EntryDll": "Unlockable Bundles.dll",

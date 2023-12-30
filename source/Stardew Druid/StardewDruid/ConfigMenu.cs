@@ -8,15 +8,8 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GenericModConfigMenu;
 using StardewDruid.Map;
-using StardewModdingAPI;
-using StardewValley.Monsters;
 
 namespace StardewDruid
 {
@@ -46,7 +39,7 @@ namespace StardewDruid
             configMenu.AddKeybindList(
                 mod: mod.ModManifest,
                 name: () => "Rite Keybinds",
-                tooltip: () => "Configure the list of keybinds to use for casting Rites",
+                tooltip: () => "Configure the list or combination of keybinds to use for casting Rites",
                 getValue: () => Config.riteButtons,
                 setValue: value => Config.riteButtons = value
             );
@@ -59,12 +52,31 @@ namespace StardewDruid
                 setValue: value => Config.actionButtons = value
             );
 
+            configMenu.AddKeybindList(
+                mod: mod.ModManifest,
+                name: () => "Journal Kebinds (Optional)",
+                tooltip: () => "Configure the list or combination of keybinds to open the Stardew Druid journal while in world.",
+                getValue: () => Config.journalButtons,
+                setValue: value => Config.journalButtons = value
+            );
+
             configMenu.AddBoolOption(
                 mod: mod.ModManifest,
                 name: () => "Slot Attune",
-                tooltip: () => "Rite casts will be based on selected slot in the toolbar as opposed to weapon or tool attunement. Slot 1 = Earth, Slot 2 = Water, Slot 3 = Stars, Slot 4 = Fates.",
+                tooltip: () => "Rite casts will be based on selected slot in the toolbar as opposed to weapon or tool attunement. Slot 1 = Earth, Slot 2 = Water, Slot 3 = Stars, Slot 4 = Fates, Slot 5 = Ether.",
                 getValue: () => Config.slotAttune,
                 setValue: value => Config.slotAttune = value
+            );
+
+            string[] colourOption = { "Red", "Blue", "Green", "Purple", "Black" };
+
+            configMenu.AddTextOption(
+                mod: mod.ModManifest,
+                name: () => "Colour Preference",
+                tooltip: () => "Select colour preference for transformation effects.",
+                allowedValues: colourOption,
+                getValue: () => Config.colourPreference,
+                setValue: value => Config.colourPreference = value
             );
 
             configMenu.AddBoolOption(
@@ -102,12 +114,12 @@ namespace StardewDruid
             configMenu.AddNumberOption(
                 mod: mod.ModManifest,
                 name: () => "Set Progress",
-                tooltip: () => "Use to adjust progress level on game load. -1 is no change. 0-5 Rite of the Earth, 6-11 Rite of the Water, 12-13 Rite of the Stars, 14 Hidden Challenges, 15-20 Rite of the Fates. Note that adjustments may clear or miss levels of progress.",
+                tooltip: () => "Use to adjust progress level on game load. -1 is no change. Note that adjustments may clear or miss levels of progress.",
                 min: -1,
-                max: 21,
+                max: QuestData.MaxProgress(),
                 interval: 1,
-                getValue: () => Config.setProgress,
-                setValue: value => Config.setProgress = value
+                getValue: () => Config.newProgress,
+                setValue: value => Config.newProgress = value
             );
 
             configMenu.AddBoolOption(
@@ -136,14 +148,6 @@ namespace StardewDruid
                 getValue: () => Config.castAnywhere,
                 setValue: value => Config.castAnywhere = value
             );
-
-            /*configMenu.AddBoolOption(
-                mod: mod.ModManifest,
-                name: () => "Unrestricted Stars",
-                tooltip: () => "Disables the cast buffer on Rite of Stars, so that it casts every button press instead of with reasonable delay.",
-                getValue: () => Config.unrestrictedStars,
-                setValue: value => Config.unrestrictedStars = value
-            );*/
 
             configMenu.AddBoolOption(
                 mod: mod.ModManifest,

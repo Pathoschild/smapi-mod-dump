@@ -6,9 +6,9 @@ mods:
    Quality Smash
 
 latest commit:
-   commit dcea5ce72aaa926196b92cc11fe452a93a143312
-   Author: BuildTools <unconfigured@null.spigotmc.org>
-   Date:   Mon Jul 26 15:55:25 2021 -0400
+   commit 8557bcfb4b298aa256b373ee59e45b870eae142f
+   Author: Jeremy Nims <jmnims@gmail.com>
+   Date:   Mon Dec 18 23:05:38 2023 -0500
    
-       sync
+       Update README.md
    

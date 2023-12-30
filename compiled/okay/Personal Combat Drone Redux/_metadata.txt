@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/18224
+IDs: prism99.cambam.MURDERDRONE.redux
+update keys: Nexus:18224

@@ -6,9 +6,9 @@ mods:
    Unlockable Areas
 
 latest commit:
-   commit 80ec8ba8a2f58d5b3b13b163f9363e99d5beb5ac
+   commit 2b955171f745182a1291a11a704773713b977e37
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Sun Nov 26 03:08:30 2023 +0100
+   Date:   Sat Dec 16 17:15:13 2023 +0100
    
-       made list elements transparent cuz its cooler
+       updated to 23350
    

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19651
+IDs: Careless_Imm0rtal.Time_Notif.
+update keys: Nexus:19651

@@ -63,25 +63,40 @@ internal class Events
         e.Edit(asset =>
         {
             GarbageCanData garbageCanData = asset.GetData<GarbageCanData>();
+            int garbageHatIndex = garbageCanData.BeforeAll.FindIndex((item) => item.Id == "Base_GarbageHat");
+            garbageCanData.BeforeAll.RemoveAt(garbageHatIndex);
+
             MapGarbageCanEdits.Clear();
             LoadGarbageCanEdits(garbageCanData);
 
             foreach (var can in garbageCanData.GarbageCans)
             {
-                
+                if (can.Value.Items is null)
+                {
+                    can.Value.Items = new List<GarbageCanItemData>();
+                }
+
                 if (!can.Value.CustomFields.TryGetValue("drbirbdev.BinningSkill_AddToMap", out string data))
                 {
+
+                    can.Value.Items.Insert(0, GetGarbageHatItemData("Default"));
                     continue;
                 }
 
                 string[] split = data.Split(" ");
 
-                if (split.Length < 4)
+                if (split.Length < 3)
                 {
                     continue;
                 }
 
-                string level = split[3];
+                string level = "Default";
+                if (split.Length > 3)
+                {
+                    level = split[3];
+                }
+
+                can.Value.Items.Insert(0, GetGarbageHatItemData(level));
                 if (level == "Default")
                 {
                     continue;
@@ -119,9 +134,34 @@ internal class Events
                     "Prismatic" => "12",
                     _ => "7"
                 };
-                
+
             }
         });
+    }
+
+    private static GarbageCanItemData GetGarbageHatItemData(string level)
+    {
+        GarbageCanItemData item = new GarbageCanItemData()
+        {
+            IgnoreBaseChance = true,
+            IsDoubleMegaSuccess = true,
+            AddToInventoryDirectly = true,
+            Condition = "PLAYER_STAT Current trashCansChecked 20, RANDOM .002",
+            Id = "drbirbdev.BinningSkill_GarbageHat",
+            ItemId = level switch
+            {
+                "Default" => "(H)66",
+                "Copper" => "(H)drbirbdev.BinningSkill_CopperGarbageHat",
+                "Iron" => "(H)drbirbdev.BinningSkill_IronGarbageHat",
+                "Gold" => "(H)drbirbdev.BinningSkill_GoldGarbageHat",
+                "Iridium" => "(H)drbirbdev.BinningSkill_IridiumGarbageHat",
+                "Radioactive" => "(H)drbirbdev.BinningSkill_RadioactiveGarbageHat",
+                "Prismatic" => "(H)drbirbdev.BinningSkill_PrismaticGarbageHat",
+                _ => "(H)drbirbdev.BinningSkill_CopperGarbageHat"
+            }
+        };
+
+        return item;
     }
 
     private static List<string> PerkText(int level)
@@ -221,13 +261,16 @@ internal class Events
         {
             var editor = asset.AsMap();
 
-            editor.Data.AddTileSheet(new TileSheet("z_trashcans", editor.Data, ModEntry.Assets.TrashCanTilesheetAssetName.Name, new Size(5, 2), new Size(16, 16)));
-            
-            foreach (GarbageCanEdit edit in edits) {
-                Location botLocation = new Location(edit.X, edit.Y);
+            Size tilesheetSize = new Size(ModEntry.Assets.TrashCanTilesheet.Width / 16, ModEntry.Assets.TrashCanTilesheet.Height / 16);
+
+            editor.Data.AddTileSheet(new TileSheet("z_trashcans", editor.Data, ModEntry.Assets.TrashCanTilesheetAssetName.Name, tilesheetSize, new Size(16, 16)));
+
+            foreach (GarbageCanEdit edit in edits)
+            {
+                Location bottomLocation = new Location(edit.X, edit.Y);
                 xTile.Layers.Layer buildingLayer = editor.Data.GetLayer("Buildings");
-                buildingLayer.Tiles[botLocation] = new StaticTile(buildingLayer, editor.Data.GetTileSheet("z_trashcans"), BlendMode.Alpha, 5 + edit.SourceX);
-                buildingLayer.Tiles[botLocation].Properties["Action"] = $"Garbage {edit.Key}";
+                buildingLayer.Tiles[bottomLocation] = new StaticTile(buildingLayer, editor.Data.GetTileSheet("z_trashcans"), BlendMode.Alpha, 7 + edit.SourceX);
+                buildingLayer.Tiles[bottomLocation].Properties["Action"] = $"Garbage {edit.Key}";
 
                 Location topLocation = new Location(edit.X, edit.Y - 1);
                 xTile.Layers.Layer frontLayer = editor.Data.GetLayer("Front");

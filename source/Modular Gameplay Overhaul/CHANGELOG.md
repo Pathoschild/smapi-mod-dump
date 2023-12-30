@@ -10,82 +10,28 @@ for queries and analysis.**
 
 This file contains a TL;DR of current version changes and hotfixes from across all modules. For the complete changelog, please refer to the individual changelogs of each module, linked [below](#detailed-changelogs).
 
-## Patch 4.1.6 Highlights
+## Patch 4.2.1 Highlights
 
-* [PRFS]: Added extended prestige levels as part of the requirement for perfection.
-* [PRFS]: Fixed issue when multiple stones are destroyed at once during a Prospector Hunt.
-* [PRFS]: Fixed issue with using Magic Bait in Crab Pots.
-* [CMBT]: Fixed incorrect subtraction of outstanding debt (thanks [DeinKoenig](https://github.com/DeinKoenig)).
+* Fixed a GMCM issue in handheld systems.
+* Updated translations. Minor typo fixes.
 
-<sup><sup>[🔼 Back to top](#margo-changelogs)</sup></sup>
+## Minor Release 4.2.x Highlights
 
-## Patch 4.1.5 Highlights
+* Added new config presets which can be found in the "optionals" folder.
+* Moved the Status Effect framework to the Core module, so that other modules can continue to use it even if CMBT is disabled.
+* [CMBT]: Added some flavor dialogue to Emily and Mr. Qi dropping some hints about the Infinity Band.
+* [PRFS]: Added new Prestige mode options. You can now have Prestige Levels without needing to reset your skills a bunch of times. Or make it even harder by requiring full reset of **all** skills before unlocking Prestige Levels.
+* [PRFS]: Overhauled the Oceanographer (Prestiged Conservationist) profession perk to better fit the profession's title.
+* [PRFS]: Overhauled the Saboteur (Prestiged Conservationist) profession perk to better fit the profession's title.
+* [PRFS]: Replaced the Aquarist profession's icon with that of fish Roe.
+* Some adjustments to the API.
+* Shaved off several mods from the curated list due to newfound incompatibilities.
 
-* Fixed GMCM list options reseting when hitting Save.
-* The module selection menu now translates correctly.
-* Fixed multiplayer error caused when a peer fires a custom projectile.
-* [CMBT]: You can now hear the chords in your Infinity Bands!
-* [PRFS]: Prospector Hunt mechanic was changed to an auditory game of hot and cold.
-* [PRFS]: Reblanced the impact of Treasure Hunt streak.
-* [PRFS]: Fixed issue of farmhands being unable to complete treasure hunts.
-
-<sup><sup>[🔼 Back to top](#margo-changelogs)</sup></sup>
-
-## Hotfix 4.1.4 Highlights
-
-* [PROFS]: Fixed typo in `ProspectorHunt.TryStart` which caused SO exception.
+**NOTE: This version is incompatible with XP Display. If you want to use that mod then DO NOT update. Please don't bother Shockah or I about this.**
 
 <sup><sup>[🔼 Back to top](#margo-changelogs)</sup></sup>
 
-## Patch 4.1.3 Highlights
-
-* Fixed GMCM list text boxes being limited to 13 characters.
-* [CMBT]: Fixed an edge case that caused an error to be thrown with Ridgeside's Fairy Needle, which, for some reason, does not have a description.
-* [CMBT]: Stabbing Swords are no longer persisted as such, to avoid the issue of the game freezing if the mod is removed abruptly.
-* [CMBT]: Weapon Overhaul is now a hard requirement for both Stabbing Swords and Melee Combo Framework.
-* [CMBT]: Removed the crit. boost given to daggers in vanilla.
-* [CMBT]: Added new failsafes for Community Upgrades applying to farmhand Hero Quest.
-* [PRFS]: Removed patch to Content Patcher. Please manually edit SVE's files as described in the [detailed changelog](Modules/Professions/CHANGELOG.md).
-* [PRFS]: Desperado's quick-shot perk now displays as a buff.
-* [PRFS]: Fixed Prospector Hunt weapons spawning out-of-bounds.
-* [PROFS]: Treasure Hunts now play quest complete sound on completion.
-* [TOLS]: Axe and Pickaxe shockwave no longer cost stamina with Efficient enchantment
-* [TWX]: Removed Spawn Crows feture.
-
-<sup><sup>[🔼 Back to top](#margo-changelogs)</sup></sup>
-
-## Patch 4.1.2 Highlights
-
-* [CMBT]: Fixed issues with weapons stats being set incorrectly.
-* [PRFS]: Fixed Null-Reference exception caused by `Monster.FindPlayer`.
-* Config options with custom logic now only trigger when the value changes. This avoids unecessarily triggering every single validation logic when saving via GMCM.
-
-<sup><sup>[🔼 Back to top](#margo-changelogs)</sup></sup>
-
-## Hotfix 4.1.1 Highlights
-
-* Hotfix for all weapons being turned into swords when Combat module not enabled.
-
-<sup><sup>[🔼 Back to top](#margo-changelogs)</sup></sup>
-
-## Minor Release 4.1.0 Highlights
-
-* The GMCM is now self-generating, which is awesome (for me) but does unfortunately mean that absolutely all translation keys for the menu have changed (sorry translators). The ZH and KO menu translations had to be discarded.
-* Added dynamic list options to the GMCM, which means that any list config settings that previously had to be changed manually (like `CustomArtisanMachines`, `StabbingSwords`, `TaxRatePerBracket`, etc.) can now be changed in the menu in-game. With this, all settings are now available in the menu.
-* [CMBT]: Made several minor improvements to animations and sound effects when acquiring Galaxy Blade / Blade of Dawn.
-* [PRFS]: Fixed Aquarist bug causing it to always consider the `FishPondCeiling` setting instead of the actual number of constructed Fish Ponds.
-* [PRFS]: Hopefully fixed an issue with CP skill level conditions not working at levels above 10.
-* [PRFS]: Several PPJA dairy products are now also considered "animal-derived" for the Producer profession. The list of `AnimalDerivedProducts` has been added to the configs.
-* Added compatibility for [More New Fish](https://www.nexusmods.com/stardewvalley/mods/3578).
-    * [CMBT]: The Sword Fish weapon is now a Mythic-tier Stabbing Sword with scaling damage based on caught fish species.
-    * [PRfS]: Tui and La can be raised in Fish Ponds with the Aquarist profession. They produce essence instead of roe.
-    * [PNDS]: Tui and La can be raised together in the same Fish Pond, unlocking a low chance to produce Galaxy Soul.
-
-<div align="center">-- This is likely the final content release before 1.6 --</div>
-
-<sup><sup>[🔼 Back to top](#margo-changelogs)</sup></sup>
-
-## Major Release 4.0.0 Highlights
+## Major Release 4.x.x Highlights
 
 * **[PRFS]:**
     * Major rework of most Combat professions. I encourage you to go over the detailed changelog for PRFS module.

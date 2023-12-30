@@ -1,0 +1,34 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/stardew-access/stardew-access
+**
+*************************************************/
+
+[
+  "bee house",
+  "bone mill",
+  "cask",
+  "crab pot",
+  "crystalarium",
+  "furnace",
+  "geode crusher",
+  "incubator",
+  "keg",
+  "kiln",
+  "lightning rod",
+  "loom",
+  "machine",
+  "maker",
+  "preserves jar",
+  "press",
+  "statue of endless fortune",
+  "statue of perfection",
+  "tapper",
+  "wood chipper",
+  "worm bin",
+  "deconstructor"
+]

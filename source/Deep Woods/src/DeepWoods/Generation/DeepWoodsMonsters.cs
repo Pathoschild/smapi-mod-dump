@@ -210,7 +210,7 @@ namespace DeepWoodsMod
             {
                 monster = new Fly(new Vector2(), true);
             }
-            else if (CanHazMonster(Settings.Monsters.Brute))
+            else if (!IsFriendsWithShadowBrutes() && CanHazMonster(Settings.Monsters.Brute))
             {
                 monster = new ShadowBrute(new Vector2());
             }
@@ -281,6 +281,13 @@ namespace DeepWoodsMod
             monster.faceDirection(this.random.GetRandomValue(0, 4));
 
             return monster;
+        }
+
+        private bool IsFriendsWithShadowBrutes()
+        {
+            // TODO: How do we find this out?
+            // TODO #2: Do we actually need to find this out? Looks like SVE doesn't modify brutes in DeepWoods.
+            return false;
         }
 
         private void BuffMonster(Monster monster)

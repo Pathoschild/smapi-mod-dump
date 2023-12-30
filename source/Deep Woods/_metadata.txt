@@ -6,11 +6,9 @@ mods:
    Deep Woods
 
 latest commit:
-   commit ff5734a22dd55a2f7f73e8be8cecc714b9930074
-   Author: Max Vollmer <maxvollmer@users.noreply.github.com>
-   Date:   Tue Sep 5 22:58:51 2023 +0200
+   commit dbee962d91a8547cffc07c5d50e9d3983ad1f1f3
+   Author: maxvollmer <maxvollmer@users.noreply.github.com>
+   Date:   Thu Dec 21 17:05:32 2023 +0100
    
-       Merge pull request #17 from Jeffyshewan/main
-       
-       ðŸŒ: update french translation
+       Merge branch 'main' of https://github.com/maxvollmer/DeepWoodsMod
    

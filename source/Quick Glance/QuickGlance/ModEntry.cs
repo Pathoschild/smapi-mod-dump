@@ -10,74 +10,77 @@
 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
-using System.Collections.Generic;
 
 namespace QuickGlance
 {
     public class ModEntry : Mod
     {
         private ModConfig Config;
+        private GMCMAPI GMCM;
+        private PerScreen<float> zoomMemory = new();
+
         public override void Entry(IModHelper helper)
         {
             this.Config = this.Helper.ReadConfig<ModConfig>();
 
-            if (Config.ToggleZoom)
+            helper.Events.Input.ButtonPressed += this.OnButtonPressed;
+            helper.Events.Input.ButtonReleased += this.OnButtonReleased;
+            helper.Events.GameLoop.GameLaunched += this.OnLaunch;
+        }
+
+        private void OnLaunch(object sender, GameLaunchedEventArgs e)
+        {
+            if (Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
             {
-                helper.Events.Input.ButtonPressed += this.OnButtonPressedToggle;
-            }
-            else
-            {
-                helper.Events.Input.ButtonPressed += this.OnButtonPressed;
-                helper.Events.Input.ButtonReleased += this.OnButtonReleased;
-                helper.Events.GameLoop.OneSecondUpdateTicked += GameLoop_OneSecondUpdateTicked;
+                if (Helper.ModRegistry.Get("spacechase0.GenericModConfigMenu").Manifest.Version.IsOlderThan("1.5.0"))
+                {
+                    Monitor.Log(Helper.Translation.Get("config.warn", new {v = "1.5.0"}), LogLevel.Warn);
+                } else
+                {
+                    GMCM = Helper.ModRegistry.GetApi<GMCMAPI>("spacechase0.GenericModConfigMenu");
+                    Config.Register(GMCM, Helper, ModManifest);
+                }
             }
         }
 
-        private Dictionary<long, float> zoomMemory = new Dictionary<long, float>();
-
         private void OnButtonReleased(object sender, ButtonReleasedEventArgs e)
         {
-            if (zoomMemory.ContainsKey(Game1.player.UniqueMultiplayerID) && ((int)e.Button == Config.ZoomKey1 || (int)e.Button == Config.ZoomKey2))
+            if (!Config.ToggleZoom && !Config.ZoomKeys.IsDown())
             {
-                Game1.options.desiredBaseZoomLevel = zoomMemory.GetValueOrDefault(Game1.player.UniqueMultiplayerID, 1f);
-                zoomMemory.Remove(Game1.player.UniqueMultiplayerID);
+                float zoom = zoomMemory.Value;
+                if (zoom is not 0f)
+                {
+                    Game1.options.desiredBaseZoomLevel = zoom;
+                    zoomMemory.Value = 0f;
+                }
             }
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
-            if (!zoomMemory.ContainsKey(Game1.player.UniqueMultiplayerID) && ((int)e.Button == Config.ZoomKey1 || (int)e.Button == Config.ZoomKey2))
+            if (Config.ZoomKeys.JustPressed())
             {
-                if (Game1.options.desiredBaseZoomLevel != Config.ZoomLevel)
-                    zoomMemory.Add(Game1.player.UniqueMultiplayerID, Game1.options.desiredBaseZoomLevel);
-                Game1.options.desiredBaseZoomLevel = Config.ZoomLevel;
+                if (Config.ToggleZoom)
+                {
+                    float zoom = zoomMemory.Value;
+                    if (zoom is not 0f)
+                    {
+                        Game1.options.desiredBaseZoomLevel = zoom;
+                        zoomMemory.Value = 0f;
+                    } else
+                    {
+                        zoomMemory.Value = Game1.options.desiredBaseZoomLevel;
+                        Game1.options.desiredBaseZoomLevel = Config.ZoomLevel;
+                    }
+                }
+                else
+                {
+                    zoomMemory.Value = Game1.options.desiredBaseZoomLevel;
+                    Game1.options.desiredBaseZoomLevel = Config.ZoomLevel;
+                }
             }
         }
-
-        private void OnButtonPressedToggle(object sender, ButtonPressedEventArgs e)
-        {
-            if (!zoomMemory.ContainsKey(Game1.player.UniqueMultiplayerID) && ((int)e.Button == Config.ZoomKey1 || (int)e.Button == Config.ZoomKey2))
-            {
-                if (Game1.options.desiredBaseZoomLevel != Config.ZoomLevel)
-                    zoomMemory.Add(Game1.player.UniqueMultiplayerID, Game1.options.desiredBaseZoomLevel);
-                Game1.options.desiredBaseZoomLevel = Config.ZoomLevel;
-            }
-            else if (zoomMemory.ContainsKey(Game1.player.UniqueMultiplayerID) && ((int)e.Button == Config.ZoomKey1 || (int)e.Button == Config.ZoomKey2))
-            {
-                Game1.options.desiredBaseZoomLevel = zoomMemory.GetValueOrDefault(Game1.player.UniqueMultiplayerID, 1f);
-                zoomMemory.Remove(Game1.player.UniqueMultiplayerID);
-            }
-        }
-
-        private void GameLoop_OneSecondUpdateTicked(object sender, OneSecondUpdateTickedEventArgs e)
-        {
-            if (zoomMemory.ContainsKey(Game1.player.UniqueMultiplayerID) && (!Helper.Input.IsDown((SButton)Config.ZoomKey1) && !Helper.Input.IsDown((SButton)Config.ZoomKey2)))
-            {
-                Game1.options.desiredBaseZoomLevel = zoomMemory.GetValueOrDefault(Game1.player.UniqueMultiplayerID, 1f);
-                zoomMemory.Remove(Game1.player.UniqueMultiplayerID);
-            }
-        }
-
     }
 }

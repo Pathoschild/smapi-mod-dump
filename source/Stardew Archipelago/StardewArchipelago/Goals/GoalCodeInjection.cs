@@ -13,8 +13,11 @@ using StardewModdingAPI;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework.Audio;
 using StardewArchipelago.Locations;
+using StardewArchipelago.Stardew;
 using StardewValley.Locations;
 using StardewValley.Menus;
 
@@ -28,13 +31,15 @@ namespace StardewArchipelago.Goals
         private static IModHelper _modHelper;
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
+        private static BundleReader _bundleReader;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, BundleReader bundleReader)
         {
             _monitor = monitor;
             _modHelper = modHelper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
+            _bundleReader = bundleReader;
         }
 
         public static void CheckCommunityCenterGoalCompletion()
@@ -43,9 +48,8 @@ namespace StardewArchipelago.Goals
             {
                 return;
             }
-
-            var communityCenter = Game1.locations.OfType<CommunityCenter>().First();
-            if (!communityCenter.areAllAreasComplete())
+            
+            if (!_bundleReader.IsCommunityCenterComplete())
             {
                 return;
             }
@@ -507,27 +511,50 @@ namespace StardewArchipelago.Goals
 
         public static string GetGoalStringGrandpa()
         {
-            var goal = _archipelago.SlotData.Goal switch
+            switch (_archipelago.SlotData.Goal)
             {
-                Goal.GrandpaEvaluation => "Make the most of this farm, and make me proud",
-                Goal.BottomOfMines => "Finish exploring the mineshaft in this town for me",
-                Goal.CommunityCenter => "Restore the old Community Center for the sake of all the villagers",
-                Goal.CrypticNote => "Meet an old friend of mine on floor 100 of the Skull Cavern",
-                Goal.MasterAngler => "Catch and document every specie of fish in the Ferngill Republic",
-                Goal.CompleteCollection => "Restore our beautiful museum with a full collection of various artifacts and minerals",
-                Goal.FullHouse => "I wish for my bloodline to thrive. Please find a partner and live happily ever after",
-                Goal.GreatestWalnutHunter => "Prove your worth to an old friend of mine, and become the greatest walnut hunter",
-                Goal.ProtectorOfTheValley => "Make sure the valley is safe for generations to come, by slaying all the monsters",
-                Goal.FullShipment => "Contribute to the local economy and market, by shipping as many things as you can",
-                Goal.GourmetChef => "Become a world-class chef, learn and cook all the recipes you can find",
-                Goal.CraftMaster => "Get used to making things with your hands, and craft as many items as you can",
-                Goal.Legend => "Nothing beats cold hard cash. Become rich enough, and buy your happiness",
-                Goal.MysteryOfTheStardrops => "A healthy body is a healthy mind. Get in shape by increasing your energy to the maximum.",
-                Goal.Allsanity => "You cannot leave anyone stranded in a Burger King. Leave no loose ends",
-                Goal.Perfection => "For a fulfilling life, you need to do a lot of everything. Leave no loose ends",
-                _ => throw new NotImplementedException(),
-            };
-            return goal;
+                case Goal.GrandpaEvaluation:
+                    return "Make the most of this farm, and make me proud";
+                case Goal.BottomOfMines:
+                    return "Finish exploring the mineshaft in this town for me";
+                case Goal.CommunityCenter:
+                    return "Restore the old Community Center for the sake of all the villagers";
+                case Goal.CrypticNote:
+                    return "Meet an old friend of mine on floor 100 of the Skull Cavern";
+                case Goal.MasterAngler:
+                    return "Catch and document every specie of fish in the Ferngill Republic";
+                case Goal.CompleteCollection:
+                    return "Restore our beautiful museum with a full collection of various artifacts and minerals";
+                case Goal.FullHouse:
+                    return "I wish for my bloodline to thrive. Please find a partner and live happily ever after";
+                case Goal.GreatestWalnutHunter:
+                    return "Prove your worth to an old friend of mine, and become the greatest walnut hunter";
+                case Goal.ProtectorOfTheValley:
+                    var currentModFolder = _modHelper.DirectoryPath;
+                    var soundsFolder = "Sounds";
+                    var fileName = "doom-eternal.wav";
+                    var relativePathToSound = Path.Combine(currentModFolder, soundsFolder, fileName);
+                    var doomCueDefinition = new CueDefinition("doom", SoundEffect.FromFile(relativePathToSound), 0);
+                    Game1.soundBank.AddCue(doomCueDefinition);
+                    Game1.playSound("doom");
+                    return "Make sure the valley is safe for generations to come. Rip and tear, until it is done";
+                case Goal.FullShipment:
+                    return "Contribute to the local economy and market, by shipping as many things as you can";
+                case Goal.GourmetChef:
+                    return "Become a world-class chef, learn and cook all the recipes you can find";
+                case Goal.CraftMaster:
+                    return "Get used to making things with your hands, and craft as many items as you can";
+                case Goal.Legend:
+                    return "Nothing beats cold hard cash. Become rich enough, and buy your happiness";
+                case Goal.MysteryOfTheStardrops:
+                    return "A healthy body is a healthy mind. Get in shape by increasing your energy to the maximum.";
+                case Goal.Allsanity:
+                    return "You cannot leave anyone stranded in a Burger King. Leave no loose ends";
+                case Goal.Perfection:
+                    return "For a fulfilling life, you need to do a lot of everything. Leave no loose ends";
+                default:
+                    throw new NotImplementedException();
+            }
         }
     }
 }

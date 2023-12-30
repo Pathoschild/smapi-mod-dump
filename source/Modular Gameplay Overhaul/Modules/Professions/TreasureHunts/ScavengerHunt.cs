@@ -308,7 +308,7 @@ internal sealed class ScavengerHunt : TreasureHunt
         }
 
 #if DEBUG
-        if (CombatModule.ShouldEnable && CombatModule.Config.DwarvenLegacy &&
+        if (CombatModule.ShouldEnable && CombatModule.Config.Quests.DwarvenLegacy &&
             JsonAssetsIntegration.DwarvishBlueprintIndex.HasValue)
         {
             if (!Game1.player.Read(Combat.DataKeys.BlueprintsFound).ParseList<int>()
@@ -498,7 +498,7 @@ internal sealed class ScavengerHunt : TreasureHunt
         var luckModifier = 1.0 + (Game1.player.DailyLuck * 10);
         if (this.Random.NextDouble() < 0.25 * luckModifier)
         {
-            if (CombatModule.ShouldEnable && CombatModule.Config.DwarvenLegacy &&
+            if (CombatModule.ShouldEnable && CombatModule.Config.Quests.DwarvenLegacy &&
                 JsonAssetsIntegration.DwarvishBlueprintIndex.HasValue)
             {
                 if (!Game1.player.Read(Combat.DataKeys.BlueprintsFound).ParseList<int>()
@@ -518,7 +518,7 @@ internal sealed class ScavengerHunt : TreasureHunt
         }
         else if (this.Random.NextDouble() < 0.25 * luckModifier)
         {
-            if (CombatModule.ShouldEnable && CombatModule.Config.DwarvenLegacy &&
+            if (CombatModule.ShouldEnable && CombatModule.Config.Quests.DwarvenLegacy &&
                 JsonAssetsIntegration.DwarvishBlueprintIndex.HasValue)
             {
                 if (!Game1.player.Read(Combat.DataKeys.BlueprintsFound).ParseList<int>()

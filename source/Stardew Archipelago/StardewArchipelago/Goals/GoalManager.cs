@@ -34,7 +34,6 @@ namespace StardewArchipelago.Goals
             _harmony = harmony;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
-            GoalCodeInjection.Initialize(_monitor, _modHelper, _archipelago, _locationChecker);
         }
 
         public void CheckGoalCompletion()
@@ -192,7 +191,7 @@ namespace StardewArchipelago.Goals
         private void InjectStardropsGoalMethods()
         {
             _harmony.Patch(
-                original: AccessTools.PropertySetter(typeof(Farmer), nameof(Farmer.totalMoneyEarned)),
+                original: AccessTools.Method(typeof(Utility), nameof(Utility.foundAllStardrops)),
                 postfix: new HarmonyMethod(typeof(GoalCodeInjection), nameof(GoalCodeInjection.FoundAllStardrops_CheckStardropsGoalCompletion_Postfix))
             );
         }

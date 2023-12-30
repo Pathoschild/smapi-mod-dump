@@ -11,11 +11,6 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StardewDruid.Map
 {
@@ -26,28 +21,28 @@ namespace StardewDruid.Map
         public static Vector2 FireVectors(GameLocation location)
         {
 
-           /*Dictionary<string, Vector2> firePoints = new()
-            {
-                ["Mountain"] = new Vector2(29,9),
-                ["Beach"] = new Vector2(48,20),
-                ["Forest"] = new Vector2(47, 97),
-            };
+            /*Dictionary<string, Vector2> firePoints = new()
+             {
+                 ["Mountain"] = new Vector2(29,9),
+                 ["Beach"] = new Vector2(48,20),
+                 ["Forest"] = new Vector2(47, 97),
+             };
 
-            return firePoints;*/
+             return firePoints;*/
 
-            if(location is Mountain)
+            if (location is Mountain)
             {
 
                 return new Vector2(29, 9);
 
             }
-            else if(location is Beach)
+            else if (location is Beach)
             {
 
                 return new Vector2(48, 20);
 
             }
-            else if(location is Forest)
+            else if (location is Forest)
             {
 
                 return new Vector2(47, 97);

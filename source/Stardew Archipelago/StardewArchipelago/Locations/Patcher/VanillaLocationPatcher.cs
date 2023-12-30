@@ -73,11 +73,11 @@ namespace StardewArchipelago.Locations.Patcher
             ReplaceSpecialOrdersWithChecks();
             ReplaceChildrenWithChecks();
             _gingerIslandPatcher.PatchGingerIslandLocations();
-            AddShipsanityLocations();
             PatchMonstersanity();
             AddCooksanityLocations();
             PatchChefAndCraftsanity();
             PatchKrobusShop();
+            PatchFarmcave();
         }
 
         private void ReplaceCommunityCenterBundlesWithChecks()
@@ -209,6 +209,11 @@ namespace StardewArchipelago.Locations.Patcher
 
         private void ReplaceElevatorsWithChecks()
         {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(MineElevatorMenu), nameof(MineElevatorMenu.draw), new[] { typeof(SpriteBatch) }),
+                postfix: new HarmonyMethod(typeof(MineshaftInjections), nameof(MineshaftInjections.Draw_AddArchipelagoIndicators_Postfix))
+            );
+
             if (_archipelago.SlotData.ElevatorProgression == ElevatorProgression.Vanilla)
             {
                 return;
@@ -248,6 +253,16 @@ namespace StardewArchipelago.Locations.Patcher
         private void ReplaceQuestsWithChecks()
         {
             _harmony.Patch(
+                original: AccessTools.Method(typeof(Railroad), "resetLocalState"),
+                prefix: new HarmonyMethod(typeof(DarkTalismanInjections), nameof(DarkTalismanInjections.ResetLocalState_PlayCutsceneIfConditionsAreMet_Postfix))
+            );
+
+            if (!_archipelago.SlotData.QuestLocations.StoryQuestsEnabled)
+            {
+                return;
+            }
+
+            _harmony.Patch(
                 original: AccessTools.Method(typeof(Quest), nameof(Quest.questComplete)),
                 prefix: new HarmonyMethod(typeof(QuestInjections), nameof(QuestInjections.QuestComplete_LocationInsteadOfReward_Prefix))
             );
@@ -260,11 +275,6 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Utility), nameof(Utility.getQuestOfTheDay)),
                 prefix:new HarmonyMethod(typeof(QuestInjections), nameof(QuestInjections.GetQuestOfTheDay_BalanceQuests_Prefix))
-            );
-
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(Mountain), nameof(Mountain.checkAction)),
-                prefix: new HarmonyMethod(typeof(QuestInjections), nameof(QuestInjections.CheckAction_AdventurerGuild_Prefix))
             );
 
             _harmony.Patch(
@@ -312,10 +322,6 @@ namespace StardewArchipelago.Locations.Patcher
                 prefix: new HarmonyMethod(typeof(DarkTalismanInjections), nameof(DarkTalismanInjections.PerformRemoveHenchman_CheckGoblinProblemLocation_Postfix))
             );
             _harmony.Patch(
-                original: AccessTools.Method(typeof(Railroad), "resetLocalState"),
-                prefix: new HarmonyMethod(typeof(DarkTalismanInjections), nameof(DarkTalismanInjections.ResetLocalState_PlayCutsceneIfConditionsAreMet_Postfix))
-            ); 
-            _harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.setUpLocationSpecificFlair)),
                 prefix: new HarmonyMethod(typeof(DarkTalismanInjections), nameof(DarkTalismanInjections.SetUpLocationSpecificFlair_BuglandChest_Prefix))
             ); 
@@ -333,16 +339,6 @@ namespace StardewArchipelago.Locations.Patcher
 
         private void ReplaceSpecialOrdersWithChecks()
         {
-            if (_archipelago.SlotData.SpecialOrderLocations == SpecialOrderLocations.Disabled)
-            {
-                return;
-            }
-
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(SpecialOrder), nameof(SpecialOrder.IsSpecialOrdersBoardUnlocked)),
-                prefix: new HarmonyMethod(typeof(SpecialOrderInjections), nameof(SpecialOrderInjections.IsSpecialOrdersBoardUnlocked_UnlockBasedOnApItem_Prefix))
-            );
-
             _harmony.Patch(
                 original: AccessTools.Method(typeof(SpecialOrder), nameof(SpecialOrder.GetSpecialOrder)),
                 postfix: new HarmonyMethod(typeof(SpecialOrderInjections), nameof(SpecialOrderInjections.GetSpecialOrder_ArchipelagoReward_Postfix))
@@ -358,9 +354,19 @@ namespace StardewArchipelago.Locations.Patcher
                 prefix: new HarmonyMethod(typeof(SpecialOrderInjections), nameof(SpecialOrderInjections.SetDuration_UseCorrectDateWithSeasonRandomizer_Prefix))
             );
 
+            if (_archipelago.SlotData.SpecialOrderLocations == SpecialOrderLocations.Disabled)
+            {
+                return;
+            }
+
             _harmony.Patch(
                 original: AccessTools.Method(typeof(SpecialOrder), nameof(SpecialOrder.UpdateAvailableSpecialOrders)),
                 prefix: new HarmonyMethod(typeof(SpecialOrderInjections), nameof(SpecialOrderInjections.UpdateAvailableSpecialOrders_ChangeFrequencyToBeLessRng_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(SpecialOrder), nameof(SpecialOrder.IsSpecialOrdersBoardUnlocked)),
+                prefix: new HarmonyMethod(typeof(SpecialOrderInjections), nameof(SpecialOrderInjections.IsSpecialOrdersBoardUnlocked_UnlockBasedOnApItem_Prefix))
             );
         }
 
@@ -493,11 +499,6 @@ namespace StardewArchipelago.Locations.Patcher
 
         private void PatchAdventurerGuildShop()
         {
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(AdventureGuild), "resetLocalState"),
-                postfix: new HarmonyMethod(typeof(AdventurerGuildInjections), nameof(AdventurerGuildInjections.ResetLocalState_GuildMemberOnlyIfReceived_Postfix))
-            );
-
             _harmony.Patch(
                 original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.answerDialogueAction)),
                 prefix: new HarmonyMethod(typeof(AdventurerGuildInjections), nameof(AdventurerGuildInjections.TelephoneAdventureGuild_AddReceivedEquipments_Prefix))
@@ -681,6 +682,11 @@ namespace StardewArchipelago.Locations.Patcher
                 prefix: new HarmonyMethod(typeof(WinterStarInjections), nameof(WinterStarInjections.GetRandomTownNPC_ChooseSecretSantaTarget_Prefix))
             );
 
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Event), nameof(Event.forceEndFestival)),
+                postfix: new HarmonyMethod(typeof(FairInjections), nameof(FairInjections.ForceEndFestival_KeepStarTokens_Postfix))
+            );
+
             if (_archipelago.SlotData.FestivalLocations == FestivalLocations.Vanilla)
             {
                 return;
@@ -709,6 +715,11 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Event), nameof(Event.setUpFestivalMainEvent)),
                 postfix: new HarmonyMethod(typeof(MoonlightJelliesInjections), nameof(MoonlightJelliesInjections.SetUpFestivalMainEvent_MoonlightJellies_Postfix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.update)),
+                postfix: new HarmonyMethod(typeof(MoonlightJelliesInjections), nameof(MoonlightJelliesInjections.Update_HandleMoonlightJelliesShopFirstTimeOnly_Postfix))
             );
 
             _harmony.Patch(
@@ -802,34 +813,18 @@ namespace StardewArchipelago.Locations.Patcher
             );
         }
 
-        private void AddShipsanityLocations()
-        {
-            if (_archipelago.SlotData.Goal == Goal.FullShipment)
-            {
-                _harmony.Patch(
-                    original: AccessTools.Method(typeof(Game1), "_newDayAfterFade"),
-                    prefix: new HarmonyMethod(typeof(ShippingInjections), nameof(ShippingInjections.NewDayAfterFade_CheckGoalCompletion_Postfix))
-                );
-            }
-
-            if (_archipelago.SlotData.Shipsanity == Shipsanity.None)
-            {
-                return;
-            }
-
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(Game1), "_newDayAfterFade"),
-                prefix: new HarmonyMethod(typeof(ShippingInjections), nameof(ShippingInjections.NewDayAfterFade_CheckShipsanityLocations_Prefix))
-            );
-        }
-
         private void PatchMonstersanity()
         {
             if (_archipelago.SlotData.Goal == Goal.ProtectorOfTheValley)
             {
                 _harmony.Patch(
-                    original: AccessTools.Method(typeof(Stats), nameof(Stats.monstersKilled)),
+                    original: AccessTools.Method(typeof(Stats), nameof(Stats.monsterKilled)),
                     postfix: new HarmonyMethod(typeof(MonsterSlayerInjections), nameof(MonsterSlayerInjections.MonsterKilled_CheckGoalCompletion_Postfix))
+                );
+
+                _harmony.Patch(
+                    original: AccessTools.Method(typeof(AdventureGuild), nameof(AdventureGuild.areAllMonsterSlayerQuestsComplete)),
+                    prefix: new HarmonyMethod(typeof(MonsterSlayerInjections), nameof(MonsterSlayerInjections.AreAllMonsterSlayerQuestsComplete_ExcludeGingerIsland_Prefix))
                 );
             }
 
@@ -837,6 +832,11 @@ namespace StardewArchipelago.Locations.Patcher
             {
                 return;
             }
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(AdventureGuild), "gil"),
+                prefix: new HarmonyMethod(typeof(MonsterSlayerInjections), nameof(MonsterSlayerInjections.Gil_NoMonsterSlayerRewards_Prefix))
+            );
 
             _harmony.Patch(
                 original: AccessTools.Method(typeof(AdventureGuild), nameof(AdventureGuild.showMonsterKillList)),
@@ -864,17 +864,8 @@ namespace StardewArchipelago.Locations.Patcher
 
         private void PatchChefAndCraftsanity()
         {
-            PatchStartingRecipes();
             PatchChefsanity();
             PatchCraftsanity();
-        }
-
-        private void PatchStartingRecipes()
-        {
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(Farmer), "farmerInit"),
-                postfix: new HarmonyMethod(typeof(StartingRecipesInjections), nameof(StartingRecipesInjections.FarmerInit_RemoveStartingRecipes_Postfix))
-            );
         }
 
         private void PatchChefsanity()
@@ -906,11 +897,6 @@ namespace StardewArchipelago.Locations.Patcher
                     prefix: new HarmonyMethod(typeof(RecipePurchaseInjections), nameof(RecipePurchaseInjections.GetIslandMerchantTradeStock_ReplaceBananaPuddingWithChefsanityCheck_Prefix))
                 );
             }
-
-            _harmony.Patch(
-                original: AccessTools.Method(typeof(CraftingRecipe), nameof(CraftingRecipe.InitShared)),
-                postfix: new HarmonyMethod(typeof(RecipeDataInjections), nameof(RecipeDataInjections.InitShared_RemoveSkillAndFriendshipLearnConditions_Postfix))
-            );
             
             _harmony.Patch(
                 original: AccessTools.Constructor(typeof(LevelUpMenu), new []{typeof(int), typeof(int)}),
@@ -931,6 +917,11 @@ namespace StardewArchipelago.Locations.Patcher
             }
 
             _harmony.Patch(
+                original: AccessTools.Method(typeof(Event), nameof(Event.command_addCraftingRecipe)),
+                prefix: new HarmonyMethod(typeof(CraftingInjections), nameof(CraftingInjections.CommandAddCraftingRecipe_SkipLearning_Prefix))
+            );
+
+            _harmony.Patch(
                 original: AccessTools.Method(typeof(Stats), nameof(Stats.checkForCraftingAchievements)),
                 postfix: new HarmonyMethod(typeof(CraftingInjections), nameof(CraftingInjections.CheckForCraftingAchievements_CheckCraftsanityLocation_Postfix))
             );
@@ -949,6 +940,11 @@ namespace StardewArchipelago.Locations.Patcher
                 original: AccessTools.Method(typeof(Sewer), nameof(Sewer.getShadowShopStock)),
                 postfix: new HarmonyMethod(typeof(CraftingInjections), nameof(CraftingInjections.GetShadowShopStock_PurchasableRecipeChecks_Postfix))
             );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Desert), nameof(Desert.getDesertMerchantTradeStock)),
+                postfix: new HarmonyMethod(typeof(CraftingInjections), nameof(CraftingInjections.GetDesertMerchantTradeStock_PurchasableRecipeChecks_Postfix))
+            );
         }
 
         private void PatchKrobusShop()
@@ -956,6 +952,14 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Sewer), nameof(Sewer.getShadowShopStock)),
                 postfix: new HarmonyMethod(typeof(KrobusShopInjections), nameof(KrobusShopInjections.GetShadowShopStock_StardropCheck_Postfix))
+            );
+        }
+
+        private void PatchFarmcave()
+        {
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Event), nameof(Event.answerDialogue)),
+                prefix: new HarmonyMethod(typeof(FarmCaveInjections), nameof(FarmCaveInjections.AnswerDialogue_SendFarmCaveCheck_Prefix))
             );
         }
     }

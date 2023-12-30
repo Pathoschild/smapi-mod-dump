@@ -7,6 +7,7 @@ import asyncio
 import traceback
 import dragonfly as df
 import server
+import logger
 
 def dictation_rule(default=None):
     return df.Dictation('dictation', default=default)
@@ -27,7 +28,7 @@ class AsyncFunction(df.ActionBase):
         try:
             await self.async_fn(*args, **kwargs)
         except (Exception, asyncio.CancelledError, asyncio.TimeoutError) as e:
-            server.log(traceback.format_exc(), level=1)
+            logger.debug(traceback.format_exc())
 
     def execute(self, data=None):
         assert isinstance(data, dict)

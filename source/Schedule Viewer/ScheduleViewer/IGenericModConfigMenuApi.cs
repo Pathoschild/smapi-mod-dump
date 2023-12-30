@@ -27,6 +27,12 @@ namespace ScheduleViewer
         /// <param name="titleScreenOnly">Whether the options can only be edited from the title screen.</param>
         void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
 
+        /// <summary>Add a section title at the current position in the form.</summary>
+        /// <param name="mod">The mod's manifest.</param>
+        /// <param name="text">The title text shown in the form.</param>
+        /// <param name="tooltip">The tooltip text shown when the cursor hovers on the title, or <c>null</c> to disable the tooltip.</param>
+        void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
+
         /// <summary>Add a key binding at the current position in the form.</summary>
         /// <param name="mod">The mod's manifest.</param>
         /// <param name="getValue">Get the current value from the mod config.</param>

@@ -610,17 +610,22 @@ namespace DailyScreenshot
                 gmcmApi.AddPage(ModManifest, "Location");
 
                 gmcmApi.AddSectionTitle(ModManifest, I18n.Config_Location_Header_Title, I18n.Config_Location_Header_Tooltip);
-
+                gmcmApi.AddParagraph(ModManifest, I18n.Config_Location_Description);
+                gmcmApi.AddParagraph(ModManifest, I18n.Config_Location_Description2);
+                
                 AddLocationConditionOption(gmcmApi, LocationFlags.Farm);
                 AddLocationConditionOption(gmcmApi, LocationFlags.Farmhouse);
                 AddLocationConditionOption(gmcmApi, LocationFlags.GreenHouse);
-                AddLocationConditionOption(gmcmApi, LocationFlags.Beach);
                 AddLocationConditionOption(gmcmApi, LocationFlags.FarmCave);
                 AddLocationConditionOption(gmcmApi, LocationFlags.Cellar);
+                AddLocationConditionOption(gmcmApi, LocationFlags.Beach);
                 AddLocationConditionOption(gmcmApi, LocationFlags.Desert);
                 AddLocationConditionOption(gmcmApi, LocationFlags.Museum);
                 AddLocationConditionOption(gmcmApi, LocationFlags.CommunityCenter);
+                AddLocationConditionOption(gmcmApi, LocationFlags.Town);
                 AddLocationConditionOption(gmcmApi, LocationFlags.Mountain);
+                AddLocationConditionOption(gmcmApi, LocationFlags.Mine);
+                AddLocationConditionOption(gmcmApi, LocationFlags.MineShaft);
                 AddLocationConditionOption(gmcmApi, LocationFlags.IslandWest);
                 AddLocationConditionOption(gmcmApi, LocationFlags.IslandFarmhouse);
                 AddLocationConditionOption(gmcmApi, LocationFlags.IslandFieldOffice);
@@ -670,8 +675,9 @@ namespace DailyScreenshot
         /// <param name="key"></param>
         private void RunTriggers(List<ModRule> rules, SButton key = SButton.None)
         {
-            if (!m_shouldProcessRules)
+            if (!m_shouldProcessRules) {
                 return;
+            }
             foreach (ModRule rule in rules)
             {
                 if (rule.Enabled && rule.Trigger.CheckTrigger(key))

@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Content;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Extensions;
 using StardewArchipelago.Items.Unlocks;
+using StardewArchipelago.Constants;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.GameData;
@@ -24,9 +25,10 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
     public class SpecialOrderInjections
     {
-        private static readonly string[] _ignoredSpecialOrders =
+        private static string[] _vanillaSpecialOrderReward = new[]
         {
-            // Add ignored orders here
+            //Exists temporarily to avoid removing mail rewards
+            "Grandpa's Shed", "Aurora Vineyard", "Monster Crops"
         };
 
         private static IMonitor _monitor;
@@ -65,16 +67,17 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             try
             {
                 var specialOrderName = __result.GetName();
-                if (_ignoredSpecialOrders.Contains(specialOrderName))
+                if (!_archipelago.LocationExists(specialOrderName))
                 {
                     return;
                 }
 
                 // Remove vanilla rewards if the player has not received the check.
                 // We will keep vanilla rewards for repeated orders
-                if (_locationChecker.IsLocationMissingAndExists(specialOrderName))
+                if (_locationChecker.IsLocationMissingAndExists(specialOrderName) & !_vanillaSpecialOrderReward.Contains(specialOrderName))
                 {
                     __result.rewards.Clear();
+                    Game1.player.team.specialOrders.Remove(__result); // Might as well, and it cleans up SVE special orders.
                 }
             }
             catch (Exception ex)
@@ -94,7 +97,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 }
 
                 var specialOrderName = GetEnglishQuestName(__instance.questName.Value);
-                if (_ignoredSpecialOrders.Contains(specialOrderName))
+                if (!_archipelago.LocationExists(specialOrderName))
                 {
                     return;
                 }
@@ -193,7 +196,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             AddTwoOrdersToBoard(specialOrdersForQi, hints, random);
         }
 
-        private static IEnumerable<KeyValuePair<string, SpecialOrderData>> FilterToSpecialOrdersThatCanBeStartedToday(Dictionary<string, SpecialOrderData> allSpecialOrdersData)
+        private static IEnumerable<KeyValuePair<string, SpecialOrderData>> FilterToSpecialOrdersThatCanBeStartedToday(
+            Dictionary<string, SpecialOrderData> allSpecialOrdersData)
         {
             var specialOrdersThatCanBeStartedToday = allSpecialOrdersData
                 .Where(order => !Game1.player.team.completedSpecialOrders.ContainsKey(order.Key) ||
@@ -201,7 +205,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 .Where(order => order.Value.Duration != "Month" || Game1.dayOfMonth <= 16)
                 .Where(order => CheckTags(order.Value.RequiredTags))
                 .Where(order => Game1.player.team.specialOrders.All(x => x.questKey.Value != order.Key))
-                .Where(order => !_archipelago.SlotData.ToolProgression.HasFlag(ToolProgression.Progressive) || !order.Key.StartsWith("Demetrius") || _archipelago.HasReceivedItem("Progressive Fishing Rod"));
+                .Where(order => !_archipelago.SlotData.ToolProgression.HasFlag(ToolProgression.Progressive) || !order.Key.StartsWith("Demetrius") ||
+                                _archipelago.HasReceivedItem("Progressive Fishing Rod"));
             return specialOrdersThatCanBeStartedToday;
         }
 
@@ -227,7 +232,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             return SpecialOrder.CheckTags(requiredTag);
         }
 
-        private static Dictionary<string, SpecialOrder> CreateSpecialOrderInstancesForType(IEnumerable<KeyValuePair<string, SpecialOrderData>> specialOrdersThatCanBeStartedToday, string orderType, Random random)
+        private static Dictionary<string, SpecialOrder> CreateSpecialOrderInstancesForType(
+            IEnumerable<KeyValuePair<string, SpecialOrderData>> specialOrdersThatCanBeStartedToday, string orderType, Random random)
         {
             var specialOrders = specialOrdersThatCanBeStartedToday
                 .Where(order => order.Value.OrderType == orderType)
@@ -259,6 +265,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             {
                 allOrdersOrdered.AddRange(specialOrdersNeverCompletedBefore);
             }
+
             if (allOrdersOrdered.Count < 2)
             {
                 allOrdersOrdered.AddRange(allSpecialOrders);
@@ -283,14 +290,17 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 {
                     var num = questNameKey.IndexOf(']', startIndex);
                     if (num == -1)
+                    {
                         return questNameKey;
+                    }
+
                     var str1 = questNameKey.Substring(startIndex + 1, num - startIndex - 1);
-                    var thisString = specialOrderStrings[str1];
+                    var thisString = specialOrderStrings.ContainsKey(str1) ? specialOrderStrings[str1] : SpecialOrderNames.Mods[str1];
                     questNameKey = questNameKey.Remove(startIndex, num - startIndex + 1);
                     questNameKey = questNameKey.Insert(startIndex, thisString);
                 }
-            }
-            while (startIndex >= 0);
+            } while (startIndex >= 0);
+
             return questNameKey;
         }
     }

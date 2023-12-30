@@ -38,6 +38,11 @@ namespace StardewArchipelago.Archipelago
 
         public string GetItemName()
         {
+            if (string.IsNullOrWhiteSpace(ItemName))
+            {
+                return ItemId.ToString();
+            }
+
             return ItemName.TurnHeartsIntoStardewHearts();
         }
 

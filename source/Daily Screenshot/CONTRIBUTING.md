@@ -16,11 +16,14 @@ your best judgment and feel free to propose changes to anything in this project
 
 ## Got improvements?
 
+* Fork this project and implement the changes you want to make.
 * Please test your changes before submitting a pull request. See [Testing](./DailyScreenshot/Tests/Testing.md) documentation for available/recommended testing strategies.
 * Open a new [pull request](../../pull/new) with the change.
-    * Please be sure to add your name to the [Contributors](./CONTRIBUTORS.md) file. :)
 
-Note: This project uses [Issues](../../issues) to track all feature requests and bug reports. If you're looking for ways to contribute, please feel free to work on any of the open Issues! Just leave a comment on the Issue to let everyone know that you're working on it, so that people don't accidentally work on the same thing without realizing.
+Notes:
+
+* This project uses [Issues](../../issues) to track all feature requests and bug reports. If you're looking for ways to contribute, please feel free to work on any of the open Issues! Just leave a comment on the Issue to let everyone know that you're working on it, so that people don't accidentally work on the same thing without realizing.
+* We use the [Contribute List](https://github.com/marketplace/actions/contribute-list) GitHub Action to help make sure we give credit to everyone who helps make this mod better! After your contribution is merged to the `main` branch, a bot will create a PR to add your name (if not already present) and we will get it merged. :)
 
 ## Want to report a bug or propose a new feature?
 
@@ -32,7 +35,7 @@ Note: This project uses [Issues](../../issues) to track all feature requests and
 
 To help test out new releases, check on [Nexus](https://www.nexusmods.com/stardewvalley/mods/4779?tab=files) to see if there is a new pre-release version available for download, and just try it out! If you discover any problems, please let us know. You can send a Discord message, create a GitHub Issue, or comment/report on the Nexus site.
 
-If you end up doing this for any pre-release version, please let me know! I'd love to include you in [Contributors](./CONTRIBUTORS.md). :)
+If you end up doing this for any pre-release version, please let me know! I'd love to include you in the Contributors list on the README page. :)
 
 For questions or comments, you can also send a message to @compscilauren on Discord.
 

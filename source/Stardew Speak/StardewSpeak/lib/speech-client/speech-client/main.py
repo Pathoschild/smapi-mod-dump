@@ -14,6 +14,8 @@ from io import BytesIO
 from zipfile import ZipFile
 import urllib.request
 import menus
+import asyncio.queues
+import threading
 
 from dragonfly import RecognitionObserver, get_engine, AppContext
 from dragonfly.log import setup_log
@@ -30,15 +32,18 @@ IS_FROZEN = getattr(sys, "frozen", False)
 
 MODELS_DIR = os.path.abspath(os.path.join(args.args.python_root, "models"))
 
+async def asleep():
+    return 6
 
 class Observer(RecognitionObserver):
     def on_begin(self):
-        pass
+        import server
+        future = asyncio.run_coroutine_threadsafe(server.request_and_update_active_menu(), server.loop)
+        # Wait for the result with an optional timeout argument
+        future.result(3)
 
     def on_recognition(self, words):
-        import server
-
-        server.log("Recognized:", " ".join(words), level=1)
+        logger.trace("Recognized:", " ".join(words))
 
     def on_failure(self):
         pass
@@ -113,6 +118,7 @@ def run_engine():
     engine.prepare_for_recognition()
     approximate_matching.initialize()
     game.show_hud_message("Speech recognition is ready", 4)
+    logger.info("Speech recognition is ready")
     try:
         engine.do_recognition()
     except KeyboardInterrupt:
@@ -126,7 +132,7 @@ def main():
     try:
         ensure_exclusive_mode_disabled_for_default_mic()
     except Exception as e:
-        server.log(
+        logger.warning(
             f"Unable to disable exclusive mode for default audio device: {traceback.format_exc()}",
             level=2,
         )

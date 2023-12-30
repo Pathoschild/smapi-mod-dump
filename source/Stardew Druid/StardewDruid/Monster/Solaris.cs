@@ -9,22 +9,22 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
-using StardewValley;
-using StardewValley.Monsters;
-using System.Collections.Generic;
-using System;
 using Microsoft.Xna.Framework.Graphics;
-using Netcode;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
-using Microsoft.Xna.Framework.Audio;
-using StardewDruid.Character;
 using StardewDruid.Map;
+using StardewModdingAPI;
+using StardewValley;
+using System;
+using System.Collections.Generic;
 
 namespace StardewDruid.Monster
 {
 
     public class Solaris : StardewValley.Monsters.Monster
     {
+
+        public Texture2D monsterTexture;
+
+        public bool loadedOut;
 
         public List<string> ouchList;
 
@@ -80,9 +80,10 @@ namespace StardewDruid.Monster
 
             ouchList = new()
             {
-                "teeheehee",
-                "wooooo"
+                "seep", "SEEP"
             };
+
+            wasHitCounter = 500;
 
             Slipperiness = 24 + Game1.random.Next(-10, 10);
 
@@ -97,8 +98,8 @@ namespace StardewDruid.Monster
             // ==============================================================
 
             if (type % 2 == 0)
-            { 
-                
+            {
+
                 spawnName = "Voidle";
 
                 objectsToDrop.Add(769);
@@ -169,7 +170,7 @@ namespace StardewDruid.Monster
                     spawnDamage = (int)Math.Max(2, combatModifier * 0.01);
 
                     spawnVelocity = 2f;
-                
+
                     break;
 
             }
@@ -178,6 +179,16 @@ namespace StardewDruid.Monster
 
             Sprite = MonsterData.MonsterSprite(spawnName);
 
+            LoadOut();
+
+        }
+
+        public void LoadOut()
+        {
+
+            monsterTexture = MonsterData.MonsterTexture(spawnName);
+
+            loadedOut = true;
 
         }
 
@@ -188,9 +199,9 @@ namespace StardewDruid.Monster
             {
                 return 0;
             }
-            
+
             int ouchIndex = Game1.random.Next(10);
-            
+
             if (ouchIndex < ouchList.Count)
             {
                 showTextAboveHead(ouchList[ouchIndex], duration: 2000);
@@ -203,12 +214,19 @@ namespace StardewDruid.Monster
         public override void update(GameTime time, GameLocation location)
         {
 
-            if (Sprite.loadedTexture == null || Sprite.loadedTexture.Length == 0)
+            if (!Context.IsMainPlayer)
             {
 
-                Sprite.spriteTexture = MonsterData.MonsterTexture(spawnName);
+                if (Sprite.loadedTexture == null || Sprite.loadedTexture.Length == 0)
+                {
 
-                Sprite.loadedTexture = Sprite.textureName.Value;
+                    Sprite.spriteTexture = MonsterData.MonsterTexture(Name);
+
+                    Sprite.loadedTexture = Sprite.textureName.Value;
+
+                    LoadOut();
+
+                }
 
             }
 
@@ -235,7 +253,7 @@ namespace StardewDruid.Monster
 
         public override Microsoft.Xna.Framework.Rectangle GetBoundingBox()
         {
-            
+
             float height = 16 * Scale;
 
             float width = 16 * Scale;
@@ -248,19 +266,31 @@ namespace StardewDruid.Monster
 
         public override void drawAboveAllLayers(SpriteBatch b)
         {
-            if (Utility.isOnScreen(base.Position, 128))
+            if (!Utility.isOnScreen(base.Position, 128))
             {
-                
-                b.Draw(Sprite.Texture, getLocalPosition(Game1.viewport) + new Vector2(32f, GetBoundingBox().Height / 2 - 32), Sprite.SourceRect, Color.White, 0f, new Vector2(8f, 16f), Math.Max(0.2f, scale) * 4f, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, drawOnTop ? 0.991f : ((float)(getStandingY() + 8) / 10000f)));
 
-                b.Draw(Game1.shadowTexture, getLocalPosition(Game1.viewport) + new Vector2(32f, GetBoundingBox().Height / 2), Game1.shadowTexture.Bounds, Color.White, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 4f, SpriteEffects.None, (float)(getStandingY() - 1) / 10000f);
+                return;
 
             }
+
+            if (!loadedOut)
+            {
+
+                LoadOut();
+
+            }
+
+            //b.Draw(Sprite.Texture, getLocalPosition(Game1.viewport) + new Vector2(32f, GetBoundingBox().Height / 2 - 32), Sprite.SourceRect, Color.White, 0f, new Vector2(8f, 16f), Math.Max(0.2f, scale) * 4f, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, drawOnTop ? 0.991f : ((getStandingY() + 8) / 10000f)));
+
+            b.Draw(monsterTexture, getLocalPosition(Game1.viewport) + new Vector2(32f, GetBoundingBox().Height / 2 - 32), Sprite.SourceRect, Color.White, 0f, new Vector2(8f, 16f), Math.Max(0.2f, scale) * 4f, flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None, Math.Max(0f, drawOnTop ? 0.991f : ((getStandingY() + 8) / 10000f)));
+
+            b.Draw(Game1.shadowTexture, getLocalPosition(Game1.viewport) + new Vector2(32f, GetBoundingBox().Height / 2), Game1.shadowTexture.Bounds, Color.White, 0f, new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y), 4f, SpriteEffects.None, (getStandingY() - 1) / 10000f);
+
         }
 
         public override void drawAboveAlwaysFrontLayer(SpriteBatch b)
         {
-            if (base.currentLocation != null && (bool)base.currentLocation.treatAsOutdoors.Value)
+            if (base.currentLocation != null && currentLocation.treatAsOutdoors.Value)
             {
                 drawAboveAllLayers(b);
             }
@@ -304,7 +334,7 @@ namespace StardewDruid.Monster
             if ((thresholdCheck))
             {
 
-                if(playerVector.X < monsterVector.X)
+                if (playerVector.X < monsterVector.X)
                 {
                     faceDirection(3);
 
@@ -324,20 +354,20 @@ namespace StardewDruid.Monster
 
                 if (num4 < 64f)
                 {
-                    
+
                     xVelocity = Math.Max(-7f, Math.Min(7f, xVelocity * 1.1f));
-                    
+
                     yVelocity = Math.Max(-7f, Math.Min(7f, yVelocity * 1.1f));
-                
+
                 }
 
                 num2 /= num4;
-                
+
                 num3 /= num4;
-                
+
                 if (wasHitCounter <= 0)
                 {
-                    
+
                     targetRotation = (float)Math.Atan2(0f - num3, num2) - MathF.PI / 2f;
 
                     if ((double)(Math.Abs(targetRotation) - Math.Abs(rotation)) > Math.PI * 7.0 / 8.0 && Game1.random.NextDouble() < 0.5)
@@ -351,43 +381,43 @@ namespace StardewDruid.Monster
 
                     if (turningRight)
                     {
-                        rotation -= (float)Math.Sign(targetRotation - rotation) * (MathF.PI / 64f);
+                        rotation -= Math.Sign(targetRotation - rotation) * (MathF.PI / 64f);
                     }
                     else
                     {
-                        rotation += (float)Math.Sign(targetRotation - rotation) * (MathF.PI / 64f);
+                        rotation += Math.Sign(targetRotation - rotation) * (MathF.PI / 64f);
                     }
 
                     rotation %= MathF.PI * 2f;
-                    
+
                     wasHitCounter = 5 + Game1.random.Next(-1, 2);
-                
+
                 }
 
                 float num5 = Math.Min(4f + spawnVelocity, Math.Max(2f, 4f + spawnVelocity - num4 / 64f / 2f));
 
-                num2 = (float)Math.Cos((double)rotation + Math.PI / 2.0);
-                
-                num3 = 0f - (float)Math.Sin((double)rotation + Math.PI / 2.0);
-                
-                xVelocity += (0f - num2) * num5 / 6f + (float)Game1.random.Next(-10, 10) / 100f;
-                
-                yVelocity += (0f - num3) * num5 / 6f + (float)Game1.random.Next(-10, 10) / 100f;
-                
+                num2 = (float)Math.Cos(rotation + Math.PI / 2.0);
+
+                num3 = 0f - (float)Math.Sin(rotation + Math.PI / 2.0);
+
+                xVelocity += (0f - num2) * num5 / 6f + Game1.random.Next(-10, 10) / 100f;
+
+                yVelocity += (0f - num3) * num5 / 6f + Game1.random.Next(-10, 10) / 100f;
+
                 if (Math.Abs(xVelocity) > Math.Abs((0f - num2) * 7f))
                 {
-                    
+
                     xVelocity -= (0f - num2) * num5 / 6f;
-                
+
                 }
 
                 if (Math.Abs(yVelocity) > Math.Abs((0f - num3) * 7f))
                 {
-                    
+
                     yVelocity -= (0f - num3) * num5 / 6f;
-                
+
                 }
-            
+
             }
 
             resetAnimationSpeed();
@@ -403,7 +433,7 @@ namespace StardewDruid.Monster
                 base.Health = -500;
             }
 
-            if (base.Position.X <= -640f || base.Position.Y <= -640f || base.Position.X >= (float)(base.currentLocation.Map.Layers[0].LayerWidth * 64 + 640) || base.Position.Y >= (float)(base.currentLocation.Map.Layers[0].LayerHeight * 64 + 640))
+            if (base.Position.X <= -640f || base.Position.Y <= -640f || base.Position.X >= base.currentLocation.Map.Layers[0].LayerWidth * 64 + 640 || base.Position.Y >= base.currentLocation.Map.Layers[0].LayerHeight * 64 + 640)
             {
                 base.Health = -500;
             }

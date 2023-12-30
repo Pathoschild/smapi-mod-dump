@@ -6,9 +6,9 @@ mods:
    Better Jukebox
 
 latest commit:
-   commit 417401f40dafa12bb1cda3c0a946d20c0130d979
+   commit 729936465322110f080a754de4402863b81a5a33
    Author: gaphodil <gaphodillo@gmail.com>
-   Date:   Mon Nov 6 19:05:12 2023 -0800
+   Date:   Sat Dec 16 13:09:33 2023 -0800
    
-       update release notes
+       fixed random button
    

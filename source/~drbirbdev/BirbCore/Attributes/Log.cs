@@ -30,26 +30,35 @@ public class Log
     }
     public static void Debug(string str)
     {
-        Monitors[Assembly.GetCallingAssembly().FullName].Log(str, LogLevel.Debug);
+        Monitors[GetKey(Assembly.GetCallingAssembly())].Log(str, LogLevel.Debug);
     }
     public static void Trace(string str)
     {
-        Monitors[Assembly.GetCallingAssembly().FullName].Log(str, LogLevel.Trace);
+        Monitors[GetKey(Assembly.GetCallingAssembly())].Log(str, LogLevel.Trace);
     }
     public static void Info(string str)
     {
-        Monitors[Assembly.GetCallingAssembly().FullName].Log(str, LogLevel.Info);
+        Monitors[GetKey(Assembly.GetCallingAssembly())].Log(str, LogLevel.Info);
     }
     public static void Warn(string str)
     {
-        Monitors[Assembly.GetCallingAssembly().FullName].LogOnce(str, LogLevel.Warn);
+        Monitors[GetKey(Assembly.GetCallingAssembly())].Log(str, LogLevel.Warn);
     }
     public static void Error(string str)
     {
-        Monitors[Assembly.GetCallingAssembly().FullName].LogOnce(str, LogLevel.Error);
+        Monitors[GetKey(Assembly.GetCallingAssembly())].Log(str, LogLevel.Error);
     }
     public static void Alert(string str)
     {
-        Monitors[Assembly.GetCallingAssembly().FullName].LogOnce(str, LogLevel.Alert);
+        Monitors[GetKey(Assembly.GetCallingAssembly())].Log(str, LogLevel.Alert);
+    }
+
+    private static string GetKey(Assembly assembly)
+    {
+        if (Monitors.ContainsKey(assembly.FullName))
+        {
+            return assembly.FullName;
+        }
+        return Assembly.GetExecutingAssembly().FullName;
     }
 }

@@ -9,14 +9,19 @@
 *************************************************/
 
 using HarmonyLib;
+using System.Collections.Generic;
+using System;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Constants;
 using StardewArchipelago.GameModifications.CodeInjections.Modded;
 using StardewArchipelago.Locations.CodeInjections.Modded;
+using StardewArchipelago.Locations.CodeInjections.Modded.SVE;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
-using StardewArchipelago.Locations.GingerIsland;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Menus;
+using StardewValley.Objects;
+
 
 namespace StardewArchipelago.Locations.Patcher
 {
@@ -25,7 +30,6 @@ namespace StardewArchipelago.Locations.Patcher
         private readonly ArchipelagoClient _archipelago;
         private readonly Harmony _harmony;
         private readonly IModHelper _modHelper;
-        private readonly GingerIslandPatcher _gingerIslandPatcher;
         private ModsManager _modsManager;
 
         public ModLocationPatcher(Harmony harmony, IModHelper modHelper, ArchipelagoClient archipelago)
@@ -42,6 +46,29 @@ namespace StardewArchipelago.Locations.Patcher
             AddDeepWoodsModInjections();
             AddMagicModInjections();
             AddSkullCavernElevatorModInjections();
+            AddSVEModInjections();
+            AddDistantLandsEventInjections();
+        }
+
+        private void AddDistantLandsEventInjections()
+        {
+            if (!_modsManager.HasMod(ModNames.DISTANT_LANDS))
+            {
+                return;
+            }
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Event), nameof(Event.skipEvent)),
+                prefix: new HarmonyMethod(typeof(ModdedEventInjections), nameof(ModdedEventInjections.SkipEvent_ReplaceRecipe_Prefix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Event), nameof(Event.command_addCookingRecipe)),
+                prefix: new HarmonyMethod(typeof(ModdedEventInjections), nameof(ModdedEventInjections.AddCookingRecipe_CheckForStrayRecipe_Prefix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Event), nameof(Event.command_addCraftingRecipe)),
+                prefix: new HarmonyMethod(typeof(ModdedEventInjections), nameof(ModdedEventInjections.AddCraftingRecipe_CheckForStrayRecipe_Prefix))
+            );
         }
 
         private void AddModSkillInjections()
@@ -52,13 +79,24 @@ namespace StardewArchipelago.Locations.Patcher
             {
                 return;
             }
-
-            var spaceCoreType = AccessTools.TypeByName("SpaceCore.Skills");
+            var _spaceCoreInterfaceType = AccessTools.TypeByName("SpaceCore.Interface.SkillLevelUpMenu");
+            var spaceCoreSkillsType = AccessTools.TypeByName("SpaceCore.Skills");
             _harmony.Patch(
-                original: AccessTools.Method(spaceCoreType, "AddExperience"),
+                original: AccessTools.Method(spaceCoreSkillsType, "AddExperience"),
                 prefix: new HarmonyMethod(typeof(SkillInjections), nameof(SkillInjections.AddExperience_ArchipelagoModExperience_Prefix))
             );
-
+            if (_archipelago.SlotData.Mods.HasMod(ModNames.MAGIC))
+            {
+                _harmony.Patch(
+                    original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.update)),
+                    postfix: new HarmonyMethod(typeof(MagicModInjections), nameof(MagicModInjections.Update_ReplaceMarlonShopChecks_Postfix))
+            );
+            }
+            /*_harmony.Patch(
+                original: AccessTools.Constructor(_spaceCoreInterfaceType, new[] {typeof(string), typeof(int)}),
+                postfix: new HarmonyMethod(typeof(RecipeLevelUpInjections), nameof(RecipeLevelUpInjections.SkillLevelUpMenuConstructor_SendModdedSkillRecipeChecks_Postfix))
+            );*/
+                
             InjectSocializingExperienceMultiplier();
             InjectArchaeologyExperienceMultiplier();
         }
@@ -149,8 +187,9 @@ namespace StardewArchipelago.Locations.Patcher
             }
 
             var _deepWoodsType = AccessTools.TypeByName("DeepWoodsMod.DeepWoods");
+            var _swordType = AccessTools.TypeByName("DeepWoodsMod.ExcaliburStone");
             var _enterDirectionType = AccessTools.TypeByName("DeepWoodsMod.DeepWoodsEnterExit+EnterDirection");
-            var constructorParameterTypes = new[] { _deepWoodsType, typeof(int), _enterDirectionType };
+            var constructorParameterTypes = new[] { _deepWoodsType, typeof(int), _enterDirectionType, typeof(bool) };
             var _unicornType = AccessTools.TypeByName("DeepWoodsMod.Unicorn");
             var _gingerbreadType = AccessTools.TypeByName("DeepWoodsMod.GingerBreadHouse");
             var _iridiumtreeType = AccessTools.TypeByName("DeepWoodsMod.IridiumTree");
@@ -158,6 +197,10 @@ namespace StardewArchipelago.Locations.Patcher
             var _fountainType = AccessTools.TypeByName("DeepWoodsMod.HealingFountain");
             var _infestedType = AccessTools.TypeByName("DeepWoodsMod.InfestedTree");
 
+            _harmony.Patch(
+                original: AccessTools.Method(_swordType, "performUseAction"),
+                prefix: new HarmonyMethod(typeof(DeepWoodsModInjections), nameof(DeepWoodsModInjections.PerformUseAction_ExcaliburLocation_Prefix))
+            );
             _harmony.Patch(
                 original: AccessTools.Method(_unicornType, "checkAction"),
                 prefix: new HarmonyMethod(typeof(DeepWoodsModInjections), nameof(DeepWoodsModInjections.CheckAction_PetUnicornLocation_Prefix))
@@ -242,6 +285,46 @@ namespace StardewArchipelago.Locations.Patcher
                 original: myElevatorMenuWithScrollBarConstructor,
                 prefix: new HarmonyMethod(typeof(SkullCavernInjections), nameof(SkullCavernInjections.MyElevatorMenuConstructor_SkullCavernElevator_Prefix)),
                 postfix: new HarmonyMethod(typeof(SkullCavernInjections), nameof(SkullCavernInjections.MyElevatorMenuConstructor_SkullCavernElevator_Postfix))
+            );
+        }
+
+        private void AddSVEModInjections()
+        {
+            if (!_archipelago.SlotData.Mods.HasMod(ModNames.SVE))
+            {
+                return;
+            }
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.update)),
+                postfix: new HarmonyMethod(typeof(SVEShopInjections), nameof(SVEShopInjections.Update_ReplaceSVEShopChecks_Postfix))
+            );
+
+            var shopMenuParameterTypes = new[]
+            {
+                typeof(Dictionary<ISalable, int[]>), typeof(int), typeof(string),
+                typeof(Func<ISalable, Farmer, int, bool>), typeof(Func<ISalable, bool>), typeof(string)
+            };
+
+            _harmony.Patch(
+                original: AccessTools.Constructor(typeof(ShopMenu), shopMenuParameterTypes),
+                prefix: new HarmonyMethod(typeof(SVEShopInjections), nameof(SVEShopInjections.Constructor_MakeBothJojaShopsTheSame_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Chest), nameof(Chest.checkForAction)),
+                prefix: new HarmonyMethod(typeof(SVECutsceneInjections), nameof(SVECutsceneInjections.CheckForAction_LanceChest_Prefix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Event), nameof(Event.endBehaviors)),
+                prefix: new HarmonyMethod(typeof(SVECutsceneInjections), nameof(SVECutsceneInjections.EndBehaviors_AddSpecialOrderAfterEvent_Prefix))
+            );
+            var specialOrderAfterEventsType = AccessTools.TypeByName("AddSpecialOrdersAfterEvents");
+
+            _harmony.Patch(
+                original: AccessTools.Method(specialOrderAfterEventsType, "UpdateSpecialOrders"),
+                prefix: new HarmonyMethod(typeof(SVECutsceneInjections), nameof(SVECutsceneInjections.UpdateSpecialOrders_StopDeletingSpecialOrders_Prefix))
             );
         }
     }

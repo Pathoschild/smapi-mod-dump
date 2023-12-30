@@ -46,7 +46,7 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 			);
 		}
 
-		private static void ShowTitlePostfix(MineCart __instance)
+		private static void ShowTitlePostfix()
 		{
 			if (!ModEntry.Config.ArcadeGamesPayToPlay)
 				return;
@@ -81,7 +81,7 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 			b.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp);
 			if (Game1.currentLocation.Name.Equals("Saloon"))
 			{
-				if (PayToPlayUtility.GetOnInsertCoinMenu())
+				if (PayToPlayUtility.OnInsertCoinMenu)
 				{
 					if (gameMode == 3)
 						b.DrawString(Game1.dialogueFont, insertCoinText, new Vector2(Game1.viewport.Width / 2 - insertCoinDimension.X / 2, 3 * Game1.viewport.Height / 4 - insertCoinDimension.Y / 2), Utility.GetPrismaticColor() * (Game1.currentGameTime.TotalGameTime.Seconds % 2 == 0 ? 0.5f : 1f), 0f, Vector2.Zero, scale, SpriteEffects.None, 0.199f);
@@ -97,7 +97,7 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 			}
 			else
 			{
-				if (PayToPlayUtility.GetOnInsertCoinMenu())
+				if (PayToPlayUtility.OnInsertCoinMenu)
 				{
 					if (gameMode == 3)
 						b.DrawString(Game1.dialogueFont, pressAnyButtonText, new Vector2(Game1.viewport.Width / 2 - pressAnyButtonDimension.X / 2, 3 * Game1.viewport.Height / 4 - pressAnyButtonDimension.Y / 2), Utility.GetPrismaticColor() * (Game1.currentGameTime.TotalGameTime.Seconds % 2 == 0 ? 0.5f : 1f), 0f, Vector2.Zero, scale, SpriteEffects.None, 0.199f);
@@ -116,7 +116,7 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 		{
 			if (!ModEntry.Config.ArcadeGamesPayToPlay)
 				return true;
-			if (__instance.gameState != MineCart.GameStates.Title || !PayToPlayUtility.GetOnInsertCoinMenu())
+			if (__instance.gameState != MineCart.GameStates.Title || !PayToPlayUtility.OnInsertCoinMenu)
 				return true;
 			if (__instance.pauseBeforeTitleFadeOutTimer != 0f || (float)typeof(MineCart).GetField("screenDarkness", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance) != 0f || __instance.fadeDelta > 0f)
 				return true;
@@ -129,7 +129,7 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 				|| Game1.input.GetGamePadState().IsButtonDown(Buttons.A)
 				|| Game1.input.GetGamePadState().IsButtonDown(Buttons.B);
 
-			if (justTryToInsertCoin && !PayToPlayUtility.GetTriedToInsertCoin())
+			if (justTryToInsertCoin && !PayToPlayUtility.TriedToInsertCoin)
 			{
 				if (Game1.currentLocation.Name.Equals("Saloon"))
 				{
@@ -141,21 +141,21 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 					else
 					{
 						Game1.player.Money -= ModEntry.Config.ArcadeGamesPayToPlayCoinPerJKGame;
-						PayToPlayUtility.SetOnInsertCoinMenu(false);
+						PayToPlayUtility.OnInsertCoinMenu = false;
 						return true;
 					}
 				}
 				else
 				{
-					PayToPlayUtility.SetOnInsertCoinMenu(false);
+					PayToPlayUtility.OnInsertCoinMenu = false;
 					return true;
 				}
 			}
-			PayToPlayUtility.SetTriedToInsertCoin(justTryToInsertCoin);
+			PayToPlayUtility.TriedToInsertCoin = justTryToInsertCoin;
 			return !justTryToInsertCoin;
 		}
 
-		private static void QuitGamePostfix(MineCart __instance)
+		private static void QuitGamePostfix()
 		{
 			if (!ModEntry.Config.ArcadeGamesPayToPlay)
 				return;
@@ -163,7 +163,7 @@ namespace mouahrarasModuleCollection.ArcadeGames.PayToPlay.Patches
 			PayToPlayUtility.Reset();
 		}
 
-		private static void ForceQuitPostfix(MineCart __instance, bool __result)
+		private static void ForceQuitPostfix(bool __result)
 		{
 			if (!ModEntry.Config.ArcadeGamesPayToPlay)
 				return;

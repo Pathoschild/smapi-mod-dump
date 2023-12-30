@@ -24,15 +24,15 @@ namespace StardewDruid
 
         public Dictionary<string, bool> questList;
 
-        public Dictionary<string, int> blessingList;
-
         public Dictionary<int, string> weaponAttunement;
 
         public Dictionary<string, int> taskList;
 
-        public Dictionary<string, int> toggleList;
-
         public Dictionary<string, string> characterList;
+
+        public int setProgress;
+
+        public int activeProgress;
 
         public StaticData()
         {
@@ -43,15 +43,15 @@ namespace StardewDruid
 
             questList = new();
 
-            blessingList = new();
-
             weaponAttunement = new();
 
             taskList = new();
 
-            toggleList = new();
-
             characterList = new();
+
+            setProgress = -1;
+
+            activeProgress = 0;
 
         }
 

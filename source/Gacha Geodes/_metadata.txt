@@ -6,9 +6,9 @@ mods:
    Gacha Geodes
 
 latest commit:
-   commit b41e62b86f4df082e0bc7c6103fd139187c1ccda
+   commit 7d0472f10305a278d2267454ee717bc148c28c72
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Fri Aug 4 17:08:51 2023 +0200
+   Date:   Mon Dec 18 06:49:48 2023 +0100
    
-       updated manifest
+       updated to 1.6 alpha 23352
    

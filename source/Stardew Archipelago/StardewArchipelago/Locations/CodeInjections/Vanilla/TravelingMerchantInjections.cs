@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Archipelago.MultiClient.Net.Models;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants;
 using StardewArchipelago.GameModifications;
 using StardewArchipelago.Serialization;
 using StardewModdingAPI;
@@ -37,15 +38,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         private const double BASE_PRICE = 1.4;
         private const double DISCOUNT_PER_UPGRADE = 0.1;
-        private const string AP_MERCHANT_DAYS = "Traveling Merchant: {0}"; // 7, One for each day
+        public const string AP_MERCHANT_DAYS = "Traveling Merchant: {0}"; // 7, One for each day
         private const string AP_MERCHANT_STOCK = "Traveling Merchant Stock Size"; // 10% base size, 6 upgrades of 15% each
         private const string AP_MERCHANT_DISCOUNT = "Traveling Merchant Discount"; // Base Price 140%, 8 x 10% discount
         private const string AP_MERCHANT_LOCATION = "Traveling Merchant {0} Item {1}";
         private const string AP_METAL_DETECTOR = "Traveling Merchant Metal Detector"; // Base Price 140%, 8 x 10% discount
         private const string AP_WEDDING_RING_RECIPE = "Wedding Ring Recipe";
-
-        private static readonly string[] _days = new[]
-            { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
         private static readonly string[] _exclusiveStock = new[]
             { "Rare Seed", "Rarecrow", "Coffee Bean", "Wedding Ring Recipe" };
@@ -175,7 +173,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
 
             var currentStockSize = GetChanceForRandomStockItemToRemain(_archipelago.GetReceivedItemCount(AP_MERCHANT_STOCK));
-            var day = GetDayOfWeekName(Game1.dayOfMonth);
+            var day = Days.GetDayOfWeekName(Game1.dayOfMonth);
             var locationName = Game1.currentLocation is Forest ? "Cindersap Forest" : "the Beach Night Market";
             var text = _flairOverride.Any() ? _flairOverride.Values.First() : GetFlairForToday(playerName, locationName, day, currentStockSize);
             var prettyStockSize = (int)(currentStockSize * 100);
@@ -502,7 +500,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         public static bool IsTravelingMerchantDay(int dayOfMonth, out string playerName)
         {
-            var dayOfWeek = GetDayOfWeekName(dayOfMonth);
+            var dayOfWeek = Days.GetDayOfWeekName(dayOfMonth);
             var requiredAPItemToSeeMerchantToday = string.Format(AP_MERCHANT_DAYS, dayOfWeek);
             var hasReceivedToday = _archipelago.HasReceivedItem(requiredAPItemToSeeMerchantToday, out playerName);
             if (!hasReceivedToday)
@@ -515,7 +513,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         public static bool HasAnyTravelingMerchantDay()
         {
-            foreach (var day in _days)
+            foreach (var day in Days.DaysOfWeek)
             {
                 var requiredAPItemToSeeMerchantToday = string.Format(AP_MERCHANT_DAYS, day);
                 if (_archipelago.HasReceivedItem(requiredAPItemToSeeMerchantToday, out _))
@@ -529,7 +527,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
         private static void AddApStock(Dictionary<ISalable, int[]> currentStock, Random random, double priceMultiplier)
         {
-            var dayOfWeek = GetDayOfWeekName(Game1.dayOfMonth);
+            var dayOfWeek = Days.GetDayOfWeekName(Game1.dayOfMonth);
             var apItems = new List<string>();
             for (var i = 1; i < 4; i++)
             {
@@ -556,30 +554,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             var price = ModifyPrice(_merchantPrices[random.Next(0, _merchantPrices.Length)], priceMultiplier);
 
             currentStock.Add(apLocation, new[] { price, 1 });
-        }
-
-        private static string GetDayOfWeekName(int day)
-        {
-            var dayOfWeek = day % 7;
-            switch (dayOfWeek)
-            {
-                case 0:
-                    return "Sunday";
-                case 1:
-                    return "Monday";
-                case 2:
-                    return "Tuesday";
-                case 3:
-                    return "Wednesday";
-                case 4:
-                    return "Thursday";
-                case 5:
-                    return "Friday";
-                case 6:
-                    return "Saturday";
-            }
-
-            throw new ArgumentException($"Invalid day: {day}");
         }
 
         private static readonly double[] _merchantArtifactPriceMultipliers = new[] // Strong odds of a price slightly above the normal, small odds of significantly cheaper or significantly more expensive

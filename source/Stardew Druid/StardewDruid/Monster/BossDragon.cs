@@ -14,10 +14,6 @@ using StardewValley;
 using StardewValley.Projectiles;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace StardewDruid.Monster
 {
@@ -53,7 +49,7 @@ namespace StardewDruid.Monster
         public bool defeated;
 
         public BossDragon(Vector2 vector, int combatModifier)
-            : base(vector*64)
+            : base(vector * 64)
         {
             Health = combatModifier * 12;
 
@@ -177,11 +173,11 @@ namespace StardewDruid.Monster
 
             Health -= num;
 
-            if(Game1.random.Next(5) == 0)
+            if (Game1.random.Next(5) == 0)
             {
                 setTrajectory(xTrajectory, yTrajectory);
             }
-            
+
             if (Health <= 0)
             {
                 deathAnimation();
@@ -200,7 +196,7 @@ namespace StardewDruid.Monster
                 DelayedAction.functionAfterDelay(burningDesert, 600);
 
             }
-            
+
             return num;
         }
 
@@ -309,7 +305,7 @@ namespace StardewDruid.Monster
                     hatSourceRect,
                     Color.White * 0.6f,
                     hatRotate,
-                    new(8f,12f),
+                    new(8f, 12f),
                     8f,
                     flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
                     layerDepth

@@ -8,6 +8,33 @@ for queries and analysis.**
 
 # Core Changelog
 
+## 4.2.2
+
+### Changed
+
+* GMCM page links moved to the top of the page for better UX.
+
+## 4.2.1
+
+### Changed
+
+* Updated Chinese translations by [Jumping-notes](https://github.com/Jumping-notes).
+
+### Fixed
+
+* Fixed GMCM issue in handheld systems removing all spaces from Dynamic List options.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
+
+## 4.2.0
+
+### Added
+
+* Added new config presets which can be found in the "optionals" folder. The compatibility files have also been moved to this folder.
+* Added Status Effect framework, previously from CMBT module.
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
+
 ## 4.1.5
 
 ### Fixed
@@ -264,7 +291,7 @@ for queries and analysis.**
     - **Burning:** Causes damage equal to 1/16th of max health every 3s for 15s, and reduces attack by half. Does not affect fire enemies (i.e., Lava Lurks, Magma Sprites and Magama Sparkers).
     - **Chilled:** Reduces movement speed by half for 5s. If Chilled is inflicted again during this time, then causes Freeze.
     - **Freeze:** Cannot move or attack for 30s. The next hit during the duration deals double damage and ends the effect.
-    - **Poisoned:** Causes damage equal to 1/16 of max health every 3s for 15s, stacking up to 3x.
+    - **Poisoned:** Causes damage equal to 1/16 of max health every 3s for 15s, stacking up to 3×.
     - **Slowed:** Reduces movement speed by half for the duration.
     - **Stunned:** Cannot move or attack for the duration.
 

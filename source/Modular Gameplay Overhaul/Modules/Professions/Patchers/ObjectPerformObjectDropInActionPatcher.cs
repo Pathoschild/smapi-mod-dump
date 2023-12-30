@@ -15,7 +15,6 @@ namespace DaLion.Overhaul.Modules.Professions.Patchers;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
-using DaLion.Overhaul.Modules.Professions;
 using DaLion.Overhaul.Modules.Professions.Extensions;
 using DaLion.Shared.Constants;
 using DaLion.Shared.Enums;

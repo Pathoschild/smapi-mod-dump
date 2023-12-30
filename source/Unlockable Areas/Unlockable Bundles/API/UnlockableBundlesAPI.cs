@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using StardewValley;
 using StardewModdingAPI;
 using Unlockable_Bundles.Lib;
+using static Unlockable_Bundles.API.IUnlockableBundlesAPI;
 
 namespace Unlockable_Bundles.API
 {
@@ -25,18 +26,18 @@ namespace Unlockable_Bundles.API
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
-        private static List<string> CachedPurchasedBundles = null;
-        private static Dictionary<string, List<string>> CachedPurchasedBundlesByLocation = null;
-        private static Dictionary<string, List<Bundle>> CachedBundles = null;
-        public List<string> PurchasedBundles => getPurchasedUnlockables();
+        private static IList<string> CachedPurchasedBundles = null;
+        private static IDictionary<string, IList<string>> CachedPurchasedBundlesByLocation = null;
+        private static IDictionary<string, IList<IBundle>> CachedBundles = null;
+        public IList<string> PurchasedBundles => getPurchasedUnlockables();
 
-        public Dictionary<string, List<string>> PurchaseBundlesByLocation => getPurchasedUnlockablesByLocation();
+        public IDictionary<string, IList<string>> PurchaseBundlesByLocation => getPurchasedUnlockablesByLocation();
 
-        public Dictionary<string, List<Bundle>> getBundles() => getAllBundleStates();
+        public IDictionary<string, IList<IBundle>> getBundles() => getAllBundleStates();
 
-        public event BundlesPurchasedEvent BundlePurchasedEvent;
-        public event IsReadyEvent IsReadyEvent;
-        public event BundlesPurchasedEvent BundleContributedEvent;
+        public event BundlesPurchasedDelegate BundlePurchasedEvent;
+        public event IsReadyDelegate IsReadyEvent;
+        public event BundlesContributedDelegate BundleContributedEvent;
 
         public static void Initialize()
         {
@@ -45,7 +46,7 @@ namespace Unlockable_Bundles.API
             Helper = Mod.Helper;
         }
 
-        public static List<string> getPurchasedUnlockables()
+        public static IList<string> getPurchasedUnlockables()
         {
             //We are not currently loading a savegame and are not between daystart and dayending
             if (SaveGame.loaded is null && !Context.IsWorldReady)
@@ -70,7 +71,7 @@ namespace Unlockable_Bundles.API
             return CachedPurchasedBundles;
         }
 
-        public static Dictionary<string, List<string>> getPurchasedUnlockablesByLocation()
+        public static IDictionary<string, IList<string>> getPurchasedUnlockablesByLocation()
         {
             if (SaveGame.loaded is null && !Context.IsWorldReady)
                 return null;
@@ -84,7 +85,7 @@ namespace Unlockable_Bundles.API
             if (CachedPurchasedBundlesByLocation != null)
                 return CachedPurchasedBundlesByLocation;
 
-            var result = new Dictionary<string, List<string>>();
+            var result = new Dictionary<string, IList<string>>();
 
             foreach (var keyLocationPair in ModData.Instance.UnlockableSaveData) {
                 var list = new List<string>();
@@ -100,7 +101,7 @@ namespace Unlockable_Bundles.API
             return CachedPurchasedBundlesByLocation;
         }
 
-        public static Dictionary<string, List<Bundle>> getAllBundleStates()
+        public static IDictionary<string, IList<IBundle>> getAllBundleStates()
         {
             if (ModData.Instance is null)
                 return null;
@@ -110,26 +111,15 @@ namespace Unlockable_Bundles.API
 
             var asset = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
 
-            var result = new Dictionary<string, List<Bundle>>();
+            var result = new Dictionary<string, IList<IBundle>>();
 
             foreach (var el in ModData.Instance.UnlockableSaveData) {
                 var key = el.Key;
-                var bundle = asset.ContainsKey(key) ? asset[key] : null;
-                var list = new List<Bundle>();
-
+                var unlockable = asset.ContainsKey(key) ? asset[key] : null;
+                var list = new List<IBundle>();
 
                 foreach (var location in el.Value)
-                    list.Add(new Bundle(
-                            key,
-                            bundle != null ? bundle.Location : null,
-                            location.Key,
-                            new Dictionary<string,int>(bundle.RandomPriceEntries == 0 ? bundle.Price : location.Value.Price),
-                            new Dictionary<string, int>(location.Value.AlreadyPaid),
-                            location.Value.Purchased,
-                            location.Value.DayPurchased == -1 ? -1 :Game1.Date.TotalDays - location.Value.DayPurchased,
-                            bundle != null,
-                            location.Value.Discovered
-                        ));
+                    list.Add(getBundleForAPI(el.Key, location.Key, unlockable, location.Value));
 
                 result.Add(key, list);
             }
@@ -138,7 +128,30 @@ namespace Unlockable_Bundles.API
             return CachedBundles;
         }
 
-        public void raiseShopContributed(BundlePurchasedEventArgs args) => BundleContributedEvent?.Invoke(this, args);
+        public static Bundle getBundleForAPI(string key, string location)
+        {
+            var asset = Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
+            var unlockable = asset.ContainsKey(key) ? asset[key] : null;
+            var saveData = ModData.getUnlockableSaveData(key, location);
+            return getBundleForAPI(key, location, unlockable, saveData);
+        }
+
+        public static Bundle getBundleForAPI(string key, string location, UnlockableModel unlockable, UnlockableSaveData saveData)
+        {
+            return new Bundle(
+                    key,
+                    unlockable != null ? unlockable.Location : null,
+                    location,
+                    new Dictionary<string, int>(unlockable.RandomPriceEntries == 0 ? unlockable.Price : saveData.Price),
+                    new Dictionary<string, int>(saveData.AlreadyPaid),
+                    saveData.Purchased,
+                    saveData.DayPurchased == -1 ? -1 : Game1.Date.TotalDays - saveData.DayPurchased,
+                    unlockable != null,
+                    saveData.Discovered
+                   );
+        }
+
+        public void raiseShopContributed(BundleContributedEventArgs args) => BundleContributedEvent?.Invoke(this, args);
         public void raiseShopPurchased(BundlePurchasedEventArgs args) => BundlePurchasedEvent?.Invoke(this, args);
         public void raiseIsReady(IsReadyEventArgs args)
         {

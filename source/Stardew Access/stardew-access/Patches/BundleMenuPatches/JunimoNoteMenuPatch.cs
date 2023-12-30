@@ -307,12 +307,8 @@ namespace stardew_access.Patches
                 else
                     currentInventorySlot = 0;
 
-            Item item = __instance.inventory.actualInventory[currentInventorySlot];
             ClickableComponent c = __instance.inventory.inventory[currentInventorySlot];
-            InventoryUtils.NarrateHoveredSlot(
-                __instance.inventory.inventory,
-                __instance.inventory.actualInventory,
-                __instance.inventory,
+            InventoryUtils.NarrateHoveredSlot(__instance.inventory,
                 hoverX: c.bounds.Center.X,
                 hoverY: c.bounds.Center.Y
             );

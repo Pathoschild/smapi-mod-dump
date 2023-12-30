@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 /// <summary>
-///     Harmony Patches for Portable Holes.
+///     Harmony Patches for Is It Cake.
 /// </summary>
 internal sealed class ModPatches
 {
@@ -97,8 +97,8 @@ internal sealed class ModPatches
     private static void CraftingRecipe_createItem_postfix(CraftingRecipe __instance, ref Item __result)
     {
         if (Game1.player.CurrentItem is not SObject { bigCraftable.Value: false } item
-         || !(__instance.name.Equals("Chocolate Cake") || __instance.name.Equals("Pink Cake"))
-         || __result is not SObject { bigCraftable.Value: false, ParentSheetIndex: 220 or 221 } obj)
+            || !(__instance.name.Equals("Chocolate Cake") || __instance.name.Equals("Pink Cake"))
+            || __result is not SObject { bigCraftable.Value: false, ParentSheetIndex: 220 or 221 } obj)
         {
             return;
         }
@@ -111,22 +111,20 @@ internal sealed class ModPatches
     private static void Item_canStackWith_postfix(Item __instance, ref bool __result, ISalable other)
     {
         if (!__result
-         || __instance is not SObject { bigCraftable.Value: false, ParentSheetIndex: 220 or 221 } obj
-         || other is not SObject { bigCraftable.Value: false, ParentSheetIndex: 220 or 221 } otherObj)
+            || __instance is not SObject { bigCraftable.Value: false, ParentSheetIndex: 220 or 221 } obj
+            || other is not SObject { bigCraftable.Value: false, ParentSheetIndex: 220 or 221 } otherObj)
         {
             return;
         }
 
-        if (!obj.modData.TryGetValue("furyx639.IsItCake/ParentSheetIndex", out var id)
-         || id == obj.ParentSheetIndex.ToString())
+        if (!obj.modData.TryGetValue("furyx639.IsItCake/ParentSheetIndex", out var id))
         {
-            id = string.Empty;
+            id = obj.ParentSheetIndex.ToString();
         }
 
-        if (!otherObj.modData.TryGetValue("furyx639.IsItCake/ParentSheetIndex", out var otherId)
-         || otherId == otherObj.ParentSheetIndex.ToString())
+        if (!otherObj.modData.TryGetValue("furyx639.IsItCake/ParentSheetIndex", out var otherId))
         {
-            otherId = string.Empty;
+            otherId = otherObj.ParentSheetIndex.ToString();
         }
 
         __result = id == otherId;
@@ -138,7 +136,7 @@ internal sealed class ModPatches
     private static bool Object_draw_prefix(SObject __instance, SpriteBatch spriteBatch, int x, int y, float alpha)
     {
         if (!__instance.modData.TryGetValue("furyx639.IsItCake/ParentSheetIndex", out var id)
-         || !int.TryParse(id, out var parentSheetIndex))
+            || !int.TryParse(id, out var parentSheetIndex))
         {
             return true;
         }
@@ -168,7 +166,7 @@ internal sealed class ModPatches
         Color color)
     {
         if (!__instance.modData.TryGetValue("furyx639.IsItCake/ParentSheetIndex", out var id)
-         || !int.TryParse(id, out var parentSheetIndex))
+            || !int.TryParse(id, out var parentSheetIndex))
         {
             return true;
         }
@@ -190,10 +188,10 @@ internal sealed class ModPatches
                 __instance.Stack,
                 spriteBatch,
                 location
-              + new Vector2(
+                + new Vector2(
                     Game1.tileSize
-                  - Utility.getWidthOfTinyDigitString(__instance.Stack, 3f * scaleSize)
-                  + 3f * scaleSize,
+                    - Utility.getWidthOfTinyDigitString(__instance.Stack, 3f * scaleSize)
+                    + 3f * scaleSize,
                     Game1.tileSize - 18f * scaleSize + 2f),
                 3f * scaleSize,
                 1f,
@@ -214,7 +212,7 @@ internal sealed class ModPatches
         float alpha = 1f)
     {
         if (!__instance.modData.TryGetValue("furyx639.IsItCake/ParentSheetIndex", out var id)
-         || !int.TryParse(id, out var parentSheetIndex))
+            || !int.TryParse(id, out var parentSheetIndex))
         {
             return true;
         }
@@ -249,7 +247,7 @@ internal sealed class ModPatches
         Farmer f)
     {
         if (!__instance.modData.TryGetValue("furyx639.IsItCake/ParentSheetIndex", out var id)
-         || !int.TryParse(id, out var parentSheetIndex))
+            || !int.TryParse(id, out var parentSheetIndex))
         {
             return true;
         }
@@ -273,8 +271,8 @@ internal sealed class ModPatches
     private static void Object_getDescription_postfix(SObject __instance, ref string __result)
     {
         if (!__instance.modData.TryGetValue("furyx639.IsItCake/ParentSheetIndex", out var id)
-         || !int.TryParse(id, out var parentSheetIndex)
-         || parentSheetIndex == __instance.ParentSheetIndex)
+            || !int.TryParse(id, out var parentSheetIndex)
+            || parentSheetIndex == __instance.ParentSheetIndex)
         {
             return;
         }

@@ -37,13 +37,13 @@ internal class Delegates
             chance = query[i].ToLower(CultureInfo.InvariantCulture) switch
             {
                 "@adddailyluck" => chance + (float)Game1.player.DailyLuck,
-                "@addbuffluck" => chance + Game1.player.LuckLevel / 100.0f,
-                "@addbinningluck" => chance + ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning"),
-                "@addallluck" => chance + (float)Game1.player.DailyLuck + Game1.player.LuckLevel / 100.0f + ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning"),
+                "@addbuffluck" => chance + (Game1.player.LuckLevel / 100.0f),
+                "@addbinningluck" => chance + (ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning")),
+                "@addallluck" => chance + (float)Game1.player.DailyLuck + (Game1.player.LuckLevel / 100.0f) + (ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning")),
                 "@multdailyluck" => chance * (float)(1 + Game1.player.DailyLuck),
                 "@multbuffluck" => chance * (1 + (Game1.player.LuckLevel / 100.0f)),
-                "@multbinningluck" => chance * (1 + ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning")),
-                "@multallluck" => chance * (float)(1 + (Game1.player.DailyLuck + Game1.player.LuckLevel / 100.0f + ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning"))),
+                "@multbinningluck" => chance * (1 + (ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning"))),
+                "@multallluck" => chance * (float)(1 + (Game1.player.DailyLuck + (Game1.player.LuckLevel / 100.0f) + (ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning")))),
                 _ => chance
             };
         }

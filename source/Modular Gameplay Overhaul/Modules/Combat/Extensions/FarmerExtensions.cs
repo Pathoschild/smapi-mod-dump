@@ -238,7 +238,7 @@ internal static class FarmerExtensions
                     new AnimationFrame(41, (int)(cooldown * modifier), true, flip: false, who =>
                     {
                         Farmer.showSwordSwipe(who);
-                        if (CombatModule.Config.SwipeHold && CombatModule.State.HoldingWeaponSwing)
+                        if (CombatModule.Config.WeaponsSlingshots.SwipeHold && CombatModule.State.HoldingWeaponSwing)
                         {
                             who.QueueNextSwipeAfterForward(weapon);
                         }
@@ -271,7 +271,7 @@ internal static class FarmerExtensions
                     new AnimationFrame(35, (int)(cooldown * modifier), true, flip: false, who =>
                     {
                         Farmer.showSwordSwipe(who);
-                        if (CombatModule.Config.SwipeHold && CombatModule.State.HoldingWeaponSwing)
+                        if (CombatModule.Config.WeaponsSlingshots.SwipeHold && CombatModule.State.HoldingWeaponSwing)
                         {
                             who.QueueNextSwipeAfterForward(weapon);
                         }
@@ -304,7 +304,7 @@ internal static class FarmerExtensions
                     new AnimationFrame(29, (int)(cooldown * modifier), true, flip: false, who =>
                     {
                         Farmer.showSwordSwipe(who);
-                        if (CombatModule.Config.SwipeHold && CombatModule.State.HoldingWeaponSwing)
+                        if (CombatModule.Config.WeaponsSlingshots.SwipeHold && CombatModule.State.HoldingWeaponSwing)
                         {
                             who.QueueNextSwipeAfterForward(weapon);
                         }
@@ -337,7 +337,7 @@ internal static class FarmerExtensions
                     new AnimationFrame(35, (int)(cooldown * modifier), true, flip: true, who =>
                     {
                         Farmer.showSwordSwipe(who);
-                        if (CombatModule.Config.SwipeHold && CombatModule.State.HoldingWeaponSwing)
+                        if (CombatModule.Config.WeaponsSlingshots.SwipeHold && CombatModule.State.HoldingWeaponSwing)
                         {
                             who.QueueNextSwipeAfterForward(weapon);
                         }
@@ -399,7 +399,7 @@ internal static class FarmerExtensions
                     new AnimationFrame(36, (int)(cooldown * modifier), true, flip: false, who =>
                     {
                         Farmer.showSwordSwipe(who);
-                        if (CombatModule.Config.SwipeHold && CombatModule.State.HoldingWeaponSwing)
+                        if (CombatModule.Config.WeaponsSlingshots.SwipeHold && CombatModule.State.HoldingWeaponSwing)
                         {
                             who.QueueNextSwipeAfterReverse(weapon);
                         }
@@ -432,7 +432,7 @@ internal static class FarmerExtensions
                     new AnimationFrame(30, (int)(cooldown * modifier), true, flip: false, who =>
                     {
                         Farmer.showSwordSwipe(who);
-                        if (CombatModule.Config.SwipeHold && CombatModule.State.HoldingWeaponSwing)
+                        if (CombatModule.Config.WeaponsSlingshots.SwipeHold && CombatModule.State.HoldingWeaponSwing)
                         {
                             who.QueueNextSwipeAfterReverse(weapon);
                         }
@@ -465,7 +465,7 @@ internal static class FarmerExtensions
                     new AnimationFrame(24, (int)(cooldown * modifier), true, flip: false, who =>
                     {
                         Farmer.showSwordSwipe(who);
-                        if (CombatModule.Config.SwipeHold && CombatModule.State.HoldingWeaponSwing)
+                        if (CombatModule.Config.WeaponsSlingshots.SwipeHold && CombatModule.State.HoldingWeaponSwing)
                         {
                             who.QueueNextSwipeAfterReverse(weapon);
                         }
@@ -498,7 +498,7 @@ internal static class FarmerExtensions
                     new AnimationFrame(30, (int)(cooldown * modifier), true, flip: true, who =>
                     {
                         Farmer.showSwordSwipe(who);
-                        if (CombatModule.Config.SwipeHold && CombatModule.State.HoldingWeaponSwing)
+                        if (CombatModule.Config.WeaponsSlingshots.SwipeHold && CombatModule.State.HoldingWeaponSwing)
                         {
                             who.QueueNextSwipeAfterReverse(weapon);
                         }

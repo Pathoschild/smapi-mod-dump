@@ -22,7 +22,6 @@ using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Extensions.Stardew;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 
 #endregion using directives
 
@@ -102,16 +101,16 @@ internal sealed class GameLocationPerformTouchActionPatcher : HarmonyPatcher
             return false;
         }
 
-        if (!CombatModule.Config.EnableHeroQuest)
+        if (!CombatModule.Config.Quests.EnableHeroQuest)
         {
             return true;
         }
 
-        if (CombatModule.Config.IridiumBarsPerGalaxyWeapon > 0)
+        if (CombatModule.Config.Quests.IridiumBarsPerGalaxyWeapon is var barsPerGalaxyWeapon and > 0)
         {
             if (player.Items.Sum(item =>
                     item is SObject { ParentSheetIndex: ObjectIds.IridiumBar } iridium ? iridium.Stack : 0) <
-                CombatModule.Config.IridiumBarsPerGalaxyWeapon)
+                barsPerGalaxyWeapon)
             {
                 Game1.drawObjectDialogue(I18n.Locations_Desert_Noiridium());
                 return false;

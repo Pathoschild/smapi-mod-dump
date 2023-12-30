@@ -13,7 +13,7 @@ async def start_fishing():
         await cast_fishing_rod(tss)
         await wait_for_nibble(tss)
 
-async def cast_fishing_rod(tss):
+async def cast_fishing_rod(tss: server.Stream):
     async with game.press_and_release(constants.USE_TOOL_BUTTON):
         await tss.wait(lambda t: t['isTimingCast'] and t['castingPower'] > 0.95, timeout=10)
 

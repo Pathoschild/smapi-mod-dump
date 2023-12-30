@@ -26,8 +26,8 @@ namespace mouahrarasModuleCollection.Utilities
 		public bool	FestivalsEndTime = true;
 		public int	FestivalsEndTimeAdditionalTime = 200;
 		public bool	FarmViewZoom = true;
-		public SButton FarmViewZoomInKey = SButton.RightThumbstickUp;
-		public SButton FarmViewZoomOutKey = SButton.RightThumbstickDown;
+		public SButton FarmViewZoomInKey = SButton.RightTrigger;
+		public SButton FarmViewZoomOutKey = SButton.LeftTrigger;
 		public float FarmViewZoomMultiplier = 1.0f;
 		public bool	FarmViewFastScrolling = true;
 		public float FarmViewFastScrollingMultiplier = 3.0f;

@@ -46,7 +46,7 @@ namespace StardewArchipelago.Locations.Festival
                 }
 
                 Game1.chatBox?.addMessage("Watching the moonlight jellies fills you with determination", Color.Gold);
-                _locationChecker.AddCheckedLocation(FestivalLocationNames.MOONLIGHT_JELLIES);
+                _locationChecker.AddCheckedLocation(FestivalLocationNames.WATCH_MOONLIGHT_JELLIES);
                 return;
             }
             catch (Exception ex)

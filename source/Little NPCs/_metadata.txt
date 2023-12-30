@@ -6,9 +6,9 @@ mods:
    Little NPCs
 
 latest commit:
-   commit 23083b0333b3d3ed2437cddb9541d513c89e06a5
+   commit d9b92db86bd625c83a980dc43178a3fd134f01e7
    Author: Candidus <candidus@xmail.net>
-   Date:   Tue Nov 28 12:38:10 2023 +0100
+   Date:   Mon Dec 4 20:42:23 2023 +0100
    
-       Support for GenericModConfigMenu.
+       Fix issues with spaces in NPC names.
    

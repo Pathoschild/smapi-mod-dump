@@ -52,7 +52,7 @@
   "lumberjack.desc.prestiged": "砍伐树木的木材产量增加25%>>40%。",
   "arborist.title.male": "树艺师",
   "arborist.title.female": "树艺师",
-  "arborist.desc": "所有的树都长得更快。普通树木会掉落硬木。",
+  "arborist.desc": "如果手工种植，树木会长得更快。 所有树木都有机会掉落硬木。",
   "arborist.desc.prestiged": "普通树木会掉落两倍的硬木。",
   "tapper.title.male": "萃取者",
   "tapper.title.female": "萃取者",
@@ -115,7 +115,7 @@
   "conservationist.title.male": "环保主义者",
   "conservationist.title.female": "环保主义者",
   "conservationist.desc": "没有鱼饵的蟹笼会困住垃圾。 从水域清除垃圾以获得税收减免并与村民建立信任。",
-  "conservationist.desc.prestiged": "税收减免累积速度提高 50%。",
+  "conservationist.desc.prestiged": "没有诱饵的蟹笼有机会捕到鱼。在雨天或月圆的日子里，可以捕获大量的鱼。",
   "conservationist.mail": "芬吉尔共和国财政部^^^{{honorific}}@,^^我们很高兴地通知您，在审查了您的环保活动后，我们确定您有资格获得所得税减免{{taxBonus}}根据芬吉尔税收法典第501(c)(3)节。因此，在{{season}}期间，{{farm}}的所有应税收入都将增加这一数额。^^如果您需要解决有关您的财务状况的任何问题，请将此信保存在您的永久记录中。^^^此致，^^劳拉D。普雷托^芬吉尔共和国财政部指令[#]减税通知",
   "conservationist.mail.max": "芬吉尔共和国财政部^^^{{honorific}}@,^^我们很高兴地通知您，在审查了您的环境活动后，我们确定您有资格根据芬吉尔税法第501(c)(3)条获得最高所得税减免{{taxBonus}}。因此，在{{season}}期间，{{farm}}的所有应税收入都将增加这一数额。^^如果您需要解决有关您的财务状况的任何问题，请将此信保存在您的永久记录中。^^^此致，^^劳拉D。普雷托^芬吉尔共和国财政部指令[#]减税通知",
 
@@ -133,10 +133,10 @@
   "poacher.title.male": "游侠",
   "poacher.title.female": "游侠",
   "poacher.desc": "暴击率+50%。攻击有机会从敌人那里偷走物品。",
-  "poacher.desc.prestiged": "成功偷窃后退还特殊动作的冷却时间。",
+  "poacher.desc.prestiged": "敌人可以被偷取两次。对成功偷取的对象施加致命的毒素。",
 
-  "rascal.title.male": "流氓",
-  "rascal.title.female": "流氓",
+  "rascal.title.male": "无赖",
+  "rascal.title.female": "无赖",
   "rascal.desc": "获得一个额外的弹药槽。有35%的机率找回用过的弹药。",
   "rascal.desc.prestiged": "有35%>>55%的机率找回用过的弹药。可以装备怪兽香水发射诱饵弹。",
   "desperado.title.male": "亡命之徒",
@@ -146,10 +146,16 @@
   "desperado.buff.name": "连锁行动",
   "desperado.buff.desc": "+50% 弹药伤害。",
   "piper.title.male": "史莱姆风笛手",
-  "piper.title.female": "史莱姆女巫",
+  "piper.title.female": "史莱姆塞壬",
   "piper.desc": "当附近有敌人时会吸引同盟的史莱姆。 击败史莱姆时有几率获得随机效果。",
   "piper.desc.prestiged": "提高击败史莱姆效果的有效性和多样性。",
   "piper.buff": "粘滑的",
+
+  // other
+  "prestiged.title": "专家 ",
+  "treasure_hunt.broadcast.started": "{{player}}正在寻宝！",
+  "treasure_hunt.broadcast.ended.success": "{{player}}找到宝藏了！",
+  "treasure_hunt.broadcast.ended.failure": "{{player}}没能找到宝藏...",
 
 
   // *************** //
@@ -191,11 +197,14 @@
   "prestige.level_up.tooltip:5": "你已经拥有这个分支的所有职业。",
   "prestige.level_up.tooltip:10": "你已经有这个职业了。",
   "prestige.level_up.question": "目前已经拥有{{oldProfession}}的{{oldUltimate}}。是否替换为{{newProfession}}的{{newUltimate}}？",
-  "prestige.level_up.unlocked": "您现在可以继续进一步发展你的{{skill}}技能。",
-  "prestige.level_up.prestige": "选择一个职业来声望：",
+  "prestige.level_up.unlocked.standard": "您现在可以继续进一步发展你的{{skill}}技能。",
+  "prestige.level_up.unlocked.challenge": "您现在可以继续进一步发展你的技能。",
+  "prestige.level_up.choose": "选择一个职业来声望：",
+  "prestige.level_up.streamlined": "Gained Prestige",
   "prestige.achievement.title.male": "万事通",
   "prestige.achievement.title.female": "万事通",
-  "prestige.achievement.desc": "掌握每一项技能的所有职业。",
+  "prestige.achievement.desc.male": "超越普通农民的极限。",
+  "prestige.achievement.desc.female": "超越普通农民的极限。",
 
 
   // *********** //
@@ -337,6 +346,13 @@
   "global.infinitycraft": "{{who}}锻造了无限戒指。",
   "resonance": "共鸣",
 
+  "dialogue.emily.gemstones.first": "你有没有注意到宝石可以唤起不同的感觉？就像黄玉的平静或红宝石的活力。#$b#宝石有一种令人难以置信的方式与我们的能量产生共鸣。这就像大自然的情绪调色板。",
+  "dialogue.emily.gemstones.second": "每块宝石都有不同的振动。当你与宝石连接时，它们会与我们内心情绪的频率产生共鸣。#$b#如果你仔细聆听，你甚至可以感受它们的声音！",
+  "dialogue.emily.gemstones.third": "你是如何与宝石产生联系的？#$b#$h#当然是把它放在身边！#$b#$0$#你可以把它当戒指或项链戴在身上，随身携带。这就像无论你走到哪里，都有一小块自然的和谐与你同在！",
+  "dialogue.emily.gemstones.fourth": "大多数珠宝只能容纳一颗宝石。#$b#克林特说，这是因为大多数金属都没有足够的强度来抵抗多种宝石的振动。",
+  "dialogue.qi.gemstones.first": "我看你给自己做了几根铱环。#$b#你发现他们的真正力量了吗？",
+  "dialogue.qi.gemstones.second": "它可能看起来不多，但结合一些宇宙力量，铱环可以变得非常强大...",
+
   // json-assets
   "gems.garnet.name": "石榴石",
   "gems.garnet.description": "来自远方的美丽公主的同名。",
@@ -410,7 +426,7 @@
   "ui.buffs.confused": "混乱",
   "ui.buffs.warrior.attack": "+{{value}}攻击",
 
-  "ui.pt.farmer_level": "Skills Mastered",
+  "ui.pt.farmer_level": "掌握技能",
 
 
   // ********* //
@@ -454,6 +470,9 @@
 
   // professions
   "gmcm.pages.prfs": "职业",
+  "gmcm.pages.prfs.limit": "Limit Break Settings",
+  "gmcm.pages.prfs.prestige": "Prestige Settings",
+  "gmcm.pages.prfs.experience": "Experience Settings",
 
   "gmcm.sections.prfs.general": "一般职业设置",
   "gmcm.should_junimos_inherit_professions.title": "祝尼魔是否继承职业技能",
@@ -480,8 +499,8 @@
   "gmcm.scavenger_detection_distance.desc": "你必须离宝藏距离多少格才显示位置，按格数调整",
   "gmcm.scavenger_hunt_handicap.title": "寻宝游戏的时间",
   "gmcm.scavenger_hunt_handicap.desc": "如果你发现寻宝狩猎结束得太快，增加这个数字。",
-  "gmcm.prospector_detection_distance.title": "Prospector Detection Distance",
-  "gmcm.prospector_detection_distance.desc": "How close you must be to the treasure tile to hear the sound cue, in tiles.",
+  "gmcm.prospector_detection_distance.title": "探矿探测距离",
+  "gmcm.prospector_detection_distance.desc": "你必须离宝藏方块多近才能听到声音提示，用方块表示。",
   "gmcm.prospector_hunt_handicap.title": "勘探者游戏的时间",
   "gmcm.prospector_hunt_handicap.desc": "如果您发现“勘探者”搜寻结束得太快，增加此数字。",
   "gmcm.spelunker_speed_ceiling.title": "洞穴探险者速度上限",
@@ -508,8 +527,8 @@
   "gmcm.limit_break_key.desc": "用于激活极限技能的键。",
   "gmcm.hold_key_to_limit_break.title": "按住激活",
   "gmcm.hold_key_to_limit_break.desc": "如果启用，极限技能将通过短时间按住热键来激活，而不是立即激活。",
-  "gmcm.limit_break_hold_delay_milliseconds.title": "激活延迟",
-  "gmcm.limit_break_hold_delay_milliseconds.desc": "在激活极限技能之前应按键多长时间（以秒为单位）。",
+  "gmcm.hold_delay_milliseconds.title": "激活延迟",
+  "gmcm.hold_delay_milliseconds.desc": "在激活极限技能之前应按键多长时间（以秒为单位）。",
   "gmcm.limit_gain_factor.title": "增益系数",
   "gmcm.limit_gain_factor.desc": "发动极限技能的积攒速率（越高越快）",
   "gmcm.limit_drain_factor.title": "消耗系数",
@@ -520,8 +539,13 @@
   "gmcm.limit_gauge_offset.desc": "如果使用其他也添加HUD条的mod，可以使用这个来调整极限能量的X和Y坐标。",
 
   "gmcm.sections.prfs.prestige": "技能重置&声望",
-  "gmcm.enable_prestige.title": "启动声望",
-  "gmcm.enable_prestige.desc": "必须启用以允许所有声望修改。",
+  "gmcm.mode.title": "声望模式",
+  "gmcm.mode.desc": "决定声望系统是否启用，如果启用，它应该如何运行的范例。\n无 - 所有声望系统将被禁用。\n标准 - 每个技能的声望等级在获得该技能的所有职业后解锁。\n挑战 - 在获得所有职业后解锁所有技能的声望等级。\n精简 - 声望等级在10级时立即解锁，但每个技能只能获得一个职业。\n所有的职业 - 威望等级被禁用，但仍然可以重置以获得所有职业。",
+  "gmcm.prestige_mode.none": "无",
+  "gmcm.prestige_mode.standard": "标准",
+  "gmcm.prestige_mode.challenge": "挑战",
+  "gmcm.prestige_mode.streamlined": "精简",
+  "gmcm.prestige_mode.capped": "封顶",
   "gmcm.skill_reset_cost_multiplier.title": "技能重置费用乘数",
   "gmcm.skill_reset_cost_multiplier.desc": "乘以重置威望雕像技能的基础费用。设置为0表示免费重置。",
   "gmcm.forget_recipes_on_skill_reset.title": "重置职业时忘记等级配方",
@@ -532,19 +556,15 @@
   "gmcm.exp_bonus_per_skill_reset.desc": "在获得相应技能声望后，技能经验获得的百分比加成。负值意味着恢复等级变得更加困难。",
   "gmcm.prestige_respec_cost.title": "声望成本",
   "gmcm.prestige_respec_cost.desc": "为一项技能重置声望职业选择的金钱成本。设置为0表示免费重置。",
-  "gmcm.prestige_progression_style.title": "声望风格",
-  "gmcm.prestige_progression_style.desc": "决定出现在技能条旁边的样式，并指示技能重置进度。",
-  "gmcm.progression_style.stackedstars": "堆叠的星星",
-  "gmcm.progression_style.gen3ribbons": "第三代彩带",
-  "gmcm.progression_style.gen4ribbons": "第四代彩带",
-
-  "gmcm.enable_extended_progression.title": "启用技能等级扩展",
-  "gmcm.enable_extended_progression.desc": "必须启用才能允许升级到 20 级。",
-  "gmcm.required_exp_per_extended_level.title": "每个扩展级别所需的经验",
-  "gmcm.required_exp_per_extended_level.desc": "10级以上每升一级需要多少技能经验。",
-
-  "gmcm.extended_perfection_requirement.title": "Extended Perfection Requirement",
-  "gmcm.extended_perfection_requirement.desc": "If enabled, the Farmer Level perfection requirement is replaced with Skill Mastery, meaning level 20 in all 5 vanilla skills if Extended Progression is enabled, or have obtained all 30 vanilla professions if not.",
+  "gmcm.ribbon.title": "声望风格",
+  "gmcm.ribbon.desc": "决定出现在技能条旁边的样式，并指示技能重置进度。",
+  "gmcm.ribbon_style.stacked_stars": "堆叠的星星",
+  "gmcm.ribbon_style.gen3_ribbons": "第三代彩带",
+  "gmcm.ribbon_style.gen4_ribbons": "第四代彩带",
+  "gmcm.exp_per_extended_level.title": "每个扩展级别所需的经验",
+  "gmcm.exp_per_extended_level.desc": "10级以上每升一级需要多少技能经验。",
+  "gmcm.is_perfection_requirement.title": "扩展完美性要求",
+  "gmcm.is_perfection_requirement.desc": "如果启用，农民等级完善要求被技能掌握取代，意味着如果扩展进程启用，所有5个原版技能都达到20级或者获得所有30个原版职业。",
 
   "gmcm.sections.prfs.experience": "技能经验系数",
   "gmcm.skill_exp_multipliers.title": "{{skill}}基础经验乘数",
@@ -558,13 +578,22 @@
   "gmcm.tracking_pointer_bob_rate.desc": "改变勘探者和拾荒者职业用来跟踪对象的指针的大小。",
   "gmcm.disable_always_track.title": "禁用持续跟踪箭头",
   "gmcm.disable_always_track.desc": "如果启用，勘探者和清道夫将只在按住热键时跟踪屏幕外的对象。",
-  "gmcm.use_legacy_prospector_hunt.title": "Use Legacy Prospector Hunt",
-  "gmcm.use_legacy_prospector_hunt.desc": "Enable to restore the legacy purple arrow for Prospector Hunts, instead of the new audio cues.",
+  "gmcm.use_legacy_prospector_hunt.title": "使用旧版的探矿狩猎",
+  "gmcm.use_legacy_prospector_hunt.desc": "允许为勘探者狩猎恢复传统的紫色箭头，而不是新的音频提示。",
   "gmcm.show_fish_collection_max_icon.title": "在“鱼类收集图鉴”中显示“MAX”图标",
   "gmcm.show_fish_collection_max_icon.desc": "是否在最大尺寸捕获的鱼下面显示“Max”图标。",
 
+  "gmcm.go_to.prfs.limit": "Go to Limit Break Settings",
+  "gmcm.go_to.prfs.prestige": "Go to Prestige Settings",
+  "gmcm.go_to.prfs.experience": "Go to Experience Settings",
+  "gmcm.back_to.prfs": "Back to Profession settings",
+
   // combat
   "gmcm.pages.cmbt": "战斗",
+  "gmcm.pages.cmbt.enemies": "Enemy Encounter Settings",
+  "gmcm.pages.cmbt.quests": "Quest Settings",
+  "gmcm.pages.cmbt.rings_enchantments": "Ring & Enchantment Settings",
+  "gmcm.pages.cmbt.weapons_slingshots": "Weapon & Slingshot Settings",
 
   "gmcm.sections.cmbt.general": "一般战斗设置",
   "gmcm.new_resistance_formula.title": "新防御公式",
@@ -577,8 +606,8 @@
   "gmcm.enable_status_conditions.desc": "是否启用异常状态，如燃烧和昏迷的敌人。这些由其他模块使用。",
 
   "gmcm.sections.cmbt.weapons": "近战和远程武器",
-  "gmcm.enable_weapon_overhaul.title": "启用武器大修",
-  "gmcm.enable_weapon_overhaul.desc": "重新平衡每一个近战武器和弹弓，改变宝箱，怪物和容器掉落！请在停用战斗模块之前禁用此设置！",
+  "gmcm.enable_overhaul.title": "启用武器大修",
+  "gmcm.enable_overhaul.desc": "重新平衡每一个近战武器和弹弓，改变宝箱，怪物和容器掉落！请在停用战斗模块之前禁用此设置！",
 
   "gmcm.woody_replaces_rusty.title": "木剑替换生锈的剑",
   "gmcm.woody_replaces_rusty.desc": "用木剑代替生锈的剑。",
@@ -586,8 +615,8 @@
   "gmcm.enable_stabbing_swords.desc": "将一些剑的防御特殊动作替换为进攻性的冲刺动作。请在停用战斗模块之前禁用此设置！",
   "gmcm.stabbing_swords.title": "刺剑",
   "gmcm.stabbing_swords.desc": "在这个列表中添加应该被赋予刺剑类型的剑的名字。",
-  "gmcm.enable_melee_combo_hits.title": "启用近战连击",
-  "gmcm.enable_melee_combo_hits.desc": "用更具战略性的连击系统取代了原版的攻击。",
+  "gmcm.enable_combo_hits.title": "启用近战连击",
+  "gmcm.enable_combo_hits.desc": "用更具战略性的连击系统取代了原版的攻击。",
   "gmcm.combo_hits_per_weapon_type.stabbing_sword.title": "刺剑连续攻击数",
   "gmcm.combo_hits_per_weapon_type.stabbing_sword.desc": "刺剑最大连续攻击次数(如果开启刺剑)。",
   "gmcm.combo_hits_per_weapon_type.defense_sword.title": "防御剑连续攻击数",
@@ -600,6 +629,8 @@
   "gmcm.defense_improves_parry.desc": "防御每增加一点，招架伤害就会增加。",
   "gmcm.grounded_club_smash.title": "球棒扣杀",
   "gmcm.grounded_club_smash.desc": "棍棒粉碎AoE将保证对洞穴敌人造成暴击伤害，但会错过飞行的敌人。",
+
+  "gmcm.sections.cmbt.ranged": "Slingshots",
 
   "gmcm.enable_ranged_critical_hits.title": "启用远程暴击",
   "gmcm.enable_ranged_critical_hits.desc": "允许弹弓造成暴击伤害并受到暴击修正的影响。",
@@ -619,10 +650,10 @@
   "gmcm.enable_infinity_band.desc": "使铱环无用，但增加了全能的无限波段。需要宝石共鸣。",
   "gmcm.enable_gemstone_resonance.title": "启用宝石共振",
   "gmcm.enable_gemstone_resonance.desc": "允许宝石在彼此接近的地方共鸣。",
-  "gmcm.play_chord.title": "Play Chord",
-  "gmcm.play_chord.desc": "Hear the chord formed by the Infinity Band every time it is equipped.",
-  "gmcm.chord_sound_duration.title": "Chord Sound Duration",
-  "gmcm.chord_sound_duration.desc": "How long the chord sound should linger, in milliseconds.",
+  "gmcm.audible_gemstones.title": "可听宝石和弦",
+  "gmcm.audible_gemstones.desc": "听到无限戒指每次装备时形成的和弦。",
+  "gmcm.chord_sound_duration.title": "和弦音长",
+  "gmcm.chord_sound_duration.desc": "和弦音应该持续多长时间，以毫秒为单位。",
   "gmcm.colorful_resonances.title": "彩色共鸣辉光",
   "gmcm.colorful_resonances.desc": "共鸣产生的辉光是否根据共鸣类型",
   "gmcm.resonance_lightsource_texture.title": "共鸣发光纹理",
@@ -701,7 +732,7 @@
   "gmcm.forge_socket_position.title": "锻造插座位置",
   "gmcm.forge_socket_position.desc": "如果启用，确定应该绘制锻造套接字的相对位置。",
   "gmcm.socket_position.standard": "标准",
-  "gmcm.socket_position.aboveseparator": "上方分隔符",
+  "gmcm.socket_position.above_separator": "上方分隔符",
   "gmcm.weapon_tooltip_style.title": "武器样式提示",
   "gmcm.weapon_tooltip_style.desc": "是显示武器的绝对数值，还是显示同类型其他武器的相对数值。",
   "gmcm.tooltip_style.vanilla": "原版",
@@ -711,6 +742,12 @@
   "gmcm.draw_current_ammo.desc": "为远程武器绘制当前选择的弹药。当装备多种弹药时有用。",
   "gmcm.bullseye_replaces_cursor.title": "靶心替换光标",
   "gmcm.bullseye_replaces_cursor.desc": "在发射弹弓时绘制靶心而不是鼠标光标。出于显而易见的原因，此选项不支持反向射击。",
+
+  "gmcm.go_to.cmbt.enemies": "Go to Enemy Encounter Settings",
+  "gmcm.go_to.cmbt.quests": "Go to Quest Settings",
+  "gmcm.go_to.cmbt.rings_enchantments": "Go to Ring & Enchantment Settings",
+  "gmcm.go_to.cmbt.weapons_slingshots": "Go to Weapon & Slingshot Settings",
+  "gmcm.back_to.cmbt": "Back to Combat settings",
 
   // tools
   "gmcm.pages.tols": "工具",
@@ -905,8 +942,8 @@
   "gmcm.deductible_tool_expenses.desc": "用于购买和升级工具的钱多少比例是免税的。",
   "gmcm.deductible_extras.title": "其他免赔额",
   "gmcm.deductible_extras.desc": "在特定项目上花费的黄金的百分比应该是免税的。必须手动添加项目以完成此列表。",
-  "gmcm.deductible_extras.label.key": "Object Name",
-  "gmcm.deductible_extras.label.value": "Deductible Pct",
+  "gmcm.deductible_extras.label.key": "对象名称",
+  "gmcm.deductible_extras.label.value": "扣除百分比",
 
   "gmcm.sections.txs.property": "财产税",
   "gmcm.property_tax_lateness_fine.title": "延迟罚金",
@@ -976,6 +1013,7 @@
   "gmcm.deterministic_age_quality.desc": "年龄与品质关系是确定的(True)还是随机的(Fasle)。",
 
   // control & ui
+  "gmcm.pages.controls_ui": "Control & UI Settings",
   "gmcm.sections.controls_ui": "控制 & UI",
   "gmcm.face_mouse_cursor.title": "脸朝向鼠标光标",
   "gmcm.face_mouse_cursor.desc": "如果使用鼠标和键盘，请在摆动前将光标朝向当前位置。",

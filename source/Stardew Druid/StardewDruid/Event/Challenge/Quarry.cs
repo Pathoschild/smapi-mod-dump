@@ -9,14 +9,11 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Cast;
 using StardewDruid.Map;
 using StardewValley;
-using StardewValley.Objects;
-using StardewValley.TerrainFeatures;
-using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
 using System.IO;
 
 namespace StardewDruid.Event.Challenge
@@ -58,11 +55,18 @@ namespace StardewDruid.Event.Challenge
 
             Mod.instance.RegisterEvent(this, "active");
 
-            StardewDruid.Character.Character jester = Mod.instance.characters["Jester"];
+            if (Mod.instance.characters.ContainsKey("Jester"))
+            {
 
-            jester.SwitchFollowMode();
+                StardewDruid.Character.Character jester = Mod.instance.characters["Jester"];
 
-            jester.WarpToTarget();
+                jester.SwitchFollowMode();
+
+                jester.WarpToTarget();
+
+
+            }
+
 
         }
 
@@ -70,17 +74,18 @@ namespace StardewDruid.Event.Challenge
         {
 
             base.EventRemove();
-
-            if (!keepJester)
+            if (Mod.instance.characters.ContainsKey("Jester"))
             {
+                if (!keepJester)
+                {
 
-                Mod.instance.characters["Jester"].WarpToDefault();
+                    Mod.instance.characters["Jester"].WarpToDefault();
 
-                Mod.instance.characters["Jester"].SwitchRoamMode();
+                    Mod.instance.characters["Jester"].SwitchRoamMode();
 
 
+                }
             }
-
             if (challengeAnimations.Count > 0)
             {
 
@@ -90,7 +95,7 @@ namespace StardewDruid.Event.Challenge
                     targetLocation.temporarySprites.Remove(animation);
 
                 }
-            
+
             }
 
         }
@@ -99,16 +104,19 @@ namespace StardewDruid.Event.Challenge
         {
             Mod.instance.CompleteQuest(questData.name);
 
-            keepJester = true;
 
-            Mod.instance.characters["Jester"].timers.Clear();
 
-            Mod.instance.dialogue["Jester"].specialDialogue.Add("afterQuarry", new() {
+            if (Mod.instance.characters.ContainsKey("Jester"))
+            {
+                keepJester = true;
+                Mod.instance.characters["Jester"].timers.Clear();
+
+                Mod.instance.dialogue["Jester"].specialDialogue.Add("afterQuarry", new() {
                 "Jester of Fate:" +
                 "^I wasn't expecting the rite to produce a portal to the Undervalley. " +
-                "I don't think even Fortee could have foreseen that.",
+                "I don't think even Fortumei could have foreseen that.",
                 "Did you learn anything about the fallen one?" });
-
+            }
             return false;
 
         }
@@ -137,7 +145,7 @@ namespace StardewDruid.Event.Challenge
                 if (activeCounter == 4)
                 {
 
-                    TemporaryAnimatedSprite challengeAnimation = new(0, 99999f, 1, 1, targetVector * 64 - new Vector2(64,64), false, false)
+                    TemporaryAnimatedSprite challengeAnimation = new(0, 99999f, 1, 1, targetVector * 64 - new Vector2(64, 64), false, false)
                     {
 
                         sourceRect = new(0, 0, 64, 64),
@@ -182,7 +190,7 @@ namespace StardewDruid.Event.Challenge
                 if (activeCounter == 5)
                 {
 
-                    Mod.instance.characters["Jester"].showTextAboveHead("uh... portal?", 3000);
+                    JesterVoice("uh... portal?", 3000);
 
                     SetTrack("tribal");
 
@@ -192,10 +200,10 @@ namespace StardewDruid.Event.Challenge
             }
 
 
-            if(activeCounter == 8)
+            if (activeCounter == 8)
             {
 
-                Mod.instance.characters["Jester"].showTextAboveHead("get ready for a fight!", 3000);
+                JesterVoice("get ready for a fight!", 3000);
 
             }
 
@@ -206,27 +214,26 @@ namespace StardewDruid.Event.Challenge
 
                 if (spawnVector != new Vector2(-1))
                 {
-                    monsterHandle.specialIndex = new() {55,};
+                    monsterHandle.specialIndex = new() { 55, };
                     monsterHandle.SpawnGround(spawnVector, true);
 
                 }
 
-                Mod.instance.characters["Jester"].showTextAboveHead("whoa that one's massive!", 3000);
+                JesterVoice("whoa that one's massive!", 3000);
 
             }
-
 
             if (activeCounter == 30)
             {
 
-                Mod.instance.characters["Jester"].showTextAboveHead("keep it up farmer!", 3000);
+                JesterVoice("keep it up farmer!", 3000);
 
             }
 
             if (activeCounter == 34)
             {
 
-                Mod.instance.characters["Jester"].showTextAboveHead("meet your fate voidspawn!", 3000);
+                JesterVoice("meet your fate voidspawn!", 3000);
 
             }
 
@@ -242,29 +249,43 @@ namespace StardewDruid.Event.Challenge
 
                 }
 
-                Mod.instance.characters["Jester"].showTextAboveHead("if only Lucky could see this", 3000);
+                JesterVoice("if only Lucky could see this", 3000);
 
             }
 
             if (activeCounter == 52)
             {
 
-                Mod.instance.characters["Jester"].showTextAboveHead("whew...the portal is closing", 3000);
+                JesterVoice("whew...the portal is closing", 3000);
 
             }
 
-            if (activeCounter <= 56) { 
-                
-                monsterHandle.SpawnInterval(); 
-            
-            } else { 
-                
-                monsterHandle.SpawnCheck(); 
-            
+            if (activeCounter <= 56)
+            {
+
+                monsterHandle.SpawnInterval();
+
+            }
+            else
+            {
+
+                monsterHandle.SpawnCheck();
+
             }
 
         }
 
+        public void JesterVoice(string speech, int interval)
+        {
+
+            if (Mod.instance.characters.ContainsKey("Jester"))
+            {
+                Mod.instance.characters["Jester"].showTextAboveHead(speech, interval);
+
+            }
+
+        }
+    
     }
 
 }

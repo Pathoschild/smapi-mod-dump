@@ -1,4 +1,7 @@
 {
   "ShowSchedulesKey": "V",
-  "SortOrder": "Alphabetical Ascending"
+  "DisableHover": false,
+  "NPCSortOrder": "AlphabeticalAscending",
+  "OnlyShowMetNPCs": false,
+  "OnlyShowSocializableNPCs": true
 }

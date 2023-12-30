@@ -16,5 +16,11 @@
   "UniqueID": "Adverserath.QuickGlance",
   "EntryDll": "QuickGlance.dll",
   "MinimumApiVersion": "2.10.0",
-  "UpdateKeys": [ "Nexus:12058" ]
+  "UpdateKeys": [ "Nexus:12058" ],
+  "Dependencies": [
+	  {
+		  "UniqueID": "spacechase0.GenericModConfigMenu",
+		  "IsRequired": false
+	  }
+  ]
 }

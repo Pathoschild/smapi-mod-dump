@@ -14,37 +14,22 @@ using DeepWoodsMod.UI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Netcode;
 using StardewValley;
 using StardewValley.TerrainFeatures;
-using System;
 
 namespace DeepWoodsMod.Stuff
 {
     public class BigWoodenSign : LargeTerrainFeature
     {
-        private NetInt row = new NetInt(0);
-        private NetInt textIndex = new NetInt(0);
-
         public BigWoodenSign()
            : base(false)
         {
-            InitNetFields();
-            this.row.Value = new Random().Next(0, 4);
-            this.textIndex.Value = new Random().Next(1, I18N.SignTexts.textIDs.Length);
         }
 
-        public BigWoodenSign(Vector2 tileLocation, int? textIndex = null)
+        public BigWoodenSign(Vector2 tileLocation)
             : this()
         {
             this.tilePosition.Value = tileLocation;
-            this.textIndex.Value = textIndex ?? new Random().Next(1, I18N.SignTexts.textIDs.Length);
-        }
-
-        private void InitNetFields()
-        {
-            this.NetFields.AddFields(this.row);
-            this.NetFields.AddFields(this.textIndex);
         }
 
         public override bool isActionable()
@@ -64,9 +49,9 @@ namespace DeepWoodsMod.Stuff
 
         public override bool performUseAction(Vector2 tileLocation, GameLocation location)
         {
-            DeepWoodsQuestMenu.OpenQuestMenu(I18N.BigWoodenSignMessage, new Response[1]
+            DeepWoodsQuestMenu.OpenQuestMenuWithModInfo(I18N.BigWoodenSignMessage, new Response[1]
             {
-                new Response("No", I18N.MessageBoxOK).SetHotKey(Keys.Escape)
+                new Response("No", I18N.MessageBoxClose).SetHotKey(Keys.Escape)
             });
 
             return true;

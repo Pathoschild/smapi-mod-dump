@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Marry Morris",
   "Author": "Yoshimax",
-  "Version": "1.4.0",
+  "Version": "1.5.0",
   "Description": "This mod allows you to marry Morris.",
   "UniqueID": "Yoshimax.MarryMorrisCode",
   "EntryDll": "MarryMorris.dll",

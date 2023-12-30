@@ -30,6 +30,12 @@ namespace DailyScreenshot
         void MTrace(string message) => ModEntry.g_dailySS.MTrace(message);
 
         /// <summary>
+        /// Helper function for sending trace messages
+        /// </summary>
+        /// <param name="message">text to send</param>
+        internal void MDebug(string message) => ModEntry.g_dailySS.MDebug(message);
+
+        /// <summary>
         /// Warning messages to the console
         /// </summary>
         /// <param name="message">Text to display</param>
@@ -183,14 +189,18 @@ namespace DailyScreenshot
             Cellar = 1 << 6,
             Desert = 1 << 7,
             Museum = 1 << 8,
-            CommunityCenter = 1 << 10,
+            CommunityCenter = 1 << 9,
+            Town = 1 << 10,
             Mountain = 1 << 11,
-            IslandWest = 1 << 12,
-            IslandFarmhouse = 1 << 13,
-            IslandFieldOffice = 1 << 14,
+            Mine = 1 << 12,
+            MineShaft = 1 << 13,
+            IslandWest = 1 << 14,
+            IslandFarmhouse = 1 << 15,
+            IslandFieldOffice = 1 << 16,
             Unknown = 1 << 24,
             Any = Farm | GreenHouse | Farmhouse | Beach | Unknown |
-                Mountain | CommunityCenter | Museum | FarmCave | Cellar | Desert | 
+                Mountain | CommunityCenter | Town | Museum | FarmCave | Cellar | Desert | 
+                Mine | MineShaft | 
                 IslandWest | IslandFarmhouse | IslandFieldOffice,
         }
 
@@ -303,7 +313,11 @@ namespace DailyScreenshot
                 Cellar => LocationFlags.Cellar,
                 Desert => LocationFlags.Desert,
                 LibraryMuseum => LocationFlags.Museum,
+                CommunityCenter => LocationFlags.CommunityCenter,
+                Town => LocationFlags.Town,
                 Mountain => LocationFlags.Mountain,
+                Mine => LocationFlags.Mine,
+                MineShaft => LocationFlags.MineShaft,
                 IslandWest => LocationFlags.IslandWest,
                 IslandFarmHouse => LocationFlags.IslandFarmhouse,
                 IslandFieldOffice => LocationFlags.IslandFieldOffice,

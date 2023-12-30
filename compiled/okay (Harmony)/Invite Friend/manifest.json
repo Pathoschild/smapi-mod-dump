@@ -1,0 +1,10 @@
+{
+  "Name": "InviteFriend",
+  "Author": "d5a1lamdtd",
+  "Version": "1.1.0",
+  "Description": "InviteFriend.",
+  "UniqueID": "d5a1lamdtd.InviteFriend",
+  "EntryDll": "InviteFriend.dll",
+  "MinimumApiVersion": "3.15.0",
+  "UpdateKeys": [ "Nexus:19500" ]
+}

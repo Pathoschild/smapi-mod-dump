@@ -57,7 +57,7 @@ internal sealed class RingGetExtraSpaceNeededForTooltipSpecialIconsPatcher : Har
             return;
         }
 
-        if (!CombatModule.Config.RebalancedRings)
+        if (!CombatModule.Config.RingsEnchantments.RebalancedRings)
         {
             return;
         }

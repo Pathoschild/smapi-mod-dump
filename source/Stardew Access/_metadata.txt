@@ -6,11 +6,14 @@ mods:
    Stardew Access
 
 latest commit:
-   commit c966d188ea506a70782edb5177ef6e87c685f890
+   commit 91ba47d05ab0f7bbbe2a123ca78531a5961331a3
    Author: Mohammad Shoaib Khan <shoaib.khan20@outlook.com>
-   Date:   Fri Sep 15 12:38:33 2023 +0530
+   Date:   Thu Dec 14 15:24:55 2023 +0530
    
-       Merge pull request #169 from khanshoaib3/i18n
+       Merge pull request #192 from khanshoaib3/development
        
-       Patches internationalisation
+       Merge development to master for v1.5.0 release
+       close #131
+       close #122
+       close #158
    

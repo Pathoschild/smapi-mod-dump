@@ -1,0 +1,9 @@
+﻿{
+  "Name": "Personaal Combat Drone Redux",
+  "Version": "1.0.1", // fixed locally
+  "Description": "THIS DRONE WILL MURDER EVERYTHING",
+  "UniqueID": "prism99.cambam.MURDERDRONE.redux",
+  "EntryDll": "combatDrone.dll",
+  "MinimumApiVersion": "3.18.0",
+  "UpdateKeys": [ "Nexus:18224" ]
+}

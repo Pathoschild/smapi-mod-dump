@@ -14,6 +14,6 @@ namespace CoreBoy.sound
     {
         void Start();
         void Stop();
-        void Play(int left, int right);
+        void Play(byte left, byte right);
     }
 }

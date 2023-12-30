@@ -15,8 +15,10 @@ namespace DaLion.Overhaul.Modules.Combat.Patchers.Rings;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using DaLion.Overhaul.Modules.Combat.Configs;
 using DaLion.Overhaul.Modules.Combat.Events.GameLoop.UpdateTicked;
 using DaLion.Overhaul.Modules.Combat.Extensions;
+using DaLion.Overhaul.Modules.Core.Extensions;
 using DaLion.Shared.Extensions.Reflection;
 using DaLion.Shared.Harmony;
 using HarmonyLib;
@@ -92,7 +94,10 @@ internal sealed class FarmerTakeDamagePatcher : HarmonyPatcher
                             typeof(ModConfig).RequirePropertyGetter(nameof(ModConfig.Combat))),
                         new CodeInstruction(
                             OpCodes.Callvirt,
-                            typeof(CombatConfig).RequirePropertyGetter(nameof(CombatConfig.RebalancedRings))),
+                            typeof(CombatConfig).RequirePropertyGetter(nameof(CombatConfig.RingsEnchantments))),
+                        new CodeInstruction(
+                            OpCodes.Callvirt,
+                            typeof(RingsEnchantmentsConfig).RequirePropertyGetter(nameof(RingsEnchantmentsConfig.RebalancedRings))),
                         new CodeInstruction(OpCodes.Brfalse_S, doVanillaYoba),
                         new CodeInstruction(OpCodes.Ldarg_0), // arg 0 = Farmer this
                         new CodeInstruction(OpCodes.Ldarg_1), // arg 1 = int damage
@@ -153,7 +158,7 @@ internal sealed class FarmerTakeDamagePatcher : HarmonyPatcher
 
     private static void TryBleed(Farmer who, Monster monster)
     {
-        if (CombatModule.Config.RebalancedRings && Game1.random.NextDouble() < 0.25)
+        if (CombatModule.Config.RingsEnchantments.RebalancedRings && Game1.random.NextDouble() < 0.25)
         {
             monster.Bleed(who);
         }

@@ -12,6 +12,7 @@ namespace DaLion.Overhaul.Modules.Combat.Events.Player.Warped;
 
 #region using directives
 
+using DaLion.Overhaul.Modules.Combat.Configs;
 using DaLion.Overhaul.Modules.Combat.Enums;
 using DaLion.Shared.Events;
 using DaLion.Shared.Extensions.Stardew;
@@ -56,9 +57,9 @@ internal sealed class ValorWarpedEvent : WarpedEvent
         }
 
         _consecutiveFloorsVisited++;
-        var objective = CombatModule.Config.HeroQuestDifficulty == CombatConfig.QuestDifficulty.Easy
+        var objective = CombatModule.Config.Quests.HeroQuestDifficulty == QuestsConfig.QuestDifficulty.Easy
             ? 10
-            : CombatModule.Config.HeroQuestDifficulty == CombatConfig.QuestDifficulty.Medium
+            : CombatModule.Config.Quests.HeroQuestDifficulty == QuestsConfig.QuestDifficulty.Medium
                 ? 20
                 : 40;
         if (_consecutiveFloorsVisited < objective)
