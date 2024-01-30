@@ -65,7 +65,7 @@ namespace Unlockable_Bundles.Lib
                     var data = asset.AsDictionary<string, AudioCueData>().Data;
                     data.Add("ub_pageflip", new AudioCueData() {
                         Id = "ub_pageflip",
-                        FilePaths = new() { Path.Combine(Helper.DirectoryPath, "assets\\pageflip.ogg") },
+                        FilePaths = new() { Path.Combine(Helper.DirectoryPath, "assets", "pageflip.ogg") },
                     });
 
                 });

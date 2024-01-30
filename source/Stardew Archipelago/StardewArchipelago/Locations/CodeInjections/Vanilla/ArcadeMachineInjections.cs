@@ -170,11 +170,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             foreach (var levelFinished in levelsFinishedThisRun.GetValue())
             {
                 var location = JK_LEVEL_LOCATIONS[levelFinished];
-                _locationChecker.AddCheckedLocation(location);
-                if (location == JK_VICTORY)
+                if (location == JK_VICTORY && _locationChecker.IsLocationMissing(JK_VICTORY))
                 {
                     Game1.chatBox?.addMessage("You can now type '!!arcade_release jk' to release all remaining Junimo Kart checks", Color.Green);
                 }
+                _locationChecker.AddCheckedLocation(location);
             }
         }
 

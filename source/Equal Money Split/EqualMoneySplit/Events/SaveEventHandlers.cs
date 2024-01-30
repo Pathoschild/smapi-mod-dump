@@ -32,7 +32,7 @@ namespace EqualMoneySplit.Events
             EqualMoneyMod.Logger.Log($"Saving | {Game1.player.Name} has {Game1.player.Money} money");
 
             // Correct the local player's money after they sent their mod messages out
-            MoneySplitUtil.CorrectLocalPlayer(PersistantFarmerData.PersonalShippingBinsMoney, PersistantFarmerData.ShareToSend);
+            MoneySplitUtil.CorrectLocalPlayer(EqualMoneyMod.FarmerData.Value.PersonalShippingBinsMoney, EqualMoneyMod.FarmerData.Value.ShareToSend);
             
             // Force the listener to check for unhandled messages
             MoneyListener.Instance.CheckForNewMessages();

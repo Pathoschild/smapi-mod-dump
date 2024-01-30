@@ -26,6 +26,7 @@ namespace ToDew {
         public KeybindList hotkeyList = new KeybindList();
         public SButton secondaryCloseButton = SButton.ControllerBack;
         public bool debug = false;
+        public bool enableMobilePhoneApp = true;
         public OverlayConfig overlay = new OverlayConfig();
     }
     /// <summary>The To-Dew mod.</summary>
@@ -37,6 +38,13 @@ namespace ToDew {
         internal readonly PerScreen<OverlayDataSources> overlayDataSources = new(() => new OverlayDataSources());
         private readonly PerScreen<ToDoListOverlayDataSource> toDoListOverlayDataSource;
         internal ModConfig config = new(); // create (and throw away) a default value to keep nullability check happy
+
+        private IMobilePhoneApi? phoneApi;
+
+        // Number of game update ticks to wait before registering with Mobile Phone
+        // (so that the fetch from the content pipeline will reflect CP changes).
+        // This probably only needs to be 2, but this will definitely work.
+        private int ticksUntilRegisterWithMobilePhone = 5;
 
         public ModEntry() {
             toDoListOverlayDataSource = new(() => {
@@ -71,6 +79,9 @@ namespace ToDew {
         }
 
         private void onLaunched(object? sender, GameLaunchedEventArgs e) {
+            // integrate with MobilePhone, if installed
+            phoneApi = Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
+
             // integrate with Generic Mod Config Menu, if installed
             var api = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
             if (api != null) {
@@ -100,12 +111,45 @@ namespace ToDew {
                     tooltip: I18n.Config_Debug_Desc,
                     getValue: () => config.debug,
                     setValue: (bool val) => config.debug = val);
+                if (phoneApi is not null) {
+                    api.AddBoolOption(
+                        mod: ModManifest,
+                        name: I18n.Config_EnableMobilePhoneApp,
+                        tooltip: I18n.Config_EnableMobilePhoneApp_Desc,
+                        getValue: () => config.enableMobilePhoneApp,
+                        setValue: (bool val) => config.enableMobilePhoneApp = val);
+                }
                 OverlayConfig.RegisterConfigMenuOptions(() => config.overlay, api, apiExt, ModManifest);
             }
 
-            // integrate with MobilePhone, if installed
-            var phoneApi = Helper.ModRegistry.GetApi<IMobilePhoneApi>("aedenthorn.MobilePhone");
-            if (phoneApi != null) {
+            if (phoneApi is not null && config.enableMobilePhoneApp) {
+                Helper.Events.GameLoop.UpdateTicking += this.OnUpdateTicked;
+            }
+
+            // add console commands
+            Helper.ConsoleCommands.Add("todo-export", "Export the todo list to a file\n\n" + GetCommandExportHelp(), this.CommandExport);
+            Helper.ConsoleCommands.Add("todo-import", "Import the todo list from a previously exported file\n\n" + GetCommandImportHelp(), this.CommandImport);
+            Helper.ConsoleCommands.Add("todo-file-info", "Get information about a previously exported file\n\n" + GetCommandFileInfoHelp(), this.CommandFileInfo);
+        }
+
+        private void OnUpdateTicked(object? sender, UpdateTickingEventArgs e) {
+            if (ticksUntilRegisterWithMobilePhone == 0) {
+                Helper.Events.GameLoop.UpdateTicking -= this.OnUpdateTicked;
+                if (phoneApi is null) return; // shouldn't happen, but let's keep the static analyzer happy
+
+                Helper.Events.Content.AssetRequested += LoadMobilePhoneIcon;
+                var icon = Game1.content.Load<Texture2D>($"Mods/{ModManifest.UniqueID}/MobilePhoneIcon");
+                Helper.Events.Content.AssetRequested -= LoadMobilePhoneIcon;
+
+                phoneApi.AddApp(Helper.ModRegistry.ModID, "To-Dew",
+                    () => { Game1.activeClickableMenu = new ToDoMenu(this, this.list!.Value!); },
+                    icon);
+            }
+            ticksUntilRegisterWithMobilePhone--;
+        }
+
+        private void LoadMobilePhoneIcon(object? sender, AssetRequestedEventArgs e) {
+            if (e.Name.IsEquivalentTo($"Mods/{ModManifest.UniqueID}/MobilePhoneIcon")) {
                 // This is a whole lot of trouble to be able to use something out of one of the built-in
                 // tile sheets, since the mobile phone api doesn't support specifying a rectangle for
                 // the sprite.
@@ -115,14 +159,8 @@ namespace ToDew {
                 Color[] data = new Color[sourceRectangle.Width * sourceRectangle.Height];
                 originalTexture.GetData(0, sourceRectangle, data, 0, data.Length);
                 cropTexture.SetData(data);
-
-                phoneApi.AddApp(Helper.ModRegistry.ModID, "To-Dew", () => { Game1.activeClickableMenu = new ToDoMenu(this, this.list!.Value!); }, cropTexture);
+                e.LoadFrom(() => cropTexture, AssetLoadPriority.Low);
             }
-
-            // add console commands
-            Helper.ConsoleCommands.Add("todo-export", "Export the todo list to a file\n\n" + GetCommandExportHelp(), this.CommandExport);
-            Helper.ConsoleCommands.Add("todo-import", "Import the todo list from a previously exported file\n\n" + GetCommandImportHelp(), this.CommandImport);
-            Helper.ConsoleCommands.Add("todo-file-info", "Get information about a previously exported file\n\n" + GetCommandFileInfoHelp(), this.CommandFileInfo);
         }
 
         private void OnModMessageReceived(object? sender, ModMessageReceivedEventArgs e) {

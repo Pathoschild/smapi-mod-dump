@@ -3,7 +3,6 @@ import time
 import logging
 import args
 import struct
-import async_timeout
 import traceback
 import weakref
 import functools
@@ -19,7 +18,19 @@ from srabuilder import rules
 from typing import Any, Coroutine
 from asyncio.futures import Future
 import logger
+from typing import Callable
 
+class NamedPipeHandler:
+
+    def __init__(self, named_pipe: str) -> None:
+        self.named_pipe_file = open(rf"\\.\pipe\{named_pipe}Reader", "r+b", 0)
+        self.named_pipe_file_read = open(rf"\\.\pipe\{named_pipe}Writer", "r+b", 0)
+
+    def read(self):
+        pass
+
+    def write(self, msg: str):
+        pass
 
 if args.args.named_pipe:
     named_pipe_file = open(rf"\\.\pipe\{args.args.named_pipe}Reader", "r+b", 0)
@@ -28,8 +39,8 @@ else:
     named_pipe_file = None
     named_pipe_file_read = None
 
-loop = None
-streams: dict[str, Stream] = {}
+loop = asyncio.new_event_loop()
+
 mod_requests: dict[str, Future] = {}
 
 ongoing_tasks = {}  # not connected to an objective, slide mouse, swing sword etc
@@ -47,124 +58,6 @@ async def stop_everything():
     await game.release_all_keys()
 
 
-class Stream:
-    
-    def __init__(self, name: str, data=None):
-        self.has_value = False
-        self.latest_value = None
-        self.future = loop.create_future()
-        self.name = name
-        self.id = f"{name}_{str(uuid.uuid4())}"
-        self.closed = False
-        self.open(data)
-
-    def set_value(self, value):
-        self.latest_value = value
-        self.has_value = True
-        try:
-            self.future.set_result(None)
-        except asyncio.InvalidStateError:
-            pass
-
-    def open(self, data):
-        streams[self.id] = self
-        send_message(
-            "NEW_STREAM",
-            {
-                "name": self.name,
-                "stream_id": self.id,
-                "data": data,
-            },
-        )
-
-    def close(self):
-        if not self.closed:
-            self.closed = True
-            send_message("STOP_STREAM", self.id)
-            del streams[self.id]
-            self.set_value(None)
-
-    async def current(self):
-        if self.has_value:
-            return self.latest_value
-        return await self.next()
-
-    async def __aenter__(self):
-        return self
-
-    async def __aexit__(self, exc_type, exc, tb):
-        self.close()
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc, tb):
-        self.close()
-
-    async def next(self):
-        if self.closed:
-            raise StreamClosedError("Stream is already closed")
-        if not self.future.done():
-            await self.future
-        if self.closed:
-            raise StreamClosedError(f"Stream {self.name} closed while waiting for next value")
-        self.future = loop.create_future()
-        return self.latest_value
-
-    async def wait(self, condition, timeout=None):
-        async with async_timeout.timeout(timeout):
-            item = await self.current()
-            while not condition(item):
-                item = await self.next()
-            return item
-
-
-class StreamClosedError(Exception):
-    pass
-
-
-def player_status_stream(ticks=1):
-    return Stream("UPDATE_TICKED", data={"type": "PLAYER_STATUS", "ticks": ticks})
-
-
-def tool_status_stream(ticks=1):
-    return Stream("UPDATE_TICKED", data={"type": "TOOL_STATUS", "ticks": ticks})
-
-
-def characters_at_location_stream(ticks=1):
-    return Stream("UPDATE_TICKED", data={"type": "CHARACTERS_AT_LOCATION", "ticks": ticks})
-
-
-def animals_at_location_stream(ticks=1):
-    return Stream("UPDATE_TICKED", data={"type": "ANIMALS_AT_LOCATION", "ticks": ticks})
-
-
-def player_items_stream(ticks=1):
-    return Stream("UPDATE_TICKED", data={"type": "PLAYER_ITEMS", "ticks": ticks})
-
-
-def on_warped_stream(ticks=1):
-    return Stream("ON_WARPED", data={"type": "PLAYER_STATUS", "ticks": ticks})
-
-
-def on_terrain_feature_list_changed_stream():
-    return Stream("ON_TERRAIN_FEATURE_LIST_CHANGED", data={})
-
-
-def on_menu_changed_stream():
-    return Stream("ON_MENU_CHANGED", data={})
-
-
-def create_stream_next_task(awaitable):
-    async def to_call(awaitable):
-        try:
-            return await awaitable
-        except ValueError as e:
-            pass
-
-    return loop.create_task(to_call(awaitable))
-
-
 def call_soon(awaitable, *args, **kw):
     loop.call_soon_threadsafe(_do_create_task, awaitable, *args, **kw)
 
@@ -174,8 +67,6 @@ def _do_create_task(awaitable, *args, **kw):
 
 
 def setup_async_loop():
-    global loop
-    loop = asyncio.new_event_loop()
 
     def async_setup():
         loop.set_exception_handler(exception_handler)
@@ -284,7 +175,8 @@ class RequestBuilder:
         return self._fut
 
     def stream(self, ticks=1):
-        return Stream("UPDATE_TICKED", data={"type": self.request_type, "ticks": ticks})
+        import stream
+        return stream.Stream("UPDATE_TICKED", data={"type": self.request_type, "ticks": ticks})
 
     @classmethod
     def batch(cls, *reqs):
@@ -323,7 +215,7 @@ def send_message(msg_type: str, msg=None):
 
 
 def on_message(msg_str: str):
-    import events
+    import events, stream
 
     try:
         msg = json.loads(msg_str)
@@ -348,20 +240,20 @@ def on_message(msg_str: str):
     elif msg_type == "STREAM_MESSAGE":
         stream_id = msg_data["stream_id"]
 
-        stream = streams.get(stream_id)
-        if stream is None:
+        stream_obj = stream.streams.get(stream_id)
+        if stream_obj is None:
             send_message("STOP_STREAM", stream_id)
             return
         stream_value = msg_data["value"]
         stream_error = msg_data.get("error")
         if stream_error is not None:
             logger.debug(f"Stream {stream_id} error: {stream_value}")
-            stream.close()
+            stream_obj.close()
             return
-        stream.set_value(stream_value)
-        stream.latest_value = stream_value
+        stream_obj.set_value(stream_value)
+        stream_obj.latest_value = stream_value
         try:
-            stream.future.set_result(None)
+            stream_obj.future.set_result(None)
         except asyncio.InvalidStateError:
             pass
     elif msg_type == "EVENT":

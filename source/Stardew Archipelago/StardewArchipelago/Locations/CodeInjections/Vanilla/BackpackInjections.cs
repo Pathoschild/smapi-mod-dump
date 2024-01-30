@@ -47,15 +47,15 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static void UpdateMaxItemsForBackpackDisplay()
         {
             var numReceivedBackpacks = _archipelago.GetReceivedItemCount(PROGRESSIVE_BACKPACK);
-            if (_locationChecker.IsLocationMissingAndExists(LARGE_PACK))
+            if (_locationChecker.IsLocationMissing(LARGE_PACK))
             {
                 _maxItemsForBackpackDisplay = 12;
             }
-            else if (_locationChecker.IsLocationMissingAndExists(DELUXE_PACK) && numReceivedBackpacks >= 1)
+            else if (_locationChecker.IsLocationMissing(DELUXE_PACK) && numReceivedBackpacks >= 1)
             {
                 _maxItemsForBackpackDisplay = 24;
             }
-            else if (_locationChecker.IsLocationMissingAndExists(PREMIUM_PACK) && numReceivedBackpacks >= 2)
+            else if (_locationChecker.IsLocationMissing(PREMIUM_PACK) && numReceivedBackpacks >= 2)
             {
                 _maxItemsForBackpackDisplay = 36;
             }
@@ -94,7 +94,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     return false; // don't run original logic
                 }
 
-                if (_locationChecker.IsLocationMissingAndExists(PREMIUM_PACK) && Game1.player.Money >= 50000)
+                if (_locationChecker.IsLocationMissing(PREMIUM_PACK) && Game1.player.Money >= 50000)
                 {
                     Game1.player.Money -= 50000;
                     _locationChecker.AddCheckedLocation(PREMIUM_PACK);
@@ -169,7 +169,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                         responseDontPurchase,
                     }, "Backpack");
             }
-            else if (_archipelago.SlotData.Mods.HasMod(ModNames.BIGGER_BACKPACK) && _locationChecker.IsLocationMissingAndExists(PREMIUM_PACK) && numReceivedBackpacks >= 2)
+            else if (_archipelago.SlotData.Mods.HasMod(ModNames.BIGGER_BACKPACK) && _locationChecker.IsLocationMissing(PREMIUM_PACK) && numReceivedBackpacks >= 2)
             {
                 Response yes = new Response("Purchase", "Purchase (50,000g)");
                 Response no = new Response("Not", Game1.content.LoadString("Strings\\Locations:SeedShop_BuyBackpack_ResponseNo"));

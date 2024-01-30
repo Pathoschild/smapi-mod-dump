@@ -1,0 +1,10 @@
+{
+    "Name": "No Hat Treasure in Skull Cave",
+    "Author": "Kumagabear",
+    "Version": "1.0.1",
+    "Description": "No Hat Treasure in Skull Cave",
+    "UniqueID": "Kumagabear.NoHatTreasureSkull",
+    "EntryDll": "NoHatTreasureSkull.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [ "Nexus:19655" ]
+}

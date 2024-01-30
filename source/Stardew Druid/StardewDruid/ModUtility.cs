@@ -12,17 +12,23 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
 using StardewDruid.Cast;
+using StardewDruid.Cast.Weald;
+using StardewDruid.Character;
 using StardewDruid.Map;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Buildings;
+using StardewValley.Characters;
 using StardewValley.Locations;
+using StardewValley.Menus;
 using StardewValley.Monsters;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -32,71 +38,15 @@ using xTile.Layers;
 using xTile.ObjectModel;
 using xTile.Tiles;
 using static StardewValley.FarmerSprite;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace StardewDruid
 {
     static class ModUtility
     {
 
-        public static void WealdSound(int castLevel)
-        {
 
-            int chargeLevel = castLevel % 4;
-
-            int pitchLevel = castLevel / 4;
-
-            //-------------------------- sound and pitch
-
-            if (pitchLevel <= 2)
-            {
-
-                if (chargeLevel == 1)
-                {
-
-                    Game1.player.currentLocation.playSoundPitched("discoverMineral", 600 + (pitchLevel * 200));
-
-                }
-
-                if (chargeLevel == 3)
-                {
-
-                    Game1.player.currentLocation.playSoundPitched("discoverMineral", 700 + (pitchLevel * 200));
-
-                }
-
-            }
-
-        }
-
-        public static void MistsSound(int castLevel)
-        {
-            //int chargeLevel = castLevel % 4;
-
-            //int pitchLevel = castLevel / 4;
-
-            //-------------------------- sound and pitch
-
-            //if (pitchLevel <= 2)
-            //{
-
-            //if (chargeLevel == 1)
-                if (castLevel == 1)
-                {
-
-                    Game1.player.currentLocation.playSoundPitched("thunder_small", 600 + (new Random().Next(5) * 200));
-
-                }
-
-                //if (chargeLevel == 3)
-                //{
-
-                //    Game1.player.currentLocation.playSoundPitched("thunder_small", 700 + (pitchLevel * 200));
-
-                //}
-
-            //}
-
-        }
+        //======================== Animations
 
         public static void AnimateRadiusDecoration(GameLocation location, Vector2 vector, string name, float size, float change, float interval = 600f, float depth = 0.0001f)
         {
@@ -211,78 +161,68 @@ namespace StardewDruid
 
         }
 
-        public static void AnimateGrowth(GameLocation targetLocation, Vector2 targetVector, Microsoft.Xna.Framework.Color animationColor) // DruidCastGrowth (0.8f, 1, 0.8f, 1)
+        public static void AnimateSparkles(GameLocation targetLocation, Vector2 targetVector, Microsoft.Xna.Framework.Color animationColor) // DruidCastGrowth (0.8f, 1, 0.8f, 1)
         {
 
-            int animationRow = 10;
-
-            Microsoft.Xna.Framework.Rectangle animationRectangle = new(0, animationRow * 64, 64, 64);
-
-            float animationInterval = 75f;
-
-            int animationLength = 8;
-
-            int animationLoops = 1;
-
-            Vector2 animationPosition = new(targetVector.X * 64 + 8, targetVector.Y * 64 + 8);
-
-            float animationSort = float.Parse(targetVector.X.ToString() + targetVector.Y.ToString() + "0000");
-
-            TemporaryAnimatedSprite newAnimation = new("TileSheets\\animations", animationRectangle, animationInterval, animationLength, animationLoops, animationPosition, false, false, animationSort, 0f, animationColor, 1.2f, 0f, 0f, 0f);
-
-            targetLocation.temporarySprites.Add(newAnimation);
+            Utility.sparkleWithinArea(new((int)(targetVector.X * 64 - 64), (int)(targetVector.Y * 64 - 64), 192, 192), 5, animationColor);
 
             return;
 
         }
 
-        public static void AnimateCastRadius(GameLocation targetLocation, Vector2 targetVector, Color animationColor, int delayInterval = 0, int animationLoops = 1, float animationStrength = 0.75f)
+        public static void AnimateImpact(GameLocation targetLocation, Vector2 targetVector, int size, string bombColor = "Red")
         {
 
-            int backRow = 11;
-
-            Microsoft.Xna.Framework.Rectangle backRectangle = new(0, backRow * 64, 64, 64);
-
-            float animationInterval = 75f;
-
-            int animationLength = 8;
-
-            float animationSort = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString());
-
-            TemporaryAnimatedSprite backAnimation = new("TileSheets\\animations", backRectangle, animationInterval, animationLength, animationLoops, targetVector * 64 + new Vector2(16, 16), false, false, animationSort, 0.001f, Color.White, 0.5f, 0f, 0f, 0f)
+            /*TemporaryAnimatedSprite radiusAnimation = new(0, 100, 5, 1, (targetVector * 64) + new Vector2(32, 32) - (new Vector2(32, 32) * size), false, false)
             {
-                delayBeforeAnimationStart = 333 * delayInterval
+
+                sourceRect = new(0, 0, 32, 32),
+
+                sourceRectStartingPos = new Vector2(0, 0),
+
+                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images","Impact.png")),
+
+                scale = size*2,
+
+                timeBasedMotion = true,
+
+                layerDepth = 0.001f,
+
+                rotationChange = 0.06f,
+
+                alphaFade = 0.001f,
+
             };
 
-            targetLocation.temporarySprites.Add(backAnimation);
+            targetLocation.temporarySprites.Add(radiusAnimation);*/
 
-            // -----------------------
+            Vector2 zero64 = new(targetVector.X * 64, targetVector.Y * 64);
 
-            int frontRow = 10;
-
-            Microsoft.Xna.Framework.Rectangle frontRectangle = new(0, frontRow * 64, 64, 64);
-
-            Vector2 animationPosition;
-
-            if (animationStrength == 0.75f)
+            TemporaryAnimatedSprite bomb = new(0, 125f, 4, 1, new(zero64.X - 32 - (32 * size), zero64.Y - 32 - (32 * size)), false, false)
             {
-                animationPosition = new(targetVector.X * 64 + 8, targetVector.Y * 64 + 8);
-            }
-            else
-            {
-                animationPosition = new(targetVector.X * 64 + (32 - (animationStrength * 32f)), targetVector.Y * 64 + (32 - (animationStrength * 32f)));
-            }
-
-            float frontSort = float.Parse(animationSort.ToString() + "5");
-
-            TemporaryAnimatedSprite frontAnimation = new("TileSheets\\animations", frontRectangle, animationInterval, animationLength, animationLoops, animationPosition, false, false, frontSort, 0.001f, animationColor, animationStrength, 0f, 0f, 0f)
-            {
-                delayBeforeAnimationStart = 333 * delayInterval
+                sourceRect = new(0, 0, 64, 64),
+                sourceRectStartingPos = new Vector2(0.0f, 0.0f),
+                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", bombColor + "Bomb.png")),
+                scale = 2f + size,
+                timeBasedMotion = true,
+                layerDepth = 999f,
+                rotationChange = 0.00628f,
+                alphaFade = 1f / 1000f
             };
 
-            targetLocation.temporarySprites.Add(frontAnimation);
+            targetLocation.temporarySprites.Add(bomb);
 
-            return;
+            TemporaryAnimatedSprite light = new(23, 500f, 6, 1, zero64, false, Game1.random.NextDouble() < 0.5)
+            {
+                texture = Game1.mouseCursors,
+                light = true,
+                lightRadius = 2 + size,
+                lightcolor = Color.Black,
+                alphaFade = 0.03f,
+                Parent = targetLocation
+            };
+
+            targetLocation.temporarySprites.Add(light);
 
         }
 
@@ -303,7 +243,7 @@ namespace StardewDruid
 
             Vector2 animationPosition = new(targetVector.X * 64, targetVector.Y * 64 - 64);
 
-            float animationSort = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString());
+            float animationSort = (targetVector.Y / 10000);
 
             TemporaryAnimatedSprite newAnimation = new("TileSheets\\animations", animationRectangle, animationInterval, animationLength, animationLoops, animationPosition, false, animationFlipped, animationSort, 0.001f, animationColor, 0.75f, 0f, 0f, 0f);
 
@@ -427,7 +367,7 @@ namespace StardewDruid
 
             targetLocation.playSound("pullItemFromWater");
 
-            DelayedAction.functionAfterDelay(QuickSlosh, 900);
+            DelayedAction.functionAfterDelay(SoundSlosh, 900);
 
             Vector2 fishPosition;
 
@@ -496,7 +436,7 @@ namespace StardewDruid
 
             float animationInterval = 1050f;
 
-            float animationSort = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString() + "33");
+            float animationSort = (targetVector.Y / 10000) + 0.00003f;
 
             TemporaryAnimatedSprite fishAnimation = new("Maps\\springobjects", targetRectangle, animationInterval, 1, 0, fishPosition, flicker: false, flipped: fishFlip, animationSort, 0f, Color.White, 3f, 0f, 0f, fishRotate)
             {
@@ -525,15 +465,13 @@ namespace StardewDruid
 
             Microsoft.Xna.Framework.Color animationColor = Microsoft.Xna.Framework.Color.White;
 
-            animationSort = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString() + "44");
+            animationSort = (targetVector.Y / 10000) + 0.00004f;
 
             TemporaryAnimatedSprite newAnimation = new("TileSheets\\animations", animationRectangle, animationInterval, animationLength, animationLoops, splashPosition, false, sloshFlip, animationSort, 0f, animationColor, 0.75f, 0f, 0.1f, 0f);
 
             targetLocation.temporarySprites.Add(newAnimation);
 
             // ------------------------------------
-
-            //animationSort = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString() + "55");
 
             TemporaryAnimatedSprite sloshAnimation = new(28, 200f, 2, 1, sloshPosition, flicker: false, flipped: false)
             {
@@ -546,48 +484,89 @@ namespace StardewDruid
 
         }
 
-        public static void QuickSlosh()
+        public static void AnimateRockfalls(GameLocation location, Vector2 vector)
+        {
+            Random random = new Random();
+            for (int index1 = 0; index1 < 10; ++index1)
+            {
+                int index2 = index1 % 5;
+                List<Vector2> tilesWithinRadius = GetTilesWithinRadius(location, vector, index2 + 2);
+                if (random.Next(2) == 0)
+                    tilesWithinRadius.Reverse();
+                int count = tilesWithinRadius.Count;
+                if (count != 0)
+                {
+                    int num1 = new List<int>() { 6, 8, 8, 7, 8 }[index2];
+                    int num2 = new List<int>() { 2, 2, 3, 4, 4 }[index2];
+                    for (int index3 = 0; index3 < num2; ++index3)
+                    {
+                        int minValue = num1 * index3;
+                        if (minValue + 1 < count)
+                        {
+                            int castDelay = random.Next(3, 20) * 100;
+                            int maxValue = Math.Min(minValue + num1, tilesWithinRadius.Count);
+                            int index4 = random.Next(minValue, maxValue);
+                            Vector2 vector2 = tilesWithinRadius[index4];
+                            AnimateRockfall(location, vector2, castDelay);
+                            //for (int level = 0; level < 3; ++level)
+                            //{
+                            //    foreach (Vector2 tilesWithinRadiu in ModUtility.GetTilesWithinRadius(location, vector2, level))
+                            //        AnimateCastRadius(location, tilesWithinRadiu, new Color(0.8f, 1f, 0.8f, 1f), castDelay + index2 * 200);
+                            //}
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void AnimateRockfall(GameLocation targetLocation, Vector2 targetVector, int castDelay, int objectIndex = -1, int scatterIndex = -1)
+        {
+            if (objectIndex == -1)
+            {
+                List<int> intList = SpawnData.RockFall(targetLocation, Game1.player);
+                objectIndex = intList[0];
+                scatterIndex = intList[1];
+            }
+            Microsoft.Xna.Framework.Rectangle standardTileSheet1 = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, objectIndex, 16, 16);
+            Microsoft.Xna.Framework.Rectangle standardTileSheet2 = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, scatterIndex, 16, 16);
+            float num1 = 575f;
+            Vector2 vector2 = new((float)(targetVector.X * 64.0 + 8.0), (float)((targetVector.Y - 3.0) * 64.0 - 24.0));
+            float num2 = 0.0015f;
+            float num3 = (targetVector.Y / 10000) + 0.00001f;
+            TemporaryAnimatedSprite temporaryAnimatedSprite1 = new TemporaryAnimatedSprite("Maps\\springobjects", standardTileSheet2, num1, 1, 0, vector2, false, false, num3, 1f / 1000f, Color.White, 3f, 0.0f, 0.0f, 0.0f, false)
+            {
+                acceleration = new Vector2(0.0f, num2),
+                timeBasedMotion = true,
+                delayBeforeAnimationStart = castDelay
+            };
+            targetLocation.temporarySprites.Add(temporaryAnimatedSprite1);
+
+            vector2 = new((float)(targetVector.X * 64.0 + 8.0), (float)((targetVector.Y - 3.0) * 64.0 + 8.0));
+            float num4 = (targetVector.Y / 10000) + 0.00002f;
+            TemporaryAnimatedSprite temporaryAnimatedSprite2 = new TemporaryAnimatedSprite("Maps\\springobjects", standardTileSheet1, num1, 1, 0, vector2, false, false, num4, 1f / 1000f, Color.White, 3f, 0.0f, 0.0f, 0.0f, false)
+            {
+                acceleration = new Vector2(0.0f, num2),
+                timeBasedMotion = true,
+                delayBeforeAnimationStart = castDelay
+            };
+            targetLocation.temporarySprites.Add(temporaryAnimatedSprite2);
+
+            vector2 = new((float)(targetVector.X * 64.0 + 16.0), (float)(targetVector.Y * 64.0 + 16.0));
+            float num5 = (targetVector.Y / 10000) + 0.00003f;
+            TemporaryAnimatedSprite temporaryAnimatedSprite3 = new TemporaryAnimatedSprite("Maps\\springobjects", standardTileSheet1, num1, 1, 0, vector2, false, false, num5, 1f / 1000f, Color.Black * 0.5f, 2f, 0.0f, 0.0f, 0.0f, false)
+            {
+                delayBeforeAnimationStart = castDelay
+            };
+            targetLocation.temporarySprites.Add(temporaryAnimatedSprite3);
+        }
+
+        public static void SoundSlosh()
         {
             Game1.currentLocation.localSound("quickSlosh");
 
         }
 
-        public static void AnimateBombZone(GameLocation targetLocation, Vector2 targetVector, Color animationcolor, int animationLoops = 1)
-        {
-
-            // --------------------------- splash animation
-
-            int animationRow = 0;
-
-            Microsoft.Xna.Framework.Rectangle animationRectangle = new(0, animationRow * 64, 64, 64);
-
-            float animationInterval = 75f;
-
-            int animationLength = 8;
-
-            Vector2 animationPosition = new((targetVector.X * 64), (targetVector.Y * 64));
-
-            float animationSort = (targetVector.X * 1000) + targetVector.Y;
-
-            TemporaryAnimatedSprite newAnimation = new("TileSheets\\animations", animationRectangle, animationInterval, animationLength, animationLoops, animationPosition, false, false, animationSort, 0f, animationcolor, 1f, 0f, 0f, 0f);
-
-            targetLocation.temporarySprites.Add(newAnimation);
-
-            // --------------------------- splash radius
-
-            TemporaryAnimatedSprite secondAnimation = new("TileSheets\\animations", animationRectangle, animationInterval, animationLength, animationLoops, animationPosition - new Vector2(24, 24), false, false, animationSort, 0f, animationcolor * 0.65f, 1.75f, 0f, 0f, 0f);
-
-            targetLocation.temporarySprites.Add(secondAnimation);
-
-            // --------------------------- splash radius
-
-            TemporaryAnimatedSprite thirdAnimation = new("TileSheets\\animations", animationRectangle, animationInterval, animationLength, animationLoops, animationPosition - new Vector2(48, 48), false, false, animationSort, 0f, animationcolor * 0.45f, 2.5f, 0f, 0f, 0f);
-
-            targetLocation.temporarySprites.Add(thirdAnimation);
-
-        }
-
-        public static void AnimateMeteor(GameLocation targetLocation, Vector2 targetVector, bool targetDirection)
+        public static void AnimateMeteor(GameLocation targetLocation, Vector2 targetVector, bool targetDirection, float epicness = 1f)
         {
 
             Microsoft.Xna.Framework.Rectangle meteorRectangle = new(0, 0, 32, 32);
@@ -623,9 +602,15 @@ namespace StardewDruid
 
             }
 
-            float animationSort = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString() + "5");
+            meteorPosition *= epicness;
 
-            TemporaryAnimatedSprite warpAnimation = new(0, 750f, 1, 1, meteorPosition, false, false)
+            meteorMotion *= epicness;
+
+            float meteorScale = 2f * epicness;
+
+            float animationSort = (targetVector.Y / 10000) + 0.00005f;
+
+            TemporaryAnimatedSprite meteorAnimation = new(0, 750f, 1, 1, meteorPosition, false, false)
             {
 
                 sourceRect = new(0, 0, 32, 32),
@@ -634,7 +619,7 @@ namespace StardewDruid
 
                 texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Fireball.png")),
 
-                scale = 2f,
+                scale = meteorScale,
 
                 motion = meteorMotion,
 
@@ -646,44 +631,330 @@ namespace StardewDruid
 
             };
 
-            targetLocation.temporarySprites.Add(warpAnimation);
-
-            /*TemporaryAnimatedSprite meteorAnimation = new("TileSheets\\Fireball", meteorRectangle, meteorInterval, 12, 1, meteorPosition, flicker: false, meteorRoll, animationSort, 0f, Color.White, 1.75f, 0f, 0f, 0f)
-            {
-
-                motion = meteorMotion,
-
-                timeBasedMotion = true,
-
-                rotationChange = targetDirection ? 0.25f : -0.25f,
-
-            };
-
             targetLocation.temporarySprites.Add(meteorAnimation);
-
-            // ----------------- puff
-
-            Microsoft.Xna.Framework.Rectangle puffRectangle = new(96, 160, 32, 32);
-
-            float puffInterval = 75;
-
-            float puffSort = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString());
-
-            TemporaryAnimatedSprite puffAnimation = new("TileSheets\\animations", puffRectangle, puffInterval, 4, 1, meteorPosition, flicker: false, flipped: false, puffSort, 0f, Color.DarkRed, 2f, 0f, 0f, 0f);
-
-            targetLocation.temporarySprites.Add(puffAnimation);*/
-
-            /*TemporaryAnimatedSprite smallAnimation = new(362, 50, 6, 1, new Vector2(targetVector.X * 64f - 16f, targetVector.Y * 64f - 16f), flicker: false, (Game1.random.NextDouble() < 0.5) ? true : false)
-            {
-                delayBeforeAnimationStart = 750,
-                scale = 1.5f,
-            };
-
-            targetLocation.temporarySprites.Add(smallAnimation);*/
 
         }
 
-        public static void ImpactVector(GameLocation targetLocation, Vector2 targetVector)
+        public static void AnimateRandomCritter(GameLocation location, Vector2 vector)
+        {
+
+            Dictionary<int, List<int>> critterList = new()
+            {
+                // base frame, move frame, frame length, loops, rect x, rect y, columns, offset x 64, offset y 64, left/right, upper/lower
+                [0] = new() { 286, 280, 5, 3, 16, 16, 20, -88, 16, 1, 1 },
+                [1] = new() { 306, 300, 5, 3, 16, 16, 20, -88, 16, 1, 1 },
+                [2] = new() { 68, 54, 6, 2, 32, 32, 10, -160, 16, 1, 1 },
+                [3] = new() { 69, 74, 6, 2, 32, 32, 10, -160, 16, 1, 1 },
+                [4] = new() { 61, 62, 6, 2, 32, 32, 10, -160, 16, 1, 1 },
+
+            };
+            Dictionary<int, List<int>> birdList = new()
+            {
+                [0] = new() { 31, 31, 3, 4, 32, 32, 10, 160, -144, -1, -1 },
+                [1] = new() { 51, 31, 3, 4, 32, 32, 10, 160, -144, -1, -1 },
+            };
+
+            for (int i = 0; i < 5; i++)
+            {
+                List<int> critterConfig;
+
+                if (i < 3)
+                {
+
+                    critterConfig = critterList[Game1.random.Next(critterList.Count)];
+
+                }
+                else
+                {
+
+                    critterConfig = birdList[Game1.random.Next(birdList.Count)];
+
+                }
+
+                int offset = i % 2;
+
+                int baseColumn = critterConfig[1] % critterConfig[6];
+
+                int baseRow = (critterConfig[1] - baseColumn) / critterConfig[6];
+
+                Microsoft.Xna.Framework.Rectangle animationRectangle = new(baseColumn * critterConfig[4], baseRow * critterConfig[5], critterConfig[4], critterConfig[5]);
+
+                float animationInterval = 80f;
+
+                int animationLength = critterConfig[2];
+
+                int animationLoops = critterConfig[3];
+
+                float critterOffsetX = 32f * offset * critterConfig[9];
+
+                float critterOffsetY = 32f * offset * critterConfig[10];
+
+                Microsoft.Xna.Framework.Color animationColor = Microsoft.Xna.Framework.Color.White;
+
+                Vector2 animationPosition = new(vector.X * 64 + critterConfig[7] + critterOffsetX, vector.Y * 64 + critterConfig[8] + critterOffsetY);
+
+                float animationSort = (vector.Y / 10000) + 0.00001f;
+
+                TemporaryAnimatedSprite critterAnimation = new("TileSheets\\critters", animationRectangle, animationInterval, animationLength, animationLoops, animationPosition, flicker: false, flipped: false, animationSort, 0.001f, animationColor, 3f, 0f, 0f, 0f)
+                {
+                    motion = new Vector2(critterConfig[4] / 80f * critterConfig[9], 0), // (float)critterConfig[4] / 80f * critterConfig[9]
+                    timeBasedMotion = true,
+                };
+
+                location.temporarySprites.Add(critterAnimation);
+
+                // ---------------------------- puff
+
+                animationSort = (vector.Y / 10000) + 0.00002f;
+
+                TemporaryAnimatedSprite boltCloud = new("TileSheets\\animations", new(128, 5 * 64, 64, 64), 333f, 3, 1, animationPosition, flicker: false, false, animationSort, 0.02f, Color.White, 0.5f, 0f, 0f, 0f);
+
+                location.temporarySprites.Add(boltCloud);
+
+            }
+
+        }
+
+        public static void AnimateButterflySpray(GameLocation location, Vector2 vector)
+        {
+
+            location.critters.Add(new Butterfly(vector, false));
+
+            location.critters.Add(new Butterfly(vector - new Vector2(1, 0), false));
+
+            location.critters.Add(new Butterfly(vector + new Vector2(1, 0), false));
+
+            location.critters.Add(new Butterfly(vector - new Vector2(2, 0), false));
+
+            location.critters.Add(new Butterfly(vector + new Vector2(2, 0), false));
+
+        }
+
+        public static void AnimateRandomFish(GameLocation location, Vector2 vector)
+        {
+
+            Vector2 position = vector * 64;
+
+            List<int> fishIndexes = new() { 138, 146, 717, };
+
+            int fishIndex = fishIndexes[Game1.random.Next(fishIndexes.Count)];
+
+            AnimateFishJump(location, position - new Vector2(32, 64), fishIndex, true);
+
+            AnimateFishJump(location, position + new Vector2(32, 64), fishIndex, false);
+
+            AnimateFishJump(location, position - new Vector2(32, 0), fishIndex, true);
+
+            AnimateFishJump(location, position + new Vector2(32, 0), fishIndex, false);
+
+        }
+
+        public static void AnimateDeathSpray(GameLocation location, Vector2 position, Color color)
+        {
+
+            Utility.makeTemporarySpriteJuicier(new TemporaryAnimatedSprite(45, position, color, 10), location);
+
+            for (int i = 1; i < 3; i++)
+            {
+                location.temporarySprites.Add(new TemporaryAnimatedSprite(6, position + new Vector2(0f, 1f) * 64f * i, color * 0.75f, 10)
+                {
+                    delayBeforeAnimationStart = i * 159
+                });
+                location.temporarySprites.Add(new TemporaryAnimatedSprite(6, position + new Vector2(0f, -1f) * 64f * i, color * 0.75f, 10)
+                {
+                    delayBeforeAnimationStart = i * 159
+                });
+                location.temporarySprites.Add(new TemporaryAnimatedSprite(6, position + new Vector2(1f, 0f) * 64f * i, color * 0.75f, 10)
+                {
+                    delayBeforeAnimationStart = i * 159
+                });
+                location.temporarySprites.Add(new TemporaryAnimatedSprite(6, position + new Vector2(-1f, 0f) * 64f * i, color * 0.75f, 10)
+                {
+                    delayBeforeAnimationStart = i * 159
+                });
+            }
+
+            location.localSound("shadowDie");
+
+        }
+
+        public static void AnimateQuickWarp(GameLocation location, Vector2 position, string name = "Escape")
+        {
+
+            TemporaryAnimatedSprite firstWarp = new(0, 75f, 12, 1, position - new Vector2(16, 16), false, false)
+            {
+
+                sourceRect = new(0, 32, 32, 32),
+
+                sourceRectStartingPos = new Vector2(0, 32),
+
+                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", name + ".png")),
+
+                scale = 3f,
+
+                layerDepth = 999,
+
+                rotationChange = -0.8f,
+
+                alpha = 0.35f
+
+            };
+
+            location.temporarySprites.Add(firstWarp);
+
+        }
+
+        public static void AnimateFate(GameLocation targetLocation, Vector2 playerVector, Vector2 targetVector, int fuelSource = 768, bool fadeAway = false, bool usePosition = false)
+        {
+
+            Vector2 targetPosition;
+
+            Vector2 playerPosition;
+
+            if (usePosition)
+            {
+
+                targetPosition = targetVector;
+
+                playerPosition = playerVector - new Vector2(0, 64);
+
+            }
+            else
+            {
+
+                targetPosition = new(targetVector.X * 64, targetVector.Y * 64);
+
+                playerPosition = (playerVector * 64) - new Vector2(0, 64);
+
+            }
+
+            float xOffset = (targetPosition.X - playerPosition.X);
+
+            float yOffset = (targetPosition.Y - playerPosition.Y);
+
+            float motionX = xOffset / 1000;
+
+            float compensate = 0.555f;
+
+            float motionY = (yOffset / 1000) - compensate;
+
+            float animationSort = (targetVector.Y / 10000) + 0.00001f;
+
+            float animationFade = fadeAway ? 0.001f : 0f;
+
+            Color tingleColor = (fuelSource == 768) ? Color.Yellow : Color.DarkBlue;
+
+            Microsoft.Xna.Framework.Rectangle targetRectangle = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, fuelSource, 16, 16);
+
+            TemporaryAnimatedSprite starAnimation = new("Maps\\springobjects", targetRectangle, 1000f, 1, 1, playerPosition, flicker: false, flipped: false, animationSort, animationFade, Color.White, 3f, 0f, 0f, 0.2f)
+            {
+
+                motion = new Vector2(motionX, motionY),
+
+                acceleration = new Vector2(0f, 0.001f),
+
+                timeBasedMotion = true,
+
+            };
+
+            targetLocation.temporarySprites.Add(starAnimation);
+
+            animationSort = (targetVector.Y / 10000) + 0.00002f;
+
+            TemporaryAnimatedSprite tingleAnimation = new("TileSheets\\animations", new(0, 11 * 64, 64, 64), 62.5f, 8, 2, playerPosition, false, false, animationSort, animationFade, tingleColor, 1f, 0f, 0f, 0.2f)
+            {
+
+                motion = new Vector2(motionX, motionY),
+
+                acceleration = new Vector2(0f, 0.001f),
+
+                timeBasedMotion = true,
+
+                delayBeforeAnimationStart = 40,
+
+            };
+
+            targetLocation.temporarySprites.Add(tingleAnimation);
+
+            TemporaryAnimatedSprite tingleAnimationTwo = new("TileSheets\\animations", new(0, 11 * 64, 64, 64), 62.5f, 8, 2, playerPosition, false, false, animationSort, animationFade, tingleColor, 0.75f, 0f, 0f, 0.2f)
+            {
+
+                motion = new Vector2(motionX, motionY),
+
+                acceleration = new Vector2(0f, 0.001f),
+
+                timeBasedMotion = true,
+
+                delayBeforeAnimationStart = 80,
+
+            };
+
+            targetLocation.temporarySprites.Add(tingleAnimationTwo);
+
+            TemporaryAnimatedSprite tingleAnimationThree = new("TileSheets\\animations", new(0, 11 * 64, 64, 64), 62.5f, 8, 2, playerPosition, false, false, animationSort, animationFade, tingleColor, 0.75f, 0f, 0f, 0.2f)
+            {
+
+                motion = new Vector2(motionX, motionY),
+
+                acceleration = new Vector2(0f, 0.001f),
+
+                timeBasedMotion = true,
+
+                delayBeforeAnimationStart = 120,
+
+            };
+
+            targetLocation.temporarySprites.Add(tingleAnimationThree);
+
+            //targetLocation.playSoundPitched("yoba",700);
+
+        }
+
+        public static TemporaryAnimatedSprite AnimateFateTarget(GameLocation location, Vector2 playerVector, Vector2 targetVector)
+        {
+
+            Vector2 targetPosition = targetVector - new Vector2(0, 32);
+
+            Vector2 playerPosition = playerVector - new Vector2(0, 32);
+
+            float xOffset = (targetPosition.X - playerPosition.X);
+
+            float yOffset = (targetPosition.Y - playerPosition.Y);
+
+            float motionX = xOffset / 1000;
+
+            float motionY = yOffset / 1000;
+
+            TemporaryAnimatedSprite warpAnimation = new(0, 1000f, 1, 1, playerPosition, false, false)
+            {
+
+                sourceRect = new(0, 0, 64, 64),
+
+                sourceRectStartingPos = new Vector2(0, 0),
+
+                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Warp.png")),
+
+                scale = 0.75f,
+                
+                scaleChange = 0.0005f,
+
+                layerDepth = 0.001f,
+
+                motion = new Vector2(motionX, motionY),
+
+                timeBasedMotion = true,
+
+                rotationChange = 0.08f,
+
+            };
+
+            location.temporarySprites.Add(warpAnimation);
+
+            return warpAnimation;
+
+        }
+
+        public static void AnimateDestruction(GameLocation targetLocation, Vector2 targetVector)
         {
 
             if (Game1.random.NextDouble() < 0.5)
@@ -714,69 +985,201 @@ namespace StardewDruid
 
         }
 
-        public static void BurnVector(GameLocation location, Vector2 position, Color color, int interval = 175, int length = 5, int loops = 1)
+
+        //======================== Gameworld Interactions
+
+        public static bool RandomTree(GameLocation targetLocation, Vector2 targetVector)
         {
 
-            TemporaryAnimatedSprite fireAnimation = new(0,interval,length,loops,position, false, false)
+            int treeIndex = Map.SpawnData.RandomTree(targetLocation);
+
+            StardewValley.TerrainFeatures.Tree newTree = new(treeIndex, 1);
+
+            targetLocation.terrainFeatures.Add(targetVector, newTree);
+
+            return true;
+
+        }
+
+        public static void UpgradeCrop(StardewValley.TerrainFeatures.HoeDirt hoeDirt, int targetX, int targetY, Farmer targetPlayer, GameLocation targetLocation, bool enableQuality)
+        {
+
+            int generateItem = 770;
+
+            if (enableQuality)
             {
 
-                sourceRect = new(0, 0, 32, 32),
+                Dictionary<int, int> objectIndexes = SpawnData.CropList(targetLocation);
 
-                sourceRectStartingPos = new Vector2(0,0),
+                int chance = Game1.random.Next(objectIndexes.Count * 3);
 
-                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images","Fire.png")),
+                if (objectIndexes.ContainsKey(chance))
+                {
+                    generateItem = objectIndexes[chance];
 
-                scale = 2f, //* size,
+                }
 
-                layerDepth = position.Y / 64000,
+            }
 
-                alphaFade = 0.001f,
+            hoeDirt.destroyCrop(new Vector2(targetX, targetY), false, targetLocation);
 
-                color = color,
+            if (generateItem == 829)
+            {
 
-            };
+                StardewValley.Crop newGinger = new(true, 2, targetX, targetY);
 
-            location.temporarySprites.Add(fireAnimation);
+                hoeDirt.crop = newGinger;
+
+                targetLocation.playSound("dirtyHit");
+
+                Game1.stats.SeedsSown++;
+
+                return;
+
+            }
+
+            hoeDirt.plant(generateItem, targetX, targetY, targetPlayer, false, targetLocation);
+
+            //hoeDirt.crop.updateDrawMath(new Vector2(targetX, targetY));
 
         }
 
-        public static StardewValley.Torch StoneBrazier(GameLocation targetLocation, Vector2 targetVector)
+        public static bool GreetVillager(Farmer player, NPC villager, int friendShip = 0)
         {
 
-            /*Rectangle sourceRectForObject = new();
+            villager.faceTowardFarmerForPeriod(3000, 4, false, player);
 
-            sourceRectForObject.X = 276;
-            sourceRectForObject.Y = 1965;
-            sourceRectForObject.Width = 8;
-            sourceRectForObject.Height = 8;
+            bool friendCheck = player.hasPlayerTalkedToNPC(villager.Name);
 
-            float animationSort = targetVector.X * 1000 + targetVector.Y + 2;
+            if (!friendCheck && player.friendshipData.ContainsKey(villager.Name))
+            {
 
-            portalAnimation = new("LooseSprites\\Cursors", sourceRectForObject, 100f, 6, 9999, new((targetVector.X * 64f)+12f,(targetVector.Y * 64f)-56f), false, false, animationSort, 0f, Color.Blue, 6f, 0f, 0f, 0f);
+                player.friendshipData[villager.Name].TalkedToToday = true;
 
-            targetLocation.temporarySprites.Add(portalAnimation);*/
+                if (friendShip > 0)
+                {
 
-            StardewValley.Torch stoneBrazier = new(targetVector, 144, false);
+                    player.changeFriendship(friendShip, villager);
 
-            int portalKey = (int)float.Parse(targetVector.X.ToString() + targetVector.Y.ToString());
+                }
 
-            LightSource portalLight = new(4, new((targetVector.X * 64f) + 12f, (targetVector.Y * 64f) - 56f), 2f, new Color(0, 80, 160), portalKey, LightSource.LightContext.None, 0L);
+                return true;
 
-            stoneBrazier.name = "PortalFlame";
-            stoneBrazier.CanBeSetDown = false;
-            stoneBrazier.Fragility = 2;
-            stoneBrazier.setHealth(9999);
-            stoneBrazier.isLamp.Value = true;
-            stoneBrazier.IsOn = true;
-            stoneBrazier.lightSource = portalLight;
+            }
 
-            targetLocation.objects.Add(targetVector, stoneBrazier);
-
-            return stoneBrazier;
+            return false;
 
         }
 
-        public static bool WaterCheck(GameLocation targetLocation, Vector2 targetVector)
+        public static void UpdateFriendship(Farmer player, List<string> NPCIndex)
+        {
+
+            foreach (string NPCName in NPCIndex)
+            {
+
+                NPC characterFromName = Game1.getCharacterFromName(NPCName);
+
+                characterFromName ??= Game1.getCharacterFromName<Child>(NPCName, mustBeVillager: false);
+
+                if (characterFromName != null && player.friendshipData.ContainsKey(NPCName))
+                {
+
+                    player.changeFriendship(375, characterFromName);
+
+                }
+
+            }
+
+        }
+
+        public static void PetAnimal(Farmer targetPlayer, FarmAnimal targetAnimal)
+        {
+
+            if (targetAnimal.wasPet.Value)
+            {
+
+                return;
+
+            }
+
+            targetAnimal.wasPet.Value = true;
+
+            int num = 7;
+
+            if (targetAnimal.wasAutoPet.Value)
+            {
+
+                targetAnimal.friendshipTowardFarmer.Value = Math.Min(1000, targetAnimal.friendshipTowardFarmer.Value + num);
+
+            }
+            else
+            {
+
+                targetAnimal.friendshipTowardFarmer.Value = Math.Min(1000, targetAnimal.friendshipTowardFarmer.Value + 15);
+
+            }
+
+            if ((targetPlayer.professions.Contains(3) && !targetAnimal.isCoopDweller()) || (targetPlayer.professions.Contains(2) && targetAnimal.isCoopDweller()))
+            {
+
+                targetAnimal.friendshipTowardFarmer.Value = Math.Min(1000, targetAnimal.friendshipTowardFarmer.Value + 15);
+
+                targetAnimal.happiness.Value = (byte)Math.Min(255, targetAnimal.happiness.Value + Math.Max(5, 40 - targetAnimal.happinessDrain.Value));
+
+            }
+
+            int num2 = 20;
+
+            if (targetAnimal.wasAutoPet.Value)
+            {
+
+                num2 = 32;
+
+            }
+
+            targetAnimal.doEmote((targetAnimal.moodMessage.Value == 4) ? 12 : num2);
+
+            targetAnimal.happiness.Value = (byte)Math.Min(255, targetAnimal.happiness.Value + Math.Max(5, 40 - targetAnimal.happinessDrain.Value));
+
+            targetAnimal.makeSound();
+
+            targetPlayer.gainExperience(0, 5);
+
+        }
+
+        public static void LearnRecipe(Farmer targetPlayer)
+        {
+
+            List<string> recipeList = SpawnData.RecipeList();
+
+            int learnedRecipes = 0;
+
+            foreach (string recipe in recipeList)
+            {
+
+                if (!targetPlayer.cookingRecipes.ContainsKey(recipe))
+                {
+
+                    targetPlayer.cookingRecipes.Add(recipe, 0);
+
+                    learnedRecipes++;
+
+                }
+
+            }
+
+            if (learnedRecipes >= 1)
+            {
+
+                Game1.addHUDMessage(new HUDMessage($"Learned {learnedRecipes} recipes", 2));
+
+            }
+
+        }
+
+        //======================== Tile Interactions
+
+        public static bool WaterCheck(GameLocation targetLocation, Vector2 targetVector, int radius = 4)
         {
             bool check = true;
 
@@ -784,7 +1187,7 @@ namespace StardewDruid
 
             Tile backTile;
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < radius; i++)
             {
 
                 List<Vector2> neighbours = GetTilesWithinRadius(targetLocation, targetVector, i);
@@ -792,7 +1195,7 @@ namespace StardewDruid
                 foreach (Vector2 neighbour in neighbours)
                 {
 
-                    backTile = backLayer.PickTile(new Location((int)neighbour.X * 64, (int)neighbour.Y * 64), Game1.viewport.Size);
+                    backTile = backLayer.PickTile(new xTile.Dimensions.Location((int)neighbour.X * 64, (int)neighbour.Y * 64), Game1.viewport.Size);
 
                     if (backTile != null)
                     {
@@ -848,13 +1251,6 @@ namespace StardewDruid
             {
 
                 return "void";
-
-            }
-
-            if (backTile.TileIndexProperties.TryGetValue("Water", out _))
-            {
-
-                return "water";
 
             }
 
@@ -914,10 +1310,50 @@ namespace StardewDruid
 
             }
 
+            if (backTile.TileIndexProperties.TryGetValue("Water", out _))
+            {
+
+                return "water";
+
+            }
+
             if (backTile.TileIndexProperties.TryGetValue("Type", out var typeValue))
             {
 
                 return "ground";
+
+            }
+
+            if (targetLocation.IsOutdoors)
+            {
+
+                List<int> grounds = new() {304, 351, 404, 356, 300, 305, };
+
+                if (grounds.Contains(backTile.TileIndex))
+                {
+                    return "ground";
+
+                }
+
+            }
+
+            if(targetLocation is Caldera)
+            {
+
+                if(backTile.TileIndex == 28)
+                {
+                    return "ground";
+                }
+
+            }
+
+            if (targetLocation is Sewer)
+            {
+
+                if (backTile.TileIndex == 34 || backTile.TileIndex == 41 || backTile.TileIndex == 42)
+                {
+                    return "ground";
+                }
 
             }
 
@@ -964,7 +1400,7 @@ namespace StardewDruid
 
                 }
 
-                Tile buildingTile = buildingLayer.PickTile(new Location((int)neighbourVector.X * 64, (int)neighbourVector.Y * 64), Game1.viewport.Size);
+                Tile buildingTile = buildingLayer.PickTile(new xTile.Dimensions.Location((int)neighbourVector.X * 64, (int)neighbourVector.Y * 64), Game1.viewport.Size);
 
                 if (buildingTile != null)
                 {
@@ -991,7 +1427,7 @@ namespace StardewDruid
                 if (pathsLayer != null)
                 {
 
-                    Tile pathsTile = buildingLayer.PickTile(new Location((int)neighbourVector.X * 64, (int)neighbourVector.Y * 64), Game1.viewport.Size);
+                    Tile pathsTile = buildingLayer.PickTile(new xTile.Dimensions.Location((int)neighbourVector.X * 64, (int)neighbourVector.Y * 64), Game1.viewport.Size);
 
                     if (pathsTile != null)
                     {
@@ -1142,175 +1578,6 @@ namespace StardewDruid
             }
 
             return neighbourList;
-
-        }
-
-        public static bool RandomTree(GameLocation targetLocation, Vector2 targetVector)
-        {
-
-
-            int treeIndex = Map.SpawnData.RandomTree(targetLocation);
-
-            StardewValley.TerrainFeatures.Tree newTree = new(treeIndex, 1);
-
-            targetLocation.terrainFeatures.Add(targetVector, newTree);
-
-            return true;
-
-        }
-
-        public static void UpgradeCrop(StardewValley.TerrainFeatures.HoeDirt hoeDirt, int targetX, int targetY, Farmer targetPlayer, GameLocation targetLocation, bool enableQuality)
-        {
-
-            int generateItem = 770;
-
-            if (enableQuality)
-            {
-
-                Dictionary<int, int> objectIndexes = SpawnData.CropList(targetLocation);
-
-                int chance = Game1.random.Next(objectIndexes.Count * 3);
-
-                if (objectIndexes.ContainsKey(chance))
-                {
-                    generateItem = objectIndexes[chance];
-
-                }
-
-            }
-
-            hoeDirt.destroyCrop(new Vector2(targetX, targetY), false, targetLocation);
-
-            if (generateItem == 829)
-            {
-
-                StardewValley.Crop newGinger = new(true, 2, targetX, targetY);
-
-                hoeDirt.crop = newGinger;
-
-                targetLocation.playSound("dirtyHit");
-
-                Game1.stats.SeedsSown++;
-
-                return;
-
-            }
-
-            hoeDirt.plant(generateItem, targetX, targetY, targetPlayer, false, targetLocation);
-
-            //hoeDirt.crop.updateDrawMath(new Vector2(targetX, targetY));
-
-        }
-
-        public static bool GreetVillager(Farmer player, NPC villager, int friendShip = 0)
-        {
-
-            villager.faceTowardFarmerForPeriod(3000, 4, false, player);
-
-            bool friendCheck = player.hasPlayerTalkedToNPC(villager.Name);
-
-            if (!friendCheck)
-            {
-
-                player.friendshipData[villager.Name].TalkedToToday = true;
-
-                if (friendShip > 0)
-                {
-
-                    player.changeFriendship(friendShip, villager);
-
-                }
-
-                return true;
-
-            }
-
-            return false;
-
-        }
-
-        public static void PetAnimal(Farmer targetPlayer, FarmAnimal targetAnimal)
-        {
-
-            if (targetAnimal.wasPet.Value)
-            {
-
-                return;
-
-            }
-
-            targetAnimal.wasPet.Value = true;
-
-            int num = 7;
-
-            if (targetAnimal.wasAutoPet.Value)
-            {
-
-                targetAnimal.friendshipTowardFarmer.Value = Math.Min(1000, targetAnimal.friendshipTowardFarmer.Value + num);
-
-            }
-            else
-            {
-
-                targetAnimal.friendshipTowardFarmer.Value = Math.Min(1000, targetAnimal.friendshipTowardFarmer.Value + 15);
-
-            }
-
-            if ((targetPlayer.professions.Contains(3) && !targetAnimal.isCoopDweller()) || (targetPlayer.professions.Contains(2) && targetAnimal.isCoopDweller()))
-            {
-
-                targetAnimal.friendshipTowardFarmer.Value = Math.Min(1000, targetAnimal.friendshipTowardFarmer.Value + 15);
-
-                targetAnimal.happiness.Value = (byte)Math.Min(255, targetAnimal.happiness.Value + Math.Max(5, 40 - targetAnimal.happinessDrain.Value));
-
-            }
-
-            int num2 = 20;
-
-            if (targetAnimal.wasAutoPet.Value)
-            {
-
-                num2 = 32;
-
-            }
-
-            targetAnimal.doEmote((targetAnimal.moodMessage.Value == 4) ? 12 : num2);
-
-            targetAnimal.happiness.Value = (byte)Math.Min(255, targetAnimal.happiness.Value + Math.Max(5, 40 - targetAnimal.happinessDrain.Value));
-
-            targetAnimal.makeSound();
-
-            targetPlayer.gainExperience(0, 5);
-
-        }
-
-        public static void LearnRecipe(Farmer targetPlayer)
-        {
-
-            List<string> recipeList = SpawnData.RecipeList();
-
-            int learnedRecipes = 0;
-
-            foreach (string recipe in recipeList)
-            {
-
-                if (!targetPlayer.cookingRecipes.ContainsKey(recipe))
-                {
-
-                    targetPlayer.cookingRecipes.Add(recipe, 0);
-
-                    learnedRecipes++;
-
-                }
-
-            }
-
-            if (learnedRecipes >= 1)
-            {
-
-                Game1.addHUDMessage(new HUDMessage($"Learned {learnedRecipes} recipes", 2));
-
-            }
 
         }
 
@@ -1761,6 +2028,35 @@ namespace StardewDruid
 
         }
 
+        public static List<Vector2> GetTilesBetweenVectors(GameLocation location, Vector2 distant, Vector2 near)
+        {
+            
+            List<Vector2> vectorList = new();
+
+            float increment = (int)(Vector2.Distance(distant, near) / 32);
+
+            Vector2 factor = (distant - near) / increment;
+
+            Vector2 check = near + factor;
+
+            for(int i = 1; i <= increment; i++)
+            {
+
+                check += factor;
+
+                Vector2 tile = new((int)(check.X / 64), (int)check.Y / 64);
+
+                if (!vectorList.Contains(tile) && tile != near)
+                {
+                    vectorList.Add(tile);
+                }
+
+            }
+
+            return vectorList;
+
+        }
+
         public static Dictionary<Vector2, string> LocationTargets(GameLocation targetLocation)
         {
 
@@ -1881,225 +2177,6 @@ namespace StardewDruid
 
         }
 
-        public static int GetTravelDirection(Vector2 current, Vector2 previous)
-        {
-
-            Vector2 microVector = current - previous;
-
-            int microX = Convert.ToInt32(microVector.X);
-
-            int microY = Convert.ToInt32(microVector.Y);
-
-            int newDirection;
-
-            if (Math.Abs(microY) == Math.Abs(microX))
-            {
-
-                if (microY > 0)
-                {
-
-                    if (microX > 0) // upper right
-                    {
-                        newDirection = 4;
-                    }
-                    else // upper left
-                    {
-                        newDirection = 7;
-
-                    }
-
-                }
-                else
-                {
-
-                    if (microX > 0) // lower right
-                    {
-                        newDirection = 5;
-                    }
-                    else // lower left
-                    {
-                        newDirection = 6;
-
-                    }
-
-
-                }
-
-            }
-            else if (Math.Abs(microY) < Math.Abs(microX))
-            {
-
-                if (microX > 0) // right
-                {
-                    newDirection = 1;
-                }
-                else // left
-                {
-                    newDirection = 3;
-
-                }
-
-            }
-            else
-            {
-                if (microY > 0) // down
-                {
-                    newDirection = 2;
-                }
-                else // up
-                {
-                    newDirection = 0;
-
-                }
-            }
-
-            return newDirection;
-
-        }
-
-        public static void AnimateRandomCritter(GameLocation location, Vector2 vector)
-        {
-
-            Dictionary<int, List<int>> critterList = new()
-            {
-                // base frame, move frame, frame length, loops, rect x, rect y, columns, offset x 64, offset y 64, left/right, upper/lower
-                [0] = new() { 286, 280, 5, 3, 16, 16, 20, -88, 16, 1, 1 },
-                [1] = new() { 306, 300, 5, 3, 16, 16, 20, -88, 16, 1, 1 },
-                [2] = new() { 68, 54, 6, 2, 32, 32, 10, -160, 16, 1, 1 },
-                [3] = new() { 69, 74, 6, 2, 32, 32, 10, -160, 16, 1, 1 },
-                [4] = new() { 61, 62, 6, 2, 32, 32, 10, -160, 16, 1, 1 },
-
-            };
-            Dictionary<int, List<int>> birdList = new()
-            {
-                [0] = new() { 31, 31, 3, 4, 32, 32, 10, 160, -144, -1, -1 },
-                [1] = new() { 51, 31, 3, 4, 32, 32, 10, 160, -144, -1, -1 },
-            };
-
-            for (int i = 0; i < 5; i++)
-            {
-                List<int> critterConfig;
-
-                if (i < 3)
-                {
-
-                    critterConfig = critterList[Game1.random.Next(critterList.Count)];
-
-                }
-                else
-                {
-
-                    critterConfig = birdList[Game1.random.Next(birdList.Count)];
-
-                }
-
-                int offset = i % 2;
-
-                int baseColumn = critterConfig[1] % critterConfig[6];
-
-                int baseRow = (critterConfig[1] - baseColumn) / critterConfig[6];
-
-                Microsoft.Xna.Framework.Rectangle animationRectangle = new(baseColumn * critterConfig[4], baseRow * critterConfig[5], critterConfig[4], critterConfig[5]);
-
-                float animationInterval = 80f;
-
-                int animationLength = critterConfig[2];
-
-                int animationLoops = critterConfig[3];
-
-                float critterOffsetX = 32f * offset * critterConfig[9];
-
-                float critterOffsetY = 32f * offset * critterConfig[10];
-
-                Microsoft.Xna.Framework.Color animationColor = Microsoft.Xna.Framework.Color.White;
-
-                Vector2 animationPosition = new(vector.X * 64 + critterConfig[7] + critterOffsetX, vector.Y * 64 + critterConfig[8] + critterOffsetY);
-
-                float animationSort = float.Parse("0.0" + vector.X.ToString() + vector.Y.ToString() + "1");
-
-                TemporaryAnimatedSprite critterAnimation = new("TileSheets\\critters", animationRectangle, animationInterval, animationLength, animationLoops, animationPosition, flicker: false, flipped: false, animationSort, 0.001f, animationColor, 3f, 0f, 0f, 0f)
-                {
-                    motion = new Vector2(critterConfig[4] / 80f * critterConfig[9], 0), // (float)critterConfig[4] / 80f * critterConfig[9]
-                    timeBasedMotion = true,
-                };
-
-                location.temporarySprites.Add(critterAnimation);
-
-                // ---------------------------- puff
-
-                animationSort = float.Parse("0.0" + vector.X.ToString() + vector.Y.ToString() + "2");
-
-                TemporaryAnimatedSprite boltCloud = new("TileSheets\\animations", new(128, 5 * 64, 64, 64), 333f, 3, 1, animationPosition, flicker: false, false, animationSort, 0.02f, Color.White, 0.5f, 0f, 0f, 0f);
-
-                location.temporarySprites.Add(boltCloud);
-
-            }
-
-        }
-
-        public static void AnimateButterflySpray(GameLocation location, Vector2 vector)
-        {
-
-            location.critters.Add(new Butterfly(vector, false));
-
-            location.critters.Add(new Butterfly(vector - new Vector2(1, 0), false));
-
-            location.critters.Add(new Butterfly(vector + new Vector2(1, 0), false));
-
-            location.critters.Add(new Butterfly(vector - new Vector2(2, 0), false));
-
-            location.critters.Add(new Butterfly(vector + new Vector2(2, 0), false));
-
-        }
-
-        public static void AnimateRandomFish(GameLocation location, Vector2 vector)
-        {
-
-            Vector2 position = vector * 64;
-
-            List<int> fishIndexes = new() { 138, 146, 717, };
-
-            int fishIndex = fishIndexes[Game1.random.Next(fishIndexes.Count)];
-
-            AnimateFishJump(location, position - new Vector2(32, 64), fishIndex, true);
-
-            AnimateFishJump(location, position + new Vector2(32, 64), fishIndex, false);
-
-            AnimateFishJump(location, position - new Vector2(32, 0), fishIndex, true);
-
-            AnimateFishJump(location, position + new Vector2(32, 0), fishIndex, false);
-
-        }
-
-        public static void AnimateDeathSpray(GameLocation location, Vector2 position, Color color)
-        {
-
-            Utility.makeTemporarySpriteJuicier(new TemporaryAnimatedSprite(45, position, color, 10), location);
-
-            for (int i = 1; i < 3; i++)
-            {
-                location.temporarySprites.Add(new TemporaryAnimatedSprite(6, position + new Vector2(0f, 1f) * 64f * i, color * 0.75f, 10)
-                {
-                    delayBeforeAnimationStart = i * 159
-                });
-                location.temporarySprites.Add(new TemporaryAnimatedSprite(6, position + new Vector2(0f, -1f) * 64f * i, color * 0.75f, 10)
-                {
-                    delayBeforeAnimationStart = i * 159
-                });
-                location.temporarySprites.Add(new TemporaryAnimatedSprite(6, position + new Vector2(1f, 0f) * 64f * i, color * 0.75f, 10)
-                {
-                    delayBeforeAnimationStart = i * 159
-                });
-                location.temporarySprites.Add(new TemporaryAnimatedSprite(6, position + new Vector2(-1f, 0f) * 64f * i, color * 0.75f, 10)
-                {
-                    delayBeforeAnimationStart = i * 159
-                });
-            }
-
-            location.localSound("shadowDie");
-
-        }
-
         public static float CalculateCritical(float damage, float critChance = 0.1f, float critModifier = 2f)
         {
 
@@ -2188,6 +2265,197 @@ namespace StardewDruid
             }
 
             return pushList;
+
+        }
+
+        public static List<Farmer> FarmerProximity(GameLocation targetLocation, Vector2 targetPosition, int radius, bool checkInvincible = false)
+        {
+
+            List<Farmer> farmers = new();
+
+            int impact = radius * 64;
+
+            impact += 32;
+
+            impact = Math.Max(64, impact);
+
+            foreach (Farmer farmer in Game1.getAllFarmers())
+            {
+
+                if(checkInvincible && farmer.temporarilyInvincible)
+                {
+                    
+                    continue;
+
+                }
+
+                if (farmer.currentLocation.Name == targetLocation.Name)
+                {
+
+                    if (Vector2.Distance(targetPosition, farmer.Position) <= impact)
+                    {
+
+                        farmers.Add(farmer);
+
+                    }
+
+                }
+
+            }
+
+            return farmers;
+        
+        }
+
+        public static void DamageFarmers(GameLocation targetLocation, List<Farmer> farmers, int damage, StardewValley.Monsters.Monster monster, bool parry = false)
+        {
+
+            if(farmers.Count == 0)
+            {
+                return;
+            }
+
+            foreach (Farmer farmer in farmers)
+            {
+
+                 farmer.takeDamage(damage, parry, monster);
+
+            }
+
+        }
+
+        public static List<StardewValley.Monsters.Monster> MonsterProximity(GameLocation targetLocation, Vector2 targetPosition, int radius, bool checkInvincible = false)
+        {
+
+            List<StardewValley.Monsters.Monster> monsterList = new();
+
+            float threshold = 32 + (64 * radius);
+
+            foreach (NPC nonPlayableCharacter in targetLocation.characters)
+            {
+
+                if (nonPlayableCharacter is StardewValley.Monsters.Monster monster)
+                {
+
+                    if (monster.IsInvisible|| monster.Health <= 0)
+                    {
+
+                        continue;
+
+                    }
+
+                    if(checkInvincible && monster.isInvincible())
+                    {
+                        continue;
+                    }
+
+                    float monsterThreshold = threshold;
+
+                    if (monster.Sprite.SpriteWidth > 16)
+                    {
+                        monsterThreshold += 32f;
+                    }
+
+                    if (monster.Sprite.SpriteWidth > 32)
+                    {
+                        monsterThreshold += 32f;
+                    }
+
+                    float monsterDifference = Vector2.Distance(monster.Position, targetPosition);
+
+                    if (monsterDifference < monsterThreshold)
+                    {
+                        
+                        monsterList.Add(monster);
+
+                    }
+
+                }
+
+            }
+
+            return monsterList;
+
+        }
+
+        public static List<StardewValley.Monsters.Monster> MonsterIntersect(GameLocation targetLocation, Microsoft.Xna.Framework.Rectangle hitBox, bool checkInvincible = false)
+        {
+
+            List<StardewValley.Monsters.Monster> monsterList = new();
+
+            foreach (NPC nonPlayableCharacter in targetLocation.characters)
+            {
+
+                if (nonPlayableCharacter is StardewValley.Monsters.Monster monster)
+                {
+
+                    if (monster.IsInvisible || monster.Health <= 0)
+                    {
+
+                        continue;
+
+                    }
+
+                    if (checkInvincible && monster.isInvincible())
+                    {
+                        continue;
+                    }
+
+                    Microsoft.Xna.Framework.Rectangle boundingBox = monster.GetBoundingBox();
+
+                    if (boundingBox.Intersects(hitBox))
+                    {
+
+                        monsterList.Add(monster);
+
+                    }
+
+                }
+
+            }
+
+            return monsterList;
+
+        }
+
+        public static void DamageMonsters(GameLocation targetLocation, List<StardewValley.Monsters.Monster> monsterList, Farmer targetPlayer, int damage, bool push = false)
+        {
+
+            if(monsterList.Count == 0)
+            {
+                return;
+            }
+
+            foreach (StardewValley.Monsters.Monster monster in monsterList)
+            {
+
+                bool critApplied = false;
+
+                float critDamage = CalculateCritical(damage);
+
+                if (critDamage > 0)
+                {
+
+                    damage = (int)critDamage;
+
+                    critApplied = true;
+
+                }
+
+                List<int> diff = new() { 0, 0 };
+
+                if (push)
+                {
+
+                    CalculatePush(targetLocation, monster, targetPlayer.Position, 64);
+
+                }
+
+                Vector2 monsterPosition = monster.Position;
+
+                HitMonster(targetLocation, targetPlayer, monster, damage, critApplied, diffX: diff[0], diffY: diff[1]);
+
+            }
 
         }
 
@@ -2343,7 +2611,7 @@ namespace StardewDruid
                     Game1.stats.incrementStat("hardModeMonstersKilled", 1);
                 }
 
-                targetLocation.characters.Remove(targetMonster);
+                //targetLocation.characters.Remove(targetMonster);
 
                 Game1.stats.MonstersKilled++;
 
@@ -2351,7 +2619,7 @@ namespace StardewDruid
 
         }
 
-        public static List<Vector2> Explode(GameLocation targetLocation, Vector2 targetVector, Farmer targetPlayer, int damageRadius, int damage, int powerLevel = 1, int dirt = 0)
+        public static List<Vector2> Explode(GameLocation targetLocation, Vector2 targetVector, Farmer targetPlayer, int radius, int powerLevel = 1, int dirt = 0)
         {
 
             Tool Pick = Mod.instance.virtualPick;
@@ -2363,96 +2631,13 @@ namespace StardewDruid
             TemporaryAnimatedSprite bigAnimation = new(23, 9999f, 6, 1, new Vector2(targetVector.X * 64f, targetVector.Y * 64f), flicker: false, (Game1.random.NextDouble() < 0.5) ? true : false)
             {
                 light = true,
-                lightRadius = damageRadius + 1,
+                lightRadius = radius + 1,
                 lightcolor = Color.Black,
                 alphaFade = 0.03f - 3f * 0.003f,
                 Parent = targetLocation
             };
 
             targetLocation.temporarySprites.Add(bigAnimation);
-
-            // ----------------- damage monsters
-
-            List<StardewValley.Monsters.Monster> monsterList = new();
-
-            if (damage > 0)
-            {
-
-                foreach (NPC nonPlayableCharacter in targetLocation.characters)
-                {
-
-                    if (nonPlayableCharacter is StardewValley.Monsters.Monster monsterCharacter)
-                    {
-
-                        if (monsterCharacter.IsInvisible || monsterCharacter.isInvincible() || monsterCharacter.Health <= 0)
-                        {
-
-                            continue;
-
-                        }
-
-                        monsterList.Add(monsterCharacter);
-
-                    }
-
-                }
-
-            }
-
-            if(monsterList.Count > 0)
-            {
-
-                Vector2 targetPosition = targetVector * 64;
-
-                foreach (StardewValley.Monsters.Monster monster in monsterList)
-                {
-
-                    float threshold = 96 + (64 * damageRadius);
-
-                    if (monster.Sprite.SpriteWidth > 16)
-                    {
-                        threshold += 32f;
-                    }
-
-                    if (monster.Sprite.SpriteWidth > 32)
-                    {
-                        threshold += 32f;
-                    }
-
-                    float monsterDifference = Vector2.Distance(monster.Position, targetPosition);
-
-                    if (monsterDifference < threshold)
-                    {
-
-                        bool critApplied = false;
-
-                        float critDamage = CalculateCritical(damage);
-
-                        if (critDamage > 0)
-                        {
-
-                            damage = (int)critDamage;
-
-                            critApplied = true;
-
-                        }
-
-                        List<int> diff = new() { 0, 0 };
-
-                        if (powerLevel > 1)
-                        {
-
-                            CalculatePush(targetLocation, monster, targetPlayer.Position, 64);
-
-                        }
-
-                        HitMonster(targetLocation, targetPlayer, monster, damage, critApplied, diffX: diff[0], diffY: diff[1]);
-
-                    }
-
-                }
-
-            }
 
             // ----------------- clump destruction
 
@@ -2466,7 +2651,7 @@ namespace StardewDruid
                     
                     Vector2 targetVector1 = resourceClump.tile.Value;
                     
-                    if ((double)Vector2.Distance(targetVector1, targetVector) <= damageRadius + 1)
+                    if ((double)Vector2.Distance(targetVector1, targetVector) <= radius + 1)
                     {
                         
                         switch (resourceClump.parentSheetIndex.Value)
@@ -2496,7 +2681,7 @@ namespace StardewDruid
                     
                     Vector2 targetVector2 = stump.tile.Value;
                     
-                    if ((double)Vector2.Distance(targetVector2, targetVector) <= damageRadius + 1)
+                    if ((double)Vector2.Distance(targetVector2, targetVector) <= radius + 1)
                     {
 
                         DestroyStump(targetLocation, targetPlayer, stump, targetVector2, "Woods");
@@ -2512,7 +2697,7 @@ namespace StardewDruid
 
             List<Vector2> tileVectors;
 
-            int impactRadius = damageRadius + 1;
+            int impactRadius = radius + 1;
 
             for (int i = 0; i < impactRadius; i++)
             {
@@ -2775,182 +2960,6 @@ namespace StardewDruid
 
         }
 
-        public static void AnimateQuickWarp(GameLocation location, Vector2 position, string name = "Escape")
-        {
-
-            TemporaryAnimatedSprite firstWarp = new(0, 75f, 12, 1, position - new Vector2(16, 16), false, false)
-            {
-
-                sourceRect = new(0, 32, 32, 32),
-
-                sourceRectStartingPos = new Vector2(0, 32),
-
-                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", name + ".png")),
-
-                scale = 3f,
-
-                layerDepth = 999,
-
-                rotationChange = -0.8f,
-
-                alpha = 0.35f
-
-            };
-
-            location.temporarySprites.Add(firstWarp);
-
-        }
-
-        public static void AnimateFate(GameLocation targetLocation, Vector2 playerVector, Vector2 targetVector, int fuelSource = 768, bool fadeAway = false, bool usePosition = false)
-        {
-
-            Vector2 targetPosition;
-
-            Vector2 playerPosition;
-
-            if (usePosition)
-            {
-
-                targetPosition = targetVector;
-
-                playerPosition = playerVector - new Vector2(0, 64);
-
-            }
-            else
-            {
-
-                targetPosition = new(targetVector.X * 64, targetVector.Y * 64);
-
-                playerPosition = (playerVector * 64) - new Vector2(0, 64);
-
-            }
-
-            float xOffset = (targetPosition.X - playerPosition.X);
-
-            float yOffset = (targetPosition.Y - playerPosition.Y);
-
-            float motionX = xOffset / 1000;
-
-            float compensate = 0.555f;
-
-            float motionY = (yOffset / 1000) - compensate;
-
-            float animationSort = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString()) + 2;
-
-            float animationFade = fadeAway ? 0.001f : 0f;
-
-            Color tingleColor = (fuelSource == 768) ? Color.Yellow : Color.DarkBlue;
-
-            Microsoft.Xna.Framework.Rectangle targetRectangle = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, fuelSource, 16, 16);
-
-            TemporaryAnimatedSprite starAnimation = new("Maps\\springobjects", targetRectangle, 1000f, 1, 1, playerPosition, flicker: false, flipped: false, animationSort, animationFade, Color.White, 3f, 0f, 0f, 0.2f)
-            {
-
-                motion = new Vector2(motionX, motionY),
-
-                acceleration = new Vector2(0f, 0.001f),
-
-                timeBasedMotion = true,
-
-            };
-
-            targetLocation.temporarySprites.Add(starAnimation);
-
-            animationSort = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString()) + 1;
-
-            TemporaryAnimatedSprite tingleAnimation = new("TileSheets\\animations", new(0, 11 * 64, 64, 64), 62.5f, 8, 2, playerPosition, false, false, animationSort, animationFade, tingleColor, 1f, 0f, 0f, 0.2f)
-            {
-
-                motion = new Vector2(motionX, motionY),
-
-                acceleration = new Vector2(0f, 0.001f),
-
-                timeBasedMotion = true,
-
-                delayBeforeAnimationStart = 40,
-
-            };
-
-            targetLocation.temporarySprites.Add(tingleAnimation);
-
-            TemporaryAnimatedSprite tingleAnimationTwo = new("TileSheets\\animations", new(0, 11 * 64, 64, 64), 62.5f, 8, 2, playerPosition, false, false, animationSort, animationFade, tingleColor, 0.75f, 0f, 0f, 0.2f)
-            {
-
-                motion = new Vector2(motionX, motionY),
-
-                acceleration = new Vector2(0f, 0.001f),
-
-                timeBasedMotion = true,
-
-                delayBeforeAnimationStart = 80,
-
-            };
-
-            targetLocation.temporarySprites.Add(tingleAnimationTwo);
-
-            TemporaryAnimatedSprite tingleAnimationThree = new("TileSheets\\animations", new(0, 11 * 64, 64, 64), 62.5f, 8, 2, playerPosition, false, false, animationSort, animationFade, tingleColor, 0.75f, 0f, 0f, 0.2f)
-            {
-
-                motion = new Vector2(motionX, motionY),
-
-                acceleration = new Vector2(0f, 0.001f),
-
-                timeBasedMotion = true,
-
-                delayBeforeAnimationStart = 120,
-
-            };
-
-            targetLocation.temporarySprites.Add(tingleAnimationThree);
-
-            //targetLocation.playSoundPitched("yoba",700);
-
-        }
-
-        public static TemporaryAnimatedSprite AnimateFateTarget(GameLocation location, Vector2 playerVector, Vector2 targetVector)
-        {
-
-            Vector2 targetPosition = targetVector - new Vector2(0, 32);
-
-            Vector2 playerPosition = playerVector - new Vector2(0, 32);
-
-            float xOffset = (targetPosition.X - playerPosition.X);
-
-            float yOffset = (targetPosition.Y - playerPosition.Y);
-
-            float motionX = xOffset / 1000;
-
-            float motionY = yOffset / 1000;
-
-            float animationSort = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString()) + 2;
-
-            TemporaryAnimatedSprite warpAnimation = new(0, 1000f, 1, 1, playerPosition, false, false)
-            {
-
-                sourceRect = new(0, 0, 64, 64),
-
-                sourceRectStartingPos = new Vector2(0, 0),
-
-                texture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", "Warp.png")),
-                scale = 0.75f,
-                scaleChange = 0.0005f,
-
-                layerDepth = animationSort,
-
-                motion = new Vector2(motionX, motionY),
-
-                timeBasedMotion = true,
-
-                rotationChange = 0.08f,
-
-            };
-
-            location.temporarySprites.Add(warpAnimation);
-
-            return warpAnimation;
-
-        }
-
         public static bool MonsterVitals(StardewValley.Monsters.Monster Monster, GameLocation location)
         {
 
@@ -2963,6 +2972,7 @@ namespace StardewDruid
 
             if (Monster.Health <= 0)
             {
+
                 return false;
 
             }
@@ -3137,99 +3147,6 @@ namespace StardewDruid
                     targetLocation.resourceClumps.Remove(resourceClump);
 
                     break;
-            }
-        }
-
-        public static void AnimateRockfalls(GameLocation location, Vector2 vector)
-        {
-            Random random = new Random();
-            for (int index1 = 0; index1 < 10; ++index1)
-            {
-                int index2 = index1 % 5;
-                List<Vector2> tilesWithinRadius = GetTilesWithinRadius(location, vector, index2 + 2);
-                if (random.Next(2) == 0)
-                    tilesWithinRadius.Reverse();
-                int count = tilesWithinRadius.Count;
-                if (count != 0)
-                {
-                    int num1 = new List<int>() { 6, 8, 8, 7, 8 }[index2];
-                    int num2 = new List<int>() { 2, 2, 3, 4, 4 }[index2];
-                    for (int index3 = 0; index3 < num2; ++index3)
-                    {
-                        int minValue = num1 * index3;
-                        if (minValue + 1 < count)
-                        {
-                            int castDelay = random.Next(3, 20) * 100;
-                            int maxValue = Math.Min(minValue + num1, tilesWithinRadius.Count);
-                            int index4 = random.Next(minValue, maxValue);
-                            Vector2 vector2 = tilesWithinRadius[index4];
-                            AnimateRockfall(location, vector2, castDelay);
-                            for (int level = 0; level < 3; ++level)
-                            {
-                                foreach (Vector2 tilesWithinRadiu in ModUtility.GetTilesWithinRadius(location, vector2, level))
-                                    AnimateCastRadius(location, tilesWithinRadiu, new Color(0.8f, 1f, 0.8f, 1f), castDelay + index2 * 200);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        public static void AnimateRockfall(GameLocation targetLocation,Vector2 targetVector,int castDelay,int objectIndex = -1,int scatterIndex = -1)
-        {
-            if (objectIndex == -1)
-            {
-                List<int> intList = SpawnData.RockFall(targetLocation, Game1.player);
-                objectIndex = intList[0];
-                scatterIndex = intList[1];
-            }
-            Microsoft.Xna.Framework.Rectangle standardTileSheet1 = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, objectIndex, 16, 16);
-            Microsoft.Xna.Framework.Rectangle standardTileSheet2 = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, scatterIndex, 16, 16);
-            float num1 = 575f;
-            Vector2 vector2 = new((float)(targetVector.X * 64.0 + 8.0), (float)((targetVector.Y - 3.0) * 64.0 - 24.0));
-            float num2 = 0.0015f;
-            float num3 = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString() + "1");
-            TemporaryAnimatedSprite temporaryAnimatedSprite1 = new TemporaryAnimatedSprite("Maps\\springobjects", standardTileSheet2, num1, 1, 0, vector2, false, false, num3, 1f / 1000f, Color.White, 3f, 0.0f, 0.0f, 0.0f, false)
-            {
-                acceleration = new Vector2(0.0f, num2),
-                timeBasedMotion = true,
-                delayBeforeAnimationStart = castDelay
-            };
-            targetLocation.temporarySprites.Add(temporaryAnimatedSprite1);
-
-            vector2 = new((float)(targetVector.X * 64.0 + 8.0), (float)((targetVector.Y - 3.0) * 64.0 + 8.0));
-            float num4 = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString() + "2");
-            TemporaryAnimatedSprite temporaryAnimatedSprite2 = new TemporaryAnimatedSprite("Maps\\springobjects", standardTileSheet1, num1, 1, 0, vector2, false, false, num4, 1f / 1000f, Color.White, 3f, 0.0f, 0.0f, 0.0f, false)
-            {
-                acceleration = new Vector2(0.0f, num2),
-                timeBasedMotion = true,
-                delayBeforeAnimationStart = castDelay
-            };
-            targetLocation.temporarySprites.Add(temporaryAnimatedSprite2);
-
-            vector2 = new((float)(targetVector.X * 64.0 + 16.0), (float)(targetVector.Y * 64.0 + 16.0));
-            float num5 = float.Parse("0.0" + targetVector.X.ToString() + targetVector.Y.ToString() + "3");
-            TemporaryAnimatedSprite temporaryAnimatedSprite3 = new TemporaryAnimatedSprite("Maps\\springobjects", standardTileSheet1, num1, 1, 0, vector2, false, false, num5, 1f / 1000f, Color.Black * 0.5f, 2f, 0.0f, 0.0f, 0.0f, false)
-            {
-                delayBeforeAnimationStart = castDelay
-            };
-            targetLocation.temporarySprites.Add(temporaryAnimatedSprite3);
-        }
-
-        public static void DamageFarmers(GameLocation location,Microsoft.Xna.Framework.Rectangle zone,int damage,StardewValley.Monsters.Monster monster,bool parry = false)
-        {
-            foreach (Farmer farmer in Game1.getAllFarmers())
-            {
-                if (farmer.currentLocation.Name == location.Name)
-                {
-                    Microsoft.Xna.Framework.Rectangle boundingBox = farmer.GetBoundingBox();
-                    if (boundingBox.Intersects(zone))
-                    {
-                        farmer.takeDamage(damage, parry, monster);
-
-                    }
-
-                }
             }
         }
 

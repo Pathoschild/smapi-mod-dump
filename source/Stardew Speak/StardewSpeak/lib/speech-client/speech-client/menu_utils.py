@@ -3,23 +3,16 @@ import server, constants
 import asyncio
 import functools
 import inspect
-from typing_extensions import Any, TypedDict
-from typing import NotRequired
+from typing import Any, TypedDict
+
+from sdv_types import ClickableComponent
 
 MENU_GRAMMAR_COUNT = 0
-
-type Point = tuple[int, int]
 
 
 class BaseMenu(TypedDict):
     menuType: str
 
-
-class ClickableComponent(TypedDict):
-    containsMouse: bool
-    visible: bool
-    center: Point
-    focusTarget: NotRequired[Point]
 
 
 async def focus_component(cmp: ClickableComponent):

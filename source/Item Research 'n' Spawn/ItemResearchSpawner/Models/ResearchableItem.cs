@@ -94,7 +94,7 @@ namespace ItemResearchSpawner.Models
 
             try
             {
-                return money / ModManager.Instance.GetItemPrice(item);
+                return money / ModManager.Instance.GetItemBuyPrice(item);
             }
             
             catch (Exception)

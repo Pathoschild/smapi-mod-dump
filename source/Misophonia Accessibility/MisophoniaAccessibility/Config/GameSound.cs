@@ -18,11 +18,13 @@ namespace MisophoniaAccessibility.Config
 {
     public class GameSound : Attribute
     {
-        public string Name { get; private set; }
+        public string CodeName { get; private set; }
+        public string DisplayName { get; private set; }
 
-        public GameSound(string name)
+        public GameSound(string codeName, string displayName)
         {
-            this.Name = name;
+            CodeName = codeName;
+            DisplayName = displayName;
         }
     }
 }

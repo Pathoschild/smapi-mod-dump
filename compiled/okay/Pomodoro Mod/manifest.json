@@ -1,0 +1,17 @@
+{
+  "Name": "Pomodoro Mod",
+  "Author": "Yasser",
+  "Version": "1.0.0",
+  "Description": "<One or two sentences about the mod>",
+  "UniqueID": "Yasser.PomodoroMod",
+  "EntryDll": "Pomodoro Mod.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [],
+  "Dependencies":
+	[
+    	{
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": true
+        }
+    ]
+}

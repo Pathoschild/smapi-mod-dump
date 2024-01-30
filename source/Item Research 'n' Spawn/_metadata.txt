@@ -6,12 +6,11 @@ mods:
    Item Research 'n' Spawn
 
 latest commit:
-   commit 286f0005b5dd114dc2b05f807b0d3f90d945a097
-   Author: aleksi_ttu <aleksi@ttu.ee>
-   Date:   Mon Aug 23 00:42:58 2021 +0300
+   commit 1a0d19df5553818919e029c8660e1e1946810665
+   Author: Aleksandr Ivanov <32095012+TSlex@users.noreply.github.com>
+   Date:   Sat Jan 6 15:29:00 2024 +0200
    
-       Merge remote-tracking branch 'origin/master'
+       Merge pull request #2 from TSlex/update
        
-       # Conflicts:
-       #       ItemResearchSpawner/release-notes.md
+       Update to 1.0.1
    

@@ -2,6 +2,7 @@ import re
 import game, constants, server, objective
 import dragonfly as df
 import menu_utils
+from typing import Iterable
 
 DEFAULT_LOCATIONS = (
     "FarmHouse",
@@ -164,9 +165,9 @@ class Point:
         command = " ".join(capitals_split).lower()
         return [f"[the] {command}"]
 
-    async def get_tiles(self, item):
+    async def get_tiles(self):
         if callable(self.tiles):
-            return await self.tiles(item)
+            return await self.tiles()
         return [{"tileX": x[0], "tileY": x[1]} for x in self.tiles]
 
 
@@ -226,8 +227,7 @@ points = (
 )
 
 
-def commands(locs: list[Location]):
-    import server
+def commands(locs: Iterable[Location]):
 
     commands: dict[str, Location] = {}
     for loc in locs:

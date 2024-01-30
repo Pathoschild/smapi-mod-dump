@@ -6,5 +6,9 @@ __MACOSX
 *.zip
 
 # very large files
+compiled/**/Pussle/Content/Fonts/squarefont_0.xnb
+compiled/**/Pussle/Content/Fonts/squarefont_1.xnb
 compiled/**/Stardew and Chill/StardewAndChill.dll
+compiled/**/Stardew Valley Timelapse/Magick.Native-Q16-x64.dll
 source/~tylergibbs2/BattleRoyale/Assets
+source/Refund Staircases/Stardew Valley/*

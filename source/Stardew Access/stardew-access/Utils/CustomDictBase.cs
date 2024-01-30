@@ -45,7 +45,7 @@ namespace stardew_access.Utils
         {
             get
             {
-                List<TKey> keys = new();
+                List<TKey> keys = [];
                 foreach (KeyValuePair<TKey, TValue> kvp in this)
                 {
                     keys.Add(kvp.Key);
@@ -58,7 +58,7 @@ namespace stardew_access.Utils
         {
             get
             {
-                List<TValue> values = new();
+                List<TValue> values = [];
                 foreach (KeyValuePair<TKey, TValue> kvp in this)
                 {
                     values.Add(kvp.Value);

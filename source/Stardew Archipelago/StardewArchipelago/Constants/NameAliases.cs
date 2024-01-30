@@ -25,6 +25,7 @@ namespace StardewArchipelago.Constants
             new List<string> { "Egg (Brown)", "Brown Egg" },
             new List<string> { "Large Egg (Brown)", "Large Brown Egg" },
             new List<string> { "Cookie", "Cookies" },
+            new List<string> { "Pina Colada", "Piña Colada" },
         };
 
         public static Dictionary<string, string> RecipeNameAliases = new()

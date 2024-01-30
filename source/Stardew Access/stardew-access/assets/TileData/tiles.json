@@ -539,7 +539,7 @@
       "Category": "interactable"
     }
   ],
-  "BlackSmith": [
+  "Blacksmith": [
     {
       "NameOrTranslationKey": "static_tile-common-shop_counter",
       "X": [3],

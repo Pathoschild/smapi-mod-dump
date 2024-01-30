@@ -16,8 +16,8 @@ namespace stardew_access.Patches
     {
         public static void PatchAll(Harmony harmony)
         {
-            List<IPatch> allPatches = new()
-            {
+            List<IPatch> allPatches =
+            [
                 // Bundle Menu Patches
                 new JojaCDMenuPatch(),
                 new JunimoNoteMenuPatch(),
@@ -82,7 +82,7 @@ namespace stardew_access.Patches
                 new FishingMiniGamePatch(),
                 new GrandpaStoryPatch(),
                 new IntroPatch(),
-            };
+            ];
 
             foreach (IPatch patch in allPatches)
             {

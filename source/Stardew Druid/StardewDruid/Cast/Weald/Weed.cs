@@ -17,11 +17,15 @@ namespace StardewDruid.Cast.Weald
     internal class Weed : CastHandle
     {
 
-        public Weed(Vector2 target, Rite rite)
+        public float damage;
+
+        public Weed(Vector2 target, Rite rite, float Damage)
             : base(target, rite)
         {
 
             castCost = 1;
+
+            damage = Damage;
 
         }
 
@@ -50,13 +54,15 @@ namespace StardewDruid.Cast.Weald
 
             }
 
-            List<Vector2> impactVectors = ModUtility.Explode(targetLocation, targetVector, targetPlayer, explodeRadius, (int)(riteData.castDamage * 0.25), powerLevel:1);
+            ModUtility.DamageMonsters(targetLocation, ModUtility.MonsterProximity(targetLocation, targetVector * 64, explodeRadius, true), targetPlayer, (int)(damage * 0.25));
+
+            List<Vector2> impactVectors = ModUtility.Explode(targetLocation, targetVector, targetPlayer, explodeRadius, powerLevel:1);
 
             targetLocation.playSound("flameSpellHit");
 
             foreach (Vector2 vector in impactVectors)
             {
-                ModUtility.ImpactVector(targetLocation, vector);
+                ModUtility.AnimateDestruction(targetLocation, vector);
 
             }
 

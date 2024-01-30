@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
 using StardewDruid.Map;
+using StardewModdingAPI;
 using StardewValley;
 using System;
 
@@ -155,7 +156,25 @@ namespace StardewDruid.Event.Scene
         public void SpawnEffigy()
         {
 
-            CharacterData.CharacterLoad("Effigy", "FarmCave");
+            if (!Context.IsMainPlayer)
+            {
+
+                if (!CharacterData.CharacterFind("Effigy"))
+                { 
+                    
+                    Mod.instance.CastMessage("Effigy introduction requires multiplayer host");
+
+                    return;
+
+                }
+
+            }
+            else
+            {
+               
+                CharacterData.CharacterLoad("Effigy", "FarmCave");
+
+            }
 
             Mod.instance.CharacterRegister("Effigy", "FarmCave");
 

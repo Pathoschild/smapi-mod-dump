@@ -18,11 +18,11 @@ mods:
    Water Pet Bowl
 
 latest commit:
-   commit 20406ed9fbb28321ae08bc6eaa73aa6caa7f0501
+   commit 7b2dc94c57e4ea7a2ab945621e8a00483cc180cb
    Author: Mizzion <36684211+Mizzion@users.noreply.github.com>
-   Date:   Mon Aug 1 15:43:30 2022 -0600
+   Date:   Fri Jan 26 15:59:11 2024 -0700
    
-       Most Recent Enhanced RelationShips
+       Fixed a minor bug
        
-       most recent ER
+       Fixed a minor bug with animal house mod
    

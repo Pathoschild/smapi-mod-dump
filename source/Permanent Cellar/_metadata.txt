@@ -6,9 +6,9 @@ mods:
    Permanent Cellar
 
 latest commit:
-   commit 10dbddd7354a5a450547f0d22d744913fb413251
+   commit f7d6b73fdabe6fc40c8f1763323a727303d99475
    Author: CyanFireUK <killa796@hotmail.com>
-   Date:   Mon Jul 31 18:15:22 2023 +0100
+   Date:   Sat Jan 13 15:27:50 2024 +0000
    
-       Added compatibility for Cellar maps that change the default warp entry locations
+       Code fixes backported from 1.6 alpha version
    

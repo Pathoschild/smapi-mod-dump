@@ -19,11 +19,11 @@ namespace EqualMoneySplit.Events
 {
     public class MultiplayerEventHandlers
     {
-        public void OnPeerConnected(object sender, PeerConnectedEventArgs args)
+        public async void OnPeerConnected(object sender, PeerConnectedEventArgs args)
         {
             EventSubscriber.Instance.TrySetEventSubscriptions();
 
-            Task requestTask = Task.Run(() =>
+            Task requestTask = Task.Run(async () =>
             {
                 bool hasPlayerConnected = Game1.getOnlineFarmers().Any(f => f.UniqueMultiplayerID == args.Peer.PlayerID); ;
                 int intervalsWaited = 0;
@@ -34,7 +34,7 @@ namespace EqualMoneySplit.Events
                     if (hasPlayerConnected)
                         break;
 
-                    Thread.Sleep(100);
+                    await Task.Delay(100);
                     intervalsWaited++;
                 }
 
@@ -43,6 +43,10 @@ namespace EqualMoneySplit.Events
                 else
                     CheckForValidModInstall(args.Peer, args.Peer.PlayerID.ToString());
             });
+
+            await requestTask;
+
+            EqualMoneyMod.FarmerData.Value ??= new();
         }
         public void OnPeerDisconnected(object sender, PeerDisconnectedEventArgs args)
         {

@@ -19,13 +19,19 @@ namespace FarmVisitors
         public int StartingHours { get; set; } = 800;
         public int EndingHours { get; set; } = 2000;
         public int Duration { get; set; } = 6;
-        public bool Verbose { get; set; } = false;
-        public bool Debug { get; set; } = false;
+        public bool Verbose { get; set; }
+        public bool Debug { get; set; }
 	    public string InLawComments { get; set; } = "VanillaOnly";
-        public bool ReplacerCompat { get; set; } = false;
-        public bool NeedsConfirmation { get; set; } = false;
+        public bool ReplacerCompat { get; set; }
+        public bool NeedsConfirmation { get; set; }
         public bool RejectionDialogue { get; set; } = true;
         public bool WalkOnFarm { get; set; } = true;
+        public bool Shed { get; set; } = true;
+        //public bool AnimalHomes { get; set; }
+        public bool Greenhouse { get; set; } = true;
         public bool UniqueDialogue { get; set; } = true;
+        public bool Sleepover { get; set; }
+        public int SleepoverMinHearts { get; set; } = 3;
+        public int SleepoverChance { get; set; } = 10;
     }
 }

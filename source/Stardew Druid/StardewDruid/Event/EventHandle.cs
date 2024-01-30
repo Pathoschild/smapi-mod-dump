@@ -15,13 +15,22 @@ using StardewDruid.Map;
 using StardewDruid.Monster;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Characters;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using xTile.Layers;
 
 namespace StardewDruid.Event
 {
     public class EventHandle
     {
+
+        public string eventId;
+
+        public double eventTime;
+
+        public bool eventLock;
 
         public int activeCounter;
 
@@ -45,18 +54,26 @@ namespace StardewDruid.Event
 
         public MonsterHandle monsterHandle;
 
-        public List<Torch> torchList;
+        //public List<Torch> torchList;
 
-        public List<Actor> actors;
+        public List<StardewDruid.Event.Brazier> braziers;
+
+        public List<StardewDruid.Character.Actor> actors;
+
+        public List<TemporaryAnimatedSprite> animations;
 
         public Vector2 voicePosition;
 
         public bool soundTrack;
 
-        public bool eventSync;
+        public List<Vector2> ladders;
 
         public EventHandle(Vector2 target, Rite rite)
         {
+
+            eventId = rite.castType;
+
+            eventTime = Game1.currentGameTime.TotalGameTime.TotalMilliseconds;
 
             riteData = rite;
 
@@ -74,9 +91,13 @@ namespace StardewDruid.Event
 
             voicePosition = target * 64;
 
-            torchList = new();
+            braziers = new();
 
             actors = new();
+
+            ladders = new();
+
+            animations = new();
 
         }
 
@@ -97,42 +118,45 @@ namespace StardewDruid.Event
         public virtual bool EventActive()
         {
 
-            if (targetPlayer.currentLocation == targetLocation && !eventAbort)
-            {
-
-                double nowTime = Game1.currentGameTime.TotalGameTime.TotalSeconds;
-
-                if (expireTime >= nowTime && !expireEarly)
-                {
-
-                    int diffTime = (int)Math.Round(expireTime - nowTime);
-
-                    if (activeCounter != 0 && diffTime % 10 == 0 && diffTime != 0)
-                    {
-
-                        MinutesLeft(diffTime);
-
-                    }
-
-                    return true;
-
-                }
-
-                return EventExpire();
-
-            }
-            else
+            if (eventAbort)
             {
 
                 EventAbort();
 
+                return false;
+
             }
 
-            return false;
+            if (targetPlayer.currentLocation.Name != targetLocation.Name)
+            {
+
+                EventAbort();
+
+                return false;
+
+            }
+
+            if (expireEarly)
+            {
+
+                return EventExpire();
+
+            }
+
+            double nowTime = Game1.currentGameTime.TotalGameTime.TotalSeconds;
+
+            if (expireTime < nowTime)
+            {
+
+                return EventExpire();
+
+            }
+
+            return true;
 
         }
 
-        public virtual bool EventPerformAction(SButton Button)
+        public virtual bool EventPerformAction(SButton Button, string type = "Action")
         {
 
             return false;
@@ -149,6 +173,12 @@ namespace StardewDruid.Event
         {
 
             expireTime++;
+
+        }
+
+        public virtual void AttemptAbort()
+        {
+
 
         }
 
@@ -187,41 +217,46 @@ namespace StardewDruid.Event
 
         }
 
-        public virtual void EventRemove()
+        public virtual void RemoveBraziers()
         {
 
-            RemoveMonsters();
-
-            if (torchList.Count > 0)
+            if (braziers.Count > 0)
             {
 
-                foreach (Torch torch in torchList)
+                foreach (Brazier brazier in braziers)
                 {
 
-                    targetLocation.objects.Remove(torch.TileLocation);
-
-                    LightSource portalLight = torch.lightSource;
-
-                    if (targetLocation.hasLightSource(portalLight.Identifier))
-                    {
-
-                        targetLocation.removeLightSource(portalLight.Identifier);
-
-                    }
-
-                    if (Game1.currentLightSources.Contains(portalLight))
-                    {
-
-                        Game1.currentLightSources.Remove(portalLight);
-                    }
+                    brazier.shutdown();
 
                 }
 
-                torchList.Clear();
-
-                Game1.playSound("fireball");
+                braziers.Clear();
 
             }
+
+        }
+
+        public void ResetBraziers()
+        {
+
+            for (int i = braziers.Count - 1; i >= 0; i--)
+            {
+
+                Brazier brazier = braziers.ElementAt(i);
+
+                if (!brazier.reset())
+                {
+
+                    braziers.RemoveAt(i);
+
+                }
+
+            }
+
+        }
+
+        public virtual void RemoveActors()
+        {
 
             if (actors.Count > 0)
             {
@@ -238,6 +273,39 @@ namespace StardewDruid.Event
 
             }
 
+
+        }
+
+        public virtual void RemoveAnimations()
+        {
+            
+            if (animations.Count > 0)
+            {
+                
+                foreach (TemporaryAnimatedSprite animation in animations)
+                {
+                    
+                    targetLocation.temporarySprites.Remove(animation);
+                
+                }
+
+                animations.Clear();
+            
+            }
+
+        }
+
+        public virtual void EventRemove()
+        {
+
+            RemoveMonsters();
+
+            RemoveBraziers();
+
+            RemoveActors();
+
+            RemoveAnimations();
+
             if (soundTrack)
             {
 
@@ -251,20 +319,6 @@ namespace StardewDruid.Event
         {
 
             activeCounter++;
-
-            if (eventLinger != -1)
-            {
-
-                return;
-
-            }
-
-            if (monsterHandle != null)
-            {
-
-                monsterHandle.SpawnInterval();
-
-            }
 
         }
 
@@ -293,10 +347,45 @@ namespace StardewDruid.Event
 
         public void AddActor(Vector2 position, bool slave = false)
         {
+            
             Actor actor = CharacterData.DisembodiedVoice(this.targetLocation, position);
+
             actor.drawSlave = slave;
+
             targetLocation.characters.Add(actor);
+
             actors.Add(actor);
+
+        }
+
+        public void RemoveLadders()
+        {
+            Layer layer = targetLocation.map.GetLayer("Buildings");
+
+            for (int index1 = 0; index1 < layer.LayerHeight; ++index1)
+            {
+                
+                for (int index2 = 0; index2 < layer.LayerWidth; ++index2)
+                {
+                    
+                    if (layer.Tiles[index2, index1] != null && layer.Tiles[index2, index1].TileIndex == 173)
+                    {
+                        
+                        layer.Tiles[index2, index1] = null;
+                        
+                        Game1.player.TemporaryPassableTiles.Clear();
+                        
+                        if (ladders.Count == 0)
+                        {
+                            ladders.Add(new Vector2(index2, index1));
+                        }
+
+                    }
+                
+                }
+            
+            }
+        
         }
 
     }

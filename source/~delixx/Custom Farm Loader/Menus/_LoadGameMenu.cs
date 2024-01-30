@@ -196,8 +196,8 @@ namespace Custom_Farm_Loader.Menus
 
             if (farm != null)
                 name = farm.Name;
-            else if (ModFarms.Exists(el => el.ID == whichFarm))
-                name = ModFarms.Find(el => el.ID == whichFarm).MapName.Replace("_", " ");
+            else if (ModFarms.Exists(el => el.Id == whichFarm))
+                name = ModFarms.Find(el => el.Id == whichFarm).MapName.Replace("_", " ");
             else if (new Regex(".+\\..+\\/.+").IsMatch(whichFarm)) //If it's a CFL type we take only the name part
                 name = whichFarm.Split("/").Last();
             else
@@ -233,7 +233,7 @@ namespace Custom_Farm_Loader.Menus
                 return icon;
             }
 
-            var farm = ModFarms.Find(el => el.ID == whichFarm);
+            var farm = ModFarms.Find(el => el.Id == whichFarm);
 
             if (farm == null || farm.IconTexture == "") {
                 CachedFarmTypeIcons.Add(whichFarm, null);

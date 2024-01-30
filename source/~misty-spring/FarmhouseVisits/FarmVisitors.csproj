@@ -1,17 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+	  <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <Reference Include="StardewValley">
-      <HintPath>/home/mist/.steam/steam/steamapps/common/Stardew Valley/Stardew Valley.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

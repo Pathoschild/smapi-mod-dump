@@ -64,7 +64,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
 
         private static readonly Dictionary<ShopIdentification, PricedItem[]> craftsanityRecipes = new()
         {
-            { new ShopIdentification("AdventureGuild", "Marlon"), new[] { new PricedItem("Magic Elixir", 3000), new PricedItem("Travel Charm", 250) } },
+            { new ShopIdentification("AdventureGuild", "Marlon"), new[] { new PricedItem("Magic Elixir", 3000), new PricedItem("Travel Core", 250) } },
         };
 
 
@@ -102,7 +102,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 }
 
                 CheckTileAnalyzeLocations(player, spellsLearned, targetX, targetY);
-                if (spellsLearned.Any(spell => _locationChecker.IsLocationMissingAndExists(spell)))
+                if (spellsLearned.Any(spell => _locationChecker.IsLocationMissing(spell)))
                 {
                     Game1.playSound("secret1");
                 }
@@ -235,9 +235,9 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
             var tile = player.currentLocation.map.GetLayer("Buildings").Tiles[(int)tilePos.X, (int)tilePos.Y];
             if (tile != null && tile.TileIndex == MINE_LADDER)
                 spellsLearned.Add(ANALYZE_DESCEND_AP_LOCATION);
-            if (player.currentLocation is Farm farm)
+            if (player.currentLocation is Farm farm || player.currentLocation.Name.Contains("DeepWoods"))
             {
-                foreach (var clump in farm.resourceClumps)
+                foreach (var clump in player.currentLocation.resourceClumps)
                 {
                     if (clump.parentSheetIndex.Value == CROP_TILE &&
                         new Rectangle((int)clump.tile.Value.X, (int)clump.tile.Value.Y, clump.width.Value, clump.height.Value).Contains((int)tilePos.X, (int)tilePos.Y))

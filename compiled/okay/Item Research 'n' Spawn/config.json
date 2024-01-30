@@ -1,5 +1,8 @@
 {
-  "ShowMenuKey": "R",
-  "DefaultMode": "Spawn",
-  "UseDefaultConfig": true
+  "ShowMenuButton": "R",
+  "DefaultMode": "Research",
+  "UseDefaultBalanceConfig": true,
+  "ResearchAmountMultiplier": 1.5,
+  "SellPriceMultiplier": 0.9,
+  "BuyPriceMultiplier": 1.1
 }

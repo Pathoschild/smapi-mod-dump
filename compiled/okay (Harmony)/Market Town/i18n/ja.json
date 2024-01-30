@@ -269,7 +269,7 @@
   "foodstore.dishday.8": "今日は{{dishToday}}の味でスパイスを効かせましょう！特別メニューです。",
   "foodstore.dishday.9": "町の話題：今日の必食の料理は{{dishToday}}です！",
   "foodstore.config.chat": "重要でないメッセージを無効にしますか？",
-  "foodstore.thankyou": "[144] フードストアをご利用いただきありがとうございます！[144] もし、このモッドを楽しんでいただけているなら、あなたのサポートはとても大切です。今後のアップデートのために投票やフォローをしてくださると嬉しいです。あなたの熱意が私たちの創造力のキッチンを刺激します！[43] #MarketTown",
+  "foodstore.thankyou": "[144] マーケットタウンとの別のアップデート！ [144] このモッドを楽しんで、今後の改良が待ちきれませんか？ フォローとエンドーズをお忘れなく！！ あなたの情熱が私たちの船を前進させます。 [43] #MarketTown",
   "foodstore.visitoreat.0": "ありがとうございます！",
   "foodstore.visitoreat.1": "お食事！！！",
   "foodstore.visitoreat.2": "おいしい！",
@@ -592,5 +592,63 @@
   "foodstore.general.child.rude.neutral.4": "ああ、わからない？ わたし遊んでいるんだよ。楽しいものがないなら、私を邪魔しないでね。",
   "foodstore.general.child.rude.neutral.5": "見て、私は会話する気分じゃないんだ。もし楽しくないなら、今回はやめておいて。",
   "foodstore.general.child.rude.neutral.6": "なぜまだここにいますか？クールな話やおもちゃを持っていないなら、さっさと去ってください。",
-  "foodstore.general.child.rude.neutral.7": "あの、本当に？楽しいことがないなら、興味ありません。"
+  "foodstore.general.child.rude.neutral.7": "あの、本当に？楽しいことがないなら、興味ありません。",
+  "foodstore.weaponText": "偉大な者",
+  "foodstore.config.dialogue":     "ダイアログ設定",
+  "foodstore.config.disablekidask": "子供が遊びたいと頼むのを無効にする",
+  "foodstore.config.enablesaleweapon": "武器の販売を可能にする",
+  "mannequin.desc": "洋服、帽子、またはブーツをかけることができます。",
+  "mannequin.name.plain-male": "通常のマネキン",
+  "mannequin.name.plain-female": "通常の女性用マネキン",
+  "mannequin.name.magic-male": "マジックマネキン",
+  "mannequin.name.magic-female": "マジック女性用マネキン",
+
+  "foodstore.soldclothes": "{{locationString}}で{{saleString}}Gで服を販売しました",
+
+  "foodstore.soldclothesText.0": "これは私に良く見えるかもしれません",
+  "foodstore.soldclothesText.1": "この色は私のスタイルに合うかどうか考えてみます",
+  "foodstore.soldclothesText.2": "このアイテムでワードローブをアップグレードする時間です",
+  "foodstore.soldclothesText.3": "これをコレクションに加えるのを我慢できません",
+  "foodstore.soldclothesText.4": "次の特別な場面にぴったりの選択",
+  "foodstore.soldclothesText.5": "変化を求めて新しいものを試してみる",
+  "foodstore.soldclothesText.6": "決して流行から外れないクラシックな一着",
+  "foodstore.config.randompurchase": "NPCがランダムアイテムを購入しますか？",
+  "foodstore.config.randompurchaseText": "デフォルトでは、NPCは最も近くのアイテムに移動します。Trueに設定すると、検索範囲内でランダムなアイテムを購入します。",
+
+  "foodstore.config.signrange": "看板で店をマークしますか？",
+"foodstore.config.signrangeText": "0に設定して無効にします。この制限により、設置された看板からの距離内でのみ有効なアイテムをNPCが購入できます。範囲外のアイテムは無視されます。倉庫内では適用されません。",
+
+"foodstore.config.doorentry": "ドア付近にNPCが生成されます",
+"foodstore.config.doorentryText": "デフォルトはTrue：訪問者は入り口の近くに生成されます。NPCをライセンスサインの場所の近くに生成するにはFalseに設定します",
+
+"foodstore.config.shedvisitchance": "倉庫訪問のチャンス",
+"foodstore.config.shedvisitchanceText": "デフォルトは0.1。10分ごとに倉庫に新しい訪問者が現れる確率。0.25未満がお勧めです！",
+
+"foodstore.config.maxshedcapacity": "倉庫の最大訪問者数",
+"foodstore.config.maxshedcapacityText": "デフォルトは3。1つの倉庫の最大収容人数。極端な値は極端なラグを引き起こす可能性があります。同時にすべての倉庫のNPCの総数を8未満に保つことが強く推奨されています",
+
+"foodstore.config.timestay": "NPCの滞在時間は？",
+"foodstore.config.timestayText": "デフォルトは100（1時間と同等）。200未満がお勧めです",
+
+"foodstore.config.openhour": "開店時間",
+"foodstore.config.closehour": "閉店時間",
+
+"foodstore.config.shed": "倉庫の設定",
+
+"foodstore.config.shedbuychance": "訪問者の購入チャンス",
+"foodstore.config.shedbuychanceText": "デフォルトは0.2。訪問者が物置内のアイテムを購入するチャンス",
+
+"foodstore.config.shedminutetohungry": "購入までの分数",
+"foodstore.config.shedminutetohungryText": "デフォルトは60。各購入の間の制限時間",
+
+"foodstore.shedguestgreeting": "こんにちは"
+
+
+
+
+
+
+
+
+
 }

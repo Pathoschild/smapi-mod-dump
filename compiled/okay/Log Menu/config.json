@@ -1,0 +1,7 @@
+{
+  "LogLimit": 30,
+  "StartFromBottom": true,
+  "OldestToNewest": true,
+  "NonNPCDialogue": true,
+  "LogButton": "L"
+}

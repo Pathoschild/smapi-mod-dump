@@ -11,7 +11,7 @@
 using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
 using StardewDruid.Map;
-using StardewDruid.Monster;
+using StardewDruid.Monster.Template;
 using StardewValley;
 using StardewValley.Objects;
 using System.Collections.Generic;
@@ -29,14 +29,12 @@ namespace StardewDruid.Event.Challenge
 
         public int trashCollected;
 
-        public BossBat bossMonster;
-
-        public List<Vector2> ladderPlacement;
+        public BigBat bossMonster;
 
         public Aquifer(Vector2 target, Rite rite, Quest quest)
             : base(target, rite, quest)
         {
-            ladderPlacement = new List<Vector2>();
+            
         }
 
         public override void EventTrigger()
@@ -81,7 +79,7 @@ namespace StardewDruid.Event.Challenge
                 foreach (Vector2 castVector in castSelection)
                 {
 
-                    Tile backTile = backLayer.PickTile(new Location((int)castVector.X * 64, (int)castVector.Y * 64), Game1.viewport.Size);
+                    Tile backTile = backLayer.PickTile(new xTile.Dimensions.Location((int)castVector.X * 64, (int)castVector.Y * 64), Game1.viewport.Size);
 
                     if (backTile != null)
                     {
@@ -149,16 +147,16 @@ namespace StardewDruid.Event.Challenge
 
                     Game1.addHUDMessage(new HUDMessage($"Collected {trashCollected} pieces of trash!", ""));
 
-                    List<string> NPCIndex = VillagerData.VillagerIndex("mountain");
-
-                    Game1.addHUDMessage(new HUDMessage($"You have gained favour with the mountain residents and their friends", ""));
-
-                    Mod.instance.CompleteQuest(questData.name);
+                    EventComplete();
 
                     if (!questData.name.Contains("Two"))
                     {
 
-                        UpdateFriendship(NPCIndex);
+                        List<string> NPCIndex = VillagerData.VillagerIndex("mountain");
+
+                        Game1.addHUDMessage(new HUDMessage($"You have gained favour with the mountain residents and their friends", ""));
+
+                        ModUtility.UpdateFriendship(Game1.player,NPCIndex);
 
                         Mod.instance.dialogue["Effigy"].specialDialogue["journey"] = new() { "I sense a change", "The rite disturbed the bats. ALL the bats." };
 
@@ -180,11 +178,11 @@ namespace StardewDruid.Event.Challenge
 
         public override void EventRemove()
         {
-            if (ladderPlacement.Count > 0)
+            if (ladders.Count > 0)
             {
                 Layer layer = targetLocation.map.GetLayer("Buildings");
-                int x = (int)ladderPlacement.First<Vector2>().X;
-                int y = (int)ladderPlacement.First<Vector2>().Y;
+                int x = (int)ladders.First<Vector2>().X;
+                int y = (int)ladders.First<Vector2>().Y;
                 if (layer.Tiles[x, y] == null)
                 {
                     layer.Tiles[x, y] = new StaticTile(layer, targetLocation.map.TileSheets[0], 0, 173);
@@ -200,13 +198,17 @@ namespace StardewDruid.Event.Challenge
 
             activeCounter++;
 
+            monsterHandle.SpawnCheck();
+
             if (eventLinger != -1)
             {
 
                 return;
 
             }
+            
             RemoveLadders();
+            
             monsterHandle.SpawnInterval();
 
             if (randomIndex.Next(2) == 0)
@@ -226,11 +228,11 @@ namespace StardewDruid.Event.Challenge
 
             if (activeCounter == 20)
             {
-                StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(11, new(30, 13), riteData.combatModifier);
+                StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(11, new(30, 13));
 
-                bossMonster = theMonster as BossBat;
+                bossMonster = theMonster as BigBat;
 
-                bossMonster.posturing = true;
+                bossMonster.posturing.Set(true);
 
                 riteData.castLocation.characters.Add(bossMonster);
 
@@ -264,7 +266,9 @@ namespace StardewDruid.Event.Challenge
 
                     case 37: bossMonster.showTextAboveHead("...is angry..."); break;
 
-                    case 39: bossMonster.showTextAboveHead("CHEEEP"); bossMonster.posturing = false; bossMonster.focusedOnFarmers = true; break;
+                    case 39: bossMonster.showTextAboveHead("CHEEEP");
+                        bossMonster.posturing.Set(false);
+                        bossMonster.focusedOnFarmers = true; break;
 
                     case 56:
 
@@ -274,7 +278,7 @@ namespace StardewDruid.Event.Challenge
 
                     case 57:
 
-                        Cast.Weald.Rockfall rockFall = new(bossMonster.getTileLocation(), riteData);
+                        Cast.Weald.Rockfall rockFall = new(bossMonster.getTileLocation(), riteData, Mod.instance.DamageLevel());
 
                         rockFall.challengeCast = true;
 
@@ -380,23 +384,6 @@ namespace StardewDruid.Event.Challenge
 
         }
 
-        public void RemoveLadders()
-        {
-            Layer layer = targetLocation.map.GetLayer("Buildings");
-            for (int index1 = 0; index1 < layer.LayerHeight; ++index1)
-            {
-                for (int index2 = 0; index2 < layer.LayerWidth; ++index2)
-                {
-                    if (layer.Tiles[index2, index1] != null && layer.Tiles[index2, index1].TileIndex == 173)
-                    {
-                        layer.Tiles[index2, index1] = null;
-                        Game1.player.TemporaryPassableTiles.Clear();
-                        if (ladderPlacement.Count == 0)
-                            ladderPlacement.Add(new Vector2(index2, index1));
-                    }
-                }
-            }
-        }
 
     }
 

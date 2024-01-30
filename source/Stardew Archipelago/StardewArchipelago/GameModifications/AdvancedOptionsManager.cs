@@ -127,6 +127,7 @@ namespace StardewArchipelago.GameModifications
                 "Standard Farm", "Riverland Farm", "Forest Farm", "Hill-top Farm", "Wilderness Farm", "Four Corners Farm", "Beach Farm",
             };
 
+            // To remove once Beta 5 is done
             for (var i = 0; i < farmTypes.Length; i++)
             {
                 if (_archipelago.HasReceivedItem(farmTypes[i]))
@@ -137,9 +138,9 @@ namespace StardewArchipelago.GameModifications
                 }
             }
 
-            _console.Log($"There was no farm type in the player's Archipelago inventory. Defaulting to standard farm.", LogLevel.Warn);
-            Game1.whichFarm = 0;
-            Game1.spawnMonstersAtNight = false;
+            var farmType = _archipelago.SlotData.FarmType;
+            Game1.whichFarm = (int)_archipelago.SlotData.FarmType;
+            Game1.spawnMonstersAtNight = farmType == FarmType.Wilderness;
         }
 
         public static void TitleMenuUpdate_ReplaceCharacterMenu_Postfix(TitleMenu __instance, GameTime time)

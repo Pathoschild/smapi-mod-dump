@@ -34,7 +34,9 @@ namespace mouahrarasModuleCollection.FarmView.Zoom.Patches
 				return;
 			if (Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu && Game1.activeClickableMenu is not AnimalQueryMenu)
 				return;
-			if ((Game1.activeClickableMenu is CarpenterMenu || Game1.activeClickableMenu is PurchaseAnimalsMenu) && (bool)Game1.activeClickableMenu.GetType().GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(Game1.activeClickableMenu))
+			if (Game1.activeClickableMenu is CarpenterMenu && (bool)typeof(CarpenterMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(Game1.activeClickableMenu))
+				return;
+			if (Game1.activeClickableMenu is PurchaseAnimalsMenu && (bool)typeof(PurchaseAnimalsMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(Game1.activeClickableMenu))
 				return;
 			if (!Game1.activeClickableMenu.shouldClampGamePadCursor())
 				return;

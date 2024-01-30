@@ -30,6 +30,17 @@
 	"config.Debug.Explanation":"Opciones de desarrollador.",
 	"config.WalkOnFarm.name": "¿Permitir PNJs en granja?",
 	"config.WalkOnFarm.description": "Si vas afuera durante la visita, los PNJs caminarán por la granja.",
+	"config.Sleepovers": "Pijamadas",
+	"config.SleepoverEnabled.name": "Activado",
+	"config.SleepoverEnabled.description": "Permite que los PNJs se queden a dormir.",
+	"config.SleepoverChance.name": "Probabilidad",
+	"config.SleepoverChance.description": "Qué tan probable es que se queden a dormir.",
+	"config.SleepoverMinHearts.name": "Mínimo de corazones",
+	"config.SleepoverMinHearts.description": "Deben tener al menos esta cantidad de corazones para dormir.",
+	"config.Places.name":"Lugares",
+	"config.Places.description":"Los lugares a los que el PNJ puede seguirte. (Requiere permitir que estén en la granja)",
+	"config.UniqueDialogue.name":"Dialogo de salida único",
+	"config.UniqueDialogue.description":"Al irse, los PNJs vainilla pueden usar diálogo único.",
 	
 	/*For translators: your in-laws = the family of your spouse.
 	 * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
@@ -326,7 +337,7 @@
 	"NPCWinter.Polite3": "Este clima es perfecto para una bebida caliente.",
 	"NPCWinter.Neutral1": "@, ¿Te gusta el invierno?",
 	"NPCWinter.Neutral2": "¿Hay alguna cosecha que sobreviva en invierno?",
-	"NPCWinter.Neutral3": "¿Has hecho un ángel de niee?",
+	"NPCWinter.Neutral3": "¿Has hecho un ángel de nieve?",
 	"NPCWinter.Rude1": "¿Por qué me trajiste aquí?$3#$b#Me estoy congelando, sabes.",
 	"NPCWinter.Rude2": "No hay mucho que ver ahora mismo.$2",
 	"NPCWinter.Rude3": "Podrías hacer un buen juego aquí, si tuvierámos bolas de nieve...",
@@ -369,7 +380,149 @@
 	"NPCRetiring.Rude2": "He pasado aquí mucho tiempo...#$b#Nos vemos, @.",
 	"NPCRetiring.Rude3": "Se está haciendo tarde. Te veré otro día.",
 
+	//for vanilla NPCs
+	"NPCRetiring.Abigail.1": "Oye...tengo hambre. Iré a la cantera.",
+	"NPCRetiring.Abigail.2": "Tengo que irme...mamá se debe estar preocupando.",
+	"NPCRetiring.Abigail.3": "Tengo que irme. ¡Muéstrame tu espada para la otra!$1",
+	
+	"NPCRetiring.Alex.1": "Mi abuela va a hacer su caldereta especial hoy.#$b#Chao, @.",
+	"NPCRetiring.Alex.2": "Mira la hora. ¡Debería estar practicando gridball!#$b#Chao, @.$1",
+	"NPCRetiring.Alex.3": "Casi me olvido, ¡Es día de flexiones!#$b#Te veo luego.",
+	
+	"NPCRetiring.Caroline.1": "Pierre va a cocinar esta noche.#$b#Tengo que irme, @.",
+	"NPCRetiring.Caroline.2": "Es hora de que vuelva.#$b#¡Muéstrame tu cosecha para la próxima!$1",
+	"NPCRetiring.Caroline.3": "Tengo que irme.#$b#Traeré algo de te la próxima vez.$1",
+	
+	"NPCRetiring.Clint.1": "Tengo trabajo que hacer...Bye @.",
+	"NPCRetiring.Clint.2": "Erm...tengo que irme. Diviértete, @.",
+	"NPCRetiring.Clint.3": "Tengo que trabajar.#$b#Una de mis azadas de iridio haría maravillas aquí... piénsalo.",
+	
+	"NPCRetiring.Demetrius.1": "Tengo trabajo que terminar en el laboratorio.#$b#Hasta luego, @.",
+	"NPCRetiring.Demetrius.2": "Es bueno tomar un descanso de vez en cuando...fue agradable, @.#$b#¡Veré la cueva la próxima vez!$1",
+	"NPCRetiring.Demetrius.3": "Mira la hora.#$b#Tendré que caminar más rápido para llegar a tiempo a casa.",
+	
+	"NPCRetiring.Dwarf.1": "En nuestra cultura, quedarse después de esta hora es maleducado.#$b#Adiós, @.",
+	"NPCRetiring.Dwarf.2": "Volveré a la mina.#$b#Tu granja se ve bien.",
+	"NPCRetiring.Dwarf.3": "Deberías ir a las minas un día, @.",
+
+	"NPCRetiring.Elliott.1": "Debo volver a mi trabajo.#$b#¡Se me ocurrió una gran idea!",
+	"NPCRetiring.Elliott.2": "Tu granja es maravillosa, @.#$b#Me dió la inspiración para crear un nuevo libro.$1",
+	"NPCRetiring.Elliott.3": "Debo retirarme, @.#$b#Ven a visitar cuando quieras.",
+
+	"NPCRetiring.Emily.1": "¡Tengo que irme, @! Pero antes...#$b#Las flores me están hablando. ¡Dicen que las tratas bien!$1",
+	"NPCRetiring.Emily.2": "Tengo ropa que terminar. ¡Te veo luego!",
+	"NPCRetiring.Emily.3": "Mira la hora, qué tarde.#$b#¡Te ayudaré con la granja a la otra!",
+	
+	"NPCRetiring.Evelyn.1": "Ahh...el olor de la granja me devuelve a mi juventud.#$b#fue agradable verte, @.",
+	"NPCRetiring.Evelyn.2": "Haré galletitas hoy.#$b#Cuídate, @.",
+	"NPCRetiring.Evelyn.3": "Cielos, ¡Mira la hora!#$b#George debe estar preocupado.",
+	
+	"NPCRetiring.George.1": "Evelyn debe estar preocupada.#$b#La próxima vez te enseñaré un par de trucos para la granja.$1",
+	"NPCRetiring.George.2": "Evelyn va a hacer galletitas hoy.#$b#No querría perdérmelas.$1",
+	"NPCRetiring.George.3": "Hmmph...tengo que irme.#$b#Tu granja no se ve tan mal, joven.$1",
+	
+	"NPCRetiring.Gus.1": "Oye, si algún día quieres hacer un negocio con tu cosecha... déjame saberlo.$1#$b#Okay, te veré luego.",
+	"NPCRetiring.Gus.2": "El salón ha estado activo, debo volver.#$b#Si te da sed, ya sabes a dónde ir.",
+	"NPCRetiring.Gus.3": "Le pedí a Willy pescado para preparar hoy.#$b#Te veré luego, @.",
+	
+	"NPCRetiring.Haley.1": "Wow, mira la hora.#$b#¡Me quedaría aquí por siempre si pudiera!$1",
+	"NPCRetiring.Haley.2": "Sólo me gustan dos cosas de este pueblo.#$b#Una es la playa, y la otra tu granja.$1#$b#Chao, @.",
+	"NPCRetiring.Haley.3": "Debería tomar fotos la próxima vez.#$b#¡Bye, @!$1",
+	
+	"NPCRetiring.Harvey.1": "Debo volver al hospital.#$b#Cuídate.",
+	"NPCRetiring.Harvey.2": "Siéntete libre de pasar por el consultorio si te sientes mal.#$b#¡No te satures!",
+	"NPCRetiring.Harvey.3": "Debo volver, @.#$b#Si quieres pasar por mi apartamento, déjame saberlo.",
+	
+	"NPCRetiring.Jas.1": "Marnie dijo que volviera a esta hora.#$b#Bye bye.",
+	"NPCRetiring.Jas.2": "Hoy juego con Vincent.#$b#¡Chao!",
+	"NPCRetiring.Jas.3": "La tía Marnie no me deja estar afuera después de esta hora.#$b#Chao...",
+	
+	"NPCRetiring.Jodi.1": "Me pregunto si Vincent está bien...iré a verlo.#$b#Cuídate, @.",
+	"NPCRetiring.Jodi.2": "@, debo irme.#$b#Compraré tu cosecha la próxima vez.$1",
+	"NPCRetiring.Jodi.3": "Tengo que irme.#$b#Tomemos té la próxima vez, @.$1",
+	
+	"NPCRetiring.Kent.1": "He estado aquí por un tiempo. Hora de volver a casa.",
+	"NPCRetiring.Kent.2": "Tengo que dejar tiempo para la familia.#$b#Adiós, @.",
+	"NPCRetiring.Kent.3": "Tu granja es muy tranquila.$1#$b#Buena suerte.",
+	
+	"NPCRetiring.Krobus.1": "I have to go...$2#$b#Someone might find me if i stay too long.#$b#Goodbye, @.$1",
+	"NPCRetiring.Krobus.2": "Humans' homes are interesting...#$b#I had fun, @.$1",
+	"NPCRetiring.Krobus.3": "I have to go.#$b#See you soon, @.$1",
+	
+	"NPCRetiring.Leah.1": "I have a painting to finish.#$b#Bye, @.",
+	"NPCRetiring.Leah.2": "The sight in here...It's really inspiring.#$b#I have to go, @.",
+	"NPCRetiring.Leah.3": "You know, you should let me paint the farm someday.#$b#Maybe next time.$1",
+	
+	"NPCRetiring.Leo.1": "The birds in the farm were nice. I think they like your crops!$1#$b#Bye, @.",
+	"NPCRetiring.Leo.2": "Is that a parrot? They're looking for me.#$b#Bye bye, @!",
+	"NPCRetiring.Leo.3": "I have to go.#$b#Come to the island soon!$1",
+	
+	"NPCRetiring.Lewis.1": "You've been keeping your grandpa's farm well, @.#$b#I'll come another day.",
+	"NPCRetiring.Lewis.2": "I have to go, @. I have to see Mar...#$b#Major duties.$2",
+	"NPCRetiring.Lewis.3": "I have duties to take care of.#$b#I'll see you in town.", //ooc?
+	
+	"NPCRetiring.Linus.1": "I should gather some season forage. See you, @.$1",
+	"NPCRetiring.Linus.2": "I should get going. Pass by my tent some time, @!$1",
+	"NPCRetiring.Linus.3": "The farm looks great, @.#$b#",
+	
+	"NPCRetiring.Marlon.1": "Gil debe sentirse solo.#$b#Bye, @.",
+	"NPCRetiring.Marlon.2": "Debo irme. Nunca sabes cuándo un monstruo atacará.",
+	"NPCRetiring.Marlon.3": "Me voy ahora.#$b#Sigue así, @.",
+	
+	"NPCRetiring.Marnie.1": "¡Mira la hora! Debería estar esperando a Le...#$b#¡Esperando a prender la leña!$4#$b#Adiós, @.",
+	"NPCRetiring.Marnie.2": "Tengo que cuidar a los animales.#$b#Hasta luego, @.",
+	"NPCRetiring.Marnie.3": "Iré a preparar la comida de Jas.#$b#¡Adiós!",
+	
+	"NPCRetiring.Maru.1": "Hay un experimento que no he terminado.#$b#Cuídate, @.$1",
+	"NPCRetiring.Maru.2": "Ey, me voy ahora.#$b#Papá se preocupa si estoy hasta tarde afuera.",
+	"NPCRetiring.Maru.3": "Le prometí a papá que lo ayudaría en el laboratorio.#$b#¡Te veo luego, @!",
+	
+	"NPCRetiring.Pam.1": "¿No tienes trabajo que hacer? Te dejaré libre.", 
+	"NPCRetiring.Pam.2": "Debería venir más, viendo lo cerca que está tu casa..",
+	"NPCRetiring.Pam.3": "Me voy.#$b#Voy a pasar por el salón.$1",
+	
+	"NPCRetiring.Penny.1": "Um...tengo que irme, @. Debo ver cómo está mamá.",
+	"NPCRetiring.Penny.2": "Se está haciendo tarde.#$b#Tengo que preparar las clases de Jas y Vincent.#$b#¡Adiós, @!",
+	"NPCRetiring.Penny.3": "Tu granja se ve hermosa, @.#$b#Um..me encantaría volver de nuevo.$1",
+	
+	"NPCRetiring.Pierre.1": "Me voy. ¡Pierre's no se mantendrá sola!",
+	"NPCRetiring.Pierre.2": "Bonita granja, @. Tu cosecha se ve sana.#$b#Si quieres hacer un trato con Pierre's, sólo llama.$1",
+	"NPCRetiring.Pierre.3": "Caroline me convenció de cocinar hoy.#$b#Hasta luego, @.",
+	
+	"NPCRetiring.Robin.1": "Debería volver a la tienda. He estado aquí por un tiempo.#$b#Te veo luego, @.",
+	"NPCRetiring.Robin.2": "Mira la hora...tengo que irme.#$b#¡Ya sabes donde encontrarme!$1",
+	"NPCRetiring.Robin.3": "Hey, tu casa se ve linda.$1#$b#Si necesitas una construcción, ¡Ya sabes a quién llamar!",
+	
+	"NPCRetiring.Sam.1": "Vincent quiere ayuda con la tarea.#$b#Te veo luego, @.",
+	"NPCRetiring.Sam.2": "Mamá hará caldereta de pez hoy. ¡Tengo que ir!$1",
+	"NPCRetiring.Sam.3": "Hmm, acabo de recordar. Hoy la banda practica.#$b#Te veo después.",
+	
+	"NPCRetiring.Sandy.1": "Debería volver a la tienda. ¡Adiós!",
+	"NPCRetiring.Sandy.2": "Aw, mira la hora. ¡Se me pasará el bus si me quedo aquí!$2#$b#Chaito, @!",
+	"NPCRetiring.Sandy.3": "Tu granja está tan linda como siempre.$1#$b#¡Traeré un souvenir a la otra!",
+	
+	"NPCRetiring.Sebastian.1": "Iré a la ciudad más tarde.#$b#Hasta luego, @.",
+	"NPCRetiring.Sebastian.2": "...Tengo que trabajar.#$b#Te veo luego.",
+	"NPCRetiring.Sebastian.3": "Le dije a Sam que hoy íbamos a practicar.#$b#Chao, @.",
+	
+	"NPCRetiring.Shane.1": "Mira la hora. Jas debe estar en casa.",
+	"NPCRetiring.Shane.2": "Hoy cuido de las gallinas de Marnie.#$b#Adiós.",
+	"NPCRetiring.Shane.3": "Uhg...tengo que ir a trabajar.#$b#Te veo luego..",
+	
+	"NPCRetiring.Vincent.1": "Jas me está esperando.#$b#Bye.$1",
+	"NPCRetiring.Vincent.2": "Mamá dijo que no me quede hasta tarde. Bye, @.",
+	"NPCRetiring.Vincent.3": "¡Bye bye, @!#$b#¡Iré a ver a los gusanos!$1",
+	
+	"NPCRetiring.Willy.1": "Hay unos peces raros esta temporada...¡El mar me llama!#$b#See ya later, @.",
+	"NPCRetiring.Willy.2": "Aye, la tienda no se abrirá sola. ¡Hasta luego, @!",
+	"NPCRetiring.Willy.3": "Te traeré peces a la próxima.",
+
+	"NPCRetiring.Wizard.1": "Los espíritus del bosque me llaman...#$b#Adiós.",
+	"NPCRetiring.Wizard.2": "Dejé una poción cociéndose en casa.#$b#Debo ir a tenderla. Adiós, @.",
+	"NPCRetiring.Wizard.3": "Es hora. Debo irme.#$b#Hasta luego, @.",
+
 	/* TN: gone while outside */
+	"NPCGoneToSleep": "{0} entró a la casa.",
 	"NPCGoneWhileOutside": "Mientras estabas afuera, {0} se retiró.",
 	"NPCGone_Cellar": "Mientras estabas en la bodega, {0} se retiró.",
 	"NPCGone_Farm": "Mientras estabas en la granja, {0} se retiró."

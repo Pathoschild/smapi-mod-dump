@@ -66,7 +66,7 @@ namespace EqualMoneySplit.Networking.Communicators
         public virtual void CheckForNewMessages(object sender = null, UpdateTickedEventArgs args = null)
         {
             foreach (Message message in Network.Instance.RetrieveMessages(Address))
-                Task.Run(() => { MessageHandler(message); });
+                MessageHandler(message);
         }
     }
 }

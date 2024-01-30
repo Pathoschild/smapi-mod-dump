@@ -28,7 +28,7 @@ namespace ItemResearchSpawner.Models.Enums
                 ItemSortOption.Name => ItemSortOption.Category,
                 ItemSortOption.Category => ItemSortOption.ID,
                 ItemSortOption.ID => ItemSortOption.Name,
-                _ => throw new NotSupportedException($"Unknown sort '{current}'.")
+                _ => throw new NotSupportedException($"Unknown sort option: '{current}'")
             };
         }
         
@@ -39,7 +39,7 @@ namespace ItemResearchSpawner.Models.Enums
                 ItemSortOption.Name => ItemSortOption.ID,
                 ItemSortOption.Category => ItemSortOption.Name,
                 ItemSortOption.ID => ItemSortOption.Category,
-                _ => throw new NotSupportedException($"Unknown sort '{current}'.")
+                _ => throw new NotSupportedException($"Unknown sort option: '{current}'")
             };
         }
     }

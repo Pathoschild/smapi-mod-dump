@@ -8,13 +8,10 @@
 **
 *************************************************/
 
-using StardewValley;
-using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using StardewValley;
+using StardewValley.Menus;
 
 namespace FarmVisitors
 {
@@ -28,19 +25,19 @@ namespace FarmVisitors
         /// <param name="dialogue"> The dialogue to display.</param>
         /// <param name="responses">Responses.</param>
         /// <param name="Actions">Actions associated with said responses.</param>
-        internal EntryQuestion(string dialogue, List<Response> responses, List<Action> Actions) : base(dialogue, responses)
+        internal EntryQuestion(string dialogue, Response[] responses, List<Action> Actions) : base(dialogue, responses)
         {
-            this.ResponseActions = Actions;
+            ResponseActions = Actions;
         }
 
         public override void receiveLeftClick(int x, int y, bool playSound = true)
         {
-            int responseIndex = this.selectedResponse;
+            var responseIndex = selectedResponse;
             base.receiveLeftClick(x, y, playSound);
 
-            if (base.safetyTimer <= 0 && responseIndex > -1 && responseIndex < this.ResponseActions.Count && this.ResponseActions[responseIndex] != null)
+            if (safetyTimer <= 0 && responseIndex > -1 && responseIndex < ResponseActions.Count && ResponseActions[responseIndex] != null)
             {
-                this.ResponseActions[responseIndex]();
+                ResponseActions[responseIndex]();
             }
         }
     }

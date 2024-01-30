@@ -1,0 +1,10 @@
+{
+  "Name": "Empty Your Hands",
+  "Author": "BlueSight",
+  "Version": "1.1.0",
+  "Description": "Deselect active item on your toolbar.",
+  "UniqueID": "BlueSight.EmptyYourHands",
+  "EntryDll": "EmptyYourHands.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:19736" ]
+}

@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/Hikari-BS/StardewMods
+   Git: https://github.com/Hikari-BS/StardewMods.git
+
+mods:
+   Empty Your Hands
+   Fixed Weapons Damage
+
+latest commit:
+   commit 9e910fd26e5ecff8870a838c0b02ca2cdf9885fa
+   Author: Afif Shafara <afifshafara445566@gmail.com>
+   Date:   Fri Jan 26 09:14:42 2024 +0700
+   
+       fixing some stuff
+   

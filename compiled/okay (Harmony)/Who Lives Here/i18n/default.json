@@ -1,0 +1,12 @@
+﻿{
+  "togglekey": "Toggle Key",
+  "togglekey.tt": "Key to toggle occupant display",
+  "autoon": "Auto On Time",
+  "autoon.tt": "Time to automatically make display visible.",
+  "autooff": "Auto Off Time",
+  "autooff.tt": "Time to automatically hide the display.",
+  "pagedelay": "Page Delay",
+  "pagedelay.tt": "How long each page is displayed for in multi-page display. A value of 0 disables auto paging.",
+  "hideempty": "Hide Empty Tabs",
+  "hideempty.tt": "Do not cycle through tab pages the do not contain animals."
+}

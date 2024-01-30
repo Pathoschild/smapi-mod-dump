@@ -21,9 +21,11 @@ using StardewModdingAPI;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Monsters;
 using MultiplayerMod.Framework.Mobile.Menus;
+using System.Diagnostics;
 
 namespace MultiplayerMod.Framework.Patch.Mobile
 {
+    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
     public class TitleMenuPatch : IPatch
     {
         private readonly Type PATCH_TYPE = typeof(TitleMenu);
@@ -268,6 +270,9 @@ namespace MultiplayerMod.Framework.Patch.Mobile
             return true;
         }
 
-
+        private string GetDebuggerDisplay()
+        {
+            return ToString();
+        }
     }
 }

@@ -107,6 +107,7 @@ mods:
    Galaxy Weapon Choice
    Garden Pot Tweaks
    Gem Isles
+   Genie Lamp
    Gift Rejection
    Groundhog Day
    Harvest Seeds
@@ -237,9 +238,9 @@ mods:
    Zombie Outbreak
 
 latest commit:
-   commit 0605df93216c418c2f6f4604f2d58bf73167967e
+   commit 134e32e45fb76423b462243fd4f588afc5347a75
    Author: aedenthorn <aedenthorn1@gmail.com>
-   Date:   Mon Dec 11 14:07:46 2023 -0500
+   Date:   Mon Jan 8 18:17:29 2024 -0500
    
        etc
    

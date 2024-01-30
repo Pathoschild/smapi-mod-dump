@@ -21,7 +21,9 @@ namespace StardewDruid.Cast.Mists
 
         public int colour;
 
-        public Smite(Vector2 target, Rite rite, StardewValley.Monsters.Monster TargetMonster, int Colour = -1)
+        public float damage;
+
+        public Smite(Vector2 target, Rite rite, StardewValley.Monsters.Monster TargetMonster, float Damage, int Colour = -1)
             : base(target, rite)
         {
 
@@ -32,6 +34,8 @@ namespace StardewDruid.Cast.Mists
             targetMonster = TargetMonster;
 
             colour = Colour;
+
+            damage = Damage;
 
         }
 
@@ -60,7 +64,7 @@ namespace StardewDruid.Cast.Mists
 
             }
 
-            int damageApplied = randomIndex.Next(riteData.castDamage);
+            int damageApplied = (int)(damage * 0.7);
 
             bool critApplied = false;
 

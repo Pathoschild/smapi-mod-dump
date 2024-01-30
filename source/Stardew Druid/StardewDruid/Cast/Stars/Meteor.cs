@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using static System.Net.Mime.MediaTypeNames;
+
 
 namespace StardewDruid.Cast.Stars
 {
@@ -20,9 +22,9 @@ namespace StardewDruid.Cast.Stars
 
         int targetDirection;
 
-        int meteorRange;
+        float damage;
 
-        public Meteor(Vector2 target, Rite rite, int range = 2)
+        public Meteor(Vector2 target, Rite rite, float Damage)
             : base(target, rite)
         {
 
@@ -30,19 +32,21 @@ namespace StardewDruid.Cast.Stars
 
             targetDirection = rite.direction;
 
-            meteorRange = range;
+            damage = Damage;
 
         }
 
         public override void CastEffect()
         {
 
-            //ModUtility.AnimateMeteorZone(targetLocation, targetVector, new Color(1f, 0.4f, 0.4f, 1));
-
             ModUtility.AnimateMeteor(targetLocation, targetVector, targetDirection < 2);
 
+            ModUtility.AnimateRadiusDecoration(targetLocation, targetVector, "Stars", 0.75f, 0.75f, 1000);
+
             DelayedAction.functionAfterDelay(MeteorImpact, 600);
+
             if (randomIndex.Next(2) == 0) { Game1.currentLocation.playSound("fireball"); }
+
             castFire = true;
 
         }
@@ -57,12 +61,14 @@ namespace StardewDruid.Cast.Stars
 
             }
 
-            List<Vector2> impactVectors = ModUtility.Explode(targetLocation, targetVector, targetPlayer, meteorRange, (int)(riteData.castDamage * 1.5), powerLevel:2);
+            ModUtility.DamageMonsters(targetLocation, ModUtility.MonsterProximity(targetLocation, targetVector * 64, 2, true), targetPlayer,(int)damage, true);
+
+            List<Vector2> impactVectors = ModUtility.Explode(targetLocation, targetVector, targetPlayer, 2, powerLevel:2);
 
             foreach(Vector2 vector in impactVectors)
             {
                 
-                ModUtility.ImpactVector(targetLocation, vector);
+                ModUtility.AnimateDestruction(targetLocation, vector);
 
             }
 
@@ -73,4 +79,5 @@ namespace StardewDruid.Cast.Stars
         }
 
     }
+
 }

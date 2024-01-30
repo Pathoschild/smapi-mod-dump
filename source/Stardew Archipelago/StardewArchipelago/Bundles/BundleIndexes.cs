@@ -68,9 +68,11 @@ namespace StardewArchipelago.Bundles
             {"Orchard", 254},
             {"Island Crops", 255},
             {"Agronomist's", 256},
+            {"Slime Farmer", 249},
 
             {"Tackle", 257},
-            {"Recycling", 258},
+            {"Recycling", 269},
+            {"Trash", 258},
             {"Spring Fishing", 27},
             {"Summer Fishing", 28},
             {"Fall Fishing", 29},
@@ -79,10 +81,13 @@ namespace StardewArchipelago.Bundles
             {"Legendary Fish", 266},
             {"Island Fish", 267},
             {"Master Baiter", 268},
+            {"Deep Fishing", 239},
 
             {"Bartender's", 277},
 
             {"Demolition", 272},
+            {"Paleontologist's", 247},
+            {"Archaeologist's", 248},
 
             { "250g", 2301 },
             { "500g", 2302 },
@@ -176,9 +181,9 @@ namespace StardewArchipelago.Bundles
             {"Orchard", BUNDLE_RED},
             {"Island Crops", BUNDLE_YELLOW},
             {"Agronomist's", BUNDLE_GREEN},
+            {"Slime Farmer", BUNDLE_GREEN},
 
             {"Tackle", BUNDLE_YELLOW},
-            {"Recycling", BUNDLE_GREEN},
             {"Spring Fishing", BUNDLE_GREEN},
             {"Summer Fishing", BUNDLE_YELLOW},
             {"Fall Fishing", BUNDLE_ORANGE},
@@ -187,10 +192,15 @@ namespace StardewArchipelago.Bundles
             {"Legendary Fish", BUNDLE_GREEN},
             {"Island Fish", BUNDLE_YELLOW},
             {"Master Baiter", BUNDLE_RED},
+            {"Recycling", BUNDLE_LIGHT_BLUE},
+            {"Trash", BUNDLE_RED},
+            {"Deep Fishing", BUNDLE_DARK_BLUE},
 
             {"Bartender's", BUNDLE_ORANGE},
 
             {"Demolition", BUNDLE_RED},
+            {"Paleontologist's", BUNDLE_ORANGE},
+            {"Archaeologist's", BUNDLE_YELLOW},
 
             { "250g", BUNDLE_YELLOW },
             { "500g", BUNDLE_YELLOW },

@@ -37,7 +37,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             GREEN_ALGAE, WHITE_ALGAE, SEAWEED, ORNATE_NECKLACE, GOLDEN_WALNUT, SECRET_NOTE, FOSSILIZED_SPINE, PEARL, SNAKE_SKULL, JOURNAL_SCRAP,
             QI_BEAN,
         };
-        private const string FISHSANITY_PREFIX = "Fishsanity: ";
+        public const string FISHSANITY_PREFIX = "Fishsanity: ";
 
         private static IMonitor _monitor;
         private static IModHelper _modHelper;
@@ -82,8 +82,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             }
         }
 
-        public static void CaughtFish_CheckGoalCompletion_Postfix(Farmer __instance, int index, int size,
-            bool from_fish_pond, int numberCaught, ref bool __result)
+        public static void CaughtFish_CheckGoalCompletion_Postfix(Farmer __instance, int index, int size, bool from_fish_pond, int numberCaught, ref bool __result)
         {
             try
             {

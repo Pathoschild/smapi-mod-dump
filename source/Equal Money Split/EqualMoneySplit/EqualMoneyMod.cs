@@ -9,8 +9,10 @@
 *************************************************/
 
 using EqualMoneySplit.Events;
+using EqualMoneySplit.Models;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley;
 
 namespace EqualMoneySplit
@@ -30,6 +32,11 @@ namespace EqualMoneySplit
         public static IModHelper SMAPI { get; private set; }
 
         /// <summary>
+        /// Contains information on each farmer's current and past money/inventory changes
+        /// </summary>
+        public static PerScreen<PersistentFarmerData> FarmerData { get; private set; } = new PerScreen<PersistentFarmerData>();
+
+        /// <summary>
         /// Entry point of EqualMoneyMod
         /// </summary>
         /// <param name="helper">SMAPI provided API for writing mods</param>
@@ -37,6 +44,8 @@ namespace EqualMoneySplit
         {
             Logger = base.Monitor;
             SMAPI = base.Helper;
+            FarmerData ??= new();
+            FarmerData.Value ??= new();
 
             EqualMoneyMod.SMAPI.Events.GameLoop.GameLaunched += OnGameLaunched;
         }

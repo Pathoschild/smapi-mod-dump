@@ -83,6 +83,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "Forgotten In Time",
                 BundleDescription = Helper.Translation.Get("oasis_tunnel"),
                 ShopPosition = new Vector2(121, 51),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Blue",
@@ -102,6 +103,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "Spring Rejuvenation",
                 BundleDescription = Helper.Translation.Get("oasis_1"),
                 ShopPosition = new Vector2(123, 21),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Blue",
@@ -126,6 +128,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "Only What's Best For You",
                 BundleDescription = Helper.Translation.Get("oasis_2"),
                 ShopPosition = new Vector2(123, 21),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Blue",
@@ -149,6 +152,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "Legendary Angler",
                 BundleDescription = Helper.Translation.Get("oasis_3"),
                 ShopPosition = new Vector2(123, 21),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Blue",
@@ -171,6 +175,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "Makeshift Repairs",
                 BundleDescription = Helper.Translation.Get("mill_tier1"),
                 ShopPosition = new Vector2(47, 16),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
@@ -194,6 +199,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "Leaking Plumbing",
                 BundleDescription = Helper.Translation.Get("mill_tier2"),
                 ShopPosition = new Vector2(47, 16),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
@@ -217,6 +223,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "Gear It Up!",
                 BundleDescription = Helper.Translation.Get("mill_tier3"),
                 ShopPosition = new Vector2(60, 9),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
@@ -239,6 +246,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "The Final Piece",
                 BundleDescription = Helper.Translation.Get("mill_tier4"),
                 ShopPosition = new Vector2(60, 9),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
@@ -262,6 +270,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "Breaking Limits",
                 BundleDescription = Helper.Translation.Get("mill_tier5"),
                 ShopPosition = new Vector2(60, 9),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Green",
@@ -287,6 +296,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "A Good Deed",
                 BundleDescription = Helper.Translation.Get("mine_1"),
                 ShopPosition = new Vector2(5, 56),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Orange",
@@ -312,6 +322,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "Jack Of All Tastes",
                 BundleDescription = Helper.Translation.Get("mine_2"),
                 ShopPosition = new Vector2(5, 56),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Orange",
@@ -335,6 +346,7 @@ namespace Desert_Bloom.Lib
                 Location = "Farm",
                 InteractionSound = "junimoMeep1",
                 InteractionShake = true,
+                BundleName = "Desert Cravings",
                 BundleDescription = Helper.Translation.Get("mine_3"),
                 ShopPosition = new Vector2(5, 56),
                 ShopTexture = "DLX.Desert_Bloom.Junimo_Shop_Orange",
@@ -388,7 +400,7 @@ namespace Desert_Bloom.Lib
         private static void edit_pet_bowl(object sender, AssetRequestedEventArgs e)
         {
             if (e.NameWithoutLocale.IsEquivalentTo("Buildings/Pet Bowl"))
-                e.LoadFromModFile<Texture2D>("Assets/Tileset/Pet Bowl", AssetLoadPriority.Low);
+                e.LoadFromModFile<Texture2D>("Assets/Tileset/Pet Bowl.png", AssetLoadPriority.Low);
         }
 
         //private static bool canTalkToJunimo() => true;

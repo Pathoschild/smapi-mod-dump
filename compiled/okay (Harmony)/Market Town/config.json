@@ -25,5 +25,17 @@
   "InviteLeaveTime": 2000.0,
   "EnableVisitInside": true,
   "DialogueTime": 2,
-  "AllowRemoveNonFood": false
+  "AllowRemoveNonFood": false,
+  "DisableKidAsk": false,
+  "EnableSaleWeapon": true,
+  "RandomPurchase": false,
+  "SignRange": 0,
+  "DoorEntry": true,
+  "ShedVisitChance": 0.1,
+  "MaxShedCapacity": 3,
+  "TimeStay": 100,
+  "OpenHour": 800,
+  "CloseHour": 2200,
+  "ShedMoveToFoodChance": 0.2,
+  "ShedMinuteToHungry": 60
 }

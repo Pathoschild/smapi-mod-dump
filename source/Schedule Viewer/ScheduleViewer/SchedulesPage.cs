@@ -50,11 +50,13 @@ namespace ScheduleViewer
 
         public Friendship emptyFriendship = new();
 
+        /// <summary>LookupAnything</summary>
+        public NPC hoveredNpc;
+
 
         public SchedulesPage(int initialSlotPosition = 0)
             : base(Game1.uiViewport.Width / 2 - (800 + IClickableMenu.borderWidth * 2) / 2, Game1.uiViewport.Height / 2 - (600 + IClickableMenu.borderWidth * 2) / 2, 800 + 36 + IClickableMenu.borderWidth * 2, 600 + IClickableMenu.borderWidth * 2, showUpperRightCloseButton: true)
         {
-            this.slotPosition = initialSlotPosition;
             // filter npcs
             IEnumerable<KeyValuePair<string, Schedule.NPCSchedule>> filteredSchedules = Schedule.GetSchedules(ModEntry.Config.OnlyShowSocializableNPCs, ModEntry.Config.OnlyShowMetNPCs);
             // sort npcs
@@ -71,15 +73,14 @@ namespace ScheduleViewer
             foreach (var item in filteredSchedules)
             {
                 // if not host then need to get sprite info
-                if (item.Value.Sprite == null || item.Value.MugShotSourceRect == null)
+                if (item.Value.NPC == null)
                 {
                     NPC npc = Game1.getCharacterFromName(item.Key);
-                    item.Value.Sprite = npc?.Sprite;
-                    item.Value.MugShotSourceRect = npc?.getMugShotSourceRect();
+                    item.Value.NPC = npc;
                 }
 
                 this.schedules.Add(item.Value);
-                this.sprites.Add(new ClickableTextureComponent("", new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth + 4, base.yPositionOnScreen + IClickableMenu.borderWidth + spriteSize / 2, 260, spriteSize), null, "", item.Value.Sprite?.Texture ?? emptySprite, item.Value.MugShotSourceRect ?? new Rectangle(0, 0, 16, 24), 4f));
+                this.sprites.Add(new ClickableTextureComponent("", new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth + 4, base.yPositionOnScreen + IClickableMenu.borderWidth + spriteSize / 2, 260, spriteSize), null, "", item.Value.NPC?.Sprite.Texture ?? emptySprite, item.Value.NPC?.getMugShotSourceRect() ?? new Rectangle(0, 0, 16, 24), 4f));
                 this.characterSlots.Add(new ClickableTextureComponent(new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth, 0, base.width - IClickableMenu.borderWidth * 2, rowHeight), null, new Rectangle(0, 0, 0, 0), 4f)
                 {
                     myID = itemIndex,
@@ -96,6 +97,8 @@ namespace ScheduleViewer
             this.downButton = new ClickableTextureComponent(new Rectangle(base.xPositionOnScreen + base.width + 16, base.yPositionOnScreen + base.height - 64, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f);
             this.scrollBar = new ClickableTextureComponent(new Rectangle(this.upButton.bounds.X + 12, this.upButton.bounds.Y + this.upButton.bounds.Height + 4, 24, 40), Game1.mouseCursors, new Rectangle(435, 463, 6, 10), 4f);
             this.scrollBarRunner = new Rectangle(this.scrollBar.bounds.X, this.upButton.bounds.Y + this.upButton.bounds.Height + 4, this.scrollBar.bounds.Width, base.height - 128 - this.upButton.bounds.Height - 8);
+            // init slot position but don't overflow
+            this.slotPosition = initialSlotPosition >= this.sprites.Count - slotsOnPage ? this.sprites.Count - slotsOnPage : initialSlotPosition;
             // set the scoll bar postion and sets yPos for characterSlots and sprites
             this.SetScrollBarToCurrentIndex();
         }
@@ -249,56 +252,31 @@ namespace ScheduleViewer
                 this.releaseLeftClick(x, y);
                 return;
             }
-            // TODO: Saving this for showing the NPC's full schedule in a new window
-            //for (int i = 0; i < this.characterSlots.Count; i++)
-            //{
-            //    if (i < this.slotPosition || i >= this.slotPosition + 5 || !this.characterSlots[i].bounds.Contains(x, y))
-            //    {
-            //        continue;
-            //    }
-            //    bool fail = true;
-            //    if (this.names[i] is string)
-            //    {
-            //        Character character = Game1.getCharacterFromName((string)this.names[i]);
-            //        if (character != null && Game1.player.friendshipData.ContainsKey(character.name))
-            //        {
-            //            fail = false;
-            //            Game1.playSound("bigSelect");
-            //            int cached_slot_position = this.slotPosition;
-            //            ProfileMenu menu = new ProfileMenu(character);
-            //            menu.exitFunction = delegate
-            //            {
-            //                if (((GameMenu)(Game1.activeClickableMenu = new GameMenu(2, -1, playOpeningSound: false))).GetCurrentPage() is SocialPage socialPage)
-            //                {
-            //                    Character character2 = menu.GetCharacter();
-            //                    if (character2 != null)
-            //                    {
-            //                        for (int j = 0; j < socialPage.names.Count; j++)
-            //                        {
-            //                            if (socialPage.names[j] is string && character2.Name == (string)socialPage.names[j])
-            //                            {
-            //                                socialPage.slotPosition = cached_slot_position;
-            //                                socialPage._SelectSlot(socialPage.characterSlots[j]);
-            //                                break;
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            };
-            //            Game1.activeClickableMenu = menu;
-            //            if (Game1.options.SnappyMenus)
-            //            {
-            //                menu.snapToDefaultClickableComponent();
-            //            }
-            //            return;
-            //        }
-            //    }
-            //    if (fail)
-            //    {
-            //        Game1.playSound("shiny4");
-            //    }
-            //    break;
-            //}
+            // Show the NPC's full schedule in a new window
+            for (int i = 0; i < this.characterSlots.Count; i++)
+            {
+                if (i < this.slotPosition || i >= this.slotPosition + slotsOnPage || !this.characterSlots[i].bounds.Contains(x, y))
+                {
+                    continue;
+                }
+
+                if (schedules[i].NPC != null)
+                {
+                    Game1.playSound("bigSelect");
+                    ScheduleDetailsPage menu = new(i, schedules);
+                    menu.exitFunction = delegate
+                    {
+                        Game1.activeClickableMenu = new SchedulesPage(menu.GetCurrentIndex());
+                    };
+                    Game1.activeClickableMenu = menu;
+                    if (Game1.options.SnappyMenus)
+                    {
+                        menu.snapToDefaultClickableComponent();
+                    }
+                    return;
+                }
+                break;
+            }
             this.slotPosition = Math.Max(0, Math.Min(this.sprites.Count - slotsOnPage, this.slotPosition));
         }
 
@@ -382,23 +360,26 @@ namespace ScheduleViewer
 
         private void DrawNPCSlot(SpriteBatch b, int i)
         {
+            ClickableTextureComponent sprite = this.sprites[i];
+            Rectangle characterSlotBounds = this.characterSlots[i].bounds;
+            var (entries, currentLocation, isOnSchedule, displayName, npc) = schedules[i];
             // highlight which NPC the mouse is over
-            if (this.characterSlots[i].bounds.Contains(Game1.getMouseX(), Game1.getMouseY()))
+            if (characterSlotBounds.Contains(Game1.getMouseX(), Game1.getMouseY()))
             {
-                b.Draw(Game1.staminaRect, new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth - 4, this.sprites[i].bounds.Y - 4, this.characterSlots[i].bounds.Width, this.characterSlots[i].bounds.Height - 12), Color.White * 0.25f);
+                b.Draw(Game1.staminaRect, new Rectangle(base.xPositionOnScreen + IClickableMenu.borderWidth - 4, sprite.bounds.Y - 4, characterSlotBounds.Width, characterSlotBounds.Height - 12), Color.White * 0.25f);
+                this.hoveredNpc = npc;
             }
-            this.sprites[i].draw(b);
-
-            var (displayName, entries, currentLocation) = schedules[i];
+            sprite.draw(b);
 
             float lineHeight = Game1.smallFont.MeasureString("W").Y;
             float russianOffsetY = ((LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ru || LocalizedContentManager.CurrentLanguageCode == LocalizedContentManager.LanguageCode.ko) ? ((0f - lineHeight) / 2f) : 0f);
-            b.DrawString(Game1.dialogueFont, displayName, new Vector2((float)(base.xPositionOnScreen + IClickableMenu.borderWidth * 3 / 2 + 64 - 20 + 96) - Game1.dialogueFont.MeasureString(displayName).X / 2f, (float)(this.sprites[i].bounds.Y + 48) + russianOffsetY - 20), Game1.textColor);
+            b.DrawString(Game1.dialogueFont, displayName, new Vector2((float)(base.xPositionOnScreen + IClickableMenu.borderWidth * 3 / 2 + 64 - 20 + 96) - Game1.dialogueFont.MeasureString(displayName).X / 2f, (float)(sprite.bounds.Y + 48) + russianOffsetY - 20), Game1.textColor);
 
             int x = this.sprites[i].bounds.Right + partitionSize;
             int y = this.sprites[i].bounds.Y - 4;
+            int slot = i - this.slotPosition;
 
-            if (currentLocation == null)
+            if (isOnSchedule)
             {
                 float yOffset = 0;
                 int activeEntryIndex = 0;
@@ -418,15 +399,8 @@ namespace ScheduleViewer
                 foreach (var line in lines)
                 {
                     string entryString = line.Value?.ToString();
-                    string key = $"{i - this.slotPosition}-{line.Key - line1Index}";
-                    if (string.IsNullOrEmpty(entryString))
-                    {
-                        this.hoverTextOptions[key] = null;
-                    }
-                    else
-                    {
-                        this.hoverTextOptions[key] = Tuple.Create(new Rectangle(x, y + (int)yOffset, (int)Game1.smallFont.MeasureString(entryString).X + 2, (int)lineHeight), line.Value.GetHoverText());
-                    }
+                    string key = $"{slot}-{line.Key - line1Index}";
+                    this.hoverTextOptions[key] = string.IsNullOrEmpty(entryString) ? null : Tuple.Create(new Rectangle(x, y + (int)yOffset, (int)Game1.smallFont.MeasureString(entryString).X + 2, (int)lineHeight), line.Value.GetHoverText());
 
                     if (line.Value != null)
                     {
@@ -447,9 +421,9 @@ namespace ScheduleViewer
                 b.DrawString(Game1.smallFont, ModEntry.ModHelper.Translation.Get(entries == null ? "not_following_schedule_today" : "ignoring_schedule_today"), new Vector2(x, y), Game1.textColor);
                 Utility.drawBoldText(b, currentLocation, Game1.smallFont, new Vector2(x, y + lineHeight), Game1.textColor);
                 // clear hover text options
-                this.hoverTextOptions[$"{i - this.slotPosition}-0"] = null;
-                this.hoverTextOptions[$"{i - this.slotPosition}-1"] = null;
-                this.hoverTextOptions[$"{i - this.slotPosition}-2"] = null;
+                this.hoverTextOptions[$"{slot}-0"] = null;
+                this.hoverTextOptions[$"{slot}-1"] = null;
+                this.hoverTextOptions[$"{slot}-2"] = null;
             }
         }
 
@@ -461,10 +435,11 @@ namespace ScheduleViewer
 
         private void SetScrollBarToCurrentIndex()
         {
-            if (this.sprites.Count > 0)
+            int numOfSlots = this.sprites.Count;
+            if (numOfSlots > 0)
             {
-                this.scrollBar.bounds.Y = this.scrollBarRunner.Height / Math.Max(1, this.sprites.Count - slotsOnPage + 1) * this.slotPosition + this.upButton.bounds.Bottom + 4;
-                if (this.slotPosition == this.sprites.Count - slotsOnPage)
+                this.scrollBar.bounds.Y = this.scrollBarRunner.Height / Math.Max(1, numOfSlots - slotsOnPage + 1) * this.slotPosition + this.upButton.bounds.Bottom + 4;
+                if (this.slotPosition == numOfSlots - slotsOnPage)
                 {
                     this.scrollBar.bounds.Y = this.downButton.bounds.Y - this.scrollBar.bounds.Height - 4;
                 }

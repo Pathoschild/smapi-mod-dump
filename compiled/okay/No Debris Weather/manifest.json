@@ -1,0 +1,10 @@
+﻿{
+  "Name": "NoDebrisWeather",
+  "Author": "Underscore76",
+  "Version": "0.0.1",
+  "Description": "Mod that hides any debris during debris weather days",
+  "UniqueID": "underscore.nodebris",
+  "EntryDll": "NoDebrisWeather.dll",
+  "MinimumApiVersion": "3.15.0",
+  "UpdateKeys": [ "GitHub:Underscore76/NoDebrisWeather" ]
+}

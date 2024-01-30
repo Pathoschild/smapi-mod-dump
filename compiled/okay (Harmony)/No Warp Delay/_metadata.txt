@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19805
+IDs: no.warp.delay
+update keys: Nexus:19805

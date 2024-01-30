@@ -8,9 +8,11 @@
 **
 *************************************************/
 
+using StardewDruid.Character;
 using StardewDruid.Map;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Minigames;
 using StardewValley.Objects;
 using System.Collections.Generic;
 
@@ -24,53 +26,81 @@ namespace StardewDruid.Dialogue
 
         public void Approach()
         {
+            
+            if (npc is StardewDruid.Character.Shadowtin)
+            {
+
+                DelayedAction.functionAfterDelay(DialogueDiscuss, 100);
+
+            }
+
+            DelayedAction.functionAfterDelay(RitesApproach, 100);
+
+        }
+
+        public void RitesApproach()
+        {
+           
+            string intro = "The Forgotten Effigy: The traditions live on.";
+            
+            if(npc is StardewDruid.Character.Jester)
+            {
+
+                intro = "The Jester of Fate: You assume I know anything.";
+
+            }
+
+            if (npc is StardewDruid.Character.Shadowtin)
+            {
+
+                intro = "Shadowtin Bear: Treasure hunter, at your service.";
+
+            }
+
+            List<Response> responseList = new List<Response>();
+            
+            QuestData.RitesProgress();
+            
+            Mod.instance.CurrentBlessing();
+
+            if (!(npc is StardewDruid.Character.Shadowtin))
+            {
+
+                responseList.Add(new Response("blessing", "(rite) I want to practice a different rite"));
+
+                int num = Mod.instance.AttuneableWeapon();
+
+                if (num != -1 && num != 999)
+                {
+
+                    responseList.Add(new Response("attune", "(attune) I want to dedicate this " + Game1.player.CurrentTool.Name + " (manage attunement)"));
+
+                }
+
+            }
+
+            responseList.Add(new Response("discuss", " (talk) I want to discuss some things with you"));
+
             if (npc is StardewDruid.Character.Effigy)
             {
-                DelayedAction.functionAfterDelay(RitesEffigy, 100);
-            }
-            DelayedAction.functionAfterDelay(RitesJester, 100);
-        }
 
-        public void RitesEffigy()
-        {
-            string str = "Forgotten Effigy: ^The traditions live on.";
-            List<Response> responseList = new List<Response>();
-            QuestData.RitesProgress();
-            Mod.instance.CurrentBlessing();
-            responseList.Add(new Response("blessing", "I want to practice a different rite (change rite)"));
-            responseList.Add(new Response("discuss", "I want to discuss some things with you"));
-            if (Context.IsMultiplayer && Context.IsMainPlayer)
-            {
-                responseList.Add(new Response("farmhands", "I want to share what I've learned with others (train farmhands)"));
-            }
-            if (Mod.instance.AttuneableWeapon() != -1)
-            {
-                responseList.Add(new Response("attune", "I want to dedicate this " + Game1.player.CurrentTool.Name + " (manage attunement)"));
+                if (Context.IsMultiplayer && Context.IsMainPlayer)
+                {
+
+                    responseList.Add(new Response("farmhands", "(farmhands) I want to share what I've learned with others"));
+
+                }
+
+                responseList.Add(new Response("magnetism", "(magnetism) I want the stones and sticks to obey!"));
 
             }
-            responseList.Add(new Response("magnetism", "I want the stones and sticks to obey! (reset magnetism)"));
 
-            responseList.Add(new Response("none", "(nevermind)"));
+            responseList.Add(new Response("cancel", "(nevermind)"));
 
             GameLocation.afterQuestionBehavior questionBehavior = new(RitesAnswer);
-            Game1.player.currentLocation.createQuestionDialogue(str, responseList.ToArray(), questionBehavior, npc);
-        }
-
-        public void RitesJester()
-        {
-            string str = "The Jester of Fate: ^You assume I know anything.";
-            List<Response> responseList = new List<Response>();
-            QuestData.RitesProgress();
-            Mod.instance.CurrentBlessing();
-            responseList.Add(new Response("blessing", "I want to practice a different rite (change rite)"));
-            responseList.Add(new Response("discuss", "I want to discuss some things with you"));
-            int num = Mod.instance.AttuneableWeapon();
-            if (num != -1 && num != 999)
-                responseList.Add(new Response("attune", "I want to dedicate this " + Game1.player.CurrentTool.Name + " (manage attunement)"));
-            responseList.Add(new Response("none", "(nevermind)"));
-            // ISSUE: method pointer
-            GameLocation.afterQuestionBehavior questionBehavior = new(RitesAnswer);
-            Game1.player.currentLocation.createQuestionDialogue(str, responseList.ToArray(), questionBehavior, npc);
+            
+            Game1.player.currentLocation.createQuestionDialogue(intro, responseList.ToArray(), questionBehavior, npc);
+        
         }
 
         public void RitesAnswer(Farmer visitor, string answer)
@@ -97,32 +127,56 @@ namespace StardewDruid.Dialogue
 
         public void DialogueBlessing()
         {
-            string str1 = "Forgotten Effigy: ^The Kings, the Lady, the Stars, I may entreat them all.";
-            List<string> stringList = QuestData.RitesProgress();
-            string str2 = Mod.instance.CurrentBlessing();
+            string intro = "Forgotten Effigy: ^The Kings, the Lady, the Stars, I may entreat them all.";
+
+            List<string> riteList = QuestData.RitesProgress();
+
+            string rite = Mod.instance.CurrentBlessing();
+
             List<Response> responseList = new List<Response>();
+
             if (npc is StardewDruid.Character.Effigy)
             {
-                if (str2 != "weald")
+                if (rite != "weald")
+                {
                     responseList.Add(new Response("weald", "Let us pay homage to the Two Kings"));
-                if (stringList.Contains("mists") && str2 != "mists")
+                }
+                    
+                if (riteList.Contains("mists") && rite != "mists")
+                {
                     responseList.Add(new Response("mists", "Call out to the Lady Beyond The Shore"));
-                if (stringList.Contains("stars") && str2 != "stars")
+                }
+                    
+                if (riteList.Contains("stars") && rite != "stars")
+                {
                     responseList.Add(new Response("stars", "Look to the Stars for me"));
+                }
+                    
             }
             if (npc is StardewDruid.Character.Jester)
             {
-                str1 = "Jester: ^I hear many voices, and some aren't even mine";
-                if (str2 != "fates")
+                intro = "Jester: ^I hear many voices, and some aren't even mine";
+
+                if (rite != "fates")
+                {
                     responseList.Add(new Response("fates", "Ask your kin to favour me"));
-                if (stringList.Contains("ether") && str2 != "ether")
+                }
+                    
+                if (riteList.Contains("ether") && rite != "ether")
+                {
                     responseList.Add(new Response("ether", "I want to reach the Masters of the Ether, the Dragons"));
+                }
+                    
             }
+
             responseList.Add(new Response("none", "I don't want anyone's favour (disable)"));
+
             responseList.Add(new Response("cancel", "(say nothing)"));
-            // ISSUE: method pointer
+
             GameLocation.afterQuestionBehavior questionBehavior = new(AnswerBlessing);
-            Game1.player.currentLocation.createQuestionDialogue(str1, responseList.ToArray(), questionBehavior, npc);
+
+            Game1.player.currentLocation.createQuestionDialogue(intro, responseList.ToArray(), questionBehavior, npc);
+
         }
 
         public void AnswerBlessing(Farmer effigyVisitor, string effigyAnswer)
@@ -159,43 +213,108 @@ namespace StardewDruid.Dialogue
                     break;
             }
             if (effigyAnswer != "cancel")
+            {
                 Mod.instance.ChangeBlessing(effigyAnswer);
+
+            }
+
             Game1.drawDialogue(npc, str);
         }
 
         public void DialogueDiscuss()
         {
+            
             List<string> stringList = QuestData.RitesProgress();
+            
             Mod.instance.CurrentBlessing();
+            
             List<Response> responseList = new List<Response>();
-            string str;
+            
+            string intro;
+            
             if (npc is StardewDruid.Character.Effigy)
             {
-                str = "Our traditions are etched into the bedrock of the valley.";
+                intro = "The Forgotten Effigy: Our traditions are etched into the bedrock of the valley.";
+
                 responseList.Add(new Response("weald", "What role do the Two Kings play?"));
+
                 if (stringList.Contains("mists"))
+                {
                     responseList.Add(new Response("mists", "Who is the Voice Beyond the Shore?"));
+                }
+                    
                 if (stringList.Contains("stars"))
+                {
                     responseList.Add(new Response("stars", "Do the Stars have names?"));
+                }
+                    
                 if (stringList.Contains("fates"))
+                {
                     responseList.Add(new Response("fates", "What do you know of Jester and the Fates?"));
+                }
+                    
                 if (stringList.Contains("ether"))
+                {
                     responseList.Add(new Response("ether", "Who were the Masters of the Ether?"));
+                }
+                    
                 responseList.Add(new Response("Effigy", "I want to know more about the First Farmer"));
+
+
+                if (Mod.instance.characters.ContainsKey("Shadowtin"))
+                {
+
+                    responseList.Add(new Response("Shadowtin", "Our circle now has it's own treasure hunter"));
+
+                }
+
+            }
+            else if (npc is StardewDruid.Character.Jester)
+            {
+                
+                intro = "The Jester of Fate: ^I enjoy answering questions. One of my dearest sisters was a sphinx.";
+                
+                responseList.Add(new Response("Jester", "Have you learned anything more about your purpose?"));
+               
+                responseList.Add(new Response("Effigy", "The Effigy of the First Farmer watches us"));
+                
+                responseList.Add(new Response("fates", "Tell me more about your kin, the Fates"));
+                
+                if (stringList.Contains("ether"))
+                {
+                    
+                    responseList.Add(new Response("ether", "Where are the Dragons?"));
+                
+                }
+
+                if (Mod.instance.characters.ContainsKey("Shadowtin"))
+                {
+
+                    responseList.Add(new Response("Shadowtin", "Shadowtin doesn't believe in luck. Or chance. Or fortune."));
+
+                }
+
             }
             else
             {
-                str = "The Jester of Fate: ^I enjoy answering questions. One of my dearest sisters was a sphinx.";
-                responseList.Add(new Response("Jester", "Have you learned anything more about your purpose?"));
-                responseList.Add(new Response("Effigy", "The Effigy of the First Farmer watches us"));
-                responseList.Add(new Response("fates", "Tell me more about your kin, the Fates"));
-                if (stringList.Contains("ether"))
-                    responseList.Add(new Response("ether", "Where are the Dragons?"));
+                intro = "Shadowtin Bear: ^Certainly. As long as the discussion relates to treasure. Or Dragons.";
+
+                responseList.Add(new Response("ether", "So what dragon treasures have you found?"));
+
+                responseList.Add(new Response("Effigy", "The Effigy is a strange mystical artifact."));
+
+                responseList.Add(new Response("fates", "Jester has no care for treasures."));
+
+                responseList.Add(new Response("Shadowtin", "How did you and the other shadowfolk come into the service of Lord Deep?"));
+
             }
-            responseList.Add(new Response("return", "(nevermind)"));
-            // ISSUE: method pointer
+            
+            responseList.Add(new Response("cancel", "(nevermind)"));
+            
             GameLocation.afterQuestionBehavior questionBehavior = new(AnswerEffects);
-            Game1.player.currentLocation.createQuestionDialogue(str, responseList.ToArray(), questionBehavior, npc);
+            
+            Game1.player.currentLocation.createQuestionDialogue(intro, responseList.ToArray(), questionBehavior, npc);
+        
         }
 
         public void AnswerEffects(Farmer visitor, string answer)
@@ -209,6 +328,10 @@ namespace StardewDruid.Dialogue
 
                 case "Jester":
                     DelayedAction.functionAfterDelay(DiscussJester, 100);
+                    break;
+
+                case "Shadowtin":
+                    DelayedAction.functionAfterDelay(DiscussShadowtin, 100);
                     break;
 
                 case "weald":
@@ -229,10 +352,6 @@ namespace StardewDruid.Dialogue
 
                 case "fates":
                     DelayedAction.functionAfterDelay(EffectsFates, 100);
-                    break;
-
-                case "return":
-                    Approach();
                     break;
 
             }
@@ -257,35 +376,76 @@ namespace StardewDruid.Dialogue
         public void EffectsFates()
         {
             if (npc is StardewDruid.Character.Effigy)
+            {
                 Game1.drawDialogue(npc, "The Fates weave the cords of destiny into the great tapestry that is the story of the world. It is said that they each serve a special purpose known only to Yoba, and so they often appear to work by mystery and happenchance, by whim even. (Effigy motions ever so slightly in the direction of Jester) Many have been known to stray from their duty.");
+            }
+            else if (npc is StardewDruid.Character.Jester)
+            {
+                Game1.drawDialogue(npc, "Flameface is right. Every Fate has a special role we're given by Fortumei, the greatest of us, priestess of Yoba. Some of us are fairies, and care for the fates of plants and little things. For my contribution, well, I've had some pretty cool moments... (Jester is pensive as his voice trails off)");
+            }
             else
-                Game1.drawDialogue(npc, "Flameface is right. Every Fate has a special role we're given by Fortumei, the greatest of us, priestess of Yoba. Some of us are fairies, and care for the fates of plants and little things. For my contribution, well, I've had some pretty cool moments... (Jester is pensive as it's voice trails off)");
+            {
+                Game1.drawDialogue(npc, "He claims to be a powerful agent of destiny, but he's as blind as a newborn kitten, and naive about the horrors that await him on his quest into the undervalley. I doubt he's been sent by Yoba. I doubt Yoba still cares about any of us.");
+            }
         }
 
         public void EffectsEther()
         {
+            
             if (npc is StardewDruid.Character.Effigy)
+            {
                 Game1.drawDialogue(npc, "I know very little of Dragonkind and their ilk. They were the first servants of Yoba, and perhaps they disappointed their creator. Their bones have become the foundation of the other world, their potent life essence has become the streams of ether that flow through the planes.");
-            else
+            }
+            else if (npc is StardewDruid.Character.Jester)
+            {
                 Game1.drawDialogue(npc, "We're talking about creatures that could reforge the world itself, Farmer. They don't like our kind, otherfolk or humanfolk. Actually I'm... (Jester's hairs raise across it's backside) kind of scared of them. I'm glad you have my back!");
+            }
+            else
+            {
+                Game1.drawDialogue(npc, "I've found this cloak, and this carnyx, and this bear mask. The Dragons would demand the best tributes, from the greatest artisans, with the finest materials available. All Shadowfolk prize such treasures, and it's a very competitive society, so I have to carry mine with me at all times.");
+            }
+
+        }
+
+
+        public void DiscussEffigy()
+        {
+
+            if (npc is StardewDruid.Character.Effigy)
+            {
+                Game1.drawDialogue(npc, "The first farmer was blessed by the elderborn, the monarchs of the valley, to cultivate and protect this special land. He used this blessing to construct me, and showed me how I could preserve his techniques for a future successor. Though my friend is long gone, I remain, because the power of the elders remain. For now.");
+            }
+            else if (npc is StardewDruid.Character.Jester)
+            {
+                Game1.drawDialogue(npc, "He talks about the first of the valley farmers all the time. They must have have been good friends. Has he asked you to build a pyre yet? (Jester gives a mischievous smirk)");
+            }
+            else
+            {
+                Game1.drawDialogue(npc, "Of all the constructs embued with the power of the elderborn, I've never heard of one so loyal to his former master. I've done my own assessment of the quality of his make. The clothes and head-dress are cheap garbage. And threadbare. I suspect a large cat has been kneading them, as the back is scratched and covered in fur. You'll probably need to replace them at some point. Or burn them. The real value in the Effigy is a fashioned inner core that is saturated with elder power. It's the heart, and the brain. A treasure from the elder age.");
+
+            }
+
         }
 
         public void DiscussJester()
         {
-            Game1.drawDialogue(npc, "I'm as lost as when I started. But, I have found out something about myself, something disturbing, embarrassing, and yet, I must accept it. I like to hide in boxes.");
+            Game1.drawDialogue(npc, "I'm as lost as when I started. But, I have found out something about myself, something embarrassing, even disturbing, and yet, I must accept it. I like to hide in boxes.");
         }
 
-        public void DiscussEffigy()
+        public void DiscussShadowtin()
         {
+
             if (npc is StardewDruid.Character.Effigy)
             {
-                
-                Game1.drawDialogue(npc, "The first farmer was blessed by the elderborn, the monarchs of the valley, to cultivate and protect this special land. He used this blessing to construct me, and showed me how I could preserve his techniques for a future successor. Though my friend is long gone, I remain, because the power of the elders remain. For now.");
-
+                Game1.drawDialogue(npc, "All manner of otherfolk traded and befriended with the first farmer, but he always had the most trouble with the shadowfolk. It's difficult to see their intentions. It's difficult to see them in any lack of light.");
+            }
+            else if (npc is StardewDruid.Character.Jester)
+            {
+                Game1.drawDialogue(npc, "I think I get what he wants, I mean, trinkets and shiny things are great. But they aren't everything. He said he'd help us get to the undervalley, but he doesn't care about my sacred mission. Still, I think he has a part to play for Yoba in our great purpose. (Jester grins) You can just beat him up again if he tries to double-cross us.");
             }
             else
             {
-                Game1.drawDialogue(npc, "Of all the constructs embued with the power of the elderborn, he is the most loyal to his master. They must have have become good friends. Has he asked you to build a pyre yet? (Jester gives a mischievous smirk)");
+                Game1.drawDialogue(npc, "The folklore of shadows is enscribed on the outer surface of the great vessel. The narrative starts with Lord Deep, before the first of my forefolk is mentioned, and the stories suggest we have always been subservient to him. But I believe those first enscriptions have been tampered with. I know now, from research, that the vessel is dragon-forged. Perhaps we served an ancient one, perhaps Lord Deep rewrote our history. I hope my travels and the treasures we uncover yield answers.");
 
             }
 
@@ -293,9 +453,13 @@ namespace StardewDruid.Dialogue
 
         public void DialogueFarmhands()
         {
+            
             string str = "Teach them to embrace the source, or seize it.";
+
             Mod.instance.TrainFarmhands();
+
             Game1.drawDialogue(npc, str);
+
         }
 
         public void DialogueAttune()
@@ -342,14 +506,7 @@ namespace StardewDruid.Dialogue
             switch (effigyAnswer)
             {
                 case "return":
-                    if (npc is StardewDruid.Character.Effigy)
-                    {
-                        // ISSUE: method pointer
-                        DelayedAction.functionAfterDelay(RitesEffigy, 100);
-                        return;
-                    }
-                    // ISSUE: method pointer
-                    DelayedAction.functionAfterDelay(RitesJester, 100);
+                    DelayedAction.functionAfterDelay(RitesApproach, 100);
                     return;
                 case "none":
                     string str3 = "This " + Game1.player.CurrentTool.Name + " will no longer serve.";

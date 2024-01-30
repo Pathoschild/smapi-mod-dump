@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19662
+IDs: TheFluffyRobot.RelaxingWeekends
+update keys: Nexus:19662, GitHub:jamespfluger/Stardew-ModCollection

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-﻿{
+{
   "ui-fail": "Nichts passiert...",
   "ui-label": "Ziel wählen",
   "ui-cancel": "Abbrechen",
@@ -16,8 +16,6 @@
   "ui-usereturn": "Zur letzten Position zurückkehren?",
   "config.WarpsEnabled.label": "Vanilla-Teleports aktiviert",
   "config.WarpsEnabled.desc": "Wann Teleports aktiviert werden sollen",
-  "config.FarmWarpEnabled.label": "Farm-Teleport aktiviert",
-  "config.FarmWarpEnabled.desc": "Wann der Teleport zur Farm aktiviert werden soll",
   "config.AccessFromDisabled.label": "Zugriff von deakt. Zielen aus",
   "config.AccessFromDisabled.desc": "Zugriff auf das Netzwerk von deaktivierten Zielen",
   "config.AccessFromWand.label": "Zugriff durch Zepter d. Rückkehr",
@@ -32,7 +30,6 @@
   "config.WandReturnEnabled.desc": "Wenn du den Zauberstab benutzt, speichert er deine Position und ermöglicht es dir, dich später dorthin zurück zu teleportieren.",
   "config.WarpEnabled.Always": "Immer",
   "config.WarpEnabled.Never": "Nie",
-  "config.WarpEnabled.AfterObelisk": "Nach Obelisken",
   "dest.farm": "Farm",
   "dest.mountain": "Berge",
   "dest.beach": "Strand",

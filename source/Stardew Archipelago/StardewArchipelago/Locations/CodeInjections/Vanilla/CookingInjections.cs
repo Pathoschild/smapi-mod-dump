@@ -19,7 +19,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
     public static class CookingInjections
     {
-        private const string COOKING_LOCATION_PREFIX = "Cook ";
+        public const string COOKING_LOCATION_PREFIX = "Cook ";
 
         private static IMonitor _monitor;
         private static ArchipelagoClient _archipelago;

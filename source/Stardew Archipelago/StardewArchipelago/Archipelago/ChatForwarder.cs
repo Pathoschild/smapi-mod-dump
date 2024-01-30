@@ -34,16 +34,18 @@ namespace StardewArchipelago.Archipelago
         private static ArchipelagoClient _archipelago;
         private Harmony _harmony;
         private static IGiftHandler _giftHandler;
+        private static GoalManager _goalManager;
         private static BankHandler _bankHandler;
         private static PlayerUnstucker _playerUnstucker;
 
-        public ChatForwarder(IMonitor monitor, IModHelper helper, Harmony harmony, ArchipelagoClient archipelago, IGiftHandler giftHandler, TileChooser tileChooser)
+        public ChatForwarder(IMonitor monitor, IModHelper helper, Harmony harmony, ArchipelagoClient archipelago, IGiftHandler giftHandler, GoalManager goalManager, TileChooser tileChooser)
         {
             _monitor = monitor;
             _helper = helper;
             _harmony = harmony;
             _archipelago = archipelago;
             _giftHandler = giftHandler;
+            _goalManager = goalManager;
             _playerUnstucker = new PlayerUnstucker(tileChooser);
             _bankHandler = new BankHandler(_archipelago);
         }
@@ -90,6 +92,10 @@ namespace StardewArchipelago.Archipelago
 
             var messageLower = message.ToLower();
             if (HandleGoalCommand(messageLower))
+            {
+                return true;
+            }
+            if (HandleVanillaGoalCommand(messageLower))
             {
                 return true;
             }
@@ -168,6 +174,20 @@ namespace StardewArchipelago.Archipelago
             var goal = GoalCodeInjection.GetGoalString();
             var goalMessage = $"Your Goal is: {goal}";
             Game1.chatBox?.addMessage(goalMessage, Color.Gold);
+            return true;
+        }
+
+        private static bool HandleVanillaGoalCommand(string message)
+        {
+            if (message != $"{COMMAND_PREFIX}vanilla_goal")
+            {
+                return false;
+            }
+
+            var goal = GoalCodeInjection.GetGoalString();
+            var goalMessage = $"Checking the vanilla completion criteria for goal: {goal}";
+            Game1.chatBox?.addMessage(goalMessage, Color.Gold);
+            _goalManager.CheckGoalCompletion(true);
             return true;
         }
 

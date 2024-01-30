@@ -22,7 +22,7 @@ using StardewValley.Menus;
 
 namespace ItemResearchSpawner
 {
-    internal class ModEntry : Mod
+    internal sealed class ModEntry : Mod
     {
         private ModConfig _config;
         private IModHelper _helper;
@@ -34,12 +34,23 @@ namespace ItemResearchSpawner
         public override void Entry(IModHelper helper)
         {
             _helper = helper;
-            _config = helper.ReadConfig<ModConfig>();
+
+            try
+            {
+                _config = helper.ReadConfig<ModConfig>();
+            }
+            catch (Exception e)
+            {
+                _config = new ModConfig();
+                helper.WriteConfig(_config);
+                Monitor.LogOnce("Failed to load config.json, replaced with default one");
+            }
+            
 
             I18n.Init(helper.Translation);
 
             _saveManager ??= new SaveManager(Monitor, _helper, ModManifest);
-            _modManager ??= new ModManager(Monitor, _helper, ModManifest);
+            _modManager ??= new ModManager(Monitor, _helper, ModManifest, _config);
             _progressionManager ??= new ProgressionManager(Monitor, _helper, ModManifest);
 
             helper.Events.Input.ButtonsChanged += OnButtonsChanged;
@@ -50,24 +61,38 @@ namespace ItemResearchSpawner
 
         private void OnLaunched(object sender, GameLaunchedEventArgs e)
         {
-            var api = Helper.ModRegistry.GetApi<GenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+            var api = Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
 
             if (api == null) return;
 
             api.RegisterModConfig(ModManifest, () => _config = new ModConfig(), () => Helper.WriteConfig(_config));
+
             api.RegisterLabel(ModManifest, "Description", "ModManifest.Description");
             api.RegisterParagraph(ModManifest, ModManifest.Description.ToString());
-            api.RegisterLabel(ModManifest, "Mod config", ":)");
-            api.RegisterSimpleOption(ModManifest, "Menu open key", "Key to open mod menu",
-                () => _config.ShowMenuKey, val => _config.ShowMenuKey = val);
 
-            var availableModes = new List<string>(){"Spawn mode", "Buy/Sell mode"};
+            api.RegisterLabel(ModManifest, "Mod config", ":)");
+
+            // ---------------- config options ----------------
+
+            api.RegisterSimpleOption(ModManifest, "Menu open key", "Key to open mod menu",
+                () => _config.ShowMenuButton, val => _config.ShowMenuButton = val);
+
+            var availableModes = new List<string>(){"Research (Spawn) mode", "Buy/Sell mode", "Combined (Research->Sell/Buy) mode" };
             
             api.RegisterChoiceOption(ModManifest, "Default mode", "Mod menu mode for the new games", 
                 () => availableModes[(int)_config.DefaultMode], val => _config.DefaultMode = (ModMode) availableModes.IndexOf(val), availableModes.ToArray());
             
             api.RegisterSimpleOption(ModManifest, "Force default config", "If true, mod will use predefined config in assets folder such as pricelist and categories",
-                () => _config.UseDefaultConfig, val => _config.UseDefaultConfig = val);
+                () => _config.UseDefaultBalanceConfig, val => _config.UseDefaultBalanceConfig = val);
+
+            api.RegisterClampedOption(ModManifest, "Base reseach amount multiplier", "increase or decrease reseach amount for all items",
+                () => _config.ResearchAmountMultiplier, (value) => { _config.ResearchAmountMultiplier = MathF.Round(value, 2); }, 0.1f, 10f);
+
+            api.RegisterClampedOption(ModManifest, "Base buy price multiplier", "increase or decrease buy price for all items (Sell/Buy mode)",
+                () => _config.BuyPriceMultiplier, (value) => { _config.BuyPriceMultiplier = MathF.Round(value, 2); }, 0.0f, 10f);
+
+            api.RegisterClampedOption(ModManifest, "Base sell price multiplier", "increase or decrease sell price for all items (Sell/Buy mode)",
+                () => _config.SellPriceMultiplier, (value) => { _config.SellPriceMultiplier = MathF.Round(value, 2); }, 0.0f, 10f);
         }
 
         private void OnButtonsChanged(object sender, ButtonsChangedEventArgs e)
@@ -77,7 +102,7 @@ namespace ItemResearchSpawner
                 return;
             }
 
-            if (_config.ShowMenuKey.JustPressed())
+            if (_config.ShowMenuButton.JustPressed())
             {
                 Game1.activeClickableMenu = GetSpawnMenu();
             }

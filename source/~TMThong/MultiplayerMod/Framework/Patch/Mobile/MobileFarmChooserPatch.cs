@@ -15,11 +15,13 @@ using StardewValley.Menus;
 using StardewValley.Minigames;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 namespace MultiplayerMod.Framework.Patch.Mobile
 {
+    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
     internal class MobileFarmChooserPatch : IPatch
     {
         public Type PATCH_TYPE { get; }
@@ -66,6 +68,11 @@ namespace MultiplayerMod.Framework.Patch.Mobile
                 return false;
             }
             return true;
+        }
+
+        private string GetDebuggerDisplay()
+        {
+            return ToString();
         }
     }
 }

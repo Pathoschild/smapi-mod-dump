@@ -11,6 +11,7 @@ for queries and analysis.**
 ## Overview
 
 This mod replaces the in-game TV channels in Stardew Valley with Brazilian-themed content. This includes new dialogue and animated sprites for each channel.
+[See more.](https://www.nexusmods.com/stardewvalley/mods/10843)
 
 ## Features
 

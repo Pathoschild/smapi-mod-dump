@@ -14,10 +14,16 @@ using StardewModdingAPI.Utilities;
 
 namespace ItemResearchSpawner
 {
-    public class ModConfig
+    internal sealed class ModConfig
     {
-        public KeybindList ShowMenuKey { get; set; } = KeybindList.ForSingle(SButton.R);
-        public ModMode DefaultMode { get; set; } = ModMode.Spawn;
-        public bool UseDefaultConfig { get; set; } = true;
+        public KeybindList ShowMenuButton { get; set; } = KeybindList.ForSingle(SButton.R);
+        public ModMode DefaultMode { get; set; } = ModMode.Research;
+        public bool UseDefaultBalanceConfig { get; set; } = true;
+
+        public float ResearchAmountMultiplier { get; set; } = 1.5f;
+
+        public float SellPriceMultiplier { get; set; } = 0.9f;
+
+        public float BuyPriceMultiplier { get; set; } = 1.1f;
     }
 }

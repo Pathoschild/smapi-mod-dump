@@ -8,6 +8,8 @@
 **
 *************************************************/
 
+using StardewDruid.Cast.Weald;
+using StardewValley;
 using System.Collections.Generic;
 
 namespace StardewDruid.Map
@@ -51,6 +53,99 @@ namespace StardewDruid.Map
             return villagerList;
 
         }
+
+        public static List<string> CustomReaction(string rite, string name)
+        {
+
+            List<string> reaction = new();
+
+            switch (rite)
+            {
+
+                case "stars":
+
+                    switch (name)
+                    {
+
+                        case "Harvey":
+
+                            reaction.Add("Be careful, "+Game1.player.Name+". The dust and vapours from those impacts could be hazardous! $s");
+
+                            break;
+
+                        case "Maru":
+
+                            reaction.Add("Ooh! A meteor shower! Did you know that the difference between a meteor and an asteroid is whether they've entered the atmosphere of a planet? $h");
+
+                            break;
+
+                        case "Kent":
+
+                            reaction.Add("Aerial bombardment! Take Cover! $a");
+
+                            reaction.Add("It's over... you saw that right? I didn't imagine it. I didn't... bring it home.");
+
+                            break;
+
+                        case "Krobus":
+
+                            reaction.Add("My people hide underground for many reasons. You've just demonstrated one of them. $s");
+
+                            break;
+
+                        case "Jodi":
+
+                            reaction.Add("Explosions. I wonder if...");
+
+                            reaction.Add("Sorry, my thoughts wandered to somewhere else.");
+
+                            break;
+
+                        default:
+
+                            break;
+
+                    }
+
+                    break;
+
+                case "mists":
+
+                    switch (name)
+                    {
+
+                        case "Sebastian":
+
+                            reaction.Add("I think I'd be good at that if you taught me.");
+                            
+                            reaction.Add("On second thought, I don't think I want to risk bolting myself. $h");
+
+                            break;
+
+                        case "Sam":
+
+                            reaction.Add("That just gave me the best album-cover idea.");
+
+                            break;
+
+                        case "Demetrius":
+
+                            reaction.Add("This is an anomalous weather pattern for this region. There haven't been recordings of such phenomena since...");
+
+                            reaction.Add("(Demetrius is deep in thought)");
+
+                            break;
+                    
+                    }
+
+                    break;
+
+            }
+
+            return reaction;
+
+        }
+
 
         public static Dictionary<string, int> Affinity()
         {

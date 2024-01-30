@@ -98,12 +98,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         {
             try
             {
-                if (!_archipelago.SlotData.Craftsanity.HasFlag(Craftsanity.All) || !eventCooking.Keys.Contains(__instance.id))
+                if (!_archipelago.SlotData.Craftsanity.HasFlag(Craftsanity.All) || !eventCrafting.Keys.Contains(__instance.id))
                 {
                     return true;
                 }
 
-                _locationChecker.AddCheckedLocation($"{eventCooking[__instance.id]}{RECIPE_SUFFIX}");
+                _locationChecker.AddCheckedLocation($"{eventCrafting[__instance.id]}{RECIPE_SUFFIX}");
                 __instance.CurrentCommand++;
                 return false; // don't run original logic
 

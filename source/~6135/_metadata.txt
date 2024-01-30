@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/6135/StardewValley.ProfitCalculator
+   Git: https://github.com/6135/StardewValley.ProfitCalculator.git
+
+mods:
+   Profit Calculator
+   Profit Calculator → DGA Support
+
+latest commit:
+   commit 5a722e5a7660df70acc9c0ef8ce2aca243f27e50
+   Author: Gui Costa <guibscosta@hotmail.com>
+   Date:   Sat Jan 27 13:33:13 2024 +0000
+   
+       Update ProfitCalculator.sln
+   

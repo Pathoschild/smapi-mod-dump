@@ -66,9 +66,18 @@ namespace ItemResearchSpawner.Components
 
             if (itemProgressionRaw.current >= itemProgressionRaw.max)
             {
-                if (ModManager.Instance.ModMode == ModMode.Buy)
+                /*                if (ModManager.Instance.ModMode == ModMode.Buy)
+                                {
+                                    OnStackChanged?.Invoke(0);
+                                }*/
+
+                switch (ModManager.Instance.ModMode)
                 {
-                    OnStackChanged?.Invoke(0);
+                    case ModMode.BuySell:
+                    case ModMode.Combined:
+                        OnStackChanged?.Invoke(0);
+                        break;
+                    default: break;
                 }
 
                 return;
@@ -111,13 +120,26 @@ namespace ItemResearchSpawner.Components
                 OnResearchCompleted();
             }
 
-            if (ModManager.Instance.ModMode == ModMode.Buy)
+/*            if (ModManager.Instance.ModMode == ModMode.Buy)
             {
                 OnStackChanged?.Invoke(0);
             }
             else
             {
                 OnStackChanged?.Invoke(item.Stack - progressCount);
+            }*/
+
+
+            switch (ModManager.Instance.ModMode)
+            {
+                case ModMode.BuySell:
+                case ModMode.Combined:
+                    OnStackChanged?.Invoke(0);
+                    break;
+                case ModMode.Research:
+                    OnStackChanged?.Invoke(item.Stack - progressCount);
+                    break;
+                default: break;
             }
         }
 
@@ -138,7 +160,7 @@ namespace ItemResearchSpawner.Components
             var message = new ResearchProgressionMessage()
             {
                 Progression = _progression,
-                PlayerID = Game1.player.uniqueMultiplayerID.ToString()
+                PlayerID = Game1.player.UniqueMultiplayerID.ToString()
             };
 
             _helper.Multiplayer.SendMessage(message, MessageKeys.PROGRESSION_SAVE_REQUIRED,
@@ -200,7 +222,12 @@ namespace ItemResearchSpawner.Components
                 return "(X)";
             }
 
-            if (ModManager.Instance.ModMode == ModMode.Buy)
+            if (ModManager.Instance.ModMode == ModMode.BuySell)
+            {
+                return "($$$)";
+            }
+
+            if (ModManager.Instance.ModMode == ModMode.Combined && itemProgressionRaw.current >= itemProgressionRaw.max)
             {
                 return "($$$)";
             }
@@ -237,6 +264,7 @@ namespace ItemResearchSpawner.Components
         private ItemProgressionRaw GetItemProgressionRaw(SpawnableItem item,
             out ResearchProgression progressionItem, ItemQuality quality = ItemQuality.Normal, bool itemActive = false)
         {
+            /*            
             var category =
                 ModManager.Instance.AvailableCategories.FirstOrDefault(c =>
                     I18n.GetByKey(c.Label).ToString().Equals(item.Category));
@@ -251,9 +279,11 @@ namespace ItemResearchSpawner.Components
 
             var maxProgression = ModManager.Instance.ModMode switch
             {
-                ModMode.Buy => 1,
+                ModMode.BuySell => 1,
                 _ => category?.ResearchCount ?? 1
-            };
+            };*/
+
+            var maxProgression = item.ProgressionLimit;
 
             progressionItem = TryInitAndReturnProgressionItem(item.Item);
 
@@ -296,11 +326,11 @@ namespace ItemResearchSpawner.Components
         public void DumpPlayersProgression()
         {
             var onlinePlayers = Game1.getOnlineFarmers()
-                .ToDictionary(farmer => farmer.uniqueMultiplayerID.ToString());
+                .ToDictionary(farmer => farmer.UniqueMultiplayerID.ToString());
 
             var offlinePlayers = Game1.getAllFarmers()
                 .Where(farmer => !onlinePlayers.Keys.Contains(farmer.UniqueMultiplayerID.ToString()))
-                .ToDictionary(farmer => farmer.uniqueMultiplayerID.ToString());
+                .ToDictionary(farmer => farmer.UniqueMultiplayerID.ToString());
 
             DumpPlayerProgression(Game1.player, _progression);
             
@@ -324,10 +354,10 @@ namespace ItemResearchSpawner.Components
         private void DumpPlayerProgression(Farmer player, Dictionary<string, ResearchProgression> progression)
         {
             _monitor.Log(
-                $"Dumping progression - player: {player.name}, location: {SaveHelper.ProgressionDumpPath(player.uniqueMultiplayerID.ToString())}",
+                $"Dumping progression - player: {player.Name}, location: {SaveHelper.ProgressionDumpPath(player.UniqueMultiplayerID.ToString())}",
                 LogLevel.Info);
 
-            _helper.Data.WriteJsonFile(SaveHelper.ProgressionDumpPath(player.uniqueMultiplayerID.ToString()),
+            _helper.Data.WriteJsonFile(SaveHelper.ProgressionDumpPath(player.UniqueMultiplayerID.ToString()),
                 progression);
         }
 
@@ -469,7 +499,7 @@ namespace ItemResearchSpawner.Components
         {
             if (!Context.IsMainPlayer) return;
 
-            SaveManager.Instance.CommitProgression(Game1.player.uniqueMultiplayerID.ToString(), _progression);
+            SaveManager.Instance.CommitProgression(Game1.player.UniqueMultiplayerID.ToString(), _progression);
         }
 
         private void OnLoad(object sender, DayStartedEventArgs e)
@@ -477,7 +507,7 @@ namespace ItemResearchSpawner.Components
             if (Context.IsMainPlayer)
             {
                 var progression =
-                    SaveManager.Instance.GetProgression(Game1.player.uniqueMultiplayerID.ToString());
+                    SaveManager.Instance.GetProgression(Game1.player.UniqueMultiplayerID.ToString());
 
                 OnLoadProgression(progression);
             }

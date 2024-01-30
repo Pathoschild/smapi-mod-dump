@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/14170
 IDs: drbirbdev.BetterFestivalNotifications
-update keys: Nexus:14170
+update keys: Nexus:14170, GitHub:drbirbdev/StardewValley

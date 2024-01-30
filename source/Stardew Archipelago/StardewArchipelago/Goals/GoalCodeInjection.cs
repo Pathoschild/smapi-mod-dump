@@ -17,9 +17,12 @@ using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Audio;
 using StardewArchipelago.Locations;
+using StardewArchipelago.Locations.CodeInjections.Vanilla;
+using StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer;
 using StardewArchipelago.Stardew;
 using StardewValley.Locations;
 using StardewValley.Menus;
+using Object = StardewValley.Object;
 
 namespace StardewArchipelago.Goals
 {
@@ -32,14 +35,16 @@ namespace StardewArchipelago.Goals
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
         private static BundleReader _bundleReader;
+        private static MonsterKillList _killList;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, BundleReader bundleReader)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, BundleReader bundleReader, MonsterKillList killList)
         {
             _monitor = monitor;
             _modHelper = modHelper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
             _bundleReader = bundleReader;
+            _killList = killList;
         }
 
         public static void CheckCommunityCenterGoalCompletion()
@@ -113,23 +118,34 @@ namespace StardewArchipelago.Goals
             _archipelago.ReportGoalCompletion();
         }
 
-        public static void CheckMasterAnglerGoalCompletion()
+        public static void CheckMasterAnglerGoalCompletion(bool vanillaGoal = false)
         {
             if (!_archipelago.IsConnected || _archipelago.SlotData.Goal != Goal.MasterAngler)
             {
                 return;
             }
 
-            CheckMasterAnglerWithoutIslandFish();
-            if (!Game1.player.hasOrWillReceiveMail(MASTER_ANGLER_LETTER))
+            if (vanillaGoal || _archipelago.SlotData.Fishsanity == Fishsanity.None)
             {
-                return;
+                SendMasterAnglerLetterExcludingIsland();
+                if (!Game1.player.hasOrWillReceiveMail(MASTER_ANGLER_LETTER))
+                {
+                    return;
+                }
+
+            }
+            else
+            {
+                if (_locationChecker.IsAnyLocationNotCheckedStartingWith(FishingInjections.FISHSANITY_PREFIX))
+                {
+                    return;
+                }
             }
 
             _archipelago.ReportGoalCompletion();
         }
 
-        private static void CheckMasterAnglerWithoutIslandFish()
+        private static void SendMasterAnglerLetterExcludingIsland()
         {
             if (!_archipelago.SlotData.ExcludeGingerIsland || Game1.player.hasOrWillReceiveMail(MASTER_ANGLER_LETTER))
             {
@@ -212,31 +228,51 @@ namespace StardewArchipelago.Goals
             _archipelago.ReportGoalCompletion();
         }
 
-        public static void CheckProtectorOfTheValleyGoalCompletion()
+        public static void CheckProtectorOfTheValleyGoalCompletion(bool vanillaGoal = false)
         {
             if (!_archipelago.IsConnected || _archipelago.SlotData.Goal != Goal.ProtectorOfTheValley)
             {
                 return;
             }
 
-            if (!AdventureGuild.areAllMonsterSlayerQuestsComplete())
+            if (vanillaGoal || _archipelago.SlotData.Monstersanity == Monstersanity.None)
             {
-                return;
+                if (!_killList.AreAllGoalsComplete())
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (_locationChecker.IsAnyLocationNotCheckedStartingWith(MonsterSlayerInjections.MONSTER_ERADICATION_AP_PREFIX))
+                {
+                    return;
+                }
             }
 
             _archipelago.ReportGoalCompletion();
         }
 
-        public static void CheckFullShipmentGoalCompletion()
+        public static void CheckFullShipmentGoalCompletion(bool vanillaGoal)
         {
             if (!_archipelago.IsConnected || _archipelago.SlotData.Goal != Goal.FullShipment)
             {
                 return;
             }
 
-            if (!Utility.hasFarmerShippedAllItems())
+            if (vanillaGoal || _archipelago.SlotData.Shipsanity == Shipsanity.None)
             {
-                return;
+                if (!HasShippedAllItems())
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (_locationChecker.IsAnyLocationNotCheckedStartingWith(NightShippingBehaviors.SHIPSANITY_PREFIX))
+                {
+                    return;
+                }
             }
 
             _archipelago.ReportGoalCompletion();
@@ -249,9 +285,19 @@ namespace StardewArchipelago.Goals
                 return;
             }
 
-            if (!HasCookedAllRecipes())
+            if (_archipelago.SlotData.Cooksanity == Cooksanity.None)
             {
-                return;
+                if (!HasCookedAllRecipes())
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (_locationChecker.IsAnyLocationNotCheckedStartingWith(CookingInjections.COOKING_LOCATION_PREFIX))
+                {
+                    return;
+                }
             }
 
             _archipelago.ReportGoalCompletion();
@@ -264,9 +310,19 @@ namespace StardewArchipelago.Goals
                 return;
             }
 
-            if (!HasCraftedAllRecipes())
+            if (_archipelago.SlotData.Craftsanity == Craftsanity.None)
             {
-                return;
+                if (!HasCraftedAllRecipes())
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (_locationChecker.IsAnyLocationNotCheckedStartingWith(CraftingInjections.CRAFTING_LOCATION_PREFIX))
+                {
+                    return;
+                }
             }
 
             _archipelago.ReportGoalCompletion();
@@ -365,7 +421,7 @@ namespace StardewArchipelago.Goals
         }
 
         // public void foundWalnut(int stack = 1)
-        public static void FounddWalnut_WalnutHunterGoal_Postfix(Farmer __instance, int stack)
+        public static void FoundWalnut_WalnutHunterGoal_Postfix(Farmer __instance, int stack)
         {
             try
             {
@@ -373,37 +429,71 @@ namespace StardewArchipelago.Goals
             }
             catch (Exception ex)
             {
-                _monitor.Log($"Failed in {nameof(FounddWalnut_WalnutHunterGoal_Postfix)}:\n{ex}", LogLevel.Error);
+                _monitor.Log($"Failed in {nameof(FoundWalnut_WalnutHunterGoal_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
         }
 
+        private static bool HasShippedAllItems()
+        {
+            var numberOfUnavailableItems = _archipelago.SlotData.ExcludeGingerIsland ? 10 : 0;
+            var numberOfMissedItems = 0;
+            foreach (var objectInformation in Game1.objectInformation)
+            {
+                var category = objectInformation.Value.Split('/')[3];
+                if (!category.Contains("Arch") && !category.Contains("Fish") && !category.Contains("Mineral") && !category.Substring(category.Length - 3).Equals("-2") && !category.Contains("Cooking") && !category.Substring(category.Length - 3).Equals("-7") && Object.isPotentialBasicShippedCategory(objectInformation.Key, category.Substring(category.Length - 3)))
+                {
+                    if (!Game1.player.basicShipped.ContainsKey(objectInformation.Key))
+                    {
+                        numberOfMissedItems++;
+                    }
+
+                    if (numberOfMissedItems > numberOfUnavailableItems)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         private static bool HasCookedAllRecipes()
         {
+            var numberOfUnavailableRecipes = _archipelago.SlotData.ExcludeGingerIsland ? 5 : 0;
             var allRecipes = Game1.content.Load<Dictionary<string, string>>("Data\\CookingRecipes");
+            var numberOfMissedRecipes = 0;
             foreach (var (recipeName, recipe) in allRecipes)
             {
                 if (!Game1.player.cookingRecipes.ContainsKey(recipeName))
                 {
-                    return false;
+                    numberOfMissedRecipes++;
+                    continue;
                 }
 
                 var recipeId = Convert.ToInt32(recipe.Split('/')[2].Split(' ')[0]);
                 if (!Game1.player.recipesCooked.ContainsKey(recipeId))
                 {
-                    return false;
+                    numberOfMissedRecipes++;
+                    continue;
                 }
             }
 
-            return true;
+            return numberOfMissedRecipes <= numberOfUnavailableRecipes;
         }
 
         private static bool HasCraftedAllRecipes()
         {
+            var numberOfUnavailableRecipes = _archipelago.SlotData.ExcludeGingerIsland ? 8 : 0;
             var allRecipes = Game1.content.Load<Dictionary<string, string>>("Data\\CraftingRecipes");
+            var numberOfMissedRecipes = 0;
             foreach (var recipe in allRecipes.Keys)
             {
                 if (!Game1.player.craftingRecipes.ContainsKey(recipe) || Game1.player.craftingRecipes[recipe] <= 0)
+                {
+                    numberOfMissedRecipes++;
+                }
+
+                if (numberOfMissedRecipes > numberOfUnavailableRecipes)
                 {
                     return false;
                 }

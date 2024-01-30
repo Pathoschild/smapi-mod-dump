@@ -11,7 +11,7 @@
 {
   "Name": "Profiler",
   "Author": "SinZ",
-  "Version": "2.0.0-beta2",
+  "Version": "2.0.0",
   "Description": "Logs when the game loop goes between states and when event handlers take too long",
   "UniqueID": "SinZ.Profiler",
   "EntryDll": "Profiler.dll",

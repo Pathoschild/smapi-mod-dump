@@ -37,7 +37,7 @@ for queries and analysis.**
 	<li><a href="#limit-breaks">Limit Breaks</a></li>
 	<li><a href="#compatibility">Compatibility</a></li>
 	<li><a href="#recommended-mods">Recommended Mods</a></li>
-	<li><a href="#for-c-developers">For C# Developers</a></li>
+	<li><a href="#for-mod-authors">For Mod Authors</a></li>
 	<li><a href="#faq">F.A.Q.</a></li>
 </ol>
 </details>
@@ -453,7 +453,7 @@ Click on any profession below to display more details. When a perk is preceded b
 <ul>
 <font size="2">
 
-- The catching bar decreases 5.5% faster per unique Fish Pond. In multiplayer, **only counts Fish Ponds owned by the player with this profession**. Does stack with Trap Bobber.
+- The catching bar decreases 5.5% slower per unique Fish Pond. In multiplayer, **only counts Fish Ponds owned by the player with this profession**. Does stack with Trap Bobber.
 - Also allows raising legendary fish. Extended family can be raised in the same pond as the parent if [PNDS](../Ponds) module is enabled.
 
 <font color="gold">
@@ -689,7 +689,13 @@ If enabled, the [Statue of Uncertainty](https://stardewvalleywiki.com/The_Sewers
 
 <br>
 
-Instead of changing your profession choices, the Statue of Prestige will reset your level 10 skills back to level 0, for a price. After resetting a skill, you will have to level up again to choose a different profession, but you get to keep every profession you've ever acquired (yes, including level 5). You will also find that leveling becomes progressively easier after each skill reset (or harder, depending on your config settings). By default, reseting a skill will also cause you to forget all associated recipes, but can also be turned off. For this incredible service, the Statue of Prestige will charge you 10,000g the first time, 50,000g the second, and 100,000g the third and last time, although the cost can also be configured. After performing three skill resets, you should have acquired all four level 10 professions simultaneously. As you reset and acquire new professions your progress will be reflected on the skills page menu, either by a new colorful star, or by a growing ribbon, depending on your settings.
+Instead of changing your profession choices, the Statue of Prestige will reset your level 10 skills back to level 0, for a price. Why would you want to do that? Because you get to keep every profession you already have (yes, including level 5), and you can then level up again to acquire a different profession. By doing this enough times, you will eventually have acquired all professions in that skill.
+
+Note that you will inevitably need to choose each 5th-level profession twice on your way to getting both corresponding 10th-level professions. When this happens, **you do NOT gain the level 5 perks twice**. These perks are acquired only once, on the first time you choose that profession.
+
+You will also find that leveling becomes progressively easier after each skill reset (or harder, if you configure it that way). By default, reseting a skill will also cause you to forget all associated recipes, but that can be turned off.
+
+For this incredible service, the Statue of Prestige will charge you 10,000g the first time, 50,000g the second, and 100,000g the third and last time, although the cost can also be configured. After performing three skill resets, you should have acquired all four level 10 professions simultaneously. As you reset and acquire new professions your progress will be reflected on the skills page menu, either by a new colorful star, or by a growing ribbon, depending on your settings.
 
 This feature is included in the **Standard**, **Challenge** and **Capped** modes. Note that changing the mode to **None** or **Streamlined** will **not** remove any professions from your farmer.
 
@@ -711,7 +717,7 @@ You may choose only **one** Prestige Profession per skill. You will be able to c
 Prestige Levels are included in the **Standard**, **Challenge** and **Streamlined** modes:
 
 - In **Standard** mode, Prestige Levels are unlocked individually for each skill after the corresponding skill has been reset 3 times and all 10th-level professions within that skill have been acquired.
-- In **Challenge** mode, Prestige Levels are unlocked simultaneously for all skills after all skills have been reset 3 times and all 10th-level professions have been acquired across all skills.
+- In **Challenge** mode, Prestige Levels are unlocked simultaneously for all skills after all skills have been reset 3 times and all 10th-level professions have been acquired across all skills (***only Vanilla skills are considered***).
 - In **Streamlined** mode, Prestige Levels are available immediately at level 10 with no additional requirements.
 
 Note that changing the mode to **None** or **Capped** will **not** reduce your skill levels if they are already above 10.
@@ -879,7 +885,21 @@ If using SVE, certain NPC heart events will not trigger if your skill levels is 
 
 <sup><sup>[🔼 Back to top](#margo--professions-prfs)</sup></sup>
 
-## For C# Developers
+## For Mod Authors
+
+### Contentsmiths
+
+The following mod textures can be targeted by CP mods:
+
+- `DaLion.ModularOverhaul/HudPointer`: changes the texture of the arrow which tracks Scavenger and Prospector objectives. You can use this to provide larger or different-shaped arrows. The provided texture should be grey, as it will be colored in dynamically.
+- `DaLion.ModularOverhaul/MaxIcon`: changes the texture of the "MAX" icon used in the fishing collection tab.
+- `DaLion.ModularOverhaul/MaxIcon`: changes the texture of the "MAX" icon used in the fishing collection tab.
+- `DaLion.ModularOverhaul/PrestigeRibbons`: changes the ribbon or star texture shown to the right of each skill in the skills page menu. Pay attention to the fact that ribbon and star versions each use different dimensions. I don't recommend changing these.
+- `DaLion.ModularOverhaul/ProfessionIcons`: changes the profession icons for regular and Prestige professions.
+- `DaLion.ModularOverhaul/SkillBars`: changes the texture of Prestige-level skill bars (blue / green rectangles) in the skill page menu.
+- `DaLion.ModularOverhaul/LimitGauge`: changes the texture of the Limit Charge gauge.
+
+### Blacksmiths
 
 The module exposes an API to facilitate integration with other mods. Currently exposed endpoints include:
 
@@ -888,8 +908,8 @@ The module exposes an API to facilitate integration with other mods. Currently e
 - Forcing new Treasure Hunt events, or interrupting active Treasure Hunts.
 - Triggering events when a Treasure Hunt starts or ends.
 - Checking a player's registered Ultimate ability.
-- Triggering events when a player's Ultimate gains charge, becomes active or inactive.
-- Checking whether the Ultimate HUD element is currently being displayed (useful for UI mods to decide whether to reposition their own HUD elements).
+- Triggering events when a player's [Limit Break](#limit-breaks) gains charge, becomes active or inactive.
+- Checking whether the Limit Charge gauge is currently being displayed. This is useful for UI mods to decide whether to reposition their own HUD elements.
 - Checking the player's config settings for this mod.
 - Registering custom skills for Prestige.
 

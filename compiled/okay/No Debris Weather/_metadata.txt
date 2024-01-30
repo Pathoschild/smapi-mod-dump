@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19699
+IDs: underscore.nodebris
+update keys: GitHub:Underscore76/NoDebrisWeather, Nexus:19699

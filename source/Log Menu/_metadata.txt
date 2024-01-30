@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/jaredtjahjadi/LogMenu
+   Git: https://github.com/jaredtjahjadi/LogMenu.git
+
+mods:
+   Log Menu
+
+latest commit:
+   commit 3e7267e81b041aa15294ad6e77b6f1646dffe8b5
+   Author: Jared Tjahjadi <jaredtjahjadi@gmail.com>
+   Date:   Sun Jan 28 02:56:03 2024 -0500
+   
+       Merge branch 'master' of https://github.com/jaredtjahjadi/DialogueLogger
+   

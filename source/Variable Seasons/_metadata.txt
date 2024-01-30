@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/calebstein1/StardewVariableSeasons
+   Git: https://github.com/calebstein1/StardewVariableSeasons.git
+
+mods:
+   Variable Seasons
+
+latest commit:
+   commit a93296ef36a3d4fa8e4f170af6c976d6d9ddf9ef
+   Author: Caleb Stein <caleb@calebstein.net>
+   Date:   Mon Jan 22 22:55:00 2024 -0800
+   
+       bump version number for new release
+   

@@ -10,7 +10,7 @@ async def focus_menu_section(menu, submenu_name: str):
     assert submenu_name in ("inventory", "forSale")
     for_sale_focused = any(x["containsMouse"] for x in menu["forSaleButtons"])
     if submenu_name == "forSale" and not for_sale_focused:
-        await focus_for_sale_index(mmenu, prev_for_sale_index)
+        await focus_for_sale_index(menu, prev_for_sale_index)
     elif submenu_name == "inventory":
         await inventory_wrapper.focus_previous(menu["inventory"])
 

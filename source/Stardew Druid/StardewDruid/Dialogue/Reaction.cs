@@ -59,9 +59,23 @@ namespace StardewDruid.Dialogue
         public static void ReactTo(NPC NPC, string cast, int friendship = 0, List<string> context = null)
         {
 
-            List<string> stringList = new List<string>();
+            List<string> stringList = Map.VillagerData.CustomReaction(cast, NPC.Name);
 
-            //int random = new Random().Next(3);
+            if(stringList.Count > 0)
+            {
+
+                for (int index = stringList.Count - 1; index >= 0; --index)
+                {
+
+                    string str = stringList[index];
+
+                    NPC.CurrentDialogue.Push(new StardewValley.Dialogue(str, NPC));
+
+                }
+
+                return;
+
+            }
 
             Dictionary<string, int> affinities = Map.VillagerData.Affinity();
 
@@ -71,6 +85,15 @@ namespace StardewDruid.Dialogue
             {
 
                 affinity = affinities[NPC.Name];
+
+            }
+
+            string place = "valley";
+
+            if (NPC.currentLocation.Name.Contains("Island"))
+            {
+
+                place = "island";
 
             }
 
@@ -111,7 +134,8 @@ namespace StardewDruid.Dialogue
 
                                 case 3:
 
-                                    stringList.Add("Your scales glitter in the light of the valley.");
+
+                                    stringList.Add("Your scales glitter in the light of the "+place+".");
 
                                     stringList.Add("It's really something! $l");
 
@@ -121,7 +145,7 @@ namespace StardewDruid.Dialogue
 
                                     stringList.Add("A Dragon warrior is a great boon to the forces of light.");
 
-                                    stringList.Add("We'll count on you to protect the valley form evil. $h");
+                                    stringList.Add("I count on you to protect the "+place+" from evil. $h");
 
                                     break;
 
@@ -129,7 +153,7 @@ namespace StardewDruid.Dialogue
 
                                     stringList.Add("The Prime Tyrannus created a mystical kingdom of ether called the Undervalley");
 
-                                    stringList.Add("The tyrant king was cast out by a powerful shadow.");
+                                    stringList.Add("The tyrant king extended his reach towards the celestial plane, but was cast out by a powerful shadow.");
 
                                     stringList.Add("He terrorised the denizens of the Calico basin for a time, until he faded into obscurity.");
 
@@ -213,7 +237,7 @@ namespace StardewDruid.Dialogue
                                 "What The Flip?"
                             };
 
-                            NPC.showTextAboveHead(alertListOne[new Random().Next(3)]);
+                            NPC.showTextAboveHead(alertListOne[new Random().Next(2)]);
 
                             stringList.Add("Oh... it's "+Game1.player.Name);
 
@@ -276,7 +300,7 @@ namespace StardewDruid.Dialogue
 
                             NPC.doEmote(16, true);
 
-                            stringList.Add("Ancient ones have not roamed the valley in centuries");
+                            stringList.Add("Ancient ones have not roamed the "+place+" in centuries");
 
                             stringList.Add("This might be an omen of troubling times to come. $s");
 
@@ -329,7 +353,7 @@ namespace StardewDruid.Dialogue
 
                                 NPC.doEmote(20, true);
 
-                                stringList.Add("Ah, so there's a little bit of magic in this magician (wink). $l");
+                                stringList.Add("Ah, so there's a little bit of magic in our town magician (wink). $l");
 
                                 break;
 
@@ -538,9 +562,10 @@ namespace StardewDruid.Dialogue
 
                     switch (affinity)
                     {
+                        
                         case 0:
 
-                            stringList.Add("Well "+Game1.player.Name+ ", I'm not sure how you did that, but it seemed dangerous.");
+                            stringList.Add("Well " + Game1.player.Name + ", I'm not sure how you did that, but it seemed dangerous.");
 
                             stringList.Add("Please dont put the town in peril.");
 
@@ -564,15 +589,15 @@ namespace StardewDruid.Dialogue
 
                             stringList.Add("Wow " + Game1.player.Name + ", that was a quite the display.");
 
-                            stringList.Add("Please use your power to keep the valley safe.");
+                            stringList.Add("Please use your power to keep the "+place+" safe.");
 
                             break;
 
                         case 4:
 
-                            stringList.Add("Ah. Stars. Reminds me of a tale of hubris and forlorn love.");
+                            stringList.Add("Your ability reminds me of a tale of hubris and forlorn love.");
 
-                            stringList.Add("The hero sought the favour of the stars, and when they answered his call, it started a fire that hurt his entire family. $s");
+                            stringList.Add("The hero sought the favour of the Stars, and when they answered his call, it started a fire that hurt his entire family. $s");
 
                             break;
 
@@ -582,7 +607,7 @@ namespace StardewDruid.Dialogue
 
                             stringList.Add("And the grief of the Sisters will overwhelm the heavens and shower the land in a hail of fire.");
 
-                            stringList.Add("It used to be that most folk in the valley knew those words.");
+                            stringList.Add("It used to be that most folk in the " + place + " knew those words.");
                             
                             break;
 
@@ -629,7 +654,7 @@ namespace StardewDruid.Dialogue
                         
                         default:
 
-                            stringList.Add("In the valley we say thunder is the voice of the Lady Beyond the Shore.");
+                            stringList.Add("Many say thunder is the voice of the Lady Beyond the Shore.");
 
                             stringList.Add("Be careful, " + Game1.player.Name + ", you don't want to catch her ire. $s");
 
@@ -675,19 +700,19 @@ namespace StardewDruid.Dialogue
                                 case 3:
 
                                     
-                                    stringList.Add("The valley has never felt more alive than since you moved here. $l");
+                                    stringList.Add("The " + place + " has never felt more alive than since you moved here. $l");
 
                                     break;
 
                                 case 4:
 
-                                    stringList.Add("I've noticed that you have a special connection to the life force of the valley. That means you have a special connection to all of us. $l");
+                                    stringList.Add("I've noticed that you have a special connection to the life force of the " + place + ". That means you have a special connection to all of us. $l");
 
                                     break;
 
                                 default:
 
-                                    stringList.Add("You have shown great aptitude for the sacred rites of the valley Druids.");
+                                    stringList.Add("You have shown great aptitude for the sacred rites of the " + place + " Druids.");
 
                                     stringList.Add("The town doesn't know how blessed it is to have you here. $l");
 
@@ -767,7 +792,7 @@ namespace StardewDruid.Dialogue
 
                                 NPC.doEmote(8, true);
 
-                                stringList.Add("The flowers and birds have come back. I think the valley is happy. $h");
+                                stringList.Add("The flowers and birds have come back. I think the " + place + " is happy. $h");
 
                                 break;
 
@@ -785,7 +810,7 @@ namespace StardewDruid.Dialogue
 
                                 NPC.doEmote(8, true);
 
-                                stringList.Add("Did you see that? I could swear the valley shimmered for a moment.");
+                                stringList.Add("Did you see that? I could swear the " + place + " shimmered for a moment.");
 
                                 break;
 

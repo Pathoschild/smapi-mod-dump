@@ -66,7 +66,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         {
             try
             {
-                var specialOrderName = __result.GetName();
+                var specialOrderName = GetEnglishQuestName(__result.questName.Value);
                 if (!_archipelago.LocationExists(specialOrderName))
                 {
                     return;
@@ -74,7 +74,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
                 // Remove vanilla rewards if the player has not received the check.
                 // We will keep vanilla rewards for repeated orders
-                if (_locationChecker.IsLocationMissingAndExists(specialOrderName) & !_vanillaSpecialOrderReward.Contains(specialOrderName))
+                if (_locationChecker.IsLocationMissing(specialOrderName) & !_vanillaSpecialOrderReward.Contains(specialOrderName))
                 {
                     __result.rewards.Clear();
                     Game1.player.team.specialOrders.Remove(__result); // Might as well, and it cleans up SVE special orders.
@@ -248,7 +248,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             var allSpecialOrders = specialOrders.Select(x => x.Key).ToList();
 
             var specialOrdersNeverCompletedBefore = allSpecialOrders.Where(key =>
-                _locationChecker.IsLocationMissingAndExists(specialOrders[key].GetName())).ToList();
+                _locationChecker.IsLocationMissing(specialOrders[key].GetName())).ToList();
 
             var hintedSpecialOrders = specialOrdersNeverCompletedBefore.Where(key =>
                 hints.Any(hint => _archipelago.GetLocationName(hint.LocationId) == specialOrders[key].GetName())).ToList();

@@ -19,6 +19,8 @@ namespace StardewDruid
 
         public KeybindList actionButtons { get; set; }
 
+        public KeybindList specialButtons { get; set; }
+
         public KeybindList journalButtons { get; set; }
 
         public bool slotAttune { get; set; }
@@ -43,13 +45,15 @@ namespace StardewDruid
 
         public string combatDifficulty { get; set; }
 
+        public bool reverseJournal { get; set; }
+
         public bool partyHats { get; set; }
 
         public bool disableSeeds { get; set; }
 
         public bool disableFish { get; set; }
 
-        public bool disableWildspawn { get; set; }
+        //public bool disableWildspawn { get; set; }
 
         public bool disableTrees { get; set; }
 
@@ -57,6 +61,7 @@ namespace StardewDruid
         {
             riteButtons = KeybindList.Parse("MouseX1,MouseX2,V,LeftShoulder");
             actionButtons = KeybindList.Parse("MouseLeft,C,ControllerX");
+            specialButtons = KeybindList.Parse("MouseRight,X,ControllerY");
             journalButtons = KeybindList.Parse("K");
             slotAttune = false;
             autoProgress = false;
@@ -69,10 +74,11 @@ namespace StardewDruid
             maxDamage = false;
             combatDifficulty = "medium";
             castAnywhere = false;
+            reverseJournal = false;
             partyHats = false;
             disableSeeds = false;
             disableFish = false;
-            disableWildspawn = false;
+            //disableWildspawn = false;
             disableTrees = false;
         }
 

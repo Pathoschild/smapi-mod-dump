@@ -16,12 +16,17 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants;
 using StardewArchipelago.GameModifications.CodeInjections;
+using StardewArchipelago.GameModifications.CodeInjections.Modded;
+using StardewArchipelago.GameModifications.CodeInjections.Television;
 using StardewArchipelago.GameModifications.EntranceRandomizer;
+using StardewArchipelago.GameModifications.Modded;
 using StardewArchipelago.GameModifications.Seasons;
 using StardewArchipelago.GameModifications.Tooltips;
 using StardewArchipelago.Locations;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
+using StardewArchipelago.Serialization;
 using StardewArchipelago.Stardew;
 using StardewArchipelago.Stardew.NameMapping;
 using StardewModdingAPI;
@@ -44,7 +49,7 @@ namespace StardewArchipelago.GameModifications
         private readonly StartingResources _startingResources;
         private readonly RecipeDataRemover _recipeDataRemover;
 
-        public RandomizedLogicPatcher(IMonitor monitor, IModHelper modHelper, Harmony harmony, ArchipelagoClient archipelago, LocationChecker locationChecker, StardewItemManager stardewItemManager, EntranceManager entranceManager, ShopStockGenerator shopStockGenerator, NameSimplifier nameSimplifier, Friends friends)
+        public RandomizedLogicPatcher(IMonitor monitor, IModHelper modHelper, Harmony harmony, ArchipelagoClient archipelago, LocationChecker locationChecker, StardewItemManager stardewItemManager, EntranceManager entranceManager, ShopStockGenerator shopStockGenerator, NameSimplifier nameSimplifier, Friends friends, ArchipelagoStateDto state)
         {
             _harmony = harmony;
             _archipelago = archipelago;
@@ -61,8 +66,7 @@ namespace StardewArchipelago.GameModifications
             TheaterInjections.Initialize(monitor, modHelper, archipelago);
             SeedShopsInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopStockGenerator);
             LostAndFoundInjections.Initialize(monitor, archipelago);
-            TVInjections.Initialize(monitor, archipelago);
-            LivinOffTheLandInjections.Initialize(monitor, archipelago);
+            InitializeTVInjections(monitor, modHelper, archipelago, entranceManager, state);
             ProfitInjections.Initialize(monitor, archipelago);
             QuestLogInjections.Initialize(monitor, archipelago, locationChecker);
             WorldChangeEventInjections.Initialize(monitor);
@@ -75,8 +79,17 @@ namespace StardewArchipelago.GameModifications
             GoldenClockInjections.Initialize(monitor, archipelago);
             ItemTooltipInjections.Initialize(monitor, modHelper, archipelago, locationChecker, nameSimplifier);
             BillboardInjections.Initialize(monitor, modHelper, archipelago, locationChecker, friends);
+            SpecialOrderBoardInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
 
             DebugPatchInjections.Initialize(monitor, archipelago);
+        }
+
+        private static void InitializeTVInjections(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, EntranceManager entranceManager,
+            ArchipelagoStateDto state)
+        {
+            TVInjections.Initialize(monitor, archipelago);
+            LivinOffTheLandInjections.Initialize(monitor, archipelago);
+            GatewayGazetteInjections.Initialize(monitor, modHelper, archipelago, entranceManager, state);
         }
 
         public void PatchAllGameLogic()
@@ -458,6 +471,21 @@ namespace StardewArchipelago.GameModifications
                 original: AccessTools.Method(typeof(TV), "getTodaysTip"),
                 prefix: new HarmonyMethod(typeof(LivinOffTheLandInjections), nameof(LivinOffTheLandInjections.GetTodaysTip_CustomLivinOffTheLand_Prefix))
             );
+
+            if (_archipelago.SlotData.EntranceRandomization is EntranceRandomization.Disabled or EntranceRandomization.Chaos)
+            {
+                return;
+            }
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(TV), nameof(TV.selectChannel)),
+                postfix: new HarmonyMethod(typeof(GatewayGazetteInjections), nameof(GatewayGazetteInjections.SelectChannel_SelectGatewayGazetteChannel_Postfix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(TV), nameof(TV.proceedToNextScene)),
+                postfix: new HarmonyMethod(typeof(GatewayGazetteInjections), nameof(GatewayGazetteInjections.ProceedToNextScene_GatewayGazette_Postfix))
+            );
         }
 
         private void PatchCleanupBeforeSave()
@@ -564,15 +592,20 @@ namespace StardewArchipelago.GameModifications
                 postfix: new HarmonyMethod(typeof(ItemTooltipInjections), nameof(ItemTooltipInjections.GetDescription_AddMissingChecks_Postfix))
             );
 
-            var billboardDrawParameters = new[] { typeof(SpriteBatch) };
+            var boardDrawParameters = new[] { typeof(SpriteBatch) };
             _harmony.Patch(
-                original: AccessTools.Method(typeof(Billboard), nameof(Billboard.draw), billboardDrawParameters),
+                original: AccessTools.Method(typeof(Billboard), nameof(Billboard.draw), boardDrawParameters),
                 postfix: new HarmonyMethod(typeof(BillboardInjections), nameof(BillboardInjections.Draw_AddArchipelagoIndicators_Postfix))
             );
 
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Billboard), nameof(Billboard.performHoverAction)),
                 postfix: new HarmonyMethod(typeof(BillboardInjections), nameof(BillboardInjections.PerformHoverAction_AddArchipelagoChecksToTooltips_Postfix))
+            );
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(SpecialOrdersBoard), nameof(SpecialOrdersBoard.draw), boardDrawParameters),
+                postfix: new HarmonyMethod(typeof(SpecialOrderBoardInjections), nameof(SpecialOrderBoardInjections.Draw_AddArchipelagoIndicators_Postfix))
             );
         }
 

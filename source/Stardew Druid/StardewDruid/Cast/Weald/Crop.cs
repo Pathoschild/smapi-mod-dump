@@ -116,6 +116,13 @@ namespace StardewDruid.Cast.Weald
 
             StardewValley.Crop targetCrop = hoeDirt.crop;
 
+            if(targetCrop == null)
+            {
+
+                return;
+
+            }
+
             if (targetCrop.isWildSeedCrop() && targetCrop.currentPhase.Value <= 1 && (Game1.currentSeason != "winter" || targetLocation.isGreenhouse.Value))
             {
 

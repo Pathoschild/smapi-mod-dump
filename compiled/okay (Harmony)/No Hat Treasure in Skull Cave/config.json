@@ -1,0 +1,8 @@
+{
+  "Enable": true,
+  "EnableMachine": true,
+  "EnableSeed": false,
+  "EnableBomb": false,
+  "EnableMedicine": false,
+  "EnableSapling": false
+}

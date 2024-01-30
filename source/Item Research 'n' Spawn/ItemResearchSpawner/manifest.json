@@ -11,10 +11,20 @@
 {
   "Name": "Item Research 'n' Spawn",
   "Author": "TSlex, CJBok and Pathoschild",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Give any item you want if you've researched it!",
   "UniqueID": "TSlex.ItemResearchSpawner",
   "EntryDll": "ItemResearchSpawner.dll",
   "MinimumApiVersion": "3.9.5",
-  "UpdateKeys": [ "Nexus:8933" ]
+  "UpdateKeys": [ "Nexus:8933" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    },
+    {
+      "UniqueID": "cat.chatcommands",
+      "IsRequired": false
+    }
+  ]
 }

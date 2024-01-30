@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/tlitookilakin/HappyHomeDesigner
+   Git: https://github.com/tlitookilakin/HappyHomeDesigner.git
+
+mods:
+   Happy Home Designer
+
+latest commit:
+   commit 184bc282db086563067a697e79c886137bb2ca06
+   Author: Wren <grahamgrasley@gmail.com>
+   Date:   Mon Jan 29 16:27:00 2024 -0500
+   
+       dga/at bugfix
+   

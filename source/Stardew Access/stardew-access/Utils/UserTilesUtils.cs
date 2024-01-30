@@ -8,13 +8,11 @@
 **
 *************************************************/
 
-using System.Text.Json;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using stardew_access.Tiles;
 using StardewValley;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace stardew_access.Utils;
 
@@ -50,7 +48,7 @@ public class UserTilesUtils
         else
         {
             Log.Trace("tiles_user.json not found, creating a new one...");
-            root = new JObject();
+            root = [];
         }
 
         if (!root.TryGetValue(Game1.currentLocation.NameOrUniqueName, out JToken? locationToken))
@@ -67,7 +65,7 @@ public class UserTilesUtils
 
         locationValueArray.Add(JObject.FromObject(jsonDataForTile));
 
-        JsonLoader.SaveJsonFile("tiles_user.json", JsonSerializer.Deserialize<JsonElement>(root.ToString()),
+        JsonLoader.SaveJsonFile("tiles_user.json", root,
             "assets/TileData");
     }
 
@@ -131,7 +129,7 @@ public class UserTilesUtils
 
         locationValueArray.Remove(toRemove);
         
-        JsonLoader.SaveJsonFile("tiles_user.json", JsonSerializer.Deserialize<JsonElement>(root.ToString()),
+        JsonLoader.SaveJsonFile("tiles_user.json", root,
             "assets/TileData");
     }
 }

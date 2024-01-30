@@ -18,7 +18,7 @@ from srabuilder import rules
 
 import logger
 
-import constants, server, game, df_utils
+import constants, server, game, df_utils, stream
 
 active_objective = None
 pending_objective = None
@@ -102,8 +102,8 @@ class FaceDirectionObjective(Objective):
         self.direction = direction
 
     async def run(self):
-        async with server.player_status_stream() as stream:
-            await game.face_direction(self.direction, stream, move_cursor=True)
+        async with stream.player_status_stream() as pss:
+            await game.face_direction(self.direction, pss, move_cursor=True)
 
 
 class MoveNTilesObjective(Objective):
@@ -112,8 +112,8 @@ class MoveNTilesObjective(Objective):
         self.n = n
 
     async def run(self):
-        async with server.player_status_stream(ticks=1) as stream:
-            await game.move_n_tiles(self.direction, self.n, stream)
+        async with stream.player_status_stream(ticks=1) as pss:
+            await game.move_n_tiles(self.direction, self.n, pss)
 
 class MoveToLocationObjective(Objective):
     def __init__(self, location):
@@ -121,12 +121,12 @@ class MoveToLocationObjective(Objective):
         self.location: locations.Location = location
 
     async def run(self):
-        async with server.player_status_stream() as stream:
-            await game.move_to_location(self.location.name, stream)
+        async with stream.player_status_stream() as pss:
+            await game.move_to_location(self.location.name, pss)
 
 async def move_to_point(point):
-    async with server.player_status_stream() as stream:
-        player_status = await stream.next()
+    async with stream.player_status_stream() as pss:
+        player_status = await pss.next()
         regex_mismatch = isinstance(point.location, re.Pattern) and not point.location.match(player_status['location'])
         str_mismatch = isinstance(point.location, str) and point.location != player_status['location']
         if regex_mismatch or str_mismatch:
@@ -151,8 +151,8 @@ class WaterCropsObjective(Objective):
     def __init__(self):
         pass
 
-    async def get_unwatered_crops(self, location: str):
-        hoe_dirt_tiles = await game.get_hoe_dirt('')
+    async def get_unwatered_crops(self):
+        hoe_dirt_tiles = await game.get_hoe_dirt()
         tiles_to_water = [hdt for hdt in hoe_dirt_tiles if hdt['crop'] and not hdt['isWatered'] and hdt['needsWatering']]
         return tiles_to_water
 
@@ -164,7 +164,7 @@ class WaterCropsObjective(Objective):
 
 class HarvestCropsObjective(Objective):
 
-    async def get_harvestable_crops(self, location: str):
+    async def get_harvestable_crops(self):
         hoe_dirt_tiles = await game.get_hoe_dirt('')
         harvestable_crop_tiles = [hdt for hdt in hoe_dirt_tiles if hdt['crop'] and hdt['readyForHarvest']]
         return harvestable_crop_tiles
@@ -176,9 +176,9 @@ class HarvestCropsObjective(Objective):
 
 class ClearOreObjective(Objective):
 
-    async def get_debris(self, location):
+    async def get_debris(self):
         ore_types = set((95, 843, 844, 25, 75, 76, 77, 816, 817, 818, 819, 8, 10, 12, 14, 6, 4, 2, 751, 849, 290, 850, 764, 765))
-        objs = await game.get_location_objects(location)
+        objs = await game.get_location_objects()
         ores = [x for x in objs if x['name'] == 'Stone' and x['parentSheetIndex'] in ore_types]
         return ores
 
@@ -195,10 +195,10 @@ class ClearDebrisObjective(Objective):
     def __init__(self, debris_type):
         self.debris_type = debris_type
 
-    async def get_debris(self, location):
+    async def get_debris(self):
         debris_objects, resource_clumps, tools = await asyncio.gather(
-            self.get_debris_objects(location), 
-            game.get_resource_clump_pieces(location),
+            self.get_debris_objects(), 
+            game.get_resource_clump_pieces(),
             game.get_tools(), 
         )
         debris = debris_objects + resource_clumps
@@ -216,8 +216,8 @@ class ClearDebrisObjective(Objective):
             clearable_debris = [x for x in clearable_debris if x['name'] == constants.WEEDS]
         return clearable_debris
 
-    async def get_debris_objects(self, location):
-        objs = await game.get_location_objects(location)
+    async def get_debris_objects(self):
+        objs = await game.get_location_objects()
         debris = [{**o, 'type': 'object'} for o in objs if game.is_debris(o)]
         return debris
 
@@ -248,8 +248,8 @@ class PlantSeedsOrFertilizerObjective(Objective):
     def __init__(self):
         pass
 
-    async def get_hoe_dirt(self, location: str):
-        hoe_dirt_tiles = await game.get_hoe_dirt('')
+    async def get_hoe_dirt(self):
+        hoe_dirt_tiles = await game.get_hoe_dirt()
         return [x for x in hoe_dirt_tiles if x['canPlantThisSeedHere']]
 
     async def run(self):
@@ -259,13 +259,13 @@ class PlantSeedsOrFertilizerObjective(Objective):
 class HoePlotObjective(Objective):
 
     def __init__(self, n1, n2):
-        self.n1 = n1f
-        self.n2 = n2
+        self.n1: int = n1
+        self.n2: int = n2
 
     async def run(self):
-        async with server.player_status_stream() as stream:
+        async with stream.player_status_stream() as pss:
             await game.equip_item_by_name(constants.HOE)
-            player_status = await stream.next()
+            player_status = await pss.next()
         player_tile = player_status["tileX"], player_status["tileY"]
         facing_direction = player_status['facingDirection']
         start_tile = game.next_tile(player_tile, facing_direction)
@@ -315,7 +315,7 @@ async def use_tool_on_animals(tool: str, animal_type=None):
         await asyncio.sleep(0.1)
 
 async def start_shopping():
-    async with server.player_status_stream() as stream:
+    async with stream.player_status_stream() as pss:
         loc = (await stream.next())['location']
         if loc == 'AnimalShop':
             tile, facing_direction = (12, 16), constants.NORTH
@@ -357,8 +357,7 @@ class DefendObjective(Objective):
         batched_request_builder = server.RequestBuilder.batch(player_status_builder, req_builder)
         batched_request_builder.data[1]['data'] = {**req_data, 'target': None, 'getPath': False}
         await game.equip_melee_weapon()
-        async with server.player_status_stream() as player_stream:
-            player_position = (await player_status_builder.request())['position']
+        async with stream.player_status_stream() as player_stream:
             while True:
                 player_status, target = await batched_request_builder.request()
                 if not target:
@@ -384,7 +383,7 @@ class AttackObjective(Objective):
         batched_request_builder = server.RequestBuilder.batch(player_status_builder, req_builder)
         batched_request_builder.data[1]['data'] = {**req_data, 'target': None, 'getPath': False}
         await game.equip_melee_weapon()
-        async with server.player_status_stream() as player_stream:
+        async with stream.player_status_stream() as player_stream:
             player_position = (await player_status_builder.request())['position']
             while True:
                 try:

@@ -252,7 +252,7 @@ namespace StardewArchipelago.GameModifications.CodeInjections
             {
                 if (character.isVillager())
                 {
-                    character.dayUpdate(Game1.dayOfMonth);
+                    character.Schedule = character.getSchedule(Game1.dayOfMonth);
                 }
             }
         }

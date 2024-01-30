@@ -31,7 +31,7 @@ internal static class Textures
     internal const int ProgressionVerticalOffset = -70;
 
     private static Lazy<Texture2D> _prestigeSheetTx =
-        new(() => ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/PrestigeRibbon"));
+        new(() => ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/PrestigeRibbons"));
 
     private static Lazy<Texture2D> _maxIconTx =
         new(() => ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/MaxIcon"));
@@ -40,7 +40,7 @@ internal static class Textures
         new(() => ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/SkillBars"));
 
     private static Lazy<Texture2D> _ultimateMeterTx =
-        new(() => ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/UltimateMeter"));
+        new(() => ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/LimitGauge"));
 
     internal static Texture2D PrestigeSheetTx => _prestigeSheetTx.Value;
 
@@ -52,9 +52,9 @@ internal static class Textures
 
     internal static void Refresh(IReadOnlySet<IAssetName> names)
     {
-        if (names.Any(name => name.IsEquivalentTo($"{Manifest.UniqueID}/PrestigeRibbon")))
+        if (names.Any(name => name.IsEquivalentTo($"{Manifest.UniqueID}/PrestigeRibbons")))
         {
-            _prestigeSheetTx = new Lazy<Texture2D>(() => ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/PrestigeRibbon"));
+            _prestigeSheetTx = new Lazy<Texture2D>(() => ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/PrestigeRibbons"));
         }
 
         if (names.Any(name => name.IsEquivalentTo($"{Manifest.UniqueID}/SkillBars")))
@@ -62,9 +62,9 @@ internal static class Textures
             _skillBarsTx = new Lazy<Texture2D>(() => ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/SkillBars"));
         }
 
-        if (names.Any(name => name.IsEquivalentTo($"{Manifest.UniqueID}/UltimateMeter")))
+        if (names.Any(name => name.IsEquivalentTo($"{Manifest.UniqueID}/LimitGauge")))
         {
-            _ultimateMeterTx = new Lazy<Texture2D>(() => ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/UltimateMeter"));
+            _ultimateMeterTx = new Lazy<Texture2D>(() => ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/LimitGauge"));
         }
     }
 }

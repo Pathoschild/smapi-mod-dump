@@ -520,10 +520,10 @@ namespace ichortower_HatMouseLacey
         }
 
         /*
-         * Early in the save load (before maps are loaded, in particular),
-         * check config values from other mods and set Content Patcher tokens
-         * to reflect them, in order to prevent users from having to manually
-         * keep configs in sync (annoying and error-prone).
+         * Early in the save load, check config values from other mods and set
+         * Content Patcher tokens to reflect them, in order to prevent users
+         * from having to manually keep configs in sync (annoying and
+         * error-prone).
          *
          * Used for:
          *   Stardew Valley Reimagined 3 (forest map edit is a config setting)
@@ -536,7 +536,11 @@ namespace ichortower_HatMouseLacey
          */
         private void OnLoadStageChanged(object sender, LoadStageChangedEventArgs e)
         {
-            if (e.NewStage == LoadStage.CreatedBasicInfo ||
+            // this used to use CreatedBasicInfo, but due to an unsolved
+            // timing (?) problem, it caused wrong patches to apply and
+            // persist until relaunching the game.
+            // moving it slightly later seems to solve it.
+            if (e.NewStage == LoadStage.CreatedInitialLocations ||
                     e.NewStage == LoadStage.SaveLoadedBasicInfo) {
                 try {
                     var modInfo = HELPER.ModRegistry.Get("DaisyNiko.SVR3");

@@ -45,7 +45,11 @@ namespace StardewArchipelago.Stardew.NameMapping
                 }
                 if (name.Contains("trilobite")) // Temporary fix.
                 {
-                    displayName += " Fossil";
+                    displayName = displayName.Replace("Trilobite Fossil", "Trilobite");
+                }
+                if (displayName.Contains("Rusty Sur"))
+                {
+                    displayName = displayName.Replace("Sur", "Spur");
                 }
                 name = displayName;
             }
@@ -98,6 +102,7 @@ namespace StardewArchipelago.Stardew.NameMapping
         {
             "Honey",
             "Secret Note",
+            "Journal Scrap",
         };
 
         private static readonly Dictionary<string, string> _simplifiedChars = new()

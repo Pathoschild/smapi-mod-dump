@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/jamespfluger/Stardew-ModCollection
+   Git: https://github.com/jamespfluger/Stardew-ModCollection.git
+
+mods:
+   Relaxing Weekends
+
+latest commit:
+   commit 5aa8a480b7e300292cc8b40299bffa12c89a8ddf
+   Author: James Pfluger <me@jamespfluger.com>
+   Date:   Sat Dec 30 17:41:18 2023 -0800
+   
+       make relaxing weekends
+   

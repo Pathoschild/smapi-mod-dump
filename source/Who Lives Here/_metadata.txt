@@ -1,0 +1,16 @@
+urls:
+   web: https://github.com/Prism-99/WhoLivesHere
+   Git: https://github.com/Prism-99/WhoLivesHere.git
+
+mods:
+   Who Lives Here
+
+latest commit:
+   commit 8e4f072dff04aa2f4a9c145250ea75820f6c6245
+   Author: Prism-99 <86083756+Prism-99@users.noreply.github.com>
+   Date:   Fri Jan 19 11:28:28 2024 -0500
+   
+       Release 1.1.0
+       
+       Added auto-toggling and large capacity support.
+   

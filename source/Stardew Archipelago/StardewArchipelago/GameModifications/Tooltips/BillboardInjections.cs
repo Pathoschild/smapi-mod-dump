@@ -26,6 +26,7 @@ using StardewArchipelago.Textures;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.Quests;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace StardewArchipelago.GameModifications.Tooltips
@@ -37,6 +38,7 @@ namespace StardewArchipelago.GameModifications.Tooltips
         private static ArchipelagoClient _archipelago;
         private static LocationChecker _locationChecker;
         private static Friends _friends;
+        private static Texture2D _bigArchipelagoIcon;
         private static Texture2D _miniArchipelagoIcon;
         private static Texture2D _travelingMerchantIcon;
 
@@ -49,26 +51,25 @@ namespace StardewArchipelago.GameModifications.Tooltips
             _friends = friends;
 
             var desiredTextureName = ArchipelagoTextures.COLOR;
+            _bigArchipelagoIcon = ArchipelagoTextures.GetColoredLogo(modHelper, 48, desiredTextureName);
             _miniArchipelagoIcon = ArchipelagoTextures.GetColoredLogo(modHelper, 24, desiredTextureName);
             _travelingMerchantIcon = TexturesLoader.GetTexture(modHelper, "traveling_merchant.png");
         }
 
-        // public override void draw(SpriteBatch b)
+        // public override void draw(SpriteBatch spriteBatch)
         public static void Draw_AddArchipelagoIndicators_Postfix(Billboard __instance, SpriteBatch b)
         {
             try
             {
                 // private bool dailyQuestBoard;
-                if (_modHelper.Reflection.GetField<bool>(__instance, "dailyQuestBoard").GetValue())
+                var dailyQuestBoard = _modHelper.Reflection.GetField<bool>(__instance, "dailyQuestBoard").GetValue();
+                if (dailyQuestBoard)
                 {
-                    return;
+                    DrawDailyQuestIndicator(__instance, b);
                 }
-
-                var calendarDays = __instance.calendarDays;
-                for (int i = 0; i < calendarDays.Count; i++)
+                else
                 {
-                    DrawAPIconIfNeeded(b, calendarDays, i);
-                    DrawTravelingMerchantIconIfNeeded(b, calendarDays, i);
+                    DrawCalendarIndicators(__instance, b);
                 }
 
                 return;
@@ -77,6 +78,52 @@ namespace StardewArchipelago.GameModifications.Tooltips
             {
                 _monitor.Log($"Failed in {nameof(Draw_AddArchipelagoIndicators_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
+            }
+        }
+
+        private static void DrawDailyQuestIndicator(Billboard billBoard, SpriteBatch spriteBatch)
+        {
+            var quest = Game1.questOfTheDay;
+            if (quest?.currentObjective == null || quest.currentObjective.Length == 0)
+            {
+                return;
+            }
+
+            var dailyQuestCheckName = GetDailyQuestCheckName(quest);
+
+            if (string.IsNullOrWhiteSpace(dailyQuestCheckName) || !_locationChecker.GetAllLocationsNotCheckedContainingWord(dailyQuestCheckName).Any())
+            {
+                return;
+            }
+
+            var size = 48;
+            var position1 = new Vector2(billBoard.acceptQuestButton.bounds.X - size - 12, billBoard.acceptQuestButton.bounds.Y + 12);
+            var position2 = new Vector2(billBoard.acceptQuestButton.bounds.X + billBoard.acceptQuestButton.bounds.Width + 12, billBoard.acceptQuestButton.bounds.Y + 12);
+            var sourceRectangle = new Rectangle(0, 0, size, size);
+            var color = Color.White;
+            spriteBatch.Draw(_bigArchipelagoIcon, position1, sourceRectangle, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+            spriteBatch.Draw(_bigArchipelagoIcon, position2, sourceRectangle, color, 0f, Vector2.Zero, 1f, SpriteEffects.None, 1f);
+        }
+
+        private static string GetDailyQuestCheckName(Quest quest)
+        {
+            return quest.questType.Value switch
+            {
+                (int)QuestType.ItemDelivery => string.Format(DailyQuest.HELP_WANTED, DailyQuest.ITEM_DELIVERY),
+                (int)QuestType.SlayMonsters => string.Format(DailyQuest.HELP_WANTED, DailyQuest.SLAY_MONSTERS),
+                (int)QuestType.Fishing => string.Format(DailyQuest.HELP_WANTED, DailyQuest.FISHING),
+                (int)QuestType.ResourceCollection => string.Format(DailyQuest.HELP_WANTED, DailyQuest.GATHERING),
+                _ => "",
+            };
+        }
+
+        private static void DrawCalendarIndicators(Billboard billBoard, SpriteBatch spriteBatch)
+        {
+            var calendarDays = billBoard.calendarDays;
+            for (int i = 0; i < calendarDays.Count; i++)
+            {
+                DrawAPIconIfNeeded(spriteBatch, calendarDays, i);
+                DrawTravelingMerchantIconIfNeeded(spriteBatch, calendarDays, i);
             }
         }
 
@@ -174,7 +221,7 @@ namespace StardewArchipelago.GameModifications.Tooltips
                 var festivalDay = FestivalLocationNames.NIGHT_MARKET_ALL;
                 foreach (var location in FestivalLocationNames.LocationsByFestival[festivalDay])
                 {
-                    if (_locationChecker.IsLocationMissingAndExists(location))
+                    if (_locationChecker.IsLocationMissing(location))
                     {
                         yield return location;
                     }
@@ -195,7 +242,7 @@ namespace StardewArchipelago.GameModifications.Tooltips
 
                 foreach (var location in FestivalLocationNames.LocationsByFestival[festivalDay])
                 {
-                    if (_locationChecker.IsLocationMissingAndExists(location))
+                    if (_locationChecker.IsLocationMissing(location))
                     {
                         yield return location;
                     }
@@ -212,7 +259,7 @@ namespace StardewArchipelago.GameModifications.Tooltips
             var festivalLocations = FestivalLocationNames.LocationsByFestival[festivalName];
             foreach (var location in festivalLocations)
             {
-                if (_locationChecker.IsLocationMissingAndExists(location))
+                if (_locationChecker.IsLocationMissing(location))
                 {
                     yield return location;
                 }

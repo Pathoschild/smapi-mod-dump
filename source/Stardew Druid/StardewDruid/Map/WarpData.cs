@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Buildings;
 using StardewValley.Locations;
 using System.Collections.Generic;
 
@@ -81,7 +82,7 @@ namespace StardewDruid.Map
 
             }
 
-            return new Vector2(0);
+            return Vector2.Zero;
 
         }
 
@@ -117,18 +118,25 @@ namespace StardewDruid.Map
         public static Vector2 WarpReverse(GameLocation location, Warp warp)
         {
 
+            if(location is Shed || location is AnimalHouse)
+            {
+
+                return new Vector2(warp.X, warp.Y);
+
+            }
+
             GameLocation target = Game1.getLocationFromName(warp.TargetName);
 
             foreach (Warp reverse in target.warps)
             {
-
+                
                 if (reverse.TargetName == location.Name)
                 {
-
+                    
                     return new Vector2(reverse.TargetX, reverse.TargetY);
 
                 }
-
+                
             }
 
             return new Vector2(0);

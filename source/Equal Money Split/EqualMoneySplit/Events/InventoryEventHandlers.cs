@@ -30,7 +30,7 @@ namespace EqualMoneySplit.Events
         public void OnInventoryChanged(object sender, InventoryChangedEventArgs args)
         {
             // Short circuit if the pockey money hasn't increased
-            if (Game1.player.Money <= PersistantFarmerData.PocketMoney)
+            if (Game1.player.Money <= EqualMoneyMod.FarmerData.Value.PocketMoney)
                 return;
 
             // Calculate all money gained from removed items or items that decreased their stack size

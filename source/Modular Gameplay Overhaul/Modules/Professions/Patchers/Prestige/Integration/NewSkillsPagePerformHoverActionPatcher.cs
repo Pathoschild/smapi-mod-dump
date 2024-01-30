@@ -85,7 +85,7 @@ internal sealed class NewSkillsPagePerformHoverActionPatcher : HarmonyPatcher
                 _ => Skill.FromValue(i),
             };
 
-            var professionsForThisSkill = Game1.player.GetProfessionsForSkill(skill, true);
+            var professionsForThisSkill = Game1.player.GetProfessionsForSkill(skill, false);
             var count = professionsForThisSkill.Length;
             if (count == 0)
             {
@@ -136,7 +136,7 @@ internal sealed class NewSkillsPagePerformHoverActionPatcher : HarmonyPatcher
             bounds.Y += 56;
 
             var professionsForThisSkill =
-                Game1.player.GetProfessionsForSkill(skill, true);
+                Game1.player.GetProfessionsForSkill(skill, false);
             var count = professionsForThisSkill.Length;
             if (count == 0)
             {

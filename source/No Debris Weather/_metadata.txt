@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Underscore76/NoDebrisWeather
+   Git: https://github.com/Underscore76/NoDebrisWeather.git
+
+mods:
+   No Debris Weather
+
+latest commit:
+   commit f7e6d549f9b0911292a20be3e707c21272c1903c
+   Author: Underscore76 <theunderscore76@gmail.com>
+   Date:   Tue Jan 2 17:03:56 2024 -0600
+   
+       init commit
+   

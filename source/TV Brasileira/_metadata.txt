@@ -6,9 +6,9 @@ mods:
    TV Brasileira
 
 latest commit:
-   commit 530ae0ef1eea89fddf6b843e7daf14bfebc97b4a
-   Author: Mikael Uhl <mikaeluhl@gmail.com>
-   Date:   Fri Feb 17 20:40:33 2023 -0300
+   commit 977f912568e266b473661dbe0e9b65468ac9907c
+   Author: Mikael Uhl <68306381+mikael-uhl@users.noreply.github.com>
+   Date:   Sat Jan 6 10:53:53 2024 -0300
    
-       Added a log message to InvalidateDialogues();
+       Update README.md
    

@@ -16,8 +16,6 @@
   "ui-usereturn": "确认要返回上个地点吗？",
   "config.WarpsEnabled.label": "启用默认传送点",
   "config.WarpsEnabled.desc": "是否允许通过菜单传送到游戏默认传送点",
-  "config.FarmWarpEnabled.label": "允许传送回农场",
-  "config.FarmWarpEnabled.desc": "是否允许通过菜单传送到农场",
   "config.AccessFromDisabled.label": "允许在被禁用地点中使用",
   "config.AccessFromDisabled.desc": "是否允许在被禁用的地点中打开传送菜单",
   "config.AccessFromWand.label": "修补回程魔杖",

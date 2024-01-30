@@ -1,0 +1,10 @@
+{
+  "Name": "Wealth is Health",
+  "Author": "Qi The Mysterious",
+  "Version": "0.1.2", // fixed locally
+  "Description": "And doing work is unhealthy!",
+  "UniqueID": "QiTheMysterious.WealthIsHealth",
+  "EntryDll": "QiTheMysterious.WealthIsHealth.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:19903" ]
+}

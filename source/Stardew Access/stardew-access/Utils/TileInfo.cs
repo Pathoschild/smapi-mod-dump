@@ -9,6 +9,8 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using stardew_access.Tiles;
 using stardew_access.Translation;
 using static stardew_access.Utils.MachineUtils;
@@ -18,16 +20,15 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using System.Text;
-using System.Text.Json;
 
 namespace stardew_access.Utils
 {
     public class TileInfo
     {
         private static readonly string[] trackable_machines;
-        private static readonly Dictionary<int, string> ResourceClumpNameTranslationKeys;
-        private static readonly Dictionary<int, (string category, string itemName)> ParentSheetIndexes;
-        private static readonly Dictionary<string, Dictionary<(int, int), string>> BundleLocations;
+        private static readonly Dictionary<int, string> ResourceClumpNameTranslationKeys = [];
+        private static readonly Dictionary<int, (string category, string itemName)> ParentSheetIndexes = [];
+        private static readonly Dictionary<string, Dictionary<(int, int), string>> BundleLocations = [];
 
         static TileInfo()
         {
@@ -36,45 +37,71 @@ namespace stardew_access.Utils
             JsonLoader.TryLoadNestedJson<int, (string, string)>(
                 "ParentSheetIndexes.json", 
                 ProcessParentSheetIndex,
-                out ParentSheetIndexes,
+                ref ParentSheetIndexes!,
                 2,
                 subdir: "assets/TileData"
             );
             JsonLoader.TryLoadNestedJson<string, Dictionary<(int, int), string>>(
                 "BundleLocations.json", 
                 ProcessBundleLocation,
-                out BundleLocations,
+                ref BundleLocations!,
                 2,
                 subdir: "assets/TileData"
             );
 
         }
 
-        private static void ProcessParentSheetIndex(List<string> path, JsonElement element, ref Dictionary<int, (string, string)> result)
+        private static void ProcessParentSheetIndex(List<string> path, JToken token, ref Dictionary<int, (string, string)> result)
         {
             string category = path[0];
             string itemName = path[1];
 
-            foreach (JsonElement indexElement in element.EnumerateArray())
+            if (token.Type == JTokenType.Array)
             {
-                int index = indexElement.GetInt32();
-                result[index] = (category, itemName);
+                foreach (JToken indexToken in token.Children())
+                {
+                    if (int.TryParse(indexToken.ToString(), out int index))
+                    {
+                        result[index] = (category, itemName);
+                    }
+                    else
+                    {
+                        Log.Warn($"Invalid index format: '{indexToken}'. Expected an integer.");
+                    }
+                }
+            }
+            else
+            {
+                Log.Warn($"Expected an array for parent sheet indexes, but found: {token.Type}.");
             }
         }
 
-        private static void ProcessBundleLocation(List<string> path, JsonElement element, ref Dictionary<string, Dictionary<(int x, int y), string>> bundleLocations)
+        private static void ProcessBundleLocation(List<string> path, JToken token, ref Dictionary<string, Dictionary<(int x, int y), string>> bundleLocations)
         {
             string locationName = path[0];
             string bundleName = path[1];
-            int x = element[0].GetInt32();
-            int y = element[1].GetInt32();
 
-            if (!bundleLocations.ContainsKey(locationName))
+            if (token.Type == JTokenType.Array && token.Children().Count() == 2)
             {
-                bundleLocations[locationName] = new Dictionary<(int x, int y), string>();
+                var elements = token.Children().ToArray();
+                if (int.TryParse(elements[0].ToString(), out int x) && int.TryParse(elements[1].ToString(), out int y))
+                {
+                    if (!bundleLocations.ContainsKey(locationName))
+                    {
+                        bundleLocations[locationName] = [];
+                    }
+
+                    bundleLocations[locationName][(x, y)] = bundleName;
+                }
+                else
+                {
+                    Log.Warn($"Invalid coordinate format for bundle location '{locationName}'. Expected integers.");
+                }
             }
-            
-            bundleLocations[locationName][(x, y)] = bundleName;
+            else
+            {
+                Log.Warn($"Expected an array of two integers for coordinates, but found: {token.Type}.");
+            }
         }
 
         ///<summary>Returns the name of the object at tile alongwith it's category's name</summary>
@@ -147,14 +174,14 @@ namespace stardew_access.Utils
                 return (door, CATEGORY.Doors);
             }
 
-            (string? name, CATEGORY? category) staticTile = MainClass.TileManager.GetNameAndCategoryAt((x, y), "user", currentLocation);
-            if(staticTile.name == null) staticTile = MainClass.TileManager.GetNameAndCategoryAt((x, y), "stardew-access", currentLocation);
-            if (staticTile.name != null)
+            (string name, CATEGORY category)? staticTile = MainClass.TileManager.GetNameAndCategoryAt((x, y), "user", currentLocation);
+            staticTile ??= MainClass.TileManager.GetNameAndCategoryAt((x, y), "stardew-access", currentLocation);
+            if (staticTile is { } static_tile)
             {
                 #if DEBUG
-                Log.Verbose($"TileInfo: Got static tile {staticTile} from TileManager");
+                Log.Verbose($"TileInfo: Got static tile {static_tile} from TileManager");
                 #endif
-                return (staticTile.name, staticTile.category);
+                return (static_tile.name, static_tile.category);
             }
 
             (string? name, CATEGORY? category) dynamicTile = DynamicTiles.GetDynamicTileAt(currentLocation, x, y, lessInfo);
@@ -332,7 +359,7 @@ namespace stardew_access.Utils
         {
             // Get the terrain feature from the reference
             var terrainFeature = terrain.Get();
-            return TerrainUtils.GetTerrainFeatureInfoAndCategory(terrainFeature);
+            return TerrainUtils.GetTerrainFeatureInfoAndCategory(terrainFeature, Game1.currentLocation is MineShaft);
         }
         #region Objects
         /// <summary>

@@ -1,0 +1,18 @@
+{
+	"Title": "English",
+	"Id": "en_US",
+	"Words": "en_words.txt",
+	"Dict": "en_dict.txt",
+	"Font": "squarefont",
+	"MaxTries": 6,
+	"Music": "taletobetold",
+	"Keys": {
+		"Pages": [
+			{
+				"Line1": "qwertyuiop",
+				"Line2": "asdfghjkl",
+				"Line3": "zxcvbnm"
+			}
+		]
+	}
+}

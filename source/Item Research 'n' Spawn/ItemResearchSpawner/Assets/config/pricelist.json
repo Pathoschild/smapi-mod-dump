@@ -30,7 +30,7 @@
   "Warp Totem: Desert:261": 500,
   "Quality Sprinkler:621": 400,
   "Mega Bomb:288": 150,
-  "Seed Maker:25": 500,
+  "Seed Maker:25": 400,
   "Warp Totem: Farm:688": 100,
   "Warp Totem: Beach:690": 150,
   "Keg:12": 350,
@@ -40,5 +40,10 @@
   "Modern Rug:2875": 4000,
   "Statue Of Endless Fortune:127": 1000000,
   "Return Scepter:-1": 1000,
-  "Bee House:10": 500
+  "Bee House:10": 500,
+  "Tub o' Flowers:108": 250,
+  "Clothing Catalogue:300": 20,
+  "Iridium Ore:386": 150,
+  "Stone Chest:232": 100,
+  "Grass Starter:297": 10
 }

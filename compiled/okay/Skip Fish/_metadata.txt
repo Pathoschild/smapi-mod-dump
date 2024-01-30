@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19762
+IDs: LucaINC.StardewValleyMods.SkipFish
+update keys: Nexus:19762

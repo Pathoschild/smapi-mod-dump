@@ -6,9 +6,9 @@ mods:
    Adventurers Guild Multiplayer Shared Kills
 
 latest commit:
-   commit c6e9dee235d7d68238757b666f43446a9ac71dc3
+   commit 15e79ad80019449979ab849204939bb4225bb1bc
    Author: Veniamin Arefev <veniamin.arefev@mail.ru>
-   Date:   Thu Dec 7 19:39:41 2023 +0300
+   Date:   Thu Jan 4 02:10:13 2024 +0300
    
-       First mod
+       Adventurers Guild Multiplayer Shared Kills V 1.1.0
    

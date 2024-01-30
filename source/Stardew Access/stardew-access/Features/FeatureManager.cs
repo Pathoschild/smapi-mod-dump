@@ -17,8 +17,8 @@ namespace stardew_access.Features;
 
 public class FeatureManager
 {
-    private static readonly List<FeatureBase> AllFeatures = new()
-    {
+    private static readonly List<FeatureBase> AllFeatures =
+    [
         PlayerTriggered.Instance,
         ReadTile.Instance,
         TileViewer.Instance,
@@ -27,7 +27,7 @@ public class FeatureManager
         GameStateNarrator.Instance,
         Warnings.Instance,
         Radar.Instance,
-    };
+    ];
 
     public static void UpdateEvent(object? sender, UpdateTickedEventArgs e)
     {
@@ -92,6 +92,23 @@ public class FeatureManager
             try
             {
                 feature.OnButtonsChanged(sender, e);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(
+                    $"An error occurred in OnButtonChangedEvent of {feature.GetType().FullName} feature:\n{exception.Message}\n{exception.StackTrace}");
+                throw;
+            }
+        }
+    }
+
+    public static void OnPlayerWarpedEvent(object? sender, WarpedEventArgs e)
+    {
+        foreach (FeatureBase feature in AllFeatures)
+        {
+            try
+            {
+                feature.OnPlayerWarped(sender, e);
             }
             catch (Exception exception)
             {

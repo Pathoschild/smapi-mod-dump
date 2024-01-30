@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;
@@ -18,8 +19,10 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using xTile;
@@ -50,11 +53,17 @@ namespace XNBArchive
                     {
                         try
                         {
-                            Assembly.Load(System.IO.File.ReadAllBytes(reference));
+                            var assembly_ = Assembly.Load(System.IO.File.ReadAllBytes(reference));
+                            foreach (var m in assembly_.Modules)
+                            {
+                                IEnumerable<Module> modules = this.GetType().Assembly.Modules;
+                                if (!modules.Contains(m)) modules.AddItem(m);
+                            }
+                            Monitor.Log($"Load {fileInfo.Name} OK", LogLevel.Alert);
                         }
-                        catch
+                        catch (Exception ex)
                         {
-
+                            this.Monitor.Log("" + ex.GetBaseException(), LogLevel.Error);
                         }
                     }
                 }
@@ -150,7 +159,6 @@ namespace XNBArchive
                                 {
                                     ContentCompiler contentCompiler = new ContentCompiler();
                                     contentCompiler.Compile(stream, obj, TargetPlatform, GraphicsProfile.HiDef, false, "", "");
-                                    stream.Close();
                                 }
                                 Log($"Successfully packaged the {dir + AltDirectorySeparatorChar + fileInfo.Name} file", LogLevel.Info);
                             }
@@ -173,9 +181,7 @@ namespace XNBArchive
                 {
 
                     Log($"Packing the {dir + AltDirectorySeparatorChar + fileInfo.Name} file failed", LogLevel.Error);
-#if DEBUG
                     Log($"{e.GetBaseException()}", LogLevel.Error);
-#endif
                 }
             }
             IsPacking = false;
@@ -283,12 +289,7 @@ namespace XNBArchive
 
         private void Log(string v, LogLevel error)
         {
-            if (Constants.TargetPlatform == GamePlatform.Android)
-            {
-                new Thread(() => { Log(v, error); }) { IsBackground = true }.Start();
-                return;
-            }
-            Log(v, error);
+            Monitor.Log(v, error);
         }
     }
 }

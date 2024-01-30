@@ -17,6 +17,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
 {
     public class VillagerGrabber
     {
+        public const string CAROLINE_SUN_ROOM = "Caroline's Sun Room";
         private StardewItemManager _itemManager;
 
         public Dictionary<string, Dictionary<StardewObject, int>> GrabberItems { get; private set; }
@@ -33,7 +34,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
 
             AddGrabberItem("Abigail", new[] { "Amethyst", "Pumpkin" });
             AddGrabberItem("Alex", new[] { "Complete Breakfast", "Egg", "Egg (Brown)" });
-            AddGrabberItem("Caroline", new[] { "Cauliflower", "Potato", "Parsnip", "Tea Set" });
+            AddGrabberItem("Caroline", new[] { "Cauliflower", "Potato", "Parsnip" });
+            AddGrabberItem(CAROLINE_SUN_ROOM, new[] { "Tea Set", "Tea Leaves", "Green Tea", "Tea Sapling" });
             AddGrabberItem("Clint", new[] { "Copper Bar", "Iron Bar", "Gold Bar" });
             AddGrabberItem("Demetrius", new[] { "Nautilus Shell", "Rainbow Shell", "Bream", "Amethyst" });
             AddGrabberItem("Dwarf", new[] { "Omni Geode", "Dwarf Scroll I", "Dwarf Scroll II", "Dwarf Scroll III", "Dwarf Scroll IV" });

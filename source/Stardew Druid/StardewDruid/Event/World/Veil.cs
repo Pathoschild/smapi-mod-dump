@@ -77,7 +77,7 @@ namespace StardewDruid.Event.World
 
         }
 
-        public void RemoveAnimations()
+        public override void RemoveAnimations()
         {
             if (veilAnimations.Count > 0)
             {
@@ -110,31 +110,41 @@ namespace StardewDruid.Event.World
                 targetLocation.temporarySprites.Add(temporaryAnimatedSprite);
                 veilAnimations[0] = temporaryAnimatedSprite;
 
-                for (int i = 0; i < 16; i++)
+                Vector2 mistCorner = veilCorner + new Vector2(32, 32);
+
+                for (int i = 0; i < 4; i++)
                 {
 
-                    Vector2 glowVector = veilCorner + new Vector2(randomIndex.Next(16) * 20, randomIndex.Next(16) * 20) - new Vector2(96,96);
-
-                    TemporaryAnimatedSprite glowSprite = new TemporaryAnimatedSprite(0, 6000f, 1, 1, glowVector, false, false)
+                    for (int j = 0; j < 4; j++)
                     {
-                        sourceRect = new Microsoft.Xna.Framework.Rectangle(88, 1779, 30, 30),
-                        sourceRectStartingPos = new Vector2(88, 1779),
-                        texture = Game1.mouseCursors,
-                        motion = new Vector2(-0.0004f +randomIndex.Next(5)*0.0002f, -0.0004f + randomIndex.Next(5) * 0.0002f),
-                        scale = 6f,
-                        layerDepth = 999f,
-                        timeBasedMotion = true,
-                        //rotationChange = -0.06f,
-                        alpha = 1f,
-                        color = new Color(0.75f, 0.75f, 1f, 1f)
-                    };
 
-                    targetLocation.temporarySprites.Add(glowSprite);
+                        if ((i == 0 || i == 3) && (j == 0 || j == 3))
+                        {
+                            continue;
+                        }
 
-                    veilAnimations[2 + i] = glowSprite;
+                        Vector2 glowVector = mistCorner + new Vector2(i * 48, j * 48);
+
+                        TemporaryAnimatedSprite glowSprite = new TemporaryAnimatedSprite(0, 5250f, 1, 1, glowVector, false, false)
+                        {
+                            sourceRect = new Microsoft.Xna.Framework.Rectangle(88, 1779, 30, 30),
+                            sourceRectStartingPos = new Vector2(88, 1779),
+                            texture = Game1.mouseCursors,
+                            motion = new Vector2(-0.0004f + randomIndex.Next(5) * 0.0002f, -0.0004f + randomIndex.Next(5) * 0.0002f),
+                            scale = 4f,
+                            layerDepth = 999f,
+                            timeBasedMotion = true,
+                            alpha = 1f,
+                            color = new Color(0.75f, 0.75f, 1f, 1f),
+                            delayBeforeAnimationStart = 750,
+                        };
+
+                        targetLocation.temporarySprites.Add(glowSprite);
+
+                        veilAnimations[2 + i] = glowSprite;
+                    }
 
                 }
-
             }
             
             if (activeCounter == 2)

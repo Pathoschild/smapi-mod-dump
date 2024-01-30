@@ -1,9 +1,9 @@
 {
-  "config.option.general.title": "常规选项：",
+  "config.title.general": "常规选项：",
   "config.option.show_schedule_key.name": "显示NPC日程密钥",
   "config.option.disable_hover.name": "悬停隐藏细节",
   "config.option.disable_hover.description": "悬停时不显示瓷砖、朝向和动画信息。",
-  "config.option.filter_sort.title": "筛选和排序选项：",
+  "config.title.filter_sort": "筛选和排序选项：",
   "config.option.sort_options.name": "NPC排序顺序",
   "config.option.sort_options.description": "查看日程时NPC排序的顺序。",
   "config.option.sort_options.option_0": "按字母顺序升序",
@@ -23,5 +23,6 @@
   "facing_direction_1": "右方",
   "facing_direction_2": "下方",
   "facing_direction_3": "左方",
-  "farmhouse": "农家"
+  "farmhouse": "农场房屋",
+  "schedule_details_page.current_location": "当前位置"
 }

@@ -30,7 +30,18 @@
 	"config.Debug.Explanation": "Developer options.",
 	"config.WalkOnFarm.name": "Allow NPCs on farm?",
 	"config.WalkOnFarm.description": "If you go outside during a visit, the NPC will roam the farm.",
-	
+	"config.Sleepovers": "Sleepovers",
+	"config.SleepoverEnabled.name": "Enabled",
+	"config.SleepoverEnabled.description": "Allows NPCs to sleep over if it's close to their bedtime.",
+	"config.SleepoverChance.name": "Chance",
+	"config.SleepoverChance.description": "How likely NPCs are to sleep at your place.",
+	"config.SleepoverMinHearts.name": "Minimum hearts",
+	"config.SleepoverMinHearts.description": "NPCs must have at least this many hearts to sleep over.",
+	"config.Places.name":"Places",
+	"config.Places.description":"The buildings the NPC can follow you to. (Requires allowing NPCs on farm)",
+	"config.UniqueDialogue.name":"Unique retiring dialogue",
+	"config.UniqueDialogue.description":"Characters will use unique dialogue when leaving.",
+
 	/*For translators: your in-laws = the family of your spouse.
 	 * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
 	 *
@@ -370,9 +381,9 @@
 	"NPCRetiring.Rude3": "It's pretty late already. I'll see you another day.",
 
 	//for vanilla NPCs
-	"NPCRetiring.Abigail.1": "Hey...i'm kinda hungry. I'll look for some rock on the way.#$b#Bye!",
+	"NPCRetiring.Abigail.1": "Hey...I'm kinda hungry. I'll look for some rock on the way.#$b#Bye!$1",
 	"NPCRetiring.Abigail.2": "I have to go...mom must be getting worried.",
-	"NPCRetiring.Abigail.3": "I have to go. show me your sword next time!$1",
+	"NPCRetiring.Abigail.3": "I have to go. Show me your sword next time!$1",
 	
 	"NPCRetiring.Alex.1": "Grandma is making her special casserole tonight.#$b#Later, @.",
 	"NPCRetiring.Alex.2": "Look at the hour. I should be practicing gridball!#$b#Later, @.$1",
@@ -395,7 +406,7 @@
 	"NPCRetiring.Dwarf.3": "You should visit the mines sometime, @.",
 
 	"NPCRetiring.Elliott.1": "I must get back to my work.#$b#A great idea passed through my head!",
-	"NPCRetiring.Elliott.2": "Your farm is a wonderful place, @.#$b#It gave me the inspiration to write s new novel.$1",
+	"NPCRetiring.Elliott.2": "Your farm is a wonderful place, @.#$b#It gave me the inspiration to write a new novel.$1",
 	"NPCRetiring.Elliott.3": "I must leave now, @.#$b#Visit the cabin whenever you like.",
 
 	"NPCRetiring.Emily.1": "I have to go, @! But before that...#$b#The flowers are speaking to me. They say you treat them well!$1",
@@ -427,11 +438,11 @@
 	"NPCRetiring.Jas.3": "Aunt Marnie won't let me out after this hour.#$b#Bye...",
 	
 	"NPCRetiring.Jodi.1": "I wonder if Vincent is alright...I'll go check on him.#$b#See you later, @.",
-	"NPCRetiring.Jodi.2": "", // have to go. smth smth buy ur crops
-	"NPCRetiring.Jodi.3": "", //have to go. tea time later?
+	"NPCRetiring.Jodi.2": "@, I have to go.#$b#I'll buy your crops next time.$1", // have to go. smth smth buy ur crops
+	"NPCRetiring.Jodi.3": "I have to leave.#$b#We should have tea next time, @.$1", //have to go. tea time later?
 	
-	"NPCRetiring.Kent.1": "", // time late, go home
-	"NPCRetiring.Kent.2": "", //check on vincent
+	"NPCRetiring.Kent.1": "I've been here a while now. Time to head home.", // time late, go home
+	"NPCRetiring.Kent.2": "I have to leave time to bond with the family.#$b#Goodbye, @.", //check on vincent
 	"NPCRetiring.Kent.3": "Your farm is very peaceful.$1#$b#Good luck with it.", //have to go. farm peaceful. 
 	
 	"NPCRetiring.Krobus.1": "I have to go...$2#$b#Someone might find me if i stay too long.#$b#Goodbye, @.$1",
@@ -463,12 +474,12 @@
 	"NPCRetiring.Marnie.3": "I'll go prepare Jas some food.#$b#Goodbye!",
 	
 	"NPCRetiring.Maru.1": "There's an experiment I have to finish.#$b#Take care, @.$1",
-	"NPCRetiring.Maru.2": "", //demetrius will get worried
+	"NPCRetiring.Maru.2": "Hey, I'll get going.#$b#Dad's going to get worried if I stay until late.",
 	"NPCRetiring.Maru.3": "I told dad I'd help him at the lab.#$b#See you later, @!",
 	
-	"NPCRetiring.Pam.1": "", // hungry 
-	"NPCRetiring.Pam.2": "", // fish show?
-	"NPCRetiring.Pam.3": "", // bye
+	"NPCRetiring.Pam.1": "Don't you have work to do? I'll leave you to it.", 
+	"NPCRetiring.Pam.2": "I oughta come again, seeing how close your home is.#$b#Later, kid.",
+	"NPCRetiring.Pam.3": "I'll go, kid.#$b#Gotta pass by the Saloon.$1",
 	
 	"NPCRetiring.Penny.1": "Um...I have to go, @. I have to check on mom.",
 	"NPCRetiring.Penny.2": "It's getting late.#$b#I have to prepare everything for Jas and Vincent's classes.#$b#Bye, @!",
@@ -482,7 +493,7 @@
 	"NPCRetiring.Robin.2": "Look at the time...I have to go.#$b#You know where to find me!$1",
 	"NPCRetiring.Robin.3": "Hey, your house looks really good.$1#$b#If you need another upgrade, you know who to call!",
 	
-	"NPCRetiring.Sam.1": "Vincent asked me to help with homework.#$b#See you later, @.",
+	"NPCRetiring.Sam.1": "Vincent wants help with his homework.#$b#See you later, @.",
 	"NPCRetiring.Sam.2": "Mom's making fish casserole today. I'll get going!$1",
 	"NPCRetiring.Sam.3": "Hmm, I just remembered. We have band practice today.#$b#See you later.",
 	
@@ -502,7 +513,7 @@
 	"NPCRetiring.Vincent.2": "Mom said to go home early. Bye, @.",
 	"NPCRetiring.Vincent.3": "Bye bye, @!#$b#I'll go meet my worm friends!$1",
 	
-	"NPCRetiring.Willy.1": "Tere's some rare fish in season...The sea's calling me!#$b#See ya later, @.",
+	"NPCRetiring.Willy.1": "There's some rare fish in season...The sea's calling me!#$b#See ya later, @.",
 	"NPCRetiring.Willy.2": "Aye, the store won't run itself. Goodbye, @!",
 	"NPCRetiring.Willy.3": "I'll bring you some fish next time.",
 
@@ -511,6 +522,7 @@
 	"NPCRetiring.Wizard.3": "It's time. I must go.#$b#Farewell, @.",
 	
 	/* TN: gone while outside */
+	"NPCGoneToSleep": "{0} went into the farmhouse.",
 	"NPCGoneWhileOutside": "While you were outside, {0} left.",
 	"NPCGone_Cellar": "While you were in the cellar, {0} left.",
 	"NPCGone_Farm": "While you were in the farm, {0} left."

@@ -115,7 +115,7 @@ namespace StardewArchipelago.Locations.Festival
                 var sourceRectangle = new Rectangle?(new Rectangle(144 + (day - 1 + (month - 1) % 3 * 3) * 28, 201, 28, 13));
                 var paintingLocationSoldToday = GetPaintingLocationToday(__instance);
                 // var paintingMailKey = $"NightMarketYear{Game1.year}Day{nightMarket.getDayOfNightMarket()}_paintingSold";
-                if (_locationChecker.IsLocationMissingAndExists(paintingLocationSoldToday))
+                if (_locationChecker.IsLocationMissing(paintingLocationSoldToday))
                 {
                     b.Draw(shopClosedTexture, position, sourceRectangle, Color.White, 0.0f, Vector2.Zero, 4f, SpriteEffects.None, 0.225000009f);
                 }

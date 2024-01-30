@@ -9,7 +9,9 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewDruid.Event.World;
 using StardewDruid.Map;
+using StardewValley;
 
 namespace StardewDruid.Cast.Weald
 {
@@ -42,7 +44,15 @@ namespace StardewDruid.Cast.Weald
 
             experienceGain = 8;
 
-            if (randomIndex.Next(11 - targetPlayer.fishingLevel.Value) == 0)
+            if(11 - targetPlayer.fishingLevel.Value <= 0)
+            {
+
+                objectQuality = 2;
+
+                experienceGain = 16;
+
+            }
+            else if (randomIndex.Next(11 - targetPlayer.fishingLevel.Value) == 0)
             {
 
                 objectQuality = 2;
@@ -52,6 +62,8 @@ namespace StardewDruid.Cast.Weald
             }
 
             StardewDruid.Cast.Throw throwObject = new(targetPlayer, targetVector * 64, randomFish, objectQuality);
+
+            Game1.player.checkForQuestComplete(null, randomFish, 1, throwObject.objectInstance, "fish", 7);
 
             throwObject.ThrowObject();
 

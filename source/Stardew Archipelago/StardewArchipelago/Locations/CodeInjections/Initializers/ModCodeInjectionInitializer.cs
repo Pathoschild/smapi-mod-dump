@@ -17,6 +17,8 @@ using StardewArchipelago.GameModifications.CodeInjections.Modded;
 using StardewArchipelago.Locations.CodeInjections.Modded;
 using StardewArchipelago.Locations.CodeInjections.Modded.SVE;
 using StardewValley;
+using StardewArchipelago.Items;
+using StardewArchipelago.GameModifications.Modded;
 
 namespace StardewArchipelago.Locations.CodeInjections.Initializers
 {
@@ -24,13 +26,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
     {
         static ArchipelagoClient _archipelago;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer, ShopStockGenerator shopStockGenerator)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer, ShopStockGenerator shopStockGenerator, JunimoShopGenerator junimoShopGenerator)
         {
             _archipelago = archipelago;
-            InitializeModdedContent(monitor, modHelper, archipelago, locationChecker, shopReplacer, shopStockGenerator);
+            InitializeModdedContent(monitor, modHelper, archipelago, locationChecker, shopReplacer, shopStockGenerator, junimoShopGenerator);
         }
 
-        private static void InitializeModdedContent(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer, ShopStockGenerator shopStockGenerator)
+        private static void InitializeModdedContent(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, ShopReplacer shopReplacer, ShopStockGenerator shopStockGenerator, JunimoShopGenerator junimoShopGenerator)
         {
             if (_archipelago.SlotData.Mods.HasMod(ModNames.DEEP_WOODS))
             {
@@ -59,7 +61,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             if (archipelago.SlotData.Mods.HasMod(ModNames.SVE))
             {
                 SVECutsceneInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
-                SVEShopInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer, shopStockGenerator);
+                SVEShopInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer, shopStockGenerator, junimoShopGenerator);
             }
 
             if (archipelago.SlotData.Mods.HasMod(ModNames.DISTANT_LANDS)) // Only mod for now that needs it.

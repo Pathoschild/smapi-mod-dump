@@ -6,9 +6,9 @@ mods:
    Misophonia Accessibility
 
 latest commit:
-   commit 34a07a1006fcf2228045f8baa111295fa4f5c942
-   Author: james.pfluger <me@jamespfluger.com>
-   Date:   Sat Apr 25 15:46:17 2020 -0500
+   commit 3ae561b6d4edc87137b9f2e94b361fba2b6239ee
+   Author: James Pfluger <me@jamespfluger.com>
+   Date:   Sun Dec 31 13:06:35 2023 -0800
    
-       Initial commit
+       removed excessive logger usage
    

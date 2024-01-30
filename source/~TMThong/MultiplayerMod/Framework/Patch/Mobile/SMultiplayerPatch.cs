@@ -16,12 +16,14 @@ using StardewValley.Network;
 using StardewValley.SDKs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MultiplayerMod.Framework.Patch.Mobile
 {
+    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
     internal class SMultiplayerPatch : IPatch
     {
         private readonly Type PATCH_TYPE = typeof(IMultiplayerPeer).Assembly.GetType("StardewModdingAPI.Framework.SMultiplayer");
@@ -72,6 +74,11 @@ namespace MultiplayerMod.Framework.Patch.Mobile
                     }
             }
             return false;
+        }
+
+        private string GetDebuggerDisplay()
+        {
+            return ToString();
         }
     }
 }

@@ -9,17 +9,21 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Netcode;
 using StardewDruid.Cast;
 using StardewDruid.Map;
-using StardewDruid.Monster;
+using StardewDruid.Monster.Template;
 using StardewValley;
+using System;
 using System.Collections.Generic;
 
 namespace StardewDruid.Event.Challenge
 {
     public class Mariner : ChallengeHandle
     {
-        public List<Vector2> cannonTargets;
+        public List<Vector2> cannons;
+
+        public List<BarrageHandle> barrages;
 
         public Mariner(Vector2 target, Rite rite, Quest quest)
             : base(target, rite, quest)
@@ -27,12 +31,16 @@ namespace StardewDruid.Event.Challenge
 
             voicePosition = targetVector * 64 + new Vector2(-10, -56);
 
+            cannons = new();
+
+            barrages = new();
+
         }
 
         public override void EventTrigger()
         {
 
-            monsterHandle = new(targetVector, riteData);
+            monsterHandle = new(targetVector, riteData.castLocation);
 
             monsterHandle.spawnIndex = new() { 2, 3 };
 
@@ -42,8 +50,6 @@ namespace StardewDruid.Event.Challenge
             {
 
                 monsterHandle.spawnFrequency = 1;
-
-                monsterHandle.spawnAmplitude = 2;
 
             }
 
@@ -66,19 +72,30 @@ namespace StardewDruid.Event.Challenge
                 if (monsterHandle.monsterSpawns.Count <= 3)
                 {
                     CastVoice("aye... maybe as strong as Deep himself...");
+
                     List<int> intList = new List<int>() { 797, 166 };
+
                     int num = questData.name.Contains("Two") ? 2 : 1;
+
                     for (int index = 0; index < num; ++index)
+                    {
                         new Throw(targetPlayer, targetVector * 64f, intList[randomIndex.Next(intList.Count)], 0).ThrowObject();
+
+                    }
+                        
                 }
                 else if (monsterHandle.monsterSpawns.Count <= 7)
                 {
                     CastVoice("eh. take this an sod off.");
 
                     List<int> intList = new List<int>() { 265, 275 };
+
                     int num = questData.name.Contains("Two") ? 2 : 1;
+
                     for (int index = 0; index < num; ++index)
+                    {
                         new Throw(targetPlayer, targetVector * 64f, intList[randomIndex.Next(intList.Count)], 0).ThrowObject();
+                    }
 
                 }
                 else
@@ -92,7 +109,7 @@ namespace StardewDruid.Event.Challenge
 
                 Mod.instance.CastMessage("Defeated " + monsterDefeated + " out of " + monsterHandle.spawnTotal + " opponents");
 
-                Mod.instance.CompleteQuest(questData.name);
+                EventComplete();
 
                 eventLinger = 3;
 
@@ -110,6 +127,8 @@ namespace StardewDruid.Event.Challenge
         {
 
             activeCounter++;
+
+            monsterHandle.SpawnCheck();
 
             if (eventLinger != -1)
             {
@@ -154,6 +173,8 @@ namespace StardewDruid.Event.Challenge
 
                         Mod.instance.CastMessage("Defeat more foes for better rewards", -1);
 
+                        CannonsToTheFore();
+
                         break;
 
                 }
@@ -187,21 +208,29 @@ namespace StardewDruid.Event.Challenge
 
                 case 15: CastVoice("this ere beach is for private members!", 3000); break;
 
-                case 20: CannonsAtTheReady(); break;
+                case 18: CannonsAtTheReady(); break;
+                case 20: CannonsToFire(); break;
+                case 21: CannonsToImpact(); break;
 
-                case 27: CastVoice("the Lady is not a friend to the drowned", 3000); break;
+                case 24: CastVoice("the Lady is not a friend to the drowned", 3000); break;
 
-                case 30: CastVoice("she buried us with our boats on this shore", 3000); break;
+                case 27: CastVoice("she buried us with our boats on this shore", 3000); break;
 
-                case 33: CastVoice("but soon Lord Deep will avenge us!", 3000); break;
+                case 30: CastVoice("but soon Lord Deep will avenge us!", 3000); break;
 
-                case 36: CastVoice("he'll swallow the ol' sea witch whole", 3000); break;
+                case 33: CastVoice("he'll swallow the ol' sea witch whole", 3000); break;
 
-                case 39: CastVoice("then the waves will no longer wash our tattered bones", 3000); break;
+                case 36: CastVoice("then the waves will no longer wash our tattered bones", 3000); break;
 
-                case 42: CastVoice("an we'll sink into the warm embrace of the earth", 3000); break;
+                case 39: CastVoice("an we'll sink into the warm embrace of the earth", 3000); break;
 
-                case 45: CannonsAtTheReady(); break;
+                case 42: CannonsAtTheReady(); break;
+                case 44: CannonsToFire(); break;
+                case 45: CannonsToImpact(); break;
+
+                case 52: CannonsAtTheReady(); break;
+                case 54: CannonsToFire(); break;
+                case 55: CannonsToImpact(); break;
 
                 default: break;
 
@@ -209,12 +238,10 @@ namespace StardewDruid.Event.Challenge
 
         }
 
-        public void CannonsAtTheReady()
+        public void CannonsToTheFore()
         {
 
-            CastVoice("CANNONS AT THE READY!", 3000);
-
-            cannonTargets = new()
+            cannons = new()
             {
                 monsterHandle.spawnWithin + new Vector2(1,4),
 
@@ -226,16 +253,33 @@ namespace StardewDruid.Event.Challenge
 
                 monsterHandle.spawnWithin + new Vector2(10,9),
 
-                //monsterHandle.spawnWithin + new Vector2(1,12),
+                monsterHandle.spawnWithin + new Vector2(1,14),
 
-                //monsterHandle.spawnWithin + new Vector2(7,12),
+                monsterHandle.spawnWithin + new Vector2(7,14),
 
-                //monsterHandle.spawnWithin + new Vector2(13,12),
+                monsterHandle.spawnWithin + new Vector2(13,14),
 
             };
 
+            for (int k = 0; k < cannons.Count; k++)
+            {
+
+                BarrageHandle missile = new(targetLocation, cannons[k], monsterHandle.spawnWithin, 2, 1, "Black", Mod.instance.CombatModifier() * 2, Mod.instance.DamageLevel());
+
+                barrages.Add(missile);
+
+            }
+
+        }
+
+        public void CannonsAtTheReady()
+        {
+
+            CastVoice("CANNONS AT THE READY!", 3000);
+
             foreach (StardewValley.Monsters.Monster monsterSpawn in monsterHandle.monsterSpawns)
             {
+                
                 if (monsterSpawn is Skeleton pirateSkeleton)
                 {
                     pirateSkeleton.triggerPanic();
@@ -249,15 +293,16 @@ namespace StardewDruid.Event.Challenge
                 }
 
             }
-
-            foreach (Vector2 cannonTarget in cannonTargets)
+            
+            foreach(BarrageHandle barrage in barrages)
             {
 
-                ModUtility.AnimateBombZone(targetLocation, cannonTarget, Color.Purple, 6);
+                barrage.TargetCircle(3);
+
+                barrage.OuterCircle(3);
 
             }
 
-            DelayedAction.functionAfterDelay(CannonsToFire, 3600);
 
         }
 
@@ -266,16 +311,26 @@ namespace StardewDruid.Event.Challenge
 
             CastVoice("FIRE!");
 
-            targetLocation.localSound("explosion");
-
-            foreach (Vector2 cannonTarget in cannonTargets)
+            foreach (BarrageHandle barrage in barrages)
             {
 
-                targetLocation.explode(cannonTarget, 3, targetPlayer, true, targetPlayer.CombatLevel * targetPlayer.CombatLevel);
+                barrage.MissileBarrage();
 
             }
 
-            cannonTargets.Clear();
+        }
+
+        public void CannonsToImpact()
+        {
+
+            targetLocation.localSound("explosion");
+
+            foreach (BarrageHandle barrage in barrages)
+            {
+
+                barrage.RadialDamage();
+
+            }
 
         }
 

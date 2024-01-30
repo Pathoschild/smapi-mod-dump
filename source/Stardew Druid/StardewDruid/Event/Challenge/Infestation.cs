@@ -11,8 +11,9 @@
 using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
 using StardewDruid.Map;
-using StardewDruid.Monster;
+using StardewDruid.Monster.Template;
 using StardewValley;
+using StardewValley.Objects;
 using System.Collections.Generic;
 
 namespace StardewDruid.Event.Challenge
@@ -20,7 +21,7 @@ namespace StardewDruid.Event.Challenge
     public class Infestation : ChallengeHandle
     {
 
-        public BossSlime bossMonster;
+        public BigSlime bossMonster;
 
         public Infestation(Vector2 target, Rite rite, Quest quest)
             : base(target, rite, quest)
@@ -44,14 +45,17 @@ namespace StardewDruid.Event.Challenge
                 new(75, 81),
                 new(82, 81),
             };
+            
+            SetupSpawn();
 
             if (questData.name.Contains("Two"))
             {
-                challengeFrequency = 2;
-                challengeAmplitude = 3;
-            }
+                
+                monsterHandle.spawnCombat *= 3;
 
-            SetupSpawn();
+                monsterHandle.spawnCombat /= 2;
+
+            }
 
             Game1.addHUDMessage(new HUDMessage($"Defeat the slimes!", "2"));
 
@@ -80,18 +84,41 @@ namespace StardewDruid.Event.Challenge
         public override bool EventExpire()
         {
 
-            List<string> NPCIndex = VillagerData.VillagerIndex("forest");
-
-            Game1.addHUDMessage(new HUDMessage($"You have gained favour with those who love the forest", ""));
-
-            Mod.instance.CompleteQuest(questData.name);
+            EventComplete();
 
             if (!questData.name.Contains("Two"))
             {
 
-                UpdateFriendship(NPCIndex);
+                List<string> NPCIndex = VillagerData.VillagerIndex("forest");
 
-                Mod.instance.dialogue["Effigy"].specialDialogue["journey"] = new() { "I sense a change", "I defeated the Pumpkin Slime. Now I'm covered in gunk." };
+                Game1.addHUDMessage(new HUDMessage($"You have gained favour with those who love the forest", ""));
+
+                ModUtility.UpdateFriendship(Game1.player,NPCIndex);
+
+                Mod.instance.dialogue["Effigy"].specialDialogue["journey"] = new() { "I sense a change", "I defeated the Pumpkin Slime. Now I'm covered in his gunk." };
+
+                Throw throwHat = new(Game1.player,targetVector*64,99);
+
+                throwHat.objectInstance = new Hat(48);
+
+                throwHat.ThrowObject();
+
+            }
+            else
+            {
+
+                List<int> eggList = new()
+                {
+                    413,
+                    437,
+                    439,
+                    680,
+                    857,
+                };
+
+                Throw throwEgg = new(Game1.player, targetVector * 64, eggList[randomIndex.Next(eggList.Count)]);
+
+                throwEgg.ThrowObject();
 
             }
 
@@ -101,8 +128,10 @@ namespace StardewDruid.Event.Challenge
 
         public override void EventInterval()
         {
-
+            
             activeCounter++;
+
+            monsterHandle.SpawnCheck();
 
             if (eventLinger != -1)
             {
@@ -124,18 +153,11 @@ namespace StardewDruid.Event.Challenge
 
                 }
 
-                StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(13, bossVector, riteData.combatModifier);
+                StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(13, bossVector);
 
-                bossMonster = theMonster as BossSlime;
+                bossMonster = theMonster as BigSlime;
 
-                if (questData.name.Contains("Two"))
-                {
-
-                    bossMonster.dropHat = false;
-
-                }
-
-                bossMonster.posturing = true;
+                bossMonster.posturing.Set(true);
 
                 riteData.castLocation.characters.Add(bossMonster);
 
@@ -171,7 +193,7 @@ namespace StardewDruid.Event.Challenge
 
                     case 37:
 
-                        bossMonster.posturing = false;
+                        bossMonster.posturing.Set(false);
 
                         bossMonster.focusedOnFarmers = true;
 
@@ -244,7 +266,7 @@ namespace StardewDruid.Event.Challenge
                 foreach (Vector2 impactVector in impactVectors)
                 {
 
-                    ModUtility.ImpactVector(targetLocation, impactVector);
+                    ModUtility.AnimateDestruction(targetLocation, impactVector);
 
                 }
 

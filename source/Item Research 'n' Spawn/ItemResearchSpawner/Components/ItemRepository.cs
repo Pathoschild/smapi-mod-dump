@@ -109,8 +109,8 @@ namespace ItemResearchSpawner.Components
 
 
                 foreach (var id in TryLoad<int, string>("Data\\weapons").Keys)
-                    yield return TryCreate(ItemType.Weapon, id, p => p.ID >= 32 && p.ID <= 34
-                        ? (Item) new Slingshot(p.ID)
+                    yield return TryCreate(ItemType.Weapon, id, p => p.ID is >= 32 and <= 34
+                        ? new Slingshot(p.ID)
                         : new MeleeWeapon(p.ID)
                     );
 

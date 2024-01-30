@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/nickmartin1ee7/RefundStaircases
+**
+*************************************************/
+
+{
+  "Name": "Refund Staircases",
+  "Author": "Nick Martin",
+  "Version": "1.0.0",
+  "Description": "Staircases used in the mineshafts are refunded on exit.",
+  "UniqueID": "NickMartin.RefundStaircases",
+  "EntryDll": "RefundStaircases.dll",
+  "UpdateKeys": [
+    "GitHub:nickmartin1ee7/RefundStaircases",
+    "Nexus:19209"
+  ]
+}

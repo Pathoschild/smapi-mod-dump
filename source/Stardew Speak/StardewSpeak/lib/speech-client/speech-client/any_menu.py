@@ -3,6 +3,7 @@ import functools
 import dragonfly as df
 from srabuilder import rules
 import title_menu, menu_utils, server, df_utils, game, container_menu, objective, constants, carpenter_menu
+from sdv_types import ClickableComponent
 
 
 def validate_any_menu(menu):
@@ -43,7 +44,7 @@ async def move_cursor_to_next_component(menu, direction, n=1):
     await menu_utils.focus_component(current_position)
 
 
-def sort_fn(current_cmp, direction_index, multiplier, cmp):
+def sort_fn(current_cmp: ClickableComponent, direction_index: int, multiplier, cmp: ClickableComponent):
     center = cmp["center"]
     current_center = current_cmp["center"]
     val, target_val = current_center[direction_index], center[direction_index]

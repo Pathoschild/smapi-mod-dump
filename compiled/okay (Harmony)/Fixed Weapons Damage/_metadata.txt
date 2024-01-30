@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19896
+IDs: BlueSight.FixedWeaponsDamage
+update keys: Nexus:19896, GitHub:Hikari-BS/StardewMods

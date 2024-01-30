@@ -12,8 +12,9 @@ namespace ItemResearchSpawner.Models.Enums
 {
     public enum ModMode
     {
-        Spawn,
-        Buy
+        Research,
+        BuySell, 
+        Combined,
     }
     
     internal static class ModModeExtensions{
@@ -22,8 +23,9 @@ namespace ItemResearchSpawner.Models.Enums
         {
             return current switch
             {
-                ModMode.Spawn => "Spawn mode",
-                ModMode.Buy => "Buy/Sell mode",
+                ModMode.Research => "Research (Spawn) mode",
+                ModMode.BuySell => "Buy/Sell mode",
+                ModMode.Combined => "Combined mode",
                 _ => "???"
             };
         }

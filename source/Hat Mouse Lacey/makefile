@@ -12,7 +12,7 @@ CONVERT_PNGS=source/house.png \
 install: smapi cp
 
 smapi:
-	cd SMAPI && dotnet build
+	cd SMAPI && dotnet build /clp:NoSummary
 	install -m 644 LICENSE "${MOD_DIR_SMAPI}/"
 
 cp:

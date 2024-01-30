@@ -31,7 +31,8 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             ScytheInjections.Initialize(monitor, locationChecker);
             FishingRodInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             var bundleReader = new BundleReader();
-            GoalCodeInjection.Initialize(monitor, modHelper, archipelago, locationChecker, bundleReader);
+            var killList = new MonsterKillList(archipelago);
+            GoalCodeInjection.Initialize(monitor, modHelper, archipelago, locationChecker, bundleReader, killList);
             CommunityCenterInjections.Initialize(monitor, archipelago, locationChecker, bundleReader);
             JunimoNoteMenuInjections.Initialize(monitor, modHelper, archipelago, state, locationChecker, bundleReader);
             MineshaftInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
@@ -52,7 +53,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             PregnancyInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             CropsanityInjections.Initialize(monitor, archipelago, locationChecker, itemManager);
             InitializeFestivalPatches(monitor, modHelper, archipelago, state, locationChecker, shopReplacer);
-            MonsterSlayerInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
+            MonsterSlayerInjections.Initialize(monitor, modHelper, archipelago, locationChecker, killList);
             CookingInjections.Initialize(monitor, archipelago, locationChecker, itemManager);
             QueenOfSauceInjections.Initialize(monitor, modHelper, archipelago, state, locationChecker, itemManager);
             RecipePurchaseInjections.Initialize(monitor, modHelper, archipelago, locationChecker, itemManager);

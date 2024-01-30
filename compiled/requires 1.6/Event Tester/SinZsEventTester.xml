@@ -93,11 +93,27 @@
             <param name="monitor">The monitor instance to use.</param>
             <param name="reflector">SMAPI's reflection helper.</param>
         </member>
+        <member name="M:SinZsEventTester.Framework.GSQTester.Register(StardewModdingAPI.IAssetName,System.Func{System.String,System.Boolean})">
+            <inheritdoc cref="M:SinZsEventTester.IEventTesterAPI.RegisterAsset(StardewModdingAPI.IAssetName,System.Func{System.String,System.Boolean})"/>
+        </member>
+        <member name="M:SinZsEventTester.Framework.GSQTester.Register(StardewModdingAPI.IAssetName,System.Collections.Generic.HashSet{System.String})">
+            <inheritdoc cref="M:SinZsEventTester.IEventTesterAPI.RegisterAsset(StardewModdingAPI.IAssetName,System.Collections.Generic.HashSet{System.String})"/>
+        </member>
+        <member name="M:SinZsEventTester.Framework.GSQTester.Remove(StardewModdingAPI.IAssetName)">
+            <inheritdoc cref="M:SinZsEventTester.IEventTesterAPI.RemoveAsset(StardewModdingAPI.IAssetName)"/>
+        </member>
         <member name="M:SinZsEventTester.Framework.GSQTester.Check(StardewValley.LocalizedContentManager)">
             <summary>
             Checks <see cref="T:StardewValley.DataLoader"/>'s assets' GSQ.
             </summary>
             <param name="content">The localized content manager to use.</param>
+        </member>
+        <member name="M:SinZsEventTester.Framework.GSQTester.Check(StardewValley.LocalizedContentManager,System.String)">
+            <summary>
+            Checks the gsq of a single asset.
+            </summary>
+            <param name="content">Content manager (to copy from).</param>
+            <param name="asset">Asset to check.</param>
         </member>
         <member name="T:SinZsEventTester.Framework.Extensions">
             <summary>
@@ -128,6 +144,41 @@
             <param name="interval">The interval of values that can be selected.</param>
             <param name="formatValue">Get the display text to show for a value, or <c>null</c> to show the number as-is.</param>
             <param name="fieldId">The unique field ID for use with <see cref="!:OnFieldChanged"/>, or <c>null</c> to auto-generate a randomized ID.</param>
+        </member>
+        <member name="T:SinZsEventTester.Framework.SimpleConsoleCommand">
+            <summary>
+            A struct that wraps a simple command.
+            </summary>
+            <param name="monitor">the monitor instance to use.</param>
+        </member>
+        <member name="M:SinZsEventTester.Framework.SimpleConsoleCommand.#ctor(StardewModdingAPI.IMonitor)">
+            <summary>
+            A struct that wraps a simple command.
+            </summary>
+            <param name="monitor">the monitor instance to use.</param>
+        </member>
+        <member name="M:SinZsEventTester.Framework.SimpleConsoleCommand.ForgetEvents(System.String[])">
+            <summary>
+            Forgets that the following events were seen.
+            </summary>
+            <param name="evts">The events to forget.</param>
+        </member>
+        <member name="M:SinZsEventTester.Framework.SimpleConsoleCommand.ForgetMail(System.String[])">
+            <summary>
+            Forgets that the following mail was received.
+            </summary>
+            <param name="mails">Mails to forget.</param>
+        </member>
+        <member name="M:SinZsEventTester.Framework.SimpleConsoleCommand.ForgetTriggers(System.String[])">
+            <summary>
+            Forgets that the following triggers were run.
+            </summary>
+            <param name="triggers">Triggers to forget.</param>
+        </member>
+        <member name="M:SinZsEventTester.Framework.SimpleConsoleCommand.CheckPreconditions">
+            <summary>
+            Checks over all event preconditions in the game.
+            </summary>
         </member>
         <member name="T:SinZsEventTester.IEventTesterAPI">
             <summary>

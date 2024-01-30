@@ -157,21 +157,6 @@ namespace StardewArchipelago.GameModifications.CodeInjections
                     __instance.itemPriceAndStock.Remove(salableItem);
                     __instance.forSale.Remove(salableItem);
                 }
-
-                if (salableObject.ParentSheetIndex != STRAWBERRY_SEEDS)
-                {
-                    continue;
-                }
-
-                if (_locationChecker.IsLocationMissingAndExists(FestivalLocationNames.STRAWBERRY_SEEDS))
-                {
-                    var myActiveHints = _archipelago.GetMyActiveHints();
-                    var strawberrySeedsApItem =
-                        new PurchaseableArchipelagoLocation(salableObject.Name, FestivalLocationNames.STRAWBERRY_SEEDS,
-                            _modHelper, _locationChecker, _archipelago, myActiveHints);
-                    __instance.itemPriceAndStock.Add(strawberrySeedsApItem, new[] { 1000, 1 });
-                    __instance.forSale.Add(strawberrySeedsApItem);
-                }
             }
         }
 

@@ -30,7 +30,7 @@ namespace ItemResearchSpawner.Models.Enums
                 ItemQuality.Silver => ItemQuality.Gold,
                 ItemQuality.Gold => ItemQuality.Iridium,
                 ItemQuality.Iridium => ItemQuality.Normal,
-                _ => throw new NotSupportedException($"Unknown quality '{current}'.")
+                _ => throw new NotSupportedException($"Unknown item quality: '{current}'")
             };
         }
         
@@ -42,7 +42,7 @@ namespace ItemResearchSpawner.Models.Enums
                 ItemQuality.Silver => ItemQuality.Normal,
                 ItemQuality.Gold => ItemQuality.Silver,
                 ItemQuality.Iridium => ItemQuality.Gold,
-                _ => throw new NotSupportedException($"Unknown quality '{current}'.")
+                _ => throw new NotSupportedException($"Unknown item quality: '{current}'")
             };
         }
     }

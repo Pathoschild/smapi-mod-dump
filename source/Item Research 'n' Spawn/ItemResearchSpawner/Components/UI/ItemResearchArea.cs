@@ -26,6 +26,7 @@ namespace ItemResearchSpawner.Components.UI
         
         private readonly Texture2D _researchTexture;
         private readonly Texture2D _sellTexture;
+        private readonly Texture2D _combinedTexture;
 
         private Item _researchItem;
 
@@ -39,6 +40,7 @@ namespace ItemResearchSpawner.Components.UI
             
             _researchTexture = content.Load<Texture2D>(Path.Combine("assets", "images", "search-button"));
             _sellTexture = content.Load<Texture2D>(Path.Combine("assets", "images", "sell-button.png"));
+            _combinedTexture = content.Load<Texture2D>(Path.Combine("assets", "images", "combined-button.png"));
 
             _researchArea = new ClickableComponent(new Rectangle(x, y, Game1.tileSize + 60, Game1.tileSize + 50), "");
 
@@ -81,7 +83,12 @@ namespace ItemResearchSpawner.Components.UI
         {
             if (_researchItem != null)
             {
-                if (ModManager.Instance.ModMode == ModMode.Buy)
+                if (ModManager.Instance.ModMode == ModMode.Combined)
+                {
+                    ModManager.Instance.SellItem(_researchItem);
+                }
+
+                if (ModManager.Instance.ModMode == ModMode.BuySell)
                 {
                     ModManager.Instance.SellItem(_researchItem); 
                 }
@@ -109,11 +116,15 @@ namespace ItemResearchSpawner.Components.UI
             spriteBatch.DrawString(progressFont, researchProgressString,
                 new Vector2(progressPositionX, areaInnerAnchors.Y + Game1.tileSize + 10), Color.Black);
 
+
             var buttonTexture = ModManager.Instance.ModMode switch
             {
-                ModMode.Buy => _sellTexture,
+                ModMode.BuySell => _sellTexture,
+                ModMode.Combined => _combinedTexture,
                 _ => _researchTexture
             };
+
+
 
             spriteBatch.Draw(buttonTexture, _researchButton.bounds, _researchButton.sourceRect, Color.White);
 
@@ -145,10 +156,10 @@ namespace ItemResearchSpawner.Components.UI
         {
             _lastItem = null; //update cached progression string
 
-            if (ModManager.Instance.ModMode == ModMode.Buy && _researchItem != null)
+/*            if (ModManager.Instance.ModMode == ModMode.BuySell && _researchItem != null)
             {
                 var amount = _researchItem.Stack - newCount;
-            }
+            }*/
 
             if (newCount <= 0)
             {

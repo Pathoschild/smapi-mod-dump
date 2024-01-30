@@ -26,7 +26,6 @@ using System.Threading.Tasks;
 
 namespace MultiplayerMod.Framework.Mobile.Menus
 {
-
     public class SCharacterCustomization : IClickableMenu
     {
 

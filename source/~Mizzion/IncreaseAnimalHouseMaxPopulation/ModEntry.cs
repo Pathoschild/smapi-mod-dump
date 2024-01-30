@@ -87,58 +87,53 @@ namespace IncreaseAnimalHouseMaxPopulation
                 DoPopChange(Config.MaxBarnPopulation, Config.MaxCoopPopulation);
             }
 
-            if (!e.IsDown(SButton.MouseLeft) || CurrentHoveredBuilding == null ||
-                !AnimalHouseBuildings.Contains(CurrentHoveredBuilding.buildingType.Value) ||
-                /*
-                this.CurrentHoveredBuilding.buildingType.Value.Contains("Shipping Bin") ||
-                this.CurrentHoveredBuilding.buildingType.Value.Contains("Cabin") ||
-                this.CurrentHoveredBuilding.buildingType.Value.Contains("Silo") ||
-                this.CurrentHoveredBuilding.buildingType.Value.Contains("Mill") ||*/
-                _data.Buildings.ContainsKey(CurrentHoveredBuilding.indoors.Value.uniqueName.Value) && _data.Buildings != null ||
-                Game1.activeClickableMenu != null)
+            if (e.IsDown(SButton.MouseLeft) && CurrentHoveredBuilding != null &&
+                AnimalHouseBuildings.Contains(CurrentHoveredBuilding.buildingType.Value) &&
+                !_data.Buildings.ContainsKey(CurrentHoveredBuilding.indoors.Value.uniqueName.Value) && _data.Buildings != null &&
+                Game1.activeClickableMenu == null && Game1.player.CurrentItem == null)
             {
-                return;
-            }
-
-            Vector2 tLocation = GetCursorLocation();
-            if (!AnimalHouseBuildings.Any(ab =>
-                CurrentHoveredBuilding.buildingType.Contains(ab) &&
-                CurrentHoveredBuilding.indoors.Value != null) || CurrentHoveredBuilding == null)
-            {
-                return;
-            }
-
-            int freeOrNot = ((!Config.Cheats.EnableFree) ? Config.CostPerPopulationIncrease : 0);
-            //Lets calculate the difference between max and current max population
-            int currentMaxOccupants = ((AnimalHouse) CurrentHoveredBuilding.indoors.Value).animalLimit.Value; //(AnimalHouse)this.CurrentHoveredBuilding.indoors
-            Cost = (CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe Barn")
-                ? ((Config.MaxBarnPopulation - currentMaxOccupants)* freeOrNot)
-                : ((Config.MaxCoopPopulation - currentMaxOccupants) * freeOrNot));
-            
-            CurrentHoveredBuildingDummy = CurrentHoveredBuilding;
-            string question = I18N.Get("upgrade_question", new
-            {
-                current_building = CurrentHoveredBuilding.buildingType.Value,
-                next_cost = Cost,
-                current_max_occupants = currentMaxOccupants,
-                config_max_occupants = CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe Barn") ? Config.MaxBarnPopulation : Config.MaxCoopPopulation
-            });
-            Game1.getFarm().createQuestionDialogue(question, Game1.getFarm().createYesNoResponses(),
-                delegate(Farmer _, string answer)
+                Vector2 tLocation = GetCursorLocation();
+                if (!AnimalHouseBuildings.Any(ab =>
+                        CurrentHoveredBuilding.buildingType.Contains(ab) &&
+                        CurrentHoveredBuilding.indoors.Value != null) || CurrentHoveredBuilding == null)
                 {
-                    if (answer == "Yes")
-                    {
-                        if (Game1.player.Money >= Cost)
-                        {
-                            Game1.player.Money -= Cost;
-                            DoPopChange(CurrentHoveredBuildingDummy);
-                        }
-                        else
-                        {
-                            Game1.showRedMessage($"You don't have {Cost} gold.");
-                        }
-                    }
+                    return;
+                }
+
+                int freeOrNot = ((!Config.Cheats.EnableFree) ? Config.CostPerPopulationIncrease : 0);
+                //Lets calculate the difference between max and current max population
+                int currentMaxOccupants = ((AnimalHouse)CurrentHoveredBuilding.indoors.Value).animalLimit.Value; //(AnimalHouse)this.CurrentHoveredBuilding.indoors
+                Cost = (CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe Barn")
+                    ? ((Config.MaxBarnPopulation - currentMaxOccupants) * freeOrNot)
+                    : ((Config.MaxCoopPopulation - currentMaxOccupants) * freeOrNot));
+
+                CurrentHoveredBuildingDummy = CurrentHoveredBuilding;
+                string question = I18N.Get("upgrade_question", new
+                {
+                    current_building = CurrentHoveredBuilding.buildingType.Value,
+                    next_cost = Cost,
+                    current_max_occupants = currentMaxOccupants,
+                    config_max_occupants = CurrentHoveredBuilding.buildingType.Value.Contains("Deluxe Barn") ? Config.MaxBarnPopulation : Config.MaxCoopPopulation
                 });
+                Game1.getFarm().createQuestionDialogue(question, Game1.getFarm().createYesNoResponses(),
+                    delegate (Farmer _, string answer)
+                    {
+                        if (answer == "Yes")
+                        {
+                            if (Game1.player.Money >= Cost)
+                            {
+                                Game1.player.Money -= Cost;
+                                DoPopChange(CurrentHoveredBuildingDummy);
+                            }
+                            else
+                            {
+                                Game1.showRedMessage($"You don't have {Cost} gold.");
+                            }
+                        }
+                    });
+            }
+
+            
         }
 
         private void Saving(object sender, SavingEventArgs e)

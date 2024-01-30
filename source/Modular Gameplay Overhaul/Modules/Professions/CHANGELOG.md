@@ -10,12 +10,34 @@ for queries and analysis.**
 
 ## 4.2.2
 
+### Added
+
+* Added alternate Prestige icons by [Posister](https://github.com/Posister). Check them out below (left: Original Metallic; right: Posister Gold. You can switch between them via Prestige config settings.
+
+<div align="center">
+<img src="https://gitlab.com/daleao/modular-overhaul/-/raw/main/assets/sprites/interface/professions_MetallicGold.png">
+<img src="https://gitlab.com/daleao/modular-overhaul/-/raw/main/assets/sprites/interface/professions_PosisterGold.png">
+</div>
+
 ### Changed
 
 * Buffed the Prestiged Trapper perk.
-    * Before: Adds `FishingLevel / 60` chance to find Iridium-quality fish.
-    * Now: All qualities from regular Trapper are increased by 1 level; i.e. Iridium is now the highest with `FishingLevel / 30` chance, and Silver is the lowest.
+    * Regular Trapper: Adds `FishingLevel / 30` chance for Gold-quality fish and `FishingLevel / 15` change for Silver-quality fish.
+    * Old Prestige: Added `FishingLevel / 60` chance to find Iridium-quality fish on top of the regular Trapper perk.
+    * New Prestige: Adds +1 to the qualities from regular Trapper; i.e. Silver is now the lowest possible quality, and Iridium is highest, with `FishingLevel / 30` (twice as high as the old) chance.
+* Prestige ribbon tooltips now also list acquired 5th-level professions, instead of only the 10th-level professions. People have been confused about whether or not they still have the 5th-level profession after doing a reset, so this should make it clear.
+
+<div align="center">
+<img src="https://gitlab.com/daleao/modular-overhaul/-/raw/main/resources/screenshots/new_tooltips.png" width="33%">
+</div>
+
 * Reworded Spelunker description.
+
+### Fixed
+
+* Fixed Luremaster double Crab Pot production not applying after the first day. Also fixed the chance of double production not scaling correctly with each failed attempt.
+
+<sup><sup>[🔼 Back to top](#profs-changelog)</sup></sup>
 
 ## 4.2.1
 

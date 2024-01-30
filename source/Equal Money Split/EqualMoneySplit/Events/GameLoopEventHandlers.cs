@@ -32,7 +32,8 @@ namespace EqualMoneySplit.Events
         /// <param name="args">Event arguments for the UpdateTicking event</param>
         public void OnUpdateTicking(object sender, UpdateTickingEventArgs args)
         {
-            PersistantFarmerData.PocketMoney = Game1.player.Money;
+            EqualMoneyMod.FarmerData.Value ??= new();
+            EqualMoneyMod.FarmerData.Value.PocketMoney = Game1.player.Money;
         }
 
         /// <summary>
@@ -50,14 +51,14 @@ namespace EqualMoneySplit.Events
             int miniShippingBinsValue = ItemValueUtil.CalculateItemCollectionValue(miniShippingBinItems);
             int mainShippingBinValue = ItemValueUtil.CalculateItemCollectionValue(Game1.player.personalShippingBin);
 
-            PersistantFarmerData.PersonalShippingBinsMoney = miniShippingBinsValue + mainShippingBinValue;
-            PersistantFarmerData.ShareToSend = MoneySplitUtil.GetPerPlayerShare(PersistantFarmerData.PersonalShippingBinsMoney);
+            EqualMoneyMod.FarmerData.Value.PersonalShippingBinsMoney = miniShippingBinsValue + mainShippingBinValue;
+            EqualMoneyMod.FarmerData.Value.ShareToSend = MoneySplitUtil.GetPerPlayerShare(EqualMoneyMod.FarmerData.Value.PersonalShippingBinsMoney);
 
             // Only send a notification if money has been earned
-            if (PersistantFarmerData.ShareToSend != 0)
+            if (EqualMoneyMod.FarmerData.Value.ShareToSend != 0)
             {
                 MoneyMessenger moneyMessenger = new MoneyMessenger();
-                moneyMessenger.SendShippingBinNotification(PersistantFarmerData.ShareToSend);
+                moneyMessenger.SendShippingBinNotification(EqualMoneyMod.FarmerData.Value.ShareToSend);
             }
         }
 
@@ -73,8 +74,8 @@ namespace EqualMoneySplit.Events
 
             EqualMoneyMod.Logger.Log($"DayStarted | {Game1.player.Name} has {Game1.player.Money} money");
 
-            PersistantFarmerData.ShareToSend = 0;
-            PersistantFarmerData.PersonalShippingBinsMoney = 0;
+            EqualMoneyMod.FarmerData.Value.ShareToSend = 0;
+            EqualMoneyMod.FarmerData.Value.PersonalShippingBinsMoney = 0;
         }
 
         /// <summary>

@@ -52,13 +52,16 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
             $"{Manifest.UniqueID}/MaxIcon",
             new ModTextureProvider(() => "assets/sprites/interface/max.png"));
         this.Provide(
-            $"{Manifest.UniqueID}/PrestigeRibbon",
+            $"{Manifest.UniqueID}/PrestigeRibbons",
             new ModTextureProvider(() => $"assets/sprites/interface/{ProfessionsModule.Config.Prestige.Ribbon}.png"));
+        this.Provide(
+            $"{Manifest.UniqueID}/ProfessionIcons",
+            new ModTextureProvider(() => $"assets/sprites/interface/professions_{ProfessionsModule.Config.Prestige.Icon}.png"));
         this.Provide(
             $"{Manifest.UniqueID}/SkillBars",
             new ModTextureProvider(ProvideSkillBars));
         this.Provide(
-            $"{Manifest.UniqueID}/UltimateMeter",
+            $"{Manifest.UniqueID}/LimitGauge",
             new ModTextureProvider(ProvideUltimateMeter));
     }
 
@@ -445,7 +448,7 @@ internal sealed class ProfessionAssetRequestedEvent : AssetRequestedEvent
     private static void EditCursorsLooseSprites(IAssetData asset)
     {
         var editor = asset.AsImage();
-        var sourceTx = ModHelper.ModContent.Load<Texture2D>("assets/sprites/interface/professions");
+        var sourceTx = ModHelper.GameContent.Load<Texture2D>($"{Manifest.UniqueID}/ProfessionIcons");
         var sourceArea = new Rectangle(0, 0, 96, 80);
         var targetArea = new Rectangle(0, 624, 96, 80);
         editor.PatchImage(sourceTx, sourceArea, targetArea);

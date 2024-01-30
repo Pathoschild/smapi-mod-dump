@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CommonHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IGenericModConfigMenuApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Sprites.cs" />
   </ItemGroup>
   <ItemGroup>

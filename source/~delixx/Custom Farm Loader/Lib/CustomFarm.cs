@@ -379,9 +379,9 @@ namespace Custom_Farm_Loader.Lib
         public static CustomFarm getCurrentCustomFarm()
         {
             if (Game1.whichModFarm is not null &&
-                CurrentCustomFarmId != Game1.whichModFarm.ID) {
-                CurrentCustomFarmId = Game1.whichModFarm.ID;
-                CurrentCustomFarm = get(Game1.whichModFarm.ID);
+                CurrentCustomFarmId != Game1.whichModFarm.Id) {
+                CurrentCustomFarmId = Game1.whichModFarm.Id;
+                CurrentCustomFarm = get(Game1.whichModFarm.Id);
             }
 
             return CurrentCustomFarm;
@@ -393,7 +393,7 @@ namespace Custom_Farm_Loader.Lib
                 return ModFarmType;
 
             return new ModFarmType() {
-                ID = $"{this.UniqueModID}/{this.Name}",
+                Id = $"{this.UniqueModID}/{this.Name}",
                 MapName = $"CFL_Map/{this.ID}",
                 TooltipStringPath = $"Strings/UI:CFL_Description/{this.ID}",
                 IconTexture = $"CFL_Icon/{this.ID}",

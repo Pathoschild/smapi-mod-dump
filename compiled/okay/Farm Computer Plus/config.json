@@ -4,5 +4,11 @@
   "AlertOnIslandMachinesReady": true,
   "IslandMachinesReadyAlertThreshold": 0,
   "AlertOnGreenhouseCropsReady": true,
-  "GreenhouseCropsReadyAlertThreshold": 0
+  "GreenhouseCropsReadyAlertThreshold": 0,
+  "AlertOnCasksReady": true,
+  "CasksReadyAlertThreshold": 0,
+  "AlertOnShedMachinesReady": true,
+  "ShedMachinesReadyAlertThreshold": 0,
+  "AlertOnShedCropsReady": true,
+  "ShedCropsReadyAlertThreshold": 0
 }

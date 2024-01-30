@@ -592,5 +592,56 @@
   "foodstore.general.child.rude.neutral.4": "Ờ, bạn không thấy tôi đang chơi à? Nếu bạn không có đồ vui vẻ, đừng làm phiền tôi.",
   "foodstore.general.child.rude.neutral.5": "Hãy xem, tôi không đang có tâm trạng nói chuyện. Nếu bạn không vui vẻ, thì lần này không được.",
   "foodstore.general.child.rude.neutral.6": "Tại sao bạn vẫn còn ở đây? Nếu bạn không đem theo những câu chuyện hay hoặc đồ chơi thú vị, hãy đi ra ngoài.",
-  "foodstore.general.child.rude.neutral.7": "Ờ, thật á? Nếu bạn không mang theo điều gì vui vẻ, tôi không quan tâm."
+  "foodstore.general.child.rude.neutral.7": "Ờ, thật á? Nếu bạn không mang theo điều gì vui vẻ, tôi không quan tâm.",
+  "foodstore.weaponText": "Rất tốt",
+  "foodstore.config.dialogue":     "Cài đặt hội thoại",
+  "foodstore.config.disablekidask": "Từ chối trẻ em hỏi",
+  "foodstore.config.enablesaleweapon": "Cho phép bán vũ khí",
+  "mannequin.desc": "Đặt quần áo, mũ hoặc giày dép lên nó.",
+  "mannequin.name.plain-male": "Bức tượng mẫu thông thường",
+  "mannequin.name.plain-female": "Bức tượng mẫu phụ nữ thông thường",
+  "mannequin.name.magic-male": "Bức tượng mẫu phép thuật",
+  "mannequin.name.magic-female": "Bức tượng mẫu phụ nữ phép thuật",
+
+  "foodstore.soldclothes": "Bán quần áo tại {{locationString}} với giá {{saleString}}G",
+
+  "foodstore.soldclothesText.0": "Có vẻ nó sẽ phù hợp với tôi",
+  "foodstore.soldclothesText.1": "Tôi tự hỏi liệu màu này có hợp với phong cách của tôi không",
+  "foodstore.soldclothesText.2": "Đã đến lúc nâng cấp tủ quần áo với mảnh này",
+  "foodstore.soldclothesText.3": "Tôi không thể cưỡng lại việc thêm nó vào bộ sưu tập của mình",
+  "foodstore.soldclothesText.4": "Lựa chọn hoàn hảo cho dịp sắp tới",
+  "foodstore.soldclothesText.5": "Thử một cái gì đó mới cho sự đổi đặc",
+  "foodstore.soldclothesText.6": "Một mảnh cổ điển không bao giờ lỗi mốt",
+  "foodstore.config.randompurchase": "NPC mua một mục ngẫu nhiên?",
+  "foodstore.config.randompurchaseText": "Mặc định, NPC sẽ di chuyển đến mục gần nhất. Đặt là True để họ mua một mục ngẫu nhiên trong phạm vi tìm kiếm.",
+
+  "foodstore.config.signrange": "Đánh dấu cửa hàng bằng biển hiệu?",
+
+"foodstore.config.signrangeText": "Đặt là 0 để tắt. Giới hạn này chỉ cho phép NPC mua các mục hợp lệ trong khoảng cách từ Bảng đặt. Các mục nằm ngoài phạm vi sẽ bị bỏ qua. Không áp dụng trong Kho",  
+"foodstore.config.doorentry": "NPC xuất hiện gần cửa",
+"foodstore.config.doorentryText": "Mặc định là True: Khách thăm sẽ xuất hiện gần Cửa vào. Đặt là False để NPC xuất hiện gần vị trí Bảng giấy phép.",
+
+"foodstore.config.shedvisitchance": "Cơ hội thăm Kho",
+"foodstore.config.shedvisitchanceText": "Mặc định là 0.1. Cơ hội cho khách thăm mới trong Kho mỗi 10 phút. Khuyến nghị dưới 0.25!",
+
+"foodstore.config.maxshedcapacity": "Số lượng khách tối đa trong Kho",
+"foodstore.config.maxshedcapacityText": "Mặc định là 3. Sức chứa tối đa trong một Kho. Giá trị cực kỳ cao có thể gây lag cực kỳ. Nên giữ tổng số NPC từ TẤT CẢ Kho cùng một lúc dưới 8 là lời khuyên lớn.",
+
+"foodstore.config.timestay": "NPC ở lại bao lâu?",
+"foodstore.config.timestayText": "Mặc định là 100 (tương đương 1 giờ). Khuyến nghị dưới 200",
+
+"foodstore.config.openhour": "Giờ mở cửa",
+"foodstore.config.closehour": "Giờ đóng cửa",
+
+"foodstore.config.shed": "Cài đặt Kho",
+
+"foodstore.config.shedbuychance": "Cơ hội mua của khách",
+"foodstore.config.shedbuychanceText": "Mặc định là 0.2. Cơ hội khách mua sản phẩm trong nhà kho",
+
+"foodstore.config.shedminutetohungry": "Phút để mua",
+"foodstore.config.shedminutetohungryText": "Mặc định là 60. Thời gian giới hạn giữa mỗi lần mua",
+
+"foodstore.shedguestgreeting": "Xin chào"
+
+
 }

@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhoLivesHere-v1.6", "WhoLivesHere-v1.6\WhoLivesHere-v1.6.csproj", "{9E6F343B-32B5-4950-83ED-0E6815F0225A}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Prism99_Core", "Prism99_Core\Prism99_Core.shproj", "{6E7F7A44-8D5A-4F8A-882B-312614D91E74}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhoLivesHere-v1.5", "WhoLivesHere-v1.5\WhoLivesHere-v1.5.csproj", "{24FD2348-9E81-4D64-82E0-9D22FC7BFC9C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "GMCM", "GMCM\GMCM.shproj", "{C68F05DD-B978-4F76-94C2-714B74741115}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WhoLivesHereCore", "WhoLivesHereCore\WhoLivesHereCore.shproj", "{40203B1C-01B7-4881-BAC2-1E43E9C7C13C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E6F343B-32B5-4950-83ED-0E6815F0225A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E6F343B-32B5-4950-83ED-0E6815F0225A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E6F343B-32B5-4950-83ED-0E6815F0225A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E6F343B-32B5-4950-83ED-0E6815F0225A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24FD2348-9E81-4D64-82E0-9D22FC7BFC9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24FD2348-9E81-4D64-82E0-9D22FC7BFC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24FD2348-9E81-4D64-82E0-9D22FC7BFC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24FD2348-9E81-4D64-82E0-9D22FC7BFC9C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5100EE9A-765D-4598-960E-FCA7A0506105}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		GMCM\GMCM.projitems*{24fd2348-9e81-4d64-82e0-9d22fc7bfc9c}*SharedItemsImports = 5
+		Prism99_Core\Prism99_Core.projitems*{24fd2348-9e81-4d64-82e0-9d22fc7bfc9c}*SharedItemsImports = 5
+		WhoLivesHereCore\WhoLivesHereCore.projitems*{24fd2348-9e81-4d64-82e0-9d22fc7bfc9c}*SharedItemsImports = 5
+		WhoLivesHereCore\WhoLivesHereCore.projitems*{40203b1c-01b7-4881-bac2-1e43e9c7c13c}*SharedItemsImports = 13
+		Prism99_Core\Prism99_Core.projitems*{6e7f7a44-8d5a-4f8a-882b-312614d91e74}*SharedItemsImports = 13
+		GMCM\GMCM.projitems*{9e6f343b-32b5-4950-83ed-0e6815f0225a}*SharedItemsImports = 5
+		Prism99_Core\Prism99_Core.projitems*{9e6f343b-32b5-4950-83ed-0e6815f0225a}*SharedItemsImports = 5
+		WhoLivesHereCore\WhoLivesHereCore.projitems*{9e6f343b-32b5-4950-83ed-0e6815f0225a}*SharedItemsImports = 5
+		GMCM\GMCM.projitems*{c68f05dd-b978-4f76-94c2-714b74741115}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal

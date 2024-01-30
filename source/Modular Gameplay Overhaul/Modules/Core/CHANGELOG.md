@@ -8,11 +8,20 @@ for queries and analysis.**
 
 # Core Changelog
 
+## 4.2.3
+
+### Fixed
+
+* Added missing status effect animations *
+
 ## 4.2.2
 
 ### Changed
 
 * GMCM page links moved to the top of the page for better UX.
+* Updated Chinese translations by [Jumping-notes](https://github.com/Jumping-notes).
+
+<sup><sup>[🔼 Back to top](#core-changelog)</sup></sup>
 
 ## 4.2.1
 

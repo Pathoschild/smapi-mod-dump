@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19931
+IDs: 6135.ProfitCalculator
+update keys: Nexus:19931, GitHub:6135/StardewValley.ProfitCalculator

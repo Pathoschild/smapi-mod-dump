@@ -1,7 +1,7 @@
 {
 	"Name": "mouahrara's Module Collection",
 	"Author": "mouahrara",
-	"Version": "1.0.2",
+	"Version": "1.0.3",
 	"Description": "A module collection by mouahrara.",
 	"UniqueID": "mouahrara.mouahrarasModuleCollection",
 	"EntryDll": "mouahrarasModuleCollection.dll",

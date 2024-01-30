@@ -269,7 +269,7 @@
   "foodstore.dishday.8": "Vamos dar um toque especial ao dia de hoje com um sabor de {{dishToday}}! É a especialidade.",
   "foodstore.dishday.9": "O assunto da cidade: {{dishToday}} é o prato imperdível de hoje!",
   "foodstore.config.chat": "Desativar mensagem não importante?",
-  "foodstore.thankyou": "[144] Obrigado por usar o Food Store! [144] Se está a gostar do mod, o seu apoio é muito importante. Mostre o seu amor votando e seguindo para futuras atualizações. O seu entusiasmo alimenta a nossa cozinha de criatividade!!! [43] #FoodStore",
+  "foodstore.thankyou": "[144] Mais uma atualização com o Market Town! [144] Está gostando do mod e ansioso por melhorias contínuas? Não se esqueça de seguir e endossar! Sua paixão impulsiona nosso barco para frente. [43] #MarketTown",
   "foodstore.visitoreat.0": "Obrigado!",
   "foodstore.visitoreat.1": "Oh comida!!!",
   "foodstore.visitoreat.2": "Delicioso delicioso!",
@@ -592,5 +592,56 @@
   "foodstore.general.child.rude.neutral.4": "Ai, você não consegue ver que estou brincando? Se não é algo divertido, não me incomode.",
   "foodstore.general.child.rude.neutral.5": "Olha, não estou com vontade de conversas. Se não for divertido, não desta vez.",
   "foodstore.general.child.rude.neutral.6": "Por que você ainda está aqui? Se você não está trazendo histórias legais ou brinquedos, caia fora.",
-  "foodstore.general.child.rude.neutral.7": "Sério mesmo? Se não estiver aqui com algo divertido, não estou interessado."
+  "foodstore.general.child.rude.neutral.7": "Sério mesmo? Se não estiver aqui com algo divertido, não estou interessado.",
+  "foodstore.weaponText": "muito bom",
+  "foodstore.config.dialogue":     "Configuração de diálogo",
+  "foodstore.config.disablekidask": "Desative as crianças e peça para brincar",
+  "foodstore.config.enablesaleweapon": "permitir a venda de armas",
+  "mannequin.desc": "Vista roupas, chapéus ou botas nele.",
+  "mannequin.name.plain-male": "Manequim Normal",
+  "mannequin.name.plain-female": "Manequim Normal Feminino",
+  "mannequin.name.magic-male": "Manequim Mágico",
+  "mannequin.name.magic-female": "Manequim Mágico Feminino",
+
+  "foodstore.soldclothes": "Vendeu roupas em {{locationString}} por {{saleString}}G",
+
+  "foodstore.soldclothesText.0": "Isso pode ficar bem em mim",
+  "foodstore.soldclothesText.1": "Me pergunto se essa cor combina com o meu estilo",
+  "foodstore.soldclothesText.2": "Hora de atualizar meu guarda-roupa com esta peça",
+  "foodstore.soldclothesText.3": "Não consigo resistir em adicionar isso à minha coleção",
+  "foodstore.soldclothesText.4": "Escolha perfeita para a próxima ocasião",
+  "foodstore.soldclothesText.5": "Experimentando algo novo para variar",
+  "foodstore.soldclothesText.6": "Uma peça clássica que nunca sai de moda",
+  "foodstore.config.randompurchase": "NPC compra item aleatório?",
+  "foodstore.config.randompurchaseText": "Por padrão, NPC se moverá para o item mais próximo. Defina como True para que comprem um item aleatório dentro da faixa de busca.",
+
+  "foodstore.config.signrange": "Marcar a loja com uma placa?",
+"foodstore.config.signrangeText": "Defina como 0 para desativar. Este limite permite que NPCs comprem apenas itens válidos dentro da distância de uma Placa colocada. Itens fora do alcance serão ignorados. Não se aplica dentro do Galpão.",
+
+"foodstore.config.doorentry": "NPC aparece perto da porta",
+"foodstore.config.doorentryText": "Padrão True: O visitante aparecerá perto da porta de entrada. Defina como Falso para que o NPC apareça perto da localização da Placa de Licença",
+
+"foodstore.config.shedvisitchance": "Chance de visita ao galpão",
+"foodstore.config.shedvisitchanceText": "Padrão 0.1. Chance de novo visitante no galpão a cada 10 minutos. Recomendado abaixo de 0.25!",
+
+"foodstore.config.maxshedcapacity": "Visitantes máximos no galpão",
+"foodstore.config.maxshedcapacityText": "Padrão 3. Capacidade máxima em um galpão. Valor extremo pode causar lag extremo. Altamente recomendado manter o número total de NPCs de TODOS os galpões ao mesmo tempo abaixo de 8",
+
+"foodstore.config.timestay": "Quanto tempo o NPC fica?",
+"foodstore.config.timestayText": "Padrão 100 (equivalente a 1 hora). Recomendado abaixo de 200",
+
+"foodstore.config.openhour": "Hora de abertura",
+"foodstore.config.closehour": "Hora de fechamento",
+
+"foodstore.config.shed": "Configuração do Galpão",
+
+"foodstore.config.shedbuychance": "Chance de compra do visitante",
+"foodstore.config.shedbuychanceText": "Padrão 0.2. Chance do visitante comprar item dentro do depósito",
+
+"foodstore.config.shedminutetohungry": "Minutos para comprar",
+"foodstore.config.shedminutetohungryText": "Padrão 60. Limite de tempo entre cada compra",
+
+"foodstore.shedguestgreeting": "Olá"
+
+
 }

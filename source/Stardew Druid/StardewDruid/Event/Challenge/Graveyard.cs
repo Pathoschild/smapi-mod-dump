@@ -11,7 +11,7 @@
 using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
 using StardewDruid.Map;
-using StardewDruid.Monster;
+using StardewDruid.Monster.Template;
 using StardewValley;
 using System.Collections.Generic;
 
@@ -20,7 +20,7 @@ namespace StardewDruid.Event.Challenge
     public class Graveyard : ChallengeHandle
     {
 
-        public BossShooter bossMonster;
+        public Shooter bossMonster;
 
         public Graveyard(Vector2 target, Rite rite, Quest quest)
             : base(target, rite, quest)
@@ -45,13 +45,22 @@ namespace StardewDruid.Event.Challenge
                 new(50, 89),
             };
 
-            if (questData.name.Contains("Two"))
+           /*if (questData.name.Contains("Two"))
             {
                 challengeFrequency = 3;
                 challengeAmplitude = 2;
-            }
+            }*/
 
             SetupSpawn();
+
+            if (questData.name.Contains("Two"))
+            {
+
+                monsterHandle.spawnCombat *= 3;
+
+                monsterHandle.spawnCombat /= 2;
+
+            }
 
             Game1.addHUDMessage(new HUDMessage($"Defeat the shadows!", "2"));
 
@@ -87,13 +96,12 @@ namespace StardewDruid.Event.Challenge
 
                 Game1.addHUDMessage(new HUDMessage($"You have gained favour with the town residents and their friends", ""));
 
-                Mod.instance.CompleteQuest(questData.name);
+                EventComplete();
 
                 if (!questData.name.Contains("Two"))
                 {
 
-                    UpdateFriendship(NPCIndex);
-
+                    ModUtility.UpdateFriendship(Game1.player, NPCIndex);
                     Mod.instance.dialogue["Effigy"].specialDialogue["journey"] = new() { "I sense a change", "The graveyard has a few less shadows." };
 
                 }
@@ -115,6 +123,8 @@ namespace StardewDruid.Event.Challenge
 
             activeCounter++;
 
+            monsterHandle.SpawnCheck();
+
             if (eventLinger != -1)
             {
 
@@ -127,11 +137,11 @@ namespace StardewDruid.Event.Challenge
             if (activeCounter == 1)
             {
 
-                StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(12, new(47, 82), riteData.combatModifier);
+                StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(12, new(47, 82));
 
-                bossMonster = theMonster as BossShooter;
+                bossMonster = theMonster as Shooter;
 
-                bossMonster.posturing = true;
+                bossMonster.posturing.Set(true);
 
                 riteData.castLocation.characters.Add(bossMonster);
 
@@ -191,7 +201,9 @@ namespace StardewDruid.Event.Challenge
 
                     case 36: bossMonster.showTextAboveHead("the Deep One sees all", 3000); bossMonster.shiftPosition = false; break;
 
-                    case 39: bossMonster.showTextAboveHead("ADVANCE"); bossMonster.posturing = false; bossMonster.focusedOnFarmers = true; break;
+                    case 39: bossMonster.showTextAboveHead("ADVANCE");
+                        bossMonster.posturing.Set(false);
+                        bossMonster.focusedOnFarmers = true; break;
 
                     case 56:
 

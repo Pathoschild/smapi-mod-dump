@@ -1,0 +1,7 @@
+﻿{
+	"Carpenter_Flip": "Guirar Edificios",
+	"Carpenter_SelectBuilding_Flip": "Seleccione un edificio para voltear",
+	"Carpenter_CannotFlip": "Este edificio no se puede voltear" ,
+	"Carpenter_CannotFlip_Permission": "No tienes permiso para voltear este edificio",
+	"Carpenter_CannotFlip_PlayerHere": "No se puede voltear mientras un jugador está en el edificio"
+}

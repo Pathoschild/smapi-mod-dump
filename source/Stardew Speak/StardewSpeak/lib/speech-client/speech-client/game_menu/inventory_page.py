@@ -1,5 +1,5 @@
 import dragonfly as df
-import title_menu, menu_utils, server, df_utils, game, letters, items, server
+import title_menu, menu_utils, stream, df_utils, game, letters, items, server
 from game_menu import game_menu
 
 inventory_wrapper = menu_utils.InventoryMenuWrapper()
@@ -15,8 +15,8 @@ async def focus_item(page, new_row, new_col):
 async def click_equipment_icon(page, item):
     cmp = menu_utils.find_component_by_field(page['equipmentIcons'], 'name', item["name"])
     await menu_utils.focus_component(cmp)
-    with server.player_items_stream() as stream:
-        player_items = await stream.next()
+    with stream.player_items_stream() as pis:
+        player_items = await pis.next()
     if player_items['cursorSlotItem'] and not player_items['equippedItems'][item['field']]:
         await menu_utils.click_component(cmp)
     else:

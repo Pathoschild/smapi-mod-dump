@@ -34,6 +34,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded.SVE
         private const int RAILROAD_BOULDER_ID = 8050108;
         private const int IRIDIUM_BOMB_ID = 8050109;
         private const string LANCE_CHEST = "Lance's Diamond Wand";
+        private const string MONSTER_ERADICATION_AP_PREFIX = "Monster Eradication: ";
+        private const string DEINFEST_AP_LOCATION = "Purify an Infested Lichtung";
+        private static readonly List<string> voidSpirits = new(){
+            MonsterName.SHADOW_BRUTE, MonsterName.SHADOW_SHAMAN, MonsterName.SHADOW_SNIPER, MonsterCategory.VOID_SPIRITS,
+            string.Join("30 ",MonsterCategory.VOID_SPIRITS), string.Join("60 ",MonsterCategory.VOID_SPIRITS), 
+            string.Join("90 ",MonsterCategory.VOID_SPIRITS), string.Join("120 ",MonsterCategory.VOID_SPIRITS)
+            };
         private static readonly Dictionary<int, string> sveEventSpecialOrders = new(){
             {8050108, "Clint2"},
             {2551994, "Clint3"},
@@ -128,6 +135,36 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded.SVE
             {
                 _monitor.Log($"Failed in {nameof(UpdateSpecialOrders_StopDeletingSpecialOrders_Prefix)}:\n{ex}", LogLevel.Error);
                 return true; // run original logic
+            }
+        }
+
+        // Original method runs on SaveLoaded, OnWarped, TimeChanged
+        // private static void FixMonsterSlayerQuest()
+        public static void FixMonsterSlayerQuest_IncludeReleaseofGoals_Postfix()
+        {
+            try
+            {
+                if (!Game1.player.eventsSeen.Contains(1090508))
+                {
+                    return;
+                }
+                foreach (var voidSpirit in voidSpirits)
+                {
+                    var locationName = $"{MONSTER_ERADICATION_AP_PREFIX}{voidSpirit}";
+                    if (_locationChecker.IsLocationMissing(locationName))
+                    {
+                        _locationChecker.AddCheckedLocation(locationName);
+                    }
+                    if (_locationChecker.IsLocationMissing(DEINFEST_AP_LOCATION)) // Temp, as Void Spirits are on these maps
+                    {
+                        _locationChecker.AddCheckedLocation(DEINFEST_AP_LOCATION);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(FixMonsterSlayerQuest_IncludeReleaseofGoals_Postfix)}:\n{ex}", LogLevel.Error);
+                return;
             }
         }
     }

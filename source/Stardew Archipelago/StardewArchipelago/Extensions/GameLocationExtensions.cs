@@ -51,6 +51,8 @@ namespace StardewArchipelago.Extensions
 
         };
 
+        private static readonly Dictionary<WarpRequest, WarpRequest> ExtraWarpsBothWays = ExtraWarps.Union(ExtraWarps.ToDictionary(x => x.Value, x => x.Key)).ToDictionary(x => x.Key, x => x.Value);
+
         private static IEnumerable<string> GetValidDestinationNames(string destinationName, EquivalentWarps equivalentAreas)
         {
             var destinationNames = new List<string> { destinationName };
@@ -68,23 +70,37 @@ namespace StardewArchipelago.Extensions
             return destinationNames;
         }
 
+
+
         public static List<Point> GetAllWarpPointsTo(this GameLocation origin, string destinationName, EquivalentWarps equivalentAreas = null)
         {
-            return GetAllWarpPointsTo(origin, GetValidDestinationNames(destinationName, equivalentAreas));
-        }
-
-        public static List<Point> GetAllWarpPointsTo(this GameLocation origin, IEnumerable<string> validDestinationNames)
-        {
-            var warpPoints = new List<Point>();
-            foreach (var destinationName in validDestinationNames)
+            var warpPoints = GetAllWarpPointsTo(origin, destinationName);
+            if (warpPoints.Any())
             {
-                warpPoints.AddRange(GetAllActionWarpsTo(origin, destinationName).Select(x => new Point(x.Key.X, x.Key.Y)));
-                warpPoints.AddRange(GetAllTouchWarpsTo(origin, destinationName).Select(warp => new Point(warp.X, warp.Y)));
-                warpPoints.AddRange(GetAllTouchActionWarpsTo(origin, destinationName).Select(x => new Point(x.Key.X, x.Key.Y)));
-                warpPoints.AddRange(GetDoorWarpPoints(origin, destinationName));
-                warpPoints.AddRange(GetSpecialTriggerWarps(origin, destinationName).Keys);
+                return warpPoints;
             }
 
+            var alternateDestinationNames = GetValidDestinationNames(destinationName, equivalentAreas);
+            foreach (var alternateDestinationName in alternateDestinationNames)
+            {
+                warpPoints = GetAllWarpPointsTo(origin, alternateDestinationName);
+                if (warpPoints.Any())
+                {
+                    return warpPoints;
+                }
+            }
+
+            return warpPoints;
+        }
+
+        public static List<Point> GetAllWarpPointsTo(this GameLocation origin, string destinationName)
+        {
+            var warpPoints = new List<Point>();
+            warpPoints.AddRange(GetSpecialTriggerWarps(origin, destinationName).Keys);
+            warpPoints.AddRange(GetAllActionWarpsTo(origin, destinationName).Select(x => new Point(x.Key.X, x.Key.Y)));
+            warpPoints.AddRange(GetAllTouchWarpsTo(origin, destinationName).Select(warp => new Point(warp.X, warp.Y)));
+            warpPoints.AddRange(GetAllTouchActionWarpsTo(origin, destinationName).Select(x => new Point(x.Key.X, x.Key.Y)));
+            warpPoints.AddRange(GetDoorWarpPoints(origin, destinationName));
             return warpPoints.Distinct().ToList();
         }
 
@@ -355,7 +371,7 @@ namespace StardewArchipelago.Extensions
         private static Dictionary<Point, Point> GetSpecialTriggerWarps(GameLocation origin, string destinationName)
         {
             var specialTriggerWarps = new Dictionary<Point, Point>();
-            foreach (var (warp1, warp2) in ExtraWarps.Union(ExtraWarps.ToDictionary(x => x.Value, x => x.Key)))
+            foreach (var (warp1, warp2) in ExtraWarpsBothWays)
             {
                 if (!warp1.LocationRequest.Name.Equals(origin.Name, StringComparison.OrdinalIgnoreCase) ||
                     !warp2.LocationRequest.Name.Equals(destinationName, StringComparison.OrdinalIgnoreCase))

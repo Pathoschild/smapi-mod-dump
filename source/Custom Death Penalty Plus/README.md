@@ -52,6 +52,13 @@ Current options allow configuration for:
  - Other mods that edit the PlayerKilled event can override the mod's edits. Penalties should still apply however (MoreRealisticWarps will also look really weird)
  - With GMCM, the mod will not allow MoreRealisticWarps and WakeUpNextDayInClinic to be true at the same time despite it being possible to do in the menu. The mod will disable MoreRealisticWarps when the menu is saved.
 
+### Translations:
+Available in:
+- Italian, thanks to AlixNauts!
+- Spanish, thanks to AlixNauts!
+- French, thanks to AlixNauts!
+- Chinese, thanks to KarnieSAMA!
+
 ### Versions:
 1.0.0 - Initial release
 

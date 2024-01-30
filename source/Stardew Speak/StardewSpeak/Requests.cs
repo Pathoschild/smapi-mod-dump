@@ -56,7 +56,7 @@ namespace StardewSpeak
             var player = Game1.player;
             int playerX = player.getTileX();
             int playerY = player.getTileY();
-            GameLocation location = player.currentLocation;
+            GameLocation currentLocation = player.currentLocation;
             switch (msgType)
             {
                 case "HEARTBEAT": // engine will shutdown if heartbeat not received after 10 seconds
@@ -166,9 +166,9 @@ namespace StardewSpeak
                         dynamic path = null;
                         while (testX != playerX || testY != playerY)
                         {
-                            if (Pathfinder.Pathfinder.isTileWalkable(location, testX, testY))
+                            if (Pathfinder.Pathfinder.isTileWalkable(currentLocation, testX, testY))
                             {
-                                path = Pathfinder.Pathfinder.FindPath(location, testX, testY, playerX, playerY);
+                                path = Pathfinder.Pathfinder.FindPath(currentLocation, testX, testY, playerX, playerY);
                                 if (path != null)
                                 {
                                     path.Reverse();
@@ -199,8 +199,8 @@ namespace StardewSpeak
                         List<dynamic> sorted;
                         if (characterType == "animal")
                         {
-                            if (!(location is IAnimalLocation)) return null;
-                            foreach (FarmAnimal farmAnimal in (location as IAnimalLocation).Animals.Values)
+                            if (!(currentLocation is IAnimalLocation)) return null;
+                            foreach (FarmAnimal farmAnimal in (currentLocation as IAnimalLocation).Animals.Values)
                             {
                                 var animal = Serialization.SerializeAnimal(farmAnimal);
                                 if ((getBy == "unpet" && !animal.wasPet) || (getBy == "readyForHarvest" && animal.readyForHarvest))
@@ -214,7 +214,7 @@ namespace StardewSpeak
                         }
                         else if (characterType == "npc" || characterType == "monster")
                         {
-                            var charList = Game1.CurrentEvent != null ? Game1.CurrentEvent.actors : location.characters.ToList();
+                            var charList = Game1.CurrentEvent != null ? Game1.CurrentEvent.actors : currentLocation.characters.ToList();
                             foreach (var character in charList)
                             {
                                 if ((characterType == "monster" && character.IsMonster) || (characterType == "npc" && !character.IsMonster))
@@ -286,8 +286,8 @@ namespace StardewSpeak
                 case "GET_LADDERS_DOWN":
                     {
                         var ladders = new List<dynamic>();
-                        xTile.Tiles.TileArray tiles = location.Map.GetLayer("Buildings").Tiles;
-                        var buildingsLayer = location.Map.GetLayer("Buildings");
+                        xTile.Tiles.TileArray tiles = currentLocation.Map.GetLayer("Buildings").Tiles;
+                        var buildingsLayer = currentLocation.Map.GetLayer("Buildings");
                         for (int y = 0; y < buildingsLayer.LayerHeight; y++)
                         {
                             for (int x = 0; x < buildingsLayer.LayerWidth; x++)
@@ -306,7 +306,7 @@ namespace StardewSpeak
                     }
                 case "GET_LOCATION_BUILDINGS":
                     {
-                        return GameState.LocationBuildings(location);
+                        return GameState.LocationBuildings(currentLocation);
                     }
                 case "GET_ELEVATOR_TILE":
                     {

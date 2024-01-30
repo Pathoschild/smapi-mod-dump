@@ -58,7 +58,7 @@ namespace StardewDruid.Cast.Weald
 
             targetPlayer.gainExperience(2, 2); // gain foraging experience
 
-            ModUtility.AnimateGrowth(targetLocation, targetVector, new(0.8f, 1, 0.8f, 1));
+            ModUtility.AnimateSparkles(targetLocation, targetVector, new(0.8f, 1, 0.8f, 1));
 
         }
 

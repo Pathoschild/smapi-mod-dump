@@ -6823,6 +6823,15 @@
         <member name="F:DaLion.Overhaul.Modules.Professions.Configs.PrestigeConfig.RibbonStyle.Gen4Ribbons">
             <summary>Use Generation 4 Pokemon contest ribbons.</summary>
         </member>
+        <member name="T:DaLion.Overhaul.Modules.Professions.Configs.PrestigeConfig.IconStyle">
+            <summary>The style used for Prestige profession icons.</summary>
+        </member>
+        <member name="F:DaLion.Overhaul.Modules.Professions.Configs.PrestigeConfig.IconStyle.MetallicGold">
+            <summary>The original, high-contrast metallic gold style.</summary>
+        </member>
+        <member name="F:DaLion.Overhaul.Modules.Professions.Configs.PrestigeConfig.IconStyle.PosisterGold">
+            <summary>Posister's cleaner, hand-colored gold style.</summary>
+        </member>
         <member name="P:DaLion.Overhaul.Modules.Professions.Configs.PrestigeConfig.Mode">
             <summary>Gets a value which determines the paradigms of the prestige system.</summary>
         </member>
@@ -6845,6 +6854,11 @@
             <summary>
                 Gets the style of the sprite that appears next to skill bars. Accepted values: "StackedStars", "Gen3Ribbons",
                 "Gen4Ribbons".
+            </summary>
+        </member>
+        <member name="P:DaLion.Overhaul.Modules.Professions.Configs.PrestigeConfig.Icon">
+            <summary>
+                Gets the style of the sprite used for Prestige profession variants. Accepted values: "MetallicGold", "PosisterGold".
             </summary>
         </member>
         <member name="P:DaLion.Overhaul.Modules.Professions.Configs.PrestigeConfig.ExpPerPrestigeLevel">
@@ -7108,6 +7122,13 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.DayEnding.PrestigeDayEndingEvent.OnDayEndingImpl(System.Object,StardewModdingAPI.Events.DayEndingEventArgs)">
             <inheritdoc />
         </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.DayStarted.LuremastersDayStartedEvent.#ctor(DaLion.Shared.Events.EventManager)">
+            <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Events.GameLoop.DayStarted.LuremastersDayStartedEvent"/> class.</summary>
+            <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
+        </member>
+        <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.DayStarted.LuremastersDayStartedEvent.OnDayStartedImpl(System.Object,StardewModdingAPI.Events.DayStartedEventArgs)">
+            <inheritdoc />
+        </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.DayStarted.MonitorLuremastersDayStartedEvent.#ctor(DaLion.Shared.Events.EventManager)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Events.GameLoop.DayStarted.MonitorLuremastersDayStartedEvent"/> class.</summary>
             <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
@@ -7187,9 +7208,6 @@
         <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.TimeChanged.LuremasterTimeChangedEvent.#ctor(DaLion.Shared.Events.EventManager)">
             <summary>Initializes a new instance of the <see cref="T:DaLion.Overhaul.Modules.Professions.Events.GameLoop.TimeChanged.LuremasterTimeChangedEvent"/> class.</summary>
             <param name="manager">The <see cref="T:DaLion.Shared.Events.EventManager"/> instance that manages this event.</param>
-        </member>
-        <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.TimeChanged.LuremasterTimeChangedEvent.OnEnabled">
-            <inheritdoc />
         </member>
         <member name="M:DaLion.Overhaul.Modules.Professions.Events.GameLoop.TimeChanged.LuremasterTimeChangedEvent.OnTimeChangedImpl(System.Object,StardewModdingAPI.Events.TimeChangedEventArgs)">
             <inheritdoc />
@@ -12225,7 +12243,7 @@
             <summary>Get a translation equivalent to "Silviculturist".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Arborist_Desc">
-            <summary>Get a translation equivalent to "Trees grow faster if planted by hand. All trees have a chance to drop hardwood.".</summary>
+            <summary>Get a translation equivalent to "Trees grow faster when planted by hand. All trees have a chance to drop hardwood.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Arborist_Desc_Prestiged">
             <summary>Get a translation equivalent to "All trees can drop twice as much hardwood.".</summary>
@@ -12273,10 +12291,10 @@
             <summary>Get a translation equivalent to "Cavewarden".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Spelunker_Desc">
-            <summary>Get a translation equivalent to "Chance to find ladders and shafts increases every mine level. Speed increases every 5 levels.".</summary>
+            <summary>Get a translation equivalent to "Chance to find ladders and shafts increases after each mine level. Speed increases every 5 levels.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Spelunker_Desc_Prestiged">
-            <summary>Get a translation equivalent to "Restore some health and energy upon reaching a new mine level.".</summary>
+            <summary>Get a translation equivalent to "Restore some health and energy at each mine level.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Spelunker_Buff_Desc(System.Object,System.Object)">
             <summary>Get a translation equivalent to "Ladder chance +{{ladderChance}}. +{{speed}} Speed.".</summary>
@@ -12675,7 +12693,7 @@
             <summary>Get a translation equivalent to "I changed my mind...".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Prestige_SkillPage_Tooltip(System.Object)">
-            <summary>Get a translation equivalent to "{{count}}/4 professions acquired:".</summary>
+            <summary>Get a translation equivalent to "{{count}}/6 professions acquired:".</summary>
             <param name="count">The value to inject for the <c>{{count}}</c> token.</param>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Prestige_LevelUp_Tooltip5">
@@ -13090,7 +13108,7 @@
             <summary>Get a translation equivalent to "Resonance".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Dialogue_Emily_Gemstones_First">
-            <summary>Get a translation equivalent to "Have you ever noticed how gemstones can evoke different feelings? Like the calmness of a topaz or the vibrant energy of a ruby.#$b#Gemstones have this incredible way of resonating with our energies. It's like nature's palette of emotions.".</summary>
+            <summary>Get a translation equivalent to "Have you ever noticed how gemstones can evoke different feelings? Like the calmness of a topaz or the fieriness of a ruby!#$b#Gemstones have this incredible way of resonating with our energies. It's like nature's palette of emotions.".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Dialogue_Emily_Gemstones_Second">
             <summary>Get a translation equivalent to "Every gemstone has a different vibration. When you connect with a gemstone, it resonates with the frequencies of our internal emotions.#$b#If you listen closely, you can even hear it!".</summary>
@@ -13105,7 +13123,7 @@
             <summary>Get a translation equivalent to "I see you've made yourself a couple of Iridium Bands.#$b#Have you discovered their true purpose?".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Dialogue_Qi_Gemstones_Second">
-            <summary>Get a translation equivalent to "It may not seem like much, but combined wth some cosmic power the Iridium Band can become extraordinarily powerful...".</summary>
+            <summary>Get a translation equivalent to "It may not look like anything special, but given some cosmic power the Iridium Band can be extraordinarily powerful...".</summary>
         </member>
         <member name="M:DaLion.Overhaul.I18n.Gems_Garnet_Name">
             <summary>Get a translation equivalent to "Garnet".</summary>

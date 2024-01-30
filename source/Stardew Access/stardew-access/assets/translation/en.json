@@ -37,6 +37,7 @@
     "grouse",
     "haddock",
     "halibut",
+    "hops",
     "jackfruit",
     "knowledge",
     "lego",
@@ -47,6 +48,7 @@
     "passionfruit",
     "pike",
     "pincers",
+    "quartz",
     "reindeer",
     "salmon",
     "series",
@@ -55,6 +57,7 @@
     "shrimp",
     "spacecraft",
     "squid",
+    "starfish",
     "starfruit",
     "swine",
     "trout",
@@ -98,8 +101,14 @@
     "zoo"
   ],
   "modified_irregulars": {
+    "bottle": [
+      "wine"
+    ],
     "drop": [
       "sap"
+    ],
+    "glob": [
+      "slime"
     ],
     "lump": [
       "clay",
@@ -139,6 +148,7 @@
       "driftwood",
       "firewood",
       "luggage",
+      "meat",
       "paper",
       "trash",
       "wood"

@@ -15,6 +15,7 @@ using Archipelago.MultiClient.Net.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants;
 using StardewArchipelago.Items.Unlocks;
 using StardewModdingAPI;
 using StardewValley;
@@ -31,12 +32,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 {
     public static class QuestInjections
     {
-        private const string HELP_WANTED = "Help Wanted: {0}";
-        private const string ITEM_DELIVERY = "Item Delivery";
-        private const string SLAY_MONSTERS = "Slay Monsters";
-        private const string FISHING = "Fishing";
-        private const string GATHERING = "Gathering";
-
         private static readonly string[] _ignoredQuests = {
             "To The Beach", "Explore The Mine", "Deeper In The Mine", "To The Bottom?", "The Mysterious Qi",
             "A Winter Mystery", "Cryptic Note", "Dark Talisman", "Goblin Problem",
@@ -79,16 +74,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                     switch (__instance.questType.Value)
                     {
                         case (int)QuestType.ItemDelivery:
-                            isArchipelago = CheckDailyQuestLocationOfType(ITEM_DELIVERY, numberOfSteps * 4);
+                            isArchipelago = CheckDailyQuestLocationOfType(DailyQuest.ITEM_DELIVERY, numberOfSteps * 4);
                             break;
                         case (int)QuestType.SlayMonsters:
-                            isArchipelago = CheckDailyQuestLocationOfType(SLAY_MONSTERS, numberOfSteps);
+                            isArchipelago = CheckDailyQuestLocationOfType(DailyQuest.SLAY_MONSTERS, numberOfSteps);
                             break;
                         case (int)QuestType.Fishing:
-                            isArchipelago = CheckDailyQuestLocationOfType(FISHING, numberOfSteps);
+                            isArchipelago = CheckDailyQuestLocationOfType(DailyQuest.FISHING, numberOfSteps);
                             break;
                         case (int)QuestType.ResourceCollection:
-                            isArchipelago = CheckDailyQuestLocationOfType(GATHERING, numberOfSteps);
+                            isArchipelago = CheckDailyQuestLocationOfType(DailyQuest.GATHERING, numberOfSteps);
                             break;
                     }
 
@@ -165,7 +160,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 
         private static bool CheckDailyQuestLocationOfType(string typeApName, int max)
         {
-            var locationName = string.Format(HELP_WANTED, typeApName);
+            var locationName = string.Format(DailyQuest.HELP_WANTED, typeApName);
             return CheckDailyQuestLocation(locationName, max);
         }
 
@@ -252,16 +247,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                 var chosenQuestType = weightedLocations[chosenIndex];
                 switch (chosenQuestType)
                 {
-                    case ITEM_DELIVERY:
+                    case DailyQuest.ITEM_DELIVERY:
                         __result = new ItemDeliveryQuest();
                         return false; // don't run original logic
-                    case FISHING:
+                    case DailyQuest.FISHING:
                         __result = new FishingQuest();
                         return false; // don't run original logic
-                    case GATHERING:
+                    case DailyQuest.GATHERING:
                         __result = new ResourceCollectionQuest();
                         return false; // don't run original logic
-                    case SLAY_MONSTERS:
+                    case DailyQuest.SLAY_MONSTERS:
                         __result = new SlayMonsterQuest();
                         return false; // don't run original logic
                     default:
@@ -287,7 +282,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             {
                 AddWeightedItemDeliveries(groupNumber, hints, remainingHelpWantedQuests);
                 AddWeightedFishing(groupNumber, hints, remainingHelpWantedQuests);
-                AddWeightedHelpWanted(groupNumber, GATHERING, hints, remainingHelpWantedQuests);
+                AddWeightedHelpWanted(groupNumber, DailyQuest.GATHERING, hints, remainingHelpWantedQuests);
                 AddWeightedSlaying(groupNumber, hints, remainingHelpWantedQuests);
             }
 
@@ -300,7 +295,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             var offset = ((groupNumber - 1) * itemDeliveryMultiplier) + 1;
             for (var delivery = 0; delivery < 4; delivery++)
             {
-                AddWeightedHelpWanted(offset + delivery, ITEM_DELIVERY, hints, remainingHelpWantedQuests);
+                AddWeightedHelpWanted(offset + delivery, DailyQuest.ITEM_DELIVERY, hints, remainingHelpWantedQuests);
             }
         }
 
@@ -311,7 +306,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                 return;
             }
 
-            AddWeightedHelpWanted(groupNumber, FISHING, hints, remainingHelpWantedQuests);
+            AddWeightedHelpWanted(groupNumber, DailyQuest.FISHING, hints, remainingHelpWantedQuests);
         }
 
         private static void AddWeightedSlaying(int groupNumber, Hint[] hints, List<string> remainingHelpWantedQuests)
@@ -321,13 +316,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                 return;
             }
 
-            AddWeightedHelpWanted(groupNumber, SLAY_MONSTERS, hints, remainingHelpWantedQuests);
+            AddWeightedHelpWanted(groupNumber, DailyQuest.SLAY_MONSTERS, hints, remainingHelpWantedQuests);
         }
 
         private static void AddWeightedHelpWanted(int questNumber, string questType, Hint[] hints, List<string> remainingHelpWantedQuests)
         {
             var location = GetHelpWantedLocationName(questType, questNumber);
-            if (!_locationChecker.IsLocationMissingAndExists(location))
+            if (!_locationChecker.IsLocationMissing(location))
             {
                 return;
             }
@@ -338,7 +333,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 
         private static string GetHelpWantedLocationName(string type, int number)
         {
-            return $"{string.Format(HELP_WANTED, type)} {number}";
+            return $"{string.Format(DailyQuest.HELP_WANTED, type)} {number}";
         }
 
         public static bool PerformAction_MysteriousQiLumberPile_Prefix(GameLocation __instance, string action, Farmer who, Location tileLocation, ref bool __result)
@@ -637,22 +632,5 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                 return true; // run original logic
             }
         }
-    }
-
-    public enum QuestType
-    {
-        Basic = 1,
-        Crafting = 2,
-        ItemDelivery = 3,
-        Monster = 4,
-        SlayMonsters = 4,
-        Socialize = 5,
-        Location = 6,
-        Fishing = 7,
-        Building = 8,
-        ItemHarvest = 9,
-        LostItem = 9,
-        SecretLostItem = 9,
-        ResourceCollection = 10,
     }
 }

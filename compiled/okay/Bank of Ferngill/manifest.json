@@ -1,7 +1,7 @@
 {
   "Name": "Bank of Ferngill",
   "Author": "Mizzion",
-  "Version": "1.0.2",
+  "Version": "1.0.4",
   "Description": "Adds a bank functionality to Stardew Valley",
   "UniqueID": "mizzion.bankofferngill",
   "EntryDll": "BankOfFerngill.dll",

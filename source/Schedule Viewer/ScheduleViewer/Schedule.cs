@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
@@ -64,39 +65,44 @@ namespace ScheduleViewer
             /// <summary>The schedule entries for today. If null, then the NPC is not following a schedule.</summary>
             public List<ScheduleEntry> Entries { get; init; }
             public bool CanSocialize { get; init; }
-            /// <summary>If not null, then the NPC is either not following a schedule or they are ignoring it today.</summary>
+            /// <summary>If true, then the NPC is either not following a schedule or they are ignoring it today.</summary>
+            public bool IsOnSchedule { get; init; }
             public string CurrentLocation { get; set; }
-            public AnimatedSprite Sprite { get; set; }
-            public Rectangle? MugShotSourceRect { get; set; }
+            [JsonIgnore]
+            public NPC NPC { get; set; }
 
-            public NPCSchedule(string displayName, List<ScheduleEntry> entries, bool canSocialize, string currentLocation, AnimatedSprite sprite = null, Rectangle? mugShotSourceRect = null)
+            /// <summary>Main creation method</summary>
+            public NPCSchedule(NPC npc, List<ScheduleEntry> entries)
             {
-                DisplayName = displayName;
+                DisplayName = npc.getName();
                 Entries = entries;
-                CanSocialize = canSocialize;
-                CurrentLocation = currentLocation;
-                Sprite = sprite;
-                MugShotSourceRect = mugShotSourceRect;
+                CanSocialize = npc.CanSocialize;
+                CurrentLocation = PrettyPrintLocationName(npc.currentLocation);
+                IsOnSchedule = npc.followSchedule && !npc.ignoreScheduleToday;
+                NPC = npc;
             }
 
-            public NPCSchedule GetSerializableObject()
+            internal void Deconstruct(out List<ScheduleEntry> entries, out string currentLocation, out bool isOnSchedule, out string displayName, out NPC npc)
             {
-                return new NPCSchedule(DisplayName, Entries, CanSocialize, CurrentLocation);
-            }
-
-            internal void Deconstruct(out string displayName, out List<ScheduleEntry> entries, out string currentLocation)
-            {
-                displayName = DisplayName;
                 entries = Entries;
                 currentLocation = CurrentLocation;
+                isOnSchedule = IsOnSchedule;
+                displayName = DisplayName;
+                npc = NPC;
+            }
+
+            internal void Deconstruct(out List<ScheduleEntry> entries, out string currentLocation, out bool isOnSchedule, out string displayName)
+            {
+                entries = Entries;
+                currentLocation = CurrentLocation;
+                isOnSchedule = IsOnSchedule;
+                displayName = DisplayName;
             }
         }
 
-        internal static void SendSchedules()
-        {
-            // clear sprite related fields and send
-            ModEntry.ModHelper.Multiplayer.SendMessage((Game1.Date.TotalDays + 1, GetSchedules().ToDictionary(x => x.Key, x => x.Value.GetSerializableObject())), ModEntry.ModMessageSchedule);
-        }
+        internal static void SendSchedules() =>
+            ModEntry.ModHelper.Multiplayer.SendMessage((Game1.Date.TotalDays + 1, GetSchedules()), ModEntry.ModMessageSchedule);
+
 
         internal static void ReceiveSchedules((int, Dictionary<string, NPCSchedule>) Message)
         {
@@ -157,7 +163,7 @@ namespace ScheduleViewer
 
                         scheduleEntries = ParseMasterSchedule(rawSchedule, npc);
                     }
-                    NpcsWithSchedule.Add(npc.Name, new NPCSchedule(name, scheduleEntries, npc.CanSocialize, !npc.followSchedule || npc.ignoreScheduleToday ? PrettyPrintLocationName(npc.currentLocation) : null, npc.Sprite, npc.getMugShotSourceRect()));
+                    NpcsWithSchedule.Add(npc.Name, new NPCSchedule(npc, scheduleEntries));
                 }
                 catch (ArgumentNullException)
                 {

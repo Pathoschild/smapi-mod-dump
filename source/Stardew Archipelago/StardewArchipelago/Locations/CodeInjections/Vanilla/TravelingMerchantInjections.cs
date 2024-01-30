@@ -259,7 +259,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 return;
             }
 
-            if (!_locationChecker.IsLocationMissingAndExists(AP_WEDDING_RING_RECIPE))
+            if (!_locationChecker.IsLocationMissing(AP_WEDDING_RING_RECIPE))
             {
                 return;
             }
@@ -423,7 +423,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             var museum = Game1.getLocationFromName("ArchaeologyHouse") as LibraryMuseum;
             foreach (var donatableItem in allDonatableItems)
             {
-                if (museum.museumAlreadyHasArtifact(donatableItem.ParentSheetIndex))
+                if (museum.museumAlreadyHasArtifact(donatableItem.ParentSheetIndex) && !_locationChecker.GetAllLocationsNotCheckedContainingWord(donatableItem.Name).Any())
                 {
                     continue;
                 }
@@ -456,7 +456,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static bool IsItemRelevantForHint(Hint hint, Object item)
         {
             var locationName = _archipelago.GetLocationName(hint.LocationId);
-            var isDirectlyNeeded = locationName == $"Museumsanity: {item.Name}";
+            var isDirectlyNeeded = locationName.Contains(item.Name, StringComparison.InvariantCultureIgnoreCase);
             if (isDirectlyNeeded)
             {
                 return true;

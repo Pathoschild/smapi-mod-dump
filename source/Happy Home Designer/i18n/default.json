@@ -1,0 +1,35 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/tlitookilakin/HappyHomeDesigner
+**
+*************************************************/
+
+{
+	"furniture.Catalog.name": "Happy Home Catalogue",
+	"furniture.Catalog.description": "Provides unlimited access to\nall wallpapers & floors, and\nalmost every furniture item...\nfrom the convenience of your\nhome!",
+	"config.CloseWithKey.name": "Close With Key",
+	"config.CloseWithKey.desc": "Allow the menu to be closed with the menu close keys.",
+	"config.GiveModifier.name": "Give Modifier",
+	"config.GiveModifier.desc": "Holding this key when clicking will put the item in your inventory.",
+	"config.FavoriteModifier.name": "Favorite Modifier",
+	"config.FavoriteModifier.desc": "Holding this key when clicking will favorite or unfavorite the item.",
+	"config.ExtendedCategories.name": "Extended Categories",
+	"config.ExtendedCategories.desc": "While enabled, replaces the default furniture filter tabs with more granular filters.",
+	"config.FurnitureTooltips.name": "Furniture Tooltips",
+	"config.FurnitureTooltips.desc": "While enabled, displays tooltips for hovered items in the furniture catalog.",
+	"config.PauseTime.name": "Pause Time",
+	"config.PauseTime.desc": "While enabled, pauses time when the catalog is open. No effect in multiplayer.",
+	"config.ReplaceFurnitureCatalog.name": "Replace Furniture Catalog",
+	"config.ReplaceFurnitureCatalog.desc": "While enabled, replaces the default furniture catalog UI with the new one.",
+	"config.ReplaceWallpaperCatalog.name": "Replace Walls & Floors Catalog",
+	"config.ReplaceWallpaperCatalog.desc": "While enabled, replaces the default wallpaper catalog UI with the new one.",
+	"logging.alternativeTextures.versionWarning": "The current version of Happy Home Designer only supports Alternative Textures {{min}} or newer. You currently have version {{current}}, and Alternative Textures integration will not be applied. Please update Alternative Textures to re-enable integration.",
+	"logging.removedWallsAndFloors": "Found and removed {{walls}} duplicate wallpapers and {{floors}} duplicate floors.",
+	"config.ToggleShortcut.name": "Catalog toggle shortcut",
+	"config.ToggleShortcut.desc": "Keyboard shortcut to show/hide the catalog while it is open.",
+	"ui.search.name": "Search"
+}

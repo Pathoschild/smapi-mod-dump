@@ -11,7 +11,7 @@
 {
     "Name":  "Equal Money Split",
     "Author":  "The Fluffy Robot",
-    "Version":  "2.0.0",
+    "Version":  "2.0.1",
     "Description":  "Splits each the earnings of every item between all connected players.",
     "UniqueID":  "TheFluffyRobot.EqualMoneySplit",
     "EntryDll":  "EqualMoneySplit.dll",

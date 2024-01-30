@@ -357,7 +357,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static void AddArchipelagoCraftingRecipeItem(Dictionary<ISalable, int[]> stock, string name, int moneyPrice, Hint[] myActiveHints, int itemPriceId = -1, int itemPriceAmount = 0)
         {
             var locationName = $"{name} Recipe";
-            if (!_locationChecker.IsLocationMissingAndExists(locationName))
+            if (!_locationChecker.IsLocationMissing(locationName))
             {
                 return;
             }
@@ -368,7 +368,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static void AddArchipelagoCookingRecipeItem(Dictionary<ISalable, int[]> stock, string name, int moneyPrice, Hint[] myActiveHints, int itemPriceId = -1, int itemPriceAmount = 0)
         {
             var location = $"{name}{CHEFSANITY_LOCATION_SUFFIX}";
-            if (!_locationChecker.IsLocationMissingAndExists(location))
+            if (!_locationChecker.IsLocationMissing(location))
             {
                 return;
             }

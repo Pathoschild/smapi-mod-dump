@@ -7,9 +7,9 @@ mods:
    Profiler
 
 latest commit:
-   commit b1f025b436a0994dd60ba8945cc147c8e47fbe13
+   commit 8a206fae06bb63d228342cb768b8b097640d8f1f
    Author: SinZ <github@361zn.is>
-   Date:   Sun Sep 24 06:40:34 2023 +1000
+   Date:   Sat Jan 27 11:22:53 2024 +1100
    
-       Add SinZational Snake Support and an example python mod to go with it
+       Bump profiler to 2.0
    

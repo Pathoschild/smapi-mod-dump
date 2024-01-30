@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using GenericModConfigMenu;
 using Microsoft.Xna.Framework;
 using StardewDruid.Cast;
 using StardewDruid.Map;
@@ -134,6 +135,11 @@ namespace StardewDruid.Event.Scene
 
             swordIndex = 15;
 
+            if (Mod.instance.Helper.ModRegistry.IsLoaded("DaLion.Overhaul"))
+            {
+                swordIndex = 44;
+            }
+
             int delayThrow = 600;
 
             Vector2 triggerVector = targetVector - new Vector2(2, 1);
@@ -144,16 +150,16 @@ namespace StardewDruid.Event.Scene
 
             Color animateColor = new(0.8f, 1, 0.8f, 1);
 
-            ModUtility.AnimateGrowth(riteData.castLocation, triggerVector + new Vector2(-3, -3), animateColor);
-            ModUtility.AnimateGrowth(riteData.castLocation, triggerVector + new Vector2(-3, -4), animateColor);
-            ModUtility.AnimateGrowth(riteData.castLocation, triggerVector + new Vector2(-2, -5), animateColor);
-            ModUtility.AnimateGrowth(riteData.castLocation, triggerVector + new Vector2(-1, -6), animateColor);
-            ModUtility.AnimateGrowth(riteData.castLocation, triggerVector + new Vector2(0, -7), animateColor);
-            ModUtility.AnimateGrowth(riteData.castLocation, triggerVector + new Vector2(1, -7), animateColor);
-            ModUtility.AnimateGrowth(riteData.castLocation, triggerVector + new Vector2(2, -7), animateColor);
-            ModUtility.AnimateGrowth(riteData.castLocation, triggerVector + new Vector2(4, -5), animateColor);
-            ModUtility.AnimateGrowth(riteData.castLocation, triggerVector + new Vector2(5, -4), animateColor);
-            ModUtility.AnimateGrowth(riteData.castLocation, triggerVector + new Vector2(5, -3), animateColor);
+            ModUtility.AnimateSparkles(riteData.castLocation, triggerVector + new Vector2(-3, -3), animateColor);
+            ModUtility.AnimateSparkles(riteData.castLocation, triggerVector + new Vector2(-3, -4), animateColor);
+            ModUtility.AnimateSparkles(riteData.castLocation, triggerVector + new Vector2(-2, -5), animateColor);
+            ModUtility.AnimateSparkles(riteData.castLocation, triggerVector + new Vector2(-1, -6), animateColor);
+            ModUtility.AnimateSparkles(riteData.castLocation, triggerVector + new Vector2(0, -7), animateColor);
+            ModUtility.AnimateSparkles(riteData.castLocation, triggerVector + new Vector2(1, -7), animateColor);
+            ModUtility.AnimateSparkles(riteData.castLocation, triggerVector + new Vector2(2, -7), animateColor);
+            ModUtility.AnimateSparkles(riteData.castLocation, triggerVector + new Vector2(4, -5), animateColor);
+            ModUtility.AnimateSparkles(riteData.castLocation, triggerVector + new Vector2(5, -4), animateColor);
+            ModUtility.AnimateSparkles(riteData.castLocation, triggerVector + new Vector2(5, -3), animateColor);
 
         }
 
@@ -224,6 +230,11 @@ namespace StardewDruid.Event.Scene
             //---------------------- throw Neptune Glaive
 
             swordIndex = 14;
+
+            if (Mod.instance.Helper.ModRegistry.IsLoaded("DaLion.Overhaul"))
+            {
+                swordIndex = 7;
+            }
 
             int delayThrow = 600;
 
@@ -311,6 +322,7 @@ namespace StardewDruid.Event.Scene
             Vector2 originVector = targetVector + new Vector2(5, 0);
 
             new Throw().ThrowSword(this.riteData.caster, this.swordIndex, originVector, delayThrow);
+
             //---------------------- meteor animation
 
             ModUtility.AnimateMeteor(riteData.castLocation, originVector, true);

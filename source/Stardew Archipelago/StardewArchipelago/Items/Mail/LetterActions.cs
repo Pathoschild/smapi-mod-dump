@@ -41,7 +41,7 @@ namespace StardewArchipelago.Items.Mail
         private readonly ToolUpgrader _toolUpgrader;
         private Dictionary<string, Action<string>> _letterActions;
 
-        public LetterActions(IModHelper modHelper, Mailman mail, ArchipelagoClient archipelago, WeaponsManager weaponsManager, TrapManager trapManager, BabyBirther babyBirther)
+        public LetterActions(IModHelper modHelper, Mailman mail, ArchipelagoClient archipelago, WeaponsManager weaponsManager, TrapManager trapManager, BabyBirther babyBirther, StardewItemManager _stardewItemManager)
         {
             _modHelper = modHelper;
             _mail = mail;
@@ -50,7 +50,7 @@ namespace StardewArchipelago.Items.Mail
             _trapManager = trapManager;
             _babyBirther = babyBirther;
             _toolUpgrader = new ToolUpgrader();
-            var modLetterActions = new ModLetterActions();
+            var modLetterActions = new ModLetterActions(_stardewItemManager);
             _letterActions = new Dictionary<string, Action<string>>();
             _letterActions.Add(LetterActionsKeys.Friendship, IncreaseFriendshipWithEveryone);
             _letterActions.Add(LetterActionsKeys.Backpack, (_) => IncreaseBackpackLevel());

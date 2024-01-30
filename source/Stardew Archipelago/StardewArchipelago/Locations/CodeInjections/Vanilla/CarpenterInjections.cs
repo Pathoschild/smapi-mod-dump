@@ -411,7 +411,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             carpenterAPStock.AddArchipelagoLocationToStock(BUILDING_BIG_BARN, 12000, new[] { Wood(400), Stone(200) }, myActiveHints, BUILDING_BARN);
             carpenterAPStock.AddArchipelagoLocationToStock(BUILDING_DELUXE_BARN, 25000, new[] { Wood(500), Stone(300) }, myActiveHints, BUILDING_BIG_BARN);
 
-            carpenterAPStock.AddArchipelagoLocationToStock(BUILDING_FISH_POND, 5000, new[] { Stone(100), Seaweed(5), GreenAlgae(5) }, myActiveHints);
+            carpenterAPStock.AddArchipelagoLocationToStock(BUILDING_FISH_POND, 5000, new[] { Stone(200), Seaweed(5), GreenAlgae(5) }, myActiveHints);
             carpenterAPStock.AddArchipelagoLocationToStock(BUILDING_MILL, 2500, new[] { Stone(50), Wood(150), Cloth(4) }, myActiveHints);
 
             carpenterAPStock.AddArchipelagoLocationToStock(BUILDING_SHED, 15000, new[] { Wood(300) }, myActiveHints);

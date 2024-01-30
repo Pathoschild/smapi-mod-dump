@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/mouahrara/FlipBuildings
+**
+*************************************************/
+
+{
+	"Carpenter_Flip": "Guirar Edificios",
+	"Carpenter_SelectBuilding_Flip": "Seleccione un edificio para voltear",
+	"Carpenter_CannotFlip": "Este edificio no se puede voltear" ,
+	"Carpenter_CannotFlip_Permission": "No tienes permiso para voltear este edificio",
+	"Carpenter_CannotFlip_PlayerHere": "No se puede voltear mientras un jugador está en el edificio"
+}

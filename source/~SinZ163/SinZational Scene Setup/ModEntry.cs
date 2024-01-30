@@ -29,11 +29,7 @@ namespace SinZational_Scene_Setup
             helper.ConsoleCommands.Add("sinz.playevents", "Auto plays events in the current location. If arguments are given is treated as a specific, or all if location is 'ALL'", (command, args) =>
             {
                 EventQueue = new();
-                if (!ArgUtility.TryGetOptionalRemainder(args, 0, out string arg, out string err))
-                {
-                    this.Monitor.Log("...How did this error out " + err, LogLevel.Error);
-                    return;
-                }
+                ArgUtility.TryGetOptionalRemainder(args, 0, out string arg);
                 if (arg?.ToUpper() == "ALL")
                 {
                     foreach (var location in Game1.locations)

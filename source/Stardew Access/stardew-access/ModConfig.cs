@@ -215,7 +215,9 @@ internal class ModConfig
     /// <summary>
     /// Toggle displaying character design options
     /// </summary>
-    public KeybindList CharacterCreationMenuDesignToggleKey { get; set; } = KeybindList.Parse("LeftControl + Space");
+    public KeybindList CharacterCreationMenuDesignToggleKey { get; set; } = KeybindList.Parse("LeftControl + Space, RightControl + Space");
+    public Boolean CharacterCreationMenuDesignDefaultEnabled { get; set; } = true;
+
 
     // Bundle menu keys
 
@@ -316,6 +318,22 @@ internal class ModConfig
     /// Cycle Down Category
     /// </summary>
     public KeybindList OTCycleDownCategory { get; set; } = KeybindList.Parse("LeftControl + PageDown");
+
+    // favorites
+    public KeybindList OTFavorite1 { get; set; } = KeybindList.Parse("LeftAlt + D1, RightAlt + D1");
+    public KeybindList OTFavorite2 { get; set; } = KeybindList.Parse("LeftAlt + D2, RightAlt + D2");
+    public KeybindList OTFavorite3 { get; set; } = KeybindList.Parse("LeftAlt + D3, RightAlt + D3");
+    public KeybindList OTFavorite4 { get; set; } = KeybindList.Parse("LeftAlt + D4, RightAlt + D4");
+    public KeybindList OTFavorite5 { get; set; } = KeybindList.Parse("LeftAlt + D5, RightAlt + D5");
+    public KeybindList OTFavorite6 { get; set; } = KeybindList.Parse("LeftAlt + D6, RightAlt + D6");
+    public KeybindList OTFavorite7 { get; set; } = KeybindList.Parse("LeftAlt + D7, RightAlt + D7");
+    public KeybindList OTFavorite8 { get; set; } = KeybindList.Parse("LeftAlt + D8, RightAlt + D8");
+    public KeybindList OTFavorite9 { get; set; } = KeybindList.Parse("LeftAlt + D9, RightAlt + D9");
+    public KeybindList OTFavorite10 { get; set; } = KeybindList.Parse("LeftAlt + D0, RightAlt + D0");
+    public KeybindList OTFavoriteDecreaseStack { get; set; } = KeybindList.Parse("LeftAlt + OemMinus, RightAlt + OemMinus");
+    public KeybindList OTFavoriteIncreaseStack { get; set; } = KeybindList.Parse("LeftAlt + OemPlus, RightAlt + OemPlus");
+    public KeybindList OTFavoriteSaveCoordinatesToggle { get; set; } = KeybindList.Parse("LeftAlt + OemTilde, RightAlt + OemTilde");
+    public KeybindList OTFavoriteSaveDefault { get; set; } = KeybindList.Parse("LeftAlt + Back, RightAlt + Back");
 
     /// <summary>
     /// Cycle Up Object

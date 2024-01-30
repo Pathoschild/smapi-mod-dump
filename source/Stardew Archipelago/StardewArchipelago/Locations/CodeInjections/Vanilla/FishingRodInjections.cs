@@ -195,19 +195,19 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 
             var priceMultiplier = _archipelago.SlotData.ToolPriceMultiplier;
             var myActiveHints = _archipelago.GetMyActiveHints();
-            if (_locationChecker.IsLocationMissingAndExists(TRAINING_ROD))
+            if (_locationChecker.IsLocationMissing(TRAINING_ROD))
             {
                 var trainingRodAPlocation = new PurchaseableArchipelagoLocation("Training Rod", TRAINING_ROD, _modHelper,
                     _locationChecker, _archipelago, myActiveHints);
                 fishShopStock.Add(trainingRodAPlocation, new[] { (int)(25 * priceMultiplier), 1 });
             }
-            if (Game1.player.fishingLevel.Value >= 2 && _locationChecker.IsLocationMissingAndExists(FIBERGLASS_ROD))
+            if (Game1.player.fishingLevel.Value >= 2 && _locationChecker.IsLocationMissing(FIBERGLASS_ROD))
             {
                 var fiberglassRodAPlocation = new PurchaseableArchipelagoLocation("Fiberglass Rod", FIBERGLASS_ROD, _modHelper,
                     _locationChecker, _archipelago, myActiveHints);
                 fishShopStock.Add(fiberglassRodAPlocation, new[] { (int)(1800 * priceMultiplier), 1 });
             }
-            if (Game1.player.fishingLevel.Value >= 6 && _locationChecker.IsLocationMissingAndExists(IRIDIUM_ROD))
+            if (Game1.player.fishingLevel.Value >= 6 && _locationChecker.IsLocationMissing(IRIDIUM_ROD))
             {
                 var iridiumRodAPLocation = new PurchaseableArchipelagoLocation("Iridium Rod", IRIDIUM_ROD, _modHelper,
                     _locationChecker, _archipelago, myActiveHints);

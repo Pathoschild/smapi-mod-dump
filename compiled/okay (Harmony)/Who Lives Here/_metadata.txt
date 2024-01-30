@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19840
+IDs: prism99.wholiveshere
+update keys: Nexus:19840, GitHub:Prism-99/WhoLivesHere

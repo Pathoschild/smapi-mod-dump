@@ -116,8 +116,14 @@ namespace StardewArchipelago.Archipelago.Gifting
                 _monitor.Log($"Attempting to send {gifts.Count} gifts to {player}", LogLevel.Trace);
                 foreach (var giftObject in gifts)
                 {
-                    TrySendShuffleGift(giftObject, player, objectsFailedToSend, out var tax);
-                    totalTax += tax;
+                    if (TrySendShuffleGift(giftObject, player, out var tax))
+                    {
+                        totalTax += tax;
+                    }
+                    else
+                    {
+                        objectsFailedToSend.Add(giftObject);
+                    }
                 }
                 _monitor.Log($"Finished sending {gifts.Count} gifts to {player}", LogLevel.Trace);
             }
@@ -128,39 +134,40 @@ namespace StardewArchipelago.Archipelago.Gifting
             return objectsFailedToSend;
         }
 
-        private void TrySendShuffleGift(Object giftObject, string player, List<Object> objectsFailedToSend, out int tax)
+        private bool TrySendShuffleGift(Object giftObject, string player, out int tax)
         {
             tax = 0;
             try
             {
                 if (!GiftGenerator.TryCreateGiftItem(giftObject, false, out var giftItem, out var giftTraits, out _))
                 {
-                    objectsFailedToSend.Add(giftObject);
-                    return;
+                    _monitor.Log($"Could not create a proper gift out of {giftObject.Name}", LogLevel.Trace);
+                    return false;
                 }
 
                 giftTraits = giftTraits.Append(new GiftTrait("Shuffle", 1, 1)).ToArray();
 
                 if (!_archipelago.MakeSureConnected())
                 {
-                    objectsFailedToSend.Add(giftObject);
-                    return;
+                    _monitor.Log($"Currently Disconnected from Archipelago", LogLevel.Trace);
+                    return false;
                 }
 
                 var success = _giftService.SendGift(giftItem, giftTraits, player, out var giftId);
                 if (!success)
                 {
-                    objectsFailedToSend.Add(giftObject);
-                    return;
+                    _monitor.Log($"Gift failed to send but did not crash", LogLevel.Trace);
+                    return false;
                 }
 
+                _monitor.Log($"Gift sent successfully!", LogLevel.Trace);
                 tax = GetTaxForItem(giftObject);
+                return true;
             }
             catch (Exception ex)
             {
-                objectsFailedToSend.Add(giftObject);
                 _monitor.Log($"Unknown error occurred while attempting to gift.{Environment.NewLine}Message: {ex.Message}{Environment.NewLine}StackTrace: {ex.StackTrace}", LogLevel.Error);
-                return;
+                return false;
             }
         }
 

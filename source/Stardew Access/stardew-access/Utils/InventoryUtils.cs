@@ -64,7 +64,7 @@ internal static class InventoryUtils
         giveExtraDetails ??= !MainClass.Config.DisableInventoryVerbosity;
         int mouseX = hoverX ?? Game1.getMouseX(true);
         int mouseY = hoverY ?? Game1.getMouseY(true);
-        List<ClickableComponent> inventory = inventoryMenu.inventory;
+        List<ClickableComponent> inventory = inventoryMenu!.inventory;
         IList<Item> actualInventory = inventoryMenu.actualInventory;
 
         for (int i = 0; i < inventory.Count; i++)
@@ -210,7 +210,7 @@ internal static class InventoryUtils
         if (item is not MeleeWeapon && item is not Tool)
             return "";
 
-        List<string> enchantNames = new();
+        List<string> enchantNames = [];
 
         var enchantList = (item is MeleeWeapon) ? (item as MeleeWeapon)!.enchantments : (item as Tool)!.enchantments;
         foreach (var enchantment in enchantList)
@@ -316,7 +316,7 @@ internal static class InventoryUtils
     {
         if (recipe is null) return "";
 
-        List<string> ingredientList = new();
+        List<string> ingredientList = [];
         for (int i = 0; i < recipe.recipeList.Count; i++)
         {
             int recipeCount = recipe.recipeList.ElementAt(i).Value;

@@ -6,9 +6,16 @@ mods:
    To-Dew
 
 latest commit:
-   commit 5185d481219758818d3107d8634a79cd34f8e0f0
+   commit d56138433ea60d4d153f1673dc8ee22f486f86c9
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Mon Oct 16 20:37:10 2023 -0400
+   Date:   Fri Jan 12 21:11:57 2024 -0500
    
-       Add Portugese translation; release 1.14.1
+       Mobile Phone integration enhancements
+       
+       Whether to add a phone app is now configurable.
+       
+       Icon for the phone app is now loaded through the content pipeline,
+       so it can be replaced with Content Patcher.
+       
+       Added example CP content pack to illustrate replacing icon.
    

@@ -1,7 +1,7 @@
 {
   "Name": "Bundle Display",
   "Author": "OjOg",
-  "Version": "2.1.1",
+  "Version": "2.1.2",
   "Description": "Shows if an item can be donated to a bundle in the community center",
   "UniqueID": "OjOg.BundleDisplay",
   "EntryDll": "BundleDisplay.dll",

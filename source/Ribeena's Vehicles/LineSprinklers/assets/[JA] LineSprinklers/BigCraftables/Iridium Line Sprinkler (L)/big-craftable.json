@@ -1,0 +1,26 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ribeena/BusLocations
+**
+*************************************************/
+
+{
+  "Name": "Iridium Line Sprinkler (L)",
+  "Description": "Waters 24 tiles in a straight line left.",
+  "Price": 1000,
+  "ProvidesLight": false, 
+  "Recipe": {
+    "ResultCount": 1,
+    "Ingredients" : [
+      {
+        "Object": 645,
+        "Count": 1,
+      }
+    ],
+    "IsDefault": true,
+  }
+}

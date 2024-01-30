@@ -16,7 +16,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FindObjectMod", "FindObject
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XNBArchive", "XNBArchive\XNBArchive.csproj", "{25B43B11-6F56-4E9C-AF9C-6102A6EF9063}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xTilePipeline", "xTilePipeline\xTilePipeline.csproj", "{245BD7BA-67DE-44CF-8267-78A550235EE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xTilePipeline", "xTilePipeline\xTilePipeline.csproj", "{245BD7BA-67DE-44CF-8267-78A550235EE0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AndroidPatcher", "AndroidPatcher\AndroidPatcher.csproj", "{D48CA030-6470-4882-8D9A-11ED2F874B5B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoWarpDelay", "NoWarpDelay\NoWarpDelay.csproj", "{263604B4-3601-4139-846F-08E5E7166C2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThongUICore", "ThongUICore\ThongUICore.csproj", "{D4A753A1-D8D7-4D97-AA68-1FC511DF1CF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +72,30 @@ Global
 		{245BD7BA-67DE-44CF-8267-78A550235EE0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{245BD7BA-67DE-44CF-8267-78A550235EE0}.Release|x86.ActiveCfg = Release|Any CPU
 		{245BD7BA-67DE-44CF-8267-78A550235EE0}.Release|x86.Build.0 = Release|Any CPU
+		{D48CA030-6470-4882-8D9A-11ED2F874B5B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D48CA030-6470-4882-8D9A-11ED2F874B5B}.Debug|Any CPU.Build.0 = Debug|x86
+		{D48CA030-6470-4882-8D9A-11ED2F874B5B}.Debug|x86.ActiveCfg = Debug|x86
+		{D48CA030-6470-4882-8D9A-11ED2F874B5B}.Debug|x86.Build.0 = Debug|x86
+		{D48CA030-6470-4882-8D9A-11ED2F874B5B}.Release|Any CPU.ActiveCfg = Release|x86
+		{D48CA030-6470-4882-8D9A-11ED2F874B5B}.Release|Any CPU.Build.0 = Release|x86
+		{D48CA030-6470-4882-8D9A-11ED2F874B5B}.Release|x86.ActiveCfg = Release|x86
+		{D48CA030-6470-4882-8D9A-11ED2F874B5B}.Release|x86.Build.0 = Release|x86
+		{263604B4-3601-4139-846F-08E5E7166C2C}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{263604B4-3601-4139-846F-08E5E7166C2C}.Debug|Any CPU.Build.0 = Debug|x86
+		{263604B4-3601-4139-846F-08E5E7166C2C}.Debug|x86.ActiveCfg = Debug|x86
+		{263604B4-3601-4139-846F-08E5E7166C2C}.Debug|x86.Build.0 = Debug|x86
+		{263604B4-3601-4139-846F-08E5E7166C2C}.Release|Any CPU.ActiveCfg = Release|x86
+		{263604B4-3601-4139-846F-08E5E7166C2C}.Release|Any CPU.Build.0 = Release|x86
+		{263604B4-3601-4139-846F-08E5E7166C2C}.Release|x86.ActiveCfg = Release|x86
+		{263604B4-3601-4139-846F-08E5E7166C2C}.Release|x86.Build.0 = Release|x86
+		{D4A753A1-D8D7-4D97-AA68-1FC511DF1CF3}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D4A753A1-D8D7-4D97-AA68-1FC511DF1CF3}.Debug|Any CPU.Build.0 = Debug|x86
+		{D4A753A1-D8D7-4D97-AA68-1FC511DF1CF3}.Debug|x86.ActiveCfg = Debug|x86
+		{D4A753A1-D8D7-4D97-AA68-1FC511DF1CF3}.Debug|x86.Build.0 = Debug|x86
+		{D4A753A1-D8D7-4D97-AA68-1FC511DF1CF3}.Release|Any CPU.ActiveCfg = Release|x86
+		{D4A753A1-D8D7-4D97-AA68-1FC511DF1CF3}.Release|Any CPU.Build.0 = Release|x86
+		{D4A753A1-D8D7-4D97-AA68-1FC511DF1CF3}.Release|x86.ActiveCfg = Release|x86
+		{D4A753A1-D8D7-4D97-AA68-1FC511DF1CF3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

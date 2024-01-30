@@ -3,16 +3,22 @@ urls:
    Git: https://github.com/drbirbdev/StardewValley.git
 
 mods:
+   Better Festival Notifications
    Binning Skill
+   Gameboy Arcade
    Junimo Kart Global Rankings
    Leaderboard Library
+   Look to the Sky
    Panning Upgrades
    Ranching Tool Upgrades
+   Realtime Framework
+   Socializing Skill
+   Winter Star Spouse
 
 latest commit:
-   commit a8f3feea6c06dfeab4cb8c56e691c27d574770d5
-   Author: Drbirbdev <drbirbdev@gmail.com>
-   Date:   Fri Dec 8 14:20:40 2023 -0800
+   commit 8399e85855065be7009d04b8115c26cb81af778b
+   Author: drbirbdev <102254622+drbirbdev@users.noreply.github.com>
+   Date:   Mon Jan 1 05:37:38 2024 -0800
    
-       Some fixes to SEdit
+       Update LICENSE.txt
    

@@ -2,9 +2,9 @@ import dragonfly as df
 from srabuilder import rules
 import server
 import title_menu, menu_utils, server, df_utils, game, container_menu, objective
-from typing import Literal
+from typing import Literal, Final
 
-TITLE = "purchaseAnimalsMenu"
+TITLE: Final = "purchaseAnimalsMenu"
 
 class PurchaseAnimalsMenu(menu_utils.BaseMenu):
     title: Literal["purchaseAnimalsMenu"]
@@ -17,7 +17,7 @@ animals = {
 }
 
 
-async def buy_animal(menu, animal_index: str):
+async def buy_animal(menu: PurchaseAnimalsMenu, animal_index: str):
     await menu_utils.click_component(menu["animalsToPurchase"][0])
 
 

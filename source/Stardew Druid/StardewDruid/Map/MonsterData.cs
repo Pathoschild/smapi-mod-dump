@@ -11,6 +11,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Monster;
+using StardewDruid.Monster.Boss;
+using StardewDruid.Monster.Template;
+using StardewModdingAPI;
+using StardewValley;
 using System.Collections.Generic;
 using System.IO;
 
@@ -18,8 +22,15 @@ namespace StardewDruid.Map
 {
     static class MonsterData
     {
-        public static StardewValley.Monsters.Monster CreateMonster(int spawnMob, Vector2 spawnVector, int combatModifier, bool partyHats = false)
+        public static StardewValley.Monsters.Monster CreateMonster(int spawnMob, Vector2 spawnVector, int combatModifier = -1)
         {
+
+            if(combatModifier == -1)
+            {
+
+                combatModifier = Mod.instance.CombatModifier();
+
+            }
 
             StardewValley.Monsters.Monster theMonster;
 
@@ -48,13 +59,13 @@ namespace StardewDruid.Map
 
                 default: // Bat
 
-                    theMonster = new Monster.Bat(spawnVector, combatModifier);
+                    theMonster = new Monster.Template.Bat(spawnVector, combatModifier);
 
                     break;
 
                 case 0: // Green Slime
 
-                    theMonster = new Slime(spawnVector, combatModifier, partyHats);
+                    theMonster = new Slime(spawnVector, combatModifier);
 
                     break;
 
@@ -66,19 +77,19 @@ namespace StardewDruid.Map
 
                 case 2: // Skeleton
 
-                    theMonster = new Monster.Skeleton(spawnVector, combatModifier, partyHats);
+                    theMonster = new Monster.Template.Skeleton(spawnVector, combatModifier);
 
                     break;
 
                 case 3: // Golem
 
-                    theMonster = new Golem(spawnVector, combatModifier, partyHats);
+                    theMonster = new Golem(spawnVector, combatModifier);
 
                     break;
 
                 case 4: // DustSpirit
 
-                    theMonster = new Spirit(spawnVector, combatModifier, partyHats);
+                    theMonster = new Spirit(spawnVector, combatModifier);
 
                     break;
 
@@ -86,39 +97,33 @@ namespace StardewDruid.Map
 
                 // ------------------ Bosses
 
-                case 11: // Bat
+                case 11:
 
-                    theMonster = new BossBat(spawnVector, combatModifier);
-
-                    break;
-
-                case 12: // Shooter
-
-                    theMonster = new BossShooter(spawnVector, combatModifier);
+                    theMonster = new BigBat(spawnVector, combatModifier);
 
                     break;
 
-                case 13: // Slime
+                case 12:
 
-                    theMonster = new BossSlime(spawnVector, combatModifier);
-
-                    break;
-
-                case 14: // Dino Monster
-
-                    theMonster = new BossDino(spawnVector, combatModifier);
+                    theMonster = new Shooter(spawnVector, combatModifier);
 
                     break;
 
-                case 15: // firebird
+                case 13:
 
-                    theMonster = new Firebird(spawnVector, combatModifier);
+                    theMonster = new BigSlime(spawnVector, combatModifier);
+
+                    break;
+
+                case 14:
+
+                    theMonster = new Dino(spawnVector, combatModifier);
 
                     break;
 
                 case 16:
 
-                    theMonster = new Boss(spawnVector, combatModifier);
+                    theMonster = new Dragon(spawnVector, combatModifier);
 
                     break;
 
@@ -128,16 +133,87 @@ namespace StardewDruid.Map
 
                     break;
 
+                case 18:
+
+                    theMonster = new Shadowtin(spawnVector, combatModifier);
+
+                    break;
+
+                case 19:
+
+                    theMonster = new Scavenger(spawnVector, combatModifier);
+
+                    break;
+
+                case 20:
+
+                    theMonster = new Rogue(spawnVector, combatModifier);
+
+                    break;
+
+                case 21:
+
+                    theMonster = new Prime(spawnVector, combatModifier);
+
+                    break;
+
+                // ------------------ Firebird
+
+                case 41:
+
+                    theMonster = new Firebird(spawnVector, combatModifier, "EmeraldFirebird");
+
+                    break;
+                case 42:
+
+                    theMonster = new Firebird(spawnVector, combatModifier, "AquamarineFirebird");
+
+                    break;
+                case 43:
+
+                    theMonster = new Firebird(spawnVector, combatModifier, "RubyFirebird");
+
+                    break;
+                case 44:
+
+                    theMonster = new Firebird(spawnVector, combatModifier, "AmethystFirebird");
+
+                    break;
+                case 45:
+
+                    theMonster = new Firebird(spawnVector, combatModifier, "TopazFirebird");
+
+                    break;
                 // ------------------ Solaris
 
                 case 51:
+
+                    theMonster = new Solaris(spawnVector, combatModifier, "SolarisZero");
+
+                    break;
                 case 52:
+
+                    theMonster = new Solaris(spawnVector, combatModifier, "VoidleZero");
+
+                    break;
                 case 53:
+
+                    theMonster = new Solaris(spawnVector, combatModifier, "Solaris");
+
+                    break;
                 case 54:
+
+                    theMonster = new Solaris(spawnVector, combatModifier, "Voidle");
+
+                    break;
                 case 55:
+
+                    theMonster = new Solaris(spawnVector, combatModifier, "SolarisPrime");
+
+                    break;
                 case 56:
 
-                    theMonster = new Solaris(spawnVector, combatModifier, spawnMob - 50);
+                    theMonster = new Solaris(spawnVector, combatModifier, "VoidlePrime");
 
                     break;
 
@@ -151,14 +227,17 @@ namespace StardewDruid.Map
         {
             List<System.Type> customMonsters = new()
             {
-                typeof(StardewDruid.Monster.BossBat),
-                typeof (BossDino),
-                typeof (Boss),
+                typeof(BigBat),
+                typeof (Dino),
+                typeof (Dragon),
                 typeof (Reaper),
-                typeof(StardewDruid.Monster.BossShooter),
-                typeof(StardewDruid.Monster.BossSlime),
-                typeof(StardewDruid.Monster.Firebird),
-                typeof(StardewDruid.Monster.Solaris),
+                typeof (Scavenger),
+                typeof (Rogue),
+                typeof (Prime),
+                typeof(Shooter),
+                typeof(BigSlime),
+                typeof(Firebird),
+                typeof(Monster.Boss.Solaris),
             };
 
             return customMonsters;
@@ -167,6 +246,20 @@ namespace StardewDruid.Map
 
         public static Texture2D MonsterTexture(string characterName)
         {
+
+            if (characterName == "Dinosaur")
+            {
+
+                return Game1.content.Load<Texture2D>("Characters\\Monsters\\Pepper Rex");
+
+            }
+
+            if (characterName.Contains("Firebird"))
+            {
+
+                return Game1.content.Load<Texture2D>("LooseSprites\\GemBird");
+
+            }
 
             Texture2D characterTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", characterName + ".png"));
 
@@ -177,7 +270,9 @@ namespace StardewDruid.Map
         public static StardewValley.AnimatedSprite MonsterSprite(string characterName)
         {
 
-            StardewValley.AnimatedSprite characterSprite = new();
+            StardewValley.AnimatedSprite characterSprite;
+
+            characterSprite = new();
 
             characterSprite.textureName.Value = "18465_" + characterName;
 
@@ -214,6 +309,8 @@ namespace StardewDruid.Map
                 characterSprite.SpriteWidth = 32;
 
             }
+
+            characterSprite.UpdateSourceRect();
 
             return characterSprite;
 

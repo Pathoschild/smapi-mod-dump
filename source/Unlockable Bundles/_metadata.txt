@@ -6,9 +6,9 @@ mods:
    Unlockable Bundles
 
 latest commit:
-   commit 2b955171f745182a1291a11a704773713b977e37
+   commit 49bbc32bd0fd2b951ae2aa655667eb4426969198
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Sat Dec 16 17:15:13 2023 +0100
+   Date:   Sun Jan 14 15:03:33 2024 +0100
    
-       updated to 23350
+       fixed non universal path delimiter
    

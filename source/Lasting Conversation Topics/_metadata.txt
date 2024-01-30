@@ -6,9 +6,12 @@ mods:
    Lasting Conversation Topics
 
 latest commit:
-   commit ed34be3a5451f5436d44f317ffc845059535961d
-   Author: Ryan Young <ryan@youngryan.com>
-   Date:   Fri Dec 29 02:17:18 2023 -0800
+   commit 47fc5744b065406137494d2e40b0bb7dda3ec1f6
+   Author: AkiraJkr <akirajkr1@gmail.com>
+   Date:   Sun Jan 28 15:21:37 2024 -0300
    
-       Add documentation and dx12 executable for Train Simulator Classic (#128)
+       Add METAL GEAR SOLID 2 and 3 (Master Collection ver) support. (#133)
+       
+       * Add METAL GEAR SOLID 2: Sons of Liberty support.
+       * Add METAL GEAR SOLID 3: Snake Eater Support.
    

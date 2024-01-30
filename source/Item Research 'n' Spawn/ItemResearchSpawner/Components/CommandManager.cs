@@ -32,13 +32,13 @@ namespace ItemResearchSpawner.Components
             _progressionManager = progressionManager;
             _modManager = modManager;
 
-            helper.ConsoleCommands.Add("rns_unlock_all", "unlock all items research progression",
+            helper.ConsoleCommands.Add("rns_unlock_all", "research (unlock) all items",
                 UnlockAllProgression);
 
-            helper.ConsoleCommands.Add("rns_unlock_active", "unlock hotbar active item",
+            helper.ConsoleCommands.Add("rns_unlock_active", "research (unlock) hotbar active item",
                 UnlockActiveProgression);
 
-            helper.ConsoleCommands.Add("rns_set_mode", "change mode to \n 0 - Spawn Mode \n 1 - Buy/Sell Mode",
+            helper.ConsoleCommands.Add("rns_set_mode", "change mode to \n 0 - Research (Spawn) mode \n 1 - Buy/Sell mode \n 2 - Combined (Research->Sell/Buy) mode",
                 SetMode);
 
             helper.ConsoleCommands.Add("rns_set_price",
@@ -81,9 +81,10 @@ namespace ItemResearchSpawner.Components
         {
             if (!CheckCommandInGame()) return;
 
-            _progressionManager.UnlockAllProgression();
+            // _progressionManager.UnlockAllProgression();
+            ProgressionManager.Instance.UnlockAllProgression();
 
-            _monitor.Log($"All researches were completed! :D", LogLevel.Info);
+            _monitor.Log($"All items were researched!", LogLevel.Info);
         }
 
         private void UnlockActiveProgression(string command, string[] args)
@@ -114,7 +115,7 @@ namespace ItemResearchSpawner.Components
             }
             catch (Exception)
             {
-                _monitor.Log($"Available modes: \n 0 - Spawn Mode \n 1 - Buy/Sell Mode", LogLevel.Info);
+                _monitor.Log($"Available modes: \n 0 - Research (Spawn) mode \n 1 - Buy/Sell mode \n 2 - Combined (Research->Sell/Buy) mode", LogLevel.Info);
             }
         }
 
@@ -166,7 +167,7 @@ namespace ItemResearchSpawner.Components
             else
             {
                 _modManager.SetItemPrice(activeItem, -1);
-                _monitor.Log($"Price for {activeItem.DisplayName}, was resetted! ;)", LogLevel.Info);
+                _monitor.Log($"Price for {activeItem.DisplayName}, was reset! ;)", LogLevel.Info);
             }
         }
 
@@ -192,14 +193,14 @@ namespace ItemResearchSpawner.Components
 
             if (Context.IsMultiplayer)
             {
-                _monitor.Log($"Wait until all clients response", LogLevel.Info);
+                _monitor.Log($"Waiting until all clients response", LogLevel.Info);
             }
             
             ProgressionManager.Instance.DumpPlayersProgression();
 
             if (!Context.IsMultiplayer)
             {
-                _monitor.Log($"Player(s) Progressions were dumped", LogLevel.Info);
+                _monitor.Log($"Player(s) progressions were dumped", LogLevel.Info);
             }
         }
 
@@ -237,7 +238,7 @@ namespace ItemResearchSpawner.Components
 
             ModManager.Instance.DumpCategories();
 
-            _monitor.Log($"Categories was dumped to {SaveHelper.CategoriesDumpPath}", LogLevel.Info);
+            _monitor.Log($"Categories were dumped to {SaveHelper.CategoriesDumpPath}", LogLevel.Info);
         }
 
         private void LoadCategories(string command, string[] args)
@@ -247,14 +248,14 @@ namespace ItemResearchSpawner.Components
 
             ModManager.Instance.LoadCategories();
 
-            _monitor.Log($"Categories was loaded", LogLevel.Info);
+            _monitor.Log($"Categories were loaded", LogLevel.Info);
         }
 
         private bool CheckCommandInGame()
         {
             if (!Game1.hasLoadedGame)
             {
-                _monitor.Log($"Use this command in-game", LogLevel.Info);
+                _monitor.Log($"Use this command in-game only!", LogLevel.Info);
                 return false;
             }
 
@@ -265,7 +266,7 @@ namespace ItemResearchSpawner.Components
         {
             if (CheckCommandInGame() && !Context.IsMainPlayer)
             {
-                _monitor.Log($"This command is for host player only ", LogLevel.Info);
+                _monitor.Log($"This command is for host player only!", LogLevel.Info);
                 return false;
             }
 
@@ -274,10 +275,10 @@ namespace ItemResearchSpawner.Components
 
         private bool CheckIsForceDefaults()
         {
-            if (_helper.ReadConfig<ModConfig>().UseDefaultConfig)
+            if (_helper.ReadConfig<ModConfig>().UseDefaultBalanceConfig)
             {
                 _monitor.Log(
-                    $"Currently default config is used for prices and categories. Please turn that off in config first :O",
+                    $"Currently default config is used for prices and categories! You can turn this off in config, to be able to manually change :)",
                     LogLevel.Warn);
                 return false;
             }

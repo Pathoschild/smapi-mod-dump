@@ -36,7 +36,7 @@ namespace StardewArchipelago.Goals
             _locationChecker = locationChecker;
         }
 
-        public void CheckGoalCompletion()
+        public void CheckGoalCompletion(bool vanillaGoal = false)
         {
             switch (_archipelago.SlotData.Goal)
             {
@@ -53,7 +53,7 @@ namespace StardewArchipelago.Goals
                     GoalCodeInjection.CheckCrypticNoteGoalCompletion();
                     return;
                 case Goal.MasterAngler:
-                    GoalCodeInjection.CheckMasterAnglerGoalCompletion();
+                    GoalCodeInjection.CheckMasterAnglerGoalCompletion(vanillaGoal);
                     return;
                 case Goal.CompleteCollection:
                     GoalCodeInjection.CheckCompleteCollectionGoalCompletion();
@@ -65,10 +65,10 @@ namespace StardewArchipelago.Goals
                     GoalCodeInjection.CheckWalnutHunterGoalCompletion();
                     return;
                 case Goal.ProtectorOfTheValley:
-                    GoalCodeInjection.CheckProtectorOfTheValleyGoalCompletion();
+                    GoalCodeInjection.CheckProtectorOfTheValleyGoalCompletion(vanillaGoal);
                     return;
                 case Goal.FullShipment:
-                    GoalCodeInjection.CheckFullShipmentGoalCompletion();
+                    GoalCodeInjection.CheckFullShipmentGoalCompletion(vanillaGoal);
                     return;
                 case Goal.GourmetChef:
                     GoalCodeInjection.CheckGourmetChefGoalCompletion();
@@ -168,7 +168,7 @@ namespace StardewArchipelago.Goals
         {
             _harmony.Patch(
                 original: AccessTools.Method(typeof(Farmer), nameof(Farmer.foundWalnut)),
-                postfix: new HarmonyMethod(typeof(GoalCodeInjection), nameof(GoalCodeInjection.FounddWalnut_WalnutHunterGoal_Postfix))
+                postfix: new HarmonyMethod(typeof(GoalCodeInjection), nameof(GoalCodeInjection.FoundWalnut_WalnutHunterGoal_Postfix))
             );
         }
 

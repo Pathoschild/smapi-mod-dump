@@ -61,7 +61,7 @@ namespace ichortower_HatMouseLacey
             queueTicker = delegate(object sender, UpdateTickedEventArgs e) {
                 StardewValley.Event theEvent = Game1.CurrentEvent;
                 if (viewportQueue.Count > 0) {
-                    FieldInfo targetField = theEvent.GetType().GetField(
+                    FieldInfo targetField = typeof(StardewValley.Event).GetField(
                             "viewportTarget", BindingFlags.NonPublic | BindingFlags.Instance);
                     Vector3 currentTarget = (Vector3)targetField.GetValue(theEvent);
                     if (currentTarget.Equals(Vector3.Zero)) {
@@ -370,7 +370,7 @@ namespace ichortower_HatMouseLacey
                 GameLocation location, GameTime time, string[] split)
         {
             StardewValley.Event theEvent = Game1.CurrentEvent;
-            FieldInfo targetField = theEvent.GetType()
+            FieldInfo targetField = typeof(StardewValley.Event)
                     .GetField("viewportTarget", BindingFlags.NonPublic | BindingFlags.Instance);
             Vector3 privTarget = (Vector3)targetField.GetValue(theEvent);
             Vector3 newTarget = new Vector3(Convert.ToInt32(split[1]),

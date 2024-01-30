@@ -6,9 +6,9 @@ mods:
    Stardew Speak
 
 latest commit:
-   commit b783c3f6778225bd0b130f29e6ea1fa5c33d5585
+   commit 2719dd549c52d178e7b0860e97c8a326f17f1bf3
    Author: etfre <evfredericksen@gmail.com>
-   Date:   Fri Dec 29 21:49:39 2023 -0500
+   Date:   Wed Jan 10 14:20:29 2024 -0500
    
-       update deps, more type annotations
+       cleanup wip
    

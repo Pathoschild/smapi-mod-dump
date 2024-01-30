@@ -8,6 +8,32 @@ for queries and analysis.**
 
 [(← Back to readme)](README.md)
 
+## 2.0.0 TODO
+Somewhere after 1.5.6 release of Stardew Valley
+
+Possible additions:
+* UI redesign
+* Saving item meta (clothes colors)
+* Controller support
+* Split screen support
+* ...
+
+Possible bugfixes:
+* Localization
+
+## 1.0.1
+Released somewhere the end of 2023 for SMAPI 3.9.5 or later.
+
+Additions:
+* Combined mode
+* Buy and sell global multipliers in config
+* Research amount global multiplier in config
+* Item price tooltip is changed to show both buy and sell prices if they are not the same
+
+Bugfixes:
+* Optimized menu
+* Few pricelist balance updates
+
 ## 1.0.0
 Released 23 August 2021 for SMAPI 3.9.5 or later.
 

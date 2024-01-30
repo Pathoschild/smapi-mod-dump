@@ -31,27 +31,14 @@ namespace StardewDruid.Cast
 
         public bool itemDebris;
 
+        public float throwFade;
+
+        public float throwHeight;
+
+        public bool dontInventorise;
+
         public Throw()
         {
-        }
-
-        public void AnimateObject()
-        {
-            Rectangle standardTileSheet = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, this.objectIndex, 16, 16);
-            float num1 = 1000f;
-            float num2 = this.catchPosition.X - this.throwPosition.X;
-            float num3 = this.catchPosition.Y - this.throwPosition.Y;
-            float num4 = num2 / 1000f;
-            float num5 = 0.555f;
-            float num6 = num3 / 1000f - num5;
-            this.itemDebris = true;
-            targetPlayer.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite("Maps\\springobjects", standardTileSheet, num1, 1, 0, this.throwPosition, false, false, 999f, 0.0f, Color.White, 4f, 0.0f, 0.0f, 0.0f, false)
-            {
-                motion = new Vector2(num4, num6),
-                acceleration = new Vector2(0.0f, 1f / 1000f),
-                timeBasedMotion = true,
-                endFunction = InventoriseObject
-            });
         }
 
         public Throw(Farmer Player, Vector2 Position, int ObjectIndex, int ObjectQuality = 0)
@@ -61,6 +48,25 @@ namespace StardewDruid.Cast
 
             objectQuality = ObjectQuality;
 
+            if(objectQuality == 3)
+            {
+
+                objectQuality = 2;
+
+            }
+            else if(objectQuality > 4)
+            {
+
+                objectQuality = 4;
+
+            }
+            else if(objectQuality < 0)
+            {
+
+                objectQuality = 0;
+
+            }
+
             objectInstance = new StardewValley.Object(objectIndex, 1, false, -1, objectQuality);
 
             targetPlayer = Player;
@@ -68,6 +74,10 @@ namespace StardewDruid.Cast
             throwPosition = Position;
 
             catchPosition = targetPlayer.Position;
+
+            throwFade = 0.001f;
+
+            throwHeight = 1;
 
         }
 
@@ -83,6 +93,17 @@ namespace StardewDruid.Cast
             objectInstance = Extract;
 
             catchPosition = Catch;
+
+            throwFade = 0.001f;
+
+            throwHeight = 1;
+
+        }
+
+        public void UpdateQuality(int updateQuality)
+        {
+
+            objectInstance = new StardewValley.Object(objectIndex, 1, false, -1, updateQuality);
 
         }
 
@@ -110,16 +131,16 @@ namespace StardewDruid.Cast
 
             float motionX = xOffset / 1000;
 
-            float compensate = 0.555f;
+            float compensate = 0.555f * throwHeight;
 
             float motionY = (yOffset / 1000) - compensate;
 
-            TemporaryAnimatedSprite throwAnimation = new("Maps\\springobjects", targetRectangle, animationInterval, 1, 0, throwPosition, flicker: false, flipped: false, throwPosition.Y / 10000f, 0.001f, Color.White, 3f, 0f, 0f, 0f)
+            TemporaryAnimatedSprite throwAnimation = new("Maps\\springobjects", targetRectangle, animationInterval, 1, 0, throwPosition, flicker: false, flipped: false, throwPosition.Y / 10000f, throwFade, Color.White, 3f, 0f, 0f, 0f)
             {
 
                 motion = new Vector2(motionX, motionY) + motionPlayer,
 
-                acceleration = new Vector2(0f, 0.001f),
+                acceleration = new Vector2(0f, 0.001f * throwHeight),
 
                 timeBasedMotion = true,
 
@@ -131,8 +152,48 @@ namespace StardewDruid.Cast
 
         }
 
+        public void AnimateObject()
+        {
+            Rectangle standardTileSheet = Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, this.objectIndex, 16, 16);
+
+            float num1 = 1000f;
+
+            float num2 = this.catchPosition.X - this.throwPosition.X;
+
+            float num3 = this.catchPosition.Y - this.throwPosition.Y;
+
+            float num4 = num2 / 1000f;
+
+            float num5 = 0.555f;
+
+            float num6 = num3 / 1000f - num5;
+
+            this.itemDebris = true;
+
+            targetPlayer.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite("Maps\\springobjects", standardTileSheet, num1, 1, 0, this.throwPosition, false, false, 999f, 0.0f, Color.White, 4f, 0.0f, 0.0f, 0.0f, false)
+            {
+                
+                motion = new Vector2(num4, num6),
+                
+                acceleration = new Vector2(0.0f, 1f / 1000f),
+               
+                timeBasedMotion = true,
+                
+                endFunction = InventoriseObject
+           
+            });
+        
+        }
+
         public void InventoriseObject(int endBehaviour)
         {
+
+            if (dontInventorise)
+            {
+
+                return;
+
+            }
 
             if (itemDebris && objectInstance is StardewValley.Object)
             {
@@ -151,7 +212,7 @@ namespace StardewDruid.Cast
                 if (objectInstance is StardewValley.Object)
                 {
 
-                    Game1.createObjectDebris(objectInstance.ParentSheetIndex, (int)spawnVector.X, (int)spawnVector.Y);
+                    Game1.createObjectDebris(objectInstance.ParentSheetIndex, (int)spawnVector.X, (int)spawnVector.Y,-1,objectQuality);
 
                 }
                 else
@@ -161,12 +222,12 @@ namespace StardewDruid.Cast
 
                 }
 
-
                 objectInstance = null;
 
             }
 
         }
+
         public void ThrowSword(Farmer player, int swordIndex, Vector2 originVector, int delayThrow = 200)
         {
             this.targetPlayer = player;

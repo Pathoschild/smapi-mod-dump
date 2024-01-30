@@ -76,6 +76,8 @@ namespace HDPortraits.Patches
 			includes_suffix = false;
 			if (npc is not null)
 			{
+				if (npc.Name is "Professor Snail")
+					return "SafariGuy";
 				if (npc.Name is not null)
 					return npc.getTextureName();
 

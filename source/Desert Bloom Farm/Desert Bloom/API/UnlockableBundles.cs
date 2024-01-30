@@ -17,6 +17,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using Unlockable_Bundles.API;
+using Desert_Bloom.Lib;
 
 namespace Desert_Bloom.API
 {
@@ -47,6 +48,7 @@ namespace Desert_Bloom.API
                 return;
 
             assignMillTier();
+            CustomTerrainSpawns.DayStarted();
         }
         private static void assignMillTier()
         {

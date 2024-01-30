@@ -94,9 +94,6 @@ internal class GridMovement : FeatureBase
 		// Exit if in a menu
 		if (Game1.activeClickableMenu != null)
 		{
-			#if DEBUG
-			Log.Verbose("OnButtonPressed: returning due to 'Game1.activeClickableMenu' not being null AKA in a menu");
-			#endif
 			return false;
 		}
 
@@ -104,34 +101,21 @@ internal class GridMovement : FeatureBase
 		if (is_warping)
 		{
 			MainClass.ModHelper!.Input.Suppress(e.Button);
-			#if DEBUG
-			Log.Verbose("OnButtonPressed: returning due to GridMovementFeature.is_warping being true");
-			#endif
 			return true;
 		}
 
 		if (!Context.CanPlayerMove)
 		{
-			#if DEBUG
-			Log.Verbose("OnButtonPressed: returning due to 'Context.CanPlayerMove' being false");
-			#endif
 			return true;
 		}
 
 		if (MainClass.Config.GridMovementOverrideKey.IsDown())
 		{
-			#if DEBUG
-			Log.Verbose(
-				"HandleGridMovement: returning due to 'Config.GridMovementOverrideKey.IsDown()' being true");
-			#endif
 			return true;
 		}
 
 		if (!MainClass.Config.GridMovementActive)
 		{
-			#if DEBUG
-			Log.Verbose("HandleGridMovement: returning due to 'Config.GridMovementActive' being false");
-			#endif
 			return true;
 		}
 
@@ -181,6 +165,12 @@ internal class GridMovement : FeatureBase
 		}
 
 		base.OnButtonsChanged(sender, e);
+	}
+
+	public override void OnPlayerWarped(object? sender, WarpedEventArgs e)
+	{
+		HandleFinishedWarping();
+		StepCounter = 0;
 	}
 
 	private void Timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -300,12 +290,6 @@ internal class GridMovement : FeatureBase
 				is_warping = true;
 			}
 		}
-	}
-
-	internal void PlayerWarped(object? sender, WarpedEventArgs e)
-	{
-		HandleFinishedWarping();
-		StepCounter = 0;
 	}
 
 	private void HandleFinishedWarping(bool failWarp = false)

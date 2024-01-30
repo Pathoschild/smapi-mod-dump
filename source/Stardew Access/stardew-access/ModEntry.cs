@@ -196,9 +196,26 @@ namespace stardew_access
 
         private void OnPlayerWarped(object? sender, WarpedEventArgs e)
         {
+            // exit if warp event is for other players
+            if (!e.IsLocalPlayer) return;
             TileUtils.CleanupMaps(e.OldLocation, e.NewLocation);
-            GridMovement.Instance.PlayerWarped(sender, e);
-            ObjectTracker.Instance.GetLocationObjects(resetFocus: true);
+            FeatureManager.OnPlayerWarpedEvent(sender, e);
         }
+
+        internal static string GetCurrentSaveFileName()
+        {
+            if (string.IsNullOrEmpty(Constants.CurrentSavePath))
+            {
+                return "";
+            }
+
+            string[] pathParts = Constants.CurrentSavePath.Split(Path.DirectorySeparatorChar);
+            string currentSave = pathParts[^1];
+            #if DEBUG
+            Log.Verbose($"Savefile name is: {currentSave}");
+            #endif
+            return currentSave;
+        }
+
     }
 }

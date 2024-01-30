@@ -21,6 +21,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
     {
         public const string SKULL_CAVERN_ELEVATOR_ITEM = "Progressive Skull Cavern Elevator";
         public const string SKULL_CAVERN_FLOOR_LOCATION = "Skull Cavern: Floor {0}";
+        public const string SKULL_KEY = "Skull Key";
 
         private const int ELEVATOR_STEP = 25;
         private const int DIFFICULTY = 1;
@@ -45,6 +46,10 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         {
             try
             {
+                if (!_archipelago.HasReceivedItem(SKULL_KEY))
+                {
+                    return true; // Don't bother updating anything until then.
+                }
                 var receivedElevators = _archipelago.GetReceivedItemCount(SKULL_CAVERN_ELEVATOR_ITEM);
                 elevatorStep = ELEVATOR_STEP;
                 difficulty = DIFFICULTY;
@@ -53,7 +58,10 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 {
                     _realDeepestMineLevel = Game1.player.deepestMineLevel;
                 }
-
+                if (receivedElevators >= 8 && Game1.player.deepestMineLevel >= 320)
+                {
+                    return true; //let the player gain these floors on their own since they've "collected" the floors already
+                }
                 var elevatorMaxLevel = (receivedElevators * ELEVATOR_STEP) + 120;
                 Game1.player.deepestMineLevel = elevatorMaxLevel;
 

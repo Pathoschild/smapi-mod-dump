@@ -44,7 +44,7 @@ namespace ItemResearchSpawner.Models
         
         public int CategoryPrice { get; }
 
-        public int ProgressionLimit => ModManager.Instance.ModMode == ModMode.Buy ? 1 : _progressionLimit;
+        public int ProgressionLimit => ModManager.Instance.ModMode == ModMode.BuySell ? 1 : _progressionLimit;
 
         public SpawnableItem(SearchableItem item, string category, int categoryPrice, int progressionLimit) : base(item)
         {

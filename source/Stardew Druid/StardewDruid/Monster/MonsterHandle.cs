@@ -21,7 +21,7 @@ namespace StardewDruid.Monster
     public class MonsterHandle
     {
 
-        private Rite riteData;
+        //private Rite riteData;
 
         public List<StardewValley.Monsters.Monster> monsterSpawns;
 
@@ -49,7 +49,13 @@ namespace StardewDruid.Monster
 
         public int spawnTotal;
 
-        public MonsterHandle(Vector2 target, Rite rite)
+        public GameLocation spawnLocation;
+
+        public int spawnCombat;
+
+        public Random randomIndex;
+
+        public MonsterHandle(Vector2 target, GameLocation location)
         {
 
             BaseTarget(target);
@@ -64,7 +70,13 @@ namespace StardewDruid.Monster
 
             spawnIndex = new() { 99, };
 
-            riteData = rite;
+            spawnLocation = location;
+
+            randomIndex = new();
+
+            spawnCombat = Mod.instance.CombatModifier();
+
+            //riteData = rite;
 
         }
 
@@ -77,10 +89,21 @@ namespace StardewDruid.Monster
 
         }
 
-        public void TargetToPlayer(Vector2 target)
+        public void TargetToPlayer(Vector2 target,bool precision = false)
         {
 
-            Vector2 playerVector = riteData.caster.getTileLocation();
+            Vector2 playerVector = Game1.player.getTileLocation();
+
+            if (precision)
+            {
+
+                spawnWithin = playerVector - new Vector2(1,1);
+
+                spawnRange = new Vector2(2, 2);
+
+                return;
+
+            }
 
             spawnWithin = playerVector + ((target - playerVector) / 2) - new Vector2(2, 2);
 
@@ -98,9 +121,9 @@ namespace StardewDruid.Monster
             for (int i = monsterSpawns.Count - 1; i >= 0; i--)
             {
 
-                ModUtility.AnimateQuickWarp(riteData.castLocation, monsterSpawns[i].Position, "Void");
+                ModUtility.AnimateQuickWarp(spawnLocation, monsterSpawns[i].Position, "Void");
 
-                riteData.castLocation.characters.Remove(monsterSpawns[i]);
+                spawnLocation.characters.Remove(monsterSpawns[i]);
 
                 monsterSpawns.RemoveAt(i);
 
@@ -162,8 +185,6 @@ namespace StardewDruid.Monster
 
             }
 
-            SpawnCheck();
-
             spawnCounter = 0;
 
             int spawnAmount = 0;
@@ -217,7 +238,7 @@ namespace StardewDruid.Monster
 
             Vector2 spawnVector = new(-1);
 
-            Vector2 playerVector = riteData.caster.getTileLocation();
+            Vector2 playerVector = Game1.player.getTileLocation();
 
             int spawnAttempt = 0;
             
@@ -242,9 +263,9 @@ namespace StardewDruid.Monster
             while (spawnAttempt++ < spawnLimit)
             {
 
-                int offsetX = riteData.randomIndex.Next(spawnX);
+                int offsetX = randomIndex.Next(spawnX);
 
-                int offsetY = riteData.randomIndex.Next(spawnY);
+                int offsetY = randomIndex.Next(spawnY);
 
                 Vector2 offsetVector = new(offsetX, offsetY);
 
@@ -255,12 +276,12 @@ namespace StardewDruid.Monster
                     continue;
                 }
 
-                if (ModUtility.GroundCheck(riteData.castLocation, spawnVector) != "ground")
+                if (ModUtility.GroundCheck(spawnLocation, spawnVector) != "ground")
                 {
                     continue;
                 }
 
-                if (ModUtility.NeighbourCheck(riteData.castLocation, spawnVector, 0).Count > 0)
+                if (ModUtility.NeighbourCheck(spawnLocation, spawnVector, 0).Count > 0)
                 {
                     continue;
                 }
@@ -280,28 +301,28 @@ namespace StardewDruid.Monster
 
             if (special)
             {
-                spawnMob = specialIndex[riteData.randomIndex.Next(specialIndex.Count)];
+                spawnMob = specialIndex[randomIndex.Next(specialIndex.Count)];
 
             }
             else
             {
-                spawnMob = spawnIndex[riteData.randomIndex.Next(spawnIndex.Count)];
+                spawnMob = spawnIndex[randomIndex.Next(spawnIndex.Count)];
 
             }
 
-            StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(spawnMob, spawnVector, riteData.combatModifier, Mod.instance.PartyHats());
+            StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(spawnMob, spawnVector, spawnCombat);
 
             monsterSpawns.Add(theMonster);
 
             spawnTotal++;
 
-            MonsterSpawn monsterSpawn = new(riteData.castLocation, theMonster);
+            MonsterSpawn monsterSpawn = new(spawnLocation, theMonster);
 
             monsterSpawn.InitiateMonster(150);
 
             spawnHandles.Add(monsterSpawn);
 
-            ModUtility.AnimateQuickWarp(riteData.castLocation, spawnVector * 64 - new Vector2(0, 32), "Void");
+            ModUtility.AnimateQuickWarp(spawnLocation, spawnVector * 64 - new Vector2(0, 32), "Void");
 
             // ------------------------------ monster
 
@@ -312,9 +333,9 @@ namespace StardewDruid.Monster
         public StardewValley.Monsters.Monster SpawnTerrain(Vector2 spawnVector, Vector2 terrainVector, bool splash)
         {
 
-            int spawnMob = spawnIndex[riteData.randomIndex.Next(spawnIndex.Count)];
+            int spawnMob = spawnIndex[randomIndex.Next(spawnIndex.Count)];
 
-            StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(spawnMob, spawnVector, riteData.combatModifier, Mod.instance.PartyHats());
+            StardewValley.Monsters.Monster theMonster = MonsterData.CreateMonster(spawnMob, spawnVector, spawnCombat);
 
             Vector2 fromPosition = new(terrainVector.X * 64, terrainVector.Y * 64);
 
@@ -328,7 +349,7 @@ namespace StardewDruid.Monster
 
             float motionY = (toPosition.Y - fromPosition.Y) / 1000 - compensate;
 
-            float animationSort = float.Parse("0.0" + terrainVector.X.ToString() + terrainVector.Y.ToString());
+            float animationSort =(terrainVector.Y / 10000);
 
             Color monsterColor = Color.White;
 
@@ -339,13 +360,21 @@ namespace StardewDruid.Monster
                 monsterColor = slimeMonster.color.Value;
             }
 
-            MonsterSpawn monsterSpawn = new(riteData.castLocation, theMonster);
+            MonsterSpawn monsterSpawn = new(spawnLocation, theMonster);
 
             monsterSpawn.InitiateMonster(1000);
 
             spawnHandles.Add(monsterSpawn);
 
             // ----------------------------- animation
+
+            if (MonsterData.CustomMonsters().Contains(theMonster.GetType()))
+            {
+                monsterSpawn.InitiateMonster(150);
+
+                return theMonster;
+
+            }
 
             string textureName = theMonster.Sprite.textureName.Value;
 
@@ -362,14 +391,14 @@ namespace StardewDruid.Monster
 
             };
 
-            riteData.castLocation.temporarySprites.Add(monsterSprite);
+            spawnLocation.temporarySprites.Add(monsterSprite);
 
-            ModUtility.AnimateQuickWarp(riteData.castLocation, fromPosition, "Void");
+            ModUtility.AnimateQuickWarp(spawnLocation, fromPosition, "Void");
 
             if (splash)
             {
 
-                ModUtility.AnimateSplash(riteData.castLocation, terrainVector, true);
+                ModUtility.AnimateSplash(spawnLocation, terrainVector, true);
 
             }
 

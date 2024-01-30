@@ -22,6 +22,7 @@ namespace StardewArchipelago.Locations
     {
         private static IMonitor _monitor;
         private ArchipelagoClient _archipelago;
+        private readonly LocationNameMatcher _locationNameMatcher;
         private Dictionary<string, long> _checkedLocations;
         private Dictionary<string, string[]> _wordFilterCache;
 
@@ -29,6 +30,7 @@ namespace StardewArchipelago.Locations
         {
             _monitor = monitor;
             _archipelago = archipelago;
+            _locationNameMatcher = new LocationNameMatcher();
             _checkedLocations = locationsAlreadyChecked.ToDictionary(x => x, x => (long)-1);
             _wordFilterCache = new Dictionary<string, string[]>();
         }
@@ -48,7 +50,7 @@ namespace StardewArchipelago.Locations
             return !IsLocationChecked(locationName);
         }
 
-        public bool IsLocationMissingAndExists(string locationName)
+        public bool IsLocationMissing(string locationName)
         {
             return _archipelago.LocationExists(locationName) && IsLocationNotChecked(locationName);
         }
@@ -57,7 +59,12 @@ namespace StardewArchipelago.Locations
         {
             return _archipelago.GetAllMissingLocations();
         }
-        
+
+        public IReadOnlyCollection<string> GetAllMissingLocationNames()
+        {
+            return _archipelago.GetAllMissingLocations().Select(x => _archipelago.GetLocationName(x)).ToArray();
+        }
+
         public void AddCheckedLocation(string locationName)
         {
             if (_checkedLocations.ContainsKey(locationName))
@@ -161,48 +168,27 @@ namespace StardewArchipelago.Locations
 
         public IEnumerable<string> GetAllLocationsNotChecked(string filter)
         {
-            return GetAllLocationsNotChecked().Where(x => x.Contains(filter, StringComparison.InvariantCultureIgnoreCase));
+            return _locationNameMatcher.GetAllLocationsMatching(GetAllLocationsNotChecked(), filter);
+        }
+
+        public IEnumerable<string> GetAllLocationsNotCheckedStartingWith(string prefix)
+        {
+            return _locationNameMatcher.GetAllLocationsStartingWith(GetAllLocationsNotChecked(), prefix);
         }
 
         public string[] GetAllLocationsNotCheckedContainingWord(string wordFilter)
         {
-            if (_wordFilterCache.ContainsKey(wordFilter))
-            {
-                return _wordFilterCache[wordFilter];
-            }
-
-            var filteredLocations = FilterLocationsForWord(GetAllLocationsNotChecked(wordFilter), wordFilter).ToArray();
-            _wordFilterCache.Add(wordFilter, filteredLocations);
-            return filteredLocations;
+            return _locationNameMatcher.GetAllLocationsContainingWord(GetAllLocationsNotChecked(), wordFilter);
         }
 
         public bool IsAnyLocationNotChecked(string filter)
         {
-            return GetAllLocationsNotChecked(filter).Any();
+            return _locationNameMatcher.IsAnyLocationMatching(GetAllLocationsNotChecked(), filter);
         }
 
-        private static IEnumerable<string> FilterLocationsForWord(IEnumerable<string> locations, string filterWord)
+        public bool IsAnyLocationNotCheckedStartingWith(string prefix)
         {
-            foreach (var location in locations)
-            {
-                if (ItemIsRelevant(filterWord, location))
-                {
-                    yield return location;
-                }
-            }
-        }
-
-        private static bool ItemIsRelevant(string itemName, string locationName)
-        {
-            var startOfItemName = locationName.IndexOf(itemName, StringComparison.InvariantCultureIgnoreCase);
-            if (startOfItemName == -1)
-            {
-                return false;
-            }
-
-            var charBefore = startOfItemName == 0 ? ' ' : locationName[startOfItemName - 1];
-            var charAfter = locationName.Length <= startOfItemName + itemName.Length ? ' ' : locationName[startOfItemName + itemName.Length];
-            return charBefore == ' ' && charAfter == ' ';
+            return _locationNameMatcher.IsAnyLocationStartingWith(GetAllLocationsNotChecked(), prefix);
         }
     }
 }

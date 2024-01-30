@@ -82,7 +82,7 @@ namespace StardewArchipelago.GameModifications
             var shouldKnowRecipe = _archipelago.HasReceivedItem($"{startingRecipe} Recipe");
             if (knowsRecipe == shouldKnowRecipe)
             {
-                if (knowsRecipe && (_locationChecker.IsLocationMissingAndExists($"Craft {startingRecipe}") || _locationChecker.IsLocationMissingAndExists($"Cook {startingRecipe}")))
+                if (knowsRecipe && (_locationChecker.IsLocationMissing($"Craft {startingRecipe}") || _locationChecker.IsLocationMissing($"Cook {startingRecipe}")))
                 {
                     knownRecipes[startingRecipe] = 0;
                 }

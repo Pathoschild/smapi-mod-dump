@@ -19,7 +19,7 @@ namespace StardewArchipelago.Items.Unlocks
     {
         public const string DIAMOND_WAND_AP_NAME = "Diamond Wand";
         public const string MARLON_BOAT_PADDLE_AP_NAME = "Marlon's Boat Paddle";
-        public const string VOID_SOUL_AP_NAME = "Void Soul";
+        public const string VOID_SOUL_AP_NAME = "Krobus' Protection";
         public const string IRIDIUM_BOMB_AP_NAME = "Iridium Bomb";
         public const string KITTYFISH_SPELL_AP_NAME = "Kittyfish Spell";
         public const string GUILD_RUNES_AP_NAME = "Nexus: Adventurer's Guild Runes";

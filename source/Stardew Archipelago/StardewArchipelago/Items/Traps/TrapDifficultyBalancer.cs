@@ -113,14 +113,24 @@ namespace StardewArchipelago.Items.Traps
             {TrapItemsDifficulty.Nightmare, 800},
         };
 
-        public Dictionary<TrapItemsDifficulty, ShuffleInventoryTarget> ShuffleInventoryTargets = new()
+        public Dictionary<TrapItemsDifficulty, double> ShuffleRate = new()
         {
-            {TrapItemsDifficulty.NoTraps, ShuffleInventoryTarget.None},
-            {TrapItemsDifficulty.Easy, ShuffleInventoryTarget.Hotbar},
-            {TrapItemsDifficulty.Medium, ShuffleInventoryTarget.FullInventory},
-            {TrapItemsDifficulty.Hard, ShuffleInventoryTarget.FullInventory},
-            {TrapItemsDifficulty.Hell, ShuffleInventoryTarget.InventoryAndChests},
-            {TrapItemsDifficulty.Nightmare, ShuffleInventoryTarget.InventoryAndChestsAndFriends},
+            {TrapItemsDifficulty.NoTraps, 0},
+            {TrapItemsDifficulty.Easy, 0.02},
+            {TrapItemsDifficulty.Medium, 0.05},
+            {TrapItemsDifficulty.Hard, 0.15},
+            {TrapItemsDifficulty.Hell, 0.4},
+            {TrapItemsDifficulty.Nightmare, 0.8},
+        };
+
+        public Dictionary<TrapItemsDifficulty, double> ShuffleRateToFriends = new()
+        {
+            {TrapItemsDifficulty.NoTraps, 0},
+            {TrapItemsDifficulty.Easy, 0},
+            {TrapItemsDifficulty.Medium, 0},
+            {TrapItemsDifficulty.Hard, 0},
+            {TrapItemsDifficulty.Hell, 0.05},
+            {TrapItemsDifficulty.Nightmare, 0.25},
         };
 
         // TODO: Figure out a way to have different difficulties for temporary winter
@@ -219,11 +229,11 @@ namespace StardewArchipelago.Items.Traps
         public Dictionary<TrapItemsDifficulty, double> InflationAmount = new()
         {
             {TrapItemsDifficulty.NoTraps, 0},
-            {TrapItemsDifficulty.Easy, 1.2},
-            {TrapItemsDifficulty.Medium, 1.4}, // Vanilla Inflation at Clint's after a year is equivalent to 2 traps
-            {TrapItemsDifficulty.Hard, 2.25}, // Vanilla Inflation at Robin's after a year is equivalent to 2 traps
-            {TrapItemsDifficulty.Hell, 3.5},
-            {TrapItemsDifficulty.Nightmare, 5},
+            {TrapItemsDifficulty.Easy, 1.1},
+            {TrapItemsDifficulty.Medium, 1.25}, // Vanilla Inflation at Clint's after a year is equivalent to 2 traps
+            {TrapItemsDifficulty.Hard, 1.75},
+            {TrapItemsDifficulty.Hell, 2.25}, // Vanilla Inflation at Robin's after a year is equivalent to 2 traps
+            {TrapItemsDifficulty.Nightmare, 3},
         };
 
         public Dictionary<TrapItemsDifficulty, int> ExplosionSize = new()

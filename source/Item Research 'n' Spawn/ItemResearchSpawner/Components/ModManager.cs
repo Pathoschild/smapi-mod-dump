@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using ItemResearchSpawner.Models;
 using ItemResearchSpawner.Models.Enums;
 using ItemResearchSpawner.Models.Messages;
@@ -35,6 +36,7 @@ namespace ItemResearchSpawner.Components
         private List<ModDataCategory> _categories;
 
         private ModState _syncedModState;
+        private ModConfig _config;
 
         #region Proprerties
 
@@ -141,7 +143,7 @@ namespace ItemResearchSpawner.Components
 
         public event UpdateMenuView OnUpdateMenuView;
 
-        public ModManager(IMonitor monitor, IModHelper helper, IManifest modManifest)
+        public ModManager(IMonitor monitor, IModHelper helper, IManifest modManifest, ModConfig config)
         {
             Instance ??= this;
 
@@ -161,6 +163,8 @@ namespace ItemResearchSpawner.Components
             _helper.Events.GameLoop.DayEnding += OnSave;
             _helper.Events.GameLoop.DayStarted += OnLoad;
             _helper.Events.Multiplayer.ModMessageReceived += OnMessageReceived;
+
+            _config = config;
         }
 
         private void InitRegistry(IEnumerable<SpawnableItem> items)
@@ -194,7 +198,7 @@ namespace ItemResearchSpawner.Components
 
         public void BuyItem(Item item)
         {
-            var price = GetItemPrice(item, true);
+            var price = GetItemBuyPrice(item, true);
 
             if (price > Game1.player._money)
             {
@@ -208,10 +212,44 @@ namespace ItemResearchSpawner.Components
 
         public void SellItem(Item item)
         {
-            Game1.player._money += GetItemPrice(item, true);
+            Game1.player._money += GetItemSellPrice(item, true);
         }
 
-        public int GetItemPrice(Item item, bool countStack = false)
+        public (int buy, int sell) GetItemPrices(Item item, bool countStack = false)
+        {
+            var price = GetItemPrice(item, false);
+
+            var buyPrice = (int)MathF.Round((float)price * _config.BuyPriceMultiplier);
+            buyPrice = buyPrice >= 0 ? buyPrice : 0;
+
+            var sellPrice = (int)MathF.Round((float)price * _config.SellPriceMultiplier);
+            sellPrice = sellPrice >= 0 ? sellPrice : 0;
+
+            if (countStack)
+            {
+                buyPrice *= item.Stack;
+                sellPrice *= item.Stack;
+            }
+
+
+            return new (buyPrice, sellPrice);
+        }
+
+        public int GetItemBuyPrice(Item item, bool countStack = false)
+        {
+            var buyPrice = GetItemPrice(item, countStack, _config.BuyPriceMultiplier);
+
+            return buyPrice >= 0 ? buyPrice : 0;
+        }
+
+        public int GetItemSellPrice(Item item, bool countStack = false)
+        {
+            var sellPrice = GetItemPrice(item, countStack, _config.SellPriceMultiplier);
+
+            return sellPrice >= 0 ? sellPrice : 0;
+        }
+
+        public int GetItemPrice(Item item, bool countStack = false, float multiplyBy=1.0f)
         {
             item.Stack = item.Stack > 0 ? item.Stack : 1;
 
@@ -239,10 +277,17 @@ namespace ItemResearchSpawner.Components
                 price = spawnableItem.CategoryPrice;
             }
 
+            if (multiplyBy != 1.0f)
+            {
+                price = (int)MathF.Round((float)price * multiplyBy);
+            }
+
+
             if (countStack)
             {
                 price *= item.Stack;
             }
+
 
             return price;
         }
@@ -287,7 +332,7 @@ namespace ItemResearchSpawner.Components
         {
             var prices = _pricelist;
 
-            if (_helper.ReadConfig<ModConfig>().UseDefaultConfig)
+            if (_helper.ReadConfig<ModConfig>().UseDefaultBalanceConfig)
             {
                 prices = _helper.Data.ReadGlobalData<Dictionary<string, int>>(SaveHelper.PriceConfigKey) ?? _pricelist;
             }
@@ -297,7 +342,7 @@ namespace ItemResearchSpawner.Components
 
         public void LoadPricelist()
         {
-            if (_helper.ReadConfig<ModConfig>().UseDefaultConfig)
+            if (_helper.ReadConfig<ModConfig>().UseDefaultBalanceConfig)
             {
                 _monitor.Log(
                     "Note: default config is being used, your changes will be ignored unless you turn the use of default config off");
@@ -321,7 +366,7 @@ namespace ItemResearchSpawner.Components
         {
             var categories = _categories;
 
-            if (_helper.ReadConfig<ModConfig>().UseDefaultConfig)
+            if (_helper.ReadConfig<ModConfig>().UseDefaultBalanceConfig)
             {
                 categories = _categories =
                     _helper.Data.ReadGlobalData<List<ModDataCategory>>(SaveHelper.CategoriesConfigKey) ?? _categories;
@@ -332,7 +377,7 @@ namespace ItemResearchSpawner.Components
 
         public void LoadCategories()
         {
-            if (_helper.ReadConfig<ModConfig>().UseDefaultConfig)
+            if (_helper.ReadConfig<ModConfig>().UseDefaultBalanceConfig)
             {
                 _monitor.Log(
                     "Note: default config is being used, your changes will be ignored unless you turn the use of default config off");
@@ -537,8 +582,11 @@ namespace ItemResearchSpawner.Components
                     ? I18n.GetByKey(category.Label).Default(category.Label)
                     : I18n.Category_Misc();
 
+                int baseResearchCount = category?.ResearchCount ?? 1;
+                //float researchMultiplier = _helper.ReadConfig<ModConfig>().ResearchAmountMultiplier;
+
                 yield return new SpawnableItem(entry, label ?? I18n.Category_Misc(), category?.BaseCost ?? 100,
-                    category?.ResearchCount ?? 1);
+                    (int)((float)baseResearchCount * _config.ResearchAmountMultiplier));
             }
         }
     }

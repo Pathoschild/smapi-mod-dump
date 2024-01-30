@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ribeena/BusLocations
+**
+*************************************************/
+
+{
+  "Name": "Bus Locations",
+  "Author": "Hootless",
+  "Version": "1.0.8",
+  "Description": "A framework that lets modders dynamically add new locations for the bus to go to.",
+  "UniqueID": "hootless.BusLocations",
+  "EntryDll": "BusLocations.dll",
+  "MinimumApiVersion": "3.15.0",
+  "UpdateKeys": [ "Nexus:2905" ]
+}

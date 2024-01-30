@@ -664,6 +664,15 @@ namespace StardewSpeak
             return type.GetProperty(fieldName, flags)?.GetValue(obj);
         }
 
+        public static bool DoesPropertyExist(dynamic settings, string name)
+        {
+            if (settings is ExpandoObject)
+            {
+                return ((IDictionary<string, object>)settings).ContainsKey(name);
+            }
+            return settings.GetType().GetProperty(name) != null;
+        }
+
         public static MethodInfo GetStaticMethod(Type type, string methodName) 
         {
             MethodInfo info = type.GetMethod(
@@ -711,6 +720,11 @@ namespace StardewSpeak
             return xdiff + ydiff;
         }
 
+        public static GameLocation getLocationFromName(string locationName) 
+        {
+            return locationName == null ? Game1.player.currentLocation : Game1.getLocationFromName(locationName);
+        }
+
         public static object SerializeItem(Item i) 
         {
             if (i == null) return null;
@@ -733,6 +747,7 @@ namespace StardewSpeak
 
                 obj = Utils.Merge(obj, new 
                 { 
+                    type = "tool",
                     isTool = true,
                     upgradeLevel = tool.UpgradeLevel,
                     power = player.toolPower,

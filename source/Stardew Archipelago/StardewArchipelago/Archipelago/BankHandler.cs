@@ -118,12 +118,19 @@ namespace StardewArchipelago.Archipelago
 
             var tax = (int)Math.Round(amountToDeposit * BANK_TAX);
             var realDepositAmount = amountToDeposit - tax;
-            AddToBank(realDepositAmount);
-            Game1.player.Money -= amountToDeposit;
+            var success = AddToBank(realDepositAmount);
 
-            Game1.chatBox?.addMessage($"You have successfully made a deposit of {realDepositAmount}$ into your shared account", Color.Gold);
-            Game1.chatBox?.addMessage($"You have been charged a tax of {tax}$", Color.Gold);
-            Game1.chatBox?.addMessage($"Thank you for using Joja Capital", Color.Gold);
+            if (success)
+            {
+                Game1.player.Money -= amountToDeposit;
+                Game1.chatBox?.addMessage($"You have successfully made a deposit of {realDepositAmount}$ into your shared account", Color.Gold);
+                Game1.chatBox?.addMessage($"You have been charged a tax of {tax}$", Color.Gold);
+                Game1.chatBox?.addMessage($"Thank you for using Joja Capital", Color.Gold);
+            }
+            else
+            {
+                Game1.chatBox?.addMessage($"The Joja Capital online services are down at the moment. Apologies for the inconvenience, please try again later.", Color.Red);
+            }
         }
 
         private void HandleWithdrawCommand(string amount)
@@ -142,13 +149,19 @@ namespace StardewArchipelago.Archipelago
                 PrintCurrentBalance(currentBalance);
                 return;
             }
-            
-            RemoveFromBank(amountToWithdraw);
-            Game1.player.addUnearnedMoney(amountToWithdraw);
 
-            Game1.chatBox?.addMessage($"You have successfully withdrawn {amountToWithdraw}$ from your shared account", Color.Gold);
-            PrintCurrentBalance();
-            Game1.chatBox?.addMessage($"Thank you for using Joja Capital", Color.Gold);
+            var success = RemoveFromBank(amountToWithdraw);
+            if (success)
+            {
+                Game1.player.addUnearnedMoney(amountToWithdraw);
+                Game1.chatBox?.addMessage($"You have successfully withdrawn {amountToWithdraw}$ from your shared account", Color.Gold);
+                PrintCurrentBalance();
+                Game1.chatBox?.addMessage($"Thank you for using Joja Capital", Color.Gold);
+            }
+            else
+            {
+                Game1.chatBox?.addMessage($"The Joja Capital online services are down at the moment. Apologies for the inconvenience, please try again later.", Color.Red);
+            }
         }
 
         private void PrintCurrentBalance()
@@ -186,22 +199,18 @@ namespace StardewArchipelago.Archipelago
             return realAmountJoules.Value;
         }
 
-        private void AddToBank(int amountToAdd)
+        private bool AddToBank(int amountToAdd)
         {
             var bankingKey = string.Format(BANKING_TEAM_KEY, _archipelago.GetTeam());
-            var currentAmountJoules = GetBankJoulesAmount();
-            var amountToAddJoules = MoneyToJoules(amountToAdd);
-            var bankAmountAfterOperation = currentAmountJoules + amountToAddJoules;
-            _archipelago.SetBigIntegerDataStorage(Scope.Global, bankingKey, bankAmountAfterOperation);
+            var amountToAddJoules = (long)MoneyToJoules(amountToAdd);
+            return _archipelago.AddBigIntegerDataStorage(Scope.Global, bankingKey, amountToAddJoules);
         }
 
-        private void RemoveFromBank(BigInteger amountToRemove)
+        private bool RemoveFromBank(BigInteger amountToRemove)
         {
             var bankingKey = string.Format(BANKING_TEAM_KEY, _archipelago.GetTeam());
-            var currentAmountJoules = GetBankJoulesAmount();
-            var amountToRemoveJoules = MoneyToJoules(amountToRemove);
-            var bankAmountAfterOperation = currentAmountJoules - amountToRemoveJoules;
-            _archipelago.SetBigIntegerDataStorage(Scope.Global, bankingKey, bankAmountAfterOperation);
+            var amountToRemoveJoules = (long)MoneyToJoules(amountToRemove);
+            return _archipelago.SubtractBigIntegerDataStorage(Scope.Global, bankingKey, amountToRemoveJoules, true);
         }
 
         private BigInteger MoneyToJoules(BigInteger money)

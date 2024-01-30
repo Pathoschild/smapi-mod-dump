@@ -6,9 +6,10 @@ mods:
    Warp Network
 
 latest commit:
-   commit 92cf9ff0a842fef9ac3a2e46c1c9e88e7ef9a04c
+   commit 3d97f160ddb3692f469c01a4e6e736d48a734f99
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Tue Nov 7 10:44:10 2023 -0500
+   Date:   Sun Jan 21 18:39:27 2024 -0500
    
-       update translations
+       overhaul pt 2
+       asset boogaloo
    

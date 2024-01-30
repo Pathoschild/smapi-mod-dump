@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using StardewArchipelago.Constants;
 using StardewArchipelago.Goals;
 using StardewArchipelago.Items.Traps;
 using StardewValley;
@@ -21,17 +22,6 @@ namespace StardewArchipelago.Items
 {
     public class BabyBirther
     {
-        private static readonly string[] _babyNames = new[]
-        {
-            "Albrekka", "Alchav", "Angela", "axe_y", "beauxq", "Berserker", "Black Sliver", "blastron", "BootsinSoots", "CaitSith2", "Captain Canadia", "Celeste", "Damocles",
-            "dewin", "el_", "emmalution", "Espeon", "eudaimonistic", "Exempt-Medic", "Farrak Kilhn", "Figment", "Fly Sniper",
-            "Frazzleduck", "Heinermann", "Ishigh", "JaredWeakStrike", "Jarno", "jat2980", "jennnifer", "Jouramie", "Justice", "Kaito Kid",
-            "KelioMZX", "KittyAshy", "Kono Tyran", "Lady Redacted", "lordlou", "Magnemania", "Marech", "Margot", "Mati", "Mav", "MeleneV", "mewlif",
-            "Noca", "N00byKing"/*, "NinoKito"*/, "Phar",
-            "PoryGone", "ProfBytes", "RaspberrySpaceJam", "Rosalie", "Salzkorn", "SamanthaCoffin", "Scipio", "Sneaki", "Snow", "Sraw", "SunnyBat",
-            "TheCondor", "toaster", "Trev", "Violet", "WhySoThirstyy", "Yellow_Meep", "zig", "Ziktofel",
-        };
-
         public void SpawnNewBaby()
         {
             var seed = (int)(Game1.uniqueIDForThisGame + Game1.stats.DaysPlayed);
@@ -86,12 +76,12 @@ namespace StardewArchipelago.Items
                 npcNames.Add(npc.Name);
             }
             string babyName;
-            var maxAttempts = _babyNames.Length * 10;
+            var maxAttempts = Community.AllNames.Length * 10;
             var attempt = 0;
             do
             {
                 attempt++;
-                babyName = _babyNames[random.Next(0, _babyNames.Length)];
+                babyName = Community.AllNames[random.Next(0, Community.AllNames.Length)];
                 if (attempt >= maxAttempts)
                 {
                     while (npcNames.Contains(babyName))

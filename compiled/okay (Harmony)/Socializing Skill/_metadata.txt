@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/14142
 IDs: drbirbdev.SocializingSkill
-update keys: Nexus:14142, GitHub:StardewModders/mod-translations
+update keys: Nexus:14142, GitHub:drbirbdev/StardewValley

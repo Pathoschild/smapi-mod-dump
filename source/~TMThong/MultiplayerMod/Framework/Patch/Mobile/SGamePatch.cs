@@ -28,12 +28,14 @@ using xTile.Dimensions;
 using xTile.Layers;
 using xTile.Tiles;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace MultiplayerMod.Framework.Patch.Mobile
 {
     /// <summary>
     /// Debug class
     /// </summary>
+    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
     internal class SGamePatch : Game1, IPatch
     {
         public Type PATCH_TYPE { get; }
@@ -275,6 +277,11 @@ namespace MultiplayerMod.Framework.Patch.Mobile
                 ModUtilities.ModMonitor.Log(ex.GetBaseException().ToString(), LogLevel.Error);
             }
             return false;
+        }
+
+        private string GetDebuggerDisplay()
+        {
+            return ToString();
         }
     }
 }

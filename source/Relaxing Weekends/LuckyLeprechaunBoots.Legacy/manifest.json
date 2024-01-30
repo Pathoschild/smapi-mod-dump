@@ -1,0 +1,22 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/jamespfluger/Stardew-ModCollection
+**
+*************************************************/
+
+{
+  "Name": "Lucky Leprechaun Boots",
+  "Author": "The Fluffy Robot",
+  "Version": "1.0.0-LuckyBoots-rc.1",
+  "Description": "Adds a luck increase to the Leprechaun Boots.",
+  "UniqueID": "TheFluffyRobot.LuckyLeprechaunBoots",
+  "EntryDll": "LuckyLeprechaunBoots.dll",
+  "MinimumApiVersion": "3.18.0",
+  "UpdateKeys": [
+    "GitHub:jamespfluger/Stardew-ModCollection"
+  ]
+}

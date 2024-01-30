@@ -10,6 +10,11 @@ feature-object_tracker-read_selected_object = {$object_name} {$only_tile ->
     [0] is {$direction} {$distance}
     *[1] {EMPTYSTRING()}
   } at {$object_x}-{$object_y}, player at {$player_x}-{$player_y}
+feature-object_tracker-read_selected_coordinates = Coordinates {$coordinates} {$only_tile ->
+    [0] is {$direction} {$distance}
+    *[1] {EMPTYSTRING()}
+  } player at {$player_x}-{$player_y}
+
 feature-object_tracker-moving_to = Moving to {$object_x}-{$object_y}.
 feature-object_tracker-could_not_find_path = Could not find path to object.
 feature-object_tracker-no_objects_found = No objects found.
@@ -19,6 +24,19 @@ feature-object_tracker-start_of_list = Start of list.
 feature-object_tracker-no_object = No Object
 feature-object_tracker-no_category = No Category
 feature-object_tracker-no_selected_object = No selected object
+feature-object_tracker-read_favorite = Favorite {$favorite_number} is {$target_object} ({$target_category})
+feature-object_tracker-read_favorite_stack  = Favorite stack {$stack_number}
+feature-object_tracker-save_coordinates_toggle = Save coordinates: {$is_enabled ->
+    [0] Disabled
+    *[1] Enabled
+  }
+feature-object_tracker-favorite_unset = Favorite {$favorite_number} is unset
+feature-object_tracker-favorite_save = Saving {$selected_object} ({$selected_category}) to {$location_name} favorite {$favorite_number}
+feature-object_tracker-favorite_save_coordinates = Saving coordinates {$coordinates} to {$location_name} favorite {$favorite_number}
+feature-object_tracker-favorite_cleared = {$location_name} favorite {$favorite_number} cleared
+feature-object_tracker-favorite_set_as_default = Saving current favorites as default
+feature-object_tracker-favorite_default_cleared = Default favorites cleared
+feature-object_tracker-no_destination_selected = No destination selected
 
 ## Tile Viewer
 
@@ -112,6 +130,9 @@ tile-building_animal_door-suffix = {$name} Animal Door {$is_open ->
     }
     *[1] Opened
   }
+tile-mine_shaft-coal_bag = Bag
+tile-mine_shaft-dirt = Dirt
+tile-mine_shaft-duggy_hole = Duggy Hole
 
 ## Interactable Tiles
 
@@ -145,6 +166,8 @@ tile-busy-prefix = Busy {$content}
 tile_name-stepping_stone = Stepping stone
 tile_name-pathway = Pathway
 tile_name-flooring = Flooring
+tile-volcano_dungeon-pressure_pad = Pressure Pad
+tile-volcano_dungeon-gate = Gate
 
 ## Entrances
 

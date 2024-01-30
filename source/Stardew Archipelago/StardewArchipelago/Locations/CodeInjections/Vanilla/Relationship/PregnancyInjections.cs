@@ -72,7 +72,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                     return false; // don't run original logic
                 }
 
-                __result = _locationChecker.IsLocationMissingAndExists(FIRST_BABY) || _locationChecker.IsLocationMissingAndExists(SECOND_BABY);
+                __result = _locationChecker.IsLocationMissing(FIRST_BABY) || _locationChecker.IsLocationMissing(SECOND_BABY);
                 return false; // don't run original logic
             }
             catch (Exception ex)
@@ -115,7 +115,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                     question = playerGiveBirthQuestion;
                 }
 
-                var nextBirthLocation = _locationChecker.IsLocationMissingAndExists(FIRST_BABY) ? FIRST_BABY : SECOND_BABY;
+                var nextBirthLocation = _locationChecker.IsLocationMissing(FIRST_BABY) ? FIRST_BABY : SECOND_BABY;
                 var scoutedItem = _archipelago.ScoutSingleLocation(nextBirthLocation);
                 question = string.Format(question, scoutedItem.ItemName, Game1.player.Name);
                 var answerPregnancyQuestionMethod = _helper.Reflection.GetMethod(__instance, "answerPregnancyQuestion");
@@ -176,7 +176,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
                 var dialogueOptions = new[] { "NewChild_FirstChild", "NewChild_Adoption" };
                 var chosenDialogue = dialogueOptions[Game1.random.Next(0, dialogueOptions.Length)];
 
-                var locationBeingChecked = _locationChecker.IsLocationMissingAndExists(FIRST_BABY) ? FIRST_BABY : SECOND_BABY;
+                var locationBeingChecked = _locationChecker.IsLocationMissing(FIRST_BABY) ? FIRST_BABY : SECOND_BABY;
                 var scoutedItem = _archipelago.ScoutSingleLocation(locationBeingChecked);
                 var scoutedItemName = scoutedItem.ItemName;
 

@@ -24,6 +24,7 @@
       "ExpBonusPerSkillReset": 0.1,
       "PrestigeRespecCost": 20000,
       "Ribbon": "StackedStars",
+      "Icon": "MetallicGold",
       "ExpPerPrestigeLevel": 5000,
       "IsPerfectionRequirement": true
     },

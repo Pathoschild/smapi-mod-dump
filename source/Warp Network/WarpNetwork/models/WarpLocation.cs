@@ -11,34 +11,84 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
+using StardewModdingAPI;
+using StardewValley;
+using WarpNetwork.api;
+using WarpNetwork.framework;
 using xTile.Dimensions;
 
 namespace WarpNetwork.models
 {
-	class WarpLocation
+	public class WarpLocation : IWarpNetAPI.IDestinationHandler
 	{
-		private Texture2D cachedIcon = null;
-
 		public string Location { set; get; }
-		public int X { set; get; } = 0;
-		public int Y { set; get; } = 1;
-		public virtual bool Enabled { set; get; } = false;
-		public virtual string Label { set; get; }
+		public Point Position { set; get; }
+		public string Condition { set; get; } = "TRUE";
+		public string Label { set; get; } = "Unnamed";
 		public bool OverrideMapProperty { set; get; } = false;
-		public bool AlwaysHide { get; set; } = false;
-		public string RequiredBuilding { set; get; } = null;
-		public virtual string Icon { set; get; } = "";
+		public string DisplayCondition { get; set; }
+		public string IconPath { set; get; } = "";
 
 		[JsonIgnore]
-		public Texture2D IconTex
-			=> cachedIcon ??= ModEntry.helper.GameContent.Load<Texture2D>("Data/WarpNetwork/Icons/" + Icon);
-		public Location CoordsAsLocation() => new(X, Y);
-		public bool IsAccessible()
-			=> Enabled && (ModEntry.config.WarpsEnabled != WarpEnabled.AfterObelisk || 
-			RequiredBuilding is null || DataPatcher.buildingTypes.Contains(RequiredBuilding.Collapse()));
-		public void Reload()
-			=> cachedIcon = null;
+		public Texture2D Icon
+			=> ModEntry.helper.GameContent.Load<Texture2D>(IconPath);
 
-		public static implicit operator Point(WarpLocation where) => new(where.X, where.Y);
+		public bool IsAccessible(GameLocation context, Farmer who)
+			=> Condition is not null && GameStateQuery.CheckConditions(Condition, context, who);
+
+		public bool IsVisible(GameLocation context, Farmer who)
+			=> DisplayCondition is null || GameStateQuery.CheckConditions(DisplayCondition, context, who);
+
+		public bool Activate(GameLocation location, Farmer who)
+		{
+			if (Game1.getLocationFromName(Location) is not null)
+				if (!Utility.isFestivalDay() || Game1.whereIsTodaysFest != Location || Utility.getStartTimeOfFestival() < Game1.timeOfDay)
+					return DoWarp(location, who);
+				else
+					ModEntry.monitor.Log($"Failed to warp to '{Location}': Festival at location not ready.", LogLevel.Debug);
+			else
+				ModEntry.monitor.Log($"Failed to warp to '{Location}': Location with that name does not exist!", LogLevel.Error);
+
+			return false;
+		}
+
+		private bool DoWarp(GameLocation where, Farmer who)
+		{
+			if (!IsAccessible(where, who))
+				return false;
+
+			Point tile = Position;
+			if (Location is "Farm")
+			{
+				if (WarpHandler.fromWand.Value)
+				{
+					Point dest = Utility.getHomeOfFarmer(who).getFrontDoorSpot();
+					API.api.DoWarpEffects(() => Game1.warpFarmer("Farm", dest.X, dest.Y, false), who, where);
+					return true;
+				}
+				Utils.TryGetActualFarmPoint(ref tile);
+			}
+
+			if (!OverrideMapProperty || tile == default)
+			{
+				var loc = Game1.getLocationFromName(Location);
+				if (loc.TryGetMapPropertyAs("WarpNetworkEntry", out Point c) || Utils.TryGetDefaultPosition(Location, out c))
+					tile = c;
+			}
+
+			if (tile == default)
+			{
+				ModEntry.monitor.Log($"Failed to warp to '{Location}': could not find landing point!", LogLevel.Warn);
+				return false;
+			}
+
+			API.api.DoWarpEffects(() => Game1.warpFarmer(Location, tile.X, tile.Y, false), who, where);
+			return true;
+		}
+
+		public void AfterWarp(string location, Point tile, IWarpNetAPI.IDestinationHandler handler)
+		{
+			// do nothing
+		}
 	}
 }

@@ -1,4 +1,9 @@
-{
+{  
+  "bank.menu.bankinfo": "Bank Info",
+  "bank.menu.deposit" : "Deposit",
+  "bank.menu.withdraw" : "Withdraw",
+  "bank.menu.takeloan": "Get A Loan",
+  "bank.menu.payloan": "Pay A Loan",
   "bank.notEnoughMoneyInBank" : "You don't have {{amt}} in the bank.",
   "bank.notEnoughMoneyOnPlayer" : "You don't have {{amt}}G on your character",
   "bank.nonNumeric" : "You entered non-numeric characters.", 

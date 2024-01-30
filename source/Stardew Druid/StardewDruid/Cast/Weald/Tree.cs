@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewDruid.Event.World;
 using System;
 using System.Collections.Generic;
 
@@ -44,13 +45,6 @@ namespace StardewDruid.Cast.Weald
             {
 
                 return;
-
-            }
-
-            if (randomIndex.Next(30) == 0 && riteData.spawnIndex["wildspawn"] && !Mod.instance.EffectDisabled("Wildspawn"))
-            {
-
-                StardewValley.Monsters.Monster spawnMonster = Mod.instance.SpawnMonster(targetLocation, targetVector, new() { 99, }, "tree");
 
             }
 

@@ -139,17 +139,17 @@ namespace StardewArchipelago.Locations
 
         private void AddArchipelagoCheckToStock(Dictionary<ISalable, int[]> itemPriceAndStock, string apLocationName, Hint[] myActiveHints, int[] itemPrice)
         {
-            if (!_locationChecker.IsLocationMissingAndExists(apLocationName))
+            if (!_locationChecker.IsLocationMissing(apLocationName))
             {
                 return;
             }
 
-            if (itemPriceAndStock.Keys.Any(x => (x is PurchaseableArchipelagoLocation apLocation) && apLocation.ApLocationName.Equals(apLocationName)))
+            if (itemPriceAndStock.Keys.Any(x => (x is PurchaseableArchipelagoLocation apLocation) && apLocation.LocationName.Equals(apLocationName)))
             {
                 return;
             }
 
-            var purchaseableLocation = new PurchaseableArchipelagoLocation(apLocationName, apLocationName, _modHelper, _locationChecker, _archipelago, myActiveHints);
+            var purchaseableLocation = new PurchaseableArchipelagoLocation(apLocationName, _modHelper, _locationChecker, _archipelago, myActiveHints);
             itemPriceAndStock.Add(purchaseableLocation, itemPrice);
         }
 

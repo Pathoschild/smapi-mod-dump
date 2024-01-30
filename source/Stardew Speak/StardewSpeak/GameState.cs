@@ -28,7 +28,7 @@ namespace StardewSpeak
         public static object LastWarp = null;
 
         public static object PlayerStatus() {
-            var player = Game1.player;
+            Farmer player = Game1.player;
             string location = player.currentLocation?.NameOrUniqueName;
             var playerPosition = player.Position;
             var position = new List<float> { playerPosition.X, playerPosition.Y };

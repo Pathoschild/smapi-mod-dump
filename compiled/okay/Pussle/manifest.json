@@ -1,0 +1,16 @@
+{
+  "Name": "Pussle",
+  "Author": "Platonymous",
+  "Version": "1.0.3-alpha.20240106",
+  "Description": "Pussle Word Game",
+  "UniqueID": "Platonymous.Pussle",
+  "EntryDll": "Pussle.dll",
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [ "Nexus:19760" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.SpaceCore",
+      "IsRequired": true
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19760
+IDs: Platonymous.Pussle
+update keys: Nexus:19760

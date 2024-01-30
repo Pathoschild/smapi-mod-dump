@@ -92,8 +92,6 @@ namespace StardewDruid.Event.World
         public override void EventRemove()
         {
 
-            //npc.Position = oldPosition;
-
             if (!positionReset)
             {
                 
@@ -148,65 +146,6 @@ namespace StardewDruid.Event.World
                 expireEarly = true;
 
             }
-            //npc.faceDirection(activeCounter);
-
-            /*
-            if (activeCounter <= 1)
-            {
-
-                npc.position.X = oldPosition.X;
-
-                npc.position.Y -= 6.4f;
-
-                upwards += 6.4f;
-
-                
-
-            }
-
-            if(activeCounter == 2)
-            {
-
-                npc.position.X = oldPosition.X;
-
-                npc.rotation += (float)Math.PI / 15;
-
-            }
-
-            if (activeCounter == 3)
-            {
-
-                float down = upwards / 10;
-
-                npc.position.X = oldPosition.X;
-
-                npc.position.Y += down;
-
-                upwards -= down;
-
-                float radiansLeft = (float)Math.PI - npc.rotation;
-               
-                if(radiansLeft > 0)
-                {
-
-                    npc.rotation += radiansLeft / 10;
-
-                }
-
-            }
-
-            if(activeCounter == 4)
-            {
-
-                npc.position.Y += upwards;
-
-                npc.rotation = oldRotation;
-
-                positionReset = true;
-
-                expireEarly = true;
-
-            }*/
 
         }
 

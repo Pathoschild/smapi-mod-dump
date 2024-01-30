@@ -27,6 +27,8 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Network;
 using MultiplayerMod.Framework.Network;
 using MultiplayerMod.Framework.Mobile;
+using System.Threading;
+using Netcode;
 
 namespace MultiplayerMod
 {
@@ -53,8 +55,8 @@ namespace MultiplayerMod
             if (ModUtilities.IsAndroid)
             {
                 tapToMoveProperty = typeof(GameLocation).GetProperty("tapToMove");
-                ModUtilities.multiplayer = new MobileMultiplayer();
             }
+            //ApplyDebug();
         }
 
         
@@ -80,7 +82,6 @@ namespace MultiplayerMod
                 }
 
             }
-
         }
 
         void OnMenuChanged(object sender, MenuChangedEventArgs eventArgs)
@@ -103,77 +104,36 @@ namespace MultiplayerMod
         {
 #if DEBUG
 
-            var listField = new List<IReflectedField<object>>();
-            /*
-            try
+            this.Helper.Events.Display.MenuChanged += (o, e) => 
             {
-                foreach(var field in typeof(Game1).GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
-                {
-                    try
-                    {
-                        listField.Add(Helper.Reflection.GetField<object>(Game1.game1, field.Name));
-                    }
-                    catch(Exception ex)
-                    {
-                        Monitor.Log(ex.GetBaseException().ToString() , LogLevel.Error);
-                    }
-                }
-                foreach (var field in typeof(Game1).GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public))
-                {
-                    try
-                    {
-                        listField.Add(Helper.Reflection.GetField<object>(Game1.game1.GetType(), field.Name));
-                    }
-                    catch (Exception ex)
-                    {
-                        Monitor.Log(ex.GetBaseException().ToString(), LogLevel.Error);
-                    }
-                }
-            }
-            catch(Exception ex)
-            {
-
-            }*/
-            Helper.Events.Input.ButtonPressed += (o, e) =>
-            {
-                if (e.Button == SButton.M)
-                {
-                    CommandManager.GetCommand("client_connectMenu").Execute("client_connectMenu", new string[] { });
-                }
-                else if (e.Button == SButton.N)
-                {
-                    Game1.activeClickableMenu = new SCoopMenuMobile();
-                }
-                else if (e.Button == SButton.P)
-                {
-                    Game1.activeClickableMenu = new CharacterCustomization(CharacterCustomization.Source.HostNewFarm);
-                }
-                else if (e.Button == SButton.L)
-                {
-                    Game1.activeClickableMenu = new SCoopGameMenu(false);
-                }
+                if (e.NewMenu == null) return;
+                Monitor.Log($"MENU CONTEXT " + e.NewMenu.ToString(), LogLevel.Info);
             };
-            /*Helper.Events.GameLoop.UpdateTicked += (o, e) =>
-            {
-                if (Game1.currentLocation != null && e.Ticks % 20 == 0)
-                {
-                    if(ModUtilities.IsAndroid)
-                    Monitor.Log($"GameMode {Game1.gameMode}", LogLevel.Debug);
-                    try
-                    {
-                        Monitor.Log("Starting Field Game1 Debug" , LogLevel.Alert);
-                        foreach (var field in listField)
-                        {
-                            Monitor.Log($"Field  {field.FieldInfo.Name} Is Null ({field.GetValue() != null}) | TYPE {field.FieldInfo.FieldType.Namespace + "." + field.FieldInfo.FieldType.Name}", LogLevel.Debug);
-                        }
-                        Monitor.Log("Stopped Field Game1 Debug", LogLevel.Alert);
-                    }
-                    catch(Exception ex)
-                    {
 
+
+            new Thread(
+                () =>
+                {
+                    while (true)
+                    {
+                        if (Game1.activeClickableMenu != null)
+                        {
+                            Monitor.Log($"MENU CONTEXT " + Game1.activeClickableMenu.ToString(), LogLevel.Info);
+                        }
+
+                        Monitor.Log($"GAME CONTEXT: " + Game1.gameMode, LogLevel.Info);
+                        if(Game1.IsMultiplayer && Game1.newDaySync != null)
+                        {
+                            var var_ = Helper.Reflection.GetField<Dictionary<string, INetObject<INetSerializable>>>(Game1.newDaySync, "variables").GetValue();
+                            foreach (var item in var_.Keys)
+                            {
+                                Monitor.Log($"GAME VAR WAIT: " + item, LogLevel.Info);
+                            }
+                        }
+                        Thread.Sleep(1000);
                     }
                 }
-            };*/
+                ) { IsBackground = true }.Start();
 #endif
         }
 

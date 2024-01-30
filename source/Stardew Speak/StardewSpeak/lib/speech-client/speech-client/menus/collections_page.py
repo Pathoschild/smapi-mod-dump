@@ -1,8 +1,9 @@
 import menu_utils, server, df_utils
-from typing_extensions import TypedDict, Any
+from typing import TypedDict, Any
+import sdv_types
 
 class CollectionsPage(TypedDict):
-    tabs: list[Any]
+    tabs: list[sdv_types.ClickableComponent]
 
 tabs = df_utils.index_choice_from_list(
     "tabs",

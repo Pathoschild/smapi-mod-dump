@@ -23,7 +23,6 @@ namespace StardewDruid.Event.World
 
         public Vector2 destination;
 
-        public List<TemporaryAnimatedSprite> animationList;
 
         public Whisk(Vector2 target, Rite rite, Vector2 Destination)
             : base(target, rite)
@@ -35,60 +34,26 @@ namespace StardewDruid.Event.World
 
             destination = Destination * 64;
 
-            animationList = new();
-
         }
 
         public override void EventTrigger()
         {
 
-            animationList.Add(ModUtility.AnimateFateTarget(targetLocation, origin, destination));
+            animations.Add(ModUtility.AnimateFateTarget(targetLocation, origin, destination));
 
             Mod.instance.RegisterEvent(this, "whisk");
 
         }
 
-        public override bool EventActive()
+        public override bool EventPerformAction(SButton Button, string Type)
         {
 
-            if (expireEarly)
+            if(Type != "Action")
             {
 
                 return false;
 
             }
-
-            if (targetPlayer.currentLocation.Name != targetLocation.Name)
-            {
-
-                return false;
-
-            }
-
-            if (expireTime < Game1.currentGameTime.TotalGameTime.TotalSeconds)
-            {
-
-                return false;
-
-            }
-
-            return true;
-
-        }
-        public void RemoveAnimations()
-        {
-            if (animationList.Count > 0)
-            {
-                foreach (TemporaryAnimatedSprite animation in animationList)
-                {
-                    targetLocation.temporarySprites.Remove(animation);
-                }
-            }
-
-        }
-
-        public override bool EventPerformAction(SButton Button)
-        {
 
             if (!EventActive())
             {

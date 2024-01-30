@@ -9,7 +9,10 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using StardewDruid.Event.World;
+using StardewValley;
 using System.Collections.Generic;
+using xTile.Dimensions;
 
 namespace StardewDruid.Cast.Weald
 {
@@ -34,78 +37,34 @@ namespace StardewDruid.Cast.Weald
         public override void CastEffect()
         {
 
-            if (randomIndex.Next(5) == 0 && riteData.spawnIndex["wildspawn"] && !Mod.instance.EffectDisabled("Wildspawn"))
+            /*if (randomIndex.Next(5) == 0 && riteData.spawnIndex["wildspawn"] && !Mod.instance.EffectDisabled("Wildspawn"))
             {
-
-                StardewValley.Monsters.Monster spawnMonster = Mod.instance.SpawnMonster(targetLocation, targetVector, new() { 0, }, "water");
-
-                if (!riteData.castTask.ContainsKey("masterCreature") && spawnMonster != null)
+                
+                if (!Mod.instance.eventRegister.ContainsKey("wildspawn"))
                 {
 
-                    Mod.instance.UpdateTask("lessonCreature", 1);
+                    new Event.World.Wildspawn(targetVector, riteData).EventTrigger();
 
                 }
+                
+                (Mod.instance.eventRegister["wildspawn"] as Wildspawn).SpawnMonster(targetLocation, targetVector, new() { 0, }, "water", true);
+               
+                //StardewValley.Monsters.Monster spawnMonster = Mod.instance.SpawnMonster(targetLocation, targetVector, new() { 0, }, "water");
 
-            }
+                //if (!riteData.castTask.ContainsKey("masterCreature")) //&& spawnMonster != null)
+                //{
 
-            Dictionary<int, int> objectIndexes;
+                //    Mod.instance.UpdateTask("lessonCreature", 1);
 
-            if (targetLocation.Name.Contains("Beach"))
-            {
+                //}
 
-                objectIndexes = new Dictionary<int, int>()
-                {
+            }*/
 
-                    [0] = 392, // nautilus shell
-                    [1] = 152, // seaweed
-                    [2] = 152, // seaweed
-                    [3] = 397, // urchin
-                    [4] = 718, // cockle
-                    [5] = 715, // lobster
-                    [6] = 720, // shrimp
-                    [7] = 719, // mussel
-                };
-
-            }
-            else
-            {
-
-                objectIndexes = new Dictionary<int, int>()
-                {
-
-                    [0] = 153, // algae
-                    [1] = 153, // algae
-                    [2] = 153, // algae
-                    [3] = 153, // algae
-                    [4] = 721, // snail 721
-                    [5] = 716, // crayfish 716
-                    [6] = 722, // periwinkle 722
-                    [7] = 717, // crab 717
-
-                };
-
-            }
-
-            int probability = randomIndex.Next(objectIndexes.Count);
-
-            int objectIndex = objectIndexes[probability];
+            int objectIndex = Map.SpawnData.RandomPoolFish(targetLocation);
 
             int objectQuality = 0;
 
-            int experienceGain;
-
-            if (probability <= 3)
-            {
-
-                experienceGain = 6;
-
-            }
-            else
-            {
-
-                experienceGain = 12;
-
-            }
+            int experienceGain = 8;
 
             Throw throwObject = new(targetPlayer, targetVector * 64, objectIndex, objectQuality);
 

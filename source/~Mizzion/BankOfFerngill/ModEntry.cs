@@ -112,6 +112,7 @@ namespace BankOfFerngill
             _events.GameLoop.Saved += OnSaved; //Event that triggers after a save is saved.
             _events.GameLoop.GameLaunched += OnGameLaunched; //Event that triggers when the game is launched.
             _events.Content.AssetRequested += OnAssetRequested; //Event that triggers when the game is requesting an asset.
+            
         }
         
         //Event Methods
@@ -326,15 +327,14 @@ namespace BankOfFerngill
             {
                 Game1.activeClickableMenu = new BankTabbedMenu(MenuTab.BankInfo, Monitor, _i18N, _bankData, false);
             }
-            if(e.IsDown(SButton.Escape) && Game1.activeClickableMenu is BankMenu or BankInfoMenu)
+            
+            if(e.IsDown(SButton.Escape) && Game1.isQuestion)// && Game1.activeClickableMenu is BankMenu or BankInfoMenu)
             {
                 Game1.exitActiveMenu();
             }
             if (e.IsDown(SButton.MouseRight) && 
-                (Game1.currentLocation.Name.Contains("Community") && ((_vaultCoords.Contains(Game1.currentCursorTile) && Game1.player.mailReceived.Contains("ccVault")) || 
-                                                                      (_config.EnableVaultRoomDeskActivation && _deskCords.Contains(Game1.currentCursorTile) && Game1.player.mailReceived.Contains("ccVault")))) || 
-                (Game1.currentLocation.Name.Contains("JojaMart") && (_jojaMartCoords.Contains(Game1.currentCursorTile)) && Game1.player.mailReceived.Contains("jojaVault")) || 
-                (_config.EnableVaultRoomDeskActivation && _jojaMartCoords.Contains(Game1.currentCursorTile) && Game1.player.mailReceived.Contains("jojaVault")))
+                ((Game1.currentLocation.Name.Contains("Community") && ((_vaultCoords.Contains(Game1.currentCursorTile) && Game1.player.mailReceived.Contains("ccVault")) || (_config.EnableVaultRoomDeskActivation && _deskCords.Contains(Game1.currentCursorTile)))) || 
+                (Game1.currentLocation.Name.Contains("JojaMart") && ((_jojaMartCoords.Contains(Game1.currentCursorTile) && Game1.player.mailReceived.Contains("jojaVault")) || (_config.EnableVaultRoomDeskActivation && _jojaMartCoords.Contains(Game1.currentCursorTile))))))
             {
                 DoBanking();
             }
@@ -469,10 +469,10 @@ namespace BankOfFerngill
                 mainResponses.Add(new Response("PayBackLoan", "Make a Loan Payment"));
             }
 
-            mainResponses.Add(new Response("", "Nothing Now")); 
+            mainResponses.Add(new Response("Nothing", "Nothing Now")); 
             //Now we create the dialogue
-            Game1.currentLocation.createQuestionDialogue("Choose an Option from below.", mainResponses.ToArray(),
-                delegate(Farmer _, string whichAnswer)
+            Game1.currentLocation.createQuestionDialogue("Choose an Option from below.", mainResponses.ToArray(), BankProcessAnswer
+                /*delegate(Farmer _, string whichAnswer)
                 {
                     Game1.activeClickableMenu = whichAnswer switch
                     {
@@ -483,9 +483,41 @@ namespace BankOfFerngill
                         "PayBackLoan" => new BankMenu(Monitor, Helper.Translation, _config, _bankData, DoPayLoan, _i18N.Get("bank.payLoan.title"), FormatString(_i18N.Get("bank.payLoan.description", new { player_name = Game1.player.Name, loan_owed = _loanOwed }), 1280)),
                         _ => Game1.activeClickableMenu = null
                     };
-                });
+                }*/);
             _mobileApi?.SetAppRunning(false);
 
+        }
+
+        private void BankProcessAnswer(Farmer who, string whichAnswer)
+        {
+            if(whichAnswer == "BankInfo")
+            {
+                Game1.activeClickableMenu = new BankInfoMenu(Monitor, Helper.Translation, _bankData);
+            }
+            else if(whichAnswer == "Withdraw")
+            {
+                Game1.activeClickableMenu = new BankMenu(Monitor, Helper.Translation, _config, _bankData, DoWithdraw, _i18N.Get("bank.withdraw.title"), FormatString(_i18N.Get("bank.withdraw.description", new { player_name = Game1.player.Name, bank_balance = _bankData.MoneyInBank }), 1280));
+            }
+            else if (whichAnswer == "Deposit")
+            {
+                Game1.activeClickableMenu = new BankMenu(Monitor, Helper.Translation, _config, _bankData, DoDeposit, _i18N.Get("bank.deposit.title"), FormatString(_i18N.Get("bank.deposit.description", new { player_name = Game1.player.Name, bank_balance = _bankData.MoneyInBank }), 1280));
+            }
+            else if (whichAnswer == "GetLoan")
+            {
+                Game1.activeClickableMenu = new BankMenu(Monitor, Helper.Translation, _config, _bankData, DoGetLoan, _i18N.Get("bank.getLoan.title"), FormatString(_i18N.Get("bank.getLoan.description", new { player_name = Game1.player.Name, loan_interest = _bankData.LoanInterest, max_loan = _maxLoan, total_money_earned = Game1.player.totalMoneyEarned }), 1280));
+            }
+            else if (whichAnswer == "PayBackLoan")
+            {
+                Game1.activeClickableMenu = new BankMenu(Monitor, Helper.Translation, _config, _bankData, DoPayLoan, _i18N.Get("bank.payLoan.title"), FormatString(_i18N.Get("bank.payLoan.description", new { player_name = Game1.player.Name, loan_owed = _loanOwed }), 1280));
+            }
+            else if(whichAnswer == "Nothing")
+            {
+                return;               
+            }
+            else
+            {
+                return;
+            }
         }
         
         //Private Methods

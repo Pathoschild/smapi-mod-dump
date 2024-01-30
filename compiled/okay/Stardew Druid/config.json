@@ -14,9 +14,9 @@
   "castAnywhere": false,
   "maxDamage": false,
   "combatDifficulty": "medium",
+  "reverseJournal": false,
   "partyHats": false,
   "disableSeeds": false,
   "disableFish": false,
-  "disableWildspawn": false,
   "disableTrees": false
 }

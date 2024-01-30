@@ -128,7 +128,7 @@ namespace ScheduleViewer
             );
 
             // add some config options
-            configMenu.AddSectionTitle(ModManifest, () => this.Helper.Translation.Get("config.option.general.title"));
+            configMenu.AddSectionTitle(ModManifest, () => this.Helper.Translation.Get("config.title.general"));
             configMenu.AddKeybind(
                 ModManifest,
                 name: () => this.Helper.Translation.Get("config.option.show_schedule_key.name"),
@@ -142,7 +142,14 @@ namespace ScheduleViewer
                 getValue: () => Config.DisableHover,
                 setValue: value => Config.DisableHover = value
             );
-            configMenu.AddSectionTitle(ModManifest, () => this.Helper.Translation.Get("config.option.filter_sort.title"));
+            configMenu.AddBoolOption(
+                ModManifest,
+                name: () => this.Helper.Translation.Get("config.option.use_large_font.name"),
+                tooltip: () => this.Helper.Translation.Get("config.option.use_large_font.description"),
+                getValue: () => Config.UseLargerFontForScheduleDetails,
+                setValue: value => Config.UseLargerFontForScheduleDetails = value
+            );
+            configMenu.AddSectionTitle(ModManifest, () => this.Helper.Translation.Get("config.title.filter_sort"));
             configMenu.AddTextOption(
                 ModManifest,
                 name: () => this.Helper.Translation.Get("config.option.sort_options.name"),
@@ -247,7 +254,7 @@ namespace ScheduleViewer
             // update current location for NPCs that are ignoring their schedule
             if (Game1.IsMasterGame && Schedule.HasSchedules())
             {
-                var npcsToUpdate = Schedule.GetSchedules().Where(schedule => e.Added.Any(npc => npc.Name.Equals(schedule.Key) && schedule.Value.CurrentLocation != null));
+                var npcsToUpdate = Schedule.GetSchedules().Where(schedule => e.Added.Any(npc => npc.Name.Equals(schedule.Key)));
                 if (npcsToUpdate.Any())
                 {
                     string newLocation = Schedule.PrettyPrintLocationName(e.Location);

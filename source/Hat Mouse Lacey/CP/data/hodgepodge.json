@@ -94,6 +94,13 @@
 			}
 		},
 		{
+			"Target": "Mods/shekurika.EventLookup/locationnames",
+			"Action": "EditData",
+			"Entries": {
+				"Custom_HatMouseLacey_MouseHouse": "{{i18n:csfiles.MapPage.mouseover}}"
+			}
+		},
+		{
 			"Target": "Strings/StringsFromCSFiles",
 			"Action": "EditData",
 			"Entries": {

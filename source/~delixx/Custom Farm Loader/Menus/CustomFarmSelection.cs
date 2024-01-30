@@ -236,26 +236,26 @@ namespace Custom_Farm_Loader.Menus
             List<ModFarmType> modFarms = Game1.content.Load<List<ModFarmType>>("Data\\AdditionalFarms");
 
             foreach (ModFarmType farm in modFarms) {
-                if (CustomFarms.Exists(el => el.ID == farm.ID))
+                if (CustomFarms.Exists(el => el.ID == farm.Id))
                     continue;
 
                 ModFarms.Add(farm);
                 CustomFarm newCustomFarm = new CustomFarm(farm);
 
-                newCustomFarm.ID = farm.ID;
+                newCustomFarm.ID = farm.Id;
                 newCustomFarm.Author = findMapAuthor(farm);
                 if (farm.MapName != "")
                     newCustomFarm.Name = farm.MapName.Replace("_", " ");
 
                 if (farm.TooltipStringPath != "")
                     try { newCustomFarm.Description = Game1.content.LoadString(farm.TooltipStringPath); } catch (Exception) {
-                        Monitor.LogOnce($"Unable to load tooltip asset '{farm.TooltipStringPath}' for {farm.ID}; Resorting to default", LogLevel.Warn);
+                        Monitor.LogOnce($"Unable to load tooltip asset '{farm.TooltipStringPath}' for {farm.Id}; Resorting to default", LogLevel.Warn);
                     }
                 if (farm.IconTexture != "") {
                     try {
                         newCustomFarm.Icon = loadCroppedIcon(farm);
                     } catch (Exception) {
-                        Monitor.LogOnce($"Unable to load farm icon asset '{farm.IconTexture}' for {farm.ID}; Resorting to default", LogLevel.Warn);
+                        Monitor.LogOnce($"Unable to load farm icon asset '{farm.IconTexture}' for {farm.Id}; Resorting to default", LogLevel.Warn);
                     }
                 }
 
@@ -265,13 +265,13 @@ namespace Custom_Farm_Loader.Menus
                         if (newCustomFarm.WorldMapOverlay == null)
                             newCustomFarm.WorldMapOverlay = Helper.GameContent.Load<Texture2D>(farm.WorldMapTexture);
                     } catch (Exception) {
-                        Monitor.LogOnce($"Unable to load world map asset '{farm.WorldMapTexture}' for {farm.ID}; Resorting to default", LogLevel.Warn);
+                        Monitor.LogOnce($"Unable to load world map asset '{farm.WorldMapTexture}' for {farm.Id}; Resorting to default", LogLevel.Warn);
                     }
 
                 }
 
-                if (farm.ID.Contains("."))
-                    newCustomFarm.Author = farm.ID.Split(".").First();
+                if (farm.Id.Contains("."))
+                    newCustomFarm.Author = farm.Id.Split(".").First();
 
                 CustomFarms.Add(newCustomFarm);
             }
@@ -284,13 +284,13 @@ namespace Custom_Farm_Loader.Menus
 
             foreach (var mod in Helper.ModRegistry.GetAll().ToList()) {
                 var manifest = mod.Manifest;
-                if (manifest.UniqueID == modFarm.ID)
+                if (manifest.UniqueID == modFarm.Id)
                     return manifest.Author;
-                else if (manifest.UniqueID.Contains(modFarm.ID))
+                else if (manifest.UniqueID.Contains(modFarm.Id))
                     relatedModRating.Add(Tuple.Create(manifest.Author, 3));
-                else if (manifest.Name == modFarm.ID)
+                else if (manifest.Name == modFarm.Id)
                     relatedModRating.Add(Tuple.Create(manifest.Author, 2));
-                else if (manifest.Name.Contains(modFarm.ID))
+                else if (manifest.Name.Contains(modFarm.Id))
                     relatedModRating.Add(Tuple.Create(manifest.Author, 1));
             }
 
@@ -345,18 +345,18 @@ namespace Custom_Farm_Loader.Menus
                  { "A_TK.FarmProjectForaging/WaFFLE", new[] { "A_TK.FarmProjectForaging", "../[CP] - Waterfall Forest - Xtra Content/assets/world_map/_default_SV/all_WaFFLE.png" } }
                  };
 
-                if (!knownWorldMapExceptions.ContainsKey(modFarm.ID))
+                if (!knownWorldMapExceptions.ContainsKey(modFarm.Id))
                     return null;
 
-                var map = knownWorldMapExceptions[modFarm.ID];
+                var map = knownWorldMapExceptions[modFarm.Id];
                 var path = UtilityMisc.getRelativeModDirectory(map[0]);
 
-                Monitor.LogOnce($"Found '{modFarm.ID}' as part of known world map exceptions. Attempting hard coded load in '{path}\\{map[1]}'");
+                Monitor.LogOnce($"Found '{modFarm.Id}' as part of known world map exceptions. Attempting hard coded load in '{path}\\{map[1]}'");
 
                 try {
                     return Helper.ModContent.Load<Texture2D>($"{path}\\{map[1]}");
                 } catch (Exception ex) {
-                    Monitor.LogOnce($"Unable to load hard coded world map asset for '{modFarm.ID}'");
+                    Monitor.LogOnce($"Unable to load hard coded world map asset for '{modFarm.Id}'");
                 }
 
                 return null;
@@ -450,8 +450,8 @@ namespace Custom_Farm_Loader.Menus
                 Game1.whichFarm = int.Parse(customFarm.ID);
             } else {
                 Game1.whichFarm = 7;
-                if (ModFarms.Exists(e => e.ID == customFarm.ID))
-                    Game1.whichModFarm = ModFarms.Find(e => e.ID == customFarm.ID);
+                if (ModFarms.Exists(e => e.Id == customFarm.ID))
+                    Game1.whichModFarm = ModFarms.Find(e => e.Id == customFarm.ID);
                 else
                     Game1.whichModFarm = customFarm.asModFarmType();
             }

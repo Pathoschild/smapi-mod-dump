@@ -6,14 +6,11 @@ mods:
    Stardew Access
 
 latest commit:
-   commit 91ba47d05ab0f7bbbe2a123ca78531a5961331a3
+   commit 9354529e7b4dba7feccdda5c4d3ca49949b79273
    Author: Mohammad Shoaib Khan <shoaib.khan20@outlook.com>
-   Date:   Thu Dec 14 15:24:55 2023 +0530
+   Date:   Sun Jan 28 14:09:05 2024 +0530
    
-       Merge pull request #192 from khanshoaib3/development
+       :globe_with_meridians: Add translations for dirt, duggy hole and coal bag for MineShaft
        
-       Merge development to master for v1.5.0 release
-       close #131
-       close #122
-       close #158
+       close #121
    

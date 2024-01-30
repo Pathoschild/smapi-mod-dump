@@ -6,9 +6,9 @@ mods:
    Stardew Archipelago
 
 latest commit:
-   commit 318c66984eb2f60d895e7f0d1e268b3e7b1c2a03
+   commit 1ccf52a205176609bd4a8880e0ee2284e8bb0fba
    Author: Alex Gilbert <alexgilbert@yahoo.com>
-   Date:   Fri Dec 29 12:02:04 2023 -0500
+   Date:   Fri Jan 26 15:15:25 2024 -0500
    
-       - Version 5.1.0
+       - Add casino rarecrow check
    

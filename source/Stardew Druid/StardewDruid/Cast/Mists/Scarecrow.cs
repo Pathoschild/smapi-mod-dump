@@ -19,15 +19,11 @@ namespace StardewDruid.Cast.Mists
     internal class Scarecrow : CastHandle
     {
 
-        int waterRadius;
-
-        public Scarecrow(Vector2 target, Rite rite, int Radius)
+        public Scarecrow(Vector2 target, Rite rite)
             : base(target, rite)
         {
 
             castCost = Math.Max(12, 48 - rite.caster.FarmingLevel * 3);
-
-            waterRadius = Radius;
 
         }
 
@@ -50,10 +46,10 @@ namespace StardewDruid.Cast.Mists
 
             float animationSort;
 
-            for (int i = 0; i < waterRadius; i++)
+            for (int i = 1; i < (Mod.instance.PowerLevel() + 2); i++)
             {
 
-                List<Vector2> hoeVectors = ModUtility.GetTilesWithinRadius(targetLocation, targetVector, i + 1);
+                List<Vector2> hoeVectors = ModUtility.GetTilesWithinRadius(targetLocation, targetVector, i);
 
                 foreach (Vector2 hoeVector in hoeVectors)
                 {

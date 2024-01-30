@@ -9,6 +9,14 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 1.14.2
+
+* Whether to add an app to the Mobile Phone mod (if installed) is now
+  configurable.  (Configuration change requires a restart of the game
+  before it will take effect.)
+* The icon used with Mobile Phone can now be replaced via Content Patcher.
+  See example content pack.
+
 ## Version 1.14.1
 
 * Add Portugese translation provided by nexusmods user ericofurtado

@@ -82,7 +82,7 @@ namespace StardewArchipelago.Archipelago.Gifting
 
             var amountRemainingAfterGift = amount - amountInGift;
             var mailKey = GetMailKey(relatedGiftIds, amountRemainingAfterGift);
-            var embed = GetEmbed(item, amount);
+            var embed = GetEmbed(item, amountInGift);
             _mail.SendArchipelagoGiftMail(mailKey, receivedGift.ItemName, receivedGift.SenderName, senderGame, embed);
 
             return amountRemainingAfterGift;

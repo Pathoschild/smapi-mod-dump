@@ -6,9 +6,9 @@ mods:
    Schedule Viewer
 
 latest commit:
-   commit 2d0ed031aa89e88f6d514824b937901a592ba190
+   commit f89f2601edb548fda44bb82d963693a75606332e
    Author: BinaryLip <dev@philliploveland.dev>
-   Date:   Fri Dec 29 18:57:06 2023 -0500
+   Date:   Wed Jan 24 19:29:00 2024 -0500
    
-       Added black fade around menu.
+       Added LookupAnything integration.
    

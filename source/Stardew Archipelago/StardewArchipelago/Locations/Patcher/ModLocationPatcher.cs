@@ -92,10 +92,10 @@ namespace StardewArchipelago.Locations.Patcher
                     postfix: new HarmonyMethod(typeof(MagicModInjections), nameof(MagicModInjections.Update_ReplaceMarlonShopChecks_Postfix))
             );
             }
-            /*_harmony.Patch(
+            _harmony.Patch(
                 original: AccessTools.Constructor(_spaceCoreInterfaceType, new[] {typeof(string), typeof(int)}),
                 postfix: new HarmonyMethod(typeof(RecipeLevelUpInjections), nameof(RecipeLevelUpInjections.SkillLevelUpMenuConstructor_SendModdedSkillRecipeChecks_Postfix))
-            );*/
+            );
                 
             InjectSocializingExperienceMultiplier();
             InjectArchaeologyExperienceMultiplier();
@@ -325,6 +325,13 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.Method(specialOrderAfterEventsType, "UpdateSpecialOrders"),
                 prefix: new HarmonyMethod(typeof(SVECutsceneInjections), nameof(SVECutsceneInjections.UpdateSpecialOrders_StopDeletingSpecialOrders_Prefix))
+            );
+
+            var disableShadowAttacksType = AccessTools.TypeByName("DisableShadowAttacks");
+
+            _harmony.Patch(
+                original: AccessTools.Method(disableShadowAttacksType, "FixMonsterSlayerQuest"),
+                postfix: new HarmonyMethod(typeof(SVECutsceneInjections), nameof(SVECutsceneInjections.FixMonsterSlayerQuest_IncludeReleaseofGoals_Postfix))
             );
         }
     }

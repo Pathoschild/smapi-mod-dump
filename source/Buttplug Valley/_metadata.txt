@@ -6,9 +6,9 @@ mods:
    Buttplug Valley
 
 latest commit:
-   commit b329e1c7e79d8623ebab00f6c796716045e18e0a
+   commit f9b737977982211dde3e6a69bbb56a21ae4dc293
    Author: TheSaltyGaming <38183890+TheSaltyGaming@users.noreply.github.com>
-   Date:   Fri Sep 22 15:02:14 2023 +0200
+   Date:   Tue Jan 9 21:52:35 2024 +0100
    
-       README
+       Fixed manifest error
    

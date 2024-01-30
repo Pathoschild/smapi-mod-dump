@@ -107,18 +107,23 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer
                     throw new ArgumentOutOfRangeException();
             }
 
-            if (!_archipelago.SlotData.ExcludeGingerIsland)
+            if (_archipelago.SlotData.ExcludeGingerIsland)
             {
-                return;
+                MonsterGoals.Remove(MonsterCategory.MAGMA_SPRITES);
+                MonsterGoals.Remove(MonsterName.MAGMA_SPRITE);
+                MonsterGoals.Remove(MonsterName.MAGMA_SPARKER);
+                MonsterGoals.Remove(MonsterName.ROYAL_SERPENT);
+                MonsterGoals.Remove(MonsterName.SKELETON_MAGE);
+                MonsterGoals.Remove(MonsterName.SHADOW_SNIPER);
+                MonsterGoals.Remove(MonsterName.TIGER_SLIME);
             }
 
-            MonsterGoals.Remove(MonsterCategory.MAGMA_SPRITES);
-            MonsterGoals.Remove(MonsterName.MAGMA_SPRITE);
-            MonsterGoals.Remove(MonsterName.MAGMA_SPARKER);
-            MonsterGoals.Remove(MonsterName.ROYAL_SERPENT);
-            MonsterGoals.Remove(MonsterName.SKELETON_MAGE);
-            MonsterGoals.Remove(MonsterName.SHADOW_SNIPER);
-            MonsterGoals.Remove(MonsterName.TIGER_SLIME);
+            if (_archipelago.SlotData.SpecialOrderLocations != SpecialOrderLocations.BoardAndQi)
+            {
+                MonsterGoals.Remove(MonsterName.ROYAL_SERPENT);
+                MonsterGoals.Remove(MonsterName.SKELETON_MAGE);
+                MonsterGoals.Remove(MonsterName.SHADOW_SNIPER);
+            }
         }
 
         private Dictionary<string, int> GenerateSplitGoals()
@@ -137,6 +142,25 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer
             return goals;
         }
 
+        public bool AreAllGoalsComplete()
+        {
+            foreach (var (monster, killsRequired) in MonsterGoals)
+            {
+                if (!IsGoalComplete(monster, killsRequired))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public bool IsGoalComplete(string monsterOrCategory, int killsRequired)
+        {
+            var killCount = GetKillCount(monsterOrCategory);
+            return killCount >= killsRequired;
+        }
+
         public string GetKillListLetterContent()
         {
             var header = Game1.content.LoadString(MONSTER_HEADER).Replace('\n', '^') + "^";
@@ -147,13 +171,18 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer
 
             foreach (var (monster, killsRequired) in MonsterGoals)
             {
-                var killCount = MonstersByCategory.ContainsKey(monster) ? GetMonstersKilledInCategory(monster) : GetMonstersKilled(monster);
+                var killCount = GetKillCount(monster);
                 var killListLine = GetKillListLine(monster, killCount, killsRequired);
                 stringBuilder.Append(killListLine);
             }
 
             stringBuilder.Append(footer);
             return stringBuilder.ToString();
+        }
+
+        private int GetKillCount(string monster)
+        {
+            return MonstersByCategory.ContainsKey(monster) ? GetMonstersKilledInCategory(monster) : GetMonstersKilled(monster);
         }
 
         public int GetMonstersKilledInCategory(string category)

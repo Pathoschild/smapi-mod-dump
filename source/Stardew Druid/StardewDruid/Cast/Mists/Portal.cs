@@ -26,7 +26,7 @@ namespace StardewDruid.Cast.Mists
         public override void CastEffect()
         {
 
-            Event.World.Portal portalEvent = new(targetVector, riteData);
+            Event.Challenge.Portal portalEvent = new(targetVector, riteData);
 
             portalEvent.EventTrigger();
 

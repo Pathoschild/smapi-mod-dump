@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfitCalculator", "ProfitCalculator\ProfitCalculator.csproj", "{6496F0A5-5AAE-4889-B324-E11F7023A2CC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfitCalculatorDGA", "ProfitCalculatorDGA\ProfitCalculatorDGA.csproj", "{CAB45FFD-824A-4E75-AE50-190F2F605B98}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6496F0A5-5AAE-4889-B324-E11F7023A2CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6496F0A5-5AAE-4889-B324-E11F7023A2CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6496F0A5-5AAE-4889-B324-E11F7023A2CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6496F0A5-5AAE-4889-B324-E11F7023A2CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAB45FFD-824A-4E75-AE50-190F2F605B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAB45FFD-824A-4E75-AE50-190F2F605B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAB45FFD-824A-4E75-AE50-190F2F605B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAB45FFD-824A-4E75-AE50-190F2F605B98}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B7149C4-4258-4655-B72C-A698AD5794FE}
+	EndGlobalSection
+EndGlobal

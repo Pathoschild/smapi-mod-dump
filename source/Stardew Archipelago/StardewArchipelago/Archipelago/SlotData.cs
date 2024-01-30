@@ -18,6 +18,7 @@ namespace StardewArchipelago.Archipelago
     public class SlotData
     {
         private const string GOAL_KEY = "goal";
+        private const string FARM_TYPE_KEY = "farm_type";
         private const string STARTING_MONEY_KEY = "starting_money";
         private const string PROFIT_MARGIN_KEY = "profit_margin";
         private const string ENTRANCE_RANDOMIZATION_KEY = "entrance_randomization";
@@ -66,6 +67,7 @@ namespace StardewArchipelago.Archipelago
 
         public string SlotName { get; private set; }
         public Goal Goal { get; private set; }
+        public FarmType FarmType { get; private set; }
         public int StartingMoney { get; private set; }
         public double ProfitMargin { get; private set; }
         public EntranceRandomization EntranceRandomization { get; private set; }
@@ -115,6 +117,7 @@ namespace StardewArchipelago.Archipelago
             _console = console;
 
             Goal = GetSlotSetting(GOAL_KEY, Goal.CommunityCenter);
+            FarmType = GetSlotSetting(FARM_TYPE_KEY, FarmType.Standard);
             StartingMoney = GetSlotSetting(STARTING_MONEY_KEY, 500);
             ProfitMargin = GetSlotSetting(PROFIT_MARGIN_KEY, 100) / 100.0;
             EntranceRandomization = GetSlotSetting(ENTRANCE_RANDOMIZATION_KEY, EntranceRandomization.Disabled);
@@ -243,6 +246,37 @@ namespace StardewArchipelago.Archipelago
                 return 1;
             }
         }
+    }
+
+    public enum Goal
+    {
+        CommunityCenter = 0,
+        GrandpaEvaluation = 1,
+        BottomOfMines = 2,
+        CrypticNote = 3,
+        MasterAngler = 4,
+        CompleteCollection = 5,
+        FullHouse = 6,
+        GreatestWalnutHunter = 7,
+        ProtectorOfTheValley = 8,
+        FullShipment = 9,
+        GourmetChef = 10,
+        CraftMaster = 11,
+        Legend = 12,
+        MysteryOfTheStardrops = 13,
+        Allsanity = 24,
+        Perfection = 25,
+    }
+
+    public enum FarmType
+    {
+        Standard = 0,
+        Riverland = 1,
+        Forest = 2,
+        HillTop = 3,
+        Wilderness = 4,
+        FourCorners = 5,
+        Beach = 6,
     }
 
     public enum EntranceRandomization
@@ -424,26 +458,6 @@ namespace StardewArchipelago.Archipelago
         Hard = 3,
         Hell = 4,
         Nightmare = 5,
-    }
-
-    public enum Goal
-    {
-        CommunityCenter = 0,
-        GrandpaEvaluation = 1,
-        BottomOfMines = 2,
-        CrypticNote = 3,
-        MasterAngler = 4,
-        CompleteCollection = 5,
-        FullHouse = 6,
-        GreatestWalnutHunter = 7,
-        ProtectorOfTheValley = 8,
-        FullShipment = 9,
-        GourmetChef = 10,
-        CraftMaster = 11,
-        Legend = 12,
-        MysteryOfTheStardrops = 13,
-        Allsanity = 24,
-        Perfection = 25,
     }
 
     public enum DebrisMultiplier

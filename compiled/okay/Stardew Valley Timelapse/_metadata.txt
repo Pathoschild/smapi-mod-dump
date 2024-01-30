@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19806
+IDs: evskii.StardewTimelapse
+update keys: Nexus:19806

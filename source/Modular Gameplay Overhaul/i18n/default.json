@@ -243,7 +243,7 @@
   "prestige.dog_statue.choice": "{{profession}}'s {{ultimate}}",
   "prestige.dog_statue.fledged": "*woof* *woof* (You are now a fully-fledged {{profession}}).",
   "prestige.dog_statue.cancel": "I changed my mind...",
-  "prestige.skill_page.tooltip": "{{count}}/4 professions acquired:",
+  "prestige.skill_page.tooltip": "{{count}}/6 professions acquired:",
   "prestige.level_up.tooltip:5": "Already acquired all professions in this branch.",
   "prestige.level_up.tooltip:10": "Already acquired this profession.",
   "prestige.level_up.question": "Currently using {{oldProfession}}'s {{oldUltimate}}. Replace with {{newProfession}}'s {{newUltimate}}?",
@@ -317,7 +317,7 @@
 
   "fromcsfiles.MeleeWeapon.cs.14122": "The Prismatic Shard's colors intensify.#You feel a magnetic pull as the iridium bars magically lift from your backpack. Before your very eyes, the metal liquefies and melds around the glowing shard, gradually assuming the shape of a {{type}}.^^#     You obtain the ={{galaxyWeapon}}=  ^",
   "locations.Town.DwarfGrave.Translated": "     You translate the dwarvish:     \n\nmidst golden triplets lost in sand\nbring forth a rainbow forged from land\nbeseech the heavens! stake thy claim\nlet thunders bruit and roar thy name\nif heart be pure and conscious clear\nand faith hath neither doubt nor fear\nstars shall rain down yonder seal\nand bestow thee with heaven steel",
-  "locations.SeedShop.Yoba": "\"Yoba's blessing, true heroes it shall fortify.      In Genoristy and Compassion, virtues to comply.     With Honor, Valor, Wisdom, their spirits amplify.      A prophecy unfolds, under Yoba's watchful eye.\"",
+  "locations.SeedShop.Yoba": "\"Yoba's blessing, true heroes it shall fortify.      In Generosity and Compassion, virtues to comply.     With Honor, Valor, Wisdom, their spirits amplify.      A prophecy unfolds, under Yoba's watchful eye.\"",
   "locations.desert.noiridium": "You feel the Prismatic Shard vibrate...#But nothing happens.#Feels like something is missing.",
 
   "mail.curse.intro": "[letterbg 2]Dear @,^I must speak with you about a matter of utmost urgency.^Please come see me at the tower at your earliest convenience.^   -M. Rasmodius, Wizard[#]Wizard's Urgent Summon",
@@ -396,12 +396,12 @@
   "global.infinitycraft": "{{who}} forged an Infinity Band.",
   "resonance": "Resonance",
 
-  "dialogue.emily.gemstones.first": "Have you ever noticed how gemstones can evoke different feelings? Like the calmness of a topaz or the vibrant energy of a ruby.#$b#Gemstones have this incredible way of resonating with our energies. It's like nature's palette of emotions.",
+  "dialogue.emily.gemstones.first": "Have you ever noticed how gemstones can evoke different feelings? Like the calmness of a topaz or the fieriness of a ruby!#$b#Gemstones have this incredible way of resonating with our energies. It's like nature's palette of emotions.",
   "dialogue.emily.gemstones.second": "Every gemstone has a different vibration. When you connect with a gemstone, it resonates with the frequencies of our internal emotions.#$b#If you listen closely, you can even hear it!",
   "dialogue.emily.gemstones.third": "How do you connect with a gemstone?#$b#$h#By keeping it close to you, of course!#$b#$0$#You can wear it as a ring or a necklace and carry it around with you. It's like having a little piece of nature's harmony with you wherever you go!",
   "dialogue.emily.gemstones.fourth": "Most jewelry can only house one gemstone.#$b#Clint says it's because most metals aren't strong enough to resist the vibrations of multiple gemstones.",
   "dialogue.qi.gemstones.first": "I see you've made yourself a couple of Iridium Bands.#$b#Have you discovered their true purpose?",
-  "dialogue.qi.gemstones.second": "It may not seem like much, but combined wth some cosmic power the Iridium Band can become extraordinarily powerful...",
+  "dialogue.qi.gemstones.second": "It may not look like anything special, but given some cosmic power the Iridium Band can be extraordinarily powerful...",
 
   // json assets
   "gems.garnet.name": "Garnet",

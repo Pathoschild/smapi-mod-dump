@@ -18,6 +18,7 @@ using StardewModdingAPI;
 using MultiplayerMod;
 using HarmonyLib;
 using MultiplayerMod.Framework.Patch.Mobile;
+using MultiplayerMod.Framework.Patch.Desktop;
 
 namespace MultiplayerMod.Framework.Patch
 {
@@ -38,7 +39,6 @@ namespace MultiplayerMod.Framework.Patch
             if (Constants.TargetPlatform == GamePlatform.Android)
             {
                 Patches.Add(new TitleMenuPatch());
-                Patches.Add(new DebrisPatch());
                 Patches.Add(new Game1Patch());
                 Patches.Add(new IClickableMenuPatch());
                 Patches.Add(new MobileCustomizerPatch());
@@ -48,12 +48,13 @@ namespace MultiplayerMod.Framework.Patch
                 Patches.Add(new GameLocationPatch());
                 Patches.Add(new GameServerPatch());
                 Patches.Add(new CarpenterMenuPatch());
+                Patches.Add(new ShippingMenuPatch());
             }
             else
             {
                 Patches.Add(new CoopMenuPatch());
             }
-
+            Patches.Add(new FarmerPatch());
         }
         public void Apply()
         {

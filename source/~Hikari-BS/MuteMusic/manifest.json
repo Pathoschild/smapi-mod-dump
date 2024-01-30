@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Hikari-BS/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Mute Music",
+  "Author": "BlueSight",
+  "Version": "1.0.0",
+  "Description": "Mute music with a hotkey.",
+  "UniqueID": "BlueSight.MuteMusic",
+  "EntryDll": "MuteMusic.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "" ]
+}

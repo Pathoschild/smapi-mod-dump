@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework;
 using StardewValley.TerrainFeatures;
 using xTile.Dimensions;
 using Desert_Bloom.API;
+using Unlockable_Bundles.API;
 
 namespace Desert_Bloom.Lib
 {
@@ -34,15 +35,12 @@ namespace Desert_Bloom.Lib
             Mod = ModEntry.Mod;
             Monitor = ModEntry._Monitor;
             Helper = ModEntry._Helper;
-
-            Helper.Events.GameLoop.DayStarted += DayStarted;
         }
 
-        private static void DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
+        public static void DayStarted()
         {
-            if (!ModEntry.IsMyFarm() || !Context.IsMainPlayer)
+            if (!Context.IsMainPlayer)
                 return;
-
 
             growGrassOnNonDiggable();
             irrigateCrops();

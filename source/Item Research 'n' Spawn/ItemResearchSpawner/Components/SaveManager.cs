@@ -146,7 +146,7 @@ namespace ItemResearchSpawner.Components
 
             _helper.Data.WriteSaveData(SaveHelper.ModStatesKey, _modStates);
 
-            if (!_helper.ReadConfig<ModConfig>().UseDefaultConfig)
+            if (!_helper.ReadConfig<ModConfig>().UseDefaultBalanceConfig)
             {
                 _helper.Data.WriteGlobalData(SaveHelper.PriceConfigKey, _pricelist);
                 _helper.Data.WriteGlobalData(SaveHelper.CategoriesConfigKey, _categories);
@@ -193,7 +193,7 @@ namespace ItemResearchSpawner.Components
 
         private void LoadPricelist()
         {
-            if (!_helper.ReadConfig<ModConfig>().UseDefaultConfig)
+            if (!_helper.ReadConfig<ModConfig>().UseDefaultBalanceConfig)
             {
                 try
                 {
@@ -216,7 +216,7 @@ namespace ItemResearchSpawner.Components
 
         private void LoadCategories()
         {
-            if (!_helper.ReadConfig<ModConfig>().UseDefaultConfig)
+            if (!_helper.ReadConfig<ModConfig>().UseDefaultBalanceConfig)
             {
                 try
                 {

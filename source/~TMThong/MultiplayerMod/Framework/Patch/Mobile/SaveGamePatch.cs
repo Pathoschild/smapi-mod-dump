@@ -12,12 +12,14 @@ using HarmonyLib;
 using StardewValley;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MultiplayerMod.Framework.Patch.Mobile
 {
+    [DebuggerDisplay("{" + nameof(GetDebuggerDisplay) + "(),nq}")]
     internal class SaveGamePatch : IPatch
     {
         public readonly Type PATCH_TYPE = typeof(SaveGame);
@@ -47,6 +49,11 @@ namespace MultiplayerMod.Framework.Patch.Mobile
         public void Apply(Harmony harmony)
         {
             harmony.Patch(AccessTools.Method(PATCH_TYPE, "getLoadEnumerator"), postfix: new HarmonyMethod(this.GetType() , nameof(postfix_getLoadEnumerator)));
+        }
+
+        private string GetDebuggerDisplay()
+        {
+            return ToString();
         }
     }
 }

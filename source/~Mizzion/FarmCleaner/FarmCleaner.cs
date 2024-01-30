@@ -290,7 +290,7 @@ namespace FarmCleaner
             if (!Context.IsWorldReady || !Game1.getFarm().IsOutdoors)
                 return;
 
-            if (e.IsDown(SButton.NumPad9))
+            if (e.IsDown(SButton.NumPad3))
             {
                 if (Game1.player.currentLocation is not null && !Game1.player.currentLocation.Name.Contains("Farm"))
                     DoLocationClean();

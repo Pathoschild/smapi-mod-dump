@@ -11,12 +11,13 @@
 {
     "Name": "Misophonia Accessibility",
     "Author": "The Fluffy Robot",
-    "Version": "2.0.0",
-    "Description": "Removes the sound played when eating, along with other sounds if configured.",
+    "Version": "3.0.0",
+    "Description": "Removes the sound played when eating, along with other sounds if configured. This can also be done in the mod's UI.'",
     "UniqueID": "TheFluffyRobot.MisophoniaAccessibility",
     "EntryDll": "MisophoniaAccessibility.dll",
-    "MinimumApiVersion": "3.4.1",
+    "MinimumApiVersion": "3.18.6",
     "UpdateKeys": [
-        "Nexus:5691"
+        "Nexus:5691",
+        "GitHub:jamespfluger/Stardew-MisophoniaAccessibility"
     ]
 }

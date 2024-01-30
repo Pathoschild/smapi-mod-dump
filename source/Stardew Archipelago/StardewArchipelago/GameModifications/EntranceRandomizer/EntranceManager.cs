@@ -14,6 +14,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Extensions;
+using StardewArchipelago.Serialization;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -27,16 +28,18 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
         private readonly IMonitor _monitor;
         private readonly EquivalentWarps _equivalentAreas;
         private readonly ModEntranceManager _modEntranceManager;
+        private readonly ArchipelagoStateDto _state;
 
-        private Dictionary<string, string> _modifiedEntrances;
+        public Dictionary<string, string> ModifiedEntrances { get; private set; }
         private HashSet<string> _checkedEntrancesToday;
         private Dictionary<string, WarpRequest> generatedWarps;
 
-        public EntranceManager(IMonitor monitor, ArchipelagoClient archipelago)
+        public EntranceManager(IMonitor monitor, ArchipelagoClient archipelago, ArchipelagoStateDto state)
         {
             _monitor = monitor;
             _equivalentAreas = new EquivalentWarps(archipelago);
             _modEntranceManager = new ModEntranceManager();
+            _state = state;
             generatedWarps = new Dictionary<string, WarpRequest>(StringComparer.OrdinalIgnoreCase);
         }
 
@@ -53,8 +56,8 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
         {
             var seed = int.Parse(slotData.Seed) + (int)Game1.stats.DaysPlayed; // 998252633 on day 9
             var random = new Random(seed);
-            var numShuffles = _modifiedEntrances.Count * _modifiedEntrances.Count;
-            var newModifiedEntrances = _modifiedEntrances.ToDictionary(x => x.Key, x => x.Value);
+            var numShuffles = ModifiedEntrances.Count * ModifiedEntrances.Count;
+            var newModifiedEntrances = ModifiedEntrances.ToDictionary(x => x.Key, x => x.Value);
 
             for (var i = 0; i < numShuffles; i++)
             {
@@ -66,12 +69,12 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
                 SwapTwoEntrances(newModifiedEntrances, chosenEntrance1, chosenEntrance2);
             }
 
-            _modifiedEntrances = new Dictionary<string, string>(newModifiedEntrances, StringComparer.OrdinalIgnoreCase);
+            ModifiedEntrances = new Dictionary<string, string>(newModifiedEntrances, StringComparer.OrdinalIgnoreCase);
         }
 
         public void SetEntranceRandomizerSettings(SlotData slotData)
         {
-            _modifiedEntrances = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            ModifiedEntrances = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             if (slotData.EntranceRandomization == EntranceRandomization.Disabled)
             {
                 return;
@@ -105,8 +108,8 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
         private void AddFarmhouseToModifiedEntrances()
         {
             var farmhouseToFarm = ReverseKey(FARM_TO_FARMHOUSE);
-            _modifiedEntrances.Add(FARM_TO_FARMHOUSE, FARM_TO_FARMHOUSE);
-            _modifiedEntrances.Add(farmhouseToFarm, farmhouseToFarm);
+            ModifiedEntrances.Add(FARM_TO_FARMHOUSE, FARM_TO_FARMHOUSE);
+            ModifiedEntrances.Add(farmhouseToFarm, farmhouseToFarm);
         }
 
         private void SwapFarmhouseEntranceWithAnotherEmptyAreaEntrance(SlotData slotData)
@@ -117,11 +120,11 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             var replacementIsOutside = false;
             while (!replacementIsOutside)
             {
-                chosenEntrance = _modifiedEntrances.Keys.ToArray()[random.Next(_modifiedEntrances.Keys.Count)];
+                chosenEntrance = ModifiedEntrances.Keys.ToArray()[random.Next(ModifiedEntrances.Keys.Count)];
                 replacementIsOutside = outsideAreas.Contains(chosenEntrance.Split(TRANSITIONAL_STRING)[0]) && !chosenEntrance.Contains("67|17"); // 67|17 is Quarry Mine
             }
 
-            SwapTwoEntrances(_modifiedEntrances, chosenEntrance, FARM_TO_FARMHOUSE);
+            SwapTwoEntrances(ModifiedEntrances, chosenEntrance, FARM_TO_FARMHOUSE);
         }
 
         private static void SwapTwoEntrances(Dictionary<string, string> entrances, string entrance1, string entrance2)
@@ -153,7 +156,7 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
         private void RegisterRandomizedEntranceWithCoordinates(string originalEquivalentEntrance,
             string replacementEquivalentEntrance)
         {
-            _modifiedEntrances.Add(originalEquivalentEntrance, replacementEquivalentEntrance);
+            ModifiedEntrances.Add(originalEquivalentEntrance, replacementEquivalentEntrance);
         }
 
         public bool TryGetEntranceReplacement(string currentLocationName, string locationRequestName, Point targetPosition, out WarpRequest warpRequest)
@@ -189,9 +192,13 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
         {
             foreach (var key in keys)
             {
-                if (_modifiedEntrances.ContainsKey(key))
+                if (ModifiedEntrances.ContainsKey(key))
                 {
-                    desiredWarpName = _modifiedEntrances[key];
+                    desiredWarpName = ModifiedEntrances[key];
+                    if (!_state.EntrancesTraversed.Contains(key))
+                    {
+                        _state.EntrancesTraversed.Add(key);
+                    }
                     return true;
                 }
             }

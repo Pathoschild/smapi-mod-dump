@@ -17,49 +17,80 @@ namespace StardewDruid.Dialogue
 {
     public class Dialogue
     {
+        
         public StardewDruid.Character.Character npc;
+        
         public string returnFrom;
+        
         public Dictionary<string, List<string>> specialDialogue = new Dictionary<string, List<string>>();
 
         public virtual void DialogueApproach()
         {
-            if (this.specialDialogue.Count > 0)
+            
+            if (specialDialogue.Count > 0)
             {
-                this.DialogueSpecial();
+                
+                DialogueSpecial();
+
             }
             else
             {
                 string str = "Welcome";
-                List<Response> responseList = new List<Response>();
-                responseList.Add(new Response("none", "(say nothing)"));
+
+                List<Response> responseList = new List<Response>()
+                {
+                    new("none", "(say nothing)"),
+                
+                };
+
                 StardewDruid.Dialogue.Dialogue dialogue = this;
+
                 GameLocation.afterQuestionBehavior questionBehavior = new(AnswerApproach);
-                this.returnFrom = null;
+
+                returnFrom = null;
+
                 Game1.player.currentLocation.createQuestionDialogue(str, responseList.ToArray(), questionBehavior, npc);
+
             }
+
         }
 
         public virtual void DialogueSpecial()
         {
-            KeyValuePair<string, List<string>> keyValuePair = this.specialDialogue.First<KeyValuePair<string, List<string>>>();
+            KeyValuePair<string, List<string>> keyValuePair = specialDialogue.First();
+
             string str = keyValuePair.Value[0];
+
             List<Response> responseList = new List<Response>();
+
             for (int index = 1; index < keyValuePair.Value.Count; ++index)
+            {
                 responseList.Add(new Response("special", keyValuePair.Value[index]));
+            }
+                
             responseList.Add(new Response("none", "(say nothing)"));
+
             StardewDruid.Dialogue.Dialogue dialogue = this;
-            // ISSUE: virtual method pointer
+
             GameLocation.afterQuestionBehavior questionBehavior = new(AnswerSpecial);
+
             Game1.player.currentLocation.createQuestionDialogue(str, responseList.ToArray(), questionBehavior, npc);
+
         }
 
         public virtual void AnswerSpecial(Farmer visitor, string answer)
         {
-            KeyValuePair<string, List<string>> keyValuePair = this.specialDialogue.First<KeyValuePair<string, List<string>>>();
+            KeyValuePair<string, List<string>> keyValuePair = specialDialogue.First();
+
             if (!(answer == "special"))
+            {
                 return;
-            this.AnswerApproach(visitor, keyValuePair.Key);
-            this.specialDialogue.Remove(keyValuePair.Key);
+            }
+
+            AnswerApproach(visitor, keyValuePair.Key);
+
+            specialDialogue.Remove(keyValuePair.Key);
+
         }
 
         public virtual void AnswerApproach(Farmer visitor, string answer)

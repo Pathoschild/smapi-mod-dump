@@ -11,8 +11,10 @@
 using StardewDruid.Map;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Objects;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StardewDruid.Dialogue
 {
@@ -23,35 +25,52 @@ namespace StardewDruid.Dialogue
 
         public override void DialogueApproach()
         {
+            
             if (specialDialogue.Count > 0)
+            {
+
                 DialogueSpecial();
+
+            }
             else if (Mod.instance.QuestOpen("approachEffigy"))
             {
+                
                 Mod.instance.CompleteQuest("approachEffigy");
+
                 Mod.instance.CharacterRegister(nameof(Effigy), "FarmCave");
+
                 DialogueIntro();
+
             }
             else
             {
                 string str = "Forgotten Effigy: ^Successor.";
+
                 List<Response> responseList = new List<Response>();
+
                 List<string> stringList = QuestData.StageProgress();
-                if (stringList.Contains("fates") || stringList.Contains("Jester"))
+
+                if (stringList.Contains("fates"))
                 {
-                    responseList.Add(new Response("quests", "What threatens the valley? (quests)"));
-                    if (Context.IsMainPlayer)
-                        responseList.Add(new Response("relocate", "It's time for a change of scene"));
+
+                    responseList.Add(new Response("quests", "(quests) What threatens the valley?"));
+
+                    responseList.Add(new Response("adventure", "(adventure) It's time for a change of scene"));
+ 
                 }
+                else if (stringList.Contains("Jester"))
+                    responseList.Add(new Response("quests", "(fate) I feel a strange presence"));
                 else if (stringList.Contains("hidden"))
-                    responseList.Add(new Response("quests", "Is the valley safe? (quests)"));
+                    responseList.Add(new Response("quests", "(quests) Is the valley safe?"));
                 else if (stringList.Contains("stars"))
-                    responseList.Add(new Response("quests", "I want to master the power of the stars (lessons)"));
+                    responseList.Add(new Response("quests", "(lessons) I want to master the power of the stars."));
                 else if (stringList.Contains("mists"))
-                    responseList.Add(new Response("quests", "What can you teach me about the mists? (lessons)"));
+                    responseList.Add(new Response("quests", "(lessons) What can you teach me about the mists?"));
                 else if (stringList.Contains("weald"))
-                    responseList.Add(new Response("quests", "I want to learn more about the weald (lessons)"));
+                    responseList.Add(new Response("quests", "(lessons) I want to learn more about the weald."));
                 if (Mod.instance.CurrentProgress() > 2)
-                    responseList.Add(new Response("rites", "I have some requests (manage rites)"));
+                    responseList.Add(new Response("rites", "(talk) I have some requests."));
+
                 responseList.Add(new Response("none", "(say nothing)"));
                 Effigy effigy = this;
                 GameLocation.afterQuestionBehavior questionBehavior = new(AnswerApproach);
@@ -68,10 +87,11 @@ namespace StardewDruid.Dialogue
                     DelayedAction.functionAfterDelay(DialogueQuery, 100);
                     break;
                 case "quests":
+                case "journey":
                     new Quests(npc).Approach();
                     break;
-                case "relocate":
-                    DelayedAction.functionAfterDelay(DialogueRelocate, 100);
+                case "adventure":
+                    new Adventure(npc).Approach();
                     break;
                 case "Demetrius":
                     DelayedAction.functionAfterDelay(DialogueDemetrius, 100);
@@ -79,6 +99,7 @@ namespace StardewDruid.Dialogue
                 case "rites":
                     new Rites(npc).Approach();
                     break;
+
             }
         }
 
@@ -99,7 +120,7 @@ namespace StardewDruid.Dialogue
         {
             List<Response> responseList = new List<Response>();
             string str = "Forgotten Effigy: ^I was crafted by the first farmer of the valley, a powerful friend of the otherworld. If you intend to succeed him, you will need to learn many lessons.";
-            responseList.Add(new Response("quests", "Ok. What is the first lesson? (start journey)"));
+            responseList.Add(new Response("quests", "(start journey) Ok. What is the first lesson?"));
             responseList.Add(new Response("none", "(say nothing)"));
             Effigy effigy = this;
             GameLocation.afterQuestionBehavior questionBehavior = new(AnswerApproach);
@@ -132,53 +153,6 @@ namespace StardewDruid.Dialogue
                 Game1.drawDialogue(npc, Game1.player.caveChoice.Value != 1 ? "I can smell the crisp, sandy scent of the Calico variety of mushroom. The shamans would eat them to... enter a trance-like state." : "... ... He came in with a feathered mask on, invoked a rite of summoning, threw Bat feed everywhere, and then left just as quickly as he entered. His shamanic heritage is very... particular.");
         }
 
-        public void DialogueRelocate()
-        {
-            
-            List<Response> responseList = new List<Response>();
-            
-            string str = "Forgotten Effigy: ^Now that you have vanquished the twisted spectres of the past, it is safe for me to roam the wilds of the Valley once more. Where shall I await your command?^";
-            
-            if (npc.DefaultMap == "FarmCave")
-            {
-                responseList.Add(new Response("Farm", "My farm would benefit from your gentle stewardship. (The Effigy will target scarecrows with Rite of the Earth effects, automatically sewing seeds, fertilising and watering tilled earth around any scarecrow)"));
-
-            }
-            
-            if (npc.DefaultMap == "Farm")
-            {
-                responseList.Add(new Response("FarmCave", "Shelter within the farm cave for the while."));
-
-            }
-                
-            responseList.Add(new Response("return", "(nevermind)"));
-            GameLocation.afterQuestionBehavior questionBehavior = new(AnswerRelocate);
-            returnFrom = null;
-            Game1.player.currentLocation.createQuestionDialogue(str, responseList.ToArray(), questionBehavior, npc);
-        }
-
-        public void AnswerRelocate(Farmer effigyVisitor, string effigyAnswer)
-        {
-            string str = "(nevermind isn't a place, successor)";
-            switch (effigyAnswer)
-            {
-                case "FarmCave":
-                    str = "I will return to where I may feel the rumbling energies of the Valley's leylines.";
-                    Mod.instance.CharacterRegister(npc.Name, "FarmCave");
-                    npc.WarpToDefault();
-                    (npc as StardewDruid.Character.Effigy).SwitchDefaultMode();
-                    Mod.instance.CastMessage("The Effigy has moved to the farm cave", -1);
-                    break;
-                case "Farm":
-                    str = "I will take my place amongst the posts and furrows of my old master's home.";
-                    Mod.instance.CharacterRegister(npc.Name, "Farm");
-                    npc.WarpToDefault();
-                    (npc as StardewDruid.Character.Effigy).SwitchRoamMode();
-                    Mod.instance.CastMessage("The Effigy now roams the farm", -1);
-                    break;
-            }
-            Game1.drawDialogue(npc, str);
-        }
-
     }
+
 }

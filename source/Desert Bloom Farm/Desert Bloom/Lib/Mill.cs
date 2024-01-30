@@ -14,6 +14,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
+using System.Collections.Generic;
 
 namespace Desert_Bloom.Lib
 {
@@ -39,7 +40,16 @@ namespace Desert_Bloom.Lib
         {
             if (ModEntry.IsMyFarm()) {
                 Tileset = Helper.GameContent.Load<Texture2D>("Maps/Desert_Bloom_Tiles");
-                MsPerFrame = Game1.random.Next(10, 24);
+                var minmax = new KeyValuePair<int, int>(10, 24);
+                var weather = Game1.getFarm().GetWeather();
+                if (weather.IsLightning)
+                    minmax = new(7, 10);
+                else if (weather.IsSnowing)
+                    minmax = new(14, 18);
+                else if (weather.IsRaining)
+                    minmax = new(20, 24);
+
+                MsPerFrame = Game1.random.Next(minmax.Key, minmax.Value);
             }
         }
 
@@ -48,7 +58,7 @@ namespace Desert_Bloom.Lib
             if (!ModEntry.IsMyFarm() || Game1.currentLocation is not Farm)
                 return;
 
-            if(Tileset == null)
+            if (Tileset == null)
                 Tileset = Helper.GameContent.Load<Texture2D>("Maps/Desert_Bloom_Tiles");
 
             var b = e.SpriteBatch;

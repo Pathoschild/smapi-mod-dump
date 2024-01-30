@@ -1,0 +1,8 @@
+{
+  "ToggleKey": "LeftControl + N, RightControl + N",
+  "AutoOnTime": 0,
+  "AutoOffTime": 0,
+  "PageDelay": 250,
+  "HideEmptyTabs": true,
+  "ShowAnimalCount": false
+}

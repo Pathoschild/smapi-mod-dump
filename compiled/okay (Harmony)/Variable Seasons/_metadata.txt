@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19904
+IDs: calebstein1.StardewVariableSeasons
+update keys: GitHub:calebstein1/StardewVariableSeasons, Nexus:19904

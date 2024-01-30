@@ -58,7 +58,7 @@ namespace ichortower_HatMouseLacey
                 ref string __result)
         {
             if (!people_to_exclude.Contains(ModEntry.LCInternalName)) {
-                __result += $"{ModEntry.LCInternalName} 31 68 0 ";
+                __result += $"{ModEntry.LCInternalName} 26 70 0 ";
             }
         }
 

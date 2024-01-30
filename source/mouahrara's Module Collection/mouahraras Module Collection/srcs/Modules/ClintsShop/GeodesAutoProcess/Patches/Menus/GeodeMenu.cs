@@ -51,6 +51,10 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 				prefix: new HarmonyMethod(typeof(GeodeMenuPatch), nameof(Updateprefix))
 			);
 			harmony.Patch(
+				original: AccessTools.Method(typeof(GeodeMenu), nameof(GeodeMenu.gameWindowSizeChanged)),
+				postfix: new HarmonyMethod(typeof(GeodeMenuPatch), nameof(GameWindowSizeChangedPostfix))
+			);
+			harmony.Patch(
 				original: AccessTools.Method(typeof(GeodeMenu), nameof(GeodeMenu.readyToClose)),
 				postfix: new HarmonyMethod(typeof(GeodeMenuPatch), nameof(ReadyToClosePostfix))
 			);
@@ -67,13 +71,12 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 
 			GeodesAutoProcessUtility.InitializeAfterOpeningGeodeMenu(__instance);
 
-			int x = __instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + IClickableMenu.borderWidth / 2 + 648;
-			int y = __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + (ModEntry.Helper.Translation.Locale.Equals("ko-kr") ? 284 : 240);
+			Vector2 position = ComputeStopButtonPosition(__instance);
 			const int width = 96;
 			const int height = 52;
 
 			__instance.geodeSpot.myID = GeodeMenu.region_geodeSpot;
-			stopButton = new ClickableTextureComponent(null, new Rectangle(x, y, width, height), null, null, Game1.mouseCursors, new Rectangle(441, 411, 24, 13), 4f)
+			stopButton = new ClickableTextureComponent(null, new Rectangle((int)position.X, (int)position.Y, width, height), null, null, Game1.mouseCursors, new Rectangle(441, 411, 24, 13), 4f)
 			{
 				myID = region_stopButton,
 				rightNeighborID = -1,
@@ -111,7 +114,7 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 			if (!ModEntry.Config.ClintsShopGeodesAutoProcess)
 				return;
 
-			b.Draw(stopButton.texture, stopButton.getVector2(), stopButton.sourceRect, Color.White * (GeodesAutoProcessUtility.IsProcessing() ? 1f : 0.5f), 0.0f, Vector2.Zero, stopButton.scale * 4f, SpriteEffects.None, 0.99f);
+			b.Draw(stopButton.texture, stopButton.getVector2(), stopButton.sourceRect, Color.White * (GeodesAutoProcessUtility.IsProcessing() ? 1f : 0.5f), 0.0f, Vector2.Zero, stopButton.scale, SpriteEffects.None, (float)(0.860000014305115 + stopButton.bounds.Y / 20000.0));
 			__instance.drawMouse(b);
 		}
 
@@ -120,7 +123,7 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 			if (!ModEntry.Config.ClintsShopGeodesAutoProcess)
 				return;
 
-			stopButton.scale = (GeodesAutoProcessUtility.IsProcessing() && stopButton.bounds.Contains(x, y)) ? 1.05f : 1f;
+			stopButton.tryHover(x, y);
 		}
 
 		private static bool ReceiveLeftClickPrefix(GeodeMenu __instance, int x, int y)
@@ -173,6 +176,14 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 			return false;
 		}
 
+		private static void GameWindowSizeChangedPostfix(GeodeMenu __instance)
+		{
+			if (!ModEntry.Config.ClintsShopGeodesAutoProcess)
+				return;
+
+			stopButton.setPosition(ComputeStopButtonPosition(__instance));
+		}
+
 		private static void ReadyToClosePostfix(ref bool __result)
 		{
 			if (!ModEntry.Config.ClintsShopGeodesAutoProcess)
@@ -188,6 +199,14 @@ namespace mouahrarasModuleCollection.ClintsShop.GeodesAutoProcess.Patches
 				return;
 
 			GeodesAutoProcessUtility.CleanBeforeClosingGeodeMenu();
+		}
+
+		private static Vector2 ComputeStopButtonPosition(GeodeMenu __instance)
+		{
+			int x = __instance.xPositionOnScreen + IClickableMenu.spaceToClearSideBorder + IClickableMenu.borderWidth / 2 + 648;
+			int y = __instance.yPositionOnScreen + IClickableMenu.spaceToClearTopBorder + (ModEntry.Helper.Translation.Locale.Equals("ko-kr") ? 284 : 240);
+
+			return new Vector2(x, y);
 		}
 	}
 }

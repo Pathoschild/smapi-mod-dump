@@ -6,9 +6,9 @@ mods:
    HD Portraits
 
 latest commit:
-   commit a335433bca7187d3cc890ba56d67aa01c5462fa9
+   commit f3d203b801945ce0fcaf16fca324175136537f50
    Author: Wren <grahamgrasley@gmail.com>
-   Date:   Wed Jan 25 23:43:36 2023 -0500
+   Date:   Tue Jan 9 13:07:08 2024 -0500
    
-       hotfix
+       add safari guy support
    

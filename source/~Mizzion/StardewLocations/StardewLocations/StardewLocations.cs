@@ -39,8 +39,13 @@ namespace StardewLocations
         private string getLocationName(string name, GameLocation loc)
         {
             var i18n = Helper.Translation;
-            
-            
+            var l = Game1.player.currentLocation;
+            if (l is MineShaft shaft)
+            {
+                //Monitor.Log($"Entered Shaft: {shaft.mineLevel}");
+                return shaft.mineLevel > 120 ? $"Current Location:\n\rCavern Level: {shaft.mineLevel}.": $"Current Location:\n\rMine Level: {shaft.mineLevel}.";
+            }            
+
             return "Current Location:\n\r" + i18n.Get(name, new
             {
                 farm_name = Game1.player.farmName,
@@ -52,7 +57,7 @@ namespace StardewLocations
         /// <summary>
         /// Get the map owners name, then returns it
         /// </summary>
-        /// <param name="loc">The map</param>
+        /// <param name="loc">The Map</param>
         /// <returns></returns>
         private string GetMapOwnersName(GameLocation loc)
         {

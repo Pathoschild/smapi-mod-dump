@@ -13,6 +13,7 @@ namespace DaLion.Overhaul.Modules.Professions.Configs;
 #region using directives
 
 using DaLion.Overhaul.Modules.Professions.Events.GameLoop.DayStarted;
+using DaLion.Shared.Extensions.SMAPI;
 using DaLion.Shared.Integrations.GMCM.Attributes;
 using Newtonsoft.Json;
 
@@ -25,6 +26,7 @@ public sealed class PrestigeConfig
     private float _expBonusPerSkillReset = 0.1f;
     private PrestigeMode _prestigeMode = PrestigeMode.Standard;
     private RibbonStyle _ribbonStyle = RibbonStyle.StackedStars;
+    private IconStyle _iconStyle = IconStyle.MetallicGold;
 
     #region dropdown enums
 
@@ -58,6 +60,16 @@ public sealed class PrestigeConfig
 
         /// <summary>Use Generation 4 Pokemon contest ribbons.</summary>
         Gen4Ribbons,
+    }
+
+    /// <summary>The style used for Prestige profession icons.</summary>
+    public enum IconStyle
+    {
+        /// <summary>The original, high-contrast metallic gold style.</summary>
+        MetallicGold,
+
+        /// <summary>Posister's cleaner, hand-colored gold style.</summary>
+        PosisterGold,
     }
 
     #endregion dropdown enums
@@ -147,7 +159,28 @@ public sealed class PrestigeConfig
             }
 
             this._ribbonStyle = value;
-            ModHelper.GameContent.InvalidateCache($"{Manifest.UniqueID}/PrestigeRibbon");
+            ModHelper.GameContent.InvalidateCache($"{Manifest.UniqueID}/PrestigeRibbons");
+        }
+    }
+
+    /// <summary>
+    ///     Gets the style of the sprite used for Prestige profession variants. Accepted values: "MetallicGold", "PosisterGold".
+    /// </summary>
+    [JsonProperty]
+    [GMCMPriority(206)]
+    public IconStyle Icon
+    {
+        get => this._iconStyle;
+        internal set
+        {
+            if (value == this._iconStyle)
+            {
+                return;
+            }
+
+            this._iconStyle = value;
+            ModHelper.GameContent.InvalidateCache($"{Manifest.UniqueID}/ProfessionIcons");
+            ModHelper.GameContent.InvalidateCacheAndLocalized("LooseSprites/Cursors");
         }
     }
 

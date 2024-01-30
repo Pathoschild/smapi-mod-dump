@@ -23,7 +23,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
     public static class CraftingInjections
     {
-        private const string CRAFTING_LOCATION_PREFIX = "Craft ";
+        public const string CRAFTING_LOCATION_PREFIX = "Craft ";
 
         private static Dictionary<string, int> _carpenterRecipes = new()
         {
@@ -225,7 +225,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static void AddRecipeCheckToStock(Dictionary<ISalable, int[]> stock, string recipeName, int[] price, Hint[] activeHints)
         {
             var apLocation = $"{recipeName} Recipe";
-            if (!_locationChecker.IsLocationMissingAndExists(apLocation))
+            if (!_locationChecker.IsLocationMissing(apLocation))
             {
                 return;
             }

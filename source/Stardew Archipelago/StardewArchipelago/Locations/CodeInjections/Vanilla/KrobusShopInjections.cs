@@ -64,7 +64,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
         private static void AddStardropCheckToStock(Dictionary<ISalable, int[]> stock)
         {
             const string apLocation = "Krobus Stardrop";
-            if (!_locationChecker.IsLocationMissingAndExists(apLocation))
+            if (!_locationChecker.IsLocationMissing(apLocation))
             {
                 return;
             }

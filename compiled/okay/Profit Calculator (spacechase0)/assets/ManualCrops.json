@@ -1,0 +1,21 @@
+{
+  "215": [
+    "Tea Leaves", // Name
+    "815", // Harvest ID (Id of item that drops)
+    "20", //growth time
+    "1", //regrowth time
+    "spring summer fall", //seasons
+    "50", //sale price
+    "1500", //purchase price
+    "1", //min harvest
+    "1", //max harvest
+    "0", //max harvest increase per farming level
+    "0.0", //chance for extra harvest
+    "false", //affected by qquality
+    "false", //affected by fertilizer
+    "false", //raised crop
+    "true", //bush crop
+    "false", //paddy crop
+    "false" //giant crop
+  ]
+}

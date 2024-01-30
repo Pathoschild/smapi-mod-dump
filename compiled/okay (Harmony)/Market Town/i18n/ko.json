@@ -269,7 +269,7 @@
   "foodstore.dishday.8": "오늘 {{dishToday}} 맛있게 매콤하게 맛보자! 이건 스페셜이야.",
   "foodstore.dishday.9": "마을 이야기: 오늘의 필수 요리입니다!",
   "foodstore.config.chat": "중요하지 않은 메시지 비활성화하시겠습니까?",
-  "foodstore.thankyou": "[144] 식품 가게를 이용해 주셔서 감사합니다![144] 만약 모드를 즐기신다면, 여러분의 지원은 세상을 의미합니다. 향후 업데이트를 위해 투표하고 팔로우로 사랑을 보여주세요. 여러분의 열정이 창조성이 넘치는 주방을 바꾸는 원동력이 됩니다!!! [43] #MarketTown",
+  "foodstore.thankyou": "[144] 마켓 타운과 함께한 또 다른 업데이트! [144] 모드를 즐기시고 지속적인 향상을 기대하시나요? 팔로우와 인도스를 잊지 마세요! 여러분의 열정이 우리 선박을 전진시킵니다. [43] #MarketTown",
   "foodstore.visitoreat.0": "감사합니다!",
   "foodstore.visitoreat.1": "오 음식!!!",
   "foodstore.visitoreat.2": "맛있어 맛있어!",
@@ -592,5 +592,57 @@
   "foodstore.general.child.rude.neutral.4": "우훗, 너 내가 게임하고 있잖아 안 보이니? 재미있는 걸 가지고 오지 않는다면 나를 귀찮게 하지 마세요.",
   "foodstore.general.child.rude.neutral.5": "봐봐, 난 대화에 기분이 안 좋아. 너가 재미 없으면, 이번에는 아니야.",
   "foodstore.general.child.rude.neutral.6": "왜 아직 여기 있니? 멋진 이야기나 장난감을 가져오지 않는다면 꺼져.",
-  "foodstore.general.child.rude.neutral.7": "음, 진지하게? 재미있는 것 없이 여기 있다면, 난 관심 없어."
+  "foodstore.general.child.rude.neutral.7": "음, 진지하게? 재미있는 것 없이 여기 있다면, 난 관심 없어.",
+  "foodstore.weaponText": "대단한 것",
+  "foodstore.config.dialogue":  "대화 설정"   ,
+  "foodstore.config.disablekidask": "아이들이 놀아달라고 요청하는 것을 비활성화하세요",
+  "foodstore.config.enablesaleweapon": "무기 판매 활성화",
+  "mannequin.desc": "옷, 모자 또는 부츠를 입힐 수 있습니다.",
+  "mannequin.name.plain-male": "일반 매너퀸",
+  "mannequin.name.plain-female": "일반 여성 매너퀸",
+  "mannequin.name.magic-male": "마법 매너퀸",
+  "mannequin.name.magic-female": "마법 여성 매너퀸",
+
+  "foodstore.soldclothes": "{{locationString}}에서 {{saleString}}G에 옷을 팔았습니다",
+
+  "foodstore.soldclothesText.0": "이게 나에게 잘 어울릴 것 같아",
+  "foodstore.soldclothesText.1": "이 색이 내 스타일에 맞을까 궁금해",
+  "foodstore.soldclothesText.2": "이 조각으로 옷장 업그레이드할 때",
+  "foodstore.soldclothesText.3": "이걸 내 컬렉션에 넣지 않을 수 없어",
+  "foodstore.soldclothesText.4": "다가오는 특별한 경우에 완벽한 선택",
+  "foodstore.soldclothesText.5": "변화를 위해 새로운 것을 시도해보기",
+  "foodstore.soldclothesText.6": "시대에 영원히 묻지 않는 클래식한 조각",
+  "foodstore.config.randompurchase": "NPC가 무작위 아이템을 구매하시겠습니까?",
+  "foodstore.config.randompurchaseText": "기본적으로 NPC는 가장 가까운 아이템으로 이동합니다. True로 설정하면 검색 범위 내에서 무작위 아이템을 구매하도록 설정됩니다.",
+
+  "foodstore.config.signrange": "가게에 표지판을 표시하시겠습니까?",
+
+"foodstore.config.signrangeText": "0으로 설정하여 비활성화합니다. 이 제한은 설치된 표지로부터의 거리 내에서만 유효한 아이템을 구매하도록 허용합니다. 범위를 벗어난 아이템은 무시됩니다. 창고 내에서는 적용되지 않습니다.",
+
+"foodstore.config.doorentry": "도어 근처 NPC 생성",
+"foodstore.config.doorentryText": "기본값 True: 방문자는 현관 문 근처에 생성됩니다. 라이선스 표지 위치 근처에 NPC를 생성하려면 False로 설정하십시오.",
+
+"foodstore.config.shedvisitchance": "창고 방문 확률",
+"foodstore.config.shedvisitchanceText": "기본값 0.1. 10분마다 창고에 새로운 방문자의 확률입니다. 0.25 아래로 권장됩니다!",
+
+"foodstore.config.maxshedcapacity": "창고 내 최대 방문자 수",
+"foodstore.config.maxshedcapacityText": "기본값 3. 하나의 창고에서의 최대 수용 인원입니다. 극단적인 값은 극단적인 랙을 초래할 수 있습니다. 동시에 모든 창고의 NPC 총 수를 8 미만으로 유지하는 것이 강력히 권장됩니다.",
+
+"foodstore.config.timestay": "NPC 체류 시간",
+"foodstore.config.timestayText": "기본값 100 (1시간과 동일). 200 미만으로 권장됩니다.",
+
+"foodstore.config.openhour": "오픈 시간",
+"foodstore.config.closehour": "닫는 시간",
+
+"foodstore.config.shed": "창고 설정",
+
+"foodstore.config.shedbuychance": "방문자 구매 기회",
+"foodstore.config.shedbuychanceText": "기본값 0.2. 창고 내 아이템 구매 확률",
+
+"foodstore.config.shedminutetohungry": "구매까지의 분",
+"foodstore.config.shedminutetohungryText": "기본값 60. 각 구매 사이의 시간 제한",
+
+"foodstore.shedguestgreeting": "안녕하세요"
+
+
 }

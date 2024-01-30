@@ -11,16 +11,18 @@
 using System;
 using System.Linq;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants;
 using StardewArchipelago.Goals;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Monsters;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer
 {
     public static class MonsterSlayerInjections
     {
-        private const string MONSTER_ERADICATION_AP_PREFIX = "Monster Eradication: ";
+        public const string MONSTER_ERADICATION_AP_PREFIX = "Monster Eradication: ";
 
         private static IMonitor _monitor;
         private static IModHelper _modHelper;
@@ -28,13 +30,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer
         private static LocationChecker _locationChecker;
         private static MonsterKillList _killList;
 
-        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker)
+        public static void Initialize(IMonitor monitor, IModHelper modHelper, ArchipelagoClient archipelago, LocationChecker locationChecker, MonsterKillList killList)
         {
             _monitor = monitor;
             _modHelper = modHelper;
             _archipelago = archipelago;
             _locationChecker = locationChecker;
-            _killList = new MonsterKillList(_archipelago);
+            _killList = killList;
         }
 
         // private void gil()
@@ -59,27 +61,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer
         {
             try
             {
-                if (!_archipelago.SlotData.ExcludeGingerIsland)
-                {
-                    return true; // run original logic
-                }
-
-                var num1 = Game1.stats.getMonstersKilled("Green Slime") + Game1.stats.getMonstersKilled("Frost Jelly") + Game1.stats.getMonstersKilled("Sludge") + Game1.stats.getMonstersKilled("Tiger Slime");
-                var num2 = Game1.stats.getMonstersKilled("Shadow Guy") + Game1.stats.getMonstersKilled("Shadow Shaman") + Game1.stats.getMonstersKilled("Shadow Brute") + Game1.stats.getMonstersKilled("Shadow Sniper");
-                var num3 = Game1.stats.getMonstersKilled("Skeleton") + Game1.stats.getMonstersKilled("Skeleton Mage");
-                var num4 = Game1.stats.getMonstersKilled("Rock Crab") + Game1.stats.getMonstersKilled("Lava Crab") + Game1.stats.getMonstersKilled("Iridium Crab");
-                var num5 = Game1.stats.getMonstersKilled("Grub") + Game1.stats.getMonstersKilled("Fly") + Game1.stats.getMonstersKilled("Bug");
-                var num6 = Game1.stats.getMonstersKilled("Bat") + Game1.stats.getMonstersKilled("Frost Bat") + Game1.stats.getMonstersKilled("Lava Bat") + Game1.stats.getMonstersKilled("Iridium Bat");
-                var num7 = Game1.stats.getMonstersKilled("Duggy") + Game1.stats.getMonstersKilled("Magma Duggy");
-                Game1.stats.getMonstersKilled("Metal Head");
-                Game1.stats.getMonstersKilled("Stone Golem");
-                var monstersKilled1 = Game1.stats.getMonstersKilled("Dust Spirit");
-                var monstersKilled2 = Game1.stats.getMonstersKilled("Mummy");
-                var monstersKilled3 = Game1.stats.getMonstersKilled("Pepper Rex");
-                var num8 = Game1.stats.getMonstersKilled("Serpent") + Game1.stats.getMonstersKilled("Royal Serpent");
-                // var num9 = Game1.stats.getMonstersKilled("Magma Sprite") + Game1.stats.getMonstersKilled("Magma Sparker"); // None of these guys on exclude island
-                __result = num1 >= 1000 && num2 >= 150 && num3 >= 50 && num5 >= 125 && num6 >= 200 && num7 >= 30 && monstersKilled1 >= 500 && num4 >= 60 && monstersKilled2 >= 100 && monstersKilled3 >= 50 && num8 >= 250;// && num9 >= 150;
-
+                __result = _killList.AreAllGoalsComplete();
                 return false; // don't run original logic
             }
             catch (Exception ex)
@@ -165,6 +147,30 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer
             {
                 _monitor.Log($"Failed in {nameof(MonsterKilled_CheckGoalCompletion_Postfix)}:\n{ex}",
                     LogLevel.Error);
+                return;
+            }
+        }
+
+        // public string Name { get; set; }
+        public static void GetName_SkeletonMage_Postfix(Character __instance, ref string __result)
+        {
+            try
+            {
+                if (!__result.Equals(MonsterName.SKELETON) || __instance is not Skeleton skeleton)
+                {
+                    return;
+                }
+
+                if (skeleton.isMage.Value)
+                {
+                    __result = MonsterName.SKELETON_MAGE;
+                }
+
+                return;
+            }
+            catch (Exception ex)
+            {
+                _monitor.Log($"Failed in {nameof(GetName_SkeletonMage_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
         }

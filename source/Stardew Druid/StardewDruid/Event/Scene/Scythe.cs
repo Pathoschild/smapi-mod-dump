@@ -24,12 +24,24 @@ namespace StardewDruid.Event.Scene
         public Scythe(Vector2 target, Rite rite, Quest quest)
           : base(target, rite)
         {
+            
             questData = quest;
+
+            eventId = quest.name;
+
         }
 
         public override void EventTrigger()
         {
             Mod.instance.CompleteQuest("swordFates");
+            
+            if (!Mod.instance.characters.ContainsKey("Jester"))
+            {
+
+                return;
+
+            }
+
             //Jester character = Mod.instance.characters["Jester"] as Jester;
             Mod.instance.RegisterEvent(this, "scene");
             expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + 20.0;
@@ -72,22 +84,20 @@ namespace StardewDruid.Event.Scene
 
                 ModUtility.AnimateQuickWarp(riteData.castLocation, character.Position - new Vector2(0.0f, 32f), "Solar");
 
-                character.SwitchEventMode();
-
-                character.priorities = new() { "event", "idle", };
+                character.SwitchSceneMode();
 
                 character.eventVectors.Clear();
 
                 character.eventVectors.Add(character.Position + new Vector2(0.0f, -128f));
 
-                character.timers["busy"] = 1000;
+                character.Halt();
 
                 Mod.instance.dialogue["Jester"].specialDialogue.Add("Thanatoshi", new List<string>()
                 {
                   "I hope he found peace...",
                   "Grim. Dark. I Love this place.",
                   "Do you know this figure?",
-                  "I have a strange foreboding about "
+                  "I have a strange foreboding about this."
                 });
 
             }

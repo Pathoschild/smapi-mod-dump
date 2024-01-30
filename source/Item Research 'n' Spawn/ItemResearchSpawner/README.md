@@ -97,7 +97,7 @@ Other:
 
 ### Commands:
 __In-game only, recommended to open menu at least once!__   
-(Add "/" if use from game itself)
+<sub>Add "/" if use from game itself (__if ChatCommands installed__)<sub>
 ```
 rns_get_key //logs active item unique key
 

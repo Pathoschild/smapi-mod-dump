@@ -198,14 +198,14 @@ namespace PermanentCellar
             FarmHouse farmHouse = Utility.getHomeOfFarmer(Game1.MasterPlayer);
 
 
-            if (!Game1.newDay && Game1.player.currentLocation == farmHouse || Game1.player.currentLocation == Game1.getLocationFromName("Cellar"))
+            if (!Game1.newDay && Game1.player.currentLocation == farmHouse || Game1.player.currentLocation == Game1.getLocationFromName("Cellar") && farmHouse.upgradeLevel < 3)
             {
                 CreateCellarEntranceFH(farmHouse);
                 CreateCellarToFarmHouseWarps(farmHouse);
             }
 
             foreach (Cabin cabin in GetLocations().OfType<Cabin>())
-                if (!Game1.newDay && Game1.player.currentLocation == cabin || Game1.player.currentLocation.Name.StartsWith("Cellar"))
+                if (!Game1.newDay && Game1.player.currentLocation == cabin || Game1.player.currentLocation.Name.StartsWith("Cellar") && cabin.upgradeLevel < 3)
                 {
                     CreateCellarEntranceCB(cabin);
                     CreateCellarToCabinWarps(cabin);
@@ -240,14 +240,14 @@ namespace PermanentCellar
                 Game1.player.craftingRecipes.Add("Cask", 0);
             }
 
-            if (Game1.player.currentLocation == farmHouse)
+            if (Game1.player.currentLocation == farmHouse && farmHouse.upgradeLevel < 3)
             {
                 CreateCellarEntranceFH(farmHouse);
                 CreateCellarToFarmHouseWarps(farmHouse);
             }
 
             foreach (Cabin cabin in GetLocations().OfType<Cabin>())
-            if (Game1.player.currentLocation == cabin)
+            if (Game1.player.currentLocation == cabin && cabin.upgradeLevel < 3)
             {
                 CreateCellarEntranceCB(cabin);
                 CreateCellarToCabinWarps(cabin);
@@ -261,13 +261,13 @@ namespace PermanentCellar
         {
             FarmHouse farmHouse = Utility.getHomeOfFarmer(Game1.MasterPlayer);
 
-            if (Game1.player.currentLocation == farmHouse || Game1.player.currentLocation == Game1.getLocationFromName("Cellar") && Game1.timeOfDay != 600)
+            if (Game1.player.currentLocation == farmHouse || Game1.player.currentLocation == Game1.getLocationFromName("Cellar") && Game1.timeOfDay != 600 && farmHouse.upgradeLevel < 3)
             {
                 CreateCellarEntranceFH(farmHouse);
             }
 
             foreach (Cabin cabin in GetLocations().OfType<Cabin>())
-            if (Game1.player.currentLocation == cabin || Game1.player.currentLocation.Name.StartsWith("Cellar") && Game1.timeOfDay != 600)
+            if (Game1.player.currentLocation == cabin || Game1.player.currentLocation.Name.StartsWith("Cellar") && Game1.timeOfDay != 600 && cabin.upgradeLevel < 3)
             {
                 CreateCellarEntranceCB(cabin);
             }
@@ -279,14 +279,14 @@ namespace PermanentCellar
         {
             FarmHouse farmHouse = Utility.getHomeOfFarmer(Game1.MasterPlayer);
 
-            if (e.NewLocation == farmHouse)
+            if (e.NewLocation == farmHouse && farmHouse.upgradeLevel < 3)
             {
                 CreateCellarEntranceFH(farmHouse);
                 CreateCellarToFarmHouseWarps(farmHouse);
             }
 
             foreach (Cabin cabin in GetLocations().OfType<Cabin>())
-                if (e.NewLocation == cabin || e.NewLocation.Name.StartsWith("Cellar"))
+                if (e.NewLocation == cabin || e.NewLocation.Name.StartsWith("Cellar") && cabin.upgradeLevel < 3)
                 {
                     CreateCellarEntranceCB(cabin);
                     CreateCellarToCabinWarps(cabin);
@@ -337,7 +337,7 @@ namespace PermanentCellar
         {
             FarmHouse farmHouse = Utility.getHomeOfFarmer(Game1.MasterPlayer);
 
-            if (Context.IsWorldReady && isDFLoaded == true && e.Button == ModHelperExtensions.ReadContentPackConfig(Helper).GetValue("RemoveButton").ToObject<SButton>() && Game1.player.currentLocation == farmHouse)
+            if (Context.IsWorldReady && isDFLoaded == true && e.Button == ModHelperExtensions.ReadContentPackConfig(Helper).GetValue("RemoveButton").ToObject<SButton>() && Game1.player.currentLocation == farmHouse && farmHouse.upgradeLevel < 3)
             {
 
                 var point = Utility.Vector2ToPoint(Game1.currentCursorTile);
@@ -355,7 +355,8 @@ namespace PermanentCellar
                 }
 
             }
-            if (Context.IsWorldReady && isDFLoaded == true && e.Button == ModHelperExtensions.ReadContentPackConfig(Helper).GetValue("RemoveButton").ToObject<SButton>() && Game1.player.currentLocation == Game1.getLocationFromName("Cabin"))
+            foreach (Cabin cabin in GetLocations().OfType<Cabin>())
+            if (Context.IsWorldReady && isDFLoaded == true && e.Button == ModHelperExtensions.ReadContentPackConfig(Helper).GetValue("RemoveButton").ToObject<SButton>() && Game1.player.currentLocation == cabin && cabin.upgradeLevel < 3)
             {
                 var point = Utility.Vector2ToPoint(Game1.currentCursorTile);
 
@@ -365,10 +366,7 @@ namespace PermanentCellar
                     {
                         if (list[i].area.Contains(point))
                         {
-                            foreach (Cabin cabin in GetLocations().OfType<Cabin>())
-                            {
-                                CreateCellarEntranceCB(cabin);
-                            }
+                           CreateCellarEntranceCB(cabin);
                         }
                     }
 
@@ -472,6 +470,7 @@ namespace PermanentCellar
             {
                 farmHouse.upgradeLevel = 3;
                 farmHouse.updateFarmLayout();
+
             }
         }
 
@@ -549,10 +548,6 @@ namespace PermanentCellar
             }
 
 
-            if (farmHouse.upgradeLevel >= 3)
-            {
-                return;
-            }
 
             if (farmHouse.upgradeLevel == 0)
             {
@@ -634,7 +629,8 @@ namespace PermanentCellar
             }
 
 
-            if (cabin.upgradeLevel >= 3)
+
+            if (cabin.upgradeLevel >= 2)
             {
                 return;
             }

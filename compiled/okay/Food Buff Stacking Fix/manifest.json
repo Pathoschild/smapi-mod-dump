@@ -1,0 +1,10 @@
+{
+  "Name": "Food Buff Stacking Fix",
+  "Author": "Joreikarr",
+  "Version": "1.0.0",
+  "Description": "Fix non stacking drink and food",
+  "UniqueID": "joreikarr.foodbuffstackingfix",
+  "EntryDll": "FoodBuffStackingFix.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": []
+}

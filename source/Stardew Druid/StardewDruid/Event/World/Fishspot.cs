@@ -40,30 +40,6 @@ namespace StardewDruid.Event.World
 
         }
 
-        public override bool EventActive()
-        {
-
-            if (expireTime >= Game1.currentGameTime.TotalGameTime.TotalSeconds && targetPlayer.currentLocation == targetLocation)
-            {
-
-                return true;
-
-            }
-
-            return false;
-
-        }
-
-        public override void EventAbort()
-        {
-
-        }
-
-        public override void EventRemove()
-        {
-
-        }
-
         public override void EventInterval()
         {
 

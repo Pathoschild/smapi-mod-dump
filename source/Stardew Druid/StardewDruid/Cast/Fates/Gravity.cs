@@ -40,7 +40,7 @@ namespace StardewDruid.Cast.Fates
 
             }
 
-            Event.World.Gravity gravityEvent = new(targetVector, riteData, type);
+            Event.World.Gravity gravityEvent = new(targetVector, riteData, type,Mod.instance.DamageLevel());
 
             gravityEvent.EventTrigger();
 

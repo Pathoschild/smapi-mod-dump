@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/19794
+IDs: aedenthorn.GenieLamp
+update keys: Nexus:19794, GitHub:aedenthorn/StardewValleyMods

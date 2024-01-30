@@ -51,6 +51,7 @@ namespace StardewArchipelago.Locations.Festival
         public const string IRIDIUM_FIREPLACE = "Iridium Fireplace";
         public const string RARECROW_7 = "Rarecrow #7 (Tanuki)";
         public const string RARECROW_8 = "Rarecrow #8 (Tribal Mask)";
+        public const string RARECROW_3 = "Rarecrow #3 (Alien)";
         public const string LUPINI_YEAR_1_PAINTING_1 = "Lupini: Red Eagle";
         public const string LUPINI_YEAR_1_PAINTING_2 = "Lupini: Portrait Of A Mermaid";
         public const string LUPINI_YEAR_1_PAINTING_3 = "Lupini: Solar Kingdom";
@@ -69,7 +70,7 @@ namespace StardewArchipelago.Locations.Festival
             {FLOWER_DANCE, new[]{ DANCE_WITH_SOMEONE, RARECROW_5, TUB_O_FLOWERS_RECIPE } },
             {LUAU, new[]{ LUAU_SOUP,  } },
             {MOONLIGHT_JELLIES, new[]{ WATCH_MOONLIGHT_JELLIES, MOONLIGHT_JELLIES_BANNER, STARPORT_DECAL } },
-            {FAIR, new[]{ STRENGTH_GAME, RARECROW_1, FAIR_STARDROP } },
+            {FAIR, new[]{ STRENGTH_GAME, RARECROW_1, FAIR_STARDROP, GRANGE_DISPLAY } },
             {SPIRIT_EVE, new[]{ GOLDEN_PUMPKIN, RARECROW_2, JACK_O_LANTERN_RECIPE } },
             {FESTIVAL_OF_ICE, new[]{ FISHING_COMPETITION, RARECROW_4 } },
             {FEAST_OF_THE_WINTER_STAR, new[]{ LEGEND_OF_THE_WINTER_STAR, SECRET_SANTA } },
