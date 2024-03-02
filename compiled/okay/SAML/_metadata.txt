@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20250
+IDs: MindMeltMax.SAML
+update keys: Nexus:20250, GitHub:MindMeltMax/SAML

@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Better Signs",
   "Author": "Steve Baker",
-  "Version": "1.0.1",
+  "Version": "2.0.0",
   "Description": "Prevents overwriting displayItems on Signs",
   "UniqueID": "stebaker92.bettersigns",
   "EntryDll": "BetterSigns.dll",

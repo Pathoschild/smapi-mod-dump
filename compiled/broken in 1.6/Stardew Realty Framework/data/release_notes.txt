@@ -1,0 +1,61 @@
+﻿1.3.0
+-fixed bug with save crashing due to DGA objects
+-fixed issue with DGA Crops and Grace period
+--disabled Grace period for DGA crops
+-fixed issue with farm animals causing load crashes
+-fixed issue with back exit missing when loading a game after returning to title
+-fixed bug with Junimos always auto planting crops, regardless of the configuration setting
+
+
+1.2.0
+-re-worked fishing
+-added fishing areas in an expansion, each area can have its own fish stock
+-added a default fish stock for expansion, if an area has no stock list of its own
+-added configurable debug logging
+-fixed gui issue when placing or upgrading buildings
+-fixed issue with NPCs running at double time
+-added additional expansion map validation to remove invalid expansions
+-disabled custom buildings on vanilla farm, there are a few bugs that need fixing
+
+1.1.0
+-fixes bug with duplicate seeds types
+-re-fixed backwoods path disappearing issue
+-fixed bug with trying to BFAV code when BFAV is not installed
+-removed crash when entering the Warproom with no expansions installed
+-added global maximum number of junimos, to help performance on large expansions
+-fixed issue with path blocks not being removed from the west side of the Farm
+-enhanced expansion pack definitions to accomodate 1.6 features
+-enhanced expansion pack definitions to remove exit mapping issues
+-added GMCM option to disable the Farm West Side exits, in case of conflicts with other farm mods
+-added chatbox command '/sdr swap x y' to swap map positions of expansion. X and Y being the id numbers of the expansions to be swapped
+-fixed issue when playing not in English some expansions would not load
+
+1.0.0
+-fixed issue with Json Shuffle
+-fixed issue with Better Junimos
+--disabled most functionality of Better Junimos, expansions
+--rain hats still work
+-fixed issue with Tractor mod
+-fixed issue with Junimos not coming out until the player entered the expansion
+--added custom maximum # of Junimos and maximum radius of Junimos
+--added option to send Junimos out in the rain and winter
+-fixed issues with Fromagerie buidling on expansion land
+-fixed disappearing Fromagerie on the vanilla Farm
+-added custom Large Greenhouse
+-added custom Greenhouse
+-added fix to deal with Large Cheese production if the mod is removed
+--custom solution instead of standard JA Shuffle fix
+-upgraded compatibility to SAMPI 4.0.0
+-fixed custom building warp issues
+-added Multilingual support
+-added Generic Mod Config Menu support
+-moved Construction menu to its own separate menu
+-moved Animal Purchase menu to its own separate menu
+-added basic Deluxe Autograbber functionality
+--with Global Forage grabber
+-improved loading and saving routines
+-fixed issue with side exits of Farm not unblocking
+-fixed Linux compatability issues
+-added grace period functionality on Farm expansions
+
+0.9.1 Initial Public release

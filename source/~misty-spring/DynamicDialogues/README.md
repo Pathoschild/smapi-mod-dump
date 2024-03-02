@@ -9,27 +9,34 @@ for queries and analysis.**
 # DynamicDialogues
 A framework which allows for dynamic dialogues throughout the day.
 
+Aquí puedes encontrar la [versión en español.](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/es/README.md)
+
 
 ## Contents
 * [Features](#features)
-* [How to use](#how-to-use)
+* [Tutorials](#how-to-use)
   * [Adding dialogues](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/creating-dialogues.md)
-  * [Adding greetings](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/creating-greetings.md)
-  * [Adding questions](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/creating-questions.md)
+    * [Random dialogue](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/creating-randomized-text.md) 
+    * [Adding greetings](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/creating-greetings.md)
+    * [Adding questions](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/creating-questions.md)
   * [Adding notifications](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/creating-notifs.md)
-  * [Adding quests](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/creating-quests.md)
+  * [New event commands](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/event-commands.md)
+  * [New game state queries](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/game-state-queries.md)
+  * [New trigger actions](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/trigger-actions.md)
+  * [Menu item behavior](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/menu-item-actions.md)
 * [Known issues](#known-issues)
 
 
 ## Features
 - Custom notifications
 - Custom npc dialogues throughout the day
-  - Dialogues have several configuration options. 
-  - Both of these are time and/or location dependant.
-- Custom greetings (when npcs say hi to each other)
+  - Dialogues have several configuration options.
+  - They can also be randomized.
+- Custom greetings between NPCs
 - Custom questions (when there's no more dialogue for the day).
-- A random pool of dialogue (when all have been exhausted).
-- Adding quests via dialogue.
+- Custom event commands
+- Items can affect one another.
+- A lot more.
 
 This mod makes use of ContentPatcher to be edited.
 
@@ -50,9 +57,6 @@ If the NPC hasn't been unlocked yet (e.g kent or leo), their entries will be ski
 
 ## Known issues
 None, as of now.
-
-(Keep in mind, this framework updates its information once per game day. So, edits added OnLocationChange/OnTimeChange won't be applied.
-The framework contains a time and location condition (for the dynamic content), so this is not a problem).
 
 ------------
 

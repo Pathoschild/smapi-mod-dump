@@ -14,7 +14,7 @@ using System.Globalization;
 using Pathoschild.Stardew.Automate.Framework;
 using Pathoschild.Stardew.ChestsAnywhere.Framework.Containers;
 using Pathoschild.Stardew.Common;
-using StardewValley;
+using StardewValley.Mods;
 
 namespace Pathoschild.Stardew.ChestsAnywhere.Framework
 {
@@ -46,9 +46,6 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework
         /// <summary>Whether Automate should put items in this container.</summary>
         public AutomateContainerPreference AutomateStoreItems { get; set; } = AutomateContainerPreference.Allow;
 
-        /// <summary>Whether Automate should avoid removing the last item in a stack.</summary>
-        public bool AutomatePreventRemovingStacks { get; set; }
-
         /// <summary>The sort value (if any).</summary>
         public int? Order { get; set; }
 
@@ -73,7 +70,6 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework
             this.Order = data.ReadField($"{prefix}/{nameof(ContainerData.Order)}", int.Parse);
             this.AutomateStoreItems = data.ReadField(AutomateContainerHelper.StoreItemsKey, p => (AutomateContainerPreference)Enum.Parse(typeof(AutomateContainerPreference), p), defaultValue: AutomateContainerPreference.Allow);
             this.AutomateTakeItems = data.ReadField(AutomateContainerHelper.TakeItemsKey, p => (AutomateContainerPreference)Enum.Parse(typeof(AutomateContainerPreference), p), defaultValue: AutomateContainerPreference.Allow);
-            this.AutomatePreventRemovingStacks = data.ReadField(AutomateContainerHelper.PreventRemovingStacksKey, bool.Parse);
         }
 
         /// <summary>Save the container data to the given mod data.</summary>
@@ -89,8 +85,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework
                 .WriteField($"{prefix}/{nameof(ContainerData.Name)}", !this.HasDefaultDisplayName() ? this.Name : null)
                 .WriteField($"{prefix}/{nameof(ContainerData.Order)}", this.Order != 0 ? this.Order?.ToString(CultureInfo.InvariantCulture) : null)
                 .WriteField(AutomateContainerHelper.StoreItemsKey, this.AutomateStoreItems != AutomateContainerPreference.Allow ? this.AutomateStoreItems.ToString() : null)
-                .WriteField(AutomateContainerHelper.TakeItemsKey, this.AutomateTakeItems != AutomateContainerPreference.Allow ? this.AutomateTakeItems.ToString() : null)
-                .WriteField(AutomateContainerHelper.PreventRemovingStacksKey, this.AutomatePreventRemovingStacks ? "true" : null);
+                .WriteField(AutomateContainerHelper.TakeItemsKey, this.AutomateTakeItems != AutomateContainerPreference.Allow ? this.AutomateTakeItems.ToString() : null);
         }
 
         /// <summary>Whether the container has the default display name.</summary>
@@ -109,7 +104,6 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Framework
             this.Category = null;
             this.AutomateTakeItems = AutomateContainerPreference.Allow;
             this.AutomateStoreItems = AutomateContainerPreference.Allow;
-            this.AutomatePreventRemovingStacks = false;
         }
 
 

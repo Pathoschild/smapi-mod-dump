@@ -75,7 +75,7 @@ namespace CoreBoy.gpu.phase
             this._spriteY = 0;
             this._spriteX = 0;
             this._i = 0;
-            for (var j = 0; j < this._sprites.Length; j++)
+            for (int j = 0; j < this._sprites.Length; j++)
             {
                 this._sprites[j] = null;
             }
@@ -86,7 +86,7 @@ namespace CoreBoy.gpu.phase
 
         public bool Tick()
         {
-            var spriteAddress = 0xfe00 + (4 * this._i);
+            int spriteAddress = 0xfe00 + (4 * this._i);
             switch (this._state)
             {
                 case State.ReadingY:

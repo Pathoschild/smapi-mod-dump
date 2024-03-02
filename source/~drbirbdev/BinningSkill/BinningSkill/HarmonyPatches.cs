@@ -13,11 +13,14 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using BirbCore.Attributes;
+using BirbCore.Extensions;
 using BirbShared;
 using HarmonyLib;
+using Microsoft.Xna.Framework;
 using SpaceCore;
 using StardewValley;
 using StardewValley.Characters;
+using StardewValley.GameData.Characters;
 using StardewValley.GameData.GarbageCans;
 using StardewValley.Locations;
 
@@ -104,41 +107,67 @@ class NPC_GetGiftTasteForThisItem
 }
 
 /// <summary>
-/// No Default NPC Reactions
 /// Custom animation texture if provided
-/// No animation if search failed
+/// Garbage can level requirements
 /// Fix animation for indoor garbage cans
+/// Prestige sneak profession
+/// Custom noise level and sneak profession
+/// TODO: No animation if search failed
 /// </summary>
 [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.CheckGarbage))]
 class GameLocation_CheckGarbage
 {
-    public static void Prefix(ref bool reactNpcs)
-    {
-        reactNpcs = false;
-    }
-
-    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
         foreach (CodeInstruction instruction in instructions)
         {
-            if (instruction.LoadsConstant("LooseSprites\\Cursors2"))
+            // Level requirements
+            if (instruction.LoadsField(AccessTools.DeclaredField(typeof(Game1), nameof(Game1.netWorldState))))
             {
-                yield return new CodeInstruction(OpCodes.Ldarg_1).WithLabels(instruction.labels).WithBlocks(instruction.blocks);
-                yield return CodeInstruction.Call(typeof(GameLocation_CheckGarbage), nameof(GetAnimationReplacement));
-            }
-            else if (instruction.Calls(AccessTools.DeclaredMethod(typeof(GameLocation), nameof(GameLocation.TryGetGarbageItem))))
-            {
-                yield return instruction;
-
-                Label doTrashAnimation = new Label();
-                yield return new CodeInstruction(OpCodes.Brtrue, doTrashAnimation);
-                yield return new CodeInstruction(OpCodes.Ldc_I4_0);
+                Label meetsLevel = generator.DefineLabel();
+                yield return new CodeInstruction(OpCodes.Ldarg_1).WithLabels(instruction.ExtractLabels()).WithBlocks(instruction.ExtractBlocks());
+                yield return new CodeInstruction(OpCodes.Ldarg_3);
+                yield return CodeInstruction.Call(typeof(GameLocation_CheckGarbage), nameof(GetMeetsLevelRequirement));
+                yield return new CodeInstruction(OpCodes.Brtrue, meetsLevel);
+                yield return new CodeInstruction(OpCodes.Ldc_I4_1);
                 yield return new CodeInstruction(OpCodes.Ret);
-                yield return new CodeInstruction(OpCodes.Ldc_I4_1).WithLabels(doTrashAnimation);
+                yield return instruction.WithLabels(meetsLevel);
             }
+
+            // Fix animations for indoor garbage cans
             else if (instruction.Calls(AccessTools.DeclaredMethod(typeof(GameLocation), nameof(GameLocation.GetSeasonIndex))))
             {
-                yield return CodeInstruction.Call(typeof(GameLocation_CheckGarbage), nameof(GetAdjustedSeasonIndex));
+                yield return CodeInstruction.Call(typeof(GameLocation_CheckGarbage), nameof(GetSeasonIndexReplacement)).WithLabels(instruction.ExtractLabels()).WithBlocks(instruction.ExtractBlocks());
+            }
+
+            // Use custom animations
+            else if (instruction.LoadsConstant("LooseSprites\\Cursors2"))
+            {
+                yield return new CodeInstruction(OpCodes.Ldarg_1).WithLabels(instruction.ExtractLabels()).WithBlocks(instruction.ExtractBlocks());
+                yield return CodeInstruction.Call(typeof(GameLocation_CheckGarbage), nameof(GetAnimationReplacement));
+            }
+
+            // Do prestiged sneak profession
+            else if (instruction.IsLdarg(5))
+            {
+                Label defaultReactNpcs = generator.DefineLabel();
+                yield return new CodeInstruction(OpCodes.Ldarg_1).WithLabels(instruction.ExtractLabels()).WithBlocks(instruction.ExtractBlocks());
+                yield return new CodeInstruction(OpCodes.Ldarg_2);
+                yield return new CodeInstruction(OpCodes.Ldarg_3);
+                yield return new CodeInstruction(OpCodes.Ldarg_0);
+                yield return CodeInstruction.Call(typeof(GameLocation_CheckGarbage), nameof(TryPrestigeSneak));
+                yield return new CodeInstruction(OpCodes.Brfalse, defaultReactNpcs);
+                yield return new CodeInstruction(OpCodes.Ldc_I4_0);
+                yield return new CodeInstruction(OpCodes.Starg_S, 5);
+                yield return instruction.WithLabels(defaultReactNpcs);
+            }
+
+            // Get custom noise level and sneak profession
+            else if (instruction.Calls(AccessTools.DeclaredMethod(typeof(Utility), nameof(Utility.GetNpcsWithinDistance))))
+            {
+                yield return new CodeInstruction(OpCodes.Ldarg_1).WithLabels(instruction.ExtractLabels()).WithBlocks(instruction.ExtractBlocks());
+                yield return new CodeInstruction(OpCodes.Ldarg_3);
+                yield return CodeInstruction.Call(typeof(GameLocation_CheckGarbage), nameof(GetNpcsWithinDistanceReplacement));
             }
             else
             {
@@ -147,15 +176,25 @@ class GameLocation_CheckGarbage
         }
     }
 
-    public static string GetAnimationReplacement(string garbageCanId)
+    public static bool GetMeetsLevelRequirement(string garbageCanId, Farmer who)
     {
-        GarbageCanData allData = Game1.content.Load<GarbageCanData>("Data/GarbageCans");
+        GarbageCanData allData = DataLoader.GarbageCans(Game1.content);
         allData.GarbageCans.TryGetValue(garbageCanId, out GarbageCanEntryData data);
-        string textureName = data?.CustomFields?.GetValueOrDefault("drbirbdev.BinningSkill_AnimationTexture", null);
-        return textureName ?? "LooseSprites/Cursors2";
+        int minLevel = data?.CustomFields?.TryGetInt("drbirbdev.BinningSkill_MinLevel") ?? 0;
+        if (who.GetCustomSkillLevel("drbirbdev.Binning") < minLevel)
+        {
+            if (ModEntry.UnderleveledCheckedGarbage.Value.Contains(garbageCanId))
+            {
+                return false;
+            }
+            ModEntry.UnderleveledCheckedGarbage.Value.Add(garbageCanId);
+            Game1.showGlobalMessage(ModEntry.Instance.I18n.Get("skill.required_level", new { level = minLevel }));
+            return false;
+        }
+        return true;
     }
 
-    private static int GetAdjustedSeasonIndex(GameLocation gameLocation)
+    public static int GetSeasonIndexReplacement(GameLocation gameLocation)
     {
         if (gameLocation.IsOutdoors || gameLocation is Summit)
         {
@@ -163,60 +202,87 @@ class GameLocation_CheckGarbage
         }
         return (int)Season.Spring;
     }
+
+    public static string GetAnimationReplacement(string garbageCanId)
+    {
+        GarbageCanData allData = DataLoader.GarbageCans(Game1.content);
+        allData.GarbageCans.TryGetValue(garbageCanId, out GarbageCanEntryData data);
+        string textureName = data?.CustomFields?.GetValueOrDefault("drbirbdev.BinningSkill_AnimationTexture", null);
+        return textureName ?? "LooseSprites/Cursors2";
+    }
+
+    public static bool TryPrestigeSneak(string garbageCanId, Vector2 tile, Farmer who, GameLocation location)
+    {
+        if (!who.HasProfession("Sneak", true))
+        {
+            return false;
+        }
+
+        GarbageCanData allData = DataLoader.GarbageCans(Game1.content);
+        allData.GarbageCans.TryGetValue(garbageCanId, out GarbageCanEntryData data);
+        int noiseLevel = data?.CustomFields?.TryGetInt("drbirbdev.BinningSkill_NoiseLevel") ?? 7;
+        noiseLevel += ModEntry.Config.PrestigeNoiseIncrease;
+
+        foreach (NPC villager in Utility.GetNpcsWithinDistance(tile, noiseLevel, location))
+        {
+            if (villager is Horse)
+            {
+                continue;
+            }
+
+            CharacterData charData = villager.GetData();
+            int amount = charData?.CustomFields?.TryGetInt("drbirbdev.BinningSkill_DumpsterDivePrestigeSneakFriendshipEffect") ?? 25;
+            int? emote = charData?.CustomFields?.TryGetInt("drbirbdev.BinningSkill_DumpsterDivePrestigeSneakEmote");
+            Dialogue dialogue = villager.TryGetDialogue("drbirbdev.BinningSkill_DumpsterDivePrestigeSneakComment");
+            switch (villager.Age)
+            {
+                case 2:
+                    emote ??= 56;
+                    dialogue ??= new Dialogue(villager, ModEntry.Instance.I18n.Get("sneak.prestige.dialogue.child"));
+                    break;
+                case 1:
+                    emote ??= 32;
+                    dialogue ??= new Dialogue(villager, ModEntry.Instance.I18n.Get("sneak.prestige.dialogue.teen"));
+                    break;
+                default:
+                    emote ??= 20;
+                    dialogue ??= new Dialogue(villager, ModEntry.Instance.I18n.Get("sneak.prestige.dialogue.adult"));
+                    break;
+            }
+
+            villager.doEmote(emote.Value);
+            who.changeFriendship(amount, villager);
+            villager.setNewDialogue(dialogue, true, true);
+            Game1.drawDialogue(villager);
+            break;
+        }
+        return true;
+    }
+
+    public static IEnumerable<NPC> GetNpcsWithinDistanceReplacement(Vector2 centerTile, int tilesAway, GameLocation location, string garbageCanId, Farmer who)
+    {
+        GarbageCanData allData = DataLoader.GarbageCans(Game1.content);
+        allData.GarbageCans.TryGetValue(garbageCanId, out GarbageCanEntryData data);
+        int noiseLevel = data?.CustomFields?.TryGetInt("drbirbdev.BinningSkill_NoiseLevel") ?? 7;
+        if (who.HasProfession("Sneak"))
+        {
+            noiseLevel -= ModEntry.Config.NoiseReduction;
+        }
+        return Utility.GetNpcsWithinDistance(centerTile, noiseLevel, location);
+    }
 }
 
 /// <summary>
-/// Garbage Can Level Requirements
-/// Sneak Profession
-/// Custom Noise Level
 /// Binning Level Bonuses
 /// Mega, DoubleMega Level Requirements
-/// Change return meaning
-///  true = not caught, high enough level
-///  false = caught, level too low
 /// </summary>
 [HarmonyPatch(typeof(GameLocation), nameof(GameLocation.TryGetGarbageItem))]
 class GameLocation_TryGetGarbageIItem
 {
-    public static bool Prefix(string id, ref double dailyLuck, ref Random garbageRandom, GameLocation __instance, ref bool __state)
+    public static void Prefix(ref double dailyLuck)
     {
         try
         {
-            __state = true;
-
-            // Check garbage can level
-            GarbageCanData allData = Game1.content.Load<GarbageCanData>("Data/GarbageCans");
-            allData.GarbageCans.TryGetValue(id, out GarbageCanEntryData data);
-            _ = int.TryParse(data?.CustomFields?.GetValueOrDefault("drbirbdev.BinningSkill_MinLevel", null), out int minLevel);
-            if (Game1.player.GetCustomSkillLevel("drbirbdev.Binning") < minLevel)
-            {
-                Game1.showGlobalMessage(ModEntry.Instance.I18n.Get("skill.required_level", new { level = minLevel }));
-                garbageRandom = Utility.CreateDaySaveRandom(777 + Utility.GetDeterministicHashCode(id));
-                __state = false;
-                return false;
-            }
-
-            // Sneak Profession, custom sound range
-            int noiseLevel = int.TryParse(data?.CustomFields?.GetValueOrDefault("drbirbdev.BinningSkill_NoiseLevel"), out noiseLevel) ? noiseLevel : 7;
-            if (Game1.player.HasProfession("Sneak", true))
-            {
-                noiseLevel += ModEntry.Config.PrestigeNoiseIncrease;
-            }
-            else if (Game1.player.HasProfession("Sneak"))
-            {
-                noiseLevel -= ModEntry.Config.NoiseReduction;
-            }
-            if (noiseLevel > 0 && Utility.isThereAFarmerOrCharacterWithinDistance(Game1.player.Tile, noiseLevel, __instance) is NPC npc && npc is not Horse)
-            {
-                if (DoCaughtReactions(npc))
-                {
-                    garbageRandom = Utility.CreateDaySaveRandom(777 + Utility.GetDeterministicHashCode(id));
-                    __state = false;
-                    __instance.playSound("trashcan");
-                    return false;
-                }
-            }
-
             // Alter dailyLuck, adding more luck depending on level
             dailyLuck += ModEntry.Config.PerLevelBaseDropChanceBonus * Game1.player.GetCustomSkillLevel("drbirbdev.Binning");
 
@@ -225,14 +291,12 @@ class GameLocation_TryGetGarbageIItem
         {
             Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
         }
-        return true;
     }
 
-    public static void Postfix(ref Item item, ref GarbageCanItemData selected, ref bool __result, bool __state)
+    public static void Postfix(ref Item item, ref GarbageCanItemData selected)
     {
         try
         {
-            __result = __state;
             if (selected == null)
             {
                 return;
@@ -249,59 +313,5 @@ class GameLocation_TryGetGarbageIItem
         {
             Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
         }
-    }
-
-    // TODO: Reverse Patch for vanilla behavior
-    public static bool DoCaughtReactions(NPC npc)
-    {
-        bool isNegativeReaction = true;
-        if (npc.Name.Equals("Linus"))
-        {
-            npc.doEmote(32);
-            npc.setNewDialogue("Data\\ExtraDialogue:Town_DumpsterDiveComment_Linus", add: true, clearOnMovement: true);
-            Game1.player.changeFriendship(5, npc);
-            Game1.Multiplayer.globalChatInfoMessage("LinusTrashCan");
-            isNegativeReaction = false;
-        }
-        else if (Game1.player.HasProfession("Sneak", true))
-        {
-            npc.doEmote(32);
-            Game1.player.changeFriendship(25, npc);
-            switch (npc.Age)
-            {
-                case 1:
-                    npc.setNewDialogue(ModEntry.Instance.I18n.Get("sneak.prestige.dialogue.teen"), true, true);
-                    break;
-                case 2:
-                    npc.setNewDialogue(ModEntry.Instance.I18n.Get("sneak.prestige.dialogue.child"), true, true);
-                    break;
-                default:
-                    npc.setNewDialogue(ModEntry.Instance.I18n.Get("sneak.prestige.dialogue.adult"), true, true);
-                    break;
-            }
-            isNegativeReaction = false;
-        }
-        else
-        {
-            switch (npc.Age)
-            {
-                case 2:
-                    npc.doEmote(28);
-                    npc.setNewDialogue("Data\\ExtraDialogue:Town_DumpsterDiveComment_Child", add: true, clearOnMovement: true);
-                    break;
-                case 1:
-                    npc.doEmote(8);
-                    npc.setNewDialogue("Data\\ExtraDialogue:Town_DumpsterDiveComment_Teen", add: true, clearOnMovement: true);
-                    break;
-                default:
-                    npc.doEmote(12);
-                    npc.setNewDialogue("Data\\ExtraDialogue:Town_DumpsterDiveComment_Adult", add: true, clearOnMovement: true);
-                    break;
-            }
-            Game1.player.changeFriendship(-25, npc);
-        }
-        Game1.drawDialogue(npc);
-
-        return isNegativeReaction;
     }
 }

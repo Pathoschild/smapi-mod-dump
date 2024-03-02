@@ -6,9 +6,9 @@ mods:
    Fireworks Festival
 
 latest commit:
-   commit 00e69a2949fceb0dffbd9e10ccdb26327e81df46
+   commit 21566b95e21a922f53201f44455f6c38dbefec9b
    Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
-   Date:   Sun Mar 19 19:48:55 2023 -0400
+   Date:   Fri Mar 1 19:20:01 2024 -0500
    
-       mousey fixes for shop issues, prep for release
+       Finally compiles in 1.6, partially finished updating
    

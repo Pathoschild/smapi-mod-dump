@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <EnableHarmony>true</EnableHarmony>
   </PropertyGroup>
 
@@ -11,6 +11,5 @@
   <ItemGroup>
     <Folder Include="i18n\" />
     <Folder Include="assets\" />
-    <Folder Include="assets\json-assets\" />
   </ItemGroup>
 </Project>

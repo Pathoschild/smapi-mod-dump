@@ -27,6 +27,9 @@ namespace Pathoschild.Stardew.TractorMod.Framework
         /// <summary>The speed modifier when riding the tractor.</summary>
         public int TractorSpeed { get; set; } = -2;
 
+        /// <summary>Which sound effects to play while riding the tractor.</summary>
+        public TractorSoundType SoundEffects { get; set; } = TractorSoundType.Tractor;
+
         /// <summary>The magnetic radius when riding the tractor.</summary>
         public int MagneticRadius { get; set; } = 384;
 
@@ -34,11 +37,11 @@ namespace Pathoschild.Stardew.TractorMod.Framework
         public int BuildPrice { get; set; } = 150000;
 
         /// <summary>The materials needed to to buy the garage.</summary>
-        public Dictionary<int, int> BuildMaterials { get; set; } = new()
+        public Dictionary<string, int> BuildMaterials { get; set; } = new()
         {
-            [Object.ironBar] = 20,
-            [Object.iridiumBar] = 5,
-            [787/* battery pack */] = 5
+            [Object.ironBarQID] = 20,
+            [Object.iridiumBarQID] = 5,
+            ["(O)787"/* battery pack */] = 5
         };
 
         /// <summary>Whether the player can summon a temporary tractor without building a garage first.</summary>

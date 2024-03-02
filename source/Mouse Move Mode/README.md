@@ -6,54 +6,74 @@ for queries and analysis.**
 
 ----
 
-# RightClickMoveMode
-  A simple mod for Stadrew valley that player can use right click to move
-  
-*Feature:*
-- Right-click or Holding right mouse  will make player move 
-- Right-click too far from player will no longer perform any action 
+# Mouse mode mode
+Mouse mode mode is a quality of life mods for Stardew valley providing mouse click to move. Also add some function that should come along with the game  
 
-- Press *G* for On/Off the Right mouse move mode (auto On)
-  
-# Extended mouse function mode
-  Add some function that should come along with the game  
-  
-*Feature:*
+## Why?
+> As the game map is big, WASD take quite of an effort for a relax farming game. Also, the mouse just stuck around the player all the time.
+
+By using mouse for transportation, it is possible to consumming most of the game content with only mouse.
+This also providing acessbility feature needed, As some player can't really play the game with keyboard.
+
+Thank you for your the kind words
+![image](https://github.com/nghiango1/RightClickMoveMode/assets/31164703/2a8dc82e-ba39-446b-9a09-cc695934c8fb)
+
+## Feature
+- Right-click or Holding right mouse will make player move 
+- Right-click too far from player will no longer perform any action 
 - Add Ctrl + Wheel to Zoom in and Zoom out 
 - Add Right Alt + Enter to change Window mode to Full screen mode (Left alt + Enter to fullscreen is already the game feature) 
 
-- Press *H* for On/off Extended mouse function mode (auto On)
-  
-# Build
+## How to use - Quick start guide
+> You should read the Stardrew Valley dedicated Modding wiki page here for step by step guilde https://stardewvalleywiki.com/Modding:Player_Guide/Getting_Started
 
-- Install NET 5.0 (Need manual download)
-- Currently using VS2022, VS2019 to build with current source have no problem
+- Install latest SMAPI from https://smapi.io/
+- Get build file from Nexus https://www.nexusmods.com/stardewvalley/mods/2614?tab=files
+- Copy build file into game `mods` foldder, which should available at game folder `C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley`
 
-> I have to create new project using VS2019 Community for NET 5.0 support
-  
-# Version
-## Current : Update project sln to NET 5.0 and Harmony 2
--  After a while, I found out that I can't even complie the code any more
--  Refactor some of my code, but mainly change still forcus on library change
+## How to contributing - Build the source code and modify
 
-## 1.1 : Source code release version
--  Extended mouse function mode added (press *H* to On/Off, auto On when open)
--  Organize code for futher update
+### Windows
 
-## Pre source code release
-   This not come with the souce code, but you can have \*.dll file from https://www.nexusmods.com/stardewvalley/mods/2614 along with Zip file
+Preparing environment
+- Install NET 5.0 (Need manual download from https://dotnet.microsoft.com/en-us/download/dotnet/5.0 , as this no logner support version)
+- Install Visual Studio 2019 (or VS2019) as your IDE as this is the only Version that support NET 5.0 (It seem that VS2022 can still build from this source, but you can't create a new NET5.0 solution)
+- Get source code (it can be done using `git clone` or you can just download it), still you don't know about `git` then it quite hard to make contributing.
+- Open the project `MouseMoveMode.sln` file from VS2019
 
-### 1.0.2
-- Fix bug where you can't uses right-mouse nomally (eg: Can't split item in inventory, etc...) 
-- Slightly smooth movement
-- Change right-click interaction when clicking to far from player
+Extra: install Nuget package (the project file already come with it, this should be automated if you using Visual Studio IDE)
+- Lib.Harmony Version="2.2.2"
+- Pathoschild.Stardew.ModBuildConfig Version="4.1.1"
 
-### 1.0.1
-- Turn off debug mode
+If you are using VS2019, the Debug and Build step is pretty straight forward. I assumming you already successfully open project `MouseMoveMode.sln` file from VS2019 and have all the Nuget package inplace
+- Build: Press `Build` button
+- Debug: Same thing, press `Debug` button
 
-### 1.0
-- Out pre-release
+> **Attention:** Most of the debug config come from `Pathoschild.Stardew.ModBuildConfig` Nuget package that automate the config step, so if anything goes wrong (The debug not started, game doesn't show up, etc), try:
+> - Install the game and steam in default location
+> - Remove and Reinstall `Pathoschild.Stardew.ModBuildConfig` Nuget package from the project
 
-### 0.1
-- Pre-release
+### Linux
 
+> I really simplify the Linux experience here. For a full guide, go to [my other repo](https://github.com/nghiango1/hello/tree/main/c%23)
+
+It quite impossible even for me to get the debug working, so we can skip it and try relying on `log` that provided by SMAPI. If you know how to then let me know.
+
+Preparing environment
+- Download Net 5.0 CLI, you can use scripted install and get the version name from https://dotnet.microsoft.com/en-us/download/dotnet/5.0 , here is a example
+  ```
+  ./dotnet-install.sh --version 5.0.408 
+  ```
+- Update your PATH to have the `dotnet` executable avaiable
+- (Optional) Install Nuget pakage manually using `dotnet` CLI
+
+Build
+- Clone the code
+- `dotnet build`
+
+Debug
+- The build file should be in release folder, manually copy and extract the build `.zip` file to the game `Mod` folder path
+- Start the game
+- Check the SMAPI log for testing the mod.
+
+> If build step fail, try install the game, steam in default location. It likely that the `Pathoschild.Stardew.ModBuildConfig` Nuget package can't detect game location.

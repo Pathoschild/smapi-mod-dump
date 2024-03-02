@@ -10,6 +10,7 @@
 
 namespace ForageFantasy
 {
+    using global::ForageFantasy.SubModules;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using StardewModdingAPI;
@@ -169,16 +170,16 @@ namespace ForageFantasy
             try
             {
                 // CommonFiddleheadFern and ForageSurvivalBurger
-                mod.Helper.Content.InvalidateCache("Data/CraftingRecipes");
+                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/CraftingRecipes");
 
                 // CommonFiddleheadFern
-                mod.Helper.Content.InvalidateCache("Data/Locations");
+                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/Locations");
 
                 // ForageSurvivalBurger
-                mod.Helper.Content.InvalidateCache("Data/CookingRecipes");
+                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/CookingRecipes");
 
                 // Tapper days needed changes
-                mod.Helper.Content.InvalidateCache("Data/ObjectInformation");
+                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/ObjectInformation");
             }
             catch (Exception e)
             {

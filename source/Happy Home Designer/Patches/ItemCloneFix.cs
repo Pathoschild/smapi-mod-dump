@@ -10,6 +10,7 @@
 
 using HarmonyLib;
 using StardewValley;
+using StardewValley.Objects;
 using System;
 
 namespace HappyHomeDesigner.Patches
@@ -18,7 +19,14 @@ namespace HappyHomeDesigner.Patches
 	{
 		public static void Apply(Harmony harmony)
 		{
-			harmony.Patch(typeof(Farmer).GetMethod(nameof(Farmer.reduceActiveItemByOne)), new(typeof(ItemCloneFix), nameof(Prefix)));
+			harmony.Patch(
+				typeof(Farmer).GetMethod(nameof(Farmer.reduceActiveItemByOne)), 
+				prefix: new(typeof(ItemCloneFix), nameof(Prefix)));
+
+			harmony.Patch(
+				typeof(Furniture).GetMethod(nameof(Furniture.performObjectDropInAction)), 
+				prefix: new(typeof(ItemCloneFix), nameof(BeforeDropIn)), 
+				postfix: new(typeof(ItemCloneFix), nameof(AfterDropIn)));
 		}
 
 		private static bool Prefix(Farmer __instance)
@@ -30,6 +38,20 @@ namespace HappyHomeDesigner.Patches
 				__instance.TemporaryItem = null;
 
 			return false;
+		}
+
+		private static void BeforeDropIn(Item dropInItem, Farmer who, out Furniture __state)
+		{
+			__state = who.TemporaryItem as Furniture;
+		}
+
+		private static void AfterDropIn(Item dropInItem, Farmer who, Furniture __state)
+		{
+			if (__state is not null && who.TemporaryItem != __state)
+			{
+				__state.Stack = 1;
+				who.TemporaryItem = __state;
+			}
 		}
 	}
 }

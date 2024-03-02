@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/mouahrara/FlipBuildings
+**
+*************************************************/
+
+{
+	"Carpenter_Flip": "Espelhar Construções",
+	"Carpenter_SelectBuilding_Flip": "Selecione uma construção para espelhar",
+	"Carpenter_CannotFlip": "Esta construção não pode ser espelhada" ,
+	"Carpenter_CannotFlip_Permission": "Você não tem permissão para espelhar esta construção",
+	"Carpenter_CannotFlip_PlayerHere": "Não é possível espelhar enquanto um jogador estiver sobre a construção"
+}

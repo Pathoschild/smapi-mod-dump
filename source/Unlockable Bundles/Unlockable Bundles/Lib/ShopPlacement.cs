@@ -26,6 +26,8 @@ using Unlockable_Bundles.API;
 
 namespace Unlockable_Bundles.Lib
 {
+    //Makes sure bundle shops are placed every DayStart and LocationListChanged
+    //DayEnding shop removal happens in SaveDataEvents
     public class ShopPlacement
     {
         public static Mod Mod;
@@ -166,7 +168,7 @@ namespace Unlockable_Bundles.Lib
         private static void validatePrice(UnlockableModel u, Dictionary<string, int> price)
         {
             foreach (var el in price) {
-                if (el.Key.ToLower() == "money")
+                if (el.Key.ToLower().Trim() == "money")
                     continue;
 
                 foreach (var entry in el.Key.Split(",")) {

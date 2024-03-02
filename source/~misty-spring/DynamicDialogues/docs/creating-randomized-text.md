@@ -28,6 +28,6 @@ Example:
 ```
 
 The mod will grab all dialogues that start with 'random', add them to a pool, and choose randomly.
-In this case, "Random.001" has a 30% chance of being chosen
+In this case, "Random.001" has a 30% chance of being chosen.
 
 After a dialogue has been used, it won't appear again for the day.

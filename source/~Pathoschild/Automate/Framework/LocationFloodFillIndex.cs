@@ -16,7 +16,6 @@ using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
-using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 using Object = StardewValley.Object;
@@ -92,7 +91,7 @@ namespace Pathoschild.Stardew.Automate.Framework
             // terrain features
             foreach ((Vector2 originTile, TerrainFeature feature) in location.terrainFeatures.Pairs)
             {
-                if (!this.TryGetData("terrain feature", location, originTile, () => this.GetTilesIn(this.AbsoluteToTileArea(feature.getBoundingBox(originTile))), out Vector2[]? tiles))
+                if (!this.TryGetData("terrain feature", location, originTile, () => this.GetTilesIn(this.AbsoluteToTileArea(feature.getBoundingBox())), out Vector2[]? tiles))
                     continue;
 
                 foreach (Vector2 tile in tiles)
@@ -110,14 +109,11 @@ namespace Pathoschild.Stardew.Automate.Framework
             }
 
             // buildings
-            if (location is BuildableGameLocation buildableLocation)
+            foreach (Building building in location.buildings)
             {
-                foreach (Building building in buildableLocation.buildings)
-                {
-                    Rectangle tileArea = new(building.tileX.Value, building.tileY.Value, building.tilesWide.Value, building.tilesHigh.Value);
-                    foreach (Vector2 tile in this.GetTilesIn(tileArea))
-                        yield return new(tile, building);
-                }
+                Rectangle tileArea = new(building.tileX.Value, building.tileY.Value, building.tilesWide.Value, building.tilesHigh.Value);
+                foreach (Vector2 tile in this.GetTilesIn(tileArea))
+                    yield return new(tile, building);
             }
         }
 

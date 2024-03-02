@@ -40,6 +40,8 @@ namespace StardewDruid.Event.Challenge
         public override void EventTrigger()
         {
 
+            cues = DialogueData.DialogueScene(questData.name);
+
             monsterHandle = new(targetVector, riteData.castLocation);
 
             monsterHandle.spawnIndex = new() { 2, 3 };
@@ -71,7 +73,8 @@ namespace StardewDruid.Event.Challenge
 
                 if (monsterHandle.monsterSpawns.Count <= 3)
                 {
-                    CastVoice("aye... maybe as strong as Deep himself...");
+
+                    DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 991);
 
                     List<int> intList = new List<int>() { 797, 166 };
 
@@ -86,7 +89,8 @@ namespace StardewDruid.Event.Challenge
                 }
                 else if (monsterHandle.monsterSpawns.Count <= 7)
                 {
-                    CastVoice("eh. take this an sod off.");
+
+                    DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 992);
 
                     List<int> intList = new List<int>() { 265, 275 };
 
@@ -101,7 +105,7 @@ namespace StardewDruid.Event.Challenge
                 else
                 {
 
-                    CastVoice("haha! not good enough for the Lady");
+                    DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 993);
 
                 }
 
@@ -137,27 +141,12 @@ namespace StardewDruid.Event.Challenge
 
             }
 
+            DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, activeCounter);
+
             if (activeCounter < 7)
             {
                 switch (activeCounter)
                 {
-                    case 1:
-
-                        CastVoice("oi matey!");
-
-                        break;
-
-                    case 3:
-
-                        CastVoice("ya dare wield the Lady's power here?");
-
-                        break;
-
-                    case 5:
-
-                        CastVoice("the deep one take you!");
-
-                        break;
 
                     case 6:
 
@@ -184,45 +173,12 @@ namespace StardewDruid.Event.Challenge
 
             if (activeCounter <= 56) { monsterHandle.SpawnInterval(); } else { monsterHandle.SpawnCheck(); }
 
-            /*"There's nay a way to modify me greatness",
-            "I've been here chatting every minute,",
-            "Of every day for months!",
-            "My friend gave me the old Mariner role!",
-            "Now I can perpetuate the same dumb interjections,",
-            "to every newb that walks over here!",
-            "!WherePendant",
-            "You're not ready for it",
-            "!GetLost",
-            "What do you mean my feet aren't natural?",
-            "No one asked for your critique, feet hater!",
-            "Making a fuss for attention is expected here",
-            "It's the only thing I know I'm good at",
-            "I don't care if I asked you to comment! Bigot!",
-            "I'm not much of a fighter myself.",
-            "Pr'fer to just ban folks I don't agree wid.",*/
-
             switch (activeCounter)
             {
-
-                case 12: CastVoice("ya can't touch me! I be a reflection!", 3000); break;
-
-                case 15: CastVoice("this ere beach is for private members!", 3000); break;
 
                 case 18: CannonsAtTheReady(); break;
                 case 20: CannonsToFire(); break;
                 case 21: CannonsToImpact(); break;
-
-                case 24: CastVoice("the Lady is not a friend to the drowned", 3000); break;
-
-                case 27: CastVoice("she buried us with our boats on this shore", 3000); break;
-
-                case 30: CastVoice("but soon Lord Deep will avenge us!", 3000); break;
-
-                case 33: CastVoice("he'll swallow the ol' sea witch whole", 3000); break;
-
-                case 36: CastVoice("then the waves will no longer wash our tattered bones", 3000); break;
-
-                case 39: CastVoice("an we'll sink into the warm embrace of the earth", 3000); break;
 
                 case 42: CannonsAtTheReady(); break;
                 case 44: CannonsToFire(); break;
@@ -274,8 +230,7 @@ namespace StardewDruid.Event.Challenge
 
         public void CannonsAtTheReady()
         {
-
-            CastVoice("CANNONS AT THE READY!", 3000);
+            DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 994);
 
             foreach (StardewValley.Monsters.Monster monsterSpawn in monsterHandle.monsterSpawns)
             {
@@ -309,7 +264,7 @@ namespace StardewDruid.Event.Challenge
         public void CannonsToFire()
         {
 
-            CastVoice("FIRE!");
+            DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 995);
 
             foreach (BarrageHandle barrage in barrages)
             {

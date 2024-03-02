@@ -47,20 +47,6 @@ namespace StardewDruid.Monster.Boss
 
             overHead = new(16, -144);
 
-            ouchList = new List<string>()
-              {
-                "ouch",
-                "shadows take you"
-              };
-
-            dialogueList = new List<string>()
-              {
-                "get out of here",
-                "how did you find us?",
-                "no mercy",
-                "into the shadows I go"
-              };
-
             loadedOut = true;
 
         }
@@ -79,8 +65,6 @@ namespace StardewDruid.Monster.Boss
             flightFloor = 1;
 
             flightLast = 4;
-
-            flightSound = "";
 
             flightTexture = characterTexture;
 
@@ -187,46 +171,12 @@ namespace StardewDruid.Monster.Boss
 
             MaxHealth = Health;
 
-            ouchList = new List<string>()
-              {
-                "ouch",
-                "shadows take you"
-              };
-
-            dialogueList = new List<string>()
-              {
-                "get out of here",
-                "how did you find us?",
-                "no mercy",
-                "into the shadows I go"
-              };
 
             blastRadius = 2;
 
             cooldownInterval = 40;
 
             tempermentActive = temperment.aggressive;
-
-        }
-
-        public override void ChaseMode()
-        {
-
-            ouchList = new List<string>()
-              {
-                "ooft",
-                "ouch!",
-              };
-
-            dialogueList = new List<string>()
-              {
-                "go away!",
-                "the Ether belongs to Lord Deep",
-                "thanks for finding the treasure for me",
-                "where's Shadowtin when I need him"
-              };
-
-            base.ChaseMode();
 
         }
 

@@ -1,0 +1,71 @@
+{
+  "CreateSpoilerLog": true,
+  "SaveRandomizedImages": false,
+  "CraftingRecipes": {
+    "Randomize": true,
+    "RandomizeLevels": true
+  },
+  "Weapons": {
+    "Randomize": true,
+    "UseCustomImages": true
+  },
+  "Boots": {
+    "Randomize": true,
+    "UseCustomImages": true,
+    "HueShiftMax": 359
+  },
+  "Monsters": {
+    "Randomize": true,
+    "SwapUniqueDrops": true,
+    "HueShiftMax": 359
+  },
+  "Crops": {
+    "Randomize": true,
+    "UseCustomImages": true,
+    "HueShiftMax": 359
+  },
+  "Fish": {
+    "Randomize": true,
+    "UseCustomImages": true,
+    "HueShiftMax": 359
+  },
+  "NPCs": {
+    "RandomizeBirthdays": true,
+    "RandomizeIndividualPreferences": true,
+    "RandomizeUniversalPreferences": true
+  },
+  "Bundles": {
+    "Randomize": true,
+    "ShowDescriptionsInBundleTooltips": true
+  },
+  "Music": {
+    "Randomize": true,
+    "RandomSongEachTransition": false
+  },
+  "Shops": {
+    "AddSeedShopItemOfTheWeek": true,
+    "AddJojaMartItemOfTheWeek": true,
+    "AddClayToRobinsShop": true,
+    "AddTapperCraftItemsToRobinsShop": true,
+    "RandomizeBlackSmithShop": true,
+    "RandomizeSaloonShop": true,
+    "AddFishingShopCatchOfTheDay": true,
+    "RandomizeOasisShop": true,
+    "AddHatShopHatOfTheWeek": true,
+    "RandomizerSewerShop": true,
+    "RandomizeClubShop": true
+  },
+  "Animals": {
+    "RandomizeHorses": true,
+    "RandomizePets": true
+  },
+  "RandomizeForagables": true,
+  "AddRandomArtifactItem": true,
+  "RandomizeBuildingCosts": true,
+  "RandomizeFruitTrees": true,
+  "RandomizeAnimalSkins": true,
+  "RandomizeMuseumRewards": true,
+  "RandomizeIntroStory": true,
+  "RandomizeQuests": true,
+  "RandomizeRain": true
+}

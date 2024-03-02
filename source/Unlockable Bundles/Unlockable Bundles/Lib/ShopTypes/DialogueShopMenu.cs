@@ -362,15 +362,11 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 }
 
                 var hasItems = Inventory.hasEnoughItems(who, requirement);
-
-                var firstEntry = requirement.Key.Split(",").First();
-                var id = Unlockable.getIDFromReqSplit(firstEntry);
-                var quality = Unlockable.getQualityFromReqSplit(firstEntry);
-                var obj = Unlockable.parseItem(id, requirement.Value, quality: quality);
-                obj.drawInMenu(b, new Vector2(xPos, yPos), 0.9f, 1f, 1f, StackDrawType.HideButShowQuality, color: Color.White, false);
+                var items = Unlockable.getRequiredItems(requirement.Key);
+                items.First()?.drawInMenu(b, new Vector2(xPos, yPos), 0.9f, 1f, 1f, StackDrawType.HideButShowQuality, color: Color.White, false);
                 if (requirement.Value > 1)
                     Utility.drawTinyDigits(requirement.Value, b, new Vector2(xPos, yPos) + new Vector2((float)(64 - Utility.getWidthOfTinyDigitString(requirement.Value, 3f)) + 3f, 64f - 18f + 1f), 3f, 1f, hasItems ? Color.White : Color.Red);
-                Utility.drawTextWithShadow(b, shortenCostName(obj.DisplayName), Game1.dialogueFont, new Vector2(xPos + 64f + 12f, yPos + 12f), hasItems ? Game1.textColor : Color.Red);
+                Utility.drawTextWithShadow(b, shortenCostName(items.First()?.DisplayName), Game1.dialogueFont, new Vector2(xPos + 64f + 12f, yPos + 12f), hasItems ? Game1.textColor : Color.Red);
             }
         }
 

@@ -24,7 +24,7 @@ namespace CoreBoy.memory.cart.type
         {
             this._cartridge = cartridge;
             this._ram = new int[0x0200];
-            for (var i = 0; i < this._ram.Length; i++)
+            for (int i = 0; i < this._ram.Length; i++)
             {
                 this._ram[i] = 0xff;
             }
@@ -57,7 +57,7 @@ namespace CoreBoy.memory.cart.type
             }
             else if (address >= 0xa000 && address < 0xc000 && this._ramWriteEnabled)
             {
-                var ramAddress = GetRamAddress(address);
+                int ramAddress = GetRamAddress(address);
                 if (ramAddress < this._ram.Length)
                 {
                     this._ram[ramAddress] = value & 0x0f;
@@ -79,7 +79,7 @@ namespace CoreBoy.memory.cart.type
 
             if (address >= 0xa000 && address < 0xb000)
             {
-                var ramAddress = GetRamAddress(address);
+                int ramAddress = GetRamAddress(address);
                 if (ramAddress < this._ram.Length)
                 {
                     return this._ram[ramAddress];
@@ -93,7 +93,7 @@ namespace CoreBoy.memory.cart.type
 
         private int GetRomByte(int bank, int address)
         {
-            var cartOffset = (bank * 0x4000) + address;
+            int cartOffset = (bank * 0x4000) + address;
             if (cartOffset < this._cartridge.Length)
             {
                 return this._cartridge[cartOffset];

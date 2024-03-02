@@ -36,7 +36,7 @@ namespace StardewDruid.Monster.Boss
         public Reaper(Vector2 vector, int CombatModifier)
           : base(vector, CombatModifier, "Reaper")
         {
-            
+
         }
 
         public override void LoadOut()
@@ -51,24 +51,6 @@ namespace StardewDruid.Monster.Boss
             specialThreshold = 480;
 
             cooldownTimer = 48;
-
-            ouchList = new List<string>()
-              {
-                "reap",
-                "...you cannot defy fate...",
-                "...pain..."
-              };
-            dialogueList = new List<string>()
-              {
-                "Do not touch the Prime!",
-                "How long has it been since I saw...",
-                "The dragon's power is mine to use!",
-                "I will not stray from my purpose",
-                "Are you a spy of the fallen one?",
-                "The undervalley... I must...",
-                "I will reap, and reap, and reap"
-              };
-
 
             overHead = new(0, -244);
 
@@ -102,8 +84,6 @@ namespace StardewDruid.Monster.Boss
 
             flightSpeed = 12;
 
-            flightSound = "";
-
         }
 
         public override void HardMode()
@@ -111,23 +91,6 @@ namespace StardewDruid.Monster.Boss
             Health *= 3;
             Health /= 2;
             MaxHealth = Health;
-
-            ouchList = new List<string>()
-              {
-                "reap",
-                "...you cannot defy fate...",
-                "I'VE HAD ENOUGH OF THIS"
-              };
-            dialogueList = new List<string>()
-              {
-                "The dragon's power is mine to use!",
-                "I will not stray from my purpose",
-                "Are you a spy of the fallen one?",
-                "The undervalley... I must...",
-                "I will reap, and reap, and reap",
-                "FORTUMEI... PLEASE... I BEG YOU",
-                "ALL WILL BE REAPED"
-              };
 
             cooldownInterval = 40;
 

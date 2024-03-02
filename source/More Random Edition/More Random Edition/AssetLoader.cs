@@ -8,288 +8,204 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
-using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using static StardewValley.LocalizedContentManager;
 
 namespace Randomizer
 {
-	public class AssetLoader : IAssetLoader
+    public class AssetLoader
 	{
 		private readonly ModEntry _mod;
-		private readonly Dictionary<string, string> _replacements = new Dictionary<string, string>();
 
+		private readonly Dictionary<string, string> _customAssetReplacements = new();
+        private readonly Dictionary<string, Texture2D> _editedAssetReplacements = new();
 
-		public AssetLoader(ModEntry mod)
+        /// <summary>Constructor</summary>
+        /// <param name="mod">A reference to the ModEntry</param>
+        public AssetLoader(ModEntry mod)
 		{
-			this._mod = mod;
+			_mod = mod;
 		}
 
-		public bool CanLoad<T>(IAssetInfo asset)
+        /// <summary>
+        /// When an asset is requested, execute the approriate patcher's code, or replace
+		/// the value from our dictionary
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <exception cref="InvalidOperationException"></exception>
+        public void OnAssetRequested(object sender, AssetRequestedEventArgs e)
 		{
-			// Check if the assets has a replacement in the dictionary
-			foreach (KeyValuePair<string, string> replacement in this._replacements)
+            if (e.NameWithoutLocale.IsEquivalentTo(RainPatcher.StardewAssetPath))
+            {
+                e.Edit(new RainPatcher().OnAssetRequested);
+            }
+            else if (e.Name.IsEquivalentTo(AnimalIconPatcher.StardewAssetPath))
+            {
+                e.Edit(new AnimalIconPatcher().OnAssetRequested);
+            }
+            else if (e.NameWithoutLocale.IsEquivalentTo(TitleScreenPatcher.StardewAssetPath))
+            {
+                e.Edit(new TitleScreenPatcher().OnAssetRequested);
+            }
+
+			// Files that come from our own images: we're replacing an xnb asset with one on our filesystem
+            else if (_customAssetReplacements.TryGetValue(e.Name.BaseName, out string customAsset))
+            {
+                e.LoadFromModFile<Texture2D>(customAsset, AssetLoadPriority.Medium);
+            } 
+
+			// Files that we have in memory: we're replacing an xnb asset with a Texture2D object
+			else if (_editedAssetReplacements.TryGetValue(e.Name.BaseName, out Texture2D editedAsset))
 			{
-				if (asset.AssetNameEquals(replacement.Key))
+				e.Edit(asset =>
 				{
-					return true;
-				}
-			}
+					var editor = asset.AsImage();
+					editor.PatchImage(editedAsset);
+                });
+            }
+        }
 
-			return false;
-		}
-
-		public T Load<T>(IAssetInfo asset)
-		{
-			string normalizedAssetName = this._mod.Helper.Content.NormalizeAssetName(asset.AssetName);
-
-			// Try to get the replacement asset from the replacements dictionary
-			if (this._replacements.TryGetValue(normalizedAssetName, out string replacementAsset))
-			{
-				return this._mod.Helper.Content.Load<T>(replacementAsset, ContentSource.ModFolder);
-			}
-
-			throw new InvalidOperationException($"Unknown asset: {asset.AssetName}.");
-		}
-
-
+		/// <summary>
+		/// Adds a replacement to our internal dictionary
+		/// </summary>
+		/// <param name="originalAsset">The original asset</param>
+		/// <param name="replacementAsset">The asset to replace it with</param>
 		private void AddReplacement(string originalAsset, string replacementAsset)
 		{
-			// Normalize the asset name so the keys are consistent
-			string normalizedAssetName = this._mod.Helper.Content.NormalizeAssetName(originalAsset);
-
-			// Add the replacement to the dictionary
-			this._replacements[normalizedAssetName] = replacementAsset;
+			IAssetName normalizedAssetName = _mod.Helper.GameContent.ParseAssetName(originalAsset);
+			_customAssetReplacements[normalizedAssetName.BaseName] = replacementAsset;
 		}
 
+        /// <summary>
+        /// Adds a replacement to our internal dictionary
+        /// </summary>
+        /// <param name="originalAsset">The original asset</param>
+        /// <param name="replacementAsset">The asset to replace it with</param>
+        private void AddReplacement(string originalAsset, Texture2D replacementAsset)
+        {
+            IAssetName normalizedAssetName = _mod.Helper.GameContent.ParseAssetName(originalAsset);
+            _editedAssetReplacements[normalizedAssetName.BaseName] = replacementAsset;
+        }
 
-		public void InvalidateCache()
+        /// <summary>
+        /// Adds a set of replacements to our internal dictionary for assets coming from our own files
+        /// </summary>
+        /// <param name="replacements">Key: the original asset; Value: the asset to replace it with</param>
+        private void AddCustomAssetReplacements(Dictionary<string, string> replacements)
 		{
-			// Invalidate all replaced assets so that the changes are reapplied
-			foreach (string assetName in this._replacements.Keys)
+			foreach (string key in replacements.Keys)
 			{
-				this._mod.Helper.Content.InvalidateCache(assetName);
+				AddReplacement(key, replacements[key]);
 			}
 		}
 
-		/// <summary>
-		/// Nothing to do here at the moment
-		/// </summary>
-		public void CalculateReplacementsBeforeLoad()
+        /// <summary>
+        /// Invalidate all replaced assets so that the changes are reapplied
+        /// </summary>
+        public void InvalidateCache()
 		{
-		}
-
-		/// <summary>
-		/// The current locale
-		/// </summary>
-		private string _currentLocale = "default";
-
-		/// <summary>
-		/// Replaces the title scrren graphics - done whenever the locale is changed or the game is first loaded
-		/// Won't actually replace it if it already did
-		/// </summary>
-		public void TryReplaceTitleScreen()
-		{
-			IClickableMenu genericMenu = Game1.activeClickableMenu;
-			if (genericMenu is null || !(genericMenu is TitleMenu)) { return; }
-
-			if (_currentLocale != _mod.Helper.Translation.Locale)
+			foreach (string assetName in _customAssetReplacements.Keys)
 			{
-				ReplaceTitleScreen((TitleMenu)genericMenu);
+				_mod.Helper.GameContent.InvalidateCache(assetName);
 			}
-		}
+            ReplaceCatIcon();
+        }
 
-		/// <summary>
-		/// Replaces the title screen after returning from a game - called by the appropriate event handler
-		/// </summary>
-		public void ReplaceTitleScreenAfterReturning()
+        /// <summary>
+        /// Replace the assets on the title screen - includes the title screen menu
+        /// and the new game menu
+        /// </summary>
+        public void ReplaceTitleScreenAssets()
 		{
 			ReplaceTitleScreen();
-		}
+			ReplaceCatIcon();
+        }
+
+		/// <summary>
+		/// Replaces the cat icon on the new game and the pause menu if pets are randomized
+		/// Otherwise, restore the icon
+		/// </summary>
+		private void ReplaceCatIcon()
+		{
+            _mod.Helper.GameContent.InvalidateCache(AnimalIconPatcher.StardewAssetPath);
+        }
 
 		/// <summary>
 		/// Replaces the title screen graphics and refreshes the settings UI page
 		/// </summary>
-		/// <param name="titleMenu">The title menu - passed if we're already on the title screen</param>
-		private void ReplaceTitleScreen(TitleMenu titleMenu = null)
+		private void ReplaceTitleScreen()
 		{
-			_currentLocale = _mod.Helper.Translation.Locale;
-			AddReplacement("Minigames/TitleButtons", $"Assets/Minigames/{Globals.GetTranslation("title-graphic")}");
-			_mod.Helper.Content.InvalidateCache("Minigames/TitleButtons");
+            _mod.Helper.GameContent.InvalidateCache(TitleScreenPatcher.StardewAssetPath);
+        }
 
-			if (titleMenu != null)
-			{
-				LanguageCode code = _mod.Helper.Translation.LocaleEnum;
-				_mod.Helper.Reflection.GetMethod(titleMenu, "OnLanguageChange", true).Invoke(code);
-			}
+        /// <summary>
+        /// Replaces the rain - intended to be called once per day start
+        /// <param name="sender">The event sender</param>
+        /// <param name="e">The event arguments</param>
+        /// </summary>
+        public void ReplaceRain()
+        {
+            if (Globals.Config.RandomizeRain)
+            {
+                _mod.Helper.GameContent.InvalidateCache(RainPatcher.StardewAssetPath);
+            }
+        }
 
-			_mod.CalculateAndInvalidateUIEdits();
-		}
-
-		/// <summary>
-		/// Asset replacements
-		/// TODO: make a class for this so that it's not in one giant file
-		/// </summary>
-		public void CalculateReplacements()
+        /// <summary>Asset replacements to load when the farm is loaded</summary>
+        public void CalculateReplacements()
 		{
-			// Clear any previous replacements
-			this._replacements.Clear();
-
-			if (Globals.Config.Crops.Randomize)
-			{
-				//TODO: probably get rid of this completely or move it somewhere
-				//AddReplacement("Maps/springobjects", "Assets/Maps/springobjects.png");
-			}
-
-			if (Globals.Config.RandomizeAnimalSkins)
-			{
-				// Replace critters
-				switch (Globals.RNG.Next(0, 4))
-				{
-					case 0:
-						this.AddReplacement("TileSheets/critters", "Assets/TileSheets/crittersBears");
-						break;
-					case 1:
-						this.AddReplacement("TileSheets/critters", "Assets/TileSheets/crittersseagullcrow");
-						break;
-					case 2:
-						this.AddReplacement("TileSheets/critters", "Assets/TileSheets/crittersWsquirrelPseagull");
-						break;
-					case 3:
-						this.AddReplacement("TileSheets/critters", "Assets/TileSheets/crittersBlueBunny");
-						break;
-				}
-
-				//Change an animal to bear 
-				int isPet = Globals.RNG.Next(1, 4);
-				string[] Animal = new string[4]; Animal[0] = "Pig"; Animal[1] = "Goat"; Animal[2] = "Brown Cow"; Animal[3] = "White Cow";
-				string[] Pet = new string[2]; Pet[0] = "cat"; Pet[1] = "dog";
-
-				if (isPet == 1)
-				{
-					int petRng = Globals.RNG.Next(0, Pet.Length - 1);
-					this.AddReplacement($"Animals/{Pet[petRng]}", "Assets/Characters/BearDog");
-				}
-				if (isPet == 2)
-				{
-					this.AddReplacement($"Animals/horse", "Assets/Characters/BearHorse");
-				}
-				else
-				{
-					int animalRng = Globals.RNG.Next(0, Animal.Length - 1);
-					this.AddReplacement($"Animals/{Animal[animalRng]}", "Assets/Characters/Bear");
-					this.AddReplacement($"Animals/Baby{Animal[animalRng]}", "Assets/Characters/BabyBear");
-				}
-			}
-
-			// Character swaps
-			if (Globals.Config.RandomizeNPCSkins)
-			{
-				// Keep track of all swaps made
-				Dictionary<string, string> currentSwaps = new Dictionary<string, string>();
-
-				// Copy the array of possible swaps to a new list
-				List<PossibleSwap> possibleSwaps = this._mod.PossibleSwaps.ToList();
-
-				// Make swaps until either a random number of swaps are made or we run out of possible swaps to make
-				int swapsRemaining = Globals.RNG.Next(5, 11);
-				while (swapsRemaining > 0 && possibleSwaps.Any())
-				{
-					// Get a random possible swap
-					int index = Globals.RNG.Next(0, possibleSwaps.Count);
-					PossibleSwap swap = possibleSwaps[index];
-
-					// Remove it from the list so it isn't chosen again
-					possibleSwaps.RemoveAt(index);
-
-					// Check if the characters haven't been swapped yet
-					if (currentSwaps.ContainsKey(swap.FirstCharacter) || currentSwaps.ContainsKey(swap.SecondCharacter))
-					{
-						continue;
-					}
-
-					// Add the swap to the dictionary
-					currentSwaps[swap.FirstCharacter] = swap.SecondCharacter;
-					currentSwaps[swap.SecondCharacter] = swap.FirstCharacter;
-					this._mod.Monitor.Log($"Swapping {swap.FirstCharacter} and {swap.SecondCharacter}");
-
-					// Add the replacements
-					this.AddReplacement($"Characters/{swap.FirstCharacter}", $"Assets/Characters/{swap.SecondCharacter}");
-					this.AddReplacement($"Characters/{swap.SecondCharacter}", $"Assets/Characters/{swap.FirstCharacter}");
-					this.AddReplacement($"Portraits/{swap.FirstCharacter}", $"Assets/Portraits/{swap.SecondCharacter}");
-					this.AddReplacement($"Portraits/{swap.SecondCharacter}", $"Assets/Portraits/{swap.FirstCharacter}");
-
-					// Decrement the number of swaps remaining
-					swapsRemaining--;
-				}
-			}
-
-			ReplaceRain();
+			_customAssetReplacements.Clear();
+			AddCustomAssetReplacements(AnimalSkinRandomizer.Randomize());
 		}
 
 		/// <summary>
 		/// Randomizes the images - depending on what settings are on
 		/// It's still important to build the images to make sure seeds are consistent
+        /// 
+        /// Note that the cache is invalidated already when the save file is loaded
+        /// See ModEntry.CalculateAllReplacements
 		/// </summary>
 		public void RandomizeImages()
 		{
-			WeaponImageBuilder weaponImageBuilder = new WeaponImageBuilder();
-			weaponImageBuilder.BuildImage();
-			HandleImageReplacement(weaponImageBuilder, "TileSheets/weapons");
+            _editedAssetReplacements.Clear();
 
-			CropGrowthImageBuilder cropGrowthImageBuilder = new CropGrowthImageBuilder();
-			cropGrowthImageBuilder.BuildImage();
-			HandleImageReplacement(cropGrowthImageBuilder, "TileSheets/crops");
+            CropGrowthImageBuilder cropGrowthImageBuilder = new();
 
-			SpringObjectsImageBuilder springObjectsImageBuilder = new SpringObjectsImageBuilder(cropGrowthImageBuilder.CropIdsToImageNames);
-			springObjectsImageBuilder.BuildImage();
-			HandleImageReplacement(springObjectsImageBuilder, "Maps/springobjects");
+            HandleImageReplacement(new WeaponImageBuilder());
+            HandleImageReplacement(cropGrowthImageBuilder);
+            HandleImageReplacement(new SpringObjectsImageBuilder(cropGrowthImageBuilder.CropIdsToLinkingData));
+            HandleImageReplacement(new BundleImageBuilder());
 
-			BundleImageBuilder bundleImageBuilder = new BundleImageBuilder();
-			bundleImageBuilder.BuildImage();
-			HandleImageReplacement(bundleImageBuilder, "LooseSprites/JunimoNote");
-		}
+            Globals.SpoilerWrite("==== ANIMALS ====");
+            HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Horses));
+            HandleImageReplacement(new AnimalRandomizer(AnimalTypes.Pets));
+            Globals.SpoilerWrite("");
+
+            MonsterHueShifter.GetHueShiftedMonsterAssets().ForEach(monsterData =>
+                AddReplacement(monsterData.StardewAssetPath, monsterData.MonsterImage));
+        }
 
 		/// <summary>
-		/// Handles actually adding the image replacement
-		/// If the image doesn't exist, sleep for 0.1 second increments until it does
+		/// Adds the image builder's modified asset to the dictionary
+        /// Replace the localized version - our cache invalidator will invalidate it and the base one
 		/// </summary>
 		/// <param name="imageBuilder">The image builder</param>
-		/// <param name="xnbPath">The path to the xnb image to replace</param>
-		private void HandleImageReplacement(ImageBuilder imageBuilder, string xnbPath)
+		private void HandleImageReplacement(ImageBuilder imageBuilder)
 		{
-			if (imageBuilder.ShouldSaveImage())
-			{
-				while (!File.Exists(imageBuilder.OutputFileFullPath))
-				{
-					Thread.Sleep(100);
-				}
-				AddReplacement(xnbPath, imageBuilder.SMAPIOutputFilePath);
-			}
-		}
+            AddReplacement(
+                Globals.GetLocalizedFileName(imageBuilder.StardewAssetPath), 
+                imageBuilder.GenerateModifiedAsset());
 
-		/// <summary>
-		/// Replaces the rain - intended to be called once per day start
-		/// <param name="sender">The event sender.</param>
-		/// <param name="e">The event arguments.</param>
-		/// </summary>
-		public void ReplaceRain(object sender = null, DayEndingEventArgs e = null)
-		{
-			if (!Globals.Config.RandomizeRain) { return; }
-			if (Globals.RNG == null) { return; }
-
-			RainTypes rainType = Globals.RNGGetRandomValueFromList(
-				Enum.GetValues(typeof(RainTypes)).Cast<RainTypes>().ToList());
-
-			AddReplacement("TileSheets/rain", $"Assets/TileSheets/{rainType.ToString()}Rain");
-			_mod.Helper.Content.InvalidateCache("TileSheets/rain");
-		}
+            // Unclear on the best way to do this - but invalidate the cache both for
+            // The current locale, and the localized one, since not all assets
+            // have translations for all locales
+            _mod.Helper.GameContent.InvalidateCache
+                (Globals.GetLocalizedFileName(imageBuilder.StardewAssetPath));
+            _mod.Helper.GameContent.InvalidateCache(imageBuilder.StardewAssetPath);
+        }
 	}
 }

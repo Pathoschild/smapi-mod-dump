@@ -50,6 +50,8 @@
     "config.bomb.held.tooltip": "When a bomb is equiped, show its range at the cursor location",
     "config.bomb.placed": "Placed bombs",
     "config.bomb.placed.tooltip": "Show the range of bombs already placed on the ground",
+    "config.bomb.hide-held-when-ticking": "Hide held when ticking",
+    "config.bomb.hide-held-when-ticking.tooltip": "Don't show the range of a held bomb when there are placed bombs currently ticking",
     "config.bomb.tint.tooltip": "Color of the highlight for bomb range where rocks and items are destroyed",
     "config.bomb.inner.enable": "Enable inner range",
     "config.bomb.inner.enable.tooltip": "The inner range is where the bomb can cause dirt to turn into hoed ground",

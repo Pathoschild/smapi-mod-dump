@@ -11,7 +11,7 @@
 {
   "Name": "Desert Bloom Farm",
   "Author": "DeLiXx",
-  "Version": "1.1.0-alpha.24026",
+  "Version": "2.0.0",
   "Description": "Desert Bloom Farm",
   "UniqueID": "DeLiXx.Desert_Bloom_Farm",
   "EntryDll": "Desert Bloom.dll",
@@ -20,13 +20,11 @@
   "Dependencies": [
     {
       "UniqueID": "DLX.Bundles",
-      "IsRequired": true,
-      "MinimumVersion": "2.0.2"
+      "IsRequired": true
     },
     {
       "UniqueID": "DeLiXx.Custom_Farm_Loader",
-      "IsRequired": true,
-      "MinimumVersion": "1.0.15"
+      "IsRequired": true
     },
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",

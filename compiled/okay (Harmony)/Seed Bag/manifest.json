@@ -1,7 +1,7 @@
 {
   "Name": "Seed Bag",
   "Author": "Platonymous",
-  "Version": "1.8.0",
+  "Version": "1.8.3-alpha.20240226",
   "Description": "Adds a Seed Bag to the Game",
   "UniqueID": "Platonymous.SeedBag",
   "EntryDll": "SeedBag.dll",
@@ -10,16 +10,6 @@
   "Dependencies": [
     {
       "UniqueID": "spacechase0.SpaceCore"
-    },
-    {
-      "UniqueID": "Platonymous.ModUpdater",
-      "IsRequired": false
     }
-  ],
-  "ModUpdater": {
-    "Repository": "Stardew-Valley-Mods",
-    "User": "Platonymous",
-    "Directory": "_releases",
-    "ModFolder": "SeedBag"
-  }
+  ]
 }

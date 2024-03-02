@@ -1,7 +1,7 @@
 import dragonfly as df
 import functools
 from srabuilder import rules
-import characters, locations, fishing_menu, title_menu, menu_utils, server, df_utils, game, container_menu, objective, constants, items
+import characters, locations, fishing_menu, server_requests, menu_utils, server, df_utils, game, container_menu, objective, constants, items
 import stream
 
 mouse_directions = {
@@ -12,8 +12,8 @@ mouse_directions = {
 }
 
 
-async def get_objects_by_name(name: str, loc: str):
-    objs = await game.get_location_objects()
+async def get_objects_by_name(name: str):
+    objs = await server_requests.get_location_objects()
     return [x for x in objs if x["name"] == name]
 
 
@@ -29,7 +29,7 @@ async def move_and_face_previous_direction(direction: int, n: int):
         await game.face_direction(ps["facingDirection"], pss, move_cursor=True)
 
 
-async def get_shipping_bin_tiles(item):
+async def get_shipping_bin_tiles():
     tile = await server.request("SHIPPING_BIN_TILE")
     return game.break_into_pieces([tile])
 
@@ -39,7 +39,7 @@ async def go_to_shipping_bin():
     await game.do_action()
 
 
-async def get_bed_tile(item):
+async def get_bed_tile():
     tile = await server.request("BED_TILE")
     return [tile]
 
@@ -48,7 +48,7 @@ async def go_to_bed():
     await game.navigate_nearest_tile(get_bed_tile, pathfind_fn=game.pathfind_to_tile)
 
 
-async def get_ladders_down(item):
+async def get_ladders_down():
     return await server.request("GET_LADDERS_DOWN")
 
 
@@ -60,7 +60,7 @@ async def ladder_down():
 async def navigate_direction(direction: int):
     async with stream.player_status_stream() as pss:
         player_status = await pss.next()
-        location = player_status["location"]
+        location = player_status["location"]["name"]
         path_tiles = await server.request("PATH_TO_EDGE", {"direction": direction})
         if path_tiles:
             path = game.Path(path_tiles, location)

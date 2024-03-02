@@ -10,6 +10,7 @@
 
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Pathoschild.Stardew.Automate.Framework.Storage;
 
 namespace Pathoschild.Stardew.Automate.Framework.Commands.Summary
 {
@@ -59,9 +60,17 @@ namespace Pathoschild.Stardew.Automate.Framework.Commands.Summary
                 .Select(p => new GroupMachineStats(p.Key, p))
                 .ToArray();
 
-            this.Containers = machineGroup.Containers
-                .GroupBy(p => p.Name)
-                .Select(p => new GroupContainerStats(p.Key, p))
+            this.Containers =
+                (
+                    from container in machineGroup.Containers
+                    let storage = container.GetStoragePreference()
+                    let takeItems = container.GetTakingItemsPreference()
+
+                    group container by new { container.Name, storage, takeItems } into containerGroup
+                    let key = containerGroup.Key
+
+                    select new GroupContainerStats(key.Name, key.storage, key.takeItems, containerGroup.ToArray())
+                )
                 .ToArray();
         }
     }

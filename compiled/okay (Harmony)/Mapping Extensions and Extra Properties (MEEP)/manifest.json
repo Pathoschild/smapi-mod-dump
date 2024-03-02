@@ -1,9 +1,16 @@
 {
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
   "$schema": "https://smapi.io/schemas/manifest.json",
   "UniqueID": "DecidedlyHuman.MappingExtensionsAndExtraProperties",
   "Name": "Mapping Extensions and Extra Properties (MEEP)",
   "Author": "DecidedlyHuman",
-  "Version": "1.3.2",
+  "Version": "2.0.2-beta",
   "Description": "Extra map features and tile/map properties to spice up your custom maps.",
   "MinimumApiVersion": "3.18.0",
   "EntryDll": "MappingExtensionsAndExtraProperties.dll",

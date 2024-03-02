@@ -1,7 +1,7 @@
 {
   "Name": "PlatoUI",
   "Author": "Platonymous",
-  "Version": "1.11.0",
+  "Version": "1.11.1-alpha.20231105",
   "Description": "UI Toolkit",
   "UniqueID": "Platonymous.PlatoUI",
   "EntryDll": "PlatoUI.dll",

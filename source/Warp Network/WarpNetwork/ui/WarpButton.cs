@@ -51,7 +51,7 @@ namespace WarpNetwork.ui
 		{
 			text = TokenParser.ParseText(loc.Label, player: who);
 			textSize = Game1.dialogueFont.MeasureString(text);
-			texture = loc.Icon;
+			texture = loc.Icon ?? WarpMenu.defaultIcon;
 		}
 		public void draw(SpriteBatch b)
 		{

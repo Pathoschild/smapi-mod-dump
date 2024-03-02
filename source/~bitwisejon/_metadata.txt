@@ -7,11 +7,9 @@ mods:
    One Click Shed Reloader
 
 latest commit:
-   commit db25ef0b3da82eb4e3ad1b9c4a724495656ef922
-   Author: bitwisejon <38377407+bitwisejon@users.noreply.github.com>
-   Date:   Tue Dec 22 10:11:38 2020 -0500
+   commit f5dcfccdf804ba6d97c48fa4bc0e32290081d1c2
+   Author: Jon Hester <jhester@aclaimrx.com>
+   Date:   Thu Feb 29 10:54:59 2024 -0500
    
-       Merge pull request #16 from bitwisejon/Suppport-SDV-1.5
-       
-       Added support for stardew valley 1.5 and smapi 3.8,
+       Comment changes
    

@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using StardewModdingAPI;
@@ -31,13 +32,37 @@ namespace WarpNetwork.models
 
 		[JsonIgnore]
 		public Texture2D Icon
-			=> ModEntry.helper.GameContent.Load<Texture2D>(IconPath);
+		{
+			get
+			{
+				try
+				{
+					return ModEntry.helper.GameContent.Load<Texture2D>(IconPath);
+				} catch (ContentLoadException ex) 
+				{
+					ModEntry.monitor.Log(ex.ToString(), LogLevel.Debug);
+				}
+				return null;
+			}
+		}
 
 		public bool IsAccessible(GameLocation context, Farmer who)
 			=> Condition is not null && GameStateQuery.CheckConditions(Condition, context, who);
 
 		public bool IsVisible(GameLocation context, Farmer who)
 			=> DisplayCondition is null || GameStateQuery.CheckConditions(DisplayCondition, context, who);
+
+		public Point GetLandingPoint(Farmer who = null, bool fromWand = false)
+		{
+			if (Location.Equals("Farm", System.StringComparison.OrdinalIgnoreCase))
+				if (fromWand && who is not null)
+					return Utility.getHomeOfFarmer(who).getFrontDoorSpot();
+
+			return 
+				!OverrideMapProperty || Position == default ?
+				Utils.GetTargetTile(Game1.getLocationFromName(Location), Position) : 
+				Position;
+		}
 
 		public bool Activate(GameLocation location, Farmer who)
 		{
@@ -57,24 +82,7 @@ namespace WarpNetwork.models
 			if (!IsAccessible(where, who))
 				return false;
 
-			Point tile = Position;
-			if (Location is "Farm")
-			{
-				if (WarpHandler.fromWand.Value)
-				{
-					Point dest = Utility.getHomeOfFarmer(who).getFrontDoorSpot();
-					API.api.DoWarpEffects(() => Game1.warpFarmer("Farm", dest.X, dest.Y, false), who, where);
-					return true;
-				}
-				Utils.TryGetActualFarmPoint(ref tile);
-			}
-
-			if (!OverrideMapProperty || tile == default)
-			{
-				var loc = Game1.getLocationFromName(Location);
-				if (loc.TryGetMapPropertyAs("WarpNetworkEntry", out Point c) || Utils.TryGetDefaultPosition(Location, out c))
-					tile = c;
-			}
+			var tile = GetLandingPoint(who, WarpHandler.fromWand.Value);
 
 			if (tile == default)
 			{

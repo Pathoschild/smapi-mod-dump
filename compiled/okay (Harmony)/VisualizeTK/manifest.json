@@ -1,7 +1,7 @@
 {
   "Name": "VisualizeTK",
   "Author": "Platonymous",
-  "Version": "1.2.0",
+  "Version": "1.2.2-alpha.20240226",
   "Description": "Visual Toolkit",
   "UniqueID": "Platonymous.VisualizeTK",
   "EntryDll": "VisualizeTK.dll",

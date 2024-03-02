@@ -12,7 +12,7 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Modded;
 using StardewArchipelago.GameModifications.CodeInjections.Modded;
 using StardewArchipelago.Locations.CodeInjections.Modded;
 using StardewArchipelago.Locations.CodeInjections.Modded.SVE;
@@ -48,6 +48,7 @@ namespace StardewArchipelago.Locations.Patcher
             AddSkullCavernElevatorModInjections();
             AddSVEModInjections();
             AddDistantLandsEventInjections();
+            AddBoardingHouseInjections();
         }
 
         private void AddDistantLandsEventInjections()
@@ -332,6 +333,23 @@ namespace StardewArchipelago.Locations.Patcher
             _harmony.Patch(
                 original: AccessTools.Method(disableShadowAttacksType, "FixMonsterSlayerQuest"),
                 postfix: new HarmonyMethod(typeof(SVECutsceneInjections), nameof(SVECutsceneInjections.FixMonsterSlayerQuest_IncludeReleaseofGoals_Postfix))
+            );
+        }
+
+        private void AddBoardingHouseInjections()
+        {
+            if (!_archipelago.SlotData.Mods.HasMod(ModNames.BOARDING_HOUSE))
+            {
+                return;
+            }
+
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(Chest), nameof(Chest.checkForAction)),
+                prefix: new HarmonyMethod(typeof(BoardingHouseInjections), nameof(BoardingHouseInjections.CheckForAction_TreasureChestLocation_Prefix))
+            );
+            _harmony.Patch(
+                original: AccessTools.Method(typeof(ShopMenu), nameof(ShopMenu.update)),
+                postfix: new HarmonyMethod(typeof(BoardingHouseInjections), nameof(BoardingHouseInjections.Update_ReplaceDwarfShopChecks_Postfix))
             );
         }
     }

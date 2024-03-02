@@ -1,6 +1,5 @@
 {
   "EnableDebugFeatures": false,
-  "GroupEditsByMod": true,
   "Controls": {
     "ToggleDebug": "F3",
     "DebugPrevTexture": "LeftControl",

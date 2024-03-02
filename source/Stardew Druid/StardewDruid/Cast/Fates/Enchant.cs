@@ -221,7 +221,69 @@ namespace StardewDruid.Cast.Fates
 
             StardewValley.Object input = new(cropIndex, 0);
 
-            if (input == null) { return; }
+            if (input == null) { targetLocation.playSound("ghost"); return; }
+
+            switch (@input.ParentSheetIndex)
+            {
+                case 262:
+                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 346, "Beer", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value.name = "Beer";
+                    break;
+                case 304:
+                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 303, "Pale Ale", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value.name = "Pale Ale";
+                    break;
+                case 815:
+                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 614, "Green Tea", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value.name = "Green Tea";
+                    break;
+                case 433:
+                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 395, "Coffee", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value.name = "Coffee";
+                    break;
+                case 340:
+                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 459, "Mead", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value.name = "Mead";
+                    break;
+
+            }
+
+            if (targetObject.heldObject.Value == null)
+            {
+                
+                switch (@input.Category)
+                {
+                    case -75:
+                        targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 350, @input.Name + " Juice", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                        targetObject.heldObject.Value.Price = (int)(@input.Price * 2.25);
+                        targetObject.heldObject.Value.name = @input.Name + " Juice";
+                        targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Juice;
+                        targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
+                        targetObject.MinutesUntilReady = 6000;
+                        break;
+                    case -79:
+                        targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 348, @input.Name + " Wine", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                        targetObject.heldObject.Value.Price = @input.Price * 3;
+                        targetObject.heldObject.Value.name = @input.Name + " Wine";
+                        targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Wine;
+                        targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
+                        targetObject.MinutesUntilReady = 10000;
+                        break;
+                    default:
+                        targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 346, "Beer", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                        targetObject.heldObject.Value.name = "Beer";
+                        break;
+
+                }
+
+            }
+
+            if (targetObject.heldObject.Value == null)
+            {
+                targetLocation.playSound("ghost");
+                return;
+            }
+
 
             targetLocation.playSound("Ship");
 
@@ -235,56 +297,6 @@ namespace StardewDruid.Cast.Fates
             targetLocation.temporarySprites.Add(temporarySprite);
 
             targetObject.MinutesUntilReady = 1000;
-
-            switch (@input.ParentSheetIndex)
-            {
-                case 262:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 346, "Beer", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
-                    targetObject.heldObject.Value.name = "Beer";
-                    return;
-                case 304:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 303, "Pale Ale", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
-                    targetObject.heldObject.Value.name = "Pale Ale";
-                    return;
-                case 815:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 614, "Green Tea", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
-                    targetObject.heldObject.Value.name = "Green Tea";
-                    return;
-                case 433:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 395, "Coffee", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
-                    targetObject.heldObject.Value.name = "Coffee";
-                    return;
-                case 340:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 459, "Mead", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
-                    targetObject.heldObject.Value.name = "Mead";
-                    return;
-
-            }
-
-            switch (@input.Category)
-            {
-                case -75:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 350, @input.Name + " Juice", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
-                    targetObject.heldObject.Value.Price = (int)(@input.Price * 2.25);
-                    targetObject.heldObject.Value.name = @input.Name + " Juice";
-                    targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Juice;
-                    targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
-                    targetObject.MinutesUntilReady = 6000;
-                    return;
-                case -79:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 348, @input.Name + " Wine", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
-                    targetObject.heldObject.Value.Price = @input.Price * 3;
-                    targetObject.heldObject.Value.name = @input.Name + " Wine";
-                    targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Wine;
-                    targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
-                    targetObject.MinutesUntilReady = 10000;
-                    return;
-                default:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 346, "Beer", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
-                    targetObject.heldObject.Value.name = "Beer";
-                    return;
-
-            }
 
         }
 
@@ -316,24 +328,24 @@ namespace StardewDruid.Cast.Fates
                 [19] = 486,
                 [20] = 262,
                 [21] = 304,
-                [24] = 91,
-                [25] = 832,
-                [26] = 834,
-                [27] = 634,
-                [28] = 635,
-                [29] = 636,
-                [30] = 637,
-                [31] = 638,
-                [32] = 613,
-                [33] = 400,
-                [34] = 398,
-                [35] = 282,
-                [36] = 260,
-                [37] = 258,
-                [38] = 254,
-                [39] = 252,
-                [40] = 88,
-                [41] = 90
+                [22] = 91,
+                [23] = 832,
+                [24] = 834,
+                [25] = 634,
+                [26] = 635,
+                [27] = 636,
+                [28] = 637,
+                [29] = 638,
+                [30] = 613,
+                [31] = 400,
+                [32] = 398,
+                [33] = 282,
+                [34] = 260,
+                [35] = 258,
+                [36] = 254,
+                [37] = 252,
+                [38] = 88,
+                [39] = 90
 
             };
 
@@ -341,7 +353,32 @@ namespace StardewDruid.Cast.Fates
 
             StardewValley.Object input = new(cropIndex, 0);
 
-            if (input == null) { return; }
+            if (input == null) { targetLocation.playSound("ghost"); return; }
+
+            switch (@input.Category)
+            {
+                case -75:
+                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 342, "Pickled " + @input.Name, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value.Price = 50 + @input.Price * 2;
+                    targetObject.heldObject.Value.name = "Pickled " + @input.Name;
+                    targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Pickle;
+                    targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
+                    break;
+                case -79:
+                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 344, @input.Name + " Jelly", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
+                    targetObject.heldObject.Value.Price = 50 + @input.Price * 2;
+                    targetObject.heldObject.Value.name = @input.Name + " Jelly";
+                    targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Jelly;
+                    targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
+                    break;
+            }
+
+            if(targetObject.heldObject.Value == null)
+            {
+                targetLocation.playSound("ghost");
+                return;
+
+            }
 
             targetLocation.playSound("Ship");
 
@@ -355,25 +392,6 @@ namespace StardewDruid.Cast.Fates
             targetLocation.temporarySprites.Add(temporarySprite);
 
             targetObject.MinutesUntilReady = 4000;
-
-            switch (@input.Category)
-            {
-                case -75:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 342, "Pickled " + @input.Name, canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
-                    targetObject.heldObject.Value.Price = 50 + @input.Price * 2;
-                    targetObject.heldObject.Value.name = "Pickled " + @input.Name;
-                    targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Pickle;
-                    targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
-                    return;
-                case -79:
-                    targetObject.heldObject.Value = new StardewValley.Object(Vector2.Zero, 344, @input.Name + " Jelly", canBeSetDown: false, canBeGrabbed: true, isHoedirt: false, isSpawnedObject: false);
-                    targetObject.heldObject.Value.Price = 50 + @input.Price * 2;
-                    targetObject.heldObject.Value.name = @input.Name + " Jelly";
-                    targetObject.heldObject.Value.preserve.Value = StardewValley.Object.PreserveType.Jelly;
-                    targetObject.heldObject.Value.preservedParentSheetIndex.Value = @input.ParentSheetIndex;
-                    return;
-            }
-
 
         }
 

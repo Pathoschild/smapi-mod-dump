@@ -13,6 +13,10 @@ for queries and analysis.**
 
 # Version changes
 
+### 1.3.0-alpha
+
+- Updated for StardewValley 1.6.0-alpha
+
 ### 1.2.4
 - Added languages:
   - Turkish

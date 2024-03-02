@@ -16,6 +16,7 @@ using StardewValley;
 using StardewValley.Locations;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using xTile.Layers;
 using xTile.Tiles;
 
@@ -45,6 +46,7 @@ namespace StardewDruid.Event.Boss
 
         public override void EventTrigger()
         {
+            cues = DialogueData.DialogueScene(questData.name);
 
             ModUtility.AnimateRadiusDecoration(targetLocation, targetVector, "Mists", 1f, 1f);
 
@@ -106,7 +108,7 @@ namespace StardewDruid.Event.Boss
                 if (expireEarly)
                 {
 
-                    GuntherVoice("One for the books.");
+                    DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[1], }, 991);
 
                     Vector2 vector2 = Gunther.getTileLocation() + new Vector2(0.0f, 1f);
 
@@ -122,7 +124,8 @@ namespace StardewDruid.Event.Boss
                 }
                 else
                 {
-                    GuntherVoice("ughh... what a mess");
+                    
+                    DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[1], }, 992);
 
                     Mod.instance.CastMessage("Try again tomorrow");
 
@@ -145,30 +148,21 @@ namespace StardewDruid.Event.Boss
 
             if (activeCounter < 6)
             {
-                switch (activeCounter)
+
+                DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[1], [1] = actors[0], }, activeCounter);
+
+                if (activeCounter == 1)
                 {
-                    case 1:
-                        CastVoice("croak");
-                        GuntherVoice("Farmer? What's this?");
-                        using (List<NPC>.Enumerator enumerator = targetLocation.characters.GetEnumerator())
+                    using (List<NPC>.Enumerator enumerator = targetLocation.characters.GetEnumerator())
+                    {
+                        while (enumerator.MoveNext())
                         {
-                            while (enumerator.MoveNext())
-                            {
-                                NPC current = enumerator.Current;
-                                if (current.isVillager() && current.Name != "Gunther")
-                                    current.doEmote(8, true);
-                            }
-                            break;
+                            NPC current = enumerator.Current;
+                            if (current.isVillager() && current.Name != "Gunther")
+                                current.doEmote(8, true);
                         }
-                    case 3:
-                        GuntherVoice("Oh... oh no no no");
-                        break;
-                    case 4:
-                        CastVoice("CROAK");
-                        break;
-                    case 5:
-                        GuntherVoice("Protect the library!");
-                        break;
+                    }
+
                 }
                 
                 Vector2 vector2 = targetVector + new Vector2(0.0f, 1f) - new Vector2(randomIndex.Next(7), randomIndex.Next(3));
@@ -224,50 +218,46 @@ namespace StardewDruid.Event.Boss
             
             }
 
+            DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[1], [1] =bossMonster,}, activeCounter);
+
             switch (activeCounter)
             {
                 case 10:
-                    GuntherVoice("What have I got to throw here...");
                     GuntherThrowRandomShit();
                     break;
-                case 15:
-                    GuntherVoice("Pre-cretacious creep!");
+                case 11:
+                    GuntherApplyDamage();
                     break;
                 case 20:
-                    GuntherVoice("It's defacing my inlaid hardwood panelling!");
                     GuntherThrowRandomShit();
                     break;
-                case 25:
-                    GuntherVoice("Crikey! If only I didn't loan our weapon collection to Zuzu mid!");
+                case 21:
+                    GuntherApplyDamage();
                     break;
                 case 30:
-                    GuntherVoice("Marlon has a lot to answer for");
                     GuntherThrowRandomShit();
                     break;
-                case 35:
-                    GuntherVoice("Tell the guildmaster I wont accept any more cursed artifacts!");
+                case 31:
+                    GuntherApplyDamage();
                     break;
                 case 40:
-                    GuntherVoice("How are you doing these amazing feats of magic?");
                     GuntherThrowRandomShit();
                     break;
                 case 41:
-                    bossMonster.showTextAboveHead("Stop throwing things at me old man!", -1, 2, 3000, 0);
-                    break;
-                case 45:
-                    GuntherVoice("Can't you perform a rite of banishment or something?");
+                    GuntherApplyDamage();
                     break;
                 case 50:
-                    GuntherVoice("Goodbye, priceless artifact. Sniff.");
                     GuntherThrowRandomShit();
                     break;
-                case 54:
-                    GuntherVoice("Leave the corpse. I might be able to sell it's parts.");
+                case 51:
+                    GuntherApplyDamage();
                     break;
                 case 57:
-                    GuntherVoice("This is going to cost the historic trust society");
                     GuntherThrowRandomShit();
                     //expireEarly = true;
+                    break;
+                case 58:
+                    GuntherApplyDamage();
                     break;
             }
 
@@ -278,11 +268,6 @@ namespace StardewDruid.Event.Boss
 
             }
 
-        }
-
-        public void GuntherVoice(string speech)
-        {
-            actors[1].showTextAboveHead(speech, 3000, 2, 3000, 0);
         }
 
         public void GuntherThrowRandomShit()
@@ -333,6 +318,13 @@ namespace StardewDruid.Event.Boss
                 589
             };
             new Throw(targetPlayer, bossMonster.Position, new StardewValley.Object(intList[riteData.randomIndex.Next(intList.Count)], 1, false, -1, 0), Gunther.Position).AnimateObject();
+        }
+
+        public void GuntherApplyDamage()
+        {
+
+            ModUtility.DamageMonsters(targetLocation, new() { bossMonster, }, targetPlayer, Mod.instance.DamageLevel());
+
         }
 
         public void ResetLocation()

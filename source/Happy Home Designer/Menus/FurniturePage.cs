@@ -12,11 +12,13 @@ using HappyHomeDesigner.Framework;
 using HappyHomeDesigner.Integration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace HappyHomeDesigner.Menus
@@ -46,7 +48,7 @@ namespace HappyHomeDesigner.Menus
 		private static readonly int[] DefaultTabMap = {1, 1, 1, 1, 0, 0, 2, 4, 4, 4, 4, 0, 3, 2, 4, 5, 4, 4};
 		internal static HashSet<string> knownFurnitureIDs;
 
-		public FurniturePage()
+		public FurniturePage(ShopMenu existing = null)
 		{
 			int[] Map;
 			int default_slot;
@@ -71,17 +73,15 @@ namespace HappyHomeDesigner.Menus
 			filter_count += 2;
 
 			var favorites = Game1.player.modData.TryGetValue(KeyFavs, out var s) ? s.Split('	') : Array.Empty<string>();
-			var season = Game1.player.currentLocation.GetSeasonForLocation();
-			IEnumerable<ISalable> AllFurnitures = Utility.getAllFurnituresForFree().Keys;
-
-			if (CustomFurniture.Installed)
-				AllFurnitures = AllFurnitures.Concat(CustomFurniture.customFurniture);
+			var season = Game1.player.currentLocation.GetSeasonKey();
 
 			bool populateIds = knownFurnitureIDs is null;
 			if (populateIds)
 				knownFurnitureIDs = new();
 
-			foreach (var item in AllFurnitures)
+			var timer = Stopwatch.StartNew();
+
+			foreach (var item in ModUtilities.GetCatalogItems(true, existing))
 			{
 				if (item is Furniture furn)
 				{
@@ -98,9 +98,12 @@ namespace HappyHomeDesigner.Menus
 						Favorites.Add(entry);
 
 					if (populateIds)
-						knownFurnitureIDs.Add(furn.Name); // TODO use ids
+						knownFurnitureIDs.Add(furn.ItemId);
 				}
 			}
+
+			timer.Stop();
+			ModEntry.monitor.Log($"Populated {entries.Count} furniture items in {timer.ElapsedMilliseconds} ms", LogLevel.Debug);
 
 			MainPanel.DisplayChanged += UpdateDisplay;
 

@@ -16,5 +16,5 @@
   "UniqueID": "com.CodesThings.BetterSprinklersPlus",
   "EntryDll": "BetterSprinklersPlus.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Nexus:17767", "GitHub:jamescodesthings/smapi-better-sprinklers" ]
 }

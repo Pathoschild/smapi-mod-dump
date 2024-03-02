@@ -1,0 +1,91 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Dunc4nNT/StardewMods
+**
+*************************************************/
+
+{
+  "config.general.page-title": "General",
+  "config.general.general-section": "General",
+  "config.general.instant-catch-fish.name": "Instantly Catch Fish",
+  "config.general.instant-catch-fish.tooltip": "Skips the fishing minigame.",
+  "config.general.instant-catch-treasure.name": "Instantly Catch Treasure",
+  "config.general.instant-catch-treasure.tooltip": "If there are any treasures in the fishing minigame, instantly catch them even if you missed them.",
+  "config.general.always-max-casting-power.name": "Always Max Casting Power",
+  "config.general.always-max-casting-power.tooltip": "Always casts the fishing rod with maximum power, no matter how long you held the button.",
+  "config.general.always-perfect.name": "Always Perfect",
+  "config.general.always-perfect.tooltip": "Always get a perfect after catching a fish, even if you did not.",
+  "config.general.treasure-appearance.name": "Treasure Appearance Rate",
+  "config.general.treasure-appearance.tooltip": "Adjust how often treasure chests appear when catching fish.",
+  "config.general.always-catch-double.name": "Always Catch Double",
+  "config.general.always-catch-double.tooltip": "Always catches double fish, even if you did not have the correct bait.",
+  "config.general.instant-bite.name": "Instant Bite",
+  "config.general.instant-bite.tooltip": "Fish instantly bite after casting your fishing rod.",
+  "config.general.auto-hook.name": "Automatically Hook",
+  "config.general.auto-hook.tooltip": "Automatically starts reeling in your fish after one bites.",
+  "config.general.auto-loot-treasure.name": "Automatically Loot Treasure",
+  "config.general.auto-loot-treasure.tooltip": "Automatically loot and close the treasure menu popup after catching treasure.",
+  "config.general.difficulty-multiplier.name": "Difficulty Multiplier",
+  "config.general.difficulty-multiplier.tooltip": "Value with which the standard fishing difficulty is multiplied.",
+  "config.general.quality-section": "Quality Options",
+  "config.general.fish-quality.name": "Fish Quality",
+  "config.general.fish-quality.tooltip": "Always catch fish with the set quality.",
+  "config.general.minimum-fish-quality.name": "Minimum Fish Quality",
+  "config.general.minimum-fish-quality.tooltip": "Always gets fish of the set quality or better.",
+
+  "config.attachments.page-title": "Attachments",
+  "config.attachments.general-section": "General",
+  "config.attachments.override-attachment-limit.name": "Override Attachment Limit",
+  "config.attachments.override-attachment-limit.tooltip": "Overrides the fishing rod's attachment limit when spawning bait and tackle.",
+  "config.attachments.reset-attachments.name": "Reset Attachments",
+  "config.attachments.reset-attachments.tooltip": "Resets spawned attachments and slots when fishing rod is unequipped.",
+  "config.attachments.bait-section": "Bait",
+  "config.attachments.spawn-bait-when-equipped.name": "Spawn Bait When Equipped",
+  "config.attachments.spawn-bait-when-equipped.tooltip": "Spawns the below selected bait item whenever you equip your fishing rod.",
+  "config.attachments.spawn-which-bait.name": "Bait to Spawn",
+  "config.attachments.spawn-which-bait.tooltip": "Which bait to automatically spawn when fishing rod is equipped.",
+  "config.attachments.infinite-bait.name": "Infinite Bait",
+  "config.attachments.infinite-bait.tooltip": "Never run out of bait.",
+  "config.attachments.tackles-section": "Tackles",
+  "config.attachments.spawn-tackle-when-equipped.name": "Spawn Tackle When Equipped",
+  "config.attachments.spawn-tackle-when-equipped.tooltip": "Spawns the below selected tackle item whenever you equip your fishing rod.",
+  "config.attachments.spawn-which-tackle.name": "Tackle to Spawn",
+  "config.attachments.spawn-which-tackle.tooltip": "Which tackle to automatically spawn when fishing rod is equipped.",
+  "config.attachments.infinite-tackle.name": "Infinite Tackle",
+  "config.attachments.infinite-tackle.tooltip": "Tackle never wears out.",
+
+  "config.enchantments.page-title": "Enchantments",
+  "config.enchantments.general-section": "General",
+  "config.enchantments.do-add-enchantments.name": "Enable Adding Enchantments",
+  "config.enchantments.do-add-enchantments.tooltip": "Adds enchantments as set below when checked.",
+  "config.enchantments.reset-enchantments.name": "Reset Enchantments",
+  "config.enchantments.reset-enchantments.tooltip": "Resets enchantments to what they were before after unequipping the fishing rod.",
+  "config.enchantments.enchantments-section": "Enchantments",
+  "config.enchantments.add-all-enchantments.name": "Add All Enchantments",
+  "config.enchantments.add-all-enchantments.tooltip": "Adds all available enchantments when you equip a fishing rod.",
+  "config.enchantments.add-auto-hook-enchantment.name": "Add Auto-Hook Enchantment",
+  "config.enchantments.add-auto-hook-enchantment.tooltip": "Adds the auto-hook enchantment when equipping a fishing rod.",
+  "config.enchantments.add-efficient-tool-enchantment.name": "Add Efficient Enchantment",
+  "config.enchantments.add-efficient-tool-enchantment.tooltip": "Adds the efficient tool enchantment when equipping a fishing rod.",
+  "config.enchantments.add-master-enchantment.name": "Add Master Enchantment",
+  "config.enchantments.add-master-enchantment.tooltip": "Adds the master enchantment when equipping a fishing rod.",
+  "config.enchantments.add-preserving-enchantment.name": "Add Preserving Enchantment",
+  "config.enchantments.add-preserving-enchantment.tooltip": "Adds the preserving enchantment when equipping a fishing rod.",
+
+  "config.treasure-appearance-vanilla": "Vanilla",
+  "config.treasure-appearance-never": "Never",
+  "config.treasure-appearance-always": "Always",
+
+  "config.quality-any": "Any",
+  "config.quality-none": "None",
+  "config.quality-silver": "Silver",
+  "config.quality-gold": "Gold",
+  "config.quality-iridium": "Iridium",
+
+  "message.config-reloaded": "Configuration file reloaded.",
+  "message.inventory-full": "Your inventory is full."
+}

@@ -1,0 +1,759 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/elizabethcd/FireworksFestival
+**
+*************************************************/
+
+{
+    "Changes": [
+        // Add chemizer strings
+        {
+            "LogName": "Add big craftable strings",
+            "Action": "EditData",
+            "Target": "Strings/BigCraftables",
+            "Entries": {
+                "{{MainModID}}.Chemizer_Name": "{{i18n:big-craftable.Chemizer.name}}",
+                "{{MainModID}}.Chemizer_Description": "{{i18n:big-craftable.Chemizer.description}}"
+            }
+        },
+        // Add chemizer big craftable
+        {
+            "LogName": "Add chemizer",
+            "Action": "EditData",
+            "Target": "Data/BigCraftables",
+            "Entries": {
+                "{{MainModID}}.Chemizer": {
+                    "Name": "{{MainModID}}.Chemizer",
+                    "DisplayName": "[LocalizedText Strings\\BigCraftables:{{MainModID}}.Chemizer_Name]",
+                    "Description": "[LocalizedText Strings\\BigCraftables:{{MainModID}}.Chemizer_Description]",
+                    "Price": 50,
+                    "CanBePlacedOutdoors": true,
+                    "CanBePlacedIndoors": true,
+                    "IsLamp": false,
+                    "Texture": "Mods\\{{MainModID}}\\Objects",
+                    "SpriteIndex": 4
+                }
+            }
+        },
+        // Add crafting recipes
+        {
+            "LogName": "Add crafting recipe for chemizer",
+            "Action": "EditData",
+            "Target": "Data/CraftingRecipes",
+            "Entries": {
+                "{{MainModID}}.Chemizer": "335 5 336 2 337 1 766 25/Field/{{MainModID}}.Chemizer/true/null/"
+            }
+        },
+        // Add machine recipes for Brimstone
+        {
+            "LogName": "Chemizer machine recipes",
+            "Action": "EditData",
+            "Target": "Data/Machines",
+            "Entries": {
+                "(BC){{MainModID}}.Chemizer": {
+                  "HasInput": false,
+                  "HasOutput": false,
+                  "InteractMethod": null,
+                  "OutputRules": [
+                    // Turns eggs into Brimstone
+                    {
+                      "Id": "Brimstone_Eggs",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": null,
+                          "RequiredTags": [
+                            "egg_item"
+                          ],
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.Brimstone",
+                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns rotten eggs into brimstone
+                    {
+                      "Id": "Brimstone_RottenEgg",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O){{MainModID}}.RottenEgg",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.Brimstone",
+                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1000,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns rotten plant 1 into Brimstone
+                    {
+                      "Id": "Brimstone_RottenPlant1",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)747",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.Brimstone",
+                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1000,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns rotten plant 2 into Brimstone
+                    {
+                      "Id": "Brimstone_RottenPlant2",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)748",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.Brimstone",
+                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1000,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns orpiment into Brimstone
+                    {
+                      "Id": "Brimstone_Orpiment",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)556",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.Brimstone",
+                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1000,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns jamborite into Brimstone
+                    {
+                      "Id": "Brimstone_Jamborite",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)548",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.Brimstone",
+                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1000,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns celestine into strontium salt
+                    {
+                      "Id": "StrontiumSalt_Celestine",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)566",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.StrontiumSalt",
+                          "ItemId": "(O){{MainModID}}.StrontiumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns ghost crystal into strontium salt
+                    {
+                      "Id": "StrontiumSalt_GhostCrystal",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)561",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.StrontiumSalt",
+                          "ItemId": "(O){{MainModID}}.StrontiumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns bone items into limestone
+                    {
+                      "Id": "Limestone_Bone",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": null,
+                          "RequiredTags": [
+                            "bone_item",
+                            "!id_o_881"
+                          ],
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O)571",
+                          "ItemId": "(O)571",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns 5 bone fragments into limestone
+                    {
+                      "Id": "Limestone_BoneFragments",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)881",
+                          "RequiredCount": 5,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O)571",
+                          "ItemId": "(O)571",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns 5 iron ore into iron salt
+                    {
+                      "Id": "IronSalt_IronOre",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)380",
+                          "RequiredCount": 5,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.IronSalt",
+                          "ItemId": "(O){{MainModID}}.IronSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns iron bar into iron salt
+                    {
+                      "Id": "IronSalt_IronBar",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)335",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.IronSalt",
+                          "ItemId": "(O){{MainModID}}.IronSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns bixite into iron salt
+                    {
+                      "Id": "IronSalt_Bixite",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)539",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.IronSalt",
+                          "ItemId": "(O){{MainModID}}.IronSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns pyrite into iron salt
+                    {
+                      "Id": "IronSalt_Pyrite",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)559",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.IronSalt",
+                          "ItemId": "(O){{MainModID}}.IronSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns hematite into iron salt
+                    {
+                      "Id": "IronSalt_Hematite",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)573",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.IronSalt",
+                          "ItemId": "(O){{MainModID}}.IronSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns baryte into barium salt
+                    {
+                      "Id": "BariumSalt_Baryte",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)540",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.BariumSalt",
+                          "ItemId": "(O){{MainModID}}.BariumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns ocean stone into barium salt
+                    {
+                      "Id": "BariumSalt_OceanStone",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)560",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.BariumSalt",
+                          "ItemId": "(O){{MainModID}}.BariumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns sandstone into barium salt
+                    {
+                      "Id": "BariumSalt_Sandstone",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)568",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.BariumSalt",
+                          "ItemId": "(O){{MainModID}}.BariumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns granite into barium salt
+                    {
+                      "Id": "BariumSalt_Granite",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)569",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.BariumSalt",
+                          "ItemId": "(O){{MainModID}}.BariumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns copper ore into copper salt
+                    {
+                      "Id": "CopperSalt_CopperOre",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)378",
+                          "RequiredCount": 5,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.CopperSalt",
+                          "ItemId": "(O){{MainModID}}.CopperSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns copper bar into copper salt
+                    {
+                      "Id": "CopperSalt_CopperBar",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)334",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.CopperSalt",
+                          "ItemId": "(O){{MainModID}}.CopperSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns geminite into copper salt
+                    {
+                      "Id": "CopperSalt_Geminite",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)546",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.CopperSalt",
+                          "ItemId": "(O){{MainModID}}.CopperSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns malachite into copper salt
+                    {
+                      "Id": "CopperSalt_Malachite",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)552",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.CopperSalt",
+                          "ItemId": "(O){{MainModID}}.CopperSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns iridium ore into iridium salt
+                    {
+                      "Id": "IridiumSalt_IridiumOre",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)386",
+                          "RequiredCount": 5,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.IridiumSalt",
+                          "ItemId": "(O){{MainModID}}.IridiumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns iridium bar into iridium salt
+                    {
+                      "Id": "IridiumSalt_IridiumBar",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)337",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.IridiumSalt",
+                          "ItemId": "(O){{MainModID}}.IridiumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns star shards into iridium salt
+                    {
+                      "Id": "IridiumSalt_StarShards",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)578",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.IridiumSalt",
+                          "ItemId": "(O){{MainModID}}.IridiumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns dolomite into magnesium salt
+                    {
+                      "Id": "MagnesiumSalt_Dolomite",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)543",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.MagnesiumSalt",
+                          "ItemId": "(O){{MainModID}}.MagnesiumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns soapstone into magnesium salt
+                    {
+                      "Id": "MagnesiumSalt_Soapstone",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)572",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.MagnesiumSalt",
+                          "ItemId": "(O){{MainModID}}.MagnesiumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                    // Turns basalt into magnesium salt
+                    {
+                      "Id": "MagnesiumSalt_Basalt",
+                      "Triggers": [
+                        {
+                          "Id": "ItemPlacedInMachine",
+                          "Trigger": "ItemPlacedInMachine",
+                          "RequiredItemId": "(O)570",
+                          "RequiredCount": 1,
+                          "Condition": null
+                        }
+                      ],
+                      "UseFirstValidOutput": false,
+                      "OutputItem": [
+                        {
+                          "Id": "(O){{MainModID}}.MagnesiumSalt",
+                          "ItemId": "(O){{MainModID}}.MagnesiumSalt",
+                          "Condition": null,
+                        }
+                      ],
+                      "MinutesUntilReady": 1500,
+                      "DaysUntilReady": -1,
+                    },
+                  ],
+                  "AdditionalConsumedItems": null,
+                  "LoadEffects": [
+                    {
+                      "Id": "Default",
+                      "Sounds": [
+                        {
+                          "Id": "Ship",
+                          "Delay": 0
+                        }
+                      ],
+                    }
+                  ],                  
+                  "AllowLoadWhenFull": false,
+                  "WobbleWhileWorking": true,
+                  "LightWhileWorking": null,
+                  "ShowNextIndexWhileWorking": false,
+                  "ShowNextIndexWhenReady": false,
+                  "AllowFairyDust": true
+                },
+            }
+        }
+    ]
+}

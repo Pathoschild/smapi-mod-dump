@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -22,7 +21,6 @@ using Archipelago.MultiClient.Net.MessageLog.Messages;
 using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
 using HarmonyLib;
-using Newtonsoft.Json.Linq;
 using StardewArchipelago.Extensions;
 using StardewModdingAPI;
 using StardewValley;

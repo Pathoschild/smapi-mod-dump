@@ -35,6 +35,6 @@
 
 namespace ForecasterText.Objects {
     public interface IRecipeFinder {
-        string GetAnyRecipe();
+        string? GetAnyRecipe();
     }
 }

@@ -39,26 +39,33 @@ namespace WarpNetwork.ui
 		private Farmer who;
 		internal bool hovering = false;
 
+		internal static Texture2D defaultIcon;
+
 		public WarpMenu(List<IWarpNetAPI.IDestinationHandler> locs, int x = 0, int y = 0, int width = 0, int height = 0)
 	  : base(x, y, width, height, true)
 		{
-			autoAlign = x == 0 && y == 0;
-			this.width = width != 0 ? width : 600;
-			this.height = height != 0 ? height : 380;
-			this.locs = locs;
-			who = Game1.player;
 			if (locs.Count < 1)
 			{
 				ModEntry.monitor.Log("Warp menu created with no destinations!", LogLevel.Warn);
 				exitThisMenuNoSound();
 			}
+
+			autoAlign = x == 0 && y == 0;
+			this.width = width != 0 ? width : 600;
+			this.height = height != 0 ? height : 380;
+			this.locs = locs;
+			who = Game1.player;
 			title = ModEntry.helper.Translation.Get("ui-label");
 			titleW = (int)Game1.dialogueFont.MeasureString(title).X + 33 + 36;
 			upArrow = new(new Rectangle(0, 0, 33, 36), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), 3f);
 			downArrow = new(new Rectangle(0, 0, 33, 36), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 3f);
+			defaultIcon = ModEntry.helper.GameContent.Load<Texture2D>(ModEntry.AssetPath + "/Icons/DEFAULT");
+
 			if (autoAlign)
 				align();
+
 			resized();
+
 			if (Game1.options.SnappyMenus)
 				snapToDefaultClickableComponent();
 		}

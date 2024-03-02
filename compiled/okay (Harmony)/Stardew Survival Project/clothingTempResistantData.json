@@ -3,32 +3,32 @@
     {
       "name": "Brestplate",
       "pattern": "postfix",
-      "heatInsulationModifier": -0.1,
-      "coldInsulationModifier": 0.1
+      "heatInsulationModifier": -0.25,
+      "coldInsulationModifier": 0.25
     },
     {
       "name": "Shirt",
       "pattern": "postfix",
-      "heatInsulationModifier": 0.1,
-      "coldInsulationModifier": -0.1
+      "heatInsulationModifier": 0.25,
+      "coldInsulationModifier": -0.25
     },
     {
       "name": "Jacket",
       "pattern": "postfix",
       "heatInsulationModifier": 0,
-      "coldInsulationModifier": 0.2
+      "coldInsulationModifier": 0.5
     },
     {
       "name": "Overalls",
       "pattern": "postfix",
-      "heatInsulationModifier": -0.1,
-      "coldInsulationModifier": 0.1
+      "heatInsulationModifier": -0.25,
+      "coldInsulationModifier": 0.25
     },
     {
       "name": "Coat",
       "pattern": "postfix",
-      "heatInsulationModifier": 0.1,
-      "coldInsulationModifier": 0.3
+      "heatInsulationModifier": 0.25,
+      "coldInsulationModifier": 0.75
     }
   ],
   "pants_data": [
@@ -41,167 +41,167 @@
     {
       "name": "Shorts",
       "pattern": "match",
-      "heatInsulationModifier": 0.2,
-      "coldInsulationModifier": -0.2
+      "heatInsulationModifier": 0.5,
+      "coldInsulationModifier": -0.5
     },
     {
       "name": "Genie Pants",
       "pattern": "match",
-      "heatInsulationModifier": -0.2,
-      "coldInsulationModifier": 0.2
+      "heatInsulationModifier": -0.5,
+      "coldInsulationModifier": 0.5
     }
   ],
   "hat_data": [
     {
       "name": "Floppy Beanie",
       "pattern": "match",
-      "heatInsulationModifier": -0.1,
-      "coldInsulationModifier": 0.3
+      "heatInsulationModifier": -0.25,
+      "coldInsulationModifier": 0.75
     },
     {
       "name": "Beanie",
       "pattern": "match",
-      "heatInsulationModifier": -0.2,
-      "coldInsulationModifier": 0.3
+      "heatInsulationModifier": -0.25,
+      "coldInsulationModifier": 0.75
     },
     {
       "name": "Fishing Hat",
       "pattern": "match",
-      "heatInsulationModifier": 0.2,
+      "heatInsulationModifier": 0.5,
       "coldInsulationModifier": 0
     },
     {
       "name": "Forager's Hat",
       "pattern": "match",
-      "heatInsulationModifier": 0.2,
+      "heatInsulationModifier": 0.5,
       "coldInsulationModifier": 0
     },
     {
       "name": "Sou'wester",
       "pattern": "match",
-      "heatInsulationModifier": 0.1,
-      "coldInsulationModifier": 0.3
+      "heatInsulationModifier": 0.25,
+      "coldInsulationModifier": 0.75
     },
     {
       "name": "Cap",
       "pattern": "postfix",
-      "heatInsulationModifier": 0.1,
+      "heatInsulationModifier": 0.25,
       "coldInsulationModifier": 0
     },
     {
       "name": "Hat",
       "pattern": "postfix",
-      "heatInsulationModifier": 0.1,
-      "coldInsulationModifier": 0.1
+      "heatInsulationModifier": 0.25,
+      "coldInsulationModifier": 0.25
     }
   ],
   "boots_data": [
     {
       "name": "Sneaker",
       "pattern": "match",
-      "heatInsulationModifier": 0.1,
-      "coldInsulationModifier": 0.2
+      "heatInsulationModifier": 0.25,
+      "coldInsulationModifier": 0.5
     },
     {
       "name": "Rubber Boots",
       "pattern": "match",
       "heatInsulationModifier": 0,
-      "coldInsulationModifier": 0.3
+      "coldInsulationModifier": 0.75
     },
     {
       "name": "Leather Boots",
-      "pattern": "match",
-      "heatInsulationModifier": 0.2,
-      "coldInsulationModifier": 0.2
-    },
-    {
-      "name": "Work Boots",
-      "pattern": "match",
-      "heatInsulationModifier": 0.2,
-      "coldInsulationModifier": 0.2
-    },
-    {
-      "name": "Combat Boots",
-      "pattern": "match",
-      "heatInsulationModifier": 0.3,
-      "coldInsulationModifier": 0.1
-    },
-    {
-      "name": "Tundra Boots",
-      "pattern": "match",
-      "heatInsulationModifier": 0,
-      "coldInsulationModifier": 0.5
-    },
-    {
-      "name": "Leprechaun Shoes",
-      "pattern": "match",
-      "heatInsulationModifier": 0.1,
-      "coldInsulationModifier": 0.1
-    },
-    {
-      "name": "Thermal Boots",
-      "pattern": "match",
-      "heatInsulationModifier": 0.3,
-      "coldInsulationModifier": 0.3
-    },
-    {
-      "name": "Cowboy Boots",
-      "pattern": "match",
-      "heatInsulationModifier": 0.3,
-      "coldInsulationModifier": 0.1
-    },
-    {
-      "name": "Dark Boots",
-      "pattern": "match",
-      "heatInsulationModifier": 0.2,
-      "coldInsulationModifier": 0.2
-    },
-    {
-      "name": "Genie Boots",
-      "pattern": "match",
-      "heatInsulationModifier": 0.4,
-      "coldInsulationModifier": 0.1
-    },
-    {
-      "name": "Space Boots",
-      "pattern": "match",
-      "heatInsulationModifier": 0.3,
-      "coldInsulationModifier": 0.3
-    },
-    {
-      "name": "Emily's Magic Boots",
       "pattern": "match",
       "heatInsulationModifier": 0.5,
       "coldInsulationModifier": 0.5
     },
     {
-      "name": "Cinderclown Shoes",
+      "name": "Work Boots",
+      "pattern": "match",
+      "heatInsulationModifier": 0.5,
+      "coldInsulationModifier": 0.5
+    },
+    {
+      "name": "Combat Boots",
+      "pattern": "match",
+      "heatInsulationModifier": 0.75,
+      "coldInsulationModifier": 0.25
+    },
+    {
+      "name": "Tundra Boots",
+      "pattern": "match",
+      "heatInsulationModifier": 0,
+      "coldInsulationModifier": 1.25
+    },
+    {
+      "name": "Leprechaun Shoes",
+      "pattern": "match",
+      "heatInsulationModifier": 0.25,
+      "coldInsulationModifier": 0.25
+    },
+    {
+      "name": "Thermal Boots",
+      "pattern": "match",
+      "heatInsulationModifier": 0.75,
+      "coldInsulationModifier": 0.75
+    },
+    {
+      "name": "Cowboy Boots",
+      "pattern": "match",
+      "heatInsulationModifier": 0.75,
+      "coldInsulationModifier": 0.25
+    },
+    {
+      "name": "Dark Boots",
+      "pattern": "match",
+      "heatInsulationModifier": 0.5,
+      "coldInsulationModifier": 0.5
+    },
+    {
+      "name": "Genie Boots",
       "pattern": "match",
       "heatInsulationModifier": 1.0,
+      "coldInsulationModifier": 0.25
+    },
+    {
+      "name": "Space Boots",
+      "pattern": "match",
+      "heatInsulationModifier": 0.75,
+      "coldInsulationModifier": 0.75
+    },
+    {
+      "name": "Emily's Magic Boots",
+      "pattern": "match",
+      "heatInsulationModifier": 1.25,
+      "coldInsulationModifier": 1.25
+    },
+    {
+      "name": "Cinderclown Shoes",
+      "pattern": "match",
+      "heatInsulationModifier": 2.5,
       "coldInsulationModifier": 0
     },
     {
       "name": "Mermaid Boots",
       "pattern": "match",
-      "heatInsulationModifier": 0.2,
-      "coldInsulationModifier": 0.6
+      "heatInsulationModifier": 0.5,
+      "coldInsulationModifier": 1.5
     },
     {
       "name": "Dragonscale Boots",
       "pattern": "match",
-      "heatInsulationModifier": 0.8,
-      "coldInsulationModifier": 0.8
+      "heatInsulationModifier": 2.0,
+      "coldInsulationModifier": 2.0
     },
     {
       "name": "Crystal Shoes",
       "pattern": "match",
-      "heatInsulationModifier": 0.8,
+      "heatInsulationModifier": 2.0,
       "coldInsulationModifier": 0
     },
     {
       "name": "Firewalker Boots",
       "pattern": "match",
-      "heatInsulationModifier": 0.6,
+      "heatInsulationModifier": 1.5,
       "coldInsulationModifier": 0
     }
   ]

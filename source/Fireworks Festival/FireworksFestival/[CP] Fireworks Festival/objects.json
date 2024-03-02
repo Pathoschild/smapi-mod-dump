@@ -1,0 +1,448 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/elizabethcd/FireworksFestival
+**
+*************************************************/
+
+{
+    "Changes": [
+        // Load spritesheets
+        {
+            "LogName": "Load fireworks spritesheet",
+            "Action": "Load",
+            "Target": "Mods/{{MainModID}}/Fireworks",
+            "FromFile": "assets/Fireworks.png"
+        },
+        {
+            "LogName": "Load objects spritesheet",
+            "Action": "Load",
+            "Target": "Mods/{{MainModID}}/Objects",
+            "FromFile": "assets/Objects.png"
+        },
+        {
+            "LogName": "Load salts spritesheet",
+            "Action": "Load",
+            "Target": "Mods/{{MainModID}}/Salts",
+            "FromFile": "assets/Salts.png"
+        },
+        // Add name and description strings for objects
+        {
+            "LogName": "Add strings for objects",
+            "Action": "EditData",
+            "Target": "Strings/Objects",
+            "Entries": {
+                "{{MainModID}}.RedFirework_Name": "{{i18n:object.RedFirework.name}}",
+                "{{MainModID}}.RedFirework_Description": "{{i18n:object.RedFirework.description}}",
+                "{{MainModID}}.OrangeFirework_Name": "{{i18n:object.OrangeFirework.name}}",
+                "{{MainModID}}.OrangeFirework_Description": "{{i18n:object.OrangeFirework.description}}",
+                "{{MainModID}}.YellowFirework_Name": "{{i18n:object.YellowFirework.name}}",
+                "{{MainModID}}.YellowFirework_Description": "{{i18n:object.YellowFirework.description}}",
+                "{{MainModID}}.GreenFirework_Name": "{{i18n:object.GreenFirework.name}}",
+                "{{MainModID}}.GreenFirework_Description": "{{i18n:object.GreenFirework.description}}",
+                "{{MainModID}}.BlueFirework_Name": "{{i18n:object.BlueFirework.name}}",
+                "{{MainModID}}.BlueFirework_Description": "{{i18n:object.BlueFirework.description}}",
+                "{{MainModID}}.PurpleFirework_Name": "{{i18n:object.PurpleFirework.name}}",
+                "{{MainModID}}.PurpleFirework_Description": "{{i18n:object.PurpleFirework.description}}",
+                "{{MainModID}}.WhiteFirework_Name": "{{i18n:object.WhiteFirework.name}}",
+                "{{MainModID}}.WhiteFirework_Description": "{{i18n:object.WhiteFirework.description}}",
+                "{{MainModID}}.StrontiumSalt_Name": "{{i18n:object.StrontiumSalt.name}}",
+                "{{MainModID}}.StrontiumSalt_Description": "{{i18n:object.StrontiumSalt.description}}",
+                "{{MainModID}}.IronSalt_Name": "{{i18n:object.IronSalt.name}}",
+                "{{MainModID}}.IronSalt_Description": "{{i18n:object.IronSalt.description}}",
+                "{{MainModID}}.BariumSalt_Name": "{{i18n:object.BariumSalt.name}}",
+                "{{MainModID}}.BariumSalt_Description": "{{i18n:object.BariumSalt.description}}",
+                "{{MainModID}}.CopperSalt_Name": "{{i18n:object.CopperSalt.name}}",
+                "{{MainModID}}.CopperSalt_Description": "{{i18n:object.CopperSalt.description}}",
+                "{{MainModID}}.IridiumSalt_Name": "{{i18n:object.IridiumSalt.name}}",
+                "{{MainModID}}.IridiumSalt_Description": "{{i18n:object.IridiumSalt.description}}",
+                "{{MainModID}}.MagnesiumSalt_Name": "{{i18n:object.MagnesiumSalt.name}}",
+                "{{MainModID}}.MagnesiumSalt_Description": "{{i18n:object.MagnesiumSalt.description}}",
+                "{{MainModID}}.RottenEgg_Name": "{{i18n:object.RottenEgg.name}}",
+                "{{MainModID}}.RottenEgg_Description": "{{i18n:object.RottenEgg.description}}",
+                "{{MainModID}}.Niter_Name": "{{i18n:object.Niter.name}}",
+                "{{MainModID}}.Niter_Description": "{{i18n:object.Niter.description}}",
+                "{{MainModID}}.Brimstone_Name": "{{i18n:object.Brimstone.name}}",
+                "{{MainModID}}.Brimstone_Description": "{{i18n:object.Brimstone.description}}",
+                "{{MainModID}}.BlackPowder_Name": "{{i18n:object.BlackPowder.name}}",
+                "{{MainModID}}.BlackPowder_Description": "{{i18n:object.BlackPowder.description}}",
+                "{{MainModID}}.Takoyaki_Name": "{{i18n:object.Takoyaki.name}}",
+                "{{MainModID}}.Takoyaki_Description": "{{i18n:object.Takoyaki.description}}",
+                "{{MainModID}}.ShavedIce_Name": "{{i18n:object.ShavedIce.name}}",
+                "{{MainModID}}.ShavedIce_Description": "{{i18n:object.ShavedIce.description}}",
+                "{{MainModID}}.Yakisoba_Name": "{{i18n:object.Yakisoba.name}}",
+                "{{MainModID}}.Yakisoba_Description": "{{i18n:object.Yakisoba.description}}",
+                "{{MainModID}}.FireworksLicense_Name": "{{i18n:object.FireworksLicense.name}}",
+                "{{MainModID}}.FireworksLicense_Description": "{{i18n:object.FireworksLicense.description}}",
+            }
+        },
+        // Create fireworks objects
+        {
+            "LogName": "Add firework objects",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "{{MainModID}}.RedFirework": {
+                    "Name": "{{MainModID}}.RedFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.RedFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.RedFirework_Description]",
+                    "Type": "Crafting",
+                    "Category": -8,
+                    "Price": 250,
+                    "Texture": "Mods\\{{MainModID}}\\Fireworks",
+                    "SpriteIndex": 0,
+                    "ExcludeFromShippingCollection": false,
+                    "ContextTags": [
+                        "color_red",
+                        "ingredient_firework"
+                    ],
+                },
+                "{{MainModID}}.OrangeFirework": {
+                    "Name": "{{MainModID}}.OrangeFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.OrangeFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.OrangeFirework_Description]",
+                    "Type": "Crafting",
+                    "Category": -8,
+                    "Price": 250,
+                    "Texture": "Mods\\{{MainModID}}\\Fireworks",
+                    "SpriteIndex": 1,
+                    "ExcludeFromShippingCollection": false,
+                    "ContextTags": [
+                        "color_orange",
+                        "ingredient_firework"
+                    ],
+                },
+                "{{MainModID}}.YellowFirework": {
+                    "Name": "{{MainModID}}.YellowFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.YellowFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.YellowFirework_Description]",
+                    "Type": "Crafting",
+                    "Category": -8,
+                    "Price": 250,
+                    "Texture": "Mods\\{{MainModID}}\\Fireworks",
+                    "SpriteIndex": 2,
+                    "ExcludeFromShippingCollection": false,
+                    "ContextTags": [
+                        "color_yellow",
+                        "ingredient_firework"
+                    ],
+                },
+                "{{MainModID}}.GreenFirework": {
+                    "Name": "{{MainModID}}.GreenFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.GreenFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.GreenFirework_Description]",
+                    "Type": "Crafting",
+                    "Category": -8,
+                    "Price": 250,
+                    "Texture": "Mods\\{{MainModID}}\\Fireworks",
+                    "SpriteIndex": 3,
+                    "ExcludeFromShippingCollection": false,
+                    "ContextTags": [
+                        "color_green",
+                        "ingredient_firework"
+                    ],
+                },
+                "{{MainModID}}.BlueFirework": {
+                    "Name": "{{MainModID}}.BlueFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.BlueFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.BlueFirework_Description]",
+                    "Type": "Crafting",
+                    "Category": -8,
+                    "Price": 250,
+                    "Texture": "Mods\\{{MainModID}}\\Fireworks",
+                    "SpriteIndex": 4,
+                    "ExcludeFromShippingCollection": false,
+                    "ContextTags": [
+                        "color_blue",
+                        "ingredient_firework"
+                    ],
+                },
+                "{{MainModID}}.PurpleFirework": {
+                    "Name": "{{MainModID}}.PurpleFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.PurpleFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.PurpleFirework_Description]",
+                    "Type": "Crafting",
+                    "Category": -8,
+                    "Price": 250,
+                    "Texture": "Mods\\{{MainModID}}\\Fireworks",
+                    "SpriteIndex": 5,
+                    "ExcludeFromShippingCollection": false,
+                    "ContextTags": [
+                        "color_purple",
+                        "ingredient_firework"
+                    ],
+                },
+                "{{MainModID}}.WhiteFirework": {
+                    "Name": "{{MainModID}}.WhiteFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.WhiteFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.WhiteFirework_Description]",
+                    "Type": "Crafting",
+                    "Category": -8,
+                    "Price": 250,
+                    "Texture": "Mods\\{{MainModID}}\\Fireworks",
+                    "SpriteIndex": 6,
+                    "ExcludeFromShippingCollection": false,
+                    "ContextTags": [
+                        "color_white",
+                        "ingredient_firework"
+                    ],
+                },
+                "{{MainModID}}.FireworksLicense": {
+                    "Name": "{{MainModID}}.FireworksLicense",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.FireworksLicense_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.FireworksLicense_Description]",
+                    "Type": "Quest",
+                    "Category": 0,
+                    "Price": 0,
+                    "Texture": "Mods\\{{MainModID}}\\Objects",
+                    "SpriteIndex": 8,
+                    "ExcludeFromShippingCollection": true,
+                    "ExcludeFromRandomSale": true,
+                }
+            }
+        },
+        // Create salt objects
+        {
+            "LogName": "Add salt objects",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "{{MainModID}}.StrontiumSalt": {
+                    "Name": "{{MainModID}}.StrontiumSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.StrontiumSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.StrontiumSalt_Description]",
+                    "Type": "Minerals",
+                    "Category": -2,
+                    "Price": 100,
+                    "Texture": "Mods\\{{MainModID}}\\Salts",
+                    "SpriteIndex": 0,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "color_red",
+                        "ingredient_metal_salt"
+                    ],
+                },
+                "{{MainModID}}.IronSalt": {
+                    "Name": "{{MainModID}}.IronSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.IronSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.IronSalt_Description]",
+                    "Type": "Minerals",
+                    "Category": -2,
+                    "Price": 100,
+                    "Texture": "Mods\\{{MainModID}}\\Salts",
+                    "SpriteIndex": 1,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "color_orange",
+                        "ingredient_metal_salt"
+                    ],
+                },
+                "{{MainModID}}.BariumSalt": {
+                    "Name": "{{MainModID}}.BariumSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.BariumSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.BariumSalt_Description]",
+                    "Type": "Minerals",
+                    "Category": -2,
+                    "Price": 100,
+                    "Texture": "Mods\\{{MainModID}}\\Salts",
+                    "SpriteIndex": 2,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "color_green",
+                        "ingredient_metal_salt"
+                    ],
+                },
+                "{{MainModID}}.CopperSalt": {
+                    "Name": "{{MainModID}}.CopperSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.CopperSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.CopperSalt_Description]",
+                    "Type": "Minerals",
+                    "Category": -2,
+                    "Price": 100,
+                    "Texture": "Mods\\{{MainModID}}\\Salts",
+                    "SpriteIndex": 3,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "color_blue",
+                        "ingredient_metal_salt"
+                    ],
+                },
+                "{{MainModID}}.IridiumSalt": {
+                    "Name": "{{MainModID}}.IridiumSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.IridiumSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.IridiumSalt_Description]",
+                    "Type": "Minerals",
+                    "Category": -2,
+                    "Price": 100,
+                    "Texture": "Mods\\{{MainModID}}\\Salts",
+                    "SpriteIndex": 4,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "color_purple",
+                        "ingredient_metal_salt"
+                    ],
+                },
+                "{{MainModID}}.MagnesiumSalt": {
+                    "Name": "{{MainModID}}.MagnesiumSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.MagnesiumSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.MagnesiumSalt_Description]",
+                    "Type": "Minerals",
+                    "Category": -2,
+                    "Price": 100,
+                    "Texture": "Mods\\{{MainModID}}\\Salts",
+                    "SpriteIndex": 5,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "color_white",
+                        "ingredient_metal_salt"
+                    ],
+                },
+            }
+        },
+        // Create misc objects
+        {
+            "LogName": "Add other objects",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "{{MainModID}}.RottenEgg": {
+                    "Name": "{{MainModID}}.RottenEgg",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.RottenEgg_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.RottenEgg_Description]",
+                    "Type": "Litter",
+                    "Category": -999,
+                    "Price": 5,
+                    "Texture": "Mods\\{{MainModID}}\\Objects",
+                    "SpriteIndex": 0,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "ingredient_rotten_egg",
+                        "color_white",
+                        "trash_item"
+                    ],
+                },
+                "{{MainModID}}.Niter": {
+                    "Name": "{{MainModID}}.Niter",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.Niter_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.Niter_Description]",
+                    "Type": "Minerals",
+                    "Category": -2,
+                    "Price": 100,
+                    "Texture": "Mods\\{{MainModID}}\\Objects",
+                    "SpriteIndex": 1,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "ingredient_niter",
+                        "color_white"
+                    ],
+                },
+                "{{MainModID}}.Brimstone": {
+                    "Name": "{{MainModID}}.Brimstone",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.Brimstone_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.Brimstone_Description]",
+                    "Type": "Minerals",
+                    "Category": -2,
+                    "Price": 100,
+                    "Texture": "Mods\\{{MainModID}}\\Objects",
+                    "SpriteIndex": 2,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "ingredient_brimstone",
+                        "color_yellow"
+                    ],
+                },
+                "{{MainModID}}.BlackPowder": {
+                    "Name": "{{MainModID}}.BlackPowder",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.BlackPowder_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.BlackPowder_Description]",
+                    "Type": "Minerals",
+                    "Category": -2,
+                    "Price": 200,
+                    "Texture": "Mods\\{{MainModID}}\\Objects",
+                    "SpriteIndex": 3,
+                    "ExcludeFromShippingCollection": false,
+                    "ContextTags": [
+                        "ingredient_black_powder",
+                        "color_black"
+                    ],
+                },
+            }
+        },
+        // Create food objects
+        {
+            "LogName": "Add food objects",
+            "Action": "EditData",
+            "Target": "Data/Objects",
+            "Entries": {
+                "{{MainModID}}.Takoyaki": {
+                    "Name": "{{MainModID}}.Takoyaki",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.Takoyaki_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.Takoyaki_Description]",
+                    "Type": "Cooking",
+                    "Category": -7,
+                    "Price": 200,
+                    "Edibility": 10,
+                    "Texture": "Mods\\{{MainModID}}\\Objects",
+                    "SpriteIndex": 5,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "ingredient_takoyaki",
+                        "color_brown"
+                    ],
+                },
+                "{{MainModID}}.ShavedIce": {
+                    "Name": "{{MainModID}}.ShavedIce",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.ShavedIce_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.ShavedIce_Description]",
+                    "Type": "Cooking",
+                    "Category": -7,
+                    "Price": 200,
+                    "Edibility": 10,
+                    "Texture": "Mods\\{{MainModID}}\\Objects",
+                    "SpriteIndex": 6,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "ingredient_shaved_ice",
+                        "ingredient_ice",
+                        "color_brown"
+                    ],
+                },
+                "{{MainModID}}.Yakisoba": {
+                    "Name": "{{MainModID}}.Yakisoba",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.Yakisoba_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.Yakisoba_Description]",
+                    "Type": "Cooking",
+                    "Category": -7,
+                    "Price": 200,
+                    "Edibility": 10,
+                    "Texture": "Mods\\{{MainModID}}\\Objects",
+                    "SpriteIndex": 7,
+                    "ExcludeFromShippingCollection": true,
+                    "ContextTags": [
+                        "ingredient_yakisoba",
+                        "color_brown"
+                    ],
+                },
+            }
+        },
+        // Add crafting recipes
+        {
+            "LogName": "Add crafting recipes for fireworks and black powder",
+            "Action": "EditData",
+            "Target": "Data/CraftingRecipes",
+            "Entries": {
+                "{{MainModID}}.RedFirework": "{{MainModID}}.StrontiumSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.RedFirework/false/null/",
+                "{{MainModID}}.OrangeFirework": "571 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.OrangeFirework/false/null/",
+                "{{MainModID}}.YellowFirework": "{{MainModID}}.IronSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.YellowFirework/false/null/",
+                "{{MainModID}}.GreenFirework": "{{MainModID}}.BariumSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.GreenFirework/false/null/",
+                "{{MainModID}}.BlueFirework": "{{MainModID}}.CopperSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.BlueFirework/false/null/",
+                "{{MainModID}}.PurpleFirework": "{{MainModID}}.IridiumSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.PurpleFirework/false/null/",
+                "{{MainModID}}.WhiteFirework": "{{MainModID}}.MagnesiumSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.WhiteFirework/false/null/",
+                "{{MainModID}}.BlackPowder": "{{MainModID}}.Niter 1 {{MainModID}}.Brimstone 1 382 5/Field/{{MainModID}}.BlackPowder/false/null/",
+            }
+        },
+    ]
+}

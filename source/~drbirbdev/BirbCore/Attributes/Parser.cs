@@ -35,9 +35,9 @@ public class Parser
     /// </summary>
     /// <param name="mod">The mod being parsed.</param>
     /// <param name="assembly">The assembly to scan for attributes. Defaults to the assembly calling ParseAll.</param>
-    public static void ParseAll(IMod mod, Assembly? assembly = null)
+    public static void ParseAll(IMod mod)
     {
-        assembly ??= Assembly.GetCallingAssembly();
+        Assembly assembly = mod.GetType().Assembly;
 
         Log.Init(mod.Monitor, assembly);
 

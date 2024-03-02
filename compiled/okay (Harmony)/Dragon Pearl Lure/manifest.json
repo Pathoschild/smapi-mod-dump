@@ -1,18 +1,10 @@
 ﻿{
   "Name": "Dragon Pearl Lure",
   "Author": "violetlizabet",
-  "Version": "0.1.0",
+  "Version": "2.0.0",
   "Description": "Adds a pearl lure object that serpents will chase.",
   "UniqueID": "violetlizabet.DragonPearlLure",
   "EntryDll": "DragonPearlLure.dll",
-  "MinimumApiVersion": "3.14.0",
-  "UpdateKeys": ["Nexus:15109"],
-  "Dependencies": [
-    {
-      "UniqueID": "spacechase0.JsonAssets"
-    },
-    {
-      "UniqueID": "Cherry.ExpandedPreconditionsUtility"
-    }
-  ]
+  "MinimumApiVersion": "4.0.0-alpha.20231012",
+  "UpdateKeys": [ "Nexus:15109" ]
 }

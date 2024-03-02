@@ -27,6 +27,8 @@ namespace StardewArchipelago.Constants
             { "Apples_Name", "Aurora Vineyard"},
             { "Lance_Name", "Monster Crops"},
             { "Krobus_Name", "Void Soul"},
+            { "Lemurkat.SpecialOrders.JasperGeodes_Name", "Geode Order" },
+            { "Lemurkat.SpecialOrders.JasperScrolls_Name", "Dwarven Scrolls" },
         };
     }
 }

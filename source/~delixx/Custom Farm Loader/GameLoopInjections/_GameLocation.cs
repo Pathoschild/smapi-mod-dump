@@ -64,7 +64,29 @@ namespace Custom_Farm_Loader.GameLoopInjections
             if (!CustomFarm.IsCFLMapSelected())
                 return;
 
+            //Thinking about it, I am not entirely sure if SaveCreating is the right place for this.
+            //Any locations that get added afterwards don't get processed
+            //But it's fine for now, I guess and there's more important things to do :)
             placeFurniture();
+            placeFences();
+        }
+
+        private static void placeFences()
+        {
+            foreach (var loc in Game1.locations) {
+                if (!loc.HasMapPropertyWithValue("cfl_PlaceFences"))
+                    return;
+
+                for (int x = 0; x < loc.Map.Layers[0].LayerWidth; x++)
+                    for (int y = 0; y < loc.Map.Layers[0].LayerHeight; y++) {
+                        var fenceProperty = loc.doesTileHavePropertyNoNull(x, y, "cfl_Fence", "Back");
+                        if (fenceProperty == "")
+                            continue;
+
+                        _GameLocation.clearTileOfLitter(loc, new Vector2(x, y));
+                        loc.objects.TryAdd(new Vector2(x, y), new Fence(new Vector2(x, y), fenceProperty, fenceProperty == "325")); //The game is hardcoded like this as well :P
+                    }
+            }
         }
 
         private static void placeFurniture()
@@ -73,6 +95,15 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             foreach (Furniture furniture in customFarm.StartFurniture.Where(el => el.LocationName != "FarmHouse"))
                 furniture.tryPlacingFurniture(Game1.getLocationFromName(furniture.LocationName));
+        }
+
+        public static void clearTileOfLitter(GameLocation location, Vector2 tile)
+        {
+            var obj = location.getObjectAtTile((int)tile.X, (int)tile.Y);
+
+            if(obj is not null && obj.Category == StardewValley.Object.litterCategory)
+                location.Objects.Remove(tile);
+
         }
 
         public static void setMap_Postfix(GameLocation __instance)
@@ -145,13 +176,16 @@ namespace Custom_Farm_Loader.GameLoopInjections
             if (!CustomFarm.IsCFLMapSelected())
                 return true;
 
+            CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
+
+            if (!customFarm.FishingRules.Any(e => e.LocationName == __instance.Name))
+                return true;
+
             foreach (Building b in __instance.buildings)
                 if (b is FishPond && b.isTileFishable(bobberTile)) {
                     __result = (b as FishPond).CatchFish();
                     return false;
                 }
-
-            CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
 
             bool isUsingMagicBait = false;
             bool hasCuriosityLure = false;

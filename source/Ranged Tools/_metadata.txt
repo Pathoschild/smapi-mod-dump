@@ -6,9 +6,9 @@ mods:
    Ranged Tools
 
 latest commit:
-   commit 10258272b0dab608ec2374756116d44cfdf77a38
+   commit db0b81d8cbdbafc759286d9ba8e210bcb4b97e42
    Author: vgperson <vgboy2002@yahoo.com>
-   Date:   Sun Jul 9 15:06:59 2023 -0700
+   Date:   Sat Feb 17 13:41:12 2024 -0800
    
-       1.5.5 update (Crab Pot placement fix)
+       1.5.7 update (resized weapon hitbox vs. monsters)
    

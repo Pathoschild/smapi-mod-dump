@@ -11,6 +11,7 @@
 namespace PermanentCookoutKit
 {
     using StardewModdingAPI;
+    using StardewModdingAPI.Events;
     using StardewValley;
     using System;
     using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace PermanentCookoutKit
         }
     }
 
-    public class PermanentCookoutKit : Mod, IAssetEditor
+    public class PermanentCookoutKit : Mod
     {
         public CookoutKitConfig Config { get; set; }
 
@@ -38,21 +39,27 @@ namespace PermanentCookoutKit
 
             Helper.Events.GameLoop.DayEnding += delegate { SaveCookingKits(); };
 
+            Helper.Events.Content.AssetRequested += this.OnAssetRequested;
+
             Patcher.PatchAll(this);
         }
 
-        public bool CanEdit<T>(IAssetInfo asset)
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            return asset.AssetNameEquals("Data/CraftingRecipes");
-        }
-
-        public void Edit<T>(IAssetData asset)
-        {
-            if (asset.AssetNameEquals("Data/CraftingRecipes"))
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes"))
             {
-                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-
-                data["Cookout Kit"] = "390 10 388 10 771 10 382 3 335 1/Field/926/false/Foraging 6/Cookout Kit";
+                e.Edit((asset) =>
+                {
+                    IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+                    if (data.TryGetValue("Cookout Kit", out var val))
+                    {
+                        var index = val.IndexOf('/');
+                        if (index > 0)
+                        {
+                            data["Cookout Kit"] = "390 10 388 10 771 10 382 3 335 1" + val[index..];
+                        }
+                    }
+                }, AssetEditPriority.Late);
             }
         }
 

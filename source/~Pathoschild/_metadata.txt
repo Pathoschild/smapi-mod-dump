@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit 224b7fb61105549b59e7b9bb8f24f8fe7e0642e9
+   commit ba8919ab54abf5974ed859129b27a8867e32dba5
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Fri Dec 1 00:55:37 2023 -0500
+   Date:   Tue Feb 27 20:03:49 2024 -0500
    
-       Merge branch 'develop' into stable
+       update for GameMenu tabs no longer constant
    

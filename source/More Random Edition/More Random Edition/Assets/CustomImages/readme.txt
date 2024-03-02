@@ -22,26 +22,33 @@ The image randomizer works by randomly choosing images in specific directories, 
 
 - Try to avoid using indexed color palettes, as they cause crashes on Macs
 - Each image should be a png, and should end in ".png", else it won't be picked up as a possible choice
-- DO NOT delete any image in the directory that is a spritesheet - this is likely the base file that's used; deleting these will cause errors
 - Most issues will be detected by the randomizer when first loading your farm, so it's a good idea to scroll through the console output to locate any errors if you make any changes
 - Most errors would result in default graphics being used instead of the custom ones
-- The randomizer will create a "randomizedImage.png" in these directories; if you're not running the game, it's safe to delete these, but they're cleared when the game is started anyway, so it doesn't do much
+- The randomizer will "randomizedImage.png" in these directories if you have the setting on; if you're not running the game, it's safe to delete these, but they're cleared and recreated when a farm is loaded, so it doesn't do much
 
 The following sections are about each folder located in the CustomImages directory, and specifics about them.
+
+Animals
+-------
+- This consists of several sub-directories with sprite sheets of animals
+- Be sure to be consistent with the size and sprite placements of the animals you wish to make sheets for here
+- If you want random colors to be applied to your image, end your file name with "hue-shift.png"
+  - These images do not need to be grayscale
+- If you want to force a certain pet to be used, delete all images out of the desired directory except the one you want
+
+Pets/Icons
+- To use an icon in-game (the little pet pic at the bottom of the pause menu), place a 16x16 image in this directory with the same name as your sprite sheet
 
 
 Bundles
 -------
 These images are all linked with a specific randomized bundle name. If you with to use your own, you must replace the existing image with the one you wish to use instead. Any extra files placed in here will never be used.
-
 - Any replacement must be 32 x 32px
-- DO NOT delete the JunimoNote images, as these are the base images used for the UI
- - If you plan on replacing it, note that the bundle image section will be overwritten by the randomizer, and that you only really need to replace the one that matches the language you're using (the English version is the one with no suffix)
 
 
 CropGrowth
 ----------
-These images are the sprites used when crops are growing on your farm. These images consist of eight 16 x 32px sprites (meaning the entire image must be 128 x 32px). The order of the sprites depends on the folder. DO NOT delete the crops.png image here, as it is the base image used.
+These images are the sprites used when crops are growing on your farm. These images consist of eight 16 x 32px sprites (meaning the entire image must be 128 x 32px). The order of the sprites depends on the folder.
 
 You MUST have the appropriate matching images in the SpringObjects directory, or you will see errors. Specificaly, the Seeds, Crops, and Flowers subdirectories. See the SpringObjects section for more details.
 
@@ -84,8 +91,6 @@ SpringObjects
 -------------
 This directory consists of replacements to be made in the springobjects.png spritesheet. This is the name of the spritesheet for most of the items in Stardew Valley.
 
-DO NOT delete the springobjects.png image, as it's used as the base image for these replacements.
-
 Fruit tree sapling sprites are replaced when the appropriate setting is on. The image to be used for that is directly in the SpringObjects directory, and is called "fruitTreeSprites.png". This consists of six 16 x 16px fruit tree sapling sprites in the following order:
 - cherry, apricot, orange, peach, pomegranate, apple
 
@@ -110,6 +115,7 @@ Flowers:
 
 
 Seeds:
+- These image should consist of only the image of the seed that would be on a packet - the rest of it should be transparent
 - Each image must be 16 x 16px
 - For each crop growth in the following folders, there has to be one crop image with the same name:
  - CustomImages/CropGrowth/NormalCrops (without the -4 or -5 in the name)
@@ -117,6 +123,18 @@ Seeds:
  - CustomImages/CropGrowth/TrellisCrops
  - CustomImages/CropGrowth/Flowers
 
+ SeedPackets:
+ - Greyscale images of seed packets that the seeds will be recolored and combined with a seed image
+ - Each image must be 16 x 16px
+ 
+ SeedPackets/TrellisPackets:
+  - Greyscale images of seed packets that the seeds will be recolored and combined with a trellis seed image
+  - Eachimage must be 16 x 16px
+  - Ensure that the seed in the corresponding seed image lines up with the standard location of all the Trellis Packets, or the image will look strange
+
+TileSheets:
+Contains images to be used as the rain graphics. The randomizer will choose one of them at the start of every day.
+- Each image must be 256 x 64px
 
 Weapons:
 The weapons are divided among four different folders, to represent the different weapon types. Each directory has the following rules, with the exception of the Slingshots directory, which is currently unused:
@@ -124,4 +142,7 @@ The weapons are divided among four different folders, to represent the different
 - Each image must be 16 x 16px
 - Having less than 60 images could result in default images being used
 
-DO NOT delete the weapons.png image in the Weapons directory, as it's used as the base image.
+
+HueShiftedMonsters
+------------------
+If you have the setting on to save randomized images, this directory will be filled with the images of the generated monsters. Other than that, this directory does not do anything.

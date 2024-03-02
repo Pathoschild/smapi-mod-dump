@@ -91,7 +91,7 @@ def player_status_stream(ticks=1) -> Stream[PlayerStatus]:
     return Stream("UPDATE_TICKED", data={"type": "PLAYER_STATUS", "ticks": ticks})
 
 
-def tool_status_stream(ticks=1) ->Stream[ToolStatus]:
+def tool_status_stream(ticks=1) -> Stream[ToolStatus]:
     return Stream("UPDATE_TICKED", data={"type": "TOOL_STATUS", "ticks": ticks})
 
 

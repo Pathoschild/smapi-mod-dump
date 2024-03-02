@@ -23,6 +23,7 @@ using Unlockable_Bundles.Lib.Enums;
 using static StardewValley.BellsAndWhistles.ParrotUpgradePerch;
 using StardewValley.BellsAndWhistles;
 using StardewValley.Menus;
+using Unlockable_Bundles.Lib.AdvancedPricing;
 
 namespace Unlockable_Bundles.Lib.ShopTypes
 {
@@ -406,10 +407,13 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             PerformAnimationLocal();
             assignNextItem();
         }
-        private KeyValuePair<string, Rectangle> getAnimationTexture(string id)
+        private KeyValuePair<string, Rectangle> getAnimationTexture(string id, Item item)
         {
             if (id == "money")
                 return new("LooseSprites\\Cursors", new Rectangle(280, 412, 15, 14));
+
+            if (item is AdvancedPricingItem apItem)
+                return apItem.getAnimationTexture();
 
             var itemData = ItemRegistry.GetDataOrErrorItem(id);
             return new(itemData.GetTextureName(), itemData.GetSourceRect());
@@ -426,9 +430,9 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             Parrots.Clear();
             ParrotPresent = true;
 
-            var texture = getAnimationTexture(NextId);
+            var texture = getAnimationTexture(NextId, NextItem);
 
-            Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(texture.Key, texture.Value, 2000f, 1, 0, (Shop.TileLocation + new Vector2(0.25f, -2.5f)) * 64f, flicker: false, flipped: false, (float)(Shop.TileLocation.Y * 64 + 1) / 10000f, 0f, Color.White, 4f, -0.015f, 0f, 0f) {
+            Game1.currentLocation.temporarySprites.Add(new TemporaryAnimatedSprite(texture.Key, texture.Value, 2000f, 1, 0, (Shop.TileLocation + new Vector2(0.25f, -2.5f)) * 64f, flicker: false, flipped: false, (float)(Shop.TileLocation.Y * 64 + 1) / 10000f, 0f, Color.White, 64f / texture.Value.Width, -0.015f, 0f, 0f) {
                 motion = new Vector2(-0.1f, -7f),
                 acceleration = new Vector2(0f, 0.25f),
                 id = 98765,
@@ -478,8 +482,11 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             Vector2 item_draw_position = Game1.GlobalToLocal(Game1.viewport, new Vector2(draw_position.X * 64f + 8f, draw_position.Y * 64f - 64f - 62f - 8f + yOffset)) + offset;
             if (NextId == "money")
                 UtilityMisc.drawMoneyKiloFormat(b, NextRequirement.Value, (int)item_draw_position.X, (int)item_draw_position.Y, Color.White);
-            else
+            else {
                 NextItem.drawInMenu(b, item_draw_position, 1f);
+                //Vanilla doesn't increment the layerDepth, which causes wackiness
+                NextItem.DrawMenuIcons(b, item_draw_position, 1f, 1f, 0.90001f, StackDrawType.Draw, Color.White);
+            }
 
         }
 

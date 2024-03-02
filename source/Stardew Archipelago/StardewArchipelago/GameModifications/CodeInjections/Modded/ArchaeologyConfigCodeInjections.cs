@@ -16,10 +16,10 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Modded
 {
     internal class ArchaeologyConfigCodeInjections
     {
-        private const double ARTIFACT_SPOT_MULTIPLIER = 1.3; // Default Value: 10
-        private const double DIGGING_MULTIPLIER = 1.3; // Default Value: 5
-        private const double PANNING_MULTIPLIER = 2; // Default Value: 5
-        private const double WATER_SHIFTER_MULTIPLIER = 1.4; // Default Value: 2
+        private const double ARTIFACT_SPOT_MULTIPLIER = 1.6; // Default Value: 10
+        private const double DIGGING_MULTIPLIER = 1.6; // Default Value: 5
+        private const double PANNING_MULTIPLIER = 3; // Default Value: 5
+        private const double WATER_SHIFTER_MULTIPLIER = 1.8; // Default Value: 2
 
         private static IMonitor _monitor;
         private static IModHelper _modHelper;

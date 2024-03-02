@@ -13,7 +13,6 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 
@@ -84,8 +83,7 @@ namespace Pathoschild.Stardew.ChestsAnywhere.Menus.Components
         /// <param name="font">The text font.</param>
         /// <param name="textColor">The text color.</param>
         /// <param name="validate">A lambda which indicates whether the specified character is allowed.</param>
-        /// <param name="reflection">Simplifies access to private code.</param>
-        public ValidatedTextBox(SpriteFont font, Color textColor, Func<char, bool> validate, IReflectionHelper reflection)
+        public ValidatedTextBox(SpriteFont font, Color textColor, Func<char, bool> validate)
         {
             this.Validator = validate;
             this.Textbox = new TextBox(Sprites.Textbox.Sheet, null, font, textColor);

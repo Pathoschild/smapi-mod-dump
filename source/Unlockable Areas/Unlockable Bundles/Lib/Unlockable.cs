@@ -23,6 +23,9 @@ using StardewModdingAPI;
 using Unlockable_Bundles.Lib.Enums;
 using Unlockable_Bundles.Lib.ShopTypes;
 using StardewValley.Menus;
+using Unlockable_Bundles.Lib.AdvancedPricing;
+using StardewValley.GameData;
+using StardewValley.Internal;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -30,48 +33,53 @@ namespace Unlockable_Bundles.Lib
     {
         public NetFields NetFields { get; } = new NetFields("DLX.Bundles/Unlockable");
 
-        private NetString _id = new NetString();
-        private NetString _location = new NetString();
-        private NetString _locationUnique = new NetString();
+        private NetString _id = new();
+        private NetString _location = new();
+        private NetString _locationUnique = new();
 
-        private NetString _bundleName = new NetString();
-        private NetString _bundleDescription = new NetString();
-        private NetEnum<BundleIconType> _bundleIcon = new NetEnum<BundleIconType>();
-        private NetString _bundleIconAsset = new NetString();
+        private NetString _bundleName = new();
+        private NetString _bundleDescription = new();
+        private NetEnum<BundleIconType> _bundleIcon = new();
+        private NetString _bundleIconAsset = new();
         private NetInt _bundleSlots = new NetInt();
-        private NetString _junimoNoteTexture = new NetString();
-        private NetString _bundleCompletedMail = new NetString();
+        private NetString _junimoNoteTexture = new();
+        private NetString _bundleCompletedMail = new();
 
-        private NetVector2 _shopPosition = new NetVector2();
-        private NetString _shopTexture = new NetString();
-        private NetString _shopAnimation = new NetString();
-        private NetString _shopEvent = new NetString();
-        private NetEnum<ShopType> _shopType = new NetEnum<ShopType>();
-        private NetBool _instantShopRemoval = new NetBool();
+        private NetVector2 _shopPosition = new();
+        private NetString _shopTexture = new();
+        private NetString _shopAnimation = new();
+        private NetString _shopEvent = new();
+        private NetEnum<ShopType> _shopType = new();
+        private NetBool _instantShopRemoval = new();
 
-        private NetBool _drawQuestionMark = new NetBool();
-        private NetVector2 _questionMarkOffset = new NetVector2();
-        private NetVector2 _speechBubbleOffset = new NetVector2();
-        private NetRectangle _parrotTarget = new NetRectangle();
-        private NetFloat _timeUntilChomp = new NetFloat();
-        private NetInt _parrotIndex = new NetInt();
-        private NetString _parrotTexture = new NetString();
+        private NetBool _drawQuestionMark = new();
+        private NetVector2 _questionMarkOffset = new();
+        private NetVector2 _speechBubbleOffset = new();
+        private NetRectangle _parrotTarget = new();
+        private NetFloat _timeUntilChomp = new();
+        private NetInt _parrotIndex = new();
+        private NetString _parrotTexture = new();
 
-        private NetBool _interactionShake = new NetBool();
-        private NetString _interactionTexture = new NetString();
-        private NetString _interactionAnimation = new NetString();
-        private NetString _interactionSound = new NetString();
+        private NetBool _interactionShake = new();
+        private NetString _interactionTexture = new();
+        private NetString _interactionAnimation = new();
+        private NetString _interactionSound = new();
 
-        public NetInt _randomPriceEntries = new NetInt();
-        public NetStringIntDictionary _price = new NetStringIntDictionary();
-        public NetStringIntDictionary _alreadyPaid = new NetStringIntDictionary();
-        public NetStringIntDictionary _alreadyPaidIndex = new NetStringIntDictionary();
-        public NetStringIntDictionary _bundleReward = new NetStringIntDictionary();
+        private NetString _overviewTexture = new();
+        private NetString _overviewAnimation = new();
+        private NetString _overviewDescription = new();
 
-        private NetString _editMap = new NetString();
-        private NetEnum<EditMapMode> _editMapMode = new NetEnum<EditMapMode>();
-        private NetVector2 _editMapPosition = new NetVector2();
-        private NetString _editMapLocation = new NetString();
+        public NetInt _randomPriceEntries = new();
+        public NetInt _randomRewardEntries = new();
+        public NetStringIntDictionary _price = new();
+        public NetStringIntDictionary _alreadyPaid = new();
+        public NetStringIntDictionary _alreadyPaidIndex = new();
+        public NetStringIntDictionary _bundleReward = new();
+
+        private NetString _editMap = new();
+        private NetEnum<PatchMapMode> _editMapMode = new();
+        private NetVector2 _editMapPosition = new();
+        private NetString _editMapLocation = new();
 
         public NetBool _completed = new NetBool(false); //This value is currently only valid from the moment a bundle was purchased till end of day
 
@@ -107,15 +115,23 @@ namespace Unlockable_Bundles.Lib
         public string InteractionAnimation { get => _interactionAnimation.Value; set => _interactionAnimation.Value = value; }
         public string InteractionSound { get => _interactionSound.Value; set => _interactionSound.Value = value; }
 
-        public int RandomPriceEntries { get => _randomPriceEntries.Value; set => _randomPriceEntries.Value = value; }
+        public string OverviewTexture { get => _overviewTexture.Value; set => _overviewTexture.Value = value; }
+        public string OverviewAnimation { get => _overviewAnimation.Value; set => _overviewAnimation.Value = value; }
+        public string OverviewDescription { get => _overviewDescription.Value; set => _overviewDescription.Value = value; }
 
+        public int RandomPriceEntries { get => _randomPriceEntries.Value; set => _randomPriceEntries.Value = value; }
+        public int RandomRewardEntries { get => _randomRewardEntries.Value; set => _randomRewardEntries.Value = value; }
         public string EditMap { get => _editMap.Value; set => _editMap.Value = value; }
-        public EditMapMode EditMapMode { get => _editMapMode.Value; set => _editMapMode.Value = value; }
+        public PatchMapMode EditMapMode { get => _editMapMode.Value; set => _editMapMode.Value = value; }
         public Vector2 EditMapPosition { get => _editMapPosition.Value; set => _editMapPosition.Value = value; }
         public string EditMapLocation { get => _editMapLocation.Value; set => _editMapLocation.Value = value; }
 
         private string CachedLocalizedShopDescription = null;
+        private string CachedLocalizedOverviewDescription = null;
         public static Dictionary<string, string> CachedJsonAssetIDs = new Dictionary<string, string>();
+        public static bool ShowDebugNames = false;
+
+        private Dictionary<string, List<Item>> RequiredItems = new();
         public Unlockable(UnlockableModel model)
         {
             this.ID = model.ID;
@@ -150,7 +166,12 @@ namespace Unlockable_Bundles.Lib
             this.InteractionAnimation = model.InteractionAnimation;
             this.InteractionSound = model.InteractionSound;
 
+            this.OverviewTexture = model.OverviewTexture;
+            this.OverviewAnimation = model.OverviewAnimation;
+            this.OverviewDescription = model.OverviewDescription;
+
             this.RandomPriceEntries = model.RandomPriceEntries;
+            this.RandomRewardEntries = model.RandomRewardEntries;
             this._price = new NetStringIntDictionary(model.Price);
             this._alreadyPaid = new NetStringIntDictionary(model.AlreadyPaid);
             this._alreadyPaidIndex = new NetStringIntDictionary(model.AlreadyPaidIndex);
@@ -198,7 +219,12 @@ namespace Unlockable_Bundles.Lib
             .AddField(_interactionAnimation, "_interactionAnimation")
             .AddField(_interactionSound, "_interactionSound")
 
+            .AddField(_overviewTexture, "_overviewTexture")
+            .AddField(_overviewAnimation, "_overviewAnimation")
+            .AddField(_overviewDescription, "overviewDescription")
+
             .AddField(_randomPriceEntries, "_randomPriceEntries")
+            .AddField(_randomRewardEntries, "_randomRewardEntries")
             .AddField(_price, "_price")
             .AddField(_alreadyPaid, "_alreadyPaid")
             .AddField(_alreadyPaidIndex, "_alreadyPaidIndex")
@@ -253,6 +279,31 @@ namespace Unlockable_Bundles.Lib
             return BundleDescription;
         }
 
+        public string getTranslatedOverviewDescription()
+        {
+            if (OverviewDescription is null)
+                return getTranslatedShopDescription();
+
+            if (Context.IsOnHostComputer)
+                return OverviewDescription;
+
+            if (CachedLocalizedOverviewDescription != null)
+                return CachedLocalizedOverviewDescription;
+
+            var unlockables = ModEntry._Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
+            if (unlockables == null)
+                return OverviewDescription;
+
+            if (unlockables.TryGetValue(ID, out var unlockable)) {
+                CachedLocalizedOverviewDescription = unlockable.OverviewDescription;
+
+                return CachedLocalizedOverviewDescription;
+            }
+
+            CachedLocalizedOverviewDescription = OverviewDescription;
+            return OverviewDescription;
+        }
+
         public static int getQualityFromReqSplit(string key)
         {
             if (!key.Contains(":"))
@@ -296,8 +347,7 @@ namespace Unlockable_Bundles.Lib
             ModEntry._Helper.Multiplayer.SendMessage((UnlockableModel)this, "BundlePurchased", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID });
             ModEntry._Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue().globalChatInfoMessage("Bundle");
 
-            if (BundleCompletedMail != "")
-                Game1.addMailForTomorrow(getMailKey(), noLetter: false, sendToEveryone: true);
+            Game1.addMailForTomorrow(getMailKey(), noLetter: BundleCompletedMail == "", sendToEveryone: true);
         }
 
         public void processContribution(KeyValuePair<string, int> requirement, int index = -1)
@@ -328,6 +378,8 @@ namespace Unlockable_Bundles.Lib
                 openRewardsMenu();
                 return;
             } else {
+                if (!ShopEvent.Contains(UBEvent.APPLYPATCH))
+                    UpdateHandler.applyUnlockable(this);
                 var ev = new UBEvent(this, ShopEvent, Game1.player);
                 ev.onEventFinished = openRewardsMenu;
                 Game1.globalFadeToBlack(() => Game1.player.currentLocation.startEvent(ev));
@@ -336,15 +388,32 @@ namespace Unlockable_Bundles.Lib
         private void openRewardsMenu()
         {
             List<Item> rewards = new List<Item>();
-            foreach (var entry in _bundleReward.Pairs) {
-                var id = getIDFromReqSplit(entry.Key);
-                var quality = getQualityFromReqSplit(entry.Key);
 
-                if (Inventory.addExceptionItem(Game1.player, id, entry.Value))
+            foreach (var reward in _bundleReward.Pairs) {
+                var id = getIDFromReqSplit(reward.Key);
+                var quality = getQualityFromReqSplit(reward.Key);
+
+                if (Inventory.addExceptionItem(Game1.player, id, reward.Value))
                     continue;
 
-                rewards.Add(parseItem(id, entry.Value, quality: quality));
+                var item = parseItem(id, reward.Value, quality: quality);
+                if (item is AdvancedPricingItem apItem) {
+                    if (apItem.UsesFlavoredSyntax) {
+                        apItem.ItemCopy.Quality = quality;
+                        apItem.ItemCopy.Stack = reward.Value;
+                        rewards.Add(apItem.ItemCopy);
+
+                    } else
+                        ModEntry._Monitor.Log($"BundleReward does not accept advanced pricing syntax apart from auto generated flavored Items! Please fix the following itemID: {id}", LogLevel.Error);
+
+                } else
+                    rewards.Add(item);
             }
+
+            rewards.AddRange(getRewardSpawnFieldItems());
+
+            if(RandomRewardEntries > 0)
+                rewards = rewards.OrderBy(x => Game1.random.Next()).Take(RandomRewardEntries).ToList();
 
             if (rewards.Count == 0)
                 return;
@@ -411,7 +480,16 @@ namespace Unlockable_Bundles.Lib
                 CachedJsonAssetIDs.Add(name, match.Key ?? name);
 
                 id = match.Key ?? name;
-            }
+            } else if (id.TrimStart().StartsWith(AdvancedPricingItem.APTYPEDEFINITION, StringComparison.OrdinalIgnoreCase))
+                return AdvancedPricingItem.parseItem(id, initialStack, quality);
+
+            else if (id.TrimStart().StartsWith(AdvancedPricingItem.FLAVOREDTYPEDEFINITION, StringComparison.OrdinalIgnoreCase))
+                return AdvancedPricingItem.parseFlavoredItem(id, initialStack, quality);
+
+            else if (id.TrimStart().StartsWith("(!UB)", StringComparison.OrdinalIgnoreCase))
+                ModEntry._Monitor.Log("The Syntax for advanced pricing changed a little to be more readable. Thank you for understanding.\n" +
+                    "New Syntax for generated flavored items: (UB.Flavored)<PreserveType>.<QualifiedItemId>\n" +
+                    "New Syntax for advanced pricing items: (UB.AP)<AdvancedPricingKey>", LogLevel.Warn);
 
             var ret = ItemRegistry.Create(id, initialStack, quality: quality);
 
@@ -423,6 +501,9 @@ namespace Unlockable_Bundles.Lib
 
         public string getDisplayName()
         {
+            if (ShowDebugNames)
+                return ID;
+
             if (BundleName != "")
                 return BundleName;
 
@@ -431,6 +512,45 @@ namespace Unlockable_Bundles.Lib
 
             return "Unnamed Bundle";
         }
-            
+
+        //Returns all required items of a Price entry except exception items
+        public List<Item> getRequiredItems(string reqKey)
+        {
+            if (RequiredItems.TryGetValue(reqKey, out List<Item> cachedItems))
+                return cachedItems;
+
+            var items = new List<Item>();
+
+            foreach (var req in reqKey.Split(",")) {
+                var id = getIDFromReqSplit(req);
+                if (isExceptionItem(id))
+                    continue;
+
+                var quality = getQualityFromReqSplit(req);
+                items.Add(parseItem(id, 0, quality));
+            }
+
+            RequiredItems.Add(reqKey, items);
+            return items;
+        }
+
+        public List<Item> getRewardSpawnFieldItems()
+        {
+            var ret = new List<Item>();
+            var models = ModEntry._Helper.GameContent.Load<Dictionary<string, UnlockableModel>>("UnlockableBundles/Bundles");
+            if (!models.TryGetValue(ID, out var model))
+                return ret;
+
+            ItemQueryContext itemQueryContext = new();
+            foreach (GenericSpawnItemDataWithCondition entry in model.BundleRewardSpawnFields) {
+                if (!GameStateQuery.CheckConditions(entry.Condition))
+                    continue;
+
+                var item = ItemQueryResolver.TryResolveRandomItem(entry, itemQueryContext, logError: (query, message) => ModEntry._Monitor.Log($"Failed parsing item query '{query}': {message}", LogLevel.Warn));
+                if (item is not null)
+                    ret.Add(item);
+            }
+            return ret;
+        }
     }
 }

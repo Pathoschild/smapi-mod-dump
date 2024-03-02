@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAML", "SAML.csproj", "{D6745A46-9F5A-46C9-A398-946FF7C96DD6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6745A46-9F5A-46C9-A398-946FF7C96DD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6745A46-9F5A-46C9-A398-946FF7C96DD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6745A46-9F5A-46C9-A398-946FF7C96DD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6745A46-9F5A-46C9-A398-946FF7C96DD6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52CDE015-FE6A-4AD6-BCD2-FE838453F99F}
+	EndGlobalSection
+EndGlobal

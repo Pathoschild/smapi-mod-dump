@@ -16,7 +16,6 @@ _Do **NOT** download the Source code (zip) or Source code (tar.gz). Also, do **N
 # UI Info Suite 2
 _Ongoing maintenance for the original UI Info Suite mod for Stardew Valley._
 
-
 UI Info Suite provides helpful information about things around you designed to help you be aware of what's going on without feeling like you're cheating.
 
 This mod is a rewrite of cdaragorn's UIInfoSuite mod (which is based on Demiacle's UiModSuite), so 99% of the credit goes to those guys. My contribution started after the December of 2019, when the original project became abandoned. As this is a very useful mod, I wanted to continue providing support for newer game versions, fixing bugs and adding new requested features, so here we are!
@@ -49,6 +48,44 @@ Compatibility is assured with:
 - Bigger Backpack by spacechase0
 - Level Extender by DevinLematty (probably?)
 - Better Farm Animal Variety by Paritee
+
+# Current collaborators
+<table>
+<tr>
+    <td align="center">
+        <a href="https://github.com/Annosz">
+            <img src="https://avatars.githubusercontent.com/u/10620868?v=4" width="100;" alt="Annosz"/>
+        </a>
+        <br />
+        <sub><b>Ádám Tóth</b></sub>
+        <br />
+        <a href="https://github.com/Annosz/UIInfoSuite2/commits?author=Annosz" title="Code">💻</a> <a href="https://github.com/Annosz/UIInfoSuite2/pulls?q=is%3Apr+reviewed-by%3AAnnosz" title="Reviewed Pull Requests">👀</a></td>
+    </td>
+    <td align="center">
+        <a href="https://github.com/drewhoener">
+            <img src="https://avatars.githubusercontent.com/u/6218989?v=4" width="100;" alt="drewhoener"/>
+        </a>
+        <br />
+        <sub><b>Drew Hoener</b></sub>
+        <br />
+        <a href="https://github.com/Annosz/UIInfoSuite2/commits?author=drewhoener" title="Code">💻</a> <a href="https://github.com/Annosz/UIInfoSuite2/pulls?q=is%3Apr+reviewed-by%3Adrewhoener" title="Reviewed Pull Requests">👀</a></td>
+    </td>
+    <td align="center">
+        <a href="https://github.com/tqdv">
+            <img src="https://avatars.githubusercontent.com/u/11901480?v=4" width="100;" alt="tqdv"/>
+        </a>
+        <br />
+        <sub><b>Tilwa Qendov</b></sub>
+        <br />
+        <a href="https://github.com/Annosz/UIInfoSuite2/commits?author=tqdv" title="Code">💻</a> <a href="https://github.com/Annosz/UIInfoSuite2/pulls?q=is%3Apr+reviewed-by%3Atqdv" title="Reviewed Pull Requests">👀</a></td>
+    </td></tr>
+</table>
+
+## All contributors
+
+<a href="https://github.com/Annosz/UIInfoSuite2/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Annosz/UIInfoSuite2" />
+</a>
 
 # Translating UI Info Suite 2
 The mod can be translated into any language supported by the game, and SMAPI will automatically

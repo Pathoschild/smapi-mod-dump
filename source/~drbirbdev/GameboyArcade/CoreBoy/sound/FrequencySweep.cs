@@ -93,7 +93,7 @@ namespace CoreBoy.sound
 
             if (this._period == 0) return;
 
-            var newFreq = this.Calculate();
+            int newFreq = this.Calculate();
 
             if (this._overflow || this._shift == 0) return;
 
@@ -106,7 +106,7 @@ namespace CoreBoy.sound
 
         private int Calculate()
         {
-            var freq = this._shadowFreq >> this._shift;
+            int freq = this._shadowFreq >> this._shift;
             if (this._negate)
             {
                 freq = this._shadowFreq - freq;

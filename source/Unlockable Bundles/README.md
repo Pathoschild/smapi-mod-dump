@@ -8,4 +8,4 @@ for queries and analysis.**
 
 [Nexusmods page](https://www.nexusmods.com/stardewvalley/mods/17265)
 
-[Documentation](https://gitlab.com/delixx/stardew-valley-unlockable-bundles/-/wikis/home)
+[Documentation](https://gitlab.com/delixx/stardew-valley/unlockable-bundles/-/wikis/home)

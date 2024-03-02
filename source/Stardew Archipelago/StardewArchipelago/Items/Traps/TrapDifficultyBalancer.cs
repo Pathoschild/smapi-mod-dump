@@ -113,14 +113,24 @@ namespace StardewArchipelago.Items.Traps
             {TrapItemsDifficulty.Nightmare, 800},
         };
 
+        public Dictionary<TrapItemsDifficulty, ShuffleTarget> ShuffleTargets = new()
+        {
+            {TrapItemsDifficulty.NoTraps, ShuffleTarget.None},
+            {TrapItemsDifficulty.Easy, ShuffleTarget.Self},
+            {TrapItemsDifficulty.Medium, ShuffleTarget.Adjacent},
+            {TrapItemsDifficulty.Hard, ShuffleTarget.Close},
+            {TrapItemsDifficulty.Hell, ShuffleTarget.SameMap},
+            {TrapItemsDifficulty.Nightmare, ShuffleTarget.AllMaps},
+        };
+
         public Dictionary<TrapItemsDifficulty, double> ShuffleRate = new()
         {
             {TrapItemsDifficulty.NoTraps, 0},
-            {TrapItemsDifficulty.Easy, 0.02},
-            {TrapItemsDifficulty.Medium, 0.05},
-            {TrapItemsDifficulty.Hard, 0.15},
-            {TrapItemsDifficulty.Hell, 0.4},
-            {TrapItemsDifficulty.Nightmare, 0.8},
+            {TrapItemsDifficulty.Easy, 0.8}, // Self essentially only affects the player inventory, so we shuffle most of it
+            {TrapItemsDifficulty.Medium, 0.4},
+            {TrapItemsDifficulty.Hard, 0.4},
+            {TrapItemsDifficulty.Hell, 0.5},
+            {TrapItemsDifficulty.Nightmare, 0.6},
         };
 
         public Dictionary<TrapItemsDifficulty, double> ShuffleRateToFriends = new()
@@ -129,8 +139,8 @@ namespace StardewArchipelago.Items.Traps
             {TrapItemsDifficulty.Easy, 0},
             {TrapItemsDifficulty.Medium, 0},
             {TrapItemsDifficulty.Hard, 0},
-            {TrapItemsDifficulty.Hell, 0.05},
-            {TrapItemsDifficulty.Nightmare, 0.25},
+            {TrapItemsDifficulty.Hell, 0.04},
+            {TrapItemsDifficulty.Nightmare, 0.1},
         };
 
         // TODO: Figure out a way to have different difficulties for temporary winter
@@ -265,13 +275,14 @@ namespace StardewArchipelago.Items.Traps
         Everywhere,
     }
 
-    public enum ShuffleInventoryTarget
+    public enum ShuffleTarget
     {
-        None,
-        Hotbar,
-        FullInventory,
-        InventoryAndChests,
-        InventoryAndChestsAndFriends,
+        None = -1,
+        Self = 0,
+        Adjacent = 1,
+        Close = 3,
+        SameMap = int.MaxValue / 10,
+        AllMaps = int.MaxValue,
     }
 
     public enum DroughtTarget

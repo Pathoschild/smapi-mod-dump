@@ -42,7 +42,7 @@ namespace Unlockable_Bundles.Lib
             ModData.checkLegacySaveData();
         }
 
-        //Solid Foundations has [EventPriority(EventPriority.High + 1)], but we want to run before it <3
+        //Solid Foundations has [EventPriority(EventPriority.High + 1)], but we want to run before it
         [EventPriority(EventPriority.High + 2)]
         private static void DayEnding(object sender, DayEndingEventArgs e)
         {

@@ -28,6 +28,10 @@ All menus can (or will) be navigated by voice. As an example, to load a saved ga
 
 Once in game, try saying `go to farm` to begin walking from your farmhouse interior to your farm. Saying `stop` will stop whatever your farmer is currently doing.
 
+## Development
+
+Documentation for developers can be found [here](docs/dev.md).
+
 ## Commands
 
 Commands wrapped in brackets are optional, meaning that `hello [world]` will match either `hello` or `hello world`. Commands wrapped in brackets or parentheses with `|` describes alternatives. Commands wrapped in `<>` refer to a particular set of alternatives: `<direction>` refers to movement directions, `<n>`, `<x>`, and `<y>` refer to numbers, `<location>` refers to game locations, and `<item>` refers to game items.

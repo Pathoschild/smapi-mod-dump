@@ -45,7 +45,7 @@ namespace CoreBoy.memory
             this._restarted = false;
             this._ticks = 0;
 
-            for (var i = 0; i < 0xa0; i++)
+            for (int i = 0; i < 0xa0; i++)
             {
                 this._oam.SetByte(0xfe00 + i, this._addressSpace.GetByte(this._from + i));
             }

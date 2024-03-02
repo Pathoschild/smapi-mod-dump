@@ -8,11 +8,9 @@
 **
 *************************************************/
 
-using System;
 using System.IO;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
-using StardewValley;
 
 namespace StardewArchipelago.Textures
 {

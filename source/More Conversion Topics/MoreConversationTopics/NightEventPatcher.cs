@@ -153,7 +153,7 @@ namespace MoreConversationTopics
             try
             {
                 // If the witch is visiting a coop, add one of the witch coop conversation topics
-                if (___targetBuilding is Coop)
+                if (___targetBuilding.buildingType.Value == "Coop")
                 {
                     // If the witch is a golden witch (post-perfection coop visit), add the golden witch conversation topic
                     if (__instance.goldenWitch)

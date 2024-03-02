@@ -19,23 +19,25 @@ namespace DynamicDialogues.Patches;
 [HarmonyPatch(typeof(GameLocation))]
 public static class DialoguePatches
 {
+  private static bool IsDebug => ModEntry.Config.Debug;
+  private static void Log(string msg, LogLevel lv = LogLevel.Trace) => ModEntry.Mon.Log(msg, lv);
   private const string NpcSwap = "$npc";
   
   internal static void Apply(Harmony harmony)
   {
-    ModEntry.Mon.Log($"Applying Harmony patch \"{nameof(DialoguePatches)}\": postfixing SDV method \"Dialogue.parseDialogueString()\".");
+    Log($"Applying Harmony patch \"{nameof(DialoguePatches)}\": postfixing SDV method \"Dialogue.parseDialogueString()\".");
     harmony.Patch(
       original: AccessTools.Method(typeof(Dialogue), "parseDialogueString"),
       postfix: new HarmonyMethod(typeof(DialoguePatches), nameof(parseDialogueString_postfix))
     );
-            
-    ModEntry.Mon.Log($"Applying Harmony patch \"{nameof(DialoguePatches)}\": prefixing SDV method \"Dialogue.prepareDialogueForDisplay()\".");
+
+    Log($"Applying Harmony patch \"{nameof(DialoguePatches)}\": prefixing SDV method \"Dialogue.prepareDialogueForDisplay()\".");
     harmony.Patch(
       original: AccessTools.Method(typeof(Dialogue), nameof(Dialogue.prepareDialogueForDisplay)),
       prefix: new HarmonyMethod(typeof(DialoguePatches), nameof(PrefixCurrentDialogueForDisplay))
     );
-    
-    ModEntry.Mon.Log($"Applying Harmony patch \"{nameof(DialoguePatches)}\": prefixing SDV method \"Dialogue.checkForSpecialDialogueAttributes()\".");
+
+    Log($"Applying Harmony patch \"{nameof(DialoguePatches)}\": prefixing SDV method \"Dialogue.checkForSpecialDialogueAttributes()\".");
     harmony.Patch(
       original: AccessTools.Method(typeof(Dialogue), "checkForSpecialDialogueAttributes"),
       prefix: new HarmonyMethod(typeof(DialoguePatches), nameof(PrefixDialogueAttributes))
@@ -44,9 +46,10 @@ public static class DialoguePatches
   
   [HarmonyPostfix]
   [HarmonyPatch("parseDialogueString")]
+  // ReSharper disable once UnusedParameter.Global
   internal static void parseDialogueString_postfix(ref Dialogue __instance, string masterString)
   {
-      //make a list with fixed values
+    //make a list with fixed values
     var fixeds = new List<string>();
     foreach (var dialogue in __instance.dialogues)
     {
@@ -57,74 +60,59 @@ public static class DialoguePatches
         fixeds[^1] += "{";
         replace = dialogue + "{";
       }
-        
+
       fixeds.Add(replace);
     }
 
     //dialogue becomes the fixed list
     __instance.dialogues = fixeds;
-
-    /*if (!ModEntry.Config.Debug) return;
-      
-    //log fixed version
-    ModEntry.Mon.Log($"Speaker: {__instance.speaker.Name}", LogLevel.Info);
-    var index = 0;
-    foreach (var dialogue in __instance.dialogues) 
-    { 
-      index++; 
-      ModEntry.Mon.Log($"Dialogue no. {index}: {dialogue}", LogLevel.Info);
-    }*/
   }
   //for changing NPCs mid dialogue
-  
+
   [HarmonyPrefix]
   [HarmonyPatch(nameof(Dialogue.prepareDialogueForDisplay))]
-  internal static bool PrefixCurrentDialogueForDisplay(Dialogue __instance) 
-  { 
+  internal static void PrefixCurrentDialogueForDisplay(ref Dialogue __instance)
+  {
     try
     {
-      if (ModEntry.Config.Debug)
+      if (IsDebug)
       {
-        ModEntry.Mon.Log("Current dialogue: " + __instance.dialogues[__instance.currentDialogueIndex], LogLevel.Info);
+        Log("Current dialogue: " + __instance.dialogues[__instance.currentDialogueIndex], LogLevel.Debug);
       }
-                
+
       if (__instance.dialogues.Count == 0)
-        return true;
-                
+        return;
+
       var str1 = Utility.ParseGiftReveals(__instance.dialogues[__instance.currentDialogueIndex]);
 
-      if (str1.StartsWith(NpcSwap))
-      {
-        __instance.showPortrait = true;
-                    
-        //get npc
-        str1 = str1.Replace(NpcSwap, null);
-        var who = str1.Replace(NpcSwap, null);
-        if (ModEntry.Config.Debug)
-          ModEntry.Mon.Log("new speaker for current dialogue: " + who, LogLevel.Info);
-        __instance.speaker = Utility.fuzzyCharacterSearch(who);
-                    
-        //go to next dialogue
-        ++__instance.currentDialogueIndex;
-                    
-        var checkDialogueAttributes = ModEntry.Help.Reflection.GetMethod(typeof(Dialogue), "checkForSpecialDialogueAttributes");
-        checkDialogueAttributes.Invoke();
-                    
-        return false;
-      }
+      if (!str1.StartsWith(NpcSwap)) 
+        return;
+      
+      __instance.showPortrait = true;
+
+      //get npc
+      str1 = str1.Replace(NpcSwap, null);
+      var who = str1.Replace(NpcSwap, null);
+      if (IsDebug)
+        Log("new speaker for current dialogue: " + who, LogLevel.Info);
+      __instance.speaker = Utility.fuzzyCharacterSearch(who);
+
+      //go to next dialogue
+      ++__instance.currentDialogueIndex;
+
+      var checkDialogueAttributes = ModEntry.Help.Reflection.GetMethod(typeof(Dialogue), "checkForSpecialDialogueAttributes");
+      checkDialogueAttributes.Invoke();
     }
     catch (Exception e)
-    { 
-      ModEntry.Mon.Log("Error: "+e,LogLevel.Error); 
+    {
+      Log("Error: " + e, LogLevel.Error);
       throw;
     }
-
-    return true;
-  }
+  } 
   
-  internal static bool PrefixDialogueAttributes(ref Dialogue __instance)
+  internal static void PrefixDialogueAttributes(ref Dialogue __instance)
   {
-    if (__instance.dialogues.Count <= 0 || !__instance.dialogues[__instance.currentDialogueIndex].Contains(NpcSwap)) return true;
+    if (__instance.dialogues.Count <= 0 || !__instance.dialogues[__instance.currentDialogueIndex].Contains(NpcSwap)) return;
 
     var text = __instance.dialogues[__instance.currentDialogueIndex];
     var split = text.Split(' ');
@@ -134,41 +122,41 @@ public static class DialoguePatches
       __instance.currentDialogueIndex++;
       throw new ArgumentException("Command has too many arguments. You can only set one NPC at a time!");
     }
-    //ModEntry.Mon.Log("split: " + split[1],LogLevel.Warn);
-    var who = Utility.fuzzyCharacterSearch(split[1].Replace("{",null), false);
-    ModEntry.Mon.Log("New speaker: " + who?.Name, ModEntry.Config.Debug ? LogLevel.Info : LogLevel.Debug);
+    //Log("split: " + split[1],LogLevel.Warn);
+    var who = Utility.fuzzyCharacterSearch(split[1].Replace("{", null), false);
+    Log("New speaker: " + who?.Name, IsDebug ? LogLevel.Info : LogLevel.Debug);
     if (who == null)
-      return true;
-    
+      return;
+
     __instance.speaker = who;
-      
+
     //__instance.currentDialogueIndex++;
     __instance.dialogues.Remove(text);
     __instance.isCurrentStringContinuedOnNextScreen = true;
 
-    return true;
     //var checkAttr = ModEntry.Help.Reflection.GetMethod(__instance, "checkForSpecialDialogueAttributes");
     //checkAttr.Invoke();
   }
+  
   /*internal static bool parseDialogueString_prefix(ref Dialogue __instance, string masterString)
   {
-    ModEntry.Mon.Log("masterString: " +masterString,LogLevel.Info);
+    Log("masterString: " +masterString,LogLevel.Info);
     //if (!masterString.Contains("$n"))
     //  return true;
-      
+
     masterString ??= "...";
     __instance.temporaryDialogue = null;
 
     var playerResponses = ModEntry.Help.Reflection.GetField<List<NPCDialogueResponse>>(typeof(Dialogue), "playerResponses");
     if (playerResponses.GetValue() != null)
       playerResponses.GetValue().Clear();
-        
+
     var source = masterString.Split('#');
     for (var count = 0; count < source.Length; ++count)
     {
-      if (source[count].Length >= 2) 
-      { 
-        source[count] = __instance.checkForSpecialCharacters(source[count]); 
+      if (source[count].Length >= 2)
+      {
+        source[count] = __instance.checkForSpecialCharacters(source[count]);
         string str1;
         try
         {
@@ -237,7 +225,7 @@ public static class DialoguePatches
             foreach (var t in strArray2)
             {
               if (!__instance.farmer.DialogueQuestionsAnswered.Contains(t)) continue;
-                          
+
               flag1 = true;
               break;
             }
@@ -275,7 +263,7 @@ public static class DialoguePatches
             {
               if (__instance.farmer.DialogueQuestionsAnswered.Contains(strArray4[1]))
               {
-                flag2 = true; 
+                flag2 = true;
                 break;
               }
             }
@@ -314,17 +302,17 @@ public static class DialoguePatches
           case "$y":
             var quickResponse = ModEntry.Help.Reflection.GetField<bool>(typeof(Dialogue), "quickResponse");
             quickResponse.SetValue(true);
-                        
+
             var ildi3 = ModEntry.Help.Reflection.GetField<bool>(typeof(Dialogue), "isLastDialogueInteractive");
             ildi3.SetValue(true);
-                        
+
             var quickResponses = ModEntry.Help.Reflection.GetField<List<string>>(typeof(Dialogue), "quickResponses");
             if (quickResponses.GetValue() == null)
               quickResponses.SetValue(new List<string>());
-                        
+
             if (playerResponses.GetValue() == null)
               playerResponses.SetValue(new List<NPCDialogueResponse>());
-                        
+
             var str5 = source[count].Substring(source[count].IndexOf('\'') + 1);
             var strArray7 = str5.Substring(0, str5.Length - 1).Split('_'); __instance.dialogues.Add(strArray7[0]);
             for (var index = 1; index < strArray7.Length; index += 2)

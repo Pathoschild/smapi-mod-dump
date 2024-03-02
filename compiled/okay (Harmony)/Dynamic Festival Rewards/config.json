@@ -1,0 +1,6 @@
+{
+  "UseYearInstead": false,
+  "Randomize": true,
+  "MinValue": 200,
+  "MaxValue": 1000
+}

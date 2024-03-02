@@ -1,0 +1,9 @@
+﻿{
+   "Name": "YanshufitosMod",
+   "Author": "yanshufitos",
+   "Version": "1.0",
+   "Description": "grass turns into weed",
+   "UniqueID": "yanshufitos.yanshufitosmod",
+   "EntryDll": "yanshf.dll",
+   "MinimumApiVersion": "3.0",
+}

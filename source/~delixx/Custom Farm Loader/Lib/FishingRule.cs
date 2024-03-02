@@ -41,7 +41,6 @@ namespace Custom_Farm_Loader.Lib
         public List<Fish> Fish = new List<Fish>();
         public Fish ForAll = null;
         public bool CatchOceanCrabPotFish = false;
-        public GameLocation Location = null;
         public string LocationName = "Farm";
 
         public bool ChangedCatchOceanCrabPotFish = false;

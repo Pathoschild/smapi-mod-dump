@@ -20,6 +20,7 @@ using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using xTile.Dimensions;
 using xTile.Layers;
 using xTile.Tiles;
@@ -41,10 +42,14 @@ namespace StardewDruid.Location
                 case "challengeMuseum":
                 case "challengeMuseumTwo":
                     MuseumEdit(); break;
-                case "challengeSkullCavern":
-                case "challengeSkullCavernTwo":
-                    SkullCavernEdit(); break;
-
+                case "swordEther":
+                case "swordEtherTwo":
+                    SkullCavernEdit();
+                    SkullCavernWarp();
+                    break;
+                case "challengeEther":
+                case "challengeEtherTwo":
+                    CryptEdit(); break;
             }
 
         }
@@ -55,11 +60,11 @@ namespace StardewDruid.Location
             switch (query.name)
             {
 
-                case "challengeSkullCavern":
-                case "challengeSkullCavernTwo":
+                case "swordEther":
+                case "swordEtherTwo":
                     SkullCavernPortal(); break;
-                case "challengeCrypt":
-                case "challengeCryptTwo":
+                case "challengeEther":
+                case "challengeEtherTwo":
                     CryptPortal(); break;
 
             }
@@ -78,8 +83,8 @@ namespace StardewDruid.Location
                 case "challengeMuseum":
                 case "challengeMuseumTwo":
                     MuseumReset();  break;
-                case "challengeSkullCavern":
-                case "challengeSkullCavernTwo":
+                case "swordEther":
+                case "swordEtherTwo":
                     SkullCavernExit(); break;
 
             }
@@ -93,10 +98,28 @@ namespace StardewDruid.Location
             switch (query.name)
             {
 
-                case "challengeCrypt":
-                case "challengeCryptTwo":
+                case "challengeEther":
+                case "challengeEtherTwo":
                     CryptReturn(); break;
 
+            }
+
+        }
+
+        public static void QuestComplete(QueryData query)
+        {
+
+            switch (query.name)
+            {
+
+                /*case "challengeSandDragon":
+                case "challengeMuseum":
+                case "challengeGemShrine":
+
+                    new Throw(Game1.player, Game1.player.Position, 74).ThrowObject(); break;*/
+
+                case "swordEther":
+                    new Throw().ThrowSword(Game1.player, 57, Game1.player.Position, 500); break;
             }
 
         }
@@ -260,7 +283,7 @@ namespace StardewDruid.Location
         }
 
 
-        public static void SkullCavernPortal()
+        public static void SkullCavernWarp()
         {
 
             Game1.inMine = true;
@@ -269,11 +292,30 @@ namespace StardewDruid.Location
             Game1.yLocationAfterWarp = 20;
         }
 
-        public static void SkullCavernAdd()
+        public static void SkullCavernPortal()
         {
-            MineShaft mineShaft = new MineShaft(145);
-            MineShaft.activeMines.Clear();
-            MineShaft.activeMines.Add(mineShaft);
+
+            Game1.player.Position = new(13 * 64, 20 * 64);
+
+        }
+
+        public static void SkullCavernEdit()
+        {
+            
+            MineShaft mineShaft;
+
+            if (Context.IsMainPlayer)
+            {
+                mineShaft = new MineShaft(145);
+                MineShaft.activeMines.Clear();
+                MineShaft.activeMines.Add(mineShaft);
+            }
+            else
+            {
+                mineShaft = MineShaft.GetMine("UndergroundMine145");
+
+            }
+
             mineShaft.mapPath.Value = "Maps\\Mines\\33";
             mineShaft.loadedMapNumber = 33;
             mineShaft.updateMap();
@@ -284,11 +326,6 @@ namespace StardewDruid.Location
             mineShaft.chooseLevelType();
             mineShaft.mineLevel = 145;
             mineShaft.findLadder();
-
-        }
-
-        public static void SkullCavernEdit()
-        {
 
             GameLocation location = Game1.getLocationFromName("UndergroundMine145");
             Layer layer1 = location.map.GetLayer("Back");
@@ -426,8 +463,6 @@ namespace StardewDruid.Location
 
             Game1.player.TemporaryPassableTiles.Add(new Microsoft.Xna.Framework.Rectangle((int)ladderTile.X * 64, (int)ladderTile.Y * 64, 64, 64));
 
-            new Throw().ThrowSword(Game1.player, 57, Game1.player.Position, 500);
-
             Mod.instance.CastMessage("A way down has appeared");
 
         }
@@ -443,17 +478,13 @@ namespace StardewDruid.Location
 
         }
 
-        public static void CryptAdd()
+        public static void CryptEdit()
         {
 
             GameLocation crypt = Game1.getLocationFromName("18465_Crypt");
 
             if (crypt != null)
             {
-
-                //Game1.locations.Remove(crypt);
-
-                //Game1.removeLocationFromLocationLookup(crypt);
 
                 return;
 

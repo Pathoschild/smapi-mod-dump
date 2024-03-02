@@ -48,7 +48,7 @@ namespace CoreBoy.sound
 
         public virtual void SetByte(int address, int value)
         {
-            var offset = address - this.Offset;
+            int offset = address - this.Offset;
 
             switch (offset)
             {
@@ -76,7 +76,7 @@ namespace CoreBoy.sound
 
         public virtual int GetByte(int address)
         {
-            var offset = address - this.Offset;
+            int offset = address - this.Offset;
 
             return offset switch
             {

@@ -23,6 +23,7 @@ using StardewArchipelago.Stardew;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using Object = StardewValley.Object;
+using StardewArchipelago.Constants.Modded;
 
 namespace StardewArchipelago.Goals
 {
@@ -484,10 +485,12 @@ namespace StardewArchipelago.Goals
         private static bool HasCraftedAllRecipes()
         {
             var numberOfUnavailableRecipes = _archipelago.SlotData.ExcludeGingerIsland ? 8 : 0;
+            numberOfUnavailableRecipes += _archipelago.SlotData.Mods.HasMod(ModNames.BOARDING_HOUSE) ? 5 : 0; // Restore crafts are ignored
             var allRecipes = Game1.content.Load<Dictionary<string, string>>("Data\\CraftingRecipes");
             var numberOfMissedRecipes = 0;
             foreach (var recipe in allRecipes.Keys)
             {
+                
                 if (!Game1.player.craftingRecipes.ContainsKey(recipe) || Game1.player.craftingRecipes[recipe] <= 0)
                 {
                     numberOfMissedRecipes++;

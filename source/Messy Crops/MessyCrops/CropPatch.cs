@@ -11,7 +11,6 @@
 using Microsoft.Xna.Framework;
 using StardewValley;
 using System;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace MessyCrops
@@ -20,8 +19,6 @@ namespace MessyCrops
 	{
 		const float pixelDepth = .0001f;
 
-		private static readonly FieldInfo drawpos = typeof(Crop).GetField("drawPosition", BindingFlags.Instance | BindingFlags.NonPublic);
-		private static readonly FieldInfo layerdepth = typeof(Crop).GetField("layerDepth", BindingFlags.Instance | BindingFlags.NonPublic);
 		internal static readonly ConditionalWeakTable<Crop, Tuple<Vector2>> offsets = new();
 
 		internal static void Setup()
@@ -36,9 +33,9 @@ namespace MessyCrops
 
 			if (ModEntry.config.ApplyToTrellis || !__instance.raisedSeeds.Value)
 			{
-				layerdepth.SetValue(__instance, ((tileLocation.Y * 64f + 32f + offset.Item1.Y) * pixelDepth + (tileLocation.X % 5) * .00001f) / 
-					((__instance.currentPhase.Value == 0 && __instance.shouldDrawDarkWhenWatered()) ? 2f : 1f));
-				drawpos.SetValue(__instance, (Vector2)drawpos.GetValue(__instance) + offset.Item1);
+				__instance.layerDepth = ((tileLocation.Y * 64f + 32f + offset.Item1.Y) * pixelDepth + (tileLocation.X % 5) * .00001f) / 
+					((__instance.currentPhase.Value == 0 && __instance.shouldDrawDarkWhenWatered()) ? 2f : 1f);
+				__instance.drawPosition += offset.Item1;
 			}
 		}
 

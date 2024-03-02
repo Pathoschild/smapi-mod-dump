@@ -22,6 +22,7 @@ using Microsoft.Xna.Framework.Input;
 using StardewValley.Objects;
 using StardewValley.BellsAndWhistles;
 using Unlockable_Bundles.Lib.Enums;
+using Unlockable_Bundles.Lib.AdvancedPricing;
 
 namespace Unlockable_Bundles.Lib.ShopTypes
 {
@@ -81,7 +82,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
             Unlockable = unlockable;
             Who = who;
-  
+
             JunimoTexture = Game1.temporaryContent.Load<Texture2D>("LooseSprites\\JunimoNote");
 
             if (Unlockable.JunimoNoteTexture == "")
@@ -134,13 +135,14 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             updateAlreadyPaidSlots();
         }
 
-        public static List<ClickableRequirementTexture> createRequirementTextures(int x, int y, Unlockable unlockable)
+        public static List<ClickableRequirementTexture> createRequirementTextures(int x, int y, Unlockable unlockable, int page = 0, int maxPerPage = 12)
         {
             List<ClickableRequirementTexture> requirementSlots = new();
             List<Rectangle> ingredientListRectangles = new List<Rectangle>();
-            addRectangleRowsToList(ingredientListRectangles, unlockable._price.Count(), x, y);
+            addRectangleRowsToList(ingredientListRectangles, Math.Min(unlockable._price.Count() - maxPerPage * page, maxPerPage), x, y);
             for (int i = 0; i < ingredientListRectangles.Count; i++) {
-                var requirement = unlockable._price.Pairs.ElementAt(i);
+                var paginatedIndex = page * maxPerPage + i;
+                var requirement = unlockable._price.Pairs.ElementAt(paginatedIndex);
                 var id = Unlockable.getFirstIDFromReqKey(requirement.Key);
 
                 if (id == "money") {
@@ -158,7 +160,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                     continue;
                 }
 
-                var obj = Unlockable.parseItem(id, unlockable._price.Pairs.ElementAt(i).Value, Unlockable.getFirstQualityFromReqKey(requirement.Key));
+                var obj = Unlockable.parseItem(id, unlockable._price.Pairs.ElementAt(paginatedIndex).Value, Unlockable.getFirstQualityFromReqKey(requirement.Key));
 
                 requirementSlots.Add(new ClickableRequirementTexture("", ingredientListRectangles[i], "", obj.DisplayName, Game1.objectSpriteSheet, Game1.getSourceRectForStandardTileSheet(Game1.objectSpriteSheet, obj.ParentSheetIndex, 16, 16), 4f) {
                     ReqKey = requirement.Key,
@@ -275,61 +277,27 @@ namespace Unlockable_Bundles.Lib.ShopTypes
 
         public virtual bool HighlightObjects(Item item)
         {
-            if (PartialDonationItem != null && CurrentPartialRequirementIndex >= 0) {
-                return CurrentPartialRequirement.Key.Split(",").Any(e =>
-                    IsValidItemForThisIngredient(
-                        item,
-                        Unlockable.getIDFromReqSplit(e),
-                        Unlockable.getQualityFromReqSplit(e),
-                        Unlockable._alreadyPaid.ContainsKey(CurrentPartialRequirement.Key)));
-            }
+            if (PartialDonationItem != null && CurrentPartialRequirementIndex >= 0)
+                return IsValidItemForThisRequirement(item, CurrentPartialRequirement);
+
             return RequirementSlots.Any(el => reqContainsType(el.ReqKey, item.TypeDefinitionId) && !Unlockable._alreadyPaid.ContainsKey(el.ReqKey));
         }
 
-        public static bool reqContainsType(string reqKey, string type)
+        public bool reqContainsType(string reqKey, string type)
         {
-            foreach (var req in reqKey.Split(",")) {
-                var id = Unlockable.getIDFromReqSplit(req);
-                if (isExceptionItem(id))
-                    continue;
-
-                if (id.StartsWith(type))
-                    return true;
-            }
-
-            return false;
+            var items = Unlockable.getRequiredItems(reqKey);
+            return items.Any(
+                el => el.TypeDefinitionId == type
+                || (el is AdvancedPricingItem apItem && apItem.ItemTypes.Contains(type)));
         }
 
-        public bool couldThisItemBeDeposited(Item item)
+        private bool IsValidItemForThisRequirement(Item comparedItem, KeyValuePair<string, int> requirement)
         {
-            foreach (var requirement in Unlockable._price.Pairs)
-                if (!IsValidItemForThisRequirement(item, requirement))
-                    return true;
-            return false;
-        }
+            if (Unlockable._alreadyPaid.ContainsKey(requirement.Key))
+                return false;
 
-        private bool IsValidItemForThisRequirement(Item item, KeyValuePair<string, int> requirement)
-        {
-            return requirement.Key.Split(",").Any(delegate (string e) {
-                var id = Unlockable.getIDFromReqSplit(e);
-
-                if (isExceptionItem(id))
-                    return false;
-
-                return IsValidItemForThisIngredient(
-                    item,
-                    id,
-                    Unlockable.getQualityFromReqSplit(e),
-                    Unlockable._alreadyPaid.ContainsKey(requirement.Key));
-            }
-            );
-        }
-
-        private bool IsValidItemForThisIngredient(Item comparedItem, string requiredID, int requiredQuality, bool completed)
-        {
-            return !completed
-                && requiredQuality <= comparedItem.Quality
-                && requiredID == comparedItem.QualifiedItemId;
+            var items = Unlockable.getRequiredItems(requirement.Key);
+            return items.Any(el => Inventory.isItemValid(el, comparedItem));
         }
 
         private static bool isExceptionItem(string id) => Unlockable.isExceptionItem(id);
@@ -548,6 +516,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                         if (HeldItem != null)
                             Game1.player.addItemToInventory(HeldItem);
                         HeldItem = null;
+                        return;
                     }
                 }
             } else {
@@ -652,7 +621,7 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 }
             }
 
-            if(includeHeldItem && HeldItem is not null) {
+            if (includeHeldItem && HeldItem is not null) {
                 ReturnPartialDonation(HeldItem, play_sound);
                 HeldItem = null;
             }

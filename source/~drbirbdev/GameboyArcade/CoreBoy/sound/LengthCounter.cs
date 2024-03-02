@@ -50,8 +50,8 @@ namespace CoreBoy.sound
 
         public void SetNr4(int value)
         {
-            var enable = (value & (1 << 6)) != 0;
-            var trigger = (value & (1 << 7)) != 0;
+            bool enable = (value & (1 << 6)) != 0;
+            bool trigger = (value & (1 << 7)) != 0;
 
             if (this.Enabled)
             {

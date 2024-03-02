@@ -1,0 +1,20 @@
+﻿{
+  "Name": "Portable Witch Shrines",
+  "Author": "chocolatte12",
+  "Version": "1.0.0",
+  "Description": "Adds the witches shrines as items you can place",
+  "UniqueID": "chocolatte12.PortableWitchShrines",
+  "EntryDll": "PortableWitchShrine.dll”,
+  "UpdateKeys": [ "Nexus:20141" ],
+  "Dependencies": [
+    /*{
+      "UniqueID": "Pathoschild.ContentPatcher"
+    },
+    {
+      "UniqueID": "Cherry.ShopTileFramework"
+    },
+    {
+      "UniqueID": "spacechase0.JsonAssets"
+    }*/
+  ]
+}

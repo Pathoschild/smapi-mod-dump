@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/elizabethcd/DragonPearlLure
+**
+*************************************************/
+
+{
+  "Name": "violetlizabet.PearlLure",
+  "DisplayName": "[LocalizedText Strings\\Objects:violetlizabet.PearlLure_Name]",
+  "Description": "[LocalizedText Strings\\Objects:violetlizabet.PearlLure_Description]",
+  "Type": "Crafting",
+  "Category": -8,
+  "Price": 100,
+  "Texture": "Mods/violetlizabet.DragonPearlLure/PearlLure",
+  "SpriteIndex": 0
+}

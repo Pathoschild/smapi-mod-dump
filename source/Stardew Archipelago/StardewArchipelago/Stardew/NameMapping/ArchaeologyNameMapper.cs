@@ -13,14 +13,14 @@ using System.Collections.Generic;
 
 namespace StardewArchipelago.Stardew.NameMapping
 {
-    public class ArchaeologyNameMapper : INameMapper
+    public class ArchaeologyNameMapper : INameMapper, IRecipeNameMapper
     {
-        private static Dictionary<string, string> InternalToEnglishNamesMap = new(){
+        private static readonly Dictionary<string, string> ArchaeologyToEnglishNamesMap = new(){
             {"moonslime.excavation.ancient_battery", "Ancient Battery Production Station"},
             {"moonslime.excavation.glass_bazier", "Glass Bazier"},
             {"moonslime.excavation.grinder", "Grinder"},
             {"moonslime.excavation.preservation_chamber", "Preservation Chamber"},
-            {"moonslime.excavation.h_preservation_chamber", "hardwood Preservation Chamber"},
+            {"moonslime.excavation.h_preservation_chamber", "Hardwood Preservation Chamber"},
             {"moonslime.excavation.glass_fence", "Glass Fence"},
             {"moonslime.excavation.dummy_path_bone", "Bone Path"},
             {"moonslime.excavation.dummy_path_glass", "Glass Path"},
@@ -30,7 +30,7 @@ namespace StardewArchipelago.Stardew.NameMapping
             {"moonslime.excavation.totem_volcano_warp", "Dwarf Gadget: Infinite Volcano Simulation"}
         };
 
-        private static Dictionary<string, string> EnglishToInternalNamesMap = InternalToEnglishNamesMap.ToDictionary(x => x.Value, x => x.Key);
+        private static readonly Dictionary<string, string> EnglishToArchaeologyNamesMap = ArchaeologyToEnglishNamesMap.ToDictionary(x => x.Value, x => x.Key);
 
         public ArchaeologyNameMapper()
         {
@@ -38,17 +38,27 @@ namespace StardewArchipelago.Stardew.NameMapping
 
         public string GetEnglishName(string internalName)
         {
-            return InternalToEnglishNamesMap.ContainsKey(internalName) ? InternalToEnglishNamesMap[internalName] : internalName;
+            return ArchaeologyToEnglishNamesMap.ContainsKey(internalName) ? ArchaeologyToEnglishNamesMap[internalName] : internalName;
         }
 
         public string GetInternalName(string englishName)
         {
-            return EnglishToInternalNamesMap.ContainsKey(englishName) ? EnglishToInternalNamesMap[englishName] : englishName;
+            return EnglishToArchaeologyNamesMap.ContainsKey(englishName) ? EnglishToArchaeologyNamesMap[englishName] : englishName;
         }
 
-        public bool RecipeNeedsMapping(string itemOfRecipe)
+        public string GetItemName(string recipeName)
         {
-            return EnglishToInternalNamesMap.ContainsKey(itemOfRecipe);
+            return GetEnglishName(recipeName);
+        }
+
+        public string GetRecipeName(string itemName)
+        {
+            return GetInternalName(itemName);
+        }
+
+        public bool RecipeNeedsMapping(string itemName)
+        {
+            return EnglishToArchaeologyNamesMap.ContainsKey(itemName);
         }
     }
 }

@@ -138,18 +138,18 @@ namespace CoreBoy.memory.cart.rtc
 
         private long ClockTimeInSec()
         {
-            var now = this._latchStart == 0 ? this._clock.CurrentTimeMillis() : this._latchStart;
+            long now = this._latchStart == 0 ? this._clock.CurrentTimeMillis() : this._latchStart;
             return ((now - this._clockStart) / 1000) + this._offsetSec;
         }
 
         public void Deserialize(long[] clockData)
         {
-            var seconds = clockData[0];
-            var minutes = clockData[1];
-            var hours = clockData[2];
-            var days = clockData[3];
-            var daysHigh = clockData[4];
-            var timestamp = clockData[10];
+            long seconds = clockData[0];
+            long minutes = clockData[1];
+            long hours = clockData[2];
+            long days = clockData[3];
+            long daysHigh = clockData[4];
+            long timestamp = clockData[10];
 
             this._clockStart = timestamp * 1000;
             this._offsetSec = seconds + (minutes * 60) + (hours * 60 * 60) + (days * 24 * 60 * 60) +
@@ -158,7 +158,7 @@ namespace CoreBoy.memory.cart.rtc
 
         public long[] Serialize()
         {
-            var clockData = new long[11];
+            long[] clockData = new long[11];
             this.Latch();
             clockData[0] = clockData[5] = this.GetSeconds();
             clockData[1] = clockData[6] = this.GetMinutes();

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20077
+IDs: mistyspring.nofestivaltimer
+update keys: Nexus:20077

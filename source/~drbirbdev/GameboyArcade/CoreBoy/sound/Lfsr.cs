@@ -20,7 +20,7 @@ namespace CoreBoy.sound
 
         public int NextBit(bool widthMode7)
         {
-            var x = ((this.Value & 1) ^ ((this.Value & 2) >> 1)) != 0;
+            bool x = ((this.Value & 1) ^ ((this.Value & 2) >> 1)) != 0;
             this.Value = this.Value >> 1;
             this.Value = this.Value | (x ? (1 << 14) : 0);
 

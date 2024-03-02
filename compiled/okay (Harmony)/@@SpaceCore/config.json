@@ -3,5 +3,6 @@
   "WalletLegacyStyle": false,
   "WalletOnRightOfSkillPage": false,
   "SupportAllProfessionsMod": true,
-  "DisposeOldTextures": false
+  "SocialInteractions_AlwaysTrigger": false,
+  "SocialInteractions_TriggerModifier": "LeftControl"
 }

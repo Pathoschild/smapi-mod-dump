@@ -14,7 +14,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.GameModifications.Modded;
-using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;

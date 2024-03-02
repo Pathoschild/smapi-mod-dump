@@ -97,7 +97,7 @@ namespace BitwiseJonMods
 
                 //These string replacements probably won't work in some languages due to the comma separator, but at least the rest of the message
                 //  will be translated.  I will also look for the period separator just in case.
-                switch ((int)((NetFieldBase<int, NetInt>)Game1.player.houseUpgradeLevel))
+                switch (Game1.player.HouseUpgradeLevel)
                 {
                     case 0:
                         msg = Game1.parseText(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_UpgradeHouse1"));
@@ -124,7 +124,7 @@ namespace BitwiseJonMods
             {
                 if (answer == "Yes")
                 {
-                    BitwiseJonMods.Common.Utility.Log(string.Format("User agreed to house upgrade from level {0} to level {1}.", Game1.player.houseUpgradeLevel.Value, Game1.player.houseUpgradeLevel.Value + 1));
+                    BitwiseJonMods.Common.Utility.Log(string.Format("User agreed to house upgrade from level {0} to level {1}.", Game1.player.HouseUpgradeLevel, Game1.player.HouseUpgradeLevel + 1));
                     houseUpgradeAccept();
                 }
             }), (NPC)Game1.getCharacterFromName("Robin", true));
@@ -150,7 +150,7 @@ namespace BitwiseJonMods
 
             //See StardewValley.Locations.1GameLocation.houseUpgradeAccept()
             BitwiseJonMods.Common.Utility.Log("BuildUsesResources=true so checking if player has the resources to complete upgrade.");
-            switch ((int)((NetFieldBase<int, NetInt>)Game1.player.houseUpgradeLevel))
+            switch (Game1.player.HouseUpgradeLevel)
             {
                 case 0:
                     if (Game1.player.Money >= 10000 && Game1.player.hasItemInInventory(388, 450, 0))
@@ -202,23 +202,23 @@ namespace BitwiseJonMods
 
             Game1.playSound("achievement");
             var homeOfFarmer = Utility.getHomeOfFarmer(Game1.player);
-            homeOfFarmer.moveObjectsForHouseUpgrade((int)((NetFieldBase<int, NetInt>)Game1.player.houseUpgradeLevel) + 1);
+            homeOfFarmer.moveObjectsForHouseUpgrade(Game1.player.HouseUpgradeLevel + 1);
 
             Game1.player.daysUntilHouseUpgrade.Value = -1;
-            ++Game1.player.houseUpgradeLevel.Value;
-            homeOfFarmer.setMapForUpgradeLevel((int)((NetFieldBase<int, NetInt>)Game1.player.houseUpgradeLevel));
+            ++Game1.player.HouseUpgradeLevel;
+            homeOfFarmer.setMapForUpgradeLevel(Game1.player.HouseUpgradeLevel);
 
             //Cabins automatically change their appearance for all players, but the main house texture has to be changed manually.
             if (!(homeOfFarmer is Cabin))
             {
                 //Use reflection to update house texture in otherwise private variable of Farm class.
                 var houseSource = Helper.Reflection.GetField<NetRectangle>(Game1.getFarm(), "houseSource");
-                var rect = new Microsoft.Xna.Framework.Rectangle(0, 144 * ((int)((NetFieldBase<int, NetInt>)Game1.MasterPlayer.houseUpgradeLevel) == 3 ? 2 : (int)((NetFieldBase<int, NetInt>)Game1.MasterPlayer.houseUpgradeLevel)), 160, 144);
+                var rect = new Microsoft.Xna.Framework.Rectangle(0, 144 * (Game1.player.HouseUpgradeLevel == 3 ? 2 : Game1.player.HouseUpgradeLevel), 160, 144);
                 houseSource.GetValue().Value = rect;
             }
 
             Game1.stats.checkForBuildingUpgradeAchievements();
-            BitwiseJonMods.Common.Utility.Log($"Upgrade complete! New upgrade level: {Game1.player.houseUpgradeLevel.Value}");
+            BitwiseJonMods.Common.Utility.Log($"Upgrade complete! New upgrade level: {Game1.player.HouseUpgradeLevel}");
         }
 
         private void activateInstantBuildMenu(BluePrint tractorBlueprint = null)

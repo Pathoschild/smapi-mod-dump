@@ -1,0 +1,4 @@
+﻿{
+	"config.Keybind.name": "Toggle time change",
+	"config.Keybind.description": "By default, time is frozen. This button will toggle the change."
+}

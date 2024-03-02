@@ -10,7 +10,7 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using StardewValley;
+using StardewValley.Mods;
 
 namespace Pathoschild.Stardew.Common
 {

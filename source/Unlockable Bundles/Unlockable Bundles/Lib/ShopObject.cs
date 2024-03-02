@@ -27,6 +27,7 @@ using StardewValley.Network;
 
 namespace Unlockable_Bundles.Lib
 {
+    //ShopObject is the bundle object the player interacts with
     public class ShopObject : StardewValley.Object
     {
         protected override void initNetFields()
@@ -48,12 +49,9 @@ namespace Unlockable_Bundles.Lib
         public static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
-        private Texture2D Texture;
 
-        private long LastAnimationUpdatedTick; //Supposed to prevent animations being updated multiple times for the same tick in splitscreen and BundleOverviewMenu
-        private int AnimationFrame = 0;
-        private long AnimationTimer = 0;
-        private List<KeyValuePair<int, int>> AnimationSequence = new List<KeyValuePair<int, int>>();  //ImageIndex, Tempo
+        public AnimatedTexture ShopTexture;
+        public AnimatedTexture OverviewTexture;
 
         public bool IsPlayerNearby;
         private NetBool _wasDiscovered = new NetBool();
@@ -69,8 +67,10 @@ namespace Unlockable_Bundles.Lib
             BundleDiscoveredAnimation = Helper.ModContent.Load<Texture2D>("assets/BundleDiscoveredAnimation.png");
             Helper.Events.Display.Rendered += drawTemporaryAnimatedSprites;
         }
-        public ShopObject() {
+        public ShopObject()
+        {
             setEvents();
+            setTextures();
         }
 
         public ShopObject(Vector2 tileLocation, Unlockable unlockable)
@@ -90,13 +90,28 @@ namespace Unlockable_Bundles.Lib
 
             WasDiscovered = ModData.getDiscovered(unlockable.ID, Unlockable.LocationUnique);
             setEvents();
+            setTextures();
         }
 
-        private void setEvents() {
+        private void setEvents()
+        {
             _wasDiscovered.fieldChangeEvent += _wasDiscovered_fieldChangeEvent;
 
             Helper.Events.GameLoop.ReturnedToTitle += returnedToTitle;
             Helper.Events.GameLoop.DayEnding += dayEnding;
+        }
+
+        private void setTextures()
+        {
+            if (Unlockable.ShopTexture.Trim().ToLower() != "none") {
+                var texture = Helper.GameContent.Load<Texture2D>(Unlockable.ShopTexture);
+                ShopTexture = new AnimatedTexture(texture, Unlockable.ShopAnimation);
+            }
+
+            if (Unlockable.OverviewTexture is not null && Unlockable.OverviewTexture.Trim() != "") {
+                var texture = Helper.GameContent.Load<Texture2D>(Unlockable.OverviewTexture);
+                OverviewTexture = new AnimatedTexture(texture, Unlockable.OverviewAnimation);
+            }
         }
 
         public override bool isPassable() => isTemporarilyInvisible;
@@ -153,10 +168,9 @@ namespace Unlockable_Bundles.Lib
         {
             Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + (float)(shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), y * 64 - 64));
 
-            var sourceRectangle = getAnimationOffsetRectangle();
 
-            if (Texture != null)
-                b.Draw(Texture, position, sourceRectangle, Color.White, 0f, new Vector2(), 2f, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
+            if (ShopTexture is not null)
+                b.Draw(ShopTexture.Texture, position, ShopTexture.getOffsetRectangle(), Color.White, 0f, new Vector2(), 2f, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
 
             if (SpeechBubble != null)
                 SpeechBubble.draw(b);
@@ -170,40 +184,31 @@ namespace Unlockable_Bundles.Lib
             Rectangle sourceRectangle;
             Texture2D texture;
 
-            if (ShopType != ShopType.ParrotPerch) {
-                texture = Texture;
-                sourceRectangle = getAnimationOffsetRectangle();
+            if(OverviewTexture is not null) {
+                texture = OverviewTexture.Texture;
+                sourceRectangle = OverviewTexture.getOffsetRectangle();
+                OverviewTexture.update(Game1.currentGameTime);
 
-            } else {
+            } else if (ShopType == ShopType.ParrotPerch) {
                 texture = SpeechBubble.ParrotPerch.texture;
                 sourceRectangle = new Rectangle(0, 24 * Unlockable.ParrotIndex, 24, 24);
                 position.Y += 8 * scale;
                 position.X -= 8 * scale;
                 scale *= 2f;
 
+            } else {
+                if (ShopTexture is null)
+                    return;
+
+                texture = ShopTexture.Texture;
+                sourceRectangle = ShopTexture.getOffsetRectangle();
+                ShopTexture.update(Game1.currentGameTime);
             }
 
-            if (texture != null)
-                b.Draw(texture, position, sourceRectangle, Color.White, 0f, new Vector2(), scale, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
+            if (texture is null)
+                return;
 
-            if (Game1.player.currentLocation.NameOrUniqueName != Unlockable.LocationUnique)
-                updateAnimation(Game1.currentGameTime);
-        }
-
-        public Rectangle getAnimationOffsetRectangle()
-        {
-            var sourceRectangle = new Rectangle(0, 0, 32, 64);
-            Vector2 origin = new Vector2(0f, 0f);
-
-            if (Texture == null && Unlockable.ShopTexture.ToLower() != "none") {
-                Texture = Helper.GameContent.Load<Texture2D>(Unlockable.ShopTexture);
-                resetAnimationFrames();
-            }
-
-            if (AnimationSequence.Count > 0 && (Texture.Width/32) > 1)
-                sourceRectangle.X = sourceRectangle.Width * AnimationSequence.ElementAt(AnimationFrame).Key;
-
-            return sourceRectangle;
+            b.Draw(texture, position, sourceRectangle, Color.White, 0f, new Vector2(), scale, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
         }
 
         public void drawQuestionMark(SpriteBatch b, Vector2 position)
@@ -217,44 +222,13 @@ namespace Unlockable_Bundles.Lib
 
         }
 
-        public void resetAnimationFrames()
-        {
-            if (Unlockable.ShopAnimation == null || Unlockable.ShopAnimation == "")
-                return;
-
-            AnimationFrame = 0;
-            AnimationSequence.Clear();
-
-            var currentTempo = 100;
-            foreach (var entry in Unlockable.ShopAnimation.Split(",")) {
-                var tempoSplit = entry.Split("@");
-
-                if (tempoSplit.Count() > 1)
-                    currentTempo = int.Parse(tempoSplit.Last());
-
-                var framesSplit = tempoSplit.First().Split("-");
-
-                var from = int.Parse(framesSplit.First());
-                var to = int.Parse(framesSplit.Last());
-
-                if (from < to)
-                    for (int i = from; i <= to; i++)
-                        AnimationSequence.Add(new KeyValuePair<int, int>(i, currentTempo));
-                else
-                    for (int i = from; i >= to; i--)
-                        AnimationSequence.Add(new KeyValuePair<int, int>(i, currentTempo));
-
-            }
-        }
-
         public override void updateWhenCurrentLocation(GameTime time)
         {
             if (shakeTimer > 0)
                 shakeTimer -= time.ElapsedGameTime.Milliseconds;
 
-            updateAnimation(time);
-            if (SpeechBubble != null)
-                SpeechBubble.updateWhenCurrentLocation(time);
+            ShopTexture?.update(Game1.currentGameTime);
+            SpeechBubble?.updateWhenCurrentLocation(time);
 
             Mutex.Update(Game1.getOnlineFarmers());
             checkPlayerNearby();
@@ -282,27 +256,6 @@ namespace Unlockable_Bundles.Lib
 
         }
 
-        public void updateAnimation(GameTime time)
-        {
-            if (time.TotalGameTime.Ticks == LastAnimationUpdatedTick)
-                return;
-            LastAnimationUpdatedTick = time.TotalGameTime.Ticks;
-
-            if (AnimationSequence.Count == 0)
-                return;
-
-            if (AnimationTimer > 0)
-                AnimationTimer -= time.ElapsedGameTime.Milliseconds;
-
-            if (AnimationTimer <= 0) {
-                AnimationFrame++;
-                if (AnimationFrame >= AnimationSequence.Count)
-                    AnimationFrame = 0;
-
-                AnimationTimer = AnimationSequence.ElementAt(AnimationFrame).Value;
-            }
-        }
-
         public override bool performToolAction(Tool t)
         {
             if (t is Pickaxe or Axe) {
@@ -312,15 +265,16 @@ namespace Unlockable_Bundles.Lib
             return false;
         }
 
+        //Only the main players could easily allocate a list of all shop objects, so instead of handling complex caching we minimize the usage of this method and cache results
         public static List<ShopObject> getAll()
         {
             List<ShopObject> list = new();
 
             foreach (var loc in Game1.locations) {
                 foreach (var building in loc.buildings.Where(el => el.isUnderConstruction() && el.indoors.Value != null))
-                        foreach (var obj in building.indoors.Value.Objects.Values.Where(el => el is ShopObject))
-                            if (!list.Contains(obj))
-                                list.Add(obj as ShopObject);
+                    foreach (var obj in building.indoors.Value.Objects.Values.Where(el => el is ShopObject))
+                        if (!list.Contains(obj))
+                            list.Add(obj as ShopObject);
 
                 foreach (var obj in loc.Objects.Values.Where(el => el is ShopObject))
                     if (!list.Contains(obj))

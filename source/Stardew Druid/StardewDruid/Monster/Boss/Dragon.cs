@@ -64,9 +64,9 @@ namespace StardewDruid.Monster.Boss
         public enum temperment
         {
 
-            aggressive,
             cautious,
             coward,
+            aggressive,
 
         }
 
@@ -96,7 +96,6 @@ namespace StardewDruid.Monster.Boss
         public int flightCeiling; // lowest frame for flight cycle
         public int flightFloor; // highest frame for flight cycle
         public int flightLast; // last frame for flight cycle (strike, land)
-        public string flightSound;
 
         // ============================= Special attack
 
@@ -168,8 +167,6 @@ namespace StardewDruid.Monster.Boss
 
             DragonSpecial();
 
-            DragonDialogue();
-
             loadedOut = true;
 
         }
@@ -186,6 +183,8 @@ namespace StardewDruid.Monster.Boss
             followIncrement = 2;
 
             walkFrames = WalkFrames(32, 32);
+
+            overHead = new(0, -128);
 
         }
 
@@ -216,6 +215,8 @@ namespace StardewDruid.Monster.Boss
 
             walkFrames = WalkFrames(64, 64);
 
+            overHead = new(0, -224);
+
         }
 
         public void BaseFlight()
@@ -232,8 +233,6 @@ namespace StardewDruid.Monster.Boss
             flightFloor = 0;
 
             flightLast = 2;
-
-            flightSound = "";
 
             flightTexture = characterTexture;
 
@@ -255,8 +254,6 @@ namespace StardewDruid.Monster.Boss
             flightFloor = 1;
 
             flightLast = 5;
-
-            flightSound = "batFlap";
 
             flightTexture = Mod.instance.Helper.ModContent.Load<Texture2D>(Path.Combine("Images", realName.Value + "Flight.png"));
 
@@ -360,65 +357,11 @@ namespace StardewDruid.Monster.Boss
 
         }
 
-
-        public void BaseDialogue()
-        {
-
-            ouchList = new();
-
-            dialogueList = new();
-
-            overHead = new(0, -128);
-
-        }
-
-        public virtual void DragonDialogue()
-        {
-
-            ouchList = new List<string>()
-              {
-                "Ah ha ha ha ha",
-                "I'll Answer That... With FIRE!",
-                "insolence!",
-                "creep"
-              };
-            dialogueList = new List<string>()
-              {
-                "behold",
-                "I am your new master",
-                "Kneel Before Tyrannus!",
-                "Why do you resist",
-                "Where are my servants?"
-              };
-
-            overHead = new(0, -224);
-
-        }
-
         public virtual void HardMode()
         {
 
             Health *= 3 / 2;
             MaxHealth = Health;
-
-            ouchList = new List<string>()
-              {
-                "Ah ha ha ha ha",
-                "Such pitiful strikes",
-                "insolence!",
-                "The land has died... and so WILL YOU",
-                "CREEP"
-              };
-
-            dialogueList = new List<string>()
-              {
-                "Where are my servants",
-                "The shamans have failed me",
-                "The only recourse for humanity, is subjugation",
-                "Beg for my mercy",
-                "Kneel Before Tyrannus!",
-                "I WILL BURN... EVERYTHING"
-              };
 
             cooldownInterval = 48;
 
@@ -607,12 +550,10 @@ namespace StardewDruid.Monster.Boss
 
             }
 
-            if (ouchTimer < (int)Game1.currentGameTime.TotalGameTime.TotalSeconds && ouchList.Count > 0)
+            if (ouchTimer < (int)Game1.currentGameTime.TotalGameTime.TotalSeconds)
             {
 
-                int index = Game1.random.Next(ouchList.Count);
-
-                showTextAboveHead(ouchList[index], -1, 2, 3000, 0);
+                DialogueData.DisplayText(this, 3, 0, realName);
 
                 ouchTimer = (int)Game1.currentGameTime.TotalGameTime.TotalSeconds + 6;
 
@@ -1052,15 +993,10 @@ namespace StardewDruid.Monster.Boss
 
             cooldownTimer--;
 
-            if (dialogueList.Count > 0)
+            if (cooldownTimer == cooldownInterval * 0.5)
             {
 
-                if (cooldownTimer == cooldownInterval * 0.5 && new Random().Next(3) == 0)
-                {
-
-                    showTextAboveHead(dialogueList[Game1.random.Next(dialogueList.Count)], -1, 2, 3000, 0);
-
-                }
+                DialogueData.DisplayText(this, 1, (int)tempermentActive, realName);
 
             }
 
@@ -1301,13 +1237,6 @@ namespace StardewDruid.Monster.Boss
             behaviourTimer = flightSpeed * destination;
 
             flightInterval = new((flightTo.X - Position.X) / behaviourTimer, (flightTo.Y - Position.Y) / behaviourTimer);
-
-            if (flightSound.Length > 0)
-            {
-
-                currentLocation.playSound(flightSound);
-
-            }
 
         }
 
@@ -1579,11 +1508,6 @@ namespace StardewDruid.Monster.Boss
                 behaviourTimer = flightIncrement * destination;
 
                 flightInterval = new((flightTo.X - Position.X) / behaviourTimer, (flightTo.Y - Position.Y) / behaviourTimer);
-
-                if (flightSound != null)
-                {
-                    currentLocation.playSound(flightSound);
-                }
 
                 return;
 

@@ -71,6 +71,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             LuauInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
             MoonlightJelliesInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer);
             FairInjections.Initialize(monitor, modHelper, archipelago, state, locationChecker, shopReplacer);
+            CasinoInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer);
             SpiritEveInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer);
             IceFestivalInjections.Initialize(monitor, modHelper, archipelago, locationChecker, shopReplacer);
             MermaidHouseInjections.Initialize(monitor, modHelper, archipelago, locationChecker);

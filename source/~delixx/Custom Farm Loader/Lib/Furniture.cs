@@ -20,6 +20,8 @@ using Newtonsoft.Json.Linq;
 using StardewModdingAPI;
 using StardewValley.Objects;
 using StardewValley.Locations;
+using StardewValley.ItemTypeDefinitions;
+using Custom_Farm_Loader.GameLoopInjections;
 
 namespace Custom_Farm_Loader.Lib
 {
@@ -32,7 +34,6 @@ namespace Custom_Farm_Loader.Lib
         private static IMonitor Monitor;
         private static IModHelper Helper;
 
-        private static Dictionary<string, string> CachedFurnitureData;
         public static List<string> TvIds = new List<string>() { "1466", "1468", "1680", "2326" };
         public static List<string> BedIds = new List<string>() { "2048", "2052", "2058", "2064", "2070", "2176", "2180", "2186", "2192", "2496", "2502", "2508", "2514" };
 
@@ -50,8 +51,6 @@ namespace Custom_Farm_Loader.Lib
             Mod = mod;
             Monitor = mod.Monitor;
             Helper = mod.Helper;
-
-            CachedFurnitureData = Helper.GameContent.Load<Dictionary<string, string>>("Data\\Furniture");
         }
 
         public static List<Furniture> parseFurnitureJsonArray(JProperty furnitureArray)
@@ -80,7 +79,7 @@ namespace Custom_Farm_Loader.Lib
                     switch (name.ToLower()) {
                         case "id":
                             furniture.Name = value;
-                            furniture.ID = MapNameToParentsheetindex(value);
+                            furniture.ID = value;
                             break;
                         case "map" or "location":
                             furniture.LocationName = value;
@@ -159,7 +158,9 @@ namespace Custom_Farm_Loader.Lib
             if (duplicateFurnitureID != "")
                 return duplicateFurnitureID;
 
-            var match = CachedFurnitureData.FirstOrDefault(fur => fur.Value.ToLower().Replace("'", "").StartsWith(comparableName + "/"));
+            var furnitureData = Helper.GameContent.Load<Dictionary<string, string>>("Data\\Furniture");
+
+            var match = furnitureData.FirstOrDefault(fur => fur.Value.ToLower().Replace("'", "").StartsWith(comparableName + "/"));
 
             if (match.Value != null)
                 return match.Key.ToString();
@@ -253,6 +254,8 @@ namespace Custom_Farm_Loader.Lib
 
         public void tryPlacingFurniture(GameLocation location)
         {
+            var removedVanillaBed = false;
+
             switch (Type) {
                 case FurnitureType.Wallpaper:
                     (location as DecoratableLocation).SetWallpaper(ID, "Bedroom");
@@ -263,21 +266,31 @@ namespace Custom_Farm_Loader.Lib
                     break;
 
                 case FurnitureType.Furniture:
-                    if (Furniture.TvIds.Exists(e => e == ID))
-                        location.furniture.Add(new TV(ID, Position));
-                    else if (Furniture.BedIds.Exists(e => e == ID))
-                        location.furniture.Add(new BedFurniture(ID, Position));
-                    else {
-                        location.furniture.Add(new StardewValley.Objects.Furniture(ID, Position, Rotations));
-                        if (HeldObject != null)
-                            location.furniture.Last().heldObject.Value = HeldObject.objectFactory(Position);
+                    var parsedId = MapNameToParentsheetindex(ID);
+                    var furniture = StardewValley.Objects.Furniture.GetFurnitureInstance(parsedId).SetPlacement(Position, Rotations);
+
+                    //We remove the starter bed if another bed is provided in the CFL StartFurniture to allow more diverse furniture placement
+                    if (furniture is BedFurniture && !removedVanillaBed && location is FarmHouse) {
+                        removedVanillaBed = true;
+                        location.furniture.RemoveWhere(e => e.TileLocation == new Vector2(9f, 8f) && e.ItemId == BedFurniture.DEFAULT_BED_INDEX);
                     }
+
+                    _GameLocation.clearTileOfLitter(location, Position);
+                    location.furniture.Add(furniture);
+
+                    if (HeldObject != null)
+                        location.furniture.Last().heldObject.Value = HeldObject.objectFactory(Position);
                     break;
 
                 case FurnitureType.Purple_Giftbox or FurnitureType.Giftbox or FurnitureType.Chest or FurnitureType.Dungeon_Chest:
                     Chest chest = null;
                     var items = new List<Item>();
-                    Items.ForEach(item => { items.Add(new StardewValley.Object(item.Id, item.Amount, quality: item.Quality) { HasBeenInInventory = false }); });
+                    Items.ForEach(item => {
+                        items.Add(
+                        item.Id.Trim().First() == '(' ?
+                        ItemRegistry.Create(item.Id, item.Amount, item.Quality)
+                        : new StardewValley.Object(item.Id, item.Amount, quality: item.Quality) { HasBeenInInventory = false });
+                    });
 
                     if (Type == FurnitureType.Giftbox || Type == FurnitureType.Purple_Giftbox) {
                         int giftboxIndex = Type == FurnitureType.Purple_Giftbox ? 1 : 0;
@@ -293,7 +306,8 @@ namespace Custom_Farm_Loader.Lib
 
                     }
 
-                    location.objects.Add(Position, chest);
+                    _GameLocation.clearTileOfLitter(location, Position);
+                    location.objects.TryAdd(Position, chest);
 
                     break;
             }

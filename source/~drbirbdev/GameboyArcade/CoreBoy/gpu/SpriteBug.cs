@@ -27,7 +27,7 @@ namespace CoreBoy.gpu
 
         public static void CorruptOam(IAddressSpace addressSpace, CorruptionType type, int ticksInLine)
         {
-            var cpuCycle = ((ticksInLine + 1) / 4) + 1;
+            int cpuCycle = ((ticksInLine + 1) / 4) + 1;
             switch (type)
             {
                 case CorruptionType.INC_DEC:
@@ -89,9 +89,9 @@ namespace CoreBoy.gpu
 
         private static void CopyValues(IAddressSpace addressSpace, int from, int to, int length)
         {
-            for (var i = length - 1; i >= 0; i--)
+            for (int i = length - 1; i >= 0; i--)
             {
-                var b = addressSpace.GetByte(0xfe00 + from + i) % 0xff;
+                int b = addressSpace.GetByte(0xfe00 + from + i) % 0xff;
                 addressSpace.SetByte(0xfe00 + to + i, b);
             }
         }

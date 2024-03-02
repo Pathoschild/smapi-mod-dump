@@ -18,6 +18,7 @@ using StardewModdingAPI.Events;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.GameData;
 using System.IO;
+using Unlockable_Bundles.Lib.AdvancedPricing;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -46,13 +47,19 @@ namespace Unlockable_Bundles.Lib
                     return new Dictionary<string, UnlockableModel>() { };
                 }, AssetLoadPriority.Medium);
 
+            } else if (e.NameWithoutLocale.IsEquivalentTo(AdvancedPricingItem.ASSET)) {
+                //We need to provide an empty initial dictionary where others can append their changes
+                e.LoadFrom(delegate () {
+                    return new Dictionary<string, AdvancedPricing.AdvancedPricing>() { };
+                }, AssetLoadPriority.Medium);
+
             } else if (e.NameWithoutLocale.StartsWith("UnlockableBundles/ShopTextures/")) {
                 var asset = e.NameWithoutLocale.BaseName[31..];
                 e.LoadFrom(delegate () {
                     return Helper.ModContent.Load<Texture2D>($"assets/{asset}.png");
                 }, AssetLoadPriority.Low);
 
-            } else if(e.NameWithoutLocale.IsEquivalentTo("Data/Mail")) {
+            } else if (e.NameWithoutLocale.IsEquivalentTo("Data/Mail")) {
                 e.Edit(asset => {
                     var data = asset.AsDictionary<string, string>().Data;
 
@@ -60,7 +67,7 @@ namespace Unlockable_Bundles.Lib
                         data.TryAdd(entry.Key, entry.Value);
                 });
 
-            } else if(e.NameWithoutLocale.IsEquivalentTo("Data/AudioChanges")) {
+            } else if (e.NameWithoutLocale.IsEquivalentTo("Data/AudioChanges")) {
                 e.Edit(asset => {
                     var data = asset.AsDictionary<string, AudioCueData>().Data;
                     data.Add("ub_pageflip", new AudioCueData() {

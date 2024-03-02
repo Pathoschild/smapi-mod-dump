@@ -42,8 +42,6 @@ namespace Unlockable_Bundles.Lib
             BGTexture = Helper.ModContent.Load<Texture2D>("assets\\BundleOverviewBG.png");
         }
 
-        public const int Region_upArrow = 97865;
-        public const int Region_downArrow = 97866;
         private Rectangle ScrollBarRunner;
 
         public ClickableTextureComponent UpArrow;
@@ -52,6 +50,7 @@ namespace Unlockable_Bundles.Lib
 
         public const int ListElementsPerPage = 4;
         public int DescriptionRowsPerPage = 3;
+        public const int RequirementsPerPage = 10;
         private bool Scrolling;
 
         public List<ClickableComponent> ListElement = new List<ClickableComponent>();
@@ -68,10 +67,13 @@ namespace Unlockable_Bundles.Lib
         public ClickableTextureComponent DescriptionUpArrow;
         public ClickableTextureComponent DescriptionDownArrow;
 
+        protected int RequirementPageIndex = 0;
         public List<ClickableRequirementTexture> RequirementIcons = new();
         private ClickableRequirementTexture HoveredComponent = null;
+        public ClickableTextureComponent RequirementUpArrow;
+        public ClickableTextureComponent RequirementDownArrow;
 
-        private StardewValley.Item NextItem = null;
+        private Item NextItem = null;
         private string NextId = "";
 
         public BundleOverviewMenu() : base(Game1.uiViewport.Width / 2 - 320, Game1.uiViewport.Height - 64 - 192, 640, 192)
@@ -145,6 +147,7 @@ namespace Unlockable_Bundles.Lib
             DownArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + 16, yPositionOnScreen + height - 260, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f) {
                 myID = 106,
                 upNeighborID = 97865,
+                downNeighborID = 803,
                 leftNeighborID = 3546,
             };
             ScrollBar = new ClickableTextureComponent(new Rectangle(UpArrow.bounds.X + 12, UpArrow.bounds.Y + UpArrow.bounds.Height + 4, 24, 40), Game1.mouseCursors, new Rectangle(435, 463, 6, 10), 4f);
@@ -162,12 +165,24 @@ namespace Unlockable_Bundles.Lib
                 myID = 801,
                 downNeighborID = 802,
                 upNeighborID = 3546,
-                rightNeighborID = 106
+                rightNeighborID = 803
             };
             DescriptionDownArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen - 24, yPositionOnScreen + height - 42, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f) {
                 myID = 802,
                 upNeighborID = 801,
-                rightNeighborID = 106
+                rightNeighborID = 804
+            };
+
+            RequirementUpArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + 16, yPositionOnScreen + height - 200, 44, 48), Game1.mouseCursors, new Rectangle(421, 459, 11, 12), 4f) {
+                myID = 803,
+                downNeighborID = 804,
+                upNeighborID = 106,
+                leftNeighborID = 801
+            };
+            RequirementDownArrow = new ClickableTextureComponent(new Rectangle(xPositionOnScreen + width + 16, yPositionOnScreen + height - 42, 44, 48), Game1.mouseCursors, new Rectangle(421, 472, 11, 12), 4f) {
+                myID = 804,
+                upNeighborID = 803,
+                leftNeighborID = 802
             };
 
             createBundleRequirementTextures();
@@ -181,7 +196,7 @@ namespace Unlockable_Bundles.Lib
                 return;
 
             var unlockable = CurrentBundle.Unlockable;
-            RequirementIcons = BundleMenu.createRequirementTextures(xPositionOnScreen + width - 160, yPositionOnScreen + height - 100, unlockable);
+            RequirementIcons = BundleMenu.createRequirementTextures(xPositionOnScreen + width - 160, yPositionOnScreen + height - 100, unlockable, RequirementPageIndex, RequirementsPerPage);
         }
 
         private void setNextItem()
@@ -277,6 +292,7 @@ namespace Unlockable_Bundles.Lib
             Game1.playSound("coin");
             CurrentBundle = bundle;
             DescriptionScrollIndex = 0;
+            RequirementPageIndex = 0;
             SplitPreviewDescription = new string[] { };
             createBundleRequirementTextures();
             setNextItem();
@@ -306,9 +322,17 @@ namespace Unlockable_Bundles.Lib
             } else if (DescriptionUpArrow.containsPoint(x, y) && DescriptionScrollIndex != 0) {
                 DescriptionScrollIndex--;
                 Game1.playSound("shwip");
-            } else if (DescriptionDownArrow.containsPoint(x, y) && SplitPreviewDescription.Length > DescriptionScrollIndex + DescriptionRowsPerPage) {
+            } else if (DescriptionDownArrow.containsPoint(x, y) && hasNextDescriptionRow()) {
                 DescriptionScrollIndex++;
                 Game1.playSound("shwip");
+            } else if(RequirementUpArrow.containsPoint(x, y) && RequirementPageIndex != 0) {
+                RequirementPageIndex--;
+                Game1.playSound("shwip");
+                createBundleRequirementTextures();
+            } else if (RequirementDownArrow.containsPoint(x, y) &&  hasNextRequirementPage()) {
+                RequirementPageIndex++;
+                Game1.playSound("shwip");
+                createBundleRequirementTextures();
             }
 
 
@@ -363,12 +387,20 @@ namespace Unlockable_Bundles.Lib
 
         public override void receiveGamePadButton(Buttons b)
         {
-            if ((b == Buttons.LeftShoulder /* || b == Buttons.LeftTrigger*/) && DescriptionScrollIndex != 0) {
+            if (b == Buttons.LeftShoulder && DescriptionScrollIndex != 0) {
                 DescriptionScrollIndex--;
                 Game1.playSound("shwip");
-            } else if ((b == Buttons.RightShoulder /* || b == Buttons.RightTrigger */) && SplitPreviewDescription.Length > DescriptionScrollIndex + DescriptionRowsPerPage) {
+            } else if (b == Buttons.RightShoulder && hasNextDescriptionRow()) {
                 DescriptionScrollIndex++;
                 Game1.playSound("shwip");
+            } else if (b == Buttons.LeftTrigger && RequirementPageIndex != 0) {
+                RequirementPageIndex--;
+                Game1.playSound("shwip");
+                createBundleRequirementTextures();
+            } else if (b == Buttons.RightTrigger && hasNextRequirementPage()) {
+                RequirementPageIndex++;
+                Game1.playSound("shwip");
+                createBundleRequirementTextures();
             }
 
             base.receiveGamePadButton(b);
@@ -389,6 +421,8 @@ namespace Unlockable_Bundles.Lib
             DescriptionUpArrow.tryHover(x, y, 0.5f);
             DescriptionDownArrow.tryHover(x, y, 0.5f);
             upperRightCloseButton.tryHover(x, y, 0.5f);
+            RequirementUpArrow.tryHover(x, y, 0.5f);
+            RequirementDownArrow.tryHover(x, y, 0.5f);
 
             HoveredComponent = RequirementIcons.FirstOrDefault(c => c.bounds.Contains(x, y));
         }
@@ -526,7 +560,7 @@ namespace Unlockable_Bundles.Lib
             b.DrawString(Game1.dialogueFont, progressDisplay, progressPos, Color.DarkSlateGray);
 
             var moneyString = u.ShopType == ShopType.ParrotPerch ? Helper.Translation.Get("ub_parrot_money") : Helper.Translation.Get("ub_speech_money");
-            var description = u.getTranslatedShopDescription();
+            var description = u.getTranslatedOverviewDescription();
             description = description.Replace("{{item}}", NextId == "money" ? moneyString : NextItem.DisplayName);
 
             if(SplitPreviewDescription.Length == 0 && description != "")
@@ -542,8 +576,14 @@ namespace Unlockable_Bundles.Lib
             if (DescriptionScrollIndex != 0)
                 DescriptionUpArrow.draw(b);
 
-            if (SplitPreviewDescription.Length > DescriptionScrollIndex + DescriptionRowsPerPage)
+            if (hasNextDescriptionRow())
                 DescriptionDownArrow.draw(b);
+
+            if (RequirementPageIndex != 0)
+                RequirementUpArrow.draw(b);
+
+            if (hasNextRequirementPage())
+                RequirementDownArrow.draw(b);
         }
 
         private string addSpacesForTitleIcon()
@@ -580,27 +620,9 @@ namespace Unlockable_Bundles.Lib
             }
         }
 
-
-        public void drawDescription(SpriteBatch b, string description, int x, int y, int width)
-        {
-            if (SplitPreviewDescription.Length == 0 && description != "")
-                SplitPreviewDescription = Game1.parseText(description, Game1.dialogueFont, width - 4).Split(Environment.NewLine);
-
-            string descriptionString = "";
-            for (int i = DescriptionScrollIndex; i < DescriptionScrollIndex + DescriptionRowsPerPage; i++) {
-                if (SplitPreviewDescription.Length > i)
-                    descriptionString += SplitPreviewDescription[i] + Environment.NewLine;
-            }
-            Utility.drawTextWithShadow(b, descriptionString, Game1.dialogueFont, new Vector2(x, y), Game1.textColor);
-
-            if (DescriptionScrollIndex != 0)
-                DescriptionUpArrow.draw(b);
-
-            if (SplitPreviewDescription.Length > DescriptionScrollIndex + DescriptionRowsPerPage)
-                DescriptionDownArrow.draw(b);
-        }
-
         public bool isScrollbarDrawn() => Bundles.Count > ListElementsPerPage;
+        public bool hasNextDescriptionRow() => SplitPreviewDescription.Length > DescriptionScrollIndex + DescriptionRowsPerPage;
+        public bool hasNextRequirementPage() => CurrentBundle?.Unlockable._price.Pairs.Count() > ((RequirementPageIndex + 1) * RequirementsPerPage);
     }
 }
 

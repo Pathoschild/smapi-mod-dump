@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20391
+IDs: NeverToxic.YetAnotherFishingMod
+update keys: Nexus:20391, GitHub:Dunc4nNT/StardewMods

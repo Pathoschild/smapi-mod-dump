@@ -28,7 +28,7 @@ namespace CoreBoy.memory.cart.type
             this._cartridge = cartridge;
             this._ramBanks = ramBanks;
             this._ram = new int[0x2000 * Math.Max(this._ramBanks, 1)];
-            for (var i = 0; i < this._ram.Length; i++)
+            for (int i = 0; i < this._ram.Length; i++)
             {
                 this._ram[i] = 0xff;
             }
@@ -59,7 +59,7 @@ namespace CoreBoy.memory.cart.type
             }
             else if (address >= 0x4000 && address < 0x6000)
             {
-                var bank = value & 0x0f;
+                int bank = value & 0x0f;
                 if (bank < this._ramBanks)
                 {
                     this._selectedRamBank = bank;
@@ -67,7 +67,7 @@ namespace CoreBoy.memory.cart.type
             }
             else if (address >= 0xa000 && address < 0xc000 && this._ramWriteEnabled)
             {
-                var ramAddress = this.GetRamAddress(address);
+                int ramAddress = this.GetRamAddress(address);
                 if (ramAddress < this._ram.Length)
                 {
                     this._ram[ramAddress] = value;
@@ -89,7 +89,7 @@ namespace CoreBoy.memory.cart.type
 
             if (address >= 0xa000 && address < 0xc000)
             {
-                var ramAddress = this.GetRamAddress(address);
+                int ramAddress = this.GetRamAddress(address);
                 if (ramAddress < this._ram.Length)
                 {
                     return this._ram[ramAddress];
@@ -103,7 +103,7 @@ namespace CoreBoy.memory.cart.type
 
         private int GetRomByte(int bank, int address)
         {
-            var cartOffset = (bank * 0x4000) + address;
+            int cartOffset = (bank * 0x4000) + address;
             if (cartOffset < this._cartridge.Length)
             {
                 return this._cartridge[cartOffset];

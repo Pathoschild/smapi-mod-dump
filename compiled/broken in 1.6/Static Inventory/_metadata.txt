@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20093
+IDs: Dinotopea.StaticInventory
+update keys: Nexus:20093, GitHub:nrobinson12/StardewValleyMods

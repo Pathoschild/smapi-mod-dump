@@ -19,6 +19,7 @@ using StardewValley.Menus;
 using StardewValley.Network;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace StardewDruid.Character
@@ -26,12 +27,7 @@ namespace StardewDruid.Character
     public class Character : NPC
     {
 
-        //public List<Vector2> moveVectors;
-        //public Dictionary<string, int> timers;
-        //public List<string> priorities;
-
-        //public List<StardewValley.Monsters.Monster> targetOpponents;
-
+        public Texture2D characterTexture;
         public List<Vector2> targetVectors;
         public float gait;
         public int opponentThreshold;
@@ -74,6 +70,7 @@ namespace StardewDruid.Character
         public int idleInterval;
         public NetInt idleFrame = new NetInt(0);
 
+        public int collideTimer;
         public int moveTimer;
         public int moveLength;
         public int moveInterval;
@@ -105,7 +102,7 @@ namespace StardewDruid.Character
         }
 
         public Character(Vector2 position, string map, string Name)
-          : base(CharacterData.CharacterSprite(Name), position, map, 2, Name, new Dictionary<int, int[]>(), CharacterData.CharacterPortrait(Name), false, null)
+          : base(new AnimatedSprite(Path.Combine("Characters","Abigail")), position, map, 2, Name, new Dictionary<int, int[]>(), CharacterData.CharacterPortrait(Name), false, null)
         {
             
             willDestroyObjectsUnderfoot = false;
@@ -142,7 +139,9 @@ namespace StardewDruid.Character
 
         public virtual void LoadOut()
         {
-            
+
+            characterTexture = CharacterData.CharacterTexture(Name);
+
             barrages = new();
 
             roamVectors = new List<Vector2>();
@@ -153,7 +152,7 @@ namespace StardewDruid.Character
             
             opponentThreshold = 640;
             
-            gait = 1.2f;
+            gait = 2f;
 
             modeActive = mode.random;
 
@@ -226,37 +225,9 @@ namespace StardewDruid.Character
             if (base.IsEmoting && !Game1.eventUp)
             {
                 Vector2 localPosition2 = getLocalPosition(Game1.viewport);
-                localPosition2.Y -= 32 + Sprite.SpriteHeight * 4;
+                localPosition2.Y -= 160;
                 b.Draw(Game1.emoteSpriteSheet, localPosition2, new Microsoft.Xna.Framework.Rectangle(base.CurrentEmoteIndex * 16 % Game1.emoteSpriteSheet.Width, base.CurrentEmoteIndex * 16 / Game1.emoteSpriteSheet.Width * 16, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, getStandingY() / 10000f);
             }
-
-            Vector2 localPosition = getLocalPosition(Game1.viewport);
-
-
-            b.Draw(
-                Sprite.Texture,
-                localPosition + new Vector2(32f, 16f),
-                walkFrames[netDirection.Value][moveFrame.Value],
-                Color.White,
-                0f,
-                new Vector2(Sprite.SpriteWidth / 2, Sprite.SpriteHeight * 3f / 4f),
-                Math.Max(0.2f, scale) * 4f,
-                flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
-                drawOnTop ? 0.991f : ((float)getStandingY() / 10000f)
-                );
-
-            b.Draw(
-                Game1.shadowTexture,
-                localPosition + new Vector2(32f, 40f),
-                Game1.shadowTexture.Bounds,
-                Color.White * 0.65f,
-                0f,
-                new Vector2(Game1.shadowTexture.Bounds.Center.X, Game1.shadowTexture.Bounds.Center.Y),
-                4f,
-                SpriteEffects.None,
-                Math.Max(0.0f, (getStandingY() / 10000f) - 0.0001f)
-                );
-
 
         }
 
@@ -272,7 +243,8 @@ namespace StardewDruid.Character
         
         public override void reloadSprite()
         {
-            Sprite = CharacterData.CharacterSprite(Name);
+            base.reloadSprite();
+            //Sprite = CharacterData.CharacterSprite(Name);
             Portrait = CharacterData.CharacterPortrait(Name);
         }
 
@@ -548,7 +520,7 @@ namespace StardewDruid.Character
 
         }
 
-        public virtual void ApplyTexture()
+        /*public virtual void ApplyTexture()
         {
 
             Sprite.spriteTexture = CharacterData.CharacterTexture(Name);
@@ -559,17 +531,17 @@ namespace StardewDruid.Character
 
             Portrait = CharacterData.CharacterPortrait(Name);
 
-        }
+        }*/
 
         public virtual void normalUpdate(GameTime time, GameLocation location)
         {
 
-            if (Sprite.loadedTexture != Sprite.textureName.Value)
+            /*if (Sprite.loadedTexture != Sprite.textureName.Value)
             {
                 
                 ApplyTexture();
             
-            }
+            }*/
 
             if (!loadedOut)
             {
@@ -667,6 +639,8 @@ namespace StardewDruid.Character
             cooldownTimer--;
 
             hitTimer--;
+
+            collideTimer--;
 
         }
 
@@ -915,6 +889,14 @@ namespace StardewDruid.Character
                     if (monsterCharacter.Health > 0 && !monsterCharacter.IsInvisible)
                     {
 
+
+                        if (ModUtility.GroundCheck(currentLocation, monsterCharacter.getTileLocation()) != "ground")
+                        {
+
+                            continue;
+
+                        }
+
                         monsterDistance = Vector2.Distance(Position, monsterCharacter.Position);
 
                         if (monsterDistance < opponentThreshold)
@@ -955,8 +937,6 @@ namespace StardewDruid.Character
 
         public virtual bool MonsterAttack(StardewValley.Monsters.Monster monster)
         {
-
-            float num = Vector2.Distance(Position, monster.Position);
 
             behaviourActive = behaviour.dash;
 
@@ -1204,12 +1184,18 @@ namespace StardewDruid.Character
 
             Microsoft.Xna.Framework.Rectangle farmerBox = Game1.player.GetBoundingBox();
 
-            bool collision = false;
-
-            if (farmerBox.Intersects(boundingBox))
+            if (farmerBox.Intersects(boundingBox) && collideTimer <= 0)
             {
+                
+                NextTarget(Game1.player.Position);
+                
+                int newDirection = (netDirection.Value + new Random().Next(1, 4)) % 4;
 
-                collision = true;
+                DirectTarget(newDirection, 2);
+
+                collideTimer = 120;
+
+                return;
 
             }
 
@@ -1251,13 +1237,21 @@ namespace StardewDruid.Character
 
                 }
 
-                if (nonPlayableCharacter != this)
+                if (nonPlayableCharacter != this && collideTimer <= 0)
                 {
 
                     if (boundingBox2.Intersects(boundingBox))
                     {
 
-                        collision = true;
+                        NextTarget(Game1.player.Position);
+
+                        int newDirection = (netDirection.Value + new Random().Next(1,4)) % 4;
+
+                        DirectTarget(newDirection, 2);
+
+                        collideTimer = 120;
+
+                        return;
 
                     }
 
@@ -1277,36 +1271,32 @@ namespace StardewDruid.Character
 
                 hitTimer = 120;
 
-                return;
-
             }
-
-            if (collision && behaviourActive == behaviour.idle)
-            {
-
-                TargetRandom();
-
-                return;
-
-            }
-
+            
             //------------- Tile check
 
-            Vector2 nextSpace = Position + (factorVector * 64);
-
-            Vector2 thisTile = new((int)(Position.X / 64), (int)(Position.Y / 64));
-
-            Vector2 nextTile = new((int)(nextSpace.X / 64), (int)(nextSpace.Y / 64));
-
-            if (thisTile != nextTile)
+            if (behaviourActive != behaviour.dash)
             {
 
-                if (ModUtility.GroundCheck(currentLocation, nextTile, npc:true) != "ground")
+                Vector2 nextSpace = Position + (factorVector * 64);
+
+                Vector2 thisTile = new((int)(Position.X / 64), (int)(Position.Y / 64));
+
+                Vector2 nextTile = new((int)(nextSpace.X / 64), (int)(nextSpace.Y / 64));
+
+                if (thisTile != nextTile)
                 {
 
-                    TargetRandom();
+                    if (ModUtility.GroundCheck(currentLocation, nextTile, npc: true) != "ground")
+                    {
 
-                    return;
+                        int newDirection = (netDirection.Value + new Random().Next(1, 4)) % 4;
+
+                        DirectTarget(newDirection, 2);
+
+                        return;
+
+                    }
 
                 }
 

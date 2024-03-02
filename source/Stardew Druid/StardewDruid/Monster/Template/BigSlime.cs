@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
+using StardewDruid.Map;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Objects;
@@ -140,20 +141,7 @@ namespace StardewDruid.Monster.Template
                 return 0;
             }
 
-            List<string> ouchList = new()
-            {
-                "bloop",
-                "bloop bloop",
-                "jelly superiority!"
-            };
-
-            int ouchIndex = Game1.random.Next(15);
-
-            if (ouchIndex < ouchList.Count)
-            {
-                showTextAboveHead(ouchList[ouchIndex], duration: 3000);
-
-            }
+            DialogueData.DisplayText(this, 3);
 
             Slipperiness = 3;
 

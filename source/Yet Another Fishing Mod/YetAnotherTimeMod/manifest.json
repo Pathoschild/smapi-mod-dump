@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Dunc4nNT/StardewMods
+**
+*************************************************/
+
+{
+  "Name": "Yet Another Time Mod",
+  "Author": "NeverToxic",
+  "Version": "0.0.1-alpha",
+  "Description": "Manipulate game time.",
+  "UniqueID": "NeverToxic.YetAnotherTimeMod",
+  "EntryDll": "YetAnotherTimeMod.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": []
+}

@@ -9,9 +9,10 @@
 *************************************************/
 
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using ContentPatcher.Framework.Conditions;
+using ContentPatcher.Framework.Migrations;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 
 namespace ContentPatcher.Framework.Patches
@@ -38,6 +39,9 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>The content pack which requested the patch.</summary>
         IContentPack ContentPack { get; }
 
+        /// <summary>The aggregate migration which applies for this patch.</summary>
+        IRuntimeMigration Migrator { get; }
+
         /// <summary>The normalized asset key from which to load the local asset (if applicable).</summary>
         string? FromAsset { get; }
 
@@ -47,8 +51,15 @@ namespace ContentPatcher.Framework.Patches
         /// <summary>The normalized asset name to intercept.</summary>
         IAssetName? TargetAsset { get; }
 
+        /// <summary>If the <see cref="TargetAsset"/> was redirected by a runtime migration, the asset name before it was redirected.</summary>
+        public IAssetName? TargetAssetBeforeRedirection { get; }
+
         /// <summary>The raw asset name to intercept, including tokens.</summary>
         ITokenString? RawTargetAsset { get; }
+
+        /// <summary>The priority for this patch when multiple patches apply.</summary>
+        /// <remarks>This is an <see cref="AssetLoadPriority"/> or <see cref="AssetEditPriority"/> value, depending on the patch type.</remarks>
+        int Priority { get; }
 
         /// <summary>When the patch should be updated.</summary>
         UpdateRate UpdateRate { get; }

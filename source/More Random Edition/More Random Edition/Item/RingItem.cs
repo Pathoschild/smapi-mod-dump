@@ -10,10 +10,10 @@
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Represents a fish
-	/// </summary>
-	public class RingItem : Item
+    /// <summary>
+    /// Represents a fish
+    /// </summary>
+    public class RingItem : Item
 	{
 		public RingItem(int id) : base(id)
 		{
@@ -21,5 +21,5 @@ namespace Randomizer
 			IsRing = true;
 			CanStack = false;
 		}
-	}
+    }
 }

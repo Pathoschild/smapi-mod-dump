@@ -6,9 +6,10 @@ mods:
    Customize Wedding Attire
 
 latest commit:
-   commit 7be593e540f6531b3f2f57c310fe15a7d4319663
+   commit 7bd2e1da943b2c8901aa058e41d52a253bc09180
    Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
-   Date:   Tue May 10 19:37:33 2022 -0400
+   Date:   Mon Feb 26 18:16:25 2024 -0500
    
-       license
+       Merge branch 'main' of github.com:elizabethcd/CustomizeWeddingAttire
+       into main
    

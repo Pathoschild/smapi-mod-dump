@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using static StardewValley.Menus.CharacterCustomization;
 
 namespace StardewDruid.Character
 {
@@ -41,6 +42,8 @@ namespace StardewDruid.Character
         public override void LoadOut()
         {
 
+            characterTexture = CharacterData.CharacterTexture(Name);
+
             barrages = new();
 
             roamVectors = new List<Vector2>();
@@ -51,7 +54,7 @@ namespace StardewDruid.Character
 
             opponentThreshold = 640;
 
-            gait = 1.2f;
+            gait = 2f;
 
             modeActive = mode.random;
 
@@ -110,10 +113,17 @@ namespace StardewDruid.Character
                 return;
             }
 
+            if (characterTexture == null)
+            {
+
+                return;
+
+            }
+
             if (base.IsEmoting && !Game1.eventUp)
             {
                 Vector2 localPosition2 = getLocalPosition(Game1.viewport);
-                localPosition2.Y -= 32 + Sprite.SpriteHeight * 4;
+                localPosition2.Y -= 160;
                 b.Draw(Game1.emoteSpriteSheet, localPosition2, new Microsoft.Xna.Framework.Rectangle(base.CurrentEmoteIndex * 16 % Game1.emoteSpriteSheet.Width, base.CurrentEmoteIndex * 16 / Game1.emoteSpriteSheet.Width * 16, 16, 16), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, getStandingY() / 10000f);
             }
 
@@ -145,7 +155,7 @@ namespace StardewDruid.Character
                 }
 
                 b.Draw(
-                    Sprite.Texture,
+                    characterTexture,
                     localPosition - new Vector2(32, 64f),
                     sourceRectangle,
                     Color.White,
@@ -161,7 +171,7 @@ namespace StardewDruid.Character
             {
 
                 b.Draw(
-                    Sprite.Texture,
+                    characterTexture,
                     localPosition - new Vector2(32, 64f),
                     dashFrames[netDirection.Value][moveFrame.Value],
                     Color.White,
@@ -177,7 +187,7 @@ namespace StardewDruid.Character
             {
 
                 b.Draw(
-                    Sprite.Texture,
+                    characterTexture,
                     localPosition - new Vector2(32, 64f),
                     new Rectangle?(specialFrames[netDirection.Value]), 
                     Color.White, 
@@ -192,7 +202,7 @@ namespace StardewDruid.Character
             else
             {
                 b.Draw(
-                    Sprite.Texture,
+                    characterTexture,
                     localPosition - new Vector2(32, 64f),
                     walkFrames[netDirection.Value][moveFrame.Value],
                     Color.White,
@@ -338,14 +348,36 @@ namespace StardewDruid.Character
                 return;
             
             }
+
+            if (!Mod.instance.eventRegister.ContainsKey("polymorph"))
+            {
+
+                if (!MonsterData.CustomMonsters().Contains(monster.GetType()))
+                {
+                    
+                    Rite rite = Mod.instance.NewRite(false);
+                    
+                    Polymorph morph = new(getTileLocation(), rite, monster);
+                    
+                    monster.Halt();
+                    
+                    monster.stunTime = 4000;
+
+                    morph.EventTrigger();
+
+                    return;
                 
+                }
+
+            }
+
             ApplyDazeEffect(monster);
 
         }
 
         public void ApplyDazeEffect(StardewValley.Monsters.Monster monster)
         {
-            if (Mod.instance.eventRegister.ContainsKey("Gravity"))
+            if (Mod.instance.eventRegister.ContainsKey("gravity"))
                 return;
             List<int> source = new List<int>();
             for (int index = 0; index < 5; ++index)
@@ -359,7 +391,7 @@ namespace StardewDruid.Character
             if (source.Count <= 0)
                 return;
             Rite rite = Mod.instance.NewRite(false);
-            Daze daze = new Daze(getTileLocation(), rite, monster, source.First<int>(), 1,Mod.instance.DamageLevel());
+            Daze daze = new(getTileLocation(), rite, monster, source.First<int>(),Mod.instance.DamageLevel());
             if (!MonsterData.CustomMonsters().Contains(monster.GetType()))
             {
                 monster.Halt();

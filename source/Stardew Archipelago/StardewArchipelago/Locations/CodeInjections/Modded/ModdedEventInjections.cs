@@ -14,49 +14,39 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Constants;
 using StardewValley;
-using StardewArchipelago.Locations.CodeInjections.Modded.SVE;
 
 namespace StardewArchipelago.Locations.CodeInjections.Modded
 {
     public static class ModdedEventInjections
     {
-        private static readonly Dictionary<string, string[]> Base_Static_Events = new()
-        {
-
-        };
-
-        private static readonly Dictionary<string, string[]> Total_Static_Events = new()
-        {
-
-        };
-
-        private static readonly Dictionary<string, string[]> Base_OnWarped_Events = new()
-        {
-
-        };
-
-        public static Dictionary<string, string[]> Total_OnWarped_Events = new()
-        {
-
-        };
-
+        private const int MUSHROOM_KEBAB_EVENT = 181091234;
+        private const int CRAYFISH_SOUP_EVENT = 181091246;
+        private const int PEMMICAN_EVENT = 181091247;
+        private const int VOID_MINT_TEA_ALECTO_EVENT = 181091261;
+        private const int VOID_MINT_TEA_WIZARD_EVENT = 181091262;
+        private const int SPECIAL_PUMPKIN_SOUP_EVENT = 44120020;
+        private const int GINGER_TINCTURE_ALECTO_EVENT = 181091237;
+        private const int GINGER_TINCTURE_WIZARD_EVENT = 1810912313;
         private static readonly string RECIPE_SUFFIX = " Recipe";
 
         private static readonly Dictionary<int, string> eventCooking = new()
         {
-            { 181091234, "Mushroom Kebab" },
-            { 181091246, "Crayfish Soup" },
-            { 181091247, "Pemmican" },
-            { 181091261, "Void Mint Tea" }, //Alecto
-            { 181091262, "Void Mint Tea" }, //Wizard
+            { MUSHROOM_KEBAB_EVENT, "Mushroom Kebab" },
+            { CRAYFISH_SOUP_EVENT, "Crayfish Soup" },
+            { PEMMICAN_EVENT, "Pemmican" },
+            { VOID_MINT_TEA_ALECTO_EVENT, "Void Mint Tea" },
+            { VOID_MINT_TEA_WIZARD_EVENT, "Void Mint Tea" },
+            { SPECIAL_PUMPKIN_SOUP_EVENT, "Special Pumpkin Soup" },
         };
-
         private static readonly Dictionary<int, string> eventCrafting = new()
         {
-            { 181091237, "Ginger Tincture" }, //Alecto
-            { 1810912313, "Ginger Tincture" }, //Wizard
+            { GINGER_TINCTURE_ALECTO_EVENT, "Ginger Tincture" },
+            { GINGER_TINCTURE_WIZARD_EVENT, "Ginger Tincture" },
+        };
+        private static readonly List<int> questEventsWithRecipes = new()
+        {
+            CRAYFISH_SOUP_EVENT, SPECIAL_PUMPKIN_SOUP_EVENT, GINGER_TINCTURE_ALECTO_EVENT, GINGER_TINCTURE_WIZARD_EVENT
         };
 
         private static IMonitor _monitor;
@@ -77,12 +67,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         {
             try
             {
-                if (!_archipelago.SlotData.Chefsanity.HasFlag(Chefsanity.Friendship) || !eventCooking.Keys.Contains(__instance.id))
+                var isEventChefsanityLocation = _archipelago.SlotData.Chefsanity.HasFlag(Chefsanity.Friendship) && eventCooking.Keys.Contains(__instance.id);
+                var isRecipeFromQuest = _archipelago.SlotData.QuestLocations.StoryQuestsEnabled && questEventsWithRecipes.Contains(__instance.id);
+                if (!isRecipeFromQuest && !isEventChefsanityLocation)
                 {
                     return true;
                 }
-
-                _locationChecker.AddCheckedLocation($"{eventCooking[__instance.id]}{RECIPE_SUFFIX}");
+                if (!isRecipeFromQuest)
+                {
+                    _locationChecker.AddCheckedLocation($"{eventCooking[__instance.id]}{RECIPE_SUFFIX}");
+                }
                 __instance.CurrentCommand++;
                 return false; // don't run original logic
 
@@ -98,12 +92,18 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
         {
             try
             {
-                if (!_archipelago.SlotData.Craftsanity.HasFlag(Craftsanity.All) || !eventCrafting.Keys.Contains(__instance.id))
+                var isEventCraftsanityLocation = _archipelago.SlotData.Craftsanity.HasFlag(Craftsanity.All) && eventCrafting.Keys.Contains(__instance.id);
+                var isRecipeFromQuest = _archipelago.SlotData.QuestLocations.StoryQuestsEnabled && questEventsWithRecipes.Contains(__instance.id);
+
+                if (!isRecipeFromQuest && !isEventCraftsanityLocation)
                 {
                     return true;
                 }
 
-                _locationChecker.AddCheckedLocation($"{eventCrafting[__instance.id]}{RECIPE_SUFFIX}");
+                if (!isRecipeFromQuest)
+                {
+                    _locationChecker.AddCheckedLocation($"{eventCrafting[__instance.id]}{RECIPE_SUFFIX}");
+                }
                 __instance.CurrentCommand++;
                 return false; // don't run original logic
 
@@ -120,7 +120,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
             try
             {
                 var cookingEvents = eventCooking.Keys;
-                var craftingEvents = eventCooking.Keys;
+                var craftingEvents = eventCrafting.Keys;
                 if (!craftingEvents.Contains(__instance.id) && !cookingEvents.Contains(__instance.id))
                 {
                     return true; // run original logic

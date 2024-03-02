@@ -47,8 +47,8 @@ namespace ForecasterText.Objects {
         private const int ROWS = 5;
         private const int SHIFT = ConfigEmojiMenu.ROWS * ConfigEmojiMenu.PER_ROW;
         
-        internal static Texture2D EmojiTextures;
-        internal static Texture2D ChatBoxTexture;
+        internal static Texture2D? EmojiTextures;
+        internal static Texture2D? ChatBoxTexture;
         
         internal readonly Mod Mod;
         public readonly IConfT9N T9N;
@@ -59,8 +59,8 @@ namespace ForecasterText.Objects {
         
         private readonly Blink Blinking = new();
         
-        private readonly Func<uint> Getter;
-        private readonly Action<uint> Setter;
+        private readonly Func<uint>? Getter;
+        private readonly Action<uint>? Setter;
         
         public override uint Value {
             get => this.Getter?.Invoke() ?? 0u;
@@ -76,8 +76,8 @@ namespace ForecasterText.Objects {
         public ConfigEmojiMenu(
             Mod mod,
             IConfT9N t9N,
-            Func<uint> get,
-            Action<uint> set
+            Func<uint>? get,
+            Action<uint>? set
         ) {
             ConfigEmojiMenu.EmojiTextures ??= Game1.content.Load<Texture2D>(@"LooseSprites\emojis");
             ConfigEmojiMenu.ChatBoxTexture ??= Game1.content.Load<Texture2D>(@"LooseSprites\chatBox");
@@ -124,7 +124,7 @@ namespace ForecasterText.Objects {
                     emoji.scale += Blink.SHIFT;
                 
                 // Draw the emoji
-                b.Draw(ConfigEmojiMenu.EmojiTextures, new Vector2((float) (emoji.bounds.X + vector.X + 16), (float) (emoji.bounds.Y + vector.Y + 16)), new Rectangle?(new Rectangle((this.PageIndex + index) * 9 % ConfigEmojiMenu.EmojiTextures.Width, (this.PageIndex + index) * 9 / ConfigEmojiMenu.EmojiTextures.Width * 9, 9, 9)), selected ? Color.White : (Color.DimGray * 0.8f), 0.0f, new Vector2(4.5f, 4.5f), emoji.scale * 4f, SpriteEffects.None, 0.9f);
+                b.Draw(ConfigEmojiMenu.EmojiTextures, new Vector2((float) (emoji.bounds.X + vector.X + 16), (float) (emoji.bounds.Y + vector.Y + 16)), new Rectangle((this.PageIndex + index) * 9 % ConfigEmojiMenu.EmojiTextures!.Width, (this.PageIndex + index) * 9 / ConfigEmojiMenu.EmojiTextures.Width * 9, 9, 9), selected ? Color.White : (Color.DimGray * 0.8f), 0.0f, new Vector2(4.5f, 4.5f), emoji.scale * 4f, SpriteEffects.None, 0.9f);
             }
             
             if (this.UpArrow.scale < 1.0)
@@ -133,8 +133,8 @@ namespace ForecasterText.Objects {
                 this.DownArrow.scale += 0.05f;
             
             // Draw the up/down buttons
-            b.Draw(ConfigEmojiMenu.ChatBoxTexture, new Vector2((float) (this.UpArrow.bounds.X + vector.X + 16), (float) (this.UpArrow.bounds.Y + vector.Y + 10)), new Rectangle?(new Rectangle(156, 300, 32, 20)), Color.White * (this.PageIndex == 0 ? 0.25f : 1f), 0.0f, new Vector2(16f, 10f), this.UpArrow.scale, SpriteEffects.None, 0.9f);
-            b.Draw(ConfigEmojiMenu.ChatBoxTexture, new Vector2((float) (this.DownArrow.bounds.X + vector.X + 16), (float) (this.DownArrow.bounds.Y + vector.Y + 10)), new Rectangle?(new Rectangle(192, 300, 32, 20)), Color.White * (this.PageIndex >= this.TotalEmojis - ConfigEmojiMenu.SHIFT ? 0.25f : 1f), 0.0f, new Vector2(16f, 10f), this.DownArrow.scale, SpriteEffects.None, 0.9f);
+            b.Draw(ConfigEmojiMenu.ChatBoxTexture, new Vector2((float) (this.UpArrow.bounds.X + vector.X + 16), (float) (this.UpArrow.bounds.Y + vector.Y + 10)), new Rectangle(156, 300, 32, 20), Color.White * (this.PageIndex == 0 ? 0.25f : 1f), 0.0f, new Vector2(16f, 10f), this.UpArrow.scale, SpriteEffects.None, 0.9f);
+            b.Draw(ConfigEmojiMenu.ChatBoxTexture, new Vector2((float) (this.DownArrow.bounds.X + vector.X + 16), (float) (this.DownArrow.bounds.Y + vector.Y + 10)), new Rectangle(192, 300, 32, 20), Color.White * (this.PageIndex >= this.TotalEmojis - ConfigEmojiMenu.SHIFT ? 0.25f : 1f), 0.0f, new Vector2(16f, 10f), this.DownArrow.scale, SpriteEffects.None, 0.9f);
         }
         
         protected override void OnClick(Vector2I bounds, Vector2I mouse) {

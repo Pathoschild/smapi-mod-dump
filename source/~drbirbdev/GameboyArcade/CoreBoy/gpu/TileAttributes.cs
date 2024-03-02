@@ -20,7 +20,7 @@ namespace CoreBoy.gpu
         {
             Attributes = new TileAttributes[256];
 
-            for (var i = 0; i < 256; i++)
+            for (int i = 0; i < 256; i++)
             {
                 Attributes[i] = new TileAttributes(i);
             }

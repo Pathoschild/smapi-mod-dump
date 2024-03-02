@@ -40,8 +40,9 @@ namespace SpeedrunPractice.Framework
                     position.X += Game1.viewport.X;
                     position.Y += Game1.viewport.Y;
                 }
+                Vector2 standingPosition = Game1.player.getStandingPosition();
                 if (Utility.withinRadiusOfPlayer((int)position.X, (int)position.Y, 1, Game1.player) &&
-                    (Math.Abs(position.X - (float)Game1.player.getStandingX()) >= 32f || Math.Abs(position.Y - (float)Game1.player.getStandingY()) >= 32f))
+                    (Math.Abs(position.X - standingPosition.X) >= 32f || Math.Abs(position.Y - standingPosition.Y) >= 32f))
                 {
                     return Game1.player.getGeneralDirectionTowards(position, 0, false);
                 }

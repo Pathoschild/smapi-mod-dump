@@ -1,10 +1,10 @@
 ﻿{
   "Name": "ClayMap",
   "Author": "Underscore",
-  "Version": "1.1.0",
+  "Version": "2.0.0-sdvalpha.20240222",
   "Description": "Draws the clay tiles over the game window",
   "UniqueID": "underscore.clay_map",
   "EntryDll": "ClayMap.dll",
-  "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:11903" ]
+  "MinimumApiVersion": "3.18.6",
+  "UpdateKeys": [ "GitHub:Underscore76/ClayMap", "Nexus:11903"]
 }

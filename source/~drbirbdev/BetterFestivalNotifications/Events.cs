@@ -55,7 +55,7 @@ internal class Events
         }
         else
         {
-            if (!Utility.TryGetPassiveFestivalDataForDay(Game1.dayOfMonth, Game1.season, out string id, out PassiveFestivalData data))
+            if (!Utility.TryGetPassiveFestivalDataForDay(Game1.dayOfMonth, Game1.season, null, out string id, out PassiveFestivalData data))
             {
                 Log.Warn("Could not load passive festival name, start, and end time");
                 return;

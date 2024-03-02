@@ -8,12 +8,17 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
+using StardewValley;
+using StardewValley.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using SVObject = StardewValley.Object;
 
 namespace Randomizer
 {
-	public class ItemList
+    public class ItemList
 	{
 		/// <summary>
 		/// Gets all the resources
@@ -29,16 +34,16 @@ namespace Randomizer
 		/// </summary>
 		/// <param name="id">The item's id</param>
 		/// <returns />
-		public static string GetItemName(int id)
+		public static string GetItemName(ObjectIndexes id)
 		{
-			return Items[id].Name;
+			return GetItem(id).Name;
 		}
 
-		/// <summary>
-		/// Gets all the foragables
-		/// </summary>
-		/// <returns />
-		public static List<Item> GetForagables()
+        /// <summary>
+        /// Gets all the foragables
+        /// </summary>
+        /// <returns />
+        public static List<Item> GetForagables()
 		{
 			return Items.Values.Where(x => x.IsForagable).ToList();
 		}
@@ -50,7 +55,7 @@ namespace Randomizer
 		/// <returns />
 		public static List<Item> GetForagables(Seasons season)
 		{
-			List<Item> foragablesInSeason = new List<Item>();
+			List<Item> foragablesInSeason = new();
 			switch (season)
 			{
 				case Seasons.Spring:
@@ -107,6 +112,35 @@ namespace Randomizer
 		}
 
 		/// <summary>
+		/// Gets all items which are giftable to NPCs
+		/// Exclude items marked as impossible - mostly for bundle reasons
+		/// </summary>
+		/// <returns>List&lt;Item&gt; containing all giftable items</returns>
+		public static List<Item> GetGiftables()
+		{
+			return Items.Values.Where(x => 
+				x.DifficultyToObtain < ObtainingDifficulties.Impossible &&
+				(
+					x.IsAnimalProduct || 
+					x.IsArtifact || 
+					x.IsCooked || 
+					x.IsCrabPotItem || 
+					x.IsCrop || 
+					x.IsFish || 
+					x.IsFlower ||
+					x.IsForagable || 
+					x.IsFruit ||
+					x.IsGeodeMineral ||
+					x.IsMayonaisse || 
+					x.IsMonsterItem || 
+					x.IsResource || 
+					x.IsSeed ||
+					x.IsSmelted ||
+					x.IsTrash)
+				).ToList();
+		}
+
+		/// <summary>
 		/// Gets all the seeds
 		/// </summary>
 		/// <returns />
@@ -132,7 +166,7 @@ namespace Randomizer
 				return null;
 			}
 
-			return (SeedItem)Items[seedId];
+			return (SeedItem)Items[(ObjectIndexes)seedId];
 		}
 
 		/// <summary>
@@ -169,11 +203,11 @@ namespace Randomizer
 			return Items.Values.Where(x => x.IsFlower).ToList();
 		}
 
-		/// <summary>
-		/// Gets all the fruit
-		/// </summary>
-		/// <returns />
-		public static List<Item> GetFruit()
+        /// <summary>
+        /// Gets all the fruit
+        /// </summary>
+        /// <returns />
+        public static List<Item> GetFruit()
 		{
 			return Items.Values.Where(x => x.IsFruit).ToList();
 		}
@@ -200,7 +234,7 @@ namespace Randomizer
 		/// Gets all the cooked items
 		/// </summary>
 		/// <returns />
-		public static List<Item> GetCookeditems()
+		public static List<Item> GetCookedItems()
 		{
 			return Items.Values.Where(x => x.IsCooked).ToList();
 		}
@@ -221,6 +255,33 @@ namespace Randomizer
 		public static List<Item> GetAnimalProducts()
 		{
 			return Items.Values.Where(x => x.IsAnimalProduct).ToList();
+		}
+
+		/// <summary>
+		/// Splits <paramref name="itemString"/> by <paramref name="separator"/> and returns a List&lt;Item&gt;.
+		/// </summary>
+		/// <param name="itemString">String of item IDs separated by a single character.</param>
+		/// <param name="separator">The character to split <c>itemString</c> by - defaults to space</param>
+		/// <returns />
+		public static List<Item> GetItemListFromString(string itemString, char separator = ' ')
+		{
+			List<Item> itemList = new();
+
+			string[] items = itemString.Trim().Split(separator);
+			foreach (string item in items)
+			{
+				int itemId = int.Parse(item);
+				// Negative values represent Item Categories, not Items - ignore
+				if (itemId > 0)
+				{
+					// It's okay if the item doesn't exist, just skip it
+					if (Items.TryGetValue((ObjectIndexes)itemId, out var retrievedItem)) {
+						itemList.Add(retrievedItem);
+					} 
+				}
+			}
+
+			return itemList;
 		}
 
 		/// <summary>
@@ -251,17 +312,49 @@ namespace Randomizer
 				);
 		}
 
-		/// <summary>
-		/// Gets a random resource item
-		/// </summary>
-		/// <param name="idsToExclude">Any ids to exclude from the results</param>
-		/// <returns>The resource item</returns>
-		public static Item GetRandomResourceItem(int[] idsToExclude = null)
+        /// <param name="difficulty">See ObtainingDifficulties</param>
+        /// <param name="idsToExclude">List of IDs to exclude</param>
+        /// <returns>The list of items, not including any in idsToExclude</returns>
+        public static List<Item> GetItemsAtDifficulty(ObtainingDifficulties difficulty, List<int> idsToExclude = null)
+        {
+            return Items.Values.Where(
+                    x => x.DifficultyToObtain == difficulty &&
+                    (idsToExclude == null || !idsToExclude.Contains(x.Id))
+                ).ToList();
+        }
+
+        /// <summary>
+        /// Gets all items in given craftable category
+        /// </summary>
+        /// <param name="category">See Enums/CraftableCategories</param>
+        /// <param name="idsToExclude">List of IDs to exclude from results</param>
+        /// <returns>The list of items in the given category</returns>
+        public static List<Item> GetCraftableItems(CraftableCategories category, List<int> idsToExclude = null)
+        {
+			List<int> excludedIds = idsToExclude ?? new List<int>();
+            return Items.Values.Where(
+                    x => x.IsCraftable && (x as CraftableItem).Category == category &&
+						!excludedIds.Contains(x.Id) &&
+						x.Id > 0
+                ).ToList();
+        }
+
+        /// <summary>
+        /// Gets a random resource item
+        /// </summary>
+        /// <param name="idsToExclude">Any ids to exclude from the results</param>
+		/// <param name="rng">The Random object to use - defaults to the global one</param>
+        /// <returns>The resource item</returns>
+        public static Item GetRandomResourceItem(int[] idsToExclude = null, Random rng = null)
 		{
-			return Globals.RNGGetRandomValueFromList(
-				Items.Values.Where(x =>
-					x.IsResource &&
-					(idsToExclude == null || !idsToExclude.Contains(x.Id))).ToList()
+            var rngToUse = rng ?? Globals.RNG;
+
+            return Globals.RNGGetRandomValueFromList(
+				Items.Values
+					.Where(x => x.IsResource &&
+						(idsToExclude == null || !idsToExclude.Contains(x.Id)))
+					.ToList(),
+                rngToUse
 			);
 		}
 
@@ -273,7 +366,7 @@ namespace Randomizer
 		/// <returns />
 		public static string GetCraftingString(ObjectIndexes objectIndex)
 		{
-			Item item = Items[(int)objectIndex];
+			Item item = GetItem(objectIndex);
 			if (item.IsCraftable)
 			{
 				return ((CraftableItem)item).GetCraftingString();
@@ -303,13 +396,13 @@ namespace Randomizer
 					x.Id != itemBeingCrafted.Id &&
 
 					// Don't allow items to require the items that they're used to obtain
-					(itemBeingCrafted.Id != (int)ObjectIndexes.Furnace || !x.IsSmelted) &&
-					(itemBeingCrafted.Id != (int)ObjectIndexes.MayonnaiseMachine || !x.IsMayonaisse) &&
+					(itemBeingCrafted.Id != (int)BigCraftableIndexes.Furnace || !x.IsSmelted) &&
+					(itemBeingCrafted.Id != (int)BigCraftableIndexes.MayonnaiseMachine || !x.IsMayonaisse) &&
 					(itemBeingCrafted.Id != (int)ObjectIndexes.CrabPot || !x.IsCrabPotItem) &&
-					(itemBeingCrafted.Id != (int)ObjectIndexes.CheesePress || (x.Id != (int)ObjectIndexes.Cheese) && x.Id != (int)ObjectIndexes.GoatCheese) &&
-					(itemBeingCrafted.Id != (int)ObjectIndexes.BeeHouse || !x.RequiresBeehouse) &&
-					(itemBeingCrafted.Id != (int)ObjectIndexes.Keg || !x.RequiresKeg) &&
-					((itemBeingCrafted.Id != (int)ObjectIndexes.LightningRod) || (x.Id != (int)ObjectIndexes.Battery)) &&
+					(itemBeingCrafted.Id != (int)BigCraftableIndexes.CheesePress || (x.Id != (int)ObjectIndexes.Cheese) && x.Id != (int)ObjectIndexes.GoatCheese) &&
+					(itemBeingCrafted.Id != (int)BigCraftableIndexes.BeeHouse || !x.RequiresBeehouse) &&
+					(itemBeingCrafted.Id != (int)BigCraftableIndexes.Keg || !x.RequiresKeg) &&
+					((itemBeingCrafted.Id != (int)BigCraftableIndexes.LightningRod) || (x.Id != (int)ObjectIndexes.Battery)) &&
 
 					(possibleDifficulties == null || possibleDifficulties.Contains(x.DifficultyToObtain)) &&
 					(idsToExclude == null || !idsToExclude.Contains(x.Id)) &&
@@ -319,821 +412,833 @@ namespace Randomizer
 			return Globals.RNGGetRandomValueFromList(items);
 		}
 
-
-		public static Dictionary<int, Item> Items;
-		static ItemList()
+		/// <summary>
+		/// Gets a list of random furniture items to sell
+		/// </summary>
+		/// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+		/// <param name="numberToGet">The number of furniture objects to get</param>
+		/// <returns>A list of furniture to sell</returns>
+		public static List<ISalable> GetRandomFurnitureToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
 		{
-			Initialize();
+			return GetRandomFurniture(numberToGet, itemsToExclude, rng)
+				.Cast<ISalable>()
+				.ToList();
+        }
+
+        /// <summary>
+        /// Gets a list of random furniture items
+        /// </summary>
+        /// <param name="numberToGet">The number of furniture objects to get</param>
+		/// <param name="itemsToExclude">Item ids to not include</param>
+        /// <param name="rng">The RNG to use</param>
+        /// <returns>A list of furniture to sell</returns>
+        public static List<Furniture> GetRandomFurniture(int numberToGet, List<int> itemsToExclude = null, Random rng = null)
+        {
+            var rngToUse = rng ?? Globals.RNG;
+
+            var allFurnitureIds = Enum.GetValues(typeof(FurnitureIndexes))
+                .Cast<int>()
+                .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
+                .ToList();
+
+            return Globals.RNGGetRandomValuesFromList(allFurnitureIds, numberToGet, rngToUse)
+                .Select(furnitureId => Furniture.GetFurnitureInstance(furnitureId))
+                .ToList();
+        }
+
+        /// <summary>
+        /// Gets a list of random clothing items to sell
+        /// </summary>
+        /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+        /// <param name="numberToGet">The number of clothing objects to get</param>
+		/// <param name="itemsToExclude">Item ids to not include</param>
+        /// <returns>A list of clothing objects to sell</returns>
+        public static List<ISalable> GetRandomClothingToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
+        {
+            var allClothingIds = Enum.GetValues(typeof(ClothingIndexes))
+                .Cast<int>()
+				.Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
+                .ToList();
+
+            return Globals.RNGGetRandomValuesFromList(allClothingIds, numberToGet, rng)
+                .Select(clothingId => new Clothing(clothingId))
+                .Cast<ISalable>()
+                .ToList();
+        }
+
+        /// <summary>
+        /// Gets a list of random hats to sell
+        /// </summary>
+        /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+        /// <param name="numberToGet">The number of hats to get</param>
+		/// <param name="itemsToExclude">Item ids to not include</param>
+        /// <returns>A list of furniture to sell</returns>
+        public static List<ISalable> GetRandomHatsToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
+        {
+            var allHatIds = Enum.GetValues(typeof(HatIndexes))
+                .Cast<int>()
+                .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
+                .ToList();
+
+            return Globals.RNGGetRandomValuesFromList(allHatIds, numberToGet, rng)
+                .Select(clothingId => new Hat(clothingId))
+                .Cast<ISalable>()
+                .ToList();
+        }
+
+        /// <summary>
+        /// Gets a list of random big craftables to sell
+        /// </summary>
+        /// <param name="rng">The RNG to use - not optional since this is only used with shops</param>
+        /// <param name="numberToGet">The number of big craftables to get</param>
+		/// <param name="itemsToExclude">Item ids to not include</param>
+        /// <returns>A list of big craftables to sell</returns>
+        public static List<ISalable> GetRandomBigCraftablesToSell(Random rng, int numberToGet, List<int> itemsToExclude = null)
+        {
+            return GetRandomBigCraftables(numberToGet, itemsToExclude, rng)
+				.Cast<ISalable>()
+				.ToList();
+        }
+
+        /// <summary>
+        /// Gets a list of random big craftables
+        /// </summary>
+        /// <param name="numberToGet">The number of big craftables to get</param>
+		/// <param name="itemsToExclude">Item ids to not include</param>
+        /// <param name="rng">The RNG to use</param>
+        /// <returns>A list of big craftables to sell</returns>
+        public static List<SVObject> GetRandomBigCraftables(int numberToGet, List<int> itemsToExclude = null, Random rng = null)
+        {
+            var rngToUse = rng ?? Globals.RNG;
+
+            var allBigCraftableIds = BigCraftableItems.Keys
+                .Cast<int>()
+                .Where(id => itemsToExclude == null || !itemsToExclude.Contains(id))
+                .ToList();
+
+            return Globals.RNGGetRandomValuesFromList(allBigCraftableIds, numberToGet, rng)
+                .Select(bigCraftableId => new SVObject(Vector2.Zero, bigCraftableId))
+                .ToList();
+        }
+
+        /// <summary>
+        /// Adds a random totem type, always costing 500 Qi Coins
+        /// </summary>
+        /// <param name="menu"></param>
+        /// <param name="shopRNG"></param>
+        public static Item GetRandomTotem(Random rng = null)
+        {
+            var rngToUse = rng ?? Globals.RNG;
+
+            var totemList = new List<ObjectIndexes>()
+            {
+                ObjectIndexes.WarpTotemFarm,
+                ObjectIndexes.WarpTotemBeach,
+                ObjectIndexes.WarpTotemMountains,
+                ObjectIndexes.WarpTotemDesert,
+                ObjectIndexes.RainTotem
+            };
+            var totemId = Globals.RNGGetRandomValueFromList(totemList, rngToUse);
+			return Items[totemId];
+        }
+
+		public static Dictionary<int, string> OriginalItemList { get; private set; }
+        public static Dictionary<ObjectIndexes, Item> Items { get; private set; }
+        public static Dictionary<BigCraftableIndexes, Item> BigCraftableItems { get; private set; }
+
+		public static Item GetItem(ObjectIndexes index)
+		{
+			return Items[index];
 		}
 
-		public static void Initialize()
+        public static Item GetBigCraftableItem(BigCraftableIndexes index)
+        {
+            return BigCraftableItems[index];
+        }
+
+        public static void Initialize()
 		{
-			Items = new Dictionary<int, Item>
+			OriginalItemList = Globals.ModRef.Helper.GameContent
+				.Load<Dictionary<int, string>>("Data/ObjectInformation");
+            Items = new Dictionary<ObjectIndexes, Item>
 			{ 
 				// Craftable items - Impossible by default
-				{ (int)ObjectIndexes.WoodFence, new CraftableItem((int)ObjectIndexes.WoodFence, "/Field/322/false/l 0", CraftableCategories.EasyAndNeedMany) },
-				{ (int)ObjectIndexes.StoneFence, new CraftableItem((int)ObjectIndexes.StoneFence, "/Field/323/false/", CraftableCategories.EasyAndNeedMany, "Farming", 2) },
-				{ (int)ObjectIndexes.IronFence, new CraftableItem((int)ObjectIndexes.IronFence, "/Field/324 10/false/", CraftableCategories.ModerateAndNeedMany, "Farming", 4) },
-				{ (int)ObjectIndexes.HardwoodFence, new CraftableItem((int)ObjectIndexes.HardwoodFence, "/Field/298/false/", CraftableCategories.ModerateAndNeedMany, "Farming", 6) },
-				{ (int)ObjectIndexes.Gate, new CraftableItem((int)ObjectIndexes.Gate, "/Home/325/false/l 0", CraftableCategories.Easy) },
-				{ (int)ObjectIndexes.Chest, new CraftableItem((int)ObjectIndexes.Chest, "/Home/130/true/null", CraftableCategories.Easy) },
-				{ (int)ObjectIndexes.Torch, new CraftableItem((int)ObjectIndexes.Torch, "/Field/93/false/l 0", CraftableCategories.Easy) { DifficultyToObtain = ObtainingDifficulties.SmallTimeRequirements } }, // You can find it in the mines
-				{ (int)ObjectIndexes.Scarecrow, new CraftableItem((int)ObjectIndexes.Scarecrow, "/Home/8/true/", CraftableCategories.Moderate, "Farming", 1) },
-				{ (int)ObjectIndexes.BeeHouse, new CraftableItem((int)ObjectIndexes.BeeHouse, "/Home/10/true/", CraftableCategories.Moderate, "Farming", 3) },
-				{ (int)ObjectIndexes.Keg, new CraftableItem((int)ObjectIndexes.Keg, "/Home/12/true/", CraftableCategories.Moderate, "Farming", 8) },
-				{ (int)ObjectIndexes.Cask, new CraftableItem((int)ObjectIndexes.Cask, "/Home/163/true/null", CraftableCategories.Moderate) },
-				{ (int)ObjectIndexes.Furnace, new CraftableItem((int)ObjectIndexes.Furnace, "/Home/13/true/l 2", CraftableCategories.Moderate) },
-				{ (int)ObjectIndexes.GardenPot, new CraftableItem((int)ObjectIndexes.GardenPot, "/Home/62/true/null", CraftableCategories.Easy) },
-				{ (int)ObjectIndexes.WoodSign, new CraftableItem((int)ObjectIndexes.WoodSign, "/Home/37/true/null", CraftableCategories.Easy) },
-				{ (int)ObjectIndexes.StoneSign, new CraftableItem((int)ObjectIndexes.StoneSign, "/Home/38/true/null", CraftableCategories.Easy) },
-				{ (int)ObjectIndexes.CheesePress, new CraftableItem((int)ObjectIndexes.CheesePress, "/Home/16/true/", CraftableCategories.Moderate, "Farming", 6) },
-				{ (int)ObjectIndexes.MayonnaiseMachine, new CraftableItem((int)ObjectIndexes.MayonnaiseMachine, "/Home/24/true/", CraftableCategories.Moderate, "Farming", 2) },
-				{ (int)ObjectIndexes.SeedMaker, new CraftableItem((int)ObjectIndexes.SeedMaker, "/Home/25/true/", CraftableCategories.Moderate, "Farming", 9) },
-				{ (int)ObjectIndexes.Loom, new CraftableItem((int)ObjectIndexes.Loom, "/Home/17/true/", CraftableCategories.Moderate, "Farming", 7) },
-				{ (int)ObjectIndexes.OilMaker, new CraftableItem((int)ObjectIndexes.OilMaker, "/Home/19/true/", CraftableCategories.Moderate, "Farming", 8) },
-				{ (int)ObjectIndexes.RecyclingMachine, new CraftableItem((int)ObjectIndexes.RecyclingMachine, "/Home/20/true/", CraftableCategories.Moderate, "Fishing", 4) },
-				{ (int)ObjectIndexes.WormBin, new CraftableItem((int)ObjectIndexes.WormBin, "/Home/154/true/", CraftableCategories.Difficult, "Fishing", 8) },
-				{ (int)ObjectIndexes.PreservesJar, new CraftableItem((int)ObjectIndexes.PreservesJar, "/Home/15/true/", CraftableCategories.Moderate, "Farming", 4) },
-				{ (int)ObjectIndexes.CharcoalKiln, new CraftableItem((int)ObjectIndexes.CharcoalKiln, "/Home/114/true/", CraftableCategories.Easy, "Foraging", 4) },
-				{ (int)ObjectIndexes.Tapper, new CraftableItem((int)ObjectIndexes.Tapper, "/Home/105/true/", CraftableCategories.Moderate, "Foraging", 3) },
-				{ (int)ObjectIndexes.LightningRod, new CraftableItem((int)ObjectIndexes.LightningRod, "/Home/9/true/", CraftableCategories.Moderate, "Foraging", 6) },
-				{ (int)ObjectIndexes.SlimeIncubator, new CraftableItem((int)ObjectIndexes.SlimeIncubator, "/Home/156/true/", CraftableCategories.Difficult, "Combat", 8) },
-				{ (int)ObjectIndexes.SlimeEggPress, new CraftableItem((int)ObjectIndexes.SlimeEggPress, "/Home/158/true/", CraftableCategories.DifficultAndNeedMany, "Combat", 6) { OverrideName = "Slime Egg-Press" } },
-				{ (int)ObjectIndexes.Crystalarium, new CraftableItem((int)ObjectIndexes.Crystalarium, "/Home/21/true/", CraftableCategories.Moderate, "Mining", 9) },
-				{ (int)ObjectIndexes.MiniJukebox, new CraftableItem((int)ObjectIndexes.MiniJukebox, "/Home/209/true/null", CraftableCategories.Moderate) { OverrideName = "Mini-Jukebox" } },
-				{ (int)ObjectIndexes.Sprinkler, new CraftableItem((int)ObjectIndexes.Sprinkler, "/Home/599/false/", CraftableCategories.ModerateAndNeedMany, "Farming", 2) },
-				{ (int)ObjectIndexes.QualitySprinkler, new CraftableItem((int)ObjectIndexes.QualitySprinkler, "/Home/621/false/", CraftableCategories.Moderate, "Farming", 6) },
-				{ (int)ObjectIndexes.IridiumSprinkler, new CraftableItem((int)ObjectIndexes.IridiumSprinkler, "/Home/645/false/", CraftableCategories.DifficultAndNeedMany, "Farming", 9) },
-				{ (int)ObjectIndexes.Staircase, new CraftableItem((int)ObjectIndexes.Staircase, "/Field/71/true/", CraftableCategories.Moderate, "Mining", 2) },
-				{ (int)ObjectIndexes.BasicFertilizer, new CraftableItem((int)ObjectIndexes.BasicFertilizer, "/Field/368/false/s ", CraftableCategories.EasyAndNeedMany, "Farming", 1) },
-				{ (int)ObjectIndexes.QualityFertilizer, new CraftableItem((int)ObjectIndexes.QualityFertilizer, "/Field/369/false/s ", CraftableCategories.Easy, "Farming", 9) },
-				{ (int)ObjectIndexes.BasicRetainingSoil, new CraftableItem((int)ObjectIndexes.BasicRetainingSoil, "/Field/370/false/s ", CraftableCategories.EasyAndNeedMany, "Farming", 4) },
-				{ (int)ObjectIndexes.QualityRetainingSoil, new CraftableItem((int)ObjectIndexes.QualityRetainingSoil, "/Field/371 2/false/s ", CraftableCategories.EasyAndNeedMany, "Farming", 7) },
-				{ (int)ObjectIndexes.SpeedGro, new CraftableItem((int)ObjectIndexes.SpeedGro, "/Field/465 5/false/s ", CraftableCategories.ModerateAndNeedMany, "Farming", 3) { OverrideName = "Speed-Gro" } },
-				{ (int)ObjectIndexes.DeluxeSpeedGro, new CraftableItem((int)ObjectIndexes.DeluxeSpeedGro, "/Field/466 5/false/s ", CraftableCategories.ModerateAndNeedMany, "Farming", 8) { OverrideName = "Deluxe Speed-Gro" } },
-				{ (int)ObjectIndexes.CherryBomb, new CraftableItem((int)ObjectIndexes.CherryBomb, "/Field/286/false/", CraftableCategories.Easy, "Mining", 1) },
-				{ (int)ObjectIndexes.Bomb, new CraftableItem((int)ObjectIndexes.Bomb, "/Field/287/false/", CraftableCategories.Moderate, "Mining", 6) },
-				{ (int)ObjectIndexes.MegaBomb, new CraftableItem((int)ObjectIndexes.MegaBomb, "/Field/288/false/", CraftableCategories.Difficult, "Mining",  8) },
-				{ (int)ObjectIndexes.ExplosiveAmmo, new CraftableItem((int)ObjectIndexes.ExplosiveAmmo, "/Home/441 5/false/", CraftableCategories.ModerateAndNeedMany, "Combat",  8) },
-				{ (int)ObjectIndexes.TransmuteFe, new CraftableItem((int)ObjectIndexes.TransmuteFe, "/Home/335/false/", CraftableCategories.Moderate, "Mining", 4) { OverrideName = "Transmute (Fe)" } },
-				{ (int)ObjectIndexes.TransmuteAu, new CraftableItem((int)ObjectIndexes.TransmuteAu, "/Home/336/false/", CraftableCategories.Moderate, "Mining", 7) { OverrideName = "Transmute (Au)" } },
+				{ ObjectIndexes.WoodFence, new CraftableItem((int)ObjectIndexes.WoodFence, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.StoneFence, new CraftableItem((int)ObjectIndexes.StoneFence, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.IronFence, new CraftableItem((int)ObjectIndexes.IronFence, CraftableCategories.ModerateAndNeedMany) },
+				{ ObjectIndexes.HardwoodFence, new CraftableItem((int)ObjectIndexes.HardwoodFence, CraftableCategories.ModerateAndNeedMany) },
+				{ ObjectIndexes.Gate, new CraftableItem((int)ObjectIndexes.Gate, CraftableCategories.Easy) },
+				{ ObjectIndexes.Torch, new CraftableItem((int)ObjectIndexes.Torch, CraftableCategories.Easy) { DifficultyToObtain = ObtainingDifficulties.SmallTimeRequirements } }, // You can find it in the mines
+				{ ObjectIndexes.Sprinkler, new CraftableItem((int)ObjectIndexes.Sprinkler, CraftableCategories.ModerateAndNeedMany) },
+				{ ObjectIndexes.QualitySprinkler, new CraftableItem((int)ObjectIndexes.QualitySprinkler, CraftableCategories.Moderate) },
+				{ ObjectIndexes.IridiumSprinkler, new CraftableItem((int)ObjectIndexes.IridiumSprinkler, CraftableCategories.DifficultAndNeedMany) },
+				{ ObjectIndexes.BasicFertilizer, new CraftableItem((int)ObjectIndexes.BasicFertilizer, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.QualityFertilizer, new CraftableItem((int)ObjectIndexes.QualityFertilizer, CraftableCategories.Easy) },
+				{ ObjectIndexes.BasicRetainingSoil, new CraftableItem((int)ObjectIndexes.BasicRetainingSoil, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.QualityRetainingSoil, new CraftableItem((int)ObjectIndexes.QualityRetainingSoil, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.SpeedGro, new CraftableItem((int)ObjectIndexes.SpeedGro, CraftableCategories.ModerateAndNeedMany, dataKey: "Speed-Gro") },
+				{ ObjectIndexes.DeluxeSpeedGro, new CraftableItem((int)ObjectIndexes.DeluxeSpeedGro, CraftableCategories.ModerateAndNeedMany, dataKey: "Deluxe Speed-Gro") },
+				{ ObjectIndexes.CherryBomb, new CraftableItem((int)ObjectIndexes.CherryBomb, CraftableCategories.Easy) },
+				{ ObjectIndexes.Bomb, new CraftableItem((int)ObjectIndexes.Bomb, CraftableCategories.Moderate) },
+				{ ObjectIndexes.MegaBomb, new CraftableItem((int)ObjectIndexes.MegaBomb, CraftableCategories.Difficult) },
+				{ ObjectIndexes.ExplosiveAmmo, new CraftableItem((int)ObjectIndexes.ExplosiveAmmo, CraftableCategories.ModerateAndNeedMany) },
 				// Skipping ancient seeds, as it's just meant to get them from the artifact
-				{ (int)ObjectIndexes.SpringSeeds, new CraftableItem((int)ObjectIndexes.SpringSeeds, "/Field/495 10/false/", CraftableCategories.Foragables, "Foraging", 1) { OverrideName = "Wild Seeds (Sp)" } },
-				{ (int)ObjectIndexes.SummerSeeds, new CraftableItem((int)ObjectIndexes.SummerSeeds, "/Field/496 10/false/", CraftableCategories.Foragables, "Foraging", 4) { OverrideName = "Wild Seeds (Su)" } },
-				{ (int)ObjectIndexes.FallSeeds, new CraftableItem((int)ObjectIndexes.FallSeeds, "/Field/497 10/false/", CraftableCategories.Foragables, "Foraging", 6) { OverrideName = "Wild Seeds (Fa)" } },
-				{ (int)ObjectIndexes.WinterSeeds, new CraftableItem((int)ObjectIndexes.WinterSeeds, "/Field/498 10/false/", CraftableCategories.Foragables, "Foraging", 7) { OverrideName = "Wild Seeds (Wi)" } },
-				{ (int)ObjectIndexes.WarpTotemFarm, new CraftableItem((int)ObjectIndexes.WarpTotemFarm, "/Field/688/false/", CraftableCategories.ModerateAndNeedMany, "Foraging", 8) { OverrideName = "Warp Totem: Farm" } },
-				{ (int)ObjectIndexes.WarpTotemMountains, new CraftableItem((int)ObjectIndexes.WarpTotemMountains, "/Field/689/false/", CraftableCategories.ModerateAndNeedMany, "Foraging", 7) { OverrideName = "Warp Totem: Mountains" } },
-				{ (int)ObjectIndexes.WarpTotemBeach, new CraftableItem((int)ObjectIndexes.WarpTotemBeach, "/Field/690/false/", CraftableCategories.ModerateAndNeedMany, "Foraging", 6) { OverrideName = "Warp Totem: Beach" } },
-				{ (int)ObjectIndexes.WarpTotemDesert, new CraftableItem((int)ObjectIndexes.WarpTotemDesert, "/Field/261/false/null", CraftableCategories.ModerateAndNeedMany) { OverrideName = "Warp Totem: Desert" } },
-				{ (int)ObjectIndexes.RainTotem, new CraftableItem((int)ObjectIndexes.RainTotem, "/Field/681/false/", CraftableCategories.Difficult, "Foraging", 9) },
-				{ (int)ObjectIndexes.FieldSnack, new CraftableItem((int)ObjectIndexes.FieldSnack, "/Home/403/false/", CraftableCategories.Easy, "Foraging", 1) },
-				{ (int)ObjectIndexes.JackOLantern, new CraftableItem((int)ObjectIndexes.JackOLantern, "/Home/746/false/null", CraftableCategories.DifficultAndNeedMany) { OverrideName = "Jack-O-Lantern" } },
-				{ (int)ObjectIndexes.WoodFloor, new CraftableItem((int)ObjectIndexes.WoodFloor, "/Field/328/false/l 0", CraftableCategories.EasyAndNeedMany) },
-				{ (int)ObjectIndexes.StrawFloor, new CraftableItem((int)ObjectIndexes.StrawFloor, "/Field/401/false/1 0", CraftableCategories.EasyAndNeedMany) },
-				{ (int)ObjectIndexes.BrickFloor, new CraftableItem((int)ObjectIndexes.BrickFloor, "/Field/293 5/false/l 0", CraftableCategories.EasyAndNeedMany) },
-				{ (int)ObjectIndexes.WeatheredFloor, new CraftableItem((int)ObjectIndexes.WeatheredFloor, "/Field/331/false/l 0", CraftableCategories.EasyAndNeedMany) },
-				{ (int)ObjectIndexes.CrystalFloor, new CraftableItem((int)ObjectIndexes.CrystalFloor, "/Field/333 5/false/l 0", CraftableCategories.ModerateAndNeedMany) },
-				{ (int)ObjectIndexes.StoneFloor, new CraftableItem((int)ObjectIndexes.StoneFloor, "/Field/329/false/l 0", CraftableCategories.EasyAndNeedMany) },
-				{ (int)ObjectIndexes.WoodPath, new CraftableItem((int)ObjectIndexes.WoodPath, "/Field/405/false/l 0", CraftableCategories.EasyAndNeedMany) },
-				{ (int)ObjectIndexes.GravelPath, new CraftableItem((int)ObjectIndexes.GravelPath, "/Field/407/false/l 0", CraftableCategories.EasyAndNeedMany) },
-				{ (int)ObjectIndexes.CobblestonePath, new CraftableItem((int)ObjectIndexes.CobblestonePath, "/Field/411/false/l 0", CraftableCategories.EasyAndNeedMany) },
-				{ (int)ObjectIndexes.SteppingStonePath, new CraftableItem((int)ObjectIndexes.SteppingStonePath, "/Field/415/false/l 0", CraftableCategories.EasyAndNeedMany) },
-				{ (int)ObjectIndexes.CrystalPath, new CraftableItem((int)ObjectIndexes.CrystalPath, "/Field/409 5/false/l 0", CraftableCategories.ModerateAndNeedMany) },
-				{ (int)ObjectIndexes.WildBait, new CraftableItem((int)ObjectIndexes.WildBait, "/Home/774 5/false/null", CraftableCategories.Easy) },
-				{ (int)ObjectIndexes.Bait, new CraftableItem((int)ObjectIndexes.Bait, "/Home/685 5/false/", CraftableCategories.EasyAndNeedMany, "Fishing", 2) },
-				{ (int)ObjectIndexes.Spinner, new CraftableItem((int)ObjectIndexes.Spinner, "/Home/686/false/", CraftableCategories.ModerateAndNeedMany, "Fishing", 6) },
-				{ (int)ObjectIndexes.Magnet, new CraftableItem((int)ObjectIndexes.Magnet, "/Home/703 3/false/", CraftableCategories.ModerateAndNeedMany, "Fishing", 9) },
-				{ (int)ObjectIndexes.TrapBobber, new CraftableItem((int)ObjectIndexes.TrapBobber, "/Home/694/false/", CraftableCategories.Moderate, "Fishing", 6) },
-				{ (int)ObjectIndexes.CorkBobber, new CraftableItem((int)ObjectIndexes.CorkBobber, "/Home/695/false/", CraftableCategories.Moderate, "Fishing", 7) },
-				{ (int)ObjectIndexes.DressedSpinner, new CraftableItem((int)ObjectIndexes.DressedSpinner, "/Home/687/false/", CraftableCategories.Moderate, "Fishing", 8) },
-				{ (int)ObjectIndexes.TreasureHunter, new CraftableItem((int)ObjectIndexes.TreasureHunter, "/Home/693/false/", CraftableCategories.Moderate, "Fishing", 7) },
-				{ (int)ObjectIndexes.BarbedHook, new CraftableItem((int)ObjectIndexes.BarbedHook, "/Home/691/false/", CraftableCategories.Moderate, "Fishing", 8) },
-				{ (int)ObjectIndexes.OilOfGarlic, new CraftableItem((int)ObjectIndexes.OilOfGarlic, "/Home/772 1/false/", CraftableCategories.Difficult, "Fishing", 6) },
-				{ (int)ObjectIndexes.LifeElixir, new CraftableItem((int)ObjectIndexes.LifeElixir, "/Home/773 1/false/", CraftableCategories.DifficultAndNeedMany, "Fishing", 2) },
-				{ (int)ObjectIndexes.CrabPot, new CraftableItem((int)ObjectIndexes.CrabPot, "/Home/710/false/", CraftableCategories.Moderate, "Fishing", 3, 1) }, // Limit the level you can learn this to prevent it from being learned twice
-				{ (int)ObjectIndexes.IridiumBand, new CraftableItem((int)ObjectIndexes.IridiumBand, "/Home/527/false/", CraftableCategories.Endgame, "Combat", 9) { IsRing = true } },
-				{ (int)ObjectIndexes.WeddingRing, new CraftableItem((int)ObjectIndexes.WeddingRing, "/Home/801/false/null", CraftableCategories.Endgame) { IsRing = true } },
-				{ (int)ObjectIndexes.RingOfYoba, new CraftableItem((int)ObjectIndexes.RingOfYoba, "/Home/524/false/", CraftableCategories.Difficult, "Combat", 7) { OverrideName = "Ring of Yoba", IsRing = true } },
-				{ (int)ObjectIndexes.SturdyRing, new CraftableItem((int)ObjectIndexes.SturdyRing, "/Home/525/false/", CraftableCategories.Moderate, "Combat", 1) { IsRing = true } },
-				{ (int)ObjectIndexes.WarriorRing, new CraftableItem((int)ObjectIndexes.WarriorRing, "/Home/521/false/", CraftableCategories.Moderate, "Combat", 4) { IsRing = true } },
-				{ (int)ObjectIndexes.TubOFlowers, new CraftableItem((int)ObjectIndexes.TubOFlowers, "/Home/108/true/null", CraftableCategories.Easy) { OverrideName = "Tub o' Flowers" } },
-				{ (int)ObjectIndexes.WoodenBrazier, new CraftableItem((int)ObjectIndexes.WoodenBrazier, "/Home/143/true/null", CraftableCategories.Easy) },
-				{ (int)ObjectIndexes.WickedStatue, new CraftableItem((int)ObjectIndexes.WickedStatue, "/Home/83/true/null", CraftableCategories.Easy) },
-				{ (int)ObjectIndexes.StoneBrazier, new CraftableItem((int)ObjectIndexes.StoneBrazier, "/Home/144/true/null", CraftableCategories.Easy) },
-				{ (int)ObjectIndexes.GoldBrazier, new CraftableItem((int)ObjectIndexes.GoldBrazier, "/Home/145/true/null", CraftableCategories.Moderate) },
-				{ (int)ObjectIndexes.Campfire, new CraftableItem((int)ObjectIndexes.Campfire, "/Home/146/true/null", CraftableCategories.Easy) },
-				{ (int)ObjectIndexes.StumpBrazier, new CraftableItem((int)ObjectIndexes.StumpBrazier, "/Home/147/true/null", CraftableCategories.Moderate) },
-				{ (int)ObjectIndexes.CarvedBrazier, new CraftableItem((int)ObjectIndexes.CarvedBrazier, "/Home/148/true/null", CraftableCategories.Moderate) },
-				{ (int)ObjectIndexes.SkullBrazier, new CraftableItem((int)ObjectIndexes.SkullBrazier, "/Home/149/true/null", CraftableCategories.Moderate) },
-				{ (int)ObjectIndexes.BarrelBrazier, new CraftableItem((int)ObjectIndexes.BarrelBrazier, "/Home/150/true/null", CraftableCategories.Moderate) },
-				{ (int)ObjectIndexes.MarbleBrazier, new CraftableItem((int)ObjectIndexes.MarbleBrazier, "/Home/151/true/null", CraftableCategories.Difficult) },
-				{ (int)ObjectIndexes.WoodLampPost, new CraftableItem((int)ObjectIndexes.WoodLampPost, "/Home/152/true/null", CraftableCategories.Moderate) { OverrideName = "Wood Lamp-post" } },
-				{ (int)ObjectIndexes.IronLampPost, new CraftableItem((int)ObjectIndexes.IronLampPost, "/Home/153/true/null", CraftableCategories.Moderate) { OverrideName = "Iron Lamp-post" } },
-
-				// Non-craftable BigObjects
-				{ (int)ObjectIndexes.Heater, new Item((int)ObjectIndexes.Heater, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.AutoGrabber, new Item((int)ObjectIndexes.AutoGrabber, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.PrairieKingArcadeSystem, new Item((int)ObjectIndexes.PrairieKingArcadeSystem, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.JunimoKartArcadeSystem, new Item((int)ObjectIndexes.JunimoKartArcadeSystem, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.SodaMachine, new Item((int)ObjectIndexes.SodaMachine, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.HMTGF, new Item((int)ObjectIndexes.HMTGF, ObtainingDifficulties.NonCraftingItem) { OverrideName = "??HMTGF??" } },
-				{ (int)ObjectIndexes.PinkyLemon, new Item((int)ObjectIndexes.PinkyLemon, ObtainingDifficulties.NonCraftingItem) { OverrideName = "??Pinky Lemon??" } },
-				{ (int)ObjectIndexes.Foroguemon, new Item((int)ObjectIndexes.Foroguemon, ObtainingDifficulties.NonCraftingItem) { OverrideName = "??Foroguemon??" } },
-				{ (int)ObjectIndexes.SolidGoldLewis, new Item((int)ObjectIndexes.SolidGoldLewis, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.StardewHeroTrophy, new Item((int)ObjectIndexes.StardewHeroTrophy, ObtainingDifficulties.NonCraftingItem) },
-
+				{ ObjectIndexes.SpringSeeds, new CraftableItem((int)ObjectIndexes.SpringSeeds, CraftableCategories.Foragables, dataKey: "Wild Seeds (Sp)" ) },
+				{ ObjectIndexes.SummerSeeds, new CraftableItem((int)ObjectIndexes.SummerSeeds, CraftableCategories.Foragables, dataKey: "Wild Seeds (Su)" ) },
+				{ ObjectIndexes.FallSeeds, new CraftableItem((int)ObjectIndexes.FallSeeds, CraftableCategories.Foragables, dataKey: "Wild Seeds (Fa)" ) },
+                { ObjectIndexes.WinterSeeds, new CraftableItem((int)ObjectIndexes.WinterSeeds, CraftableCategories.Foragables, dataKey: "Wild Seeds (Wi)" ) },
+				{ ObjectIndexes.WarpTotemFarm, new CraftableItem((int)ObjectIndexes.WarpTotemFarm, CraftableCategories.ModerateAndNeedMany, dataKey: "Warp Totem: Farm") },
+				{ ObjectIndexes.WarpTotemMountains, new CraftableItem((int)ObjectIndexes.WarpTotemMountains, CraftableCategories.ModerateAndNeedMany, dataKey: "Warp Totem: Mountains") },
+				{ ObjectIndexes.WarpTotemBeach, new CraftableItem((int)ObjectIndexes.WarpTotemBeach, CraftableCategories.ModerateAndNeedMany, dataKey: "Warp Totem: Beach") },
+				{ ObjectIndexes.WarpTotemDesert, new CraftableItem((int)ObjectIndexes.WarpTotemDesert, CraftableCategories.ModerateAndNeedMany, dataKey: "Warp Totem: Desert") },
+				{ ObjectIndexes.RainTotem, new CraftableItem((int)ObjectIndexes.RainTotem, CraftableCategories.Difficult) },
+				{ ObjectIndexes.FieldSnack, new CraftableItem((int)ObjectIndexes.FieldSnack, CraftableCategories.Easy) },
+				{ ObjectIndexes.JackOLantern, new CraftableItem((int)ObjectIndexes.JackOLantern, CraftableCategories.DifficultAndNeedMany, dataKey: "Jack-O-Lantern") },
+				{ ObjectIndexes.WoodFloor, new CraftableItem((int)ObjectIndexes.WoodFloor, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.StrawFloor, new CraftableItem((int)ObjectIndexes.StrawFloor, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.BrickFloor, new CraftableItem((int)ObjectIndexes.BrickFloor, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.WeatheredFloor, new CraftableItem((int)ObjectIndexes.WeatheredFloor, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.CrystalFloor, new CraftableItem((int)ObjectIndexes.CrystalFloor, CraftableCategories.ModerateAndNeedMany) },
+				{ ObjectIndexes.StoneFloor, new CraftableItem((int)ObjectIndexes.StoneFloor, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.WoodPath, new CraftableItem((int)ObjectIndexes.WoodPath, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.GravelPath, new CraftableItem((int)ObjectIndexes.GravelPath, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.CobblestonePath, new CraftableItem((int)ObjectIndexes.CobblestonePath, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.SteppingStonePath, new CraftableItem((int)ObjectIndexes.SteppingStonePath, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.CrystalPath, new CraftableItem((int)ObjectIndexes.CrystalPath, CraftableCategories.ModerateAndNeedMany) },
+				{ ObjectIndexes.WildBait, new CraftableItem((int)ObjectIndexes.WildBait, CraftableCategories.Easy) },
+				{ ObjectIndexes.Bait, new CraftableItem((int)ObjectIndexes.Bait, CraftableCategories.EasyAndNeedMany) },
+				{ ObjectIndexes.Spinner, new CraftableItem((int)ObjectIndexes.Spinner, CraftableCategories.ModerateAndNeedMany) },
+				{ ObjectIndexes.Magnet, new CraftableItem((int)ObjectIndexes.Magnet, CraftableCategories.ModerateAndNeedMany) },
+				{ ObjectIndexes.TrapBobber, new CraftableItem((int)ObjectIndexes.TrapBobber, CraftableCategories.Moderate) },
+				{ ObjectIndexes.CorkBobber, new CraftableItem((int)ObjectIndexes.CorkBobber, CraftableCategories.Moderate) },
+				{ ObjectIndexes.DressedSpinner, new CraftableItem((int)ObjectIndexes.DressedSpinner, CraftableCategories.Moderate) },
+				{ ObjectIndexes.TreasureHunter, new CraftableItem((int)ObjectIndexes.TreasureHunter, CraftableCategories.Moderate) },
+				{ ObjectIndexes.BarbedHook, new CraftableItem((int)ObjectIndexes.BarbedHook, CraftableCategories.Moderate) },
+				{ ObjectIndexes.OilOfGarlic, new CraftableItem((int)ObjectIndexes.OilOfGarlic, CraftableCategories.Difficult, dataKey: "Oil Of Garlic") },
+				{ ObjectIndexes.LifeElixir, new CraftableItem((int)ObjectIndexes.LifeElixir, CraftableCategories.DifficultAndNeedMany) },
+				{ ObjectIndexes.CrabPot, new CraftableItem((int)ObjectIndexes.CrabPot, CraftableCategories.Moderate, overrideBaseLevelLearnedAt: 1) }, // Limit the level you can learn this to prevent it from being learned twice
+				{ ObjectIndexes.IridiumBand, new CraftableItem((int)ObjectIndexes.IridiumBand, CraftableCategories.Endgame) { IsRing = true } },
+				{ ObjectIndexes.WeddingRing, new CraftableItem((int)ObjectIndexes.WeddingRing, CraftableCategories.Endgame) { IsRing = true } },
+				{ ObjectIndexes.RingOfYoba, new CraftableItem((int)ObjectIndexes.RingOfYoba, CraftableCategories.Difficult) { OverrideName = "Ring of Yoba", IsRing = true } },
+				{ ObjectIndexes.SturdyRing, new CraftableItem((int)ObjectIndexes.SturdyRing, CraftableCategories.Moderate) { IsRing = true } },
+				{ ObjectIndexes.WarriorRing, new CraftableItem((int)ObjectIndexes.WarriorRing, CraftableCategories.Moderate) { IsRing = true } },
+				
 				// Resources - ObtainingDifficulties.NoRequirements
-				{ (int)ObjectIndexes.Wood, new ResourceItem((int)ObjectIndexes.Wood) },
-				{ (int)ObjectIndexes.Hardwood, new ResourceItem((int)ObjectIndexes.Hardwood, 1, new Range(1, 15)) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements } },
-				{ (int)ObjectIndexes.Stone, new ResourceItem((int)ObjectIndexes.Stone) },
-				{ (int)ObjectIndexes.Fiber, new ResourceItem((int)ObjectIndexes.Fiber, 3, new Range(1, 5)) },
-				{ (int)ObjectIndexes.Clay, new ResourceItem((int)ObjectIndexes.Clay, 1, new Range(1, 5)) { DifficultyToObtain = ObtainingDifficulties.SmallTimeRequirements } },
+				{ ObjectIndexes.Wood, new ResourceItem((int)ObjectIndexes.Wood) },
+				{ ObjectIndexes.Hardwood, new ResourceItem((int)ObjectIndexes.Hardwood, 1, new Range(1, 15)) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements } },
+				{ ObjectIndexes.Stone, new ResourceItem((int)ObjectIndexes.Stone) },
+				{ ObjectIndexes.Fiber, new ResourceItem((int)ObjectIndexes.Fiber, 3, new Range(1, 5)) },
+				{ ObjectIndexes.Clay, new ResourceItem((int)ObjectIndexes.Clay, 1, new Range(1, 5)) { DifficultyToObtain = ObtainingDifficulties.SmallTimeRequirements } },
 
 				// Items you get as a byproduct of collection resources
-				{ (int)ObjectIndexes.Sap, new Item((int)ObjectIndexes.Sap, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 15) } },
-				{ (int)ObjectIndexes.Acorn, new Item((int)ObjectIndexes.Acorn, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.MapleSeed, new Item((int)ObjectIndexes.MapleSeed, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.PineCone, new Item((int)ObjectIndexes.PineCone, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.MixedSeeds, new Item((int)ObjectIndexes.MixedSeeds, ObtainingDifficulties.NoRequirements) },
+				{ ObjectIndexes.Sap, new Item((int)ObjectIndexes.Sap, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 15) } },
+				{ ObjectIndexes.Acorn, new Item((int)ObjectIndexes.Acorn, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.MapleSeed, new Item((int)ObjectIndexes.MapleSeed, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.PineCone, new Item((int)ObjectIndexes.PineCone, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.MixedSeeds, new Item((int)ObjectIndexes.MixedSeeds, ObtainingDifficulties.NoRequirements) },
 
 				// Tapper items
-				{ (int)ObjectIndexes.OakResin, new Item((int)ObjectIndexes.OakResin, ObtainingDifficulties.MediumTimeRequirements) },
-				{ (int)ObjectIndexes.MapleSyrup, new Item((int)ObjectIndexes.MapleSyrup, ObtainingDifficulties.MediumTimeRequirements) },
-				{ (int)ObjectIndexes.PineTar, new Item((int)ObjectIndexes.PineTar, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.OakResin, new Item((int)ObjectIndexes.OakResin, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.MapleSyrup, new Item((int)ObjectIndexes.MapleSyrup, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.PineTar, new Item((int)ObjectIndexes.PineTar, ObtainingDifficulties.MediumTimeRequirements) },
 
 				// Items you can buy from the shops easily
-				{ (int)ObjectIndexes.Hay, new Item((int)ObjectIndexes.Hay, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.Sugar, new Item((int)ObjectIndexes.Sugar, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.Oil, new Item((int)ObjectIndexes.Oil, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.WheatFlour, new Item((int)ObjectIndexes.WheatFlour, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.Hay, new Item((int)ObjectIndexes.Hay, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.Sugar, new Item((int)ObjectIndexes.Sugar, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.Oil, new Item((int)ObjectIndexes.Oil, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.WheatFlour, new Item((int)ObjectIndexes.WheatFlour, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
 
 				// Misc fishing items
-				{ (int)ObjectIndexes.Seaweed, new Item((int)ObjectIndexes.Seaweed, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.GreenAlgae, new Item((int)ObjectIndexes.GreenAlgae, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.WhiteAlgae, new Item((int)ObjectIndexes.WhiteAlgae, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.LeadBobber, new Item((int)ObjectIndexes.LeadBobber, ObtainingDifficulties.MediumTimeRequirements) { CanStack = false } },
+				{ ObjectIndexes.Seaweed, new Item((int)ObjectIndexes.Seaweed, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.GreenAlgae, new Item((int)ObjectIndexes.GreenAlgae, ObtainingDifficulties.NoRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.WhiteAlgae, new Item((int)ObjectIndexes.WhiteAlgae, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.LeadBobber, new Item((int)ObjectIndexes.LeadBobber, ObtainingDifficulties.MediumTimeRequirements) { CanStack = false } },
+				{ ObjectIndexes.CuriosityLure, new Item((int)ObjectIndexes.CuriosityLure, ObtainingDifficulties.RareItem) { CanStack = false } },
 
 				// Fish - defaults to ObtainingDifficulties.LargeTimeRequirements
-				{ (int)ObjectIndexes.AnyFish, new FishItem((int)ObjectIndexes.AnyFish, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.AnyFish, new FishItem((int)ObjectIndexes.AnyFish, ObtainingDifficulties.NonCraftingItem) },
 
-				{ (int)ObjectIndexes.Pufferfish, new FishItem((int)ObjectIndexes.Pufferfish) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Anchovy, new FishItem((int)ObjectIndexes.Anchovy) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Tuna, new FishItem((int)ObjectIndexes.Tuna) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Sardine, new FishItem((int)ObjectIndexes.Sardine) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Bream, new FishItem((int)ObjectIndexes.Bream) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ (int)ObjectIndexes.LargemouthBass, new FishItem((int)ObjectIndexes.LargemouthBass) {
-					AvailableLocations = new List<Locations> { Locations.Mountain }
-				} },
-				{ (int)ObjectIndexes.SmallmouthBass, new FishItem((int)ObjectIndexes.SmallmouthBass) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ (int)ObjectIndexes.RainbowTrout, new FishItem((int)ObjectIndexes.RainbowTrout) {
-					AvailableLocations = new List<Locations> { Locations.Forest, Locations.Town, Locations.Mountain }
-				} },
-				{ (int)ObjectIndexes.Salmon, new FishItem((int)ObjectIndexes.Salmon) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ (int)ObjectIndexes.Walleye, new FishItem((int)ObjectIndexes.Walleye) {
-					AvailableLocations = new List<Locations> { Locations.Forest, Locations.Town, Locations.Mountain }
-				} },
-				{ (int)ObjectIndexes.Perch, new FishItem((int)ObjectIndexes.Perch) {
-					AvailableLocations = new List<Locations> { Locations.Forest, Locations.Town, Locations.Mountain }
-				} },
-				{ (int)ObjectIndexes.Carp, new FishItem((int)ObjectIndexes.Carp) {
-					AvailableLocations = new List<Locations> { Locations.Mountain, Locations.Woods, Locations.Sewer }
-				} },
-				{ (int)ObjectIndexes.Catfish, new FishItem((int)ObjectIndexes.Catfish) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest, Locations.Woods, Locations.WitchSwamp }
-				} },
-				{ (int)ObjectIndexes.Pike, new FishItem((int)ObjectIndexes.Pike) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ (int)ObjectIndexes.Sunfish, new FishItem((int)ObjectIndexes.Sunfish) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ (int)ObjectIndexes.RedMullet, new FishItem((int)ObjectIndexes.RedMullet) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Herring, new FishItem((int)ObjectIndexes.Herring) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Eel, new FishItem((int)ObjectIndexes.Eel) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Octopus, new FishItem((int)ObjectIndexes.Octopus) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.RedSnapper, new FishItem((int)ObjectIndexes.RedSnapper) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Squid, new FishItem((int)ObjectIndexes.Squid) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.SeaCucumber, new FishItem((int)ObjectIndexes.SeaCucumber) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.SuperCucumber, new FishItem((int)ObjectIndexes.SuperCucumber) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Ghostfish, new FishItem((int)ObjectIndexes.Ghostfish) {
-					AvailableLocations = new List<Locations> { Locations.UndergroundMine }
-				} },
-				{ (int)ObjectIndexes.Stonefish, new FishItem((int)ObjectIndexes.Stonefish) {
-					AvailableLocations = new List<Locations> { Locations.UndergroundMine }
-				} },
-				{ (int)ObjectIndexes.IcePip, new FishItem((int)ObjectIndexes.IcePip) {
-					AvailableLocations = new List<Locations> { Locations.UndergroundMine }
-				} },
-				{ (int)ObjectIndexes.LavaEel, new FishItem((int)ObjectIndexes.LavaEel) {
-					AvailableLocations = new List<Locations> { Locations.UndergroundMine }
-				} },
-				{ (int)ObjectIndexes.Sandfish, new FishItem((int)ObjectIndexes.Sandfish) {
-					AvailableLocations = new List<Locations> { Locations.Desert }
-				} },
-				{ (int)ObjectIndexes.ScorpionCarp, new FishItem((int)ObjectIndexes.ScorpionCarp) {
-					AvailableLocations = new List<Locations> { Locations.Desert }
-				} },
-				{ (int)ObjectIndexes.Flounder, new FishItem((int)ObjectIndexes.Flounder) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.MidnightCarp, new FishItem((int)ObjectIndexes.MidnightCarp) {
-					AvailableLocations = new List<Locations> { Locations.Forest, Locations.Mountain }
-				} },
-				{ (int)ObjectIndexes.Sturgeon, new FishItem((int)ObjectIndexes.Sturgeon) {
-					AvailableLocations = new List<Locations> { Locations.Mountain }
-				} },
-				{ (int)ObjectIndexes.TigerTrout, new FishItem((int)ObjectIndexes.TigerTrout) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ (int)ObjectIndexes.Bullhead, new FishItem((int)ObjectIndexes.Bullhead) {
-					AvailableLocations = new List<Locations> { Locations.Mountain }
-				} },
-				{ (int)ObjectIndexes.Tilapia, new FishItem((int)ObjectIndexes.Tilapia) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Chub, new FishItem((int)ObjectIndexes.Chub) {
-					AvailableLocations = new List<Locations> { Locations.Forest, Locations.Mountain }
-				} },
-				{ (int)ObjectIndexes.Dorado, new FishItem((int)ObjectIndexes.Dorado) {
-					AvailableLocations = new List<Locations> { Locations.Forest }
-				} },
-				{ (int)ObjectIndexes.Albacore, new FishItem((int)ObjectIndexes.Albacore) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Shad, new FishItem((int)ObjectIndexes.Shad) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest }
-				} },
-				{ (int)ObjectIndexes.Lingcod, new FishItem((int)ObjectIndexes.Lingcod) {
-					AvailableLocations = new List<Locations> { Locations.Town, Locations.Forest, Locations.Mountain }
-				} },
-				{ (int)ObjectIndexes.Halibut, new FishItem((int)ObjectIndexes.Halibut) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Woodskip, new FishItem((int)ObjectIndexes.Woodskip) {
-					AvailableLocations = new List<Locations> { Locations.Woods }
-				} },
-				{ (int)ObjectIndexes.VoidSalmon, new FishItem((int)ObjectIndexes.VoidSalmon, ObtainingDifficulties.Impossible) {
-					AvailableLocations = new List<Locations> { Locations.WitchSwamp }
-				} },
-				{ (int)ObjectIndexes.Slimejack, new FishItem((int)ObjectIndexes.Slimejack, ObtainingDifficulties.Impossible) {
-					AvailableLocations = new List<Locations> { Locations.BugLand }
-				} },
-				{ (int)ObjectIndexes.MidnightSquid, new FishItem((int)ObjectIndexes.MidnightSquid, ObtainingDifficulties.RareItem) {
-					AvailableLocations = new List<Locations> { Locations.NightMarket }
-				} },
-				{ (int)ObjectIndexes.SpookFish, new FishItem((int)ObjectIndexes.SpookFish, ObtainingDifficulties.RareItem) {
-					AvailableLocations = new List<Locations> { Locations.NightMarket }
-				} },
-				{ (int)ObjectIndexes.Blobfish, new FishItem((int)ObjectIndexes.Blobfish, ObtainingDifficulties.RareItem) {
-					AvailableLocations = new List<Locations> { Locations.NightMarket }
-				} },
-				{ (int)ObjectIndexes.Crimsonfish, new FishItem((int)ObjectIndexes.Crimsonfish, ObtainingDifficulties.EndgameItem) {
-					AvailableLocations = new List<Locations> { Locations.Beach }
-				} },
-				{ (int)ObjectIndexes.Angler, new FishItem((int)ObjectIndexes.Angler, ObtainingDifficulties.EndgameItem) {
-					AvailableLocations = new List<Locations> { Locations.Town }
-				} },
-				{ (int)ObjectIndexes.Legend, new FishItem((int)ObjectIndexes.Legend, ObtainingDifficulties.EndgameItem) {
-					AvailableLocations = new List<Locations> { Locations.Mountain }
-				} },
-				{ (int)ObjectIndexes.Glacierfish, new FishItem((int)ObjectIndexes.Glacierfish, ObtainingDifficulties.EndgameItem) {
-					AvailableLocations = new List<Locations> { Locations.Forest }
-				} },
-				{ (int)ObjectIndexes.MutantCarp, new FishItem((int)ObjectIndexes.MutantCarp, ObtainingDifficulties.EndgameItem) {
-					AvailableLocations = new List<Locations> { Locations.Sewer }
-				} },
+				{ ObjectIndexes.Pufferfish, new FishItem((int)ObjectIndexes.Pufferfish) },
+				{ ObjectIndexes.Anchovy, new FishItem((int)ObjectIndexes.Anchovy) },
+				{ ObjectIndexes.Tuna, new FishItem((int)ObjectIndexes.Tuna) },
+				{ ObjectIndexes.Sardine, new FishItem((int)ObjectIndexes.Sardine) },
+				{ ObjectIndexes.Bream, new FishItem((int)ObjectIndexes.Bream) },
+				{ ObjectIndexes.LargemouthBass, new FishItem((int)ObjectIndexes.LargemouthBass) },
+				{ ObjectIndexes.SmallmouthBass, new FishItem((int)ObjectIndexes.SmallmouthBass) },
+				{ ObjectIndexes.RainbowTrout, new FishItem((int)ObjectIndexes.RainbowTrout) },
+				{ ObjectIndexes.Salmon, new FishItem((int)ObjectIndexes.Salmon) },
+				{ ObjectIndexes.Walleye, new FishItem((int)ObjectIndexes.Walleye) },
+				{ ObjectIndexes.Perch, new FishItem((int)ObjectIndexes.Perch) },
+				{ ObjectIndexes.Carp, new FishItem((int)ObjectIndexes.Carp) },
+				{ ObjectIndexes.Catfish, new FishItem((int)ObjectIndexes.Catfish) },
+				{ ObjectIndexes.Pike, new FishItem((int)ObjectIndexes.Pike) },
+				{ ObjectIndexes.Sunfish, new FishItem((int)ObjectIndexes.Sunfish) },
+				{ ObjectIndexes.RedMullet, new FishItem((int)ObjectIndexes.RedMullet) },
+				{ ObjectIndexes.Herring, new FishItem((int)ObjectIndexes.Herring) },
+				{ ObjectIndexes.Eel, new FishItem((int)ObjectIndexes.Eel) },
+				{ ObjectIndexes.Octopus, new FishItem((int)ObjectIndexes.Octopus) },
+				{ ObjectIndexes.RedSnapper, new FishItem((int)ObjectIndexes.RedSnapper) },
+				{ ObjectIndexes.Squid, new FishItem((int)ObjectIndexes.Squid) },
+				{ ObjectIndexes.SeaCucumber, new FishItem((int)ObjectIndexes.SeaCucumber) },
+				{ ObjectIndexes.SuperCucumber, new FishItem((int)ObjectIndexes.SuperCucumber) },
+				{ ObjectIndexes.Ghostfish, new FishItem((int)ObjectIndexes.Ghostfish) },
+				{ ObjectIndexes.Stonefish, new FishItem((int)ObjectIndexes.Stonefish) },
+				{ ObjectIndexes.IcePip, new FishItem((int)ObjectIndexes.IcePip) },
+				{ ObjectIndexes.LavaEel, new FishItem((int)ObjectIndexes.LavaEel) },
+				{ ObjectIndexes.Sandfish, new FishItem((int)ObjectIndexes.Sandfish) },
+				{ ObjectIndexes.ScorpionCarp, new FishItem((int)ObjectIndexes.ScorpionCarp) },
+				{ ObjectIndexes.Flounder, new FishItem((int)ObjectIndexes.Flounder) },
+				{ ObjectIndexes.MidnightCarp, new FishItem((int)ObjectIndexes.MidnightCarp) },
+				{ ObjectIndexes.Sturgeon, new FishItem((int)ObjectIndexes.Sturgeon) },
+				{ ObjectIndexes.TigerTrout, new FishItem((int)ObjectIndexes.TigerTrout) },
+				{ ObjectIndexes.Bullhead, new FishItem((int)ObjectIndexes.Bullhead) },
+				{ ObjectIndexes.Tilapia, new FishItem((int)ObjectIndexes.Tilapia) },
+				{ ObjectIndexes.Chub, new FishItem((int)ObjectIndexes.Chub) },
+				{ ObjectIndexes.Dorado, new FishItem((int)ObjectIndexes.Dorado) },
+				{ ObjectIndexes.Albacore, new FishItem((int)ObjectIndexes.Albacore) },
+				{ ObjectIndexes.Shad, new FishItem((int)ObjectIndexes.Shad) },
+				{ ObjectIndexes.Lingcod, new FishItem((int)ObjectIndexes.Lingcod) },
+				{ ObjectIndexes.Halibut, new FishItem((int)ObjectIndexes.Halibut) },
+				{ ObjectIndexes.Woodskip, new FishItem((int)ObjectIndexes.Woodskip) },
+				{ ObjectIndexes.VoidSalmon, new FishItem((int)ObjectIndexes.VoidSalmon, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.Slimejack, new FishItem((int)ObjectIndexes.Slimejack, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.MidnightSquid, new FishItem((int)ObjectIndexes.MidnightSquid, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.SpookFish, new FishItem((int)ObjectIndexes.SpookFish, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.Blobfish, new FishItem((int)ObjectIndexes.Blobfish, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.Crimsonfish, new FishItem((int)ObjectIndexes.Crimsonfish, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.Angler, new FishItem((int)ObjectIndexes.Angler, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.Legend, new FishItem((int)ObjectIndexes.Legend, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.Glacierfish, new FishItem((int)ObjectIndexes.Glacierfish, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.MutantCarp, new FishItem((int)ObjectIndexes.MutantCarp, ObtainingDifficulties.EndgameItem) },
 
 				// Crab pot specific
-				{ (int)ObjectIndexes.Lobster, new CrabPotItem((int)ObjectIndexes.Lobster) },
-				{ (int)ObjectIndexes.Crab, new CrabPotItem((int)ObjectIndexes.Crab) },
-				{ (int)ObjectIndexes.Shrimp, new CrabPotItem((int)ObjectIndexes.Shrimp) },
-				{ (int)ObjectIndexes.Crayfish, new CrabPotItem((int)ObjectIndexes.Crayfish) },
-				{ (int)ObjectIndexes.Snail, new CrabPotItem((int)ObjectIndexes.Snail) },
-				{ (int)ObjectIndexes.Periwinkle, new CrabPotItem((int)ObjectIndexes.Periwinkle) },
+				{ ObjectIndexes.Lobster, new CrabPotItem((int)ObjectIndexes.Lobster) },
+				{ ObjectIndexes.Crab, new CrabPotItem((int)ObjectIndexes.Crab) },
+				{ ObjectIndexes.Shrimp, new CrabPotItem((int)ObjectIndexes.Shrimp) },
+				{ ObjectIndexes.Crayfish, new CrabPotItem((int)ObjectIndexes.Crayfish) },
+				{ ObjectIndexes.Snail, new CrabPotItem((int)ObjectIndexes.Snail) },
+				{ ObjectIndexes.Periwinkle, new CrabPotItem((int)ObjectIndexes.Periwinkle) },
 
 				// Items you can find in the mines
-				{ (int)ObjectIndexes.CaveCarrot, new Item((int)ObjectIndexes.CaveCarrot, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.BugMeat, new MonsterItem((int)ObjectIndexes.BugMeat, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.Slime, new MonsterItem((int)ObjectIndexes.Slime, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 10) } },
-				{ (int)ObjectIndexes.BatWing, new MonsterItem((int)ObjectIndexes.BatWing, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.VoidEssence, new MonsterItem((int)ObjectIndexes.VoidEssence, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.SolarEssence, new MonsterItem((int)ObjectIndexes.SolarEssence, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.SquidInk, new MonsterItem((int)ObjectIndexes.SquidInk, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.BoneFragment, new Item((int)ObjectIndexes.BoneFragment, ObtainingDifficulties.LargeTimeRequirements) },
-				{ (int)ObjectIndexes.GreenSlimeEgg, new Item((int)ObjectIndexes.GreenSlimeEgg, ObtainingDifficulties.LargeTimeRequirements) },
-				{ (int)ObjectIndexes.BlueSlimeEgg, new Item((int)ObjectIndexes.BlueSlimeEgg, ObtainingDifficulties.LargeTimeRequirements) },
-				{ (int)ObjectIndexes.RedSlimeEgg, new Item((int)ObjectIndexes.RedSlimeEgg, ObtainingDifficulties.EndgameItem) },
-				{ (int)ObjectIndexes.PurpleSlimeEgg, new Item((int)ObjectIndexes.PurpleSlimeEgg, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.CaveCarrot, new Item((int)ObjectIndexes.CaveCarrot, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.BugMeat, new MonsterItem((int)ObjectIndexes.BugMeat, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.Slime, new MonsterItem((int)ObjectIndexes.Slime, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 10) } },
+				{ ObjectIndexes.BatWing, new MonsterItem((int)ObjectIndexes.BatWing, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.VoidEssence, new MonsterItem((int)ObjectIndexes.VoidEssence, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.SolarEssence, new MonsterItem((int)ObjectIndexes.SolarEssence, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.SquidInk, new MonsterItem((int)ObjectIndexes.SquidInk, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.BoneFragment, new Item((int)ObjectIndexes.BoneFragment, ObtainingDifficulties.LargeTimeRequirements) },
+				{ ObjectIndexes.GreenSlimeEgg, new Item((int)ObjectIndexes.GreenSlimeEgg, ObtainingDifficulties.LargeTimeRequirements) },
+				{ ObjectIndexes.BlueSlimeEgg, new Item((int)ObjectIndexes.BlueSlimeEgg, ObtainingDifficulties.LargeTimeRequirements) },
+				{ ObjectIndexes.RedSlimeEgg, new Item((int)ObjectIndexes.RedSlimeEgg, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.PurpleSlimeEgg, new Item((int)ObjectIndexes.PurpleSlimeEgg, ObtainingDifficulties.EndgameItem) },
 
-				{ (int)ObjectIndexes.Coal, new Item((int)ObjectIndexes.Coal, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.CopperOre, new Item((int)ObjectIndexes.CopperOre, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.IronOre, new Item((int)ObjectIndexes.IronOre, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.GoldOre, new Item((int)ObjectIndexes.GoldOre, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
-				{ (int)ObjectIndexes.IridiumOre, new Item((int)ObjectIndexes.IridiumOre, ObtainingDifficulties.EndgameItem) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.Coal, new Item((int)ObjectIndexes.Coal, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.CopperOre, new Item((int)ObjectIndexes.CopperOre, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.IronOre, new Item((int)ObjectIndexes.IronOre, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.GoldOre, new Item((int)ObjectIndexes.GoldOre, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 5) } },
+				{ ObjectIndexes.IridiumOre, new Item((int)ObjectIndexes.IridiumOre, ObtainingDifficulties.EndgameItem) { ItemsRequiredForRecipe = new Range(1, 5) } },
 
-				{ (int)ObjectIndexes.Quartz, new Item((int)ObjectIndexes.Quartz, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.FireQuartz, new Item((int)ObjectIndexes.FireQuartz, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.EarthCrystal, new Item((int)ObjectIndexes.EarthCrystal, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.FrozenTear, new Item((int)ObjectIndexes.FrozenTear, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.Quartz, new Item((int)ObjectIndexes.Quartz, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.FireQuartz, new Item((int)ObjectIndexes.FireQuartz, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.EarthCrystal, new Item((int)ObjectIndexes.EarthCrystal, ObtainingDifficulties.SmallTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.FrozenTear, new Item((int)ObjectIndexes.FrozenTear, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
 
-				{ (int)ObjectIndexes.Geode, new Item((int)ObjectIndexes.Geode, ObtainingDifficulties.SmallTimeRequirements) },
-				{ (int)ObjectIndexes.FrozenGeode, new Item((int)ObjectIndexes.FrozenGeode, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
-				{ (int)ObjectIndexes.MagmaGeode, new Item((int)ObjectIndexes.MagmaGeode, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 2) } },
-				{ (int)ObjectIndexes.OmniGeode, new Item((int)ObjectIndexes.OmniGeode, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.Geode, new Item((int)ObjectIndexes.Geode, ObtainingDifficulties.SmallTimeRequirements) },
+				{ ObjectIndexes.FrozenGeode, new Item((int)ObjectIndexes.FrozenGeode, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 3) } },
+				{ ObjectIndexes.MagmaGeode, new Item((int)ObjectIndexes.MagmaGeode, ObtainingDifficulties.MediumTimeRequirements) { ItemsRequiredForRecipe = new Range(1, 2) } },
+				{ ObjectIndexes.OmniGeode, new Item((int)ObjectIndexes.OmniGeode, ObtainingDifficulties.MediumTimeRequirements) },
 
-				{ (int)ObjectIndexes.Aquamarine, new Item((int)ObjectIndexes.Aquamarine, ObtainingDifficulties.MediumTimeRequirements) },
-				{ (int)ObjectIndexes.Amethyst, new Item((int)ObjectIndexes.Amethyst, ObtainingDifficulties.MediumTimeRequirements) },
-				{ (int)ObjectIndexes.Emerald, new Item((int)ObjectIndexes.Emerald, ObtainingDifficulties.MediumTimeRequirements) },
-				{ (int)ObjectIndexes.Ruby, new Item((int)ObjectIndexes.Ruby, ObtainingDifficulties.MediumTimeRequirements) },
-				{ (int)ObjectIndexes.Topaz, new Item((int)ObjectIndexes.Topaz, ObtainingDifficulties.MediumTimeRequirements) },
-				{ (int)ObjectIndexes.Jade, new Item((int)ObjectIndexes.Jade, ObtainingDifficulties.MediumTimeRequirements) },
-				{ (int)ObjectIndexes.Diamond, new Item((int)ObjectIndexes.Diamond, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.Aquamarine, new Item((int)ObjectIndexes.Aquamarine, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.Amethyst, new Item((int)ObjectIndexes.Amethyst, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.Emerald, new Item((int)ObjectIndexes.Emerald, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.Ruby, new Item((int)ObjectIndexes.Ruby, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.Topaz, new Item((int)ObjectIndexes.Topaz, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.Jade, new Item((int)ObjectIndexes.Jade, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.Diamond, new Item((int)ObjectIndexes.Diamond, ObtainingDifficulties.MediumTimeRequirements) },
 
 				// Geode mineral items - ObtainingDifficulties.LargeTimeRequirements
-				{ (int)ObjectIndexes.Alamite, new GeodeMineralItem((int)ObjectIndexes.Alamite) },
-				{ (int)ObjectIndexes.Calcite, new GeodeMineralItem((int)ObjectIndexes.Calcite) },
-				{ (int)ObjectIndexes.Celestine, new GeodeMineralItem((int)ObjectIndexes.Celestine) },
-				{ (int)ObjectIndexes.Granite, new GeodeMineralItem((int)ObjectIndexes.Granite) },
-				{ (int)ObjectIndexes.Jagoite, new GeodeMineralItem((int)ObjectIndexes.Jagoite) },
-				{ (int)ObjectIndexes.Jamborite, new GeodeMineralItem((int)ObjectIndexes.Jamborite) },
-				{ (int)ObjectIndexes.Limestone, new GeodeMineralItem((int)ObjectIndexes.Limestone) },
-				{ (int)ObjectIndexes.Malachite, new GeodeMineralItem((int)ObjectIndexes.Malachite) },
-				{ (int)ObjectIndexes.Mudstone, new GeodeMineralItem((int)ObjectIndexes.Mudstone) },
-				{ (int)ObjectIndexes.Nekoite, new GeodeMineralItem((int)ObjectIndexes.Nekoite) },
-				{ (int)ObjectIndexes.Orpiment, new GeodeMineralItem((int)ObjectIndexes.Orpiment) },
-				{ (int)ObjectIndexes.PetrifiedSlime, new GeodeMineralItem((int)ObjectIndexes.PetrifiedSlime) },
-				{ (int)ObjectIndexes.Sandstone, new GeodeMineralItem((int)ObjectIndexes.Sandstone) },
-				{ (int)ObjectIndexes.Slate, new GeodeMineralItem((int)ObjectIndexes.Slate) },
-				{ (int)ObjectIndexes.ThunderEgg, new GeodeMineralItem((int)ObjectIndexes.ThunderEgg) },
+				{ ObjectIndexes.Alamite, new GeodeMineralItem((int)ObjectIndexes.Alamite) },
+				{ ObjectIndexes.Calcite, new GeodeMineralItem((int)ObjectIndexes.Calcite) },
+				{ ObjectIndexes.Celestine, new GeodeMineralItem((int)ObjectIndexes.Celestine) },
+				{ ObjectIndexes.Granite, new GeodeMineralItem((int)ObjectIndexes.Granite) },
+				{ ObjectIndexes.Jagoite, new GeodeMineralItem((int)ObjectIndexes.Jagoite) },
+				{ ObjectIndexes.Jamborite, new GeodeMineralItem((int)ObjectIndexes.Jamborite) },
+				{ ObjectIndexes.Limestone, new GeodeMineralItem((int)ObjectIndexes.Limestone) },
+				{ ObjectIndexes.Malachite, new GeodeMineralItem((int)ObjectIndexes.Malachite) },
+				{ ObjectIndexes.Mudstone, new GeodeMineralItem((int)ObjectIndexes.Mudstone) },
+				{ ObjectIndexes.Nekoite, new GeodeMineralItem((int)ObjectIndexes.Nekoite) },
+				{ ObjectIndexes.Orpiment, new GeodeMineralItem((int)ObjectIndexes.Orpiment) },
+				{ ObjectIndexes.PetrifiedSlime, new GeodeMineralItem((int)ObjectIndexes.PetrifiedSlime) },
+				{ ObjectIndexes.Sandstone, new GeodeMineralItem((int)ObjectIndexes.Sandstone) },
+				{ ObjectIndexes.Slate, new GeodeMineralItem((int)ObjectIndexes.Slate) },
+				{ ObjectIndexes.ThunderEgg, new GeodeMineralItem((int)ObjectIndexes.ThunderEgg) },
 
-				{ (int)ObjectIndexes.Aerinite, new GeodeMineralItem((int)ObjectIndexes.Aerinite) },
-				{ (int)ObjectIndexes.Esperite, new GeodeMineralItem((int)ObjectIndexes.Esperite) },
-				{ (int)ObjectIndexes.FairyStone, new GeodeMineralItem((int)ObjectIndexes.FairyStone) },
-				{ (int)ObjectIndexes.Fluorapatite, new GeodeMineralItem((int)ObjectIndexes.Fluorapatite) },
-				{ (int)ObjectIndexes.Geminite, new GeodeMineralItem((int)ObjectIndexes.Geminite) },
-				{ (int)ObjectIndexes.GhostCrystal, new GeodeMineralItem((int)ObjectIndexes.GhostCrystal) },
-				{ (int)ObjectIndexes.Hematite, new GeodeMineralItem((int)ObjectIndexes.Hematite) },
-				{ (int)ObjectIndexes.Kyanite, new GeodeMineralItem((int)ObjectIndexes.Kyanite) },
-				{ (int)ObjectIndexes.Lunarite, new GeodeMineralItem((int)ObjectIndexes.Lunarite) },
-				{ (int)ObjectIndexes.Marble, new GeodeMineralItem((int)ObjectIndexes.Marble) },
-				{ (int)ObjectIndexes.OceanStone, new GeodeMineralItem((int)ObjectIndexes.OceanStone) },
-				{ (int)ObjectIndexes.Opal, new GeodeMineralItem((int)ObjectIndexes.Opal) },
-				{ (int)ObjectIndexes.Pyrite, new GeodeMineralItem((int)ObjectIndexes.Pyrite) },
-				{ (int)ObjectIndexes.Soapstone, new GeodeMineralItem((int)ObjectIndexes.Soapstone) },
+				{ ObjectIndexes.Aerinite, new GeodeMineralItem((int)ObjectIndexes.Aerinite) },
+				{ ObjectIndexes.Esperite, new GeodeMineralItem((int)ObjectIndexes.Esperite) },
+				{ ObjectIndexes.FairyStone, new GeodeMineralItem((int)ObjectIndexes.FairyStone) },
+				{ ObjectIndexes.Fluorapatite, new GeodeMineralItem((int)ObjectIndexes.Fluorapatite) },
+				{ ObjectIndexes.Geminite, new GeodeMineralItem((int)ObjectIndexes.Geminite) },
+				{ ObjectIndexes.GhostCrystal, new GeodeMineralItem((int)ObjectIndexes.GhostCrystal) },
+				{ ObjectIndexes.Hematite, new GeodeMineralItem((int)ObjectIndexes.Hematite) },
+				{ ObjectIndexes.Kyanite, new GeodeMineralItem((int)ObjectIndexes.Kyanite) },
+				{ ObjectIndexes.Lunarite, new GeodeMineralItem((int)ObjectIndexes.Lunarite) },
+				{ ObjectIndexes.Marble, new GeodeMineralItem((int)ObjectIndexes.Marble) },
+				{ ObjectIndexes.OceanStone, new GeodeMineralItem((int)ObjectIndexes.OceanStone) },
+				{ ObjectIndexes.Opal, new GeodeMineralItem((int)ObjectIndexes.Opal) },
+				{ ObjectIndexes.Pyrite, new GeodeMineralItem((int)ObjectIndexes.Pyrite) },
+				{ ObjectIndexes.Soapstone, new GeodeMineralItem((int)ObjectIndexes.Soapstone) },
 
-				{ (int)ObjectIndexes.Baryte, new GeodeMineralItem((int)ObjectIndexes.Baryte) },
-				{ (int)ObjectIndexes.Basalt, new GeodeMineralItem((int)ObjectIndexes.Basalt) },
-				{ (int)ObjectIndexes.Bixite, new GeodeMineralItem((int)ObjectIndexes.Bixite) },
-				{ (int)ObjectIndexes.Dolomite, new GeodeMineralItem((int)ObjectIndexes.Dolomite) },
-				{ (int)ObjectIndexes.FireOpal, new GeodeMineralItem((int)ObjectIndexes.FireOpal) },
-				{ (int)ObjectIndexes.Helvite, new GeodeMineralItem((int)ObjectIndexes.Helvite) },
-				{ (int)ObjectIndexes.Jasper, new GeodeMineralItem((int)ObjectIndexes.Jasper) },
-				{ (int)ObjectIndexes.LemonStone, new GeodeMineralItem((int)ObjectIndexes.LemonStone) },
-				{ (int)ObjectIndexes.Neptunite, new GeodeMineralItem((int)ObjectIndexes.Neptunite) },
-				{ (int)ObjectIndexes.Obsidian, new GeodeMineralItem((int)ObjectIndexes.Obsidian) },
-				{ (int)ObjectIndexes.StarShards, new GeodeMineralItem((int)ObjectIndexes.StarShards) },
-				{ (int)ObjectIndexes.Tigerseye, new GeodeMineralItem((int)ObjectIndexes.Tigerseye) },
+				{ ObjectIndexes.Baryte, new GeodeMineralItem((int)ObjectIndexes.Baryte) },
+				{ ObjectIndexes.Basalt, new GeodeMineralItem((int)ObjectIndexes.Basalt) },
+				{ ObjectIndexes.Bixite, new GeodeMineralItem((int)ObjectIndexes.Bixite) },
+				{ ObjectIndexes.Dolomite, new GeodeMineralItem((int)ObjectIndexes.Dolomite) },
+				{ ObjectIndexes.FireOpal, new GeodeMineralItem((int)ObjectIndexes.FireOpal) },
+				{ ObjectIndexes.Helvite, new GeodeMineralItem((int)ObjectIndexes.Helvite) },
+				{ ObjectIndexes.Jasper, new GeodeMineralItem((int)ObjectIndexes.Jasper) },
+				{ ObjectIndexes.LemonStone, new GeodeMineralItem((int)ObjectIndexes.LemonStone) },
+				{ ObjectIndexes.Neptunite, new GeodeMineralItem((int)ObjectIndexes.Neptunite) },
+				{ ObjectIndexes.Obsidian, new GeodeMineralItem((int)ObjectIndexes.Obsidian) },
+				{ ObjectIndexes.StarShards, new GeodeMineralItem((int)ObjectIndexes.StarShards) },
+				{ ObjectIndexes.Tigerseye, new GeodeMineralItem((int)ObjectIndexes.Tigerseye) },
 
 				// Rings - a few of them are craftable
-				{ (int)ObjectIndexes.SmallGlowRing, new RingItem((int)ObjectIndexes.SmallGlowRing) },
-				{ (int)ObjectIndexes.GlowRing, new RingItem((int)ObjectIndexes.GlowRing) },
-				{ (int)ObjectIndexes.SmallMagnetRing, new RingItem((int)ObjectIndexes.SmallMagnetRing) },
-				{ (int)ObjectIndexes.MagnetRing, new RingItem((int)ObjectIndexes.MagnetRing) },
-				{ (int)ObjectIndexes.SlimeCharmerRing, new RingItem((int)ObjectIndexes.SlimeCharmerRing) },
-				{ (int)ObjectIndexes.VampireRing, new RingItem((int)ObjectIndexes.VampireRing) },
-				{ (int)ObjectIndexes.SavageRing, new RingItem((int)ObjectIndexes.SavageRing) },
-				{ (int)ObjectIndexes.BurglarsRing, new RingItem((int)ObjectIndexes.BurglarsRing) },
-				{ (int)ObjectIndexes.AmethystRing, new RingItem((int)ObjectIndexes.AmethystRing) },
-				{ (int)ObjectIndexes.TopazRing, new RingItem((int)ObjectIndexes.TopazRing) },
-				{ (int)ObjectIndexes.AquamarineRing, new RingItem((int)ObjectIndexes.AquamarineRing) },
-				{ (int)ObjectIndexes.JadeRing, new RingItem((int)ObjectIndexes.JadeRing) },
-				{ (int)ObjectIndexes.EmeraldRing, new RingItem((int)ObjectIndexes.EmeraldRing) },
-				{ (int)ObjectIndexes.RubyRing, new RingItem((int)ObjectIndexes.RubyRing) },
+				{ ObjectIndexes.SmallGlowRing, new RingItem((int)ObjectIndexes.SmallGlowRing) },
+				{ ObjectIndexes.GlowRing, new RingItem((int)ObjectIndexes.GlowRing) },
+				{ ObjectIndexes.SmallMagnetRing, new RingItem((int)ObjectIndexes.SmallMagnetRing) },
+				{ ObjectIndexes.MagnetRing, new RingItem((int)ObjectIndexes.MagnetRing) },
+				{ ObjectIndexes.SlimeCharmerRing, new RingItem((int)ObjectIndexes.SlimeCharmerRing) },
+				{ ObjectIndexes.VampireRing, new RingItem((int)ObjectIndexes.VampireRing) },
+				{ ObjectIndexes.SavageRing, new RingItem((int)ObjectIndexes.SavageRing) },
+				{ ObjectIndexes.BurglarsRing, new RingItem((int)ObjectIndexes.BurglarsRing) },
+				{ ObjectIndexes.AmethystRing, new RingItem((int)ObjectIndexes.AmethystRing) },
+				{ ObjectIndexes.TopazRing, new RingItem((int)ObjectIndexes.TopazRing) },
+				{ ObjectIndexes.AquamarineRing, new RingItem((int)ObjectIndexes.AquamarineRing) },
+				{ ObjectIndexes.JadeRing, new RingItem((int)ObjectIndexes.JadeRing) },
+				{ ObjectIndexes.EmeraldRing, new RingItem((int)ObjectIndexes.EmeraldRing) },
+				{ ObjectIndexes.RubyRing, new RingItem((int)ObjectIndexes.RubyRing) },
 
 				// Animal items - default is ObtainingDifficulties.MediumTimeRequirements, +1 for each building/large version/cheese press required
-				{ (int)ObjectIndexes.Honey, new AnimalItem((int)ObjectIndexes.Honey, ObtainingDifficulties.LargeTimeRequirements) { RequiresBeehouse = true } },
-				{ (int)ObjectIndexes.WhiteEgg, new AnimalItem((int)ObjectIndexes.WhiteEgg) },
-				{ (int)ObjectIndexes.LargeWhiteEgg, new AnimalItem((int)ObjectIndexes.LargeWhiteEgg, ObtainingDifficulties.LargeTimeRequirements) },
-				{ (int)ObjectIndexes.BrownEgg, new AnimalItem((int)ObjectIndexes.BrownEgg) },
-				{ (int)ObjectIndexes.LargeBrownEgg, new AnimalItem((int)ObjectIndexes.LargeBrownEgg, ObtainingDifficulties.LargeTimeRequirements) },
-				{ (int)ObjectIndexes.VoidEgg, new AnimalItem((int)ObjectIndexes.VoidEgg, ObtainingDifficulties.EndgameItem) },
-				{ (int)ObjectIndexes.Milk, new AnimalItem((int)ObjectIndexes.Milk) },
-				{ (int)ObjectIndexes.LargeMilk, new AnimalItem((int)ObjectIndexes.LargeMilk, ObtainingDifficulties.LargeTimeRequirements) },
-				{ (int)ObjectIndexes.GoatMilk, new AnimalItem((int)ObjectIndexes.GoatMilk, ObtainingDifficulties.LargeTimeRequirements) },
-				{ (int)ObjectIndexes.LargeGoatMilk, new AnimalItem((int)ObjectIndexes.LargeGoatMilk, ObtainingDifficulties.EndgameItem) },
-				{ (int)ObjectIndexes.DuckEgg, new AnimalItem((int)ObjectIndexes.DuckEgg, ObtainingDifficulties.LargeTimeRequirements) },
-				{ (int)ObjectIndexes.DuckFeather, new AnimalItem((int)ObjectIndexes.DuckFeather, ObtainingDifficulties.EndgameItem) },
-				{ (int)ObjectIndexes.Wool, new AnimalItem((int)ObjectIndexes.Wool, ObtainingDifficulties.EndgameItem) },
-				{ (int)ObjectIndexes.Cloth, new AnimalItem((int)ObjectIndexes.Cloth, ObtainingDifficulties.EndgameItem) },
-				{ (int)ObjectIndexes.RabbitsFoot, new AnimalItem((int)ObjectIndexes.RabbitsFoot, ObtainingDifficulties.EndgameItem) },
-				{ (int)ObjectIndexes.Truffle, new AnimalItem((int)ObjectIndexes.Truffle, ObtainingDifficulties.EndgameItem) },
-				{ (int)ObjectIndexes.TruffleOil, new AnimalItem((int)ObjectIndexes.TruffleOil, ObtainingDifficulties.EndgameItem) { RequiresOilMaker = true } },
-				{ (int)ObjectIndexes.Mayonnaise, new AnimalItem((int)ObjectIndexes.Mayonnaise) { IsMayonaisse = true } },
-				{ (int)ObjectIndexes.DuckMayonnaise, new AnimalItem((int)ObjectIndexes.DuckMayonnaise, ObtainingDifficulties.LargeTimeRequirements) { IsMayonaisse = true } },
-				{ (int)ObjectIndexes.VoidMayonnaise, new AnimalItem((int)ObjectIndexes.VoidMayonnaise, ObtainingDifficulties.EndgameItem) { IsMayonaisse = true } },
-				{ (int)ObjectIndexes.Cheese, new AnimalItem((int)ObjectIndexes.Cheese, ObtainingDifficulties.LargeTimeRequirements)},
-				{ (int)ObjectIndexes.GoatCheese, new AnimalItem((int) ObjectIndexes.GoatCheese, ObtainingDifficulties.EndgameItem)},
+				{ ObjectIndexes.Honey, new AnimalItem((int)ObjectIndexes.Honey, ObtainingDifficulties.LargeTimeRequirements) { RequiresBeehouse = true } },
+				{ ObjectIndexes.WhiteEgg, new AnimalItem((int)ObjectIndexes.WhiteEgg) },
+				{ ObjectIndexes.LargeWhiteEgg, new AnimalItem((int)ObjectIndexes.LargeWhiteEgg, ObtainingDifficulties.LargeTimeRequirements) },
+				{ ObjectIndexes.BrownEgg, new AnimalItem((int)ObjectIndexes.BrownEgg) },
+				{ ObjectIndexes.LargeBrownEgg, new AnimalItem((int)ObjectIndexes.LargeBrownEgg, ObtainingDifficulties.LargeTimeRequirements) },
+				{ ObjectIndexes.VoidEgg, new AnimalItem((int)ObjectIndexes.VoidEgg, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.Milk, new AnimalItem((int)ObjectIndexes.Milk) },
+				{ ObjectIndexes.LargeMilk, new AnimalItem((int)ObjectIndexes.LargeMilk, ObtainingDifficulties.LargeTimeRequirements) },
+				{ ObjectIndexes.GoatMilk, new AnimalItem((int)ObjectIndexes.GoatMilk, ObtainingDifficulties.LargeTimeRequirements) },
+				{ ObjectIndexes.LargeGoatMilk, new AnimalItem((int)ObjectIndexes.LargeGoatMilk, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.DuckEgg, new AnimalItem((int)ObjectIndexes.DuckEgg, ObtainingDifficulties.LargeTimeRequirements) },
+				{ ObjectIndexes.DuckFeather, new AnimalItem((int)ObjectIndexes.DuckFeather, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.Wool, new AnimalItem((int)ObjectIndexes.Wool, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.Cloth, new AnimalItem((int)ObjectIndexes.Cloth, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.RabbitsFoot, new AnimalItem((int)ObjectIndexes.RabbitsFoot, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.Truffle, new AnimalItem((int)ObjectIndexes.Truffle, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.TruffleOil, new AnimalItem((int)ObjectIndexes.TruffleOil, ObtainingDifficulties.EndgameItem) { RequiresOilMaker = true } },
+				{ ObjectIndexes.Mayonnaise, new AnimalItem((int)ObjectIndexes.Mayonnaise) { IsMayonaisse = true } },
+				{ ObjectIndexes.DuckMayonnaise, new AnimalItem((int)ObjectIndexes.DuckMayonnaise, ObtainingDifficulties.LargeTimeRequirements) { IsMayonaisse = true } },
+				{ ObjectIndexes.VoidMayonnaise, new AnimalItem((int)ObjectIndexes.VoidMayonnaise, ObtainingDifficulties.EndgameItem) { IsMayonaisse = true } },
+				{ ObjectIndexes.Cheese, new AnimalItem((int)ObjectIndexes.Cheese, ObtainingDifficulties.LargeTimeRequirements)},
+				{ ObjectIndexes.GoatCheese, new AnimalItem((int) ObjectIndexes.GoatCheese, ObtainingDifficulties.EndgameItem)},
 
 				// Artifacts and rare items
-				{ (int)ObjectIndexes.DwarfScrollI, new ArtifactItem((int)ObjectIndexes.DwarfScrollI) },
-				{ (int)ObjectIndexes.DwarfScrollII, new ArtifactItem((int)ObjectIndexes.DwarfScrollII) },
-				{ (int)ObjectIndexes.DwarfScrollIII, new ArtifactItem((int)ObjectIndexes.DwarfScrollIII) },
-				{ (int)ObjectIndexes.DwarfScrollIV, new ArtifactItem((int)ObjectIndexes.DwarfScrollIV) },
-				{ (int)ObjectIndexes.ChippedAmphora, new ArtifactItem((int)ObjectIndexes.ChippedAmphora) },
-				{ (int)ObjectIndexes.Arrowhead, new ArtifactItem((int)ObjectIndexes.Arrowhead) },
-				{ (int)ObjectIndexes.AncientDoll, new ArtifactItem((int)ObjectIndexes.AncientDoll) },
-				{ (int)ObjectIndexes.ElvishJewelry, new ArtifactItem((int)ObjectIndexes.ElvishJewelry) },
-				{ (int)ObjectIndexes.ChewingStick, new ArtifactItem((int)ObjectIndexes.ChewingStick) },
-				{ (int)ObjectIndexes.OrnamentalFan, new ArtifactItem((int)ObjectIndexes.OrnamentalFan) },
-				{ (int)ObjectIndexes.AncientSword, new ArtifactItem((int)ObjectIndexes.AncientSword) },
-				{ (int)ObjectIndexes.RustySpoon, new ArtifactItem((int)ObjectIndexes.RustySpoon) },
-				{ (int)ObjectIndexes.RustySpur, new ArtifactItem((int)ObjectIndexes.RustySpur) },
-				{ (int)ObjectIndexes.RustyCog, new ArtifactItem((int)ObjectIndexes.RustyCog) },
-				{ (int)ObjectIndexes.ChickenStatue, new ArtifactItem((int)ObjectIndexes.ChickenStatue) },
-				{ (int)ObjectIndexes.PrehistoricTool, new ArtifactItem((int)ObjectIndexes.PrehistoricTool) },
-				{ (int)ObjectIndexes.DriedStarfish, new ArtifactItem((int)ObjectIndexes.DriedStarfish) },
-				{ (int)ObjectIndexes.Anchor, new ArtifactItem((int)ObjectIndexes.Anchor) },
-				{ (int)ObjectIndexes.GlassShards, new ArtifactItem((int)ObjectIndexes.GlassShards) },
-				{ (int)ObjectIndexes.BoneFlute, new ArtifactItem((int)ObjectIndexes.BoneFlute) },
-				{ (int)ObjectIndexes.PrehistoricHandaxe, new ArtifactItem((int)ObjectIndexes.PrehistoricHandaxe) },
-				{ (int)ObjectIndexes.DwarvishHelm, new ArtifactItem((int)ObjectIndexes.DwarvishHelm) },
-				{ (int)ObjectIndexes.DwarfGadget, new ArtifactItem((int)ObjectIndexes.DwarfGadget) },
-				{ (int)ObjectIndexes.AncientDrum, new ArtifactItem((int)ObjectIndexes.AncientDrum) },
-				{ (int)ObjectIndexes.PrehistoricScapula, new ArtifactItem((int)ObjectIndexes.PrehistoricScapula) },
-				{ (int)ObjectIndexes.PrehistoricTibia, new ArtifactItem((int)ObjectIndexes.PrehistoricTibia) },
-				{ (int)ObjectIndexes.PrehistoricSkull, new ArtifactItem((int)ObjectIndexes.PrehistoricSkull) },
-				{ (int)ObjectIndexes.SkeletalHand, new ArtifactItem((int)ObjectIndexes.SkeletalHand) },
-				{ (int)ObjectIndexes.PrehistoricRib, new ArtifactItem((int)ObjectIndexes.PrehistoricRib) },
-				{ (int)ObjectIndexes.PrehistoricVertebra, new ArtifactItem((int)ObjectIndexes.PrehistoricVertebra) },
-				{ (int)ObjectIndexes.SkeletalTail, new ArtifactItem((int)ObjectIndexes.SkeletalTail) },
-				{ (int)ObjectIndexes.NautilusFossil, new ArtifactItem((int)ObjectIndexes.NautilusFossil) },
-				{ (int)ObjectIndexes.AmphibianFossil, new ArtifactItem((int)ObjectIndexes.AmphibianFossil) },
-				{ (int)ObjectIndexes.PalmFossil, new ArtifactItem((int)ObjectIndexes.PalmFossil) },
-				{ (int)ObjectIndexes.Trilobite, new ArtifactItem((int)ObjectIndexes.Trilobite) },
+				{ ObjectIndexes.DwarfScrollI, new ArtifactItem((int)ObjectIndexes.DwarfScrollI) },
+				{ ObjectIndexes.DwarfScrollII, new ArtifactItem((int)ObjectIndexes.DwarfScrollII) },
+				{ ObjectIndexes.DwarfScrollIII, new ArtifactItem((int)ObjectIndexes.DwarfScrollIII) },
+				{ ObjectIndexes.DwarfScrollIV, new ArtifactItem((int)ObjectIndexes.DwarfScrollIV) },
+				{ ObjectIndexes.ChippedAmphora, new ArtifactItem((int)ObjectIndexes.ChippedAmphora) },
+				{ ObjectIndexes.Arrowhead, new ArtifactItem((int)ObjectIndexes.Arrowhead) },
+				{ ObjectIndexes.AncientDoll, new ArtifactItem((int)ObjectIndexes.AncientDoll) },
+				{ ObjectIndexes.ElvishJewelry, new ArtifactItem((int)ObjectIndexes.ElvishJewelry) },
+				{ ObjectIndexes.ChewingStick, new ArtifactItem((int)ObjectIndexes.ChewingStick) },
+				{ ObjectIndexes.OrnamentalFan, new ArtifactItem((int)ObjectIndexes.OrnamentalFan) },
+				{ ObjectIndexes.AncientSword, new ArtifactItem((int)ObjectIndexes.AncientSword) },
+				{ ObjectIndexes.RustySpoon, new ArtifactItem((int)ObjectIndexes.RustySpoon) },
+				{ ObjectIndexes.RustySpur, new ArtifactItem((int)ObjectIndexes.RustySpur) },
+				{ ObjectIndexes.RustyCog, new ArtifactItem((int)ObjectIndexes.RustyCog) },
+				{ ObjectIndexes.ChickenStatue, new ArtifactItem((int)ObjectIndexes.ChickenStatue) },
+				{ ObjectIndexes.PrehistoricTool, new ArtifactItem((int)ObjectIndexes.PrehistoricTool) },
+				{ ObjectIndexes.DriedStarfish, new ArtifactItem((int)ObjectIndexes.DriedStarfish) },
+				{ ObjectIndexes.Anchor, new ArtifactItem((int)ObjectIndexes.Anchor) },
+				{ ObjectIndexes.GlassShards, new ArtifactItem((int)ObjectIndexes.GlassShards) },
+				{ ObjectIndexes.BoneFlute, new ArtifactItem((int)ObjectIndexes.BoneFlute) },
+				{ ObjectIndexes.PrehistoricHandaxe, new ArtifactItem((int)ObjectIndexes.PrehistoricHandaxe) },
+				{ ObjectIndexes.DwarvishHelm, new ArtifactItem((int)ObjectIndexes.DwarvishHelm) },
+				{ ObjectIndexes.DwarfGadget, new ArtifactItem((int)ObjectIndexes.DwarfGadget) },
+				{ ObjectIndexes.AncientDrum, new ArtifactItem((int)ObjectIndexes.AncientDrum) },
+				{ ObjectIndexes.PrehistoricScapula, new ArtifactItem((int)ObjectIndexes.PrehistoricScapula) },
+				{ ObjectIndexes.PrehistoricTibia, new ArtifactItem((int)ObjectIndexes.PrehistoricTibia) },
+				{ ObjectIndexes.PrehistoricSkull, new ArtifactItem((int)ObjectIndexes.PrehistoricSkull) },
+				{ ObjectIndexes.SkeletalHand, new ArtifactItem((int)ObjectIndexes.SkeletalHand) },
+				{ ObjectIndexes.PrehistoricRib, new ArtifactItem((int)ObjectIndexes.PrehistoricRib) },
+				{ ObjectIndexes.PrehistoricVertebra, new ArtifactItem((int)ObjectIndexes.PrehistoricVertebra) },
+				{ ObjectIndexes.SkeletalTail, new ArtifactItem((int)ObjectIndexes.SkeletalTail) },
+				{ ObjectIndexes.NautilusFossil, new ArtifactItem((int)ObjectIndexes.NautilusFossil) },
+				{ ObjectIndexes.AmphibianFossil, new ArtifactItem((int)ObjectIndexes.AmphibianFossil) },
+				{ ObjectIndexes.PalmFossil, new ArtifactItem((int)ObjectIndexes.PalmFossil) },
+				{ ObjectIndexes.Trilobite, new ArtifactItem((int)ObjectIndexes.Trilobite) },
 
-				{ (int)ObjectIndexes.StrangeDoll1, new Item((int)ObjectIndexes.StrangeDoll1, ObtainingDifficulties.RareItem) },
-				{ (int)ObjectIndexes.StrangeDoll2, new Item((int)ObjectIndexes.StrangeDoll2, ObtainingDifficulties.RareItem) },
-				{ (int)ObjectIndexes.PrismaticShard, new Item((int)ObjectIndexes.PrismaticShard, ObtainingDifficulties.RareItem) },
-				{ (int)ObjectIndexes.DinosaurEgg, new ArtifactItem((int)ObjectIndexes.DinosaurEgg, ObtainingDifficulties.RareItem) },
-				{ (int)ObjectIndexes.RareDisc, new ArtifactItem((int)ObjectIndexes.RareDisc, ObtainingDifficulties.RareItem) },
-				{ (int)ObjectIndexes.GoldenMask, new ArtifactItem((int)ObjectIndexes.GoldenMask, ObtainingDifficulties.RareItem) },
-				{ (int)ObjectIndexes.GoldenRelic, new ArtifactItem((int)ObjectIndexes.GoldenRelic, ObtainingDifficulties.RareItem) },
-				{ (int)ObjectIndexes.AncientSeed, new ArtifactItem((int)ObjectIndexes.AncientSeed, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.StrangeDoll1, new Item((int)ObjectIndexes.StrangeDoll1, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.StrangeDoll2, new Item((int)ObjectIndexes.StrangeDoll2, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.PrismaticShard, new Item((int)ObjectIndexes.PrismaticShard, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.DinosaurEgg, new ArtifactItem((int)ObjectIndexes.DinosaurEgg, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.RareDisc, new ArtifactItem((int)ObjectIndexes.RareDisc, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.GoldenMask, new ArtifactItem((int)ObjectIndexes.GoldenMask, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.GoldenRelic, new ArtifactItem((int)ObjectIndexes.GoldenRelic, ObtainingDifficulties.RareItem) },
+				{ ObjectIndexes.AncientSeed, new ArtifactItem((int)ObjectIndexes.AncientSeed, ObtainingDifficulties.RareItem) },
 
 				// Items on Ginger Island - not randomizing yet, so marking as impossible
-				{ (int)ObjectIndexes.TaroRoot, new Item((int)ObjectIndexes.TaroRoot, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.TaroTuber, new Item((int)ObjectIndexes.TaroTuber, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.Pineapple, new Item((int)ObjectIndexes.Pineapple, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.PineappleSeeds, new Item((int)ObjectIndexes.PineappleSeeds, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.CinderShard, new Item((int)ObjectIndexes.CinderShard, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.MagmaCap, new Item((int)ObjectIndexes.MagmaCap, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.DragonTooth, new Item((int)ObjectIndexes.DragonTooth, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.TaroRoot, new Item((int)ObjectIndexes.TaroRoot, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.TaroTuber, new Item((int)ObjectIndexes.TaroTuber, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.Pineapple, new Item((int)ObjectIndexes.Pineapple, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.PineappleSeeds, new Item((int)ObjectIndexes.PineappleSeeds, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.CinderShard, new Item((int)ObjectIndexes.CinderShard, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.MagmaCap, new Item((int)ObjectIndexes.MagmaCap, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.DragonTooth, new Item((int)ObjectIndexes.DragonTooth, ObtainingDifficulties.Impossible) },
 
 				// Misc - those marked as impossible you can only get a limited amount of
-				{ (int)ObjectIndexes.Battery, new Item((int)ObjectIndexes.Battery, ObtainingDifficulties.LargeTimeRequirements) },
-				{ (int)ObjectIndexes.LuckyPurpleShorts, new Item((int)ObjectIndexes.LuckyPurpleShorts, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.LostAxe, new Item((int)ObjectIndexes.LostAxe, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.BerryBasket, new Item((int)ObjectIndexes.BerryBasket, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.Pearl, new Item((int)ObjectIndexes.Pearl, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.IridiumMilk, new Item((int)ObjectIndexes.IridiumMilk, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.DecorativePot, new Item((int)ObjectIndexes.DecorativePot, ObtainingDifficulties.Impossible) { CanStack = false } },
-				{ (int)ObjectIndexes.DrumBlock, new Item((int)ObjectIndexes.DrumBlock, ObtainingDifficulties.Impossible) { CanStack = false } },
-				{ (int)ObjectIndexes.FluteBlock, new Item((int)ObjectIndexes.FluteBlock, ObtainingDifficulties.Impossible) { CanStack = false } },
-				{ (int)ObjectIndexes.TeaSet, new Item((int)ObjectIndexes.TeaSet, ObtainingDifficulties.Impossible) { CanStack = false } },
-				{ (int)ObjectIndexes.PurpleMushroom, new Item((int)ObjectIndexes.PurpleMushroom, ObtainingDifficulties.MediumTimeRequirements) },
-				{ (int)ObjectIndexes.Mead, new Item((int)ObjectIndexes.Mead, ObtainingDifficulties.LargeTimeRequirements) { RequiresBeehouse = true, RequiresKeg = true } },
-				{ (int)ObjectIndexes.PaleAle, new Item((int)ObjectIndexes.PaleAle, ObtainingDifficulties.LargeTimeRequirements) { RequiresKeg = true } },
-				{ (int)ObjectIndexes.MermaidsPendant, new Item((int)ObjectIndexes.MermaidsPendant, ObtainingDifficulties.EndgameItem) { OverrideName = "Mermaid's Pendant" } },
-				{ (int)ObjectIndexes.TreasureChest, new Item((int)ObjectIndexes.TreasureChest, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.MuscleRemedy, new Item((int)ObjectIndexes.MuscleRemedy, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.EnergyTonic, new Item((int)ObjectIndexes.EnergyTonic, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.Stardrop, new Item((int)ObjectIndexes.Stardrop, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.Bouquet, new Item((int)ObjectIndexes.Bouquet, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.Vinegar, new Item((int)ObjectIndexes.Vinegar, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.Beer, new Item((int)ObjectIndexes.Beer, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.Wine, new Item((int)ObjectIndexes.Wine, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.Juice, new Item((int)ObjectIndexes.Juice, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.Jelly, new Item((int)ObjectIndexes.Jelly, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.Pickles, new Item((int)ObjectIndexes.Pickles, ObtainingDifficulties.Impossible) },
-				{ (int)ObjectIndexes.GoldenPumpkin, new Item((int)ObjectIndexes.GoldenPumpkin, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.Rice, new Item((int)ObjectIndexes.Rice, ObtainingDifficulties.MediumTimeRequirements) },
-				{ (int)ObjectIndexes.Salmonberry, new Item((int)ObjectIndexes.Salmonberry, ObtainingDifficulties.LargeTimeRequirements) },
-				{ (int)ObjectIndexes.GrassStarter, new Item((int)ObjectIndexes.GrassStarter, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.SpringOnion, new Item((int)ObjectIndexes.SpringOnion, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.Coffee, new Item((int)ObjectIndexes.Coffee, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.Battery, new Item((int)ObjectIndexes.Battery, ObtainingDifficulties.LargeTimeRequirements) },
+				{ ObjectIndexes.LuckyPurpleShorts, new Item((int)ObjectIndexes.LuckyPurpleShorts, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.LostAxe, new Item((int)ObjectIndexes.LostAxe, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.BerryBasket, new Item((int)ObjectIndexes.BerryBasket, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.Pearl, new Item((int)ObjectIndexes.Pearl, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.IridiumMilk, new Item((int)ObjectIndexes.IridiumMilk, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.DecorativePot, new Item((int)ObjectIndexes.DecorativePot, ObtainingDifficulties.Impossible) { CanStack = false } },
+				{ ObjectIndexes.DrumBlock, new Item((int)ObjectIndexes.DrumBlock, ObtainingDifficulties.Impossible) { CanStack = false } },
+				{ ObjectIndexes.FluteBlock, new Item((int)ObjectIndexes.FluteBlock, ObtainingDifficulties.Impossible) { CanStack = false } },
+				{ ObjectIndexes.TeaSet, new Item((int)ObjectIndexes.TeaSet, ObtainingDifficulties.Impossible) { CanStack = false } },
+				{ ObjectIndexes.PurpleMushroom, new Item((int)ObjectIndexes.PurpleMushroom, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.Mead, new Item((int)ObjectIndexes.Mead, ObtainingDifficulties.LargeTimeRequirements) { RequiresBeehouse = true, RequiresKeg = true } },
+				{ ObjectIndexes.PaleAle, new Item((int)ObjectIndexes.PaleAle, ObtainingDifficulties.LargeTimeRequirements) { RequiresKeg = true } },
+				{ ObjectIndexes.MermaidsPendant, new Item((int)ObjectIndexes.MermaidsPendant, ObtainingDifficulties.EndgameItem) { OverrideName = "Mermaid's Pendant" } },
+				{ ObjectIndexes.TreasureChest, new Item((int)ObjectIndexes.TreasureChest, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.MuscleRemedy, new Item((int)ObjectIndexes.MuscleRemedy, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.EnergyTonic, new Item((int)ObjectIndexes.EnergyTonic, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.Stardrop, new Item((int)ObjectIndexes.Stardrop, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.Bouquet, new Item((int)ObjectIndexes.Bouquet, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.Vinegar, new Item((int)ObjectIndexes.Vinegar, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.Beer, new Item((int)ObjectIndexes.Beer, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.Wine, new Item((int)ObjectIndexes.Wine, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.Juice, new Item((int)ObjectIndexes.Juice, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.Jelly, new Item((int)ObjectIndexes.Jelly, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.Pickles, new Item((int)ObjectIndexes.Pickles, ObtainingDifficulties.Impossible) },
+				{ ObjectIndexes.GoldenPumpkin, new Item((int)ObjectIndexes.GoldenPumpkin, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.Rice, new Item((int)ObjectIndexes.Rice, ObtainingDifficulties.MediumTimeRequirements) },
+				{ ObjectIndexes.Salmonberry, new Item((int)ObjectIndexes.Salmonberry, ObtainingDifficulties.LargeTimeRequirements) },
+				{ ObjectIndexes.GrassStarter, new Item((int)ObjectIndexes.GrassStarter, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.SpringOnion, new Item((int)ObjectIndexes.SpringOnion, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.Coffee, new Item((int)ObjectIndexes.Coffee, ObtainingDifficulties.NonCraftingItem) },
 
 				// All cooking recipes - ObtainingDifficulties.LargeTimeRequirements
-				{ (int)ObjectIndexes.FriedEgg, new CookedItem((int)ObjectIndexes.FriedEgg) },
-				{ (int)ObjectIndexes.Omelet, new CookedItem((int)ObjectIndexes.Omelet) },
-				{ (int)ObjectIndexes.Salad, new CookedItem((int)ObjectIndexes.Salad) },
-				{ (int)ObjectIndexes.CheeseCauliflower, new CookedItem((int)ObjectIndexes.CheeseCauliflower) },
-				{ (int)ObjectIndexes.BakedFish, new CookedItem((int)ObjectIndexes.BakedFish) },
-				{ (int)ObjectIndexes.ParsnipSoup, new CookedItem((int)ObjectIndexes.ParsnipSoup) },
-				{ (int)ObjectIndexes.VegetableMedley, new CookedItem((int)ObjectIndexes.VegetableMedley) },
-				{ (int)ObjectIndexes.CompleteBreakfast, new CookedItem((int)ObjectIndexes.CompleteBreakfast) },
-				{ (int)ObjectIndexes.FriedCalamari, new CookedItem((int)ObjectIndexes.FriedCalamari) },
-				{ (int)ObjectIndexes.StrangeBun, new CookedItem((int)ObjectIndexes.StrangeBun) },
+				{ ObjectIndexes.FriedEgg, new CookedItem((int)ObjectIndexes.FriedEgg) },
+				{ ObjectIndexes.Omelet, new CookedItem((int)ObjectIndexes.Omelet) },
+				{ ObjectIndexes.Salad, new CookedItem((int)ObjectIndexes.Salad) },
+				{ ObjectIndexes.CheeseCauliflower, new CookedItem((int)ObjectIndexes.CheeseCauliflower, (int)ObjectIndexes.Cauliflower) },
+				{ ObjectIndexes.BakedFish, new CookedItem((int)ObjectIndexes.BakedFish) },
+				{ ObjectIndexes.ParsnipSoup, new CookedItem((int)ObjectIndexes.ParsnipSoup, (int)ObjectIndexes.Parsnip) },
+				{ ObjectIndexes.VegetableMedley, new CookedItem((int)ObjectIndexes.VegetableMedley) },
+				{ ObjectIndexes.CompleteBreakfast, new CookedItem((int)ObjectIndexes.CompleteBreakfast) },
+				{ ObjectIndexes.FriedCalamari, new CookedItem((int)ObjectIndexes.FriedCalamari) },
+				{ ObjectIndexes.StrangeBun, new CookedItem((int)ObjectIndexes.StrangeBun) },
 
-				{ (int)ObjectIndexes.LuckyLunch, new CookedItem((int)ObjectIndexes.LuckyLunch) },
-				{ (int)ObjectIndexes.FriedMushroom, new CookedItem((int)ObjectIndexes.FriedMushroom) },
-				{ (int)ObjectIndexes.Pizza, new CookedItem((int)ObjectIndexes.Pizza) },
-				{ (int)ObjectIndexes.BeanHotpot, new CookedItem((int)ObjectIndexes.BeanHotpot) },
-				{ (int)ObjectIndexes.GlazedYams, new CookedItem((int)ObjectIndexes.GlazedYams) },
-				{ (int)ObjectIndexes.CarpSurprise, new CookedItem((int)ObjectIndexes.CarpSurprise) },
-				{ (int)ObjectIndexes.Hashbrowns, new CookedItem((int)ObjectIndexes.Hashbrowns) },
-				{ (int)ObjectIndexes.Pancakes, new CookedItem((int)ObjectIndexes.Pancakes) },
-				{ (int)ObjectIndexes.SalmonDinner, new CookedItem((int)ObjectIndexes.SalmonDinner) },
-				{ (int)ObjectIndexes.FishTaco, new CookedItem((int)ObjectIndexes.FishTaco) },
+				{ ObjectIndexes.LuckyLunch, new CookedItem((int)ObjectIndexes.LuckyLunch) },
+				{ ObjectIndexes.FriedMushroom, new CookedItem((int)ObjectIndexes.FriedMushroom) },
+				{ ObjectIndexes.Pizza, new CookedItem((int)ObjectIndexes.Pizza) },
+				{ ObjectIndexes.BeanHotpot, new CookedItem((int)ObjectIndexes.BeanHotpot, (int)ObjectIndexes.GreenBean) },
+				{ ObjectIndexes.GlazedYams, new CookedItem((int)ObjectIndexes.GlazedYams, (int)ObjectIndexes.Yam) },
+				{ ObjectIndexes.CarpSurprise, new CookedItem((int)ObjectIndexes.CarpSurprise, (int)ObjectIndexes.Carp, isFishDish: true) },
+				{ ObjectIndexes.Hashbrowns, new CookedItem((int)ObjectIndexes.Hashbrowns) },
+				{ ObjectIndexes.Pancakes, new CookedItem((int)ObjectIndexes.Pancakes) },
+				{ ObjectIndexes.SalmonDinner, new CookedItem((int)ObjectIndexes.SalmonDinner, (int)ObjectIndexes.Salmon, isFishDish: true) },
+				{ ObjectIndexes.FishTaco, new CookedItem((int)ObjectIndexes.FishTaco) },
 
-				{ (int)ObjectIndexes.CrispyBass, new CookedItem((int)ObjectIndexes.CrispyBass) },
-				{ (int)ObjectIndexes.PepperPoppers, new CookedItem((int)ObjectIndexes.PepperPoppers) },
-				{ (int)ObjectIndexes.Bread, new CookedItem((int)ObjectIndexes.Bread) },
-				{ (int)ObjectIndexes.TomKhaSoup, new CookedItem((int)ObjectIndexes.TomKhaSoup) },
-				{ (int)ObjectIndexes.TroutSoup, new CookedItem((int)ObjectIndexes.TroutSoup) },
-				{ (int)ObjectIndexes.ChocolateCake, new CookedItem((int)ObjectIndexes.ChocolateCake) },
-				{ (int)ObjectIndexes.PinkCake, new CookedItem((int)ObjectIndexes.PinkCake) },
-				{ (int)ObjectIndexes.RhubarbPie, new CookedItem((int)ObjectIndexes.RhubarbPie) },
-				{ (int)ObjectIndexes.Cookie, new CookedItem((int)ObjectIndexes.Cookie) },
-				{ (int)ObjectIndexes.Spaghetti, new CookedItem((int)ObjectIndexes.Spaghetti) },
+				{ ObjectIndexes.CrispyBass, new CookedItem((int)ObjectIndexes.CrispyBass, (int)ObjectIndexes.LargemouthBass, isFishDish: true) },
+				{ ObjectIndexes.PepperPoppers, new CookedItem((int)ObjectIndexes.PepperPoppers, (int)ObjectIndexes.HotPepper) },
+				{ ObjectIndexes.Bread, new CookedItem((int)ObjectIndexes.Bread) },
+				{ ObjectIndexes.TomKhaSoup, new CookedItem((int)ObjectIndexes.TomKhaSoup) },
+				{ ObjectIndexes.TroutSoup, new CookedItem((int)ObjectIndexes.TroutSoup, (int)ObjectIndexes.RainbowTrout, isFishDish: true) },
+				{ ObjectIndexes.ChocolateCake, new CookedItem((int)ObjectIndexes.ChocolateCake) },
+				{ ObjectIndexes.PinkCake, new CookedItem((int)ObjectIndexes.PinkCake) },
+				{ ObjectIndexes.RhubarbPie, new CookedItem((int)ObjectIndexes.RhubarbPie, (int)ObjectIndexes.Rhubarb) },
+				{ ObjectIndexes.Cookie, new CookedItem((int)ObjectIndexes.Cookie) },
+				{ ObjectIndexes.Spaghetti, new CookedItem((int)ObjectIndexes.Spaghetti) },
 
-				{ (int)ObjectIndexes.FriedEel, new CookedItem((int)ObjectIndexes.FriedEel) },
-				{ (int)ObjectIndexes.SpicyEel, new CookedItem((int)ObjectIndexes.SpicyEel) },
-				{ (int)ObjectIndexes.Sashimi, new CookedItem((int)ObjectIndexes.Sashimi) },
-				{ (int)ObjectIndexes.MakiRoll, new CookedItem((int)ObjectIndexes.MakiRoll) },
-				{ (int)ObjectIndexes.Tortilla, new CookedItem((int)ObjectIndexes.Tortilla) },
-				{ (int)ObjectIndexes.RedPlate, new CookedItem((int)ObjectIndexes.RedPlate) },
-				{ (int)ObjectIndexes.EggplantParmesan, new CookedItem((int)ObjectIndexes.EggplantParmesan) },
-				{ (int)ObjectIndexes.RicePudding, new CookedItem((int)ObjectIndexes.RicePudding) },
-				{ (int)ObjectIndexes.IceCream, new CookedItem((int)ObjectIndexes.IceCream) },
-				{ (int)ObjectIndexes.BlueberryTart, new CookedItem((int)ObjectIndexes.BlueberryTart) },
+				{ ObjectIndexes.FriedEel, new CookedItem((int)ObjectIndexes.FriedEel, (int)ObjectIndexes.Eel, isFishDish: true) },
+				{ ObjectIndexes.SpicyEel, new CookedItem((int)ObjectIndexes.SpicyEel, (int)ObjectIndexes.Eel, isFishDish: true) },
+				{ ObjectIndexes.Sashimi, new CookedItem((int)ObjectIndexes.Sashimi) },
+				{ ObjectIndexes.MakiRoll, new CookedItem((int)ObjectIndexes.MakiRoll) },
+				{ ObjectIndexes.Tortilla, new CookedItem((int)ObjectIndexes.Tortilla) },
+				{ ObjectIndexes.RedPlate, new CookedItem((int)ObjectIndexes.RedPlate) },
+				{ ObjectIndexes.EggplantParmesan, new CookedItem((int)ObjectIndexes.EggplantParmesan, (int)ObjectIndexes.Eggplant) },
+				{ ObjectIndexes.RicePudding, new CookedItem((int)ObjectIndexes.RicePudding, (int)ObjectIndexes.Rice) },
+				{ ObjectIndexes.IceCream, new CookedItem((int)ObjectIndexes.IceCream) },
+				{ ObjectIndexes.BlueberryTart, new CookedItem((int)ObjectIndexes.BlueberryTart, (int)ObjectIndexes.Blueberry) },
 
-				{ (int)ObjectIndexes.AutumnsBounty, new CookedItem((int)ObjectIndexes.AutumnsBounty) { OverrideName = "Autumn's Bounty" } },
-				{ (int)ObjectIndexes.PumpkinSoup, new CookedItem((int)ObjectIndexes.PumpkinSoup) },
-				{ (int)ObjectIndexes.SuperMeal, new CookedItem((int)ObjectIndexes.SuperMeal) },
-				{ (int)ObjectIndexes.CranberrySauce, new CookedItem((int)ObjectIndexes.CranberrySauce) },
-				{ (int)ObjectIndexes.Stuffing, new CookedItem((int)ObjectIndexes.Stuffing) },
-				{ (int)ObjectIndexes.FarmersLunch, new CookedItem((int)ObjectIndexes.FarmersLunch) { OverrideName = "Farmer's Lunch" } },
-				{ (int)ObjectIndexes.SurvivalBurger, new CookedItem((int)ObjectIndexes.SurvivalBurger) },
-				{ (int)ObjectIndexes.DishOTheSea, new CookedItem((int)ObjectIndexes.DishOTheSea) { OverrideName = "Dish o' The Sea" } },
-				{ (int)ObjectIndexes.MinersTreat, new CookedItem((int)ObjectIndexes.MinersTreat) { OverrideName = "Miner's Treat" } },
-				{ (int)ObjectIndexes.RootsPlatter, new CookedItem((int)ObjectIndexes.RootsPlatter) },
+				{ ObjectIndexes.AutumnsBounty, new CookedItem((int)ObjectIndexes.AutumnsBounty) { OverrideName = "Autumn's Bounty" } },
+				{ ObjectIndexes.PumpkinSoup, new CookedItem((int)ObjectIndexes.PumpkinSoup, (int)ObjectIndexes.Pumpkin) },
+				{ ObjectIndexes.SuperMeal, new CookedItem((int)ObjectIndexes.SuperMeal) },
+				{ ObjectIndexes.CranberrySauce, new CookedItem((int)ObjectIndexes.CranberrySauce, (int)ObjectIndexes.Cranberries) },
+				{ ObjectIndexes.Stuffing, new CookedItem((int)ObjectIndexes.Stuffing) },
+				{ ObjectIndexes.FarmersLunch, new CookedItem((int)ObjectIndexes.FarmersLunch) { OverrideName = "Farmer's Lunch" } },
+				{ ObjectIndexes.SurvivalBurger, new CookedItem((int)ObjectIndexes.SurvivalBurger) },
+				{ ObjectIndexes.DishOTheSea, new CookedItem((int)ObjectIndexes.DishOTheSea) { OverrideName = "Dish o' The Sea" } },
+				{ ObjectIndexes.MinersTreat, new CookedItem((int)ObjectIndexes.MinersTreat) { OverrideName = "Miner's Treat" } },
+				{ ObjectIndexes.RootsPlatter, new CookedItem((int)ObjectIndexes.RootsPlatter) },
 
-				{ (int)ObjectIndexes.AlgaeSoup, new CookedItem((int)ObjectIndexes.AlgaeSoup) },
-				{ (int)ObjectIndexes.PaleBroth, new CookedItem((int)ObjectIndexes.PaleBroth) },
-				{ (int)ObjectIndexes.PlumPudding, new CookedItem((int)ObjectIndexes.PlumPudding) },
-				{ (int)ObjectIndexes.ArtichokeDip, new CookedItem((int)ObjectIndexes.ArtichokeDip) },
-				{ (int)ObjectIndexes.StirFry, new CookedItem((int)ObjectIndexes.StirFry) },
-				{ (int)ObjectIndexes.RoastedHazelnuts, new CookedItem((int)ObjectIndexes.RoastedHazelnuts) },
-				{ (int)ObjectIndexes.PumpkinPie, new CookedItem((int)ObjectIndexes.PumpkinPie) },
-				{ (int)ObjectIndexes.RadishSalad, new CookedItem((int)ObjectIndexes.RadishSalad) },
-				{ (int)ObjectIndexes.FruitSalad, new CookedItem((int)ObjectIndexes.FruitSalad) },
-				{ (int)ObjectIndexes.BlackberryCobbler, new CookedItem((int)ObjectIndexes.BlackberryCobbler) },
+				{ ObjectIndexes.AlgaeSoup, new CookedItem((int)ObjectIndexes.AlgaeSoup) },
+				{ ObjectIndexes.PaleBroth, new CookedItem((int)ObjectIndexes.PaleBroth) },
+                { ObjectIndexes.TripleShotEspresso, new CookedItem((int)ObjectIndexes.TripleShotEspresso) },
+                { ObjectIndexes.PlumPudding, new CookedItem((int)ObjectIndexes.PlumPudding) },
+				{ ObjectIndexes.ArtichokeDip, new CookedItem((int)ObjectIndexes.ArtichokeDip, (int)ObjectIndexes.Artichoke) },
+				{ ObjectIndexes.StirFry, new CookedItem((int)ObjectIndexes.StirFry) },
+				{ ObjectIndexes.RoastedHazelnuts, new CookedItem((int)ObjectIndexes.RoastedHazelnuts) },
+				{ ObjectIndexes.PumpkinPie, new CookedItem((int)ObjectIndexes.PumpkinPie, (int)ObjectIndexes.Pumpkin) },
+				{ ObjectIndexes.RadishSalad, new CookedItem((int)ObjectIndexes.RadishSalad, (int)ObjectIndexes.Radish) },
+				{ ObjectIndexes.FruitSalad, new CookedItem((int)ObjectIndexes.FruitSalad, ingredientId: null) },
+				{ ObjectIndexes.BlackberryCobbler, new CookedItem((int)ObjectIndexes.BlackberryCobbler) },
 
-				{ (int)ObjectIndexes.CranberryCandy, new CookedItem((int)ObjectIndexes.CranberryCandy) },
-				{ (int)ObjectIndexes.Bruschetta, new CookedItem((int)ObjectIndexes.Bruschetta) },
-				{ (int)ObjectIndexes.Coleslaw, new CookedItem((int)ObjectIndexes.Coleslaw) },
-				{ (int)ObjectIndexes.FiddleheadRisotto, new CookedItem((int)ObjectIndexes.FiddleheadRisotto) },
-				{ (int)ObjectIndexes.PoppyseedMuffin, new CookedItem((int)ObjectIndexes.PoppyseedMuffin) },
-				{ (int)ObjectIndexes.Chowder, new CookedItem((int)ObjectIndexes.Chowder) },
-				{ (int)ObjectIndexes.LobsterBisque, new CookedItem((int)ObjectIndexes.LobsterBisque) },
-				{ (int)ObjectIndexes.Escargot, new CookedItem((int)ObjectIndexes.Escargot) },
-				{ (int)ObjectIndexes.FishStew, new CookedItem((int)ObjectIndexes.FishStew) },
-				{ (int)ObjectIndexes.MapleBar, new CookedItem((int)ObjectIndexes.MapleBar) },
+				{ ObjectIndexes.CranberryCandy, new CookedItem((int)ObjectIndexes.CranberryCandy, (int)ObjectIndexes.Cranberries) },
+				{ ObjectIndexes.Bruschetta, new CookedItem((int)ObjectIndexes.Bruschetta) },
+				{ ObjectIndexes.Coleslaw, new CookedItem((int)ObjectIndexes.Coleslaw) },
+				{ ObjectIndexes.FiddleheadRisotto, new CookedItem((int)ObjectIndexes.FiddleheadRisotto) },
+				{ ObjectIndexes.PoppyseedMuffin, new CookedItem((int)ObjectIndexes.PoppyseedMuffin, (int)ObjectIndexes.Poppy) },
+				{ ObjectIndexes.Chowder, new CookedItem((int)ObjectIndexes.Chowder) },
+				{ ObjectIndexes.LobsterBisque, new CookedItem((int)ObjectIndexes.LobsterBisque) },
+				{ ObjectIndexes.Escargot, new CookedItem((int)ObjectIndexes.Escargot) },
+				{ ObjectIndexes.FishStew, new CookedItem((int)ObjectIndexes.FishStew) },
+				{ ObjectIndexes.MapleBar, new CookedItem((int)ObjectIndexes.MapleBar) },
 
-				{ (int)ObjectIndexes.CrabCakes, new CookedItem((int)ObjectIndexes.CrabCakes) },
+				{ ObjectIndexes.CrabCakes, new CookedItem((int)ObjectIndexes.CrabCakes) },
+
+				// Internally, this IS a cooked item, but functionally - it actually has no matching recipe, so we won't define it that way
+				// You can buy it for 3 prismatic shards, so it is very much an endgame item!
+                { ObjectIndexes.MagicRockCandy, new Item((int)ObjectIndexes.MagicRockCandy, ObtainingDifficulties.EndgameItem) },
 			
 				// ------ All Foragables - ObtainingDifficulties.LargeTimeRequirements -------
 				// Spring Foragables
-				{ (int)ObjectIndexes.WildHorseradish, new ForagableItem((int)ObjectIndexes.WildHorseradish) },
-				{ (int)ObjectIndexes.Daffodil, new ForagableItem((int)ObjectIndexes.Daffodil) },
-				{ (int)ObjectIndexes.Leek, new ForagableItem((int)ObjectIndexes.Leek) },
-				{ (int)ObjectIndexes.Dandelion, new ForagableItem((int)ObjectIndexes.Dandelion) },
-				{ (int)ObjectIndexes.Morel, new ForagableItem((int)ObjectIndexes.Morel) },
-				{ (int)ObjectIndexes.CommonMushroom, new ForagableItem((int)ObjectIndexes.CommonMushroom) }, // Also fall
+				{ ObjectIndexes.WildHorseradish, new ForagableItem((int)ObjectIndexes.WildHorseradish) },
+				{ ObjectIndexes.Daffodil, new ForagableItem((int)ObjectIndexes.Daffodil) },
+				{ ObjectIndexes.Leek, new ForagableItem((int)ObjectIndexes.Leek) },
+				{ ObjectIndexes.Dandelion, new ForagableItem((int)ObjectIndexes.Dandelion) },
+				{ ObjectIndexes.Morel, new ForagableItem((int)ObjectIndexes.Morel) },
+				{ ObjectIndexes.CommonMushroom, new ForagableItem((int)ObjectIndexes.CommonMushroom) }, // Also fall
 
 				// Summer Foragables
-				{ (int)ObjectIndexes.SpiceBerry, new ForagableItem((int)ObjectIndexes.SpiceBerry) },
-				{ (int)ObjectIndexes.Grape, new CropItem((int)ObjectIndexes.Grape, "8/Basic -75") { ShouldBeForagable = true, DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements, ItemsRequiredForRecipe = new Range(1, 3)} },
-				{ (int)ObjectIndexes.SweetPea, new ForagableItem((int)ObjectIndexes.SweetPea) },
-				{ (int)ObjectIndexes.RedMushroom, new ForagableItem((int)ObjectIndexes.RedMushroom) }, // Also fall
-				{ (int)ObjectIndexes.FiddleheadFern, new ForagableItem((int)ObjectIndexes.FiddleheadFern) },
+				{ ObjectIndexes.SpiceBerry, new ForagableItem((int)ObjectIndexes.SpiceBerry) },
+				{ ObjectIndexes.Grape, new CropItem((int)ObjectIndexes.Grape, "8/Basic -75") { ShouldBeForagable = true, DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements, ItemsRequiredForRecipe = new Range(1, 3)} },
+				{ ObjectIndexes.SweetPea, new ForagableItem((int)ObjectIndexes.SweetPea) },
+				{ ObjectIndexes.RedMushroom, new ForagableItem((int)ObjectIndexes.RedMushroom) }, // Also fall
+				{ ObjectIndexes.FiddleheadFern, new ForagableItem((int)ObjectIndexes.FiddleheadFern) },
 
 				// Fall Foragables
-				{ (int)ObjectIndexes.WildPlum, new ForagableItem((int)ObjectIndexes.WildPlum) },
-				{ (int)ObjectIndexes.Hazelnut, new ForagableItem((int)ObjectIndexes.Hazelnut) },
-				{ (int)ObjectIndexes.Blackberry, new ForagableItem((int)ObjectIndexes.Blackberry) },
-				{ (int)ObjectIndexes.Chanterelle, new ForagableItem((int)ObjectIndexes.Chanterelle) },
+				{ ObjectIndexes.WildPlum, new ForagableItem((int)ObjectIndexes.WildPlum) },
+				{ ObjectIndexes.Hazelnut, new ForagableItem((int)ObjectIndexes.Hazelnut) },
+				{ ObjectIndexes.Blackberry, new ForagableItem((int)ObjectIndexes.Blackberry) },
+				{ ObjectIndexes.Chanterelle, new ForagableItem((int)ObjectIndexes.Chanterelle) },
 
 				// Winter Foragables
-				{ (int)ObjectIndexes.WinterRoot, new ForagableItem((int)ObjectIndexes.WinterRoot) },
-				{ (int)ObjectIndexes.CrystalFruit, new ForagableItem((int)ObjectIndexes.CrystalFruit) },
-				{ (int)ObjectIndexes.SnowYam, new ForagableItem((int)ObjectIndexes.SnowYam) },
-				{ (int)ObjectIndexes.Crocus, new ForagableItem((int)ObjectIndexes.Crocus) },
-				{ (int)ObjectIndexes.Holly, new ForagableItem((int)ObjectIndexes.Holly) },
+				{ ObjectIndexes.WinterRoot, new ForagableItem((int)ObjectIndexes.WinterRoot) },
+				{ ObjectIndexes.CrystalFruit, new ForagableItem((int)ObjectIndexes.CrystalFruit) },
+				{ ObjectIndexes.SnowYam, new ForagableItem((int)ObjectIndexes.SnowYam) },
+				{ ObjectIndexes.Crocus, new ForagableItem((int)ObjectIndexes.Crocus) },
+				{ ObjectIndexes.Holly, new ForagableItem((int)ObjectIndexes.Holly) },
 
 				// Beach Foragables - the medium ones can also be obtained from crab pots
-				{ (int)ObjectIndexes.NautilusShell, new ForagableItem((int)ObjectIndexes.NautilusShell) },
-				{ (int)ObjectIndexes.Coral, new ForagableItem((int)ObjectIndexes.Coral) },
-				{ (int)ObjectIndexes.SeaUrchin, new ForagableItem((int)ObjectIndexes.SeaUrchin) },
-				{ (int)ObjectIndexes.RainbowShell, new ForagableItem((int)ObjectIndexes.RainbowShell) },
-				{ (int)ObjectIndexes.Clam, new ForagableItem((int)ObjectIndexes.Clam) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
-				{ (int)ObjectIndexes.Cockle, new ForagableItem((int)ObjectIndexes.Cockle) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
-				{ (int)ObjectIndexes.Mussel, new ForagableItem((int)ObjectIndexes.Mussel) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
-				{ (int)ObjectIndexes.Oyster, new ForagableItem((int)ObjectIndexes.Oyster) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
+				{ ObjectIndexes.NautilusShell, new ForagableItem((int)ObjectIndexes.NautilusShell) },
+				{ ObjectIndexes.Coral, new ForagableItem((int)ObjectIndexes.Coral) },
+				{ ObjectIndexes.SeaUrchin, new ForagableItem((int)ObjectIndexes.SeaUrchin) },
+				{ ObjectIndexes.RainbowShell, new ForagableItem((int)ObjectIndexes.RainbowShell) },
+				{ ObjectIndexes.Clam, new ForagableItem((int)ObjectIndexes.Clam) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
+				{ ObjectIndexes.Cockle, new ForagableItem((int)ObjectIndexes.Cockle) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
+				{ ObjectIndexes.Mussel, new ForagableItem((int)ObjectIndexes.Mussel) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
+				{ ObjectIndexes.Oyster, new ForagableItem((int)ObjectIndexes.Oyster) { DifficultyToObtain = ObtainingDifficulties.MediumTimeRequirements, IsCrabPotItem = true } },
 
 				// Desert Foragables
-				{ (int)ObjectIndexes.Coconut, new ForagableItem((int)ObjectIndexes.Coconut) },
-				{ (int)ObjectIndexes.CactusFruit, new CropItem((int)ObjectIndexes.CactusFruit, "30/Basic -79") { ShouldBeForagable = true, DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements, ItemsRequiredForRecipe = new Range(1, 3)} },
+				{ ObjectIndexes.Coconut, new ForagableItem((int)ObjectIndexes.Coconut) },
+				{ ObjectIndexes.CactusFruit, new CropItem((int)ObjectIndexes.CactusFruit, "30/Basic -79") { ShouldBeForagable = true, DifficultyToObtain = ObtainingDifficulties.LargeTimeRequirements, ItemsRequiredForRecipe = new Range(1, 3)} },
 
 				// Fruit - since trees are randomized, we're making them foragable
-				{ (int)ObjectIndexes.Cherry, new ForagableItem((int)ObjectIndexes.Cherry) { IsFruit = true } },
-				{ (int)ObjectIndexes.Apricot, new ForagableItem((int)ObjectIndexes.Apricot) { IsFruit = true } },
-				{ (int)ObjectIndexes.Orange, new ForagableItem((int)ObjectIndexes.Orange) { IsFruit = true } },
-				{ (int)ObjectIndexes.Peach, new ForagableItem((int)ObjectIndexes.Peach) { IsFruit = true } },
-				{ (int)ObjectIndexes.Pomegranate, new ForagableItem((int)ObjectIndexes.Pomegranate) { IsFruit = true } },
-				{ (int)ObjectIndexes.Apple, new ForagableItem((int)ObjectIndexes.Apple) { IsFruit = true } },
+				{ ObjectIndexes.Cherry, new ForagableItem((int)ObjectIndexes.Cherry) { IsFruit = true } },
+				{ ObjectIndexes.Apricot, new ForagableItem((int)ObjectIndexes.Apricot) { IsFruit = true } },
+				{ ObjectIndexes.Orange, new ForagableItem((int)ObjectIndexes.Orange) { IsFruit = true } },
+				{ ObjectIndexes.Peach, new ForagableItem((int)ObjectIndexes.Peach) { IsFruit = true } },
+				{ ObjectIndexes.Pomegranate, new ForagableItem((int)ObjectIndexes.Pomegranate) { IsFruit = true } },
+				{ ObjectIndexes.Apple, new ForagableItem((int)ObjectIndexes.Apple) { IsFruit = true } },
 				// ------ End Foragables -------
 
 				// Smelted Items - ObtainingDifficulties.MediumTimeRequirements
-				{ (int)ObjectIndexes.RefinedQuartz, new SmeltedItem((int)ObjectIndexes.RefinedQuartz) },
-				{ (int)ObjectIndexes.CopperBar, new SmeltedItem((int)ObjectIndexes.CopperBar) },
-				{ (int)ObjectIndexes.IronBar, new SmeltedItem((int)ObjectIndexes.IronBar) },
-				{ (int)ObjectIndexes.GoldBar, new SmeltedItem((int)ObjectIndexes.GoldBar) },
-				{ (int)ObjectIndexes.IridiumBar, new SmeltedItem((int)ObjectIndexes.IridiumBar, ObtainingDifficulties.EndgameItem) },
+				{ ObjectIndexes.RefinedQuartz, new SmeltedItem((int)ObjectIndexes.RefinedQuartz) },
+				{ ObjectIndexes.CopperBar, new SmeltedItem((int)ObjectIndexes.CopperBar) },
+				{ ObjectIndexes.IronBar, new SmeltedItem((int)ObjectIndexes.IronBar) },
+				{ ObjectIndexes.GoldBar, new SmeltedItem((int)ObjectIndexes.GoldBar) },
+				{ ObjectIndexes.IridiumBar, new SmeltedItem((int)ObjectIndexes.IridiumBar, ObtainingDifficulties.EndgameItem) },
 
 				// Trash items - ObtainingDifficulties.NoRequirements
-				{ (int)ObjectIndexes.BrokenCD, new TrashItem((int)ObjectIndexes.BrokenCD) { OverrideName = "Broken CD" } },
-				{ (int)ObjectIndexes.SoggyNewspaper, new TrashItem((int)ObjectIndexes.SoggyNewspaper) },
-				{ (int)ObjectIndexes.Driftwood, new TrashItem((int)ObjectIndexes.Driftwood) },
-				{ (int)ObjectIndexes.BrokenGlasses, new TrashItem((int)ObjectIndexes.BrokenGlasses) },
-				{ (int)ObjectIndexes.JojaCola, new TrashItem((int)ObjectIndexes.JojaCola) },
-				{ (int)ObjectIndexes.Trash, new TrashItem((int)ObjectIndexes.Trash) },
+				{ ObjectIndexes.BrokenCD, new TrashItem((int)ObjectIndexes.BrokenCD) { OverrideName = "Broken CD" } },
+				{ ObjectIndexes.SoggyNewspaper, new TrashItem((int)ObjectIndexes.SoggyNewspaper) },
+				{ ObjectIndexes.Driftwood, new TrashItem((int)ObjectIndexes.Driftwood) },
+				{ ObjectIndexes.BrokenGlasses, new TrashItem((int)ObjectIndexes.BrokenGlasses) },
+				{ ObjectIndexes.JojaCola, new TrashItem((int)ObjectIndexes.JojaCola) },
+				{ ObjectIndexes.Trash, new TrashItem((int)ObjectIndexes.Trash) },
 
 				// Fruit trees - ObtainingDifficulties.SmallTimeRequirements
-				{ (int)ObjectIndexes.CherrySapling, new Item((int)ObjectIndexes.CherrySapling, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.ApricotSapling, new Item((int)ObjectIndexes.ApricotSapling, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.OrangeSapling, new Item((int)ObjectIndexes.OrangeSapling, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.PeachSapling, new Item((int)ObjectIndexes.PeachSapling, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.PomegranateSapling, new Item((int)ObjectIndexes.PomegranateSapling, ObtainingDifficulties.NonCraftingItem) },
-				{ (int)ObjectIndexes.AppleSapling, new Item((int)ObjectIndexes.AppleSapling, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.CherrySapling, new Item((int)ObjectIndexes.CherrySapling, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.ApricotSapling, new Item((int)ObjectIndexes.ApricotSapling, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.OrangeSapling, new Item((int)ObjectIndexes.OrangeSapling, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.PeachSapling, new Item((int)ObjectIndexes.PeachSapling, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.PomegranateSapling, new Item((int)ObjectIndexes.PomegranateSapling, ObtainingDifficulties.NonCraftingItem) },
+				{ ObjectIndexes.AppleSapling, new Item((int)ObjectIndexes.AppleSapling, ObtainingDifficulties.NonCraftingItem) },
 
 				// Seeds - ObtainingDifficulties.LargeTimeRequirements
-				{ (int)ObjectIndexes.ParsnipSeeds, new SeedItem((int)ObjectIndexes.ParsnipSeeds, new List<Seasons> { Seasons.Spring }) },
-				{ (int)ObjectIndexes.JazzSeeds, new SeedItem((int)ObjectIndexes.JazzSeeds, new List<Seasons> { Seasons.Spring }) },
-				{ (int)ObjectIndexes.CauliflowerSeeds, new SeedItem((int)ObjectIndexes.CauliflowerSeeds, new List<Seasons> { Seasons.Spring }) },
-				{ (int)ObjectIndexes.CoffeeBean, new SeedItem((int)ObjectIndexes.CoffeeBean, new List<Seasons> { Seasons.Spring, Seasons.Summer }) { Randomize = false, Price = 15 } },
-				{ (int)ObjectIndexes.GarlicSeeds, new SeedItem((int)ObjectIndexes.GarlicSeeds, new List<Seasons> { Seasons.Spring }) },
-				{ (int)ObjectIndexes.BeanStarter, new SeedItem((int)ObjectIndexes.BeanStarter, new List<Seasons> { Seasons.Spring }) },
-				{ (int)ObjectIndexes.KaleSeeds, new SeedItem((int)ObjectIndexes.KaleSeeds, new List<Seasons> { Seasons.Spring }) },
-				{ (int)ObjectIndexes.PotatoSeeds, new SeedItem((int)ObjectIndexes.PotatoSeeds, new List<Seasons> { Seasons.Spring }) },
-				{ (int)ObjectIndexes.RhubarbSeeds, new SeedItem((int)ObjectIndexes.RhubarbSeeds, new List<Seasons> { Seasons.Spring }) },
-				{ (int)ObjectIndexes.StrawberrySeeds, new SeedItem((int)ObjectIndexes.StrawberrySeeds, new List<Seasons> { Seasons.Spring }) },
-				{ (int)ObjectIndexes.TulipBulb, new SeedItem((int)ObjectIndexes.TulipBulb, new List<Seasons> { Seasons.Spring }) },
-				{ (int)ObjectIndexes.RiceShoot, new SeedItem((int)ObjectIndexes.RiceShoot, new List<Seasons> { Seasons.Spring }) },
-				{ (int)ObjectIndexes.BlueberrySeeds, new SeedItem((int)ObjectIndexes.BlueberrySeeds, new List<Seasons> { Seasons.Summer }) },
-				{ (int)ObjectIndexes.CornSeeds, new SeedItem((int)ObjectIndexes.CornSeeds, new List<Seasons> { Seasons.Summer,Seasons.Fall }) },
-				{ (int)ObjectIndexes.HopsStarter, new SeedItem((int)ObjectIndexes.HopsStarter, new List<Seasons> { Seasons.Summer }) },
-				{ (int)ObjectIndexes.PepperSeeds, new SeedItem((int)ObjectIndexes.PepperSeeds, new List<Seasons> { Seasons.Summer }) },
-				{ (int)ObjectIndexes.MelonSeeds, new SeedItem((int)ObjectIndexes.MelonSeeds, new List<Seasons> { Seasons.Summer }) },
-				{ (int)ObjectIndexes.PoppySeeds, new SeedItem((int)ObjectIndexes.PoppySeeds, new List<Seasons> { Seasons.Summer }) },
-				{ (int)ObjectIndexes.RadishSeeds, new SeedItem((int)ObjectIndexes.RadishSeeds, new List<Seasons> { Seasons.Summer }) },
-				{ (int)ObjectIndexes.RedCabbageSeeds, new SeedItem((int)ObjectIndexes.RedCabbageSeeds, new List<Seasons> { Seasons.Summer }) },
-				{ (int)ObjectIndexes.StarfruitSeeds, new SeedItem((int)ObjectIndexes.StarfruitSeeds, new List<Seasons> { Seasons.Summer }) },
-				{ (int)ObjectIndexes.SpangleSeeds, new SeedItem((int)ObjectIndexes.SpangleSeeds, new List<Seasons> { Seasons.Summer }) },
-				{ (int)ObjectIndexes.SunflowerSeeds, new SeedItem((int)ObjectIndexes.SunflowerSeeds, new List<Seasons> { Seasons.Summer, Seasons.Fall }) },
-				{ (int)ObjectIndexes.TomatoSeeds, new SeedItem((int)ObjectIndexes.TomatoSeeds, new List<Seasons> { Seasons.Summer }) },
-				{ (int)ObjectIndexes.WheatSeeds, new SeedItem((int)ObjectIndexes.WheatSeeds, new List<Seasons> { Seasons.Summer, Seasons.Fall }) },
-				{ (int)ObjectIndexes.AmaranthSeeds, new SeedItem((int)ObjectIndexes.AmaranthSeeds, new List<Seasons> { Seasons.Fall }) },
-				{ (int)ObjectIndexes.ArtichokeSeeds, new SeedItem((int)ObjectIndexes.ArtichokeSeeds, new List<Seasons> { Seasons.Fall }) },
-				{ (int)ObjectIndexes.BeetSeeds, new SeedItem((int)ObjectIndexes.BeetSeeds, new List<Seasons> { Seasons.Fall }) },
-				{ (int)ObjectIndexes.BokChoySeeds, new SeedItem((int)ObjectIndexes.BokChoySeeds, new List<Seasons> { Seasons.Fall }) },
-				{ (int)ObjectIndexes.CranberrySeeds, new SeedItem((int)ObjectIndexes.CranberrySeeds, new List<Seasons> { Seasons.Fall }) },
-				{ (int)ObjectIndexes.EggplantSeeds, new SeedItem((int)ObjectIndexes.EggplantSeeds, new List<Seasons> { Seasons.Fall }) },
-				{ (int)ObjectIndexes.FairySeeds, new SeedItem((int)ObjectIndexes.FairySeeds, new List<Seasons> { Seasons.Fall }) },
-				{ (int)ObjectIndexes.GrapeStarter, new SeedItem((int)ObjectIndexes.GrapeStarter, new List<Seasons> { Seasons.Fall }) },
-				{ (int)ObjectIndexes.PumpkinSeeds, new SeedItem((int)ObjectIndexes.PumpkinSeeds, new List<Seasons> { Seasons.Fall }) },
-				{ (int)ObjectIndexes.YamSeeds, new SeedItem((int)ObjectIndexes.YamSeeds, new List<Seasons> { Seasons.Fall }) },
-				{ (int)ObjectIndexes.AncientSeeds, new SeedItem((int)ObjectIndexes.AncientSeeds, new List<Seasons> { Seasons.Spring, Seasons.Summer, Seasons.Fall }) { Randomize = false } },
-				{ (int)ObjectIndexes.CactusSeeds, new SeedItem((int)ObjectIndexes.CactusSeeds, new List<Seasons> { Seasons.Spring, Seasons.Summer, Seasons.Fall, Seasons.Winter }) },
-				{ (int)ObjectIndexes.RareSeed, new SeedItem((int)ObjectIndexes.RareSeed, new List<Seasons> { Seasons.Fall }) },
+				{ ObjectIndexes.ParsnipSeeds, new SeedItem((int)ObjectIndexes.ParsnipSeeds, new List<Seasons> { Seasons.Spring }) },
+				{ ObjectIndexes.JazzSeeds, new SeedItem((int)ObjectIndexes.JazzSeeds, new List<Seasons> { Seasons.Spring }) },
+				{ ObjectIndexes.CauliflowerSeeds, new SeedItem((int)ObjectIndexes.CauliflowerSeeds, new List<Seasons> { Seasons.Spring }) },
+				{ ObjectIndexes.CoffeeBean, new SeedItem((int)ObjectIndexes.CoffeeBean, new List<Seasons> { Seasons.Spring, Seasons.Summer }) { Randomize = false, Price = 15 } },
+				{ ObjectIndexes.GarlicSeeds, new SeedItem((int)ObjectIndexes.GarlicSeeds, new List<Seasons> { Seasons.Spring }) },
+				{ ObjectIndexes.BeanStarter, new SeedItem((int)ObjectIndexes.BeanStarter, new List<Seasons> { Seasons.Spring }) },
+				{ ObjectIndexes.KaleSeeds, new SeedItem((int)ObjectIndexes.KaleSeeds, new List<Seasons> { Seasons.Spring }) },
+				{ ObjectIndexes.PotatoSeeds, new SeedItem((int)ObjectIndexes.PotatoSeeds, new List<Seasons> { Seasons.Spring }) },
+				{ ObjectIndexes.RhubarbSeeds, new SeedItem((int)ObjectIndexes.RhubarbSeeds, new List<Seasons> { Seasons.Spring }) },
+				{ ObjectIndexes.StrawberrySeeds, new SeedItem((int)ObjectIndexes.StrawberrySeeds, new List<Seasons> { Seasons.Spring }) },
+				{ ObjectIndexes.TulipBulb, new SeedItem((int)ObjectIndexes.TulipBulb, new List<Seasons> { Seasons.Spring }) },
+				{ ObjectIndexes.RiceShoot, new SeedItem((int)ObjectIndexes.RiceShoot, new List<Seasons> { Seasons.Spring }) },
+				{ ObjectIndexes.BlueberrySeeds, new SeedItem((int)ObjectIndexes.BlueberrySeeds, new List<Seasons> { Seasons.Summer }) },
+				{ ObjectIndexes.CornSeeds, new SeedItem((int)ObjectIndexes.CornSeeds, new List<Seasons> { Seasons.Summer,Seasons.Fall }) },
+				{ ObjectIndexes.HopsStarter, new SeedItem((int)ObjectIndexes.HopsStarter, new List<Seasons> { Seasons.Summer }) },
+				{ ObjectIndexes.PepperSeeds, new SeedItem((int)ObjectIndexes.PepperSeeds, new List<Seasons> { Seasons.Summer }) },
+				{ ObjectIndexes.MelonSeeds, new SeedItem((int)ObjectIndexes.MelonSeeds, new List<Seasons> { Seasons.Summer }) },
+				{ ObjectIndexes.PoppySeeds, new SeedItem((int)ObjectIndexes.PoppySeeds, new List<Seasons> { Seasons.Summer }) },
+				{ ObjectIndexes.RadishSeeds, new SeedItem((int)ObjectIndexes.RadishSeeds, new List<Seasons> { Seasons.Summer }) },
+				{ ObjectIndexes.RedCabbageSeeds, new SeedItem((int)ObjectIndexes.RedCabbageSeeds, new List<Seasons> { Seasons.Summer }) },
+				{ ObjectIndexes.StarfruitSeeds, new SeedItem((int)ObjectIndexes.StarfruitSeeds, new List<Seasons> { Seasons.Summer }) },
+				{ ObjectIndexes.SpangleSeeds, new SeedItem((int)ObjectIndexes.SpangleSeeds, new List<Seasons> { Seasons.Summer }) },
+				{ ObjectIndexes.SunflowerSeeds, new SeedItem((int)ObjectIndexes.SunflowerSeeds, new List<Seasons> { Seasons.Summer, Seasons.Fall }) },
+				{ ObjectIndexes.TomatoSeeds, new SeedItem((int)ObjectIndexes.TomatoSeeds, new List<Seasons> { Seasons.Summer }) },
+				{ ObjectIndexes.WheatSeeds, new SeedItem((int)ObjectIndexes.WheatSeeds, new List<Seasons> { Seasons.Summer, Seasons.Fall }) },
+				{ ObjectIndexes.AmaranthSeeds, new SeedItem((int)ObjectIndexes.AmaranthSeeds, new List<Seasons> { Seasons.Fall }) },
+				{ ObjectIndexes.ArtichokeSeeds, new SeedItem((int)ObjectIndexes.ArtichokeSeeds, new List<Seasons> { Seasons.Fall }) },
+				{ ObjectIndexes.BeetSeeds, new SeedItem((int)ObjectIndexes.BeetSeeds, new List<Seasons> { Seasons.Fall }) },
+				{ ObjectIndexes.BokChoySeeds, new SeedItem((int)ObjectIndexes.BokChoySeeds, new List<Seasons> { Seasons.Fall }) },
+				{ ObjectIndexes.CranberrySeeds, new SeedItem((int)ObjectIndexes.CranberrySeeds, new List<Seasons> { Seasons.Fall }) },
+				{ ObjectIndexes.EggplantSeeds, new SeedItem((int)ObjectIndexes.EggplantSeeds, new List<Seasons> { Seasons.Fall }) },
+				{ ObjectIndexes.FairySeeds, new SeedItem((int)ObjectIndexes.FairySeeds, new List<Seasons> { Seasons.Fall }) },
+				{ ObjectIndexes.GrapeStarter, new SeedItem((int)ObjectIndexes.GrapeStarter, new List<Seasons> { Seasons.Fall }) },
+				{ ObjectIndexes.PumpkinSeeds, new SeedItem((int)ObjectIndexes.PumpkinSeeds, new List<Seasons> { Seasons.Fall }) },
+				{ ObjectIndexes.YamSeeds, new SeedItem((int)ObjectIndexes.YamSeeds, new List<Seasons> { Seasons.Fall }) },
+				{ ObjectIndexes.AncientSeeds, new SeedItem((int)ObjectIndexes.AncientSeeds, new List<Seasons> { Seasons.Spring, Seasons.Summer, Seasons.Fall }) { Randomize = false } },
+				{ ObjectIndexes.CactusSeeds, new SeedItem((int)ObjectIndexes.CactusSeeds, new List<Seasons> { Seasons.Spring, Seasons.Summer, Seasons.Fall, Seasons.Winter }) },
+				{ ObjectIndexes.RareSeed, new SeedItem((int)ObjectIndexes.RareSeed, new List<Seasons> { Seasons.Fall }) },
 
 				// Crops - ObtainingDifficulties.LargeTimeRequirements
-				{ (int)ObjectIndexes.Parsnip, new CropItem((int)ObjectIndexes.Parsnip, "10/Basic -75") },
-				{ (int)ObjectIndexes.BlueJazz, new CropItem((int)ObjectIndexes.BlueJazz, "18/Basic -80") },
-				{ (int)ObjectIndexes.Cauliflower, new CropItem((int)ObjectIndexes.Cauliflower, "10/Basic -75") },
-				{ (int)ObjectIndexes.Garlic, new CropItem((int)ObjectIndexes.Garlic, "8/Basic -75") },
-				{ (int)ObjectIndexes.GreenBean, new CropItem((int)ObjectIndexes.GreenBean, "10/Basic -75") },
-				{ (int)ObjectIndexes.Kale, new CropItem((int)ObjectIndexes.Kale, "20/Basic -75") },
-				{ (int)ObjectIndexes.Potato, new CropItem((int)ObjectIndexes.Potato, "10/Basic -75") },
-				{ (int)ObjectIndexes.Rhubarb, new CropItem((int)ObjectIndexes.Rhubarb, "-300/Basic -79") },
-				{ (int)ObjectIndexes.Strawberry, new CropItem((int)ObjectIndexes.Strawberry, "20/Basic -79") },
-				{ (int)ObjectIndexes.Tulip, new CropItem((int)ObjectIndexes.Tulip, "18/Basic -80") },
-				{ (int)ObjectIndexes.Blueberry, new CropItem((int)ObjectIndexes.Blueberry, "10/Basic -79") },
-				{ (int)ObjectIndexes.Corn, new CropItem((int)ObjectIndexes.Corn, "10/Basic -75") },
-				{ (int)ObjectIndexes.Hops, new CropItem((int)ObjectIndexes.Hops, "18/Basic -75") },
-				{ (int)ObjectIndexes.HotPepper, new CropItem((int)ObjectIndexes.HotPepper, "5/Basic -79") },
-				{ (int)ObjectIndexes.Melon, new CropItem((int)ObjectIndexes.Melon, "45/Basic -79") },
-				{ (int)ObjectIndexes.Poppy, new CropItem((int)ObjectIndexes.Poppy, "18/Basic -80") },
-				{ (int)ObjectIndexes.Radish, new CropItem((int)ObjectIndexes.Radish, "18/Basic -75") },
-				{ (int)ObjectIndexes.RedCabbage, new CropItem((int)ObjectIndexes.RedCabbage, "30/Basic -75") },
-				{ (int)ObjectIndexes.Starfruit, new CropItem((int)ObjectIndexes.Starfruit, "50/Basic -79") },
-				{ (int)ObjectIndexes.SummerSpangle, new CropItem((int)ObjectIndexes.SummerSpangle, "18/Basic -80") },
-				{ (int)ObjectIndexes.Sunflower, new CropItem((int)ObjectIndexes.Sunflower, "18/Basic -80") },
-				{ (int)ObjectIndexes.Tomato, new CropItem((int)ObjectIndexes.Tomato, "8/Basic -75") },
-				{ (int)ObjectIndexes.Wheat, new CropItem((int)ObjectIndexes.Wheat, "-300/Basic -75") },
-				{ (int)ObjectIndexes.Amaranth, new CropItem((int)ObjectIndexes.Amaranth, "20/Basic -75") },
-				{ (int)ObjectIndexes.Artichoke, new CropItem((int)ObjectIndexes.Artichoke, "12/Basic -75") },
-				{ (int)ObjectIndexes.Beet, new CropItem((int)ObjectIndexes.Beet, "Basic -75/Beet") },
-				{ (int)ObjectIndexes.BokChoy, new CropItem((int)ObjectIndexes.BokChoy, "10/Basic -75") },
-				{ (int)ObjectIndexes.Cranberries, new CropItem((int)ObjectIndexes.Cranberries, "30/Basic -81") },
-				{ (int)ObjectIndexes.Eggplant, new CropItem((int)ObjectIndexes.Eggplant, "8/Basic -75") },
-				{ (int)ObjectIndexes.FairyRose, new CropItem((int)ObjectIndexes.FairyRose, "18/Basic -80") },
-				{ (int)ObjectIndexes.Pumpkin, new CropItem((int)ObjectIndexes.Pumpkin, "-300/Basic -75") },
-				{ (int)ObjectIndexes.Yam, new CropItem((int)ObjectIndexes.Yam, "18/Basic -75") },
-				{ (int)ObjectIndexes.AncientFruit, new CropItem((int)ObjectIndexes.AncientFruit, "-300/Basic -79") },
-				{ (int)ObjectIndexes.SweetGemBerry, new CropItem((int)ObjectIndexes.SweetGemBerry, "-300/Basic -17") },
-				{ (int)ObjectIndexes.UnmilledRice, new CropItem((int)ObjectIndexes.UnmilledRice, "1/Basic -75") },
+				{ ObjectIndexes.Parsnip, new CropItem((int)ObjectIndexes.Parsnip, "10/Basic -75") },
+				{ ObjectIndexes.BlueJazz, new CropItem((int)ObjectIndexes.BlueJazz, "18/Basic -80") },
+				{ ObjectIndexes.Cauliflower, new CropItem((int)ObjectIndexes.Cauliflower, "10/Basic -75") },
+				{ ObjectIndexes.Garlic, new CropItem((int)ObjectIndexes.Garlic, "8/Basic -75") },
+				{ ObjectIndexes.GreenBean, new CropItem((int)ObjectIndexes.GreenBean, "10/Basic -75") },
+				{ ObjectIndexes.Kale, new CropItem((int)ObjectIndexes.Kale, "20/Basic -75") },
+				{ ObjectIndexes.Potato, new CropItem((int)ObjectIndexes.Potato, "10/Basic -75") },
+				{ ObjectIndexes.Rhubarb, new CropItem((int)ObjectIndexes.Rhubarb, "-300/Basic -79") },
+				{ ObjectIndexes.Strawberry, new CropItem((int)ObjectIndexes.Strawberry, "20/Basic -79") },
+				{ ObjectIndexes.Tulip, new CropItem((int)ObjectIndexes.Tulip, "18/Basic -80") },
+				{ ObjectIndexes.Blueberry, new CropItem((int)ObjectIndexes.Blueberry, "10/Basic -79") },
+				{ ObjectIndexes.Corn, new CropItem((int)ObjectIndexes.Corn, "10/Basic -75") },
+				{ ObjectIndexes.Hops, new CropItem((int)ObjectIndexes.Hops, "18/Basic -75") },
+				{ ObjectIndexes.HotPepper, new CropItem((int)ObjectIndexes.HotPepper, "5/Basic -79") },
+				{ ObjectIndexes.Melon, new CropItem((int)ObjectIndexes.Melon, "45/Basic -79") },
+				{ ObjectIndexes.Poppy, new CropItem((int)ObjectIndexes.Poppy, "18/Basic -80") },
+				{ ObjectIndexes.Radish, new CropItem((int)ObjectIndexes.Radish, "18/Basic -75") },
+				{ ObjectIndexes.RedCabbage, new CropItem((int)ObjectIndexes.RedCabbage, "30/Basic -75") },
+				{ ObjectIndexes.Starfruit, new CropItem((int)ObjectIndexes.Starfruit, "50/Basic -79") },
+				{ ObjectIndexes.SummerSpangle, new CropItem((int)ObjectIndexes.SummerSpangle, "18/Basic -80") },
+				{ ObjectIndexes.Sunflower, new CropItem((int)ObjectIndexes.Sunflower, "18/Basic -80") },
+				{ ObjectIndexes.Tomato, new CropItem((int)ObjectIndexes.Tomato, "8/Basic -75") },
+				{ ObjectIndexes.Wheat, new CropItem((int)ObjectIndexes.Wheat, "-300/Basic -75") },
+				{ ObjectIndexes.Amaranth, new CropItem((int)ObjectIndexes.Amaranth, "20/Basic -75") },
+				{ ObjectIndexes.Artichoke, new CropItem((int)ObjectIndexes.Artichoke, "12/Basic -75") },
+				{ ObjectIndexes.Beet, new CropItem((int)ObjectIndexes.Beet, "Basic -75/Beet") },
+				{ ObjectIndexes.BokChoy, new CropItem((int)ObjectIndexes.BokChoy, "10/Basic -75") },
+				{ ObjectIndexes.Cranberries, new CropItem((int)ObjectIndexes.Cranberries, "30/Basic -81") },
+				{ ObjectIndexes.Eggplant, new CropItem((int)ObjectIndexes.Eggplant, "8/Basic -75") },
+				{ ObjectIndexes.FairyRose, new CropItem((int)ObjectIndexes.FairyRose, "18/Basic -80") },
+				{ ObjectIndexes.Pumpkin, new CropItem((int)ObjectIndexes.Pumpkin, "-300/Basic -75") },
+				{ ObjectIndexes.Yam, new CropItem((int)ObjectIndexes.Yam, "18/Basic -75") },
+				{ ObjectIndexes.AncientFruit, new CropItem((int)ObjectIndexes.AncientFruit, "-300/Basic -79") },
+				{ ObjectIndexes.SweetGemBerry, new CropItem((int)ObjectIndexes.SweetGemBerry, "-300/Basic -17") },
+				{ ObjectIndexes.UnmilledRice, new CropItem((int)ObjectIndexes.UnmilledRice, "1/Basic -75") },
 			};
-		}
+			BigCraftableItems = new Dictionary<BigCraftableIndexes, Item>()
+			{
+				{ BigCraftableIndexes.Chest, new CraftableItem((int)BigCraftableIndexes.Chest, CraftableCategories.Easy, isBigCraftable: true) },
+				{ BigCraftableIndexes.Scarecrow, new CraftableItem((int)BigCraftableIndexes.Scarecrow, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.BeeHouse, new CraftableItem((int)BigCraftableIndexes.BeeHouse, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.Keg, new CraftableItem((int)BigCraftableIndexes.Keg, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.Cask, new CraftableItem((int)BigCraftableIndexes.Cask, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.Furnace, new CraftableItem((int)BigCraftableIndexes.Furnace, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.GardenPot, new CraftableItem((int)BigCraftableIndexes.GardenPot, CraftableCategories.Easy, isBigCraftable: true) },
+				{ BigCraftableIndexes.WoodSign, new CraftableItem((int)BigCraftableIndexes.WoodSign, CraftableCategories.Easy, isBigCraftable: true) },
+				{ BigCraftableIndexes.StoneSign, new CraftableItem((int)BigCraftableIndexes.StoneSign,  CraftableCategories.Easy, isBigCraftable: true) },
+				{ BigCraftableIndexes.CheesePress, new CraftableItem((int)BigCraftableIndexes.CheesePress, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.MayonnaiseMachine, new CraftableItem((int)BigCraftableIndexes.MayonnaiseMachine, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.SeedMaker, new CraftableItem((int)BigCraftableIndexes.SeedMaker, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.Loom, new CraftableItem((int)BigCraftableIndexes.Loom, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.OilMaker, new CraftableItem((int)BigCraftableIndexes.OilMaker, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.RecyclingMachine, new CraftableItem((int)BigCraftableIndexes.RecyclingMachine, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.WormBin, new CraftableItem((int)BigCraftableIndexes.WormBin, CraftableCategories.Difficult, isBigCraftable: true) },
+				{ BigCraftableIndexes.PreservesJar, new CraftableItem((int)BigCraftableIndexes.PreservesJar, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.CharcoalKiln, new CraftableItem((int)BigCraftableIndexes.CharcoalKiln, CraftableCategories.Easy, isBigCraftable: true) },
+				{ BigCraftableIndexes.Tapper, new CraftableItem((int)BigCraftableIndexes.Tapper, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.LightningRod, new CraftableItem((int)BigCraftableIndexes.LightningRod, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.SlimeIncubator, new CraftableItem((int)BigCraftableIndexes.SlimeIncubator, CraftableCategories.Difficult, isBigCraftable: true) },
+				{ BigCraftableIndexes.SlimeEggPress, new CraftableItem((int)BigCraftableIndexes.SlimeEggPress, CraftableCategories.DifficultAndNeedMany, isBigCraftable: true, dataKey: "Slime Egg-Press") },
+				{ BigCraftableIndexes.Crystalarium, new CraftableItem((int)BigCraftableIndexes.Crystalarium, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.MiniJukebox, new CraftableItem((int)BigCraftableIndexes.MiniJukebox, CraftableCategories.Moderate, isBigCraftable: true, dataKey: "Mini-Jukebox") },
+				{ BigCraftableIndexes.Staircase, new CraftableItem((int)BigCraftableIndexes.Staircase, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.TubOFlowers, new CraftableItem((int)BigCraftableIndexes.TubOFlowers, CraftableCategories.Easy, isBigCraftable: true, dataKey: "Tub o' Flowers") },
+				{ BigCraftableIndexes.WoodenBrazier, new CraftableItem((int)BigCraftableIndexes.WoodenBrazier, CraftableCategories.Easy, isBigCraftable: true) },
+				{ BigCraftableIndexes.WickedStatue, new CraftableItem((int)BigCraftableIndexes.WickedStatue, CraftableCategories.Easy, isBigCraftable: true) },
+				{ BigCraftableIndexes.StoneBrazier, new CraftableItem((int)BigCraftableIndexes.StoneBrazier, CraftableCategories.Easy, isBigCraftable: true) },
+				{ BigCraftableIndexes.GoldBrazier, new CraftableItem((int)BigCraftableIndexes.GoldBrazier,  CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.Campfire, new CraftableItem((int)BigCraftableIndexes.Campfire, CraftableCategories.Easy, isBigCraftable: true) },
+				{ BigCraftableIndexes.StumpBrazier, new CraftableItem((int)BigCraftableIndexes.StumpBrazier, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.CarvedBrazier, new CraftableItem((int)BigCraftableIndexes.CarvedBrazier, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.SkullBrazier, new CraftableItem((int)BigCraftableIndexes.SkullBrazier, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.BarrelBrazier, new CraftableItem((int)BigCraftableIndexes.BarrelBrazier, CraftableCategories.Moderate, isBigCraftable: true) },
+				{ BigCraftableIndexes.MarbleBrazier, new CraftableItem((int)BigCraftableIndexes.MarbleBrazier, CraftableCategories.Difficult, isBigCraftable: true) },
+				{ BigCraftableIndexes.WoodLampPost, new CraftableItem((int) BigCraftableIndexes.WoodLampPost, CraftableCategories.Moderate, isBigCraftable: true, dataKey : "Wood Lamp-post") },
+				{ BigCraftableIndexes.IronLampPost, new CraftableItem((int) BigCraftableIndexes.IronLampPost, CraftableCategories.Moderate, isBigCraftable: true, dataKey : "Iron Lamp-post") },
 
-		public static Dictionary<int, int> BigCraftableItems = new Dictionary<int, int> {
-			{(int)ObjectIndexes.Chest, 130},
-			{(int)ObjectIndexes.Scarecrow, 8},
-			{(int)ObjectIndexes.BeeHouse, 10},
-			{(int)ObjectIndexes.Cask, 163},
-			{(int)ObjectIndexes.Furnace, 13},
-			{(int)ObjectIndexes.GardenPot, 62},
-			{(int)ObjectIndexes.CheesePress, 16},
-			{(int)ObjectIndexes.MayonnaiseMachine, 24},
-			{(int)ObjectIndexes.SeedMaker, 25},
-			{(int)ObjectIndexes.Loom, 17},
-			{(int)ObjectIndexes.OilMaker, 19},
-			{(int)ObjectIndexes.RecyclingMachine, 20},
-			{(int)ObjectIndexes.PreservesJar, 15},
-			{(int)ObjectIndexes.CharcoalKiln, 114},
-			{(int)ObjectIndexes.Tapper, 105},
-			{(int)ObjectIndexes.LightningRod, 9},
-			{(int)ObjectIndexes.Crystalarium, 21},
-			{(int)ObjectIndexes.Staircase, 71},
-			{(int)ObjectIndexes.WoodSign, 37},
-			{(int)ObjectIndexes.StoneSign, 38},
-			{(int)ObjectIndexes.SlimeIncubator, 156},
-			{(int)ObjectIndexes.SlimeEggPress, 158},
-			{(int)ObjectIndexes.WormBin, 154},
-			{(int)ObjectIndexes.TubOFlowers, 108}, //109 is also a thing
-			{(int)ObjectIndexes.WoodenBrazier, 143},
-			{(int)ObjectIndexes.WickedStatue, 83}, //84 is also a thing
-			{(int)ObjectIndexes.StoneBrazier, 144},
-			{(int)ObjectIndexes.GoldBrazier, 145},
-			{(int)ObjectIndexes.Campfire, 146},
-			{(int)ObjectIndexes.StumpBrazier, 147},
-			{(int)ObjectIndexes.CarvedBrazier, 148},
-			{(int)ObjectIndexes.SkullBrazier, 149},
-			{(int)ObjectIndexes.BarrelBrazier, 150},
-			{(int)ObjectIndexes.MarbleBrazier, 151},
-			{(int)ObjectIndexes.WoodLampPost, 152},
-			{(int)ObjectIndexes.IronLampPost, 153},
-			{(int)ObjectIndexes.Heater, 104},
-			{(int)ObjectIndexes.AutoGrabber, 165},
-			{(int)ObjectIndexes.PrairieKingArcadeSystem, 141},
-			{(int)ObjectIndexes.JunimoKartArcadeSystem, 159},
-			{(int)ObjectIndexes.SodaMachine, 117},
-			{(int)ObjectIndexes.HMTGF, 155},
-			{(int)ObjectIndexes.PinkyLemon, 161},
-			{(int)ObjectIndexes.Foroguemon, 162},
-			{(int)ObjectIndexes.SolidGoldLewis, 164},
-			{(int)ObjectIndexes.StardewHeroTrophy, 116}
-		};
-	}
+				// Non-craftable BigObjects
+				{ BigCraftableIndexes.Heater, new Item((int)BigCraftableIndexes.Heater, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) },
+				{ BigCraftableIndexes.AutoGrabber, new Item((int)BigCraftableIndexes.AutoGrabber, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) },
+				{ BigCraftableIndexes.PrairieKingArcadeSystem, new Item((int)BigCraftableIndexes.PrairieKingArcadeSystem, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) },
+				{ BigCraftableIndexes.JunimoKartArcadeSystem, new Item((int)BigCraftableIndexes.JunimoKartArcadeSystem, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) },
+				{ BigCraftableIndexes.SodaMachine, new Item((int)BigCraftableIndexes.SodaMachine, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) },
+				{ BigCraftableIndexes.HMTGF, new Item((int)BigCraftableIndexes.HMTGF, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) { OverrideName = "??HMTGF??" } },
+				{ BigCraftableIndexes.PinkyLemon, new Item((int)BigCraftableIndexes.PinkyLemon, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) { OverrideName = "??Pinky Lemon??" } },
+				{ BigCraftableIndexes.Foroguemon, new Item((int)BigCraftableIndexes.Foroguemon, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) { OverrideName = "??Foroguemon??" } },
+				{ BigCraftableIndexes.SolidGoldLewis, new Item((int)BigCraftableIndexes.SolidGoldLewis, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) },
+				{ BigCraftableIndexes.StardewHeroTrophy, new Item((int)BigCraftableIndexes.StardewHeroTrophy, ObtainingDifficulties.NonCraftingItem, isBigCraftable: true) }
+			};
+
+			// Populate the AvailableLocations/Seasons now that all fish are initialized
+			// Afterwards, fill out the default fish info
+			FishData.InitializeFishToLocations();
+			Items.Values.Where(item => item.Id > 0 && item is FishItem)
+				.Cast<FishItem>()
+				.ToList()
+				.ForEach(fishItem => FishData.FillDefaultFishInfo(fishItem));
+        }
+
+        /// <summary>
+        /// Gets the value currently in the ObjectInformation asset
+        /// </summary>
+        /// <param name="dataToGet">The index of the data to retrieve</param>
+        /// <returns>The data</returns>
+        public static string GetOriginalItemData(int itemId, ObjectInformationIndexes dataToGet)
+        {
+			if (itemId < 0) { return ""; }
+            return OriginalItemList[itemId].Split("/")[(int)dataToGet];
+        }
+    }
 }

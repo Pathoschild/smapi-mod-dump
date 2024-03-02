@@ -56,5 +56,11 @@ namespace UIInfoSuite2.Options
             batch.Draw(Game1.mouseCursors, new Vector2(slotX + Bounds.X, slotY + Bounds.Y), new Rectangle?(_isChecked ? OptionsCheckbox.sourceRectChecked : OptionsCheckbox.sourceRectUnchecked), Color.White * (_canClick ? 1f : 0.33f), 0.0f, Vector2.Zero, Game1.pixelZoom, SpriteEffects.None, 0.4f);
             base.Draw(batch, slotX, slotY);
         }
+
+        public override Point? GetRelativeSnapPoint(Rectangle slotBounds)
+        {
+            // Based on the value calculated in OptionsPage.snapCursorToCurrentSnappedComponent
+            return new Point(Bounds.X + 16, Bounds.Y + 13);
+        }
     }
 }

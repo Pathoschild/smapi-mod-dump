@@ -217,6 +217,9 @@ namespace ContentPatcher.Framework.Conditions
         /// <summary>The <see cref="StardewValley.LocalizedContentManager.LanguageCode"/> name.</summary>
         Language,
 
+        /// <summary>The current content pack's unique manifest ID.</summary>
+        ModId,
+
         /****
         ** Specialized
         ****/

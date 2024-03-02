@@ -33,7 +33,6 @@ internal sealed class UtilityPercentGameCompleteInnerPatcher : HarmonyPatcher
 
     /// <summary>Patch to add new perfection requirement.</summary>
     [HarmonyPrefix]
-    // ReSharper disable once UnusedParameter.Local
     private static bool UtilityPercentGameCompletePrefix(ref float __result)
     {
         if (!ProfessionsModule.EnablePrestige || !ProfessionsModule.Config.Prestige.IsPerfectionRequirement)
@@ -43,7 +42,6 @@ internal sealed class UtilityPercentGameCompleteInnerPatcher : HarmonyPatcher
 
         if (ProfessionsModule.EnablePrestigeLevels)
         {
-            // ReSharper disable once RedundantAssignment
             __result = Math.Min(
                 Skill.ListVanilla
                     .Where(skill => skill.CurrentLevel >= 20)
@@ -55,7 +53,6 @@ internal sealed class UtilityPercentGameCompleteInnerPatcher : HarmonyPatcher
 
         if (ProfessionsModule.EnableSkillReset)
         {
-            // ReSharper disable once RedundantAssignment
             __result += Math.Min(
                 Skill.ListVanilla
                     .Where(skill => Game1.player.HasAllProfessionsInSkill(skill))

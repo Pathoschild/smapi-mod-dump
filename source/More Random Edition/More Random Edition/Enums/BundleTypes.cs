@@ -58,7 +58,7 @@ namespace Randomizer
 		FishTankFallFish,
 		FishTankWinterFish,
 		FishTankOceanFood,
-		FishTankLegendary,
+		FishTankRandom,
 		FishTankLocation,
 		FishTankRainFish,
 		FishTankNightFish,

@@ -27,12 +27,12 @@ namespace CoreBoy.cpu
 
             RegCmd(opcodes, 0x00, "NOP");
 
-            foreach (var (key, value) in OpcodesForValues(0x01, 0x10, "BC", "DE", "HL", "SP"))
+            foreach ((int key, string value) in OpcodesForValues(0x01, 0x10, "BC", "DE", "HL", "SP"))
             {
                 RegLoad(opcodes, key, value, "d16");
             }
 
-            foreach (var (key, value) in OpcodesForValues(0x02, 0x10, "(BC)", "(DE)"))
+            foreach ((int key, string value) in OpcodesForValues(0x02, 0x10, "(BC)", "(DE)"))
             {
                 RegLoad(opcodes, key, value, "A");
             }
@@ -52,7 +52,7 @@ namespace CoreBoy.cpu
                 RegCmd(opcodes, t, "DEC {}").Load(t.Value).Alu("DEC").Store(t.Value);
             }
 
-            foreach (var (key, value) in OpcodesForValues(0x06, 0x08, "B", "C", "D", "E", "H", "L", "(HL)", "A"))
+            foreach ((int key, string value) in OpcodesForValues(0x06, 0x08, "B", "C", "D", "E", "H", "L", "(HL)", "A"))
             {
                 RegLoad(opcodes, key, value, "d8");
             }
@@ -69,7 +69,7 @@ namespace CoreBoy.cpu
                 RegCmd(opcodes, t, "ADD HL,{}").Load("HL").Alu("ADD", t.Value).Store("HL");
             }
 
-            foreach (var (key, value) in OpcodesForValues(0x0a, 0x10, "(BC)", "(DE)"))
+            foreach ((int key, string value) in OpcodesForValues(0x0a, 0x10, "(BC)", "(DE)"))
             {
                 RegLoad(opcodes, key, "A", value);
             }
@@ -100,7 +100,7 @@ namespace CoreBoy.cpu
             RegCmd(opcodes, 0x37, "SCF").Load("A").Alu("SCF").Store("A");
             RegCmd(opcodes, 0x3f, "CCF").Load("A").Alu("CCF").Store("A");
 
-            foreach (var (key, value) in OpcodesForValues(0x40, 0x08, "B", "C", "D", "E", "H", "L", "(HL)", "A"))
+            foreach ((int key, string value) in OpcodesForValues(0x40, 0x08, "B", "C", "D", "E", "H", "L", "(HL)", "A"))
             {
                 foreach (var s in OpcodesForValues(key, 0x01, "B", "C", "D", "E", "H", "L", "(HL)", "A"))
                 {
@@ -115,7 +115,7 @@ namespace CoreBoy.cpu
 
             RegCmd(opcodes, 0x76, "HALT");
 
-            foreach (var (key, value) in OpcodesForValues(0x80, 0x08, "ADD", "ADC", "SUB", "SBC", "AND", "XOR", "OR", "CP"))
+            foreach ((int key, string value) in OpcodesForValues(0x80, 0x08, "ADD", "ADC", "SUB", "SBC", "AND", "XOR", "OR", "CP"))
             {
                 foreach (var t in OpcodesForValues(key, 0x01, "B", "C", "D", "E", "H", "L", "(HL)", "A"))
                 {
@@ -193,7 +193,7 @@ namespace CoreBoy.cpu
 
             RegLoad(opcodes, 0xf9, "SP", "HL").ExtraCycle();
 
-            foreach (var (key, value) in OpcodesForValues(0x00, 0x08, "RLC", "RRC", "RL", "RR", "SLA", "SRA", "SWAP", "SRL"))
+            foreach ((int key, string value) in OpcodesForValues(0x00, 0x08, "RLC", "RRC", "RL", "RR", "SLA", "SRA", "SWAP", "SRL"))
             {
                 foreach (var t in OpcodesForValues(key, 0x01, "B", "C", "D", "E", "H", "L", "(HL)", "A"))
                 {
@@ -201,9 +201,9 @@ namespace CoreBoy.cpu
                 }
             }
 
-            foreach (var (key, value) in OpcodesForValues(0x40, 0x40, "BIT", "RES", "SET"))
+            foreach ((int key, string value) in OpcodesForValues(0x40, 0x40, "BIT", "RES", "SET"))
             {
-                for (var b = 0; b < 0x08; b++)
+                for (int b = 0; b < 0x08; b++)
                 {
                     foreach (var t in OpcodesForValues(key + (b * 0x08), 0x01, "B", "C", "D", "E", "H", "L", "(HL)", "A"))
                     {
@@ -255,8 +255,8 @@ namespace CoreBoy.cpu
         private static Dictionary<int, string> OpcodesForValues(int start, int step, params string[] values)
         {
             var map = new Dictionary<int, string>();
-            var i = start;
-            foreach (var e in values)
+            int i = start;
+            foreach (string e in values)
             {
                 map.Add(i, e);
                 i += step;

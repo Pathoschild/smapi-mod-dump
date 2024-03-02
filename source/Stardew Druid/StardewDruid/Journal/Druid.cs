@@ -39,6 +39,7 @@ namespace StardewDruid.Journal
         public ClickableTextureComponent startButton;
         protected Page _shownPage;
         protected List<string> _objectiveText;
+        protected List<string> _transcriptText;
         protected float _contentHeight;
         protected float _scissorRectHeight;
         public float scrollAmount;
@@ -382,6 +383,7 @@ namespace StardewDruid.Journal
                         questPage = index;
                         _shownPage = pages[currentPage][index];
                         _objectiveText = _shownPage.objectives;
+                        _transcriptText = _shownPage.transcript;
                         scrollAmount = 0.0f;
                         SetScrollBarFromAmount();
                         if (!Game1.options.SnappyMenus)
@@ -509,6 +511,24 @@ namespace StardewDruid.Journal
                     num1 += Game1.dialogueFont.MeasureString(text2).Y;
                     _contentHeight = num1 + scrollAmount - screen.Y;
                 }
+
+                if (_transcriptText.Count > 0)
+                {
+
+                    num1 += 16;
+                    for (int index = 0; index < _transcriptText.Count; ++index)
+                    {
+                        string str = _transcriptText[index];
+                        int num2 = width - 128;
+                        SpriteFont dialogueFont = Game1.dialogueFont;
+                        int num3 = num2;
+                        string text2 = Game1.parseText(str, dialogueFont, num3);
+                        Utility.drawTextWithShadow(b, text2, Game1.dialogueFont, new Vector2(xPositionOnScreen + 64, num1 - 8f), Game1.textColor, 1f, -1f, -1, -1, 1f, 3);
+                        num1 += Game1.dialogueFont.MeasureString(text2).Y;
+                        _contentHeight = num1 + scrollAmount - screen.Y;
+                    }
+                }
+
                 b.End();
                 b.GraphicsDevice.ScissorRectangle = scissorRectangle;
                 b.Begin(0, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, new Matrix?());

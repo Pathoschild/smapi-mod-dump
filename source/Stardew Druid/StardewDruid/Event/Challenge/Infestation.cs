@@ -32,6 +32,8 @@ namespace StardewDruid.Event.Challenge
         public override void EventTrigger()
         {
 
+            cues = DialogueData.DialogueScene(questData.name);
+
             challengeSpawn = new() { 0, };
             challengeFrequency = 1;
             challengeAmplitude = 1;
@@ -170,26 +172,13 @@ namespace StardewDruid.Event.Challenge
                 return;
             }
 
-            if (bossMonster.Health >= 1)
+            if (ModUtility.MonsterVitals(bossMonster, targetLocation))
             {
+
+                DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = bossMonster,}, activeCounter);
+
                 switch (activeCounter)
                 {
-
-                    case 15: bossMonster.showTextAboveHead("HOW BORING", 3000); break;
-
-                    case 18: bossMonster.showTextAboveHead("the monarchs must be asleep.", 3000); break;
-
-                    case 21: bossMonster.showTextAboveHead("if they send only a farmer", 3000); break;
-
-                    case 24: bossMonster.showTextAboveHead("to face the onslaught...", 3000); break;
-
-                    case 27: bossMonster.showTextAboveHead("OF THE MIGHTY SLIME", 3000); break;
-
-                    case 30: bossMonster.showTextAboveHead("you will be consumed", 3000); break;
-
-                    case 33: bossMonster.showTextAboveHead("along with the whole valley", 3000); break;
-
-                    case 36: bossMonster.showTextAboveHead("ALL WILL BE JELLY", 3000); break;
 
                     case 37:
 
@@ -201,8 +190,6 @@ namespace StardewDruid.Event.Challenge
 
                     case 55:
 
-                        bossMonster.showTextAboveHead("bloop?");
-
                         bossMonster.Halt();
 
                         bossMonster.stunTime = 5000;
@@ -211,15 +198,11 @@ namespace StardewDruid.Event.Challenge
 
                     case 56:
 
-                        bossMonster.showTextAboveHead("that's a lot of star power");
-
                         bossMonster.Halt();
 
                         break;
 
                     case 58:
-
-                        bossMonster.showTextAboveHead("!!!!");
 
                         Vector2 meteorVector = bossMonster.getTileLocation();
 

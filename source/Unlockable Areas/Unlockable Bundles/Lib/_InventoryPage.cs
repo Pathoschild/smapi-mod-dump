@@ -31,6 +31,10 @@ namespace Unlockable_Bundles.Lib
         public static Texture2D BundleOverviewIcon;
         private static ClickableTextureComponent BundleOverviewButton;
 
+        private const int OverviewButtonId = 6401;
+        private const int JunimoButtonId = 898;
+        private const int OrganizeButtonId = InventoryPage.region_organizeButton;
+        private const int LastInventorySlotId = 11;
         public static void Initialize()
         {
             Mod = ModEntry.Mod;
@@ -60,24 +64,41 @@ namespace Unlockable_Bundles.Lib
                 original: AccessTools.DeclaredMethod(typeof(InventoryPage), nameof(InventoryPage.draw), new[] { typeof(SpriteBatch) }),
                 postfix: new HarmonyMethod(typeof(_InventoryPage), nameof(_InventoryPage.draw_Postfix))
             );
+
+            harmony.Patch(
+                original: AccessTools.DeclaredMethod(typeof(IClickableMenu), nameof(IClickableMenu.populateClickableComponentList)),
+                postfix: new HarmonyMethod(typeof(_InventoryPage), nameof(_InventoryPage.populateClickableComponentList_Postfix))
+            );
         }
 
+        //Mod compatibility fixes over who gets what spot in the inventory page go here :)
         public static void Constructor_Postfix(InventoryPage __instance)
         {
             Point pos = new Point(__instance.xPositionOnScreen + __instance.width, __instance.yPositionOnScreen + 96);
+            var leftNeighborID = LastInventorySlotId;
+            var downNeighborID = OrganizeButtonId;
 
             if (__instance.junimoNoteIcon is not null) {
-                __instance.junimoNoteIcon.rightNeighborID = 700;
-  
+                leftNeighborID = JunimoButtonId;
+                __instance.junimoNoteIcon.rightNeighborID = OverviewButtonId;
                 pos.X += 80;
-            }
-                
+
+            } else
+                __instance.organizeButton.upNeighborID = OverviewButtonId;
 
             BundleOverviewButton = new ClickableTextureComponent("", new Rectangle(pos.X, pos.Y, 64, 64), "", "Bundle Overview", BundleOverviewIcon, new Rectangle(0, 0, 60, 55), 1f) {
-                myID = 700,
-                leftNeighborID = 898
+                myID = OverviewButtonId,
+                leftNeighborID = leftNeighborID,
+                downNeighborID = downNeighborID
             };
         }
+
+        public static void populateClickableComponentList_Postfix(IClickableMenu __instance)
+        {
+            if (__instance is InventoryPage)
+                __instance.allClickableComponents.Add(BundleOverviewButton);
+        }
+
 
         public static void performHoverAction_Postfix(int x, int y, InventoryPage __instance)
         {

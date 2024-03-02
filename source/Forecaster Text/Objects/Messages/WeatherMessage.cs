@@ -33,6 +33,7 @@
  * SOFTWARE.
  */
 
+using ForecasterText.Objects.Addons;
 using ForecasterText.Objects.Enums;
 using StardewModdingAPI;
 using StardewValley;
@@ -43,22 +44,22 @@ namespace ForecasterText.Objects.Messages {
         
         protected WeatherMessage() {}
         
-        protected abstract int GetWeather();
+        protected abstract string GetWeather();
         protected abstract WeatherDisplay GetDisplay(ForecasterConfig config);
         protected virtual bool ShouldDisplayFor(Farmer farmer) => true;
         
         /// <inheritdoc />
-        public string Write(Farmer farmer, ITranslationHelper t9N, ForecasterConfig config) {
+        public string? Write(Farmer farmer, ITranslationHelper t9N, ForecasterConfig config) {
             if (!this.ShouldDisplayFor(farmer))
                 return null;
             
             WeatherDisplay display = this.GetDisplay(config);
-            int weather = this.GetWeather();
+            string weather = this.GetWeather();
             
             if (!this.ShowWeather(display, weather))
                 return null;
             
-            WeatherIcons[] emojis = weather switch {
+            WeatherIcons[]? emojis = weather switch {
                 Game1.weather_sunny
                     => new[] { WeatherIcons.SUN },
                 Game1.weather_festival
@@ -90,7 +91,7 @@ namespace ForecasterText.Objects.Messages {
                 .Write(farmer, t9N, config);
         }
         
-        protected virtual bool ShowWeather(WeatherDisplay display, int weather) {
+        protected virtual bool ShowWeather(WeatherDisplay display, string weather) {
             return display switch {
                 WeatherDisplay.NEVER => false,
                 WeatherDisplay.ALWAYS => true,
@@ -119,11 +120,11 @@ namespace ForecasterText.Objects.Messages {
                 => true;
             
             /// <inheritdoc />
-            protected override int GetWeather()
-                => (int)this.Weather;
+            protected override string GetWeather()
+                => this.Weather.GetString();
             
             /// <inheritdoc />
-            protected override bool ShowWeather(WeatherDisplay display, int weather)
+            protected override bool ShowWeather(WeatherDisplay display, string weather)
                 => true;
         }
         public class PelicanTown : WeatherMessage {
@@ -132,7 +133,7 @@ namespace ForecasterText.Objects.Messages {
             public PelicanTown(): base() {}
             
             /// <inheritdoc />
-            protected override int GetWeather() {
+            protected override string GetWeather() {
                 WorldDate date = new(Game1.Date); // Copy the date so we don't modify the origin
                 ++date.TotalDays; // Increase by one to get the next days weather
                 return !Game1.IsMasterGame ? Game1.getWeatherModificationsForDate(date, Game1.netWorldState.Value.WeatherForTomorrow) : Game1.getWeatherModificationsForDate(date, Game1.weatherForTomorrow);
@@ -148,9 +149,9 @@ namespace ForecasterText.Objects.Messages {
             public GingerIsland(): base() {}
             
             /// <inheritdoc />
-            protected override int GetWeather() {
+            protected override string GetWeather() {
                 return Game1.netWorldState.Value.GetWeatherForLocation(
-                    Game1.getLocationFromName("IslandSouth").GetLocationContext()
+                    Game1.getLocationFromName("IslandSouth").GetLocationContextId()
                 ).weatherForTomorrow.Value;
             }
             

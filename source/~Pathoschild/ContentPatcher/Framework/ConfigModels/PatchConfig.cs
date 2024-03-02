@@ -48,6 +48,9 @@ namespace ContentPatcher.Framework.ConfigModels
         [JsonProperty(ObjectCreationHandling = ObjectCreationHandling.Auto)]
         public InvariantDictionary<string?> When { get; } = new();
 
+        /// <summary>The priority for this patch when multiple patches apply.</summary>
+        public string? Priority { get; set; }
+
         /****
         ** Multiple actions
         ****/
@@ -121,6 +124,7 @@ namespace ContentPatcher.Framework.ConfigModels
             this.FromFile = other.FromFile;
             this.Enabled = other.Enabled;
             this.When = other.When.Clone();
+            this.Priority = other.Priority;
 
             // multiple actions
             this.TextOperations = other.TextOperations.Select(p => p != null ? new TextOperationConfig(p) : null).ToList();

@@ -6,21 +6,22 @@ for queries and analysis.**
 
 ----
 
-### Adding notifications
+## Adding notifications
 
 Notifications are loaded from `mistyspring.dynamicdialogues/Notifs`.
 
-name | description
------|------------ 
-Time | (*) Time to add a notification at.
-Location | (*) Name of map to display the notif in. 
-Message | Message to display. 
-IsBox | (Optional) If `true`, will make notification a box. 
-Sound | (Optional) Sound the notif will make, if any. ([see sound IDs](https://docs.google.com/spreadsheets/d/18AtLClQPuC96rJOC-A4Kb1ZkuqtTmCRFAKn9JJiFiYE))
+| name     | required | description                                                                                                                              |
+|----------|----------|------------------------------------------------------------------------------------------------------------------------------------------|
+| Time     | (*)      | Time to add a notification at.                                                                                                           |
+| Location | (*)      | Name of map to display the notif in.                                                                                                     |
+| Message  | yes      | Message to display.                                                                                                                      |
+| IsBox    | no       | If `true`, will make notification a box.                                                                                                 |
+| Sound    | no       | Sound the notification will make. ([see sound IDs](https://docs.google.com/spreadsheets/d/18AtLClQPuC96rJOC-A4Kb1ZkuqtTmCRFAKn9JJiFiYE)) |
+| Conditions | no        | [Conditions](https://github.com/misty-spring/DynamicDialogues/blob/main/docs/player-conditions.md) to use.                               |
 
-* = like with dialogues, you must either set a time, a location, or both.
+`(*)` = like with dialogues,you need either a time or location (or both) for the dialogue to load.
 
-Template:
+**Template**:
 
 ```
         "example_asBox": {

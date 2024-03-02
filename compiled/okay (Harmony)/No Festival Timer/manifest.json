@@ -1,0 +1,16 @@
+﻿{
+  "Name": "No festival timer",
+  "Author": "mistyspring",
+  "Version": "1.1.0",
+  "Description": "Makes festival timer infinite. Has support for mod festivals.",
+  "UniqueID": "mistyspring.nofestivaltimer",
+  "EntryDll": "NoFestivalTimer.dll",
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": ["nexus:20077"],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

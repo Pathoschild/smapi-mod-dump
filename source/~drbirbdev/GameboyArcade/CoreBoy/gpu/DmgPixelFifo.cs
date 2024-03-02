@@ -39,7 +39,7 @@ namespace CoreBoy.gpu
 
         public void Enqueue8Pixels(int[] pixelLine, TileAttributes tileAttributes)
         {
-            foreach (var p in pixelLine)
+            foreach (int p in pixelLine)
             {
                 this.Pixels.Enqueue(p);
                 this._palettes.Enqueue(this._registers.Get(GpuRegister.Bgp));
@@ -49,13 +49,13 @@ namespace CoreBoy.gpu
 
         public void SetOverlay(int[] pixelLine, int offset, TileAttributes flags, int oamIndex)
         {
-            var priority = flags.IsPriority();
-            var overlayPalette = this._registers.Get(flags.GetDmgPalette());
+            bool priority = flags.IsPriority();
+            int overlayPalette = this._registers.Get(flags.GetDmgPalette());
 
-            for (var j = offset; j < pixelLine.Length; j++)
+            for (int j = offset; j < pixelLine.Length; j++)
             {
-                var p = pixelLine[j];
-                var i = j - offset;
+                int p = pixelLine[j];
+                int i = j - offset;
 
                 if (this._pixelType.Get(i) == 1)
                 {

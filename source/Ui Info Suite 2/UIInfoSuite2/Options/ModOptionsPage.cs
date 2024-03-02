@@ -19,14 +19,18 @@ using System.Collections.Generic;
 
 namespace UIInfoSuite2.Options
 {
+    /// <summary>Our mod options made page to be added to <see cref="GameMenu.pages"/></summary>
     public class ModOptionsPage : IClickableMenu
     {
+        private const int visibleSlots = 7;
         private const int Width = 800;
 
-        private List<ClickableComponent> _optionSlots = new();
+        /// <summary>The visible option slots <para>Must be public so
+        /// <see cref="IClickableMenu.populateClickableComponentList" /> can find it.</para></summary> 
+        public List<ClickableComponent> _optionSlots = new();
         private List<ModOptionsElement> _options;
         private string _hoverText;
-        private int _optionsSlotHeld;
+        private int _optionsSlotHeld = -1;
         private int _currentItemIndex;
         private bool _isScrolling;
         private ClickableTextureComponent _upArrow;
@@ -73,14 +77,24 @@ namespace UIInfoSuite2.Options
                 _scrollBar.bounds.Width,
                 height - Game1.tileSize * 2 - _upArrow.bounds.Height - Game1.pixelZoom * 2);
 
-            for (int i = 0; i < 7; ++i)
-                _optionSlots.Add(new ClickableComponent(
+            for (int i = 0; i < visibleSlots; ++i)
+            {
+                // tqdv: I'm not sure where Game1.tileSize and Game1.pixelZoom come from
+                var component = new ClickableComponent(
                     new Rectangle(
                         xPositionOnScreen + Game1.tileSize / 4,
-                        yPositionOnScreen + Game1.tileSize * 5 / 4 + Game1.pixelZoom + i * (height - Game1.tileSize * 2) / 7,
+                        yPositionOnScreen + Game1.tileSize * 5 / 4 + Game1.pixelZoom + i * (height - Game1.tileSize * 2) / visibleSlots,
                         width - Game1.tileSize / 2,
-                        (height - Game1.tileSize * 2) / 7 + Game1.pixelZoom),
-                    i.ToString()));
+                        (height - Game1.tileSize * 2) / visibleSlots + Game1.pixelZoom),
+                    i.ToString())
+                    {
+                        myID = i,
+                        downNeighborID = (i+1 < visibleSlots ? i+1 : ClickableComponent.CUSTOM_SNAP_BEHAVIOR),
+                        upNeighborID = (i-1 >= 0 ? i-1 : ClickableComponent.CUSTOM_SNAP_BEHAVIOR),
+                        fullyImmutable = true
+                    };
+                _optionSlots.Add(component);
+            }
 
             events.Display.MenuChanged += OnMenuChanged;
         }
@@ -127,6 +141,74 @@ namespace UIInfoSuite2.Options
             }
         }
 
+        public override void snapToDefaultClickableComponent()
+        {
+            base.currentlySnappedComponent = base.getComponentWithID(1);
+            this.snapCursorToCurrentSnappedComponent();
+        }
+
+        protected override void customSnapBehavior(int direction, int oldRegion, int oldID)
+        {
+            if (oldID == visibleSlots-1 && direction == Game1.down)
+            {
+                if (_currentItemIndex + visibleSlots < _options.Count)
+                {
+                    DownArrowPressed();
+                    Game1.playSound("shiny4");
+                }
+            }
+            else if (oldID == 0 && direction == Game1.up)
+            {
+                if (_currentItemIndex > 0)
+                {
+                    UpArrowPressed();
+                    Game1.playSound("shiny4");
+                }
+                else
+                {
+                    // Already at the top, move to the menu tab
+                    base.currentlySnappedComponent = base.getComponentWithID(12348);
+                    if (base.currentlySnappedComponent != null)
+                    {
+                        // Set the down neighbor of the tab to the first slot, instead of the default (which is the second slot)
+                        base.currentlySnappedComponent.downNeighborID = 0;
+                    }
+                    snapCursorToCurrentSnappedComponent();
+                }
+            }
+        }
+
+        public override void snapCursorToCurrentSnappedComponent()
+        {
+            if (base.currentlySnappedComponent != null)
+            {
+                var snappedElement = GetVisibleOption(base.currentlySnappedComponent.myID);
+                if (snappedElement != null)
+                {
+                    var maybePos = snappedElement.GetRelativeSnapPoint(base.currentlySnappedComponent.bounds);
+                    if (maybePos is Point pos) // if it's not null
+                    {
+                        Game1.setMousePosition(
+                            base.currentlySnappedComponent.bounds.X + pos.X,
+                            base.currentlySnappedComponent.bounds.Y + pos.Y);
+                        return;
+                    }
+                }
+
+                if (base.currentlySnappedComponent.myID < visibleSlots)
+                {
+                    ModEntry.MonitorObject.Log($"{this.GetType().Name}: Using default snap position for a slot");
+
+                    // Positioning taken from OptionsPage.snapCursorToCurrentSnappedComponent
+                    Game1.setMousePosition(base.currentlySnappedComponent.bounds.Left + 48, base.currentlySnappedComponent.bounds.Center.Y - 12);
+                }
+                else
+                {
+                    base.snapCursorToCurrentSnappedComponent();
+                }
+            }
+        }
+
         private void SetScrollBarToCurrentItem()
         {
             if (_options.Count > 0)
@@ -156,10 +238,8 @@ namespace UIInfoSuite2.Options
                             y,
                             yPositionOnScreen + _upArrow.bounds.Height + Game1.pixelZoom * 5));
 
-                    _currentItemIndex = Math.Min(
-                        _options.Count - 7,
-                        Math.Max(
-                            0,
+                    _currentItemIndex = Math.Max(0,
+                        Math.Min(_options.Count - visibleSlots,
                             _options.Count * (y - _scrollBarRunner.Y) / _scrollBarRunner.Height));
 
                     SetScrollBarToCurrentItem();
@@ -178,10 +258,14 @@ namespace UIInfoSuite2.Options
 
         public override void receiveKeyPress(Keys key)
         {
-            if (_optionsSlotHeld > -1 &&
-                _optionsSlotHeld + _currentItemIndex < _options.Count)
+            if (_optionsSlotHeld > -1 && _optionsSlotHeld + _currentItemIndex < _options.Count)
             {
                 _options[_currentItemIndex + _optionsSlotHeld].ReceiveKeyPress(key);
+            }
+            else
+            {
+                // The base implementation handles gamepad movement
+                base.receiveKeyPress(key);
             }
         }
 
@@ -196,7 +280,7 @@ namespace UIInfoSuite2.Options
                     UpArrowPressed();
                     Game1.playSound("shiny4");
                 }
-                else if (direction < 0 && _currentItemIndex < Math.Max(0, _options.Count - 7))
+                else if (direction < 0 && _currentItemIndex + visibleSlots < _options.Count)
                 {
                     DownArrowPressed();
                     Game1.playSound("shiny4");
@@ -258,11 +342,13 @@ namespace UIInfoSuite2.Options
                     y > yPositionOnScreen &&
                     y < yPositionOnScreen + height)
                 {
+                    // Handle scrollbar click even if the player clicked right next to it, but do not enable scrollbar dragging
+                    // NB the leniency area is based on the option page's, so it's too large
                     _isScrolling = true;
                     base.leftClickHeld(x, y);
                     base.releaseLeftClick(x, y);
                 }
-                _currentItemIndex = Math.Max(0, Math.Min(_options.Count - 7, _currentItemIndex));
+                _currentItemIndex = Math.Max(0, Math.Min(_options.Count - visibleSlots, _currentItemIndex));
                 for (int i = 0; i < _optionSlots.Count; ++i)
                 {
                     if (_optionSlots[i].bounds.Contains(x, y) &&
@@ -283,14 +369,6 @@ namespace UIInfoSuite2.Options
         public override void receiveRightClick(int x, int y, bool playSound = true)
         {
 
-        }
-
-        public override void receiveGamePadButton(Buttons b)
-        {
-            if (b == Buttons.A)
-            {
-                receiveLeftClick(Game1.getMouseX(), Game1.getMouseY());
-            }
         }
 
         public override void performHoverAction(int x, int y)
@@ -344,6 +422,47 @@ namespace UIInfoSuite2.Options
             }
             if (_hoverText != "")
                 IClickableMenu.drawHoverText(batch, _hoverText, Game1.smallFont);
+        }
+
+        /// <summary>Returns the <see cref="ModOptionsElement" /> that corresponds to the component ID</summary>
+        /// <returns>the mod options element, or null if it is invalid</returns>
+        private ModOptionsElement? GetVisibleOption(int componentId)
+        {
+            if (componentId >= visibleSlots)
+                return null;
+            
+            int index = _currentItemIndex + componentId;
+            if (0 <= index && index < _options.Count)
+            {
+                return _options[index];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        internal void SaveState(ModOptionsPageState state)
+        {
+            state.currentIndex = _currentItemIndex;
+            state.currentComponent = base.currentlySnappedComponent?.myID;
+        }
+
+        internal void LoadState(ModOptionsPageState state)
+        {
+            if (state.currentIndex is int index)
+            {
+                _currentItemIndex = index;
+            }
+            if (state.currentComponent is int componentID)
+            {
+                var component = base.getComponentWithID(componentID);
+                if (component != null)
+                {
+                    base.currentlySnappedComponent = component;
+                    this.snapCursorToCurrentSnappedComponent();
+                }
+            }
         }
     }
 }

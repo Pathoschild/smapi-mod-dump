@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
+using StardewArchipelago.Constants.Modded;
 using StardewArchipelago.Extensions;
 using StardewArchipelago.Serialization;
 using StardewModdingAPI;
@@ -114,17 +115,33 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
 
         private void SwapFarmhouseEntranceWithAnotherEmptyAreaEntrance(SlotData slotData)
         {
-            var outsideAreas = new[] { "Town", "Mountain", "Farm", "Forest", "BusStop", "Desert", "Beach" };
+            var outsideAreas = new List<string>() { "Town", "Mountain", "Farm", "Forest", "BusStop", "Desert", "Beach" };
+            outsideAreas.AddRange(IncludeOutsideModEntrancesToOutsideAreas(slotData));
             var random = new Random(int.Parse(slotData.Seed));
             var chosenEntrance = "";
             var replacementIsOutside = false;
+            
             while (!replacementIsOutside)
             {
                 chosenEntrance = ModifiedEntrances.Keys.ToArray()[random.Next(ModifiedEntrances.Keys.Count)];
-                replacementIsOutside = outsideAreas.Contains(chosenEntrance.Split(TRANSITIONAL_STRING)[0]) && !chosenEntrance.Contains("67|17"); // 67|17 is Quarry Mine
+                var barredEntranceRule = !chosenEntrance.Contains("67|17")  &&  !chosenEntrance.Contains("SpriteSpring");
+                replacementIsOutside = outsideAreas.Contains(chosenEntrance.Split(TRANSITIONAL_STRING)[0]) && barredEntranceRule; // 67|17 is Quarry Mine
             }
 
             SwapTwoEntrances(ModifiedEntrances, chosenEntrance, FARM_TO_FARMHOUSE);
+        }
+
+        private IEnumerable<string> IncludeOutsideModEntrancesToOutsideAreas(SlotData slotData)
+        {
+            if (slotData.Mods.HasMod(ModNames.SVE))
+            {
+                yield return "Custom_ForestWest"; 
+                yield return "Custom_BlueMoonVineyard";
+            }
+            if (slotData.Mods.HasMod(ModNames.BOARDING_HOUSE))
+            {
+                yield return "Custom_BoardingHouse_BackwoodsPlateau";
+            }
         }
 
         private static void SwapTwoEntrances(Dictionary<string, string> entrances, string entrance1, string entrance2)

@@ -6,11 +6,9 @@ mods:
    Forecaster Text
 
 latest commit:
-   commit e09b47616c508f9ebed0811718be0ff2de6d11bc
+   commit 04ae0ce8a3345badf25550f5e5d2b0f297006f77
    Author: 7873930+GStefanowich <7873930+GStefanowich@users.noreply.github.com>
-   Date:   Thu Aug 31 10:31:43 2023 -0400
+   Date:   Mon Feb 26 14:31:29 2024 -0500
    
-       Pushed version 1.2.4
-         Added Turkish T9N
-       Updated the README to show changes
+       Cleaned up remaining Nullability warnings
    

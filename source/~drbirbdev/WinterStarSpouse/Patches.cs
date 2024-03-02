@@ -80,7 +80,7 @@ class LetterViewerMenu_Constructor
                 return;
             }
             // Reload the mail text, because the parameter has already been changed in-place with the wrong gift recipient.
-            Dictionary<string, string> mailDict = Game1.content.Load<Dictionary<string, string>>("Data\\mail");
+            Dictionary<string, string> mailDict = DataLoader.Mail(Game1.content);
             string mail = mailDict[mailTitle];
 
             mail = mail.Split(new string[1] { "[#]" }, StringSplitOptions.None)[0];

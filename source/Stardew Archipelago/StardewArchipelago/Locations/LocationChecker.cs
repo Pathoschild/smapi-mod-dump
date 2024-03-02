@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using StardewArchipelago.Archipelago;
@@ -24,7 +23,6 @@ namespace StardewArchipelago.Locations
         private ArchipelagoClient _archipelago;
         private readonly LocationNameMatcher _locationNameMatcher;
         private Dictionary<string, long> _checkedLocations;
-        private Dictionary<string, string[]> _wordFilterCache;
 
         public LocationChecker(IMonitor monitor, ArchipelagoClient archipelago, List<string> locationsAlreadyChecked)
         {
@@ -32,7 +30,6 @@ namespace StardewArchipelago.Locations
             _archipelago = archipelago;
             _locationNameMatcher = new LocationNameMatcher();
             _checkedLocations = locationsAlreadyChecked.ToDictionary(x => x, x => (long)-1);
-            _wordFilterCache = new Dictionary<string, string[]>();
         }
 
         public List<string> GetAllLocationsAlreadyChecked()
@@ -88,7 +85,7 @@ namespace StardewArchipelago.Locations
             }
 
             _checkedLocations.Add(locationName, locationId);
-            _wordFilterCache.Clear();
+            _locationNameMatcher.ClearCache();
             SendAllLocationChecks();
             GoalCodeInjection.CheckAllsanityGoalCompletion();
         }
@@ -118,7 +115,7 @@ namespace StardewArchipelago.Locations
                 if (!_checkedLocations.ContainsKey(locationName))
                 {
                     _checkedLocations.Add(locationName, locationId);
-                    _wordFilterCache.Clear();
+                    _locationNameMatcher.ClearCache();
                 }
             }
         }
@@ -152,7 +149,7 @@ namespace StardewArchipelago.Locations
                 }
 
                 _checkedLocations.Remove(location);
-                _wordFilterCache.Clear();
+                _locationNameMatcher.ClearCache();
             }
         }
 

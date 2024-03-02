@@ -7,6 +7,9 @@ for queries and analysis.**
 ----
 
 # Release notes
+## 1.2.0
+* Updated to support SMAPI 3.18 in preparation for Stardew Valley v1.6
+
 ## 1.1.1
 * Updated to support SMAPI 3.8 and Stardew Valley v1.5
 

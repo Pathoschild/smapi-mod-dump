@@ -1,0 +1,72 @@
+﻿{
+    /*********
+    ** In-game messages
+    *********/
+    // changed manually
+    "message.config-reloaded": "Ora il tempo è cambiato...",
+    "message.speed-changed": "10 minuti sembrano {{seconds}} secondi",
+    "message.time-stopped": "Hey, hai fermato il tempo!",
+    "message.time-resumed": "Ora Il tempo è come sempre...",
+
+    // changed based on time
+    "message.on-time-change.time-stopped": "Il tempo si ferma subito...",
+
+    // changed based on location
+    "message.on-location-change.time-stopped-globally": "Il tempo si è fermato dappertutto...",
+    "message.on-location-change.time-stopped-here": "Qui il tempo si è fermato...",
+    "message.on-location-change.time-speed-here": "Qui 10 minuti sembrano come {{secondi}} secondi...",
+
+
+    /*********
+    ** Generic Mod Config Menu UI
+    *********/
+    // general options
+    "config.general-options": "Opzioni generali",
+    "config.enable-on-festival-days.name": "Attiva nei giorni dei festival",
+    "config.enable-on-festival-days.desc": "Per modificare il tempo nei giorni dei festival.",
+    "config.location-notify.name": "Mostra informazioni sul tempo sul portale",
+    "config.location-notify.desc": "Per visualizzare un messaggio sulle impostazioni del tempo quando si entra in una località.",
+
+    // seconds per minute section
+    "config.seconds-per-minute": "Secondi per minuti",
+    "config.indoors-speed.name": "Negli interni",
+    "config.indoors-speed.desc": "Il numero di secondi per minuto di gioco negli interni.",
+    "config.outdoors-speed.name": "Negli esterni",
+    "config.outdoors-speed.desc": "Il numero di secondi per minuto di gioco negli esterni.",
+    "config.mine-speed.name": "Miniere",
+    "config.mine-speed.desc": "Il numero di secondi per minuto di gioco nelle Miniere.",
+    "config.skull-cavern-speed.name": "Caverna del Teschio",
+    "config.skull-cavern-speed.desc": "Il numero di secondi per minuto di gioco nella Caverna del Teschio.",
+    "config.volcano-dungeon-speed.name": "Dungeon del vulcano",
+    "config.volcano-dungeon-speed.desc": "Il numero di secondi per minuto di gioco nel Dungeon del Vulcano.",
+
+    // freeze time section
+    "config.freeze-time": "Tempo congelato",
+    "config.anywhere-at-time.name": "Tempo congelato a",
+    "config.anywhere-at-time.desc": "Il tempo in cui congelare il tempo ovunque. Dovrebbe essere l'ora militare di 24 ore, da 600 (6 del mattino) a 2400 (mezzanotte) e 2600 (2 del mattino). È possibile impostarlo a 2600 per disabilitarlo. ",
+    "config.freeze-time-indoors.name": "Negli interni",
+    "config.freeze-time-indoors.desc": "Per congelare il tempo negli interni",
+    "config.freeze-time-outdoors.name": "Negli esterni",
+    "config.freeze-time-outdoors.desc": "Per congelare il tempo negli esterni",
+    "config.freeze-time-mine.name": "Miniere",
+    "config.freeze-time-mine.desc": "Per congelare il tempo nelle Miniere",
+    "config.freeze-time-skull-cavern.name": "Caverna del teschio",
+    "config.freeze-time-skull-cavern.desc": "Per congelare il tempo nella Caverna del teschio",
+    "config.freeze-time-volcano-dungeon.name": "Dungeon del vulcano",
+    "config.freeze-time-volcano-dungeon.desc": "Per congelare il tempo nel Dungeon del vulcano",
+    "config.freeze-time-freeze-names.name": "Congelare luoghi specifici",
+    "config.freeze-time-freeze-names.desc": "I nomi di luoghi specifici in cui congelare il tempo. I nomi dei luoghi possono essere visualizzati nel gioco utilizzando la modalità Debug. È possibile elencarli più volte con le virgole.",
+    "config.freeze-time-dont-freeze-names.name": "Non congelare i nomi delle località",
+    "config.freeze-time-dont-freeze-names.desc": "I nomi di luoghi specifici in cui il tempo non dovrebbe essere congelato, indipendentemente dalle impostazioni precedenti. I nomi delle località possono essere visualizzati nel gioco utilizzando la modalità Debug. È possibile elencarli più volte con le virgole.",
+
+    // controls
+    "config.controls": "Controlli",
+    "config.freeze-time-key.name": "Tempo congelato",
+    "config.freeze-time-key.desc": "È il tasto che congela o scongela il tempo. Il congelamento del tempo rimane valido fino a quando non lo si scongela; lo scongelamento del tempo rimane valido fino a quando non si inserisce una nuova località con le impostazioni di tempo.",
+    "config.slow-time-key.name": "Tempo rallentato",
+    "config.slow-time-key.desc": "Il tasto che rallenta il tempo di un secondo ogni 10 minuti di gioco. Si combina con Control per 100 secondi, Shift per 10 secondi o Alt per 0,1 secondi.",
+    "config.speed-up-time-key.name": "Tempo accelerato",
+    "config.speed-up-time-key.desc": "Il tasto che accelera il tempo di un secondo ogni 10 minuti di gioco. Si combina con Control per 100 secondi, Shift per 10 secondi o Alt per 0,1 secondi.",
+    "config.reload-key.name": "Ricarica configurazione",
+    "config.reload-key.desc": "Il tasto che ricarica tutti i valori dal file di configurazione e li applica immediatamente. Il tempo rimarrà congelato se è stato congelato tramite il tasto di scelta rapida."
+}

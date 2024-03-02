@@ -16,7 +16,8 @@ namespace HorseOverhaul
 
     internal class FoodData
     {
-        protected const int BugMeatID = 684;
+        protected const string BugMeatID = "(O)684";
+        protected const string ChocolateCakeID = "(O)220";
 
         public static int CalculateGenericFriendshipGain(Item item, int currentFriendship)
         {
@@ -46,14 +47,13 @@ namespace HorseOverhaul
         {
             // TODO maybe exclude a few items (maybe differences between cat and dog?)
             // TODO maybe include a few cooked meats? then you could do the same for cooked fish too though
-            // TODO no healthRecoveredOnConsumption > 0 in case raw chicken is classified as toxic?
-            return item.ParentSheetIndex == BugMeatID || item.Category == StardewObject.meatCategory;
+            return item.QualifiedItemId == BugMeatID || item.Category == StardewObject.meatCategory;
         }
 
         public static bool IsChocolate(Item item)
         {
             // Chocolate Cake, currently the only chocolate item
-            return item?.ParentSheetIndex == 220;
+            return item?.QualifiedItemId == ChocolateCakeID;
         }
     }
 }

@@ -41,8 +41,8 @@ using StardewValley;
 
 namespace ForecasterText.Objects.Messages {
     internal interface ISourceMessage {
-        string Write(Farmer farmer, ITranslationHelper t9N, ForecasterConfig config);
-        string Write(ForecasterConfig config, ITranslationHelper t9N)
+        string? Write(Farmer farmer, ITranslationHelper t9N, ForecasterConfig config);
+        string? Write(ForecasterConfig config, ITranslationHelper t9N)
             => this.Write(Game1.player, t9N, config);
         
         public static MessageSource GetDailyLuck(SpiritMoods mood)
@@ -53,10 +53,10 @@ namespace ForecasterText.Objects.Messages {
         public static MessageSource GetQueenOfSauce(string recipe, bool hasRecipe)
             => MessageSource.TV(new MessageBuilder("tv.recipe")
                 .AddEmoji("icon", hasRecipe ? MiscEmoji.KNOWN_RECIPE : MiscEmoji.NEW_RECIPE)
-                .AddTranslation("recipe", $@"Data\CookingRecipes:{recipe}", content => content?.Split('/') is {Length: >=5} split ? split[4] : recipe));
+                .AddRecipe("recipe", new CraftingRecipe(recipe)));
         
-        public static MessageSource GetBirthdays(IEnumerable<object> characters, ForecasterConfig config) {
-            MessageBuilder builder = null;
+        public static MessageSource? GetBirthdays(IEnumerable<object> characters, ForecasterConfig config) {
+            MessageBuilder? builder = null;
             
             foreach (object obj in characters) {
                 // Create the build if it doesn't exist

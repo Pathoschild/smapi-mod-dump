@@ -95,7 +95,7 @@ namespace Desert_Bloom.Lib
                     },
                 EditMap = "DLX.Desert_Bloom.Oasis_Tunnel.Overlay",
                 EditMapPosition = new Vector2(120, 48),
-                EditMapMode = EditMapMode.ReplaceByLayer
+                EditMapMode = PatchMapMode.ReplaceByLayer
             });
 
             list.Add(new UnlockableModel() {
@@ -188,7 +188,7 @@ namespace Desert_Bloom.Lib
                 },
                 EditMap = "DLX.Desert_Bloom.Mill_1",
                 EditMapPosition = new Vector2(33, 16),
-                EditMapMode = EditMapMode.ReplaceByLayer
+                EditMapMode = PatchMapMode.ReplaceByLayer
             });
 
             if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier1"))
@@ -212,7 +212,7 @@ namespace Desert_Bloom.Lib
                 },
                 EditMap = "DLX.Desert_Bloom.Mill_2",
                 EditMapPosition = new Vector2(31, 11),
-                EditMapMode = EditMapMode.ReplaceByLayer
+                EditMapMode = PatchMapMode.ReplaceByLayer
             });
 
             if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier2"))
@@ -235,7 +235,7 @@ namespace Desert_Bloom.Lib
                 },
                 EditMap = "DLX.Desert_Bloom.Mill_3",
                 EditMapPosition = new Vector2(24, 7),
-                EditMapMode = EditMapMode.ReplaceByLayer
+                EditMapMode = PatchMapMode.ReplaceByLayer
             });
 
             if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier3"))
@@ -259,7 +259,7 @@ namespace Desert_Bloom.Lib
                 },
                 EditMap = "DLX.Desert_Bloom.Mill_4",
                 EditMapPosition = new Vector2(86, 42),
-                EditMapMode = EditMapMode.ReplaceByLayer
+                EditMapMode = PatchMapMode.ReplaceByLayer
             });
 
             if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mill_Tier4"))
@@ -311,7 +311,7 @@ namespace Desert_Bloom.Lib
                 },
                 EditMap = "DLX.Desert_Bloom.Mine_Area_Clean",
                 EditMapPosition = new Vector2(3, 53),
-                EditMapMode = EditMapMode.ReplaceByLayer
+                EditMapMode = PatchMapMode.ReplaceByLayer
             });
 
             if (!API.UnlockableBundlesHandler.unlocked("DLX.Desert_Bloom.Mining_Area_1"))

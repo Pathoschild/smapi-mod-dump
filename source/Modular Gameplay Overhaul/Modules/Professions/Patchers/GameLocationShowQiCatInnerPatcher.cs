@@ -43,7 +43,6 @@ internal sealed class GameLocationShowQiCatInnerPatcher : HarmonyPatcher
 
         if (ProfessionsModule.EnablePrestigeLevels)
         {
-            // ReSharper disable once RedundantAssignment
             __result = Math.Min(
                 Skill.ListVanilla
                     .Where(skill => skill.CurrentLevel >= 20)
@@ -55,7 +54,6 @@ internal sealed class GameLocationShowQiCatInnerPatcher : HarmonyPatcher
 
         if (ProfessionsModule.EnableSkillReset)
         {
-            // ReSharper disable once RedundantAssignment
             __result += Math.Min(
                 Skill.ListVanilla
                     .Where(skill => Game1.player.HasAllProfessionsInSkill(skill))

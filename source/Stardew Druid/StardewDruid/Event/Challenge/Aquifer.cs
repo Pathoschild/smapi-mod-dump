@@ -40,6 +40,8 @@ namespace StardewDruid.Event.Challenge
         public override void EventTrigger()
         {
 
+            cues = DialogueData.DialogueScene(questData.name);
+
             challengeSpawn = new() { 99, };
 
             challengeFrequency = 2;
@@ -245,36 +247,18 @@ namespace StardewDruid.Event.Challenge
                 return;
             }
 
-            if (bossMonster.Health >= 1)
+            if (ModUtility.MonsterVitals(bossMonster,targetLocation))
             {
+
+                DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = bossMonster, }, activeCounter);
+
                 switch (activeCounter)
                 {
 
-                    case 22: bossMonster.showTextAboveHead("...farmer..."); break;
-
-                    case 24: bossMonster.showTextAboveHead("...you tresspass..."); break;
-
-                    case 26: bossMonster.showTextAboveHead("cheeep cheep"); break;
-
-                    case 28: bossMonster.showTextAboveHead("...your kind..."); break;
-
-                    case 30: bossMonster.showTextAboveHead("...defile waters..."); break;
-
-                    case 32: bossMonster.showTextAboveHead("cheeep cheep"); break;
-
-                    case 34: bossMonster.showTextAboveHead("She Who Screeches Over Seas", 3000); break;
-
-                    case 37: bossMonster.showTextAboveHead("...is angry..."); break;
-
-                    case 39: bossMonster.showTextAboveHead("CHEEEP");
+                    case 39:
                         bossMonster.posturing.Set(false);
                         bossMonster.focusedOnFarmers = true; break;
 
-                    case 56:
-
-                        bossMonster.showTextAboveHead("...rocks hurt...");
-
-                        break;
 
                     case 57:
 
@@ -283,12 +267,6 @@ namespace StardewDruid.Event.Challenge
                         rockFall.challengeCast = true;
 
                         rockFall.CastEffect();
-
-                        break;
-
-                    case 58:
-
-                        bossMonster.showTextAboveHead("CHEEE--- aack");
 
                         break;
 

@@ -28,7 +28,7 @@ namespace Custom_Farm_Loader.Lib
 
         //A variety of rocks/nodes and their HP aka. MinutesUntilReady
         public static Dictionary<SpringObjectID, int> SmallResources = new Dictionary<SpringObjectID, int>() {
-            { SpringObjectID.Diamond_Node, 5 },         { SpringObjectID.Musel_Node, 8 },           { SpringObjectID.Geode_Node, 3 },           { SpringObjectID.Frozen_Geode_Node, 5 },
+            { SpringObjectID.Diamond_Node, 5 },         { SpringObjectID.Mussel_Node, 8 },           { SpringObjectID.Geode_Node, 3 },           { SpringObjectID.Frozen_Geode_Node, 5 },
             { SpringObjectID.Magma_Geode_Node, 7 },     { SpringObjectID.Radioactive_Node, 25 },    { SpringObjectID.Iron_Node, 4 },            { SpringObjectID.Dark_Gray_Rock, 2 },
             { SpringObjectID.Copper_Node, 3 },          { SpringObjectID.Gold_Node, 8 },            { SpringObjectID.Iridium_Node, 16 },        { SpringObjectID.Bone_Node, 4 },
             { SpringObjectID.Clay_Node, 4 },            { SpringObjectID.Omni_Geode_Node, 8 },      { SpringObjectID.Cinder_Shard_Node, 12 },   { SpringObjectID.Volcano_Rock, 6 },
@@ -43,22 +43,30 @@ namespace Custom_Farm_Loader.Lib
 
         public static SpringObjectID randomizeResourceIDs(SpringObjectID item)
         {
-            bool alt = Game1.random.Next(0, 2) == 1;
-            int alt3 = Game1.random.Next(1, 4);
-
-            return item switch {
-                SpringObjectID.Boulder => alt ? SpringObjectID.Boulder : SpringObjectID.Boulder_Alternative,
-                SpringObjectID.Blue_Boulder => alt ? SpringObjectID.Blue_Boulder : SpringObjectID.Blue_Boulder_Alternative,
-                SpringObjectID.Rock => alt ? SpringObjectID.Rock : SpringObjectID.Rock_Alternative,
-                SpringObjectID.Twig => alt ? SpringObjectID.Twig : SpringObjectID.Twig_Alternative,
-                SpringObjectID.Crystal => alt3 == 1 ? SpringObjectID.Crystal : alt3 == 2 ? SpringObjectID.Crystal_Alternative1 : SpringObjectID.Crystal_Alternative2,
-                SpringObjectID.Dark_Gray_Rock => alt ? SpringObjectID.Dark_Gray_Rock : SpringObjectID.Dark_Gray_Rock_Alternative,
-                SpringObjectID.Bone_Node => alt ? SpringObjectID.Bone_Node : SpringObjectID.Bone_Node_Alternative,
-                SpringObjectID.Cinder_Shard_Node => alt ? SpringObjectID.Cinder_Shard_Node : SpringObjectID.Cinder_Shard_Node_Alternative,
-                SpringObjectID.Volcano_Rock => alt3 == 1 ? SpringObjectID.Volcano_Rock : alt3 == 2 ? SpringObjectID.Volcano_Rock_Alternative1 : SpringObjectID.Volcano_Rock_Alternative2,
-                _ => item
-            };
+            var variants = getVariants(item);
+            return variants.OrderBy(x => Game1.random.Next()).First();
         }
+        
+        public static List<SpringObjectID> getVariants(SpringObjectID item)
+        {
+            var ret = new List<SpringObjectID> { item };
+
+            ret.AddRange(item switch {
+                SpringObjectID.Boulder => new SpringObjectID[] { SpringObjectID.Boulder_Alternative },
+                SpringObjectID.Blue_Boulder => new SpringObjectID[] { SpringObjectID.Blue_Boulder_Alternative },
+                SpringObjectID.Rock => new SpringObjectID[] { SpringObjectID.Rock_Alternative },
+                SpringObjectID.Twig => new SpringObjectID[] { SpringObjectID.Twig_Alternative },
+                SpringObjectID.Crystal => new SpringObjectID[] { SpringObjectID.Crystal_Alternative1, SpringObjectID.Crystal_Alternative2 },
+                SpringObjectID.Dark_Gray_Rock => new SpringObjectID[] { SpringObjectID.Dark_Gray_Rock_Alternative },
+                SpringObjectID.Bone_Node => new SpringObjectID[] { SpringObjectID.Bone_Node_Alternative },
+                SpringObjectID.Cinder_Shard_Node => new SpringObjectID[] { SpringObjectID.Cinder_Shard_Node_Alternative },
+                SpringObjectID.Volcano_Rock => new SpringObjectID[] { SpringObjectID.Volcano_Rock_Alternative1, SpringObjectID.Volcano_Rock_Alternative2 },
+                _ => new SpringObjectID[] { }
+            });
+
+            return ret;
+        }
+
         public static string getRandomWeedForSeason(Season season)
         {
             double random = Game1.random.NextDouble();

@@ -9,16 +9,10 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Netcode;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Locations;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Locations;
-using StardewValley.Tools;
 using Object = StardewValley.Object;
 
 namespace StardewArchipelago.GameModifications.CodeInjections

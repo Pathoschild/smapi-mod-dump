@@ -35,7 +35,7 @@ namespace CoreBoy.memory
 
         private int GetRelative(int address)
         {
-            var i = address - this._echoStart;
+            int i = address - this._echoStart;
             if (i < 0 || i >= this._length)
             {
                 throw new ArgumentException();

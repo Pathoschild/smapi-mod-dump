@@ -122,13 +122,6 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 var deepWoodsStateProperty = deepWoodsSettingsType.GetProperty("DeepWoodsState", BindingFlags.Public | BindingFlags.Static);
                 var deepWoodsState = deepWoodsStateProperty.GetValue(null);
                 var lowestLevelReachedField = _helper.Reflection.GetField<int>(deepWoodsState, "lowestLevelReached");
-                
-                if (_archipelago.GetReceivedItemCount(WOODS_OBELISK_SIGILS) >= 10 && lowestLevelReachedField.GetValue() >= 100)
-                {
-                    return; //let the player gain these floors on their own since they've "collected" the floors already
-                }
-                
-                lowestLevelReachedField.SetValue(10 * _archipelago.GetReceivedItemCount(WOODS_OBELISK_SIGILS));
                 var levelIndexedAt1 = level - 1;
 
                 if (levelIndexedAt1 % LEVEL_STEP != 0 || levelIndexedAt1 == 0)
@@ -143,6 +136,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 }
 
                 _locationChecker.AddCheckedLocation(string.Format(WOODS_DEPTH_LOCATION, levelIndexedAt1));
+
+                if (_archipelago.GetReceivedItemCount(WOODS_OBELISK_SIGILS) >= 10 && lowestLevelReachedField.GetValue() >= 100)
+                {
+                    return; //let the player gain these floors on their own since they've "collected" the floors already
+                }
+
+                lowestLevelReachedField.SetValue(10 * _archipelago.GetReceivedItemCount(WOODS_OBELISK_SIGILS));
                 return;
             }
             catch (Exception ex)

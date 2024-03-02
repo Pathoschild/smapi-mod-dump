@@ -43,7 +43,7 @@ class Observer(RecognitionObserver):
         future.result(3)
 
     def on_recognition(self, words):
-        logger.trace("Recognized:", " ".join(words))
+        logger.info("Recognized:", " ".join(words))
 
     def on_failure(self):
         pass

@@ -1,0 +1,10 @@
+{
+  "Name": "SAML",
+  "Author": "MindMeltMax",
+  "Version": "1.0.0-alpha.1",
+  "Description": "A simple, extensible UI Framework",
+  "UniqueID": "MindMeltMax.SAML",
+  "EntryDll": "SAML.dll",
+  "MinimumApiVersion": "4.0.0-alpha.20230925",
+  "UpdateKeys": [ "nexus:20250" ]
+}

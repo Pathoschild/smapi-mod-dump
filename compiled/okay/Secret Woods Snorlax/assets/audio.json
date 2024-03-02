@@ -1,0 +1,14 @@
+{
+    "ichortower.SecretWoodsSnorlax_flutemelody": {
+        "ID": "ichortower.SecretWoodsSnorlax_flutemelody",
+        "Category": "Sound",
+        "Looped": false,
+        "FilePaths": [ "assets/melody.ogg" ]
+    },
+    "ichortower.SecretWoodsSnorlax_fluteshort": {
+        "ID": "ichortower.SecretWoodsSnorlax_fluteshort",
+        "Category": "Sound",
+        "Looped": false,
+        "FilePaths": [ "assets/melody_short.ogg" ]
+    }
+}

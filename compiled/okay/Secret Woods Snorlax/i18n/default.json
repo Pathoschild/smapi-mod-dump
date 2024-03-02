@@ -5,7 +5,6 @@
     "tool.noEffect.1": "He doesn't seem to notice.",
     "tool.noEffect.2": "It's not very effective...",
     "tool.noEffect.3": "Maybe some other item would work?",
-    "flute.dontPlayHere": "OAK: {{p}}! This isn't the time to use that!",
     "hint.1.Shane": "You want to move the big sleeping thing in the forest? How should I know?$s#$b#Try bribing it, maybe. Everyone has a price.",
     "hint.1.Abigail": "Oh, the big oaf out in the woods! He's cute, isn't he?$h#$b#... I guess you'd need to wake him up if you want him to move. But how...?$9",
     "hint.1.Linus": "If you want to move the sleeping animal, you'll have to find someone very knowledgeable.#$b#A friend of mine lives in the tower over that way. Maybe he can help.",
@@ -31,6 +30,10 @@
     "wizard.0001.10": "Samuel, you old coot. Looks like you were right.",
     "wizard.0001.11": "I found a use for it after all.",
     "wizard.0001.12": "Back again, eh? Any luck with our slumbering friend?",
+
+    "flute.dontPlayHere": "OAK: {{p}}! This isn't the time to use that!",
+    "object.strangeflute.name": "Strange Flute",
+    "object.strangeflute.description": "An antique flute from a distant land. It makes a beautiful sound.",
 
     "EOF": ""
 }

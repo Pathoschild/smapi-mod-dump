@@ -19,6 +19,8 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.GameData.Objects;
+using StardewValley.GameData.Shops;
 using StardewValley.Monsters;
 
 namespace DragonPearlLure
@@ -26,17 +28,14 @@ namespace DragonPearlLure
     /// <summary>The mod entry point.</summary>
     internal sealed class ModEntry : Mod
     {
-        /// <summary>The Json Assets mod API.</summary>
-        private static IJsonAssets JA_API;
-
         /// <summary>Monitor for logging purposes.</summary>
         private static IMonitor Mon;
 
+        /// <summary>Helper for patching purposes.</summary>
+        private static IModHelper Help;
+
         /// <summary>Game1.multiplayer from reflection.</summary>
         private static Multiplayer multiplayer;
-
-        /// <summary>The name of the pearl lure.</summary>
-        private static string pearlLureName = "violetlizabet.PearlLure";
 
         /// <summary>The name of the pearl lure.</summary>
         private static string pearlLureMonsterName = "Pearl Lure Monster";
@@ -45,7 +44,13 @@ namespace DragonPearlLure
         private static string modID;
 
         /// <summary>The item ID for the pearl lure.</summary>
-        public static int PearlLureID => JA_API.GetObjectId(pearlLureName);
+        public static string PearlLureID = "violetlizabet.PearlLure";
+
+        /// <summary>The item ID for the pearl lure.</summary>
+        public static string lureImageLoc = "Mods/violetlizabet.DragonPearlLure/PearlLure";
+
+        /// <summary>The magic number for the TAS</summary>
+        private static int PearlLureMagicNumber = 15109;
 
         /// <summary>The dummy farmer for serpents to chase.</summary>
         private static Farmer dummyFarmer;
@@ -57,7 +62,6 @@ namespace DragonPearlLure
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
             helper.Events.GameLoop.SaveLoaded += this.OnSaveLoaded;
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
 
@@ -65,6 +69,7 @@ namespace DragonPearlLure
             var harmony = new Harmony(this.ModManifest.UniqueID);
             var Game1_multiplayer = this.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
             Mon = Monitor;
+            Help = Helper;
             multiplayer = Game1_multiplayer;
             modID = this.ModManifest.UniqueID;
 
@@ -109,20 +114,6 @@ namespace DragonPearlLure
             );
         }
 
-        // Grab JA API in order to create pearl lure
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
-        {
-            JA_API = this.Helper.ModRegistry.GetApi<IJsonAssets>("spacechase0.JsonAssets");
-            if (JA_API == null)
-            {
-                this.Monitor.Log("Could not get Json Assets API, mod will not work!", LogLevel.Error);
-            }
-            else
-            {
-                JA_API.LoadAssets(Path.Combine(this.Helper.DirectoryPath, "assets", "json-assets"), this.Helper.Translation);
-            }
-        }
-
         // Create dummy farmer
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
@@ -132,9 +123,59 @@ namespace DragonPearlLure
         // Load pearl lure monster asset
         private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
+            // Add the image for the pearl lure monster
             if (e.NameWithoutLocale.IsEquivalentTo("Characters/Monsters/" + pearlLureMonsterName))
             {
                 e.LoadFromModFile<Texture2D>("assets/PearlLureMonster.png", AssetLoadPriority.Medium);
+            }
+            // Add the data for the pearl lure
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects"))
+            {
+                var pearlLureObjectData = Helper.ModContent.Load<ObjectData>("assets/object.json");
+                e.Edit(asset =>
+                    {
+                        var editor = asset.AsDictionary<string, ObjectData>();
+                        editor.Data[PearlLureID] = pearlLureObjectData;
+                    }
+                );
+            }
+            // Add in the name and description for the pearl lure
+            else if (e.NameWithoutLocale.IsEquivalentTo("Strings/Objects"))
+            {
+                e.Edit(asset => {
+                    var dict = asset.AsDictionary<string, string>();
+                    dict.Data[$"{PearlLureID}_Name"] =
+                            Helper.Translation.Get("pearl-lure.name");
+                    dict.Data[$"{PearlLureID}_Description"] =
+                            Helper.Translation.Get("pearl-lure.description");
+                });
+            }
+            // Add in the image for the pearl lure
+            else if (e.NameWithoutLocale.IsEquivalentTo(lureImageLoc))
+            {
+                e.LoadFrom(() => {
+                    return Helper.ModContent.Load<Texture2D>("assets/object.png");
+                }, AssetLoadPriority.Medium);
+            }
+            // Add in the recipe for the pearl lure
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes"))
+            {
+                e.Edit(asset => {
+                    var dict = asset.AsDictionary<string, string>();
+                    dict.Data[PearlLureID] = $"287 1 768 2/Field/{PearlLureID}/false/null/[LocalizedText Strings\\Objects:{PearlLureID}_Name]";
+                });
+            }
+            // Sell the pearl lure at the Dwarf
+            else if (e.NameWithoutLocale.IsEquivalentTo("Data/Shops"))
+            {
+                var dwarfShopEntries = Helper.ModContent.Load<Dictionary<string, ShopItemData>>("assets/shopEntries.json");
+                e.Edit(asset => {
+                    var dict = asset.AsDictionary<string, ShopData>();
+                    foreach (var entry in dwarfShopEntries)
+                    {
+                        dict.Data["Dwarf"].Items.Add(entry.Value);
+                    }
+                });
             }
         }
 
@@ -142,14 +183,14 @@ namespace DragonPearlLure
         private static void CanBePlacedHere_Postfix(StardewValley.Object __instance, GameLocation l, Vector2 tile, ref bool __result)
         {
             // Not our item, we don't care
-            if (!__instance.Name.Contains(pearlLureName, StringComparison.OrdinalIgnoreCase) || __instance.bigCraftable.Value)
+            if (!__instance.ItemId.Contains(PearlLureID, StringComparison.OrdinalIgnoreCase) || __instance.bigCraftable.Value)
             {
                 return;
             }
             else
             {
                 // If the tile is suitable, it can be placed
-                if ((!l.isTileOccupiedForPlacement(tile, __instance) || l.isTileOccupiedByFarmer(tile) != null))
+                if (!l.CanItemBePlacedHere(tile) || l.isTileOccupiedByFarmer(tile) != null)
                 {
                     __result = true;
                 }
@@ -160,7 +201,7 @@ namespace DragonPearlLure
         private static bool PlacementAction_Prefix(StardewValley.Object __instance, GameLocation location, int x, int y, Farmer who, ref bool __result)
         {
             // Not our item, we don't care
-            if (!__instance.Name.Contains(pearlLureName, StringComparison.OrdinalIgnoreCase) || __instance.bigCraftable.Value)
+            if (!__instance.ItemId.Contains(PearlLureID, StringComparison.OrdinalIgnoreCase) || __instance.bigCraftable.Value)
             {
                 return true;
             }
@@ -178,7 +219,7 @@ namespace DragonPearlLure
         // Set placeable to true for our item
         private static void IsPlaceable_Postfix(StardewValley.Object __instance, ref bool __result)
         {
-            if (__instance.Name.Contains(pearlLureName, StringComparison.OrdinalIgnoreCase))
+            if (__instance.ItemId.Contains(PearlLureID, StringComparison.OrdinalIgnoreCase))
             {
                 __result = true;
             }
@@ -187,7 +228,7 @@ namespace DragonPearlLure
         // Spawn a new pearl lure monster when unloaded
         private static void TASUnload_Postfix(TemporaryAnimatedSprite __instance)
         {
-            if (__instance.initialParentTileIndex == PearlLureID)
+            if (__instance.initialParentTileIndex == PearlLureMagicNumber)
             {
                 Bat newBat = new Bat(__instance.Position, -555);
                 newBat.DamageToFarmer = 0;
@@ -351,15 +392,22 @@ namespace DragonPearlLure
             }
             int idNum = Game1.random.Next();
             location.playSound("thudStep");
-            TemporaryAnimatedSprite pearlTAS = new TemporaryAnimatedSprite(PearlLureID, 100f, 1, 24, placementTile * 64f, flicker: true, flipped: false, location, who)
+            TemporaryAnimatedSprite pearlTAS = new TemporaryAnimatedSprite(PearlLureMagicNumber, 100f, 1, 24, placementTile * 64f, flicker: true, flipped: false, location, who)
             {
                 bombRadius = 3,
                 bombDamage = 1,
                 shakeIntensity = 0.5f,
                 shakeIntensityChange = 0.002f,
                 extraInfoForEndBehavior = idNum,
-                endFunction = location.removeTemporarySpritesWithID
+                endFunction = location.removeTemporarySpritesWithID,
+                sourceRect = new Rectangle(0, 0, 16, 16),
+                scale = 4f
             };
+
+            // Try forcing the texture name
+            Help.Reflection.GetField<string>(pearlTAS, "textureName").SetValue(lureImageLoc);
+            Help.Reflection.GetMethod(pearlTAS, "loadTexture").Invoke();
+
             multiplayer.broadcastSprites(location, pearlTAS);
             location.netAudio.StartPlaying("fuse");
             return true;

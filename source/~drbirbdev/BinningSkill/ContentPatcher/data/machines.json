@@ -13,8 +13,8 @@
         // Load image files
         {
             "Action": "Load",
-            "Target": "Mods/drbirbdev.BinningSkill/BigCraftables",
-            "FromFile": "assets/bigcraftables.png"
+            "Target": "Mods/drbirbdev.BinningSkill/Items",
+            "FromFile": "assets/items.png"
         },
 
         // Add crafting recipes
@@ -31,10 +31,10 @@
             "Action": "EditData",
             "Target": "Data/CraftingRecipes",
             "Entries": {
-                "drbirbdev.BinningSkill_TrashCan": "335 2 390 30/Field/drbirbdev.BinningSkill_TrashCan/true/drbirbdev.Binning 2/{{i18n: bc.trashcan.name}}",
-                "drbirbdev.BinningSkill_Composter": "388 70 92 20 771 30/Field/drbirbdev.BinningSkill_Composter/true/drbirbdev.Binning 4/{{i18n: bc.composter.name}}",
-                "drbirbdev.BinningSkill_RecyclingBin": "335 3 336 2 771 10/Field/drbirbdev.BinningSkill_RecyclingBin/true/drbirbdev.Binning 7/{{i18n: bc.recyclingbin.name}}",
-                "drbirbdev.BinningSkill_AdvancedRecyclingMachine": "337 5 787 2 338 10/Field/drbirbdev.BinningSkill_AdvancedRecyclingMachine/true/drbirbdev.Binning 9/{{i18n: bc.advancedrecyclingmachine.name}}"
+                "drbirbdev.BinningSkill_TrashCan": "335 2 390 30//drbirbdev.BinningSkill_TrashBin/true/drbirbdev.Binning 2/{{i18n: item.TrashBin.name}}",
+                "drbirbdev.BinningSkill_Composter": "388 70 92 20 771 30//drbirbdev.BinningSkill_Composter/true/drbirbdev.Binning 4/{{i18n: item.Composter.name}}",
+                "drbirbdev.BinningSkill_RecyclingBin": "335 3 336 2 771 10//drbirbdev.BinningSkill_RecyclingBin/true/drbirbdev.Binning 7/{{i18n: item.RecyclingBin.name}}",
+                "drbirbdev.BinningSkill_AdvancedRecyclingMachine": "337 5 787 2 338 10//drbirbdev.BinningSkill_AdvancedRecyclingMachine/true/drbirbdev.Binning 9/{{i18n: item.AdvancedRecyclingMachine.name}}"
             }
         },
         {
@@ -53,34 +53,34 @@
             "Entries": {
                 "drbirbdev.BinningSkill_Composter": {
                     "Name": "Composter",
-                    "DisplayName": "{{i18n:bc.composter.name}}",
-                    "Description": "{{i18n:bc.composter.desc}}",
+                    "DisplayName": "{{i18n:item.Composter.name}}",
+                    "Description": "{{i18n:item.Composter.desc}}",
                     "Price": 50,
-                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "Texture": "Mods/drbirbdev.BinningSkill/Items",
                     "SpriteIndex": 0
                 },
-                "drbirbdev.BinningSkill_TrashCan": {
+                "drbirbdev.BinningSkill_TrashBin": {
                     "Name": "Trash Can",
-                    "DisplayName": "{{i18n:bc.trashcan.name}}",
-                    "Description": "{{i18n:bc.trashcan.desc}}",
+                    "DisplayName": "{{i18n:item.TrashBin.name}}",
+                    "Description": "{{i18n:item.TrashBin.desc}}",
                     "Price": 50,
-                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "Texture": "Mods/drbirbdev.BinningSkill/Items",
                     "SpriteIndex": 1
                 },
                 "drbirbdev.BinningSkill_RecyclingBin": {
                     "Name": "Recycling Bin",
-                    "DisplayName": "{{i18n:bc.recyclingbin.name}}",
-                    "Description": "{{i18n:bc.recyclingbin.desc}}",
+                    "DisplayName": "{{i18n:item.RecyclingBin.name}}",
+                    "Description": "{{i18n:item.RecyclingBin.desc}}",
                     "Price": 50,
-                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "Texture": "Mods/drbirbdev.BinningSkill/Items",
                     "SpriteIndex": 2
                 },
                 "drbirbdev.BinningSkill_AdvancedRecyclingMachine": {
                     "Name": "Advanced Recycling Machine",
-                    "DisplayName": "{{i18n:bc.advancedrecyclingmachine.name}}",
-                    "Description": "{{i18n:bc.advancedrecyclingmachine.desc}}",
+                    "DisplayName": "{{i18n:item.AdvancedRecyclingMachine.name}}",
+                    "Description": "{{i18n:item.AdvancedRecyclingMachine.desc}}",
                     "Price": 50,
-                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "Texture": "Mods/drbirbdev.BinningSkill/Items",
                     "SpriteIndex": 3
                 }
             }
@@ -98,7 +98,7 @@
                             "Triggers": [
                                 {
                                     "Id": "ItemPlacedInMachine",
-                                    "Condition": "ITEM_HAS_EDIBILITY Input 1"
+                                    "Condition": "ITEM_EDIBILITY Input 1"
                                 }
                             ],
                             "DaysUntilReady": 2,
@@ -107,64 +107,64 @@
                                 {
                                     "Id": "High Quality",
                                     "RandomItemId": [ "(O)918", "(O)919", "(O)920" ],
-                                    "Condition": "ITEM_HAS_EDIBILITY Input 70",
+                                    "Condition": "ITEM_EDIBILITY Input 70",
                                     "StackModifierMode": "Stack",
                                     "StackModifiers": [
                                         {
                                             "Id": "HighValue",
                                             "Modification": "Add",
                                             "Amount": 1,
-                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 450"
+                                            "Condition": "ITEM_PRICE Input 450"
                                         },
                                         {
                                             "Id": "MediumValue",
                                             "Modification": "Add",
                                             "Amount": 1,
-                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 350"
+                                            "Condition": "ITEM_PRICE Input 350"
                                         },
                                         {
                                             "Id": "LowValue",
                                             "Modification": "Add",
                                             "Amount": 1,
-                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 250"
+                                            "Condition": "ITEM_PRICE Input 250"
                                         },
                                         {
                                             "Id": "CookedItem",
                                             "Modification": "Add",
                                             "Amount": 2,
-                                            "Condition": "ITEM_HAS_TAG Input category_cooking"
+                                            "Condition": "ITEM_CONTEXT_TAG Input category_cooking"
                                         }
                                     ]
                                 },
                                 {
                                     "Id": "Medium Quality",
                                     "RandomItemId": [ "(O)369", "(O)371", "(O)466" ],
-                                    "Condition": "ITEM_HAS_EDIBILITY Input 30",
+                                    "Condition": "ITEM_EDIBILITY Input 30",
                                     "StackModifierMode": "Stack",
                                     "StackModifiers": [
                                         {
                                             "Id": "HighValue",
                                             "Modification": "Add",
                                             "Amount": 1,
-                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 450"
+                                            "Condition": "ITEM_PRICE Input 450"
                                         },
                                         {
                                             "Id": "MediumValue",
                                             "Modification": "Add",
                                             "Amount": 1,
-                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 350"
+                                            "Condition": "ITEM_PRICE Input 350"
                                         },
                                         {
                                             "Id": "LowValue",
                                             "Modification": "Add",
                                             "Amount": 1,
-                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 250"
+                                            "Condition": "ITEM_PRICE Input 250"
                                         },
                                         {
                                             "Id": "CookedItem",
                                             "Modification": "Add",
                                             "Amount": 2,
-                                            "Condition": "ITEM_HAS_TAG Input category_cooking"
+                                            "Condition": "ITEM_CONTEXT_TAG Input category_cooking"
                                         }
                                     ]
                                 },
@@ -177,25 +177,25 @@
                                             "Id": "HighValue",
                                             "Modification": "Add",
                                             "Amount": 1,
-                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 450"
+                                            "Condition": "ITEM_PRICE Input 450"
                                         },
                                         {
                                             "Id": "MediumValue",
                                             "Modification": "Add",
                                             "Amount": 1,
-                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 350"
+                                            "Condition": "ITEM_PRICE Input 350"
                                         },
                                         {
                                             "Id": "LowValue",
                                             "Modification": "Add",
                                             "Amount": 1,
-                                            "Condition": "drbirbdev.BirbCore_ItemHasSellPrice Input 250"
+                                            "Condition": "ITEM_PRICE Input 250"
                                         },
                                         {
                                             "Id": "CookedItem",
                                             "Modification": "Add",
                                             "Amount": 2,
-                                            "Condition": "ITEM_HAS_TAG Input category_cooking"
+                                            "Condition": "ITEM_CONTEXT_TAG Input category_cooking"
                                         }
                                     ]
                                 }
@@ -214,7 +214,7 @@
                         }
                     ]
                 },
-                "(BC)drbirbdev.BinningSkill_TrashCan": {
+                "(BC)drbirbdev.BinningSkill_TrashBin": {
                     "OutputRules": [
                         {
                             "Id": "Default",
@@ -486,7 +486,7 @@
                     "Type": "Cooking",
                     "Category": -7,
                     "Price": 100,
-                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "Texture": "Mods/drbirbdev.BinningSkill/Items",
                     "SpriteIndex": 4,
                     "Edibility": 50,
                     "IsDrink": false,
@@ -504,7 +504,7 @@
                     "Type": "Cooking",
                     "Category": -7,
                     "Price": 150,
-                    "Texture": "Mods/drbirbdev.BinningSkill/BigCraftables",
+                    "Texture": "Mods/drbirbdev.BinningSkill/Items",
                     "SpriteIndex": 5,
                     "Edibility": 50,
                     "IsDrink": false,

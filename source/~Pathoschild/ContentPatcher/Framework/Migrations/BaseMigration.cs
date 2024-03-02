@@ -23,10 +23,10 @@ namespace ContentPatcher.Framework.Migrations
     internal abstract class BaseMigration : IMigration
     {
         /*********
-        ** Private methods
+        ** Fields
         *********/
         /// <summary>The tokens added in this format version.</summary>
-        protected InvariantSet? AddedTokens { get; set; }
+        protected InvariantSet? AddedTokens;
 
 
         /*********
@@ -34,6 +34,9 @@ namespace ContentPatcher.Framework.Migrations
         *********/
         /// <inheritdoc />
         public ISemanticVersion Version { get; }
+
+        /// <inheritdoc />
+        public string[] MigrationWarnings { get; protected set; } = Array.Empty<string>();
 
 
         /*********

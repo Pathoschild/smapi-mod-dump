@@ -37,6 +37,12 @@
                 "drbirbdev.BinningSkill_Town_Fountain": {
                     "Items": [
                         {
+                            "Id": "HarveyWeapon",
+                            "ItemId": "(W)37",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck",
+                            "IsDoubleMegaSuccess": true
+                        },
+                        {
                             "Id": "RandomFish",
                             "ItemId": "LOCATION_FISH Here 0 100 5", //TODO: broken?
                             "Condition": "drbirbdev.BinningSkill_RANDOM 0.2 @addAllLuck"
@@ -53,6 +59,18 @@
                 },
                 "drbirbdev.BinningSkill_Mountain_Robins": {
                     "Items": [
+                        {
+                            "Id": "SebastianWeapon",
+                            "ItemId": "(W)41",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck",
+                            "IsDoubleMegaSuccess": true
+                        },
+                        {
+                            "Id": "MaruWeapon",
+                            "ItemId": "(W)36",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck",
+                            "IsDoubleMegaSuccess": true,
+                        },
                         {
                             "Id": "ExpertCraftingMaterials",
                             "RandomItemId": [
@@ -137,6 +155,12 @@
                 "drbirbdev.BinningSkill_SeedShop_Store": {
                     "Items": [
                         {
+                            "Id": "AbbyWeapon",
+                            "ItemId": "(W)40",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck",
+                            "IsDoubleMegaSuccess": true
+                        },
+                        {
                             "Id": "ItemSoldByPlayer",
                             "ItemId": "ITEMS_SOLD_BY_PLAYER SeedShop",
                             "Condition": "drbirbdev.BinningSkill_RANDOM 0.3 @addAllLuck"
@@ -149,9 +173,15 @@
                 "drbirbdev.BinningSkill_Forest_Marnie": {
                     "Items": [
                         {
+                            "Id": "AutoPetter",
+                            "ItemId": "(BC)272",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @multAllLuck",
+                            "IsDoubleMegaSuccess": true
+                        },
+                        {
                             "Id": "GoldenEgg",
                             "ItemId": "(O)928",
-                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.009 @multAllLuck, PLAYER_HAS_FLAG Target Farm_Eternal",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.009 @multAllLuck, PLAYER_HAS_MAIL Target Farm_Eternal",
                             "IsDoubleMegaSuccess": true
                         },
                         {
@@ -200,12 +230,21 @@
                                 "(O)303",
                                 "(O)459"
                             ],
-                            "Condition": "!RANDOM 0.7 @addDailyLuck @addDailyLuck @addDailyLuck @addDailyLuck, TIME 1000 1700, !IS_VISITING_ISLAND Pam"
+                            "Condition": "!RANDOM 0.7 @addDailyLuck, TIME 1000 1700, !IS_VISITING_ISLAND Pam"
                         },
                         {
                             "Id": "RandomArtifact",
                             "ItemId": "RANDOM_ARTIFACT_FOR_DIG_SPOT",
                             "Condition": "drbirbdev.BinningSkill_RANDOM 0.2 @addDailyLuck"
+                        },
+                        {
+                            "Id": "SprinklerAttachement",
+                            "RandomItemId": [
+                                "(O)913",
+                                "(O)915"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @multAllLuck",
+                            "IsMegaSuccess": true
                         }
                     ],
                     "CustomFields": {
@@ -389,7 +428,7 @@
                         "drbirbdev.BinningSkill_AddToMap": "Maps/WitchSwamp 22 20 Iron"
                     }
                 },
-                "drbirbdev.BinningSkill_WoodsIron": {
+                "drbirbdev.BinningSkill_Woods": {
                     "Items": [
                     ],
                     "CustomFields": {
@@ -398,6 +437,24 @@
                 },
                 "drbirbdev.BinningSkill_Beach_Mariner": {
                     "Items": [
+                        {
+                            "Id": "VoidPendant",
+                            "ItemId": "(O)808",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.05 @multAllLuck",
+                            "IsMegaSuccess": true
+                        },
+                        {
+                            "Id": "MermaidPendant",
+                            "ItemId": "(O)460",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.05 @multAllLuck",
+                            "IsMegaSuccess": true
+                        },
+                        {
+                            "Id": "MagicBait",
+                            "ItemId": "(O)908",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @multAllLuck",
+                            "IsMegaSuccess": true
+                        }
                     ],
                     "CustomFields": {
                         "drbirbdev.BinningSkill_AddToMap": "Maps/Beach 90 4 Gold"
@@ -405,6 +462,12 @@
                 },
                 "drbirbdev.BinningSkill_Club": {
                     "Items": [
+                        {
+                            "Id": "StatueOfEndlessFortune",
+                            "ItemId": "(BC)127",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.002 @multAllLuck",
+                            "IsDoubleMegaSuccess": true
+                        }
                     ],
                     "CustomFields": {
                         "drbirbdev.BinningSkill_AddToMap": "Maps/Club 14 4 Gold"
@@ -412,6 +475,21 @@
                 },
                 "drbirbdev.BinningSkill_Forest_HatMouse": {
                     "Items": [
+                        {
+                            "Id": "LeahWeapon",
+                            "ItemId": "(W)39",
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck",
+                            "IsDoubleMegaSuccess": true
+                        },
+                        {
+                            "Id": "LeahItem",
+                            "RandomItemId": [
+                                "(F)1306",
+                                "(F)1802"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.003 @multAllLuck",
+                            "IsDoubleMegaSuccess": true
+                        }
                     ],
                     "CustomFields": {
                         "drbirbdev.BinningSkill_AddToMap": "Maps/Forest 37 94 Gold"
@@ -419,6 +497,24 @@
                 },
                 "drbirbdev.BinningSkill_MovieTheater": {
                     "Items": [
+                        {
+                            "Id": "JunimoItem",
+                            "RandomItemId": [
+                                "(F)1733",
+                                "(BC)55"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.005 @multAllLuck"
+                        },
+                        {
+                            "Id": "RareTreasure",
+                            "RandomItemId": [
+                                "(O)373",
+                                "(O)797",
+                                "(O)166"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.005 @addAllLuck",
+                            "IsMegaSuccess": true
+                        }
                     ],
                     "CustomFields": {
                         "drbirbdev.BinningSkill_AddToMap": "Maps/MovieTheater 19 7 Gold"
@@ -495,6 +591,29 @@
                 },
                 "drbirbdev.BinningSkill_QiNutRoom": {
                     "Items": [
+                        {
+                            "Id": "QiBigCraftable",
+                            "RandomItemId": [
+                                "(BC)265",
+                                "(BC)275"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.02 @multAllLuck",
+                            "IsDoubleMegaSuccess": true
+                        },
+                        {
+                            "Id": "UniquePersonalItem",
+                            "RandomItemId": [
+                                "(F)1914",
+                                "(F)1915",
+                                "(F)1916",
+                                "(F)1900",
+                                "(F)1902",
+                                "(F)1907",
+                                "(F)1909"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @multAllLuck",
+                            "IsDoubleMegaSuccess": true
+                        }
                     ],
                     "CustomFields": {
                         "drbirbdev.BinningSkill_AddToMap": "Maps/QiNutRoom 4 6 Radioactive"
@@ -502,10 +621,245 @@
                 },
                 "drbirbdev.BinningSkill_Railroad_SummitPath": {
                     "Items": [
+                        {
+                            "Id": "Statue",
+                            "RandomItemId": [
+                                "(BC)265",
+                                "(BC)275",
+                                "(BC)127"
+                            ],
+                            "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @addAllLuck, PLAYER_HAS_MAIL Target Farm_Eternal",
+                            "IsDoubleMegaSuccess": true
+                        },
+                        {
+                            "Id": "PrismaticShard",
+                            "ItemId": "(O)74",
+                            "Condition": "PLAYER_HAS_MAIL Target Farm_Eternal",
+                            "IsMegaSuccess": true
+                        }
                     ],
                     "CustomFields": {
                         "drbirbdev.BinningSkill_AddToMap": "Maps/Railroad 31 25 Prismatic"
                     }
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/GarbageCans",
+            "TargetField": [ "GarbageCans", "Blacksmith", "Items" ],
+            "Entries": {
+                "WeirdStatue": {
+                    "RandomItemId": [
+                        "(BC)155",
+                        "(BC)161",
+                        "(BC)162"
+                    ],
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck"
+                },
+                "MetalBar": {
+                    "RandomItemId": [
+                        "(O)334",
+                        "(O)335",
+                        "(O)336",
+                        "(O)337"
+                    ],
+                    "IsMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.03 @multAllLuck"
+                },
+                "RadioactiveBar": {
+                    "ItemId": "(O)910",
+                    "IsMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.005 @multAllLuck"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/GarbageCans",
+            "TargetField": [ "GarbageCans", "EmilyAndHaley", "Items" ],
+            "Entries": {
+                "HaleyWeapon": {
+                    "ItemId": "(W)42",
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck"
+                },
+                "SewingMachine": {
+                    "ItemId": "(BC)247",
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck"
+                },
+                "AnyGemstone": {
+                    "RandomItemId": [
+                        "(O)60",
+                        "(O)62",
+                        "(O)64",
+                        "(O)66",
+                        "(O)68",
+                        "(O)70",
+                        "(O)72"
+                    ],
+                    "IsMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.04 @multAllLuck"
+                },
+                "PrismaticShard": {
+                    "ItemId": "(O)74",
+                    "IsMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @multAllLuck"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/GarbageCans",
+            "TargetField": [ "GarbageCans", "Evelyn", "Items" ],
+            "Entries": {
+                "AlexWeapon": {
+                    "ItemId": "(W)25",
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck"
+                },
+                "CoffeeMaker": {
+                    "ItemId": "(BC)246",
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.002 @multAllLuck"
+                },
+                "FairyDust": {
+                    "ItemId": "(O)872",
+                    "IsMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @multAllLuck"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/GarbageCans",
+            "TargetField": [ "GarbageCans", "JodiAndKent", "Items" ],
+            "Entries": {
+                "SamWeapon": {
+                    "ItemId": "(W)30",
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck"
+                },
+                "SamBoombox": {
+                    "ItemId": "(F)1309",
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.001"
+                },
+                "Explosive": {
+                    "RandomItemId": [
+                        "(O)286",
+                        "(O)287",
+                        "(O)288"
+                    ],
+                    "IsMegaSuccess": true,
+                    "Condition": "YEAR 2, drbirbdev.BinningSkill_RANDOM 0.05 @multAllLuck"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/GarbageCans",
+            "TargetField": [ "GarbageCans", "JojaMart", "Items" ],
+            "Entries": {
+                "MovieItem": {
+                    "RandomItemId": [
+                        "(O)809",
+                        "(F)1952",
+                        "(F)1953",
+                        "(F)1954",
+                        "(F)1955",
+                        "(F)1956",
+                        "(F)1957",
+                        "(F)1958",
+                        "(F)1959"
+                    ],
+                    "IsMegaSuccess": true,
+                    "Condition": "PLAYER_HAS_FLAG Host ccMovieTheater, !PLAYER_HAS_FLAG Host ccMovieTheaterJoja, drbirbdev.BinningSkill_RANDOM 0.03 @multAllLuck"
+                },
+                "SodaMachine": {
+                    "ItemId": "(BC)117",
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/GarbageCans",
+            "TargetField": [ "GarbageCans", "Mayor", "Items" ],
+            "Entries": {
+                "TownItems": {
+                    "RandomItemId": [
+                        "(BC)248",
+                        "(BC)164",
+                        "(BC)116"
+                    ],
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.003 @multAllLuck"
+                },
+                "RelationshipItems": {
+                    "RandomItemId": [
+                        "(O)460",
+                        "(O)277",
+                        "(O)789"
+                    ],
+                    "IsMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.03 @multAllLuck"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/GarbageCans",
+            "TargetField": [ "GarbageCans", "Museum", "Items" ],
+            "Entries": {
+                "ElliottWeapon": {
+                    "ItemId": "(W)35",
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck"
+                },
+                "PennyWeapon": {
+                    "ItemId": "(W)38",
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck"
+                },
+                "Geode": {
+                    "RandomItemId": [
+                        "(O)535",
+                        "(O)536",
+                        "(O)537",
+                        "(O)749",
+                        "(O)275"
+                    ],
+                    "IsMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.05 @multAllLuck"
+                }
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/GarbageCans",
+            "TargetField": [ "GarbageCans", "Saloon", "Items" ],
+            "Entries": {
+                "QiSeasoning": {
+                    "ItemId": "(O)917",
+                    "IsMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @multAllLuck"
+                },
+                "MushroomSeed": {
+                    "ItemId": "(O)891",
+                    "IsMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.01 @multAllLuck"
+                },
+                "ArcadeMachine": {
+                    "RandomItemId": [
+                        "(BC)141",
+                        "(BC)159"
+                    ],
+                    "IsDoubleMegaSuccess": true,
+                    "Condition": "drbirbdev.BinningSkill_RANDOM 0.001 @multAllLuck"
                 }
             }
         }

@@ -73,7 +73,7 @@ namespace HorseOverhaul
         {
             if (horse?.currentLocation != null && !Game1.options.muteAnimalSounds && !config.DisableHorseSounds)
             {
-                horse.currentLocation.playSoundAt(soundName, horse.getTileLocation());
+                horse.currentLocation.playSound(soundName, horse.Tile);
             }
         }
     }

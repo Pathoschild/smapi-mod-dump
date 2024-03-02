@@ -14,7 +14,6 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Locations;
-using StardewArchipelago.Locations.Festival;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;

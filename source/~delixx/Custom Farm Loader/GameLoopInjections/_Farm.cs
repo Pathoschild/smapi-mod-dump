@@ -89,7 +89,7 @@ namespace Custom_Farm_Loader.GameLoopInjections
             if (!Game1.IsMasterGame)
                 return;
 
-            if (customFarm.Properties.FishSplashing == false)
+            if (!customFarm.Properties.FishSplashing)
                 return;
 
             Random r = new Random(timeOfDay + (int)Game1.uniqueIDForThisGame / 2 + (int)Game1.stats.DaysPlayed);

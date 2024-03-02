@@ -38,6 +38,8 @@ namespace StardewArchipelago.Archipelago
         private static BankHandler _bankHandler;
         private static PlayerUnstucker _playerUnstucker;
 
+        private static string _lastCommand;
+
         public ChatForwarder(IMonitor monitor, IModHelper helper, Harmony harmony, ArchipelagoClient archipelago, IGiftHandler giftHandler, GoalManager goalManager, TileChooser tileChooser)
         {
             _monitor = monitor;
@@ -48,6 +50,7 @@ namespace StardewArchipelago.Archipelago
             _goalManager = goalManager;
             _playerUnstucker = new PlayerUnstucker(tileChooser);
             _bankHandler = new BankHandler(_archipelago);
+            _lastCommand = null;
         }
 
         public void ListenToChatMessages()
@@ -85,68 +88,84 @@ namespace StardewArchipelago.Archipelago
 
         private static bool TryHandleCommand(string message)
         {
-            if (message == null || !message.StartsWith(COMMAND_PREFIX))
+            if (string.IsNullOrWhiteSpace(message) || !message.StartsWith(COMMAND_PREFIX))
             {
                 return false;
             }
 
             var messageLower = message.ToLower();
+            if (HandleReCommand(messageLower))
+            {
+                return true;
+            }
             if (HandleGoalCommand(messageLower))
             {
+                _lastCommand = message;
                 return true;
             }
             if (HandleVanillaGoalCommand(messageLower))
             {
+                _lastCommand = message;
                 return true;
             }
 
             if (HandleExperienceCommand(messageLower))
             {
+                _lastCommand = message;
                 return true;
             }
 
             if (HandleFriendshipCommand(message))
             {
+                _lastCommand = message;
                 return true;
             }
 
             if (HandleArcadeReleaseCommand(messageLower))
             {
+                _lastCommand = message;
                 return true;
             }
 
             if (_giftHandler.HandleGiftItemCommand(message))
             {
+                _lastCommand = message;
                 return true;
             }
 
             if (_bankHandler.HandleBankCommand(message))
             {
+                _lastCommand = message;
                 return true;
             }
 
             if (HandleHideEmptyLettersCommand(messageLower))
             {
+                _lastCommand = message;
                 return true;
             }
 
             if (HandleOverrideSpriteRandomizerCommand(messageLower))
             {
+                _lastCommand = message;
                 return true;
             }
 
             if (HandleUnstuckCommand(messageLower))
             {
+                _lastCommand = message;
                 return true;
             }
 
             if (HandleSleepCommand(messageLower))
             {
+                _lastCommand = message;
                 return true;
             }
 
             if (HandleSyncCommand(messageLower))
             {
+                _lastCommand = message;
                 return true;
             }
 
@@ -162,6 +181,17 @@ namespace StardewArchipelago.Archipelago
             }
 
             return false;
+        }
+
+        private static bool HandleReCommand(string message)
+        {
+            if (message != $"{COMMAND_PREFIX}re" && message != $"{COMMAND_PREFIX}!" && message != $"{COMMAND_PREFIX}redo")
+            {
+                return false;
+            }
+            
+
+            return TryHandleCommand(_lastCommand);
         }
 
         private static bool HandleGoalCommand(string message)
@@ -359,18 +389,17 @@ namespace StardewArchipelago.Archipelago
             }
 
             var currentOverride = ModEntry.Instance.State.AppearanceRandomizerOverride;
-            var overrideStatus = "off";
             if (currentOverride == null || currentOverride == AppearanceRandomization.Disabled)
             {
                 currentOverride = AppearanceRandomization.Villagers;
-                overrideStatus = "on";
+                Game1.chatBox?.addMessage($"Sprite Randomizer is now enabled. Changes will take effect after sleeping.", Color.Gold);
             }
             else
             {
                 currentOverride = AppearanceRandomization.Disabled;
+                Game1.chatBox?.addMessage($"Sprite Randomizer is now disabled. Changes will take effect after sleeping, then reloading your game.", Color.Gold);
             }
             ModEntry.Instance.State.AppearanceRandomizerOverride = currentOverride;
-            Game1.chatBox?.addMessage($"Sprite Randomizer is now {overrideStatus}. Changes will take effect after sleeping, then reloading your game.", Color.Gold);
             return true;
         }
 

@@ -11,7 +11,7 @@
 
 using HarmonyLib;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Modded;
 using StardewArchipelago.GameModifications.CodeInjections.Modded;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;

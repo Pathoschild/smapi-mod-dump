@@ -45,7 +45,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.ItemScanning
 
         /// <summary>Get all items owned by the player.</summary>
         /// <remarks>
-        /// This is derived from <see cref="Utility.iterateAllItems"/> with some improvements:
+        /// This is derived from <see cref="Utility.ForEachItem"/> with some improvements:
         ///   * removed items held by other players, items floating on the ground, spawned forage, and output in a non-ready machine (except casks which can be emptied anytime);
         ///   * added hay in silos;
         ///   * added tool attachments;
@@ -82,21 +82,13 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.ItemScanning
                 }
 
                 // building output
-                if (location is BuildableGameLocation buildableLocation)
+                foreach (var building in location.buildings)
                 {
-                    foreach (var building in buildableLocation.buildings)
-                    {
-                        switch (building)
-                        {
-                            case Mill mill:
-                                this.ScanAndTrack(tracked: items, itemsSeen: itemsSeen, root: mill.output.Value, parent: mill, includeRoot: false);
-                                break;
+                    if (building is JunimoHut hut)
+                        this.ScanAndTrack(tracked: items, itemsSeen: itemsSeen, root: hut.GetOutputChest(), parent: hut, includeRoot: false);
 
-                            case JunimoHut hut:
-                                this.ScanAndTrack(tracked: items, itemsSeen: itemsSeen, root: hut.output.Value, parent: hut, includeRoot: false);
-                                break;
-                        }
-                    }
+                    foreach (Chest chest in building.buildingChests)
+                        this.ScanAndTrack(tracked: items, itemsSeen: itemsSeen, root: chest, parent: building, includeRoot: false);
                 }
 
                 // map objects
@@ -130,7 +122,7 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.ItemScanning
             int hayCount = farm?.piecesOfHay.Value ?? 0;
             while (hayCount > 0)
             {
-                SObject hay = new SObject(178, 1);
+                Item hay = ItemRegistry.Create("(O)178");
                 hay.Stack = Math.Min(hayCount, hay.maximumStackSize());
                 hayCount -= hay.Stack;
                 this.ScanAndTrack(tracked: items, itemsSeen: itemsSeen, root: hay, parent: farm);
@@ -152,8 +144,8 @@ namespace Pathoschild.Stardew.LookupAnything.Framework.ItemScanning
                 item is SObject obj
                 && (
                     obj.IsSpawnedObject
-                    || obj.isForage(null) // location argument is only used to check if it's on the beach, in which case everything is forage
-                    || (obj is not Chest && obj.Name is "Weeds" or "Stone" or "Twig")
+                    || obj.isForage()
+                    || obj.Category == SObject.litterCategory
                 );
         }
 

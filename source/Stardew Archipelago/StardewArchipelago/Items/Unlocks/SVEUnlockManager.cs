@@ -19,18 +19,19 @@ namespace StardewArchipelago.Items.Unlocks
     {
         public const string DIAMOND_WAND_AP_NAME = "Diamond Wand";
         public const string MARLON_BOAT_PADDLE_AP_NAME = "Marlon's Boat Paddle";
-        public const string VOID_SOUL_AP_NAME = "Krobus' Protection";
+        public const string VOID_SOUL_AP_NAME = "Void Spirit Peace Agreement";
         public const string IRIDIUM_BOMB_AP_NAME = "Iridium Bomb";
         public const string KITTYFISH_SPELL_AP_NAME = "Kittyfish Spell";
         public const string GUILD_RUNES_AP_NAME = "Nexus: Adventurer's Guild Runes";
         public const string SPRITE_RUNES_AP_NAME = "Nexus: Sprite Spring Runes";
-        public const string JUNIMO_RUNES_AP_NAME = "Nexus: Junimo and Outpost Runes";
-        // public const string OUTPOST_RUNES_AP_NAME = "Nexus: Outpost Runes";
-        public const string FARM_RUNES_AP_NAME = "Nexus: Farm and Wizard Runes";
-        // public const string WIZARD_RUNES_AP_NAME = "Nexus: Wizard Runes";
+        public const string JUNIMO_RUNES_AP_NAME = "Nexus: Junimo Woods Runes";
+        public const string OUTPOST_RUNES_AP_NAME = "Nexus: Outpost Runes";
+        public const string FARM_RUNES_AP_NAME = "Nexus: Farm Runes";
+        public const string WIZARD_RUNES_AP_NAME = "Nexus: Wizard Runes";
         public const string AURORA_RUNES_AP_NAME = "Nexus: Aurora Vineyard Runes";
         public const string FABLE_REEF_AP_NAME = "Fable Reef Portal";
         public const string AURORA_VINEYARD_TABLET_AP_NAME = "Aurora Vineyard Tablet";
+        public const string GRANDPA_SHED_AP_NAME = "Grandpa's Shed";
         public const string SCARLETT_JOB_OFFER = "Scarlett's Job Offer";
         public const string MORGAN_SCHOOLING = "Morgan's Schooling";
         public const int MAIN_NEXUS_EVENT = 908071;
@@ -73,6 +74,7 @@ namespace StardewArchipelago.Items.Unlocks
             _unlockables.Add(VOID_SOUL_AP_NAME, SendVoidSoul);
             _unlockables.Add(IRIDIUM_BOMB_AP_NAME, SendIridiumBomb);
             _unlockables.Add(KITTYFISH_SPELL_AP_NAME, SendKittyfishSpell);
+            _unlockables.Add(GRANDPA_SHED_AP_NAME, SendGrandpaShed);
         }
 
         private void RegisterSVEVillagerInvitations()
@@ -86,9 +88,11 @@ namespace StardewArchipelago.Items.Unlocks
         {
             _unlockables.Add(GUILD_RUNES_AP_NAME, SendGuildRunes);
             _unlockables.Add(SPRITE_RUNES_AP_NAME, SendSpriteSpringRunes);
-            _unlockables.Add(JUNIMO_RUNES_AP_NAME, SendJunimoOutpostRunes);
+            _unlockables.Add(JUNIMO_RUNES_AP_NAME, SendJunimoRunes);
+            _unlockables.Add(WIZARD_RUNES_AP_NAME, SendWizardRunes);
+            _unlockables.Add(OUTPOST_RUNES_AP_NAME, SendOutpostRunes);
             _unlockables.Add(AURORA_RUNES_AP_NAME, SendAuroraRunes);
-            _unlockables.Add(FARM_RUNES_AP_NAME, SendFarmWizardRunes);
+            _unlockables.Add(FARM_RUNES_AP_NAME, SendFarmRunes);
             _unlockables.Add(FABLE_REEF_AP_NAME, SendLancePortal);
         }
 
@@ -112,29 +116,28 @@ namespace StardewArchipelago.Items.Unlocks
             return new LetterVanillaAttachment(receivedItem, "RailroadBoulderRemoved", true);
         }
 
+        private LetterVanillaAttachment SendGrandpaShed(ReceivedItem receivedItem)
+        {
+            return new LetterVanillaAttachment(receivedItem, "ShedRepaired", true);
+        }
+
         private LetterEventSeenAttachment SendSpriteSpringRunes(ReceivedItem receivedItem)
         {
             var events = new List<int> {MAIN_NEXUS_EVENT, SPRITE_RUNES_EVENT};
             return new LetterEventSeenAttachment(receivedItem, events);
         }
 
-        private LetterEventSeenAttachment SendJunimoOutpostRunes(ReceivedItem receivedItem)
+        private LetterEventSeenAttachment SendJunimoRunes(ReceivedItem receivedItem)
         {
-            var events = new List<int> {MAIN_NEXUS_EVENT, JUNIMO_RUNES_EVENT, OUTPOST_RUNES_EVENT};
+            var events = new List<int> {MAIN_NEXUS_EVENT, JUNIMO_RUNES_EVENT};
             return new LetterEventSeenAttachment(receivedItem, events);
         }
 
-        /*private LetterEventSeenAttachment SendWizardRunes(ReceivedItem receivedItem)
-        {
-            var events = new List<int> {MAIN_NEXUS_EVENT, WIZARD_RUNES_EVENT};
-            return new LetterEventSeenAttachment(receivedItem, events);
-        }*/
-
-        /*private LetterEventSeenAttachment SendOutpostRunes(ReceivedItem receivedItem)
+        private LetterEventSeenAttachment SendOutpostRunes(ReceivedItem receivedItem)
         {
             var events = new List<int> {MAIN_NEXUS_EVENT, OUTPOST_RUNES_EVENT};
             return new LetterEventSeenAttachment(receivedItem, events);
-        }*/
+        }
 
         private LetterEventSeenAttachment SendGuildRunes(ReceivedItem receivedItem)
         {
@@ -148,9 +151,15 @@ namespace StardewArchipelago.Items.Unlocks
             return new LetterEventSeenAttachment(receivedItem, events);
         }
 
-        private LetterEventSeenAttachment SendFarmWizardRunes(ReceivedItem receivedItem)
+        private LetterEventSeenAttachment SendFarmRunes(ReceivedItem receivedItem)
         {
-            var events = new List<int> {MAIN_NEXUS_EVENT, FARM_RUNES_EVENT, WIZARD_RUNES_EVENT};
+            var events = new List<int> {MAIN_NEXUS_EVENT, FARM_RUNES_EVENT};
+            return new LetterEventSeenAttachment(receivedItem, events);
+        }
+
+        private LetterEventSeenAttachment SendWizardRunes(ReceivedItem receivedItem)
+        {
+            var events = new List<int> {MAIN_NEXUS_EVENT, WIZARD_RUNES_EVENT};
             return new LetterEventSeenAttachment(receivedItem, events);
         }
 

@@ -12,36 +12,36 @@
 	"Farm": {
 		"Location": "Farm",
 		"Position": {"X": 48, "Y": 7},
-		"Condition": "TRUE",
-		"Label": "[LocalizedText Mods\\tlitookilakin.warpnetwork\\Strings:dest.farm]",
+		"Condition": "ANY_OBELISK_BUILT all",
+		"Label": "[LocationName Farm]",
 		"IconPath": "Mods/tlitookilakin.warpnetwork/Icons/farm"
 	},
 	"Mountain": {
 		"Location": "Mountain",
 		"Position": {"X": 31, "Y": 20},
 		"Condition": "BUILDINGS_CONSTRUCTED all \"Earth Obelisk\"",
-		"Label": "[LocalizedText Mods\\tlitookilakin.warpnetwork\\Strings:dest.mountain]",
+		"Label": "[LocationName Mountain]",
 		"IconPath": "Mods/tlitookilakin.warpnetwork/Icons/mountain"
 	},
 	"Beach": {
 		"Location": "Beach",
 		"Position": {"X": 20, "Y": 4},
 		"Condition": "BUILDINGS_CONSTRUCTED all \"Water Obelisk\"",
-		"Label": "[LocalizedText Mods\\tlitookilakin.warpnetwork\\Strings:dest.beach]",
+		"Label": "[LocationName Beach]",
 		"IconPath": "Mods/tlitookilakin.warpnetwork/Icons/beach"
 	},
 	"Desert": {
 		"Location": "Desert",
 		"Position": {"X": 35, "Y": 43},
 		"Condition": "BUILDINGS_CONSTRUCTED all \"Desert Obelisk\"",
-		"Label": "[LocalizedText Mods\\tlitookilakin.warpnetwork\\Strings:dest.desert]",
+		"Label": "[LocationName Desert]",
 		"IconPath": "Mods/tlitookilakin.warpnetwork/Icons/desert"
 	},
 	"Island": {
 		"Location": "IslandSouth",
 		"Position": {"X": 11, "Y": 11},
 		"Condition": "BUILDINGS_CONSTRUCTED all \"Island Obelisk\"",
-		"Label": "[LocalizedText Mods\\tlitookilakin.warpnetwork\\Strings:dest.island]",
+		"Label": "[LocationName IslandSouth]",
 		"IconPath": "Mods/tlitookilakin.warpnetwork/Icons/island"
 	}
 }

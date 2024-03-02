@@ -18,6 +18,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using System;
+using System.Collections.Generic;
 
 namespace HappyHomeDesigner
 {
@@ -28,7 +29,9 @@ namespace HappyHomeDesigner
 		internal static IModHelper helper;
 		internal static Config config;
 		internal static ITranslationHelper i18n;
-		internal static string uiPath = "";
+		internal static IAssetName uiPath;
+		internal static IAssetName furnitureData;
+		internal static IAssetName sprite;
 		private static string whichUI = "ui";
 
 		public override void Entry(IModHelper helper)
@@ -37,7 +40,9 @@ namespace HappyHomeDesigner
 			ModEntry.helper = helper;
 			i18n = Helper.Translation;
 			config = Helper.ReadConfig<Config>();
-			uiPath = $"Mods/{ModManifest.UniqueID}/UI";
+			uiPath = helper.GameContent.ParseAssetName($"Mods/{ModManifest.UniqueID}/UI");
+			furnitureData = helper.GameContent.ParseAssetName("Data/Furniture");
+			sprite = helper.GameContent.ParseAssetName($"Mods/{ModManifest.UniqueID}/Catalogue");
 			manifest = ModManifest;
 
 			helper.Events.GameLoop.GameLaunched += Launched;
@@ -50,8 +55,21 @@ namespace HappyHomeDesigner
 
 		private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
 		{
-			if (e.NameWithoutLocale.IsEquivalentTo(uiPath))
+			if (e.NameWithoutLocale.Equals(uiPath))
 				e.LoadFromModFile<Texture2D>($"assets/{whichUI}.png", AssetLoadPriority.Low);
+			else if (e.NameWithoutLocale.Equals(furnitureData))
+				e.Edit(AddCatalogue, AssetEditPriority.Default);
+			else if (e.NameWithoutLocale.Equals(sprite))
+				e.LoadFromModFile<Texture2D>("assets/catalog.png", AssetLoadPriority.Low);
+		}
+
+		private void AddCatalogue(IAssetData asset)
+		{
+			if (asset.Data is Dictionary<string, string> data)
+				data.TryAdd(
+					manifest.UniqueID + "_Catalogue",
+					$"Happy Home Catalogue/table/2 2/-1/1/230000/-1/{i18n.Get("furniture.Catalog.name")}/0/Mods\\{manifest.UniqueID}\\Catalogue/true"
+				);
 		}
 
 		private void OnWarp(object sender, WarpedEventArgs e)
@@ -101,12 +119,6 @@ namespace HappyHomeDesigner
 
 		private void Launched(object sender, GameLaunchedEventArgs e)
 		{
-			if (Helper.ModRegistry.IsLoaded("spacechase0.DynamicGameAssets"))
-			{
-				IDynamicGameAssets.API = Helper.ModRegistry.GetApi<IDynamicGameAssets>("spacechase0.DynamicGameAssets");
-				IDynamicGameAssets.API.AddEmbeddedPack(ModManifest, Helper.DirectoryPath);
-			}
-
 			if (Helper.ModRegistry.IsLoaded("spacechase0.GenericModConfigMenu"))
 			{
 				IGMCM.API = Helper.ModRegistry.GetApi<IGMCM>("spacechase0.GenericModConfigMenu");
@@ -130,6 +142,7 @@ namespace HappyHomeDesigner
 
 		private static void Patch(Harmony harmony)
 		{
+			ReplaceShop.Apply(harmony);
 			ItemCloneFix.Apply(harmony);
 			FurnitureAction.Apply(harmony);
 			InventoryCombine.Apply(harmony);

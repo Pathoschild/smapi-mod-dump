@@ -8,6 +8,13 @@ for queries and analysis.**
 
 # TWX Changelog
 
+## 4.2.3
+
+### Fixed
+
+* Fixed freeze when collecting trash from Crab Pot with full inventory.
+* `TrashDoesNotConsumeBait` now applies to fishing rods as well.
+
 ## 4.2.2
 
 ### Fixed

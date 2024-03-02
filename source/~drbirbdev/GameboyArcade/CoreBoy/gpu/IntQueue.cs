@@ -26,7 +26,7 @@ namespace CoreBoy.gpu
         {
             lock (this._inner)
             {
-                var asArray = this._inner.ToArray();
+                int[] asArray = this._inner.ToArray();
                 asArray[index] = value;
                 this._inner = new Queue<int>(asArray);
             }

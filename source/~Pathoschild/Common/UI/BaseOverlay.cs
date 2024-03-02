@@ -54,7 +54,7 @@ namespace Pathoschild.Stardew.Common.UI
         /// <summary>Release all resources.</summary>
         public virtual void Dispose()
         {
-            this.Events.Display.Rendered -= this.OnRendered;
+            this.Events.Display.RenderedActiveMenu -= this.OnRendered;
             this.Events.Display.RenderedWorld -= this.OnRenderedWorld;
             this.Events.GameLoop.UpdateTicked -= this.OnUpdateTicked;
             this.Events.Input.ButtonPressed -= this.OnButtonPressed;
@@ -89,7 +89,7 @@ namespace Pathoschild.Stardew.Common.UI
             events.GameLoop.UpdateTicked += this.OnUpdateTicked;
 
             if (this.IsMethodOverridden(nameof(this.DrawUi)))
-                events.Display.Rendered += this.OnRendered;
+                events.Display.RenderedActiveMenu += this.OnRendered;
             if (this.IsMethodOverridden(nameof(this.DrawWorld)))
                 events.Display.RenderedWorld += this.OnRenderedWorld;
             if (this.IsMethodOverridden(nameof(this.ReceiveLeftClick)))
@@ -167,7 +167,7 @@ namespace Pathoschild.Stardew.Common.UI
         /// <inheritdoc cref="IDisplayEvents.Rendered"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnRendered(object? sender, RenderedEventArgs e)
+        private void OnRendered(object? sender, RenderedActiveMenuEventArgs e)
         {
             if (Context.ScreenId != this.ScreenId)
                 return;

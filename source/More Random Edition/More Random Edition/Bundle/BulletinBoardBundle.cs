@@ -29,339 +29,376 @@ namespace Randomizer
 			switch (BundleType)
 			{
 				case BundleTypes.BulletinNews:
-					Name = Globals.GetTranslation("bundle-bulletin-news");
+					SetBundleName("bundle-bulletin-news");
 					potentialItems = new List<RequiredItem>()
 					{
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
-						new RequiredItem((int)ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
+						new RequiredItem(ObjectIndexes.SoggyNewspaper),
 					};
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, Range.GetRandomValue(1, 8));
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.BulletinCleanup:
-					Name = Globals.GetTranslation("bundle-bulletin-cleanup");
+					SetBundleName("bundle-bulletin-cleanup");
 					RequiredItems = RequiredItem.CreateList(ItemList.GetTrash(), 1, 5);
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.BulletinHated:
-					Name = Globals.GetTranslation("bundle-bulletin-hated"); potentialItems = RequiredItem.CreateList(NPC.UniversalHates);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("bundle-bulletin-hated"); 
+					potentialItems = RequiredItem.CreateList(
+						PreferenceRandomizer.GetUniversalPreferences(UniversalPreferencesIndexes.Hated));
+					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Range.GetRandomValue(4, 6);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BulletinLoved:
-					Name = Globals.GetTranslation("bundle-bulletin-loved");
-					RequiredItems = RequiredItem.CreateList(NPC.UniversalLoves);
-					MinimumRequiredItems = 2;
-					Color = BundleColors.Red;
+					SetBundleName("bundle-bulletin-loved");
+					potentialItems = RequiredItems = RequiredItem.CreateList(
+						PreferenceRandomizer.GetUniversalPreferences(UniversalPreferencesIndexes.Loved));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
+                    MinimumRequiredItems = Range.GetRandomValue(2, 6);
+                    Color = BundleColors.Red;
 					break;
 				case BundleTypes.BulletinAbigail:
-					Name = Globals.GetTranslation("Abigail-name");
-					potentialItems = RequiredItem.CreateList(Abigail.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Abigail-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Abigail));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BulletinAlex:
-					Name = Globals.GetTranslation("Alex-name");
-					potentialItems = RequiredItem.CreateList(Alex.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Alex-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Alex));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.BulletinCaroline:
-					Name = Globals.GetTranslation("Caroline-name");
-					potentialItems = RequiredItem.CreateList(Caroline.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Caroline-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Caroline));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.BulletinClint:
-					Name = Globals.GetTranslation("Clint-name");
-					potentialItems = RequiredItem.CreateList(Clint.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Clint-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Clint));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.BulletinDwarf:
-					Name = Globals.GetTranslation("Dwarf-name");
-					potentialItems = RequiredItem.CreateList(Dwarf.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Dwarf-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Dwarf));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.BulletinDemetrius:
-					Name = Globals.GetTranslation("Demetrius-name");
-					potentialItems = RequiredItem.CreateList(Demetrius.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Demetrius-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Demetrius));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.BulletinElliott:
-					Name = Globals.GetTranslation("Elliott-name");
-					potentialItems = RequiredItem.CreateList(Elliott.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Elliott-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Elliott));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BulletinEmily:
-					Name = Globals.GetTranslation("Emily-name");
-					potentialItems = RequiredItem.CreateList(Emily.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Emily-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Emily));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BulletinEvelyn:
-					Name = Globals.GetTranslation("Evelyn-name");
-					potentialItems = RequiredItem.CreateList(Evelyn.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Evelyn-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Evelyn));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BulletinGeorge:
-					Name = Globals.GetTranslation("George-name");
-					potentialItems = RequiredItem.CreateList(George.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("George-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.George));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.BulletinGus:
-					Name = Globals.GetTranslation("Gus-name");
-					potentialItems = RequiredItem.CreateList(Gus.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Gus-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Gus));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.BulletinHaley:
-					Name = Globals.GetTranslation("Haley-name");
-					potentialItems = RequiredItem.CreateList(Haley.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Haley-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Haley));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.BulletinHarvey:
-					Name = Globals.GetTranslation("Harvey-name");
-					potentialItems = RequiredItem.CreateList(Harvey.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Harvey-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Harvey));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.BulletinJas:
-					Name = Globals.GetTranslation("Jas-name");
-					potentialItems = RequiredItem.CreateList(Jas.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Jas-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Jas));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BulletinJodi:
-					Name = Globals.GetTranslation("Jodi-name");
-					potentialItems = RequiredItem.CreateList(Jodi.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Jodi-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Jodi));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BulletinKent:
-					Name = Globals.GetTranslation("Kent-name");
-					potentialItems = RequiredItem.CreateList(Kent.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Kent-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Kent));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.BulletinKrobus:
-					Name = Globals.GetTranslation("Krobus-name");
-					potentialItems = RequiredItem.CreateList(Krobus.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Krobus-name");
+					potentialItems = RequiredItem.CreateList(
+						PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Krobus));
+					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.BulletinLeah:
-					Name = Globals.GetTranslation("Leah-name");
-					potentialItems = RequiredItem.CreateList(Leah.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Leah-name");
+					potentialItems = RequiredItem.CreateList(
+						PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Leah));
+					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.BulletinLewis:
-					Name = Globals.GetTranslation("Lewis-name");
-					potentialItems = RequiredItem.CreateList(Lewis.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Lewis-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Lewis));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Green;
 					break;
 				case BundleTypes.BulletinLinus:
-					Name = Globals.GetTranslation("Linus-name");
-					potentialItems = RequiredItem.CreateList(Linus.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Linus-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Linus));
+					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.BulletinMarnie:
-					Name = Globals.GetTranslation("Marnie-name");
-					potentialItems = RequiredItem.CreateList(Marnie.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Marnie-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Marnie));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.BulletinMaru:
-					Name = Globals.GetTranslation("Maru-name");
-					potentialItems = RequiredItem.CreateList(Maru.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Maru-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Maru));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BulletinPam:
-					Name = Globals.GetTranslation("Pam-name");
-					potentialItems = RequiredItem.CreateList(Pam.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Pam-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Pam));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BulletinPenny:
-					Name = Globals.GetTranslation("Penny-name");
-					potentialItems = RequiredItem.CreateList(Penny.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Penny-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Penny));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.BulletinPierre:
-					Name = Globals.GetTranslation("Pierre-name");
-					potentialItems = RequiredItem.CreateList(Pierre.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Pierre-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Pierre));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Orange;
 					break;
 				case BundleTypes.BulletinRobin:
-					Name = Globals.GetTranslation("Robin-name");
-					potentialItems = RequiredItem.CreateList(Robin.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Robin-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Robin));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Yellow;
 					break;
 				case BundleTypes.BulletinSam:
-					Name = Globals.GetTranslation("Sam-name");
-					potentialItems = RequiredItem.CreateList(Sam.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Sam-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Sam));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.BulletinSandy:
-					Name = Globals.GetTranslation("Sandy-name");
-					potentialItems = RequiredItem.CreateList(Sandy.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Sandy-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Sandy));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.BulletinSebastian:
-					Name = Globals.GetTranslation("Sebastian-name");
-					potentialItems = RequiredItem.CreateList(Sebastian.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Sebastian-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Sebastian));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BulletinShane:
-					Name = Globals.GetTranslation("Shane-name");
-					potentialItems = RequiredItem.CreateList(Shane.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Shane-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Shane));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Blue;
 					break;
 				case BundleTypes.BulletinVincent:
-					Name = Globals.GetTranslation("Vincent-name");
-					potentialItems = RequiredItem.CreateList(Vincent.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Vincent-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Vincent));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BulletinWilly:
-					Name = Globals.GetTranslation("Willy-name");
-					potentialItems = RequiredItem.CreateList(Willy.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Willy-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Willy));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BulletinWizard:
-					Name = Globals.GetTranslation("Wizard-name");
-					potentialItems = RequiredItem.CreateList(Wizard.Loves);
-					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
+					SetBundleName("Wizard-name");
+					potentialItems = RequiredItem.CreateList(
+                        PreferenceRandomizer.GetLovedItems(GiftableNPCIndexes.Wizard));
+                    RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8, forceNumberOfValuesRNGCalls: true);
 					MinimumRequiredItems = Math.Min(Math.Max(RequiredItems.Count - 2, 3), RequiredItems.Count);
 					Color = BundleColors.Purple;
 					break;
 				case BundleTypes.BulletinColorPink:
-					Name = Globals.GetTranslation("bundle-bulletin-pink");
-					potentialItems = RequiredItem.CreateList(new List<int>
+					SetBundleName("bundle-bulletin-pink");
+					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
 					{
-						(int)ObjectIndexes.Shrimp,
-						(int)ObjectIndexes.StrangeBun,
-						(int)ObjectIndexes.SalmonDinner,
-						(int)ObjectIndexes.PinkCake,
-						(int)ObjectIndexes.Sashimi,
-						(int)ObjectIndexes.IceCream,
-						(int)ObjectIndexes.Salmonberry,
-						(int)ObjectIndexes.Coral,
-						(int)ObjectIndexes.Dolomite,
-						(int)ObjectIndexes.Nekoite,
-						(int)ObjectIndexes.StarShards,
-						(int)ObjectIndexes.Peach,
-						(int)ObjectIndexes.BugMeat,
-						(int)ObjectIndexes.Bait
+						ObjectIndexes.Shrimp,
+						ObjectIndexes.StrangeBun,
+						ObjectIndexes.SalmonDinner,
+						ObjectIndexes.PinkCake,
+						ObjectIndexes.Sashimi,
+						ObjectIndexes.IceCream,
+						ObjectIndexes.Salmonberry,
+						ObjectIndexes.Coral,
+						ObjectIndexes.Dolomite,
+						ObjectIndexes.Nekoite,
+						ObjectIndexes.StarShards,
+						ObjectIndexes.Peach,
+						ObjectIndexes.BugMeat,
+						ObjectIndexes.Bait
 					});
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = Range.GetRandomValue(3, 6);
 					Color = BundleColors.Red;
 					break;
 				case BundleTypes.BulletinColorWhite:
-					Name = Globals.GetTranslation("bundle-bulletin-white");
-					potentialItems = RequiredItem.CreateList(new List<int>
+					SetBundleName("bundle-bulletin-white");
+					potentialItems = RequiredItem.CreateList(new List<ObjectIndexes>
 					{
-						(int)ObjectIndexes.Leek,
-						(int)ObjectIndexes.Quartz,
-						(int)ObjectIndexes.OrnamentalFan,
-						(int)ObjectIndexes.DinosaurEgg,
-						(int)ObjectIndexes.ChickenStatue,
-						(int)ObjectIndexes.WhiteAlgae,
-						(int)ObjectIndexes.WhiteEgg,
-						(int)ObjectIndexes.LargeWhiteEgg,
-						(int)ObjectIndexes.Milk,
-						(int)ObjectIndexes.LargeMilk,
-						(int)ObjectIndexes.FriedEgg,
-						(int)ObjectIndexes.RicePudding,
-						(int)ObjectIndexes.IceCream,
-						(int)ObjectIndexes.Mayonnaise,
-						(int)ObjectIndexes.IronBar,
-						(int)ObjectIndexes.RefinedQuartz,
-						(int)ObjectIndexes.IronOre,
-						(int)ObjectIndexes.SpringOnion,
-						(int)ObjectIndexes.SnowYam,
-						(int)ObjectIndexes.Rice,
-						(int)ObjectIndexes.GoatCheese,
-						(int)ObjectIndexes.Cloth,
-						(int)ObjectIndexes.GoatMilk,
-						(int)ObjectIndexes.LargeGoatMilk,
-						(int)ObjectIndexes.Wool,
-						(int)ObjectIndexes.DuckEgg,
-						(int)ObjectIndexes.RabbitsFoot,
-						(int)ObjectIndexes.PaleBroth,
-						(int)ObjectIndexes.Esperite,
-						(int)ObjectIndexes.Lunarite,
-						(int)ObjectIndexes.Marble,
-						(int)ObjectIndexes.PrehistoricScapula,
-						(int)ObjectIndexes.PrehistoricTibia,
-						(int)ObjectIndexes.PrehistoricSkull,
-						(int)ObjectIndexes.SkeletalHand,
-						(int)ObjectIndexes.PrehistoricRib,
-						(int)ObjectIndexes.PrehistoricVertebra,
-						(int)ObjectIndexes.SkeletalTail,
-						(int)ObjectIndexes.NautilusFossil,
-						(int)ObjectIndexes.Trilobite,
-						(int)ObjectIndexes.ArtichokeDip,
-						(int)ObjectIndexes.LeadBobber,
-						(int)ObjectIndexes.Chowder
+						ObjectIndexes.Leek,
+						ObjectIndexes.Quartz,
+						ObjectIndexes.OrnamentalFan,
+						ObjectIndexes.DinosaurEgg,
+						ObjectIndexes.ChickenStatue,
+						ObjectIndexes.WhiteAlgae,
+						ObjectIndexes.WhiteEgg,
+						ObjectIndexes.LargeWhiteEgg,
+						ObjectIndexes.Milk,
+						ObjectIndexes.LargeMilk,
+						ObjectIndexes.FriedEgg,
+						ObjectIndexes.RicePudding,
+						ObjectIndexes.IceCream,
+						ObjectIndexes.Mayonnaise,
+						ObjectIndexes.IronBar,
+						ObjectIndexes.RefinedQuartz,
+						ObjectIndexes.IronOre,
+						ObjectIndexes.SpringOnion,
+						ObjectIndexes.SnowYam,
+						ObjectIndexes.Rice,
+						ObjectIndexes.GoatCheese,
+						ObjectIndexes.Cloth,
+						ObjectIndexes.GoatMilk,
+						ObjectIndexes.LargeGoatMilk,
+						ObjectIndexes.Wool,
+						ObjectIndexes.DuckEgg,
+						ObjectIndexes.RabbitsFoot,
+						ObjectIndexes.PaleBroth,
+						ObjectIndexes.Esperite,
+						ObjectIndexes.Lunarite,
+						ObjectIndexes.Marble,
+						ObjectIndexes.PrehistoricScapula,
+						ObjectIndexes.PrehistoricTibia,
+						ObjectIndexes.PrehistoricSkull,
+						ObjectIndexes.SkeletalHand,
+						ObjectIndexes.PrehistoricRib,
+						ObjectIndexes.PrehistoricVertebra,
+						ObjectIndexes.SkeletalTail,
+						ObjectIndexes.NautilusFossil,
+						ObjectIndexes.Trilobite,
+						ObjectIndexes.ArtichokeDip,
+						ObjectIndexes.LeadBobber,
+						ObjectIndexes.Chowder
 					});
 					RequiredItems = Globals.RNGGetRandomValuesFromList(potentialItems, 8);
 					MinimumRequiredItems = Range.GetRandomValue(3, 6);
@@ -377,28 +414,32 @@ namespace Randomizer
 		{
 			if (Globals.RNGGetNextBoolean(1))
 			{
-				Reward = new RequiredItem((int)ObjectIndexes.PrismaticShard);
+				Reward = new RequiredItem(ObjectIndexes.PrismaticShard);
 			}
 
 			else if (Globals.RNGGetNextBoolean(5))
 			{
-				List<Item> universalLoves = NPC.UniversalLoves.Where(x =>
-					x.Id != (int)ObjectIndexes.PrismaticShard).ToList();
+				// The idea is that we want a GOOD reward, so use the original data in case the
+				// generated love list is really bad
+				List<Item> universalLoves = PreferenceRandomizer
+					.GetUniversalPreferences(UniversalPreferencesIndexes.Loved, forceOriginalData: true)
+					.Where(x => x.Id != (int)ObjectIndexes.PrismaticShard)
+					.ToList();
 
 				Reward = Globals.RNGGetRandomValueFromList(RequiredItem.CreateList(universalLoves, 5, 10));
 			}
 
-			List<RequiredItem> potentialRewards = new List<RequiredItem>
+			List<RequiredItem> potentialRewards = new()
 			{
-				new RequiredItem((int)ObjectIndexes.JunimoKartArcadeSystem),
-				new RequiredItem((int)ObjectIndexes.PrairieKingArcadeSystem),
-				new RequiredItem((int)ObjectIndexes.SodaMachine),
-				new RequiredItem((int)ObjectIndexes.Beer, 43),
-				new RequiredItem((int)ObjectIndexes.Salad, Range.GetRandomValue(5, 25)),
-				new RequiredItem((int)ObjectIndexes.Bread, Range.GetRandomValue(5, 25)),
-				new RequiredItem((int)ObjectIndexes.Spaghetti, Range.GetRandomValue(5, 25)),
-				new RequiredItem((int)ObjectIndexes.Pizza, Range.GetRandomValue(5, 25)),
-				new RequiredItem((int)ObjectIndexes.Coffee, Range.GetRandomValue(5, 25))
+				new(BigCraftableIndexes.JunimoKartArcadeSystem),
+				new(BigCraftableIndexes.PrairieKingArcadeSystem),
+				new(BigCraftableIndexes.SodaMachine),
+				new(ObjectIndexes.Beer, 43),
+				new(ObjectIndexes.Salad, Range.GetRandomValue(5, 25)),
+				new(ObjectIndexes.Bread, Range.GetRandomValue(5, 25)),
+				new(ObjectIndexes.Spaghetti, Range.GetRandomValue(5, 25)),
+				new(ObjectIndexes.Pizza, Range.GetRandomValue(5, 25)),
+				new(ObjectIndexes.Coffee, Range.GetRandomValue(5, 25))
 			};
 
 			Reward = Globals.RNGGetRandomValueFromList(potentialRewards);

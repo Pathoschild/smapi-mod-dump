@@ -14,15 +14,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using StardewModdingAPI;
 using StardewValley;
+using StardewValley.GameData;
 using Unlockable_Bundles.Lib.Enums;
 
 namespace Unlockable_Bundles.Lib
 {
-    //The model is here because casting directly to Unlockable caused issues
+    //The model is here because casting directly to Unlockable caused issues.
+    //At this point some logic depends on it iirc to clone Unlockable for non unique locations
     public class UnlockableModel
     {
-        //Don't forget to implement changes to Unlockable constructor as well
+        //Any fields added here should also be added to:
+        //- Unlockable -> UnlockableModel explicit operator
+        //- Unlockable as a field/property
+        //- Unlockable constructor
+        //- Unlockable > addNetFields
         public string ID = "";
         public string Location = "";
         public string LocationUnique = "";
@@ -55,14 +62,20 @@ namespace Unlockable_Bundles.Lib
         public string InteractionAnimation = null; //Currently not in use
         public string InteractionSound = null;
 
+        public string OverviewTexture = null;
+        public string OverviewAnimation = null;
+        public string OverviewDescription = null;
+
         public int RandomPriceEntries = 0;
-        public Dictionary<string, int> Price = new Dictionary<string, int>();
-        public Dictionary<string, int> AlreadyPaid = new Dictionary<string, int>();
-        public Dictionary<string, int> AlreadyPaidIndex = new Dictionary<string, int>();
-        public Dictionary<string, int> BundleReward = new Dictionary<string, int>();
+        public int RandomRewardEntries = 0;
+        public Dictionary<string, int> Price = new();
+        public Dictionary<string, int> AlreadyPaid = new();
+        public Dictionary<string, int> AlreadyPaidIndex = new();
+        public Dictionary<string, int> BundleReward = new();
+        public List<GenericSpawnItemDataWithCondition> BundleRewardSpawnFields = new();
 
         public string EditMap = "NONE";
-        public EditMapMode EditMapMode = EditMapMode.Overlay;
+        public PatchMapMode EditMapMode = PatchMapMode.Overlay;
         public Vector2 EditMapPosition;
         public string EditMapLocation = "";
 
@@ -101,7 +114,12 @@ namespace Unlockable_Bundles.Lib
                 InteractionAnimation = v.InteractionAnimation,
                 InteractionSound = v.InteractionSound,
 
+                OverviewTexture = v.OverviewTexture,
+                OverviewAnimation = v.OverviewAnimation,
+                OverviewDescription = v.OverviewDescription,
+
                 RandomPriceEntries = v.RandomPriceEntries,
+                RandomRewardEntries = v.RandomRewardEntries,
                 Price = v._price.Pairs.ToDictionary(x => x.Key, x => x.Value),
                 AlreadyPaid = v._alreadyPaid.Pairs.ToDictionary(x => x.Key, x => x.Value),
                 AlreadyPaidIndex = v._alreadyPaidIndex.Pairs.ToDictionary(x => x.Key, x => x.Value),
@@ -114,12 +132,6 @@ namespace Unlockable_Bundles.Lib
             };
         }
         public void applyDefaultValues()
-        {
-            applyDefaultShopType();
-
-        }
-
-        private void applyDefaultShopType()
         {
             BundleDescription = defaultBundleDescription();
             BundleSlots = defaultBundleSlots();

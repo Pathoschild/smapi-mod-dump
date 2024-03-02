@@ -20,12 +20,11 @@ using StardewValley.Locations;
 using StardewValley.Objects;
 using StardewValley.Tools;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Modded;
 using Object = StardewValley.Object;
 using StardewArchipelago.Items.Unlocks;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.MonsterSlayer;
 using StardewArchipelago.Stardew;
-using StardewArchipelago.GameModifications.Modded;
 using StardewArchipelago.Stardew.NameMapping;
 
 namespace StardewArchipelago.Items.Mail
@@ -614,8 +613,8 @@ namespace StardewArchipelago.Items.Mail
         private void LearnSpecialCraftingRecipe(string recipeItemName)
         {
             // When more mods start to need name mapping, we can make a generic version of this
-            var nameMapper = new CompoundNameMapper(_archipelago.SlotData);
-            var internalName = nameMapper.GetInternalName(recipeItemName.Replace("_", " "));
+            var nameMapper = new CraftingRecipeNameMapper();
+            var internalName = nameMapper.GetRecipeName(recipeItemName.Replace("_", " "));
             if (Game1.player.craftingRecipes.ContainsKey(internalName))
             {
                 Game1.player.craftingRecipes[internalName] = 0;

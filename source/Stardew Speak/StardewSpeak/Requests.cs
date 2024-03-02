@@ -248,7 +248,8 @@ namespace StardewSpeak
                         int fromY = data.y;
                         int cutoff = data.cutoff;
                         var tiles = Pathfinder.Pathfinder.FindPath(player.currentLocation, fromX, fromY, playerX, playerY, cutoff);
-                        return new { tiles, location = player.currentLocation.NameOrUniqueName };
+                        var location = Serialization.SerializeLocation(player.currentLocation);
+                        return new { tiles, location = location };
                     }
                 case "BED_TILE":
                     {
@@ -416,7 +417,7 @@ namespace StardewSpeak
                         return wt;
                     }
                 case "GET_ACTIVE_MENU":
-                    return Utils.SerializeMenu(Game1.activeClickableMenu);
+                       return Utils.SerializeMenu(Game1.activeClickableMenu);
                 case "GET_MOUSE_POSITION":
                     {
                         return new List<int> { Game1.getMouseX(), Game1.getMouseY() };

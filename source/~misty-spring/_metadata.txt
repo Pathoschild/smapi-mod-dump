@@ -10,9 +10,11 @@ mods:
    Spouses in Ginger Island
 
 latest commit:
-   commit 66b33d744bea3ed73f54ba2587e5a55d7a97b4cb
+   commit f97a4f798b44476a8b2dbf7cea0886d81e0f36f3
    Author: Mistyspring <105533011+misty-spring@users.noreply.github.com>
-   Date:   Thu Jan 11 18:24:27 2024 +0000
+   Date:   Sat Feb 17 17:17:57 2024 -0300
    
-       Rename Creating-objecthunts.md to creating-objecthunts.md
+       Update January changes
+       
+       Removing deprecated content/documentation, and updating with changes made through January. Also reorganized some things.
    

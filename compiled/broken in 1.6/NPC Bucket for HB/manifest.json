@@ -1,0 +1,10 @@
+{
+    "Name": "NPCBucket",
+    "Author": "shounlol",
+    "Version": "1.0.1",
+    "Description": "Allows for the collection of cum bottles from adult male NPCs.",
+    "UniqueID": "shounlol.NPCBucket",
+    "EntryDll": "NPCBucket.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": ["Nexus:20328"]
+  }

@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.GameModifications.CodeInjections;
-using StardewArchipelago.Items.Unlocks;
 using StardewValley;
 
 namespace StardewArchipelago.GameModifications.EntranceRandomizer

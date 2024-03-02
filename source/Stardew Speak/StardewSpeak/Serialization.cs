@@ -46,7 +46,7 @@ namespace StardewSpeak
                 currentProduce,
                 readyForHarvest,
                 toolUsedForHarvest = animal.toolUsedForHarvest.Value,
-                location = animal.currentLocation.NameOrUniqueName,
+                location = SerializeLocation(animal.currentLocation),
             };
         }
         public static dynamic SerializeCharacter(NPC character) 
@@ -62,7 +62,7 @@ namespace StardewSpeak
             {
                 name = character.Name,
                 trackingId,
-                location = character.currentLocation.NameOrUniqueName,
+                location = SerializeLocation(character.currentLocation),
                 tileX = character.getTileX(),
                 tileY = character.getTileY(),
                 isMonster = character.IsMonster,
@@ -87,5 +87,12 @@ namespace StardewSpeak
             }
             return serializedEvent;
         }
+        public static dynamic SerializeLocation(GameLocation location)
+        {
+            if (location == null) return null;
+            return new { name = location.NameOrUniqueName, isOutdoors = location.IsOutdoors };
+        }
     }
+
+
 }

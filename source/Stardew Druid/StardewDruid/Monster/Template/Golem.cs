@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewDruid.Map;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
@@ -304,23 +305,7 @@ namespace StardewDruid.Monster.Template
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
 
-            List<string> ouchList = new()
-            {
-                "oooft",
-                "yeoww",
-                "crikey!",
-                "DEEP",
-                "shivers",
-                "timbers",
-                "yarr",
-            };
-
-            int ouchIndex = Game1.random.Next(10);
-
-            if (ouchIndex < ouchList.Count)
-            {
-                showTextAboveHead(ouchList[ouchIndex], duration: 2000);
-            }
+            DialogueData.DisplayText(this, 3);
 
             int num = Math.Max(1, damage - resilience.Value);
 
@@ -339,14 +324,7 @@ namespace StardewDruid.Monster.Template
         public void triggerPanic()
         {
 
-            List<string> panicList = new()
-            {
-                "cover!",
-                "RUN",
-                "oh no!",
-            };
-
-            showTextAboveHead(panicList[Game1.random.Next(3)], duration: 3000);
+            DialogueData.DisplayText(this, 3, 2);
 
         }
 

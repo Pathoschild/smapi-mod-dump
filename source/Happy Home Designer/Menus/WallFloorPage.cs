@@ -17,6 +17,7 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace HappyHomeDesigner.Menus
 {
@@ -35,7 +36,7 @@ namespace HappyHomeDesigner.Menus
 		private readonly UndoRedoButton undoRedo = new(new(0, 0, 144, 80), "undo_redo");
 		private GridPanel ActivePanel;
 
-		public WallFloorPage()
+		public WallFloorPage(ShopMenu existing = null)
 		{
 			filter_count = 4;
 
@@ -48,7 +49,9 @@ namespace HappyHomeDesigner.Menus
 			int removedWalls = 0;
 			int removedFloors = 0;
 
-			foreach (var item in Utility.getAllWallpapersAndFloorsForFree().Keys)
+			var timer = Stopwatch.StartNew();
+
+			foreach (var item in ModUtilities.GetCatalogItems(false, existing))
 			{
 				if (item is not Wallpaper wall)
 					continue;
@@ -80,6 +83,9 @@ namespace HappyHomeDesigner.Menus
 					}
 				}
 			}
+
+			timer.Stop();
+			ModEntry.monitor.Log($"Populated {floors.Count} floors and {walls.Count} walls in {timer.ElapsedMilliseconds} ms", LogLevel.Debug);
 
 			if (removedFloors is not 0 || removedWalls is not 0)
 				ModEntry.i18n.Log("logging.removedWallsAndFloors", new { walls = removedWalls, floors = removedFloors }, LogLevel.Info);

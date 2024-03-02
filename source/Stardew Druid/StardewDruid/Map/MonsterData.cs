@@ -274,7 +274,7 @@ namespace StardewDruid.Map
 
             characterSprite = new();
 
-            characterSprite.textureName.Value = "18465_" + characterName;
+            characterSprite.textureName.Set("18465_" + characterName);
 
             characterSprite.spriteTexture = MonsterTexture(characterName);
 

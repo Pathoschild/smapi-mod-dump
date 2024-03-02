@@ -58,10 +58,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded
                 {
                     _realDeepestMineLevel = Game1.player.deepestMineLevel;
                 }
+
                 if (receivedElevators >= 8 && Game1.player.deepestMineLevel >= 320)
                 {
                     return true; //let the player gain these floors on their own since they've "collected" the floors already
                 }
+
                 var elevatorMaxLevel = (receivedElevators * ELEVATOR_STEP) + 120;
                 Game1.player.deepestMineLevel = elevatorMaxLevel;
 

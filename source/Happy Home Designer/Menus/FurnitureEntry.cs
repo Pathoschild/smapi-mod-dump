@@ -44,7 +44,7 @@ namespace HappyHomeDesigner.Menus
 		{
 			this.Item = Item;
 			this.season = season;
-			HasVariants = AlternativeTextures.Installed && AlternativeTextures.HasVariant("Furniture_" + Item.Name, season);
+			HasVariants = AlternativeTextures.Installed && AlternativeTextures.HasVariant("Furniture_" + Item.ItemId, season);
 			// 1.6: port to id
 			Favorited = favorites.Contains(Item.Name);
 		}
@@ -96,7 +96,7 @@ namespace HappyHomeDesigner.Menus
 			{
 				var location = Game1.currentLocation;
 
-				if (!bed.CanModifyBed(location, Game1.player))
+				if (!bed.CanModifyBed(Game1.player))
 				{
 					Game1.showRedMessage(Game1.content.LoadString("Strings\\UI:Bed_CantMoveOthersBeds"));
 					return false;

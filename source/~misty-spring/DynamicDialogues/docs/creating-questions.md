@@ -26,17 +26,17 @@ You can add multiple questions.
 ## Adding questions
 
 
-name |Required| description
------|---|--------- 
-Question |Yes| Text the question will have.
-Answer |Yes| NPC's answer.
-MaxTimesAsked\* |No| Max times you can ask this question. If 0, it'll count as infinite.
-Location |No| The question will only appear when in this location.
-From |No| The hour the question *can* begin being added at.
-To |No| Limit time for adding the question.
-EventToStart|No|Event to start after you ask the question.
-QuestToStart|No|Quest to add after you ask the question.
-CanRepeatEvent\*\*|No|If the event can be repeated.
+| name            | Required | description                                                         |
+|-----------------|----------|---------------------------------------------------------------------|
+| Question        | Yes      | Text the question will have.                                        |
+| Answer          | Yes      | NPC's answer.                                                       |
+| MaxTimesAsked\* | No       | Max times you can ask this question. If 0, it'll count as infinite. |
+| Location        | No       | The question will only appear when in this location.                |
+| From            | No       | The hour the question *can* begin being added at.                   |
+| To              | No       | Limit time for adding the question.                                 |
+| EventToStart    | No       | Event to start after you ask the question.                          |
+| QuestToStart    | No       | Quest to add after you ask the question.                            |
+| TriggerAction   | No       | Trigger action to call.                                             |
 
 \*= If you include a quest (or event), `MaxTimesAsked` must be 1.
 
@@ -56,7 +56,7 @@ Template:
 ```
 
 Just remove any fields you won't be using.
-**Note:** If you don't want the question to appear every day, use CP's "When" field.
+**Note:** If you don't want the question to appear every day, use ContentPatcher's "When" field.
 
 ------------
 

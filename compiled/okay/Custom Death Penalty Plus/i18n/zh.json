@@ -1,0 +1,54 @@
+{
+  // String fragments
+  "TheMightyAmondee.CDPP/responseperson": "有人",
+  "TheMightyAmondee.CDPP/responseappendix1": "而且还遍体鳞伤",
+  "TheMightyAmondee.CDPP/responseappendix2": "在矿井里",
+  "TheMightyAmondee.CDPP/responseappendix3": "在姜岛岸边",
+  "TheMightyAmondee.CDPP/finallyawake": "很好，你终于醒了",
+
+  // Event fragments
+  "TheMightyAmondee.CDPP/wakeplayer": " ……{0}?",
+  "TheMightyAmondee.CDPP/nomoneylost": "我的钱貌似都还在。",
+  "TheMightyAmondee.CDPP/nomoneylostmine": "幸好，我的钱都还在。",
+  "TheMightyAmondee.CDPP/nocharge": "哈维医生没向我收医药费，他人真好。",
+  "TheMightyAmondee.CDPP/nomoney": "幸好，我身上也没什么钱可丢的，不然可就麻烦了。",
+  "TheMightyAmondee.CDPP/becareful": "下次记得小心点，好吗？$s",
+  "TheMightyAmondee.CDPP/nicetoseeyou": "虽然见到你很开心，但我讨厌帮你包扎伤口……#$b#下次请小心点，好吗？$s",
+  "TheMightyAmondee.CDPP/bereallycareful": "你真的应该更加小心点。我不喜欢你拿命开玩笑，事后还得我来给你包扎。$s",
+  "TheMightyAmondee.CDPP/easynow1": "放轻松……慢一点。",
+  "TheMightyAmondee.CDPP/easynow2": "嘿，孩子，你没事吧？",
+  "TheMightyAmondee.CDPP/qi": "我在下面找到了你，孩子，那时候你遍体鳞伤，不省人事……但愿你没在干什么蠢事。$1#$b#下次在洞穴里记得小心点，好吧？还有大好的前程在等着你呢。",
+  "TheMightyAmondee.CDPP/whathappened": "……发生了什么？",
+  "TheMightyAmondee.CDPP/somethingbad": "我肯定遭遇了什么不好的事……我完全不记得自己怎么到这儿的……",
+  "TheMightyAmondee.CDPP/moneylost": "我似乎丢失了{{moneylost}}金。什么情况？……",
+
+  // Mail fragments
+  "TheMightyAmondee.CDPP/mailnocharge": "感谢我吧，这次服务就不收你钱了。",
+  "TheMightyAmondee.CDPP/mailnochargeharvey": "这次我没收你医药费。",
+
+  // Replacements
+  "TheMightyAmondee.CDPP/replacementdialogue": "{0}发现你不省人事倒在地上，{1}……我不得不给你做了次急救手术！#$b#",
+  "TheMightyAmondee.CDPP/replacementmail1": "这个服务会向您收取 {0}金的费用",
+  "TheMightyAmondee.CDPP/replacementmail2": "你的医疗费是 {0}金",
+
+  // Config settings
+  "config.option.title.death": "死亡惩罚",
+  "config.option.title.passout": "昏迷惩罚",
+  "config.option.title.other": "其他惩罚",
+
+  "config.option.death.restoreitems": "恢复物品",
+  "config.option.death.losscap": "金钱遗失上限",
+  "config.option.death.moneytorestorepercentage": "金钱恢复百分比",
+  "config.option.death.energytorestorepercentage": "能量恢复百分比",
+  "config.option.death.healthtorestorepercentage": "生命值恢复百分比",
+
+  "config.option.passout.losscap": "金钱遗失上限",
+  "config.option.passout.moneytorestorepercentage": "金钱恢复百分比",
+  "config.option.passout.energytorestorepercentage": "能量恢复百分比",
+
+  "config.option.other.wakeupnextdayinclinic": "第二天在诊所中醒来",
+  "config.option.other.harveyfriendshipchange": "哈维亲密度改变",
+  "config.option.other.marufriendshipchange": "玛鲁亲密度改变",
+  "config.option.other.morerealisticwarps": "更真实的醒来地点",
+  "config.option.other.debuffondeath": "死亡时获得Debuff"
+}

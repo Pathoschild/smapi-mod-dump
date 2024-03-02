@@ -1,0 +1,10 @@
+{
+  "Name": "Static Inventory",
+  "Author": "Dinotopea",
+  "Version": "1.0.2",
+  "Description": "Keep your inventory static.",
+  "UniqueID": "Dinotopea.StaticInventory",
+  "EntryDll": "StaticInventory.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:20093" ]
+}

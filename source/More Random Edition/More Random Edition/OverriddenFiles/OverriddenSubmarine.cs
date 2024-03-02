@@ -114,19 +114,19 @@ namespace Randomizer
 			if (!Globals.Config.Fish.Randomize)
 			{
 				if (Game1.random.NextDouble() < 0.1)
-					return new SVOBject(154, 1, false, -1, 0);
+					return new SVOBject((int)ObjectIndexes.SeaCucumber, 1, false, -1, 0);
 				if (Game1.random.NextDouble() < 0.08 + (flag ? 0.1 : 0.0))
-					return new SVOBject(155, 1, false, -1, 0);
+					return new SVOBject((int)ObjectIndexes.SuperCucumber, 1, false, -1, 0);
 				if (Game1.random.NextDouble() < 0.05)
-					return new SVOBject(149, 1, false, -1, 0);
+					return new SVOBject((int)ObjectIndexes.Octopus, 1, false, -1, 0);
 			}
 
 			// Pearl
 			if (Game1.random.NextDouble() < 0.01 + (flag ? 0.02 : 0.0))
-				return new SVOBject(797, 1, false, -1, 0);
+				return new SVOBject((int)ObjectIndexes.Pearl, 1, false, -1, 0);
 
 			// Seaweed
-			return new SVOBject(152, 1, false, -1, 0);
+			return new SVOBject((int)ObjectIndexes.Seaweed, 1, false, -1, 0);
 		}
 	}
 }

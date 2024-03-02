@@ -5,5 +5,6 @@
   "FriendshipPenalty": 500,
   "DaysBannedFor": 3,
   "CatchesBeforeBan": 3,
-  "CaughtRadius": 5
+  "CaughtRadius": 5,
+  "RareStockChance": 0.0
 }

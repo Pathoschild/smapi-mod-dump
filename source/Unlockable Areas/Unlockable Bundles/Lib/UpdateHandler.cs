@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -23,7 +24,7 @@ using xTile.Tiles;
 
 namespace Unlockable_Bundles.Lib
 {
-    //This class handles applying purchased bundles
+    //This class handles applying purchased bundles and some network stuff, which one could refactor into its own dedicated class
     public sealed class UpdateHandler
     {
         private static Mod Mod;
@@ -90,7 +91,7 @@ namespace Unlockable_Bundles.Lib
                         unlockable.applyDefaultValues();
 
                         if (locationValue.Value.Purchased)
-                            applyList.Add((UnlockableModel)new Unlockable(unlockable));
+                            applyList.Add((UnlockableModel)new Unlockable(unlockable)); //Cloning
                     }
 
             ModEntry._Helper.Multiplayer.SendMessage(new KeyValuePair<List<UnlockableModel>, ModData>(applyList, ModData.Instance), "UnlockablesReady", modIDs: new[] { ModEntry.Mod.ModManifest.UniqueID }, playerIDs: new[] { e.Peer.PlayerID });
@@ -118,12 +119,24 @@ namespace Unlockable_Bundles.Lib
             if (location.Name != location.NameOrUniqueName && Game1.currentLocation.NameOrUniqueName != location.NameOrUniqueName)
                 return;
 
-            //You could alternatively achieve the same thing using V, but my version was faster during testing, so I'll keep it for now
-            //Helper.ModContent.GetPatchHelper(location.Map).AsMap().PatchMap(map, patchMode: (PatchMapMode)unlockable.EditMapMode);
+            //Alternative to applyOverlay: applySmapiOverlay(map, unlockable, location)
+            //I found my own solution to be faster in testing and more reliable with water and seasons
+
             applyOverlay(location, unlockable, map);
 
             if (location.Name == Game1.currentLocation.Name)
                 location.Map.LoadTileSheets(Game1.mapDisplayDevice);
+        }
+
+        private static void applySmapiOverlay(Map map, Unlockable unlockable, GameLocation location)
+        {
+            var sourceArea = new Rectangle(0, 0, map.Layers[0].LayerWidth, map.Layers[0].LayerHeight);
+            var targetArea = new Rectangle((int)unlockable.EditMapPosition.X, (int)unlockable.EditMapPosition.Y, map.Layers[0].LayerWidth, map.Layers[0].LayerHeight);
+            var patchHelper = Helper.ModContent.GetPatchHelper(location.Map).AsMap();
+
+            patchHelper.ExtendMap(targetArea.Right, targetArea.Bottom);
+            patchHelper.PatchMap(map, sourceArea, targetArea, unlockable.EditMapMode);
+            location.updateSeasonalTileSheets();
         }
 
         private static void cacheMapIfNecessary(GameLocation location, bool isNew)
@@ -181,7 +194,7 @@ namespace Unlockable_Bundles.Lib
                 var last = unlockable._alreadyPaid.Pairs.Last();
                 var index = unlockable._alreadyPaidIndex.ContainsKey(last.Key) ? unlockable._alreadyPaidIndex[last.Key] : -1;
                 ModData.setPartiallyPurchased(unlockable.ID, unlockable.LocationUnique, last.Key, last.Value, index);
-                ModEntry._API.raiseShopContributed(new API.BundleContributedEventArgs(Game1.player, new KeyValuePair<string, int> (last.Key, last.Value), unlockable.Location, unlockable.LocationUnique, unlockable.ID, false));
+                ModEntry._API.raiseShopContributed(new API.BundleContributedEventArgs(Game1.player, new KeyValuePair<string, int>(last.Key, last.Value), unlockable.Location, unlockable.LocationUnique, unlockable.ID, false));
             } else if (e.Type == "UpdateMailData") {
                 AssetRequested.MailData = e.ReadAs<Dictionary<string, string>>();
                 Helper.GameContent.InvalidateCache("Data/Mail");
@@ -192,7 +205,7 @@ namespace Unlockable_Bundles.Lib
         public static void applyOverlay(GameLocation location, Unlockable unlockable, Map overlayMap)
         {
             addTilesheetsAndLayers(location, unlockable, overlayMap);
-            bool isReplaceOverlay = unlockable.EditMapMode is EditMapMode.Replace or EditMapMode.ReplaceByLayer;
+            bool isReplaceOverlay = unlockable.EditMapMode is PatchMapMode.Replace or PatchMapMode.ReplaceByLayer;
 
             foreach (var overlayLayer in overlayMap.Layers) {
                 int locationX = (int)unlockable.EditMapPosition.X;
@@ -231,7 +244,7 @@ namespace Unlockable_Bundles.Lib
                 }
             }
 
-            if (unlockable.EditMapMode == EditMapMode.Replace)
+            if (unlockable.EditMapMode == PatchMapMode.Replace)
                 clearNonOverlappingLayers(location, unlockable, overlayMap);
 
             CachedTilesheets.Clear();
@@ -245,6 +258,7 @@ namespace Unlockable_Bundles.Lib
             int height = overlayMap.DisplayHeight / 64;
 
             foreach (var locationLayer in nonOverlapping) {
+                bool isBackLayer = locationLayer.Id.ToLower().Equals("back");
                 int locationX = (int)unlockable.EditMapPosition.X;
 
                 for (int overlayX = 0; overlayX < width && locationX < locationLayer.LayerSize.Width; overlayX++, locationX++) {
@@ -252,7 +266,8 @@ namespace Unlockable_Bundles.Lib
 
                     for (int overlayY = 0; overlayY < height && locationY < locationLayer.LayerSize.Height; overlayY++, locationY++) {
 
-                        clearWaterTiles(location, locationX, locationY);
+                        if (isBackLayer)
+                            clearWaterTiles(location, locationX, locationY);
                         locationLayer.Tiles[locationX, locationY] = null;
                     }
                 }

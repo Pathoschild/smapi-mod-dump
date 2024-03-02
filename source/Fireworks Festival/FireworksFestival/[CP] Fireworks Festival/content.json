@@ -10,6 +10,12 @@
 
 {
     "Format": "1.28.0",
+    "DynamicTokens": [
+        {
+            "Name": "MainModID",
+            "Value": "violetlizabet.FireworksFestival"
+        },
+    ],
     "Changes": [
         // Load festival data
         {
@@ -227,22 +233,23 @@
                 "Day": 20
             }
         },
-        // Add shop dialogue
+        // Add shops
         {
-            "LogName": "Add shop NPC dialogue for Birdie and Fireworks Fox",
-            "Action": "EditData",
-            "Target": "Strings/StringsFromCSFiles",
-            "Entries": {
-                "vlFireworks.Birdie": "{{i18n:BirdieShop}}",
-                "vlFireworks.Fox": "{{i18n:FoxShop}}",
-            }
+            "LogName": "Add shops",
+            "Action": "Include",
+            "FromFile": "shops.json"
         },
-        // Load fox portrait
+        // Add fireworks, salts, firework ingredients, and foods
         {
-            "LogName": "Load fireworks fox portrait",
-            "Action": "Load",
-            "Target": "Portraits/FireworksFox",
-            "FromFile": "assets/FoxPortrait.png"
+            "LogName": "Add new objects",
+            "Action": "Include",
+            "FromFile": "objects.json"
+        },
+        // Add chemizer machine and associated recipes
+        {
+            "LogName": "Add chemizer machine and recipes",
+            "Action": "Include",
+            "FromFile": "machines.json"
         }
     ]
 }

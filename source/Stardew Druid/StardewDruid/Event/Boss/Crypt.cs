@@ -44,6 +44,8 @@ namespace StardewDruid.Event.Boss
 
             bossMonsters = new();
 
+            cues = DialogueData.DialogueScene(questData.name);
+
         }
 
         public override void EventRemove()
@@ -155,7 +157,7 @@ namespace StardewDruid.Event.Boss
             if (activeCounter == 1)
             {
 
-                Location.LocationData.CryptAdd();
+                Location.LocationData.CryptEdit();
 
                 targetLocation = Game1.getLocationFromName("18465_Crypt");
 
@@ -167,10 +169,6 @@ namespace StardewDruid.Event.Boss
 
                 Game1.yLocationAfterWarp = 10;
 
-                EventQuery("LocationEdit");
-
-                EventQuery("LocationPortal");
-
                 voicePosition = new(targetVector.X * 64, targetVector.Y * 64 - 32f);
 
                 SetTrack("tribal");
@@ -181,6 +179,11 @@ namespace StardewDruid.Event.Boss
 
             if (activeCounter == 2)
             {
+
+                EventQuery("LocationEdit");
+
+                EventQuery("LocationPortal");
+
                 int difficulty = 1;
 
                 if (questData.name.Contains("Two"))
@@ -277,41 +280,7 @@ namespace StardewDruid.Event.Boss
 
             }
 
-
-            switch (activeCounter)
-            {
-
-                case 10: bossMonsters[0].showTextAboveHead("I can't believe it"); break;
-
-                case 14: bossMonsters[0].showTextAboveHead("A Dragon? Here? Now?"); break;
-
-                case 18: bossMonsters[0].showTextAboveHead("This changes everything"); break;
-
-                case 22: bossMonsters[0].showTextAboveHead("So you defeated the scouts"); break;
-
-                case 26: bossMonsters[0].showTextAboveHead("They shouldn't have invaded the surface"); break;
-
-                case 30: bossMonsters[0].showTextAboveHead("But the Deep one willed it"); break;
-
-                case 34: bossMonsters[0].showTextAboveHead("So they acquiesced"); break;
-
-                case 38: bossMonsters[0].showTextAboveHead("I found the squad leader's hat and crossbow"); break;
-
-                case 42: bossMonsters[0].showTextAboveHead("The power that slew him is unmistakable"); break;
-
-                case 46: bossMonsters[0].showTextAboveHead("The Lady Beyond punishes us still"); break;
-
-                case 60: bossMonsters[0].showTextAboveHead("How did you find this hideout?"); break;
-
-                case 64: bossMonsters[0].showTextAboveHead("We can't let you leave"); break;
-
-                case 68: bossMonsters[0].showTextAboveHead("Lord Deep will not be pleased"); break;
-
-                case 72: bossMonsters[0].showTextAboveHead("We haven't collected enough ether"); break;
-
-                case 76: bossMonsters[0].showTextAboveHead("The Starlet will fade without it"); break;
-            
-            }
+            DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = bossMonsters[0], }, activeCounter);
 
             if (activeCounter % 60 == 0)
             {

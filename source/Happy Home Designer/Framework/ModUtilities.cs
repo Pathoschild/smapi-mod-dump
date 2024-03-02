@@ -17,10 +17,14 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.GameData.Shops;
+using StardewValley.Internal;
+using StardewValley.Menus;
 using StardewValley.Objects;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Reflection;
 
 namespace HappyHomeDesigner.Framework
@@ -36,13 +40,7 @@ namespace HappyHomeDesigner.Framework
 			if (item is not Furniture furn)
 				return false;
 
-			// TODO switch to IDs
-			if (FurniturePage.knownFurnitureIDs is null || !FurniturePage.knownFurnitureIDs.Contains(furn.Name))
-				return false;
-			else
-				ModEntry.monitor.Log($"Deleted furniture with ID {furn.ParentSheetIndex} [{item.DisplayName}]");
-
-			return true;
+			return FurniturePage.knownFurnitureIDs is not null && FurniturePage.knownFurnitureIDs.Contains(furn.ItemId);
 		}
 
 		public static bool TryFindAssembly(string name, [NotNullWhen(true)] out Assembly assembly)
@@ -186,6 +184,41 @@ namespace HappyHomeDesigner.Framework
 				if (items[i] == which)
 					return i;
 			return -1;
+		}
+
+		public static Rectangle ToRect(this xTile.Dimensions.Rectangle rect)
+			=> new(rect.X, rect.Y, rect.Width, rect.Height);
+
+		public static IEnumerable<ISalable> GetCatalogItems(bool furniture, ShopMenu existing = null)
+		{
+			var name = furniture ? "Furniture Catalogue" : "Catalogue";
+			IEnumerable<ISalable> output;
+
+			if (existing is null)
+			{
+
+				if (!DataLoader.Shops(Game1.content).TryGetValue(name, out var catalog))
+					return Array.Empty<ISalable>();
+
+				 output = ShopBuilder.GetShopStock(name, catalog).Keys;
+			} else
+			{
+				output = existing.forSale;
+			}
+
+			if (CustomFurniture.Installed && furniture)
+				output = output.Concat(CustomFurniture.customFurniture);
+
+			return output;
+		}
+
+		public static IEnumerable<MethodInfo> GetMethodsNamed(this Type type, string name, BindingFlags flags = BindingFlags.Default)
+		{
+			foreach (var item in type.GetMethods(flags))
+			{
+				if (item.Name == name)
+					yield return item;
+			}
 		}
 	}
 }

@@ -11,10 +11,10 @@
 {
   "Name": "More Conversation Topics",
   "Author": "violetlizabet",
-  "Version": "1.1.2",
+  "Version": "2.0.0",
   "Description": "Adds conversation topics that need code to add.",
   "UniqueID": "violetlizabet.MoreConvoTopics",
   "EntryDll": "MoreConversationTopics.dll",
-  "MinimumApiVersion": "3.14.0",
+  "MinimumApiVersion": "4.0.0-alpha.20231012",
   "UpdateKeys": [ "Nexus:10008", "GitHub:elizabethcd/MoreConversationTopics" ]
 }

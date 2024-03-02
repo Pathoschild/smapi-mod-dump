@@ -11,7 +11,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Netcode;
 using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.FastAnimations.Framework;
 using StardewModdingAPI;
@@ -21,15 +20,12 @@ using StardewValley.TerrainFeatures;
 namespace Pathoschild.Stardew.FastAnimations.Handlers
 {
     /// <summary>Handles the falling-tree animation.</summary>
-    /// <remarks>See game logic in <see cref="StardewValley.TerrainFeatures.Tree.tickUpdate"/>.</remarks>
+    /// <remarks>See game logic in <see cref="Tree.tickUpdate"/>.</remarks>
     internal class TreeFallingHandler : BaseAnimationHandler
     {
         /*********
         ** Fields
         *********/
-        /// <summary>Simplifies access to private game code.</summary>
-        private readonly IReflectionHelper Reflection;
-
         /// <summary>The trees in the current location.</summary>
         private Dictionary<Vector2, TerrainFeature> Trees = new();
 
@@ -39,12 +35,8 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="multiplier">The animation speed multiplier to apply.</param>
-        /// <param name="reflection">Simplifies access to private game code.</param>
-        public TreeFallingHandler(float multiplier, IReflectionHelper reflection)
-            : base(multiplier)
-        {
-            this.Reflection = reflection;
-        }
+        public TreeFallingHandler(float multiplier)
+            : base(multiplier) { }
 
         /// <summary>Perform any updates needed when the player enters a new location.</summary>
         /// <param name="location">The new location.</param>
@@ -87,8 +79,8 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
             GameTime gameTime = Game1.currentGameTime;
 
             int skips = this.GetSkipsThisTick();
-            foreach ((Vector2 tile, TerrainFeature tree) in this.GetFallingTrees())
-                this.ApplySkips(skips, () => tree.tickUpdate(gameTime, tile, Game1.currentLocation));
+            foreach (TerrainFeature tree in this.GetFallingTrees())
+                this.ApplySkips(skips, () => tree.tickUpdate(gameTime));
         }
 
 
@@ -96,16 +88,22 @@ namespace Pathoschild.Stardew.FastAnimations.Handlers
         ** Private methods
         *********/
         /// <summary>Get all trees in the current location which are currently falling.</summary>
-        private IEnumerable<KeyValuePair<Vector2, TerrainFeature>> GetFallingTrees()
+        private IEnumerable<TerrainFeature> GetFallingTrees()
         {
             Rectangle visibleTiles = TileHelper.GetVisibleArea();
             foreach (KeyValuePair<Vector2, TerrainFeature> pair in this.Trees)
             {
                 if (visibleTiles.Contains((int)pair.Key.X, (int)pair.Key.Y))
                 {
-                    bool isFalling = this.Reflection.GetField<NetBool>(pair.Value, "falling").GetValue().Value;
+                    bool isFalling = pair.Value switch
+                    {
+                        Tree tree => tree.falling.Value,
+                        FruitTree tree => tree.falling.Value,
+                        _ => false
+                    };
+
                     if (isFalling)
-                        yield return pair;
+                        yield return pair.Value;
                 }
             }
         }

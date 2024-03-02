@@ -1,0 +1,15 @@
+urls:
+   web: https://github.com/Hedgehog-Technologies/StardewMods
+   Git: https://github.com/Hedgehog-Technologies/StardewMods.git
+
+mods:
+   Allow Beach Sprinklers
+   AutoShaker
+
+latest commit:
+   commit ded88b347404f085023ad3b3cc40a94d877a36e3
+   Author: Jag <jag3dagster@gmail.com>
+   Date:   Thu Feb 22 22:46:28 2024 -0800
+   
+       chore: Update AllowBeachSprinklers version
+   

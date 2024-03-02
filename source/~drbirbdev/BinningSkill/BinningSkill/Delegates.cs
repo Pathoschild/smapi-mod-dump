@@ -8,11 +8,11 @@
 **
 *************************************************/
 
-using System;
 using System.Globalization;
 using BirbCore.Attributes;
 using SpaceCore;
 using StardewValley;
+using StardewValley.Delegates;
 
 namespace BinningSkill;
 
@@ -20,14 +20,15 @@ namespace BinningSkill;
 internal class Delegates
 {
     [SDelegate.GameStateQuery]
-    public static bool LEVEL(string[] query, GameLocation location, Farmer player, Item targetItem, Item inputItem, Random random)
+    public static bool Level(string[] query, GameStateQueryContext context)
     {
-        return GameStateQuery.Helpers.PlayerSkillLevelImpl(query, player, (target) => target.GetCustomBuffedSkillLevel("drbirbdev.Binning")); ;
+        return GameStateQuery.Helpers.PlayerSkillLevelImpl(query, context.Player, (target) => target.GetCustomBuffedSkillLevel("drbirbdev.Binning")); ;
     }
 
     [SDelegate.GameStateQuery]
-    public static bool RANDOM(string[] query, GameLocation location, Farmer player, Item targetItem, Item inputItem, Random random)
+    public static bool Random(string[] query, GameStateQueryContext context)
     {
+
         if (!ArgUtility.TryGetFloat(query, 1, out float chance, out string error))
         {
             return GameStateQuery.Helpers.ErrorResult(query, error);
@@ -36,17 +37,17 @@ internal class Delegates
         {
             chance = query[i].ToLower(CultureInfo.InvariantCulture) switch
             {
-                "@adddailyluck" => chance + (float)Game1.player.DailyLuck,
-                "@addbuffluck" => chance + (Game1.player.LuckLevel / 100.0f),
-                "@addbinningluck" => chance + (ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning")),
-                "@addallluck" => chance + (float)Game1.player.DailyLuck + (Game1.player.LuckLevel / 100.0f) + (ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning")),
-                "@multdailyluck" => chance * (float)(1 + Game1.player.DailyLuck),
-                "@multbuffluck" => chance * (1 + (Game1.player.LuckLevel / 100.0f)),
-                "@multbinningluck" => chance * (1 + (ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning"))),
-                "@multallluck" => chance * (float)(1 + (Game1.player.DailyLuck + (Game1.player.LuckLevel / 100.0f) + (ModEntry.Config.PerLevelRareDropChanceBonus * player.GetCustomBuffedSkillLevel("drbirbdev.Binning")))),
+                "@adddailyluck" => chance + (float)context.Player.DailyLuck,
+                "@addbuffluck" => chance + (context.Player.LuckLevel / 100.0f),
+                "@addbinningluck" => chance + (ModEntry.Config.PerLevelRareDropChanceBonus * context.Player.GetCustomBuffedSkillLevel("drbirbdev.Binning")),
+                "@addallluck" => chance + (float)context.Player.DailyLuck + (context.Player.LuckLevel / 100.0f) + (ModEntry.Config.PerLevelRareDropChanceBonus * context.Player.GetCustomBuffedSkillLevel("drbirbdev.Binning")),
+                "@multdailyluck" => chance * (float)(1 + context.Player.DailyLuck),
+                "@multbuffluck" => chance * (1 + (context.Player.LuckLevel / 100.0f)),
+                "@multbinningluck" => chance * (1 + (ModEntry.Config.PerLevelRareDropChanceBonus * context.Player.GetCustomBuffedSkillLevel("drbirbdev.Binning"))),
+                "@multallluck" => chance * (float)(1 + (context.Player.DailyLuck + (context.Player.LuckLevel / 100.0f) + (ModEntry.Config.PerLevelRareDropChanceBonus * context.Player.GetCustomBuffedSkillLevel("drbirbdev.Binning")))),
                 _ => chance
             };
         }
-        return random.NextDouble() < (double)chance;
+        return context.Random.NextDouble() < (double)chance;
     }
 }

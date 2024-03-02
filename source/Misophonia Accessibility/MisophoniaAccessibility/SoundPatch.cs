@@ -29,7 +29,7 @@ namespace MisophoniaAccessibility
         /// <param name="cueName">Sound that will be played from Stardew Valley</param>
         internal static bool PatchSound(string cueName)
         {
-            return MisophoniaAccessibilityMod.DisabledCodeSounds.TryGetValue(key: cueName, value: out _);
+            return !MisophoniaAccessibilityMod.DisabledCodeSounds.TryGetValue(key: cueName, value: out _);
         }
     }
 }

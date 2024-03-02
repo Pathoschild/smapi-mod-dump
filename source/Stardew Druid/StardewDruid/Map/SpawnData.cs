@@ -1204,7 +1204,13 @@ namespace StardewDruid.Map
                 spawnIndex["artifact"] = true;
                 spawnIndex["whisk"] = true;
                 spawnIndex["gravity"] = true;
-                spawnIndex["crate"] = true;
+
+                if (playerLocation is IslandWest)
+                {
+
+                    spawnIndex["crate"] = true;
+
+                }
 
             }
             else if (playerLocation is Forest || playerLocation is Mountain || playerLocation is Desert || playerLocation is BusStop || playerLocation is BugLand)
@@ -1288,7 +1294,7 @@ namespace StardewDruid.Map
                 spawnIndex["artifact"] = true;
                 spawnIndex["whisk"] = true;
 
-                if (playerLocation.Map.Layers[0].LayerWidth * playerLocation.Map.Layers[0].LayerHeight > 2000)
+                if (playerLocation is Beach || playerLocation is IslandSouth || playerLocation is IslandSouthEast)
                 {
 
                     spawnIndex["crate"] = true;

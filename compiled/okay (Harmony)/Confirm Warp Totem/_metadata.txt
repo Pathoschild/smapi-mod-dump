@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20255
+IDs: JohnPeters.ConfirmWarpTotem
+update keys: Nexus:???, Nexus:20255

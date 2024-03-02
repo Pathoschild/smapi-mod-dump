@@ -9,8 +9,10 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using StardewDruid.Cast;
+using StardewDruid.Dialogue;
 using StardewDruid.Map;
 using StardewDruid.Monster.Boss;
 using StardewValley;
@@ -19,6 +21,7 @@ using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using xTile.Dimensions;
 using xTile.Layers;
 using xTile.Tiles;
@@ -128,7 +131,18 @@ namespace StardewDruid.Event.World
 
             treasurePosition = treasureVector * 64f;
 
-            TemporaryAnimatedSprite radiusAnimation = new(0, 4000, 1, 1, (treasureVector * 64) - new Vector2(16,16), false, false)
+            TreasureGlyph();
+
+            Mod.instance.RegisterEvent(this,"crate");
+
+        }
+
+        public void TreasureGlyph()
+        {
+
+            animations.Clear();
+
+            TemporaryAnimatedSprite radiusAnimation = new(0, 4000, 1, 1, (treasureVector * 64) - new Vector2(16, 16), false, false)
             {
 
                 sourceRect = new(0, 0, 64, 64),
@@ -149,9 +163,7 @@ namespace StardewDruid.Event.World
 
             targetLocation.temporarySprites.Add(radiusAnimation);
 
-            crateAnimations[0] = radiusAnimation;
-
-            Mod.instance.RegisterEvent(this,"crate");
+            animations.Add(radiusAnimation);
 
         }
 
@@ -307,7 +319,18 @@ namespace StardewDruid.Event.World
             if (activeCounter % 4 == 0)
             {
 
-                crateAnimations[0].reset();
+                if (!targetLocation.temporarySprites.Contains(animations.First()))
+                {
+
+                    TreasureGlyph();
+
+
+                }
+                else
+                {
+                    animations.First().reset();
+
+                }
 
             }
 
@@ -437,7 +460,17 @@ namespace StardewDruid.Event.World
 
                 Mod.instance.UpdateTask("lessonTreasure", 1);
 
-                Mod.instance.CastMessage("Ether-drenched page added to Journal");
+                int etherIndex = Mod.instance.TaskList()["lessonTreasure"] - 1;
+
+                Dictionary<int, List<string>> etherPages = DialogueData.EtherPages();
+
+                List<string> etherPage = etherPages[etherIndex];
+
+                Narrator etherNarrator = DialogueData.EtherNarrator(etherIndex);
+
+                etherNarrator.BufferHUD(etherPage);
+
+                Mod.instance.CastMessage("Ether-drenched letter added to Journal");
 
                 Throw book = new Throw(Game1.player, treasurePosition - new Vector2(16,48), 102);
 
@@ -446,8 +479,6 @@ namespace StardewDruid.Event.World
                 book.throwHeight = 2;
 
                 book.dontInventorise = true;
-
-                //book.throwHeight = 1;
 
                 book.ThrowObject();
 

@@ -15,7 +15,7 @@ using Archipelago.Gifting.Net.Gifts;
 using Archipelago.Gifting.Net.Service;
 using Archipelago.Gifting.Net.Traits;
 using Microsoft.Xna.Framework;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Modded;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;

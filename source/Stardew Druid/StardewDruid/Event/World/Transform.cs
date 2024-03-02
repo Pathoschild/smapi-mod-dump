@@ -15,6 +15,7 @@ using StardewDruid.Character;
 using StardewDruid.Dialogue;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Minigames;
 
 namespace StardewDruid.Event.World
 {
@@ -42,7 +43,9 @@ namespace StardewDruid.Event.World
         {
             
             Mod.instance.RegisterEvent(this, "transform");
-            
+
+            Mod.instance.clickRegister[0] = "transform";
+
             expireTime = Game1.currentGameTime.TotalGameTime.TotalSeconds + extendTime;
             
             Game1.displayFarmer = false;
@@ -148,6 +151,7 @@ namespace StardewDruid.Event.World
 
         public override bool EventPerformAction(SButton Button, string Type)
         {
+            
             if (!EventActive())
             {
                 

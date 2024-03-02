@@ -9,14 +9,11 @@
 *************************************************/
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Locations;
-using StardewArchipelago.Stardew;
 using StardewArchipelago.Stardew.NameMapping;
 using StardewArchipelago.Textures;
 using StardewModdingAPI;

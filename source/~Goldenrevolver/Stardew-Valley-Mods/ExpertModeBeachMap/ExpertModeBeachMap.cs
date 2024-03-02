@@ -90,6 +90,14 @@ namespace ExpertModeBeachMap
             }
         }
 
+        public static bool HasUnlockedPirateVisits
+        {
+            get
+            {
+                return Game1.MasterPlayer.mailReceived.Contains("gotBoatPainting");
+            }
+        }
+
         // TODO
         public static bool performAction(IslandSouthEastCave __instance, string action, Farmer who, Location tileLocation)
         {
@@ -106,6 +114,27 @@ namespace ExpertModeBeachMap
             }
 
             return true;
+        }
+
+        private static void SpawnShip()
+        {
+            if (Game1.whichFarm != Farm.beach_layout)
+            {
+                return;
+            }
+
+            var location = Game1.getFarm();
+
+            location.updateMap();
+
+            location.setMapTile(58, 13, 301, "Buildings", null);
+            location.setMapTile(59, 13, 301, "Buildings", null);
+            location.setMapTile(60, 13, 301, "Buildings", null);
+            location.setMapTile(61, 13, 301, "Buildings", null);
+            location.setMapTile(58, 14, 336, "Back", null);
+            location.setMapTile(59, 14, 336, "Back", null);
+            location.setMapTile(60, 14, 336, "Back", null);
+            location.setMapTile(61, 14, 336, "Back", null);
         }
 
         public static bool ApplySprinkler_Pre(StardewObject __instance, GameLocation location, Vector2 tile, ref bool __state)

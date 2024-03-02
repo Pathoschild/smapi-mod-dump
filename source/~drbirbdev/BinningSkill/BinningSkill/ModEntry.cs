@@ -8,8 +8,10 @@
 **
 *************************************************/
 
+using System.Collections.Generic;
 using BirbCore.Attributes;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace BinningSkill;
 
@@ -22,6 +24,8 @@ public class ModEntry : Mod
     internal static Assets Assets;
 
     internal ITranslationHelper I18n => this.Helper.Translation;
+
+    public static readonly PerScreen<ISet<string>> UnderleveledCheckedGarbage = new();
 
     public override void Entry(IModHelper helper)
     {

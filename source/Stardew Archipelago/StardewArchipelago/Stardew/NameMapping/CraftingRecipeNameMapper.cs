@@ -13,35 +13,35 @@ using System.Collections.Generic;
 
 namespace StardewArchipelago.Stardew.NameMapping
 {
-    public class CraftingRecipeNameMapper : INameMapper
+    public class CraftingRecipeNameMapper : IRecipeNameMapper
     {
-        private static readonly Dictionary<string, string> _internalToEnglishNames = new(){
+        private static readonly Dictionary<string, string> _recipeToItemNames = new(){
             {"Wild Seeds (Sp)", "Spring Seeds"},
             {"Wild Seeds (Su)", "Summer Seeds"},
             {"Wild Seeds (Fa)", "Fall Seeds"},
             {"Wild Seeds (Wi)", "Winter Seeds"},
         };
 
-        private static readonly Dictionary<string, string> _englishToInternalNames =
-            _internalToEnglishNames.ToDictionary(x => x.Value, x => x.Key);
+        private static readonly Dictionary<string, string> _itemToRecipeNames =
+            _recipeToItemNames.ToDictionary(x => x.Value, x => x.Key);
 
         public CraftingRecipeNameMapper()
         {
         }
 
-        public string GetEnglishName(string internalName)
+        public string GetItemName(string recipeName)
         {
-            return _internalToEnglishNames.ContainsKey(internalName) ? _internalToEnglishNames[internalName] : internalName;
+            return _recipeToItemNames.ContainsKey(recipeName) ? _recipeToItemNames[recipeName] : recipeName;
         }
 
-        public string GetInternalName(string englishName)
+        public string GetRecipeName(string itemName)
         {
-            return _englishToInternalNames.ContainsKey(englishName) ? _englishToInternalNames[englishName] : englishName;
+            return _itemToRecipeNames.ContainsKey(itemName) ? _itemToRecipeNames[itemName] : itemName;
         }
 
-        public bool RecipeNeedsMapping(string itemOfRecipe)
+        public bool RecipeNeedsMapping(string itemName)
         {
-            return _englishToInternalNames.ContainsKey(itemOfRecipe);
+            return _itemToRecipeNames.ContainsKey(itemName);
         }
     }
 }

@@ -21,7 +21,7 @@ Select either Robin's or the Wizard's construction menu, and then click the flip
 https://github.com/mouahrara/FlipBuildings/assets/131559634/573ac1fc-1169-40bd-88ea-7caabe1cf72e
 
 ## Accessibility
-English, French, German (thanks to **ByteBender64**), Russian (thanks to **theRealDuda**) and Spanish (thanks to **ElGremioMaestro**) translations are included in the base mod, and contributions are welcome. To contribute, see the dedicated [GitHub issue](https://github.com/StardewModders/mod-translations/issues/61).
+English, French, German (thanks to **ByteBender64**), Portuguese (thanks to **kanadeyoru**), Russian (thanks to **theRealDuda**), Spanish (thanks to **ElGremioMaestro**) and Turkish (thanks to **BURAKMESE**) translations are included in the base mod, and contributions are welcome. To contribute, see the dedicated [GitHub issue](https://github.com/StardewModders/mod-translations/issues/61).
 
 ## Multiplayer
 The mod is compatible with multiplayer as long as all connected players have the mod installed.\

@@ -448,7 +448,7 @@ namespace StardewDruid.Event.World
                             if (!Mod.instance.eventRegister.ContainsKey(eventName))
                             {
 
-                                Event.World.Daze dazeEvent = new(targetVector, riteData, monster, i, 0, damage);
+                                Event.World.Daze dazeEvent = new(targetVector, riteData, monster, i, damage);
 
                                 dazeEvent.EventTrigger();
 

@@ -67,7 +67,7 @@ namespace CoreBoy.memory
                 throw new ArgumentException("Not valid register: " + reg);
             }
 
-            var value = this._values[reg.Address] + 1;
+            int value = this._values[reg.Address] + 1;
             this._values[reg.Address] = value;
             return value;
         }

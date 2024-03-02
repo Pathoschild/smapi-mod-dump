@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/15987
+IDs: Platonymous.InkStories
+update keys: Nexus:15987

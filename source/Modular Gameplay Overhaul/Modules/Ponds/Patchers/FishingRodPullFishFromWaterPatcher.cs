@@ -83,7 +83,6 @@ internal sealed class FishingRodPullFishFromWaterPatcher : HarmonyPatcher
 
     #region handlers
 
-    // ReSharper disable once RedundantAssignment
     private static void PullAlgae(FishPond pond, ref int index, ref int quality)
     {
         quality = SObject.lowQuality;
@@ -173,7 +172,6 @@ internal sealed class FishingRodPullFishFromWaterPatcher : HarmonyPatcher
         }
     }
 
-    // ReSharper disable once RedundantAssignment
     private static void HandleLegendary(FishPond pond, ref int index, ref int quality, List<int> fishQualities, int lowestFish)
     {
         var familyCount = pond.Read<int>(DataKeys.FamilyLivingHere);

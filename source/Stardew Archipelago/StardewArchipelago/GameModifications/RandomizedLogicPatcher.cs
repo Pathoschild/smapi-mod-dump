@@ -8,7 +8,6 @@
 **
 *************************************************/
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
@@ -16,12 +15,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Constants;
 using StardewArchipelago.GameModifications.CodeInjections;
-using StardewArchipelago.GameModifications.CodeInjections.Modded;
 using StardewArchipelago.GameModifications.CodeInjections.Television;
 using StardewArchipelago.GameModifications.EntranceRandomizer;
-using StardewArchipelago.GameModifications.Modded;
 using StardewArchipelago.GameModifications.Seasons;
 using StardewArchipelago.GameModifications.Tooltips;
 using StardewArchipelago.Locations;

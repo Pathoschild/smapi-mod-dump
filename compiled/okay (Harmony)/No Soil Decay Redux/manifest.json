@@ -1,0 +1,10 @@
+{
+  "Name": "No Soil Decay Redux",
+  "Author": "Platonymous",
+  "Version": "1.5.11-alpha.20231114",
+  "Description": "Stops soil from decaying",
+  "UniqueID": "Platonymous.NoSoilDecayRedux",
+  "EntryDll": "NoSoilDecayRedux.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:1084" ]
+}

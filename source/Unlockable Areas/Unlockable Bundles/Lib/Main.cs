@@ -30,6 +30,7 @@ namespace Unlockable_Bundles.Lib
             Helper = Mod.Helper;
 
             ShopTypes.Main.Initialize();
+            AdvancedPricing.Main.Initialize();
 
             AssetRequested.Initialize();
             SaveDataEvents.Initialize();
@@ -37,6 +38,7 @@ namespace Unlockable_Bundles.Lib
             ShopPlacement.Initialize();
             UpdateHandler.Initialize();
             UB_NoGrass.Initialize();
+            UB_SharedDigSpot.Initialize();
             UtilityMisc.Initialize();
             UnsafeMap.Initialize();
             UBEvent.Initialize();

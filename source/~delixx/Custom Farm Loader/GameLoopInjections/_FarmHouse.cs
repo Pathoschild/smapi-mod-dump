@@ -89,8 +89,9 @@ namespace Custom_Farm_Loader.GameLoopInjections
         private static void loadStartFurniture(FarmHouse __instance)
         {
             CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
+            var starterFurniture = customFarm.StartFurniture.Where(el => el.LocationName == "FarmHouse");
 
-            foreach (Furniture furniture in customFarm.StartFurniture.Where(el => el.LocationName == "FarmHouse"))
+            foreach (Furniture furniture in starterFurniture)
                 furniture.tryPlacingFurniture(__instance);
 
         }

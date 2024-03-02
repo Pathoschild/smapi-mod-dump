@@ -21,6 +21,7 @@ using StardewArchipelago.Archipelago.Gifting;
 using StardewArchipelago.Extensions;
 using StardewArchipelago.GameModifications;
 using StardewArchipelago.Items.Mail;
+using StardewArchipelago.Items.Traps.Shuffle;
 using StardewArchipelago.Stardew;
 using StardewModdingAPI;
 using StardewValley;
@@ -511,9 +512,10 @@ namespace StardewArchipelago.Items.Traps
 
         public void ShuffleInventory()
         {
+            var targets = _difficultyBalancer.ShuffleTargets[_archipelago.SlotData.TrapItemsDifficulty];
             var rate = _difficultyBalancer.ShuffleRate[_archipelago.SlotData.TrapItemsDifficulty];
             var rateToFriends = _difficultyBalancer.ShuffleRateToFriends[_archipelago.SlotData.TrapItemsDifficulty];
-            _inventoryShuffler.ShuffleInventories(rate, rateToFriends);
+            _inventoryShuffler.ShuffleInventories(targets, rate, rateToFriends);
         }
 
         private void SendDislikedGiftToEveryone()

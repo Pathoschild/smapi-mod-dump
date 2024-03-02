@@ -51,10 +51,7 @@ namespace Randomizer
 			}
 
 			RequiredItems = new List<RequiredItem> { new RequiredItem() { MoneyAmount = moneyAmount } };
-
-			string moneyString = moneyAmount.ToString("N0", new CultureInfo(Globals.ModRef.Helper.Translation.Locale));
-			string bundleNameFlavor = Globals.GetTranslation($"{BundleType.ToString()}-{bundleNameFlavorID}");
-			Name = $"{Globals.GetTranslation("vault-money-format", new { moneyString })}: {bundleNameFlavor}";
+            SetVaultBundleName(moneyAmount, bundleNameFlavorID);
 			ImageNameSuffix = $"-{bundleNameFlavorID}";
 
 			Color = Globals.RNGGetRandomValueFromList(
@@ -68,19 +65,19 @@ namespace Randomizer
 		{
 			List<RequiredItem> potentialRewards = new List<RequiredItem>
 			{
-				new RequiredItem((int)ObjectIndexes.GoldBar, Range.GetRandomValue(5, 25)),
-				new RequiredItem((int)ObjectIndexes.IridiumBar, Range.GetRandomValue(1, 5)),
-				new RequiredItem((int)ObjectIndexes.SolidGoldLewis),
-				new RequiredItem((int)ObjectIndexes.HMTGF),
-				new RequiredItem((int)ObjectIndexes.PinkyLemon),
-				new RequiredItem((int)ObjectIndexes.Foroguemon),
-				new RequiredItem((int)ObjectIndexes.GoldenPumpkin),
-				new RequiredItem((int)ObjectIndexes.GoldenMask),
-				new RequiredItem((int)ObjectIndexes.GoldenRelic),
-				new RequiredItem((int)ObjectIndexes.GoldBrazier),
-				new RequiredItem((int)ObjectIndexes.TreasureChest),
-				new RequiredItem((int)ObjectIndexes.Lobster, Range.GetRandomValue(5, 25)),
-				new RequiredItem((int)ObjectIndexes.LobsterBisque, Range.GetRandomValue(5, 25))
+				new(ObjectIndexes.GoldBar, Range.GetRandomValue(5, 25)),
+				new(ObjectIndexes.IridiumBar, Range.GetRandomValue(1, 5)),
+				new(BigCraftableIndexes.SolidGoldLewis),
+				new(BigCraftableIndexes.HMTGF),
+				new(BigCraftableIndexes.PinkyLemon),
+				new(BigCraftableIndexes.Foroguemon),
+				new(ObjectIndexes.GoldenPumpkin),
+				new(ObjectIndexes.GoldenMask),
+				new(ObjectIndexes.GoldenRelic),
+				new(BigCraftableIndexes.GoldBrazier),
+				new(ObjectIndexes.TreasureChest),
+				new(ObjectIndexes.Lobster, Range.GetRandomValue(5, 25)),
+				new(ObjectIndexes.LobsterBisque, Range.GetRandomValue(5, 25))
 			};
 
 			Reward = Globals.RNGGetRandomValueFromList(potentialRewards);

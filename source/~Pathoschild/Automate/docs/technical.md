@@ -189,7 +189,7 @@ namespace YourModName
             if (input.TryGetIngredient(SObject.ironBar, 1, out IConsumable ingredient))
             {
                 ingredient.Take();
-                this.Entity.heldObject.Value = new SObject(SObject.goldBar, 1);
+                this.Entity.heldObject.Value = ItemRegistry.Create<SObject>(SObject.goldBarQID);
                 this.Entity.MinutesUntilReady = 120;
                 return true;
             }
@@ -201,7 +201,7 @@ namespace YourModName
 ```
 
 Next, let's create a factory which returns the new machine. This example assumes you've added an
-in-game object with ID 2000 that you want to automate.
+in-game object with ID `Example.ModId_Transmuter` that you want to automate.
 
 ```c#
 using Microsoft.Xna.Framework;
@@ -222,7 +222,7 @@ namespace YourModName
         /// <returns>Returns an instance or <c>null</c>.</returns>
         public IAutomatable GetFor(SObject obj, GameLocation location, in Vector2 tile)
         {
-            if (obj.ParentSheetIndex == 2000)
+            if (obj.QualifiedItemId == "(BC)Example.ModId_Transmuter")
                 return new TransmuterMachine(obj, location, tile);
 
             return null;
@@ -243,7 +243,7 @@ namespace YourModName
         /// <param name="location">The location to check.</param>
         /// <param name="tile">The tile position to check.</param>
         /// <returns>Returns an instance or <c>null</c>.</returns>
-        public IAutomatable GetFor(Building building, BuildableGameLocation location, in Vector2 tile)
+        public IAutomatable GetFor(Building building, GameLocation location, in Vector2 tile)
         {
             return null;
         }

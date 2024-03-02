@@ -9,7 +9,6 @@
 *************************************************/
 
 using System.Collections.Generic;
-using System.Reflection;
 using BirbCore.APIs;
 using BirbCore.Attributes;
 using StardewModdingAPI;
@@ -30,7 +29,7 @@ public class ModEntry : Mod
 
     public override void Entry(IModHelper helper)
     {
-        Parser.ParseAll(this, Assembly.GetExecutingAssembly());
+        Parser.ParseAll(this);
     }
 
     public override object GetApi()

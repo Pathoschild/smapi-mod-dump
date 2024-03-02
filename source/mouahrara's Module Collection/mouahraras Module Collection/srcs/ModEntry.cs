@@ -10,7 +10,7 @@
 
 using HarmonyLib;
 using StardewModdingAPI;
-using mouahrarasModuleCollection.Modules;
+using mouahrarasModuleCollection.Sections;
 using mouahrarasModuleCollection.Hooks;
 using mouahrarasModuleCollection.Utilities;
 
@@ -33,13 +33,10 @@ namespace mouahrarasModuleCollection
 
 			Harmony harmony = new(ModManifest.UniqueID);
 
-			// Apply modules
-			ArcadeGamesModule.Apply(harmony);
-			ClintsShopModule.Apply(harmony);
-			CrystalariumsModule.Apply(harmony);
-			FarmViewModule.Apply(harmony);
-			FestivalsModule.Apply(harmony);
-			MarniesShopModule.Apply(harmony);
+			// Apply sections
+			TweaksAndFeaturesSection.Apply(harmony);
+			AdditionsSection.Apply(harmony);
+			OverhaulsSection.Apply(harmony);
 
 			// Hook into the required events
 			Helper.Events.GameLoop.GameLaunched += GameLaunchedHook.Apply;

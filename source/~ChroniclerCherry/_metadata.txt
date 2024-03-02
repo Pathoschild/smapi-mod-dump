@@ -18,17 +18,14 @@ mods:
    Profit Margins
    Shop Tile Framework
    Snack Anything
-   Stardew Aquarium Code
    Tool Upgrade Costs
    Train Station
    Upgrade Empty Cabins
 
 latest commit:
-   commit eea5f23bf661818f9aa31adf4a8e26bd6c91da94
-   Author: Yiminxue Zheng <33401364+ChroniclerCherry@users.noreply.github.com>
-   Date:   Sat Sep 11 01:25:15 2021 -0400
+   commit b733e5454653c599f125885c80f46ec4f541c3a2
+   Author: Yiminxue Zheng <yiminxuezheng@gmail.com>
+   Date:   Wed Apr 14 09:55:55 2021 -0400
    
-       Revert "Revert "Revert "Load assets through Content API so they can be patched (#52)" (#62)" (#63)" (#64)
-       
-       This reverts commit 85f2a0d1a9d72230d2b479f0c636aa620d2ea43a.
+       Merge branch 'Develop'
    

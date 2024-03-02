@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/Dunc4nNT/StardewMods
+   Git: https://github.com/Dunc4nNT/StardewMods.git
+
+mods:
+   Yet Another Fishing Mod
+
+latest commit:
+   commit ea81ea485288deea8ab63750227df6f5dc9607e9
+   Author: Dunc4nNT <76918336+Dunc4nNT@users.noreply.github.com>
+   Date:   Fri Mar 1 18:36:15 2024 +0100
+   
+       version stuff
+   

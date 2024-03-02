@@ -6,9 +6,9 @@ mods:
    mouahrara's Module Collection
 
 latest commit:
-   commit d9de0024f295297818b4aedfb543ad14d87951f0
+   commit a211c651e6de784b2fcde050385ff96c74aac50e
    Author: mouahrara <mouahrara.noreply@protonmail.com>
-   Date:   Thu Dec 14 04:30:02 2023 +0100
+   Date:   Wed Feb 7 13:33:07 2024 +0100
    
-       Prepping for 1.6 migration and code maintenance
+       Improve Better animal pruchase module
    

@@ -11,6 +11,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Netcode;
+using StardewDruid.Map;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Network;
@@ -120,20 +121,7 @@ namespace StardewDruid.Monster.Template
 
             if (posturing) { return 0; }
 
-            int ouchIndex = Game1.random.Next(15);
-
-            List<string> ouchList = new()
-            {
-                "flap flap",
-                "flippity",
-                "cheeep"
-            };
-
-            if (ouchIndex < ouchList.Count)
-            {
-                showTextAboveHead(ouchList[ouchIndex], duration: 3000);
-
-            }
+            DialogueData.DisplayText(this, 3);
 
             return base.takeDamage(damage, xTrajectory, yTrajectory, isBomb, addedPrecision, who);
 

@@ -10,7 +10,7 @@
 
 namespace HorseOverhaul
 {
-    using StardewValley;
+    using StardewValley.Buildings;
     using StardewValley.Characters;
 
     public class PetMenu : BaseMenu
@@ -31,7 +31,15 @@ namespace HorseOverhaul
             string no = mod.Helper.Translation.Get("No");
 
             string petAnswer = pet.grantedFriendshipForPet.Value ? yes : no;
-            string waterAnswer = Game1.getFarm().petBowlWatered.Value ? yes : no;
+
+            string waterAnswer = no;
+
+            PetBowl petBowl = pet.GetPetBowl();
+            if (petBowl != null && petBowl.watered.Value)
+            {
+                waterAnswer = yes;
+            }
+
             string foodAnswer = pet?.modData?.ContainsKey($"{mod.ModManifest.UniqueID}/gotFed") == true ? yes : no;
 
             string friendship = mod.Helper.Translation.Get("Friendship", new { value = pet.friendshipTowardFarmer.Value }) + "\n";

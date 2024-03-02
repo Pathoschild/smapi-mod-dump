@@ -11,5 +11,6 @@
   "JunimoHutBehaviorForFertilizer": "AutoDetect",
   "JunimoHutBehaviorForSeeds": "AutoDetect",
   "WarnForMissingBridgeMod": true,
-  "MachineOverrides": {}
+  "MachineOverrides": {},
+  "MinMinutesForFairyDust": 20
 }

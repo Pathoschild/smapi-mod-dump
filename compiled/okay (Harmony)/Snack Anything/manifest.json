@@ -1,0 +1,10 @@
+﻿{
+    "Name": "Snack Anything",
+    "Author": "Cherry",
+    "Version": "2.0.0-alpha.20240225",
+    "Description": "Snack (almost) Anything",
+    "UniqueID": "Cherry.SnackAnything",
+    "EntryDll": "SnackAnything.dll",
+    "MinimumApiVersion": "4.0.0-alpha",
+    "UpdateKeys": [ "Nexus:5196" ]
+}

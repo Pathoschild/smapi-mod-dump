@@ -18,6 +18,8 @@ namespace HorseOverhaul
 
     internal class HorseFoodData : FoodData
     {
+        protected const string BreadID = "(O)216";
+
         public const int DefaultValue = 10;
 
         public const int OtherSpecialValue = 15;
@@ -69,106 +71,106 @@ namespace HorseOverhaul
         // Fiddlehead fern and amaranth as well as most flowers are poisonous for horses, but sunflower seeds and dandelions are excellent treats.
         // Of course, you shouldn't feed your horse dairy products, chocolate, coffee or meat of any kind.
 
-        public static readonly Dictionary<int, int> HorseEdibility = new()
+        public static readonly Dictionary<string, int> HorseEdibility = new()
         {
             // Other
-            { 152, HorseFoodData.NormalForageValue - 2 }, // Seaweed
-            { 178, HorseFoodData.HayId }, // Hay, simply set to false, because that would be trivial
-            { 245, HorseFoodData.OtherSpecialValue }, // Sugar
-            { 253, HorseFoodData.CoffeeID }, // Triple Shot Espresso
-            { 395, HorseFoodData.CoffeeID }, // Coffee
-            { 431, HorseFoodData.GrainsValue }, // Sunflower Seeds
-            { 433, HorseFoodData.CoffeeID }, // Coffee Bean
-            { 771, HorseFoodData.FiberId }, // Fiber, simply set to false, because that would be trivial
+            { "(O)152", HorseFoodData.NormalForageValue - 2 }, // Seaweed
+            { "(O)178", HorseFoodData.HayId }, // Hay, simply set to false, because that would be trivial
+            { "(O)245", HorseFoodData.OtherSpecialValue }, // Sugar
+            { "(O)253", HorseFoodData.CoffeeID }, // Triple Shot Espresso
+            { "(O)395", HorseFoodData.CoffeeID }, // Coffee
+            { "(O)431", HorseFoodData.GrainsValue }, // Sunflower Seeds
+            { "(O)433", HorseFoodData.CoffeeID }, // Coffee Bean
+            { "(O)771", HorseFoodData.FiberId }, // Fiber, simply set to false, because that would be trivial
 
             // Category -17
-            { 417, HorseFoodData.RareFruitValue }, // Sweet Gem Berry
-            { 430, HorseFoodData.DislikeID }, // Truffle
+            { "(O)417", HorseFoodData.RareFruitValue }, // Sweet Gem Berry
+            { "(O)430", HorseFoodData.DislikeID }, // Truffle
 
             // Mushrooms
-            { 257, HorseFoodData.DislikeID }, // Morel
-            { 281, HorseFoodData.DislikeID }, // Chanterelle
-            { 404, HorseFoodData.DislikeID }, // Common Mushroom
-            { 420, HorseFoodData.DislikeID }, // Red Mushroom
-            { 422, HorseFoodData.DislikeID }, // Purple Mushroom
-            { 851, HorseFoodData.DislikeID }, // Magma Cap
+            { "(O)257", HorseFoodData.DislikeID }, // Morel
+            { "(O)281", HorseFoodData.DislikeID }, // Chanterelle
+            { "(O)404", HorseFoodData.DislikeID }, // Common Mushroom
+            { "(O)420", HorseFoodData.DislikeID }, // Red Mushroom
+            { "(O)422", HorseFoodData.DislikeID }, // Purple Mushroom
+            { "(O)851", HorseFoodData.DislikeID }, // Magma Cap
 
             // Other forage
-            { 16, HorseFoodData.HorseRadishID }, // Wild Horseradish
-            { 18, HorseFoodData.ShouldntID }, // Daffodil
-            { 20, HorseFoodData.OnionId }, // Leek
-            { 22, HorseFoodData.NormalForageValue }, // Dandelion
-            { 78, HorseFoodData.NormalForageValue + 2 }, // Cave Carrot
-            { 92, HorseFoodData.ShouldntID }, // Sap
-            { 283, HorseFoodData.ShouldntID }, // Holly
-            { 399, HorseFoodData.OnionId }, // Spring Onion
-            { 408, HorseFoodData.DislikeID }, // Hazelnut
-            { 412, HorseFoodData.SpecialForageValue }, // Winter Root
-            { 416, HorseFoodData.SpecialForageValue }, // Snow Yam
-            { 829, HorseFoodData.SpecialForageValue }, // Ginger
+            { "(O)16", HorseFoodData.HorseRadishID }, // Wild Horseradish
+            { "(O)18", HorseFoodData.ShouldntID }, // Daffodil
+            { "(O)20", HorseFoodData.OnionId }, // Leek
+            { "(O)22", HorseFoodData.NormalForageValue }, // Dandelion
+            { "(O)78", HorseFoodData.NormalForageValue + 2 }, // Cave Carrot
+            { "(O)92", HorseFoodData.ShouldntID }, // Sap
+            { "(O)283", HorseFoodData.ShouldntID }, // Holly
+            { "(O)399", HorseFoodData.OnionId }, // Spring Onion
+            { "(O)408", HorseFoodData.DislikeID }, // Hazelnut
+            { "(O)412", HorseFoodData.SpecialForageValue }, // Winter Root
+            { "(O)416", HorseFoodData.SpecialForageValue }, // Snow Yam
+            { "(O)829", HorseFoodData.SpecialForageValue }, // Ginger
 
             // Flowers
-            { 376, HorseFoodData.ShouldntID }, // Poppy
-            { 402, HorseFoodData.ShouldntID }, // Sweet Pea
-            { 418, HorseFoodData.ShouldntID }, // Crocus
-            { 421, HorseFoodData.ShouldntID }, // Sunflower
-            { 591, HorseFoodData.ShouldntID }, // Tulip
-            { 593, HorseFoodData.ShouldntID }, // Summer Spangle
-            { 595, HorseFoodData.ShouldntID }, // Fairy Rose
-            { 597, HorseFoodData.ShouldntID }, // Blue Jazz
+            { "(O)376", HorseFoodData.ShouldntID }, // Poppy
+            { "(O)402", HorseFoodData.ShouldntID }, // Sweet Pea
+            { "(O)418", HorseFoodData.ShouldntID }, // Crocus
+            { "(O)421", HorseFoodData.ShouldntID }, // Sunflower
+            { "(O)591", HorseFoodData.ShouldntID }, // Tulip
+            { "(O)593", HorseFoodData.ShouldntID }, // Summer Spangle
+            { "(O)595", HorseFoodData.ShouldntID }, // Fairy Rose
+            { "(O)597", HorseFoodData.ShouldntID }, // Blue Jazz
 
             // Fruits
-            { 88, HorseFoodData.SpecialForageValue }, // Coconut
-            { 90, HorseFoodData.SpecialForageValue }, // Cactus Fruit
-            { 91, HorseFoodData.ExoticTreeFruitValue }, // Banana
-            { 252, HorseFoodData.ShouldntID }, // Rhubarb
-            { 254, HorseFoodData.RareFruitValue }, // Melon
-            { 258, HorseFoodData.CommonBerryValue }, // Blueberry
-            { 260, HorseFoodData.NightshadeID }, // Hot Pepper
-            { 268, HorseFoodData.RareFruitValue }, // Starfruit
-            { 282, HorseFoodData.CommonBerryValue }, // Cranberries
-            { 296, HorseFoodData.CommonForageValue / 2 }, // Salmonberry
-            { 396, HorseFoodData.NormalForageValue }, // Spice Berry
-            { 398, HorseFoodData.NormalForageValue }, // Grape
-            { 400, HorseFoodData.CommonBerryValue }, // Strawberry
-            { 406, HorseFoodData.NormalForageValue }, // Wild Plum
-            { 410, HorseFoodData.CommonForageValue }, // Blackberry
-            { 414, HorseFoodData.RareForageValue }, // Crystal Fruit
-            { 454, HorseFoodData.RareFruitValue }, // Ancient Fruit
-            { 613, HorseFoodData.NormalTreeFruitValue + 4 }, // Apple
-            { 634, HorseFoodData.NormalTreeFruitValue }, // Apricot
-            { 635, HorseFoodData.NormalTreeFruitValue }, // Orange
-            { 636, HorseFoodData.NormalTreeFruitValue }, // Peach
-            { 637, HorseFoodData.NormalTreeFruitValue }, // Pomegranate
-            { 638, HorseFoodData.NormalTreeFruitValue }, // Cherry
-            { 832, HorseFoodData.RareFruitValue }, // Pineapple
-            { 834, HorseFoodData.ExoticTreeFruitValue }, // Mango
-            { 889, HorseFoodData.DislikeID }, // Qi Fruit
+            { "(O)88", HorseFoodData.SpecialForageValue }, // Coconut
+            { "(O)90", HorseFoodData.SpecialForageValue }, // Cactus Fruit
+            { "(O)91", HorseFoodData.ExoticTreeFruitValue }, // Banana
+            { "(O)252", HorseFoodData.ShouldntID }, // Rhubarb
+            { "(O)254", HorseFoodData.RareFruitValue }, // Melon
+            { "(O)258", HorseFoodData.CommonBerryValue }, // Blueberry
+            { "(O)260", HorseFoodData.NightshadeID }, // Hot Pepper
+            { "(O)268", HorseFoodData.RareFruitValue }, // Starfruit
+            { "(O)282", HorseFoodData.CommonBerryValue }, // Cranberries
+            { "(O)296", HorseFoodData.CommonForageValue / 2 }, // Salmonberry
+            { "(O)396", HorseFoodData.NormalForageValue }, // Spice Berry
+            { "(O)398", HorseFoodData.NormalForageValue }, // Grape
+            { "(O)400", HorseFoodData.CommonBerryValue }, // Strawberry
+            { "(O)406", HorseFoodData.NormalForageValue }, // Wild Plum
+            { "(O)410", HorseFoodData.CommonForageValue }, // Blackberry
+            { "(O)414", HorseFoodData.RareForageValue }, // Crystal Fruit
+            { "(O)454", HorseFoodData.RareFruitValue }, // Ancient Fruit
+            { "(O)613", HorseFoodData.NormalTreeFruitValue + 4 }, // Apple
+            { "(O)634", HorseFoodData.NormalTreeFruitValue }, // Apricot
+            { "(O)635", HorseFoodData.NormalTreeFruitValue }, // Orange
+            { "(O)636", HorseFoodData.NormalTreeFruitValue }, // Peach
+            { "(O)637", HorseFoodData.NormalTreeFruitValue }, // Pomegranate
+            { "(O)638", HorseFoodData.NormalTreeFruitValue }, // Cherry
+            { "(O)832", HorseFoodData.RareFruitValue }, // Pineapple
+            { "(O)834", HorseFoodData.ExoticTreeFruitValue }, // Mango
+            { "(O)889", HorseFoodData.DislikeID }, // Qi Fruit
 
             // Vegetables
-            { 24, HorseFoodData.NormalVegetableValue }, // Parsnip
-            { 188, HorseFoodData.NormalVegetableValue }, // Green Bean
-            { 190, HorseFoodData.CabbageId }, // Cauliflower
-            { 192, HorseFoodData.NightshadeID }, // Potato
-            { 248, HorseFoodData.OnionId }, // Garlic
-            { 250, HorseFoodData.CabbageId }, // Kale
-            { 256, HorseFoodData.NightshadeID }, // Tomato
-            { 259, HorseFoodData.ShouldntID }, // Fiddlehead Fern
-            { 262, HorseFoodData.GrainsValue }, // Wheat
-            { 264, HorseFoodData.NormalVegetableValue }, // Radish
-            { 266, HorseFoodData.CabbageId }, // Red Cabbage
-            { 270, HorseFoodData.GrainsValue }, // Corn
-            { 271, HorseFoodData.GrainsValue }, // Unmilled Rice
-            { 272, HorseFoodData.NightshadeID }, // Eggplant
-            { 274, HorseFoodData.RareVegetableValue }, // Artichoke
-            { 276, HorseFoodData.RareVegetableValue }, // Pumpkin
-            { 278, HorseFoodData.CabbageId }, // Bok Choy
-            { 280, HorseFoodData.RareVegetableValue }, // Yam
-            { 284, HorseFoodData.NormalVegetableValue }, // Beet
-            { 300, HorseFoodData.ShouldntID }, // Amaranth
-            { 304, HorseFoodData.ShouldntID }, // Hops
-            { 815, HorseFoodData.NormalVegetableValue }, // Tea Leaves
-            { 830, HorseFoodData.ShouldntID }, // Taro Root
+            { "(O)24", HorseFoodData.NormalVegetableValue }, // Parsnip
+            { "(O)188", HorseFoodData.NormalVegetableValue }, // Green Bean
+            { "(O)190", HorseFoodData.CabbageId }, // Cauliflower
+            { "(O)192", HorseFoodData.NightshadeID }, // Potato
+            { "(O)248", HorseFoodData.OnionId }, // Garlic
+            { "(O)250", HorseFoodData.CabbageId }, // Kale
+            { "(O)256", HorseFoodData.NightshadeID }, // Tomato
+            { "(O)259", HorseFoodData.ShouldntID }, // Fiddlehead Fern
+            { "(O)262", HorseFoodData.GrainsValue }, // Wheat
+            { "(O)264", HorseFoodData.NormalVegetableValue }, // Radish
+            { "(O)266", HorseFoodData.CabbageId }, // Red Cabbage
+            { "(O)270", HorseFoodData.GrainsValue }, // Corn
+            { "(O)271", HorseFoodData.GrainsValue }, // Unmilled Rice
+            { "(O)272", HorseFoodData.NightshadeID }, // Eggplant
+            { "(O)274", HorseFoodData.RareVegetableValue }, // Artichoke
+            { "(O)276", HorseFoodData.RareVegetableValue }, // Pumpkin
+            { "(O)278", HorseFoodData.CabbageId }, // Bok Choy
+            { "(O)280", HorseFoodData.RareVegetableValue }, // Yam
+            { "(O)284", HorseFoodData.NormalVegetableValue }, // Beet
+            { "(O)300", HorseFoodData.ShouldntID }, // Amaranth
+            { "(O)304", HorseFoodData.ShouldntID }, // Hops
+            { "(O)815", HorseFoodData.NormalVegetableValue }, // Tea Leaves
+            { "(O)830", HorseFoodData.ShouldntID }, // Taro Root
         };
 
         public static string GetReplyForID(int id)
@@ -190,7 +192,7 @@ namespace HorseOverhaul
 
         public static HorseFoodData ClassifyHorseFood(Item itemToFeed)
         {
-            if (HorseEdibility.TryGetValue(itemToFeed.ParentSheetIndex, out int result))
+            if (HorseEdibility.TryGetValue(itemToFeed.QualifiedItemId, out int result))
             {
                 if (result > 0)
                 {
@@ -233,7 +235,7 @@ namespace HorseOverhaul
                 {
                     return new HorseFoodData(0, "HorseHerbivore");
                 }
-                else if (itemToFeed.ParentSheetIndex == 216)
+                else if (itemToFeed.QualifiedItemId == BreadID)
                 {
                     return new HorseFoodData(0, "HorseNoBread");
                 }

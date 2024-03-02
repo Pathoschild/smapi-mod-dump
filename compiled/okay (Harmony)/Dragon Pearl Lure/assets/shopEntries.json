@@ -1,0 +1,17 @@
+﻿{
+  "item-entry": {
+    "Id": "violetlizabet.PearlLure",
+    "ItemId": "(O)violetlizabet.PearlLure",
+    "Price": 900,
+    "Condition": null,
+    "IsRecipe": false
+  },
+  "recipe-entry": {
+    "Id": "violetlizabet.PearlLure (Recipe)",
+    "ItemId": "(O)violetlizabet.PearlLure",
+    "Price": 5000,
+    "Condition": "PLAYER_MINING_LEVEL Current 7, !PLAYER_HAS_CRAFTING_RECIPE Current violetlizabet.PearlLure",
+    "IsRecipe": true
+  }
+}
+

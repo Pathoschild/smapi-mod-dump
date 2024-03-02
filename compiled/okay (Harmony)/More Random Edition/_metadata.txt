@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/16921
-IDs: Chikakoo.Randomizer
-update keys: Nexus:16921, Nexus:5311, GitHub:Chikakoo/stardew-valley-randomizer

@@ -1,0 +1,30 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Hedgehog-Technologies/StardewMods
+**
+*************************************************/
+
+{
+  "IsShakerActive.Name": "开启自动摇树",
+  "IsShakerActive.Description": "决定<自动摇树>的开启",
+  "ToggleShaker.Name": "自动摇树快捷键",
+  "ToggleShaker.Description": "将自动摇树功能与特定键位绑定",
+  "ShakeRegularTrees.Name": "要摇普通树木吗？",
+  "ShakeRegularTrees.Description": "决定是否会自动摇动您走过的普通树木以获取种子。",
+  "ShakeFruitTrees.Name": "要摇果树吗？",
+  "ShakeFruitTrees.Description": "决定是否会自动摇动您走过的果树以获取果实。",
+  "FruitsReadyToShake.Name": "多少果实才可摇果树",
+  "FruitsReadyToShake.Description": "能触发自动摇树时，每棵果树至少要有多少果实。",
+  "ShakeTeaBushes.Name": "要摇茶树吗?",
+  "ShakeTeaBushes.Description": "是否会摇动您走过的茶丛以获取茶叶。",
+  "ShakeBushes.Name": "要摇灌木丛吗？",
+  "ShakeBushes.Description": "是否会摇动您走过的灌木丛。",
+  "UsePlayerMagnetism.Name": "磁力摇树",
+  "UsePlayerMagnetism.Description": "在玩家可以拾取物品的相同距离内摇动灌木丛。注意：优先级高于“摇树距离”。 ",
+  "ShakeDistance.Name": "摇树距离",
+  "ShakeDistance.Description": "在不使用“磁力摇树”时，自动摇树需要的距离。"
+}

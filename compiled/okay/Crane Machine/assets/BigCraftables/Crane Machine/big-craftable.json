@@ -1,0 +1,6 @@
+{
+    "Name": "Crane Machine",
+    "Description": "Allows you to play the crane game",
+    "Price": 0,
+    "ProvidesLight": false,
+}

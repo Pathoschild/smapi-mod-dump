@@ -29,6 +29,7 @@ namespace StardewDruid.Event.Challenge
 
         public override void EventTrigger()
         {
+            cues = DialogueData.DialogueScene(questData.name);
 
             monsterHandle = new(targetVector + new Vector2(0, 2), riteData.castLocation);
 
@@ -84,7 +85,7 @@ namespace StardewDruid.Event.Challenge
             {
                 if (monsterHandle.monsterSpawns.Count <= 4)
                 {
-                    CastVoice("the woods breathe again");
+                    DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 991);
                     int num = questData.name.Contains("Two") ? 2 : 1;
                     for (int index = 0; index < num; ++index)
                     {
@@ -96,7 +97,7 @@ namespace StardewDruid.Event.Challenge
                 else if (monsterHandle.monsterSpawns.Count <= 10)
                 {
 
-                    CastVoice("the dust settles");
+                    DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 992);
                     int num = questData.name.Contains("Two") ? 2 : 1;
                     for (int index = 0; index < num; ++index)
                     {
@@ -108,7 +109,7 @@ namespace StardewDruid.Event.Challenge
                 else
                 {
 
-                    CastVoice("dust overwhelming");
+                    DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 993);
 
                 }
 
@@ -144,27 +145,12 @@ namespace StardewDruid.Event.Challenge
 
             }
 
+            DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, activeCounter);
+
             if (activeCounter < 8)
             {
                 switch (activeCounter)
                 {
-                    case 1:
-
-                        CastVoice("can you feel it");
-
-                        break;
-
-                    case 3:
-
-                        CastVoice("all around us");
-
-                        break;
-
-                    case 5:
-
-                        CastVoice("THE DUST RISES");
-
-                        break;
 
                     case 7:
 
@@ -176,20 +162,14 @@ namespace StardewDruid.Event.Challenge
 
                         targetLocation.playSound("dustMeep");
 
+                        targetLocation.playSound("dustMeep");
+
                         break;
 
                 }
             }
-            else if (activeCounter == 35)
-            {
-
-                CastVoice("ha ha ha");
-
-            }
             else if (activeCounter == 38)
             {
-
-                CastVoice("dust them");
 
                 for (int i = 0; i < 2; i++)
                 {
@@ -198,18 +178,6 @@ namespace StardewDruid.Event.Challenge
                     throwObject.ThrowObject();
 
                 }
-
-            }
-            else if (activeCounter == 47)
-            {
-
-                CastVoice("the monarchs sleep", 3000);
-
-            }
-            else if (activeCounter == 50)
-            {
-
-                CastVoice("and meeps creep into the world", 3000);
 
             }
             else if (activeCounter <= 57)

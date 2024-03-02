@@ -24,6 +24,14 @@ namespace CustomizeWeddingAttire
         private static ITranslationHelper I18n;
         private static IManifest Manifest;
 
+        static string tuxShirt = "1010";
+        static string tuxPants = "0";
+        static Color tuxColor = new Color(49, 49, 49);
+
+        static string dressShirt = "1265";
+        static string dressPants = "2";
+        static Color dressColor = new Color(255, 255, 255);
+
         // call this method from your Entry class
         public static void Initialize(IMonitor monitor, ModConfig config, ITranslationHelper translator, IManifest manifest)
         {
@@ -38,188 +46,186 @@ namespace CustomizeWeddingAttire
         {
             try
             {
-                Monitor.Log("Applying Harmony patch to prefix (and possibly skip) addSpecificTemporarySprite in Event.cs", LogLevel.Trace);
+                Monitor.Log("Applying Harmony patch to postfix IsOverridingPants in Farmer.cs", LogLevel.Trace);
                 harmony.Patch(
-                    original: AccessTools.Method(typeof(Event), "addSpecificTemporarySprite"),
-                    prefix: new HarmonyMethod(typeof(WeddingPatcher), nameof(WeddingPatcher.Event_addSpecificTemporarySprite_Prefix))
+                    original: AccessTools.Method(typeof(Farmer), nameof(Farmer.IsOverridingPants)),
+                    postfix: new HarmonyMethod(typeof(WeddingPatcher), nameof(WeddingPatcher.Farmer_IsOverridingPants_Postfix))
                 );
             }
             catch (Exception ex)
             {
-                Monitor.Log($"Failed to add prefix to before wedding sprite function with exception: {ex}", LogLevel.Error);
+                Monitor.Log($"Failed to add postfix to after farmer pants override function with exception: {ex}", LogLevel.Error);
             }
+
             try
             {
-                Monitor.Log("Applying Harmony patch to postfix endBehaviors in Event.cs", LogLevel.Trace);
+                Monitor.Log("Applying Harmony patch to postfix IsOverridingShirt in Farmer.cs", LogLevel.Trace);
                 harmony.Patch(
-                    original: AccessTools.Method(typeof(Event),nameof(Event.endBehaviors)),
-                    postfix: new HarmonyMethod(typeof(WeddingPatcher), nameof(WeddingPatcher.Event_endBehaviors_Postfix))
+                    original: AccessTools.Method(typeof(Farmer), nameof(Farmer.IsOverridingShirt)),
+                    postfix: new HarmonyMethod(typeof(WeddingPatcher), nameof(WeddingPatcher.Farmer_IsOverridingShirt_Postfix))
                 );
             }
             catch (Exception ex)
             {
-                Monitor.Log($"Failed to add postfix to after wedding sprite function with exception: {ex}", LogLevel.Error);
+                Monitor.Log($"Failed to add postfix to after farmer shirt override function with exception: {ex}", LogLevel.Error);
             }
         }
 
-        // Method that is used to prefix
-        private static bool Event_addSpecificTemporarySprite_Prefix(string key, GameLocation location, Event __instance, ref int ___oldShirt, ref Color ___oldPants)
+        private static void Farmer_IsOverridingPants_Postfix(Farmer __instance, ref string id, ref Color? color, ref bool __result)
         {
-            // If this is not a temporary sprite for a wedding, skip this prefix entirely
-            if (key != "wedding")
+            // Return if not during a wedding
+            if (!Context.IsWorldReady || Game1.CurrentEvent == null || !Game1.CurrentEvent.isWedding)
             {
-                return true;
+                return;
             }
 
-            // Put the player in a tux if desired
+            // Get preference and change accordingly
             try
             {
-                if (Config.WeddingAttire == ModEntry.tuxOption || (Game1.player.IsMale && Config.WeddingAttire == ModEntry.defaultOption))
+                // Identify which farmer we're dealing with here
+                long unqID = __instance.UniqueMultiplayerID;
+
+                // Be more careful about changing current player's clothing
+                if (unqID == Game1.player.UniqueMultiplayerID)
                 {
-                    ___oldShirt = __instance.farmer.shirt;
-                    ___oldPants = __instance.farmer.pantsColor;
-                    putInTux(__instance.farmer);
+                    string preference = getOutfitTypeCurrentFarmer();
+                    if (preference == "tux")
+                    {
+                        id = tuxPants;
+                        color = tuxColor;
+                        __result = true;
+                    }
+                    else if (preference == "dress")
+                    {
+                        id = dressPants;
+                        color = dressColor;
+                        __result = true;
+                    }
+                }
+                // Fake event farmers can just directly get changed
+                else
+                {
+                    string preference = getOutfitTypeOtherFarmers(unqID);
+                    if (preference == "tux")
+                    {
+                        putInTux(__instance);
+                    }
+                    else if (preference == "dress")
+                    {
+                        putInDress(__instance);
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Monitor.Log($"Failed to make player wear tux with exception: {ex}", LogLevel.Error);
+                Monitor.Log($"Failed to make player pants change with exception: {ex}", LogLevel.Error);
+            }
+        }
+
+        private static void Farmer_IsOverridingShirt_Postfix(Farmer __instance, ref string id, ref bool __result)
+        {
+            // Return if not during a wedding
+            if (!Context.IsWorldReady || Game1.CurrentEvent == null || !Game1.CurrentEvent.isWedding)
+            {
+                return;
+            }
+
+            // Get preference and change accordingly
+            try
+            {
+                // Identify which farmer we're dealing with here
+                long unqID = __instance.UniqueMultiplayerID;
+
+                // Be more careful about changing current player's clothing
+                if (unqID == Game1.player.UniqueMultiplayerID)
+                {
+                    string preference = getOutfitTypeCurrentFarmer();
+                    if (preference == "tux")
+                    {
+                        id = tuxShirt;
+                        __result = true;
+                    }
+                    else if (preference == "dress")
+                    {
+                        id = dressShirt;
+                        __result = true;
+                    }
+                }
+                // Fake event farmers can just directly get changed
+                else
+                {
+                    string preference = getOutfitTypeOtherFarmers(unqID);
+                    if (preference == "tux")
+                    {
+                        putInTux(__instance);
+                    }
+                    else if (preference == "dress")
+                    {
+                        putInDress(__instance);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Monitor.Log($"Failed to make player pants change with exception: {ex}", LogLevel.Error);
+            }
+        }
+
+        private static string getOutfitTypeCurrentFarmer()
+        {
+            // Put the player in a tux if desired
+            if (Config.WeddingAttire == ModEntry.tuxOption || (Game1.player.IsMale && Config.WeddingAttire == ModEntry.defaultOption))
+            {
+                return "tux";
             }
 
             // Put the player in a dress if desired
-            try
+            if (Config.WeddingAttire == ModEntry.dressOption)
             {
-                if (Config.WeddingAttire == ModEntry.dressOption)
-                {
-                    ___oldShirt = __instance.farmer.shirt;
-                    ___oldPants = __instance.farmer.pantsColor;
-                    putInDress(__instance.farmer);
-                }
+                return "dress";
             }
-            catch (Exception ex)
+            return "none";
+        }
+
+        // Respect other players' preferences if possible
+        private static string getOutfitTypeOtherFarmers(long unqID)
+        {
+            // Get the copy of the other farmer in the event
+            Farmer realFarmerActor = Game1.getFarmerMaybeOffline(unqID);
+
+            // Check for the preference of the farmer in modData and do nothing if no preference found
+            if (!realFarmerActor.modData.TryGetValue($"{Manifest.UniqueID}/weddingAttirePref", out string farmerPreference))
             {
-                Monitor.Log($"Failed to make player wear dress with exception: {ex}", LogLevel.Error);
+                return "none";
             }
-
-            // Figure out what behavior to take for each other farmer
-            try
+            // Tuxedo if preferred
+            else if (farmerPreference == ModEntry.tuxOption || farmerPreference == ModEntry.defaultOption && realFarmerActor.IsMale)
             {
-                foreach (Farmer farmerActor in __instance.farmerActors)
-                {
-                    long unqID = farmerActor.UniqueMultiplayerID;
-
-                    // If the farmer is the current player, we already handled this, so skip to the next farmer
-                    if (unqID == Game1.player.UniqueMultiplayerID)
-                    {
-                        continue;
-                    }
-
-                    // Get the copy of the other farmer in the event
-                    Farmer realFarmerActor = Game1.getFarmerMaybeOffline(unqID);
-
-                    // Check for the preference of the farmer in modData
-                    if (!realFarmerActor.modData.TryGetValue($"{Manifest.UniqueID}/weddingAttirePref", out string farmerPreference))
-                    {
-                        // If no preference is recorded, use the game default
-                        if (farmerActor.IsMale)
-                        {
-                            putInTux(farmerActor);
-                        }
-                    }
-                    // Use the game default if preferred
-                    else if (farmerPreference == ModEntry.defaultOption) {
-                        if (farmerActor.IsMale)
-                        {
-                            putInTux(farmerActor);
-                        }
-                    }
-                    // Tuxedo if preferred
-                    else if(farmerPreference == ModEntry.tuxOption)                        
-                    {
-                        putInTux(farmerActor);
-                    }
-                    // Dress if preferred
-                    else if (farmerPreference == ModEntry.dressOption)
-                    {
-                        putInDress(farmerActor);
-                    }
-                }
+                return "tux";
             }
-            catch (Exception ex)
+            // Dress if preferred
+            else if (farmerPreference == ModEntry.dressOption)
             {
-                Monitor.Log($"Failed to change other player's sprite's clothes with exception: {ex}", LogLevel.Error);
-            }
-
-            // Do the sprite adding that needs to be done if the function is skipped
-            try
-            {
-                location.TemporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Microsoft.Xna.Framework.Rectangle(540, 1196, 98, 54), 99999f, 1, 99999, new Vector2(25f, 60f) * 64f + new Vector2(0f, -64f), flicker: false, flipped: false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f));
-                location.TemporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Microsoft.Xna.Framework.Rectangle(540, 1250, 98, 25), 99999f, 1, 99999, new Vector2(25f, 60f) * 64f + new Vector2(0f, 54f) * 4f + new Vector2(0f, -64f), flicker: false, flipped: false, 0f, 0f, Color.White, 4f, 0f, 0f, 0f));
-                location.TemporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Microsoft.Xna.Framework.Rectangle(527, 1249, 12, 25), 99999f, 1, 99999, new Vector2(24f, 62f) * 64f, flicker: false, flipped: false, 0f, 0f, Color.White, 4f, 0f, 0f, 0f));
-                location.TemporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Microsoft.Xna.Framework.Rectangle(527, 1249, 12, 25), 99999f, 1, 99999, new Vector2(32f, 62f) * 64f, flicker: false, flipped: false, 0f, 0f, Color.White, 4f, 0f, 0f, 0f));
-                location.TemporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Microsoft.Xna.Framework.Rectangle(527, 1249, 12, 25), 99999f, 1, 99999, new Vector2(24f, 69f) * 64f, flicker: false, flipped: false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f));
-                location.TemporarySprites.Add(new TemporaryAnimatedSprite("LooseSprites\\Cursors", new Microsoft.Xna.Framework.Rectangle(527, 1249, 12, 25), 99999f, 1, 99999, new Vector2(32f, 69f) * 64f, flicker: false, flipped: false, 1f, 0f, Color.White, 4f, 0f, 0f, 0f));
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Failed to finish wedding scene setup with exception: {ex}", LogLevel.Error);
+                return "dress";
             }
             
-            return false;
+            return "none";
         }
 
-        private static void Event_endBehaviors_Postfix(string[] split, Event __instance, ref int ___oldShirt, ref Color ___oldPants)
-        {
-            // After the wedding, make sure to change the player's clothes back to normal if needed
-            try
-            {
-                // Process the input string the same way the game does to get the key
-                if (split != null && split.Length > 1)
-                {
-                    string key = split[1];
-                    // Only need to change clothes back if this was a wedding
-                    if (key != "wedding")
-                    {
-                        return;
-                    }
-                    try
-                    {
-                        // Only need to change clothes back if preference was for changing clothes
-                        if (Config.WeddingAttire == ModEntry.dressOption || Config.WeddingAttire == ModEntry.tuxOption || (Game1.player.IsMale && Config.WeddingAttire == ModEntry.defaultOption))
-                        {
-                            __instance.farmer.changeShirt(-1);
-                            __instance.farmer.changePants(___oldPants);
-                            __instance.farmer.changePantStyle(-1);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Monitor.Log($"Failed to reset clothes after wedding with exception: {ex}", LogLevel.Error);
-                    }
-                }
-                return;
-            }
-            catch (Exception ex)
-            {
-                Monitor.Log($"Failed to initiate resetting clothes after wedding with exception: {ex}", LogLevel.Error);
-            }
-
-        }
-
-        private static void putInTux(Farmer farmerActor)
+        public static void putInTux(Farmer farmer)
         {
             // This is identical to the game's wedding tuxedo
-            farmerActor.changeShirt(10);
-            farmerActor.changePants(new Color(49, 49, 49));
-            farmerActor.changePantStyle(0);
+            farmer.changeShirt(tuxShirt);
+            farmer.changePantStyle(tuxPants);
+            farmer.changePantsColor(tuxColor);
         }
 
-        private static void putInDress(Farmer farmerActor)
+        public static void putInDress(Farmer farmer)
         {
             // Bridal top and long skirt, both in white
-            farmerActor.changeShirt(265);
-            farmerActor.changePantStyle(2);
-            farmerActor.changePants(new Color(255, 255, 255));
+            farmer.changeShirt(dressShirt);
+            farmer.changePantStyle(dressPants);
+            farmer.changePantsColor(dressColor);
         }
     }
 }

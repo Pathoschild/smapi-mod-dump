@@ -40,7 +40,8 @@ namespace Custom_Farm_Loader.Lib.Enums
         Topaz_Node = 10, //5
         Emerald_Node = 12, //5
         Aquamarine_Node = 14, //5
-        Musel_Node = 25, //8
+        Musel_Node = Mussel_Node, //Typo fix
+        Mussel_Node = 25, //8
         Gem_Node = 44, //5
         Mystic_Stone = 46, //5
         Geode_Node = 75, //3

@@ -208,14 +208,14 @@ namespace StardewDruid.Map
 
         }
 
-        public static AnimatedSprite CharacterSprite(string characterName)
+        /*public static AnimatedSprite CharacterSprite(string characterName)
         {
 
             AnimatedSprite characterSprite = new();
 
             characterSprite.spriteTexture = CharacterTexture(characterName);
 
-            characterSprite.textureName.Value = "18465_" + characterName;
+            characterSprite.textureName.Set("18465_" + characterName);
 
             characterSprite.loadedTexture = "18465_" + characterName;
 
@@ -271,7 +271,7 @@ namespace StardewDruid.Map
 
             return characterSprite;
 
-        }
+        }*/
 
         public static Texture2D CharacterPortrait(string characterName)
         {

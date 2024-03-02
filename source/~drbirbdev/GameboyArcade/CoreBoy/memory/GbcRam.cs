@@ -35,13 +35,13 @@ namespace CoreBoy.memory
 
         private int Translate(int address)
         {
-            var ramBank = this._svbk & 0x7;
+            int ramBank = this._svbk & 0x7;
             if (ramBank == 0)
             {
                 ramBank = 1;
             }
 
-            var result = address - 0xd000 + ((ramBank - 1) * 0x1000);
+            int result = address - 0xd000 + ((ramBank - 1) * 0x1000);
             if (result < 0 || result >= this._ram.Length)
             {
                 throw new ArgumentException();

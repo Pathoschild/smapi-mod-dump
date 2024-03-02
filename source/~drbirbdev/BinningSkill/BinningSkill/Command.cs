@@ -30,7 +30,7 @@ internal class Command
             return;
         }
 
-        GarbageCanData allData = Game1.content.Load<GarbageCanData>("Data\\GarbageCans");
+        GarbageCanData allData = DataLoader.GarbageCans(Game1.content);
         if (!allData.GarbageCans.TryGetValue(key, out var data))
         {
             data = null;
@@ -163,7 +163,7 @@ internal class Command
 
     public static bool TryGetGarbageCan(string search, out string entryKey, out GameLocation entryLocation)
     {
-        GarbageCanData allData = Game1.content.Load<GarbageCanData>("Data\\GarbageCans");
+        GarbageCanData allData = DataLoader.GarbageCans(Game1.content);
         entryKey = null;
         entryLocation = null;
         if (!allData.GarbageCans.TryGetValue(search, out GarbageCanEntryData entryData))

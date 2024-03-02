@@ -8,6 +8,9 @@
 **
 *************************************************/
 
+using StardewValley.Objects;
+using System;
+
 namespace Randomizer
 {
 	/// <summary>
@@ -38,24 +41,27 @@ namespace Randomizer
 			}
 		}
 
-		/// <summary>
-		/// Gets a random value between the min and max value, inclusive
-		/// </summary>
-		/// <returns />
-		public int GetRandomValue()
+        /// <summary>
+        /// Gets a random value between the min and max value, inclusive
+        /// </summary>
+        /// <param name="rng">The Random object to use - defaults to the global one</param>
+        /// <returns />
+        public int GetRandomValue(Random rng = null)
 		{
-			return Globals.RNG.Next(MinValue, MaxValue + 1);
+            var rngToUse = rng ?? Globals.RNG;
+            return rngToUse.Next(MinValue, MaxValue + 1);
 		}
 
-		/// <summary>
-		/// Gets a random value between the min and max value, inclusive
-		/// </summary>
-		/// <param name="minValue">The min value</param>
-		/// <param name="maxValue">The max value</param>
-		/// <returns />
-		public static int GetRandomValue(int minValue, int maxValue)
+        /// <summary>
+        /// Gets a random value between the min and max value, inclusive
+        /// </summary>
+        /// <param name="minValue">The min value</param>
+        /// <param name="maxValue">The max value</param>
+        /// <param name="rng">The Random object to use - defaults to the global one</param>
+        /// <returns />
+        public static int GetRandomValue(int minValue, int maxValue, Random rng = null)
 		{
-			return new Range(minValue, maxValue).GetRandomValue();
+            return new Range(minValue, maxValue).GetRandomValue(rng);
 		}
 	}
 }

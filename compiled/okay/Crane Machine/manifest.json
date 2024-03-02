@@ -1,0 +1,21 @@
+{
+  "Name": "Crane Machine",
+  "Author": "chocolatte12",
+  "Version": "1.0.0",
+  "Description": "Adds a Crane Machine",
+  "UniqueID": "chocolatte12.CraneMachine",
+  "EntryDll": "CraneMachine.dll",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:20112" ],
+  "Dependencies": [
+        /*{
+            "UniqueID": "Pathoschild.ContentPatcher",
+        },
+        {
+            "UniqueID": "Cherry.ShopTileFramework",
+        },
+        {
+            "UniqueID": "spacechase0.JsonAssets",
+        }*/
+    ]
+}

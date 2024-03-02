@@ -44,13 +44,6 @@ namespace StardewDruid.Monster.Boss
 
             MaxHealth = Health;
 
-            ouchList = new List<string>()
-              {
-                "Ah ha ha ha ha",
-                "PATHETIC",
-                "You're nothing. NOTHING.",
-              };
-
             cooldownInterval = 40;
 
             tempermentActive = temperment.aggressive;

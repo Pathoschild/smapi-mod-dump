@@ -16,12 +16,12 @@ namespace StardewArchipelago.GameModifications.CodeInjections.Modded
 {
     internal class SocializingConfigCodeInjections
     {
-        private const double TALKING_MULTIPLIER = 1.4;
-        private const double GIFT_MULTIPLIER = 1.3;
-        private const double EVENT_MULTIPLIER = 1.3;
-        private const double QUEST_MULTIPLIER = 1.3;
-        private const double LOVED_GIFT_MULTIPLIER = 1.1;
-        private const double BIRTHDAY_GIFT_MULTIPLIER = 1.1;
+        private const double TALKING_MULTIPLIER = 1.8;
+        private const double GIFT_MULTIPLIER = 1.6;
+        private const double EVENT_MULTIPLIER = 1.6;
+        private const double QUEST_MULTIPLIER = 1.6;
+        private const double LOVED_GIFT_MULTIPLIER = 1.2;
+        private const double BIRTHDAY_GIFT_MULTIPLIER = 1.2;
 
         private static IMonitor _monitor;
         private static IModHelper _modHelper;

@@ -6,9 +6,9 @@ mods:
    Stardew Archipelago
 
 latest commit:
-   commit 1ccf52a205176609bd4a8880e0ee2284e8bb0fba
+   commit e22637bede4030d6038e6571f4347d5d46863daf
    Author: Alex Gilbert <alexgilbert@yahoo.com>
-   Date:   Fri Jan 26 15:15:25 2024 -0500
+   Date:   Mon Feb 12 12:53:57 2024 -0500
    
-       - Add casino rarecrow check
+       - Fixed Price multiplier for blueprints sometimes asking 0 of something
    

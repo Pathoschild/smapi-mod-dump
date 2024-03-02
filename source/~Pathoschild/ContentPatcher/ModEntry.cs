@@ -28,6 +28,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using TokenParser = ContentPatcher.Framework.TokenParser;
 
 [assembly: InternalsVisibleTo("Pathoschild.Stardew.Tests.Mods")]
 namespace ContentPatcher
@@ -75,7 +76,8 @@ namespace ContentPatcher
             new Migration_1_27(),
             new Migration_1_28(),
             new Migration_1_29(),
-            new Migration_1_30()
+            new Migration_1_30(),
+            new Migration_2_0()
         };
 
         /// <summary>The special validation logic to apply to assets affected by patches.</summary>
@@ -121,9 +123,6 @@ namespace ContentPatcher
 
             helper.Events.GameLoop.UpdateTicked += this.OnUpdateTicked;
             helper.Events.Content.LocaleChanged += this.OnLocaleChanged;
-
-            if (!this.Config.GroupEditsByMod)
-                this.Monitor.Log("Grouping edits by mod is disabled in config.json. This will reduce the usefulness of log info.");
 
             // enable temporary PyTK legacy mode (unless running in SMAPI strict mode)
             IModInfo? pyTk = helper.ModRegistry.Get("Platonymous.Toolkit");
@@ -281,6 +280,22 @@ namespace ContentPatcher
                     this.Monitor.Log($"{group.ModName} added {(group.TokenNames.Length == 1 ? "a custom token" : $"{group.TokenNames.Length} custom tokens")} with prefix '{group.ModPrefix}': {string.Join(", ", group.TokenNames)}.");
             }
 
+            // log content pack migration warnings
+            {
+                ILookup<string, string> contentPacksByWarning =
+                    this.ContentPacks
+                        .SelectMany(pack => pack.Migrator.MigrationWarnings.Select(warning => new { pack.Manifest.Name, Warning = warning }))
+                        .ToLookup(p => p.Warning, p => p.Name);
+
+                foreach (IGrouping<string, string> warningGroup in contentPacksByWarning.OrderBy(p => p.Key, new HumanSortComparer()))
+                {
+                    this.Monitor.Log(
+                        $"{warningGroup.Key}\n\nAffected content packs:\n- {string.Join("\n- ", warningGroup.OrderByHuman(p => p))}\n\nFor mod authors, see how to update a mod: https://smapi.io/cp-migrate.",
+                        LogLevel.Info
+                    );
+                }
+            }
+
             // set up events
             if (this.Config.EnableDebugFeatures)
                 helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
@@ -333,8 +348,7 @@ namespace ContentPatcher
                 monitor: this.Monitor,
                 installedMods: this.GetInstalledMods(),
                 modTokens: modTokens,
-                assetValidators: this.AssetValidators(),
-                groupEditsByMod: this.Config.GroupEditsByMod
+                assetValidators: this.AssetValidators()
             );
         }
 

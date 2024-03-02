@@ -35,6 +35,12 @@ internal class Events
         public int SourceX { get; set; }
     }
 
+    [SEvent.DayStarted]
+    private void GameStarted(object sender, DayStartedEventArgs e)
+    {
+        ModEntry.UnderleveledCheckedGarbage.Value = new HashSet<string>();
+    }
+
     [SEvent.GameLaunchedLate]
     private void GameLaunched(object sender, GameLaunchedEventArgs e)
     {
@@ -76,9 +82,8 @@ internal class Events
                     can.Value.Items = new List<GarbageCanItemData>();
                 }
 
-                if (!can.Value.CustomFields.TryGetValue("drbirbdev.BinningSkill_AddToMap", out string data))
+                if (can.Value.CustomFields is null || !can.Value.CustomFields.TryGetValue("drbirbdev.BinningSkill_AddToMap", out string data))
                 {
-
                     can.Value.Items.Insert(0, GetGarbageHatItemData("Default"));
                     continue;
                 }
@@ -249,7 +254,7 @@ internal class Events
 
         if (MapGarbageCanEdits.Count == 0)
         {
-            LoadGarbageCanEdits(Game1.content.Load<GarbageCanData>("Data/GarbageCans"));
+            LoadGarbageCanEdits(DataLoader.GarbageCans(Game1.content));
         }
 
         if (!MapGarbageCanEdits.TryGetValue(e.Name.ToString(), out List<GarbageCanEdit> edits))
@@ -283,6 +288,10 @@ internal class Events
     {
         foreach (KeyValuePair<string, GarbageCanEntryData> entry in garbageCanData.GarbageCans)
         {
+            if (entry.Value.CustomFields is null)
+            {
+                continue;
+            }
             if (!entry.Value.CustomFields.TryGetValue("drbirbdev.BinningSkill_AddToMap", out string data))
             {
                 continue;

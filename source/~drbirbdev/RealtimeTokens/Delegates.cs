@@ -111,7 +111,7 @@ internal class Delegates
     {
         if (!ArgUtility.TryGet(query, 1, out string value, out string error))
         {
-            return TokenParser.LogTokenError(query, error, out replacement);
+            return StardewValley.TokenizableStrings.TokenParser.LogTokenError(query, error, out replacement);
         }
 
         replacement = ModEntry.API.GetLocalName(value);

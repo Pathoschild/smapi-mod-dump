@@ -10,7 +10,6 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using Archipelago.Gifting.Net.Service;
 using Archipelago.Gifting.Net.Traits;
 using Microsoft.Xna.Framework;

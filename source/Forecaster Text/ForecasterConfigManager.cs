@@ -35,6 +35,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using ForecasterText.Objects;
 using ForecasterText.Objects.Enums;
 using ForecasterText.Objects.Messages;
@@ -43,7 +44,7 @@ using StardewModdingAPI;
 
 namespace ForecasterText {
     public sealed class ForecasterConfigManager {
-        private ForecasterConfig _CachedConfig;
+        private ForecasterConfig? _CachedConfig;
         private readonly ModEntry Mod;
         private ITranslationHelper Translations => this.Mod.Helper.Translation;
         
@@ -64,7 +65,7 @@ namespace ForecasterText {
         
         #region Mod Config Menu
         
-        private IGenericModConfigMenuApi ConfigMenu { get; set; }
+        private IGenericModConfigMenuApi? ConfigMenu { get; set; }
         private IManifest Manifest => this.Mod.ModManifest;
         
         public void RegisterConfigManager(IGenericModConfigMenuApi configMenu) {
@@ -82,7 +83,10 @@ namespace ForecasterText {
             //this.InitializePage(multiplayerConfig, "child");
         }
         
-        private void InitializePage(ForecasterConfig config, string page = null) {
+        private void InitializePage(ForecasterConfig config, string? page = null) {
+            // We set our ConfigMenu in the RegisterConfigManager method
+            Debug.Assert(this.ConfigMenu is not null);
+            
             if (page is "child") {
                 this.ConfigMenu.AddPage(this.Manifest, page, () => "Multiplayer");
                 this.AddParagraph("Here you can set the options that are used for sending the TV information to other players. They will only receive alerts if they do not already have this mod");
@@ -282,7 +286,7 @@ namespace ForecasterText {
             this.AddSectionTitle(t9N.Get, t9N.GetDesc);
         }
         
-        private void AddSectionTitle(Func<string> text, Func<string> tooltip = null)
+        private void AddSectionTitle(Func<string?> text, Func<string?>? tooltip = null)
             => this.ConfigMenu?.AddSectionTitle(this.Manifest, text, tooltip);
         
         private void AddBoolOption(Func<bool> getValue, Action<bool> setValue, string name) {
@@ -293,7 +297,7 @@ namespace ForecasterText {
             IConfT9N t9N = this.Translation(name, tooltip);
             this.AddBoolOption(getValue, setValue, t9N.Get, t9N.GetDesc);
         }
-        private void AddBoolOption(Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null)
+        private void AddBoolOption(Func<bool> getValue, Action<bool> setValue, Func<string?> name, Func<string?>? tooltip = null)
             => this.ConfigMenu?.AddBoolOption(this.Manifest, getValue, setValue, name, tooltip);
         
         private void AddWeatherDropdown(Func<WeatherDisplay> getValue, Action<WeatherDisplay> setValue, string name) {
@@ -301,7 +305,7 @@ namespace ForecasterText {
             this.AddWeatherDropdown(getValue, setValue, t9N.Get, t9N.GetDesc);
         }
         
-        private void AddWeatherDropdown(Func<WeatherDisplay> getValue, Action<WeatherDisplay> setValue, Func<string> name, Func<string> tooltip = null) => this.ConfigMenu?.AddTextOption(
+        private void AddWeatherDropdown(Func<WeatherDisplay> getValue, Action<WeatherDisplay> setValue, Func<string?> name, Func<string?>? tooltip = null) => this.ConfigMenu?.AddTextOption(
             this.Manifest,
             () => getValue().ToString(),
             value => setValue(Enum.TryParse(value, true, out WeatherDisplay display) ? display : WeatherDisplay.ALWAYS),
@@ -311,10 +315,10 @@ namespace ForecasterText {
             formatAllowedValue: value => this.Translations.Get($"config.weather.show.{value.ToLowerInvariant()}")
         );
         
-        private void AddEmojiSelector(string text, Func<uint> get = null, Action<uint> set = null, ConfigMessageParsingRenderer parser = null)
+        private void AddEmojiSelector(string? text, Func<uint> get, Action<uint>? set = null, ConfigMessageParsingRenderer? parser = null)
             => this.AddEmojiSelector(text, text is null ? null : $"{text}.desc", get, set, parser);
         
-        private void AddEmojiSelector(string text, string tooltip, Func<uint> get = null, Action<uint> set = null, ConfigMessageParsingRenderer parser = null) {
+        private void AddEmojiSelector(string? text, string? tooltip, Func<uint> get, Action<uint>? set = null, ConfigMessageParsingRenderer? parser = null) {
             // Unlike other types check if the config exists before constructing types
             if (this.ConfigMenu is {} config) {
                 ConfigEmojiMenu menu = new(this.Mod, this.Translation(text, tooltip), get, i => {
@@ -351,8 +355,8 @@ namespace ForecasterText {
             IConfT9N t9N = this.Translation(text);
             this.AddPageLink(page, t9N.Get, t9N.GetDesc);
         }
-
-        private void AddPageLink(string page, Func<string> text, Func<string> tooltip)
+        
+        private void AddPageLink(string page, Func<string?> text, Func<string?> tooltip)
             => this.ConfigMenu?.AddPageLink(this.Manifest, page, text, tooltip);
         
         private void AddParagraph(string text) => 
@@ -364,22 +368,22 @@ namespace ForecasterText {
         #endregion
         #region Examples
         
-        internal ISourceMessage SpiritExampleMessage(ConfigEmojiMessage message, SpiritMoods mood)
+        internal ISourceMessage? SpiritExampleMessage(ConfigEmojiMessage message, SpiritMoods mood)
             => ISourceMessage.GetDailyLuck(mood);
         
-        internal ISourceMessage RecipeExampleMessage(ConfigEmojiMessage message, bool hasRecipe)
+        internal ISourceMessage? RecipeExampleMessage(ConfigEmojiMessage message, bool hasRecipe)
             => ISourceMessage.GetQueenOfSauce("Trout Soup", hasRecipe);
         
-        internal ISourceMessage BirthdayExampleMessage(ConfigEmojiMessage message, IEnumerable<object> names)
+        internal ISourceMessage? BirthdayExampleMessage(ConfigEmojiMessage message, IEnumerable<object> names)
             => ISourceMessage.GetBirthdays(names, this.ModConfig);
         
-        internal ISourceMessage WeatherExampleMessage(ConfigEmojiMessage message, WeatherIcons weatherDisplay)
+        internal ISourceMessage? WeatherExampleMessage(ConfigEmojiMessage message, WeatherIcons weatherDisplay)
             => new WeatherMessage.TestDisplay(weatherDisplay);
         
         #endregion
         #region Rendering
         
-        public void ReRender<T>(object sender, T e)
+        public void ReRender<T>(object? sender, T e)
             => this.ReRender();
         
         private void ReRender()
@@ -390,30 +394,36 @@ namespace ForecasterText {
         
         private IConfT9N Translation(string key)
             => new ConfigurationTranslation(this.Translations, key);
-        private IConfT9N Translation(string mainKey, string descKey)
+        private IConfT9N Translation(string? mainKey, string? descKey)
             => new ConfigurationTranslation(this.Translations, mainKey, descKey);
         
         private sealed class ConfigurationTranslation : IConfT9N {
             private readonly ITranslationHelper Translations;
-            private readonly string MainKey;
-            private readonly string DescKey;
+            private readonly string? MainKey;
+            private readonly string? DescKey;
             
             public ConfigurationTranslation(
                 ITranslationHelper translations,
-                string key
+                string? key
             ): this(translations, key, key is null ? null : $"{key}.desc") {}
-            public ConfigurationTranslation(ITranslationHelper translations, string mainKey, string descKey) {
+            public ConfigurationTranslation(ITranslationHelper translations, string? mainKey, string? descKey) {
                 this.Translations = translations;
                 this.MainKey = mainKey is null ? null : $"config.{mainKey}";
                 this.DescKey = descKey is null ? null : $"config.{descKey}";
             }
             
             /// <inheritdoc/>
-            public string Get()
+            public string? Get()
+                => this.GetT9N()?.ToString();
+            
+            public Translation? GetT9N()
                 => this.MainKey is null ? null : this.Translations.Get(this.MainKey);
             
             /// <inheritdoc/>
-            public string GetDesc()
+            public string? GetDesc()
+                => this.GetDescT9N()?.ToString();
+            
+            public Translation? GetDescT9N()
                 => this.DescKey is null ? null : this.Translations.Get(this.DescKey);
         }
         

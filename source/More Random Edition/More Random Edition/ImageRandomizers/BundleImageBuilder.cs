@@ -10,7 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using Microsoft.Xna.Framework;
 using System.IO;
 using System.Linq;
 
@@ -30,8 +30,8 @@ namespace Randomizer
 
 		public BundleImageBuilder() : base()
 		{
-			BaseFileName = Globals.GetTranslation("junimo-note-graphic");
-			SubDirectory = "Bundles";
+            StardewAssetPath = "LooseSprites/JunimoNote";
+            SubDirectory = "Bundles";
 			SetUpPointsToBundlesMap();
 			PositionsToOverlay = PointsToBundlesMap.Keys.ToList();
 
@@ -65,7 +65,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Gets a random file name that matches the weapon type at the given position
+		/// Gets a random file name that matches the bundle type at the given position
 		/// Will remove the name found from the list
 		/// </summary>
 		/// <param name="position">The position</param>
@@ -73,11 +73,11 @@ namespace Randomizer
 		protected override string GetRandomFileName(Point position)
 		{
 			Bundle bundle = PointsToBundlesMap[position];
-			return $"{ImageDirectory}/{bundle.ImageName}.png";
+			return Path.Combine(ImageDirectory, $"{bundle.ImageName}.png");
 		}
 
 		/// <summary>
-		/// Whether the settings premit random weapon images
+		/// Whether the settings premit random bundle images
 		/// </summary>
 		/// <returns>True if so, false otherwise</returns>
 		public override bool ShouldSaveImage()
@@ -86,7 +86,7 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// Whether the settings premit random weapon images
+		/// Whether the settings premit random bundle images
 		/// </summary>
 		/// <returns>True if so, false otherwise</returns>
 		protected override bool ShouldSaveImage(Point position)

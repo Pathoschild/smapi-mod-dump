@@ -24,12 +24,12 @@ namespace Randomizer
 			{
 				if (Id == (int)ObjectIndexes.CoffeeBean)
 				{
-					Item coffee = ItemList.Items[(int)ObjectIndexes.Coffee];
+					Item coffee = ItemList.Items[ObjectIndexes.Coffee];
 					string coffeeName = Globals.GetTranslation("item-coffee-name", new { itemName = coffee.CoffeeIngredient });
 					return Globals.GetTranslation("item-coffee-bean-description", new { itemName = coffee.CoffeeIngredient, coffeeName });
 				}
 
-				CropItem growsCrop = (CropItem)ItemList.Items[CropGrowthInfo.CropId];
+				CropItem growsCrop = (CropItem)ItemList.Items[(ObjectIndexes)CropGrowthInfo.CropId];
 				string flowerString = growsCrop.IsFlower ? $"{Globals.GetTranslation("crop-tooltip-flower")} " : "";
 				string scytheString = CropGrowthInfo.CanScythe ? $"{Globals.GetTranslation("crop-tooltip-needs-scythe")} " : "";
 				string trellisString = CropGrowthInfo.IsTrellisCrop ? $"{Globals.GetTranslation("crop-tooltip-trellis")} " : "";

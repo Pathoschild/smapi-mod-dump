@@ -9,6 +9,8 @@
 *************************************************/
 
 {
+  // GUI - Game Menu
+  "OptionsTabTooltip": "UI Info Suite 2 Options",
   //GUI - Billboard
   "Billboard": "Billboard",
   "Calendar": "Calendar",

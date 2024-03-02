@@ -9,12 +9,8 @@
 *************************************************/
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using StardewArchipelago.Archipelago;
-using StardewArchipelago.Goals;
-using StardewModdingAPI;
 
 namespace StardewArchipelago.Locations
 {
@@ -81,6 +77,11 @@ namespace StardewArchipelago.Locations
             var charBefore = startOfItemName == 0 ? ' ' : locationName[startOfItemName - 1];
             var charAfter = locationName.Length <= startOfItemName + itemName.Length ? ' ' : locationName[startOfItemName + itemName.Length];
             return charBefore == ' ' && charAfter == ' ';
+        }
+
+        public void ClearCache()
+        {
+            _wordFilterCache.Clear();
         }
     }
 }

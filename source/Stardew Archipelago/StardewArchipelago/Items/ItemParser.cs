@@ -27,6 +27,7 @@ namespace StardewArchipelago.Items
         public const string FRIENDSHIP_BONUS_PREFIX = "Friendship Bonus (";
         public const string RECIPE_SUFFIX = " Recipe";
 
+        private IMonitor _monitor;
         private StardewItemManager _itemManager;
         private UnlockManager _unlockManager;
         private TrapManager _trapManager;
@@ -36,6 +37,7 @@ namespace StardewArchipelago.Items
         
         public ItemParser(IMonitor monitor, IModHelper helper, Harmony harmony, ArchipelagoClient archipelago, StardewItemManager itemManager, TileChooser tileChooser, BabyBirther babyBirther, GiftSender giftSender)
         {
+            _monitor = monitor;
             _itemManager = itemManager;
             _unlockManager = new UnlockManager(archipelago);
             _trapManager = new TrapManager(monitor, helper, harmony, archipelago, tileChooser, babyBirther, giftSender);
@@ -65,7 +67,10 @@ namespace StardewArchipelago.Items
                 }
 
                 var resourcePackItem = GetResourcePackItem(stardewItemName);
-                return resourcePackItem.GetAsLetter(receivedItem, resourcePackAmount);
+                if (resourcePackItem != null)
+                {
+                    return resourcePackItem.GetAsLetter(receivedItem, resourcePackAmount);
+                }
             }
             
             if (TryParseFriendshipBonus(receivedItem.ItemName, out var numberOfPoints))
@@ -93,9 +98,10 @@ namespace StardewArchipelago.Items
                 return _itemManager.GetRecipeByName(itemOfRecipe).GetAsLetter(receivedItem);
             }
 
-            if (_itemManager.ItemExists(receivedItem.ItemName))
+            var itemName = _nameMapper.GetInternalName(receivedItem.ItemName);
+            if (_itemManager.ItemExists(itemName))
             {
-                var singleItem = GetSingleItem(receivedItem.ItemName);
+                var singleItem = GetSingleItem(itemName);
                 return singleItem.GetAsLetter(receivedItem);
             }
 
@@ -119,7 +125,8 @@ namespace StardewArchipelago.Items
                 return false;
             }
 
-            stardewItemName = apItemName.Substring(apItemName.IndexOf(" ", StringComparison.Ordinal) + 1);
+            var originalItemName = apItemName.Substring(apItemName.IndexOf(" ", StringComparison.Ordinal) + 1);
+            stardewItemName = _nameMapper.GetInternalName(originalItemName);
             return true;
         }
 
@@ -160,7 +167,14 @@ namespace StardewArchipelago.Items
             // So I try the alternate version before giving up
             var isPlural = stardewItemName.EndsWith('s');
             var otherVersion = isPlural ? stardewItemName.Substring(0, stardewItemName.Length - 1) : stardewItemName + "s";
-            return _itemManager.GetItemByName(otherVersion);
+
+            if (_itemManager.ItemExists(otherVersion))
+            {
+                return _itemManager.GetItemByName(otherVersion);
+            }
+
+            _monitor.Log($"Could not properly parse resource pack item: {stardewItemName}", LogLevel.Error);
+            return null;
         }
     }
 }

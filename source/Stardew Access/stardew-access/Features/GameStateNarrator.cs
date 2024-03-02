@@ -28,6 +28,11 @@ internal class GameStateNarrator : FeatureBase
 
     private static GameStateNarrator? instance;
 
+    /// <summary>
+    /// Stores the last 9 spoken hud messages.
+    /// </summary>
+    public static List<string> HudMessagesBuffer = new();
+
     public new static GameStateNarrator Instance
     {
         get
@@ -133,8 +138,9 @@ internal class GameStateNarrator : FeatureBase
                     if (hudMessageQueryKey != searchQuery)
                     {
                         hudMessageQueryKey = searchQuery;
-
                         MainClass.ScreenReader.Say(toSpeak, true);
+                        HudMessagesBuffer.Add(toSpeak);
+                        if (HudMessagesBuffer.Count > 9) HudMessagesBuffer.RemoveAt(0);
                     }
                 }
             }

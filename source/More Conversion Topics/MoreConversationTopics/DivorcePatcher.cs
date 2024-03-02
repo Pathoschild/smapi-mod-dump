@@ -74,7 +74,7 @@ namespace MoreConversationTopics
             try
             {
                 // Use the same logic as doDivorce() to decide which kind of divorce is happening and log for use in postfix
-                if(!__instance.isMarried())
+                if(!__instance.isMarriedOrRoommates())
                 {
                     __state = DivorceState.UnMarriedNoDivorce;
                 }

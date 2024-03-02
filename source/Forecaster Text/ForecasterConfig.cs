@@ -91,7 +91,7 @@ namespace ForecasterText {
         
         public bool SendToOthers { get; set; } = false;
         public bool UseSameForOthers { get; set; } = true;
-        public ForecasterConfig Child { get; set; } = null;
+        public ForecasterConfig? Child { get; set; } = null;
         
         #endregion
         #region Getters

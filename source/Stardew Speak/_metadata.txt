@@ -6,9 +6,9 @@ mods:
    Stardew Speak
 
 latest commit:
-   commit 2719dd549c52d178e7b0860e97c8a326f17f1bf3
+   commit 6c18137e5d2006d2efce63b06e1564fdc592667b
    Author: etfre <evfredericksen@gmail.com>
-   Date:   Wed Jan 10 14:20:29 2024 -0500
+   Date:   Thu Feb 8 21:09:12 2024 -0500
    
-       cleanup wip
+       update pip doc command
    

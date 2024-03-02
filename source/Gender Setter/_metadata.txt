@@ -6,9 +6,9 @@ mods:
    Gender Setter
 
 latest commit:
-   commit 0b16232aa3695e3e2a37714a051ef74ca5da2185
+   commit a84e496ddc746457a57413c8b2a4ffe9c48ee6d6
    Author: sqbr <sqbr@users.noreply.github.com>
-   Date:   Sun Oct 30 23:25:41 2022 +0800
+   Date:   Mon Feb 26 20:57:09 2024 +0800
    
-       Fixed 'Them'
+       updating to 1.6
    

@@ -3,7 +3,6 @@
   "hotkeyList": "None",
   "secondaryCloseButton": "ControllerBack",
   "debug": false,
-  "enableMobilePhoneApp": true,
   "overlay": {
     "enabled": true,
     "clickToMarkDone": true,

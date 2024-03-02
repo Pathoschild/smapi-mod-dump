@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+        <RootNamespace>NeverToxic.$(SolutionName.Replace(" ", "_")).$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Remove="i18n\default.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
+    </ItemGroup>
+    
+    <Import Project="..\..\Common\Common.projitems" Label="Shared" />
+
+</Project>

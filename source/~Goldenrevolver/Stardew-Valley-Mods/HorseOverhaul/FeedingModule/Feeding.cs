@@ -199,8 +199,8 @@ namespace HorseOverhaul
             {
                 if (ignoreMousePosition)
                 {
-                    var playerPos = Game1.player.getStandingXY();
-                    var charaPos = chara.getStandingXY();
+                    var playerPos = Game1.player.StandingPixel;
+                    var charaPos = chara.StandingPixel;
 
                     int xDistance = Math.Abs(playerPos.X - charaPos.X);
                     int yDistance = Math.Abs(playerPos.Y - charaPos.Y);

@@ -16,7 +16,6 @@ using Newtonsoft.Json;
 using StardewArchipelago.Constants;
 using StardewValley;
 using Object = StardewValley.Object;
-using StardewArchipelago.Stardew.NameMapping;
 
 namespace StardewArchipelago.Stardew
 {

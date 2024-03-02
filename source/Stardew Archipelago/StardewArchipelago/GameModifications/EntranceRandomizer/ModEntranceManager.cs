@@ -11,7 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Modded;
 
 namespace StardewArchipelago.GameModifications.EntranceRandomizer
 {
@@ -24,6 +24,7 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
 
         private static readonly Dictionary<string, string> _locationSVE = new()
         {
+            { "Willy's Bedroom", "Custom_WillyRoom" },
             { "Grandpa's Shed Interior", "Custom_GrandpasShedRuins" },
             { "Grandpa's Shed Upstairs", "Custom_GrandpasShedGreenhouse" },
             { "Grandpa's Shed", "Custom_GrandpasShedOutside" },
@@ -70,7 +71,7 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             { "Grampleton Suburbs", "Custom_GrampletonSuburbs" },
             { "Scarlett's House", "Custom_ScarlettHouse" },
             { "Wizard Basement", "Custom_WizardBasement" },
-            { "Witch's Attic", "Custom_Alecto_WitchHutUpstairs"},
+            { "Gunther's Bedroom", "Custom_GunthersRoom"}
         };
 
         private static readonly Dictionary<string, string> _locationEugene = new()
@@ -110,6 +111,40 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             { "Yoba's Clearing", "Custom_Woods3" },
         };                
 
+        private static readonly Dictionary<string, string> _locationAlecto = new()
+        {
+            { "Witch's Attic", "Custom_Alecto_WitchHutUpstairs"},
+        };
+
+        private static readonly Dictionary<string, string> _locationLacey = new()
+        {
+            { "Mouse House", "Custom_HatMouseLacey_MouseHouse"}
+        };
+
+        private static readonly Dictionary<string, string> _locationBoardingHouse = new()
+        {
+            { "Boarding House Outside", "Custom_BoardingHouse_BackwoodsPlateau" },
+            { "Boarding House - First Floor", "Custom_BoardingHouse_BoardingHouse"},
+            { "Boarding House - Second Floor", "Custom_BoardingHouse_BoardingHouse2" },
+            { "Abandoned Mines - 1A", "Custom_BoardingHouse_AbandonedMine1A" },
+            { "Abandoned Mines - 1B", "Custom_BoardingHouse_AbandonedMine1B" },
+            { "Abandoned Mines - 2A", "Custom_BoardingHouse_AbandonedMine2A" },
+            { "Abandoned Mines - 2B", "Custom_BoardingHouse_AbandonedMine2B" },
+            { "Abandoned Mines - 3", "Custom_BoardingHouse_AbandonedMine3" },
+            { "Abandoned Mines - 4", "Custom_BoardingHouse_AbandonedMine4" },
+            { "Abandoned Mines - 5", "Custom_BoardingHouse_AbandonedMine5" },
+            { "Abandoned Mines Entrance", "Custom_BoardingHouse_MineEntrance" },
+            { "The Lost Valley", "Custom_BoardingHouse_TheLostValley" },
+            { "Gregory's Tent", "Custom_BoardingHouse_GregoryTent" },
+            { "Lost Valley Ruins - First House", "Custom_BoardingHouse_Ruins_House1" },
+            { "Lost Valley Ruins - Second House", "Custom_BoardingHouse_Ruins_House2" },
+            { "Lost Valley Ruins", "Custom_BoardingHouse_Ruins" },
+            { "Buffalo's Ranch", "Custom_BoardingHouse_BuffalosRanch" },
+            { "Lost Valley Minecart", "Custom_BoardingHouse_TheLostValley|3|22" }
+
+
+        };                
+
         private static readonly Dictionary<string, Dictionary<string, string>> _locationAliasesByMod = new()
         {
             { ModNames.ALEC, _locationAlec },
@@ -120,6 +155,9 @@ namespace StardewArchipelago.GameModifications.EntranceRandomizer
             { ModNames.JUNA, _locationJuna },
             { ModNames.SVE, _locationSVE },
             { ModNames.YOBA, _locationYoba },
+            { ModNames.ALECTO, _locationAlecto },
+            { ModNames.LACEY, _locationLacey },
+            { ModNames.BOARDING_HOUSE, _locationBoardingHouse },
         };
 
         public Dictionary<string, string> GetModLocationAliases(SlotData slotData)

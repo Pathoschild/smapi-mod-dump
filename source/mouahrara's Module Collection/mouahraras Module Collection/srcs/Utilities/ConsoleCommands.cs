@@ -9,7 +9,6 @@
 *************************************************/
 
 using System.IO;
-using System.Collections.Generic;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -19,24 +18,24 @@ namespace mouahrarasModuleCollection.Utilities
 	{
 		internal static void Load()
 		{
-			ModEntry.Helper.ConsoleCommands.Add("mmc_uninstall", $"Usage: mmc_uninstall\nUninstall the mouahrara's Module Collection mod", (_, _) => MMC_uninstall());
+			ModEntry.Helper.ConsoleCommands.Add("mmc_uninstall", "Uninstall the mouahrara's Module Collection mod", MMC_uninstall);
 		}
 
-		private static void MMC_uninstall()
+		private static void MMC_uninstall(string command, string[] args)
 		{
 			if (!Context.IsWorldReady)
 			{
-				ModEntry.Monitor.Log(ModEntry.Helper.Translation.Get("ConsoleCommands.NoSaveLoaded"), LogLevel.Warn);
+				ModEntry.Monitor.Log("You must load a save to run this command.", LogLevel.Error);
 				return;
 			}
 			if (!Game1.IsMasterGame)
 			{
-				ModEntry.Monitor.Log(ModEntry.Helper.Translation.Get("ConsoleCommands.NotMasterplayer"), LogLevel.Warn);
+				ModEntry.Monitor.Log("You must be the masterplayer to run this command.", LogLevel.Error);
 				return;
 			}
 
 			DisableModules();
-			ModEntry.Monitor.Log(ModEntry.Helper.Translation.Get("ConsoleCommands.CompleteUninstallation", new { ModName = ModEntry.ModManifest.Name, ModsFolder = Path.Combine(Path.GetDirectoryName(ModEntry.Helper.GetType().Assembly.Location), "Mods")}), LogLevel.Info);
+			ModEntry.Monitor.Log($"To complete the uninstallation, please save the game and delete the {ModEntry.ModManifest.Name} mod from the {Path.Combine(Path.GetDirectoryName(ModEntry.Helper.GetType().Assembly.Location), "Mods")} folder.", LogLevel.Info);
 		}
 
 		private static void DisableModules()
@@ -44,13 +43,14 @@ namespace mouahrarasModuleCollection.Utilities
 			ModEntry.Config.ArcadeGamesPayToPlay = false;
 			ModEntry.Config.ArcadeGamesPayToPlayKonamiCode = false;
 			ModEntry.Config.ArcadeGamesPayToPlayNonRealisticLeaderboard = false;
-			ModEntry.Config.ClintsShopSimultaneousServices = false;
-			ModEntry.Config.ClintsShopGeodesAutoProcess = false;
-			ModEntry.Config.FestivalsEndTime = false;
-			ModEntry.Config.FarmViewZoom = false;
-			ModEntry.Config.FarmViewFastScrolling = false;
-			ModEntry.Config.MarniesShopAnimalPurchase = false;
-			ModEntry.Monitor.Log(ModEntry.Helper.Translation.Get("ConsoleCommands.DisableModulesSuccess"), LogLevel.Info);
+			ModEntry.Config.ShopsBetterAnimalPurchase = false;
+			ModEntry.Config.ShopsSimultaneousServices = false;
+			ModEntry.Config.ShopsGeodesAutoProcess = false;
+			ModEntry.Config.MachinesSafeReplacement = false;
+			ModEntry.Config.UserInterfaceZoom = false;
+			ModEntry.Config.UserInterfaceFastScrolling = false;
+			ModEntry.Config.OtherFestivalEndTime = false;
+			ModEntry.Monitor.Log("Modules successfully disabled.", LogLevel.Info);
 		}
 	}
 }

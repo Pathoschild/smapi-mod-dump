@@ -6,11 +6,9 @@ mods:
    Better Sprinklers Plus
 
 latest commit:
-   commit e8bbb7ddc79cda37c4367a9d46b59d947867761c
-   Author: James Macmillan <32203362+jamescodesthings@users.noreply.github.com>
-   Date:   Fri Nov 17 08:16:56 2023 +0000
+   commit 5ea30ab2de24bf71516c9c51d8af45c18dd317bf
+   Author: James Macmillan <jamescodesthings@gmail.com>
+   Date:   Thu Feb 22 21:06:00 2024 +0000
    
-       Fix accodental relicense
-       
-       with apologies to the original license holder.
+       Add UpdateKeys to manifest.json
    

@@ -43,21 +43,4 @@ internal class Delegates
             new ItemQueryResult(flavored)
         };
     }
-
-    [SDelegate.GameStateQuery]
-    public static bool ItemHasSellPrice(string[] query, GameLocation location, Farmer player, Item targetItem, Item inputItem, Random random)
-    {
-        if (!GameStateQuery.Helpers.TryGetItemArg(query, 1, targetItem, inputItem, out Item item, out string error) ||
-            !ArgUtility.TryGetOptionalInt(query, 2, out int minPrice, out error, 0) ||
-            !ArgUtility.TryGetOptionalInt(query, 3, out int maxPrice, out error, int.MaxValue))
-        {
-            return GameStateQuery.Helpers.ErrorResult(query, error);
-        }
-
-        if (item is StardewValley.Object obj && obj.sellToStorePrice(player.UniqueMultiplayerID) >= minPrice)
-        {
-            return obj.sellToStorePrice(player.UniqueMultiplayerID) <= maxPrice;
-        }
-        return false;
-    }
 }

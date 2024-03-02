@@ -32,6 +32,8 @@ namespace Custom_Farm_Loader.GameLoopInjections
         public static Mod Mod;
         private static IMonitor Monitor;
         private static IModHelper Helper;
+
+        private static bool ReachedMaxForage = false;
         public static void Initialize(Mod mod)
         {
             Mod = mod;
@@ -52,8 +54,14 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 return;
 
             CustomFarm customFarm = CustomFarm.getCurrentCustomFarm();
+            update(customFarm.DailyUpdates);
+        }
 
-            foreach (DailyUpdate dailyUpdate in customFarm.DailyUpdates) {
+        public static void update(List<DailyUpdate> dailyUpdates)
+        {
+            ReachedMaxForage = false;
+
+            foreach (DailyUpdate dailyUpdate in dailyUpdates) {
                 if (!dailyUpdate.Filter.isValid(who: Game1.player))
                     continue;
 
@@ -67,73 +75,73 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 Monitor.Log($"Running daily update of type {dailyUpdate.Type} at {dailyUpdate.Area.LocationName}");
                 if (dailyUpdate.Type == DailyUpdateType.TransformWeeds)
                     updateTransformWeeds(dailyUpdate);
+
                 else
                     updateArea(dailyUpdate);
             }
-
         }
 
         public static void updateArea(DailyUpdate dailyUpdate)
         {
             var validTiles = dailyUpdate.validTiles();
+            validTiles = validTiles.OrderBy(x => Game1.random.Next()).Take(dailyUpdate.Attempts).ToList();
 
-            if (dailyUpdate.Attempts < validTiles.Count)
-                validTiles = validTiles.OrderBy(x => Game1.random.Next()).Take(dailyUpdate.Attempts).ToList();
-
-
+            var spawnedCount = countSpawned(dailyUpdate);
             foreach (Vector2 position in validTiles) {
+                if (dailyUpdate.MaxSpawned is not null && spawnedCount >= dailyUpdate.MaxSpawned)
+                    break;
+
                 dailyUpdate.Position = position;
 
                 if (Game1.random.NextDouble() > dailyUpdate.Chance)
                     continue;
 
-                switchDailyUpdate(dailyUpdate);
+                if (switchDailyUpdate(dailyUpdate))
+                    spawnedCount++;
             }
         }
 
-        private static void switchDailyUpdate(DailyUpdate dailyUpdate)
+        private static bool switchDailyUpdate(DailyUpdate dailyUpdate)
         {
             switch (dailyUpdate.Type) {
                 case DailyUpdateType.SpawnResourceClumps:
-                    updateSpawnResourceClumps(dailyUpdate);
-                    break;
+                    return updateSpawnResourceClumps(dailyUpdate);
+
                 case DailyUpdateType.SpawnQuarryRocks:
-                    updateSpawnQuerryRocks(dailyUpdate);
-                    break;
+                    return updateSpawnQuerryRocks(dailyUpdate);
+
                 case DailyUpdateType.SpawnBeachDrops:
-                    //updateSpawnBeachDrops(dailyUpdate);
-                    break;
+                    return updateSpawnBeachDrops(dailyUpdate);
+
                 case DailyUpdateType.SpawnForestFarmDrops:
-                    updateSpawnForestFarmDrops(dailyUpdate);
-                    break;
+                    return updateSpawnForestFarmDrops(dailyUpdate);
+
                 case DailyUpdateType.SpawnForagingDrops:
-                    updateSpawnForagingDrops(dailyUpdate);
-                    break;
+                    return updateSpawnForagingDrops(dailyUpdate);
+
                 case DailyUpdateType.SpawnItemDrops:
-                    updateSpawnItemDrops(dailyUpdate);
-                    break;
+                    return updateSpawnItemDrops(dailyUpdate);
+
                 case DailyUpdateType.SpawnWildCrops:
-                    updateSpawnWildCrops(dailyUpdate);
-                    break;
+                    return updateSpawnWildCrops(dailyUpdate);
             }
+
+            return false;
         }
-        private static void updateSpawnForestFarmDrops(DailyUpdate dailyUpdate)
+        private static bool updateSpawnForestFarmDrops(DailyUpdate dailyUpdate)
         {
             if (Game1.IsWinter)
-                return;
+                return false;
 
 
             var obj = ItemRegistry.Create<StardewValley.Object>(getRandomForestFarmDrop());
-            dailyUpdate.Location.dropObject(obj, dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
-
-
+            return dailyUpdate.Location.dropObject(obj, dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
         }
 
-        private static void updateSpawnForagingDrops(DailyUpdate dailyUpdate)
+        private static bool updateSpawnForagingDrops(DailyUpdate dailyUpdate)
         {
             var obj = ItemRegistry.Create<StardewValley.Object>(getRandomForagingDrop());
-            dailyUpdate.Location.dropObject(obj, dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
-
+            return dailyUpdate.Location.dropObject(obj, dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
         }
 
         private static string getRandomForestFarmDrop()
@@ -172,17 +180,23 @@ namespace Custom_Farm_Loader.GameLoopInjections
             return possibleItems.ElementAt(Game1.random.Next(possibleItems.Count)).ToString();
         }
 
-        private static void updateSpawnBeachDrops(DailyUpdate dailyUpdate)
+        private static bool updateSpawnBeachDrops(DailyUpdate dailyUpdate)
         {
             string itemID = getRandomBeachDrop(dailyUpdate.Position);
             if (itemID == "922" || itemID == "923" || itemID == "924")
-                dailyUpdate.Location.objects.TryAdd(dailyUpdate.Position, new StardewValley.Object(dailyUpdate.Position, itemID) {
+                return dailyUpdate.Location.objects.TryAdd(dailyUpdate.Position, new StardewValley.Object(itemID, 1) {
                     Fragility = 2,
                     MinutesUntilReady = 3
                 });
 
-            else if (itemID != "-1")
-                dailyUpdate.Location.dropObject(new StardewValley.Object(dailyUpdate.Position, itemID), dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
+            else if (itemID != "-1") {
+                var obj2 = ItemRegistry.Create<StardewValley.Object>("(O)" + itemID);
+                obj2.CanBeSetDown = false;
+                obj2.IsSpawnedObject = true;
+                return dailyUpdate.Location.dropObject(obj2, dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
+            }
+
+            return false;
         }
 
         private static string getRandomBeachDrop(Vector2 v)
@@ -209,10 +223,10 @@ namespace Custom_Farm_Loader.GameLoopInjections
             };
         }
 
-        private static void updateSpawnQuerryRocks(DailyUpdate dailyUpdate)
+        private static bool updateSpawnQuerryRocks(DailyUpdate dailyUpdate)
         {
             var obj = ItemRegistry.Create<StardewValley.Object>(getRandomQuerryRock());
-            dailyUpdate.Location.Objects.TryAdd(dailyUpdate.Position, obj);
+            return dailyUpdate.Location.Objects.TryAdd(dailyUpdate.Position, obj);
         }
 
         private static string getRandomQuerryRock()
@@ -260,9 +274,9 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             viableObjects = UtilityMisc.PickSomeInRandomOrder(viableObjects, dailyUpdate.Attempts);
 
-            int attempts = 0;
+            var spawnedCount = countSpawned(dailyUpdate);
             foreach (KeyValuePair<Vector2, StardewValley.Object> obj in viableObjects) {
-                if (attempts++ >= dailyUpdate.Attempts)
+                if (dailyUpdate.MaxSpawned is not null && spawnedCount++ >= dailyUpdate.MaxSpawned)
                     break;
 
                 if (Game1.random.NextDouble() > dailyUpdate.Chance)
@@ -271,28 +285,21 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 //We create a new object because simply changing the parentsheetindex like vanilla does it doesn't seem to work
                 var newObj = ItemRegistry.Create<StardewValley.Object>(((int)SpringObject.getTransformedWeedForSeason(dailyUpdate.Location.GetSeason())).ToString());
                 dailyUpdate.Location.Objects.Remove(obj.Value.TileLocation);
-                dailyUpdate.Location.Objects.Add(obj.Value.TileLocation, newObj);
+                dailyUpdate.Location.Objects.TryAdd(obj.Value.TileLocation, newObj);
             }
         }
 
-        private static void updateSpawnResourceClumps(DailyUpdate dailyUpdate)
+        private static bool updateSpawnResourceClumps(DailyUpdate dailyUpdate)
         {
-            int width = 1;
-            int height = 1;
 
             if (SpringObject.LargeResources.Exists(x => x == dailyUpdate.ResourceClumpID)) {
-                width = 2;
-                height = 2;
-            }
+                if (!dailyUpdate.isValidTile(dailyUpdate.Position + new Vector2(1, 0))
+                    || !dailyUpdate.isValidTile(dailyUpdate.Position + new Vector2(0, 1))
+                    || !dailyUpdate.isValidTile(dailyUpdate.Position + new Vector2(1, 1)))
+                    return false;
 
-            for (int x = (int)dailyUpdate.Position.X; x < dailyUpdate.Position.X + width; x++)
-                for (int y = (int)dailyUpdate.Position.Y; y < dailyUpdate.Position.Y + width; y++)
-                    if (dailyUpdate.Location.IsTileOccupiedBy(new Vector2(x, y)))
-                        return;
-
-            if (SpringObject.LargeResources.Exists(x => x == dailyUpdate.ResourceClumpID)) {
-                dailyUpdate.Location.resourceClumps.Add(new ResourceClump((int)SpringObject.randomizeResourceIDs(dailyUpdate.ResourceClumpID), width, height, dailyUpdate.Position));
-                return;
+                dailyUpdate.Location.resourceClumps.Add(new ResourceClump((int)SpringObject.randomizeResourceIDs(dailyUpdate.ResourceClumpID), 2, 2, dailyUpdate.Position));
+                return true;
             }
 
             string itemId;
@@ -312,24 +319,24 @@ namespace Custom_Farm_Loader.GameLoopInjections
                 itemId = ((int)dailyUpdate.ResourceClumpID).ToString();
 
             var obj = ItemRegistry.Create<StardewValley.Object>(itemId);
-            dailyUpdate.Location.Objects.TryAdd(dailyUpdate.Position, obj);
+            return dailyUpdate.Location.Objects.TryAdd(dailyUpdate.Position, obj);
         }
 
-        private static void updateSpawnItemDrops(DailyUpdate dailyUpdate)
+        private static bool updateSpawnItemDrops(DailyUpdate dailyUpdate)
         {
             if (dailyUpdate.Items.Count == 0)
-                return;
+                return false;
 
             if (dailyUpdate.Location.IsTileOccupiedBy(new Vector2((int)dailyUpdate.Position.X, (int)dailyUpdate.Position.Y)))
-                return;
+                return false;
 
             string itemId = UtilityMisc.PickSomeInRandomOrder(dailyUpdate.Items, 1).First();
 
             var obj = ItemRegistry.Create<StardewValley.Object>(itemId);
-            dailyUpdate.Location.dropObject(obj, dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
+            return dailyUpdate.Location.dropObject(obj, dailyUpdate.Position * 64f, Game1.viewport, initialPlacement: true);
         }
 
-        private static void updateSpawnWildCrops(DailyUpdate dailyUpdate)
+        private static bool updateSpawnWildCrops(DailyUpdate dailyUpdate)
         {
             var whichForageCrop = dailyUpdate.WildCropID switch {
                 WildCropType.Spring_Onion => "1",
@@ -347,14 +354,88 @@ namespace Custom_Farm_Loader.GameLoopInjections
 
             if (dailyUpdate.Location.terrainFeatures.ContainsKey(dailyUpdate.Position)
                 && dailyUpdate.Location.terrainFeatures[dailyUpdate.Position] is HoeDirt hoeDirt //we did already check for this in DailyUpdate.wildCropsException
-                && hoeDirt.crop is null)
+                && hoeDirt.crop is null) {
                 hoeDirt.crop = crop;
-
-            else
+                return true;
+            } else
                 //We add the hoedirt this way, because the constructor which includes the crop doesn't call HoeDirt.initialize for some reason
-                dailyUpdate.Location.terrainFeatures.TryAdd(dailyUpdate.Position, new HoeDirt(0, dailyUpdate.Location) { crop = crop });
-                //dailyUpdate.Location.terrainFeatures.TryAdd(dailyUpdate.Position, new HoeDirt(0, crop));
+                return dailyUpdate.Location.terrainFeatures.TryAdd(dailyUpdate.Position, new HoeDirt(0, dailyUpdate.Location) { crop = crop });
         }
 
+        private static int countSpawned(DailyUpdate dailyUpdate)
+        {
+            switch (dailyUpdate.Type) {
+                case DailyUpdateType.SpawnResourceClumps:
+                    return countSpawnedResourceClumps(dailyUpdate);
+
+                case DailyUpdateType.SpawnQuarryRocks:
+                    return countSpawnedObjects(dailyUpdate, new() { "590", "668", "670", "77", "76", "75", "751", "290", "764", "765" });
+
+                case DailyUpdateType.SpawnBeachDrops:
+                    return countSpawnedObjects(dailyUpdate, new() { "922", "923", "924", "394", "392", "397", "719", "718", "723", "372", "152" });
+
+                case DailyUpdateType.SpawnForestFarmDrops:
+                    return countSpawnedObjects(dailyUpdate, new() { "16", "20", "22", "257", "396", "398", "402", "404", "281", "420", "422", "792" });
+
+                case DailyUpdateType.SpawnForagingDrops:
+                    return countSpawnedObjects(dailyUpdate, new() { "16", "18", "20", "22", "396", "398", "402", "404", "406", "408", "410", "412", "414", "416", "418" });
+
+                case DailyUpdateType.SpawnItemDrops:
+                    return countSpawnedObjects(dailyUpdate, dailyUpdate.Items);
+
+                case DailyUpdateType.SpawnWildCrops:
+                    return countSpawnedCrops(dailyUpdate, new() { ((int)dailyUpdate.WildCropID).ToString() });
+
+                case DailyUpdateType.TransformWeeds:
+                    return countSpawnedObjects(dailyUpdate, new() { "792", "793", "794" });
+            }
+
+            return 0;
+        }
+        private static int countSpawnedResourceClumps(DailyUpdate dailyUpdate)
+        {
+            List<int> itemIds = new();
+
+            if (SpringObject.SmallResources.ContainsKey(dailyUpdate.ResourceClumpID)
+                || SpringObject.LargeResources.Exists(x => x == dailyUpdate.ResourceClumpID)
+                || dailyUpdate.ResourceClumpID == SpringObjectID.Crystal)
+                SpringObject.getVariants(dailyUpdate.ResourceClumpID).ForEach(el => itemIds.Add((int)el));
+
+            else if (dailyUpdate.ResourceClumpID == SpringObjectID.Weed)
+                itemIds = new() { 674, 675, 784, 676, 677, 785, 678, 679, 786 };
+
+            else if (dailyUpdate.ResourceClumpID == SpringObjectID.Transformed_Weed)
+                itemIds = new() {
+                    (int)SpringObjectID.Transformed_Weed,
+                    (int)SpringObjectID.Transformed_Weed_Summer,
+                    (int)SpringObjectID.Transformed_Weed_Fall };
+
+            else
+                itemIds = new() { (int)dailyUpdate.ResourceClumpID };
+
+
+            if (SpringObject.LargeResources.Exists(x => x == dailyUpdate.ResourceClumpID))
+                return dailyUpdate.Location.resourceClumps.Count(el => el is ResourceClump rc && itemIds.Contains(rc.parentSheetIndex.Value) && dailyUpdate.Area.isTileIncluded(el.Tile));
+
+            return countSpawnedObjects(dailyUpdate, itemIds.ConvertAll(el => el.ToString()));
+        }
+
+        //Not checking for IsSpawnedObject because I think that's irrelevant and probably inconsistent with different object types
+        private static int countSpawnedObjects(DailyUpdate dailyUpdate, List<string> itemIds)
+            => dailyUpdate.Location.Objects.Pairs.Count(el => itemIds.Contains(el.Value.ItemId) && dailyUpdate.Area.isTileIncluded(el.Value.TileLocation));
+
+        private static int countSpawnedCrops(DailyUpdate dailyUpdate, List<string> itemIds)
+        {
+            var whichForageCrop = dailyUpdate.WildCropID switch {
+                WildCropType.Spring_Onion => "1",
+                WildCropType.Ginger => "2",
+                _ => ""
+            };
+
+            return dailyUpdate.Location.terrainFeatures.Pairs.Count(el => el.Value is HoeDirt hd
+                                                                   && hd.crop is not null
+                                                                   && (whichForageCrop == "" ? itemIds.Contains(hd.crop.netSeedIndex.Value) : hd.crop.whichForageCrop.Value == whichForageCrop)
+                                                                   && dailyUpdate.Area.isTileIncluded(el.Value.Tile));
+        }
     }
 }

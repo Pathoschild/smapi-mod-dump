@@ -217,8 +217,8 @@ namespace CoreBoy.gpu
         private int GetTileData(int tileId, int line, int byteNumber, int tileDataAddress, bool signed,
             TileAttributes attr, int tileHeight)
         {
-            var effectiveLine = attr.IsYFlip() ? tileHeight - 1 - line : line;
-            var tileAddress = signed ? tileDataAddress + (ToSigned(tileId) * 0x10) : tileDataAddress + (tileId * 0x10);
+            int effectiveLine = attr.IsYFlip() ? tileHeight - 1 - line : line;
+            int tileAddress = signed ? tileDataAddress + (ToSigned(tileId) * 0x10) : tileDataAddress + (tileId * 0x10);
 
             var videoRam = (attr.GetBank() == 0 || !this._gbc) ? this._videoRam0 : this._videoRam1;
             return videoRam.GetByte(tileAddress + (effectiveLine * 2) + byteNumber);
@@ -236,10 +236,10 @@ namespace CoreBoy.gpu
 
         public static int[] Zip(int data1, int data2, bool reverse, int[] pixelLine)
         {
-            for (var i = 7; i >= 0; i--)
+            for (int i = 7; i >= 0; i--)
             {
-                var mask = 1 << i;
-                var p = (2 * ((data2 & mask) == 0 ? 0 : 1)) + ((data1 & mask) == 0 ? 0 : 1);
+                int mask = 1 << i;
+                int p = (2 * ((data2 & mask) == 0 ? 0 : 1)) + ((data1 & mask) == 0 ? 0 : 1);
                 if (reverse)
                 {
                     pixelLine[i] = p;

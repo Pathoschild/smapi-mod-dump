@@ -58,7 +58,7 @@ namespace ForecasterText {
             this.ConfigManager = config;
         }
         
-        public void OnDayStart(object sender, DayStartedEventArgs e) {
+        public void OnDayStart(object? sender, DayStartedEventArgs e) {
             if (!Context.IsWorldReady) {
                 this.Mod.Monitor.Log("World is not ready yet", LogLevel.Error);
                 return;
@@ -67,14 +67,14 @@ namespace ForecasterText {
             // Send messages for each event
             this.SendChatMessages();
         }
-        public void OnFarmerJoin(object sender, Farmer farmer) {
+        public void OnFarmerJoin(object? sender, Farmer farmer) {
             // Send messages for each event
             this.SendChatMessages(farmer);
         }
         
         #region Show messages in chat
         
-        private void SendChatMessages(Farmer peer = null) {
+        private void SendChatMessages(Farmer? peer = null) {
             ISourceMessage[] messages = {
                 new WeatherMessage.PelicanTown(),
                 new WeatherMessage.GingerIsland(),
@@ -89,7 +89,7 @@ namespace ForecasterText {
                 else this.SendChatMessageToPeer(peer, message);
             }
         }
-        private void SendChatMessage(ISourceMessage message) {
+        private void SendChatMessage(ISourceMessage? message) {
             // Ignore if trying to send a disabled message
             if (message is null)
                 return;

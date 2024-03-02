@@ -1,0 +1,364 @@
+﻿{
+	/* TN: config  (tn = translator note) */
+	"config.CustomChance.name": "사용자 지정 기회",
+	"config.CustomChance.description": "10분마다 방문하는 마을 주민 확률.",
+	"config.MaxVisitsPerDay.name": "1일 최대 방문 수",
+	"config.MaxVisitsPerDay.description": "하루에 방문할 수 있는 횟수.",
+	"config.StartingHours.name": "시작 시간",
+	"config.StartingHours.description": "마을 사람들이 방문하기 시작하는 시간.",
+	"config.EndingHours.name": "종료 시간",
+	"config.EndingHours.description": "마을 사람들이 방문을 끝내는 시간.",
+	"config.VisitDuration.name":"지속 시간",
+	"config.VisitDuration.description":"방문 지속 시간, 10분 간격.(예: 3은 30분)",
+	"config.Verbose.name": "상세 로그",
+	"config.Verbose.description": "모드는 더 많은 정보를 기록합니다.",
+	"config.Extras":"기타 설정",
+	"config.Blacklist.name":"블랙리스트",
+	"config.Blacklist.description":"방문을 원하지 않는 캐릭터. 공백으로 구분. (예: Pierre Lewis)",
+	"config.VisitConfiguration":"방문 구성",
+	"config.Debug.name": "디버그",
+	"config.Debug.Explanation":"개발자 옵션.",
+	"config.WalkOnFarm.name": "농장 안 NPC 허용",
+	"config.WalkOnFarm.description": "NPC의 방문 중 농장 밖으로 나가면, NPC가 농장을 돌아다닙니다.",
+
+	/*For translators: your in-laws = the family of your spouse.
+	 * Example: if you're married to alex, george is your "father in law". (explaining in case anyone was confused like me)
+	 *
+	 * Feel free to use your language's equivalent! */
+
+	"config.InLawComments.name":"친척 설정",
+	"config.InLawComments.description": "배우자의 친척이 방문하면 해당 배우자(또는 자녀가 있는 경우)에 대해 물어봅니다. 이것은 바닐라 및 모든 인척 또는 둘 다에 영향을 줄 수 있습니다.",
+	"config.InLawComments.values.VanillaOnly": "바닐라 전용",
+	"config.InLawComments.values.VanillaAndMod": "바닐라 및 모든 NPC",
+	"config.InLawComments.values.None": "없음",
+	"config.ReplacerCompat.name":"대체\n호환성",
+	"config.ReplacerCompat.description":"NPC 교체자와 호환되도록 이 옵션을 설정합니다.",
+	
+	//new content
+	"config.AskForConfirmation.name": "허용 요청",
+	"config.AskForConfirmation.description": "NPC는 (질문을 통해) 농장에 입장할 수 있는 권한을 요청합니다.",
+	"config.RejectionDialogues.name": "거절에 대한 대화",
+	"config.RejectionDialogues.description": "방문이 거절될 경우, NPC가 이에 대한 상호작용을 남깁니다.",
+	"config.ReceiveGifts.name": "선물 받기",
+	"config.ReceiveGifts.description": "활성화시, 방문객이 선물을 가져옵니다.",
+	"Visit.AllowOrNot": "{0}이(가) 찾아왔습니다. 문을 열어줄까요?",
+	"Visit.Yes": "열어주기",
+	"Visit.No": "가만히 있기",
+
+	/* TN: command errors */
+	"error.WorldNotReady":"이 명령을 사용하려면 저장을 로드해야 합니다.",
+	"error.InvalidValue":"잘못된 값입니다.",
+	"error.NotInFarmhouse":"당신은 농가에 있지 않습니다, NPC는 들어올 수 없습니다.",
+
+	/* TN: bad schedule (when the user adds one via ContentPatcher) */
+	"FromHigherThanTo":"시작 시간이 종료 시간보다 큽니다. 게임을 수정하고 다시 시작합니다.",
+	"NotInSave": "NPC가 현재 저장되지 않았습니다.(잠금 해제하셨나요?)",
+	"CantBe2600":"2600시에 방문을 종료할 수 없습니다.",
+	"CantBe600":"600시에 방문을 시작할 수 없습니다.",
+
+	/* TN: If you don't let them enter / reject the visit */
+	//by social
+	"NPCRejected.Outgoing1": "이런. 다음에 또 와야겠네.",
+	"NPCRejected.Outgoing2": "집에 아무도 없나?",
+	"NPCRejected.Outgoing3": "조용하네...#$b#아쉬워라.$1",
+	"NPCRejected.Shy1": "아마도 집에 아무도 없나보네...",
+	"NPCRejected.Shy2": "계세요?#$b#...아마도 제 시간을 놓친 거 같아.",
+	"NPCRejected.Shy3": "...$2",
+	//by manners
+	"NPCRejected.Polite1": "제가 시간을 잘못 찾아 온 것 같네요.",
+	"NPCRejected.Polite2": "...#$b#@이(가) 잘 지내고 있길 바래요.",
+	"NPCRejected.Polite3": "...지금 집에 아무도 없는 거 같아요.",
+	"NPCRejected.Neutral1": "계세요...#$b#음. 돌아가야겠네.",
+	"NPCRejected.Neutral2": "흠?#$b#@이(가) 집에 있는 줄 알았는데.",
+	"NPCRejected.Neutral3": "...",
+	"NPCRejected.Rude1": "@이(가) 여기 없다고?#$b#운이 별론걸.$2",
+	"NPCRejected.Rude2": "이봐요. 아무도 없어요?",
+	"NPCRejected.Rude3": "이런. 아무도 없어요..? $2",
+	
+	/* If allowed to enter and "ask for confirmation" is on */
+	//by social
+	"NPCThanking.Outgoing1": "고마워. 날씨가 정말 험하네.",
+	"NPCThanking.Outgoing2": "지난번에 왔을 때랑 집이 뭔가 달라보이네.#$b#뭐 바꾼 거 있어?",
+	"NPCThanking.Outgoing3": "%farm 농장엔 정말 뭐가 많네.",
+	"NPCThanking.Shy1": "혹시 내가 방해가 될까?",
+	"NPCThanking.Shy2": "들여보내줘서 고마워.",
+	"NPCThanking.Shy3": "...",
+	//by manners
+	"NPCThanking.Polite1": "이곳까지 오는 길은 정말 괜찮았어요.",
+	"NPCThanking.Polite2": "초대받지 않고 와서 미안해요.",
+	"NPCThanking.Polite3": "감사합니다, @.",
+	"NPCThanking.Neutral1": "그래서, 깜짝 방문은 어때요?",
+	"NPCThanking.Neutral2": "농장이 정말 보기 좋네요.",
+	"NPCThanking.Neutral3": "여기가 정말 마음에 들어요.",
+	"NPCThanking.Rude1": "음, 그런대로 괜찮네요.",
+	"NPCThanking.Rude2": "도착했네... 발이 아프기 시작했어요.",
+	"NPCThanking.Rude3": "여긴 너무 마을 바깥에 있어요.",
+
+	/* TN: introduction */
+	//by social
+	"NPCIntroduce.Outgoing1": "@? 나 들어갈게!",
+	"NPCIntroduce.Outgoing2": "@? 나야!",
+	"NPCIntroduce.Outgoing3": "@? 문 열어!",
+	"NPCIntroduce.Shy1": "@, 거기 있어?",
+	"NPCIntroduce.Shy2": "@?",
+	"NPCIntroduce.Shy3": "안녕? 집에 누구 있어?",
+	//by manners
+	"NPCIntroduce.Polite1": "안녕하세요, 들어가도 될까요?",
+	"NPCIntroduce.Polite2": "실례합니다...",
+	"NPCIntroduce.Polite3": "(똑똑)",
+	"NPCIntroduce.Neutral1": "거기 누구 있나요?",
+	"NPCIntroduce.Neutral2": "여보세요? @?",
+	"NPCIntroduce.Neutral3": "@, 저예요.",
+	"NPCIntroduce.Rude1": "@, 저 밖에 있어요.",
+	"NPCIntroduce.Rude2": "안녕하세요..? @..?",
+	"NPCIntroduce.Rude3": "여보세요...@, 거기 있어요?",
+
+	/* TN: walk into house */
+	//by social
+	"NPCWalkIn.Outgoing1": "안녕, {0}!",
+	"NPCWalkIn.Outgoing2": "이봐!",
+	"NPCWalkIn.Outgoing3": "안녕하세요!",
+	"NPCWalkIn.Shy1": "안녕, {0}",
+	"NPCWalkIn.Shy2": "실례합니다.",
+	"NPCWalkIn.Shy3": "안녕하세요",
+	//by manners
+	"NPCWalkIn.Polite1": "실례합니다.",
+	"NPCWalkIn.Polite2": "안녕하세요, 인사드립니다.",
+	"NPCWalkIn.Polite3": "인사드립니다.",
+	"NPCWalkIn.Neutral1": "안녕하세요, {0}!",
+	"NPCWalkIn.Neutral2": "들어 갈께요.",
+	"NPCWalkIn.Neutral3": "안녕하세요.",
+	"NPCWalkIn.Rude1": "이봐요, {0}.",
+	"NPCWalkIn.Rude2": "들어갈게요.",
+	"NPCWalkIn.Rude3": "안녕하세요.",
+
+	/* TN: greeting player */
+	//by social
+	"NPCGreet.Outgoing1": "안녕. 잘 지냈어? 지나가다 잠깐 들린거야.$1",
+	"NPCGreet.Outgoing2": "안녕. 농장은 어때? 그래서 확인해보려고 들렸지.$1",
+	"NPCGreet.Outgoing3": "안녕! 오랜만이야.$1",
+	"NPCGreet.Shy1": "안녕, @. 잘 지냈어? 농장은 수월한 것 같네.",
+	"NPCGreet.Shy2": "안녕, @... 지나가다 잠깐 들렸어.",
+	"NPCGreet.Shy3": "이봐, @. 반가워. 어떻게 지내는지 궁금했어.",
+	//by manners
+	"NPCGreet.Polite1": "@, 초대받지 않고 방문드려서 죄송합니다.#$b#당신을 한번 만나보고 싶었어요.",
+	"NPCGreet.Polite2": "인사를 드립니다. 만나서 반갑군요, @.",
+	"NPCGreet.Polite3": "실례합니다... 혹여라도 제 방문이 실례를 끼치지 않았나요?$1",
+	"NPCGreet.Neutral1": "이야기하러 왔어... 안녕, @.",
+	"NPCGreet.Neutral2": "저기, 지나가는 길에 시끄러운 소리가 나서요...#$b#뭔가 무슨 일이 있나 하고 들렸어요. 하하.$1",
+	"NPCGreet.Neutral3": "안녕하세요, @. 한번 집들이를 와 보고 싶었어요.#$b#그래서 깜짝 방문을 하려고 들렸죠.",
+	"NPCGreet.Rude1": "저기, @! 나를 잊은 거에요?",
+	"NPCGreet.Rude2": "안녕하세요, @.",
+	"NPCGreet.Rude3": "저기, 지나가다가 당신이 집 안에 있는 걸 봐버렸지 뭐에요...#$b#그냥 지나가려고 했는데.",
+	
+	/* TN: if player wants to receive gifts. 
+	 * Same lines as the ones in NPCGreet- just moved to their own translation key.
+	 * (and some extra ones as new content) */
+	"NPCGift.Normal1": "선물을 가져왔어.[{0}]", //outgoing1, outgoing2
+	"NPCGift.Normal2": "여기, 널 위한 선물이야.[{0}]", //outgoing3
+	"NPCGift.Normal3": "도움이 될까봐 선물을 준비했어.[{0}]", //shy3
+	"NPCGift.Normal4": "여기, 이걸 보니까 당신 생각이 나더라고요.[{0}]", //neutral1
+	"NPCGift.Normal5": "여기, 이건 네 물건 같더라고. 그래서 샀어. [{0}]", //original
+	"NPCGift.Kind1": "그래서 도움이 될 만한 선물을 가져왔어요. [{0}]", //polite1
+	"NPCGift.Kind2": "여기, 도움이 될 만한 선물을 가져왔어요. [{0}]", //polite2
+	"NPCGift.Kind3": "도움이 될 만한 선물을 가져왔어요. [{0}]", //polite3
+	"NPCGift.Kind4": "이걸 보니까 당신 생각이 났어요.[{0}]", //neutral2
+	"NPCGift.Kind5": "좋아할 거 같은 물건이던데.[{0}]", //original
+	"NPCGift.Lax1": "여기. 이거 받아.[{0}]", //original
+	"NPCGift.Lax2": "이거 봐봐요. 당신을 위한 선물을 가져왔어요.[{0}]", //rude1
+	"NPCGift.Lax3": "당신을 위한 선물이야. 받아요.[{0}]", //rude3
+	"NPCGift.Lax4": "여기. 예비로 써.[{0}]", //original
+	"NPCGift.Lax5": "오다가 주웠어요.[{0}]", //rude2
+	
+	/* TN: in-law/family dialogue. 15 Generic ones + 3 Unique for each spouse
+	 * FOR TRANSLATORS: This dialogue is said by the family -of- the character! e.g, InLaw.Alex dialogues are said by Evelyn or George. Hope this clears any confusion!
+     
+     * game will replace %farm by the farm name. please don't translate that word! (similarly, {0} is replaced by the character name) */
+
+	 //generic lines (for any spouse)
+	"InLaw.Generic.1": "지금 {0}이(가) 집에 있어?",
+	"InLaw.Generic.2": "{0}을(를) 본 지 너무 오래된것 같아...",
+	"InLaw.Generic.3": "{0}은(는) 어떻게 지내? 둘이 잘 지내고 있는거야?",
+	"InLaw.Generic.4": "안녕, {0} 여기 있어?",
+	"InLaw.Generic.5": "{0}은(는) 어딨어, @?",
+	"InLaw.Generic.6": "너랑 {0}은(는) 잘 지니? @, 별일 없지?",
+	"InLaw.Generic.7": "{0}을(를) 한동안 못 봤네...",
+	"InLaw.Generic.8": "{0}이(가) %farm 농장에서 즐겁길 바라고 있어..." ,
+	"InLaw.Generic.9": "{0}은(는) 잘 지내고 있어?",
+	"InLaw.Generic.10": "@... {0}은(는) 잘지내니?",
+	"InLaw.Generic.11": "안녕, {0}은(는) 어딨어?",
+	"InLaw.Generic.12": "@, {0} 집에 있어?",
+	"InLaw.Generic.13": "{0}이(가) 오늘 여기에 있어?",
+	"InLaw.Generic.14": "@... {0}은(는) 어떻게 지내?",
+	"InLaw.Generic.15": "@, {0}은(는) 있어? 오랜만이야.$1",
+
+	//for vanilla spouses
+	"InLaw.Abigail.1": "아비게일은 아직도 친구들과 함께 밴드에 있는거야?",
+	"InLaw.Abigail.2": "아비게일이 아직도 오컬트를 좋아하나?#$b#너무 위험하지 않았으면 좋겠는데...$2",
+	"InLaw.Abigail.3": "애비게일이 잘 지내길 바래.",
+
+	"InLaw.Alex.1": "알렉스가 여기로 이사온 이후로 집이 조용해졌어.#$b#하지만 난 알렉스가 행복하길 바래.$1",
+	"InLaw.Alex.2": "내 손자는 어때?",
+	"InLaw.Alex.3": "내 손자가 아직도 그리드볼을 하는거야?",
+
+	"InLaw.Emily.1": "에밀리는 어때?#$b#여전히 앵무새를 돌보고 있어?",
+	"InLaw.Emily.2": "에밀리는 매일 살롱 때문에 바빴는데...$2#$b#이제 좀 쉬고 있길 바래.",
+	"InLaw.Emily.3": "에밀리는 너와 함께 농장에서 사는 걸 정말 좋아할 거야, @.",
+
+	"InLaw.Haley.1": "헤일리랑 어떻게 지내?$1",
+	"InLaw.Haley.2": "헤일리가 농장을 그렇게 좋아할 줄이야...",
+	"InLaw.Haley.3": "@, 헤일리는 아직도 사진을 찍어?",
+
+	"InLaw.Maru.1": "마루는 아직도 실험을 하고 있어?",
+	"InLaw.Maru.2": "마루는 충분히 쉬고 있지?#$b#농장과 병원에서 일하는 건 정말 힘들겠어",
+	"InLaw.Maru.3": "마루는 어디 있어, @?#$b#딸이 보고싶네...$1",
+
+	"InLaw.Penny.1": "페니는 여전히 아이들을 가르치고 있는거야?",
+	"InLaw.Penny.2": "@...#$b#페니좀 볼 수 있을까?",
+	"InLaw.Penny.3": "@, 페니는 뭐하고 있었어??",
+
+	"InLaw.Sam.1": "샘은 아직도 기타를 연주하니?#$b#스케이트 타는 건 어때?",
+	"InLaw.Sam.2": "@, 우리 아들은 잘 지내니?",
+	"InLaw.Sam.3": "샘이 화분을 잘 관리하고 있는건지...",
+
+	"InLaw.Sebastian.1": "세바스찬이 아직도 오토바이를 가지고 있어?",
+	"InLaw.Sebastian.2": "세바스찬이 농장에서 산다는 건 상상도 못했는데...#$b#세바스찬이 여기서 행복했으면 좋겠어.",
+	"InLaw.Sebastian.3": "@, 닭 키우고 있어?#$b#세바스찬이 달걀이 가득한 집에서 어떻게 지내는지 궁금해.$1",
+
+	"InLaw.Shane.1": "안녕, 쉐인은? 찰리는?",
+	"InLaw.Shane.2": "쉐인은 잘 지내고 있어?",
+	"InLaw.Shane.3": "셰인은 농장에서 행복하게 살 수 있을 것 같아.",
+
+	/* TN: ask about your kids, 1 to 5
+	 * if you have kids, this is added right after InLaw. */
+	"ask.singlechild.1":"{0}을(를) 마지막으로 본 지 꽤 됐네...",
+	"ask.singlechild.2":"@, {0}은(는) 여기 있어?",
+	"ask.singlechild.3":"{0}을(를) 한동안 못본것 같아...",
+	"ask.singlechild.4":"@, {0}은(는) 잘 지내고 있어?",
+	"ask.singlechild.5":"내가 마지막으로 여기에 온 이후로 {0}이(가) 많이 컸을것 같아.",
+
+	"ask.multiplechild.1":"@, {0}은(는) 어디에 있어?#$b#그리고 {1}은(는) 어때?",
+	"ask.multiplechild.2":"{0}, {1}을(를) 한동안 보지 못했어.",
+	"ask.multiplechild.3":"{0}, {1}은(는) 어때? 아이는 여기 있어?",
+	"ask.multiplechild.4":"{1}과(와) {0}은(는) 잘 지내니?",
+	"ask.multiplechild.5":"{0}과(와) {1}은(는) 지금 집에 있어?",
+
+	/*talk about furniture*/
+	//by social
+	"NPCFurniture.Outgoing1":"{0}은(는) 네 농가에 잘 어울려.",
+	"NPCFurniture.Outgoing2":"이봐, 그거 {0} 언제 받았어?",
+	"NPCFurniture.Outgoing3":"@, 이거 {0} 파는 거야?#$b#농담이야.$1.",
+	"NPCFurniture.Shy1":"그래서, 그 {0}...#$b#정말 예쁘네.",
+	"NPCFurniture.Shy2":"{0}이(가) 있는지 몰랐어!$1",
+	"NPCFurniture.Shy3":"{0} 너는... 고향에 있던 아이를 생각나게 해",
+	//by manners
+	"NPCFurniture.Polite1": "@, {0}... 이 집에 활기를 불어넣고 있네요.",
+	"NPCFurniture.Polite2": "이곳을 꾸미는 데 많은 노력을 기울였군요. @...$1",
+	"NPCFurniture.Polite3": "죄송합니다만, 언제부터 이 {0}을(를) 가지고 있었나요?#$b#정말 마음에 들어요.$1",
+	"NPCFurniture.Neutral1": "이봐요, 이거 멋져요.$1",
+	"NPCFurniture.Neutral2": "집이 정말 멋져요...그 {0}을(를) 사용하면 훨씬 더 좋을것 같아요.",
+	"NPCFurniture.Neutral3": "여기 너무 좋아요, @.#$b#저 {0} 좀 보세요! 정말 멋진 것 같아요.$$1",
+	"NPCFurniture.Rude1": "{0}이(가) 마음에 들어요.",
+	"NPCFurniture.Rude2": "언제부터 {0}을(를) 가지고 있으셨어요?$1",
+	"NPCFurniture.Rude3": "{0}, 이것, 어디에서 구하셨어요?",
+
+	/* TN: Talking about animals */
+	//by social
+	"NPCAnimal.Outgoing1": "{0}이(가) 꽤 많이 자랐네, 그치?",
+	"NPCAnimal.Outgoing2": "{0}은(는) 여기 사는 걸 좋아하겠다.",
+	"NPCAnimal.Outgoing3": "{0}... 정말 이름 귀엽다!$1",
+	"NPCAnimal.Shy1": "{0}은(는) 정말 빨리 자라는 거 같아.",
+	"NPCAnimal.Shy2": "{0}은(는) 여기 사는 걸 좋아할까?",
+	"NPCAnimal.Shy3": "{0}... 정말 멋진 이름이야!",
+	//by manners
+	"NPCAnimal.Polite1": "동물 키우기를 좋아하시는 거 같네요, @.",
+	"NPCAnimal.Polite2": "그래서, {0}을(를) 키우는 건... 잘 되고 있나요?",
+	"NPCAnimal.Polite3": "%farm은(는) 넓으니까, {0}에게 산책을 좀 시켜주는 거 어때요?.",
+	"NPCAnimal.Neutral1": "언제부터 {0}을(를) 기르셨나요?",
+	"NPCAnimal.Neutral2": "저기, 저 아이가 {0}인가요?",
+	"NPCAnimal.Neutral3": "%farm은(는) 정말로 넓네요...",
+	"NPCAnimal.Rude1": "{0}은(는) 문제를 일으킨 적 없어요?",
+	"NPCAnimal.Rude2": "{0}은(는) %farm에 살아서 좋겠네요. 운이 좋군요.",
+	"NPCAnimal.Rude3": "당신은 동물을 좋아하네요, @?",
+
+	/* TN: Talking about crops */
+	//by social
+	"NPCCrop.Outgoing1": "{0}? %farm에서 보기 전엔 한번도 본 적 없는 거야!$1",
+	"NPCCrop.Outgoing2": "{0}을(를) 심기 좋은 계절이야!#$b#좋은 선택이네.",
+	"NPCCrop.Outgoing3": "이거... {0} 맞지? 아니야?$1",
+	"NPCCrop.Shy1": "@, 저거, {0}야?",
+	"NPCCrop.Shy2": "네 \"{0}\"은(는) 분명 잘 자랄거야.",
+	"NPCCrop.Shy3": "...그래서, 너는 {0}을(를) 먹는 걸 좋아해?",
+	//by manners
+	"NPCCrop.Polite1": "{0}을(를) 심게 된 이유가 있나요, @?",
+	"NPCCrop.Polite2": "\"{0}\"... 한번도 가까이서 본 적은 없었는데.",
+	"NPCCrop.Polite3": "{0}은(는) 잘 팔리나요, @?",
+	"NPCCrop.Neutral1": "당신이 {0}을(를) 좋아하는지는 몰랐어요.",
+	"NPCCrop.Neutral2": "그래서, \"{0}\"에 대해서 이야기해줄 수 있나요?",
+	"NPCCrop.Neutral3": "\"{0}\"? 주방에서 요리해보신 적 있나요?",
+	"NPCCrop.Rude1": "저기, @.#$b#내가 {0}을(를) 먹어도 될까요? 하. 하.$1",
+	"NPCCrop.Rude2": "농장에서 {0}을(를) 키우는 건 별로죠?",
+	"NPCCrop.Rude3": "{0}? 여기서는 자라기 힘들어 보이는데요...",
+	
+	/* TN: Talking about winter */
+	//by social
+	"NPCWinter.Outgoing1": "와, 엄청 추워! $1",
+	"NPCWinter.Outgoing2": "저기. 안은 엄청 따뜻했었는데.$1#$b#다시 안으로 돌아가자.",
+	"NPCWinter.Outgoing3": "%farm이(가) 눈에 뒤덮였네...",
+	"NPCWinter.Shy1": "평생 %farm이(가) 이렇게 평화로워 보이는 건 처음 보는 거 같아.",
+	"NPCWinter.Shy2": "음, 우리 다시 들어가지 않을래?",
+	"NPCWinter.Shy3": "좀 춥네...",
+	//by manners
+	"NPCWinter.Polite1": "눈이 쌓인 게 무슨 문제라도 될까요, @?",
+	"NPCWinter.Polite2": "여기서 보는 경치가 정말 좋네요.",
+	"NPCWinter.Polite3": "따뜻한 음료를 마시기엔 정말 좋은 날씨에요.",
+	"NPCWinter.Neutral1": "겨울을 좋아하세요, @?",
+	"NPCWinter.Neutral2": "겨울에 심을 수 있는 게 있나요?",
+	"NPCWinter.Neutral3": "눈사람을 만들어 보셨나요?",
+	"NPCWinter.Rude1": "왜 저를 여기에 데려오신 거에요?$3#$b#너무 추워요, 아시다시피.",
+	"NPCWinter.Rude2": "지금은 볼 것도 별로 없네요.$2",
+	"NPCWinter.Rude3": "여기서 눈싸움을 하면 딱이겠네요...",
+
+	/* TN: If there's no crops, no animals, and it's not winter */
+	//by social
+	"NPCNoneYet.Outgoing1": "어떤 작물을 재배하려고?",
+	"NPCNoneYet.Outgoing2": "그래서... 이 농장의 어떤 부분을 제일 좋아해?",
+	"NPCNoneYet.Outgoing3": "이번 계절을 준비하긴 한 거야? %farm은(는) 버려진 것처럼 보여.",
+	"NPCNoneYet.Shy1": "정말 조용해...",
+	"NPCNoneYet.Shy2": "호수도 있고, 산도 있네.",
+	"NPCNoneYet.Shy3": "@, 와. 엄청 넓네.",
+	//by manners
+	"NPCNoneYet.Polite1": "이 농장은... 정말로 조용하네요.",
+	"NPCNoneYet.Polite2": "여기서 살면 좋겠군요.",
+	"NPCNoneYet.Polite3": "동물을 좋아하나요, @?#$b#농장에서는 동물도 기를 수 있답니다.",
+	"NPCNoneYet.Neutral1": "%farm에서 씨앗들을 뿌려놓으면 순식간에 자랄 거에요.",
+	"NPCNoneYet.Neutral2": "@, 아직도 아무 동물도 사지 않으신 거에요?'",
+	"NPCNoneYet.Neutral3": "@, 이곳에서 농작물이 정말 잘 자란다던데, #$b#정말인가요??",
+	"NPCNoneYet.Rude1": "심을 씨앗이 없으신가 봐요?",
+	"NPCNoneYet.Rude2": "아무런 동물도 뛰어다니지 않는군요...",
+	"NPCNoneYet.Rude3": "@...#$b#동물을 무서워하나보네요?",
+
+	/* TN: leaving */
+	//by social
+	"NPCRetiring.Outgoing1": "즐거웠어. 이제 이만 난 가봐야 할 거 같아.#$b#나중에 봐!",
+	"NPCRetiring.Outgoing2": "시간이 벌써 이렇게 됐네. 난 이만 가볼게.",
+	"NPCRetiring.Outgoing3": "나중에 봐, @.",
+	"NPCRetiring.Shy1": "늦어지고 있어... 이제 가야될 거 같아.#$b#만나서 반가웠어!",
+	"NPCRetiring.Shy2": "해야할 일이 있어. 재밌었네 오늘.#$b#고마워, @.$1",
+	"NPCRetiring.Shy3": "미안, @. 나 이제 돌아가봐야 해.#$b#시간 내 줘서 기뻐.",
+	//by manners
+	"NPCRetiring.Polite1": "@, 이제 가봐야 할 거 같아요. 해야할 일이 있거든요.#$b#만나서 즐거웠어요!$1",
+	"NPCRetiring.Polite2": "여기 온 지 꽤 됐네요... 저는 이만 가보겠습니다.#$b#다음에 봐요, @.",
+	"NPCRetiring.Polite3": "@, 당신을 만나서 즐거웠어요.#$b#기분 좋은 하루가 되기를 바래요.",
+	"NPCRetiring.Neutral1": "저기, 시간 좀 봐요... 조금 전에 갔어야 했어요.#$b#다음에 또 만나요!$1",
+	"NPCRetiring.Neutral2": "밖이 어두워지기 전에 지금 출발할게요.#$b#또 봐요, @.",
+	"NPCRetiring.Neutral3": "할 일이 있으신 모양이니 이만 가볼게요.#$b#재밌었어요.$1",
+	"NPCRetiring.Rude1": "저는... 제가 당신을 바쁘게 하고 있나 봐요.#$b#나중에 봐요.",
+	"NPCRetiring.Rude2": "너무 오랫동안 여기 있었어요... 갈 거예요.#$b#다음에 봐요, @.",
+	"NPCRetiring.Rude3": "벌써 꽤 늦었어요. 다른 날 또 봐요.",
+	
+	/* TN: gone while outside */
+	"NPCGoneWhileOutside": "당신이 밖에서 시간을 보내는 동안, {0}이(가) 떠났습니다.",
+	"NPCGone_Cellar": "당신이 지하에서 시간을 보내는 동안, {0}이(가) 떠났습니다.",
+	"NPCGone_Farm": "당신이 농장에서 시간을 보내는 동안, {0}이(가) 떠났습니다."
+}

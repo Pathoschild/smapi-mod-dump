@@ -1,0 +1,148 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/elizabethcd/FireworksFestival
+**
+*************************************************/
+
+{
+	"Changes": [
+		// Add shop dialogue
+		{
+			"LogName": "Add shop NPC dialogue for Birdie and Fireworks Fox",
+			"Action": "EditData",
+			"Target": "Strings/StringsFromCSFiles",
+			"Entries": {
+				"vlFireworks.Birdie": "{{i18n:BirdieShop}}",
+				"vlFireworks.Fox": "{{i18n:FoxShop}}",
+			}
+		},
+		// Load fox portrait
+		{
+			"LogName": "Load fireworks fox portrait",
+			"Action": "Load",
+			"Target": "Portraits/FireworksFox",
+			"FromFile": "assets/FoxPortrait.png"
+		},
+		// Add niter to blacksmith shop
+		{
+		    "LogName": "Add niter to Clint's",
+		    "Action": "EditData",
+		    "Target": "Data/Shops",
+		    "TargetField": [ "Blacksmith", "Items" ],
+		    "Entries": {
+		        "(O){{MainModID}}.Niter": {
+						"Price": 100,
+						"AvailableStock": -1,
+						"Condition": null,
+						"Id": "(O){{MainModID}}.Niter",
+						"ItemId": "(O){{MainModID}}.Niter",
+					},
+		    }
+		},
+		// Create fireworks shop
+		{
+			"LogName": "Create fireworks shop",
+			"Action": "EditData",
+			"Target": "Data/Shops",
+			"Entries": {
+				"{{MainModID}}PurpleBoat": {
+					"Currency": 0,
+					"Owners": [
+					{
+						"Condition": null,
+						"Portrait": "Portraits\\Birdie",
+						"Dialogues": [
+							{
+								"Id": "Default",
+								"Condition": null,
+								"Dialogue": "[LocalizedText Strings\\StringsFromCSFiles:vlFireworks.Birdie]",
+							}
+						],
+						"Id": "AnyOrNone",
+						"Name": "AnyOrNone"
+					}
+					],
+					"SalableItemTags": [
+						"ingredient_firework"
+					],
+					"Items": [
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Condition": null,
+							"Id": "(O){{MainModID}}.RedFirework",
+							"ItemId": "(O){{MainModID}}.RedFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Condition": null,
+							"Id": "(O){{MainModID}}.OrangeFirework",
+							"ItemId": "(O){{MainModID}}.OrangeFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Condition": null,
+							"Id": "(O){{MainModID}}.YellowFirework",
+							"ItemId": "(O){{MainModID}}.YellowFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Condition": null,
+							"Id": "(O){{MainModID}}.GreenFirework",
+							"ItemId": "(O){{MainModID}}.GreenFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Condition": null,
+							"Id": "(O){{MainModID}}.BlueFirework",
+							"ItemId": "(O){{MainModID}}.BlueFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Condition": null,
+							"Id": "(O){{MainModID}}.PurpleFirework",
+							"ItemId": "(O){{MainModID}}.PurpleFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Condition": null,
+							"Id": "(O){{MainModID}}.WhiteFirework",
+							"ItemId": "(O){{MainModID}}.WhiteFirework",
+						},
+						{
+							"Price": 50000,
+							"AvailableStock": 1,
+							"Condition": "!PLAYER_HAS_MAIL Current vl.fireworkslicense",
+							"Id": "(O){{MainModID}}.FireworksLicense",
+							"ItemId": "(O){{MainModID}}.FireworksLicense",
+						},
+					],
+				}
+			}
+		},
+		{
+			"LogName": "Add fireworks shop to festival map",
+			"Action": "EditMap",
+			"Target": "Maps/Beach-FireworksFestival",
+			"MapTiles": [
+				{
+					"Position": { "X": 25, "Y": 39 },
+					"Layer": "Buildings",
+					"SetProperties": {
+						"Action": "OpenShop {{MainModID}}PurpleBoat"
+					}
+				}
+			]
+		}
+	]
+}

@@ -9,6 +9,7 @@
 *************************************************/
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using StardewDruid.Cast;
 using StardewDruid.Character;
 using StardewDruid.Map;
@@ -54,8 +55,6 @@ namespace StardewDruid.Event
 
         public MonsterHandle monsterHandle;
 
-        //public List<Torch> torchList;
-
         public List<StardewDruid.Event.Brazier> braziers;
 
         public List<StardewDruid.Character.Actor> actors;
@@ -67,6 +66,8 @@ namespace StardewDruid.Event
         public bool soundTrack;
 
         public List<Vector2> ladders;
+
+        public Dictionary<int, Dictionary<int, string>> cues;
 
         public EventHandle(Vector2 target, Rite rite)
         {
@@ -98,6 +99,8 @@ namespace StardewDruid.Event
             ladders = new();
 
             animations = new();
+
+            cues = new();
 
         }
 
@@ -319,6 +322,35 @@ namespace StardewDruid.Event
         {
 
             activeCounter++;
+
+        }
+
+        public void DialogueCue(Dictionary<int, Dialogue.Narrator> narrators,Dictionary<int,StardewValley.NPC> overheads, int cueIndex = -1)
+        {
+
+            if (cues.ContainsKey(cueIndex))
+            {
+
+                foreach(KeyValuePair<int,string> cue in cues[cueIndex])
+                {
+
+                    if (narrators.ContainsKey(cue.Key))
+                    {
+
+                        narrators[cue.Key].DisplayHUD(cue.Value);
+
+                    }
+
+                    if (overheads.ContainsKey(cue.Key))
+                    {
+
+                        overheads[cue.Key].showTextAboveHead(cue.Value);
+
+                    }
+
+                }
+
+            }
 
         }
 

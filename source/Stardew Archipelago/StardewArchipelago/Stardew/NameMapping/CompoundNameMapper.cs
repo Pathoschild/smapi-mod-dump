@@ -11,22 +11,29 @@
 using System.Linq;
 using System.Collections.Generic;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Modded;
 
 namespace StardewArchipelago.Stardew.NameMapping
 {
-    public class CompoundNameMapper : INameMapper
+    public class CompoundNameMapper : INameMapper, IRecipeNameMapper
     {
         private List<INameMapper> _mappers;
+        private List<IRecipeNameMapper> _recipeMappers;
 
         public CompoundNameMapper(SlotData slotData)
         {
             _mappers = new List<INameMapper>();
-            _mappers.Add(new CraftingRecipeNameMapper());
+            _recipeMappers = new List<IRecipeNameMapper>();
+
+            // This one is not the same type of mapping
+            var craftingRecipeMapper = new CraftingRecipeNameMapper();
+            _recipeMappers.Add(craftingRecipeMapper);
 
             if (slotData.Mods.HasMod(ModNames.ARCHAEOLOGY))
             {
-                _mappers.Add(new ArchaeologyNameMapper());
+                var archaeologyMapper = new ArchaeologyNameMapper();
+                _mappers.Add(archaeologyMapper);
+                _recipeMappers.Add(archaeologyMapper);
             }
         }
 
@@ -40,9 +47,19 @@ namespace StardewArchipelago.Stardew.NameMapping
             return _mappers.Aggregate(englishName, (current, nameMapper) => nameMapper.GetInternalName(current));
         }
 
-        public bool RecipeNeedsMapping(string itemOfRecipe)
+        public string GetItemName(string recipeName)
         {
-            return _mappers.Any(x => x.RecipeNeedsMapping(itemOfRecipe));
+            return _recipeMappers.Aggregate(recipeName, (current, nameMapper) => nameMapper.GetItemName(current));
+        }
+
+        public string GetRecipeName(string itemName)
+        {
+            return _recipeMappers.Aggregate(itemName, (current, nameMapper) => nameMapper.GetRecipeName(current));
+        }
+
+        public bool RecipeNeedsMapping(string itemName)
+        {
+            return _recipeMappers.Any(x => x.RecipeNeedsMapping(itemName));
         }
     }
 }

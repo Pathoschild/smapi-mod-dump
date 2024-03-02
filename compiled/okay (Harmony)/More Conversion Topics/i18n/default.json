@@ -1,6 +1,8 @@
 ﻿{
   // GMCM
   "mod-description": "Adds conversation topics for use in dialogue mods.",
+  "EngagementDuration.title": "Engagement/New Roommate Duration",
+  "EngagementDuration.description":  "People may comment on you getting engaged/a new roommate for this many days afterwards.",
   "WeddingDuration.title": "Wedding Duration",
   "WeddingDuration.description": "People may comment on your wedding for this many days afterwards.",
   "BirthDuration.title": "Birth Duration",
@@ -33,6 +35,8 @@
   "FairyVisitDuration.description": "People may comment on the fairy visiting your farm for this many days afterwards.",
   "IslandResortDuration.title": "Island Resort Unlock Duration",
   "IslandResortDuration.description": "People may comment on the resort being unlocked for this many days afterwards.",
+  "SelfishShrineDuration.title": "Shrine of Selfishness Duration",
+  "SelfishShrineDuration.description": "People may comment on the action of the dark shrine of selfishness for this many days afterwards.",
 
   // Errors
   "IllFormattedConfig": "Config file seems ill-formatted, using default. Please use Generic Mod Config Menu to configure.",

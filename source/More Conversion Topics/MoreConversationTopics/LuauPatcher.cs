@@ -46,11 +46,11 @@ namespace MoreConversationTopics
         }
 
         // Method that is used to postfix
-        private static void Event_governorTaste_Postfix(Event __instance)
+        private static void Event_governorTaste_Postfix(Event __instance, string[] ___eventCommands)
         {
             try
             {
-                string governorReactionString = __instance.eventCommands[__instance.CurrentCommand + 1];
+                string governorReactionString = ___eventCommands[__instance.CurrentCommand + 1];
                 if (governorReactionString.EndsWith("6"))
                 {
                     MCTHelperFunctions.AddOrExtendCT("luauShorts", Config.LuauDuration);

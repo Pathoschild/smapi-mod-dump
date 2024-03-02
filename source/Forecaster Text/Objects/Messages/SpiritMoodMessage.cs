@@ -41,7 +41,7 @@ using StardewValley;
 namespace ForecasterText.Objects.Messages {
     public sealed class SpiritMoodMessage : ISourceMessage {
         /// <inheritdoc />
-        public string Write(Farmer farmer, ITranslationHelper t9N, ForecasterConfig config) {
+        public string? Write(Farmer farmer, ITranslationHelper t9N, ForecasterConfig config) {
             SpiritMoods mood = this.GetSpiritMood(farmer);
             
             if ( // If any of the "Show Luck" options is turned off

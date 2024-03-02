@@ -84,7 +84,7 @@ namespace SpeedrunPractice.Framework
             // draw centered quarter screen
             // draw 1/3 down from top
             // draw rectangle
-            Vector2 playerTile = Game1.player.getTileLocation();
+            Vector2 playerTile = Game1.player.Tile;
             Rectangle progressRectGlobal = new Rectangle((int)(playerTile.X - 3 + 0.5) * Game1.tileSize, (int)(playerTile.Y - 2) * Game1.tileSize, Game1.tileSize * 6, Game1.tileSize / 2);
             Rectangle progressRect = Game1.GlobalToLocal(Game1.viewport, progressRectGlobal);
             if (fadeCounter > 0)

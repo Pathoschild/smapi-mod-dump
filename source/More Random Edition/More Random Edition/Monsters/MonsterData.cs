@@ -12,67 +12,58 @@ using System.Collections.Generic;
 
 namespace Randomizer
 {
-	/// <summary>
-	/// Contains data about monsters
-	/// </summary>
-	public class MonsterData
+    /// <summary>
+    /// Contains data about monsters
+    /// </summary>
+    public class MonsterData
 	{
-		/// <summary>
-		/// The data from the xnb file. Note the following changes:
-		/// - The value -4 is changed to coal
-		/// - The value -6 is changed to gold ore
-		/// 
-		/// These changes were based on the source code
-		/// See the constructor for "Debrs" in Debris.cs
-		/// </summary>
-		public static List<string> DefaultStringData = new List<string>
+		private static Dictionary<string, string> DefaultMonsterData;
+
+        /// <summary>
+        /// Initialize the data from the XNB file, but make the following changes:
+        /// - The value -4 is changed to coal
+        /// - The value -6 is changed to gold ore
+        /// 
+        /// These changes were based on the source code
+        /// See the constructor for "Debrs" in Debris.cs
+        /// </summary>
+        private static void Initialize()
 		{
-			"24/5/0/0/false/1000/766 .75 766 .05 153 .1 66 .015 92 .15 96 .005 99 .001/1/.01/4/2/.00/true/3/Green Slime",
-			"40/6/0/0/false/1000/382 .5 433 .01 336 .001 84 .02 414 .02 97 .005 99 .001/2/.00/4/3/.00/true/2/Dust Spirit",
-			"24/6/0/0/true/1000/767 .9 767 .4 108 .001 287 .02 96 .005 99 .001/1/.01/4/3/.00/true/3/Bat",
-			"36/7/0/0/true/1000/767 .9 767 .55 108 .001 287 .02 97 .005 99 .001/1/.01/4/3/.00/true/7/Frost Bat",
-			"80/15/0/0/true/1000/767 .9 767 .7 108 .001 287 .02 98 .005 99 .001/1/.01/4/3/.00/true/15/Lava Bat",
-			"300/30/0/0/true/1000/386 .9 386 .5 386 .25 386 .1 288 .05 768 .5 773 .05 349 .05 787 .05 337 .008/1/.01/4/3/.00/true/22/Iridium Bat",
-			"45/5/0/0/false/1000/390 .9 80 .1 382 .1 380 .1 96 .005 99 .001/5/.01/3/2/.00/true/5/Stone Golem",
-			"30/5/0/0/false/1000/771 .9 771 .5 770 .5 382 .1 86 .005 72 .001/1/.01/3/2/.00/true/5/Wilderness Golem",
-			"20/4/0/0/false/1000/684 .6 273 .05 273 .05 157 .02 114 .005 96 .005 99 .001/0/.005/3/1/.00/true/2/Grub",
-			"22/6/0/0/true/1000/684 .9 157 .02 114 .005 96 .005 99 .001/1/.005/13/2/.0/true/10/Fly",
-			"106/7/0/0/false/1000/766 .75 412 .08 70 .02 98 .015 92 .5 97 .005 99 .001/0/.01/4/2/.0/true/6/Frost Jelly",
-			$"205/16/0/0/false/1000/766 .8 157 .1 {(int)ObjectIndexes.Coal} .1 72 .01 92 .5 98 .005 99 .001/0/.01/4/2/.0/true/10/Sludge",
-			$"125/20/0/0/false/0/769 .75 769 .1 329 .02 337 .002 336 .01 335 .02 334 .04 203 .04 293 .03 108 .003 {(int)ObjectIndexes.Coal} .1 98 .005 99 .001/2/.01/-1/2/.0/true/15/Shadow Guy",
-			$"96/10/0/3/false/0/768 .95 768 .1 156 .08 338 .08 {(int)ObjectIndexes.GoldOre} .2 97 .005 99 .001/3/.01/12/4/.0/true/15/Ghost",
-			"190/25/0/3/false/0/749 .99 338 .1/3/.01/12/4/.0/true/20/Carbon Ghost",
-			"40/6/0/0/false/0/286 .25 535 .25 280 .03 105 .02 86 .1 72 .01 96 .005 99 .001/0/.01/1/2/.0/true/10/Duggy",
-			"30/5/0/0/false/0/717 .15 286 .4 96 .005 99 .001/1/0/1/2/.0/true/4/Rock Crab",
-			"120/15/0/0/false/0/717 .25 287 .4 98 .005 99 .001/3/0/1/3/.0/true/12/Lava Crab",
-			"240/15/0/0/false/0/732 .5 386 .5 386 .5 386 .5/3/0/1/3/.0/true/20/Iridium Crab",
-			"1/18/0/0/true/0/768 .75 814 .9 814 .5 814 .2 336 .05 287 .1 288 .05 98 .005 99 .001/2/0/6/3/.0/true/15/Squid Kid", // Added two squid ink drops for balance
-			"300/12/1/3/false/0/769 .25 105 .03 106 .03 166 .001 60 .04 232 .04 72 .03 74 .01 97 .005 99 .001/3/0/5/2/.0/true/15/Skeleton Warrior",
-			$"160/18/0/0/false/0/814 .75 769 .75 769 .1 337 .002 336 .01 335 .02 334 .04 203 .04 108 .003 {(int)ObjectIndexes.Coal} .1 98 .005 99 .001 74 .0005/2/.01/8/3/.0/true/15/Shadow Brute", // Added squid ink drop for balance
-			$"80/17/0/0/false/0/769 .75 769 .2 337 .002 336 .01 335 .02 334 .04 108 .003 {(int)ObjectIndexes.Coal} .1 98 .005 99 .001 74 .0005/2/.01/8/3/.0/true/15/Shadow Shaman",
-			"140/10/0/2/false/2000/881 .5 881 .4 881 .2 579 .005/1/.01/8/2/.0/true/8/Skeleton",
-			"60/5/0/2/false/2000/80 0/1/.01/8/2/.0/true/8/Skeleton Mage",
-			"40/15/0/0/false/2000/768 .65 378 .1 378 .1 380 .1 380 .1 382 .1 98 .005 99 .001/8/.01/8/2/.0/true/6/Metal Head",
-			"5/15/0/0/false/2000/378 .1 378 .1 380 .1 380 .1 382 .1/4/.01/8/2/.0/true/1/Spiker",
-			"1/8/0/0/false/2000/684 .76 157 .02 114 .005 96 .005 99 .001/0/0/-1/2/.0/true/1/Bug",
-			"260/30/0/3/false/1000/768 .99 428 .2 428 .05 768 .15 243 .04 99 .001 74 .001/0/.01/8/2/.0/true/20/Mummy",
-			"60/5/0/0/false/1000/766 .99 766 .9 766 .4 99 .001/0/.01/5/2/.0/true/7/Big Slime",
-			"150/23/0/2/true/1000/769 .99 769 .15 287 .15 226 .06 446 .008 74 .001/0/.01/13/2/.0/true/20/Serpent",
-			"300/15/0/0/false/1000/80 0/5/.01/3/2/.0/true/7/Pepper Rex",
-			"415/23/0/0/false/1000/766 .8 157 .1 -4 .1 72 .01 92 .5 98 .005 99 .001/0/.01/4/2/.0/true/20/Tiger Slime",
-			"220/15/0/0/false/1000/881 .5 881 .4 881 .2 852 .15/5/.01/3/2/.0/true/12/Lava Lurk",
-			"250/18/0/0/false/2000/768 .65 287 .1 378 .1 378 .1 380 .1 380 .1 382 .1 833 .1 833 .1 98 .005 99 .001/8/.01/8/2/.0/true/16/Hot Head",
-			"220/15/0/0/true/2000/848 .5 848 .2/8/.01/8/2/.0/true/15/Magma Sprite",
-			"380/16/0/0/false/0/831 .5 831 .5 288 .4 848 .4 848 .15/0/.01/1/2/.0/true/18/Magma Duggy",
-			"310/15/0/0/true/2000/848 .5 848 .2/8/.01/8/2/.0/true/17/Magma Sparker",
-			"290/15/0/0/false/0/851 .99 848 .5 848 .2/3/0/1/3/.0/true/14/False Magma Cap",
-			"300/18/0/0/true/0/60 .1 62 .1 64 .1 66 .1 68 .1 70 .1 72 .1/5/0/-1/3/.0/true/15/Dwarvish Sentry",
-			"500/25/0/3/false/0/749 .99/3/.01/12/4/.0/true/25/Putrid Ghost",
-			"300/18/0/0/false/0/769 .75 769 .1 337 .002 336 .01 335 .02 334 .04 203 .04 108 .003 -4 .1 98 .005 99 .001 74 .0005/2/.1/8/3/.0/true/20/Shadow Sniper",
-			"200/15/0/0/false/0/769 .75 769 .1 337 .002 336 .01 335 .02 334 .04 203 .04 108 .003 -4 .1 98 .005 99 .001 74 .0005/2/.1/8/3/.0/true/15/Spider",
-			"150/23/0/2/true/1000/769 .99 769 .15 287 .15 226 .06 446 .008 74 .001/0/.01/13/2/.0/true/20/Royal Serpent",
-			"80/18/0/0/true/0/768 .75 814 .2 336 .05 287 .1 288 .05 98 .005 99 .001/2/0/6/3/.0/true/15/Blue Squid"
-		};
+            DefaultMonsterData = Globals.ModRef.Helper.GameContent
+				.Load<Dictionary<string, string>>("Data/Monsters");
+
+			foreach(KeyValuePair<string, string> data in DefaultMonsterData)
+			{
+				string key = data.Key;
+				string[] dataParts = data.Value.Split("/");
+
+				// Note that parsing this will replace -4 and -6 with the appropriate items
+				List<ItemDrop> itemDrops = ItemDrop.ParseString(dataParts[(int)MonsterFields.ItemDrops]);
+
+				// Additional squid ink is added to the pool for balance purposes, since there's barely
+				// anything that drops it, and it may be required for recipes
+				switch (key)
+				{
+                    // Add two squid ink drops before the one that already exists
+                    // Should result in: 814 .9 814 .5 814 .2 (.2 already exists)
+                    case "Squid Kid":
+						const int SquidKidInkIndex = 1;
+						itemDrops.Insert(SquidKidInkIndex, new ItemDrop(ObjectIndexes.SquidInk, 0.5));
+                        itemDrops.Insert(SquidKidInkIndex, new ItemDrop(ObjectIndexes.SquidInk, 0.9));
+                        break;
+					// Add one squid innk drop at the start of the list
+					case "Shadow Brute":
+                        const int ShadowBruteInkIndex = 0;
+                        itemDrops.Insert(ShadowBruteInkIndex, new ItemDrop(ObjectIndexes.SquidInk, 0.75));
+						break;
+                }
+
+				// Actually replace the item drops
+				dataParts[(int)MonsterFields.ItemDrops] = string.Join(" ", itemDrops);
+
+				DefaultMonsterData[key] = string.Join("/", dataParts);
+			}
+		}
 
 		public enum MonsterFields
 		{
@@ -101,7 +92,7 @@ namespace Randomizer
 		public static Monster ParseMonster(string data)
 		{
 			string[] fields = data.Split('/');
-			if (fields.Length != 15)
+			if (fields.Length < 15)
 			{
 				Globals.ConsoleError($"Incorrect number of fields when parsing monster with input: {data}");
 				return null;
@@ -202,21 +193,27 @@ namespace Randomizer
 		}
 
 		/// <summary>
-		/// The weapon items in dictionary form - data taken from Monsters.xnb
+		/// The weapon items in dictionary form - data taken from Data/Monsters.xnb
 		/// </summary>
 		/// <returns />
 		public static List<Monster> GetAllMonsters()
 		{
-			List<Monster> monsters = new List<Monster>();
-			foreach (string data in DefaultStringData)
+			if (DefaultMonsterData == null)
+			{
+                Initialize();
+            }
+
+			List<Monster> monsters = new();
+			foreach (string data in DefaultMonsterData.Values)
 			{
 				Monster monster = ParseMonster(data);
-				if (monster != null)
+				if (monster != null && monster.IsMinesMonster)
 				{
-					monsters.Add(ParseMonster(data));
+					monsters.Add(monster);
 				}
 			}
 
+			// count should be 45
 			return monsters;
 		}
 	}

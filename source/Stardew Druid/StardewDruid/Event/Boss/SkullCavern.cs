@@ -46,6 +46,9 @@ namespace StardewDruid.Event.Boss
 
         public override void EventTrigger()
         {
+
+            cues = DialogueData.DialogueScene(questData.name);
+
             ModUtility.AnimateRadiusDecoration(targetLocation, targetVector, "Weald", 1f, 1f);
 
             ModUtility.AnimateRockfalls(targetLocation, targetPlayer.getTileLocation());
@@ -105,6 +108,7 @@ namespace StardewDruid.Event.Boss
 
         public override bool EventExpire()
         {
+            
             if (eventLinger == -1)
             {
                 
@@ -149,8 +153,8 @@ namespace StardewDruid.Event.Boss
 
                     if (!questData.name.Contains("Two"))
                     {
-
-                        Mod.instance.characters["Jester"].showTextAboveHead("Thanatoshi... why...", -1, 2, 3000, 0);
+                        
+                        DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = Mod.instance.characters["Jester"], }, 991);
 
                     }
 
@@ -187,7 +191,6 @@ namespace StardewDruid.Event.Boss
             if (activeCounter == 2)
             {
                 
-                Location.LocationData.SkullCavernAdd();
                 Location.LocationData.SkullCavernEdit();
                 targetLocation = Game1.getLocationFromName("UndergroundMine145");
                 targetVector = new Vector2(13f, 18f);
@@ -196,6 +199,9 @@ namespace StardewDruid.Event.Boss
                 Game1.xLocationAfterWarp = 13;
                 Game1.yLocationAfterWarp = 19;
 
+                EventQuery("LocationEdit");
+                //EventQuery("LocationPortal");
+
                 voicePosition = new(17 * 64f, 13 * 64f);
                 return;
             }
@@ -203,10 +209,9 @@ namespace StardewDruid.Event.Boss
             if (activeCounter == 3)
             {
 
-                EventQuery("LocationEdit");
+                targetPlayer.Position = new(targetVector.X * 64, targetVector.Y * 64);//Vector2.op_Multiply(targetVector, 64f);
                 EventQuery("LocationPortal");
 
-                targetPlayer.Position = new(targetVector.X * 64, targetVector.Y * 64);//Vector2.op_Multiply(targetVector, 64f);
                 bossMonster = MonsterData.CreateMonster(17, new Vector2(13f, 9f)) as Reaper;
                 if (questData.name.Contains("Two"))
                 {
@@ -230,35 +235,12 @@ namespace StardewDruid.Event.Boss
 
             }
 
-            if (activeCounter == 5 && Mod.instance.characters["Jester"].currentLocation.Name == targetLocation.Name)
-                Mod.instance.characters["Jester"].showTextAboveHead("What a moment...", -1, 2, 3000, 0);
+            if(Mod.instance.characters["Jester"].currentLocation.Name == targetLocation.Name)
+            {
 
-            if (activeCounter == 10 && Mod.instance.characters["Jester"].currentLocation.Name == targetLocation.Name)
-                Mod.instance.characters["Jester"].showTextAboveHead("Thanatoshi?", -1, 3, 3000, 0);
+                DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = Mod.instance.characters["Jester"], }, activeCounter);
 
-            if (activeCounter == 15 && Mod.instance.characters["Jester"].currentLocation.Name == targetLocation.Name)
-                Mod.instance.characters["Jester"].showTextAboveHead("Farmer, it's him, The Reaper of Fate", -1, 3, 3000, 0);
-
-            if (activeCounter == 20 && Mod.instance.characters["Jester"].currentLocation.Name == targetLocation.Name)
-                Mod.instance.characters["Jester"].showTextAboveHead("Thanatoshi, stop messing around!", -1, 3, 3000, 0);
-
-            if (activeCounter == 25 && Mod.instance.characters["Jester"].currentLocation.Name == targetLocation.Name)
-                Mod.instance.characters["Jester"].showTextAboveHead("I am a Fate too you know, the Jester?", -1, 2, 3000, 0);
-
-            if (activeCounter == 30 && Mod.instance.characters["Jester"].currentLocation.Name == targetLocation.Name)
-                Mod.instance.characters["Jester"].showTextAboveHead("It's no use, he's insane", -1, 2, 3000, 0);
-
-            if (activeCounter == 35 && Mod.instance.characters["Jester"].currentLocation.Name == targetLocation.Name)
-                Mod.instance.characters["Jester"].showTextAboveHead("That's... a cutlass... on the shaft", -1, 2, 3000, 0);
-
-            if (activeCounter == 40 && Mod.instance.characters["Jester"].currentLocation.Name == targetLocation.Name)
-                Mod.instance.characters["Jester"].showTextAboveHead("What has he done to himself?", -1, 2, 3000, 0);
-
-            if (activeCounter == 40 && Mod.instance.characters["Jester"].currentLocation.Name == targetLocation.Name)
-                Mod.instance.characters["Jester"].showTextAboveHead("I guess we have no choice...", -1, 2, 3000, 0);
-
-            if (activeCounter == 50 && Mod.instance.characters["Jester"].currentLocation.Name == targetLocation.Name)
-                Mod.instance.characters["Jester"].showTextAboveHead("For Fate and Fortune!", -1, 3, 3000, 0);
+            }
 
             if (activeCounter > 5)
             {
@@ -294,6 +276,7 @@ namespace StardewDruid.Event.Boss
                 ResetBraziers();
 
             }
+        
         }
 
         public void SecondFight()
@@ -304,12 +287,12 @@ namespace StardewDruid.Event.Boss
             if (secondCounter < 9)
             {
 
+                DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [1] = actors[0], }, secondCounter + 200);
+
                 switch (secondCounter)
                 {
 
                     case 1:
-
-                        CastVoice("...yesss...");
 
                         targetLocation.playSoundPitched("DragonRoar", 1200);
 
@@ -319,15 +302,11 @@ namespace StardewDruid.Event.Boss
 
                     case 3:
 
-                        CastVoice("you have done well, shaman");
-
                         targetLocation.playSoundPitched("DragonRoar", 800);
 
                         break;
 
                     case 5:
-
-                        CastVoice("...I return...");
 
                         targetLocation.playSoundPitched("DragonRoar", 400);
 
@@ -350,56 +329,19 @@ namespace StardewDruid.Event.Boss
                 return;
             }
 
-            if(secondCounter == 15)
-            {
-                secondMonster.showTextAboveHead("For centuries I lingered in bone");
-            }
-
-            if (secondCounter == 20)
-            {
-                secondMonster.showTextAboveHead("As the reaper leeched my life force");
-            }
-
-            if (secondCounter == 25)
-            {
-                secondMonster.showTextAboveHead("But an ancient is never truly gone");
-            }
-
-            if (secondCounter == 30)
-            {
-                secondMonster.showTextAboveHead("As long as my ether remains");
-            }
-
-            if (secondCounter == 35)
-            {
-                secondMonster.showTextAboveHead("I will gather the essence of your soul");
-            }
-
-            if (secondCounter == 40)
-            {
-                secondMonster.showTextAboveHead("And fashion new form from your pieces");
-            }
-
-            if (secondCounter == 45)
-            {
-                secondMonster.showTextAboveHead("The Mistress of Fortune will face my wrath");
-            }
-
-            if (secondCounter == 50)
-            {
-                secondMonster.showTextAboveHead("I will make her my servant");
-            }
-
             if (!ModUtility.MonsterVitals(secondMonster, targetLocation))
             {
-                CastVoice("...rwwwghhhh...");
+                DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [1] = actors[0], }, 992);
 
                 targetLocation.playSoundPitched("DragonRoar", 400);
 
                 expireEarly = true;
 
+                return;
+
             }
 
+            DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [1] = secondMonster, }, secondCounter + 200);
 
             if (activeCounter % 30 == 0)
             {

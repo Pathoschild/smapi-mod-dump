@@ -136,16 +136,8 @@ namespace WarpNetwork.framework
 			builder.AppendLine("\t\"Enabled\": \"TRUE\",");
 			builder.AppendLine("\t\"Label\": \"label\"");
 			builder.Append('}');
-			if (DesktopClipboard.IsAvailable)
-			{
-				DesktopClipboard.SetText(builder.ToString());
-				print("\nJSON copied to clipboard!\n");
-			}
-			else
-			{
-				print("\nClipboard not available, printing to console!\n");
-				print(builder.ToString());
-			}
+			DesktopClipboard.SetText(builder.ToString());
+			print("\nJSON copied to clipboard!\n");
 		}
 		private static void GetHeldID(string[] args)
 		{

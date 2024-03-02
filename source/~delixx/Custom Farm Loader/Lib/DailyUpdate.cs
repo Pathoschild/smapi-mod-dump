@@ -42,6 +42,7 @@ namespace Custom_Farm_Loader.Lib
         public List<BackgroundType> BackgroundTypes = new List<BackgroundType>();
         public Vector2 Position = new Vector2(0, 0);
         public GameLocation Location = null;
+        public int? MaxSpawned = null;
 
         public static void Initialize(Mod mod)
         {
@@ -87,6 +88,9 @@ namespace Custom_Farm_Loader.Lib
                             break;
                         case "attempts":
                             dailyUpdate.Attempts = int.Parse(value);
+                            break;
+                        case "maxspawned":
+                            dailyUpdate.MaxSpawned = int.Parse(value);
                             break;
                         case "backgrounds":
                             dailyUpdate.BackgroundTypes = UtilityMisc.parseEnumArray<BackgroundType>(property);

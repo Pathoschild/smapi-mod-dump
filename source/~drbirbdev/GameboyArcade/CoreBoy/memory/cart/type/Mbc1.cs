@@ -42,7 +42,7 @@ namespace CoreBoy.memory.cart.type
             this._ramBanks = ramBanks;
             this._romBanks = romBanks;
             this._ram = new int[0x2000 * this._ramBanks];
-            for (var i = 0; i < this._ram.Length; i++)
+            for (int i = 0; i < this._ram.Length; i++)
             {
                 this._ram[i] = 0xff;
             }
@@ -72,7 +72,7 @@ namespace CoreBoy.memory.cart.type
             else if (address >= 0x2000 && address < 0x4000)
             {
                 // LOG.trace("Low 5 bits of ROM bank: {}", (value & 0b00011111));
-                var bank = this._selectedRomBank & 0b01100000;
+                int bank = this._selectedRomBank & 0b01100000;
                 bank = bank | (value & 0b00011111);
                 this.SelectRomBank(bank);
                 this._cachedRomBankFor0X0000 = this._cachedRomBankFor0X4000 = -1;
@@ -80,7 +80,7 @@ namespace CoreBoy.memory.cart.type
             else if (address >= 0x4000 && address < 0x6000 && this._memoryModel == 0)
             {
                 // LOG.trace("High 2 bits of ROM bank: {}", ((value & 0b11) << 5));
-                var bank = this._selectedRomBank & 0b00011111;
+                int bank = this._selectedRomBank & 0b00011111;
                 bank = bank | ((value & 0b11) << 5);
                 this.SelectRomBank(bank);
                 this._cachedRomBankFor0X0000 = this._cachedRomBankFor0X4000 = -1;
@@ -88,7 +88,7 @@ namespace CoreBoy.memory.cart.type
             else if (address >= 0x4000 && address < 0x6000 && this._memoryModel == 1)
             {
                 // LOG.trace("RAM bank: {}", (value & 0b11));
-                var bank = value & 0b11;
+                int bank = value & 0b11;
                 this._selectedRamBank = bank;
                 this._cachedRomBankFor0X0000 = this._cachedRomBankFor0X4000 = -1;
             }
@@ -100,7 +100,7 @@ namespace CoreBoy.memory.cart.type
             }
             else if (address >= 0xa000 && address < 0xc000 && this._ramWriteEnabled)
             {
-                var ramAddress = this.GetRamAddress(address);
+                int ramAddress = this.GetRamAddress(address);
                 if (ramAddress < this._ram.Length)
                 {
                     this._ram[ramAddress] = value;
@@ -130,7 +130,7 @@ namespace CoreBoy.memory.cart.type
             {
                 if (this._ramWriteEnabled)
                 {
-                    var ramAddress = this.GetRamAddress(address);
+                    int ramAddress = this.GetRamAddress(address);
                     if (ramAddress < this._ram.Length)
                     {
                         return this._ram[ramAddress];
@@ -155,7 +155,7 @@ namespace CoreBoy.memory.cart.type
                 }
                 else
                 {
-                    var bank = this._selectedRamBank << 5;
+                    int bank = this._selectedRamBank << 5;
                     if (this._multicart)
                     {
                         bank >>= 1;
@@ -173,7 +173,7 @@ namespace CoreBoy.memory.cart.type
         {
             if (this._cachedRomBankFor0X4000 == -1)
             {
-                var bank = this._selectedRomBank;
+                int bank = this._selectedRomBank;
                 if (bank % 0x20 == 0)
                 {
                     bank++;
@@ -199,7 +199,7 @@ namespace CoreBoy.memory.cart.type
 
         private int GetRomByte(int bank, int address)
         {
-            var cartOffset = (bank * 0x4000) + address;
+            int cartOffset = (bank * 0x4000) + address;
             if (cartOffset < this._cartridge.Length)
             {
                 return this._cartridge[cartOffset];
@@ -224,11 +224,11 @@ namespace CoreBoy.memory.cart.type
 
         private static bool IsMulticart(int[] rom)
         {
-            var logoCount = 0;
-            for (var i = 0; i < rom.Length; i += 0x4000)
+            int logoCount = 0;
+            for (int i = 0; i < rom.Length; i += 0x4000)
             {
-                var logoMatches = true;
-                for (var j = 0; j < NintendoLogo.Length; j++)
+                bool logoMatches = true;
+                for (int j = 0; j < NintendoLogo.Length; j++)
                 {
                     if (rom[i + 0x104 + j] != NintendoLogo[j])
                     {

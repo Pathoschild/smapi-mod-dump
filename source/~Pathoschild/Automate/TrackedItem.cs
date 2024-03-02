@@ -10,7 +10,6 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Pathoschild.Stardew.Common;
 using StardewValley;
 
 namespace Pathoschild.Stardew.Automate
@@ -33,9 +32,6 @@ namespace Pathoschild.Stardew.Automate
         /// <summary>The last stack size handlers were notified of.</summary>
         private int LastCount;
 
-        /// <summary>Whether <see cref="PreventEmptyStacks"/> has already been applied.</summary>
-        private bool PreventedEmptyStacks;
-
 
         /*********
         ** Accessors
@@ -44,7 +40,7 @@ namespace Pathoschild.Stardew.Automate
         public Item Sample { get; }
 
         /// <inheritdoc />
-        public ItemType Type { get; }
+        public string Type { get; }
 
         /// <inheritdoc />
         public int Count { get; private set; }
@@ -60,7 +56,7 @@ namespace Pathoschild.Stardew.Automate
         public TrackedItem(Item item, Action<Item>? onReduced = null, Action<Item>? onEmpty = null)
         {
             this.Item = item ?? throw new InvalidOperationException("Can't track a null item stack.");
-            this.Type = (ItemType)item.GetItemType();
+            this.Type = item.TypeDefinitionId;
             this.Sample = this.GetNewStack(item);
             this.OnReduced = onReduced;
             this.OnEmpty = onEmpty;
@@ -90,16 +86,6 @@ namespace Pathoschild.Stardew.Automate
             return this.GetNewStack(this.Item, count);
         }
 
-        /// <inheritdoc />
-        public void PreventEmptyStacks()
-        {
-            if (!this.PreventedEmptyStacks)
-            {
-                this.PreventedEmptyStacks = true;
-                this.Count = Math.Max(0, this.Count - 1);
-            }
-        }
-
 
         /*********
         ** Private methods
@@ -114,7 +100,7 @@ namespace Pathoschild.Stardew.Automate
 
             // notify handlers
             this.OnReduced?.Invoke(this.Item);
-            if (this.Count <= 0 && !this.PreventedEmptyStacks)
+            if (this.Count <= 0)
                 this.OnEmpty?.Invoke(this.Item);
         }
 

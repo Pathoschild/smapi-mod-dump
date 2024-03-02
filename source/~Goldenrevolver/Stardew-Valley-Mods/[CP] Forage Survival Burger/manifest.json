@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+  "Name": "Forage Survival Burger",
+  "Author": "Goldenrevolver",
+  "Version": "1.2",
+  "Description": "Replaces the survival burger cooking recipe with new foraging based crafting and cooking recipes",
+  "UniqueID": "Goldenrevolver.ForageSurvivalBurger",
+  "MinimumApiVersion": "3.8.2",
+  "UpdateKeys": [ "Nexus:7527" ],
+  "ContentPackFor": {"UniqueID": "Pathoschild.ContentPatcher"}
+}

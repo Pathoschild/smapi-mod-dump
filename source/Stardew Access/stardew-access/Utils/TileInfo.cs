@@ -35,14 +35,14 @@ namespace stardew_access.Utils
             JsonLoader.TryLoadJsonArray("trackable_machines.json", out trackable_machines, subdir: "assets/TileData");
             JsonLoader.TryLoadJsonDictionary("resource_clump_name_translation_keys.json", out ResourceClumpNameTranslationKeys, subdir: "assets/TileData");
             JsonLoader.TryLoadNestedJson<int, (string, string)>(
-                "ParentSheetIndexes.json", 
+                "ParentSheetIndexes.json",
                 ProcessParentSheetIndex,
                 ref ParentSheetIndexes!,
                 2,
                 subdir: "assets/TileData"
             );
             JsonLoader.TryLoadNestedJson<string, Dictionary<(int, int), string>>(
-                "BundleLocations.json", 
+                "BundleLocations.json",
                 ProcessBundleLocation,
                 ref BundleLocations!,
                 2,
@@ -178,9 +178,9 @@ namespace stardew_access.Utils
             staticTile ??= MainClass.TileManager.GetNameAndCategoryAt((x, y), "stardew-access", currentLocation);
             if (staticTile is { } static_tile)
             {
-                #if DEBUG
+#if DEBUG
                 Log.Verbose($"TileInfo: Got static tile {static_tile} from TileManager");
-                #endif
+#endif
                 return (static_tile.name, static_tile.category);
             }
 
@@ -241,7 +241,7 @@ namespace stardew_access.Utils
 
                         string name = item.item.DisplayName;
                         int count = item.item.Stack;
-                        return (Translator.Instance.Translate("item-dropped_item-info", new {item_count = count, item_name = name}), CATEGORY.DroppedItems);
+                        return (Translator.Instance.Translate("item-dropped_item-info", new { item_count = count, item_name = name }), CATEGORY.DroppedItems);
                     }
                 }
                 catch (Exception e)
@@ -281,7 +281,7 @@ namespace stardew_access.Utils
         public static string? GetJunimoBundleAt(GameLocation currentLocation, int x, int y)
         {
             string locationName = currentLocation.NameOrUniqueName;
-            
+
             if (BundleLocations.TryGetValue(locationName, out Dictionary<(int, int), string>? bundleCoords))
             {
                 if (bundleCoords.TryGetValue((x, y), out string? bundleName))
@@ -299,7 +299,7 @@ namespace stardew_access.Utils
                     }
                 }
             }
-            
+
             return null;  // No bundle was found
         }
 
@@ -333,7 +333,7 @@ namespace stardew_access.Utils
         public static string? GetFarmAnimalAt(GameLocation location, int x, int y)
         {
             Dictionary<(int x, int y), FarmAnimal>? animalsByCoordinate = AnimalUtils.GetAnimalsByLocation(location);
-            
+
             if (animalsByCoordinate == null || !animalsByCoordinate.TryGetValue((x, y), out FarmAnimal? foundAnimal))
                 return null;
 
@@ -359,7 +359,8 @@ namespace stardew_access.Utils
         {
             // Get the terrain feature from the reference
             var terrainFeature = terrain.Get();
-            return TerrainUtils.GetTerrainFeatureInfoAndCategory(terrainFeature, Game1.currentLocation is MineShaft);
+            return TerrainUtils.GetTerrainFeatureInfoAndCategory(terrainFeature,
+                    Game1.currentLocation is MineShaft && !MainClass.Config.ReadHoedDirtInMineShafts);
         }
         #region Objects
         /// <summary>
@@ -443,7 +444,9 @@ namespace stardew_access.Utils
                 {
                     if (obj.Name.Contains(machine, StringComparison.OrdinalIgnoreCase))
                     {
-                        toReturn.name = obj.DisplayName;
+                        toReturn.name = obj.heldObject.Value is not null
+                            ? $"{obj.DisplayName}, {InventoryUtils.GetItemDetails(obj.heldObject.Value)}"
+                            : obj.DisplayName;
                         toReturn.category = CATEGORY.Machines;
                     }
                 }

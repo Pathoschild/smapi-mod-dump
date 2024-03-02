@@ -26,6 +26,7 @@ What works:
 - Out of season crops will survive some amount of time past a season change before dying (still need to test winter transition).
 - The general store sells crop seeds for the next season as well as the current season.
 - The calendar outside the general store shows the correct season by day when viewed out of season.
+- The year will increment on Spring 1 by the calendar, whether or not it's still Winter in-game.
 
 What's in development:
 - JojaMart will also sell crop seeds for th next as well as current season. (This likely won't be implemented until after 1.6 releases)
@@ -35,6 +36,5 @@ What's in development:
 
 Known bugs:
 - The season listed on the load save files list will always reflect the actual in-game season, not the calendar season. It's purely cosmetic and doesn't affect how the seasons progress in-game, but I'd like to fix it for clarity's sake if possible.
-- The year will increment on the randomly rolled date that Winter changes to Spring, rather than being fixed on Spring 1. Medium priority, just because it should be a pretty easy fix, it'll just need to be tested pretty thoroughly for side-effects, since I'm not sure the ramifications of the year incrementing while it's still technically winter in-game.
 - Festivals that occur "out of season" will will use their "in season" maps. This is most noticable, for example, if Spirit's Eve occurs after the change to winter, the festival map will display the fall textures just for the festival, then revert back to winter textures the festival ends. This is probably fixable, but it's not really a priority right now. Canon can be that Pelican Town has a secret crew of prolific snow-shovelers.
 - ??? (please report any you find)

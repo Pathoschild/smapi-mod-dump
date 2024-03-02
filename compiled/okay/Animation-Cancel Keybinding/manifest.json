@@ -1,0 +1,9 @@
+{
+  "Name": "Animation-Cancel Keybinding",
+  "Author": "Swaglix",
+  "Version": "1.0.0",
+  "Description": "Adds a keybind to cancel the animation of a tool or whatever to another key, if f.e. you use the space key and don't want to disable it for the prairie king minigame.",
+  "UniqueID": "swaglix.AnimationCancelKeybinding",
+  "UpdateKeys": [],
+  "EntryDll": "AnimationCancelKeybinding.dll"
+}

@@ -9,7 +9,6 @@
 *************************************************/
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -21,7 +20,6 @@ using StardewArchipelago.Locations;
 using StardewArchipelago.Locations.CodeInjections.Vanilla;
 using StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship;
 using StardewArchipelago.Locations.Festival;
-using StardewArchipelago.Stardew.NameMapping;
 using StardewArchipelago.Textures;
 using StardewModdingAPI;
 using StardewValley;

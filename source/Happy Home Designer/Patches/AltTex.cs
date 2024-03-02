@@ -39,19 +39,7 @@ namespace HappyHomeDesigner.Patches
 				return;
 
 			var min_version = new Version(ModEntry.manifest.ExtraFields["AlternativeTexturesVersion"].ToString());
-			var android_version = new Version(ModEntry.manifest.ExtraFields["AlternativeTexturesAndroid"].ToString());
 			var current_version = asm.GetName().Version;
-
-			bool use_android = false;
-
-			if (OperatingSystem.IsAndroid())
-			{
-				if (current_version < min_version)
-				{
-					use_android = true;
-					min_version = android_version;
-				}
-			}
 
 			if (current_version < min_version)
 			{
@@ -78,11 +66,8 @@ namespace HappyHomeDesigner.Patches
 			harmony.Patch(furniturePatcher.GetMethod("DrawPrefix", flag), transpiler: new(typeof(AltTex), nameof(fixFurniturePreview)));
 			harmony.Patch(objectPatcher.GetMethod("PlacementActionPostfix", flag), prefix: new(typeof(AltTex), nameof(preventRandomVariant)));
 			harmony.Patch(bedPatcher.GetMethod("DrawPrefix", flag), transpiler: new(typeof(AltTex), nameof(fixBedPreview)));
+			harmony.Patch(furniturePatcher.GetMethod("DrawInMenuPrefix", flag), transpiler: new(typeof(AltTex), nameof(menuDraw)));
 
-			if (use_android)
-				harmony.Patch(furniturePatcher.GetMethod("DrawInMenuPrefix", flag), transpiler: new(typeof(Android), nameof(Android.menuDraw)));
-			else
-				harmony.Patch(furniturePatcher.GetMethod("DrawInMenuPrefix", flag), transpiler: new(typeof(AltTex), nameof(menuDraw)));
 			IsApplied = true;
 		}
 
@@ -241,8 +226,9 @@ namespace HappyHomeDesigner.Patches
 			il.MatchStartForward(
 					new(OpCodes.Ldarg_0),
 					new(OpCodes.Ldfld, typeof(Furniture).GetField(nameof(Furniture.sourceRect))),
-					new(OpCodes.Call, typeof(NetFieldBase<Rectangle, NetRectangle>).GetMethod("op_Implicit"))
-				).RemoveInstructions(3)
+					new(OpCodes.Callvirt, typeof(NetFieldBase<Rectangle, NetRectangle>).GetProperty(nameof(NetRectangle.Value)).GetMethod)
+				)
+				.RemoveInstructions(3)
 				.InsertAndAdvance(
 					new CodeInstruction(OpCodes.Ldloc_S, sourceRect)
 				);

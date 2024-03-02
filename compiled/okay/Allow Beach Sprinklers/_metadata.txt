@@ -1,3 +1,3 @@
 page URL: https://www.nexusmods.com/stardewvalley/mods/7629
-IDs: Jag3Dagster.AllowBeachSprinklers, Jag3dagster.AllowBeachSprinklers
-update keys: Nexus:7629, GitHub:jag3dagster/AllowBeachSprinklers
+IDs: HedgehogTechnologies.AllowBeachSprinklers, Jag3dagster.AllowBeachSprinklers
+update keys: Nexus:7629, GitHub:Hedgehog-Technologies/StardewMods

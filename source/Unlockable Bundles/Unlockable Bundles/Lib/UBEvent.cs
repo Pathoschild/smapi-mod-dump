@@ -28,13 +28,15 @@ namespace Unlockable_Bundles.Lib
 
         public Unlockable Unlockable;
 
+        public const string APPLYPATCH = "ub_applyPatch";
+
         public static void Initialize()
         {
             Mod = ModEntry.Mod;
             Monitor = Mod.Monitor;
             Helper = Mod.Helper;
 
-            RegisterCommand("ub_applyPatch", delegate { ub_applyPatch(); });
+            RegisterCommand(APPLYPATCH, delegate { ub_applyPatch(); });
         }
         public UBEvent(Unlockable unlockable, string eventString, Farmer farmerActor = null) : base(eventString, farmerActor)
         {

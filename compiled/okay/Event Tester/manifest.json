@@ -1,10 +1,20 @@
 {
-  "Name": "EventTester",
-  "Author": "BlaDe",
-  "Version": "1.0.0",
-  "Description": "Trigger an event script saved in the config file",
-  "UniqueID": "BlaDe.EventTester",
-  "EntryDll": "EventTester.dll",
-  "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "Nexus:11178" ]
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "$schema": "https://smapi.io/schemas/manifest.json",
+  "UniqueID": "sinZandAtravita.SinZsEventTester",
+  "Name": "SinZ's Event Tester",
+  "Author": "SinZ and atravita",
+  "Version": "0.1.5",
+  "Description": "Automated way to run events.",
+  "MinimumApiVersion": "3.18",
+  "EntryDll": "SinZsEventTester.dll",
+  "UpdateKeys": [
+    "Nexus:19458"
+  ]
 }

@@ -10,6 +10,7 @@
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewDruid.Map;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
@@ -79,19 +80,8 @@ namespace StardewDruid.Monster.Template
 
         public override int takeDamage(int damage, int xTrajectory, int yTrajectory, bool isBomb, double addedPrecision, Farmer who)
         {
-            
-            int ouchIndex = Game1.random.Next(10);
 
-            List<string> ouchList = new()
-            {
-                "blup blup",
-                "bloop",
-            };
-
-            if (ouchIndex < ouchList.Count)
-            {
-                showTextAboveHead(ouchList[ouchIndex], duration: 2000);
-            }
+            DialogueData.DisplayText(this, 3);
 
             return base.takeDamage(damage, xTrajectory, yTrajectory, isBomb, addedPrecision, who);
 

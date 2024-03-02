@@ -16,6 +16,10 @@ using System.Threading.Tasks;
 
 namespace Custom_Farm_Loader.Lib.Enums
 {
+    //I decided not to support custom crops, because I deemed it not worth the effort.
+    //It'd make testing and implementing way more tedious and I wasn't sure anyone would even want to use it.
+    //Especially since there's custom logic at place like for Spring_Onion and at least in 1.5 iirc different crops had different ways to create the objects for, like with flowers
+    //Wild Crops are probably already yet another feature no one is going to use in the first place, so unless someone specifically asks for this, it's a big no
     public enum WildCropType
     {
         Spring_Onion = 399,

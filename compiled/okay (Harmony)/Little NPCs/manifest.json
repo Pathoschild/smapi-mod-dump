@@ -1,15 +1,15 @@
 {
   "Name": "LittleNPCs",
   "Author": "Candidus42",
-  "Version": "1.1.4",
+  "Version": "2.0.0-alpha.20240110",
   "Description": "Turns your children into little NPCs.",
   "UniqueID": "Candidus42.LittleNPCs",
   "EntryDll": "LittleNPCs.dll",
-  "MinimumApiVersion": "3.14.0",
+  "MinimumApiVersion": "4.0.0-alpha",
   "Dependencies": [
     {
       "UniqueID": "Pathoschild.ContentPatcher",
-      "MinimumVersion": "1.26.0",
+      "MinimumVersion": "1.30.0-alpha",
       "IsRequired": true
     }
   ],

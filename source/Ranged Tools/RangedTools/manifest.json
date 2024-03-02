@@ -11,7 +11,7 @@
 {
   "Name": "Ranged Tools",
   "Author": "vgperson",
-  "Version": "1.5.5",
+  "Version": "1.5.7",
   "Description": "Allows customization of the range tools can be used at with mouse clicks.",
   "UniqueID": "vgperson.RangedTools",
   "EntryDll": "RangedTools.dll",

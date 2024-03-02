@@ -103,9 +103,14 @@ eg. DeLiXx.Sunny_Farm/Sunny Farm
 </pre>
 The manifest.json Unique ID, a slash and your cfl_map.json name.
 
-Use the command "set_farm_type list" to obtain a list of all currently installed modded farm types.
+Use the command <b>set_farm_type list</b> to obtain a list of all currently installed modded farm types.
 
 If you have Content Patcher installed you can use the [<b>FarmType</b> Token](https://github.com/Pathoschild/StardewMods/blob/develop/ContentPatcher/docs/author-guide/tokens.md#world) in your WHEN conditions to change specific assets, like a custom FarmCave load, only when your custom farm is loaded to avoid interference with other Farms. 
+```json
+"When": {
+  "FarmType": "DeLiXx.Sunny_Farm/Sunny Farm"
+}
+```
 
 Alternatively use <b>Game1.GetFarmTypeID()</b> in your code.
 

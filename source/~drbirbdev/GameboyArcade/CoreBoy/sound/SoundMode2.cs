@@ -51,7 +51,7 @@ namespace CoreBoy.sound
         {
             this._volumeEnvelope.Tick();
 
-            var e = this.UpdateLength();
+            bool e = this.UpdateLength();
             e = this.DacEnabled && e;
             if (!e)
             {
@@ -84,7 +84,7 @@ namespace CoreBoy.sound
 
         private int GetDuty()
         {
-            var i = this.GetNr1() >> 6;
+            int i = this.GetNr1() >> 6;
             return i switch
             {
                 0 => 0b00000001,

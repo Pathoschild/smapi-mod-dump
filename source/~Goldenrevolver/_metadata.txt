@@ -19,9 +19,9 @@ mods:
    Watering Grants Experience and Crops Can Wither
 
 latest commit:
-   commit b0279eb7e97cd2fd1a88e3d4e8eb888cc0203d91
+   commit 78ce7d822708256d86bee6950664e4bfe29504e2
    Author: Goldenrevolver <22944589+Goldenrevolver@users.noreply.github.com>
-   Date:   Wed Feb 9 11:24:10 2022 +0100
+   Date:   Mon Feb 26 02:08:37 2024 +0100
    
-       Update for Watering Grants Experience (no saltwater watering), Ring Overhaul crafting fix, Horse Overhaul translations, first work on Expert Mode Beach Map mod, more work on Forage Fantasy update, request mod: Mermaid Show Clam Mover
+       Horse Overhaul: First working 1.6 update
    

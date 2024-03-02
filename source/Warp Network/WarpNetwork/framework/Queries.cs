@@ -12,10 +12,6 @@ using StardewValley;
 using StardewValley.Delegates;
 using StardewValley.Locations;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WarpNetwork.framework
 {
@@ -49,17 +45,17 @@ namespace WarpNetwork.framework
 						return true;
 
 				return false;
-            }
+			}
 
 			foreach (var location in Game1.locations)
 				if (location is IslandWest island && island.farmObelisk.Value)
 					return true;
 				else
-                    foreach (var building in location.buildings)
+					foreach (var building in location.buildings)
 						if (building.buildingType.Value.Contains("obelisk", StringComparison.OrdinalIgnoreCase))
 							return true;
 
 			return false;
-        }
+		}
 	}
 }

@@ -19,9 +19,9 @@ namespace CoreBoy.sound
 
         public void SetNr43(int value)
         {
-            var clockShift = value >> 4;
+            int clockShift = value >> 4;
 
-            var divisor = (value & 0b111) switch
+            int divisor = (value & 0b111) switch
             {
                 0 => 8,
                 1 => 16,

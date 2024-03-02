@@ -69,6 +69,12 @@ namespace Custom_Farm_Loader
 
                 case "reload":
                     reloadCFL(); break;
+
+                case "type" or "farmtype":
+                    Monitor.Log(Game1.GetFarmTypeID(), LogLevel.Info); break;
+
+                default:
+                    Monitor.Log("Unknown Command: " + args[0], LogLevel.Error); break;
             }
         }
 
@@ -77,12 +83,13 @@ namespace Custom_Farm_Loader
                 "Valid Commands:\n" +
                 "DAYUPDATE NUM      Performs all valid daily updates of the players location NUM times\n" +
                 "FURNITURE          Prints out all furniture of the current location as json so it can be directly copied into StartFurniture\n" +
-                "RELOAD             Reloads all cached cfl_map.json data"
-                    ,LogLevel.Info);
+                "RELOAD             Reloads all cached cfl_map.json data\n" +
+                "TYPE               Prints the current farm type"
+                    , LogLevel.Info);
 
 
         private void printValidCommands() =>
-            Monitor.Log("Valid Commands: help, dayupdate, furniture, reload", LogLevel.Info);
+            Monitor.Log("Valid Commands: help, dayupdate, furniture, reload, type", LogLevel.Info);
 
         private void reloadCFL()
         {
@@ -97,31 +104,13 @@ namespace Custom_Farm_Loader
         private void dayupdateCommand(int times)
         {
             if (!CustomFarm.IsCFLMapSelected()) {
-                Monitor.Log("No CFL map selected", LogLevel.Warn);
+                Monitor.Log("No CFL map selected", LogLevel.Error);
                 return;
             }
 
             var customFarm = CustomFarm.getCurrentCustomFarm();
-
-            for (int i = 0; i < times; i++) {
-                foreach (var dailyUpdate in customFarm.DailyUpdates) {
-                    if (dailyUpdate.Area.LocationName != Game1.currentLocation.Name)
-                        continue;
-
-                    if (!dailyUpdate.Filter.isValid(who: Game1.player))
-                        continue;
-
-                    dailyUpdate.Location = Game1.currentLocation;
-
-
-                    if (dailyUpdate.Type == DailyUpdateType.TransformWeeds)
-                        DailyUpdateEvents.updateTransformWeeds(dailyUpdate);
-                    else
-                        DailyUpdateEvents.updateArea(dailyUpdate);
-                }
-
-            }
-
+            while (times-- > 0)
+                DailyUpdateEvents.update(customFarm.DailyUpdates.FindAll(el => el.Area.LocationName == Game1.currentLocation.Name));
         }
 
         private void debug(string command, string[] args)
@@ -132,8 +121,8 @@ namespace Custom_Farm_Loader
 
         private void printFurniture()
         {
-            if(Game1.currentLocation is null) {
-                Monitor.Log("No GameLocation loaded", LogLevel.Warn);
+            if (Game1.currentLocation is null) {
+                Monitor.Log("No GameLocation loaded", LogLevel.Error);
                 return;
             }
 
@@ -157,14 +146,14 @@ namespace Custom_Farm_Loader
                 string heldObject = "";
                 if (furniture.heldObject.Value is StardewValley.Object h) {
                     heldObject = ", \"HeldObject\": {" +
-                        $" /*{h.Name}*/ \"ID\": {h.ParentSheetIndex}" +
+                        $" /*{h.Name}*/ \"ID\": \"{h.ItemId}\"" +
                         (h is not StardewValley.Objects.Furniture ? ", \"Type\": \"Item\"" : "") +
                         (h is StardewValley.Objects.Furniture f && f.currentRotation.Value > 0 ? $", \"Rotations\": {totalRotations(f)}" : "") +
                         (h.Quality > 0 ? ", \"Quality\": \"" + h.Quality switch { 1 => "Silver", 2 => "Gold", 4 => "Iridium", _ => "" } + "\"" : "") +
                         " }";
                 }
 
-                res += "\t" + $"{{ /*{furniture.Name}*/ \"ID\": {furniture.ParentSheetIndex}" +
+                res += "\t" + $"{{ /*{furniture.Name}*/ \"ID\": \"{furniture.ItemId}\"" +
                        $", \"Position\": \"{furniture.TileLocation.X}, {furniture.TileLocation.Y}\"" +
                        map +
                        (furniture.currentRotation.Value > 0 ? $", \"Rotations\": {totalRotations(furniture)}" : "") +

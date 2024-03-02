@@ -1,0 +1,18 @@
+{
+    "ichortower.SecretWoodsSnorlax_StrangeFlute": {
+        "Name": "Strange Flute",
+        "DisplayName": "[LocalizedText Strings\\Objects:ichortower.SecretWoodsSnorlax_StrangeFlute_Name]",
+        "Description": "[LocalizedText Strings\\Objects:ichortower.SecretWoodsSnorlax_StrangeFlute_Description]",
+        "Type": "Quest",
+        "Category": -8,
+        "Price": 0,
+        "Edibility": -300,
+        "Texture": "Mods/ichortower.SecretWoodsSnorlax/StrangeFlute",
+        "SpriteIndex": 0,
+        "ContextTags": [
+            "not_placeable",
+            "not_giftable",
+            "prevent_loss_on_death"
+        ]
+    }
+}

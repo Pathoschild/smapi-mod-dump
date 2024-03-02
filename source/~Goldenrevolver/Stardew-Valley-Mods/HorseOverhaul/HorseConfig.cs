@@ -10,8 +10,6 @@
 
 namespace HorseOverhaul
 {
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
     using StardewModdingAPI;
     using StardewModdingAPI.Utilities;
     using System;
@@ -23,37 +21,6 @@ namespace HorseOverhaul
         Brown = 2,
         Horsemanship_Brown = 3,
         Horsemanship_Beige = 4
-    }
-
-    public interface IGenericModConfigMenuAPI
-    {
-        void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
-
-        void RegisterLabel(IManifest mod, string labelName, string labelDesc);
-
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
-
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet);
-
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet);
-
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet);
-
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<SButton> optionGet, Action<SButton> optionSet);
-
-        void RegisterClampedOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet, int min, int max);
-
-        void RegisterClampedOption(IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet, float min, float max);
-
-        void RegisterChoiceOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet, string[] choices);
-
-        void RegisterComplexOption(IManifest mod, string optionName, string optionDesc, Func<Vector2, object, object> widgetUpdate, Func<SpriteBatch, Vector2, object, object> widgetDraw, Action<object> onSave);
-
-        void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
-
-        void SetTitleScreenOnlyForNextOptions(IManifest mod, bool titleScreenOnly);
-
-        void AddParagraph(IManifest mod, Func<string> text);
     }
 
     /// <summary>
@@ -135,7 +102,7 @@ namespace HorseOverhaul
 
         public static void SetUpModConfigMenu(HorseConfig config, HorseOverhaul mod)
         {
-            IGenericModConfigMenuAPI api = mod.Helper.ModRegistry.GetApi<IGenericModConfigMenuAPI>("spacechase0.GenericModConfigMenu");
+            IGenericModConfigMenuApi api = mod.Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
 
             if (api == null)
             {
@@ -144,9 +111,9 @@ namespace HorseOverhaul
 
             var manifest = mod.ModManifest;
 
-            api.RegisterModConfig(
-                manifest,
-                delegate
+            api.Register(
+                mod: manifest,
+                reset: delegate
                 {
                     // if the world is ready, then we are not in the main menu, so reset should only reset the keybindings
                     if (Context.IsWorldReady)
@@ -161,7 +128,7 @@ namespace HorseOverhaul
                         config = new HorseConfig();
                     }
                 },
-                delegate
+                save: delegate
                 {
                     mod.Helper.WriteConfig(config);
                     VerifyConfigValues(config, mod);
@@ -170,38 +137,38 @@ namespace HorseOverhaul
 
             api.SetTitleScreenOnlyForNextOptions(manifest, true);
 
-            api.RegisterLabel(manifest, "General", null);
+            api.AddSectionTitle(manifest, () => "General", null);
 
-            api.RegisterSimpleOption(manifest, "Thin Horse", null, () => config.ThinHorse, (bool val) => config.ThinHorse = val);
-            api.RegisterSimpleOption(manifest, "Saddle Bags", null, () => config.SaddleBag, (bool val) => config.SaddleBag = val);
-            api.RegisterChoiceOption(manifest, "Visible Saddle Bags", null, () => config.VisibleSaddleBags.ToString(), (string val) => config.VisibleSaddleBags = val, Enum.GetNames(typeof(SaddleBagOption)));
+            api.AddBoolOption(manifest, () => config.ThinHorse, (bool val) => config.ThinHorse = val, () => "Thin Horse", null);
+            api.AddBoolOption(manifest, () => config.SaddleBag, (bool val) => config.SaddleBag = val, () => "Saddle Bags", null);
+            api.AddTextOption(manifest, () => config.VisibleSaddleBags.ToString(), (string val) => config.VisibleSaddleBags = val, () => "Visible Saddle Bags", null, Enum.GetNames(typeof(SaddleBagOption)), (s) => s.Replace('_', ' '));
 
-            api.RegisterLabel(manifest, "Friendship", null);
+            api.AddSectionTitle(manifest, () => "Friendship", null);
 
-            api.RegisterSimpleOption(manifest, "Movement Speed (MS)", null, () => config.MovementSpeed, (bool val) => config.MovementSpeed = val);
-            api.RegisterSimpleOption(manifest, "Maximum MS Bonus", null, () => config.MaxMovementSpeedBonus, (float val) => config.MaxMovementSpeedBonus = val);
-            api.RegisterSimpleOption(manifest, "Petting", null, () => config.Petting, (bool val) => config.Petting = val);
-            api.RegisterSimpleOption(manifest, "Water", null, () => config.Water, (bool val) => config.Water = val);
-            api.RegisterSimpleOption(manifest, "Feeding", null, () => config.Feeding, (bool val) => config.Feeding = val);
-            api.RegisterSimpleOption(manifest, "Heater", null, () => config.HorseHeater, (bool val) => config.HorseHeater = val);
+            api.AddBoolOption(manifest, () => config.MovementSpeed, (bool val) => config.MovementSpeed = val, () => "Movement Speed (MS)", null);
+            api.AddNumberOption(manifest, () => config.MaxMovementSpeedBonus, (float val) => config.MaxMovementSpeedBonus = val, () => "Maximum MS Bonus", null);
+            api.AddBoolOption(manifest, () => config.Petting, (bool val) => config.Petting = val, () => "Petting", null);
+            api.AddBoolOption(manifest, () => config.Water, (bool val) => config.Water = val, () => "Water", null);
+            api.AddBoolOption(manifest, () => config.Feeding, (bool val) => config.Feeding = val, () => "Feeding", null);
+            api.AddBoolOption(manifest, () => config.HorseHeater, (bool val) => config.HorseHeater = val, () => "Heater", null);
 
-            api.RegisterLabel(manifest, "Other", null);
+            api.AddSectionTitle(manifest, () => "Other", null);
 
-            api.RegisterSimpleOption(manifest, "Horse Hoofstep Effects", null, () => config.HorseHoofstepEffects, (bool val) => config.HorseHoofstepEffects = val);
-            api.RegisterSimpleOption(manifest, "Disable Horse Sounds", null, () => config.DisableHorseSounds, (bool val) => config.DisableHorseSounds = val);
-            api.RegisterSimpleOption(manifest, "New Food System", null, () => config.NewFoodSystem, (bool val) => config.NewFoodSystem = val);
-            api.RegisterSimpleOption(manifest, "Pet Feeding", null, () => config.PetFeeding, (bool val) => config.PetFeeding = val);
-            api.RegisterSimpleOption(manifest, "Allow Multiple Feedings A Day", null, () => config.AllowMultipleFeedingsADay, (bool val) => config.AllowMultipleFeedingsADay = val);
-            api.RegisterSimpleOption(manifest, "Disable Stable Sprite Changes", null, () => config.DisableStableSpriteChanges, (bool val) => config.DisableStableSpriteChanges = val);
+            api.AddBoolOption(manifest, () => config.HorseHoofstepEffects, (bool val) => config.HorseHoofstepEffects = val, () => "Horse Hoofstep Effects", null);
+            api.AddBoolOption(manifest, () => config.DisableHorseSounds, (bool val) => config.DisableHorseSounds = val, () => "Disable Horse Sounds", null);
+            api.AddBoolOption(manifest, () => config.NewFoodSystem, (bool val) => config.NewFoodSystem = val, () => "New Food System", null);
+            api.AddBoolOption(manifest, () => config.PetFeeding, (bool val) => config.PetFeeding = val, () => "Pet Feeding", null);
+            api.AddBoolOption(manifest, () => config.AllowMultipleFeedingsADay, (bool val) => config.AllowMultipleFeedingsADay = val, () => "Allow Multiple Feedings A Day", null);
+            api.AddBoolOption(manifest, () => config.DisableStableSpriteChanges, (bool val) => config.DisableStableSpriteChanges = val, () => "Disable Stable Sprite Changes", null);
 
             api.SetTitleScreenOnlyForNextOptions(manifest, false);
 
-            api.RegisterLabel(manifest, "Keybindings", null);
+            api.AddSectionTitle(manifest, () => "Keybindings", null);
 
             api.AddKeybindList(manifest, () => config.HorseMenuKey, (KeybindList keybindList) => config.HorseMenuKey = keybindList, () => "Horse Menu Key");
             api.AddKeybindList(manifest, () => config.PetMenuKey, (KeybindList keybindList) => config.PetMenuKey = keybindList, () => "Pet Menu Key");
             api.AddKeybindList(manifest, () => config.AlternateSaddleBagAndFeedKey, (KeybindList keybindList) => config.AlternateSaddleBagAndFeedKey = keybindList, () => "Alternate Saddle Bag\nAnd Feed Key");
-            api.RegisterSimpleOption(manifest, "Disable Main Saddle Bag\nAnd Feed Key", null, () => config.DisableMainSaddleBagAndFeedKey, (bool val) => config.DisableMainSaddleBagAndFeedKey = val);
+            api.AddBoolOption(manifest, () => config.DisableMainSaddleBagAndFeedKey, (bool val) => config.DisableMainSaddleBagAndFeedKey = val, () => "Disable Main Saddle Bag\nAnd Feed Key", null);
         }
     }
 }

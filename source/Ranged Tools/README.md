@@ -101,9 +101,9 @@ By default (true), this mod only takes effect when pressing a "use tool" button 
 
 ## Possible Mod Conflicts
 
-This mod affects a handful of functons, particularly the function that returns what tile a tool acts upon (for the sake of tool range), as well as one of the range-checking functions (for the sake of seed/object placement range). It also overrides drawing of the Tool Hit Location indicator in the player's draw function to follow the user setting. I aimed to make these as unobtrusive as I could.
+This mod affects a handful of functons, particularly the function that returns what tile a tool acts upon (for the sake of tool range), as well as two range-checking functions (for the sake of seed/object placement range). It also overrides drawing of the Tool Hit Location indicator in the player's draw function to follow the user setting. I aimed to make these as unobtrusive as I could.
 
-It's possible that similar tool functionality mods operating in the same area may not work, or cause this mod to not work. Through both general and specific fixes, I've resolved conflicts with mods like Expanded Storage, Pipe Irrigation, and Hoe and Water Direction; other conflicts may or may not be resolvable on a case-by-case basis.
+It's possible that similar tool functionality mods operating in the same area may not work, or cause this mod to not work. Through both general and specific fixes, I've resolved conflicts with mods like Expanded Storage, Pipe Irrigation, Hoe and Water Direction, and Placement Plus; other conflicts may or may not be resolvable on a case-by-case basis.
 
 ## Download
 

@@ -1,0 +1,10 @@
+{
+  "Name": "Ring Overhaul for MARGO",
+  "Author": "Jibb",
+  "Version": "2.0.0",
+  "Description": "Modified version of Ring Overhaul to work with MARGO",
+  "UniqueID": "Jibb.RingOverhaulMARGO",
+  "EntryDll": "RingOverhaul.dll",
+  "MinimumApiVersion": "3.13.2",
+  "UpdateKeys": [ "Nexus:12171" ]
+}

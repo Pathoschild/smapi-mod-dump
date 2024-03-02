@@ -8,14 +8,16 @@
 **
 *************************************************/
 
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
 namespace Randomizer
 {
-	public class CropGrowthImageBuilder : ImageBuilder
+    public class CropGrowthImageBuilder : ImageBuilder
 	{
 		private const string NormalDirectory = "NormalCrops";
 		private const string RegrowingDirectory = "RegrowingCrops";
@@ -30,17 +32,24 @@ namespace Randomizer
 		/// <summary>
 		/// Keeps track of crop ids mapped to image names so that all the crop images can be linked
 		/// </summary>
-		public Dictionary<int, string> CropIdsToImageNames;
+		public Dictionary<int, CropImageLinkingData> CropIdsToLinkingData;
 
 		/// <summary>
 		/// Keeps track of crop growth images to crop ids
 		/// </summary>
 		private Dictionary<Point, int> CropGrowthImagePointsToIds;
 
-		public CropGrowthImageBuilder()
+        /// <summary>
+        /// A reverse lookup since we have the image name when we need to find the crop id
+        /// </summary>
+        private readonly Dictionary<string, int> ImageNameToCropIds;
+
+        public CropGrowthImageBuilder()
 		{
-			CropIdsToImageNames = new Dictionary<int, string>();
-			BaseFileName = "Crops.png";
+			CropIdsToLinkingData = new Dictionary<int, CropImageLinkingData>();
+            ImageNameToCropIds = new();
+
+            StardewAssetPath = $"TileSheets/crops";
 			SubDirectory = "CropGrowth";
 			SetUpCropGrowthImagePointsToIds();
 			PositionsToOverlay = CropGrowthImagePointsToIds.Keys.ToList();
@@ -50,16 +59,25 @@ namespace Randomizer
 			OffsetHeightInPx = 32;
 			OffsetWidthInPx = 128;
 
-			NormalImages = Directory.GetFiles($"{ImageDirectory}/{NormalDirectory}")
+			NormalImages = Directory.GetFiles(Path.Combine(ImageDirectory, NormalDirectory))
 				.Where(x => x.EndsWith("-4.png") || x.EndsWith("-5.png"))
 				.Select(x => x.Replace("-4.png", "").Replace("-5.png", ""))
 				.Distinct()
 				.OrderBy(x => x)
 				.ToList();
 
-			RegrowingImages = Directory.GetFiles($"{ImageDirectory}/{RegrowingDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
-			TrellisImages = Directory.GetFiles($"{ImageDirectory}/{TrellisDirectory}").Where(x => x.EndsWith(".png")).OrderBy(x => x).ToList();
-			FlowerImages = Directory.GetFiles($"{ImageDirectory}/{FlowersDirectory}").Where(x => x.EndsWith(".png") && !x.EndsWith("-NoHue.png")).OrderBy(x => x).ToList();
+			RegrowingImages = Directory.GetFiles(Path.Combine(ImageDirectory, RegrowingDirectory))
+				.Where(x => x.EndsWith(".png"))
+				.OrderBy(x => x)
+				.ToList();
+			TrellisImages = Directory.GetFiles(Path.Combine(ImageDirectory, TrellisDirectory))
+				.Where(x => x.EndsWith(".png"))
+				.OrderBy(x => x)
+				.ToList();
+			FlowerImages = Directory.GetFiles(Path.Combine(ImageDirectory, FlowersDirectory))
+				.Where(x => x.EndsWith(".png") && !x.EndsWith("-NoHue.png"))
+				.OrderBy(x => x)
+				.ToList();
 
 			ValidateCropImages();
 		}
@@ -69,13 +87,13 @@ namespace Randomizer
 		/// Excludes Ancient Seeds, as they aren't randomized
 		/// Coffee beans are also the crop, so use their seed ID as the crop ID
 		/// </summary>
-		/// <returns></returns>
+		/// <returns />
 		private void SetUpCropGrowthImagePointsToIds()
 		{
 			const int itemsPerRow = 2;
 
 			CropGrowthImagePointsToIds = new Dictionary<Point, int>();
-			List<int> seedIdsToExclude = new List<int>
+			List<int> seedIdsToExclude = new()
 			{
 				(int)ObjectIndexes.AncientSeeds
 			};
@@ -98,10 +116,9 @@ namespace Randomizer
 		/// <returns>The selected file name</returns>
 		protected override string GetRandomFileName(Point position)
 		{
-			string fileName = "";
-
+			string fileName;
 			int cropId = CropGrowthImagePointsToIds[position];
-			Item item = ItemList.Items[cropId];
+			Item item = ItemList.Items[(ObjectIndexes)cropId];
 
 			SeedItem seedItem = item.Id == (int)ObjectIndexes.CoffeeBean ?
 				(SeedItem)item : ((CropItem)item).MatchingSeedItem;
@@ -115,7 +132,7 @@ namespace Randomizer
 
 				if (!seedItem.CropGrowthInfo.TintColorInfo.HasTint)
 				{
-					fileName = $"{fileName.Substring(0, fileName.Length - 4)}-NoHue.png";
+					fileName = $"{fileName[..^4]}-NoHue.png";
 				}
 			}
 
@@ -150,20 +167,52 @@ namespace Randomizer
 				return null;
 			}
 
-
-			CropIdsToImageNames[cropId] = Path.GetFileName(fileName).Replace("-4.png", ".png").Replace("-5.png", ".png").Replace("-NoHue.png", ".png");
-			return fileName;
+			var linkingFileName = Path.GetFileName(fileName)
+				.Replace("-4.png", ".png")
+				.Replace("-5.png", ".png")
+				.Replace("-NoHue.png", ".png");
+            CropIdsToLinkingData[cropId] = new CropImageLinkingData(linkingFileName, seedItem);
+            ImageNameToCropIds[fileName] = cropId; // Pass in this file name since it's the one we have in MainipulateImage
+            return fileName;
 		}
 
+        /// <summary>
+        /// Hue-shift the image to paste onto SpringObjects, if applicable
+        /// </summary>
+        /// <param name="image">The image to potentially hue shift</param>
+        /// <param name="fileName">The full path of the image - needed so we can check the sub-directory</param>
+        /// <returns>The manipulated image (or the input, if nothing is done)</returns>
+        protected override Texture2D ManipulateImage(Texture2D image, string fileName)
+        {
+			string endingFileName = fileName.Split(
+				$"CustomImages{Path.DirectorySeparatorChar}CropGrowth{Path.DirectorySeparatorChar}")[1];
 
-		/// <summary>
-		/// Fix the width value given the graphic id
-		/// This is to prevent the giant cauliflower from being cut off
-		/// </summary>
-		/// <param name="graphicId">The graphic ID to check</param>
-		private void FixWidthValue(int graphicId)
+			// Flowers are the only thing that we're NOT hue-shifting
+			if (endingFileName.StartsWith("Flowers"))
+			{
+				return image;
+            }
+
+            if (ImageNameToCropIds.TryGetValue(fileName, out int cropId) &&
+				CropIdsToLinkingData.TryGetValue(cropId, out CropImageLinkingData linkingData))
+            {
+                Random rng = Globals.GetFarmRNG($"{nameof(CropGrowthImageBuilder)}{fileName}");
+                linkingData.HueShiftValue = Range.GetRandomValue(0, Globals.Config.Crops.HueShiftMax, rng);
+                return ImageManipulator.ShiftImageHue(image, linkingData.HueShiftValue);
+            }
+
+            Globals.ConsoleError($"CropGrowthBuilder: Could not get linking data when manipulating image: {fileName}");
+            return image;
+        }
+
+        /// <summary>
+        /// Fix the width value given the graphic id
+        /// This is to prevent the giant cauliflower from being cut off
+        /// </summary>
+        /// <param name="graphicId">The graphic ID to check</param>
+        private void FixWidthValue(int graphicId)
 		{
-			List<int> graphicIndexesWithSmallerWidths = new List<int> { 32, 34 };
+			List<int> graphicIndexesWithSmallerWidths = new() { 32, 34 };
 			if (graphicIndexesWithSmallerWidths.Contains(graphicId))
 			{
 				ImageWidthInPx = 112;
@@ -189,7 +238,7 @@ namespace Randomizer
 		private void ValidateCropImages()
 		{
 			// Gather data for normal images
-			string normalCropGrowthDirectory = $"{ImageDirectory}/{NormalDirectory}";
+			string normalCropGrowthDirectory = Path.Combine(ImageDirectory, NormalDirectory);
 			List<string> normalImageNames = Directory.GetFiles(normalCropGrowthDirectory).ToList();
 
 			List<string> normal4StageImages = normalImageNames
@@ -229,7 +278,7 @@ namespace Randomizer
 			}
 
 			// Check that every crop growth image has a matching seed packet
-			string seedImageDirectory = $"{CustomImagesPath}/SpringObjects/Seeds";
+			string seedImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Seeds");
 			List<string> seedImageNames = Directory.GetFiles(seedImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
@@ -244,8 +293,8 @@ namespace Randomizer
 			}
 
 			// Check that all crop growth images exist as a crop or flower
-			string cropImageDirectory = $"{CustomImagesPath}/SpringObjects/Crops";
-			List<string> cropImageNames = Directory.GetFiles(cropImageDirectory)
+			string cropImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Crops");
+            List<string> cropImageNames = Directory.GetFiles(cropImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
 				.ToList();
@@ -258,8 +307,8 @@ namespace Randomizer
 				}
 			}
 
-			string flowerImageDirectory = $"{CustomImagesPath}/SpringObjects/Flowers";
-			List<string> flowerImageNames = Directory.GetFiles(flowerImageDirectory)
+			string flowerImageDirectory = Path.Combine(CustomImagesPath, "SpringObjects", "Flowers");
+            List<string> flowerImageNames = Directory.GetFiles(flowerImageDirectory)
 				.Where(x => x.EndsWith(".png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
 				.ToList();
@@ -273,7 +322,7 @@ namespace Randomizer
 			}
 
 			// Check that each flower image contains the no-hue version
-			List<string> noHueFlowerImages = Directory.GetFiles($"{ImageDirectory}/{FlowersDirectory}")
+			List<string> noHueFlowerImages = Directory.GetFiles(Path.Combine(ImageDirectory, FlowersDirectory))
 				.Where(x => x.EndsWith("-NoHue.png"))
 				.Select(x => Path.GetFileNameWithoutExtension(x))
 				.OrderBy(x => x)
@@ -286,6 +335,20 @@ namespace Randomizer
 					Globals.ConsoleWarn($"{flowerImageName}-NoHue.png not found at: {ImageDirectory}/{FlowersDirectory}");
 				}
 			}
-		}
+
+			// Check that there's at least one seed packet template for trellis and non-trellis seeds
+			string seedPacketDirectory = $"{CustomImagesPath}/SpringObjects/{SpringObjectsImageBuilder.SeedPacketDirectory}";
+			string tellisPacketDirectory = $"{seedPacketDirectory}/{SpringObjectsImageBuilder.TrellisPacketSubDirectory}";
+
+			if (!Directory.GetFiles(seedPacketDirectory).Where(x => x.EndsWith(".png")).Any()) 
+			{
+                Globals.ConsoleWarn($"No seed packet images found at: {seedPacketDirectory}");
+            }
+
+            if (!Directory.GetFiles(seedPacketDirectory).Where(x => x.EndsWith(".png")).Any())
+            {
+                Globals.ConsoleWarn($"No trellis packet images found at: {tellisPacketDirectory}");
+            }
+        }
 	}
 }

@@ -10,7 +10,7 @@
 
 {
   /*
-Don't change the names inside {{placeHolder}}, they will get replaced with values.
+		Don't change the names inside {{placeHolder}}, they will get replaced with values.
     You can change the position of the {{placeHolder}} where they need to be in the sentence.
   */
   "Yes": "Да",
@@ -30,7 +30,7 @@ Don't change the names inside {{placeHolder}}, they will get replaced with value
   "LactoseIntolerantPets": "Большинство кошек и собак не переносят лактозу.",
   "LactoseIntolerantHorses": "Большинство взрослых лошадей не переносят лактозу.",
   "HorseHerbivore": "Лошади настоящие травоядные, они не могут есть мясо.",
-  "HorseNoBread": "Лошади не должны есть обработанную пищу, такую ??как хлеб.",
+  "HorseNoBread": "Лошади не должны есть обработанную пищу, такую как хлеб.",
   "HorseEatShouldnt": "Ваша лошадь не должна это есть.",
   "HorseEatHay": "У вашей лошади достаточно сена в конюшне.",
   "HorseEatFiber": "вашей лошади достаточно травы, чтобы есть везде.",
@@ -38,6 +38,6 @@ Don't change the names inside {{placeHolder}}, they will get replaced with value
   "HorseEatCabbage": "Лошади не должны есть капусту или родственников семейства капустных.",
   "HorseEatOnion": "Лошади не должны есть лук или родственников семейства луковых.",
   "HorseEatNightshade": "Лошади не должны есть представителей семейства пасленовых, включая картофель, помидоры, перец или баклажаны.",
-  "HorseEatHorseRadish": "Несмотря на название, хрен опасен для лошадей, а обычный редис - нет.",
+  "HorseEatHorseRadish": "Ваша лошадь не должна это есть.",
   "HorseEatDislike": "Ваша лошадь не хочет это есть."
 }

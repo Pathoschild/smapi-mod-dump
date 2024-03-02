@@ -35,15 +35,15 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
         private const int DECAY_PARTNER = -8;
         private const int DECAY_OTHER = -2;
         private const int AUTOPET_POINTS = 5;
-        private const int DECAY_GRAB = -7;
+        private const int DECAY_GRAB = -12;
         private const int POINTS_PER_HEART = 250;
         private const int POINTS_PER_PET_HEART = 200;
         private const string HEARTS_PATTERN = "{0} <3";
         public const string FRIENDSANITY_PATTERN = "Friendsanity: {0} {1} <3";
 
-        private static string[] _notImmediatelyAccessible = new[]
+        private static List<string> _notImmediatelyAccessible = new()
         {
-            "Leo", "Krobus", "Dwarf", "Sandy", "Kent", "Yoba", "Lance", "Apples", "Scarlett", "Morgan", "Goblin", "Alecto"
+            "Leo", "Krobus", "Dwarf", "Sandy", "Kent"
         };
 
         private static IMonitor _monitor;
@@ -535,7 +535,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Relationship
         {
             farmer.changeFriendship(DECAY_GRAB, npc);
             var hearts = farmer.friendshipData[friendName].Points / 250;
-            var chanceOfProduction = (hearts / 28.0) * chanceMultiplier;
+            var chanceOfProduction = (hearts / 56.0) * chanceMultiplier;
             if (random.NextDouble() > chanceOfProduction)
             {
                 return;

@@ -37,8 +37,8 @@ namespace StardewDruid.Event.Boss
 
         public override void EventTrigger()
         {
-
-            //ModUtility.AnimateMeteorZone(targetLocation, targetVector, Color.Red);
+            
+            cues = DialogueData.DialogueScene(questData.name);
 
             ModUtility.AnimateRadiusDecoration(targetLocation, targetVector, "Stars", 1f, 1f);
 
@@ -78,7 +78,7 @@ namespace StardewDruid.Event.Boss
                 if (expireEarly)
                 {
 
-                    CastVoice("the Deep one will never give her up", 3000);
+                    DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 991);
 
                     if (!questData.name.Contains("Two"))
                     {
@@ -97,7 +97,7 @@ namespace StardewDruid.Event.Boss
                 else
                 {
 
-                    CastVoice("the Sisters chose poorly", 3000);
+                    DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, 992);
 
                 }
 
@@ -125,34 +125,10 @@ namespace StardewDruid.Event.Boss
 
             }
 
+            DialogueCue(DialogueData.DialogueNarrator(questData.name), new() { [0] = actors[0], }, activeCounter);
+
             if (activeCounter < 7)
             {
-
-                switch (activeCounter)
-                {
-                    case 1:
-
-                        CastVoice("so the Sisters raised another to their priesthood", 3000);
-
-                        break;
-
-                    case 4:
-
-                        CastVoice("it matters not", 2000);
-
-                        break;
-
-                    case 6:
-
-                        CastVoice("they will not reclaim what is rightfully his", 2000);
-
-                        break;
-
-                    default:
-
-                        break;
-
-                }
 
                 Game1.playSound("batFlap");
 

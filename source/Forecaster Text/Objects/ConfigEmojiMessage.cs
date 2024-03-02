@@ -106,7 +106,7 @@ namespace ForecasterText.Objects {
             float num2 = 0.0f;
             for (int index = 0; index < this.Snippets.Count; ++index) {
                 if (this.Snippets[index].emojiIndex != -1)
-                    b.Draw(ConfigEmojiMenu.EmojiTextures, new Vector2((float) ((double) vector.X + (double) num1 + 20), (float) ((double) vector.Y + (double) num2 + 16)), new Rectangle?(new Rectangle(this.Snippets[index].emojiIndex * 9 % ConfigEmojiMenu.EmojiTextures.Width, this.Snippets[index].emojiIndex * 9 / ConfigEmojiMenu.EmojiTextures.Width * 9, 9, 9)), Color.White * this.Alpha, 0.0f, new Vector2(4.5f, 4.5f), 3f, SpriteEffects.None, 0.99f);
+                    b.Draw(ConfigEmojiMenu.EmojiTextures, new Vector2((float) ((double) vector.X + (double) num1 + 20), (float) ((double) vector.Y + (double) num2 + 16)), new Rectangle(this.Snippets[index].emojiIndex * 9 % ConfigEmojiMenu.EmojiTextures!.Width, this.Snippets[index].emojiIndex * 9 / ConfigEmojiMenu.EmojiTextures.Width * 9, 9, 9), Color.White * this.Alpha, 0.0f, new Vector2(4.5f, 4.5f), 3f, SpriteEffects.None, 0.99f);
                 else if (this.Snippets[index].message != null) {
                     if (this.Snippets[index].message.Equals(Environment.NewLine)) {
                         num1 = 0.0f;
@@ -129,7 +129,7 @@ namespace ForecasterText.Objects {
                 // Clear the snippets
                 this.Snippets.Clear();
                 this.Snippets.Add(new ChatSnippet("> ", this.Language));
-                if (this.Setter is {} renderer && renderer(this) is {} ienumerable)
+                if (this.Setter(this) is {} ienumerable)
                     this.Snippets.AddRange(ienumerable);
             } finally {
                 // Always update the value
@@ -137,11 +137,10 @@ namespace ForecasterText.Objects {
             }
         }
         
-        private IEnumerable<ChatSnippet> ConvertString(string raw) {
+        private IEnumerable<ChatSnippet>? ConvertString(string raw) {
             if (raw is not {Length: >0})
                 return null;
             
-            Console.WriteLine(raw);
             StringBuilder builder = new();
             List<ChatSnippet> list = new();
             

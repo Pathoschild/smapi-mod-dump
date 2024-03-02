@@ -74,13 +74,12 @@ namespace ContentPatcher.Framework
         /// <param name="installedMods">The installed mod IDs.</param>
         /// <param name="modTokens">The custom tokens provided by mods.</param>
         /// <param name="assetValidators">Handle special validation logic on loaded or edited assets.</param>
-        /// <param name="groupEditsByMod">Whether to apply changes from each content pack in a separate operation.</param>
-        public ScreenManager(IModHelper helper, IMonitor monitor, IInvariantSet installedMods, ModProvidedToken[] modTokens, IAssetValidator[] assetValidators, bool groupEditsByMod)
+        public ScreenManager(IModHelper helper, IMonitor monitor, IInvariantSet installedMods, ModProvidedToken[] modTokens, IAssetValidator[] assetValidators)
         {
             this.Helper = helper;
             this.Monitor = monitor;
             this.TokenManager = new TokenManager(helper.GameContent, installedMods, modTokens);
-            this.PatchManager = new PatchManager(this.Monitor, this.TokenManager, assetValidators, groupEditsByMod);
+            this.PatchManager = new PatchManager(this.Monitor, this.TokenManager, assetValidators);
             this.PatchLoader = new PatchLoader(this.PatchManager, this.TokenManager, this.Monitor, installedMods, helper.GameContent.ParseAssetName);
             this.CustomLocationManager = new CustomLocationManager(this.Monitor, helper.GameContent);
         }
@@ -120,20 +119,33 @@ namespace ContentPatcher.Framework
         {
             // add locations
             if (newStage is LoadStage.CreatedInitialLocations or LoadStage.SaveAddedLocations)
-                this.CustomLocationManager.Apply(saveLocations: SaveGame.loaded?.locations, gameLocations: Game1.locations);
+                this.CustomLocationManager.AddTmxlLocations(saveLocations: SaveGame.loaded?.locations, gameLocations: Game1.locations);
 
             // update context
             switch (newStage)
             {
                 case LoadStage.SaveParsed:
                 case LoadStage.SaveLoadedBasicInfo or LoadStage.CreatedBasicInfo:
-                case LoadStage.Loaded when Game1.dayOfMonth == 0: // handled by OnDayStarted if we're not creating a new save
                     this.Monitor.VerboseLog($"Updating context: load stage changed to {newStage}.");
 
                     this.TokenManager.IsSaveParsed = true;
                     this.TokenManager.IsSaveBasicInfoLoaded = newStage != LoadStage.SaveParsed;
 
                     this.UpdateContext(ContextUpdateType.All);
+                    break;
+
+                case LoadStage.Preloaded:
+                case LoadStage.Loaded:
+                    this.Monitor.VerboseLog($"Updating context: load stage changed to {newStage}.");
+
+                    if (!this.TokenManager.IsSaveLoaded)
+                    {
+                        this.TokenManager.IsSaveParsed = true;
+                        this.TokenManager.IsSaveBasicInfoLoaded = true;
+                        this.TokenManager.IsSaveLoaded = true;
+
+                        this.UpdateContext(ContextUpdateType.All);
+                    }
                     break;
             }
         }

@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/nrobinson12/StardewValleyMods
+   Git: https://github.com/nrobinson12/StardewValleyMods.git
+
+mods:
+   Static Inventory
+
+latest commit:
+   commit c4744f8767ad8be4bf7ba8f79e7207b62c6f28f5
+   Author: nrobinson12 <25268723+nrobinson12@users.noreply.github.com>
+   Date:   Wed Feb 7 12:04:13 2024 -0800
+   
+       changelog
+   

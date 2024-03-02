@@ -1,0 +1,32 @@
+﻿{
+    "Name": "ExcavationSkill",
+    "Author": "moonslime",
+    "Version": "1.6.0",
+    "Description": "Adds a skill related to digging and panning.",
+    "UniqueID": "moonslime.ExcavationSkill",
+    "EntryDll": "ExcavationSkill.dll",
+    "MinimumApiVersion": "3.0.0",
+    "UpdateKeys": [
+        "Nexus:15793"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.SpaceCore"
+        },
+        {
+            "UniqueID": "Digus.ProducerFrameworkMod"
+        },
+        {
+            "UniqueID": "spacechase0.JsonAssets"
+        },
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        },
+        {
+            "UniqueID": "DaLion.Overhaul",
+            "MinimumVersion": "1.1.1",
+            "IsRequired": false
+        }
+    ]
+}

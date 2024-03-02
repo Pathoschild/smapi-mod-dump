@@ -101,7 +101,7 @@ namespace UIInfoSuite2.UIElements
             string path = string.Empty;
             try
             {
-                path = Path.Combine(_helper.DirectoryPath, "assets", "LevelUp.wav");
+                path = Path.Combine(_helper.DirectoryPath, "Assets", "LevelUp.wav");
                 _soundEffect = SoundEffect.FromStream(new FileStream(path, FileMode.Open)).CreateInstance();
             }
             catch (Exception ex)

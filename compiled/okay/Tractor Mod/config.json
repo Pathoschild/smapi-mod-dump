@@ -1,12 +1,13 @@
 {
   "Distance": 1,
   "TractorSpeed": -2,
+  "SoundEffects": "Tractor",
   "MagneticRadius": 384,
   "BuildPrice": 150000,
   "BuildMaterials": {
-    "335": 20,
-    "337": 5,
-    "787": 5
+    "(O)335": 20,
+    "(O)337": 5,
+    "(O)787": 5
   },
   "CanSummonWithoutGarage": false,
   "HighlightRadius": false,

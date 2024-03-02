@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20328
+IDs: shounlol.NPCBucket
+update keys: Nexus:20328

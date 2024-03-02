@@ -1,0 +1,47 @@
+##################################################
+##
+## You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+## for queries and analysis.
+##
+## This is *not* the original file, and not necessarily the latest version.
+## Source repository: https://github.com/Annosz/UiInfoSuite2
+##
+##################################################
+
+workspace:
+  base: /code
+  path: ""
+
+steps:
+  build:
+    image: quay.kawa.tf/tqdv/smapi-mod:3.18.4
+    commands:
+      - cp UIInfoSuite2/UIInfoSuite2-woodpecker.csproj.local UIInfoSuite2/UIInfoSuite2.csproj.local
+      - dotnet build -c Release
+    when:
+      - event: tag
+      - event: manual
+      - event: push
+        branch: ci-*
+
+  prepare-artifacts:
+    image: busybox
+    commands:
+      # Rename the artifact file from "UIInfoSuite2 2.2.9.zip" to "UIInfoSuite2-v2.2.9.zip"
+      # Notably because GitHub automatically converts spaces to dots, so the file ends up
+      # being named "UIInfoSuite2.2.2.9.zip" which looks confusing
+      - cp UIInfoSuite2/bin/Release/*/UIInfoSuite2*.zip "UIInfoSuite2-v${CI_COMMIT_TAG}.zip"
+    when:
+      - event: tag
+
+  publish:
+    image: plugins/github-release
+    settings:
+      api_key:
+        from_secret: github_api_key
+      files: UIInfoSuite2-*.zip
+      title: ${CI_COMMIT_TAG}
+      note: _Automatically created by the Woodpecker pipeline_
+      prerelease: true
+    when:
+      - event: tag

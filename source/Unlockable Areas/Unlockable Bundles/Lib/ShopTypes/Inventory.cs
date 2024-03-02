@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using StardewValley;
 using StardewModdingAPI;
 using StardewValley.Menus;
+using Unlockable_Bundles.Lib.AdvancedPricing;
 
 namespace Unlockable_Bundles.Lib.ShopTypes
 {
@@ -78,20 +79,43 @@ namespace Unlockable_Bundles.Lib.ShopTypes
             if (key.ToLower() == "money")
                 return who.Money;
 
-            var obj = Unlockable.parseItem(Unlockable.getIDFromReqSplit(key));
-            int quality = Unlockable.getQualityFromReqSplit(key);
-            if (obj.QualifiedItemId == "(O)858")
+            var item = Unlockable.parseItem(Unlockable.getIDFromReqSplit(key), 0, Unlockable.getQualityFromReqSplit(key));
+            if (item.QualifiedItemId == "(O)858")
                 return who.QiGems;
 
-            else if (obj.QualifiedItemId == "(O)73")
+            else if (item.QualifiedItemId == "(O)73")
                 return Game1.netWorldState.Value.GoldenWalnuts;
 
-            else
-                return who.Items.Sum(e => e is not null
-                                         && e.QualifiedItemId == obj.QualifiedItemId
-                                         && e.Quality >= quality
-                                         ? e.Stack
-                                         : 0);
+            else {
+                var relevant = getRelevantInventory(who, item);
+                return relevant.Sum(el => el.Value.Stack);
+            }
+        }
+
+        public static Dictionary<int, Item> getRelevantInventory(Farmer who, Item item)
+        {
+            var relevantInventory = new Dictionary<int, Item>();
+
+            for (int i = 0; i < who.Items.Count; i++)
+                if (who.Items[i] is not null && isItemValid(item, who.Items[i]))
+                    relevantInventory.Add(i, who.Items[i]);
+
+            return relevantInventory;
+        }
+
+        public static bool isItemValid(Item priceItem, Item compareItem)
+        {
+            if (compareItem.Quality < priceItem.Quality)
+                return false;
+
+            if (compareItem.QualifiedItemId == priceItem.QualifiedItemId)
+                return true;
+
+            else if (priceItem is AdvancedPricingItem apItem)
+                if (apItem.ContextTags.All(tag => compareItem.HasContextTag(tag)))
+                    return true;
+
+            return false;
         }
 
         public static void subtractItems(Farmer who, string key, int amount)
@@ -101,26 +125,20 @@ namespace Unlockable_Bundles.Lib.ShopTypes
                 return;
             }
 
-            var obj = Unlockable.parseItem(Unlockable.getIDFromReqSplit(key));
-            int quality = Unlockable.getQualityFromReqSplit(key);
+            var item = Unlockable.parseItem(Unlockable.getIDFromReqSplit(key), quality: Unlockable.getQualityFromReqSplit(key));
 
-            if (obj.QualifiedItemId == "(O)858") {
+            if (item.QualifiedItemId == "(O)858") {
                 who.QiGems -= amount;
                 return;
-            } else if (obj.QualifiedItemId == "(O)73") {
+            } else if (item.QualifiedItemId == "(O)73") {
                 Game1.netWorldState.Value.GoldenWalnuts -= amount;
                 return;
             }
 
-            var relevantInventory = new Dictionary<int, int>();
-            for (int i = 0; i < who.Items.Count; i++)
-                if (who.Items[i] is not null
-                    && who.Items[i].QualifiedItemId == obj.QualifiedItemId
-                    && who.Items[i].Quality >= quality)
-                    relevantInventory.Add(i, who.Items[i].Quality);
+            var relevantInventory = getRelevantInventory(who, item);
 
-            //We want to take the least valuable items out first, so we sort by quality
-            var sortedInventry = (from e in relevantInventory orderby e.Value ascending select e);
+            //We want to take the least valuable items out first, so we sort by quality and sellToStorePrice
+            var sortedInventry = from e in relevantInventory orderby e.Value.Quality, e.Value.sellToStorePrice() ascending select e;
 
             foreach (var el in sortedInventry) {
                 if (who.Items[el.Key].Stack > amount) {

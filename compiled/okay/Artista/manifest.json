@@ -1,7 +1,7 @@
 {
   "Name": "Artista",
   "Author": "Platonymous",
-  "Version": "1.4.2",
+  "Version": "1.4.4-alpha.20240226",
   "Description": "Play as an Artist",
   "UniqueID": "Platonymous.Artista",
   "EntryDll": "Artista.dll",

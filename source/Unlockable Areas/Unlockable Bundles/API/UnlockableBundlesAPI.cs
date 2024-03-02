@@ -28,6 +28,7 @@ namespace Unlockable_Bundles.API
 
         private static IList<string> CachedPurchasedBundles = null;
         private static IDictionary<string, IList<string>> CachedPurchasedBundlesByLocation = null;
+        private static IList<string> CachedDiscoveredBundles = null;
         private static IDictionary<string, IList<IBundle>> CachedBundles = null;
         public IList<string> PurchasedBundles => getPurchasedUnlockables();
 
@@ -101,6 +102,31 @@ namespace Unlockable_Bundles.API
             return CachedPurchasedBundlesByLocation;
         }
 
+        public static IList<string> getDiscoveredUnlockables()
+        {
+            //We are not currently loading a savegame and are not between daystart and dayending
+            if (SaveGame.loaded is null && !Context.IsWorldReady)
+                return null;
+
+            if (ModData.Instance is null)
+                if (Context.IsMainPlayer)
+                    SaveDataEvents.LoadModData();
+                else
+                    return null;
+
+            if (CachedDiscoveredBundles != null)
+                return CachedDiscoveredBundles;
+
+            var ret = new List<string>();
+
+            foreach (var e in ModData.Instance.UnlockableSaveData)
+                if (e.Value.Any(el => el.Value.Discovered))
+                    ret.Add(e.Key);
+
+            CachedDiscoveredBundles = ret;
+            return CachedDiscoveredBundles;
+        }
+
         public static IDictionary<string, IList<IBundle>> getAllBundleStates()
         {
             if (ModData.Instance is null)
@@ -163,6 +189,7 @@ namespace Unlockable_Bundles.API
         {
             CachedPurchasedBundles = null;
             CachedPurchasedBundlesByLocation = null;
+            CachedDiscoveredBundles = null;
             CachedBundles = null;
             ContentPatcherHandling.DaysSincePurchaseToken.RequiresContextUpdate = true;
         }

@@ -1,0 +1,20 @@
+{
+  "Name": "[PFM] HCCA",
+  "Author": "centrifiableGrimalkin",
+  "Version": "1.2.0",
+  "Description": "Adds producing rules for my mod.",
+  "UniqueID": "certifiableGrimalkin.HCCA_PMF",
+  "MinimumApiVersion": "3.0.0",
+  "UpdateKeys": [ "Nexus:16159" ],
+  "Dependencies": [
+    {
+      "UniqueID": "certifiableGrimalkin.HotChocolateCoffeeAlternative"
+    },
+    {
+      "UniqueID": "certifiableGrimalkin.HCCA_JA"
+    }
+  ],
+  "ContentPackFor": {
+    "UniqueID": "DIGUS.ProducerFrameworkMod"
+  }
+}

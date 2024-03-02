@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HappyHomeDesigner.Framework;
 using HappyHomeDesigner.Integration;
 using HappyHomeDesigner.Patches;
 using Microsoft.Xna.Framework;
@@ -32,7 +33,7 @@ namespace HappyHomeDesigner.Menus
 			All = 3,
 		}
 
-		public static bool TryShowCatalog(AvailableCatalogs catalogs)
+		public static bool TryShowCatalog(AvailableCatalogs catalogs, ShopMenu existing = null)
 		{
 			MenuTexture = ModEntry.helper.GameContent.Load<Texture2D>(ModEntry.uiPath);
 
@@ -60,14 +61,15 @@ namespace HappyHomeDesigner.Menus
 		private readonly ClickableTextureComponent SettingsButton;
 		private readonly ClickableTextureComponent ToggleButton;
 		private bool Toggled = true;
+		private Point screenSize;
 
-		public Catalog(AvailableCatalogs catalogs)
+		public Catalog(AvailableCatalogs catalogs, ShopMenu existing = null)
 		{
 			Catalogs = catalogs;
 			if ((catalogs & AvailableCatalogs.Furniture) is not 0)
-				Pages.Add(new FurniturePage());
+				Pages.Add(new FurniturePage(existing));
 			if ((catalogs & AvailableCatalogs.Wallpaper) is not 0)
-				Pages.Add(new WallFloorPage());
+				Pages.Add(new WallFloorPage(existing));
 
 			if (Pages.Count is not 1)
 				for (int i = 0; i < Pages.Count; i++)
@@ -79,12 +81,12 @@ namespace HappyHomeDesigner.Menus
 			if (IGMCM.Installed)
 				SettingsButton = new(new(0, 0, 48, 48), Game1.objectSpriteSheet, new(256, 64, 16, 16), 3f, true);
 
-			var vp = Game1.uiViewport;
-			Resize(new(vp.X, vp.Y, vp.Width, vp.Height));
+			Resize(Game1.uiViewport.ToRect());
 			AltTex.forcePreviewDraw = true;
 			AltTex.forceMenuDraw = true;
 
-			Game1.playSound("bigSelect");
+			if (existing is null)
+				Game1.playSound("bigSelect");
 		}
 
 		protected override void cleanupBeforeExit()
@@ -118,6 +120,9 @@ namespace HappyHomeDesigner.Menus
 		}
 		public override void draw(SpriteBatch b)
 		{
+			if (screenSize.X != Game1.uiViewport.Width || screenSize.Y != Game1.uiViewport.Height)
+				Resize(Game1.uiViewport.ToRect());
+
 			ToggleButton.draw(b);
 
 			if (!Toggled)
@@ -187,6 +192,8 @@ namespace HappyHomeDesigner.Menus
 		}
 		private void Resize(Rectangle bounds)
 		{
+			screenSize = bounds.Size;
+
 			Rectangle region = new(32, 96, 400, bounds.Height - 160);
 			for (int i = 0; i < Pages.Count; i++)
 				Pages[i].Resize(region);

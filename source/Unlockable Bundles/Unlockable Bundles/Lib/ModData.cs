@@ -28,7 +28,9 @@ namespace Unlockable_Bundles.Lib
         public static ModData Instance = null;
 
         //Dic<UnlockableKey, Dic<locationUnique, SaveData>>
-        public Dictionary<string, Dictionary<string, UnlockableSaveData>> UnlockableSaveData { get; set; } = new Dictionary<string, Dictionary<string, UnlockableSaveData>>();
+        public Dictionary<string, Dictionary<string, UnlockableSaveData>> UnlockableSaveData { get; set; } = new();
+        //Dic<Location:x,y , List<Farmers>>
+        public Dictionary<string, List<long>> FoundUniqueDigSpots { get; set; } = new();
 
         public static bool isUnlockablePurchased(string key, string location)
         {
@@ -84,7 +86,7 @@ namespace Unlockable_Bundles.Lib
             return Instance.UnlockableSaveData[key][location].Discovered;
         }
 
-        //Returns the most recent purchase day spawn of an unlockable or -1
+        //Returns the most recent purchase day of an unlockable or -1
         public static int getDaysSincePurchase(string key)
         {
             if (Instance == null)

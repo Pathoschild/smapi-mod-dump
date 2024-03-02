@@ -32,6 +32,10 @@ namespace CustomizeWeddingAttire
         public const string noneOption = "weddingAttire.noneOption";
         public const string defaultOption = "weddingAttire.defaultOption";
 
+        // Remember if last tick was a wedding
+        private bool wasWedding = false;
+        private int timer = 0;
+
         /*********
         ** Public methods
         *********/
@@ -54,6 +58,9 @@ namespace CustomizeWeddingAttire
 
             // Set up GMCM config when game is launched
             helper.Events.GameLoop.GameLaunched += SetUpConfig;
+
+            // Update clothing during the wedding
+            helper.Events.GameLoop.UpdateTicked += UpdateClothing;
         }
 
         private void SetUpConfig(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
@@ -125,19 +132,15 @@ namespace CustomizeWeddingAttire
                         var oldDir = farmer.facingDirection.Value;
                         farmer.faceDirection(Game1.down);
                         if (v == 0 || v == 3 && farmer.IsMale) { // tux
-                            farmer.changeShirt(10);
-                            farmer.changePantStyle(0);
-                            farmer.changePants(new Color(49, 49, 49));
+                            WeddingPatcher.putInTux(farmer);
 
                         } else if (v == 1) { // dress
-                            farmer.changeShirt(265);
-                            farmer.changePantStyle(2);
-                            farmer.changePants(new Color(255, 255, 255));
+                            WeddingPatcher.putInDress(farmer);
                         }
                         farmer.FarmerRenderer.draw(b, farmer.FarmerSprite.CurrentAnimationFrame, farmer.FarmerSprite.CurrentFrame, farmer.FarmerSprite.SourceRect, pos, Vector2.Zero, 0.8f, Color.White, 0f, 1f, farmer);
-                        farmer.changeShirt(-1);
-                        farmer.changePants(oldPantsColor);
-                        farmer.changePantStyle(-1);
+                        farmer.changeShirt("-1");
+                        farmer.changePantsColor(oldPantsColor);
+                        farmer.changePantStyle("-1");
                         farmer.faceDirection(oldDir);
                         FarmerRenderer.isDrawingForUI = false;
                     },
@@ -146,6 +149,27 @@ namespace CustomizeWeddingAttire
                     labelLocation: (int)IGMCMOptionsAPI.ImageOptionLabelLocation.Top
                 );
 
+            }
+        }
+
+        private void UpdateClothing(object sender, UpdateTickedEventArgs e)
+        {
+            // Forcibly update the clothing during the wedding to fix the sleeves
+            if (Game1.CurrentEvent is not null && Game1.CurrentEvent.isWedding)
+            {
+                Game1.player.UpdateClothing();
+                wasWedding = true;
+            }
+            // Also update the clothing for 15 ticks after the wedding to get the normal sleeves back
+            if (wasWedding)
+            {
+                Game1.player.UpdateClothing();
+                timer++;
+            }
+            if (timer > 15)
+            {
+                wasWedding = false;
+                timer = 0;
             }
         }
     }

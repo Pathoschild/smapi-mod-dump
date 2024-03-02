@@ -1,5 +1,72 @@
 {
-    "191120001/H/m 20000/f Wizard 500": "WizardSong/-1000 -1000/farmer 8 27 0 Wizard 10 15 2/showFrame Wizard 18/viewport 6 18 true/pause 1500/advancedMove farmer false 0 -6 -2 0 0 -5 4 10/pause 1000/faceDirection Wizard 2/speak Wizard \"{{i18n:wizard.0001.0}}\"/advancedMove Wizard false -4 0 2 10/viewport move 0 -1 2000/speak Wizard \"{{i18n:wizard.0001.1}}\"/waitForAllStationary/pause 400/move Wizard 1 0 1/speak Wizard \"{{i18n:wizard.0001.2}}\"/faceDirection Wizard 2 true/speak Wizard \"{{i18n:wizard.0001.3}}\"/pause 250/move farmer 0 -1 1/faceDirection Wizard 3 true/fork {{moved}} secretwoodssnorlax_altline/speak Wizard \"{{i18n:wizard.0001.4}}\"/switchEvent secretwoodssnorlax_fin",
-    "secretwoodssnorlax_altline": "pause 50/speak Wizard \"{{i18n:wizard.0001.4a}}\"/switchEvent secretwoodssnorlax_fin",
-    "secretwoodssnorlax_fin": "pause 150/advancedMove Wizard false 0 -8 4 0 2 500/pause 350/advancedMove farmer false 1 0 0 -8 2 0 1 10/pause 400/viewport move 1 -2 3500/speak Wizard \"{{i18n:wizard.0001.5}}\"/waitForAllStationary/viewport move 0 -1 1500/pause 120/advancedMove Wizard false -1 0 3 10/pause 600/speak Wizard \"{{i18n:wizard.0001.6}}\"/pause 200/SWS_holdKey/pause 3300/SWS_giveKey/pause 1000/faceDirection farmer 1/speak Wizard \"{{i18n:wizard.0001.7}}\"/speak Wizard \"{{i18n:wizard.0001.8}}\"/speak Wizard \"{{i18n:wizard.0001.9}}\"/pause 720/advancedMove farmer false -2 0 0 13 1 0 0 5 2 10/pause 1500/faceDirection Wizard 2/pause 1500/showFrame Wizard 18/pause 2000/speak Wizard \"{{i18n:wizard.0001.10}}\"/pause 500/faceDirection Wizard 2 continue/speak Wizard \"{{i18n:wizard.0001.11}}\"/pause 1000/waitForAllStationary/end dialogueWarpOut Wizard \"{{i18n:wizard.0001.12}}\""
+    "ichortower.SecretWoodsSnorlax_e1/H/m 20000/f Wizard 500":
+        "WizardSong/
+        -1000 -1000/
+        farmer 8 27 0 Wizard 10 15 2/
+        setSkipActions ichortower.SecretWoodsSnorlax_Action_GiveKey/
+        skippable/
+        showFrame Wizard 18/
+        viewport 6 18 true/
+        pause 1500/
+        advancedMove farmer false 0 -6 -2 0 0 -5 4 10/
+        pause 1000/
+        faceDirection Wizard 2/
+        speak Wizard \"{{i18n:wizard.0001.0}}\"/
+        advancedMove Wizard false -4 0 2 10/
+        viewport move 0 -1 2000/
+        speak Wizard \"{{i18n:wizard.0001.1}}\"/
+        waitForAllStationary/
+        pause 400/
+        move Wizard 1 0 1/
+        speak Wizard \"{{i18n:wizard.0001.2}}\"/
+        faceDirection Wizard 2 true/
+        speak Wizard \"{{i18n:wizard.0001.3}}\"/
+        pause 250/
+        move farmer 0 -1 1/
+        faceDirection Wizard 3 true/
+        fork {{moved}} ichortower.SecretWoodsSnorlax_e1_altline/
+        speak Wizard \"{{i18n:wizard.0001.4}}\"/
+        switchEvent ichortower.SecretWoodsSnorlax_e1_fin",
+
+    "ichortower.SecretWoodsSnorlax_e1_altline":
+        "pause 50/
+        speak Wizard \"{{i18n:wizard.0001.4a}}\"/
+        switchEvent ichortower.SecretWoodsSnorlax_e1_fin",
+
+    "ichortower.SecretWoodsSnorlax_e1_fin":
+        "pause 150/
+        advancedMove Wizard false 0 -8 4 0 2 500/
+        pause 350/
+        advancedMove farmer false 1 0 0 -8 2 0 1 10/
+        pause 400/
+        viewport move 1 -2 3500/
+        speak Wizard \"{{i18n:wizard.0001.5}}\"/
+        waitForAllStationary/
+        viewport move 0 -1 1500/
+        pause 120/
+        advancedMove Wizard false -1 0 3 10/
+        pause 600/
+        speak Wizard \"{{i18n:wizard.0001.6}}\"/
+        pause 200/
+        setSkipActions \"\"/
+        action ichortower.SecretWoodsSnorlax_Action_GiveKey/
+        pause 4000/
+        faceDirection farmer 1/
+        speak Wizard \"{{i18n:wizard.0001.7}}\"/
+        speak Wizard \"{{i18n:wizard.0001.8}}\"/
+        speak Wizard \"{{i18n:wizard.0001.9}}\"/
+        pause 720/
+        advancedMove farmer false -2 0 0 13 1 0 0 5 2 10/
+        pause 1500/
+        faceDirection Wizard 2/
+        pause 1500/
+        showFrame Wizard 18/
+        pause 2000/
+        speak Wizard \"{{i18n:wizard.0001.10}}\"/
+        pause 500/
+        faceDirection Wizard 2 true/
+        speak Wizard \"{{i18n:wizard.0001.11}}\"/
+        pause 1000/
+        waitForAllStationary/
+        end dialogueWarpOut Wizard \"{{i18n:wizard.0001.12}}\""
 }

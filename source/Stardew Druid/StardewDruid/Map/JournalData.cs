@@ -9,6 +9,7 @@
 *************************************************/
 
 using StardewDruid.Journal;
+using StardewValley.Menus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,30 +46,93 @@ namespace StardewDruid.Map
                         switch (stringList[1])
                         {
                             case "quest":
+                                
                                 if (stringList.Count > 5)
                                 {
+                                    
                                     if (Mod.instance.QuestGiven(stringList[5]))
                                     {
+                                        
                                         Page page = new Page();
+                                        
                                         page.title = stringList[0];
+                                        
                                         page.icon = stringList[2];
+                                        
                                         page.description = stringList[3];
+                                        
                                         if (Mod.instance.QuestComplete(stringList[5]))
+                                        {
+                                            
                                             page.objectives.Add(stringList[4]);
+                                        
+                                        }
                                         else
+                                        {
+                                            
                                             page.active = true;
+                                        
+                                        }
+
+                                        Dictionary<int, Dictionary<int, string>> dialogueScene = DialogueData.DialogueScene(stringList[5]);
+
+                                        if(dialogueScene.Count > 0)
+                                        {
+
+                                            Dictionary<int, Dialogue.Narrator> narrator = DialogueData.DialogueNarrator(stringList[5]);
+
+                                            foreach(KeyValuePair<int, Dialogue.Narrator> sceneNarrator in narrator)
+                                            {
+                                                page.transcript.Add("(transcript) " + sceneNarrator.Value.name);
+
+                                                foreach (KeyValuePair<int, Dictionary<int, string>> sceneEntry in dialogueScene)
+                                                {
+
+                                                    if(sceneEntry.Key > 900)
+                                                    {
+                                                        continue;
+                                                    }
+
+                                                    if (sceneEntry.Value.ContainsKey(sceneNarrator.Key))
+                                                    {
+
+                                                        page.transcript.Add(sceneEntry.Value[sceneNarrator.Key]);
+
+                                                    }
+
+                                                }
+
+                                            }
+
+                                        }
+
                                         pageList.Add(page);
+                                        
                                         break;
+                                    
                                     }
+                                    
                                     break;
+                                
                                 }
+
                                 Page page1 = new Page();
+
                                 page1.title = stringList[0];
+
                                 page1.icon = stringList[2];
+
                                 page1.description = stringList[3];
+
                                 if (num > keyValuePair.Key)
+                                {
+                                    
                                     page1.objectives.Add(stringList[4]);
+                                
+                                }
+                                    
                                 pageList.Add(page1);
+
                                 break;
 
                             case "lesson":
@@ -115,6 +179,56 @@ namespace StardewDruid.Map
                                     description = stringList[3],
 
                                     objectives = effectObjectives,
+
+                                });
+
+                                break;
+
+                            case "ether":
+
+                                List<string> etherPages = new() {};
+
+                                int specialNotes = 0;
+
+                                Dictionary<string, int> taskList = Mod.instance.TaskList();
+
+                                if (taskList.ContainsKey("masterTreasure"))
+                                {
+
+                                    specialNotes = 7;
+
+                                }
+                                else if (taskList.ContainsKey("lessonTreasure"))
+                                {
+
+                                    specialNotes = taskList["lessonTreasure"];
+
+                                }
+
+                                Dictionary<int, List<string>> specialEntries = DialogueData.EtherPages();
+
+                                for (int i = 0; i < specialNotes; i++)
+                                {
+
+                                    foreach (string entry in specialEntries[i])
+                                    {
+                                        
+                                        etherPages.Add(entry);
+
+                                    }
+
+                                }
+
+                                pageList.Add(new Page()
+                                {
+
+                                    title = stringList[0],
+
+                                    icon = stringList[2],
+
+                                    description = stringList[3],
+
+                                    objectives = etherPages,
 
                                 });
 
@@ -227,8 +341,8 @@ namespace StardewDruid.Map
                     "Lesson: Nature's Bounty",
                     "lesson",
                     "Weald",
-                    "The Effigy has shown me how to gather the bounty of the wild.", //, though some bounties are guarded jealously by creatures of the forest
-                    "Extract foragables from large bushes, wood from trees, fibre from grass and small fish from water.", // Might disturb bats.
+                    "The Effigy has shown me how to gather the bounty of the wild.",
+                    "Extract foragables from large bushes, wood from trees, fibre from grass and small fish from water.",
                     "lessonCreature",
                     "of 20 bushes rustled with Rite",
                     "masterCreature",
@@ -754,6 +868,13 @@ namespace StardewDruid.Map
                     "of 7 treasures found",
                     "masterTreasure",
                     "Special journal entry completed"
+                    },
+                    new()
+                    {
+                    "Ether-drenched Pages",
+                    "ether",
+                    "Effigy",
+                    "I've collected a series of ether-soaked pieces of vellum once scattered throughout the valley. The messages are written in a cuneform I can only decipher while in the guise of the ancient ones.",
                     }
                 },
                 [33] = new()
@@ -797,58 +918,6 @@ namespace StardewDruid.Map
                 }
 
             };
-
-            int specialNotes = 0;
-
-            Dictionary<string, int> taskList = Mod.instance.TaskList();
-
-            if (taskList.ContainsKey("masterTreasure"))
-            {
-
-                specialNotes = 7;
-
-            }
-            else if (taskList.ContainsKey("lessonTreasure"))
-            {
-
-                specialNotes = taskList["lessonTreasure"];
-
-            }
-
-            if (specialNotes > 0)
-            {
-
-                List<string> specialPage = new()
-                {
-
-                    "Ether-drenched Pages",
-                    "journal",
-                    "Effigy",
-                    "I've collected a series of ether-soaked pieces of vellum once scattered throughout the valley. The messages are written in a cuneform I can only decipher while in the guise of the ancient ones.",
-
-                };
-
-                List<string> specialEntries = new()
-                {
-                    "I strolled alone, in the valley untouched by the war of our great kin, and came upon a spring that mirrors the celestial plane. I saw her reflection, and from the mirrored side, she saw mine.",
-                    "I made a garden for her here, where the fruits grow sweetest, and dyed the blossoms with all the burgeoning colours of my heart. Her light dappled over the grove, bringing it to life. She was pleased, and I was captivated.",
-                    "I climbed the heights of the sacred mountain, and there, I constructed a marriage altar. I looked upward for many nights. Her light came again, and confirmed her own yearning. I convinced the Benevolus Prime to conduct a rite of union.",
-                    "By the purity and power of our union, the barriers between us broke. Dear Lady, it is Yoba's will that I am with my love, and there is nothing more to explain.",
-                    "(Written in a different hand) Dear Lord, your bride cannot be accommodated. The powers at court are enraptured by her brilliance as it shines through the weald. ",
-                    "All have come to covet her celestial beauty. Even if our Kings do not claim her, the Dragons will surely challenge you. For the sake of peace, she must return to her sisters.",
-                    "Lady, I will not be parted from the second part of my soul. We will flee the vanity of the masters, and make a sanctuary in the secretest place, deep under the valley."
-
-                };
-
-                for (int i = 0; i < specialNotes; i++)
-                {
-                    specialPage.Add(specialEntries[i]);
-
-                }
-
-                pages[32].Add(specialPage);
-
-            }
 
             return pages;
 

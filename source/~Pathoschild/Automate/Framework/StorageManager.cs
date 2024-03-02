@@ -13,9 +13,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Pathoschild.Stardew.Automate.Framework.Storage;
-using Pathoschild.Stardew.Common;
-using StardewValley;
-using SObject = StardewValley.Object;
 
 namespace Pathoschild.Stardew.Automate.Framework
 {
@@ -23,13 +20,13 @@ namespace Pathoschild.Stardew.Automate.Framework
     internal class StorageManager : IStorage
     {
         /*********
-        ** Fields
+        ** Accessors
         *********/
-        /// <summary>The storage containers that accept input, in priority order.</summary>
-        private IContainer[] InputContainers;
+        /// <inheritdoc />
+        public IContainer[] InputContainers { get; private set; }
 
-        /// <summary>The storage containers that provide items, in priority order.</summary>
-        private IContainer[] OutputContainers;
+        /// <inheritdoc />
+        public IContainer[] OutputContainers { get; private set; }
 
 
         /*********
@@ -71,13 +68,8 @@ namespace Pathoschild.Stardew.Automate.Framework
         {
             foreach (IContainer container in this.OutputContainers)
             {
-                bool preventRemovingStacks = container.ModData.ReadField(AutomateContainerHelper.PreventRemovingStacksKey, bool.Parse);
-
                 foreach (ITrackedStack stack in container)
                 {
-                    if (preventRemovingStacks)
-                        stack.PreventEmptyStacks();
-
                     if (stack.Count > 0)
                         yield return stack;
                 }
@@ -103,12 +95,6 @@ namespace Pathoschild.Stardew.Automate.Framework
 
             consumable = null;
             return false;
-        }
-
-        /// <inheritdoc />
-        public bool TryGetIngredient(int id, int count, [NotNullWhen(true)] out IConsumable? consumable, ItemType? type = ItemType.Object)
-        {
-            return this.TryGetIngredient(item => (type == null || item.Type == type) && (item.Sample.ParentSheetIndex == id || item.Sample.Category == id), count, out consumable);
         }
 
         /// <inheritdoc />
@@ -154,12 +140,6 @@ namespace Pathoschild.Stardew.Automate.Framework
             return false;
         }
 
-        /// <inheritdoc />
-        public bool TryConsume(int itemID, int count, ItemType? type = ItemType.Object)
-        {
-            return this.TryConsume(item => (type == null || item.Type == type) && item.Sample.ParentSheetIndex == itemID, count);
-        }
-
         /****
         ** TryPush
         ****/
@@ -183,10 +163,10 @@ namespace Pathoschild.Stardew.Automate.Framework
             }
 
             // push into chests that already have this item
-            string itemKey = this.GetItemKey(item.Sample);
+            string itemKey = item.Sample.QualifiedItemId;
             foreach (IContainer container in otherContainers)
             {
-                if (container.All(p => this.GetItemKey(p.Sample) != itemKey))
+                if (container.All(p => p.Sample.QualifiedItemId != itemKey))
                     continue;
 
                 container.Store(item);
@@ -206,22 +186,6 @@ namespace Pathoschild.Stardew.Automate.Framework
             }
 
             return item.Count < originalCount;
-        }
-
-
-        /*********
-        ** Private methods
-        *********/
-        /// <summary>Get a key which uniquely identifies an item type.</summary>
-        /// <param name="item">The item to identify.</param>
-        private string GetItemKey(Item item)
-        {
-            string key = item.GetType().FullName!;
-            if (item is SObject obj)
-                key += "_craftable:" + obj.bigCraftable.Value;
-            key += "_id:" + item.ParentSheetIndex;
-
-            return key;
         }
     }
 }

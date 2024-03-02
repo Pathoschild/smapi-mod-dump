@@ -492,8 +492,8 @@ namespace StardewDruid.Map
 
             int num = Mod.instance.CurrentProgress();
 
-            string rite = RitesProgress().Last();
-            
+            List<string> rites = RitesProgress();
+
             foreach (KeyValuePair<int, List<string>> keyValuePair in QuestProgress())
             {
                 
@@ -509,15 +509,6 @@ namespace StardewDruid.Map
                             num = keyValuePair.Key;
                             
                             num++;
-                            
-                            Mod.instance.blessingList = RitesProgress();
-
-                            if(Mod.instance.blessingList.Last() != rite)
-                            {
-
-                                Mod.instance.ChangeBlessing(Mod.instance.blessingList.Last());
-
-                            }
  
                             return num;
                         
@@ -1036,7 +1027,7 @@ namespace StardewDruid.Map
                     },
                     triggerMarker = "icon",
                     triggerVector = new Vector2(118f, 20f),
-                    triggerColour = new Color(1f, 0.8f, 0.4f, 1f),
+                    triggerColour = new Color(1f, 0.4f, 0.4f, 1f),
                     questId = 18465046,
                     questValue = 6,
                     questTitle = "Traces of the Fallen One",

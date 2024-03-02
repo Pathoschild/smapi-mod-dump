@@ -47,7 +47,6 @@ namespace ContentPatcher.Framework.Locations
             typeof (Duggy),
             typeof (Ghost),
             typeof (GreenSlime),
-            typeof (LavaCrab),
             typeof (RockCrab),
             typeof (ShadowGuy),
             typeof (Child),

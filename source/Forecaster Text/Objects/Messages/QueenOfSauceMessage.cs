@@ -45,7 +45,7 @@ namespace ForecasterText.Objects.Messages {
         }
         
         /// <inheritdoc />
-        public string Write(Farmer farmer, ITranslationHelper t9N, ForecasterConfig config) {
+        public string? Write(Farmer farmer, ITranslationHelper t9N, ForecasterConfig config) {
             IRecipeFinder recipeFinder = this.Mod.GetRecipeFinder(farmer);
             
             // Get the recipe name

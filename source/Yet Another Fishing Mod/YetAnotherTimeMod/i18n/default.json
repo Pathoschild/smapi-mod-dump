@@ -1,0 +1,17 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Dunc4nNT/StardewMods
+**
+*************************************************/
+
+{
+  "message.config-reloaded": "Configuration file reloaded.",
+  "message.not-main-player-warning": "Disabled mod; only the host can manipulate game time.",
+  "message.time-update": "Set time speed to {{Percentage}}%",
+  "message.time-unfrozen": "Time is now resumed.",
+  "message.time-frozen": "Time is now frozen."
+}

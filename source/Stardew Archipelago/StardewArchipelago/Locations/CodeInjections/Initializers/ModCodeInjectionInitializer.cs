@@ -8,16 +8,13 @@
 **
 *************************************************/
 
-using System.Linq;
 using StardewArchipelago.Archipelago;
 using StardewModdingAPI;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Modded;
 using StardewArchipelago.GameModifications;
 using StardewArchipelago.GameModifications.CodeInjections.Modded;
 using StardewArchipelago.Locations.CodeInjections.Modded;
 using StardewArchipelago.Locations.CodeInjections.Modded.SVE;
-using StardewValley;
-using StardewArchipelago.Items;
 using StardewArchipelago.GameModifications.Modded;
 
 namespace StardewArchipelago.Locations.CodeInjections.Initializers
@@ -67,6 +64,10 @@ namespace StardewArchipelago.Locations.CodeInjections.Initializers
             if (archipelago.SlotData.Mods.HasMod(ModNames.DISTANT_LANDS)) // Only mod for now that needs it.
             {
                 ModdedEventInjections.Initialize(monitor, modHelper, archipelago, locationChecker);
+            }
+            if (archipelago.SlotData.Mods.HasMod(ModNames.BOARDING_HOUSE))
+            {
+                BoardingHouseInjections.Initialize(monitor, locationChecker, archipelago, shopReplacer);
             }
         }
     }

@@ -39,6 +39,9 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
             [ResourceClump.hollowLogIndex] = Tool.steel
         };
 
+        /// <summary>Simplifies access to private code.</summary>
+        private readonly IReflectionHelper Reflection;
+
 
         /*********
         ** Public methods
@@ -48,9 +51,10 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
         /// <param name="modRegistry">Fetches metadata about loaded mods.</param>
         /// <param name="reflection">Simplifies access to private code.</param>
         public AxeAttachment(AxeConfig config, IModRegistry modRegistry, IReflectionHelper reflection)
-            : base(modRegistry, reflection)
+            : base(modRegistry)
         {
             this.Config = config;
+            this.Reflection = reflection;
         }
 
         /// <summary>Get whether the tool is currently enabled.</summary>
@@ -76,7 +80,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
             tool = tool.AssertNotNull();
 
             // clear debris
-            if (this.Config.ClearDebris && (this.IsTwig(tileObj) || this.IsWeed(tileObj)))
+            if (this.Config.ClearDebris && tileObj != null && (tileObj.IsTwig() || tileObj.IsWeeds()))
                 return this.UseToolOnTile(tool, tile, player, location);
 
             // cut terrain features
@@ -106,7 +110,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
             // cut resource stumps
             if (this.Config.ClearDebris || this.Config.CutGiantCrops)
             {
-                if (this.TryGetResourceClumpCoveringTile(location, tile, player, out ResourceClump? clump, out Func<Tool, bool>? applyTool))
+                if (this.TryGetResourceClumpCoveringTile(location, tile, player, this.Reflection, out ResourceClump? clump, out Func<Tool, bool>? applyTool))
                 {
                     // giant crops
                     if (this.Config.CutGiantCrops && clump is GiantCrop)
@@ -129,7 +133,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
             // cut bushes in large terrain features
             if (this.Config.CutBushes)
             {
-                foreach (Bush bush in location.largeTerrainFeatures.OfType<Bush>().Where(p => p.tilePosition.Value == tile))
+                foreach (Bush bush in location.largeTerrainFeatures.OfType<Bush>().Where(p => p.Tile == tile))
                 {
                     if (this.ShouldCut(bush) && this.UseToolOnTile(tool, tile, player, location))
                         return true;
@@ -211,8 +215,7 @@ namespace Pathoschild.Stardew.TractorMod.Framework.Attachments
                 // the game doesn't reliably track heavy tappers, so we need to check manually
                 || (
                     location.objects.TryGetValue(tile, out SObject obj)
-                    && obj.bigCraftable.Value
-                    && obj.ParentSheetIndex is 105 or 264
+                    && obj.IsTapper()
                 );
         }
     }

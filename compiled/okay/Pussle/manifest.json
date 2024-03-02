@@ -1,7 +1,7 @@
 {
   "Name": "Pussle",
   "Author": "Platonymous",
-  "Version": "1.0.3-alpha.20240106",
+  "Version": "1.0.4-alpha.20240226",
   "Description": "Pussle Word Game",
   "UniqueID": "Platonymous.Pussle",
   "EntryDll": "Pussle.dll",

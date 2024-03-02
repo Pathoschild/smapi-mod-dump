@@ -1,0 +1,7 @@
+﻿{
+	"Carpenter_Flip": "Binaları Çevir",
+	"Carpenter_SelectBuilding_Flip": "Çevrilecek binayı seçin",
+	"Carpenter_CannotFlip": "Bu bina çevrilemez" ,
+	"Carpenter_CannotFlip_Permission": "Bu binayı çevirmek için izniniz yok",
+	"Carpenter_CannotFlip_PlayerHere": "Bir oyuncu binadayken bina çevrilemez"
+}

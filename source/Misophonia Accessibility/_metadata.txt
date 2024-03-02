@@ -6,9 +6,9 @@ mods:
    Misophonia Accessibility
 
 latest commit:
-   commit 3ae561b6d4edc87137b9f2e94b361fba2b6239ee
+   commit 9e0aed734391694e24ae74166e7ab15ec4929675
    Author: James Pfluger <me@jamespfluger.com>
-   Date:   Sun Dec 31 13:06:35 2023 -0800
+   Date:   Thu Feb 1 20:02:40 2024 -0800
    
-       removed excessive logger usage
+       bugfix: add not condition to `PatchSound`
    

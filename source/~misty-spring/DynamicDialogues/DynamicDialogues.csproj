@@ -7,9 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
-    <Reference Include="StardewValley">
-      <HintPath>/home/mist/.steam/steam/steamapps/common/Stardew Valley/Stardew Valley.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

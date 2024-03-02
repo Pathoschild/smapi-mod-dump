@@ -6,11 +6,11 @@ mods:
    Ui Info Suite 2
 
 latest commit:
-   commit 65d16f3afb9a4fa6f4eb4dbc2cea9ca26bbd78a6
-   Author: Tilwa Qendov <tqdv@users.noreply.github.com>
-   Date:   Sat Aug 26 13:22:35 2023 +0200
+   commit 2b7a83dfc986ab321e2c52685a62fc0f9d042fb4
+   Author: Drew Hoener <drewhoener@gmail.com>
+   Date:   Thu Feb 29 17:37:32 2024 -0500
    
-       Merge pull request #325 from Pseurae/robin-fix
+       Merge pull request #333 from tqdv/tqdv-2.2.10
        
-       Update ShowRobinBuildingStatusIcon to account for house upgrades
+       Release version 2.2.10
    

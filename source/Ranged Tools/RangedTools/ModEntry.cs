@@ -92,7 +92,7 @@ namespace RangedTools
                 patchPrefix(harmonyInstance, typeof(SpriteBatch), nameof(SpriteBatch.Draw),
                             typeof(ModEntry), nameof(ModEntry.Prefix_SpriteBatch_Draw),
                             new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color),
-                                typeof(float), typeof(Vector2), typeof(Vector2), typeof(SpriteEffects), typeof(float) });
+                                         typeof(float), typeof(Vector2), typeof(Vector2), typeof(SpriteEffects), typeof(float) });
                 
                 patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.playerCanPlaceItemHere),
                             typeof(ModEntry), nameof(ModEntry.Prefix_playerCanPlaceItemHere));
@@ -103,11 +103,19 @@ namespace RangedTools
                 patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.withinRadiusOfPlayer),
                             typeof(ModEntry), nameof(ModEntry.Prefix_withinRadiusOfPlayer));
                 
+                patchPrefix(harmonyInstance, typeof(Utility), nameof(Utility.tileWithinRadiusOfPlayer),
+                            typeof(ModEntry), nameof(ModEntry.Prefix_tileWithinRadiusOfPlayer));
+                
                 patchPostfix(harmonyInstance, typeof(MeleeWeapon), nameof(MeleeWeapon.getAreaOfEffect),
                              typeof(ModEntry), nameof(ModEntry.Postfix_getAreaOfEffect));
                 
                 patchPostfix(harmonyInstance, typeof(MeleeWeapon), nameof(MeleeWeapon.DoDamage),
                              typeof(ModEntry), nameof(ModEntry.Postfix_DoDamage));
+                
+                patchPrefix(harmonyInstance, typeof(GameLocation), nameof(GameLocation.damageMonster),
+                            typeof(ModEntry), nameof(ModEntry.Prefix_damageMonster),
+                            new Type[] { typeof(Rectangle), typeof(int), typeof(int), typeof(bool), typeof(float),
+                                         typeof(int), typeof(float), typeof(float), typeof(bool), typeof(Farmer) });
                 
                 patchPrefix(harmonyInstance, typeof(GameLocation), "isMonsterDamageApplicable",
                             typeof(ModEntry), nameof(ModEntry.Prefix_isMonsterDamageApplicable));
@@ -160,7 +168,7 @@ namespace RangedTools
             }
             catch (Exception ex)
             {
-                Log("Error in code patching: " + ex.InnerException + Environment.NewLine + ex.StackTrace);
+                Log("Error patching prefix method to " + sourceClass.Name + "." + sourceName + "." + Environment.NewLine + ex.InnerException + Environment.NewLine + ex.StackTrace);
             }
         }
         
@@ -196,7 +204,7 @@ namespace RangedTools
             }
             catch (Exception ex)
             {
-                Log("Error in code patching: " + ex.InnerException + Environment.NewLine + ex.StackTrace);
+                Log("Error patching postfix method to " + sourceClass.Name + "." + sourceName + "." + Environment.NewLine + ex.InnerException + Environment.NewLine + ex.StackTrace);
             }
         }
         
@@ -917,6 +925,54 @@ namespace RangedTools
                 return true; // Go to original function
             }
         }
+
+        /// <summary>Rewrite of Utility.tileWithinRadiusOfPlayer to add an override for the tileRadius argument.</summary>
+        /// <param name="__result">The result of the function.</param>
+        /// <param name="xTile">The tile X coordinate.</param>
+        /// <param name="yTile">The tile Y coordinate.</param>
+        /// <param name="tileRadius">The allowed radius, overriden if tileRadiusOverride is set.</param>
+        /// <param name="f">The Farmer placing the object.</param>
+        public static bool Prefix_tileWithinRadiusOfPlayer(ref bool __result, int xTile, int yTile, int tileRadius, Farmer f)
+        {
+            try
+            {
+                if (tileRadiusOverride == -1)
+                {
+                    __result = true;
+                    return false; // Don't do original function anymore
+                }
+                
+                if (tileRadiusOverride != 0)
+                    tileRadius = tileRadiusOverride;
+                
+                Point point = new Point(xTile, yTile);
+                if (!Config.UseHalfTilePositions) // Standard method: Round player's position down to nearest tile
+                {
+                    Vector2 tileLocation = f.getTileLocation();
+                    __result = (double)Math.Abs((float)point.X - tileLocation.X) <= (double)tileRadius && (double)Math.Abs((float)point.Y - tileLocation.Y) <= (double)tileRadius;
+                }
+                else // New method: Determine extents of tiles in range based on player position rounded favorably up/down
+                {
+                    // Round player position to nearest half-tile (i.e. 0, 0.5, 1, 1.5, 2, 2.5...).
+                    Vector2 playerPosition = new Vector2((float)Math.Round(f.position.Value.X / 32f) / 2f,
+                                                         (float)Math.Round(f.position.Value.Y / 32f) / 2f);
+                    
+                    // Determine the tiles on the edge of the range, rounding down for minimums and up for maximums.
+                    int minX = (int)playerPosition.X - tileRadius;
+                    int minY = (int)playerPosition.Y - tileRadius;
+                    int maxX = (int)Math.Ceiling(playerPosition.X) + tileRadius;
+                    int maxY = (int)Math.Ceiling(playerPosition.Y) + tileRadius;
+                    
+                    __result = point.X >= minX && point.X <= maxX && point.Y >= minY && point.Y <= maxY;
+                }
+                return false; // Don't do original function anymore
+            }
+            catch (Exception ex)
+            {
+                Log("Error in tileWithinRadiusOfPlayer: " + ex.Message + Environment.NewLine + ex.StackTrace);
+                return true; // Go to original function
+            }
+        }
         
         /// <summary>Postfix to MeleeWeapon.getAreaOfEffect that shifts effect area of scythes/melee weapons to cursor if enabled.</summary>
         /// <param name="__result">Rectangle for the area of effect.</param>
@@ -1005,6 +1061,50 @@ namespace RangedTools
             
             if (!cueName.Equals(""))
                 Game1.playSound(cueName);
+        }
+
+        /// <summary>Prefix to GameLocation.damageMonster to inflate areaOfEffect for melee attacks.</summary>
+        /// <param name="areaOfEffect">The area affected by the attack.</param>
+        /// <param name="minDamage">Minimum damage of attack.</param>
+        /// <param name="maxDamage">Maximum damage of attack.</param>
+        /// <param name="isBomb">Whether the damage is being done by a bomb.</param>
+        /// <param name="knockBackModifier">Amount of knockback done to monster.</param>
+        /// <param name="addedPrecision">Precision for bomb hitbox.</param>
+        /// <param name="critChance">Chance of critical hit.</param>
+        /// <param name="critMultiplier">Damage multiplier for critical hit.</param>
+        /// <param name="triggerMonsterInvincibleTimer">Whether to give monster invincibility cooldown.</param>
+        /// <param name="who">The attacking Farmer.</param>
+        public static bool Prefix_damageMonster(ref Rectangle areaOfEffect, int minDamage, int maxDamage, bool isBomb, float knockBackModifier, int addedPrecision, float critChance, float critMultiplier, bool triggerMonsterInvincibleTimer, Farmer who)
+        {
+            try
+            {
+                if (isBomb) // Don't change bomb radius
+                    return true; // Go to original function
+                
+                int myRange = Config.WeaponRange;
+                if (myRange == 1) // Default behavior
+                    return true; // Go to original function
+                
+                if (!who.IsLocalPlayer)
+                    return true; // Go to original function
+                
+                if (myRange < 0) // Infinite
+                {
+                    areaOfEffect.X = 0;
+                    areaOfEffect.Y = 0;
+                    areaOfEffect.Width = Game1.currentLocation.map.DisplayWidth;
+                    areaOfEffect.Height = Game1.currentLocation.map.DisplayHeight;
+                }
+                else if (myRange > 1)
+                    areaOfEffect.Inflate((myRange - 1) * 64, (myRange - 1) * 64);
+                
+                return true; // Go to original function
+            }
+            catch (Exception ex)
+            {
+                Log("Error in damageMonster: " + ex.Message + Environment.NewLine + ex.StackTrace);
+                return true; // Go to original function
+            }
         }
         
         /// <summary>Prefix to GameLocation.isMonsterDamageApplicable that overrides it if the setting to ignore obstacles is enabled.</summary>

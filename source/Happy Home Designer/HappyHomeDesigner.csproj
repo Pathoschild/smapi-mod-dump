@@ -1,22 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 		<EnableHarmony>true</EnableHarmony>
-		<Version>1.1.0</Version>
+		<Version>2.0.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Update="content.json">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-
 	<PropertyGroup>
-		<GamePath>C:\Program Files (x86)\Steam\steamapps\common\STARDEW_CURRENT</GamePath>
+		<GamePath>C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley</GamePath>
 	</PropertyGroup>
 </Project>

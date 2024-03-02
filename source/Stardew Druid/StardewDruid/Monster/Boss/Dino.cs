@@ -53,23 +53,6 @@ namespace StardewDruid.Monster.Boss
             DinoFlight();
             DinoSpecial();
 
-            ouchList = new List<string>()
-            {
-                "ouch",
-                "croak",
-                "can't you aim for the helmet?"
-            };
-
-            dialogueList = new List<string>()
-            {
-                "Why am I here",
-                "The power of the Stars has seeped into the land",
-                "I should be at rest, I should be...",
-                "Surrender, and I'll give you a pony ride",
-                "STOP MOVING. JUST BURN.",
-                "My helmet provides +3 Intelligence!"
-            };
-
             overHead = new(16, -144);
 
             hatsTexture = Game1.content.Load<Texture2D>("Characters\\Farmer\\hats");
@@ -122,8 +105,6 @@ namespace StardewDruid.Monster.Boss
             flightLast = 1;
 
             flightIncrement = 9;
-
-            flightSound = "";
 
             flightTexture = characterTexture;
 

@@ -1,4 +1,5 @@
 {
+  "EngagementDuration": 3,
   "WeddingDuration": 7,
   "BirthDuration": 7,
   "DivorceDuration": 7,
@@ -14,5 +15,6 @@
   "RailroadEarthquakeDuration": 7,
   "WitchVisitDuration": 7,
   "FairyVisitDuration": 7,
-  "IslandResortDuration": 7
+  "IslandResortDuration": 7,
+  "SelfishShrineDuration": 7
 }

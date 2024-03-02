@@ -14,6 +14,5 @@ namespace StardewArchipelago.Stardew.NameMapping
     {
         string GetEnglishName(string internalName);
         string GetInternalName(string englishName);
-        bool RecipeNeedsMapping(string itemOfRecipe);
     }
 }

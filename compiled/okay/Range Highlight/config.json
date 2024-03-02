@@ -12,6 +12,7 @@
   "ShowOtherBeehousesWhenHoldingBeehouse": false,
   "showHeldBombRange": true,
   "showPlacedBombRange": true,
+  "hideHeldBombWhenPlacedAreTicking": true,
   "showBombInnerRange": false,
   "showBombOuterRange": true,
   "ShowAllRangesKey": "LeftShift",

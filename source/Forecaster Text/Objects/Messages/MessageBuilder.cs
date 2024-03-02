@@ -35,7 +35,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using ForecasterText.Objects.Addons;
@@ -52,13 +51,13 @@ namespace ForecasterText.Objects.Messages {
             this.T9N = t9N;
         }
         
-        public MessageBuilder AddText(string key, string text)
+        public MessageBuilder AddText(string key, string? text)
             => text is not null ? this.Add(key, text) : this;
         public MessageBuilder AddText(string key, char c)
             => this.Add(key, c);
         public MessageBuilder PadText(string key, char padding) {
             if (
-                this.Values.TryGetValue(key, out IList<object> list)
+                this.Values.TryGetValue(key, out IList<object>? list)
                 && list.Count > 0
                 && list.LastOrDefault() is not uint
             ) {
@@ -68,12 +67,13 @@ namespace ForecasterText.Objects.Messages {
             return this;
         }
         
-        public MessageBuilder AddTranslation(string key, string path)
-            => this.AddText(key, Game1.content.LoadString(path));
-        public MessageBuilder AddTranslation(string key, string path, Func<string, string> parser) {
-            string content = Game1.content.LoadString(path);
-            return this.AddText(key, parser(content));
-        }
+        public MessageBuilder AddRecipe(string key, CraftingRecipe recipe)
+            => this.AddText(key, recipe.DisplayName);
+        
+        public MessageBuilder AddTranslation(string key, Translation translation)
+            => this.AddTranslation(key, translation, t9N => t9N.ToString());
+        public MessageBuilder AddTranslation(string key, Translation path, Func<Translation, string> parser)
+            => this.AddText(key, parser(path));
         
         public MessageBuilder AddEmoji(string key, uint? id)
             => id is uint i ? this.Add(key, i) : this;
@@ -89,8 +89,8 @@ namespace ForecasterText.Objects.Messages {
         };
         public MessageBuilder AddNpcEmoji(string key, string name) => this.AddEmoji(key, CharacterEmoji.GetEmoji(name));
         
-        private MessageBuilder Add(string key, object value) {
-            if (!this.Values.TryGetValue(key, out IList<object> list)) {
+        private MessageBuilder Add(string key, object? value) {
+            if (!this.Values.TryGetValue(key, out IList<object>? list)) {
                 list = new List<object>();
                 this.Values[key] = list;
             }
@@ -110,7 +110,7 @@ namespace ForecasterText.Objects.Messages {
                 StringBuilder intern = new();
                 
                 foreach (object raw in pair.Value) {
-                    object cast = raw switch {
+                    object? cast = raw switch {
                         SpiritMoods mood => config.GetEmoji(mood),
                         WeatherIcons weather => config.GetEmoji(weather),
                         MiscEmoji emoji => config.GetEmoji(emoji),

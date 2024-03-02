@@ -6,9 +6,9 @@ mods:
    More Random Edition
 
 latest commit:
-   commit 86e61047098098eba299d820a2fbab815771daaf
-   Author: chikakoo <lionel.crafts@gmail.com>
-   Date:   Mon Jan 22 10:25:47 2024 -0600
+   commit c23126af132c480096cf244a65ba9612fbd8e7ec
+   Author: Chikakoo <lionel.crafts@gmail.com>
+   Date:   Tue Feb 27 12:46:49 2024 -0600
    
-       Update README.md
+       Updated the version in the manifest
    

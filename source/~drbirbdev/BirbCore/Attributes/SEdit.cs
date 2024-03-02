@@ -208,11 +208,11 @@ public class SEdit : ClassHandler
             {
                 if (toEditValue is IList toEditValueList)
                 {
-                    ApplyListEdit(toEditValueList, edit);
+                    this.ApplyListEdit(toEditValueList, edit);
                 }
                 else if (toEditValue is IDictionary toEditValueDictionary)
                 {
-                    ApplyDictionaryEdit(toEditValueDictionary, edit, name);
+                    this.ApplyDictionaryEdit(toEditValueDictionary, edit, name);
                 }
                 else
                 {

@@ -22,10 +22,7 @@ namespace WarpNetwork.api
 		internal static API api = new();
 
 		public void AddCustomDestinationHandler(string ID, IWarpNetAPI.IDestinationHandler handler)
-		{
-			Utils.CustomLocs.Remove(ID);
-			Utils.CustomLocs.Add(ID, handler);
-		}
+			=> Utils.CustomLocs[ID] = handler;
 
 		public bool CanWarpTo(string ID, GameLocation where = null, Farmer who = null)
 			=> Utils.GetWarpLocations().TryGetValue(ID, out var loc) && loc.IsAccessible(where, who);

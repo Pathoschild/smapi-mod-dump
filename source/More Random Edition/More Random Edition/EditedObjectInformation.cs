@@ -17,13 +17,13 @@ namespace Randomizer
 	/// </summary>
 	public class EditedObjectInformation
 	{
-		public Dictionary<int, string> ObjectInformationReplacements = new Dictionary<int, string>();
-		public Dictionary<int, string> FruitTreeReplacements = new Dictionary<int, string>();
+		public Dictionary<int, string> ObjectInformationReplacements = new();
+		public Dictionary<int, string> FruitTreeReplacements = new();
 		public Dictionary<int, string> CropsReplacements
 		{
 			get
 			{
-				Dictionary<int, string> cropsReplacements = new Dictionary<int, string>();
+				Dictionary<int, string> cropsReplacements = new();
 				foreach (KeyValuePair<int, CropGrowthInformation> cropInfo in CropGrowthInformation.CropIdsToInfo)
 				{
 					cropsReplacements.Add(cropInfo.Key, cropInfo.Value.ToString());
@@ -31,6 +31,6 @@ namespace Randomizer
 				return cropsReplacements;
 			}
 		}
-		public Dictionary<int, string> FishReplacements = new Dictionary<int, string>();
+		public Dictionary<int, string> FishReplacements = new();
 	}
 }

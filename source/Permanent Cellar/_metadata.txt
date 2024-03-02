@@ -6,9 +6,9 @@ mods:
    Permanent Cellar
 
 latest commit:
-   commit f7d6b73fdabe6fc40c8f1763323a727303d99475
+   commit 6f78be90529b0e6448c32ef98d1af8d2a437d561
    Author: CyanFireUK <killa796@hotmail.com>
-   Date:   Sat Jan 13 15:27:50 2024 +0000
+   Date:   Tue Feb 6 20:32:23 2024 +0000
    
-       Code fixes backported from 1.6 alpha version
+       Code improvements
    

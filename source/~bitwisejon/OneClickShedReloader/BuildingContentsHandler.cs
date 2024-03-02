@@ -15,7 +15,7 @@ using StardewValley;
 using StardewValley.Locations;
 using System.Linq;
 
-namespace BitwiseJonMods
+namespace BitwiseJonMods.OneClickShedReloader
 {
     class BuildingContentsHandler
     {

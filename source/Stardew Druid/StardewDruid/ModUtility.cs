@@ -45,7 +45,6 @@ namespace StardewDruid
     static class ModUtility
     {
 
-
         //======================== Animations
 
         public static void AnimateRadiusDecoration(GameLocation location, Vector2 vector, string name, float size, float change, float interval = 600f, float depth = 0.0001f)
@@ -985,7 +984,6 @@ namespace StardewDruid
 
         }
 
-
         //======================== Gameworld Interactions
 
         public static bool RandomTree(GameLocation targetLocation, Vector2 targetVector)
@@ -1256,6 +1254,7 @@ namespace StardewDruid
 
             if (npc)
             {
+
                 PropertyValue barrier = null;
 
                 backTile.Properties.TryGetValue("NPCBarrier", out barrier);
@@ -1358,6 +1357,126 @@ namespace StardewDruid
             }
 
             return "unknown";
+
+        }
+
+        public static Dictionary<Vector2, string> LocationTargets(GameLocation targetLocation)
+        {
+
+            Dictionary<Vector2, string> targetCasts = new();
+
+            if (targetLocation.largeTerrainFeatures.Count > 0)
+            {
+
+                foreach (LargeTerrainFeature largeTerrainFeature in targetLocation.largeTerrainFeatures)
+                {
+
+                    if (largeTerrainFeature is not StardewValley.TerrainFeatures.Bush bushFeature)
+                    {
+
+                        continue;
+
+                    }
+
+                    Vector2 originVector = bushFeature.tilePosition.Value;
+
+                    targetCasts[originVector] = "Bush";
+
+                    targetCasts[new Vector2(originVector.X + 1, originVector.Y)] = "Bush";
+
+                    targetCasts[new Vector2(originVector.X, originVector.Y + 1)] = "Bush";
+
+                    targetCasts[new Vector2(originVector.X + 1, originVector.Y + 1)] = "Bush";
+
+                }
+
+            }
+
+            if (targetLocation.resourceClumps.Count > 0)
+            {
+
+                foreach (ResourceClump resourceClump in targetLocation.resourceClumps)
+                {
+
+                    Vector2 originVector = resourceClump.tile.Value;
+
+                    targetCasts[originVector] = "Clump";
+
+                    targetCasts[new Vector2(originVector.X + 1, originVector.Y)] = "Clump";
+
+                    targetCasts[new Vector2(originVector.X, originVector.Y + 1)] = "Clump";
+
+                    targetCasts[new Vector2(originVector.X + 1, originVector.Y + 1)] = "Clump";
+
+                }
+
+            }
+
+            if (targetLocation is Woods woodsLocation)
+            {
+                foreach (ResourceClump resourceClump in woodsLocation.stumps)
+                {
+
+                    Vector2 originVector = resourceClump.tile.Value;
+
+                    targetCasts[originVector] = "Clump";
+
+                    targetCasts[new Vector2(originVector.X + 1, originVector.Y)] = "Clump";
+
+                    targetCasts[new Vector2(originVector.X, originVector.Y + 1)] = "Clump";
+
+                    targetCasts[new Vector2(originVector.X + 1, originVector.Y + 1)] = "Clump";
+
+                }
+
+            }
+
+            if (targetLocation.furniture.Count > 0)
+            {
+                foreach (Furniture item in targetLocation.furniture)
+                {
+
+                    Vector2 originVector = item.TileLocation;
+
+                    for (int i = 0; i < (item.boundingBox.Width / 64); i++)
+                    {
+
+                        for (int j = 0; j < (item.boundingBox.Height / 64); j++)
+                        {
+
+                            targetCasts[new Vector2(originVector.X + i, originVector.Y + j)] = "Furniture";
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            if (targetLocation is BuildableGameLocation farmLocation)
+            {
+
+                foreach (Building building in farmLocation.buildings)
+                {
+
+                    for (int i = 0; i < building.tilesWide.Value; i++)
+                    {
+
+                        for (int j = 0; j < building.tilesHigh.Value; j++)
+                        {
+
+                            targetCasts[new Vector2(building.tileX.Value + i, building.tileY.Value + j)] = "Building";
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            return targetCasts;
 
         }
 
@@ -2054,126 +2173,6 @@ namespace StardewDruid
             }
 
             return vectorList;
-
-        }
-
-        public static Dictionary<Vector2, string> LocationTargets(GameLocation targetLocation)
-        {
-
-            Dictionary<Vector2, string> targetCasts = new();
-
-            if (targetLocation.largeTerrainFeatures.Count > 0)
-            {
-
-                foreach (LargeTerrainFeature largeTerrainFeature in targetLocation.largeTerrainFeatures)
-                {
-
-                    if (largeTerrainFeature is not StardewValley.TerrainFeatures.Bush bushFeature)
-                    {
-
-                        continue;
-
-                    }
-
-                    Vector2 originVector = bushFeature.tilePosition.Value;
-
-                    targetCasts[originVector] = "Bush";
-
-                    targetCasts[new Vector2(originVector.X + 1, originVector.Y)] = "Bush";
-
-                    targetCasts[new Vector2(originVector.X, originVector.Y + 1)] = "Bush";
-
-                    targetCasts[new Vector2(originVector.X + 1, originVector.Y + 1)] = "Bush";
-
-                }
-
-            }
-
-            if (targetLocation.resourceClumps.Count > 0)
-            {
-
-                foreach (ResourceClump resourceClump in targetLocation.resourceClumps)
-                {
-
-                    Vector2 originVector = resourceClump.tile.Value;
-
-                    targetCasts[originVector] = "Clump";
-
-                    targetCasts[new Vector2(originVector.X + 1, originVector.Y)] = "Clump";
-
-                    targetCasts[new Vector2(originVector.X, originVector.Y + 1)] = "Clump";
-
-                    targetCasts[new Vector2(originVector.X + 1, originVector.Y + 1)] = "Clump";
-
-                }
-
-            }
-
-            if (targetLocation is Woods woodsLocation)
-            {
-                foreach (ResourceClump resourceClump in woodsLocation.stumps)
-                {
-
-                    Vector2 originVector = resourceClump.tile.Value;
-
-                    targetCasts[originVector] = "Clump";
-
-                    targetCasts[new Vector2(originVector.X + 1, originVector.Y)] = "Clump";
-
-                    targetCasts[new Vector2(originVector.X, originVector.Y + 1)] = "Clump";
-
-                    targetCasts[new Vector2(originVector.X + 1, originVector.Y + 1)] = "Clump";
-
-                }
-
-            }
-
-            if (targetLocation.furniture.Count > 0)
-            {
-                foreach (Furniture item in targetLocation.furniture)
-                {
-
-                    Vector2 originVector = item.TileLocation;
-
-                    for (int i = 0; i < (item.boundingBox.Width / 64); i++)
-                    {
-
-                        for (int j = 0; j < (item.boundingBox.Height / 64); j++)
-                        {
-
-                            targetCasts[new Vector2(originVector.X + i, originVector.Y + j)] = "Furniture";
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-            if (targetLocation is BuildableGameLocation farmLocation)
-            {
-
-                foreach (Building building in farmLocation.buildings)
-                {
-
-                    for (int i = 0; i < (building.tilesWide.Value / 64); i++)
-                    {
-
-                        for (int j = 0; j < (building.tilesHigh.Value / 64); j++)
-                        {
-
-                            targetCasts[new Vector2(building.tileX.Value + i, building.tileY.Value + j)] = "Building";
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-            return targetCasts;
 
         }
 

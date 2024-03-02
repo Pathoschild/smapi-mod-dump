@@ -10,16 +10,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Goals;
+using StardewArchipelago.Constants.Modded;
 using StardewArchipelago.Stardew.NameMapping;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
-using Object = StardewValley.Object;
 
 namespace StardewArchipelago.Locations.CodeInjections.Vanilla
 {
@@ -103,7 +101,10 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             foreach (var shippedItem in allShippedItems)
             {
                 var name = _nameSimplifier.GetSimplifiedName(shippedItem);
-
+                if (IgnoredModdedStrings.Shipments.Contains(name))
+                {
+                    continue;
+                }
                 var apLocation = $"{SHIPSANITY_PREFIX}{name}";
                 if (_archipelago.GetLocationId(apLocation) > -1)
                 {

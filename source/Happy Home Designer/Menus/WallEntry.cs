@@ -25,7 +25,7 @@ namespace HappyHomeDesigner.Menus
 		public bool Favorited;
 
 		private readonly Wallpaper item;
-		private readonly Texture2D sheet;
+		private Texture2D sheet;
 		private readonly Rectangle region;
 		private readonly int CellHeight;
 		private readonly int CellWidth;
@@ -39,20 +39,11 @@ namespace HappyHomeDesigner.Menus
 		{
 			item = wallPaper;
 
-			var modData = item.GetModData();
-			if (modData is not null)
-			{
-				try{
-					sheet = ModEntry.helper.GameContent.Load<Texture2D>(modData.Texture);
-				} catch (Exception) {
-					sheet = ModEntry.helper.GameContent.Load<Texture2D>("Maps/walls_and_floors");
-				}
-				id = modData.ID + ':' + item.ParentSheetIndex.ToString();
-			} else
-			{
-				sheet = ModEntry.helper.GameContent.Load<Texture2D>("Maps/walls_and_floors");
-				id = item.ParentSheetIndex.ToString();
-			}
+			var modData = item.GetSetData();
+
+			id = modData is not null ?
+				modData.Id + ':' + item.ParentSheetIndex.ToString() :
+				item.ParentSheetIndex.ToString();
 
 			Favorited = favorites.Contains(id);
 
@@ -77,6 +68,9 @@ namespace HappyHomeDesigner.Menus
 
 		public void Draw(SpriteBatch batch, int x, int y)
 		{
+			// defer texture load to prevent Lag Spike Of Doom
+			sheet ??= GetTexture();
+
 			//IClickableMenu.drawTextureBox(batch, Game1.menuTexture, background, x, y, 56, CellHeight, Color.White, 1f, false);
 			batch.Draw(sheet, new Vector2(x + 4, y + 4), region, Color.White, 0f, Vector2.Zero, Scale, SpriteEffects.None, 0f);
 			batch.DrawFrame(Game1.menuTexture, new(x, y, CellWidth, CellHeight), background, 4, 1, Color.White);
@@ -92,8 +86,7 @@ namespace HappyHomeDesigner.Menus
 			if (Game1.currentLocation is not DecoratableLocation where)
 				return false;
 
-			var x = Game1.player.getTileX();
-			var y = Game1.player.getTileY();
+			(var x, var y) = Game1.player.TilePoint;
 
 			if (item.isFloor.Value)
 			{
@@ -101,12 +94,12 @@ namespace HappyHomeDesigner.Menus
 				if (id is null)
 					return false;
 
-				var existing = where.appliedFloor[id];
+				var existing = where.appliedFloor.TryGetValue(id, out var xid) ? xid : "0";
 
-				var modData = item.GetModData();
+				var modData = item.GetSetData();
 				var name = modData is null ?
 					item.ParentSheetIndex.ToString() :
-					$"{modData.ID}:{item.ParentSheetIndex}";
+					$"{modData.Id}:{item.ParentSheetIndex}";
 
 				where.SetFloor(name, id);
 
@@ -122,12 +115,12 @@ namespace HappyHomeDesigner.Menus
 					id = where.GetWallpaperID(x, y);
 				}
 
-				var existing = where.appliedWallpaper[id];
+				var existing = where.appliedWallpaper.TryGetValue(id, out var xid) ? xid : "0";
 
-				var modData = item.GetModData();
+				var modData = item.GetSetData();
 				var name = modData is null ?
 					item.ParentSheetIndex.ToString() :
-					$"{modData.ID}:{item.ParentSheetIndex}";
+					$"{modData.Id}:{item.ParentSheetIndex}";
 
 				where.SetWallpaper(name, id);
 
@@ -161,6 +154,23 @@ namespace HappyHomeDesigner.Menus
 		public string GetName()
 		{
 			return id;
+		}
+
+		private Texture2D GetTexture()
+		{
+			var modData = item.GetSetData();
+			if (modData is not null)
+			{
+				try
+				{
+					return ModEntry.helper.GameContent.Load<Texture2D>(modData.Texture);
+				}
+				catch (Exception)
+				{
+					return ModEntry.helper.GameContent.Load<Texture2D>("Maps/walls_and_floors");
+				}
+			}
+			return ModEntry.helper.GameContent.Load<Texture2D>("Maps/walls_and_floors");
 		}
 	}
 }

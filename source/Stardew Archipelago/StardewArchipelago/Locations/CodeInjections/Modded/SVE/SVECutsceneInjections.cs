@@ -11,10 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HarmonyLib;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Constants;
-using StardewArchipelago.GameModifications.CodeInjections;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
@@ -33,14 +31,20 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded.SVE
         private const string RAILROAD_KEY = "Clint2Again";
         private const int RAILROAD_BOULDER_ID = 8050108;
         private const int IRIDIUM_BOMB_ID = 8050109;
-        private const string LANCE_CHEST = "Lance's Diamond Wand";
+        private const string LANCE_CHEST_LOCATION = "Monster Crops";
         private const string MONSTER_ERADICATION_AP_PREFIX = "Monster Eradication: ";
-        private const string DEINFEST_AP_LOCATION = "Purify an Infested Lichtung";
+        private static readonly Dictionary<BundlePrice, string> VineyardPrices = new(){
+            { BundlePrice.Minimum, "ApplesZygote" }, { BundlePrice.VeryCheap, "ApplesBaby" },
+            { BundlePrice.Cheap, "ApplesOomfie" }, { BundlePrice.Normal, "Apples" }, { BundlePrice.Expensive, "ApplesAdult" },
+            { BundlePrice.VeryExpensive, "ApplesBoomer" }, { BundlePrice.Maximum, "ApplesEldritchHorror" },
+        };
+        private const string APPLES_NAME = "Apples";
         private static readonly List<string> voidSpirits = new(){
             MonsterName.SHADOW_BRUTE, MonsterName.SHADOW_SHAMAN, MonsterName.SHADOW_SNIPER, MonsterCategory.VOID_SPIRITS,
             string.Join("30 ",MonsterCategory.VOID_SPIRITS), string.Join("60 ",MonsterCategory.VOID_SPIRITS), 
             string.Join("90 ",MonsterCategory.VOID_SPIRITS), string.Join("120 ",MonsterCategory.VOID_SPIRITS)
             };
+        private const string DEINFEST_AP_LOCATION = "Purify an Infested Lichtung";
         private static readonly Dictionary<int, string> sveEventSpecialOrders = new(){
             {8050108, "Clint2"},
             {2551994, "Clint3"},
@@ -88,7 +92,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded.SVE
                 __instance.items.RemoveAt(0);
                 __result = true;
 
-                _locationChecker.AddCheckedLocation(LANCE_CHEST);
+                _locationChecker.AddCheckedLocation(LANCE_CHEST_LOCATION);
 
                 return false; // don't run original logic
 
@@ -111,7 +115,12 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded.SVE
                     return true; // run original logic
                 }
                 //Change the key so it doesn't get deleted
-                var specialOrder = SpecialOrder.GetSpecialOrder(sveEventSpecialOrders[__instance.id], null);
+                var eventsKey = sveEventSpecialOrders[__instance.id];
+                if (eventsKey == APPLES_NAME) // Changes apples quest with one relevant to bundle price
+                {
+                    eventsKey = GetAuroraVineyardPricedEventKey();
+                }
+                var specialOrder = SpecialOrder.GetSpecialOrder(eventsKey, null);
                 Game1.player.team.specialOrders.Add(specialOrder);
 
                 return true; // run original logic
@@ -166,6 +175,13 @@ namespace StardewArchipelago.Locations.CodeInjections.Modded.SVE
                 _monitor.Log($"Failed in {nameof(FixMonsterSlayerQuest_IncludeReleaseofGoals_Postfix)}:\n{ex}", LogLevel.Error);
                 return;
             }
+        }
+
+        public static string GetAuroraVineyardPricedEventKey()
+        {
+            
+            var bundlesPrice = _archipelago.SlotData.BundlePrice;
+            return VineyardPrices[bundlesPrice];
         }
     }
 }

@@ -6,12 +6,9 @@ mods:
    Lasting Conversation Topics
 
 latest commit:
-   commit 47fc5744b065406137494d2e40b0bb7dda3ec1f6
-   Author: AkiraJkr <akirajkr1@gmail.com>
-   Date:   Sun Jan 28 15:21:37 2024 -0300
+   commit 5e8a21be7cfdce9886edb61dbc3e1e683f01e810
+   Author: Nigel McKernan <nmck160@gmail.com>
+   Date:   Thu Nov 30 09:18:20 2023 -0800
    
-       Add METAL GEAR SOLID 2 and 3 (Master Collection ver) support. (#133)
-       
-       * Add METAL GEAR SOLID 2: Sons of Liberty support.
-       * Add METAL GEAR SOLID 3: Snake Eater Support.
+       Add The Witcher 2 support.
    

@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Archipelago.MultiClient.Net.Models;
 using StardewArchipelago.Archipelago;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Modded;
 using StardewArchipelago.GameModifications.Buildings;
 using StardewModdingAPI;
 using StardewValley;
@@ -129,7 +129,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 foreach (var itemId in __instance.itemsRequired.Keys.ToArray())
                 {
                     var quantity = __instance.itemsRequired[itemId];
-                    var modifiedQuantity = (int)(quantity * priceMultiplier);
+                    var modifiedQuantity = Math.Max(1, (int)(quantity * priceMultiplier));
                     __instance.itemsRequired[itemId] = modifiedQuantity;
                 }
 
@@ -177,16 +177,16 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                     case 0:
                         text = Game1.parseText(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_UpgradeHouse1"));
                         text = text.Replace("10,000", $"{(int)(10000 * priceMultiplier)}")
-                                   .Replace("450", $"{(int)(450 * priceMultiplier)}");
+                                   .Replace("450", $"{Math.Max(1, (int)(450 * priceMultiplier))}");
                         break;
                     case 1:
                         text = Game1.parseText(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_UpgradeHouse2"));
                         text = text.Replace("50,000", $"{(int)(50000 * priceMultiplier)}")
-                                   .Replace("150", $"{(int)(150 * priceMultiplier)}");
+                                   .Replace("150", $"{Math.Max(1, (int)(150 * priceMultiplier))}");
                         break;
                     case 2:
                         text = Game1.parseText(Game1.content.LoadString("Strings\\Locations:ScienceHouse_Carpenter_UpgradeHouse3"));
-                        text = text.Replace("100,000", $"{(int)(100000 * priceMultiplier)}");
+                        text = text.Replace("100,000", $"{Math.Max(1, (int)(100000 * priceMultiplier))}");
                         break;
                 }
 
@@ -336,7 +336,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                 {
                     case 0:
                         var price1 = (int)(10000 * priceMultiplier);
-                        var woodAmount = (int)(450 * priceMultiplier);
+                        var woodAmount = Math.Max(1, (int)(450 * priceMultiplier));
                         if (Game1.player.Money >= price1 && Game1.player.hasItemInInventory(388, woodAmount))
                         {
                             Game1.player.daysUntilHouseUpgrade.Value = 3;
@@ -355,7 +355,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
                         break;
                     case 1:
                         var price2 = (int)(50000 * priceMultiplier);
-                        var hardwoodAmount = (int)(150 * priceMultiplier);
+                        var hardwoodAmount = Math.Max(1, (int)(150 * priceMultiplier));
                         if (Game1.player.Money >= price2 && Game1.player.hasItemInInventory(709, hardwoodAmount))
                         {
                             Game1.player.daysUntilHouseUpgrade.Value = 3;
@@ -474,7 +474,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla
             var purchasableCheck = new PurchaseableArchipelagoLocation(locationDisplayName, locationName, _modHelper, _locationChecker, _archipelago, myActiveHints);
             foreach (var material in materials)
             {
-                material.Stack = (int)(material.Stack * priceMultiplier);
+                material.Stack = Math.Max(1, (int)(material.Stack * priceMultiplier));
                 purchasableCheck.AddMaterialRequirement(material);
             }
 

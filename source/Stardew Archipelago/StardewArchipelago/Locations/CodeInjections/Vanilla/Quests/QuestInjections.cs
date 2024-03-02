@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using StardewArchipelago.Archipelago;
 using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Modded;
 using StardewArchipelago.Items.Unlocks;
 using StardewModdingAPI;
 using StardewValley;
@@ -32,9 +33,9 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
 {
     public static class QuestInjections
     {
-        private static readonly string[] _ignoredQuests = {
+        private static List<string> _ignoredQuests = new(){
             "To The Beach", "Explore The Mine", "Deeper In The Mine", "To The Bottom?", "The Mysterious Qi",
-            "A Winter Mystery", "Cryptic Note", "Dark Talisman", "Goblin Problem",
+            "A Winter Mystery", "Cryptic Note", "Dark Talisman", "Goblin Problem"
         };
 
         private static IMonitor _monitor;
@@ -50,6 +51,7 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
             _archipelago = archipelago;
             _locationChecker = locationChecker;
             _englishContentManager = new ContentManager(Game1.game1.Content.ServiceProvider, Game1.game1.Content.RootDirectory);
+            UpdateIgnoredQuestList();
         }
 
         public static bool QuestComplete_LocationInsteadOfReward_Prefix(Quest __instance)
@@ -631,6 +633,11 @@ namespace StardewArchipelago.Locations.CodeInjections.Vanilla.Quests
                     LogLevel.Error);
                 return true; // run original logic
             }
+        }
+
+        private static void UpdateIgnoredQuestList()
+        {
+            _ignoredQuests.AddRange(IgnoredModdedStrings.Quests);
         }
     }
 }

@@ -22,6 +22,10 @@ using System.Linq;
 
 
 /// <summary>
+/// 2/29/24: Now loading all supported buildings and containers from the config file to help with mod support.
+/// 
+/// 1/31/24: Added support for the two statues - perfection and endless fortune. Also converted mods to .net 5.0 and SMAPI 3.18 in preparation for Stardew Valley 1.6.
+/// 
 /// 11/14/20: Adding support for cellars and casks. Added code to detect hover over on house. 
 /// Add support for cabins with cellars - hit rectangle will be different - only owner of cabin can do it
 /// Add support for greenhouse
@@ -33,44 +37,42 @@ using System.Linq;
 ///   
 /// 
 /// </summary>
-namespace BitwiseJonMods
+namespace BitwiseJonMods.OneClickShedReloader
 {
     public class ModEntry : Mod
     {
-        private List<string> _supportedBuildingTypes = new List<string>() {
-            "Shed",
-            "Barn",
-            "Coop",
-            "Greenhouse"
-        };
-
-        private List<string> _supportedContainerTypes = new List<string>() {
-            "Bee House",
-            "Cask",
-            "Charcoal Kiln",
-            "Cheese Press",
-            "Crystalarium",
-            "Furnace",
-            "Keg",
-            "Loom",
-            "Mayonnaise Machine",
-            "Mushroom Box",
-            "Oil Maker",
-            "Preserves Jar",
-            "Recycling Machine",
-            "Seed Maker",
-            "Auto-Grabber"
-        };
+        private List<string> _supportedBuildingTypes = new List<string>();
+        private List<string> _supportedContainerTypes = new List<string>();
+        private List<string> _nonReloadableContainerTypes = new List<string>();
+        private bool _logNamesOnHover = false;
 
         private GameLocation _currentTileLocation = null;
+        private ModConfig _config;
+        private string _lastHoveredItem = "";
 
         public override void Entry(IModHelper helper)
         {
             Common.Utility.InitLogging(this.Monitor);
+            _config = helper.ReadConfig<ModConfig>();
+
+            BuildSupportedObjectListsFromConfig();
 
             Helper.Events.Input.ButtonPressed += Input_ButtonPressed;
             Helper.Events.Display.RenderingHud += DrawHoverTooltip;
             Helper.Events.GameLoop.UpdateTicked += GetTileUnderCursor;
+        }
+
+        private void BuildSupportedObjectListsFromConfig()
+        {
+            Common.Utility.LogImportant($"Config logNamesOnHover={_config.logNamesOnHover.value}");
+            Common.Utility.LogImportant($"Config BuildingTypes={string.Join(",", _config.buildingTypes.values)}");
+            Common.Utility.LogImportant($"Config ContainerTypes={string.Join(",", _config.containerTypes.values)}");
+            Common.Utility.LogImportant($"Config NonReloadableContainerTypes={string.Join(",", _config.nonReloadableContainerTypes.values)}");
+
+            _logNamesOnHover = _config.logNamesOnHover.value;
+            _supportedBuildingTypes = _config.buildingTypes.values;
+            _supportedContainerTypes = _config.containerTypes.values;
+            _nonReloadableContainerTypes = _config.nonReloadableContainerTypes.values;
         }
 
         private void GetTileUnderCursor(object sender, UpdateTickedEventArgs e)
@@ -78,16 +80,36 @@ namespace BitwiseJonMods
             //Simulate previous SMAPI event GameEvents.FourthUpdateTick
             if (e.IsMultipleOf(4))
             {
+                if (_logNamesOnHover)
+                {
+                    if (Game1.currentLocation != null)
+                    {
+                        var tileLocation = Game1.currentCursorTile;
+                        var item = Game1.currentLocation.getObjectAtTile((int)tileLocation.X, (int)tileLocation.Y);
+                        if (item != null && !_lastHoveredItem.Equals(item.Name))
+                        {
+                            _lastHoveredItem = item.Name;
+                            Common.Utility.LogImportant($"Item under cursor: {item.Name}");
+                        }
+                    }
+                }
+
                 //See if we have a building under the cursor
                 if (Game1.currentLocation is BuildableGameLocation buildableLocation)
                 {
                     var building = buildableLocation.getBuildingAt(Game1.currentCursorTile);
 
+                    if (building != null && _logNamesOnHover && !_lastHoveredItem.Equals(building.buildingType.ToString()))
+                    {
+                        _lastHoveredItem = building.buildingType.ToString();
+                        Common.Utility.LogImportant($"Building under cursor: {_lastHoveredItem}");
+                    }
+
                     if (building != null && _supportedBuildingTypes.Any(b => building.buildingType.Contains(b)))
                     {
                         //jon, 12/22/20: Greenhouse is now a building and can be moved. But the building is just a shell with no indoors so we must get
                         //  the actual Greenhouse game location here to use for finding objects inside.
-                        if (building.buildingType == "Greenhouse")
+                        if (building.buildingType?.Value == "Greenhouse")
                         {
                             if (Game1.MasterPlayer.hasOrWillReceiveMail("jojaPantry") || Game1.MasterPlayer.hasOrWillReceiveMail("ccPantry"))
                             {
@@ -100,13 +122,19 @@ namespace BitwiseJonMods
                         }
                         return;
                     }
+                   
                 }
 
                 //See if we have the farmhouse or a cabin under the cursor that has a cellar
                 var cellar = GetCellarForFarmHouseUnderCursor(Game1.currentCursorTile);
                 if (cellar != null)
                 {
-                    //Common.Utility.Log($"{DateTime.Now.Ticks} House/Cabin under cursor has a cellar!");
+                    if (_logNamesOnHover && !_lastHoveredItem.Equals("Cellar"))
+                    {
+                        _lastHoveredItem = "Cellar";
+                        Common.Utility.LogImportant($"Building under cursor: Cellar");
+                    }
+
                     _currentTileLocation = cellar;
                     return;
                 }
@@ -115,7 +143,12 @@ namespace BitwiseJonMods
                 var greenhouse = GetGreenHouseUnderCursor(Game1.currentCursorTile);
                 if (greenhouse != null)
                 {
-                    //Common.Utility.Log($"{DateTime.Now.Ticks} Greenhouse under cursor!");
+                    if (_logNamesOnHover && !_lastHoveredItem.Equals("Greenhouse"))
+                    {
+                        _lastHoveredItem = "Greenhouse";
+                        Common.Utility.LogImportant($"Building under cursor: Greenhouse");
+                    }
+
                     _currentTileLocation = greenhouse;
                     return;
                 }
@@ -124,7 +157,12 @@ namespace BitwiseJonMods
                 var cave = GetFarmCaveUnderCursor(Game1.currentCursorTile);
                 if (cave != null)
                 {
-                    //Common.Utility.Log($"{DateTime.Now.Ticks} Cave under cursor!");
+                    if (_logNamesOnHover && !_lastHoveredItem.Equals("FarmCave"))
+                    {
+                        _lastHoveredItem = "FarmCave";
+                        Common.Utility.LogImportant($"Building under cursor: FarmCave");
+                    }
+
                     _currentTileLocation = cave;
                     return;
                 }
@@ -143,7 +181,7 @@ namespace BitwiseJonMods
             Rectangle? hitRectangle = null;
 
             //Player's cabin/house must have a cellar (upgrade level 3).
-            if (Game1.currentLocation == null || Game1.player.houseUpgradeLevel < 3) return null;
+            if (Game1.currentLocation == null || Game1.player.HouseUpgradeLevel < 3) return null;
 
             var homeOfFarmer = Utility.getHomeOfFarmer(Game1.player);
             if (homeOfFarmer == null) return null;
@@ -188,7 +226,7 @@ namespace BitwiseJonMods
 
             //Only consistent way to tell if player has greenhouse is to check if main player has or will receive pantry mail.
             var greenhouse = Game1.getLocationFromName("GreenHouse");
-            if (greenhouse == null || greenhouse.warps == null || greenhouse.warps.Count() == 0 || (!Game1.MasterPlayer.hasOrWillReceiveMail("jojaPantry") && !Game1.MasterPlayer.hasOrWillReceiveMail("ccPantry"))) return null;
+            if (greenhouse == null || greenhouse.warps?.Count == 0 || (!Game1.MasterPlayer.hasOrWillReceiveMail("jojaPantry") && !Game1.MasterPlayer.hasOrWillReceiveMail("ccPantry"))) return null;
 
             if (Game1.currentLocation.Name == greenhouse.Name)
             {
@@ -215,7 +253,7 @@ namespace BitwiseJonMods
             if (Game1.currentLocation == null) return null;
 
             var farmcave = Game1.getLocationFromName("FarmCave") as FarmCave;
-            if (farmcave == null || farmcave.warps == null || farmcave.warps.Count() == 0) return null;
+            if (farmcave == null || farmcave.warps?.Count == 0) return null;
 
             if (Game1.currentLocation.IsFarm && Game1.currentLocation.IsOutdoors && Context.IsMainPlayer)
             {
@@ -265,7 +303,7 @@ namespace BitwiseJonMods
             if (_currentTileLocation != null && Game1.activeClickableMenu == null)
             {
                 //Get info about location contents
-                var buildingInfo = new BuildingContentsInfo(_currentTileLocation, _supportedContainerTypes);
+                var buildingInfo = new BuildingContentsInfo(_currentTileLocation, _supportedContainerTypes, _nonReloadableContainerTypes);
 
                 //Building instructions depending on proximity to building and if player is holding an item.
                 var instructions = GetToolTipInstructions(buildingInfo);
@@ -364,7 +402,7 @@ namespace BitwiseJonMods
 
         private void HarvestAllItemsInBuilding(GameLocation location)
         {
-            var buildingInfo = new BuildingContentsInfo(location, _supportedContainerTypes);
+            var buildingInfo = new BuildingContentsInfo(location, _supportedContainerTypes, _nonReloadableContainerTypes);
 
             Common.Utility.Log($"  {buildingInfo.Containers.Count()} containers found in building.");
             Common.Utility.Log($"  Of these containers, {buildingInfo.ReadyToHarvestContainers.Count()} are ready for harvest.");

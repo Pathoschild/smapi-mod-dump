@@ -1,9 +1,0 @@
-{
-  "Name": "Ice Cube",
-  "Description": "Wait they never melt? How??",
-  "Category": "ArtisanGoods",
-  "Edibility": -300,
-  "Price": 20,
-  "IsColored": false,
-  "Recipe": null
-}

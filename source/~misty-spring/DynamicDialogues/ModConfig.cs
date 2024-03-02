@@ -8,12 +8,12 @@
 **
 *************************************************/
 
+namespace DynamicDialogues;
 
-namespace DynamicDialogues
+internal class ModConfig
 {
-    internal class ModConfig
-    {
-        public bool Verbose { get; set; } = false;
-        public bool Debug { get; set; } = false;
-    }
+    public bool Verbose { get; set; }
+    public bool Debug { get; set; }
+    public bool ChangeAt { get; set; }
+    public int QuestChance { get; set; } = 30;
 }

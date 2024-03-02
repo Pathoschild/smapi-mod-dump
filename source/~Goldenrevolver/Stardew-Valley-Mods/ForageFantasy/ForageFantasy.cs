@@ -19,7 +19,7 @@ namespace ForageFantasy
     using System.Collections.Generic;
     using System.IO;
 
-    public class ForageFantasy : Mod, IAssetEditor
+    public class ForageFantasy : Mod
     {
         public ForageFantasyConfig Config { get; set; }
 
@@ -53,39 +53,34 @@ namespace ForageFantasy
 
         public override void Entry(IModHelper helper)
         {
-            Config = Helper.ReadConfig<ForageFantasyConfig>();
+            Config = helper.ReadConfig<ForageFantasyConfig>();
 
             ForageFantasyConfig.VerifyConfigValues(Config, this);
 
-            Helper.Events.GameLoop.GameLaunched += delegate { ForageFantasyConfig.SetUpModConfigMenu(Config, this); };
+            helper.Events.GameLoop.GameLaunched += delegate { ForageFantasyConfig.SetUpModConfigMenu(Config, this); };
 
-            Helper.Events.GameLoop.GameLaunched += delegate { DeluxeGrabberCompatibility.Setup(this); };
+            helper.Events.GameLoop.GameLaunched += delegate { DeluxeGrabberCompatibility.Setup(this); };
 
-            Helper.Events.GameLoop.DayStarted += delegate
+            helper.Events.GameLoop.DayStarted += delegate
             {
                 TapperAndMushroomQualityLogic.IncreaseTreeAges(this);
                 GrapeLogic.SetDropToNewGrapes(this);
                 CheckForTappersDream();
             };
 
-            Helper.Events.GameLoop.DayEnding += delegate { GrapeLogic.ResetGrapes(this); };
+            helper.Events.GameLoop.DayEnding += delegate { GrapeLogic.ResetGrapes(this); };
 
-            Helper.Events.GameLoop.SaveLoaded += delegate { FernAndBurgerLogic.ChangeBundle(this); };
+            helper.Events.GameLoop.SaveLoaded += delegate { FernAndBurgerLogic.ChangeBundle(this); };
 
             helper.Events.Input.ButtonsChanged += OnButtonsChanged;
+
+            helper.Events.Content.AssetRequested += OnAssetRequested;
 
             Patcher.PatchAll(this);
         }
 
-        public bool CanEdit<T>(IAssetInfo asset)
-        {
-            return FernAndBurgerLogic.CanEdit<T>(asset, Config);
-        }
-
-        public void Edit<T>(IAssetData asset)
-        {
-            FernAndBurgerLogic.Edit<T>(asset, this);
-        }
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+            => FernAndBurgerLogic.Apply(e, this.Config, this.Helper.Translation);
 
         /// <summary>
         /// Small helper method to log to the console because I keep forgetting the signature

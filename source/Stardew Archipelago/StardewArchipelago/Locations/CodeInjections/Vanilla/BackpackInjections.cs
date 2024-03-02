@@ -11,7 +11,7 @@
 using System;
 using StardewArchipelago.Archipelago;
 using Microsoft.Xna.Framework.Graphics;
-using StardewArchipelago.Constants;
+using StardewArchipelago.Constants.Modded;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;

@@ -1,0 +1,10 @@
+﻿{
+  "Name": "violetlizabet.PearlLure",
+  "DisplayName": "[LocalizedText Strings\\Objects:violetlizabet.PearlLure_Name]",
+  "Description": "[LocalizedText Strings\\Objects:violetlizabet.PearlLure_Description]",
+  "Type": "Crafting",
+  "Category": -8,
+  "Price": 100,
+  "Texture": "Mods/violetlizabet.DragonPearlLure/PearlLure",
+  "SpriteIndex": 0
+}

@@ -205,7 +205,7 @@ namespace PermanentCellar
             }
 
             foreach (Cabin cabin in GetLocations().OfType<Cabin>())
-                if (!Game1.newDay && Game1.player.currentLocation == cabin || Game1.player.currentLocation.Name.StartsWith("Cellar") && cabin.upgradeLevel < 3)
+                if (!Game1.newDay && Game1.player.currentLocation == cabin || Game1.player.currentLocation == Game1.getLocationFromName(cabin.GetCellarName()) && cabin.upgradeLevel < 3)
                 {
                     CreateCellarEntranceCB(cabin);
                     CreateCellarToCabinWarps(cabin);
@@ -267,7 +267,7 @@ namespace PermanentCellar
             }
 
             foreach (Cabin cabin in GetLocations().OfType<Cabin>())
-            if (Game1.player.currentLocation == cabin || Game1.player.currentLocation.Name.StartsWith("Cellar") && Game1.timeOfDay != 600 && cabin.upgradeLevel < 3)
+            if (Game1.player.currentLocation == cabin || Game1.player.currentLocation == Game1.getLocationFromName(cabin.GetCellarName()) && Game1.timeOfDay != 600 && cabin.upgradeLevel < 3)
             {
                 CreateCellarEntranceCB(cabin);
             }
@@ -279,7 +279,7 @@ namespace PermanentCellar
         {
             FarmHouse farmHouse = Utility.getHomeOfFarmer(Game1.MasterPlayer);
 
-            if (e.NewLocation == farmHouse && farmHouse.upgradeLevel < 3)
+            if (e.NewLocation == farmHouse || e.NewLocation == Game1.getLocationFromName("Cellar") && farmHouse.upgradeLevel < 3)
             {
                 CreateCellarEntranceFH(farmHouse);
                 CreateCellarToFarmHouseWarps(farmHouse);
@@ -287,7 +287,7 @@ namespace PermanentCellar
 
 
             foreach (Cabin cabin in GetLocations().OfType<Cabin>())
-                if (e.NewLocation == cabin || e.NewLocation.Name.StartsWith("Cellar") && cabin.upgradeLevel < 3)
+                if (e.NewLocation == cabin || e.NewLocation == Game1.getLocationFromName(cabin.GetCellarName()) && cabin.upgradeLevel < 3)
                 {
                     CreateCellarEntranceCB(cabin);
                     CreateCellarToCabinWarps(cabin);
@@ -677,50 +677,50 @@ namespace PermanentCellar
 
         private static Tuple<Warp, Warp> GetCellarToFarmHouseWarps(FarmHouse farmHouse)
         {
-            GameLocation cellar = Game1.getLocationFromName(farmHouse.GetCellarName());
+                GameLocation cellar = Game1.getLocationFromName(farmHouse.GetCellarName());
 
-            try
-            {
-                Warp warp1 = cellar.warps.First(warp =>
+                try
                 {
-                    return OrdinalIgnoreCase.Equals(warp.TargetName, "FarmHouse");
-                });
+                    Warp warp1 = cellar.warps.First(warp =>
+                    {
+                        return OrdinalIgnoreCase.Equals(warp.TargetName, "FarmHouse");
+                    });
 
-                Warp warp2 = cellar.warps.Skip(1).First(warp =>
+                    Warp warp2 = cellar.warps.Skip(1).First(warp =>
+                    {
+                        return OrdinalIgnoreCase.Equals(warp.TargetName, "FarmHouse");
+                    });
+
+                    return Tuple.Create(warp1, warp2);
+                }
+                catch
                 {
-                    return OrdinalIgnoreCase.Equals(warp.TargetName, "FarmHouse");
-                });
-
-                return Tuple.Create(warp1, warp2);
-            }
-            catch
-            {
-                throw new Exception($"The farmhouse cellar map doesn't have the required warp points.");
-            }
+                    throw new Exception($"The farmhouse cellar map doesn't have the required warp points.");
+                }
         }
 
         private static Tuple<Warp, Warp> GetCellarToCabinWarps(Cabin cabin)
         {
-            GameLocation cellar = Game1.getLocationFromName(cabin.GetCellarName());
+                GameLocation cellar = Game1.getLocationFromName(cabin.GetCellarName());
 
-            try
-            {
-                Warp warp1 = cellar.warps.First(warp =>
+                try
                 {
-                    return OrdinalIgnoreCase.Equals(warp.TargetName, "FarmHouse") || OrdinalIgnoreCase.Equals(warp.TargetName, cabin.NameOrUniqueName);
-                });
+                    Warp warp1 = cellar.warps.First(warp =>
+                    {
+                        return OrdinalIgnoreCase.Equals(warp.TargetName, "FarmHouse") || OrdinalIgnoreCase.Equals(warp.TargetName, cabin.NameOrUniqueName);
+                    });
 
-                Warp warp2 = cellar.warps.Skip(1).First(warp =>
+                    Warp warp2 = cellar.warps.Skip(1).First(warp =>
+                    {
+                        return OrdinalIgnoreCase.Equals(warp.TargetName, "FarmHouse") || OrdinalIgnoreCase.Equals(warp.TargetName, cabin.NameOrUniqueName);
+                    });
+
+                    return Tuple.Create(warp1, warp2);
+                }
+                catch
                 {
-                    return OrdinalIgnoreCase.Equals(warp.TargetName, "FarmHouse") || OrdinalIgnoreCase.Equals(warp.TargetName, cabin.NameOrUniqueName);
-                });
-
-                return Tuple.Create(warp1, warp2);
-            }
-            catch
-            {
-                throw new Exception($"The cabin cellar map doesn't have the required warp points.");
-            }
+                    throw new Exception($"The cabin cellar map doesn't have the required warp points.");
+                }
         }
 
     }

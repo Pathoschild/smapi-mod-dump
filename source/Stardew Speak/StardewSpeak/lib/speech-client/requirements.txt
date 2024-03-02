@@ -14,8 +14,7 @@ charset-normalizer==3.3.2
 cmake==3.27.7
 comtypes==1.2.0
 decorator==5.1.1
-dfly-breathe==0.2.4
-dragonfly @ git+https://github.com/dictation-toolbox/dragonfly.git@d564c2945ec4de1bd5505fd40fecbe4722c33584
+dragonfly @ git+https://github.com/dictation-toolbox/dragonfly.git@250ecfeb590cdf73147ac6627afb70151353097b
 idna==3.6
 json-rpc==1.15.0
 kaldi-active-grammar==3.1.0
@@ -31,7 +30,6 @@ requests==2.31.0
 setuptools==69.0.2
 six==1.16.0
 sounddevice==0.4.6
-srabuilder @ git+https://github.com/evfredericksen/srabuilder.git@df091f3ace2e4adebfa0bb5bdeb39505734cfecd
 urllib3==2.1.0
 ush==3.1.0
 webrtcvad-wheels==2.0.11.post1
