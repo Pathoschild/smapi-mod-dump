@@ -1,0 +1,28 @@
+{
+    "new-description.trapper.fish": "Ловится в {{location}}.",
+    "new-description.normal.fish": "Ловится {{weather}} с {{schedule}}.\n\nМесто:\n{{locations}}",
+
+    "location.freshwater": "пресная вода",
+    "location.ocean": "океан",
+	"location.unknown":"?",
+
+    "schedule.between.times": "{{startTime}} до {{endTime}}",
+    "schedule.join.times": "{{parsedTimes}}, и {{startTime}} до {{endTime}}",
+    "schedule.more.times": "{{parsedTimes}}, {{startTime}} до {{endTime}}",
+
+    "time.24hour.format": "{{hour}}:{{minutes}}",
+	"time.morning.12hour": "{{hour}}am",
+    "time.morning.12hour.minutes": "{{hour}}.{{minutes}}am",
+    "time.afternoon.12hour": "{{hour}}pm",
+	"time.afternoon.12hour.minutes": "{{hour}}.{{minutes}}pm",
+
+    "season.spring": "Весной",
+    "season.summer": "Летом",
+    "season.fall": "Осенью",
+    "season.winter": "Зимой",
+
+    "weather.sunny": "в ясный день",
+    "weather.rainy": "в дождливый день",
+    "weather.both": "при любой погоде",
+    "weather.unknown": "при неизвестных условиях"
+}

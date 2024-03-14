@@ -24,15 +24,14 @@ namespace BinningSkill;
 [SEvent]
 internal class Events
 {
+    private static readonly Dictionary<string, List<GarbageCanEdit>> MapGarbageCanEdits = new();
 
-    public static Dictionary<string, List<GarbageCanEdit>> MapGarbageCanEdits = new();
-
-    public class GarbageCanEdit
+    private class GarbageCanEdit
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public string Key { get; set; }
-        public int SourceX { get; set; }
+        public int X { get; init; }
+        public int Y { get; init; }
+        public string Key { get; init; }
+        public int SourceX { get; init; }
     }
 
     [SEvent.DayStarted]
@@ -44,18 +43,23 @@ internal class Events
     [SEvent.GameLaunchedLate]
     private void GameLaunched(object sender, GameLaunchedEventArgs e)
     {
-        BirbSkill.Register("drbirbdev.Binning", ModEntry.Assets.SkillTexture, ModEntry.Instance.Helper, new Dictionary<string, object>()
-        {
-            {"Recycler", null },
-            {"Sneak", null },
-            {"Environmentalist", null },
-            {"Salvager", null },
-            {"Upseller", null },
-            {"Reclaimer", new {
-                extra = (ModEntry.Config.ReclaimerExtraValuePercent * 100).ToString("0.0"),
-                pExtra = ((ModEntry.Config.ReclaimerPrestigeExtraValuePercent + ModEntry.Config.ReclaimerExtraValuePercent) * 100).ToString("0.0")
-            } }
-        }, PerkText, HoverText);
+        BirbSkill.Register("drbirbdev.Binning", ModEntry.Assets.SkillTexture, ModEntry.Instance.Helper,
+            new Dictionary<string, object>()
+            {
+                { "Recycler", null },
+                { "Sneak", null },
+                { "Environmentalist", null },
+                { "Salvager", null },
+                { "Upseller", null },
+                {
+                    "Reclaimer", new
+                    {
+                        extra = (ModEntry.Config.ReclaimerExtraValuePercent * 100).ToString("0.0"),
+                        pExtra = ((ModEntry.Config.ReclaimerPrestigeExtraValuePercent +
+                                   ModEntry.Config.ReclaimerExtraValuePercent) * 100).ToString("0.0")
+                    }
+                }
+            }, PerkText, HoverText);
     }
 
     [SEvent.AssetRequested]
@@ -77,12 +81,10 @@ internal class Events
 
             foreach (var can in garbageCanData.GarbageCans)
             {
-                if (can.Value.Items is null)
-                {
-                    can.Value.Items = new List<GarbageCanItemData>();
-                }
+                can.Value.Items ??= [];
 
-                if (can.Value.CustomFields is null || !can.Value.CustomFields.TryGetValue("drbirbdev.BinningSkill_AddToMap", out string data))
+                if (can.Value.CustomFields is null ||
+                    !can.Value.CustomFields.TryGetValue("drbirbdev.BinningSkill_AddToMap", out string data))
                 {
                     can.Value.Items.Insert(0, GetGarbageHatItemData("Default"));
                     continue;
@@ -139,7 +141,6 @@ internal class Events
                     "Prismatic" => "12",
                     _ => "7"
                 };
-
             }
         });
     }
@@ -171,18 +172,21 @@ internal class Events
 
     private static List<string> PerkText(int level)
     {
-        List<string> result = new()
-        {
-            ModEntry.Instance.I18n.Get("skill.perk.base", new { bonusPercent = (ModEntry.Config.PerLevelBaseDropChanceBonus * 100).ToString("0.0") }),
-            ModEntry.Instance.I18n.Get("skill.perk.rare", new { bonusPercent = (ModEntry.Config.PerLevelRareDropChanceBonus * 100).ToString("0.0") })
-        };
+        List<string> result =
+        [
+            ModEntry.Instance.I18N.Get("skill.perk.base",
+                new { bonusPercent = (ModEntry.Config.PerLevelBaseDropChanceBonus * 100).ToString("0.0") }),
+            ModEntry.Instance.I18N.Get("skill.perk.rare",
+                new { bonusPercent = (ModEntry.Config.PerLevelRareDropChanceBonus * 100).ToString("0.0") })
+        ];
         if (level == ModEntry.Config.MegaMinLevel)
         {
-            result.Add(ModEntry.Instance.I18n.Get("skill.perk.mega_drops"));
+            result.Add(ModEntry.Instance.I18N.Get("skill.perk.mega_drops"));
         }
+
         if (level == ModEntry.Config.DoubleMegaMinLevel)
         {
-            result.Add(ModEntry.Instance.I18n.Get("skill.perk.double_mega_drops"));
+            result.Add(ModEntry.Instance.I18N.Get("skill.perk.double_mega_drops"));
         }
 
         return result;
@@ -190,7 +194,8 @@ internal class Events
 
     private static string HoverText(int level)
     {
-        return ModEntry.Instance.I18n.Get("skill.perk.base", new { bonusPercent = (level * ModEntry.Config.PerLevelBaseDropChanceBonus * 100).ToString("0.0") });
+        return ModEntry.Instance.I18N.Get("skill.perk.base",
+            new { bonusPercent = (level * ModEntry.Config.PerLevelBaseDropChanceBonus * 100).ToString("0.0") });
     }
 
     private uint PreviousTrashCansChecked;
@@ -198,6 +203,7 @@ internal class Events
     private uint PreviousPiecesOfTrashRecycled;
     private uint PreviousRecyclingBinsChecked;
     private uint PreviousFoodComposted;
+
     [SEvent.TimeChanged]
     private void TimeChanged(object sender, TimeChangedEventArgs e)
     {
@@ -218,6 +224,7 @@ internal class Events
             {
                 friendship += ModEntry.Config.RecyclingPrestigeFriendshipGain;
             }
+
             // TODO: figure out better region than hard-coding Town
             Utility.improveFriendshipWithEveryoneInRegion(Game1.player, friendship, "Town");
         }
@@ -226,21 +233,26 @@ internal class Events
         this.PreviousTrashCansChecked = Game1.stats.Get(StatKeys.TrashCansChecked);
         if (trashChecked > 0)
         {
-            Skills.AddExperience(Game1.player, "drbirbdev.Binning", ModEntry.Config.ExperienceFromCheckingTrash * trashChecked);
+            Skills.AddExperience(Game1.player, "drbirbdev.Binning",
+                ModEntry.Config.ExperienceFromCheckingTrash * trashChecked);
         }
 
-        int recyclingChecked = (int)(Game1.stats.Get("drbirbdev.BinningSkill_RecyclingBinsChecked") - this.PreviousRecyclingBinsChecked);
+        int recyclingChecked = (int)(Game1.stats.Get("drbirbdev.BinningSkill_RecyclingBinsChecked") -
+                                     this.PreviousRecyclingBinsChecked);
         this.PreviousRecyclingBinsChecked = Game1.stats.Get("drbirbdev.BinningSkill_RecyclingBinsChecked");
         if (recyclingChecked > 0)
         {
-            Skills.AddExperience(Game1.player, "drbirbdev.Binning", ModEntry.Config.ExperienceFromCheckingRecycling * recyclingChecked);
+            Skills.AddExperience(Game1.player, "drbirbdev.Binning",
+                ModEntry.Config.ExperienceFromCheckingRecycling * recyclingChecked);
         }
 
-        int compostingChecked = (int)(Game1.stats.Get("drbirbdev.BinningSkill_FoodComposted") - this.PreviousFoodComposted);
+        int compostingChecked =
+            (int)(Game1.stats.Get("drbirbdev.BinningSkill_FoodComposted") - this.PreviousFoodComposted);
         this.PreviousFoodComposted = Game1.stats.Get("drbirbdev.BinningSkill_FoodComposted");
         if (compostingChecked > 0)
         {
-            Skills.AddExperience(Game1.player, "drbirbdev.Binning", ModEntry.Config.ExperienceFromComposting * compostingChecked);
+            Skills.AddExperience(Game1.player, "drbirbdev.Binning",
+                ModEntry.Config.ExperienceFromComposting * compostingChecked);
         }
     }
 
@@ -257,7 +269,7 @@ internal class Events
             LoadGarbageCanEdits(DataLoader.GarbageCans(Game1.content));
         }
 
-        if (!MapGarbageCanEdits.TryGetValue(e.Name.ToString(), out List<GarbageCanEdit> edits))
+        if (!MapGarbageCanEdits.TryGetValue(e.Name.ToString() ?? string.Empty, out List<GarbageCanEdit> edits))
         {
             return;
         }
@@ -266,20 +278,24 @@ internal class Events
         {
             var editor = asset.AsMap();
 
-            Size tilesheetSize = new Size(ModEntry.Assets.TrashCanTilesheet.Width / 16, ModEntry.Assets.TrashCanTilesheet.Height / 16);
+            Size tilesheetSize = new Size(ModEntry.Assets.TrashCanTilesheet.Width / 16,
+                ModEntry.Assets.TrashCanTilesheet.Height / 16);
 
-            editor.Data.AddTileSheet(new TileSheet("z_trashcans", editor.Data, ModEntry.Assets.TrashCanTilesheetAssetName.Name, tilesheetSize, new Size(16, 16)));
+            editor.Data.AddTileSheet(new TileSheet("z_trashcans", editor.Data,
+                ModEntry.Assets.TrashCanTilesheetAssetName.Name, tilesheetSize, new Size(16, 16)));
 
             foreach (GarbageCanEdit edit in edits)
             {
                 Location bottomLocation = new Location(edit.X, edit.Y);
                 xTile.Layers.Layer buildingLayer = editor.Data.GetLayer("Buildings");
-                buildingLayer.Tiles[bottomLocation] = new StaticTile(buildingLayer, editor.Data.GetTileSheet("z_trashcans"), BlendMode.Alpha, 7 + edit.SourceX);
+                buildingLayer.Tiles[bottomLocation] = new StaticTile(buildingLayer,
+                    editor.Data.GetTileSheet("z_trashcans"), BlendMode.Alpha, 7 + edit.SourceX);
                 buildingLayer.Tiles[bottomLocation].Properties["Action"] = $"Garbage {edit.Key}";
 
                 Location topLocation = new Location(edit.X, edit.Y - 1);
                 xTile.Layers.Layer frontLayer = editor.Data.GetLayer("Front");
-                frontLayer.Tiles[topLocation] = new StaticTile(frontLayer, editor.Data.GetTileSheet("z_trashcans"), BlendMode.Alpha, edit.SourceX);
+                frontLayer.Tiles[topLocation] = new StaticTile(frontLayer, editor.Data.GetTileSheet("z_trashcans"),
+                    BlendMode.Alpha, edit.SourceX);
             }
         });
     }
@@ -292,14 +308,16 @@ internal class Events
             {
                 continue;
             }
+
             if (!entry.Value.CustomFields.TryGetValue("drbirbdev.BinningSkill_AddToMap", out string data))
             {
                 continue;
             }
+
             string[] split = data.Split(" ");
             if (split.Length < 3)
             {
-                Log.Error($"AddToMap expectes at least 3 arguments, <map> <x> <y> [level = Default], but got {data}");
+                Log.Error($"AddToMap expected at least 3 arguments, <map> <x> <y> [level = Default], but got {data}");
             }
 
             string mapName = split[0];
@@ -310,16 +328,19 @@ internal class Events
                 Log.Error($"Could not get x and y coordinates from {data} for garbage can {entry.Key}");
                 continue;
             }
+
             string level = "Default";
             if (split.Length > 3)
             {
                 level = split[3];
             }
+
             if (!MapGarbageCanEdits.TryGetValue(mapName, out List<GarbageCanEdit> edits))
             {
                 edits = new List<GarbageCanEdit>();
                 MapGarbageCanEdits[mapName] = edits;
             }
+
             edits.Add(new GarbageCanEdit()
             {
                 X = x,

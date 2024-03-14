@@ -21,30 +21,69 @@ namespace ChangedWateringCanAndHoeArea
     public class ChangedWateringCanAndHoeArea : Mod
     {
         private static ChangedWateringCanAndHoeArea mod;
-        private static bool shouldNotPatchReaching = false;
 
-        public static void TilesAffectedPatch(Tool __instance, Vector2 tileLocation, int power, Farmer who, ref List<Vector2> __result)
+        private static bool usingIncompatibleIridiumWithReachingMod = false;
+
+        public ChangedWateringCanAndHoeAreaConfig Config { get; set; }
+
+        public override void Entry(IModHelper helper)
         {
+            mod = this;
+
+            Config = Helper.ReadConfig<ChangedWateringCanAndHoeAreaConfig>();
+
+            Helper.Events.GameLoop.GameLaunched += delegate { ChangedWateringCanAndHoeAreaConfig.SetUpModConfigMenu(Config, this); };
+
+            usingIncompatibleIridiumWithReachingMod = mod.Helper.ModRegistry.IsLoaded("kakashigr.RadioactiveTools");
+
+            if (usingIncompatibleIridiumWithReachingMod)
+            {
+                ErrorLog("Disabled Reaching Buff in favor of Radioactive Tools");
+            }
+
+            var harmony = new Harmony(ModManifest.UniqueID);
+
             try
             {
-                // this should always be the case, but just to make sure
-                if (__instance is WateringCan || __instance is Hoe)
-                {
-                    if (power is 2 or 3 or 6)
-                    {
-                        if (power is 6 && shouldNotPatchReaching)
-                        {
-                            return;
-                        }
-
-                        // set the list of affected tiles ourselves
-                        __result = NewTilesAffected(__instance, tileLocation, power, who);
-                    }
-                }
+                harmony.Patch(
+                   original: AccessTools.Method(typeof(Tool), "tilesAffected"),
+                   postfix: new HarmonyMethod(typeof(ChangedWateringCanAndHoeArea), nameof(TilesAffectedPatch)));
             }
             catch (Exception e)
             {
-                mod.ErrorLog("There was an exception in a patch", e);
+                ErrorLog("Error while trying to setup required patches:", e);
+            }
+        }
+
+        public void DebugLog(object o)
+        {
+            Monitor.Log(o == null ? "null" : o.ToString(), LogLevel.Debug);
+        }
+
+        public void ErrorLog(object o, Exception e = null)
+        {
+            string baseMessage = o == null ? "null" : o.ToString();
+
+            string errorMessage = e == null ? string.Empty : $"\n{e.Message}\n{e.StackTrace}";
+
+            Monitor.Log(baseMessage + errorMessage, LogLevel.Error);
+        }
+
+        public static void TilesAffectedPatch(Tool __instance, Vector2 tileLocation, int power, Farmer who, ref List<Vector2> __result)
+        {
+            if ((__instance is WateringCan && mod.Config.EnableWateringCanChange)
+                || (__instance is Hoe && mod.Config.EnableHoeChange))
+            {
+                if (power is 2 or 3 or 6)
+                {
+                    if (power is 6 && (usingIncompatibleIridiumWithReachingMod || !mod.Config.EnableIridiumWithReachingBuff))
+                    {
+                        return;
+                    }
+
+                    // set the list of affected tiles ourselves
+                    __result = NewTilesAffected(__instance, tileLocation, power, who);
+                }
             }
         }
 
@@ -158,45 +197,6 @@ namespace ChangedWateringCanAndHoeArea
                     _ => tileLocations[i],
                 };
             }
-        }
-
-        public override void Entry(IModHelper helper)
-        {
-            mod = this;
-
-            shouldNotPatchReaching = mod.Helper.ModRegistry.IsLoaded("kakashigr.RadioactiveTools");
-
-            if (shouldNotPatchReaching)
-            {
-                ErrorLog("Disabled Reach Buff in favor of Radioactive Tools");
-            }
-
-            var harmony = new Harmony(ModManifest.UniqueID);
-
-            try
-            {
-                harmony.Patch(
-                   original: AccessTools.Method(typeof(Tool), "tilesAffected"),
-                   postfix: new HarmonyMethod(typeof(ChangedWateringCanAndHoeArea), nameof(TilesAffectedPatch)));
-            }
-            catch (Exception e)
-            {
-                ErrorLog("Error while trying to setup required patches:", e);
-            }
-        }
-
-        public void DebugLog(object o)
-        {
-            Monitor.Log(o == null ? "null" : o.ToString(), LogLevel.Debug);
-        }
-
-        public void ErrorLog(object o, Exception e = null)
-        {
-            string baseMessage = o == null ? "null" : o.ToString();
-
-            string errorMessage = e == null ? string.Empty : $"\n{e.Message}\n{e.StackTrace}";
-
-            Monitor.Log(baseMessage + errorMessage, LogLevel.Error);
         }
     }
 }

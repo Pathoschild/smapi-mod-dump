@@ -6,9 +6,9 @@ mods:
    Schedule Viewer
 
 latest commit:
-   commit f89f2601edb548fda44bb82d963693a75606332e
+   commit 96e534251e9c11882b86816561583be1b7b05ad1
    Author: BinaryLip <dev@philliploveland.dev>
-   Date:   Wed Jan 24 19:29:00 2024 -0500
+   Date:   Wed Mar 13 01:48:44 2024 -0400
    
-       Added LookupAnything integration.
+       Tweaked gifting section.
    

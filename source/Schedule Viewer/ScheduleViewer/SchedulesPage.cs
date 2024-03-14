@@ -400,7 +400,7 @@ namespace ScheduleViewer
                 {
                     string entryString = line.Value?.ToString();
                     string key = $"{slot}-{line.Key - line1Index}";
-                    this.hoverTextOptions[key] = string.IsNullOrEmpty(entryString) ? null : Tuple.Create(new Rectangle(x, y + (int)yOffset, (int)Game1.smallFont.MeasureString(entryString).X + 2, (int)lineHeight), line.Value.GetHoverText());
+                    this.hoverTextOptions[key] = string.IsNullOrEmpty(entryString) ? null : Tuple.Create(new Rectangle(x, y + (int)yOffset, (int)Game1.smallFont.MeasureString(entryString).X + 2, (int)lineHeight), line.Value.HoverText);
 
                     if (line.Value != null)
                     {

@@ -37,98 +37,10 @@
 		        "(O){{MainModID}}.Niter": {
 						"Price": 100,
 						"AvailableStock": -1,
-						"Condition": null,
 						"Id": "(O){{MainModID}}.Niter",
 						"ItemId": "(O){{MainModID}}.Niter",
 					},
 		    }
-		},
-		// Create fireworks shop
-		{
-			"LogName": "Create fireworks shop",
-			"Action": "EditData",
-			"Target": "Data/Shops",
-			"Entries": {
-				"{{MainModID}}PurpleBoat": {
-					"Currency": 0,
-					"Owners": [
-					{
-						"Condition": null,
-						"Portrait": "Portraits\\Birdie",
-						"Dialogues": [
-							{
-								"Id": "Default",
-								"Condition": null,
-								"Dialogue": "[LocalizedText Strings\\StringsFromCSFiles:vlFireworks.Birdie]",
-							}
-						],
-						"Id": "AnyOrNone",
-						"Name": "AnyOrNone"
-					}
-					],
-					"SalableItemTags": [
-						"ingredient_firework"
-					],
-					"Items": [
-						{
-							"Price": 5000,
-							"AvailableStock": -1,
-							"Condition": null,
-							"Id": "(O){{MainModID}}.RedFirework",
-							"ItemId": "(O){{MainModID}}.RedFirework",
-						},
-						{
-							"Price": 5000,
-							"AvailableStock": -1,
-							"Condition": null,
-							"Id": "(O){{MainModID}}.OrangeFirework",
-							"ItemId": "(O){{MainModID}}.OrangeFirework",
-						},
-						{
-							"Price": 5000,
-							"AvailableStock": -1,
-							"Condition": null,
-							"Id": "(O){{MainModID}}.YellowFirework",
-							"ItemId": "(O){{MainModID}}.YellowFirework",
-						},
-						{
-							"Price": 5000,
-							"AvailableStock": -1,
-							"Condition": null,
-							"Id": "(O){{MainModID}}.GreenFirework",
-							"ItemId": "(O){{MainModID}}.GreenFirework",
-						},
-						{
-							"Price": 5000,
-							"AvailableStock": -1,
-							"Condition": null,
-							"Id": "(O){{MainModID}}.BlueFirework",
-							"ItemId": "(O){{MainModID}}.BlueFirework",
-						},
-						{
-							"Price": 5000,
-							"AvailableStock": -1,
-							"Condition": null,
-							"Id": "(O){{MainModID}}.PurpleFirework",
-							"ItemId": "(O){{MainModID}}.PurpleFirework",
-						},
-						{
-							"Price": 5000,
-							"AvailableStock": -1,
-							"Condition": null,
-							"Id": "(O){{MainModID}}.WhiteFirework",
-							"ItemId": "(O){{MainModID}}.WhiteFirework",
-						},
-						{
-							"Price": 50000,
-							"AvailableStock": 1,
-							"Condition": "!PLAYER_HAS_MAIL Current vl.fireworkslicense",
-							"Id": "(O){{MainModID}}.FireworksLicense",
-							"ItemId": "(O){{MainModID}}.FireworksLicense",
-						},
-					],
-				}
-			}
 		},
 		{
 			"LogName": "Add fireworks shop to festival map",
@@ -143,6 +55,378 @@
 					}
 				}
 			]
-		}
+		},
+		{
+			"LogName": "Add traveling cart shop to festival map",
+			"Action": "EditMap",
+			"Target": "Maps/Beach-FireworksFestival",
+			"MapTiles": [
+				{
+					"Position": { "X": 39, "Y": 30 },
+					"Layer": "Buildings",
+					"SetProperties": {
+						"Action": "OpenShop Traveler down"
+					}
+				}
+			]
+		},
+		{
+			"LogName": "Add fruits shop to festival map",
+			"Action": "EditMap",
+			"Target": "Maps/Beach-FireworksFestival",
+			"MapTiles": [
+				{
+					"Position": { "X": 47, "Y": 34 },
+					"Layer": "Buildings",
+					"SetProperties": {
+						"Action": "OpenShop {{MainModID}}BrownBoat"
+					}
+				},
+				{
+					"Position": { "X": 48, "Y": 34 },
+					"Layer": "Buildings",
+					"SetProperties": {
+						"Action": "OpenShop {{MainModID}}BrownBoat"
+					}
+				}
+			]
+		},
+		{
+			"LogName": "Add foods shop to festival map",
+			"Action": "EditMap",
+			"Target": "Maps/Beach-FireworksFestival",
+			"MapTiles": [
+				{
+					"Position": { "X": 19, "Y": 33 },
+					"Layer": "Buildings",
+					"SetProperties": {
+						"Action": "OpenShop {{MainModID}}BlueBoat"
+					}
+				}
+			]
+		},
+		{
+			"LogName": "Add yukata shop to festival map",
+			"Action": "EditMap",
+			"Target": "Maps/Beach-FireworksFestival",
+			"MapTiles": [
+				{
+					"Position": { "X": 34, "Y": 15 },
+					"Layer": "Buildings",
+					"SetProperties": {
+						"Action": "OpenShop {{MainModID}}YukataShop"
+					}
+				},
+				{
+					"Position": { "X": 35, "Y": 15 },
+					"Layer": "Buildings",
+					"SetProperties": {
+						"Action": "OpenShop {{MainModID}}YukataShop"
+					}
+				}
+			]
+		},
+		// Create fireworks shop
+		{
+			"LogName": "Create fireworks shop",
+			"Action": "EditData",
+			"Target": "Data/Shops",
+			"Entries": {
+				"{{MainModID}}PurpleBoat": {
+					"Currency": 0,
+					"Owners": [
+						{
+							"Portrait": "Portraits\\Birdie",
+							"Dialogues": [
+								{
+									"Id": "Default",
+									"Dialogue": "[LocalizedText Strings\\StringsFromCSFiles:vlFireworks.Birdie]",
+								}
+							],
+							"Id": "AnyOrNone",
+							"Name": "AnyOrNone"
+						}
+					],
+					"SalableItemTags": [
+						"ingredient_firework"
+					],
+					"Items": [
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Id": "(O){{MainModID}}.RedFirework",
+							"ItemId": "(O){{MainModID}}.RedFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Id": "(O){{MainModID}}.OrangeFirework",
+							"ItemId": "(O){{MainModID}}.OrangeFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Id": "(O){{MainModID}}.YellowFirework",
+							"ItemId": "(O){{MainModID}}.YellowFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Id": "(O){{MainModID}}.GreenFirework",
+							"ItemId": "(O){{MainModID}}.GreenFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Id": "(O){{MainModID}}.BlueFirework",
+							"ItemId": "(O){{MainModID}}.BlueFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Id": "(O){{MainModID}}.PurpleFirework",
+							"ItemId": "(O){{MainModID}}.PurpleFirework",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Id": "(O){{MainModID}}.WhiteFirework",
+							"ItemId": "(O){{MainModID}}.WhiteFirework",
+						},
+						{
+							"Price": 50000,
+							"AvailableStock": 1,
+							"Condition": "!PLAYER_HAS_MAIL Current vl.fireworkslicense",
+							"Id": "(O){{MainModID}}.FireworksLicense",
+							"ItemId": "(O){{MainModID}}.FireworksLicense",
+						},
+					],
+				},
+				"{{MainModID}}BlueBoat": {
+					"Currency": 0,
+					"Owners": [
+						{
+							"Portrait": "",
+							"Dialogues": [],
+							"Id": "AnyOrNone",
+							"Name": "AnyOrNone"
+						}
+					],
+					"Items": [
+						{
+							"Price": 500,
+							"AvailableStock": -1,
+							"Id": "(O){{MainModID}}.Takoyaki",
+							"ItemId": "(O){{MainModID}}.Takoyaki",
+						},
+						{
+							"Price": 500,
+							"AvailableStock": -1,
+							"Id": "(O){{MainModID}}.Yakisoba",
+							"ItemId": "(O){{MainModID}}.Yakisoba",
+						},
+						{
+							"Price": 1500,
+							"AvailableStock": -1,
+							"Id": "(O)202",
+							"ItemId": "(O)202",
+						},
+						{
+							"Price": 1500,
+							"AvailableStock": -1,
+							"Id": "(O)214",
+							"ItemId": "(O)214",
+						},
+						{
+							"Price": 1500,
+							"AvailableStock": -1,
+							"Id": "(O)205",
+							"ItemId": "(O)205",
+						},
+					]
+				},
+				"{{MainModID}}BrownBoat": {
+					"Currency": 0,
+					"Owners": [
+						{
+							"Portrait": "",
+							"Dialogues": [],
+							"Id": "AnyOrNone",
+							"Name": "AnyOrNone"
+						}
+					],
+					"Items": [
+						{
+							"Price": 1000,
+							"AvailableStock": -1,
+							"Id": "(O)254",
+							"ItemId": "(O)254",
+						},
+						{
+							"Price": 1000,
+							"AvailableStock": -1,
+							"Id": "(O)400",
+							"ItemId": "(O)400",
+						},
+						{
+							"Price": 1000,
+							"AvailableStock": -1,
+							"Id": "(O)398",
+							"ItemId": "(O)398",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Id": "(O)636",
+							"ItemId": "(O)636",
+						},
+						{
+							"Price": 5000,
+							"AvailableStock": -1,
+							"Id": "(O)268",
+							"ItemId": "(O)268",
+						},
+					]
+				},
+				"{{MainModID}}YukataShop": {
+					"Currency": 0,
+					"Owners": [
+						{
+							"Portrait": "Portraits\\FireworksFox",
+							"Dialogues": [
+								{
+									"Id": "Default",
+									"Dialogue": "[LocalizedText Strings\\StringsFromCSFiles:vlFireworks.Fox]",
+								}
+							],
+							"Id": "AnyOrNone",
+							"Name": "AnyOrNone"
+						}
+					],
+					"Items": [
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 1,
+							"AvailableStock": -1,
+							"Id": "(S)1226",
+							"ItemId": "(S)1226",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 1,
+							"AvailableStock": -1,
+							"Id": "(S)1270",
+							"ItemId": "(S)1270",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 1,
+							"AvailableStock": -1,
+							"Id": "(S)1193",
+							"ItemId": "(S)1193",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 1,
+							"AvailableStock": -1,
+							"Id": "(S)1016",
+							"ItemId": "(S)1016",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 1,
+							"AvailableStock": -1,
+							"Id": "(S)1043",
+							"ItemId": "(S)1043",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 1,
+							"AvailableStock": -1,
+							"Id": "(S)1212",
+							"ItemId": "(S)1212",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 1,
+							"AvailableStock": -1,
+							"Id": "(S)1081",
+							"ItemId": "(S)1081",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 1,
+							"AvailableStock": -1,
+							"Id": "(S)1085",
+							"ItemId": "(S)1085",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 1,
+							"AvailableStock": -1,
+							"Id": "(S)1144",
+							"ItemId": "(S)1144",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 2,
+							"AvailableStock": -1,
+							"Id": "(P)10",
+							"ItemId": "(P)10",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 2,
+							"AvailableStock": -1,
+							"Id": "(P)11",
+							"ItemId": "(P)11",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 2,
+							"AvailableStock": -1,
+							"Id": "(P)12",
+							"ItemId": "(P)12",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 3,
+							"AvailableStock": -1,
+							"Id": "(H)44",
+							"ItemId": "(H)44",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 3,
+							"AvailableStock": -1,
+							"Id": "(H)67",
+							"ItemId": "(H)67",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 3,
+							"AvailableStock": -1,
+							"Id": "(H)42",
+							"ItemId": "(H)42",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 3,
+							"AvailableStock": -1,
+							"Id": "(H)36",
+							"ItemId": "(H)36",
+						},
+						{
+							"TradeItemId": "(O)142",
+							"TradeItemAmount": 3,
+							"AvailableStock": -1,
+							"Condition": "PLAYER_HAS_ACHIEVEMENT Current 34",
+							"Id": "(H)9",
+							"ItemId": "(H)9",
+						},
+					]
+				}
+			}
+		},
 	]
 }

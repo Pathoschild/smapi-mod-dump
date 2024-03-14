@@ -8,20 +8,24 @@
 **
 *************************************************/
 
-namespace ScytheFixes
+namespace EnchantableScythesConfig
 {
     using HarmonyLib;
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using StardewValley;
+    using StardewValley.Constants;
+    using StardewValley.Enchantments;
+    using StardewValley.Extensions;
     using StardewValley.Tools;
     using System;
+    using System.Collections.Generic;
 
     public class Patcher
     {
-        private const int goldenScytheId = 53;
-
         private static EnchantableScythes mod;
+
+        // TODO check what iridium scythe does on release
 
         public static void PatchAll(EnchantableScythes scytheFixes)
         {
@@ -48,6 +52,10 @@ namespace ScytheFixes
                     postfix: new HarmonyMethod(typeof(Patcher), nameof(GetEnchantmentFromItem_Post)));
 
                 harmony.Patch(
+                    original: AccessTools.Method(typeof(BaseEnchantment), nameof(BaseEnchantment.GetAvailableEnchantmentsForItem)),
+                    postfix: new HarmonyMethod(typeof(Patcher), nameof(AddHaymakerOnlyWorkaround)));
+
+                harmony.Patch(
                     original: AccessTools.Method(typeof(MeleeWeapon), nameof(MeleeWeapon.Forge)),
                     postfix: new HarmonyMethod(typeof(Patcher), nameof(Forge_Post)));
             }
@@ -57,226 +65,205 @@ namespace ScytheFixes
             }
         }
 
-        public static void AddEnchantmentTooltipToScythe(MeleeWeapon __instance, SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha)
+        public static void AddHaymakerOnlyWorkaround(Tool item, ref List<BaseEnchantment> __result)
         {
-            try
+            if (item is MeleeWeapon meleeWeapon && meleeWeapon.isScythe() && mod.Config.ScythesCanOnlyGetHaymaker && __result.Count == 0)
             {
-                if (!mod.Config.EnchantableScythes)
-                {
-                    return;
-                }
+                __result = new List<BaseEnchantment>();
 
-                if (__instance.isScythe(-1))
+                List<BaseEnchantment> enchantments = BaseEnchantment.GetAvailableEnchantments();
+
+                foreach (BaseEnchantment enchantment2 in enchantments)
                 {
-                    foreach (BaseEnchantment enchantment in __instance.enchantments)
+                    if (enchantment2.CanApplyTo(item))
                     {
-                        if (enchantment.ShouldBeDisplayed())
-                        {
-                            Utility.drawWithShadow(spriteBatch, Game1.mouseCursors2, new Vector2((float)(x + 16 + 4), (float)(y + 16 + 4)), new Rectangle(127, 35, 10, 10), Color.White, 0f, Vector2.Zero, 4f, false, 1f, -1, -1, 0.35f);
-                            Utility.drawTextWithShadow(spriteBatch, BaseEnchantment.hideEnchantmentName ? "???" : enchantment.GetDisplayName(), font, new Vector2((float)(x + 16 + 52), (float)(y + 16 + 12)), new Color(120, 0, 210) * 0.9f * alpha, 1f, -1f, -1, -1, 1f, 3);
-                            y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
-                        }
+                        __result.Add(enchantment2);
                     }
                 }
             }
-            catch (Exception e)
+        }
+
+        public static void AddEnchantmentTooltipToScythe(MeleeWeapon __instance, SpriteBatch spriteBatch, ref int x, ref int y, SpriteFont font, float alpha)
+        {
+            if (!mod.Config.EnchantableScythes || !__instance.isScythe())
             {
-                mod.ErrorLog("There was an exception in a patch", e);
+                return;
+            }
+
+            foreach (BaseEnchantment enchantment in __instance.enchantments)
+            {
+                if (enchantment.ShouldBeDisplayed())
+                {
+                    Utility.drawWithShadow(spriteBatch, Game1.mouseCursors2, new Vector2((float)(x + 16 + 4), (float)(y + 16 + 4)), new Rectangle(127, 35, 10, 10), Color.White, 0f, Vector2.Zero, 4f, false, 1f, -1, -1, 0.35f);
+                    Utility.drawTextWithShadow(spriteBatch, BaseEnchantment.hideEnchantmentName ? "???" : enchantment.GetDisplayName(), font, new Vector2((float)(x + 16 + 52), (float)(y + 16 + 12)), new Color(120, 0, 210) * 0.9f * alpha, 1f, -1f, -1, -1, 1f, 3);
+                    y += (int)Math.Max(font.MeasureString("TT").Y, 48f);
+                }
             }
         }
 
         public static void Forge_Post(MeleeWeapon __instance, Item item, bool count_towards_stats, ref bool __result)
         {
-            try
+            if (!mod.Config.EnchantableScythes || !__instance.isScythe())
             {
-                if (!mod.Config.EnchantableScythes || !__instance.isScythe(-1))
-                {
-                    return;
-                }
+                return;
+            }
 
-                if (item is MeleeWeapon other_weapon && other_weapon.type == __instance.type)
-                {
-                    __instance.appearance.Value = (__instance.IndexOfMenuItemView = other_weapon.getDrawnItemIndex());
-                    __result = true;
-                    return;
-                }
+            if (item is MeleeWeapon other_weapon && other_weapon.type == __instance.type)
+            {
+                __instance.appearance.Value = other_weapon.QualifiedItemId;
+                __result = true;
+                return;
+            }
 
-                BaseEnchantment enchantment = BaseEnchantment.GetEnchantmentFromItem(__instance, item);
-                if (enchantment != null && __instance.AddEnchantment(enchantment))
-                {
-                    // deleted diamond case
+            BaseEnchantment enchantment = BaseEnchantment.GetEnchantmentFromItem(__instance, item);
+            if (enchantment != null && __instance.AddEnchantment(enchantment))
+            {
+                // deleted diamond case
 
-                    if (count_towards_stats && !enchantment.IsForge())
+                if (count_towards_stats && !enchantment.IsForge())
+                {
+                    __instance.previousEnchantments.Insert(0, enchantment.GetName());
+                    while (__instance.previousEnchantments.Count > 2)
                     {
-                        __instance.previousEnchantments.Insert(0, enchantment.GetName());
-                        while (__instance.previousEnchantments.Count > 2)
-                        {
-                            __instance.previousEnchantments.RemoveAt(__instance.previousEnchantments.Count - 1);
-                        }
-                        Game1.stats.incrementStat("timesEnchanted", 1);
+                        __instance.previousEnchantments.RemoveAt(__instance.previousEnchantments.Count - 1);
                     }
-
-                    __result = true;
-                    return;
+                    Game1.stats.Increment(StatKeys.TimesEnchanted, 1);
                 }
 
-                __result = false;
+                __result = true;
+                return;
             }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
-            }
+
+            __result = false;
         }
 
         public static void GetEnchantmentFromItem_Post(Item base_item, Item item, ref BaseEnchantment __result)
         {
-            try
+            if (!mod.Config.EnchantableScythes)
             {
-                if (!mod.Config.EnchantableScythes)
-                {
-                    return;
-                }
-
-                if (base_item is MeleeWeapon weapon && weapon.isScythe(-1))
-                {
-                    // actual enchantments
-                    if (Utility.IsNormalObjectAtParentSheetIndex(item, 74))
-                    {
-                        var enchantmentRandom = new Random((int)(Game1.stats.getStat("timesEnchanted") + (uint)((int)Game1.uniqueIDForThisGame)));
-                        __result = Utility.GetRandom(BaseEnchantment.GetAvailableEnchantmentsForItem(base_item as Tool), enchantmentRandom);
-                        return;
-                    }
-
-                    // weapon forging
-                    if (Utility.IsNormalObjectAtParentSheetIndex(item, 60))
-                    {
-                        __result = new EmeraldEnchantment();
-                        return;
-                    }
-                    if (Utility.IsNormalObjectAtParentSheetIndex(item, 62))
-                    {
-                        __result = new AquamarineEnchantment();
-                        return;
-                    }
-                    if (Utility.IsNormalObjectAtParentSheetIndex(item, 64))
-                    {
-                        __result = new RubyEnchantment();
-                        return;
-                    }
-                    if (Utility.IsNormalObjectAtParentSheetIndex(item, 66))
-                    {
-                        __result = new AmethystEnchantment();
-                        return;
-                    }
-                    if (Utility.IsNormalObjectAtParentSheetIndex(item, 68))
-                    {
-                        __result = new TopazEnchantment();
-                        return;
-                    }
-                    if (Utility.IsNormalObjectAtParentSheetIndex(item, 70))
-                    {
-                        __result = new JadeEnchantment();
-                        return;
-                    }
-
-                    // deleted diamond case
-
-                    __result = null;
-                }
+                return;
             }
-            catch (Exception e)
+
+            if (base_item is not MeleeWeapon meleeWeapon || !meleeWeapon.isScythe())
             {
-                mod.ErrorLog("There was an exception in a patch", e);
+                return;
+            }
+
+            switch (item?.QualifiedItemId)
+            {
+                // actual enchantments
+                case "(O)74":
+                    __result = Utility.CreateRandom(Game1.stats.Get(StatKeys.TimesEnchanted), Game1.uniqueIDForThisGame, 0.0, 0.0, 0.0).ChooseFrom(BaseEnchantment.GetAvailableEnchantmentsForItem(base_item as Tool));
+                    return;
+
+                // weapon forging
+                case "(O)60":
+                    __result = new EmeraldEnchantment();
+                    return;
+
+                case "(O)62":
+                    __result = new AquamarineEnchantment();
+                    return;
+
+                case "(O)64":
+                    __result = new RubyEnchantment();
+                    return;
+
+                case "(O)66":
+                    __result = new AmethystEnchantment();
+                    return;
+
+                case "(O)68":
+                    __result = new TopazEnchantment();
+                    return;
+
+                case "(O)70":
+                    __result = new JadeEnchantment();
+                    return;
+
+                // deleted diamond case
+                default:
+                    __result = null;
+                    return;
             }
         }
 
         public static void CanApplyEnchantmentToScythe(BaseWeaponEnchantment __instance, Item item, ref bool __result)
         {
-            try
+            if (!mod.Config.EnchantableScythes)
             {
-                if (!mod.Config.EnchantableScythes)
-                {
-                    return;
-                }
-
-                if (item is MeleeWeapon meleeWeapon)
-                {
-                    if (meleeWeapon.isScythe(-1))
-                    {
-                        if (__instance is not DiamondEnchantment && __instance is not ArtfulEnchantment)
-                        {
-                            if (!mod.Config.ScythesCanOnlyGetHaymaker || __instance is HaymakerEnchantment || __instance.IsForge())
-                            {
-                                __result = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (mod.Config.OtherWeaponsCannotGetHaymakerAnymore && __instance is HaymakerEnchantment)
-                        {
-                            __result = false;
-                        }
-                    }
-                }
+                return;
             }
-            catch (Exception e)
+
+            if (item is MeleeWeapon meleeWeapon)
             {
-                mod.ErrorLog("There was an exception in a patch", e);
+                if (meleeWeapon.isScythe())
+                {
+                    if (__instance is not DiamondEnchantment && __instance is not ArtfulEnchantment)
+                    {
+                        if (!mod.Config.ScythesCanOnlyGetHaymaker || __instance is HaymakerEnchantment || __instance.IsForge())
+                        {
+                            __result = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (mod.Config.OtherWeaponsCannotGetHaymakerAnymore && __instance is HaymakerEnchantment)
+                    {
+                        __result = false;
+                    }
+                }
             }
         }
 
         public static void RespawnGoldenScythes()
         {
-            try
+            if (!mod.Config.GoldenScytheRespawns)
             {
-                if (!mod.Config.GoldenScytheRespawns)
+                return;
+            }
+
+            var farmers = Game1.getAllFarmers();
+
+            int missingGoldenScythes = 0;
+            foreach (Farmer who in farmers)
+            {
+                if (who.mailReceived.Contains("gotGoldenScythe"))
                 {
-                    return;
+                    missingGoldenScythes++;
                 }
+            }
 
-                var farmers = Game1.getAllFarmers();
-
-                int missingGoldenScythes = 0;
-                foreach (Farmer who in farmers)
+            foreach (Farmer who in farmers)
+            {
+                foreach (var item in who.Items)
                 {
-                    if (who.mailReceived.Contains("gotGoldenScythe"))
+                    if (item is MeleeWeapon meleeWeapon && meleeWeapon.QualifiedItemId == "(W)" + MeleeWeapon.goldenScytheId)
                     {
-                        missingGoldenScythes++;
-                    }
-                }
-
-                foreach (Farmer who in farmers)
-                {
-                    foreach (var item in who.Items)
-                    {
-                        if (item is MeleeWeapon weapon && weapon.InitialParentTileIndex == goldenScytheId)
-                        {
-                            missingGoldenScythes--;
-                        }
-                    }
-                }
-
-                if (missingGoldenScythes > 0)
-                {
-                    Utility.iterateChestsAndStorage(delegate (Item item)
-                    {
-                        if (item is MeleeWeapon weapon && weapon.InitialParentTileIndex == goldenScytheId) missingGoldenScythes--;
-                    });
-
-                    foreach (Farmer who in farmers)
-                    {
-                        if (missingGoldenScythes > 0 && who.mailReceived.Contains("gotGoldenScythe"))
-                        {
-                            who.mailReceived.Remove("gotGoldenScythe");
-                            missingGoldenScythes--;
-                        }
+                        missingGoldenScythes--;
                     }
                 }
             }
-            catch (Exception e)
+
+            if (missingGoldenScythes > 0)
             {
-                mod.ErrorLog("There was an exception in a patch", e);
+                Utility.iterateChestsAndStorage(delegate (Item item)
+                {
+                    if (item is MeleeWeapon meleeWeapon && meleeWeapon.QualifiedItemId == "(W)" + MeleeWeapon.goldenScytheId)
+                    {
+                        missingGoldenScythes--;
+                    }
+                });
+
+                foreach (Farmer who in farmers)
+                {
+                    if (missingGoldenScythes > 0 && who.mailReceived.Contains("gotGoldenScythe"))
+                    {
+                        who.mailReceived.Remove("gotGoldenScythe");
+                        missingGoldenScythes--;
+                    }
+                }
             }
         }
     }

@@ -1,0 +1,10 @@
+{
+  "Name": "Honey Harvest Sync",
+  "Author": "voltaek",
+  "Version": "1.0.0",
+  "Description": "Ready-for-harvest bee houses show the honey you'll receive.",
+  "UniqueID": "voltaek.HoneyHarvestSync",
+  "EntryDll": "HoneyHarvestSync.dll",
+  "MinimumApiVersion": "3.18.0",
+  "UpdateKeys": [ "Nexus:20493" ]
+}

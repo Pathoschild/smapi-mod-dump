@@ -1,0 +1,33 @@
+{
+  "Keys": {
+    "ReloadConfig": "None"
+  },
+  "CatchFishRetries": 0,
+  "InstantCatchFish": true,
+  "InstantCatchTreasure": false,
+  "AlwaysMaxCastingPower": false,
+  "AlwaysPerfect": false,
+  "TreasureAppearence": "Vanilla",
+  "AlwaysCatchDouble": false,
+  "InstantBite": false,
+  "AutoHook": false,
+  "SpawnBaitWhenEquipped": false,
+  "FishQuality": "Any",
+  "MinimumFishQuality": "None",
+  "SpawnWhichBait": "(O)685",
+  "SpawnTackleWhenEquipped": false,
+  "SpawnWhichTackle": "(O)686",
+  "OverrideAttachmentLimit": false,
+  "ResetAttachmentsWhenNotEquipped": true,
+  "InfiniteBait": false,
+  "InfiniteTackle": false,
+  "AutoLootTreasure": false,
+  "DifficultyMultiplier": 1.0,
+  "DoAddEnchantments": false,
+  "AddAllEnchantments": false,
+  "AddAutoHookEnchantment": false,
+  "AddEfficientToolEnchantment": false,
+  "AddMasterEnchantment": false,
+  "AddPreservingEnchantment": false,
+  "ResetEnchantmentsWhenNotEquipped": true
+}

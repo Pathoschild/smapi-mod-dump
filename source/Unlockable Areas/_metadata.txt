@@ -6,9 +6,9 @@ mods:
    Unlockable Areas
 
 latest commit:
-   commit f61c3c3b6147a47bc91d2fab7c40b7a242868d36
+   commit 8e34e9fe6b551a5faa156ba44848d5d68b1fa25b
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Wed Feb 28 06:29:43 2024 +0100
+   Date:   Wed Mar 13 18:36:58 2024 +0100
    
-       updated to 24058
+       misunderstood IsSplitscreen fix
    

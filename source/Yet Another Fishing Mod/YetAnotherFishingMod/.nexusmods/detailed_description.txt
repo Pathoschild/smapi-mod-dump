@@ -39,6 +39,7 @@ The mod's configurable options can be found below. These can either be adjusted 
 [size=4][b]General[/b][/size]
 
 [list]
+[*]Increase Chance of Catching Fish
 [*]Instantly Catch Fish
 [*]Instantly Catch Treasure
 [*]Always Maximum Casting Power

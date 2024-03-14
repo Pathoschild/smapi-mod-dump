@@ -45,6 +45,7 @@ namespace Unlockable_Bundles.Lib
         public Vector2 ShopPosition;
         public string ShopTexture = null;
         public string ShopAnimation = null;
+        public int ShopTextureWidth = 32;
         public string ShopEvent = null;
         public ShopType ShopType = ShopType.Dialogue;
         public bool? InstantShopRemoval = null;
@@ -64,11 +65,13 @@ namespace Unlockable_Bundles.Lib
 
         public string OverviewTexture = null;
         public string OverviewAnimation = null;
+        public int OverviewTextureWidth = 32;
         public string OverviewDescription = null;
 
         public int RandomPriceEntries = 0;
         public int RandomRewardEntries = 0;
         public Dictionary<string, int> Price = new();
+        public Dictionary<string, string> PriceMigration = new();
         public Dictionary<string, int> AlreadyPaid = new();
         public Dictionary<string, int> AlreadyPaidIndex = new();
         public Dictionary<string, int> BundleReward = new();
@@ -97,6 +100,7 @@ namespace Unlockable_Bundles.Lib
                 ShopPosition = v.ShopPosition,
                 ShopTexture = v.ShopTexture,
                 ShopAnimation = v.ShopAnimation,
+                ShopTextureWidth = v.ShopTextureWidth,
                 ShopEvent = v.ShopEvent,
                 ShopType = v.ShopType,
                 InstantShopRemoval = v.InstantShopRemoval,
@@ -116,11 +120,13 @@ namespace Unlockable_Bundles.Lib
 
                 OverviewTexture = v.OverviewTexture,
                 OverviewAnimation = v.OverviewAnimation,
+                OverviewTextureWidth = v.OverviewTextureWidth,
                 OverviewDescription = v.OverviewDescription,
 
                 RandomPriceEntries = v.RandomPriceEntries,
                 RandomRewardEntries = v.RandomRewardEntries,
                 Price = v._price.Pairs.ToDictionary(x => x.Key, x => x.Value),
+                PriceMigration = v._priceMigration.Pairs.ToDictionary(x => x.Key, x => x.Value),
                 AlreadyPaid = v._alreadyPaid.Pairs.ToDictionary(x => x.Key, x => x.Value),
                 AlreadyPaidIndex = v._alreadyPaidIndex.Pairs.ToDictionary(x => x.Key, x => x.Value),
                 BundleReward = v._bundleReward.Pairs.ToDictionary(x => x.Key, x => x.Value),

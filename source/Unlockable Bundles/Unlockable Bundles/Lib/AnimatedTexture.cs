@@ -26,10 +26,10 @@ namespace Unlockable_Bundles.Lib
         private int Frame = 0;
         private long Timer = 0;
         private List<KeyValuePair<int, int>> Sequence = new List<KeyValuePair<int, int>>();  //ImageIndex, Tempo
-        private int BaseWidth = 32;
-        private int BaseHeight = 64;
+        private int BaseWidth;
+        private int BaseHeight;
 
-        public AnimatedTexture(Texture2D texture, string animation, int baseWidth = 32, int baseHeight = 64)
+        public AnimatedTexture(Texture2D texture, string animation, int baseWidth, int baseHeight)
         {
             Texture = texture;
             Animation = animation;
@@ -39,7 +39,7 @@ namespace Unlockable_Bundles.Lib
         }
 
         public Rectangle getOffsetRectangle() => getOffsetRectangle(ref Frame, Sequence, Texture, BaseWidth, BaseHeight);
-        public static Rectangle getOffsetRectangle(ref int frame, List<KeyValuePair<int, int>> sequence, Texture2D texture, int baseWidth = 32, int baseHeight = 64)
+        public static Rectangle getOffsetRectangle(ref int frame, List<KeyValuePair<int, int>> sequence, Texture2D texture, int baseWidth, int baseHeight)
         {
             var sourceRectangle = new Rectangle(0, 0, baseWidth, baseHeight);
 

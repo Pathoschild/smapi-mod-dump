@@ -34,7 +34,7 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.UserInterface.Zoom.Patche
 				return;
 			if (Game1.activeClickableMenu is not CarpenterMenu && Game1.activeClickableMenu is not PurchaseAnimalsMenu && Game1.activeClickableMenu is not AnimalQueryMenu)
 				return;
-			if (Game1.activeClickableMenu is CarpenterMenu && (bool)typeof(CarpenterMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(Game1.activeClickableMenu))
+			if (Game1.activeClickableMenu is CarpenterMenu && (Game1.activeClickableMenu as CarpenterMenu).freeze)
 				return;
 			if (Game1.activeClickableMenu is PurchaseAnimalsMenu && (bool)typeof(PurchaseAnimalsMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(Game1.activeClickableMenu))
 				return;

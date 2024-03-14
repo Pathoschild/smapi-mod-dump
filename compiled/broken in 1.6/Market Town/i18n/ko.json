@@ -664,7 +664,9 @@
 
 "neutral-order-reaction-1":                         "오, 알겠어!",
 "neutral-order-reaction-2":                         "좋아",
-"neutral-order-reaction-3":                         "좋아!"
+"neutral-order-reaction-3":                         "좋아!",
+
+"foodstore.config.shedvisitor": " 방문자 특별 요청"
 
 
 

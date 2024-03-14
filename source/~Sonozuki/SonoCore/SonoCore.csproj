@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<Version>1.0.0</Version>
+		<TargetFramework>net6.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<EnableHarmony>true</EnableHarmony>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Using Include="HarmonyLib" />
+		<Using Include="Microsoft.Xna.Framework.Content" />
+		<Using Include="SonoCore.Attributes" />
+		<Using Include="SonoCore.Extensions" />
+		<Using Include="StardewModdingAPI" />
+		<Using Include="System.Collections" />
+		<Using Include="System.Reflection" />
+		<Using Include="System.Reflection.Emit" />
+		<Using Include="System.Runtime.CompilerServices" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+	</ItemGroup>
+
+</Project>

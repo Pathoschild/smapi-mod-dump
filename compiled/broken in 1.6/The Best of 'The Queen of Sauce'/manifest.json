@@ -1,9 +1,0 @@
-{
-  "Name": "Best of \"The Queen of Sauce\"",
-  "Author": "Bpendragon",
-  "Version": "1.1.0",
-  "Description": "Miss a Queen of Sauce recipe? A month after it first airs Gus will get it in his shop (at a decently hefty price)",
-  "UniqueID": "Bpendragon.BestOfQOS",
-  "EntryDll": "BestOfQOS.dll",
-  "UpdateKeys": [ "Github:Bpendragon/Best-of-Queen-of-Sauce", "Nexus:7985" ]
-}

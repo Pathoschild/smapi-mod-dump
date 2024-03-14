@@ -1,3 +1,0 @@
-page URL: https://www.nexusmods.com/stardewvalley/mods/5398
-IDs: EpicBellyFlop45.MoreGrass
-update keys: Nexus:5398, GitHub:AndyCrocker/StardewMods

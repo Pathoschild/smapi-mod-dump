@@ -11,11 +11,14 @@
 namespace AnimalsDie
 {
     using HarmonyLib;
+    using Microsoft.Xna.Framework;
     using Netcode;
     using StardewValley;
     using StardewValley.Buildings;
     using StardewValley.Events;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     internal class Patcher
     {
@@ -30,15 +33,15 @@ namespace AnimalsDie
             try
             {
                 harmony.Patch(
-                   original: AccessTools.Method(typeof(FarmAnimal), "dayUpdate"),
+                   original: AccessTools.Method(typeof(FarmAnimal), nameof(FarmAnimal.dayUpdate)),
                    prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchDayUpdate)));
 
                 harmony.Patch(
-                   original: AccessTools.Method(typeof(QuestionEvent), "setUp"),
+                   original: AccessTools.Method(typeof(QuestionEvent), nameof(QuestionEvent.setUp)),
                    postfix: new HarmonyMethod(typeof(Patcher), nameof(DetectPregnancy)));
 
                 harmony.Patch(
-                   original: AccessTools.Method(typeof(SoundInTheNightEvent), "makeChangesToLocation"),
+                   original: AccessTools.Method(typeof(SoundInTheNightEvent), nameof(SoundInTheNightEvent.makeChangesToLocation)),
                    prefix: new HarmonyMethod(typeof(Patcher), nameof(DetectAnimalAttack)));
             }
             catch (Exception e)
@@ -47,50 +50,54 @@ namespace AnimalsDie
             }
         }
 
-        public static bool DetectAnimalAttack(NetInt ___behavior, Building ___targetBuilding)
+        public static void DetectAnimalAttack(NetInt ___behavior, Building ___targetBuilding)
         {
             try
             {
                 if (!Game1.IsMasterGame)
                 {
-                    return true;
+                    return;
                 }
 
-                if (___behavior.Value == SoundInTheNightEvent.dogs && ___targetBuilding != null)
+                if (___behavior.Value != SoundInTheNightEvent.dogs)
                 {
-                    AnimalHouse indoors = ___targetBuilding.indoors.Value as AnimalHouse;
-                    long idOfRemove = 0L;
-                    foreach (long a in indoors.animalsThatLiveHere)
-                    {
-                        if (!indoors.animals.ContainsKey(a))
-                        {
-                            idOfRemove = a;
-                            break;
-                        }
-                    }
-
-                    if (!Game1.getFarm().animals.ContainsKey(idOfRemove))
-                    {
-                        return true;
-                    }
-
-                    mod.WildAnimalVictim = Game1.getFarm().animals[idOfRemove];
+                    return;
                 }
 
-                return true;
+                if (___targetBuilding == null || ___targetBuilding.GetIndoors() is not AnimalHouse animalHouse)
+                {
+                    return;
+                }
+
+                long idOfRemove = 0L;
+                foreach (long animalID in animalHouse.animalsThatLiveHere)
+                {
+                    if (!animalHouse.animals.ContainsKey(animalID))
+                    {
+                        idOfRemove = animalID;
+                        break;
+                    }
+                }
+
+                // this event can only happen on the farm
+                if (!Game1.getFarm().animals.ContainsKey(idOfRemove))
+                {
+                    return;
+                }
+
+                mod.WildAnimalVictim = Game1.getFarm().animals[idOfRemove];
             }
             catch (Exception e)
             {
                 mod.ErrorLog("There was an exception in a patch", e);
-                return true;
             }
         }
 
-        public static void DetectPregnancy(ref QuestionEvent __instance, ref bool __result, int ___whichQuestion)
+        public static void DetectPregnancy(QuestionEvent __instance, bool __result, int ___whichQuestion)
         {
             try
             {
-                if (!__result && ___whichQuestion == 2 && __instance.animal != null)
+                if (!__result && ___whichQuestion == QuestionEvent.barnBirth && __instance.animal != null)
                 {
                     __instance.animal.modData.TryGetValue($"{mod.ModManifest.UniqueID}/illness", out string moddata);
 
@@ -113,9 +120,8 @@ namespace AnimalsDie
             }
         }
 
-        // yes, there is a typo in environtment in the base game and whenever it gets fixed this doesn't work anymore
         [HarmonyPriority(Priority.High)]
-        public static bool PatchDayUpdate(ref FarmAnimal __instance, ref GameLocation environtment)
+        public static void PatchDayUpdate(FarmAnimal __instance, GameLocation environment)
         {
             try
             {
@@ -123,19 +129,19 @@ namespace AnimalsDie
                 if (animal.home == null)
                 {
                     mod.DebugLog($"{animal.Name} has no home anymore! This should have been fixed at the start of the day. Please report this to the mod page.");
-                    return true;
+                    return;
                 }
 
-                if (environtment == null)
+                if (environment == null)
                 {
                     mod.DebugLog($"{animal.Name} is nowhere? Please report this to the mod page. A game update or another mod probably caused this.");
-                    return true;
+                    return;
                 }
 
                 if (mod.CheckedToday.Contains(__instance))
                 {
                     // sometimes the base game calls FarmAnimal.dayUpdate twice because it gets called by both the farm and the animal house
-                    return true;
+                    return;
                 }
                 else
                 {
@@ -143,25 +149,31 @@ namespace AnimalsDie
                 }
 
                 bool wasLeftOutLastNight = false;
-                if (!(animal.home.indoors.Value as AnimalHouse).animals.ContainsKey(animal.myID.Value) && environtment is Farm)
+                GameLocation insideHome = __instance.home?.GetIndoors();
+
+                if (insideHome != null && !__instance.IsHome)
                 {
-                    if (!animal.home.animalDoorOpen.Value)
+                    if (!__instance.home?.animalDoorOpen.Value == true)
                     {
                         wasLeftOutLastNight = true;
                     }
                 }
 
-                byte actualFullness = animal.fullness.Value;
+                int actualFullness = animal.fullness.Value;
 
                 if (!wasLeftOutLastNight)
                 {
-                    if (actualFullness < 200 && animal.home.indoors.Value is AnimalHouse)
+                    if (actualFullness < 200 && environment is AnimalHouse)
                     {
-                        for (int i = animal.home.indoors.Value.objects.Count() - 1; i >= 0; i--)
+                        // technically, this isn't correct if you don't have enough hay for all your animals (since I don't remove the hay here), but... whatever
+                        KeyValuePair<Vector2, StardewValley.Object>[] array = environment.objects.Pairs.ToArray();
+                        for (int i = 0; i < array.Length; i++)
                         {
-                            if (animal.home.indoors.Value.objects.Pairs.ElementAt(i).Value.Name.Equals("Hay"))
+                            KeyValuePair<Vector2, StardewValley.Object> pair = array[i];
+                            if (pair.Value.QualifiedItemId == "(O)178")
                             {
-                                actualFullness = byte.MaxValue;
+                                actualFullness = 255;
+                                break;
                             }
                         }
                     }
@@ -172,7 +184,7 @@ namespace AnimalsDie
                 if (mod.Config.DeathByStarvation && starvation >= mod.Config.DaysToDieDueToStarvation)
                 {
                     mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, Cause.starvation.ToString()));
-                    return true;
+                    return;
                 }
 
                 bool gotWater = false;
@@ -186,7 +198,7 @@ namespace AnimalsDie
                     if (mod.Config.DeathByDehydrationWithAnimalsNeedWaterMod && dehydration >= mod.Config.DaysToDieDueToDehydrationWithAnimalsNeedWaterMod)
                     {
                         mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, Cause.dehydration.ToString()));
-                        return true;
+                        return;
                     }
                 }
 
@@ -195,7 +207,7 @@ namespace AnimalsDie
                 if (mod.Config.DeathByIllness && illness >= mod.Config.IllnessScoreToDie)
                 {
                     mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, Cause.illness.ToString()));
-                    return true;
+                    return;
                 }
                 else if (illness >= mod.Config.IllnessScoreToDie / 2)
                 {
@@ -205,15 +217,12 @@ namespace AnimalsDie
                 if (mod.Config.DeathByOldAge && mod.ShouldDieOfOldAge(animal))
                 {
                     mod.AnimalsToKill.Add(new Tuple<FarmAnimal, string>(animal, Cause.oldAge.ToString()));
-                    return true;
+                    return;
                 }
-
-                return true;
             }
             catch (Exception e)
             {
                 mod.ErrorLog("There was an exception in a patch", e);
-                return true;
             }
         }
     }

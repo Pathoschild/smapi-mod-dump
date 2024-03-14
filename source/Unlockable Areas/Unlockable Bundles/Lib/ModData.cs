@@ -20,6 +20,7 @@ using Newtonsoft.Json.Linq;
 using StardewValley.Network;
 using Unlockable_Bundles.NetLib;
 using Newtonsoft.Json;
+using StardewModdingAPI;
 
 namespace Unlockable_Bundles.Lib
 {
@@ -134,16 +135,98 @@ namespace Unlockable_Bundles.Lib
             ensureExist(unlockable.ID, unlockable.LocationUnique);
             var savedata = Instance.UnlockableSaveData[unlockable.ID][unlockable.LocationUnique];
 
+            if (savedata.Purchased) //We currently don't need to apply savedata for purchased unlockables, since all we do with them is apply map patches
+                return;
+
+            applyPriceMigration(unlockable, savedata);
+            applyRandomPriceEntries(unlockable, savedata);
+            ensureBundleCanBeCompleted(unlockable);
+
             unlockable.AlreadyPaid = savedata.AlreadyPaid;
             unlockable.AlreadyPaidIndex = savedata.AlreadyPaidIndex;
 
+
+        }
+
+        private static void ensureBundleCanBeCompleted(UnlockableModel unlockable)
+        {
+            //Safefail when for whatever reason there's fewer items than have to be submitted
+            if(unlockable.BundleSlots > unlockable.Price.Count)
+                unlockable.BundleSlots = unlockable.Price.Count;
+        }
+
+        private static void applyRandomPriceEntries(UnlockableModel unlockable, UnlockableSaveData savedata)
+        {
             if (unlockable.RandomPriceEntries > 0) {
-                if(savedata.Price.Count == 0)
+                if (savedata.Price.Count == 0)
                     savedata.Price = new Dictionary<string, int>(unlockable.Price.OrderBy(x => Game1.random.Next()).Take(unlockable.RandomPriceEntries));
 
                 unlockable.Price = savedata.Price;
             }
-                
+        }
+
+        private static void applyPriceMigration(UnlockableModel unlockable, UnlockableSaveData savedata)
+        {
+            foreach (var migration in unlockable.PriceMigration) {
+                if (!savedata.Price.ContainsKey(migration.Key) && !savedata.AlreadyPaid.ContainsKey(migration.Key) && !savedata.AlreadyPaidIndex.ContainsKey(migration.Key))
+                    continue;
+
+                if (migration.Value.Trim().ToLower() == "remove") { //Remove Keyword
+                    savedata.Price.Remove(migration.Key);
+                    savedata.AlreadyPaid.Remove(migration.Key);
+                    savedata.AlreadyPaidIndex.Remove(migration.Key);
+                    ModEntry._Monitor.Log($"Removed price savedata in bundle '{unlockable.ID}' for '{migration.Key}'");
+                    continue;
+                }
+
+                if (migration.Value.Trim().ToLower() == "reroll") { //Reroll
+                    if (unlockable.RandomPriceEntries <= 0) {
+                        ModEntry._Monitor.LogOnce($"PriceMigration reroll requested for '{migration.Key}' of bundle '{unlockable.ID}', but this bundle does not remember its Price entries.\n"
+                            + "Reroll request will be ignored", LogLevel.Warn);
+                        continue;
+                    }
+
+                    var unusedPriceEntries = unlockable.Price.Where(e => !savedata.Price.ContainsKey(e.Key)).ToDictionary(x => x.Key, x => x.Value);
+
+                    if (unusedPriceEntries.Count == 0) {
+                        ModEntry._Monitor.LogOnce($"PriceMigration reroll requested for '{migration.Key}' of bundle '{unlockable.ID}', but there's no unused Price entries left\n"
+                            + "Reroll request will be ignored", LogLevel.Warn);
+                        continue;
+                    }
+
+                    var randomPrice = unusedPriceEntries.ElementAt(Game1.random.Next(unusedPriceEntries.Count));
+                    applyPriceEntryMigration(unlockable, savedata, migration.Key, randomPrice.Key, randomPrice.Value);
+                    continue;
+                }
+
+                if (!unlockable.Price.TryGetValue(migration.Value, out var newPriceAmount)) {
+                    ModEntry._Monitor.LogOnce($"PriceMigration requested from '{migration.Key}' to '{migration.Value}' of bundle '{unlockable.ID}' without a matching Price entry.\n"
+                        + "Migration request will be ignored.", LogLevel.Warn);
+                    continue;
+                }
+
+                applyPriceEntryMigration(unlockable, savedata, migration.Key, migration.Value, newPriceAmount);
+            }
+        }
+
+        private static void applyPriceEntryMigration(UnlockableModel unlockable, UnlockableSaveData savedata, string oldPriceKey, string newPriceKey, int newPriceAmount)
+        {
+            if (savedata.AlreadyPaid.TryGetValue(oldPriceKey, out var alreadyPaidAmount)) {
+                savedata.AlreadyPaid.Remove(oldPriceKey);
+                savedata.AlreadyPaid.Add(newPriceKey, alreadyPaidAmount);
+
+                if (savedata.AlreadyPaidIndex.TryGetValue(oldPriceKey, out var alreadyPaidIndex)) {
+                    savedata.AlreadyPaidIndex.Remove(oldPriceKey);
+                    savedata.AlreadyPaidIndex.Add(newPriceKey, alreadyPaidIndex);
+                }
+            }
+
+            if(savedata.Price.Count != 0) {
+                savedata.Price.Remove(oldPriceKey);
+                savedata.Price.Add(newPriceKey, newPriceAmount);
+            }
+
+            ModEntry._Monitor.Log($"Migrated Price in bundle '{unlockable.ID}' from '{oldPriceKey}' to '{newPriceKey}':'{newPriceAmount}'");
         }
     }
 }

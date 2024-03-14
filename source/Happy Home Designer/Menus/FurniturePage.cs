@@ -73,7 +73,8 @@ namespace HappyHomeDesigner.Menus
 			filter_count += 2;
 
 			var favorites = Game1.player.modData.TryGetValue(KeyFavs, out var s) ? s.Split('	') : Array.Empty<string>();
-			var season = Game1.player.currentLocation.GetSeasonKey();
+			var season = Game1.player.currentLocation.GetSeason();
+			var seasonName = season.ToString();
 
 			bool populateIds = knownFurnitureIDs is null;
 			if (populateIds)
@@ -85,7 +86,7 @@ namespace HappyHomeDesigner.Menus
 			{
 				if (item is Furniture furn)
 				{
-					var entry = new FurnitureEntry(furn, season, favorites);
+					var entry = new FurnitureEntry(furn, season, seasonName, favorites);
 					var type = furn.furniture_type.Value;
 
 					entries.Add(entry);

@@ -20,20 +20,20 @@ using StardewValley.Network;
 
 namespace Unlockable_Bundles.NetLib
 {
-    public class NetStringIntDictionary : NetDictionary<string, int, NetInt, SerializableDictionary<string, int>, NetStringDictionary<int, NetInt>>
+    public class NetStringStringDictionary : NetDictionary<string, string, NetString, SerializableDictionary<string, string>, NetStringDictionary<string, NetString>>
     {
-        public NetStringIntDictionary() { }
-        public NetStringIntDictionary(IEnumerable<KeyValuePair<string, int>> dict)
+        public NetStringStringDictionary() { }
+        public NetStringStringDictionary(IEnumerable<KeyValuePair<string, string>> dict)
         {
             CopyFrom(dict);
         }
 
-        protected override int getFieldTargetValue(NetInt field)
+        protected override string getFieldTargetValue(NetString field)
         {
             return field.Value;
         }
 
-        protected override int getFieldValue(NetInt field)
+        protected override string getFieldValue(NetString field)
         {
             return field.Value;
         }
@@ -43,7 +43,7 @@ namespace Unlockable_Bundles.NetLib
             return reader.ReadString();
         }
 
-        protected override void setFieldValue(NetInt field, string key, int value)
+        protected override void setFieldValue(NetString field, string key, string value)
         {
             field.Value = value;
         }

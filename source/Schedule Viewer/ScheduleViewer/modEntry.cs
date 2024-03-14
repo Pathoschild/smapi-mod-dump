@@ -29,7 +29,6 @@ namespace ScheduleViewer
         public static ModConfig Config;
         public static IMonitor Console;
         public static IModHelper ModHelper;
-        public static Dictionary<string, string> CustomLocationNames = new();
         private static DialogueBox ErrorDialogue = null;
 
         public const string ModMessageSchedule = "the day's schedule";
@@ -89,16 +88,6 @@ namespace ScheduleViewer
                     break;
                 }
             }
-            // try loading in display names from NPC Map Locations
-            if (this.Helper.ModRegistry.IsLoaded("Bouhm.NPCMapLocations"))
-            {
-                try
-                {
-                    var locationSettings = this.Helper.GameContent.Load<Dictionary<string, JObject>>("Mods/Bouhm.NPCMapLocations/Locations");
-                    CustomLocationNames = locationSettings.Where(location => location.Value.SelectToken("MapTooltip.PrimaryText") != null).ToDictionary(location => location.Key, location => location.Value.SelectToken("MapTooltip.PrimaryText").Value<string>());
-                }
-                catch (Exception) { }
-            }
 
             // broadcast the new day's schedule if multiplayer
             if (Game1.IsMasterGame && this.Helper.Multiplayer.GetConnectedPlayers().Any())
@@ -157,7 +146,7 @@ namespace ScheduleViewer
                 getValue: () => Config.NPCSortOrder.ToString(),
                 setValue: value => Config.NPCSortOrder = parseSortType(value),
                 allowedValues: Enum.GetNames(typeof(ModConfig.SortType)),
-                formatAllowedValue: type => this.Helper.Translation.Get($"config.option.sort_options.option_{(ushort) parseSortType(type)}")
+                formatAllowedValue: type => this.Helper.Translation.Get($"config.option.sort_options.option_{(ushort)parseSortType(type)}")
             );
             configMenu.AddBoolOption(
                 ModManifest,
@@ -255,14 +244,11 @@ namespace ScheduleViewer
             if (Game1.IsMasterGame && Schedule.HasSchedules())
             {
                 var npcsToUpdate = Schedule.GetSchedules().Where(schedule => e.Added.Any(npc => npc.Name.Equals(schedule.Key)));
-                if (npcsToUpdate.Any())
+                string locationName = Schedule.PrettyPrintLocationName(e.Location);
+                foreach (var npc in npcsToUpdate)
                 {
-                    string newLocation = Schedule.PrettyPrintLocationName(e.Location);
-                    foreach (var npc in npcsToUpdate)
-                    {
-                        Schedule.UpdateCurrentLocation((npc.Key, newLocation));
-                        this.Helper.Multiplayer.SendMessage<(string, string)>((npc.Key, newLocation), ModMessageCurrentLocation);
-                    }
+                    Schedule.UpdateCurrentLocation((npc.Key, locationName));
+                    this.Helper.Multiplayer.SendMessage<(string, string)>((npc.Key, locationName), ModMessageCurrentLocation);
                 }
             }
         }

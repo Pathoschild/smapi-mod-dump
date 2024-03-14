@@ -42,7 +42,7 @@
             "Target": "Data/CookingRecipes",
             "Entries": {
                 "drbirbdev.BinningSkill_GrilledCheese": "216 1 424 1//drbirbdev.BinningSkill_GrilledCheese/drbirbdev.BinningSkill 1/{{i18n: item.GrilledCheese.name}}",
-                "drbirbdev.BinningSkill_FishCasserol": "-4 1 -6 1 -75 1//drbirbdev.BinningSkill_FishCasserol/drbirbdev.BinningSkill 8/{{i18n: item.FishCasserol.name}}"
+                "drbirbdev.BinningSkill_FishCasserole": "-4 1 -6 1 -75 1//drbirbdev.BinningSkill_FishCasserole/drbirbdev.BinningSkill 8/{{i18n: item.FishCasserole.name}}"
             }
         },
 
@@ -497,10 +497,10 @@
                         }
                     }
                 },
-                "drbirbdev.BinningSkill_FishCasserol": {
-                    "Name": "Fish Casserol",
-                    "DisplayName": "{{i18n:item.FishCasserol.name}}",
-                    "Description": "{{i18n:item.FishCasserol.desc}}",
+                "drbirbdev.BinningSkill_FishCasserole": {
+                    "Name": "Fish Casserole",
+                    "DisplayName": "{{i18n:item.FishCasserole.name}}",
+                    "Description": "{{i18n:item.FishCasserole.desc}}",
                     "Type": "Cooking",
                     "Category": -7,
                     "Price": 150,

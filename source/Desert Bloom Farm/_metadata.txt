@@ -6,9 +6,9 @@ mods:
    Desert Bloom Farm
 
 latest commit:
-   commit efd1bb72a71765f4403085b3a3b23822a21a29a3
+   commit 48e4dababd7d52e9c1ccbe2d8b63fb11dc4f008e
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Wed Feb 28 04:01:31 2024 +0100
+   Date:   Fri Mar 8 21:32:47 2024 +0100
    
-       build for 24058, expecting this to be the final build before 1.6
+       renamed file to match class
    

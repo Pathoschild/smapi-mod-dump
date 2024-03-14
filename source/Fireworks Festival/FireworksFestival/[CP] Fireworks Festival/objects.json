@@ -201,6 +201,10 @@
                     "SpriteIndex": 8,
                     "ExcludeFromShippingCollection": true,
                     "ExcludeFromRandomSale": true,
+                    "ContextTags": [
+                        "not_giftable",
+                        "prevent_loss_on_death"
+                    ]
                 }
             }
         },
@@ -222,7 +226,8 @@
                     "ExcludeFromShippingCollection": true,
                     "ContextTags": [
                         "color_red",
-                        "ingredient_metal_salt"
+                        "ingredient_metal_salt",
+                        "not_museum_donatable"
                     ],
                 },
                 "{{MainModID}}.IronSalt": {
@@ -237,7 +242,8 @@
                     "ExcludeFromShippingCollection": true,
                     "ContextTags": [
                         "color_orange",
-                        "ingredient_metal_salt"
+                        "ingredient_metal_salt",
+                        "not_museum_donatable"
                     ],
                 },
                 "{{MainModID}}.BariumSalt": {
@@ -252,7 +258,8 @@
                     "ExcludeFromShippingCollection": true,
                     "ContextTags": [
                         "color_green",
-                        "ingredient_metal_salt"
+                        "ingredient_metal_salt",
+                        "not_museum_donatable"
                     ],
                 },
                 "{{MainModID}}.CopperSalt": {
@@ -267,7 +274,8 @@
                     "ExcludeFromShippingCollection": true,
                     "ContextTags": [
                         "color_blue",
-                        "ingredient_metal_salt"
+                        "ingredient_metal_salt",
+                        "not_museum_donatable"
                     ],
                 },
                 "{{MainModID}}.IridiumSalt": {
@@ -282,7 +290,8 @@
                     "ExcludeFromShippingCollection": true,
                     "ContextTags": [
                         "color_purple",
-                        "ingredient_metal_salt"
+                        "ingredient_metal_salt",
+                        "not_museum_donatable"
                     ],
                 },
                 "{{MainModID}}.MagnesiumSalt": {
@@ -297,7 +306,8 @@
                     "ExcludeFromShippingCollection": true,
                     "ContextTags": [
                         "color_white",
-                        "ingredient_metal_salt"
+                        "ingredient_metal_salt",
+                        "not_museum_donatable"
                     ],
                 },
             }
@@ -336,7 +346,8 @@
                     "ExcludeFromShippingCollection": true,
                     "ContextTags": [
                         "ingredient_niter",
-                        "color_white"
+                        "color_white",
+                        "not_museum_donatable"
                     ],
                 },
                 "{{MainModID}}.Brimstone": {
@@ -351,7 +362,8 @@
                     "ExcludeFromShippingCollection": true,
                     "ContextTags": [
                         "ingredient_brimstone",
-                        "color_yellow"
+                        "color_yellow",
+                        "not_museum_donatable"
                     ],
                 },
                 "{{MainModID}}.BlackPowder": {
@@ -366,7 +378,8 @@
                     "ExcludeFromShippingCollection": false,
                     "ContextTags": [
                         "ingredient_black_powder",
-                        "color_black"
+                        "color_black",
+                        "not_museum_donatable"
                     ],
                 },
             }
@@ -444,5 +457,76 @@
                 "{{MainModID}}.BlackPowder": "{{MainModID}}.Niter 1 {{MainModID}}.Brimstone 1 382 5/Field/{{MainModID}}.BlackPowder/false/null/",
             }
         },
+        // Add gift tastes
+        {
+            "LogName": "Add gift tastes for fireworks",
+            "Action": "EditData",
+            "Target": "Data/NPCGiftTastes",
+            "TextOperations": [
+                // Everyone likes fireworks
+                {
+                    "Operation": "Append",
+                    "Target": ["Entries", "Universal_Like"],
+                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Delimiter": " "
+                },
+                // Kent hates fireworks and black powder
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Kent", 7],
+                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework {{MainModID}}.BlackPowder",
+                    "Delimiter": " "
+                },
+                // Abigail loves purple fireworks
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Abigail", 1],
+                    "Value": "{{MainModID}}.PurpleFirework",
+                    "Delimiter": " "
+                },
+                // Dwarf loves fireworks
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Dwarf", 1],
+                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Delimiter": " "
+                },
+                // Leo loves fireworks
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Leo", 1],
+                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Delimiter": " "
+                },
+                // Vincent loves fireworks
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Vincent", 1],
+                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Delimiter": " "
+                },
+                // Jas loves fireworks
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Jas", 1],
+                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Delimiter": " "
+                },
+                // Wizard loves fireworks
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Wizard", 1],
+                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Delimiter": " "
+                },
+                // Jas loves shaved ice
+                {
+                    "Operation": "Append",
+                    "Target": ["Fields", "Jas", 1],
+                    "Value": "{{MainModID}}.ShavedIce",
+                    "Delimiter": " "
+                },
+            ]
+        }
     ]
 }

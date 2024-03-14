@@ -48,10 +48,10 @@
                 "Pam": "{{i18n:Pam}}$2",
                 "Haley": "{{i18n:Haley}}$2",
                 "Jodi": "{{i18n:Jodi}}$h",
-                "Kent": "{{i18n:Kent1}}#$b#{{i18n:Kent2}}",
+                "Kent": "{{i18n:Kent1}}%revealtaste:Kent:{{MainModID}}.RedFirework#$b#{{i18n:Kent2}}",
                 "Sam": "{{i18n:Sam}}$h",
                 "Leah": "{{i18n:Leah1}}#$e#{{i18n:Leah2}}$h",
-                "Shane": "{{i18n:Shane}}",
+                "Shane": "{{i18n:Shane}}%revealtaste:Jas:{{MainModID}}.ShavedIce",
                 "Marnie": "{{i18n:Marnie}}",
                 "Elliott": "{{i18n:Elliott}}",
                 "Gus": "{{i18n:Gus}}$h",
@@ -108,12 +108,8 @@
         {
             "LogName": "Load submarine map for fishing game",
             "Action": "Load",
-            "Target": "Maps/FishingGame",
-            "FromFile": "assets/Maps/Submarine-FireworksFestival.tmx",
-            "When": {
-                "Season": "summer",
-                "Day": 20
-            }
+            "Target": "Maps/FireworksFestivalFishingGame",
+            "FromFile": "assets/Maps/Submarine-FireworksFestival.tmx"
         },
         // Load nighttime maps
         {
@@ -207,17 +203,52 @@
         },
         // Change fishing game fishes
         {
-            "LogName": "Change fishing game fish",
+            "LogName": "Add fishing game location with fish",
             "Action": "EditData",
             "Target": "Data/Locations",
-            "Fields": {
-                "fishingGame": {
-                    "5": "129 -1 130 -1 131 -1 146 -1 147 -1 148 -1 708 -1" // field 5 (summer fish)
-                }
-            },
-            "When": {
-                "Season": "summer",
-                "Day": 20
+            "TargetField": ["fishingGame"],
+            "Entries": {
+                "DefaultArrivalTile": {
+                    "X": 14,
+                    "Y": 15
+                },
+                "Fish": [
+                    {
+                        "Id": "(O)129",
+                        "ItemId": "(O)129",
+                        "IgnoreFishDataRequirements": true
+                    },
+                    {
+                        "Id": "(O)130",
+                        "ItemId": "(O)130",
+                        "IgnoreFishDataRequirements": true
+                    },
+                    {
+                        "Id": "(O)131",
+                        "ItemId": "(O)131",
+                        "IgnoreFishDataRequirements": true
+                    },
+                    {
+                        "Id": "(O)146",
+                        "ItemId": "(O)146",
+                        "IgnoreFishDataRequirements": true
+                    },
+                    {
+                        "Id": "(O)147",
+                        "ItemId": "(O)147",
+                        "IgnoreFishDataRequirements": true
+                    },
+                    {
+                        "Id": "(O)148",
+                        "ItemId": "(O)148",
+                        "IgnoreFishDataRequirements": true
+                    },
+                    {
+                        "Id": "(O)708",
+                        "ItemId": "(O)708",
+                        "IgnoreFishDataRequirements": true
+                    }
+                ],
             }
         },
         // Change fishing game reward

@@ -1,0 +1,47 @@
+{
+    //titles
+    "config.Monsters.name":"Monstruos",
+    "config.World.name":"Mundo",
+    "config.Menus.name":"Menús",
+    
+    //misc
+    "config.Animations.name": "Animaciones",
+    "config.Animations.description": "La cantidad de animaciones que quieres ver.",
+    "config.Animations.values.Basic": "Normal",
+    "config.Animations.values.NoFlash": "Sin luces parpadeantes",
+    "config.Animations.values.Minimal": "Mínimo",
+    "config.Animations.values.All": "Todas",
+
+    "config.BombLight.name":"Luz de bomba",
+    "config.BombLight.description":"Desactiva luz de bombas",
+
+    //world
+    "config.Lava.name": "Lava",
+    "config.Lava.description": "Desactiva animación de lava.",
+
+    "config.Water.name": "Agua",
+    "config.Water.description": "No habrá animación en la orilla del mar.",
+
+    "config.Rain.name":"Lluvia",
+    "config.Rain.description":"Transparencia de lluvia",
+
+    "config.FishingBubbles.name": "Charco de burbujas",
+    "config.FishingBubbles.description": "Cambia el charco de burbujas por un ícono de exclamación.",
+    "config.FishingBubbles.values.Basic": "Transparente",
+    "config.FishingBubbles.values.NoFlash": "Opaco",
+    "config.FishingBubbles.values.Minimal": "Opaco y estático",
+    "config.FishingBubbles.values.All": "No cambiar",
+ 
+    //menus
+    "config.Forge.name":"Forja",
+    "config.Sewing.name":"Máquina de coser",
+    "config.Menus.description": "Desactiva brillo leve.",
+
+    //npcs
+    "config.Bugs.name":"Bichos",
+    "config.Magma.name":"Magma",
+    "config.Projectiles.name":"Proyectiles",
+    "config.Serpents.name":"Serpientes",
+    "config.SlimeBall.name": "Bola de baba",
+    "config.SlimeBall.description": "Desactiva animación de bolas de baba en el criadero."
+}

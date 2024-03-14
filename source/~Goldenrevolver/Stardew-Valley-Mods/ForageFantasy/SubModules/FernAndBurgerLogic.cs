@@ -13,24 +13,58 @@ namespace ForageFantasy
     using StardewModdingAPI;
     using StardewModdingAPI.Events;
     using StardewValley;
+    using StardewValley.GameData;
+    using StardewValley.GameData.Locations;
     using System.Collections.Generic;
+    using System.Linq;
 
     internal class FernAndBurgerLogic
     {
-        internal static void Apply(AssetRequestedEventArgs e, ForageFantasyConfig config, ITranslationHelper translation)
+        public static void UpdateExistingBundle(ForageFantasy mod)
         {
-            if (config.TapperDaysNeededChangesEnabled && e.NameWithoutLocale.IsEquivalentTo("Data/ObjectInformation"))
+            if (!mod.Config.CommonFiddleheadFern)
             {
-                e.Edit((asset) => ApplyTapperEdits(asset, config), AssetEditPriority.Late);
                 return;
             }
 
+            Dictionary<string, string> bundleData = Game1.netWorldState.Value.BundleData;
+
+            ApplyBundleChanges(bundleData);
+        }
+
+        private static void UpdateNewBundle(IAssetData asset)
+        {
+            IDictionary<string, string> bundleData = asset.AsDictionary<string, string>().Data;
+
+            ApplyBundleChanges(bundleData);
+        }
+
+        private static void ApplyBundleChanges(IDictionary<string, string> bundleData)
+        {
+            // Summer Foraging
+            string key = "Crafts Room/14";
+
+            string[] bundle = bundleData[key].Split('/');
+
+            if (!bundle[2].StartsWith("259 1 0") && !bundle[2].Contains(" 259 1 0"))
+            {
+                bundle[2] += " 259 1 0";
+            }
+
+            bundleData[key] = string.Join('/', bundle);
+        }
+
+        internal static void Apply(AssetRequestedEventArgs e, ForageFantasyConfig config, ITranslationHelper translation)
+        {
             if (config.CommonFiddleheadFern)
             {
-                if (e.NameWithoutLocale.IsEquivalentTo("Data/Locations"))
+                if (e.NameWithoutLocale.IsEquivalentTo("Data/Bundles"))
+                {
+                    e.Edit(UpdateNewBundle, AssetEditPriority.Late);
+                }
+                else if (e.NameWithoutLocale.IsEquivalentTo("Data/Locations"))
                 {
                     e.Edit(ApplyLocationChanges, AssetEditPriority.Late);
-                    return;
                 }
                 else if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes"))
                 {
@@ -42,168 +76,216 @@ namespace ForageFantasy
             {
                 if (e.NameWithoutLocale.IsEquivalentTo("Data/CookingRecipes"))
                 {
-                    e.Edit((asset) => ApplyCookingChanges(asset, translation), AssetEditPriority.Late);
+                    e.Edit((asset) => ApplyCraftingorCookingChanges(asset, translation, true), AssetEditPriority.Late);
                 }
                 else if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes"))
                 {
-                    e.Edit((asset) => ApplyCraftingChanges(asset, translation), AssetEditPriority.Late);
+                    e.Edit((asset) => ApplyCraftingorCookingChanges(asset, translation, false), AssetEditPriority.Late);
                 }
             }
-        }
-
-        private static void ApplyTapperEdits(IAssetData asset, ForageFantasyConfig config)
-        {
-                    /*  here is the reasoning for the math
-
-                    normal tapper:
-                    maple syrup 9 days 200g
-                    oak resin 7 days 150g
-                    pine tar 5 days 100g
-
-                    so 22,2g per day, 21,4g per day, 20g per day
-
-                    heavy tapper:
-                    maple syrup 4 days 200g
-                    oak resin 3 days 150g
-                    pine tar 2 days 100g
-
-                    so 50g per day for all of them
-
-                    ----
-
-                    wanted values:
-                    maple syrup 7 days 150g
-                    oak resin 7 days 150g
-                    pine tar 7 days 150g
-
-                    so the calculation is:
-                    newSellPrice = (int)Math.Round(daysNeeded * (150f / 7f), MidpointRounding.AwayFromZero);
-                 */
-
-            IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
-
-            var priceChanges = new Dictionary<int, int>() { { 724, config.MapleDaysNeeded }, { 725, config.OakDaysNeeded }, { 726, config.PineDaysNeeded } };
-
-            foreach (var item in priceChanges)
-                {
-                    var entry = data[item.Key];
-                    var fields = entry.Split('/', 3);
-                    var newPrice = TapperAndMushroomQualityLogic.GetTapperProductValueForDaysNeeded(item.Value);
-                    fields[1] = newPrice.ToString();
-                    data[item.Key] = string.Join('/', fields);
-                }
         }
 
         private static void ApplyCommonFernCrafting(IAssetData asset)
         {
             IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
 
-            var entry = data["Wild Seeds (Su)"];
-            var fields = entry.Split('/', 2);
-            fields[0] = "396 1 398 1 402 1 259 1";
-            data["Wild Seeds (Su)"] = string.Join('/', fields);
+            if (data.TryGetValue("Wild Seeds (Su)", out var val))
+            {
+                var index = val.IndexOf('/');
+
+                if (index > 0)
+                {
+                    data["Wild Seeds (Su)"] = "396 1 398 1 402 1 259 1" + val[index..];
+                }
+            }
+        }
+
+        private const string FiddleheadFernID = "(O)259";
+
+        private const string SpiceBerryId = "(O)396";
+        private const string GrapeID = "(O)398";
+        private const string SweetPeaID = "(O)402";
+        private const string RedMushroomID = "(O)420";
+
+        private class LocationChanges
+        {
+            internal HashSet<string> idsToCheck;
+            internal double summerForageChance;
+            internal double newfiddleheadChance;
+
+            public LocationChanges(double summerForageChance, double newfiddleheadChance, HashSet<string> idsToCheck)
+            {
+                this.idsToCheck = idsToCheck;
+                this.summerForageChance = summerForageChance;
+                this.newfiddleheadChance = newfiddleheadChance;
+            }
         }
 
         private static void ApplyLocationChanges(IAssetData asset)
         {
-            IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+            IDictionary<string, LocationData> data = asset.AsDictionary<string, LocationData>().Data;
 
-            foreach (var (location, value) in data)
+            foreach (var location in data)
             {
-                var fields = value.Split('/', 3);
-                switch (location)
+                LocationChanges locationChangesToApply = null;
+
+                switch (location.Key)
                 {
                     case "BusStop":
-                        fields[1] = "396 .6 398 .6 402 .6";
+
+                        // before: "396 .4 398 .4 402 .7"
+                        // after: "396 .6 398 .6 402 .6";
+                        locationChangesToApply = new LocationChanges(0.6, 0.0, new HashSet<string>() { SpiceBerryId, GrapeID, SweetPeaID });
                         break;
 
                     case "Forest":
-                        fields[1] = "396 .8 398 .8 259 .8";
+
+                        int foundSweetPeaIndex = -1;
+                        int foundGrapeIndex = -1;
+
+                        // we replace sweet peas with grapes, if found
+                        for (int i = 0; i < location.Value.Forage.Count; i++)
+                        {
+                            SpawnForageData forage = location.Value.Forage[i];
+
+                            if (forage.Season != Season.Summer)
+                            {
+                                continue;
+                            }
+
+                            if (forage.Id == SweetPeaID)
+                            {
+                                foundSweetPeaIndex = i;
+                            }
+                            else if (forage.Id == GrapeID)
+                            {
+                                foundGrapeIndex = i;
+                            }
+                        }
+
+                        if (foundSweetPeaIndex != -1 && foundGrapeIndex == -1)
+                        {
+                            location.Value.Forage[foundSweetPeaIndex].Id = GrapeID;
+                            location.Value.Forage[foundSweetPeaIndex].ItemId = GrapeID;
+                        }
+
+                        // before: "396 .6 402 .9"
+                        // after: "396 .8 398 .8 259 .8";
+                        locationChangesToApply = new LocationChanges(0.8, 0.8, new HashSet<string>() { SpiceBerryId, GrapeID, FiddleheadFernID });
                         break;
 
                     case "Mountain":
-                        fields[1] = "396 .7 398 .7 259 .8";
+                        // before: "396 .5 398 .8"
+                        // after: "396 .7 398 .7 259 .8";
+                        locationChangesToApply = new LocationChanges(0.7, 0.8, new HashSet<string>() { SpiceBerryId, GrapeID, FiddleheadFernID });
                         break;
 
                     case "Backwoods":
-                        fields[1] = "396 .7 398 .7 259 .8";
+                        // before: "396 .5 398 .8"
+                        // after: "396 .7 398 .7 259 .8";
+                        locationChangesToApply = new LocationChanges(0.7, 0.8, new HashSet<string>() { SpiceBerryId, GrapeID, FiddleheadFernID });
                         break;
 
                     case "Railroad":
-                        fields[1] = "396 .6 398 .6 402 .6";
+                        // before: "396 .4 398 .4 402 .7"
+                        // after: "396 .6 398 .6 402 .6";
+                        locationChangesToApply = new LocationChanges(0.6, 0.0, new HashSet<string>() { SpiceBerryId, GrapeID, SweetPeaID });
                         break;
 
                     case "Woods":
-                        fields[1] = "259 .7 420 .7";
+                        // before: "259 .9 420 .25"
+                        // after: "259 .7 420 .7";
+                        locationChangesToApply = new LocationChanges(0.7, 0.7, new HashSet<string>() { FiddleheadFernID, RedMushroomID });
                         break;
                 }
-                data[location] = string.Join('/', fields);
+
+                if (locationChangesToApply == null)
+                {
+                    continue;
+                }
+
+                var forages = location.Value.Forage.Where((f) => f.Season == Season.Summer && locationChangesToApply.idsToCheck.Contains(f.Id));
+
+                bool foundFiddle = false;
+                foreach (var forage in forages)
+                {
+                    forage.Chance = locationChangesToApply.summerForageChance;
+
+                    if (forage.Id == FiddleheadFernID)
+                    {
+                        foundFiddle = true;
+                    }
+                }
+
+                if (!foundFiddle && locationChangesToApply.newfiddleheadChance > 0.0)
+                {
+                    location.Value.Forage.Add(CreateFiddleheadForageData(locationChangesToApply.newfiddleheadChance));
+                }
             }
         }
 
-        private static void ApplyCookingChanges(IAssetData asset, ITranslationHelper translation)
+        private static SpawnForageData CreateFiddleheadForageData(double spawnChance)
         {
-            var spring = translation.Get("SpringBurger");
-            var summer = translation.Get("SummerBurger");
-            var fall = translation.Get("FallBurger");
-            var winter = translation.Get("WinterBurger");
+            return new SpawnForageData
+            {
+                Id = FiddleheadFernID,
+                ItemId = FiddleheadFernID,
+                Season = Season.Summer,
+                Condition = null,
+                RandomItemId = null,
+                MaxItems = null,
+                ObjectInternalName = null,
+                ObjectDisplayName = null,
+                PerItemCondition = null,
+                StackModifiers = null,
+                QualityModifiers = null,
+                StackModifierMode = QuantityModifier.QuantityModifierMode.Stack,
+                QualityModifierMode = QuantityModifier.QuantityModifierMode.Stack,
+                ToolUpgradeLevel = -1,
+                Quality = -1,
+                MinStack = -1,
+                MaxStack = -1,
+                IsRecipe = false,
+                Chance = spawnChance
+            };
+        }
+
+        private const string craftingInfix = "/Field/241/false/s Foraging 2/";
+        private const string cookingInfix = "/70 1/241 2/s Foraging 2/";
+
+        private const string springCraftingRecipe = "216 1 16 1 20 1 22 1";
+        private const string summerCraftingRecipe = "216 1 398 1 396 1 259 1";
+        private const string fallCraftingRecipe = "216 1 404 1 406 1 408 1";
+        private const string winterCraftingRecipe = "216 1 412 1 414 1 416 1";
+
+        private static void ApplyCraftingorCookingChanges(IAssetData asset, ITranslationHelper translation, bool useCookingRecipes)
+        {
+            var springBurgerName = translation.Get("SpringBurger");
+            var summerBurgerName = translation.Get("SummerBurger");
+            var fallBurgerName = translation.Get("FallBurger");
+            var winterBurgerName = translation.Get("WinterBurger");
 
             IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+
+            string infix = useCookingRecipes ? cookingInfix : craftingInfix;
 
             data.Remove("Survival Burger");
-            data.Add("Survival Burger (Sp)", $"216 1 16 1 20 1 22 1/70 1/241 2/s Foraging 2/{spring}");
-            data.Add("Survival Burger (Su)", $"216 1 398 1 396 1 259 1/70 1/241 2/s Foraging 2/{summer}");
-            data.Add("Survival Burger (Fa)", $"216 1 404 1 406 1 408 1/70 1/241 2/s Foraging 2/{fall}");
-            data.Add("Survival Burger (Wi)", $"216 1 412 1 414 1 416 1/70 1/241 2/s Foraging 2/{winter}");
+            data["Survival Burger (Sp)"] = $"{springCraftingRecipe}{infix}{springBurgerName}";
+            data["Survival Burger (Su)"] = $"{summerCraftingRecipe}{infix}{summerBurgerName}";
+            data["Survival Burger (Fa)"] = $"{fallCraftingRecipe}{infix}{fallBurgerName}";
+            data["Survival Burger (Wi)"] = $"{winterCraftingRecipe}{infix}{winterBurgerName}";
         }
 
-        private static void ApplyCraftingChanges(IAssetData asset, ITranslationHelper translation)
-        {
-            var spring = translation.Get("SpringBurger");
-            var summer = translation.Get("SummerBurger");
-            var fall = translation.Get("FallBurger");
-            var winter = translation.Get("WinterBurger");
-
-            IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-
-            data.Add("Survival Burger (Sp)", $"216 1 16 1 20 1 22 1/Field/241/false/s Foraging 2/{spring}");
-            data.Add("Survival Burger (Su)", $"216 1 398 1 396 1 259 1/Field/241/false/s Foraging 2/{summer}");
-            data.Add("Survival Burger (Fa)", $"216 1 404 1 406 1 408 1/Field/241/false/s Foraging 2/{fall}");
-            data.Add("Survival Burger (Wi)", $"216 1 412 1 414 1 416 1/Field/241/false/s Foraging 2/{winter}");
-        }
-
-        public static void ChangeBundle(ForageFantasy mod)
-        {
-            if (!mod.Config.CommonFiddleheadFern)
-            {
-                return;
-            }
-
-            Dictionary<string, string> bundleData = Game1.netWorldState.Value.BundleData;
-
-            // Summer Foraging
-            string key = "Crafts Room/14";
-
-            string[] bundle = bundleData[key].Split('/', 3);
-
-            if (!bundle[2].Contains("259 1 0"))
-            {
-                bundle[2] += " 259 1 0";
-            }
-
-            bundleData[key] = string.Join('/', bundle);
-        }
-
-        public static int GetWildSeedSummerForage()
+        public static string GetWildSeedSummerForage()
         {
             int ran = Game1.random.Next(4);
 
             return ran switch
             {
-                0 => 259,
-                1 => 396,
-                2 => 398,
-                _ => 402,
+                0 => "(O)259",
+                1 => "(O)396",
+                2 => "(O)398",
+                _ => "(O)402",
             };
         }
     }

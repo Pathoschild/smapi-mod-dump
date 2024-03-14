@@ -1,7 +1,7 @@
 {
    "Name": "AimonsMoreLivelySewerOverhaulPatches",
     "Author": "Aimon111",
-    "Version": "1.0.0",
+    "Version": "1.0.5",
     "Description": "Adds frogs into sewers and other small patches.",
     "UniqueID": "AimonsMoreLivelySewerOverhaulPatches",
   "EntryDll": "AimonsMoreLivelySewerOverhaulPatches.dll",

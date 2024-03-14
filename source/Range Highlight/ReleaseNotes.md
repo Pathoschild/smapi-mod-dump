@@ -9,6 +9,14 @@ for queries and analysis.**
 
 # Release Notes
 
+## Version 3.6.1
+
+### User-visible changes
+
+* Fix integration with Better Junimos when using its "Junimos work for wages"
+  option.  (This also makes in-game changes to its configuration for junimo
+  range reflected immediately instead of requiring a return to the title screen.)
+
 ## Version 3.6.0
 
 ### User-visible Changes

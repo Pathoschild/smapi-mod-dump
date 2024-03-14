@@ -236,13 +236,19 @@ namespace ContentPatcher.Framework.Migrations
             private void MergeBirthdayIntoNewFormat(CharacterData entry, string birthday)
             {
                 string[] fields = ArgUtility.SplitBySpace(birthday, 2);
+                string rawSeason = ArgUtility.Get(fields, 0);
+                int day = ArgUtility.GetInt(fields, 1);
 
-                if (fields[0] == "null" || string.IsNullOrWhiteSpace(fields[0]))
-                    entry.BirthSeason = null;
-                else if (Utility.TryParseEnum(fields[0], out Season season))
+                if (Utility.TryParseEnum(rawSeason, out Season season))
+                {
                     entry.BirthSeason = season;
-
-                entry.BirthDay = ArgUtility.GetInt(fields, 1, entry.BirthDay);
+                    entry.BirthDay = day;
+                }
+                else
+                {
+                    entry.BirthSeason = null;
+                    entry.BirthDay = 0;
+                }
             }
 
             /// <summary>Get the pre-1.6 'friends and family' field from the new asset.</summary>
@@ -331,11 +337,13 @@ namespace ContentPatcher.Framework.Migrations
             /// <param name="rawHome">The 'home' field value.</param>
             private void MergeHomeIntoNewFormat(CharacterData entry, string rawHome)
             {
-                string[] fields = ArgUtility.SplitBySpace(rawHome, 3);
+                string[] fields = ArgUtility.SplitBySpace(rawHome);
 
                 string locationName = fields[0];
                 if (!ArgUtility.TryGetPoint(fields, 1, out Point tile, out _))
                     tile = Point.Zero;
+                if (!ArgUtility.TryGetInt(fields, 3, out int direction, out _))
+                    direction = Game1.up;
 
                 // update existing entry
                 if (entry.Home?.Count > 0)
@@ -357,7 +365,14 @@ namespace ContentPatcher.Framework.Migrations
                 {
                     Id = "Default",
                     Location = locationName,
-                    Tile = tile
+                    Tile = tile,
+                    Direction = direction switch
+                    {
+                        Game1.down => nameof(Game1.down),
+                        Game1.left => nameof(Game1.left),
+                        Game1.right => nameof(Game1.right),
+                        _ => nameof(Game1.up)
+                    }
                 });
             }
         }

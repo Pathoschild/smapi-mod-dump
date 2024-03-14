@@ -6,12 +6,19 @@ mods:
    Range Highlight
 
 latest commit:
-   commit 43148795e871344d91c854637e6cb5955967ea4e
+   commit 54879bf214286a7fda83c69e2e1edde4447b2239
    Author: Jamie Taylor <Jamie.Taylor@pobox.com>
-   Date:   Sun Nov 27 19:41:56 2022 -0500
+   Date:   Fri Mar 8 22:04:25 2024 -0500
    
-       Add warning on game load for possible UI Info Suite 2 conflicts
+       fix bug in Better Junimos integration; version 3.6.1
        
-       Add warning on game load if both Range Highlight and UI Info Suite 2 are
-       configured to show ranges.
+       Previously, the junimo hut range was fixed when the integration was
+       installed, which is annoying when it means that in-game changes to the
+       configuration are not reflected until returning to the title screen, but a
+       serious problem when using the "Junimos work for wages" option in Better
+       Junimos.  When using that option, the range is initially a reduced range
+       until the junimos have been paid.
+       
+       The range is now re-fetched before returning the highlight tiles for
+       junimo huts.
    

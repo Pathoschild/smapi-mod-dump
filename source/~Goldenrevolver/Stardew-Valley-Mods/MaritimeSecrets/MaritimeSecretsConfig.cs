@@ -16,15 +16,13 @@ namespace MaritimeSecrets
 
     public interface IGenericModConfigMenuApi
     {
-        void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
+        void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
 
-        void RegisterLabel(IManifest mod, string labelName, string labelDesc);
+        void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
 
         void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
 
         void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null, string[] allowedValues = null, Func<string, string> formatAllowedValue = null, string fieldId = null);
-
-        void AddParagraph(IManifest mod, Func<string> text);
     }
 
     /// <summary>
@@ -32,6 +30,8 @@ namespace MaritimeSecrets
     /// </summary>
     public class MaritimeSecretsConfig
     {
+        public string MarinerNameOverwrite { get; set; } = string.Empty;
+
         public int MarinerSpeechType { get; set; } = 0;
 
         public bool ChangePendantPriceToPearl { get; set; } = false;
@@ -61,8 +61,13 @@ namespace MaritimeSecrets
 
             var manifest = mod.ModManifest;
 
-            api.RegisterModConfig(manifest, () => config = new MaritimeSecretsConfig(), delegate { mod.Helper.WriteConfig(config); VerifyConfigValues(config, mod); });
+            api.Register(
+                mod: manifest,
+                reset: () => config = new MaritimeSecretsConfig(),
+                save: () => { mod.Helper.WriteConfig(config); VerifyConfigValues(config, mod); }
+            );
 
+            api.AddTextOption(manifest, () => config.MarinerNameOverwrite, (string val) => config.MarinerNameOverwrite = val, () => mod.Helper.Translation.Get("ConfigMarinerNameOverwrite"), () => mod.Helper.Translation.Get("ConfigMarinerNameOverwriteDescription"));
             api.AddTextOption(manifest, () => GetElementFromConfig(SpeechChoices, config.MarinerSpeechType), (string val) => config.MarinerSpeechType = GetIndexFromArrayElement(SpeechChoices, val), () => mod.Helper.Translation.Get("ConfigMarinerSpeechType"), null, SpeechChoices, (s) => TranslateSpeechChoice(s, mod));
             api.AddBoolOption(manifest, () => config.ChangePendantPriceToPearl, (bool val) => config.ChangePendantPriceToPearl = val, () => mod.Helper.Translation.Get("ConfigChangePendantPriceToPearl"));
         }

@@ -21,7 +21,7 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.UserInterface.FastScrolli
 		{
 			if (!ModEntry.Config.UserInterfaceFastScrolling)
 				return;
-			if (__instance is CarpenterMenu && (bool)typeof(CarpenterMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance))
+			if (__instance is CarpenterMenu && (__instance as CarpenterMenu).freeze)
 				return;
 			if (__instance is PurchaseAnimalsMenu && (bool)typeof(PurchaseAnimalsMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance))
 				return;

@@ -12,23 +12,95 @@ namespace ForageFantasy
 {
     using StardewModdingAPI;
     using StardewModdingAPI.Events;
-    using StardewModdingAPI.Utilities;
     using StardewValley;
+    using StardewValley.GameData.WildTrees;
     using StardewValley.TerrainFeatures;
     using System;
     using System.Collections.Generic;
-    using System.IO;
+    using System.Linq;
 
     public class ForageFantasy : Mod
     {
         public ForageFantasyConfig Config { get; set; }
 
-        // TODO translate config and tree menu and crafting recipes
-        // TODO seasonal mushroom tappers, magma cap on ginger island for mushroom tree and box
+        public static IManifest Manifest { get; set; }
 
-        internal bool TappersDreamAndMushroomTreesGrowInWinter { get; set; }
+        internal static string FineGrapeAssetPath { get; private set; }
 
-        public static int DetermineForageQuality(Farmer farmer, bool allowBotanist = true)
+        internal static bool MushroomTreeTapperWorksInWinter { get; set; }
+
+        // maybe TODO seasonal mushroom tappers, magma cap on ginger island for mushroom tree and box
+
+        public override void Entry(IModHelper helper)
+        {
+            Config = helper.ReadConfig<ForageFantasyConfig>();
+            Manifest = this.ModManifest;
+
+            ForageFantasyConfig.VerifyConfigValues(Config, this);
+
+            FineGrapeAssetPath = Helper.ModContent.GetInternalAssetName("assets/fineGrape.png").BaseName;
+
+            helper.Events.GameLoop.GameLaunched += delegate
+            {
+                ForageFantasyConfig.SetUpModConfigMenu(Config, this);
+                DeluxeGrabberCompatibility.Setup(this);
+            };
+
+            helper.Events.GameLoop.DayStarted += delegate
+            {
+                TapperAndMushroomQualityLogic.IncreaseTreeAges(this);
+                GrapeLogic.SetDropToNewGrapes(this);
+            };
+
+            helper.Events.GameLoop.DayEnding += delegate { GrapeLogic.ResetGrapes(this); };
+
+            helper.Events.GameLoop.SaveLoaded += delegate { FernAndBurgerLogic.UpdateExistingBundle(this); };
+
+            helper.Events.Input.ButtonsChanged += OnButtonsChanged;
+
+            helper.Events.Content.AssetRequested += OnAssetRequested;
+
+            Patcher.PatchAll(this);
+        }
+
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
+        {
+            FernAndBurgerLogic.Apply(e, this.Config, this.Helper.Translation);
+
+            TapperAssetChanges.Apply(e, this.Config, this.Helper.Translation);
+
+            GrapeLogic.Apply(e, this.Config, this.Helper.Translation);
+
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/WildTrees"))
+            {
+                e.Edit((asset) =>
+                {
+                    IDictionary<string, WildTreeData> data = asset.AsDictionary<string, WildTreeData>().Data;
+
+                    if (data.TryGetValue(Tree.mushroomTree, out var mushroomTreeData))
+                    {
+                        var defaultTap = mushroomTreeData.TapItems.Where((s) => s.Id == "Default").FirstOrDefault();
+
+                        if (defaultTap?.Condition != null && defaultTap.Condition.Contains("!LOCATION_SEASON Target Winter"))
+                        {
+                            MushroomTreeTapperWorksInWinter = false;
+                        }
+                        else
+                        {
+                            MushroomTreeTapperWorksInWinter = !mushroomTreeData.IsStumpDuringWinter;
+                        }
+                    }
+                }, AssetEditPriority.Late + (int)AssetEditPriority.Late);
+            }
+        }
+
+        // do not combine these overloads with a default parameter. this one is used in a transpiler patch
+        public static int DetermineForageQuality(Farmer farmer)
+        {
+            return DetermineForageQuality(farmer, true);
+        }
+
+        public static int DetermineForageQuality(Farmer farmer, bool allowBotanist)
         {
             if (allowBotanist && farmer.professions.Contains(Farmer.botanist))
             {
@@ -50,37 +122,6 @@ namespace ForageFantasy
                 }
             }
         }
-
-        public override void Entry(IModHelper helper)
-        {
-            Config = helper.ReadConfig<ForageFantasyConfig>();
-
-            ForageFantasyConfig.VerifyConfigValues(Config, this);
-
-            helper.Events.GameLoop.GameLaunched += delegate { ForageFantasyConfig.SetUpModConfigMenu(Config, this); };
-
-            helper.Events.GameLoop.GameLaunched += delegate { DeluxeGrabberCompatibility.Setup(this); };
-
-            helper.Events.GameLoop.DayStarted += delegate
-            {
-                TapperAndMushroomQualityLogic.IncreaseTreeAges(this);
-                GrapeLogic.SetDropToNewGrapes(this);
-                CheckForTappersDream();
-            };
-
-            helper.Events.GameLoop.DayEnding += delegate { GrapeLogic.ResetGrapes(this); };
-
-            helper.Events.GameLoop.SaveLoaded += delegate { FernAndBurgerLogic.ChangeBundle(this); };
-
-            helper.Events.Input.ButtonsChanged += OnButtonsChanged;
-
-            helper.Events.Content.AssetRequested += OnAssetRequested;
-
-            Patcher.PatchAll(this);
-        }
-
-        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
-            => FernAndBurgerLogic.Apply(e, this.Config, this.Helper.Translation);
 
         /// <summary>
         /// Small helper method to log to the console because I keep forgetting the signature
@@ -124,7 +165,7 @@ namespace ForageFantasy
         {
             foreach (var terrainfeature in currentLocation.terrainFeatures.Pairs)
             {
-                if (Game1.currentCursorTile == terrainfeature.Value.currentTileLocation)
+                if (Game1.currentCursorTile == terrainfeature.Value.Tile)
                 {
                     if (terrainfeature.Value is Tree tree)
                     {
@@ -146,67 +187,6 @@ namespace ForageFantasy
                     }
                 }
             }
-        }
-
-        private void CheckForTappersDream()
-        {
-            try
-            {
-                if (Helper.ModRegistry.IsLoaded("Goldenrevolver.ATappersDream"))
-                {
-                    var data = Helper.ModRegistry.Get("Goldenrevolver.ATappersDream");
-
-                    var path = data.GetType().GetProperty("DirectoryPath");
-
-                    if (path?.GetValue(data) != null)
-                    {
-                        var list = ReadConfigFile("config.json", path.GetValue(data) as string, new[] { "MushroomTreesGrowInWinter" }, data.Manifest.Name, true);
-
-                        TappersDreamAndMushroomTreesGrowInWinter = list["MushroomTreesGrowInWinter"]?.ToLower().Contains("true") == true;
-                    }
-                    else
-                    {
-                        TappersDreamAndMushroomTreesGrowInWinter = false;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                TappersDreamAndMushroomTreesGrowInWinter = false;
-            }
-        }
-
-        private Dictionary<string, string> ReadConfigFile(string path, string modFolderPath, string[] options, string modName, bool isNonString)
-        {
-            string fullPath = Path.Combine(modFolderPath, PathUtilities.NormalizePath(path));
-
-            var result = new Dictionary<string, string>();
-
-            try
-            {
-                string fullText = File.ReadAllText(fullPath).ToLower();
-                var split = fullText.Split('\"');
-                int offset = isNonString ? 1 : 2;
-
-                for (int i = 0; i < split.Length; i++)
-                {
-                    foreach (var option in options)
-                    {
-                        if (option.ToLower() == split[i].Trim() && i + offset < split.Length)
-                        {
-                            string optionText = split[i + offset].Trim();
-
-                            result.Add(option, optionText);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                ErrorLog($"There was an exception while {ModManifest.Name} was reading the config for {modName}:", e);
-            }
-
-            return result;
         }
     }
 }

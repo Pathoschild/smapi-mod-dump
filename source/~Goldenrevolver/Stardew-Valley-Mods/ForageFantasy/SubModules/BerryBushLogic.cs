@@ -16,35 +16,38 @@ namespace ForageFantasy
 
     internal class BerryBushLogic
     {
+        internal const string springBerries = "(O)296";
+        internal const string fallBerries = "(O)410";
+
         public static bool IsHarvestableBush(Bush bush)
         {
-            return bush != null && !bush.townBush.Value && bush.inBloom(Game1.GetSeasonForLocation(bush.currentLocation), Game1.dayOfMonth) && bush.size.Value != Bush.greenTeaBush && bush.size.Value != Bush.walnutBush;
+            return bush != null && !bush.townBush.Value && bush.inBloom() && bush.size.Value != Bush.greenTeaBush && bush.size.Value != Bush.walnutBush;
         }
 
-        public static void RewardBerryXP(ForageFantasy mod)
+        public static void RewardBerryXP(ForageFantasyConfig config, Farmer who)
         {
-            double chance = mod.Config.BerryBushChanceToGetXP / 100.0;
+            double chance = config.BerryBushChanceToGetXP / 100.0;
 
-            if (mod.Config.BerryBushXPAmount > 0 && Game1.random.NextDouble() < chance)
+            if (config.BerryBushXPAmount > 0 && Game1.random.NextDouble() < chance)
             {
-                Game1.player.gainExperience(2, mod.Config.BerryBushXPAmount);
+                who.gainExperience(Farmer.foragingSkill, config.BerryBushXPAmount);
             }
         }
 
-        public static void ChangeBerryQualityAndGiveExp(Bush bush, ForageFantasy mod)
+        public static void ChangeBerryQualityAndGiveExp(Bush bush, ForageFantasyConfig config)
         {
-            int shakeOff;
+            string shakeOff;
 
-            string season = (bush.overrideSeason.Value == -1) ? Game1.GetSeasonForLocation(bush.currentLocation) : Utility.getSeasonNameFromNumber(bush.overrideSeason.Value);
+            var season = bush.Location.GetSeason();
 
             switch (season)
             {
-                case "spring":
-                    shakeOff = 296;
+                case Season.Spring:
+                    shakeOff = springBerries;
                     break;
 
-                case "fall":
-                    shakeOff = 410;
+                case Season.Fall:
+                    shakeOff = fallBerries;
                     break;
 
                 default:
@@ -53,17 +56,18 @@ namespace ForageFantasy
 
             bool gaveExp = false;
 
-            foreach (var item in bush.currentLocation.debris)
+            // change quality of every nearby matching berry debris, and give XP if we find at least one
+            foreach (var item in bush.Location.debris)
             {
-                if (item?.item?.ParentSheetIndex == shakeOff)
+                if (item?.item?.QualifiedItemId == shakeOff)
                 {
                     if (!gaveExp)
                     {
                         gaveExp = true;
-                        RewardBerryXP(mod);
+                        RewardBerryXP(config, Game1.player);
                     }
 
-                    if (mod.Config.BerryBushQuality)
+                    if (config.BerryBushQuality)
                     {
                         ((StardewObject)item.item).Quality = ForageFantasy.DetermineForageQuality(Game1.player);
                     }

@@ -1,0 +1,15 @@
+{
+  "Animations": "NoFlash",
+  "FishingBubbles": "NoFlash",
+  "Forge": true,
+  "Lava": true,
+  "Rain": 1.0,
+  "Sewing": false,
+  "SoftLight": false,
+  "Water": false,
+  "Bugs": false,
+  "Magma": false,
+  "Projectiles": true,
+  "SlimeBall": false,
+  "Serpents": true
+}

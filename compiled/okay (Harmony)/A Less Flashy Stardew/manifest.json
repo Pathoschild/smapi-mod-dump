@@ -1,0 +1,16 @@
+{
+  "Name": "Less Flashy Stardew",
+  "Author": "mistyspring",
+  "Version": "3.1.1-alpha050324",
+  "Description": "Reduces flashing in SDV.",
+  "UniqueID": "mistyspring.lessflashy",
+  "EntryDll": "LessFlashy.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": ["Nexus:10531"],
+  "Dependencies": [
+    {
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": false
+    }
+  ]
+}

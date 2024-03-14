@@ -10,37 +10,25 @@
 
 namespace ForageFantasy
 {
-    using global::ForageFantasy.SubModules;
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
     using StardewModdingAPI;
     using StardewModdingAPI.Utilities;
+    using StardewValley;
     using System;
     using System.Diagnostics.CodeAnalysis;
 
     public interface IGenericModConfigMenuApi
     {
-        void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
+        void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
 
-        void RegisterLabel(IManifest mod, string labelName, string labelDesc);
+        void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
 
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
+        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
 
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet);
+        void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
 
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet);
+        void AddNumberOption(IManifest mod, Func<float> getValue, Action<float> setValue, Func<string> name, Func<string> tooltip = null, float? min = null, float? max = null, float? interval = null, Func<float, string> formatValue = null, string fieldId = null);
 
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet);
-
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<SButton> optionGet, Action<SButton> optionSet);
-
-        void RegisterClampedOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet, int min, int max);
-
-        void RegisterClampedOption(IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet, float min, float max);
-
-        void RegisterChoiceOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet, string[] choices);
-
-        void RegisterComplexOption(IManifest mod, string optionName, string optionDesc, Func<Vector2, object, object> widgetUpdate, Func<SpriteBatch, Vector2, object, object> widgetDraw, Action<object> onSave);
+        void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null, string[] allowedValues = null, Func<string, string> formatAllowedValue = null, string fieldId = null);
 
         void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
 
@@ -66,27 +54,29 @@ namespace ForageFantasy
 
         public int BerryBushXPAmount { get; set; } = 1;
 
-        public int MushroomXPAmount { get; set; } = 1;
+        public int MushroomBoxXPAmount { get; set; } = 1;
 
         public int TapperXPAmount { get; set; } = 3;
+
+        public int SmallStumpBonusXPAmount { get; set; } = 1;
+
+        public int TwigDebrisXPAmount { get; set; } = 1;
 
         public bool AutomationHarvestsGrantXP { get; set; } = false;
 
         public bool TapperDaysNeededChangesEnabled { get; set; } = true;
 
-        public int MapleDaysNeeded { get; set; } = 9;
+        public int MapleTapperDaysNeeded { get; set; } = 9;
 
-        public int OakDaysNeeded { get; set; } = 7;
+        public int OakTapperDaysNeeded { get; set; } = 7;
 
-        public int PineDaysNeeded { get; set; } = 5;
+        public int PineTapperDaysNeeded { get; set; } = 5;
 
-        public bool MushroomTreeHeavyTappersFix { get; set; } = true;
-
-        public bool MushroomTreeTappersConsistencyChange { get; set; } = true;
-
-        public bool MushroomTreeSeedsDrop { get; set; } = false;
+        public bool MushroomTreeTappersConsistentDaysNeeded { get; set; } = true;
 
         public bool CommonFiddleheadFern { get; set; } = true;
+
+        public bool WildAndFineGrapes { get; set; } = true;
 
         public bool ForageSurvivalBurger { get; set; } = true;
 
@@ -94,28 +84,28 @@ namespace ForageFantasy
 
         public bool MushroomTapperCalendar { get; set; } = false;
 
-        private static string[] TQChoices { get; set; } = new string[] { "Disabled", "Forage Level Based", "Forage Level Based (No Botanist)", "Tree Age Based (Months)", "Tree Age Based (Years)" };
+        private static string[] TQChoices { get; set; } = new string[] { "Disabled", "ForageLevelBased", "ForageLevelBasedNoBotanist", "TreeAgeBasedMonths", "TreeAgeBasedYears" };
 
         public static void VerifyConfigValues(ForageFantasyConfig config, ForageFantasy mod)
         {
             bool invalidConfig = false;
 
-            if (config.MapleDaysNeeded <= 0)
+            if (config.MapleTapperDaysNeeded <= 0)
             {
                 invalidConfig = true;
-                config.MapleDaysNeeded = 1;
+                config.MapleTapperDaysNeeded = 1;
             }
 
-            if (config.PineDaysNeeded <= 0)
+            if (config.PineTapperDaysNeeded <= 0)
             {
                 invalidConfig = true;
-                config.PineDaysNeeded = 1;
+                config.PineTapperDaysNeeded = 1;
             }
 
-            if (config.OakDaysNeeded <= 0)
+            if (config.OakTapperDaysNeeded <= 0)
             {
                 invalidConfig = true;
-                config.OakDaysNeeded = 1;
+                config.OakTapperDaysNeeded = 1;
             }
 
             if (config.TapperQualityOptions < 0 || config.TapperQualityOptions > 4)
@@ -148,28 +138,36 @@ namespace ForageFantasy
                 config.TapperXPAmount = 0;
             }
 
-            if (config.MushroomXPAmount < 0)
+            if (config.MushroomBoxXPAmount < 0)
             {
                 invalidConfig = true;
-                config.MushroomXPAmount = 0;
+                config.MushroomBoxXPAmount = 0;
             }
 
-            if (mod.Helper.ModRegistry.IsLoaded("thelion.AwesomeProfessions"))
+            if (config.SmallStumpBonusXPAmount < 0)
             {
-                if (config.MushroomBoxQuality || config.BerryBushQuality)
-                {
-                    invalidConfig = true;
-
-                    config.MushroomBoxQuality = false;
-                    config.BerryBushQuality = false;
-
-                    mod.DebugLog("Enabled Walk of Life compatibility.");
-                }
+                invalidConfig = true;
+                config.SmallStumpBonusXPAmount = 0;
             }
 
+            if (config.TwigDebrisXPAmount < 0)
+            {
+                invalidConfig = true;
+                config.TwigDebrisXPAmount = 0;
+            }
+
+            if (invalidConfig)
+            {
+                mod.DebugLog("At least one config value was out of range and was reset.");
+                mod.Helper.WriteConfig(config);
+            }
+        }
+
+        public static void InvalidateCache(ForageFantasy mod)
+        {
             try
             {
-                // CommonFiddleheadFern and ForageSurvivalBurger
+                // CommonFiddleheadFern, ForageSurvivalBurger
                 mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/CraftingRecipes");
 
                 // CommonFiddleheadFern
@@ -178,18 +176,18 @@ namespace ForageFantasy
                 // ForageSurvivalBurger
                 mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/CookingRecipes");
 
-                // Tapper days needed changes
-                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/ObjectInformation");
+                // Tapper days needed changes, Fine Grapes
+                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/Objects");
+
+                // Tapper days needed changes, Tree Menu
+                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/WildTrees");
+
+                // Fine Grapes
+                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/NPCGiftTastes");
             }
             catch (Exception e)
             {
                 mod.DebugLog($"Exception when trying to invalidate cache on config change {e}");
-            }
-
-            if (invalidConfig)
-            {
-                mod.DebugLog("At least one config value was out of range and was reset.");
-                mod.Helper.WriteConfig(config);
             }
         }
 
@@ -206,9 +204,9 @@ namespace ForageFantasy
 
             var manifest = mod.ModManifest;
 
-            api.RegisterModConfig(
-                manifest,
-                delegate
+            api.Register(
+                mod: manifest,
+                reset: delegate
                 {
                     // if the world is ready, then we are not in the main menu, so reset should only reset the keybindings and calendar
                     if (Context.IsWorldReady)
@@ -220,67 +218,92 @@ namespace ForageFantasy
                     {
                         config = new ForageFantasyConfig();
                     }
+                    InvalidateCache(mod);
                 },
-                delegate
+                save: delegate
                 {
                     mod.Helper.WriteConfig(config);
                     VerifyConfigValues(config, mod);
+                    InvalidateCache(mod);
                 }
             );
 
             api.SetTitleScreenOnlyForNextOptions(manifest, true);
 
-            api.RegisterLabel(manifest, "Quality Tweaks", null);
+            api.AddSectionTitle(manifest, GetConfigName(mod, "SectionQualityTweaks"));
 
-            if (mod.Helper.ModRegistry.IsLoaded("thelion.AwesomeProfessions"))
-            {
-                api.RegisterLabel(manifest, "Berry Bush Quality Disabled (Walk Of Life)", null);
-                api.RegisterLabel(manifest, "Mushroom Box Quality Disabled (Walk Of Life)", null);
-            }
-            else
-            {
-                api.RegisterSimpleOption(manifest, "Berry Bush Quality", "Salmonberries and blackberries have quality based\non forage level even without botanist perk.", () => config.BerryBushQuality, (bool val) => config.BerryBushQuality = val);
-                api.RegisterSimpleOption(manifest, "Mushroom Box Quality", "Mushrooms have quality based on forage level and botanist perk.", () => config.MushroomBoxQuality, (bool val) => config.MushroomBoxQuality = val);
-            }
+            api.AddBoolOption(manifest, () => config.BerryBushQuality, (bool val) => config.BerryBushQuality = val,
+                GetConfigName(mod, "BerryBushQuality"), GetConfigDescription(mod, "BerryBushQuality"));
+            api.AddBoolOption(manifest, () => config.MushroomBoxQuality, (bool val) => config.MushroomBoxQuality = val,
+                GetConfigName(mod, "MushroomBoxQuality"), GetConfigDescription(mod, "MushroomBoxQuality"));
+            api.AddTextOption(manifest, () => GetElementFromConfig(TQChoices, config.TapperQualityOptions), (string val) => config.TapperQualityOptions = GetIndexFromArrayElement(TQChoices, val),
+                GetConfigName(mod, "TapperQualityOptions"), GetConfigDescription(mod, "TapperQualityOptions"), TQChoices, GetConfigDropdownChoice(mod, "TapperQualityOptions"));
+            api.AddBoolOption(manifest, () => config.TapperQualityRequiresTapperPerk, (bool val) => config.TapperQualityRequiresTapperPerk = val,
+                GetConfigName(mod, "TapperQualityRequiresTapperPerk"), GetConfigDescription(mod, "TapperQualityRequiresTapperPerk"));
 
-            api.RegisterChoiceOption(manifest, "Tapper Quality Options", null, () => GetElementFromConfig(TQChoices, config.TapperQualityOptions), (string val) => config.TapperQualityOptions = GetIndexFromArrayElement(TQChoices, val), TQChoices);
-            api.RegisterSimpleOption(manifest, "Tapper Perk Is Required", null, () => config.TapperQualityRequiresTapperPerk, (bool val) => config.TapperQualityRequiresTapperPerk = val);
+            api.AddSectionTitle(manifest, GetConfigName(mod, "SectionXPRewards"));
 
-            api.RegisterLabel(manifest, "XP Rewards", null);
+            api.AddNumberOption(manifest, () => config.BerryBushChanceToGetXP, (int val) => config.BerryBushChanceToGetXP = val,
+                GetConfigName(mod, "BerryBushChanceToGetXP"), GetConfigDescription(mod, "BerryBushChanceToGetXP"), 0, 100);
+            api.AddNumberOption(manifest, () => config.BerryBushXPAmount, (int val) => config.BerryBushXPAmount = val,
+                GetConfigName(mod, "BerryBushXPAmount"), GetConfigDescription(mod, "BerryBushXPAmount"), 0);
+            api.AddNumberOption(manifest, () => config.MushroomBoxXPAmount, (int val) => config.MushroomBoxXPAmount = val,
+                GetConfigName(mod, "MushroomBoxXPAmount"), GetConfigDescription(mod, "MushroomBoxXPAmount"), 0);
+            api.AddNumberOption(manifest, () => config.TapperXPAmount, (int val) => config.TapperXPAmount = val,
+                GetConfigName(mod, "TapperXPAmount"), GetConfigDescription(mod, "TapperXPAmount"), 0);
+            api.AddNumberOption(manifest, () => config.SmallStumpBonusXPAmount, (int val) => config.SmallStumpBonusXPAmount = val,
+                GetConfigName(mod, "SmallStumpBonusXPAmount"), GetConfigDescription(mod, "SmallStumpBonusXPAmount"), 0);
+            api.AddNumberOption(manifest, () => config.TwigDebrisXPAmount, (int val) => config.TwigDebrisXPAmount = val,
+                GetConfigName(mod, "TwigDebrisXPAmount"), GetConfigDescription(mod, "TwigDebrisXPAmount"), 0);
+            api.AddBoolOption(manifest, () => config.AutomationHarvestsGrantXP, (bool val) => config.AutomationHarvestsGrantXP = val,
+                GetConfigName(mod, "AutomationHarvestsGrantXP"), GetConfigDescription(mod, "AutomationHarvestsGrantXP"));
 
-            api.RegisterClampedOption(manifest, "Berry Bush Chance To Get XP", "Chance to get foraging experience when harvesting bushes.\nSet to 0 to disable feature.", () => config.BerryBushChanceToGetXP, (int val) => config.BerryBushChanceToGetXP = val, 0, 100);
-            api.RegisterSimpleOption(manifest, "Berry Bush XP Amount", "Amount of XP gained per bush. For reference:\nChopping down a tree is 12XP, a foraging good is 7XP\nNegative values will be reset to 0.", () => config.BerryBushXPAmount, (int val) => config.BerryBushXPAmount = val);
-            api.RegisterSimpleOption(manifest, "Mushroom Box XP Amount", "For reference:\nChopping down a tree is 12XP, a foraging good is 7XP\nNegative values will be reset to 0.", () => config.MushroomXPAmount, (int val) => config.MushroomXPAmount = val);
-            api.RegisterSimpleOption(manifest, "Tapper XP Amount", "For reference:\nChopping down a tree is 12XP, a foraging good is 7XP\nNegative values will be reset to 0.", () => config.TapperXPAmount, (int val) => config.TapperXPAmount = val);
-            api.RegisterSimpleOption(manifest, "Automation Harvests Grant XP", "Whether automatic harvests with the Automate, Deluxe\nGrabber Redux or One Click Shed Reloader should grant XP.\nKeep in mind that some of those only affect the host.", () => config.AutomationHarvestsGrantXP, (bool val) => config.AutomationHarvestsGrantXP = val);
+            api.AddSectionTitle(manifest, GetConfigName(mod, "SectionTapperDaysNeededChanges"));
 
-            api.RegisterLabel(manifest, "Tapper Days Needed Changes", null);
+            api.AddBoolOption(manifest, () => config.TapperDaysNeededChangesEnabled, (bool val) => config.TapperDaysNeededChangesEnabled = val,
+                GetConfigName(mod, "TapperDaysNeededChangesEnabled"), GetConfigDescription(mod, "TapperDaysNeededChangesEnabled"));
+            api.AddNumberOption(manifest, () => config.MapleTapperDaysNeeded, (int val) => config.MapleTapperDaysNeeded = val,
+                GetConfigName(mod, "MapleDaysNeeded"), GetConfigDescription(mod, "MapleDaysNeeded"), 1);
+            api.AddNumberOption(manifest, () => config.OakTapperDaysNeeded, (int val) => config.OakTapperDaysNeeded = val,
+                GetConfigName(mod, "OakDaysNeeded"), GetConfigDescription(mod, "OakDaysNeeded"), 1);
+            api.AddNumberOption(manifest, () => config.PineTapperDaysNeeded, (int val) => config.PineTapperDaysNeeded = val,
+                GetConfigName(mod, "PineDaysNeeded"), GetConfigDescription(mod, "PineDaysNeeded"), 1);
+            api.AddBoolOption(manifest, () => config.MushroomTreeTappersConsistentDaysNeeded, (bool val) => config.MushroomTreeTappersConsistentDaysNeeded = val,
+                GetConfigName(mod, "MushroomTreeTappersConsistencyChange"), GetConfigDescription(mod, "MushroomTreeTappersConsistencyChange"));
 
-            api.RegisterSimpleOption(manifest, "Days Needed Changes Enabled", "If this is disabled, then all features\nin this category don't do anything", () => config.TapperDaysNeededChangesEnabled, (bool val) => config.TapperDaysNeededChangesEnabled = val);
-            api.RegisterSimpleOption(manifest, "Maple Tree Days Needed", "default: 9 days, recommended: 7 days", () => config.MapleDaysNeeded, (int val) => config.MapleDaysNeeded = val);
-            api.RegisterSimpleOption(manifest, "Oak Tree Days Needed", "default: 7 days, recommended: 7 days", () => config.OakDaysNeeded, (int val) => config.OakDaysNeeded = val);
-            api.RegisterSimpleOption(manifest, "Pine Tree Days Needed", "default: 5 days, recommended: 7 days", () => config.PineDaysNeeded, (int val) => config.PineDaysNeeded = val);
-            api.RegisterSimpleOption(manifest, "Mushroom Tree Heavy Tapper Fix", null, () => config.MushroomTreeHeavyTappersFix, (bool val) => config.MushroomTreeHeavyTappersFix = val);
-            api.RegisterSimpleOption(manifest, "Mushroom Tree Tapper\nConsistency Change", null, () => config.MushroomTreeTappersConsistencyChange, (bool val) => config.MushroomTreeTappersConsistencyChange = val);
+            api.AddSectionTitle(manifest, GetConfigName(mod, "SectionOtherFeatures"));
 
-            api.RegisterLabel(manifest, "Other Features", null);
-
-            api.RegisterSimpleOption(manifest, "Mushroom Tree Seeds Drop", null, () => config.MushroomTreeSeedsDrop, (bool val) => config.MushroomTreeSeedsDrop = val);
-            api.RegisterSimpleOption(manifest, "Common Fiddlehead Fern", "Fiddlehead fern is available outside of the secret forest\nand added to the wild seeds pack and summer foraging bundle.", () => config.CommonFiddleheadFern, (bool val) => config.CommonFiddleheadFern = val);
-            api.RegisterSimpleOption(manifest, "Forage Survival Burger", "Forage based early game crafting recipes\nand even more efficient cooking recipes.", () => config.ForageSurvivalBurger, (bool val) => config.ForageSurvivalBurger = val);
+            api.AddBoolOption(manifest, () => config.CommonFiddleheadFern, (bool val) => config.CommonFiddleheadFern = val,
+                GetConfigName(mod, "CommonFiddleheadFern"), GetConfigDescription(mod, "CommonFiddleheadFern"));
+            api.AddBoolOption(manifest, () => config.ForageSurvivalBurger, (bool val) => config.ForageSurvivalBurger = val,
+                GetConfigName(mod, "ForageSurvivalBurger"), GetConfigDescription(mod, "ForageSurvivalBurger"));
+            api.AddBoolOption(manifest, () => config.WildAndFineGrapes, (bool val) => config.WildAndFineGrapes = val,
+                GetConfigName(mod, "WildAndFineGrapes"), GetConfigDescription(mod, "WildAndFineGrapes"));
 
             api.SetTitleScreenOnlyForNextOptions(manifest, false);
 
-            api.RegisterSimpleOption(manifest, "Mushroom Tapper Calendar", null, () => config.MushroomTapperCalendar, (bool val) => config.MushroomTapperCalendar = val);
+            api.AddBoolOption(manifest, () => config.MushroomTapperCalendar, (bool val) => config.MushroomTapperCalendar = val,
+                GetConfigName(mod, "MushroomTapperCalendar"), GetConfigDescription(mod, "MushroomTapperCalendar"));
 
-            api.AddKeybindList(manifest, () => config.TreeMenuKey, (KeybindList keybindList) => config.TreeMenuKey = keybindList, () => "Tree Menu Key");
+            api.AddKeybindList(manifest, () => config.TreeMenuKey, (KeybindList keybindList) => config.TreeMenuKey = keybindList,
+                GetConfigName(mod, "TreeMenuKey"), GetConfigDescription(mod, "TreeMenuKey"));
 
             api.SetTitleScreenOnlyForNextOptions(manifest, true);
+        }
 
-            if (GrapeLogic.AreGrapeJsonModsInstalled(mod))
-            {
-                api.RegisterLabel(manifest, "Fine Grapes Feature Installed And Enabled", "Remove the Json Assets mod pack to disable this option");
-            }
+        private static Func<string, string> GetConfigDropdownChoice(ForageFantasy mod, string key)
+        {
+            return (s) => mod.Helper.Translation.Get($"Config{key}{s}");
+        }
+
+        private static Func<string> GetConfigName(ForageFantasy mod, string key)
+        {
+            return () => mod.Helper.Translation.Get($"Config{key}");
+        }
+
+        private static Func<string> GetConfigDescription(ForageFantasy mod, string key)
+        {
+            return () => mod.Helper.Translation.Get($"Config{key}Description");
         }
 
         private static string GetElementFromConfig(string[] options, int config)
@@ -301,5 +324,21 @@ namespace ForageFantasy
 
             return index == -1 ? 0 : index;
         }
+    }
+
+    /// <summary>
+    /// Extension methods for IGameContentHelper.
+    /// </summary>
+    public static class GameContentHelperExtensions
+    {
+        /// <summary>
+        /// Invalidates both an asset and the locale-specific version of an asset.
+        /// </summary>
+        /// <param name="helper">The game content helper.</param>
+        /// <param name="assetName">The (string) asset to invalidate.</param>
+        /// <returns>if something was invalidated.</returns>
+        public static bool InvalidateCacheAndLocalized(this IGameContentHelper helper, string assetName)
+            => helper.InvalidateCache(assetName)
+                | (helper.CurrentLocaleConstant != LocalizedContentManager.LanguageCode.en && helper.InvalidateCache(assetName + "." + helper.CurrentLocale));
     }
 }

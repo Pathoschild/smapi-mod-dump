@@ -74,7 +74,7 @@
         // Add new cans to maps
         {
             "Action": "Include",
-            "FromFile": "data/garbagecans.json"
+            "FromFile": "data/garbage_cans.json"
         },
         // Profession related patches
         {

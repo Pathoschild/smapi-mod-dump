@@ -21,6 +21,7 @@ using ContentPatcher.Framework.ConfigModels;
 using ContentPatcher.Framework.Migrations;
 using ContentPatcher.Framework.Patches;
 using ContentPatcher.Framework.Tokens;
+using ContentPatcher.Framework.TriggerActions;
 using ContentPatcher.Framework.Validators;
 using Pathoschild.Stardew.Common;
 using Pathoschild.Stardew.Common.Utilities;
@@ -28,6 +29,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
+using StardewValley.Triggers;
 using TokenParser = ContentPatcher.Framework.TokenParser;
 
 [assembly: InternalsVisibleTo("Pathoschild.Stardew.Tests.Mods")]
@@ -222,14 +224,6 @@ namespace ContentPatcher
             this.ScreenManager.Value.OnWarped();
         }
 
-        /// <inheritdoc cref="IGameLoopEvents.ReturnedToTitle"/>
-        /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event data.</param>
-        private void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
-        {
-            this.ScreenManager.Value.OnReturnedToTitle();
-        }
-
         /// <inheritdoc cref="IGameLoopEvents.UpdateTicked"/>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
@@ -300,11 +294,14 @@ namespace ContentPatcher
             if (this.Config.EnableDebugFeatures)
                 helper.Events.Input.ButtonsChanged += this.OnButtonsChanged;
             helper.Events.Content.AssetRequested += this.OnAssetRequested;
-            helper.Events.GameLoop.ReturnedToTitle += this.OnReturnedToTitle;
             helper.Events.GameLoop.DayStarted += this.OnDayStarted;
             helper.Events.GameLoop.TimeChanged += this.OnTimeChanged;
             helper.Events.Player.Warped += this.OnWarped;
             helper.Events.Specialized.LoadStageChanged += this.OnLoadStageChanged;
+
+            // set up trigger actions
+            // (This needs to happen before content packs are loaded below, since they may use these.)
+            TriggerActionManager.RegisterAction($"{this.ModManifest.UniqueID}_MigrateIds", new MigrateIdsAction().Handle);
 
             // load screen manager
             this.InitializeScreenManagerIfNeeded(this.ContentPacks);

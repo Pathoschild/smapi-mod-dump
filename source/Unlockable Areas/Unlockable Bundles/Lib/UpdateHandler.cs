@@ -24,7 +24,10 @@ using xTile.Tiles;
 
 namespace Unlockable_Bundles.Lib
 {
-    //This class handles applying purchased bundles and some network stuff, which one could refactor into its own dedicated class
+    //This class handles applying purchased bundles and some network stuff
+    //If other people worked on this as well I'd rename it to MapPatchHandler and maybe refactor the network stuff into its own dedicated class
+    //but I've gotten too used to it by now ;;
+    //Maybe someday
     public sealed class UpdateHandler
     {
         private static Mod Mod;

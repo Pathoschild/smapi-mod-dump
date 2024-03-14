@@ -14,7 +14,6 @@ namespace DropItHotkey
     using StardewModdingAPI.Events;
     using StardewValley;
     using StardewValley.Menus;
-    using System;
 
     public class DropItHotkey : Mod
     {
@@ -31,27 +30,9 @@ namespace DropItHotkey
 
         private static void DropItem(Farmer player, Item toDrop)
         {
-            // typo by the base game (verified for 1.5.6)
+            // typo by the base game (verified for 1.6.0 alpha)
             Game1.playSound("throwDownITem");
             Game1.createItemDebris(toDrop, player.getStandingPosition(), player.FacingDirection, null, -1).DroppedByPlayerID.Value = player.UniqueMultiplayerID;
-        }
-
-        private static bool CheckHeldItem(Func<Item, bool> f = null)
-        {
-            if (f == null)
-            {
-                return Game1.player.CursorSlotItem != null;
-            }
-
-            return f(Game1.player.CursorSlotItem);
-        }
-
-        private static Item TakeHeldItem()
-        {
-            Item cursorSlotItem = Game1.player.CursorSlotItem;
-            Game1.player.CursorSlotItem = null;
-
-            return cursorSlotItem;
         }
 
         private void CheckForHotkey(object sender, ButtonsChangedEventArgs e)
@@ -70,11 +51,13 @@ namespace DropItHotkey
                 }
                 else if (Context.IsWorldReady && Game1.activeClickableMenu is GameMenu menu)
                 {
-                    if (menu.GetCurrentPage() is InventoryPage invPage)
+                    if (menu.GetCurrentPage() is InventoryPage)
                     {
-                        if (CheckHeldItem((Item i) => i != null && i.canBeDropped() && i.canBeTrashed()))
+                        Item heldItem = Game1.player.CursorSlotItem;
+                        if (heldItem != null && heldItem.canBeDropped() && heldItem.canBeTrashed())
                         {
-                            DropItem(Game1.player, TakeHeldItem());
+                            Game1.player.CursorSlotItem = null;
+                            DropItem(Game1.player, heldItem);
                         }
                     }
                 }

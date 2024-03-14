@@ -10,11 +10,13 @@
 
 namespace ForageFantasy
 {
-    using StardewModdingAPI.Utilities;
     using StardewValley;
+    using StardewValley.GameData.FruitTrees;
     using StardewValley.TerrainFeatures;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
     using StardewObject = StardewValley.Object;
 
     public class TreeMenu : BaseMenu
@@ -24,17 +26,17 @@ namespace ForageFantasy
         private readonly ForageFantasy mod;
 
         public TreeMenu(ForageFantasy mod, TerrainFeature tree)
-          : base(TreeTypeToName(tree))
+          : base(TreeTypeToName(mod, tree))
         {
             this.mod = mod;
             this.tree = tree;
         }
 
-        // TODO replace with I18n and make everything translatable
-
-        public static string TreeTypeToName(TerrainFeature tree)
+        public static string TreeTypeToName(ForageFantasy mod, TerrainFeature tree)
         {
-            return tree is FruitTree ? "Fruit Tree" : TreeTypeToName((Tree)tree);
+            string key = (tree is FruitTree) ? "FruitTree" : TreeTypeToNameKey((Tree)tree);
+
+            return mod.Helper.Translation.Get($"TreeMenu{key}");
         }
 
         public static int GetFruitTreeCurrentQuality(FruitTree tree)
@@ -44,42 +46,33 @@ namespace ForageFantasy
             return val == 3 ? StardewObject.bestQuality : val;
         }
 
-        public static string TreeTypeToName(Tree tree)
+        public static string TreeTypeToNameKey(Tree tree)
         {
             return tree?.treeType.Value switch
             {
-                1 => "Oak Tree",
-                2 => "Maple Tree",
-                3 => "Pine Tree",
-                9 or 6 => "Palm Tree",
-                7 => "Mushroom Tree",
-                8 => "Mahogany Tree",
-                _ => "Tree",
+                "1" => "OakTree",
+                "2" => "MapleTree",
+                "3" => "PineTree",
+                "9" or "6" => "PalmTree",
+                "7" => "MushroomTree",
+                "8" => "MahoganyTree",
+                _ => "UnknownTree",
             };
         }
 
-        public static string QualityToName(int quality)
+        public string QualityToName(int quality)
         {
-            return quality switch
+            switch (quality)
             {
-                StardewObject.lowQuality => "Normal",
-                StardewObject.medQuality => "Silver",
-                StardewObject.highQuality => "Gold",
-                StardewObject.bestQuality => "Iridium",
-                _ => null,
-            };
-        }
+                case StardewObject.lowQuality:
+                case StardewObject.medQuality:
+                case StardewObject.highQuality:
+                case StardewObject.bestQuality:
+                    return mod.Helper.Translation.Get($"TreeMenuQuality{(int)quality}");
 
-        // similar to FruitTree.IsInSeason here, taken from LookUpAnything
-        public static bool IsFruitTreeInSeason(FruitTree fruitTree, string season)
-        {
-            if (season == fruitTree.fruitSeason.Value || fruitTree.currentLocation.SeedsIgnoreSeasonsHere())
-                return true;
-
-            if (fruitTree.fruitSeason.Value == "island")
-                return season == "summer" || fruitTree.currentLocation.GetLocationContext() == GameLocation.LocationContext.Island;
-
-            return false;
+                default:
+                    return mod.Helper.Translation.Get($"TreeMenuQualityUnknown");
+            }
         }
 
         public override string GetStatusMessage()
@@ -93,58 +86,89 @@ namespace ForageFantasy
 
             var daysAged = -fruitTree.daysUntilMature.Value;
 
-            string outp = $"Age: {GetTreeAgeString(daysAged)}\n";
+            var output = new StringBuilder();
+
+            output.Append(mod.Helper.Translation.Get("TreeMenuTreeAge", new { age = GetTreeAgeString(daysAged) }));
+            output.Append('\n');
 
             string qualityString = QualityToName(GetFruitTreeCurrentQuality(fruitTree));
 
             if (qualityString != null)
             {
-                outp += $"Age Quality: {qualityString}\n";
+                output.Append(mod.Helper.Translation.Get("TreeMenuTreeAgeQuality", new { quality = qualityString }));
+                output.Append('\n');
             }
 
             if (!fruitTree.stump.Value)
             {
-                bool hasProduce = fruitTree.fruitsOnTree.Value > 0;
+                bool hasProduce = fruitTree.fruit.Count > 0;
 
-                if (hasProduce)
+                FruitTreeData data = fruitTree.GetData();
+                var defaultFruit = data?.Fruit.Where((t) => t.Id == "Default").FirstOrDefault();
+
+                string produceName = null;
+
+                if (fruitTree.struckByLightningCountdown.Value > 1)
                 {
-                    outp += $"Produce: {new StardewObject(fruitTree.indexOfFruit.Value, 1).DisplayName}\n";
+                    // a fruit tree struck by lightning returns coal
+                    produceName = ItemRegistry.Create("(O)382").DisplayName;
+                }
+                else if (defaultFruit?.ItemId != null && ItemRegistry.Exists(defaultFruit.ItemId))
+                {
+                    produceName = ItemRegistry.Create(defaultFruit.ItemId).DisplayName;
                 }
                 else
                 {
-                    var lightningDays = fruitTree.struckByLightningCountdown.Value;
+                    produceName = mod.Helper.Translation.Get("TreeMenuUnknownProduct");
+                }
 
-                    // a fruit tree struck by lightning returns coal
-                    var produce = lightningDays > 1 ? 382 : fruitTree.indexOfFruit.Value;
+                output.Append(mod.Helper.Translation.Get("TreeMenuProduct", new { product = produceName }));
+                output.Append('\n');
 
-                    outp += $"Produce: {new StardewObject(produce, 1).DisplayName}\n";
-
-                    var tomorrow = SDate.Now().AddDays(1);
-
-                    if (IsFruitTreeInSeason(fruitTree, tomorrow.Season))
+                if (!hasProduce)
+                {
+                    if (fruitTree.IsInSeasonHere())
                     {
-                        outp += "Producing In: 1 day\n";
+                        string dayString = mod.Helper.Translation.Get("TreeMenu1Day");
+                        output.Append(mod.Helper.Translation.Get("TreeMenuProductReadyIn", new { duration = dayString }));
+                        output.Append('\n');
                     }
                     else
                     {
-                        var seasonToBear = fruitTree.fruitSeason.Value;
+                        int bestNextSeasonDiff = 10;
 
-                        if (seasonToBear == SDate.Now().Season)
+                        Season currentSeason = Game1.season;
+
+                        List<Season> growSeasons = data?.Seasons;
+                        if (growSeasons != null && growSeasons.Count > 0)
                         {
-                            seasonToBear = $"Next {seasonToBear}";
-                        }
-                        else
-                        {
-                            seasonToBear = char.ToUpper(seasonToBear[0]) + seasonToBear[1..];
+                            foreach (Season growSeason in growSeasons)
+                            {
+                                int seasonDiff = (-((int)currentSeason - (int)growSeason) + 4) % 4;
+
+                                if (seasonDiff < bestNextSeasonDiff)
+                                {
+                                    bestNextSeasonDiff = seasonDiff;
+                                }
+                            }
                         }
 
-                        outp += $"Producing In: {seasonToBear}\n";
+                        string seasonToBear = mod.Helper.Translation.Get("TreeMenuUnknownSeason");
+
+                        if (bestNextSeasonDiff < 10)
+                        {
+                            Season bestSeaon = (Season)(((int)currentSeason + bestNextSeasonDiff + 4) % 4);
+                            seasonToBear = Utility.getSeasonNameFromNumber((int)bestSeaon);
+                        }
+
+                        output.Append(mod.Helper.Translation.Get("TreeMenuProductReadyIn", new { duration = seasonToBear }));
+                        output.Append('\n');
                     }
                 }
             }
 
             // remove last newline character
-            return outp[0..^1];
+            return output.ToString()[0..^1];
         }
 
         public string GetTreeStatusMessage()
@@ -159,106 +183,62 @@ namespace ForageFantasy
                 daysAged = int.Parse(moddata);
             }
 
-            string outp = $"Age: {GetTreeAgeString(daysAged)}\n";
+            var output = new StringBuilder();
+
+            output.Append(mod.Helper.Translation.Get("TreeMenuTreeAge", new { age = GetTreeAgeString(daysAged) }));
+            output.Append('\n');
 
             if (mod.Config.TapperQualityOptions is 3 or 4)
             {
-                int quality = TapperAndMushroomQualityLogic.DetermineTreeQuality(mod, (Tree)tree);
+                int quality = TapperAndMushroomQualityLogic.DetermineTreeQuality(mod.Config, (Tree)tree);
                 string qualityString = QualityToName(quality);
 
                 if (qualityString != null)
                 {
-                    outp += $"Age Quality: {qualityString}\n";
+                    output.Append(mod.Helper.Translation.Get("TreeMenuTreeAgeQuality", new { quality = qualityString }));
+                    output.Append('\n');
                 }
             }
 
-            if (!normalTree.stump.Value || normalTree.treeType.Value == Tree.mushroomTree)
+            if (normalTree.tapped.Value)
             {
-                StardewValley.Object tile_object = tree.currentLocation.getObjectAtTile((int)tree.currentTileLocation.X, (int)tree.currentTileLocation.Y);
+                StardewObject tile_object = tree.Location.getObjectAtTile((int)tree.Tile.X, (int)tree.Tile.Y);
 
                 if (tile_object.IsTapper() && tile_object.heldObject.Value != null)
                 {
+                    output.Append(mod.Helper.Translation.Get("TreeMenuProduct", new { product = tile_object.heldObject.Value.DisplayName }));
+                    output.Append('\n');
+
                     if (tile_object.MinutesUntilReady > 0)
                     {
-                        outp += $"Produce: {tile_object.heldObject.Value.DisplayName}\n";
-                        outp += TapperProducingInString(tile_object.MinutesUntilReady);
-
-                        if (mod.Config.TapperDaysNeededChangesEnabled)
-                        {
-                            outp += tile_object.heldObject.Value.ParentSheetIndex switch
-                            {
-                                724 => $"Base Value: {TapperAndMushroomQualityLogic.GetTapperProductValueForDaysNeeded(mod.Config.MapleDaysNeeded)}\n",
-                                725 => $"Base Value: {TapperAndMushroomQualityLogic.GetTapperProductValueForDaysNeeded(mod.Config.OakDaysNeeded)}\n",
-                                726 => $"Base Value: {TapperAndMushroomQualityLogic.GetTapperProductValueForDaysNeeded(mod.Config.PineDaysNeeded)}\n",
-                                _ => "", // just so I can use a switch assignment
-                            };
-                        }
+                        output.Append(mod.Helper.Translation.Get("TreeMenuProductReadyIn", new { duration = FormatTapperMinutesUntil(tile_object.MinutesUntilReady) }));
+                        output.Append('\n');
                     }
+
+                    output.Append(mod.Helper.Translation.Get("TreeMenuProductValue", new { price = tile_object.heldObject.Value.Price }));
+                    output.Append('\n');
                 }
             }
 
             // remove last newline character
-            return outp[0..^1];
+            return output.ToString()[0..^1];
         }
 
-        private static string TapperProducingInString(int minutes, bool simplified = true)
+        private string FormatTapperMinutesUntil(int minutes)
         {
             var span = TimeSpan.FromMinutes(minutes);
 
-            if (simplified)
+            if (span.Days == 1)
             {
-                if (span.Days == 1)
-                {
-                    return $"Producing In: 1 day\n";
-                }
-                else
-                {
-                    return $"Producing In: { span.Days } days\n";
-                }
+                return mod.Helper.Translation.Get("TreeMenu1Day");
             }
             else
             {
-                var parts = new List<string>();
-
-                if (span.Days > 0)
-                {
-                    if (span.Days == 1)
-                    {
-                        parts.Add($"1 day");
-                    }
-                    else
-                    {
-                        parts.Add($"{span.Days} days");
-                    }
-                }
-                if (span.Hours > 0)
-                {
-                    if (span.Minutes == 1)
-                    {
-                        parts.Add($"1 hour");
-                    }
-                    else
-                    {
-                        parts.Add($"{span.Hours} hours");
-                    }
-                }
-                if (span.Minutes > 0)
-                {
-                    if (span.Minutes == 1)
-                    {
-                        parts.Add($"1 minute");
-                    }
-                    else
-                    {
-                        parts.Add($"{span.Minutes} minutes");
-                    }
-                }
-
-                return $"Producing In: { string.Join($",\n{new String(' ', "Producing In: ".Length + 3)}", parts) }\n";
+                return mod.Helper.Translation.Get("TreeMenuNDays", new { n = span.Days });
             }
         }
 
-        private static string GetTreeAgeString(int days)
+        private string GetTreeAgeString(int days)
         {
             // intentional int division
             int months = days / 28;
@@ -268,33 +248,33 @@ namespace ForageFantasy
             {
                 if (years == 1)
                 {
-                    return "1 year";
+                    return mod.Helper.Translation.Get("TreeMenu1Year");
                 }
                 else
                 {
-                    return $"{years} year";
+                    return mod.Helper.Translation.Get("TreeMenuNYears", new { n = years });
                 }
             }
             else if (months > 0)
             {
                 if (months == 1)
                 {
-                    return "1 month";
+                    return mod.Helper.Translation.Get("TreeMenu1Month");
                 }
                 else
                 {
-                    return $"{months} months";
+                    return mod.Helper.Translation.Get("TreeMenuNMonths", new { n = months });
                 }
             }
             else
             {
                 if (days == 1)
                 {
-                    return "1 day";
+                    return mod.Helper.Translation.Get("TreeMenu1Day");
                 }
                 else
                 {
-                    return $"{days} days";
+                    return mod.Helper.Translation.Get("TreeMenuNDays", new { n = days });
                 }
             }
         }

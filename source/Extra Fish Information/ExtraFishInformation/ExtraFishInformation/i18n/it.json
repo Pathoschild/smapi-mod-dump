@@ -1,0 +1,38 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/ceasg/StardewValleyMods
+**
+*************************************************/
+
+{
+    "new-description.trapper.fish": "Trovato nel {{location}}.",
+    "new-description.normal.fish": "Trovato {{weather}} dalle {{schedule}}.\n\nLocations:\n{{locations}}",
+
+    "location.freshwater": "acqua fresca",
+    "location.ocean": "oceano",
+	"location.unknown":"?",
+
+    "schedule.between.times": "{{startTime}} alle {{endTime}}",
+    "schedule.join.times": "{{parsedTimes}}, e {{startTime}} alle {{endTime}}",
+    "schedule.more.times": "{{parsedTimes}}, {{startTime}} alle {{endTime}}",
+
+    "time.24hour.format": "{{hour}}:{{minutes}}",
+	"time.morning.12hour": "{{hour}}am",
+    "time.morning.12hour.minutes": "{{hour}}.{{minutes}}am",
+    "time.afternoon.12hour": "{{hour}}pm",
+	"time.afternoon.12hour.minutes": "{{hour}}.{{minutes}}pm",
+
+    "season.spring": "Primavera",
+    "season.summer": "Estate",
+    "season.fall": "Autunno",
+    "season.winter": "Inverno",
+
+    "weather.sunny": "quando è soleggiato",
+    "weather.rainy": "quando è piovoso",
+    "weather.both": "in qualsiasi meteo",
+    "weather.unknown": "in condizioni sconosciute"
+}

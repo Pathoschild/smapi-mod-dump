@@ -6,12 +6,9 @@ mods:
    Stardew Access
 
 latest commit:
-   commit 6019f57839d699228803cd7b1a1f1597cfd1987b
+   commit 7e7feb41a61187f18c2962341c31582d28586864
    Author: Mohammad Shoaib Khan <khanshoaibpers@outlook.com>
-   Date:   Thu Feb 15 00:16:16 2024 +0530
+   Date:   Sat Mar 9 14:42:02 2024 +0530
    
-       ðŸ“ Update keybindings.md
-       
-       - Added Left/Right Alt + 1-9 key combination info
-       - Updated ruby script to auto change `.md` to `.html` in links of compiled html pages
+       ðŸ”– Bump version to v1.5.1
    

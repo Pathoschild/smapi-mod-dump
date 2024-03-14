@@ -27,7 +27,7 @@ namespace HappyHomeDesigner.Menus
 		public Furniture Item;
 		public bool HasVariants;
 		public bool Favorited;
-		private readonly string season = string.Empty;
+		private readonly Season season = default;
 
 		// 384 396 15 15 cursors
 		// 256 256 10 10 cursors
@@ -40,13 +40,12 @@ namespace HappyHomeDesigner.Menus
 		/// <summary>Standard constructor. Used for main catalog page.</summary>
 		/// <param name="Item">The contained furniture item.</param>
 		/// <param name="season">The local season. Required to accurately check for AT variants.</param>
-		public FurnitureEntry(Furniture Item, string season, IList<string> favorites)
+		public FurnitureEntry(Furniture Item, Season season, string seasonName, IList<string> favorites)
 		{
 			this.Item = Item;
 			this.season = season;
-			HasVariants = AlternativeTextures.Installed && AlternativeTextures.HasVariant("Furniture_" + Item.ItemId, season);
-			// 1.6: port to id
-			Favorited = favorites.Contains(Item.Name);
+			HasVariants = AlternativeTextures.Installed && AlternativeTextures.HasVariant( "Furniture_" + Item.ItemId, "Furniture_" + Item.Name, seasonName);
+			Favorited = favorites.Contains(Item.ItemId);
 		}
 
 		/// <summary>Used for AT variant entries.</summary>
@@ -127,8 +126,7 @@ namespace HappyHomeDesigner.Menus
 
 		public override string ToString()
 		{
-			// 1.6: replace with ID
-			return Item?.Name ?? string.Empty;
+			return Item?.ItemId ?? string.Empty;
 		}
 
 		public string GetName()

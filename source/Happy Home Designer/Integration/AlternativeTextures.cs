@@ -11,6 +11,7 @@
 using HappyHomeDesigner.Framework;
 using HappyHomeDesigner.Patches;
 using StardewModdingAPI;
+using StardewValley;
 using StardewValley.Objects;
 using System;
 using System.Collections;
@@ -30,8 +31,8 @@ namespace HappyHomeDesigner.Integration
 
 		public static bool Installed;
 
-		public static Func<string, string, bool> HasVariant;
-		public static Action<Furniture, string, List<Furniture>> VariantsOf;
+		public static Func<string, string, string, bool> HasVariant;
+		public static Action<Furniture, Season, List<Furniture>> VariantsOf;
 
 		internal static void Init(IModHelper helper)
 		{
@@ -80,19 +81,18 @@ namespace HappyHomeDesigner.Integration
 			*		AlternativeTextures.textureManager.DoesObjectHaveAlternativeTexture(name + "_" + season)
 			*/
 
-			var getter = manager.FieldType.GetMethod("DoesObjectHaveAlternativeTexture", new[] { typeof(string) });
+			var getter = manager.FieldType.GetMethod("DoesObjectHaveAlternativeTexture", new[] { typeof(string), typeof(bool) });
 			var name = Expression.Parameter(typeof(string));
 			var season = Expression.Parameter(typeof(string));
+			var id = Expression.Parameter(typeof(string));
+
 			var body = Expression.Or(
-				Expression.Call(Expression.Field(null, manager), getter, name),
-				Expression.Call(Expression.Field(null, manager), getter, 
-					Expression.Call(typeof(string).GetMethod(nameof(string.Concat), new[] {typeof(string), typeof(string), typeof(string)}),
-					name, Expression.Constant("_"), season)
-				)
+				HasVariantCheck(manager, getter, name, season, Expression.Constant(false)),
+				HasVariantCheck(manager, getter, id, season, Expression.Constant(true))
 			);
 			try
 			{
-				HasVariant = Expression.Lambda<Func<string, string, bool>>(body, name, season).Compile();
+				HasVariant = Expression.Lambda<Func<string, string, string, bool>>(body, id, name, season).Compile();
 			} catch (Exception ex)
 			{
 				ModEntry.monitor.Log(ex.ToString(), LogLevel.Trace);
@@ -101,9 +101,21 @@ namespace HappyHomeDesigner.Integration
 			return true;
 		}
 
+		private static Expression HasVariantCheck(FieldInfo manager, MethodInfo getter, Expression name, Expression season, Expression isId)
+		{
+			return Expression.Or(
+				Expression.Call(Expression.Field(null, manager), getter, name, isId),
+				Expression.Call(Expression.Field(null, manager), getter,
+					Expression.Call(typeof(string).GetMethod(nameof(string.Concat), new[] { typeof(string), typeof(string), typeof(string) }),
+					name, Expression.Constant("_"), season),
+					isId
+				)
+			);
+		}
+
 		internal static bool BindVariantsOf(FieldInfo manager)
 		{
-			var mg = manager.FieldType.GetMethod("GetAvailableTextureModels");
+			var mg = manager.FieldType.GetMethod("GetAvailableTextureModels", new[] {typeof(string), typeof(string), typeof(Season)});
 			if (!mg.ReturnType.TryGetGenericOf(0, out var modelType))
 				return false;
 
@@ -111,7 +123,7 @@ namespace HappyHomeDesigner.Integration
 
 			VariantsOf = (source, season, list) => {
 				var tm = manager.GetValue(null);
-				IList models = mg.Invoke(tm, new[] { "Furniture_" + source.Name, season }) as IList;
+				IList models = mg.Invoke(tm, new object[] { "Furniture_" + source.ItemId, "Furniture_" + source.Name, season }) as IList;
 				for (int i = 0; i < models.Count; i++)
 				{
 					var m = models[i] as dynamic;

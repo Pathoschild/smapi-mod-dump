@@ -31,11 +31,10 @@ namespace FlipBuildings.Patches
 
 		private static IEnumerable<CodeInstruction> DrawTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator iLGenerator)
 		{
-
 			PatchHelper.CodeReplacement[] codeReplacements = new PatchHelper.CodeReplacement[]
 			{
-				// null
 				new(
+					// Flip hut texture
 					referenceInstruction: new(OpCodes.Callvirt, typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })),
 					offset: 15,
 					targetInstruction: new(OpCodes.Ldc_I4_0),
@@ -45,6 +44,7 @@ namespace FlipBuildings.Patches
 					}
 				),
 				new(
+					// Offset bag position
 					referenceInstruction: new(OpCodes.Callvirt, typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })),
 					offset: 48,
 					targetInstruction: new(OpCodes.Add),
@@ -57,6 +57,7 @@ namespace FlipBuildings.Patches
 					goNext: false
 				),
 				new(
+					// Flip bag texture
 					referenceInstruction: new(OpCodes.Callvirt, typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })),
 					offset: 17,
 					targetInstruction: new(OpCodes.Ldc_I4_0),
@@ -65,8 +66,8 @@ namespace FlipBuildings.Patches
 						new(OpCodes.Ldc_I4_1)
 					}
 				),
-				// null
 				new(
+					// Flip light texture
 					referenceInstruction: new(OpCodes.Callvirt, typeof(SpriteBatch).GetMethod(nameof(SpriteBatch.Draw), new Type[] { typeof(Texture2D), typeof(Vector2), typeof(Rectangle?), typeof(Color), typeof(float), typeof(Vector2), typeof(float), typeof(SpriteEffects), typeof(float) })),
 					offset: 17,
 					targetInstruction: new(OpCodes.Ldc_I4_0),

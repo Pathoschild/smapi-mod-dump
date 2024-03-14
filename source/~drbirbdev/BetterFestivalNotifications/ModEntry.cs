@@ -20,7 +20,7 @@ public class ModEntry : Mod
     internal static ModEntry Instance;
     internal static Config Config;
 
-    internal ITranslationHelper I18n => this.Helper.Translation;
+    internal ITranslationHelper I18N => this.Helper.Translation;
 
     public override void Entry(IModHelper helper)
     {

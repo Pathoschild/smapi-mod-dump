@@ -16,13 +16,6 @@ Having difficulty fishing? Or finding it too easy? This is yet another mod that 
 
 This mod is made for Stardew Valley 1.6 using SMAPI 4.0. As of writing this, neither are publicly released yet, thus will only work on the alpha versions. This mod will **not** work on versions prior to those mentioned.
 
-## Prerequisites
-
-Mandatory and optional requirements for use of this mod.
-
-- [SMAPI 4.0](https://www.nexusmods.com/stardewvalley/mods/2400) (required)
-- [GMCM 1.12](https://www.nexusmods.com/stardewvalley/mods/5098) (optional)
-
 ## Table of Contents
 
 - Prerequisites
@@ -39,6 +32,13 @@ Mandatory and optional requirements for use of this mod.
 - To Do
 - Licensing
 
+## Prerequisites
+
+Mandatory and optional requirements for use of this mod.
+
+- [SMAPI 4.0](https://www.nexusmods.com/stardewvalley/mods/2400) (required)
+- [GMCM 1.12](https://www.nexusmods.com/stardewvalley/mods/5098) (optional)
+
 ## Installation
 
 1. Download and install the required prerequisites.
@@ -51,6 +51,7 @@ Mandatory and optional requirements for use of this mod.
 The mod's configurable options can be found below. These can either be adjusted through [Generic Mod Configuration Menu (GMCM)](https://www.nexusmods.com/stardewvalley/mods/5098) or the `config.json` file. Editing the options using GMCM is recommended. GMCM will also provide descriptive tooltips if the option itself is not clear.
 
 ### General
+- Increase Chance of Catching Fish
 - Instantly Catch Fish
 - Instantly Catch Treasure
 - Always Maximum Casting Power

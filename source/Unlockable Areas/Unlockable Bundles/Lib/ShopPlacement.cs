@@ -53,7 +53,7 @@ namespace Unlockable_Bundles.Lib
 
         private static void cleanupDay()
         {
-            ContentPatcherHandling.DaysSincePurchaseToken.Ready = false;
+            UnlockableBundlesAPI.IsReady = false;
             HasDayStarted = false;
             ModData.Instance = null;
 
@@ -94,7 +94,7 @@ namespace Unlockable_Bundles.Lib
             UpdateHandler.clearCache();
 
             ModData.Instance = new ModData();
-            ContentPatcherHandling.DaysSincePurchaseToken.Ready = false;
+            UnlockableBundlesAPI.IsReady = false;
         }
 
 

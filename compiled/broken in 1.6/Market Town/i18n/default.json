@@ -1,6 +1,6 @@
 {
   "foodstore.note":                                   "Exciting News! The upcoming major update will unveil a spectacular 'Market Town' complete with a charming Restaurant, captivating Museum, delightful Flower Shop, and more! Your voice matters! Participate in the Town Layout Vote - Beach Map, Serene Island, Enchanting Jungle, or something else? Share your imaginative ideas on the FORUM located on the Mod page. Let's shape this town together!",
-  
+
   "foodstore.hidden.0":                               "And weekly tip: Villager more likely to promote when ate loved food, and more criticise when are hated food.",
   "foodstore.hidden.1":                               "And weekly tip: The lower sale price can be 32% of the base price, while the highest is 520%.",
   "foodstore.hidden.2":                               "And weekly tip: Food Store might change name to ''Market Town''. What does that mean? It mean Food Store is not the only shop you can open!!",
@@ -312,7 +312,7 @@
   
   "foodstore.config.chat":                            "Disable non-important message?",
   
-  "foodstore.thankyou":                               "[144] Another update with Market Town! [144] Enjoying the mod and eager for ongoing improvements? Don't forget to Follow and Endorse!!. Your passion propels our ship forward. [43] #MarketTown",
+  "foodstore.thankyou":                               "[144] Enjoying the mod and eager for ongoing improvements? Don't forget to Follow and Endorse!!. Your passion propels our ship forward. [43] #MarketTown",
   
   "foodstore.visitoreat.0":                           "Thank you!",
   "foodstore.visitoreat.1":                           "Oh food!!!",
@@ -771,6 +771,9 @@
 
   "neutral-order-reaction-1":                         "Oh, OK!",
   "neutral-order-reaction-2":                         "Alright",
-  "neutral-order-reaction-3":                         "Cool!"
+  "neutral-order-reaction-3":                         "Cool!",
+
+  "foodstore.config.shedvisitor":                     "  Visitors Special Request",
+  "foodstore.mailtotal":                              "Total Market earning: {{totalEarning}}G^^  Earning yesterday: {{sellMoney}}G^^"
 
 }

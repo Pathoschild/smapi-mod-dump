@@ -6,7 +6,7 @@ mods:
    mouahrara's Module Collection
 
 latest commit:
-   commit a211c651e6de784b2fcde050385ff96c74aac50e
+   commit 157eca0360b55eb3545d1b28fcafbee5a6f8b596
    Author: mouahrara <mouahrara.noreply@protonmail.com>
    Date:   Wed Feb 7 13:33:07 2024 +0100
    

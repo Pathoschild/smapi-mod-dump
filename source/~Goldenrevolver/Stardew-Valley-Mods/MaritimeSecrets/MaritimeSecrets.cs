@@ -28,13 +28,15 @@ namespace MaritimeSecrets
         internal bool IsUsingMermaidMod { get; private set; }
         internal MaritimeSecretsConfig Config { get; private set; }
 
-        private readonly List<string> mermaidMods = new() { "Naya.ContentPatcher.MermaidMariner", "mi.Mermaids", "DragonMaus.MermaidsReplaceOldMarinerRedux" };
+        private readonly List<string> mermaidMods = new() { "NayaSprites.ContentPatcher.MermaidMariner", "Naya.ContentPatcher.MermaidMariner", "mi.Mermaids", "DragonMaus.MermaidsReplaceOldMarinerRedux" };
 
         public override void Entry(IModHelper helper)
         {
             talkedToMarinerTodayKey = $"{ModManifest.UniqueID}/TalkedToMarinerToday";
 
             Config = Helper.ReadConfig<MaritimeSecretsConfig>();
+
+            MaritimeSecretsConfig.VerifyConfigValues(Config, this);
 
             Helper.Events.GameLoop.GameLaunched += delegate { MaritimeSecretsConfig.SetUpModConfigMenu(Config, this); };
 

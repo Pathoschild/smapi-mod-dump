@@ -26,6 +26,7 @@ using Unlockable_Bundles.Lib.AdvancedPricing;
 
 namespace Unlockable_Bundles.Lib.ShopTypes
 {
+    //CCBundleMenu
     internal class BundleMenu : IClickableMenu
     {
         public static Mod Mod;

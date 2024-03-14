@@ -48,6 +48,7 @@ namespace Unlockable_Bundles.Lib
         private NetVector2 _shopPosition = new();
         private NetString _shopTexture = new();
         private NetString _shopAnimation = new();
+        private NetInt _shopTextureWidth = new();
         private NetString _shopEvent = new();
         private NetEnum<ShopType> _shopType = new();
         private NetBool _instantShopRemoval = new();
@@ -67,11 +68,13 @@ namespace Unlockable_Bundles.Lib
 
         private NetString _overviewTexture = new();
         private NetString _overviewAnimation = new();
+        private NetInt _overviewTextureWidth = new();
         private NetString _overviewDescription = new();
 
         public NetInt _randomPriceEntries = new();
         public NetInt _randomRewardEntries = new();
         public NetStringIntDictionary _price = new();
+        public NetStringStringDictionary _priceMigration = new();
         public NetStringIntDictionary _alreadyPaid = new();
         public NetStringIntDictionary _alreadyPaidIndex = new();
         public NetStringIntDictionary _bundleReward = new();
@@ -98,6 +101,7 @@ namespace Unlockable_Bundles.Lib
         public Vector2 ShopPosition { get => _shopPosition.Value; set => _shopPosition.Value = value; }
         public string ShopTexture { get => _shopTexture.Value; set => _shopTexture.Value = value; }
         public string ShopAnimation { get => _shopAnimation.Value; set => _shopAnimation.Value = value; }
+        public int ShopTextureWidth { get => _shopTextureWidth.Value; set => _shopTextureWidth.Value = value; }
         public string ShopEvent { get => _shopEvent.Value; set => _shopEvent.Value = value; }
         public ShopType ShopType { get => _shopType.Value; set => _shopType.Value = value; }
         public bool InstantShopRemoval { get => _instantShopRemoval.Value; set => _instantShopRemoval.Value = value; }
@@ -117,6 +121,7 @@ namespace Unlockable_Bundles.Lib
 
         public string OverviewTexture { get => _overviewTexture.Value; set => _overviewTexture.Value = value; }
         public string OverviewAnimation { get => _overviewAnimation.Value; set => _overviewAnimation.Value = value; }
+        public int OverviewTextureWidth { get => _overviewTextureWidth.Value; set => _overviewTextureWidth.Value = value; }
         public string OverviewDescription { get => _overviewDescription.Value; set => _overviewDescription.Value = value; }
 
         public int RandomPriceEntries { get => _randomPriceEntries.Value; set => _randomPriceEntries.Value = value; }
@@ -149,6 +154,7 @@ namespace Unlockable_Bundles.Lib
             this.ShopPosition = model.ShopPosition;
             this.ShopTexture = model.ShopTexture;
             this.ShopAnimation = model.ShopAnimation;
+            this.ShopTextureWidth = model.ShopTextureWidth;
             this.ShopEvent = model.ShopEvent;
             this.ShopType = model.ShopType;
             this.InstantShopRemoval = model.InstantShopRemoval == true;
@@ -168,11 +174,13 @@ namespace Unlockable_Bundles.Lib
 
             this.OverviewTexture = model.OverviewTexture;
             this.OverviewAnimation = model.OverviewAnimation;
+            this.OverviewTextureWidth = model.OverviewTextureWidth;
             this.OverviewDescription = model.OverviewDescription;
 
             this.RandomPriceEntries = model.RandomPriceEntries;
             this.RandomRewardEntries = model.RandomRewardEntries;
             this._price = new NetStringIntDictionary(model.Price);
+            this._priceMigration = new NetStringStringDictionary(model.PriceMigration);
             this._alreadyPaid = new NetStringIntDictionary(model.AlreadyPaid);
             this._alreadyPaidIndex = new NetStringIntDictionary(model.AlreadyPaidIndex);
             this._bundleReward = new NetStringIntDictionary(model.BundleReward);
@@ -202,6 +210,7 @@ namespace Unlockable_Bundles.Lib
             .AddField(_shopPosition, "_shopPosition")
             .AddField(_shopTexture, "_shopTexture")
             .AddField(_shopAnimation, "_shopAnimation")
+            .AddField(_shopTextureWidth, "_shopTextureWidth")
             .AddField(_shopEvent, "_shopEvent")
             .AddField(_shopType, "_shopType")
             .AddField(_instantShopRemoval, "_instantShopRemoval")
@@ -221,11 +230,13 @@ namespace Unlockable_Bundles.Lib
 
             .AddField(_overviewTexture, "_overviewTexture")
             .AddField(_overviewAnimation, "_overviewAnimation")
+            .AddField(_overviewTextureWidth, "_overviewTextureWidth")
             .AddField(_overviewDescription, "overviewDescription")
 
             .AddField(_randomPriceEntries, "_randomPriceEntries")
             .AddField(_randomRewardEntries, "_randomRewardEntries")
             .AddField(_price, "_price")
+            .AddField(_priceMigration, "_priceMigration")
             .AddField(_alreadyPaid, "_alreadyPaid")
             .AddField(_alreadyPaidIndex, "_alreadyPaidIndex")
             .AddField(_bundleReward, "_bundleReward")
@@ -412,7 +423,7 @@ namespace Unlockable_Bundles.Lib
 
             rewards.AddRange(getRewardSpawnFieldItems());
 
-            if(RandomRewardEntries > 0)
+            if (RandomRewardEntries > 0)
                 rewards = rewards.OrderBy(x => Game1.random.Next()).Take(RandomRewardEntries).ToList();
 
             if (rewards.Count == 0)

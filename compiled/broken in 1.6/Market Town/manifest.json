@@ -1,16 +1,20 @@
 ﻿{
   "Name": "Market Town",
   "Author": "d5a1lamdtd",
-  "Version": "4.2.0",
+  "Version": "5.0.0-alpha",
   "Description": "MarketTown",
   "UniqueID": "d5a1lamdtd.MarketTown",
   "EntryDll": "MarketTown.dll",
   "MinimumApiVersion": "3.15.0",
   "UpdateKeys": [ "Nexus:19309" ],
   "Dependencies":[
-   {
+    {
       "UniqueID": "spacechase0.SpaceCore",
       "IsRequired": true
-   }
+    },
+    {  
+      "UniqueID": "Pathoschild.ContentPatcher",
+      "IsRequired": true
+    }
   ]
 }

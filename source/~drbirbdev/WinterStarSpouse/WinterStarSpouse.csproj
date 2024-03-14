@@ -3,8 +3,8 @@
 
     <PropertyGroup>
         <Description>Customize how often you spouse is your winter star secret santa.</Description>
-        <Version>1.0.7</Version>
+        <Version>1.1.0</Version>
         <UpdateKeys>Nexus:14164</UpdateKeys>
     </PropertyGroup>
-    
+
 </Project>

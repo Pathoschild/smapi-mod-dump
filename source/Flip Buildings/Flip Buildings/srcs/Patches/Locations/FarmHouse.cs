@@ -26,12 +26,13 @@ namespace FlipBuildings.Patches
 			);
 		}
 
-		private static void GetPorchStandingSpotPostfix(FarmHouse __instance, ref Point __result)
+		private static void GetPorchStandingSpotPostfix(ref Point __result)
 		{
-			Farm farm = Game1.getFarm();
-			if (!farm.modData.ContainsKey(ModDataKeys.FLIPPED))
+			if (!Game1.getFarm().GetMainFarmHouse().modData.ContainsKey(ModDataKeys.FLIPPED))
 				return;
-			Point mainFarmHouseEntry = farm.GetMainFarmHouseEntry();
+
+			Point mainFarmHouseEntry = Game1.getFarm().GetMainFarmHouseEntry();
+
 			mainFarmHouseEntry.X -= 2;
 			__result = mainFarmHouseEntry;
 		}

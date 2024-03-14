@@ -18,7 +18,6 @@ public class Config
     [SConfig.PageLink("Experience")]
     [SConfig.PageLink("BonusDrops")]
     [SConfig.PageLink("Professions")]
-
     [SConfig.PageBlock("Experience")]
     [SConfig.SectionTitle("ExperienceModifiers")]
     [SConfig.Option(Min = 0, Max = 100, Interval = 1)]
@@ -54,21 +53,21 @@ public class Config
     [SConfig.PageBlock("Professions")]
     [SConfig.SectionTitle("ProfessionModifiers")]
 
-
     // Recycler
     // No configs associated
     [SConfig.SectionTitle("RecyclerProfessionModifiers")]
     [SConfig.Paragraph("None")]
-
 
     // Environmentalist
     [SConfig.SectionTitle("EnvironmentalistProfessionModifiers")]
     // Gain friendship for every N recyclables
     [SConfig.Option(Min = 100, Max = 10000, Interval = 100)]
     public int RecyclingCountToGainFriendship { get; set; } = 1000;
+
     // Amount of friendship to gain each time
     [SConfig.Option(Min = 0, Max = 100, Interval = 1)]
     public int RecyclingFriendshipGain { get; set; } = 10;
+
     // Additional friendship if prestiged
     [SConfig.Option(Min = 0, Max = 100, Interval = 1)]
     public int RecyclingPrestigeFriendshipGain { get; set; } = 10;
@@ -78,13 +77,13 @@ public class Config
     [SConfig.SectionTitle("SalvagerProfessionModifiers")]
     [SConfig.Paragraph("None")]
 
-
     // Sneak
     [SConfig.SectionTitle("SneakProfessionModifiers")]
     // How quiet is sneaking.  Default noise range is 7, so a value of 7 removes all noise.
     [SConfig.Option(Min = 0, Max = 25, Interval = 1)]
     public int NoiseReduction { get; set; } = 5;
-    // How loud when diging through trash gives friendship.
+
+    // How loud when digging through trash gives friendship.
     [SConfig.Option(Min = 0, Max = 25, Interval = 1)]
     public int PrestigeNoiseIncrease { get; set; } = 0;
 
@@ -94,13 +93,12 @@ public class Config
     [SConfig.Paragraph("None")]
     // No configs associated
 
-
     // Reclaimer
     [SConfig.SectionTitle("ReclaimerProfessionModifiers")]
     // The amount of extra value that the reclaimer skill provides.
     [SConfig.Option(Min = 0, Max = 1, Interval = 0.01f)]
     public float ReclaimerExtraValuePercent { get; set; } = 0.2f;
+
     [SConfig.Option(Min = 0, Max = 1, Interval = 0.01f)]
     public float ReclaimerPrestigeExtraValuePercent { get; set; } = 0.2f;
-
 }

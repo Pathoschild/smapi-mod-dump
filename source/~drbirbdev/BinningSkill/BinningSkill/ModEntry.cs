@@ -20,10 +20,11 @@ public class ModEntry : Mod
 {
     [SMod.Instance]
     internal static ModEntry Instance;
+
     internal static Config Config;
     internal static Assets Assets;
 
-    internal ITranslationHelper I18n => this.Helper.Translation;
+    internal ITranslationHelper I18N => this.Helper.Translation;
 
     public static readonly PerScreen<ISet<string>> UnderleveledCheckedGarbage = new();
 
@@ -31,5 +32,4 @@ public class ModEntry : Mod
     {
         Parser.ParseAll(this);
     }
-
 }

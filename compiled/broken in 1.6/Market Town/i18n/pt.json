@@ -663,7 +663,9 @@
 
 "neutral-order-reaction-1":                         "Ah, OK!",
 "neutral-order-reaction-2":                         "Tudo bem",
-"neutral-order-reaction-3":                         "Legal!"
+"neutral-order-reaction-3":                         "Legal!",
+
+"foodstore.config.shedvisitor": "Solicitação especial de visitantes"
 
 
 

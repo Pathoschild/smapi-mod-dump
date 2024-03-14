@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+    "FarmImprovement_Initial_Question": "Pişt... anakaralı. Dinle beni. Paracığın varsa... ben ve benim oğlanlar çiftliğine yardım edebiliriz. Ne dersin?",
+    "FarmImprovement_Yes": "Anlat bakalım...",
+    "FarmImprovement_No": "İstemez, kalsın.",
+    "FarmImprovement_Farm_Expansion_Question": "Benim oğlanlar çiftliğinde ufak da olsa yer açabilirler. Alt tarafı... {{price}}g istiyoruz. Anlaştık mı?",
+    "FarmImprovement_Sprinkler_Question": "Benim oğlanlar senin toprağa el atıp fıskiyelere yer açabilir. Alt tarafı {{price}}g istiyoruz. Anlaştık mı?",
+    "FarmImprovement_Done_Tomorrow": "Heh heh heh... güzel. Yarın sabah uyandığında neler yaptığımızı göreceksin."
+}

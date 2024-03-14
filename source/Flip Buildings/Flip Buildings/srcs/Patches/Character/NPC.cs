@@ -14,6 +14,7 @@ using System.Reflection.Emit;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewValley;
+using StardewValley.Buildings;
 using FlipBuildings.Utilities;
 
 namespace FlipBuildings.Patches
@@ -33,11 +34,12 @@ namespace FlipBuildings.Patches
 			PatchHelper.CodeReplacement[] codeReplacements = new PatchHelper.CodeReplacement[]
 			{
 				new(
+					instanceType: typeof(Building),
 					instanceInstructions: new CodeInstruction[]
 					{
 						new(OpCodes.Ldloc_1),
+						new(OpCodes.Call, typeof(Farm).GetMethod(nameof(Farm.GetMainFarmHouse)))
 					},
-					instanceType: typeof(Farm),
 					referenceInstruction: new(OpCodes.Call, typeof(Game1).GetMethod(nameof(Game1.warpCharacter), new Type[] { typeof(NPC), typeof(string), typeof(Vector2) })),
 					offset: 10,
 					targetInstruction: new(OpCodes.Ldc_I4_4),

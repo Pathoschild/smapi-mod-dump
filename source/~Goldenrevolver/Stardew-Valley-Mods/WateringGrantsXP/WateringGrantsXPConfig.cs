@@ -10,35 +10,23 @@
 
 namespace WateringGrantsXP
 {
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
     using StardewModdingAPI;
     using System;
     using System.Diagnostics.CodeAnalysis;
 
     public interface IGenericModConfigMenuApi
     {
-        void RegisterModConfig(IManifest mod, Action revertToDefault, Action saveToFile);
+        void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
 
-        void RegisterLabel(IManifest mod, string labelName, string labelDesc);
+        void AddSectionTitle(IManifest mod, Func<string> text, Func<string> tooltip = null);
 
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<bool> optionGet, Action<bool> optionSet);
+        void AddBoolOption(IManifest mod, Func<bool> getValue, Action<bool> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
 
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet);
+        void AddNumberOption(IManifest mod, Func<int> getValue, Action<int> setValue, Func<string> name, Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null, Func<int, string> formatValue = null, string fieldId = null);
 
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet);
+        void AddNumberOption(IManifest mod, Func<float> getValue, Action<float> setValue, Func<string> name, Func<string> tooltip = null, float? min = null, float? max = null, float? interval = null, Func<float, string> formatValue = null, string fieldId = null);
 
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet);
-
-        void RegisterSimpleOption(IManifest mod, string optionName, string optionDesc, Func<SButton> optionGet, Action<SButton> optionSet);
-
-        void RegisterClampedOption(IManifest mod, string optionName, string optionDesc, Func<int> optionGet, Action<int> optionSet, int min, int max);
-
-        void RegisterClampedOption(IManifest mod, string optionName, string optionDesc, Func<float> optionGet, Action<float> optionSet, float min, float max);
-
-        void RegisterChoiceOption(IManifest mod, string optionName, string optionDesc, Func<string> optionGet, Action<string> optionSet, string[] choices);
-
-        void RegisterComplexOption(IManifest mod, string optionName, string optionDesc, Func<Vector2, object, object> widgetUpdate, Func<SpriteBatch, Vector2, object, object> widgetDraw, Action<object> onSave);
+        void AddTextOption(IManifest mod, Func<string> getValue, Action<string> setValue, Func<string> name, Func<string> tooltip = null, string[] allowedValues = null, Func<string, string> formatAllowedValue = null, string fieldId = null);
     }
 
     /// <summary>
@@ -58,7 +46,9 @@ namespace WateringGrantsXP
 
         public int ChanceToDieWhenLeftForTooLong { get; set; } = 100;
 
-        public bool CantRefillCanWithSaltWater { get; set; } = true;
+        public bool WitheringAlsoChecksGardenPots { get; set; } = false;
+
+        public bool CantRefillCanWithSaltWater { get; set; } = false;
 
         public static void VerifyConfigValues(WateringGrantsXPConfig config, WateringGrantsXP mod)
         {
@@ -120,23 +110,28 @@ namespace WateringGrantsXP
 
             var manifest = mod.ModManifest;
 
-            api.RegisterModConfig(manifest, () => config = new WateringGrantsXPConfig(), delegate { mod.Helper.WriteConfig(config); VerifyConfigValues(config, mod); });
+            api.Register(
+                mod: manifest,
+                reset: () => config = new WateringGrantsXPConfig(),
+                save: () => { mod.Helper.WriteConfig(config); VerifyConfigValues(config, mod); }
+            );
 
-            api.RegisterLabel(manifest, "Watering Grants XP", null);
+            api.AddSectionTitle(manifest, () => "Watering Grants XP", null);
 
-            api.RegisterSimpleOption(manifest, "Amount Of Experience", null, () => config.WateringExperienceAmount, (int val) => config.WateringExperienceAmount = val);
-            api.RegisterClampedOption(manifest, "Chance To Get XP", null, () => config.WateringChanceToGetXP, (int val) => config.WateringChanceToGetXP = val, 0, 100);
-            api.RegisterSimpleOption(manifest, "Forage Seed Watering\nGrants Foraging XP", null, () => config.ForageSeedWateringGrantsForagingXP, (bool val) => config.ForageSeedWateringGrantsForagingXP = val);
+            api.AddNumberOption(manifest, () => config.WateringExperienceAmount, (int val) => config.WateringExperienceAmount = val, () => "Amount Of Experience", null, 0);
+            api.AddNumberOption(manifest, () => config.WateringChanceToGetXP, (int val) => config.WateringChanceToGetXP = val, () => "Chance To Get XP", null, 0, 100);
+            api.AddBoolOption(manifest, () => config.ForageSeedWateringGrantsForagingXP, (bool val) => config.ForageSeedWateringGrantsForagingXP = val, () => "Forage Seed Watering\nGrants Foraging XP", null);
 
-            api.RegisterLabel(manifest, "Crops Die Without Water", null);
+            api.AddSectionTitle(manifest, () => "Crops Die Without Water", null);
 
-            api.RegisterSimpleOption(manifest, "Withering Feature Enabled", null, () => config.CropsCanDieWithoutWater, (bool val) => config.CropsCanDieWithoutWater = val);
-            api.RegisterSimpleOption(manifest, "Days For Chance Of Withering", null, () => config.DaysWithoutWaterForChanceToDie, (int val) => config.DaysWithoutWaterForChanceToDie = val);
-            api.RegisterClampedOption(manifest, "Chance For Withering", null, () => config.ChanceToDieWhenLeftForTooLong, (int val) => config.ChanceToDieWhenLeftForTooLong = val, 0, 100);
+            api.AddBoolOption(manifest, () => config.CropsCanDieWithoutWater, (bool val) => config.CropsCanDieWithoutWater = val, () => "Withering Feature Enabled", null);
+            api.AddNumberOption(manifest, () => config.DaysWithoutWaterForChanceToDie, (int val) => config.DaysWithoutWaterForChanceToDie = val, () => "Days For Chance Of Withering", null, 1);
+            api.AddNumberOption(manifest, () => config.ChanceToDieWhenLeftForTooLong, (int val) => config.ChanceToDieWhenLeftForTooLong = val, () => "Chance For Withering", null, 0, 100);
+            api.AddBoolOption(manifest, () => config.WitheringAlsoChecksGardenPots, (bool val) => config.WitheringAlsoChecksGardenPots = val, () => "Withering Also Checks Garden Pots", null);
 
-            api.RegisterLabel(manifest, "Other", null);
+            api.AddSectionTitle(manifest, () => "Other", null);
 
-            api.RegisterSimpleOption(manifest, "Can't Refill Watering Can\nWith Salt Water", null, () => config.CantRefillCanWithSaltWater, (bool val) => config.CantRefillCanWithSaltWater = val);
+            api.AddBoolOption(manifest, () => config.CantRefillCanWithSaltWater, (bool val) => config.CantRefillCanWithSaltWater = val, () => "Can't Refill Watering Can\nWith Salt Water", null);
         }
     }
 }

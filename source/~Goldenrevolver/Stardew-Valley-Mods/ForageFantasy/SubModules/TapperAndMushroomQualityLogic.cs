@@ -20,13 +20,13 @@ namespace ForageFantasy
     {
         public static bool IsMushroomBox(this StardewObject o)
         {
-            return o != null && o.bigCraftable.Value && o.ParentSheetIndex == 128;
+            return o != null && o.QualifiedItemId == "(BC)128";
         }
 
-        public static bool IsTapper(this StardewObject o)
-        {
-            return o != null && o.bigCraftable.Value && (o.ParentSheetIndex == 105 || o.ParentSheetIndex == 264);
-        }
+        //public static bool IsBaseGameTapper(this StardewObject o)
+        //{
+        //    return o != null && (o.QualifiedItemId is "(BC)105" or "BC)264");
+        //}
     }
 
     internal class TapperAndMushroomQualityLogic
@@ -43,7 +43,7 @@ namespace ForageFantasy
                 return;
             }
 
-            foreach (var location in Game1.locations)
+            Utility.ForEachLocation(delegate (GameLocation location)
             {
                 foreach (var terrainfeature in location.terrainFeatures.Pairs)
                 {
@@ -52,7 +52,9 @@ namespace ForageFantasy
                         IncreaseTreeAge(mod, tree);
                     }
                 }
-            }
+
+                return true;
+            });
         }
 
         public static void IncreaseTreeAge(ForageFantasy mod, Tree tree)
@@ -75,53 +77,54 @@ namespace ForageFantasy
             }
         }
 
-        public static void RewardMushroomBoxExp(ForageFantasy mod, Farmer player)
+        public static void RewardMushroomBoxExp(ForageFantasyConfig config, Farmer player)
         {
-            if (mod.Config.MushroomXPAmount > 0)
+            if (config.MushroomBoxXPAmount > 0)
             {
-                player.gainExperience(2, mod.Config.MushroomXPAmount);
+                player.gainExperience(Farmer.foragingSkill, config.MushroomBoxXPAmount);
             }
         }
 
-        public static void RewardTapperExp(ForageFantasy mod, Farmer player)
+        public static void RewardTapperExp(ForageFantasyConfig config, Farmer player)
         {
-            if (mod.Config.TapperXPAmount > 0)
+            if (config.TapperXPAmount > 0)
             {
-                player.gainExperience(2, mod.Config.TapperXPAmount);
+                player.gainExperience(Farmer.foragingSkill, config.TapperXPAmount);
             }
         }
 
-        public static int DetermineTapperQuality(ForageFantasy mod, Farmer player, Tree tree)
+        public static int DetermineTapperQuality(ForageFantasyConfig config, Farmer player, Tree tree)
         {
-            int option = mod.Config.TapperQualityOptions;
+            switch (config.TapperQualityOptions)
+            {
+                case 1:
+                case 2:
+                    // has tapper profession or it's not required
+                    if (!config.TapperQualityRequiresTapperPerk || player.professions.Contains(Farmer.tapper))
+                    {
+                        return ForageFantasy.DetermineForageQuality(player, config.TapperQualityOptions == 1);
+                    }
+                    break;
 
-            if (option is 1 or 2)
-            {
-                // has tapper profession or it's not required
-                if (!mod.Config.TapperQualityRequiresTapperPerk || player.professions.Contains(Farmer.tapper))
-                {
-                    return ForageFantasy.DetermineForageQuality(player, mod.Config.TapperQualityOptions == 1);
-                }
-            }
-            else if (option is 3 or 4)
-            {
-                // quality increase once a year
-                return DetermineTreeQuality(mod, tree);
+                case 3:
+                case 4:
+                    // quality increase once a year
+                    return DetermineTreeQuality(config, tree);
             }
 
             // tapper perk required but doesn't have it or invalid option
             return 0;
         }
 
-        public static int DetermineTreeQuality(ForageFantasy mod, Tree tree)
+        public static int DetermineTreeQuality(ForageFantasyConfig config, Tree tree)
         {
-            tree.modData.TryGetValue($"{mod.ModManifest.UniqueID}/treeAge", out string moddata);
+            tree.modData.TryGetValue($"{ForageFantasy.Manifest.UniqueID}/treeAge", out string moddata);
 
             if (!string.IsNullOrEmpty(moddata))
             {
                 int age = int.Parse(moddata);
 
-                bool useMonths = mod.Config.TapperQualityOptions == 3;
+                bool useMonths = config.TapperQualityOptions == 3;
 
                 int timeForLevelUp = useMonths ? 28 : 28 * 4;
 

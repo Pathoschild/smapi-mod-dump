@@ -15,8 +15,8 @@ namespace PermanentCookoutKit
     using Microsoft.Xna.Framework.Graphics;
     using StardewValley;
     using StardewValley.BellsAndWhistles;
-    using StardewValley.Network;
-    using StardewValley.Objects;
+    using StardewValley.Extensions;
+    using StardewValley.ItemTypeDefinitions;
     using StardewValley.Tools;
     using System;
     using System.Linq;
@@ -24,11 +24,11 @@ namespace PermanentCookoutKit
 
     internal class Patcher
     {
-        private const int WoodID = 388;
-        private const int DriftwoodID = 169;
-        private const int HardwoodID = 709;
-        private const int CoalID = 382;
-        private const int FiberID = 771;
+        internal const string WoodID = "(O)388";
+        internal const string DriftwoodID = "(O)169";
+        internal const string HardwoodID = "(O)709";
+        internal const string CoalID = "(O)382";
+        internal const string FiberID = "(O)771";
 
         private static PermanentCookoutKit mod;
 
@@ -55,427 +55,185 @@ namespace PermanentCookoutKit
                 harmony.Patch(
                    original: AccessTools.Method(typeof(Torch), nameof(Torch.checkForAction)),
                    prefix: new HarmonyMethod(typeof(Patcher), nameof(CheckForAction_Pre)));
-
-                harmony.Patch(
-                   original: AccessTools.Method(typeof(StardewObject), nameof(StardewObject.performObjectDropInAction), new[] { typeof(Item), typeof(bool), typeof(Farmer) }),
-                   prefix: new HarmonyMethod(typeof(Patcher), nameof(UpdateCharcoalKilnInput)));
             }
             catch (Exception e)
             {
                 mod.ErrorLog("Error while trying to setup required patches:", e);
             }
-
-            if (mod.Helper.ModRegistry.IsLoaded("Pathoschild.Automate"))
-            {
-                try
-                {
-                    mod.DebugLog("This mod patches Automate. If you notice issues with Automate, make sure it happens without this mod before reporting it to the Automate page.");
-
-                    // I don't see a use in using MachineWrapper because it's also internal I need to check for the type of the machine anyway which would be way too much reflection at runtime
-                    var charcoalKiln = AccessTools.TypeByName("Pathoschild.Stardew.Automate.Framework.Machines.Objects.CharcoalKilnMachine");
-
-                    harmony.Patch(
-                       original: AccessTools.Method(charcoalKiln, "SetInput"),
-                       prefix: new HarmonyMethod(typeof(Patcher), nameof(PatchCharcoalKiln)));
-                }
-                catch (Exception e)
-                {
-                    mod.ErrorLog($"Error while trying to patch Automate. Please report this to the mod page of {mod.ModManifest.Name}, not Automate:", e);
-                }
-            }
         }
 
-        public static bool PatchCharcoalKiln(ref object __instance)
+        // based on 'IsOn' case of Torch.Draw(SpriteBatch, int, int, float)
+        public static void Draw_Post(Torch __instance, SpriteBatch spriteBatch, int x, int y, float alpha)
         {
-            try
+            if (!Game1.eventUp || Game1.currentLocation?.currentEvent?.showGroundObjects == true || Game1.currentLocation.IsFarm)
             {
-                var recipesProp = AccessTools.Field(__instance.GetType(), "Recipes");
-                object[] recipes = (object[])recipesProp.GetValue(__instance);
+                float draw_layer = Math.Max(0f, (((y + 1) * 64) - 24) / 10000f) + (x * 1E-05f);
 
-                object oldWoodRecipe = recipes[0];
-
-                var constructor = oldWoodRecipe.GetType().GetConstructor(new Type[] { typeof(int), typeof(int), typeof(Func<Item, StardewObject>), typeof(int) });
-
-                Func<Item, StardewObject> output = input => new StardewObject(CoalID, 1);
-
-                var woodRecipe = constructor.Invoke(new object[] { WoodID, mod.Config.CharcoalKilnWoodNeeded, output, mod.Config.CharcoalKilnTimeNeeded });
-
-                object driftwoodRecipe = null;
-                object hardwoodRecipe = null;
-
-                int count = 1;
-
-                if (mod.Config.DriftwoodMultiplier > 0)
-                {
-                    count++;
-                    driftwoodRecipe = constructor.Invoke(new object[] { DriftwoodID, CountWithMultiplier(mod.Config.CharcoalKilnWoodNeeded, mod.Config.DriftwoodMultiplier), output, mod.Config.CharcoalKilnTimeNeeded });
-                }
-
-                if (mod.Config.HardwoodMultiplier > 0)
-                {
-                    count++;
-                    hardwoodRecipe = constructor.Invoke(new object[] { HardwoodID, CountWithMultiplier(mod.Config.CharcoalKilnWoodNeeded, mod.Config.HardwoodMultiplier), output, mod.Config.CharcoalKilnTimeNeeded });
-                }
-
-                Array resultArray = Array.CreateInstance(woodRecipe.GetType(), count);
-
-                resultArray.SetValue(woodRecipe, 0);
-
-                if (mod.Config.DriftwoodMultiplier > 0)
-                {
-                    resultArray.SetValue(driftwoodRecipe, 1);
-                }
-
-                if (mod.Config.HardwoodMultiplier > 0)
-                {
-                    resultArray.SetValue(hardwoodRecipe, count - 1);
-                }
-
-                recipesProp.SetValue(__instance, resultArray);
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
-                return true;
-            }
-        }
-
-        public static void Draw_Post(Torch __instance, SpriteBatch spriteBatch, int x, int y, float alpha = 1f)
-        {
-            try
-            {
-                if (!Game1.eventUp || (Game1.currentLocation != null && Game1.currentLocation.currentEvent != null && Game1.currentLocation.currentEvent.showGroundObjects) || Game1.currentLocation.IsFarm)
-                {
-                    float draw_layer = Math.Max(0f, (((y + 1) * 64) - 24) / 10000f) + (x * 1E-05f);
-
-                    // draw the upper half of the cookout kit even if isOn == false
-                    if (__instance.IsCookoutKit() && !__instance.IsOn)
-                    {
-                        Rectangle r = StardewObject.getSourceRectForBigCraftable(__instance.ParentSheetIndex + 1);
-                        r.Height -= 16;
-                        Vector2 scaleFactor = __instance.getScale();
-                        scaleFactor *= 4f;
-                        Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y * 64) - 64 + 12));
-                        var destination = new Rectangle((int)(position.X - (scaleFactor.X / 2f)) + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(position.Y - (scaleFactor.Y / 2f)) + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(64f + scaleFactor.X), (int)(64f + (scaleFactor.Y / 2f)));
-                        spriteBatch.Draw(Game1.bigCraftableSpriteSheet, destination, new Rectangle?(r), Color.White * alpha, 0f, Vector2.Zero, SpriteEffects.None, draw_layer + 0.0028f);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
-            }
-        }
-
-        public static void UpdateWhenCurrentLocation_Post(Torch __instance, GameLocation environment, float ___smokePuffTimer)
-        {
-            try
-            {
-                // remove the smoke from cookout kits that are off
+                // draw the upper half of the cookout kit even if isOn == false
                 if (__instance.IsCookoutKit() && !__instance.IsOn)
                 {
-                    // the condition for smoke to spawn in the overridden method
-                    if (___smokePuffTimer == 1000f)
-                    {
-                        // make sure it really is the smoke that was just spawned and then remove it
-                        if (environment.temporarySprites.Any() && environment.temporarySprites.Last().initialPosition == (__instance.TileLocation * 64f) + new Vector2(32f, -32f))
-                        {
-                            environment.temporarySprites.RemoveAt(environment.temporarySprites.Count - 1);
-                        }
-                    }
+                    ParsedItemData itemData2 = ItemRegistry.GetDataOrErrorItem(__instance.QualifiedItemId);
+                    Rectangle r = itemData2.GetSourceRect(1, new int?(__instance.ParentSheetIndex)).Clone();
+                    r.Height -= 16;
+                    Vector2 scaleFactor = __instance.getScale();
+                    scaleFactor *= 4f;
+                    Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64, (y * 64) - 64 + 12));
+                    var destination = new Rectangle((int)(position.X - (scaleFactor.X / 2f)) + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(position.Y - (scaleFactor.Y / 2f)) + ((__instance.shakeTimer > 0) ? Game1.random.Next(-1, 2) : 0), (int)(64f + scaleFactor.X), (int)(64f + (scaleFactor.Y / 2f)));
+                    spriteBatch.Draw(itemData2.GetTexture(), destination, new Rectangle?(r), Color.White * alpha, 0f, Vector2.Zero, SpriteEffects.None, draw_layer + 0.0028f);
                 }
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
             }
         }
 
-        public static bool UpdateCharcoalKilnInput(ref StardewObject __instance, ref bool __result, ref Item dropInItem, ref bool probe, ref Farmer who)
+        public static void UpdateWhenCurrentLocation_Post(Torch __instance, float ___smokePuffTimer)
         {
-            try
+            GameLocation environment = __instance.Location;
+
+            // remove the smoke from cookout kits that are off
+            if (environment != null && __instance.IsCookoutKit() && !__instance.IsOn)
             {
-                if (__instance.name.Equals("Charcoal Kiln"))
+                // the condition for smoke to spawn in the overridden method
+                if (___smokePuffTimer == 1000f)
                 {
-                    if (__instance.isTemporarilyInvisible)
+                    // make sure it really is the smoke that was just spawned and then remove it
+                    if (environment.temporarySprites.Any() && environment.temporarySprites.Last().initialPosition == (__instance.TileLocation * 64f) + new Vector2(32f, -32f))
                     {
-                        __result = false;
-                        return false;
+                        environment.temporarySprites.RemoveAt(environment.temporarySprites.Count - 1);
                     }
-
-                    if (dropInItem is not StardewObject)
-                    {
-                        __result = false;
-                        return false;
-                    }
-
-                    StardewObject dropIn = dropInItem as StardewObject;
-
-                    if (dropInItem is Wallpaper)
-                    {
-                        __result = false;
-                        return false;
-                    }
-
-                    if (__instance.heldObject.Value != null)
-                    {
-                        __result = false;
-                        return false;
-                    }
-
-                    if (dropIn != null && dropIn.bigCraftable.Value)
-                    {
-                        __result = false;
-                        return false;
-                    }
-
-                    if (__instance.bigCraftable.Value && !probe && dropIn != null && __instance.heldObject.Value == null)
-                    {
-                        __instance.scale.X = 5f;
-                    }
-
-                    if (probe && __instance.MinutesUntilReady > 0)
-                    {
-                        __result = false;
-                        return false;
-                    }
-
-                    int consumeCount = -1;
-
-                    switch (dropIn.ParentSheetIndex)
-                    {
-                        case DriftwoodID:
-                            if (mod.Config.DriftwoodMultiplier > 0 && dropIn.Stack >= CountWithMultiplier(mod.Config.CharcoalKilnWoodNeeded, mod.Config.DriftwoodMultiplier))
-                            {
-                                consumeCount = CountWithMultiplier(mod.Config.CharcoalKilnWoodNeeded, mod.Config.DriftwoodMultiplier);
-                            }
-
-                            break;
-
-                        case WoodID:
-                            if (dropIn.Stack >= mod.Config.CharcoalKilnWoodNeeded)
-                            {
-                                consumeCount = mod.Config.CharcoalKilnWoodNeeded;
-                            }
-
-                            break;
-
-                        case HardwoodID:
-                            if (mod.Config.HardwoodMultiplier > 0 && dropIn.Stack >= CountWithMultiplier(mod.Config.CharcoalKilnWoodNeeded, mod.Config.HardwoodMultiplier))
-                            {
-                                consumeCount = CountWithMultiplier(mod.Config.CharcoalKilnWoodNeeded, mod.Config.HardwoodMultiplier);
-                            }
-
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    if (who.IsLocalPlayer && consumeCount == -1)
-                    {
-                        if (!probe && who.IsLocalPlayer && StardewObject.autoLoadChest == null)
-                        {
-                            Game1.showRedMessage(Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12783"));
-                        }
-
-                        __result = false;
-                        return false;
-                    }
-
-                    if (__instance.heldObject.Value == null && consumeCount != -1)
-                    {
-                        if (!probe)
-                        {
-                            __instance.ConsumeInventoryItem(who, dropIn, consumeCount);
-                            who.currentLocation.playSound("openBox", NetAudio.SoundContext.Default);
-                            DelayedAction.playSoundAfterDelay("fireball", 50, null, -1);
-                            __instance.showNextIndex.Value = true;
-
-                            var multiplayer = (Multiplayer)AccessTools.Field(typeof(Game1), "multiplayer").GetValue(null);
-
-                            var tempSprite = new TemporaryAnimatedSprite(27, (__instance.TileLocation * 64f) + new Vector2(-16f, -128f), Color.White, 4, false, 50f, 10, 64, ((__instance.TileLocation.Y + 1f) * 64f / 10000f) + 0.0001f, -1, 0)
-                            {
-                                alphaFade = 0.005f
-                            };
-
-                            multiplayer.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite[] { tempSprite });
-
-                            __instance.heldObject.Value = new StardewObject(CoalID, 1, false, -1, 0);
-                            __instance.MinutesUntilReady = mod.Config.CharcoalKilnTimeNeeded;
-                        }
-                        else
-                        {
-                            __instance.heldObject.Value = new StardewObject();
-
-                            __result = true;
-                            return false;
-                        }
-                    }
-
-                    __result = false;
-                    return false;
                 }
-                else
-                {
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
-                return true;
             }
         }
 
-        public static void PerformToolAction_Post(StardewObject __instance, Tool t, GameLocation location)
+        public static void PerformToolAction_Post(StardewObject __instance, Tool t)
         {
-            try
+            GameLocation location = __instance.Location;
+
+            if (__instance.IsCookoutKit() && location != null)
             {
-                if (__instance.IsCookoutKit() && location != null)
+                if (!location.Objects.ContainsKey(__instance.TileLocation))
                 {
-                    if (!location.Objects.ContainsKey(__instance.TileLocation))
-                    {
-                        Vector2 dropPosition = __instance.TileLocation * 64f;
+                    Vector2 dropPosition = __instance.TileLocation * 64f;
 
-                        // drop 1 iron bar
-                        location.debris.Add(new Debris(new StardewObject(335, 1), dropPosition));
+                    // drop 1 iron bar
+                    location.debris.Add(new Debris(ItemRegistry.Create("(O)335", 1), dropPosition));
 
-                        // drop 10 stones
-                        location.debris.Add(new Debris(new StardewObject(390, 10), dropPosition));
-                    }
-                    else if (t is WateringCan can && can.WaterLeft > 0)
-                    {
-                        // extinguishes the fire, does not truly remove the object
-                        __instance.performRemoveAction(__instance.TileLocation, location);
-                    }
+                    // drop 10 stones
+                    location.debris.Add(new Debris(ItemRegistry.Create("(O)390", 10), dropPosition));
                 }
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
+                else if (t is WateringCan can && can.WaterLeft > 0)
+                {
+                    // extinguishes the fire, does not truly remove the object
+                    __instance.performRemoveAction();
+                }
             }
         }
 
         public static bool CheckForAction_Pre(Torch __instance, Farmer who, bool justCheckingForActivity)
         {
-            try
+            if (justCheckingForActivity)
             {
-                if (justCheckingForActivity)
-                {
-                    return true;
-                }
-
-                // check for ignition
-                if (__instance.IsCookoutKit() && !__instance.IsOn && who != null)
-                {
-                    int coalCount = mod.Config.CoalNeeded;
-                    int baseKindlingCount = mod.Config.FiberNeeded;
-                    int baseWoodCount = mod.Config.WoodNeeded;
-
-                    float driftwoodMult = mod.Config.DriftwoodMultiplier;
-                    float hardwoodMult = mod.Config.HardwoodMultiplier;
-
-                    bool hasCoal = who.hasItemInInventory(CoalID, coalCount);
-
-                    bool hasKindling = false;
-                    int kindlingID = -1;
-                    int actualKindlingCount = -1;
-
-                    if (hasCoal)
-                    {
-                        if (!hasKindling)
-                        {
-                            // soggy newspaper
-                            hasKindling = CheckForResource(who, 172, baseKindlingCount, mod.Config.NewspaperMultiplier, ref kindlingID, ref actualKindlingCount);
-                        }
-
-                        if (!hasKindling)
-                        {
-                            // fiber
-                            hasKindling = CheckForResource(who, FiberID, baseKindlingCount, 1, ref kindlingID, ref actualKindlingCount);
-                        }
-
-                        if (!hasKindling)
-                        {
-                            // wool
-                            hasKindling = CheckForResource(who, 440, baseKindlingCount, mod.Config.WoolMultiplier, ref kindlingID, ref actualKindlingCount);
-                        }
-
-                        if (!hasKindling)
-                        {
-                            // cloth
-                            hasKindling = CheckForResource(who, 428, baseKindlingCount, mod.Config.ClothMultiplier, ref kindlingID, ref actualKindlingCount);
-                        }
-                    }
-
-                    bool hasWood = false;
-                    int chosenWoodID = -1;
-                    int actualWoodCount = -1;
-
-                    if (hasCoal && hasKindling)
-                    {
-                        if (!hasWood)
-                        {
-                            // driftwood
-                            hasWood = CheckForResource(who, DriftwoodID, baseKindlingCount, mod.Config.DriftwoodMultiplier, ref chosenWoodID, ref actualWoodCount);
-                        }
-
-                        if (!hasWood)
-                        {
-                            // wood
-                            hasWood = CheckForResource(who, WoodID, baseKindlingCount, 1, ref chosenWoodID, ref actualWoodCount);
-                        }
-
-                        if (!hasWood)
-                        {
-                            // hardwood
-                            hasWood = CheckForResource(who, HardwoodID, baseKindlingCount, mod.Config.HardwoodMultiplier, ref chosenWoodID, ref actualWoodCount);
-                        }
-                    }
-
-                    if (hasCoal && hasKindling && hasWood)
-                    {
-                        who.removeItemsFromInventory(CoalID, coalCount);
-                        who.removeItemsFromInventory(kindlingID, actualKindlingCount);
-                        who.removeItemsFromInventory(chosenWoodID, actualWoodCount);
-
-                        __instance.IsOn = true;
-
-                        if (__instance.bigCraftable.Value)
-                        {
-                            Game1.playSound("fireball");
-
-                            __instance.initializeLightSource(__instance.TileLocation, false);
-                            AmbientLocationSounds.addSound(__instance.TileLocation, 1);
-                        }
-                    }
-                    else
-                    {
-                        var coal = new StardewObject(CoalID, 0);
-                        var fiber = new StardewObject(FiberID, 0);
-                        var wood = new StardewObject(WoodID, 0);
-
-                        Game1.showRedMessage($"{coalCount} {coal.DisplayName}, {baseKindlingCount} {fiber.DisplayName}, {baseWoodCount} {wood.DisplayName}");
-                    }
-
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
                 return true;
             }
+
+            // check for ignition
+            if (!__instance.IsCookoutKit() || __instance.IsOn || who == null)
+            {
+                return true;
+            }
+
+            int coalCount = mod.Config.CoalNeeded;
+            int baseKindlingCount = mod.Config.FiberNeeded;
+            int baseWoodCount = mod.Config.WoodNeeded;
+
+            bool hasCoal = who.Items.ContainsId(CoalID, coalCount);
+
+            bool hasKindling = false;
+            string kindlingID = null;
+            int actualKindlingCount = -1;
+
+            if (hasCoal)
+            {
+                if (!hasKindling)
+                {
+                    // soggy newspaper
+                    hasKindling = CheckForResource(who, "(O)172", baseKindlingCount, mod.Config.NewspaperMultiplier, ref kindlingID, ref actualKindlingCount);
+                }
+
+                if (!hasKindling)
+                {
+                    // fiber
+                    hasKindling = CheckForResource(who, FiberID, baseKindlingCount, 1, ref kindlingID, ref actualKindlingCount);
+                }
+
+                if (!hasKindling)
+                {
+                    // wool
+                    hasKindling = CheckForResource(who, "(O)440", baseKindlingCount, mod.Config.WoolMultiplier, ref kindlingID, ref actualKindlingCount);
+                }
+
+                if (!hasKindling)
+                {
+                    // cloth
+                    hasKindling = CheckForResource(who, "(O)428", baseKindlingCount, mod.Config.ClothMultiplier, ref kindlingID, ref actualKindlingCount);
+                }
+            }
+
+            bool hasWood = false;
+            string chosenWoodID = null;
+            int actualWoodCount = -1;
+
+            if (hasCoal && hasKindling)
+            {
+                if (!hasWood)
+                {
+                    // driftwood
+                    hasWood = CheckForResource(who, DriftwoodID, baseKindlingCount, mod.Config.DriftwoodMultiplier, ref chosenWoodID, ref actualWoodCount);
+                }
+
+                if (!hasWood)
+                {
+                    // wood
+                    hasWood = CheckForResource(who, WoodID, baseKindlingCount, 1, ref chosenWoodID, ref actualWoodCount);
+                }
+
+                if (!hasWood)
+                {
+                    // hardwood
+                    hasWood = CheckForResource(who, HardwoodID, baseKindlingCount, mod.Config.HardwoodMultiplier, ref chosenWoodID, ref actualWoodCount);
+                }
+            }
+
+            if (hasCoal && hasKindling && hasWood)
+            {
+                who.Items.ReduceId(CoalID, coalCount);
+                who.Items.ReduceId(kindlingID, actualKindlingCount);
+                who.Items.ReduceId(chosenWoodID, actualWoodCount);
+
+                __instance.IsOn = true;
+
+                if (__instance.bigCraftable.Value)
+                {
+                    Game1.playSound("fireball");
+
+                    __instance.initializeLightSource(__instance.TileLocation, false);
+                    AmbientLocationSounds.addSound(__instance.TileLocation, 1);
+                }
+            }
+            else
+            {
+                var coal = ItemRegistry.Create(CoalID);
+                coal.stack.Value = 0;
+                var fiber = ItemRegistry.Create(FiberID);
+                fiber.stack.Value = 0;
+                var wood = ItemRegistry.Create(WoodID);
+                wood.stack.Value = 0;
+
+                Game1.showRedMessage($"{coalCount} {coal.DisplayName}, {baseKindlingCount} {fiber.DisplayName}, {baseWoodCount} {wood.DisplayName}");
+            }
+
+            return false;
         }
 
-        private static int CountWithMultiplier(int baseCount, float multiplier)
+        internal static int CountWithMultiplier(int baseCount, float multiplier)
         {
             if (multiplier > 0)
             {
@@ -487,13 +245,13 @@ namespace PermanentCookoutKit
             }
         }
 
-        private static bool CheckForResource(Farmer who, int id, int baseCount, float multiplier, ref int idToSet, ref int kindlingToRemove)
+        private static bool CheckForResource(Farmer who, string id, int baseCount, float multiplier, ref string idToSet, ref int kindlingToRemove)
         {
             if (multiplier > 0)
             {
                 int count = CountWithMultiplier(baseCount, multiplier);
 
-                if (who.hasItemInInventory(id, count))
+                if (who.Items.ContainsId(id, count))
                 {
                     idToSet = id;
                     kindlingToRemove = count;

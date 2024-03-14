@@ -213,8 +213,10 @@ namespace Unlockable_Bundles
 
             var shops = ShopObject.getAll();
 
-            if (key.ToLower().Trim() != "all")
-                shops = shops.Where(el => el.Unlockable.ID == key).ToList();
+            if (key.EndsWith('*'))
+                shops = shops.Where(el => el.Unlockable.ID.ToLower().StartsWith(key.Remove(key.Length-1).ToLower())).ToList();
+            else if (key.ToLower().Trim() != "all")
+                shops = shops.Where(el => el.Unlockable.ID.ToLower() == key.ToLower()).ToList();
 
             shops.ForEach(el => el.WasDiscovered = wasdiscovered);
 

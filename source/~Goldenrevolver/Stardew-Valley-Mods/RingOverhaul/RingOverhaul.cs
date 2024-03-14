@@ -13,12 +13,14 @@ namespace RingOverhaul
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using StardewModdingAPI;
+    using StardewModdingAPI.Events;
     using StardewValley;
+    using StardewValley.GameData.Objects;
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    public class RingOverhaul : Mod, IAssetEditor
+    public class RingOverhaul : Mod
     {
         public Texture2D ExplorerRingTexture { get; set; }
 
@@ -26,55 +28,57 @@ namespace RingOverhaul
 
         public Texture2D PaladinRingTexture { get; set; }
 
-        private bool ShouldApplyCustomSprites => Config.CraftableGemRings && Config.CraftableGemRingsCustomSprites && Config.CraftableGemRingsMetalBar != 1 && !Helper.ModRegistry.IsLoaded("BBR.BetterRings");
+        private bool ShouldApplyCustomSprites
+        {
+            get
+            {
+                return Config.CraftableGemRings && Config.CraftableGemRingsCustomSprites
+                    && Config.CraftableGemRingsMetalBar != 1 && !Helper.ModRegistry.IsLoaded("BBR.BetterRings");
+            }
+        }
 
-        public const int CoalID = 382;
-        public const int IridiumBandID = 527;
-        public const int JukeBoxRingID = 528;
+        public const string IridiumBandNonQualifiedID = "527";
+        public const string JukeBoxRingNonQualifiedID = "528";
 
-        internal RingConfig Config;
+        internal RingOverhaulConfig Config;
 
-        // TODO add API
-        // TODO make fake assets to make this CP changeable
+        // TODO double check 1.6 mini jukebox changes, especially Game1.player calls vs who calls
+
         // TODO make rings of the same category type not equippable at the same time (care for compatibility with equip more rings)
 
         public override void Entry(IModHelper helper)
         {
-            Config = Helper.ReadConfig<RingConfig>();
+            Config = Helper.ReadConfig<RingOverhaulConfig>();
 
-            Helper.Events.GameLoop.GameLaunched += GameLoop_GameLaunched;
-            Helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
+            RingOverhaulConfig.VerifyConfigValues(this, Config);
 
             string path = Helper.ModRegistry.IsLoaded("BBR.BetterRings") ? "assets/betterRings" : "assets";
 
-            ExplorerRingTexture = Helper.Content.Load<Texture2D>($"{path}/explorer_ring.png");
-            BerserkerRingTexture = Helper.Content.Load<Texture2D>($"{path}/berserker_ring.png");
-            PaladinRingTexture = Helper.Content.Load<Texture2D>($"{path}/paladin_ring.png");
+            ExplorerRingTexture = Helper.ModContent.Load<Texture2D>($"{path}/explorer_ring.png");
+            BerserkerRingTexture = Helper.ModContent.Load<Texture2D>($"{path}/berserker_ring.png");
+            PaladinRingTexture = Helper.ModContent.Load<Texture2D>($"{path}/paladin_ring.png");
+
+            Helper.Events.GameLoop.DayStarted += GameLoop_DayStarted;
+            Helper.Events.Content.AssetRequested += OnAssetRequested;
+
+            Helper.Events.GameLoop.GameLaunched += delegate { RingOverhaulConfig.SetUpModConfigMenu(Config, this); };
 
             Patcher.PatchAll(this);
         }
 
-        private void GameLoop_GameLaunched(object sender, StardewModdingAPI.Events.GameLaunchedEventArgs e)
+        private void GameLoop_DayStarted(object sender, DayStartedEventArgs e)
         {
-            RingConfig.SetUpModConfigMenu(Config, this);
-
-            try
+            if (!Config.JukeboxRingEnabled)
             {
-                Helper.Content.InvalidateCache("Data/CraftingRecipes");
-                Helper.Content.InvalidateCache("Data/ObjectInformation");
+                return;
             }
-            catch (Exception)
-            {
-            }
-        }
 
-        private void GameLoop_DayStarted(object sender, StardewModdingAPI.Events.DayStartedEventArgs e)
-        {
-            if (Config.JukeboxRingEnabled)
+            foreach (var farmer in Game1.getAllFarmers())
             {
-                if (Game1.player.craftingRecipes.ContainsKey("Mini-Jukebox") && !Game1.player.craftingRecipes.ContainsKey("Jukebox Ring"))
+                if (farmer.craftingRecipes.ContainsKey("Mini-Jukebox")
+                    && !farmer.craftingRecipes.ContainsKey("Jukebox Ring"))
                 {
-                    Game1.player.craftingRecipes.Add("Jukebox Ring", 0);
+                    farmer.craftingRecipes.Add("Jukebox Ring", 0);
                 }
             }
         }
@@ -102,147 +106,140 @@ namespace RingOverhaul
             Monitor.Log(baseMessage + errorMessage, LogLevel.Error);
         }
 
-        public static string TryGetDisplayFieldEarly(int id, bool bigCraftable = false)
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            var dict = bigCraftable ? Game1.bigCraftablesInformation : Game1.objectInformation;
-
-            if (dict?.TryGetValue(id, out string value) == true)
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/Objects"))
             {
-                var split = value?.Split('/');
-
-                if (split?.Length > 4)
+                e.Edit((asset) =>
                 {
-                    return split[4];
-                }
-            }
+                    IDictionary<string, ObjectData> data = asset.AsDictionary<string, ObjectData>().Data;
 
-            return null;
-        }
-
-        public bool CanEdit<T>(IAssetInfo asset)
-        {
-            return asset.AssetNameEquals("Data/ObjectInformation")
-                || asset.AssetNameEquals("Data/CraftingRecipes")
-                || (asset.AssetNameEquals("Maps/springobjects") && ShouldApplyCustomSprites);
-        }
-
-        public void Edit<T>(IAssetData asset)
-        {
-            if (asset.AssetNameEquals("Data/ObjectInformation"))
-            {
-                IDictionary<int, string> data = asset.AsDictionary<int, string>().Data;
-
-                var entry = data[IridiumBandID];
-                var fields = entry.Split('/');
-                fields[5] = Helper.Translation.Get("IridiumBandTooltip");
-                data[IridiumBandID] = string.Join("/", fields);
-
-                entry = data[JukeBoxRingID];
-                fields = entry.Split('/');
-                fields[5] = TryGetDisplayFieldEarly(209, true);
-
-                if (fields[5] != null)
-                {
-                    data[JukeBoxRingID] = string.Join("/", fields);
-                }
-            }
-
-            if (asset.AssetNameEquals("Maps/springobjects") && ShouldApplyCustomSprites)
-            {
-                var editor = asset.AsImage();
-
-                string path = Config.CraftableGemRingsMetalBar switch
-                {
-                    2 => "assets/gem_rings_iron.png",
-                    3 => "assets/gem_rings_gold.png",
-                    _ => "assets/gem_rings_progressive.png",
-                };
-
-                Texture2D sourceImage = Helper.Content.Load<Texture2D>(path, ContentSource.ModFolder);
-                editor.PatchImage(sourceImage, targetArea: new Rectangle(16, 352, 96, 16));
-            }
-
-            if (asset.AssetNameEquals("Data/CraftingRecipes"))
-            {
-                IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
-
-                var recipeChanges = new Dictionary<string, Tuple<string, string>>();
-
-                if (Config.JukeboxRingEnabled)
-                {
-                    string name = TryGetDisplayFieldEarly(JukeBoxRingID) ?? "Jukebox Ring";
-
-                    data.Add("Jukebox Ring", $"336 1 787 1 464 1/Home/528/false/null/{name}");
-                }
-
-                if (!Config.OldGlowStoneRingRecipe)
-                {
-                    recipeChanges["Iridium Band"] = new Tuple<string, string>("337 2 529 1 530 1 531 1 532 1 533 1 534 1", "Combat 9");
-                }
-
-                if (!Config.OldGlowStoneRingRecipe)
-                {
-                    recipeChanges["Glowstone Ring"] = new Tuple<string, string>("517 1 519 1", "Mining 4");
-                }
-
-                if (Config.MinorRingCraftingChanges)
-                {
-                    recipeChanges["Sturdy Ring"] = new Tuple<string, string>("334 2 86 5 338 5", "Combat 1");
-                    recipeChanges["Warrior Ring"] = new Tuple<string, string>("335 5 382 25 84 10", "Combat 4");
-                }
-
-                foreach (var item in recipeChanges)
-                {
-                    var entry = data[item.Key];
-                    var fields = entry.Split('/');
-                    fields[0] = item.Value.Item1;
-                    fields[4] = item.Value.Item2;
-                    data[item.Key] = string.Join("/", fields);
-                }
-
-                if (!Config.OldGlowStoneRingRecipe)
-                {
-                    string name = TryGetDisplayFieldEarly(517) ?? "Glow Ring";
-
-                    data.Add("Glow Ring", $"516 1 768 5/Home/517/false/Mining 4/{name}");
-
-                    name = TryGetDisplayFieldEarly(519) ?? "Magnet Ring";
-
-                    data.Add("Magnet Ring", $"518 1 769 5/Home/519/false/Mining 4/{name}");
-                }
-
-                if (Config.CraftableGemRings)
-                {
-                    var dict = new Dictionary<string, int> { { "Amethyst Ring", 66 }, { "Topaz Ring", 68 }, { "Aquamarine Ring", 62 }, { "Jade Ring", 70 }, { "Emerald Ring", 60 }, { "Ruby Ring", 64 } }.ToList();
-
-                    int itemId = 529;
-                    int combatLevel = 2;
-                    int oreBar = Config.CraftableGemRingsMetalBar == 2 ? 335 : Config.CraftableGemRingsMetalBar == 3 ? 336 : 334;
-
-                    for (int i = 0; i < dict.Count; i++)
+                    if (Config.IridiumBandChangesEnabled)
                     {
-                        string name = TryGetDisplayFieldEarly(itemId) ?? dict[i].Key;
-
-                        data.Add(dict[i].Key, $"{dict[i].Value} 1 {oreBar} 1/Home/{itemId}/ false/Combat {combatLevel}/{name}");
-
-                        if (Config.CraftableGemRingsMetalBar == 0 && i is 1 or 3)
-                        {
-                            oreBar++;
-                        }
-
-                        if (Config.CraftableGemRingsUnlockLevels != 0)
-                        {
-                            combatLevel += i == 2 ? 2 : 1;
-                        }
-                        else if (i is 1 or 3)
-                        {
-                            combatLevel += 2;
-                        }
-
-                        itemId++;
+                        var entry = data[IridiumBandNonQualifiedID];
+                        entry.Description = Helper.Translation.Get("IridiumBandTooltip");
+                        data[IridiumBandNonQualifiedID] = entry;
                     }
-                }
+
+                    if (Config.JukeboxRingEnabled)
+                    {
+                        var entry = data[JukeBoxRingNonQualifiedID];
+                        //entry.Description = "[LocalizedText Strings\\Objects:JukeboxRing_Description]";
+                        entry.Description = "[LocalizedText Strings\\BigCraftables:MiniJukebox_Description]";
+                        data[JukeBoxRingNonQualifiedID] = entry;
+                    }
+                });
+            }
+
+            if (e.NameWithoutLocale.IsEquivalentTo("Maps/springobjects") && ShouldApplyCustomSprites)
+            {
+                e.Edit((asset) =>
+                {
+                    var editor = asset.AsImage();
+
+                    string path = Config.CraftableGemRingsMetalBar switch
+                    {
+                        2 => "assets/gem_rings_iron.png",
+                        3 => "assets/gem_rings_gold.png",
+                        _ => "assets/gem_rings_progressive.png",
+                    };
+
+                    Texture2D sourceImage = Helper.ModContent.Load<Texture2D>(path);
+                    editor.PatchImage(sourceImage, targetArea: new Rectangle(16, 352, 96, 16));
+                });
+            }
+
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/CraftingRecipes"))
+            {
+                e.Edit((asset) =>
+                {
+                    IDictionary<string, string> data = asset.AsDictionary<string, string>().Data;
+
+                    var recipeChanges = new Dictionary<string, Tuple<string, string>>();
+
+                    if (Config.JukeboxRingEnabled)
+                    {
+                        data["Jukebox Ring"] = "336 1 787 1 464 1/Home/528/false/null/";
+                    }
+
+                    if (!Config.OldIridiumBandRecipe && Config.IridiumBandChangesEnabled)
+                    {
+                        recipeChanges["Iridium Band"] = new Tuple<string, string>("337 2 529 1 530 1 531 1 532 1 533 1 534 1", "Combat 9");
+                    }
+
+                    if (!Config.OldGlowStoneRingRecipe)
+                    {
+                        recipeChanges["Glowstone Ring"] = new Tuple<string, string>("517 1 519 1", "Mining 4");
+                    }
+
+                    if (Config.MinorRingCraftingChanges)
+                    {
+                        recipeChanges["Sturdy Ring"] = new Tuple<string, string>("334 2 86 5 338 5", "Combat 1");
+                        recipeChanges["Warrior Ring"] = new Tuple<string, string>("335 5 382 25 84 10", "Combat 4");
+                    }
+
+                    foreach (var item in recipeChanges)
+                    {
+                        var entry = data[item.Key];
+                        var fields = entry.Split('/');
+                        fields[0] = item.Value.Item1;
+                        fields[4] = item.Value.Item2;
+                        data[item.Key] = string.Join("/", fields);
+                    }
+
+                    if (!Config.OldGlowStoneRingRecipe)
+                    {
+                        data["Glow Ring"] = "516 1 768 5/Home/517/false/Mining 4/";
+                        data["Magnet Ring"] = "518 1 769 5/Home/519/false/Mining 4/";
+                    }
+
+                    if (Config.CraftableGemRings)
+                    {
+                        var dict = new Dictionary<string, int> { { "Amethyst Ring", 66 }, { "Topaz Ring", 68 }, { "Aquamarine Ring", 62 }, { "Jade Ring", 70 }, { "Emerald Ring", 60 }, { "Ruby Ring", 64 } }.ToList();
+
+                        int itemId = 529;
+                        int combatLevel = 2;
+                        int oreBar = Config.CraftableGemRingsMetalBar == 2 ? 335 : Config.CraftableGemRingsMetalBar == 3 ? 336 : 334;
+
+                        for (int i = 0; i < dict.Count; i++)
+                        {
+                            data[dict[i].Key] = $"{dict[i].Value} 1 {oreBar} 1/Home/{itemId}/false/Combat {combatLevel}/";
+
+                            if (Config.CraftableGemRingsMetalBar == 0 && i is 1 or 3)
+                            {
+                                oreBar++;
+                            }
+
+                            if (Config.CraftableGemRingsUnlockLevels != 0)
+                            {
+                                combatLevel += i == 2 ? 2 : 1;
+                            }
+                            else if (i is 1 or 3)
+                            {
+                                combatLevel += 2;
+                            }
+
+                            itemId++;
+                        }
+                    }
+                });
             }
         }
+    }
+
+    /// <summary>
+    /// Extension methods for IGameContentHelper.
+    /// </summary>
+    public static class GameContentHelperExtensions
+    {
+        /// <summary>
+        /// Invalidates both an asset and the locale-specific version of an asset.
+        /// </summary>
+        /// <param name="helper">The game content helper.</param>
+        /// <param name="assetName">The (string) asset to invalidate.</param>
+        /// <returns>if something was invalidated.</returns>
+        public static bool InvalidateCacheAndLocalized(this IGameContentHelper helper, string assetName)
+            => helper.InvalidateCache(assetName)
+                | (helper.CurrentLocaleConstant != LocalizedContentManager.LanguageCode.en && helper.InvalidateCache(assetName + "." + helper.CurrentLocale));
     }
 }

@@ -42,11 +42,11 @@ https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/469a20d
 
 https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/3f85a5e0-70f3-4691-a6cb-73ab6f79cfc9
 
-| Module                 | Functionality                                                             | GMCM options                                               |
-|------------------------|---------------------------------------------------------------------------|------------------------------------------------------------|
-| Better animal purchase | Allows you to purchase several animals in a row and choose their variety. | <ul><li>Enabled</li></ul>                                  |
-| Geodes auto-process    | Allows you to automatically and quickly process many geodes.              | <ul><li>Enabled</li><li>Process speed multiplier</li></ul> |
-| Simultaneous services  | Allows you to shop and process geodes, even while upgrading tools.        | <ul><li>Enabled</li></ul>                                  |
+| Module                 | Functionality                                                             | GMCM options                                                                        |
+|------------------------|---------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
+| Better animal purchase | Allows you to purchase several animals in a row and choose their variety. | <ul><li>Enabled</li><li>Secondary previous key</li><li>Secondary next key</li></ul> |
+| Geodes auto-process    | Allows you to automatically and quickly process many geodes.              | <ul><li>Enabled</li><li>Process speed multiplier</li></ul>                          |
+| Simultaneous services  | Allows you to shop and process geodes, even while upgrading tools.        | <ul><li>Enabled</li></ul>                                                           |
 
 - #### User Interface
 

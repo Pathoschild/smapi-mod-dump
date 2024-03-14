@@ -105,12 +105,12 @@ namespace Unlockable_Bundles.Lib
         {
             if (Unlockable.ShopTexture.Trim().ToLower() != "none") {
                 var texture = Helper.GameContent.Load<Texture2D>(Unlockable.ShopTexture);
-                ShopTexture = new AnimatedTexture(texture, Unlockable.ShopAnimation);
+                ShopTexture = new AnimatedTexture(texture, Unlockable.ShopAnimation, Unlockable.ShopTextureWidth, Unlockable.ShopTextureWidth * 2);
             }
 
             if (Unlockable.OverviewTexture is not null && Unlockable.OverviewTexture.Trim() != "") {
                 var texture = Helper.GameContent.Load<Texture2D>(Unlockable.OverviewTexture);
-                OverviewTexture = new AnimatedTexture(texture, Unlockable.OverviewAnimation);
+                OverviewTexture = new AnimatedTexture(texture, Unlockable.OverviewAnimation, Unlockable.OverviewTextureWidth, Unlockable.OverviewTextureWidth * 2);
             }
         }
 
@@ -170,7 +170,7 @@ namespace Unlockable_Bundles.Lib
 
 
             if (ShopTexture is not null)
-                b.Draw(ShopTexture.Texture, position, ShopTexture.getOffsetRectangle(), Color.White, 0f, new Vector2(), 2f, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
+                b.Draw(ShopTexture.Texture, position, ShopTexture.getOffsetRectangle(), Color.White, 0f, new Vector2(), 64f / Unlockable.ShopTextureWidth, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);
 
             if (SpeechBubble != null)
                 SpeechBubble.draw(b);
@@ -188,6 +188,7 @@ namespace Unlockable_Bundles.Lib
                 texture = OverviewTexture.Texture;
                 sourceRectangle = OverviewTexture.getOffsetRectangle();
                 OverviewTexture.update(Game1.currentGameTime);
+                scale *= 32 / Unlockable.OverviewTextureWidth;
 
             } else if (ShopType == ShopType.ParrotPerch) {
                 texture = SpeechBubble.ParrotPerch.texture;
@@ -203,6 +204,7 @@ namespace Unlockable_Bundles.Lib
                 texture = ShopTexture.Texture;
                 sourceRectangle = ShopTexture.getOffsetRectangle();
                 ShopTexture.update(Game1.currentGameTime);
+                scale *= 32 / Unlockable.ShopTextureWidth;
             }
 
             if (texture is null)

@@ -83,7 +83,7 @@ If you want to add a crop that is not in the game, you can do so by adding a `cr
 - [X] Add support for Vanilla crops.
 - [X] Take Fertilizer into account.
 - [X] Take Quality into account.
-- [ ] Add support for JA crops.
+- [X] Add support for JA crops.
 - [X] Add support for DGA crops.
 - [ ] Add proper scaling support for options menu.
 - [ ] Obtain Seed prices from stores and from DGA to get more accurate seed prices.

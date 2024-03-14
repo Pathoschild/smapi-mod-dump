@@ -8,12 +8,11 @@
 **
 *************************************************/
 
-using StardewModdingAPI.Events;
 using StardewModdingAPI;
-using StardewValley.Buildings;
+using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Buildings;
 using System.Linq;
-using Bpendragon.GreenhouseSprinklers.Data;
 
 namespace Bpendragon.GreenhouseSprinklers
 {
@@ -41,6 +40,11 @@ namespace Bpendragon.GreenhouseSprinklers
             Monitor.Log($"OnDayEnding hit. Greenhouse Level {GetUpgradeLevel(gh)}");
             AddLetterIfNeeded(GetUpgradeLevel(gh));
 
+            if (gh.buildingType.Value.StartsWith("GreenhouseSprinklers"))
+            {
+                gh.buildingType.Set("Greenhouse");
+            }
+
             Monitor.Log("Day ending");
             if (GetUpgradeLevel(gh) >= 2) //run these checks before we check for upgrades
             {
@@ -63,17 +67,17 @@ namespace Bpendragon.GreenhouseSprinklers
                 Monitor.Log($"Upgraded as far as the user wants to go. No more upgrades.");
                 return; //We've upgraded as far as the user wants to go
             }
-            bool canRecieveMail = true;
+            bool canReceiveMail = true;
             bool jojaMember = Game1.player.hasOrWillReceiveMail("jojaMember");
             //Check if has forsaken the Junimos
             if (jojaMember)
             {
                 Monitor.Log($"Player has Joja membership. Checking additional pre-requisites");
-                canRecieveMail = Game1.getFarm().buildings.Any(x => x is JunimoHut);
-                Monitor.Log($"Junimo Hut found: {canRecieveMail}");
+                canReceiveMail = Game1.getFarm().buildings.Any(x => x is JunimoHut);
+                Monitor.Log($"Junimo Hut found: {canReceiveMail}");
             }
 
-            if (canRecieveMail)
+            if (canReceiveMail)
             {
                 var requirements = Config.DifficultySettings.Find(x => x.Difficulty == difficulty);
                 if(!Game1.player.friendshipData.TryGetValue("Wizard", out var wizard))

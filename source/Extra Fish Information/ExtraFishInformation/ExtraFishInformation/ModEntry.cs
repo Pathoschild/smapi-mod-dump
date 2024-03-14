@@ -28,12 +28,8 @@ namespace ExtraFishInformation
     // MOD ENTRY CLASS
 
     /// <summary>The mod entry point.</summary>
-    public class ModEntry : Mod, IAssetEditor
-    {
-        // PUBLIC VARIABLES
-        IDictionary<int, string> updatedDescriptions = new Dictionary<int, string>();
-
-
+    public class ModEntry : Mod
+    { 
         // PRIVATE VARIABLES
         private ModConfig Config;
         private ITranslationHelper i18n;
@@ -46,12 +42,14 @@ namespace ExtraFishInformation
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
-            // get data frm config.json - try/catched to handle errors
+            // set default time settings
             timeIn24Hours = true;
-            try
+
+            // get data from config.json
+            try // try-catch to handle errors
             {
-                this.Config = this.Helper.ReadConfig<ModConfig>();
-                timeIn24Hours = this.Config.TimeIn24Hours;
+                    this.Config = this.Helper.ReadConfig<ModConfig>();
+                    timeIn24Hours = this.Config.TimeIn24Hours;
             }
             catch (Exception e)
             {
@@ -66,130 +64,120 @@ namespace ExtraFishInformation
             }
 
             // load mod
-            helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;
+            helper.Events.Content.AssetRequested += this.OnAssetRequested;
 
         } // end Entry method
 
 
-        /// <summary>Get whether this instance can edit the given asset.</summary>
-        /// <param name="asset">Basic metadata about the asset being loaded.</param>
-        public bool CanEdit<T>(IAssetInfo asset)
-        {
-            return asset.AssetNameEquals("Data/ObjectInformation");
-
-        } // end CanEdit method
-
-
-        /// <summary>Edit a matched asset.</summary>
-        /// <param name="asset">A helper which encapsulates metadata about an asset and enables changes to it.</param>
-        public void Edit<T>(IAssetData asset)
-        {
-            if (!asset.AssetNameEquals("Data/ObjectInformation")) return;
-            // updates descriptions with new descriptions
-            IDictionary<int, string> objectData = asset.AsDictionary<int, string>().Data;
-            foreach (KeyValuePair<int, string> item in updatedDescriptions)
-            {
-                objectData[item.Key] = item.Value;
-            }
-
-        } // end Edit method
-
-
         // PRIVATE METHODS
 
-        /// <summary>"Raised after the game is launched, right before the first update tick. This happens once per game session (unrelated to loading saves). All mods are loaded and initialised at this point, so this is a good time to set up mod integrations." [see more at: https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Events] </summary>
+        /// <summary>"Raised when an asset is being requested from the content pipeline. The asset isn't necessarily being loaded yet (e.g. the game may be checking if it exists). " [see more at: https://stardewvalleywiki.com/Modding:Modder_Guide/APIs/Events] </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event data.</param>
-        private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            // read in required data files
-            IDictionary<int, string> objectInfo = this.Helper.Content.Load<Dictionary<int, string>>("Data/ObjectInformation", ContentSource.GameContent);
-            IDictionary<int, string> fishInfo = this.Helper.Content.Load<Dictionary<int, string>>("Data/Fish", ContentSource.GameContent);
-            IDictionary<string, string> locationInfo = this.Helper.Content.Load<Dictionary<string, string>>("Data/Locations", ContentSource.GameContent);
-
-            // set up a more easy to handle version of the locations data
-            IDictionary<string, string[]> seasonalLocationInfo = new Dictionary<string, string[]>();
-            foreach (KeyValuePair<string, string> item in locationInfo)
+            // process only if asset requested is Data/ObjectInformation
+            if (e.NameWithoutLocale.IsEquivalentTo("Data/ObjectInformation"))
             {
-                string[] locationInfoSections = item.Value.Split('/');
-                string[] newArray = new string[4];
-                Array.Copy(locationInfoSections, 4, newArray, 0, 4);
-                seasonalLocationInfo[item.Key] = newArray;
-            }
 
-            // set up dict for new info
-            IDictionary<int, string> newInfo = new Dictionary<int, string>();
-
-            // get fish info from each fish
-            foreach (KeyValuePair<int, string> item in objectInfo)
-            {
-                try // catch exceptions
+                // attempt to edit the Data/ObjectInformation asset
+                e.Edit(asset =>
                 {
-                    // get info from ObjectInformation
-                    string objectItemInfo = item.Value;
-                    if (!objectItemInfo.Contains("Fish -4")) continue;  // ignore non-fish items
-                    int fishId = item.Key;
-                    string[] objectItemSections = objectItemInfo.Split('/');
-                    string description = objectItemSections[5];  // get object description
+                    // get Data/ObjectInformation file
+                    IDictionary<int, string> objectInfo = asset.AsDictionary<int, string>().Data;
 
-                    // get info from Fish
-                    string fishItemInfo = fishInfo[fishId];  // get individual fish info 
-                    string[] fishInfoSections = fishItemInfo.Split('/');  // sections are 0-12 (or 0-13 for localisations) for all except trapper fish which are 0-6 (or 0-7 for localisations) [see sdv wiki for more info]
-                    string newDescription;
+                    // read in other content assets from game folder
+                    IDictionary<int, string> fishInfo = this.Helper.GameContent.Load<Dictionary<int, string>>("Data/Fish");
+                    IDictionary<string, string> locationInfo = this.Helper.GameContent.Load<Dictionary<string, string>>("Data/Locations");
 
-                    // handle each fish
-                    if ((fishInfoSections.Length == 7) || (fishInfoSections.Length == 8)) // handle trapper fish
+                    // set up a more easy to handle version of the locations data
+                    IDictionary<string, string[]> seasonalLocationInfo = new Dictionary<string, string[]>();
+                    foreach (KeyValuePair<string, string> item in locationInfo)
                     {
-                        string location = fishInfoSections[4];
-                        string extraInfo = "";
-                        if (location.Equals("ocean"))
-                        {
-                            extraInfo = i18n.Get("new-description.trapper.fish", new { location = i18n.Get("location.ocean") });
-                        }
-                        else if (location.Equals("freshwater"))
-                        {
-                            extraInfo = i18n.Get("new-description.trapper.fish", new { location = i18n.Get("location.freshwater") });
-                        }
-                        else
-                        {
-                            extraInfo = i18n.Get("new-description.trapper.fish", new { location = i18n.Get("location.unknown") });
-                        }
-
-                        newDescription = $"{description} {extraInfo}";
+                        string[] locationInfoSections = item.Value.Split('/');
+                        string[] newArray = new string[4];
+                        Array.Copy(locationInfoSections, 4, newArray, 0, 4);
+                        seasonalLocationInfo[item.Key] = newArray;
                     }
-                    else  // handle all other fish
+
+                    // get fish info from each fish, then process the fish and update its description
+                    foreach (KeyValuePair<int, string> item in objectInfo)
                     {
-                        string locations = ParseLocation(fishId, seasonalLocationInfo);
-                        string weather = ParseWeather(fishInfoSections[7]);
-                        string schedule = ParseTimes(fishInfoSections[5], timeIn24Hours);
-                        string extraInfo = i18n.Get("new-description.normal.fish", new { weather = weather, schedule = schedule, locations = locations });
-                        newDescription = $"{description} {extraInfo}";
-                    } // end if/else statement
 
-                    // repack object sections
-                    objectItemSections[5] = newDescription;
-                    string newObjectInfo = string.Join("/", objectItemSections);
-                    newInfo[item.Key] = newObjectInfo;
+                        try // try-catch to handle exceptions
+                        {
+                            // get info from Data/ObjectInformation content
+                            string objectItemInfo = item.Value;
+                            if (!objectItemInfo.Contains("Fish -4")) continue;  // ignore non-fish items
+                            int fishId = item.Key;
+                            string[] objectItemSections = objectItemInfo.Split('/');
+                            string description = objectItemSections[5];  // get object description
 
-                }
-                catch (KeyNotFoundException exception) // key not found exception: likely from fish added from another mod
-                {
-                    this.Monitor.Log($"Error! Key not found for fish: {item}\nExtra fish information will not be added for this fish.", LogLevel.Error);
-                    // should not crash game: fish that do not throw this exception should still be loaded
-                }
-                catch (Exception exception) // catch all other exceptions: no other exceptions expected
-                {
-                    System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(exception, true);
-                    this.Monitor.Log($"Error! {exception.GetType().Name}: {exception.Message} [Line number {trace.GetFrame(0).GetFileLineNumber()}]", LogLevel.Error);
-                }
+                            // get info from Fish
+                            string fishItemInfo = fishInfo[fishId];  // get individual fish info 
+                            string[] fishInfoSections = fishItemInfo.Split('/');  // sections are 0-12 (or 0-13 for localisations) for all except trapper fish which are 0-6 (or 0-7 for localisations) [see sdv wiki for more info]
 
-            } // end foreach fish
+                            // set up string for new fish description
+                            string newDescription;
 
-            // update descriptions to include new info for each fish
-            updatedDescriptions = newInfo;
-            this.Helper.Content.InvalidateCache("Data/ObjectInformation");
+                            // handle each fish
+                            if ((fishInfoSections.Length == 7) || (fishInfoSections.Length == 8)) // handle trapper fish
+                            {
+                                string location = fishInfoSections[4];
+                                string extraInfo = "";
+                                if (location.Equals("ocean"))
+                                {
+                                    extraInfo = i18n.Get("new-description.trapper.fish", new { location = i18n.Get("location.ocean") });
+                                }
+                                else if (location.Equals("freshwater"))
+                                {
+                                    extraInfo = i18n.Get("new-description.trapper.fish", new { location = i18n.Get("location.freshwater") });
+                                }
+                                else
+                                {
+                                    extraInfo = i18n.Get("new-description.trapper.fish", new { location = i18n.Get("location.unknown") });
+                                }
 
-        } // end OnGameLaunched method
+                                newDescription = $"{description} {extraInfo}";
+                            }
+                            else  // handle all other fish
+                            {
+                                string locations = ParseLocation(fishId, seasonalLocationInfo);
+                                string weather = ParseWeather(fishInfoSections[7]);
+                                string schedule = ParseTimes(fishInfoSections[5], timeIn24Hours);
+                                string extraInfo = i18n.Get("new-description.normal.fish", new { weather = weather, schedule = schedule, locations = locations });
+                                newDescription = $"{description} {extraInfo}";
+                            } // end if/else statement
+
+                            // repack object sections
+                            objectItemSections[5] = newDescription;
+                            string newObjectInfo = string.Join("/", objectItemSections);
+
+                            // update Data/ObjectInformation with new info
+                            objectInfo[item.Key] = newObjectInfo;
+
+                        } // end of try {}, moving on to catches:
+
+                        catch (KeyNotFoundException exception) // key not found exception: likely from fish added from another mod
+                        {
+                            // should not crash game: fish that do not throw this exception should still be loaded
+                            this.Monitor.Log($"Error! Key not found for fish: {item}\nExtra fish information will not be added for this fish.", LogLevel.Error);
+                        }
+
+                        catch (Exception exception) // catch all other exceptions: no other exceptions expected
+                        {
+                            System.Diagnostics.StackTrace trace = new System.Diagnostics.StackTrace(exception, true);
+                            this.Monitor.Log($"Error! {exception.GetType().Name}: {exception.Message} [Line number {trace.GetFrame(0).GetFileLineNumber()}]", LogLevel.Error);
+                        }
+                        // end of try-catch section
+
+                    } // end foreach fish
+
+                }); // end e.Edit
+
+            } // end if e.NameWithoutLocale
+
+        } // end OnAssetRequested method
 
 
         /// <summary>A helper method to parse location and season information from the edited version of Locations.xnb </summary>
@@ -207,21 +195,17 @@ namespace ExtraFishInformation
                 // TODO: convert namesLikeThis to Names Like This
                 string locationName = ParseLocationName(location.Key);
 
-                // locations to ignore: Temp, Fishing Game, 
-                if (locationName == "Temp")
-                { break; }
-                if (locationName == "FishingGame") // TODO: change to "Fishing Game" once locations have been properly parsed
-                { break; }
-
+                // setup arrays for parsing the data from each season for the location
                 string foundSeasons = "";
                 string allSeasons = $"{seasonNames[0]}, {seasonNames[1]}, {seasonNames[2]}, {seasonNames[3]}";
                 string[] seasonInfo = location.Value;
 
+                // parse the fishes in each season
                 for (int i = 0; i < seasonInfo.Length; i++)
                 {
                     if (seasonInfo[i].Contains(fishId.ToString()))
                     {
-                        // TODO: handle Forest differently - Forest has 3 different areas -1/0/1
+                        // TODO: handle Forest and IslandWest differently - these have different areas within them
                         if (foundSeasons.Length == 0)
                         { foundSeasons = $"{seasonNames[i]}"; }
                         else
@@ -229,6 +213,7 @@ namespace ExtraFishInformation
                     } // end if
                 } // end for loop
 
+                // if there were fish found in the season, update the fish's description with the info
                 if (foundSeasons.Length != 0)
                 {
                     // change seasons to either blank (all seasons) or to be in brackets
@@ -245,6 +230,7 @@ namespace ExtraFishInformation
 
             } // end foreach loop
 
+            // if the fish was not found in any location data, consider it unknown
             if (foundLocations.Length == 0)
             { foundLocations = "?"; }
 
@@ -254,7 +240,7 @@ namespace ExtraFishInformation
 
 
         /// <summary>A helper method to parse location names from namesLikeThis to Names Like This.</summary>
-        /// <param name="weather">String containing unparsed location name.</param>
+        /// <param name="locationName">String containing unparsed location name.</param>
         /// <returns>String containing parsed location name.</returns>
         private string ParseLocationName(string locationName)
         {
@@ -392,7 +378,7 @@ namespace ExtraFishInformation
             }
 
             if (timeIn24Hours == false)
-                { newTime = ConvertTo12HourTime(newTime); }
+            { newTime = ConvertTo12HourTime(newTime); }
 
             return newTime;
 
@@ -419,7 +405,7 @@ namespace ExtraFishInformation
                     hour = Int32.Parse(time24Hours.Substring(0, time24Hours.IndexOf("h")));
                     minutes = Int32.Parse(time24Hours.Substring(time24Hours.IndexOf("h") + 1));
                     break;
-                default: 
+                default:
                     hour = Int32.Parse(time24Hours.Substring(0, 2));
                     minutes = Int32.Parse(time24Hours.Substring(3));
                     break;
@@ -429,16 +415,16 @@ namespace ExtraFishInformation
             if (hour >= 0 && hour <= 11)
             {
                 if (minutes == 0)
-                    { time12Hours = i18n.Get("time.morning.12hour", new { hour = hour }); }
+                { time12Hours = i18n.Get("time.morning.12hour", new { hour = hour }); }
                 else
-                    { time12Hours = i18n.Get("time.morning.12hour.minutes", new { hour = hour, minutes = minutes }); }
+                { time12Hours = i18n.Get("time.morning.12hour.minutes", new { hour = hour, minutes = minutes }); }
             }
             else if (hour == 12)
             {
                 if (minutes == 0)
-                    { time12Hours = i18n.Get("time.afternoon.12hour", new { hour = hour }); }
+                { time12Hours = i18n.Get("time.afternoon.12hour", new { hour = hour }); }
                 else
-                    { time12Hours = i18n.Get("time.afternoon.12hour.minutes", new { hour = hour, minutes = minutes }); }
+                { time12Hours = i18n.Get("time.afternoon.12hour.minutes", new { hour = hour, minutes = minutes }); }
             }
             else if (hour >= 13 && hour <= 23)
             {
@@ -450,9 +436,9 @@ namespace ExtraFishInformation
             else if (hour == 24)
             {
                 if (minutes == 0)
-                    { time12Hours = i18n.Get("time.morning.12hour", new { hour = hour - 12 }); }
+                { time12Hours = i18n.Get("time.morning.12hour", new { hour = hour - 12 }); }
                 else
-                    { time12Hours = i18n.Get("time.morning.12hour.minutes", new { hour = hour - 12, minutes = minutes }); }
+                { time12Hours = i18n.Get("time.morning.12hour.minutes", new { hour = hour - 12, minutes = minutes }); }
             }
 
             // return time in 12hr format

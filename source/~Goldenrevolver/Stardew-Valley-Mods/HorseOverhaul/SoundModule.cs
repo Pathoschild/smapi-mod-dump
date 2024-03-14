@@ -22,12 +22,12 @@ namespace HorseOverhaul
         private const string HorseSnickerSound = "goldenrevolver_horseSnicker";
         private const string HorseSnortSound = "goldenrevolver_horseSnort";
 
-        public static void PlayHorseEatSound(Horse horse, HorseConfig config)
+        public static void PlayHorseEatSound(Horse horse, HorseOverhaulConfig config)
         {
             PlayHorseSound(HorseSnortSound, horse, config);
         }
 
-        public static void PlayHorsePettingSound(Horse horse, HorseConfig config)
+        public static void PlayHorsePettingSound(Horse horse, HorseOverhaulConfig config)
         {
             int number = Game1.random.Next(2);
             PlayHorseSound(HorseSnickerSound + number, horse, config);
@@ -69,7 +69,7 @@ namespace HorseOverhaul
             }
         }
 
-        private static void PlayHorseSound(string soundName, Horse horse, HorseConfig config)
+        private static void PlayHorseSound(string soundName, Horse horse, HorseOverhaulConfig config)
         {
             if (horse?.currentLocation != null && !Game1.options.muteAnimalSounds && !config.DisableHorseSounds)
             {

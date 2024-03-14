@@ -3,7 +3,7 @@
 
     <PropertyGroup>
         <Description>Adds a slingshot minigame when outdoors and things can be heard overhead.</Description>
-        <Version>1.0.4</Version>
+        <Version>1.1.0</Version>
         <UpdateKeys>Nexus:15262</UpdateKeys>
     </PropertyGroup>
 

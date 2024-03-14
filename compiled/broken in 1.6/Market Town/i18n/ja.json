@@ -663,7 +663,9 @@
 
 "neutral-order-reaction-1":                         "ああ、わかった！",
 "neutral-order-reaction-2":                         "わかった",
-"neutral-order-reaction-3":                         "いいね！"
+"neutral-order-reaction-3":                         "いいね！",
+
+"foodstore.config.shedvisitor": " 訪問者の特別リクエスト"
 
 
 

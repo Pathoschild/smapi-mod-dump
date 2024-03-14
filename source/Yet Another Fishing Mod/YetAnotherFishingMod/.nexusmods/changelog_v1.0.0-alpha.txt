@@ -21,8 +21,4 @@ Version 1.0.0-alpha
 - Spawn bait, tackle and enchantments
 - Infinite bait and tackle
 - Reset attachments and enchantments on unequip
-- GMCM integration 
-- Dynamically generate available bait and tackles on game launch
-- Changed bait, tackle and quality options to be a dropdown menu
-- Allow for i18n of the config menu added by GMCM
-- Replace AlwaysCatchTreasure with an option that allows to adjust treasure appearance rate to vanilla, never or always
+- GMCM integration

@@ -11,10 +11,10 @@
 {
   "Name": "Mushroom Rancher",
   "Author": "Goldenrevolver",
-  "Version": "1.1.0",
+  "Version": "1.2",
   "Description": "Allows raising living mushrooms in the slime hutch.",
   "UniqueID": "Goldenrevolver.MushroomRancher",
   "EntryDll": "MushroomRancher.dll",
-  "MinimumApiVersion": "3.13.2",
+  "MinimumApiVersion": "4.0.0-alpha",
   "UpdateKeys": [ "Nexus:10978" ]
 }

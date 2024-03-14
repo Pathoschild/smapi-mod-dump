@@ -59,9 +59,9 @@
                   "HasOutput": false,
                   "InteractMethod": null,
                   "OutputRules": [
-                    // Turns eggs into Brimstone
+                    // Turns eggs into rotten eggs
                     {
-                      "Id": "Brimstone_Eggs",
+                      "Id": "RottenEggs_Eggs",
                       "Triggers": [
                         {
                           "Id": "ItemPlacedInMachine",
@@ -77,8 +77,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.Brimstone",
-                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Id": "(O){{MainModID}}.RottenEgg",
+                          "ItemId": "(O){{MainModID}}.RottenEgg",
                           "Condition": null,
                         }
                       ],

@@ -26,14 +26,6 @@
                 "drbirbdev.BinningSkill_RadioactiveGarbageHat": "RadioactiveGarbageHat/{{i18n:item.RadioactiveGarbageHat.desc}}/false/true//{{i18n:item.RadioactiveGarbageHat.name}}/4/Mods\\drbirbdev.BinningSkill\\GarbageHats",
                 "drbirbdev.BinningSkill_PrismaticGarbageHat": "PrismaticGarbageHat/{{i18n:item.PrismaticGarbageHat.desc}}/false/true/Prismatic/{{i18n:item.PrismaticGarbageHat.name}}/5/Mods\\drbirbdev.BinningSkill\\GarbageHats"
             }
-        },
-        // Remove the garbage hat. This is handled in code on a per-can basis for binning skill.
-        {
-            "Action": "EditData",
-            "Target": "Data/GarbageCans",
-            "Entries": {
-                "Base_GarbageHat": null
-            }
         }
     ]
 }

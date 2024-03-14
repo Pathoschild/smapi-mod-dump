@@ -17,14 +17,28 @@ Provided functionality for players:
     * You can set this menu to always show up when interacting with an NPC in the config, in case you want to (for example) prevent accidentally gifting an item to somebody.
 
 Provided functionality for content pack authors:
+* New GameStateQuery queries:
+    * Every custom skill registered through the C# API automatically registers a `PLAYER_<SKILLID_IN_CAPS>_LEVEL` query matching the vanilla ones (such as PLAYER_FARMING_LEVEL).
+* New tile action - `spacechase0.SpaceCore_TriggerAction triggerActionId` - for running a trigger action, set the Trigger to "Manual"
+* New touch action - `spacechase0.SpaceCore_TriggerAction triggerActionId` - for running a trigger action, set the Trigger to "Manual"
+* New trigger actions
+    * `spacechase0.SpaceCore_OnItemUsed` - use item GSQ conditions to check the right item
+    * `spacechase0.SpaceCore_OnItemEaten` - use item GSQ conditions to check the right item
+* New trigger action actions
+    * `spacechase0.SpaceCore_PlaySound sound local` - `sound` = the cue ID, `local` = `true` if everyone near the player should hear it, `false` otherwise
+    * `spacechase0.SpaceCore_ShowHudMessage "message goes here"`
+* Custom event commands
     * `damageFarmer amount`
-    * `setDating npc`
+    * `setDating npc [true/false]` - default true
     * `totemWarpEffect tileX tileY totemSpriteSheetPatch sourceRectX,SourceRectY,sourceRectWidth,sourceRectHeight` - will need to delay after this command if you want to wait for the animation to be done
     * `setActorScale actor factorX factorY` - reset with factorX/Y = 1 - this will probably not be positioned right after scaling and will need a position offset afterwards
     * `cycleActorColors actor durationInSeconds color [color...]` color=`R,G,B` - specify 1 or more. Specifying 1 will just mean it stays that color instead of cycling
     * `flash durationInSeconds`
     * `setRaining locationContext true/false` - Sets a location context as raining (or not). In vanilla, valid location contexts are "Default", "Island", and "Desert" (case sensitive).
     * `screenshake intensity durationInSeconds` - Shake the screen for a certain amount of time. For intensity, `1` will be basically nothing. It's in pixels difference from the base screen position, so try something like 5 or 10 to start with.
+    * `setZoom factor` (factor of 4 is zoomed in 400% - don't zoom out (ie. less than 1), the game doesn't like it)
+    * `smoothZoom targetZoomFactor durationInSeconds`
+    * `setEngaged npc asRoommate weddingOffset` - `npc` = NPC internal ID, `asRoommate` = true if this is a roommate, false otherwise, `weddingOffset` = how many days away the wedding should be, minimum of one (pushed back for invalid wedding dates like festivals).
 * Vanilla Asset Expansions
     * Objects - These are in the asset `spacechase0.SpaceCore/ObjectExtensionData`, which is a dictionary with the key being an object's unqualified item ID, and the value being an object containing the following fields:
         * `CategoryTextOverride` - string, default null (no override)
@@ -38,9 +52,18 @@ Provided functionality for content pack authors:
             * `Location` - string, the location to warp to - ex. `"CommunityCenter"`
             * `Position` - Vector2, the tile to warp to - ex. `"25, 15"`
             * `Color` - Color, the color the screen should flash - ex. `{ "R": 0, "G": 0, "B": 255, "A": 255 }`
-        * `UseForTriggerAction` - The [Trigger Action](https://stardewvalleywiki.com/Modding:Trigger_actions) to run, if any.
+        * `UseForTriggerAction` - True to run a trigger action upon use, false otherwise. Default false.
     * Weapons - Stored in the `CustomFields` on the weapon data asset object:
         * `CanBeTrashed` - true/false, also prevents dropping, default true
+    * Furniture - Stored in the asset `"spacechase0.SpaceCore/FurnitureExtensionData"`, which is a dictionary with the key being the furniture ID, and the value being an object containing the following fields:
+        * `TileProperties` - A dictionary of tile coordinates to a dictionary of layers to a dictionary of tile properties. Just look at [this example](https://gist.github.com/spacechase0/ea6db01284157d408d9f359f141a0d65).
+    * Shops - Stored in the asset `"spacechase0.SpaceCore/ShopExtensionData"`, which is a dictionary with the key being the shop ID, and the value being an object containing the following fields:
+        * `Tabs` - The options are `"None"`, `"Catalogue"`, `"FurnitureCatalogue"`, and `"Custom"`. For custom, see the next field.
+        * `CustomTabs` - A list consisting of the following object (see [this example](https://gist.github.com/spacechase0/8a80b22655f624d9854486bfbe5abc7e)):
+            * `Id` - The ID of this tab, must be unique (used by Content Patcher)
+            * `IconTexture` - The path to the texture to use for the tab. Use the `{{InternalAssetKey: }}` token for your own assets.
+            * `IconRect` - The subrect of the texture to use for the tab. An object containing `X`, `Y`, `Width`, `Height` (all in pixels).
+            * `FilterCondition` - A GameStateQuery condition used for filtering the items. Use `TRUE` to just get everything (useful for your first tab). Example to get all seeds: `"ITEM_CATEGORY Input -74"`
     * NPCs - Stored in the asset `"spacechase0.SpaceCore/NpcExtensionData"`, which is a dictionary with the key being an NPC name, and the value being an object containing the following fields:
         * `GiftEventTriggers` - A dictionary with the keys being an object, and the values being an event to trigger when that item is given to the NPC.
             * The "event to trigger" needs to be the full event key (ID and preconditions) used in the events data file, so that SpaceCore can find the event.

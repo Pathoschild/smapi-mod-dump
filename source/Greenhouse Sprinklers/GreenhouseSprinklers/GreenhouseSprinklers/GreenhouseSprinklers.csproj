@@ -3,7 +3,7 @@
     <RootNamespace>Bpendragon.GreenhouseSprinklers</RootNamespace>
     <AssemblyName>GreenhouseSprinklers</AssemblyName>
     <Version>2.1.1</Version>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
 	<EnableHarmony>true</EnableHarmony>
 	<RepositoryUrl>https://github.com/Bpendragon/GreenhouseSprinklers</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
@@ -11,15 +11,18 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <Optimize>False</Optimize>
+    <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DebugType>full</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.0" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
     <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>

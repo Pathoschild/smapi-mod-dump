@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Buildings;
 
 namespace RangeHighlight {
     internal class Integrations {
@@ -42,12 +43,37 @@ namespace RangeHighlight {
         private void IntegrateBetterJunimos() {
             IBetterJunimosAPI? api = theMod.helper.ModRegistry.GetApi<IBetterJunimosAPI>("hawkfalcon.BetterJunimos");
             if (api == null) return;
-            int r = api.GetJunimoHutMaxRadius();
-            if (r > 1) {
-                theMod.defaultShapes.SetJunimoRange((uint)r);
-            } else {
-                theMod.Monitor.Log($"ignoring nonsense value {r} from Better Junimos for Junimo Hut radius", LogLevel.Info);
+            // Lots of duplicated code here, but it's the best we can do without adding something to the
+            // api just for the purpose of letting us fiddle with internal structures
+            void setRange() {
+                int r = api.GetJunimoHutMaxRadius();
+                if (r > 1) {
+                    theMod.defaultShapes.SetJunimoRange((uint)r);
+                } else {
+                    theMod.Monitor.LogOnce($"ignoring nonsense value {r} from Better Junimos for Junimo Hut radius", LogLevel.Info);
+                }
             }
+            theMod.api.RemoveBuildingRangeHighlighter("jltaylor-us.RangeHighlight/junimoHut");
+            theMod.api.AddBuildingRangeHighlighter("jltaylor-us.RangeHighlight/better-junimoHut",
+                () => theMod.config.ShowJunimoRange,
+                () => theMod.config.ShowJunimoRangeKey,
+                blueprint => {
+                    if (blueprint.name == "Junimo Hut") {
+                        setRange();
+                        return new Tuple<Color, bool[,], int, int>(theMod.config.JunimoRangeTint, theMod.defaultShapes.junimoHut, 1, 1);
+                    } else {
+                        return null;
+                    }
+                },
+                building => {
+                    setRange();
+                    if (building is JunimoHut) {
+                        setRange();
+                        return new Tuple<Color, bool[,], int, int>(theMod.config.JunimoRangeTint, theMod.defaultShapes.junimoHut, 1, 1);
+                    } else {
+                        return null;
+                    }
+                });
         }
         private void IntegrateBetterBeehouses() {
             IBetterBeehousesAPI? api = theMod.helper.ModRegistry.GetApi<IBetterBeehousesAPI>("tlitookilakin.BetterBeehouses");

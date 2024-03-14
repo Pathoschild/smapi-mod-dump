@@ -12,14 +12,13 @@ using HarmonyLib;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
+using StardewValley.Buffs;
 using StardewValley.Menus;
-using StardewValley.Network;
 using StardewValley.Objects;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using StardewObject = StardewValley.Object;
 
 namespace RingOverhaul
 {
@@ -53,11 +52,15 @@ namespace RingOverhaul
 
         public static readonly string JukeBoxRingTrackKey = $"{mod?.ModManifest?.UniqueID}JukeBoxRingTrackKey";
         public static readonly string JukeBoxRingHasAddedKey = $"{mod?.ModManifest?.UniqueID}JukeBoxRingHasAddedKey";
+        public static readonly string PrecisionSlingshotBuffKey = $"{mod?.ModManifest?.UniqueID}.PrecisionSlingshotDamage";
 
-        private static readonly List<int> explorerIds = new() { 520, 859, 888, 528 }; // 516, 517, 518, 519,
-        private static readonly List<int> berserkerIds = new() { 521, 522, 523, 526, 811, 860, 862 };
-        private static readonly List<int> iridiumBandIds = new() { 529, 530, 531, 532, 533, 534 }; // 527
-        private static readonly List<int> paladinIds = new() { 524, 525, 810, 839, 861, 863, 887 };
+        private static readonly List<string> explorerIds = new() { "(O)520", "(O)859", "(O)888", "(O)528" }; // 516, 517, 518, 519,
+        private static readonly List<string> berserkerIds = new() { "(O)521", "(O)522", "(O)523", "(O)526", "(O)811", "(O)860", "(O)862" };
+        private static readonly List<string> iridiumBandIds = new() { "(O)529", "(O)530", "(O)531", "(O)532", "(O)533", "(O)534" }; // 527
+        private static readonly List<string> paladinIds = new() { "(O)524", "(O)525", "(O)810", "(O)839", "(O)861", "(O)863", "(O)887" };
+
+        public const string IridiumBandQualifiedID = "(O)527";
+        public const string JukeBoxRingQualifiedID = "(O)528";
 
         public static void PatchAll(RingOverhaul horseOverhaul)
         {
@@ -88,28 +91,28 @@ namespace RingOverhaul
                     postfix: new HarmonyMethod(typeof(Patcher), nameof(PerformFire_Post)));
 
                 harmony.Patch(
+                    original: AccessTools.Method(typeof(Ring), nameof(Ring.AddEquipmentEffects)),
+                    postfix: new HarmonyMethod(typeof(Patcher), nameof(AddEquipmentEffects_Post)));
+
+                harmony.Patch(
                     original: AccessTools.Method(typeof(Ring), nameof(Ring.onEquip)),
-                    prefix: new HarmonyMethod(typeof(Patcher), nameof(OnEquip_Pre)));
+                    postfix: new HarmonyMethod(typeof(Patcher), nameof(OnEquip_Post)));
 
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Ring), nameof(Ring.onUnequip)),
-                    prefix: new HarmonyMethod(typeof(Patcher), nameof(OnUnequip_Pre)));
+                    postfix: new HarmonyMethod(typeof(Patcher), nameof(OnUnequip_Post)));
 
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Ring), nameof(Ring.onNewLocation)),
-                    prefix: new HarmonyMethod(typeof(Patcher), nameof(OnNewLocation_Pre)));
+                    postfix: new HarmonyMethod(typeof(Patcher), nameof(OnNewLocation_Post)));
 
                 harmony.Patch(
                     original: AccessTools.Method(typeof(Ring), nameof(Ring.onLeaveLocation)),
-                    prefix: new HarmonyMethod(typeof(Patcher), nameof(OnLeaveLocation_Pre)));
+                    postfix: new HarmonyMethod(typeof(Patcher), nameof(OnLeaveLocation_Post)));
 
                 harmony.Patch(
                     original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.IsMiniJukeboxPlaying)),
-                    postfix: new HarmonyMethod(typeof(Patcher), nameof(IsMiniJukeboxPlaying)));
-
-                harmony.Patch(
-                   original: AccessTools.Method(typeof(StardewObject), nameof(StardewObject.performObjectDropInAction), new[] { typeof(Item), typeof(bool), typeof(Farmer) }),
-                   prefix: new HarmonyMethod(typeof(Patcher), nameof(UpdateFurnaceInput)));
+                    postfix: new HarmonyMethod(typeof(Patcher), nameof(IsMiniJukeboxPlaying_Post)));
             }
             catch (Exception e)
             {
@@ -139,6 +142,7 @@ namespace RingOverhaul
             var result = new SortedDictionary<string, int>();
             var to_process = new Queue<Ring>();
             to_process.Enqueue(ring);
+
             while (to_process.Count > 0)
             {
                 Ring cur = to_process.Dequeue();
@@ -154,7 +158,7 @@ namespace RingOverhaul
                     string key = cur.displayName;
                     if (result.TryGetValue(key, out int val))
                     {
-                        result.Add(key, val + 1);
+                        result[key] = val + 1;
                     }
                     else
                     {
@@ -162,6 +166,7 @@ namespace RingOverhaul
                     }
                 }
             }
+
             return result;
         }
 
@@ -203,23 +208,23 @@ namespace RingOverhaul
             else
             {
                 // so they can't get combined with their own ingredients/ results
-                if (ring.ParentSheetIndex is RingOverhaul.IridiumBandID or 516 or 517 or 518 or 519)
+                if (ring.QualifiedItemId is IridiumBandQualifiedID or "(O)516" or "(O)517" or "(O)518" or "(O)519")
                 {
                     return RingClass.different;
                 }
-                else if (explorerIds.Contains(ring.ParentSheetIndex))
+                else if (explorerIds.Contains(ring.QualifiedItemId))
                 {
                     return RingClass.explorer;
                 }
-                else if (berserkerIds.Contains(ring.ParentSheetIndex))
+                else if (berserkerIds.Contains(ring.QualifiedItemId))
                 {
                     return RingClass.berserker;
                 }
-                else if (iridiumBandIds.Contains(ring.ParentSheetIndex))
+                else if (iridiumBandIds.Contains(ring.QualifiedItemId))
                 {
                     return RingClass.iridiumBand;
                 }
-                else if (paladinIds.Contains(ring.ParentSheetIndex))
+                else if (paladinIds.Contains(ring.QualifiedItemId))
                 {
                     return RingClass.paladin;
                 }
@@ -230,359 +235,285 @@ namespace RingOverhaul
 
         public static void LoadDisplayFields_Postfix(CombinedRing __instance)
         {
-            try
+            RingClass ringClass = GetRingClass(__instance);
+
+            switch (ringClass)
             {
-                RingClass ringClass = GetRingClass(__instance);
+                case RingClass.explorer:
+                    __instance.displayName = mod.Helper.Translation.Get("ExplorerRingName");
+                    break;
 
-                switch (ringClass)
-                {
-                    case RingClass.explorer:
-                        __instance.DisplayName = mod.Helper.Translation.Get("ExplorerRingName");
-                        break;
+                case RingClass.berserker:
+                    __instance.displayName = mod.Helper.Translation.Get("BerserkerRingName");
+                    break;
 
-                    case RingClass.berserker:
-                        __instance.DisplayName = mod.Helper.Translation.Get("BerserkerRingName");
-                        break;
+                case RingClass.iridiumBand:
+                    __instance.displayName = mod.Helper.Translation.Get("GemBandName");
+                    break;
 
-                    case RingClass.iridiumBand:
-                        __instance.DisplayName = mod.Helper.Translation.Get("GemBandName");
-                        break;
-
-                    case RingClass.paladin:
-                        __instance.DisplayName = mod.Helper.Translation.Get("PaladinRingName");
-                        break;
-                }
-
-                if (mod.Config.RemoveCrabshellRingAndImmunityBandTooltipFromCombinedRing || mod.Config.RemoveLuckyTooltipFromCombinedRing)
-                {
-                    __instance.description = "";
-                    foreach (Ring ring in __instance.combinedRings)
-                    {
-                        if ((ring.ParentSheetIndex is 810 or 887) && mod.Config.RemoveCrabshellRingAndImmunityBandTooltipFromCombinedRing)
-                        {
-                            continue;
-                        }
-
-                        if ((ring.ParentSheetIndex is 859) && mod.Config.RemoveLuckyTooltipFromCombinedRing)
-                        {
-                            continue;
-                        }
-
-                        ring.getDescription();
-                        __instance.description += ring.description + "\n\n";
-                    }
-
-                    __instance.description = __instance.description.Trim();
-                }
-
-                if (GetCombinedRingTotal(__instance) >= 8)
-                {
-                    string description = "Many Rings forged into one:\n\n";
-                    foreach (KeyValuePair<string, int> entry in GetCombinedRings(__instance))
-                    {
-                        description += String.Format("{1}x {0}\n", entry.Key, entry.Value);
-                    }
-                    __instance.description = description.Trim();
-                }
+                case RingClass.paladin:
+                    __instance.displayName = mod.Helper.Translation.Get("PaladinRingName");
+                    break;
             }
-            catch (Exception e)
+
+            if (mod.Config.RemoveCrabshellRingAndImmunityBandTooltipFromCombinedRing || mod.Config.RemoveLuckyTooltipFromCombinedRing)
             {
-                mod.ErrorLog("There was an exception in a patch", e);
+                __instance.description = "";
+                foreach (Ring ring in __instance.combinedRings)
+                {
+                    if ((ring.QualifiedItemId is "(O)810" or "(O)887") && mod.Config.RemoveCrabshellRingAndImmunityBandTooltipFromCombinedRing)
+                    {
+                        continue;
+                    }
+
+                    if ((ring.QualifiedItemId is "(O)859") && mod.Config.RemoveLuckyTooltipFromCombinedRing)
+                    {
+                        continue;
+                    }
+
+                    ring.getDescription();
+                    __instance.description += ring.description + "\n\n";
+                }
+
+                __instance.description = __instance.description.Trim();
+            }
+
+            if (GetCombinedRingTotal(__instance) >= 8)
+            {
+                string description = "Many Rings forged into one:\n\n";
+                foreach (KeyValuePair<string, int> entry in GetCombinedRings(__instance))
+                {
+                    description += String.Format("{1}x {0}\n", entry.Key, entry.Value);
+                }
+                __instance.description = description.Trim();
             }
         }
 
         public static bool CanCombine_Prefix(Ring __instance, Ring ring, ref bool __result)
         {
-            try
+            __result = true;
+
+            var class1 = GetRingClass(__instance);
+            var class2 = GetRingClass(ring);
+
+            if (class1 == RingClass.different || class2 == RingClass.different)
             {
-                __result = true;
+                __result = false;
+                return false;
+            }
 
-                var class1 = GetRingClass(__instance);
-                var class2 = GetRingClass(ring);
-
-                if (class1 == RingClass.different || class2 == RingClass.different)
+            if (__instance is CombinedRing || ring is CombinedRing)
+            {
+                if (class1 != RingClass.none && class2 != RingClass.none && class1 != class2)
                 {
                     __result = false;
                     return false;
                 }
+            }
 
-                if (__instance is CombinedRing || ring is CombinedRing)
+            if (ring is CombinedRing)
+            {
+                foreach (Ring combinedRing in (ring as CombinedRing).combinedRings)
                 {
-                    if (class1 != RingClass.none && class2 != RingClass.none && class1 != class2)
+                    if (!__instance.CanCombine(combinedRing))
                     {
                         __result = false;
                         return false;
                     }
                 }
-
-                if (ring is CombinedRing)
-                {
-                    foreach (Ring combinedRing in (ring as CombinedRing).combinedRings)
-                    {
-                        if (!__instance.CanCombine(combinedRing))
-                        {
-                            __result = false;
-                            return false;
-                        }
-                    }
-                }
-                else if (__instance is CombinedRing)
-                {
-                    foreach (Ring combinedRing in (__instance as CombinedRing).combinedRings)
-                    {
-                        if (!combinedRing.CanCombine(ring))
-                        {
-                            __result = false;
-                            return false;
-                        }
-                    }
-                }
-                else if (__instance.ParentSheetIndex == ring.ParentSheetIndex)
-                {
-                    __result = false;
-                }
-                return false; // don't run original logic
             }
-            catch (Exception e)
+            else if (__instance is CombinedRing)
             {
-                mod.ErrorLog("There was an exception in a patch", e);
-                return true; // run original logic
+                foreach (Ring combinedRing in (__instance as CombinedRing).combinedRings)
+                {
+                    if (!combinedRing.CanCombine(ring))
+                    {
+                        __result = false;
+                        return false;
+                    }
+                }
             }
+            // intentional use of ParentSheetIndex (as the base game method does the same)
+            // do not change to ItemId or QualifiedItemId unless it's changed in the same way in the base game
+            else if (__instance.ParentSheetIndex == ring.ParentSheetIndex)
+            {
+                __result = false;
+            }
+
+            return false; // don't run original logic
         }
 
         public static bool DrawInMenu_Prefix(CombinedRing __instance, SpriteBatch spriteBatch, Vector2 location, float scaleSize, float transparency, float layerDepth, StackDrawType drawStackNumber, Color color, bool drawShadow)
         {
-            try
+            Texture2D texture = GetRingClass(__instance) switch
             {
-                Texture2D texture = GetRingClass(__instance) switch
-                {
-                    RingClass.explorer => mod.ExplorerRingTexture,
-                    RingClass.berserker => mod.BerserkerRingTexture,
-                    RingClass.paladin => mod.PaladinRingTexture,
-                    _ => null,
-                };
+                RingClass.explorer => mod.ExplorerRingTexture,
+                RingClass.berserker => mod.BerserkerRingTexture,
+                RingClass.paladin => mod.PaladinRingTexture,
+                _ => null,
+            };
 
-                if (texture != null)
+            if (texture != null)
+            {
+                spriteBatch.Draw(texture, location + new Vector2(32f, 32f) * scaleSize, null, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 4f, SpriteEffects.None, layerDepth);
+                return false; // don't run original logic
+            }
+
+            if (__instance.combinedRings.Count >= 2)
+            {
+                // always use base rings as the sprites to draw. The first pair that are combined on the left hand side get used as the sprite.
+                if (__instance.combinedRings[0] is CombinedRing)
                 {
-                    spriteBatch.Draw(texture, location + new Vector2(32f, 32f) * scaleSize, null, color * transparency, 0f, new Vector2(8f, 8f) * scaleSize, scaleSize * 4f, SpriteEffects.None, layerDepth);
+                    __instance.combinedRings[0].drawInMenu(spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, color, drawShadow);
                     return false; // don't run original logic
                 }
-
-                if (__instance.combinedRings.Count >= 2)
+                else if (__instance.combinedRings[1] is CombinedRing)
                 {
-                    // always use base rings as the sprites to draw. The first pair that are combined on the left hand side get used as the sprite.
-                    if (__instance.combinedRings[0] is CombinedRing)
-                    {
-                        __instance.combinedRings[0].drawInMenu(spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, color, drawShadow);
-                        return false; // don't run original logic
-                    }
-                    else if (__instance.combinedRings[1] is CombinedRing)
-                    {
-                        __instance.combinedRings[1].drawInMenu(spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, color, drawShadow);
-                        return false; // don't run original logic
-                    }
+                    __instance.combinedRings[1].drawInMenu(spriteBatch, location, scaleSize, transparency, layerDepth, drawStackNumber, color, drawShadow);
+                    return false; // don't run original logic
                 }
+            }
 
-                return true; // run original logic
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
-                return true; // run original logic
-            }
+            return true; // run original logic
         }
 
-        public static bool PerformFire_Pre(Farmer who)
+        public static void PerformFire_Pre(Farmer who)
         {
-            try
+            if (!mod.Config.PrecisionBuffsSlingshotDamage)
             {
-                who.attackIncreaseModifier += who.weaponPrecisionModifier;
-                return true;
+                return;
             }
-            catch (Exception e)
+
+            var precisionSlingShotBuff = new Buff(
+                id: PrecisionSlingshotBuffKey,
+                duration: Buff.ENDLESS,
+                effects: new BuffEffects()
+                {
+                    AttackMultiplier = { who.buffs.WeaponPrecisionMultiplier }
+                }
+            )
             {
-                mod.ErrorLog("There was an exception in a patch", e);
-                return true;
-            }
+                visible = false
+            };
+
+            who.applyBuff(precisionSlingShotBuff);
         }
 
         public static void PerformFire_Post(Farmer who)
         {
-            try
+            if (!mod.Config.PrecisionBuffsSlingshotDamage)
             {
-                who.attackIncreaseModifier -= who.weaponPrecisionModifier;
+                return;
             }
-            catch (Exception e)
+
+            who.buffs.Remove(PrecisionSlingshotBuffKey);
+        }
+
+        public static void AddEquipmentEffects_Post(Ring __instance, ref BuffEffects effects)
+        {
+            if (!mod.Config.IridiumBandChangesEnabled)
             {
-                mod.ErrorLog("There was an exception in a patch", e);
+                return;
+            }
+
+            if (__instance.QualifiedItemId == IridiumBandQualifiedID)
+            {
+                //effects.AttackMultiplier.Value += 0.1f; // base is still called, so we don't need to add this
+                effects.KnockbackMultiplier.Value += 0.1f;
+                effects.WeaponPrecisionMultiplier.Value += 0.1f;
+                effects.CriticalChanceMultiplier.Value += 0.1f;
+                effects.CriticalPowerMultiplier.Value += 0.1f;
+                effects.WeaponSpeedMultiplier.Value += 0.1f;
             }
         }
 
-        public static bool OnEquip_Pre(Ring __instance, Farmer who, GameLocation location)
+        public static void OnEquip_Post(Ring __instance, Farmer who)
         {
-            try
+            GameLocation location = who.currentLocation;
+            if (mod.Config.JukeboxRingEnabled && __instance.QualifiedItemId == JukeBoxRingQualifiedID)
             {
-                if (mod.Config.JukeboxRingEnabled && __instance.indexInTileSheet.Value == RingOverhaul.JukeBoxRingID)
-                {
-                    TryAddJukeBoxRing(__instance, location);
+                TryAddJukeBoxRing(__instance, location);
 
-                    OnEquipJukeBoxRing(who, __instance);
-                    return false;
-                }
-                else if (__instance.indexInTileSheet.Value == RingOverhaul.IridiumBandID)
-                {
-                    var fieldInfo = AccessTools.Field(typeof(Ring), "_lightSourceID");
+                OnEquipJukeBoxRing(who, __instance);
+                return;
+            }
+            else if (__instance.QualifiedItemId == IridiumBandQualifiedID)
+            {
+                RemoveIridiumBandLight(location, __instance);
+                return;
+            }
+        }
 
-                    if (fieldInfo.GetValue(__instance) != null)
+        public static void OnUnequip_Post(Ring __instance, Farmer who)
+        {
+            GameLocation location = who.currentLocation;
+            if (mod.Config.JukeboxRingEnabled && __instance.QualifiedItemId == JukeBoxRingQualifiedID)
+            {
+                TryRemoveJukeBoxRing(__instance, location);
+            }
+        }
+
+        public static void OnNewLocation_Post(Ring __instance, GameLocation environment)
+        {
+            if (mod.Config.JukeboxRingEnabled && __instance.QualifiedItemId == JukeBoxRingQualifiedID)
+            {
+                TryAddJukeBoxRing(__instance, environment);
+
+                // != true because it can be a null compare
+                if (environment?.currentEvent?.isFestival != true)
+                {
+                    if (__instance.modData.ContainsKey(JukeBoxRingTrackKey))
                     {
-                        location.removeLightSource(((int?)fieldInfo.GetValue(__instance)).Value);
-                    }
+                        environment.miniJukeboxTrack.Value = __instance.modData[JukeBoxRingTrackKey];
 
-                    fieldInfo.SetValue(__instance, null);
-
-                    who.attackIncreaseModifier += 0.1f; // base is not called, so we need to add this
-                    who.knockbackModifier += 0.1f;
-                    who.weaponPrecisionModifier += 0.1f;
-                    who.critChanceModifier += 0.1f;
-                    who.critPowerModifier += 0.1f;
-                    who.weaponSpeedModifier += 0.1f;
-
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
-                return true;
-            }
-        }
-
-        public static bool OnUnequip_Pre(Ring __instance, Farmer who, GameLocation location)
-        {
-            try
-            {
-                if (mod.Config.JukeboxRingEnabled && __instance.indexInTileSheet.Value == RingOverhaul.JukeBoxRingID)
-                {
-                    TryRemoveJukeBoxRing(__instance, location);
-
-                    return false;
-                }
-                else if (__instance.indexInTileSheet.Value == RingOverhaul.IridiumBandID)
-                {
-                    who.attackIncreaseModifier -= 0.1f;
-                    who.knockbackModifier -= 0.1f;
-                    who.weaponPrecisionModifier -= 0.1f;
-                    who.critChanceModifier -= 0.1f;
-                    who.critPowerModifier -= 0.1f;
-                    who.weaponSpeedModifier -= 0.1f;
-
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
-                return true;
-            }
-        }
-
-        public static bool OnNewLocation_Pre(Ring __instance, GameLocation environment)
-        {
-            try
-            {
-                if (mod.Config.JukeboxRingEnabled && __instance.indexInTileSheet.Value == RingOverhaul.JukeBoxRingID)
-                {
-                    TryAddJukeBoxRing(__instance, environment);
-
-                    // != true because it can be a null compare
-                    if (environment?.currentEvent?.isFestival != true)
-                    {
-                        if (__instance.modData.ContainsKey(JukeBoxRingTrackKey))
+                        if (__instance.modData[JukeBoxRingTrackKey] == "random")
                         {
-                            environment.miniJukeboxTrack.Value = __instance.modData[JukeBoxRingTrackKey];
-
-                            if (__instance.modData[JukeBoxRingTrackKey] == "random")
-                            {
-                                environment.SelectRandomMiniJukeboxTrack();
-                            }
-                        }
-                    }
-
-                    return false;
-                }
-                else if (__instance.indexInTileSheet.Value == RingOverhaul.IridiumBandID)
-                {
-                    var fieldInfo = AccessTools.Field(typeof(Ring), "_lightSourceID");
-
-                    if (fieldInfo.GetValue(__instance) != null)
-                    {
-                        environment.removeLightSource(((int?)fieldInfo.GetValue(__instance)).Value);
-                    }
-
-                    fieldInfo.SetValue(__instance, null);
-
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
-                return true;
-            }
-        }
-
-        public static bool OnLeaveLocation_Pre(Ring __instance, GameLocation environment)
-        {
-            try
-            {
-                if (mod.Config.JukeboxRingEnabled && __instance.indexInTileSheet.Value == RingOverhaul.JukeBoxRingID)
-                {
-                    TryRemoveJukeBoxRing(__instance, environment);
-
-                    return false;
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
-                return true;
-            }
-        }
-
-        public static void IsMiniJukeboxPlaying(GameLocation __instance, ref bool __result)
-        {
-            try
-            {
-                // anti rain check
-                if (mod.Config.JukeboxRingWorksInRain && !__result && __instance.miniJukeboxCount.Value > 0 && __instance.miniJukeboxTrack.Value != "")
-                {
-                    foreach (var player in Game1.getOnlineFarmers())
-                    {
-                        if (player.currentLocation == __instance && player.isWearingRing(RingOverhaul.JukeBoxRingID))
-                        {
-                            __result = true;
-                            break;
+                            environment.SelectRandomMiniJukeboxTrack();
                         }
                     }
                 }
+
+                return;
             }
-            catch (Exception e)
+            else if (__instance.QualifiedItemId == IridiumBandQualifiedID)
             {
-                mod.ErrorLog("There was an exception in a patch", e);
+                RemoveIridiumBandLight(environment, __instance);
+                return;
+            }
+        }
+
+        public static void OnLeaveLocation_Post(Ring __instance, GameLocation environment)
+        {
+            if (mod.Config.JukeboxRingEnabled && __instance.QualifiedItemId == JukeBoxRingQualifiedID)
+            {
+                TryRemoveJukeBoxRing(__instance, environment);
+            }
+        }
+
+        public static void IsMiniJukeboxPlaying_Post(GameLocation __instance, ref bool __result)
+        {
+            // we only try to override an 'anti rain check', so if the config is off, we don't need to do anything
+            if (__result || !mod.Config.JukeboxRingWorksInRain || !mod.Config.JukeboxRingEnabled)
+            {
+                return;
+            }
+
+            bool isRaining = __instance.IsOutdoors && __instance.IsRainingHere();
+            bool couldPlayMiniJukeBox = __instance.miniJukeboxCount.Value > 0 && __instance.miniJukeboxTrack.Value != string.Empty;
+
+            bool wasOnlyCancelledDueToRain = isRaining && couldPlayMiniJukeBox;
+
+            if (wasOnlyCancelledDueToRain)
+            {
+                // check if one of the 'miniJukeboxCount' was a jukebox ring
+                foreach (var player in Game1.getOnlineFarmers())
+                {
+                    if (player.currentLocation == __instance && player.isWearingRing(JukeBoxRingQualifiedID))
+                    {
+                        __result = true;
+                        break;
+                    }
+                }
             }
         }
 
@@ -612,143 +543,42 @@ namespace RingOverhaul
             Game1.activeClickableMenu = new ChooseFromListMenu(list, new ChooseFromListMenu.actionOnChoosingListOption((s) => OnSongChosen(s, ring)), true, who.currentLocation.miniJukeboxTrack.Value);
         }
 
+        public static void RemoveIridiumBandLight(GameLocation environment, Ring ring)
+        {
+            if (!mod.Config.IridiumBandChangesEnabled)
+            {
+                return;
+            }
+
+            var fieldInfo = AccessTools.Field(typeof(Ring), "_lightSourceID");
+
+            if (fieldInfo.GetValue(ring) != null)
+            {
+                environment.removeLightSource(((int?)fieldInfo.GetValue(ring)).Value);
+            }
+
+            fieldInfo.SetValue(ring, null);
+        }
+
         public static void OnSongChosen(string selection, Ring ring)
         {
             if (Game1.player.currentLocation != null)
             {
                 if (selection == "turn_off")
                 {
-                    Game1.player.currentLocation.miniJukeboxTrack.Value = "";
-                    return;
+                    Game1.player.currentLocation.miniJukeboxTrack.Value = string.Empty;
                 }
-
-                Game1.player.currentLocation.miniJukeboxTrack.Value = selection;
-
-                if (selection == "random")
+                else
                 {
-                    Game1.player.currentLocation.SelectRandomMiniJukeboxTrack();
-                }
+                    Game1.player.currentLocation.miniJukeboxTrack.Value = selection;
 
-                ring.modData[JukeBoxRingTrackKey] = selection;
-            }
-        }
-
-        public static bool UpdateFurnaceInput(ref StardewObject __instance, ref bool __result, ref Item dropInItem, ref bool probe, ref Farmer who)
-        {
-            try
-            {
-                if (!probe && __instance.name.Equals("Furnace") && __instance.heldObject.Value == null)
-                {
-                    if (dropInItem is StardewObject o && o.ParentSheetIndex == RingOverhaul.CoalID && who.IsLocalPlayer)
+                    if (selection == "random")
                     {
-                        var inventory = who.Items;
-                        SimpleFurnaceRecipe[] recipes = new SimpleFurnaceRecipe[]
-                        {
-                            new SimpleFurnaceRecipe(new List<int>{ 516 }, 517, "Glow Ring"), // + 5x 768
-                            new SimpleFurnaceRecipe(new List<int>{ 518 }, 519, "Magnet Ring"), // + 5x 769
-                            new SimpleFurnaceRecipe(new List<int>{ 517, 519 }, 888, "Glowstone Ring"),
-                            new SimpleFurnaceRecipe(new List<int>{ 529, 530, 531, 532, 533, 534 }, RingOverhaul.IridiumBandID, "Iridium Band"), // + 2x 337
-                        };
-
-                        var foundIds = new List<int>();
-
-                        for (int i = inventory.Count - 1; i >= 0; i--)
-                        {
-                            if (inventory[i] is Ring ring)
-                            {
-                                foundIds.Add(ring.ParentSheetIndex);
-                            }
-                        }
-
-                        foreach (var recipe in recipes)
-                        {
-                            if (!who.craftingRecipes.ContainsKey(recipe.requiredRecipe))
-                            {
-                                continue;
-                            }
-
-                            // check if the recipe is applicable
-                            if (foundIds.Intersect(recipe.inputIds).ToList().Count == recipe.inputIds.Count)
-                            {
-                                if (recipe.outputId == 517)
-                                {
-                                    if (who.getTallyOfObject(768, false) >= 5)
-                                    {
-                                        who.consumeObject(768, 5);
-                                        // __instance.ConsumeInventoryItem(who, 768, 5);
-                                    }
-                                    else
-                                    {
-                                        continue;
-                                    }
-                                }
-
-                                if (recipe.outputId == 519)
-                                {
-                                    if (who.getTallyOfObject(769, false) >= 5)
-                                    {
-                                        who.consumeObject(769, 5);
-                                        // __instance.ConsumeInventoryItem(who, 769, 5);
-                                    }
-                                    else
-                                    {
-                                        continue;
-                                    }
-                                }
-
-                                if (recipe.outputId == RingOverhaul.IridiumBandID)
-                                {
-                                    if (who.getTallyOfObject(337, false) >= 2)
-                                    {
-                                        who.consumeObject(337, 2);
-                                        // __instance.ConsumeInventoryItem(who, 337, 2);
-                                    }
-                                    else
-                                    {
-                                        continue;
-                                    }
-                                }
-
-                                for (int i = inventory.Count - 1; i >= 0; i--)
-                                {
-                                    if (inventory[i] is Ring ring && recipe.inputIds.Contains(ring.ParentSheetIndex))
-                                    {
-                                        recipe.inputIds.Remove(ring.ParentSheetIndex);
-                                        inventory[i] = null;
-                                    }
-                                }
-
-                                who.craftingRecipes[recipe.requiredRecipe]++;
-
-                                who.consumeObject(RingOverhaul.CoalID, 1);
-                                // __instance.ConsumeInventoryItem(who, RingOverhaul.CoalID, 1);
-
-                                who.currentLocation.debris.Add(new Debris(new Ring(recipe.outputId), __instance.TileLocation * 64f));
-                                who.currentLocation.playSound("furnace", NetAudio.SoundContext.Default);
-
-                                var multiplayer = (Multiplayer)AccessTools.Field(typeof(Game1), "multiplayer").GetValue(null);
-
-                                multiplayer.broadcastSprites(who.currentLocation, new TemporaryAnimatedSprite[]
-                                {
-                                    new TemporaryAnimatedSprite(30, __instance.TileLocation * 64f + new Vector2(0f, -16f), Color.White, 4, false, 50f, 10, 64, (__instance.TileLocation.Y + 1f) * 64f / 10000f + 0.0001f, -1, 0)
-                                    {
-                                        alphaFade = 0.005f
-                                    }
-                                });
-
-                                __result = false;
-                                return false;
-                            }
-                        }
+                        Game1.player.currentLocation.SelectRandomMiniJukeboxTrack();
                     }
                 }
 
-                return true;
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
-                return true;
+                ring.modData[JukeBoxRingTrackKey] = selection;
             }
         }
     }

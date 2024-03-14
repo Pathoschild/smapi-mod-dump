@@ -14,9 +14,9 @@ namespace WateringGrantsXP
     using StardewModdingAPI;
     using StardewValley;
     using StardewValley.Locations;
+    using StardewValley.Objects;
     using StardewValley.TerrainFeatures;
     using StardewValley.Tools;
-    using System;
 
     public class WateringGrantsXP : Mod
     {
@@ -26,9 +26,7 @@ namespace WateringGrantsXP
 
         private string key;
 
-        private const int fiberId = 771;
-
-        private const int qiFruitId = 889;
+        private const string unqualifiedQiFruitId = "889";
 
         public override void Entry(IModHelper helper)
         {
@@ -41,13 +39,14 @@ namespace WateringGrantsXP
 
             Helper.Events.GameLoop.GameLaunched += delegate { WateringGrantsXPConfig.SetUpModConfigMenu(config, this); };
 
-            Helper.Events.GameLoop.DayEnding += CheckForUnwateredCrops;
+            Helper.Events.GameLoop.DayEnding += delegate { CheckForUnwateredCrops(); };
 
             var harmony = new Harmony(this.ModManifest.UniqueID);
 
             harmony.Patch(
                original: AccessTools.Method(typeof(HoeDirt), nameof(HoeDirt.performToolAction)),
                prefix: new HarmonyMethod(typeof(WateringGrantsXP), nameof(WateringGrantsXP.GiveWateringExp)));
+
             harmony.Patch(
                original: AccessTools.Method(typeof(GameLocation), nameof(GameLocation.CanRefillWateringCanOnTile)),
                postfix: new HarmonyMethod(typeof(WateringGrantsXP), nameof(WateringGrantsXP.CantRefillWateringCanWithSaltWater)));
@@ -58,95 +57,85 @@ namespace WateringGrantsXP
             Monitor.Log(o == null ? "null" : o.ToString(), LogLevel.Debug);
         }
 
-        public void ErrorLog(object o, Exception e = null)
-        {
-            string baseMessage = o == null ? "null" : o.ToString();
-
-            string errorMessage = e == null ? string.Empty : $"\n{e.Message}\n{e.StackTrace}";
-
-            Monitor.Log(baseMessage + errorMessage, LogLevel.Error);
-        }
-
         public static void CantRefillWateringCanWithSaltWater(GameLocation __instance, ref bool __result, int tileX, int tileY)
         {
-            try
+            if (__result && mod.config.CantRefillCanWithSaltWater)
             {
-                if (__result && mod.config.CantRefillCanWithSaltWater)
+                if ((__instance.doesTileHaveProperty(tileX, tileY, "Water", "Back") != null || __instance.doesTileHaveProperty(tileX, tileY, "WaterSource", "Back") != null)
+                    && (__instance is Beach || __instance.catchOceanCrabPotFishFromThisSpot(tileX, tileY)))
                 {
-                    if ((__instance.doesTileHaveProperty(tileX, tileY, "Water", "Back") != null || __instance.doesTileHaveProperty(tileX, tileY, "WaterSource", "Back") != null) && (__instance is Beach || __instance.catchOceanCrabPotFishFromThisSpot(tileX, tileY)))
-                    {
-                        __result = false;
-                    }
+                    __result = false;
                 }
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
             }
         }
 
         private static bool GiveWateringExp(HoeDirt __instance, ref Tool t)
         {
-            try
-            {
-                double chance = mod.config.WateringChanceToGetXP / 100.0;
+            double chance = mod.config.WateringChanceToGetXP / 100.0;
 
-                if (t != null && t is WateringCan && __instance != null && __instance.state.Value == HoeDirt.dry && __instance.needsWatering() && __instance.crop != null && !__instance.crop.dead.Value)
+            if (t is WateringCan && __instance.state.Value == HoeDirt.dry && __instance.needsWatering() && __instance.crop != null && !__instance.crop.dead.Value)
+            {
+                if (Game1.random.NextDouble() < chance)
                 {
-                    if (Game1.random.NextDouble() < chance)
+                    if (t.getLastFarmerToUse() != null)
                     {
-                        if (__instance.crop.isWildSeedCrop() && mod.config.ForageSeedWateringGrantsForagingXP)
-                        {
-                            if (t.getLastFarmerToUse() != null)
-                            {
-                                t.getLastFarmerToUse().gainExperience(2, mod.config.WateringExperienceAmount);
-                            }
-                        }
-                        else
-                        {
-                            if (t.getLastFarmerToUse() != null)
-                            {
-                                t.getLastFarmerToUse().gainExperience(0, mod.config.WateringExperienceAmount);
-                            }
-                        }
+                        bool shouldBoostForaging = __instance.crop.isWildSeedCrop() && mod.config.ForageSeedWateringGrantsForagingXP;
+
+                        var skillToBoost = shouldBoostForaging ? Farmer.foragingSkill : Farmer.farmingSkill;
+
+                        t.getLastFarmerToUse().gainExperience(skillToBoost, mod.config.WateringExperienceAmount);
                     }
                 }
+            }
 
-                return true;
-            }
-            catch (Exception e)
-            {
-                mod.ErrorLog("There was an exception in a patch", e);
-                return true;
-            }
+            return true;
         }
 
-        private void CheckForUnwateredCrops(object sender, StardewModdingAPI.Events.DayEndingEventArgs e)
+        private void CheckForUnwateredCrops()
         {
             if (!Context.IsMainPlayer || !config.CropsCanDieWithoutWater)
             {
                 return;
             }
 
-            foreach (var location in Game1.locations)
+            Utility.ForEachLocation(delegate (GameLocation location)
             {
                 foreach (var terrainfeature in location.terrainFeatures.Pairs)
                 {
                     if (terrainfeature.Value is HoeDirt dirt)
                     {
-                        if (dirt.crop == null || dirt.crop.dead.Value || dirt.state.Value == HoeDirt.watered)
+                        HandleHoeDirt(dirt);
+                    }
+                }
+
+                if (config.WitheringAlsoChecksGardenPots)
+                {
+                    foreach (var locObject in location.Objects.Values)
+                    {
+                        if (locObject is IndoorPot pot && pot.hoeDirt.Value != null)
                         {
-                            if (dirt.modData.ContainsKey(key))
-                            {
-                                dirt.modData.Remove(key);
-                            }
-                        }
-                        else if (dirt.needsWatering() && !dirt.crop.dead.Value && dirt.state.Value == HoeDirt.dry && !(dirt.crop.indexOfHarvest.Value is fiberId or qiFruitId))
-                        {
-                            CheckForCropDeath(dirt);
+                            HandleHoeDirt(pot.hoeDirt.Value);
                         }
                     }
                 }
+
+                return true;
+            });
+        }
+
+        private void HandleHoeDirt(HoeDirt dirt)
+        {
+            if (dirt.crop == null || dirt.crop.dead.Value || dirt.isWatered())
+            {
+                if (dirt.modData.ContainsKey(key))
+                {
+                    dirt.modData.Remove(key);
+                }
+            }
+            else if (dirt.needsWatering() && !dirt.crop.dead.Value && !dirt.isWatered()
+                && dirt.crop.indexOfHarvest.Value != unqualifiedQiFruitId)
+            {
+                CheckForCropDeath(dirt);
             }
         }
 

@@ -147,3 +147,4 @@ These debug commands can be written directly into the SMAPI console.<br>They are
 | cfl reload       | Reloads all cached cfl_map.json data       |
 | cfl dayupdate `num`,<br> cfl du `num`       | Performs all valid daily updates of the players location `num` times       |
 | cfl furniture       | Prints out all furniture of the current location as json so it can be directly copied into StartFurniture        |
+| cfl type       | Prints out the current FarmType ID        |

@@ -149,7 +149,8 @@ namespace HappyHomeDesigner
 			SearchFocusFix.Apply(harmony);
 
 			AltTex.Apply(harmony);
-			DGA.Apply(harmony);
+			// TODO rewrite patches when dga comes back
+			//DGA.Apply(harmony);
 		}
 	}
 }

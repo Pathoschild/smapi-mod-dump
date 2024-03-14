@@ -25,6 +25,8 @@ namespace ScheduleViewer
     {
         private int currentIndex;
 
+        private SocialPage.SocialEntry socialEntry;
+
         private string hoverText = "";
 
         /// <summary>Key in the line number, Value is Rectangle containing the bounds of the hover text and the hover text string"</summary>
@@ -95,6 +97,10 @@ namespace ScheduleViewer
         protected Rectangle _characterStatusDisplayBox;
 
         protected List<ClickableTextureComponent> _clickableTextureComponents = new();
+
+        public readonly Rectangle emptyHeartSourceRect = new(218, 428, 7, 6);
+
+        public readonly Rectangle filledHeartSourceRect = new(211, 428, 7, 6);
 
         /// <summary>LookupAnything</summary>
         public NPC hoveredNpc;
@@ -189,39 +195,18 @@ namespace ScheduleViewer
         public override void draw(SpriteBatch b)
         {
             Schedule.NPCSchedule schedule = this.schedules[this.currentIndex];
+            var (entries, currentLocation, isOnSchedule, displayName, npc) = schedule;
             b.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.4f);
             b.Draw(this.letterTexture, new Vector2(base.xPositionOnScreen + base.width / 2, base.yPositionOnScreen + base.height / 2), new Rectangle(0, 0, 320, 180), Color.White, 0f, new Vector2(160f, 90f), 4f, SpriteEffects.None, 0.86f);
             Game1.DrawBox(this._characterStatusDisplayBox.X, this._characterStatusDisplayBox.Y, this._characterStatusDisplayBox.Width, this._characterStatusDisplayBox.Height);
+
+            // sprite
             b.Draw((Game1.timeOfDay >= 1900) ? Game1.nightbg : Game1.daybg, this._characterSpriteDrawPosition, Color.White);
             Vector2 character_position_offset = new Vector2(0f, (32 - this._animatedSprite.SpriteHeight) * 4);
             character_position_offset += this._characterEntrancePosition * 4f;
-            var (entries, currentLocation, isOnSchedule, displayName, npc) = schedule;
-            Game1.player.friendshipData.TryGetValue(npc?.Name, out Friendship friendship);
             this._animatedSprite.draw(b, new Vector2(this._characterSpriteDrawPosition.X + 32f + character_position_offset.X, this._characterSpriteDrawPosition.Y + 32f + character_position_offset.Y), 0.8f);
-            int heartLevel = Game1.player.getFriendshipHeartLevelForNPC(npc?.Name);
-            bool datable = SocialPage.isDatable(npc?.Name);
-            bool spouse = friendship?.IsMarried() ?? false;
-            bool dating = friendship?.IsDating() ?? false;
-            int drawn_hearts = Math.Max(10, Utility.GetMaximumHeartsForCharacter(npc));
-            float heart_draw_start_x = this._heartDisplayPosition.X - (float)(Math.Min(10, drawn_hearts) * 32 / 2);
-            float heart_draw_offset_y = ((drawn_hearts > 10) ? (-16f) : 0f);
-            for (int hearts = 0; hearts < drawn_hearts; hearts++)
-            {
-                int xSource = ((hearts < heartLevel) ? 211 : 218);
-                if (datable && !dating && !spouse && hearts >= 8)
-                {
-                    xSource = 211;
-                }
-                if (hearts < 10)
-                {
-                    b.Draw(Game1.mouseCursors, new Vector2(heart_draw_start_x + (float)(hearts * 32), this._heartDisplayPosition.Y + heart_draw_offset_y), new Rectangle(xSource, 428, 7, 6), (datable && !dating && !spouse && hearts >= 8) ? (Color.Black * 0.35f) : Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.88f);
-                }
-                else
-                {
-                    b.Draw(Game1.mouseCursors, new Vector2(heart_draw_start_x + (float)((hearts - 10) * 32), this._heartDisplayPosition.Y + heart_draw_offset_y + 32f), new Rectangle(xSource, 428, 7, 6), Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.88f);
-                }
-            }
 
+            // name label
             if (this._printedName.Length < displayName.Length)
             {
                 SpriteText.drawStringWithScrollCenteredAt(b, "", (int)this._characterNamePosition.X, (int)this._characterNamePosition.Y, this._printedName);
@@ -230,10 +215,32 @@ namespace ScheduleViewer
             {
                 SpriteText.drawStringWithScrollCenteredAt(b, displayName, (int)this._characterNamePosition.X, (int)this._characterNamePosition.Y);
             }
-            // Can give gift
-            SpriteText.drawStringHorizontallyCenteredAt(b, ModEntry.ModHelper.Translation.Get("schedule_details_page.can_give_gift"), (int)this._giftHeaderDisplayPosition.X, (int)this._giftHeaderDisplayPosition.Y);
-            string canGiveGiftText = CanGiveGiftText(friendship);
-            Utility.drawBoldText(b, canGiveGiftText, Game1.dialogueFont, new Vector2((0f - Game1.dialogueFont.MeasureString(canGiveGiftText).X) / 2f + this._giftDisplayPosition.X, this._giftDisplayPosition.Y), Game1.textColor);
+
+            // friendship section
+            if (ShowFriendshipSection(out string giftedTodayText))
+            {
+                // hearts
+                int maxHearts = Math.Max(10, Utility.GetMaximumHeartsForCharacter(npc));
+                float heart_draw_start_x = this._heartDisplayPosition.X - (float)(Math.Min(10, maxHearts) * 32 / 2);
+                float heart_draw_offset_y = maxHearts > 10 ? -16f : 0f;
+                for (int i = 0; i < maxHearts; i++)
+                {
+                    bool isGreyedOut = socialEntry.IsDatable && !socialEntry.IsDatingCurrentPlayer() && !socialEntry.IsMarriedToCurrentPlayer() && i >= 8;
+                    Rectangle heartSourceRect = isGreyedOut || i < socialEntry.HeartLevel ? filledHeartSourceRect : emptyHeartSourceRect;
+                    if (i < 10)
+                    {
+                        b.Draw(Game1.mouseCursors, new Vector2(heart_draw_start_x + (float)(i * 32), this._heartDisplayPosition.Y + heart_draw_offset_y), heartSourceRect, isGreyedOut ? (Color.Black * 0.35f) : Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.88f);
+                    }
+                    else
+                    {
+                        b.Draw(Game1.mouseCursors, new Vector2(heart_draw_start_x + (float)((i - 10) * 32), this._heartDisplayPosition.Y + heart_draw_offset_y + 32f), heartSourceRect, Color.White, 0f, Vector2.Zero, 4f, SpriteEffects.None, 0.88f);
+                    }
+                }
+
+                // Gifted today
+                SpriteText.drawStringHorizontallyCenteredAt(b, ModEntry.ModHelper.Translation.Get("schedule_details_page.gifted_today.header"), (int)this._giftHeaderDisplayPosition.X, (int)this._giftHeaderDisplayPosition.Y);
+                Utility.drawBoldText(b, giftedTodayText, Game1.dialogueFont, new Vector2((0f - Game1.dialogueFont.MeasureString(giftedTodayText).X) / 2f + this._giftDisplayPosition.X, this._giftDisplayPosition.Y), Game1.textColor);
+            }
 
             // Current Location
             SpriteText.drawStringHorizontallyCenteredAt(b, ModEntry.ModHelper.Translation.Get("schedule_details_page.current_location"), (int)this._locationHeaderDisplayPosition.X, (int)this._locationHeaderDisplayPosition.Y);
@@ -296,7 +303,7 @@ namespace ScheduleViewer
                     string entryString = entry?.ToString();
                     if (!string.IsNullOrEmpty(entryString))
                     {
-                        this.hoverTextOptions.Add(Tuple.Create(new Rectangle(x, y + (int)yOffset, (int)font.MeasureString(entryString).X + 2, (int)lineHeight), entry?.GetHoverText()));
+                        this.hoverTextOptions.Add(Tuple.Create(new Rectangle(x, y + (int)yOffset, (int)font.MeasureString(entryString).X + 2, (int)lineHeight), entry?.HoverText));
                     }
                     if (entry != null)
                     {
@@ -693,15 +700,38 @@ namespace ScheduleViewer
         }
         #endregion
 
-        public string CanGiveGiftText(Friendship friendship)
+        public bool ShowFriendshipSection(out string giftText)
         {
+            giftText = null;
             NPC npc = this.GetCharacter();
-            if (friendship == null || npc == null) return "?";
-            if (friendship.GiftsToday < 1 && (friendship.GiftsThisWeek < NPC.maxGiftsPerWeek || npc.isBirthday(Game1.currentSeason, Game1.dayOfMonth) || npc is Child || friendship.IsMarried()))
+            if (!npc.CanSocialize)
             {
-                return Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_Yes");
+                return false;
             }
-            return Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No");
+            if (socialEntry.Friendship == null)
+            {
+                giftText = Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No");
+                return true;
+            }
+            bool alreadyGiftedToday = socialEntry.Friendship.GiftsToday == 1;
+            if (alreadyGiftedToday)
+            {
+                giftText = Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_Yes");
+                return true;
+            }
+            bool ignoreWeeklyGiftLimit = npc.isBirthday() || npc is Child || socialEntry.IsMarriedToCurrentPlayer();
+            if (ignoreWeeklyGiftLimit)
+            {
+                giftText = Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No");
+                return true;
+            }
+            if (socialEntry.Friendship.GiftsThisWeek >= NPC.maxGiftsPerWeek)
+            {
+                giftText = ModEntry.ModHelper.Translation.Get("schedule_details_page.gifted_today.weekly_limit");
+                return true;
+            }
+            giftText = Game1.content.LoadString("Strings\\Lexicon:QuestionDialogue_No");
+            return true;
         }
 
         public void ChangeCharacter(int offset)
@@ -784,6 +814,8 @@ namespace ScheduleViewer
             this._directionChangeTimer = 2000f;
             this._currentDirection = 2;
             this._hiddenEmoteTimer = -1f;
+            Game1.player.friendshipData.TryGetValue(npc?.Name, out Friendship friendship);
+            this.socialEntry = new(npc, friendship, npc.GetData());
             this.SetupLayout();
             base.populateClickableComponentList();
             if (Game1.options.snappyMenus && Game1.options.gamepadControls && (base.currentlySnappedComponent == null || !base.allClickableComponents.Contains(base.currentlySnappedComponent)))

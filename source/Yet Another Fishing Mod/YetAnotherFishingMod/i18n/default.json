@@ -11,6 +11,8 @@
 {
   "config.general.page-title": "General",
   "config.general.general-section": "General",
+  "config.general.catch-fish-retries.name": "Catch Fish Retries",
+  "config.general.catch-fish-retries.tooltip": "How many times the mod will attempt to catch a fish instead of junk.",
   "config.general.instant-catch-fish.name": "Instantly Catch Fish",
   "config.general.instant-catch-fish.tooltip": "Skips the fishing minigame.",
   "config.general.instant-catch-treasure.name": "Instantly Catch Treasure",

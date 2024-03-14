@@ -9,12 +9,12 @@
 *************************************************/
 
 {
-  "Name": "A Tappers Dream - A Tree Overhaul",
+  "Name": "Tree Overhaul - A Tappers Dream",
   "Author": "Goldenrevolver",
-  "Version": "3.3",
+  "Version": "4.0",
   "Description": "Makes just about everything about trees configurable.",
   "UniqueID": "Goldenrevolver.ATappersDream",
   "EntryDll": "TreeOverhaul.dll",
-  "MinimumApiVersion": "3.13.2",
+  "MinimumApiVersion": "4.0.0-alpha",
   "UpdateKeys": [ "Nexus:260" ]
 }

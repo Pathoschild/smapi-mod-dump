@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+    "FarmImprovement_Initial_Question": "이봐... 내륙인. 들어봐. 돈이 있다면... 나랑 우리 애들이 네 농장을 개선해 줄 수 있어. 관심 있어?",
+    "FarmImprovement_Yes": "어디 들어보자...",
+    "FarmImprovement_No": "고맙지만 사양할게.",
+    "FarmImprovement_Farm_Expansion_Question": "우리 애들이 농장에 공간 좀 추가해 줄 수 있어. 가격은... {{price}} 골드면 될 거야. 어때?",
+    "FarmImprovement_Sprinkler_Question": "우리 애들이 모래 작업 좀 해서 스프링클러를 쓸 수 있을 거야. 딱 {{price}} 골드면 돼. 어때?",
+    "FarmImprovement_Done_Tomorrow": "헤헤헤... 완벽해. 내일 아침이면 작업이 완료되었을 거야."
+}

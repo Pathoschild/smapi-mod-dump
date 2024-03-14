@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20425
+IDs: bowtochris.CommunityCenterBundlesRandomizer
+update keys: Nexus:20425

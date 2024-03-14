@@ -1,0 +1,34 @@
+﻿{
+  "config.menutoggle.name": "Open menu keybind",
+  "config.menutoggle.tooltip": "Which keybind to use to open the menu.",
+  
+  "config.menustyle.name": "Menu style",
+  "config.menustyle.tooltip": "Which menu style to use.",
+  "config.menustyle.values.grid": "Grid (legacy)",
+  "config.menustyle.values.verticallist": "Vertical list",
+  
+  "config.maxrows.name": "Max rows",
+  "config.maxrows.tooltip": "How many items should be visible on one row (when using grid menu).",
+  
+  "config.maxcolumns.name": "Max columns",
+  "config.maxcolumns.tooltip": "(Grid menu style only)\nHow many items should be visible on one column.",
+  
+  "config.section.general": "General",
+  "config.section.customization": "Customization",
+
+  "strings.removewarp.questiontext": "Are you sure you want to remove \"{{warpName}}\"?",
+  "strings.removewarp.tooltip": "Remove Warp",
+  "strings.addwarp.tooltip": "Add Warp",
+  "strings.namewarp.tooltip": "Name warp",
+  "strings.globalwarp.tooltip": "Make warp global?",
+  
+  "strings.tabs.all": "All warps",
+  "strings.tabs.global": "Global warps",
+  "strings.tabs.local": "Local warps",
+  
+  "strings.sorting.date.descending": "Newest first",
+  "strings.sorting.date.ascending": "Oldest first",
+  
+  "strings.sorting.warpname.ascending": "Warp name (ascending)",
+  "strings.sorting.warpname.descending": "Warp name (descending)"
+}

@@ -14,6 +14,7 @@ namespace StarfishMoverRecolor
     using Microsoft.Xna.Framework;
     using Microsoft.Xna.Framework.Graphics;
     using StardewModdingAPI;
+    using StardewModdingAPI.Events;
     using StardewValley;
     using StardewValley.Locations;
     using StardewValley.Projectiles;
@@ -22,7 +23,7 @@ namespace StarfishMoverRecolor
     using System.Diagnostics;
     using xTile.Dimensions;
 
-    public class StarfishMoverRecolor : Mod, IAssetEditor
+    public class StarfishMoverRecolor : Mod
     {
         private bool checkedThisFrame = false;
 
@@ -39,7 +40,9 @@ namespace StarfishMoverRecolor
             Helper.Events.GameLoop.UpdateTicked += GameLoop_UpdateTicked;
             Helper.Events.Player.Warped += Player_Warped;
 
-            clamTexture = Helper.Content.Load<Texture2D>($"assets/starfish_texture.png");
+            clamTexture = Helper.ModContent.Load<Texture2D>($"assets/starfish_texture.png");
+
+            Helper.Events.Content.AssetRequested += OnAssetRequested;
 
             mod = this;
 
@@ -63,33 +66,36 @@ namespace StarfishMoverRecolor
             }
         }
 
-        private void Player_Warped(object sender, StardewModdingAPI.Events.WarpedEventArgs e)
+        private void Player_Warped(object sender, WarpedEventArgs e)
         {
             if (e?.NewLocation is MermaidHouse)
             {
-                Helper.Content.InvalidateCache("Maps/mermaid_house_tiles");
+                Helper.GameContent.InvalidateCacheAndLocalized("Maps/mermaid_house_tiles");
             }
         }
 
-        public bool CanEdit<T>(IAssetInfo asset)
+        private void OnAssetRequested(object sender, AssetRequestedEventArgs e)
         {
-            return asset.AssetNameEquals("Maps/mermaid_house_tiles") && clamTexture != null;
-        }
-
-        public void Edit<T>(IAssetData asset)
-        {
-            if (asset.AssetNameEquals("Maps/mermaid_house_tiles") && clamTexture != null)
+            if (clamTexture == null)
             {
-                var editor = asset.AsImage();
+                return;
+            }
 
-                for (int i = 0; i < config.ClamPositions.Length; i++)
+            if (e.NameWithoutLocale.IsEquivalentTo("Maps/mermaid_house_tiles"))
+            {
+                e.Edit((asset) =>
                 {
-                    editor.PatchImage(clamTexture, null, new Microsoft.Xna.Framework.Rectangle((int)config.ClamPositions[i].X * 16, (int)config.ClamPositions[i].Y * 16, 16, 16), PatchMode.Overlay);
-                }
+                    var editor = asset.AsImage();
+
+                    for (int i = 0; i < config.ClamPositions.Length; i++)
+                    {
+                        editor.PatchImage(clamTexture, null, new Microsoft.Xna.Framework.Rectangle((int)config.ClamPositions[i].X * 16, (int)config.ClamPositions[i].Y * 16, 16, 16), PatchMode.Overlay);
+                    }
+                });
             }
         }
 
-        private void GameLoop_UpdateTicked(object sender, StardewModdingAPI.Events.UpdateTickedEventArgs e)
+        private void GameLoop_UpdateTicked(object sender, UpdateTickedEventArgs e)
         {
             checkedThisFrame = false;
         }
@@ -158,9 +164,7 @@ namespace StarfishMoverRecolor
                 }
 
                 var clamPitch = mod.config.ClamPitches[which];
-                ICue clamTone = Game1.soundBank.GetCue("clam_tone");
-                clamTone.SetVariable("Pitch", clamPitch);
-                clamTone.Play();
+                Game1.playSound("clam_tone", clamPitch);
 
                 var clamPosition = mod.config.ClamPositions[which] * 64;
                 var clamColor = mod.config.ClamColors[which];
@@ -195,7 +199,7 @@ namespace StarfishMoverRecolor
                         interval = 1f,
                         delayBeforeAnimationStart = 885,
                         texture = ___mermaidSprites,
-                        endFunction = new TemporaryAnimatedSprite.endBehavior(__instance.playClamTone),
+                        endFunction = __instance.playClamTone,
                         extraInfoForEndBehavior = 0
                     });
                     __instance.temporarySprites.Add(new TemporaryAnimatedSprite
@@ -203,7 +207,7 @@ namespace StarfishMoverRecolor
                         interval = 1f,
                         delayBeforeAnimationStart = 1270,
                         texture = ___mermaidSprites,
-                        endFunction = new TemporaryAnimatedSprite.endBehavior(__instance.playClamTone),
+                        endFunction = __instance.playClamTone,
                         extraInfoForEndBehavior = 4
                     });
                     __instance.temporarySprites.Add(new TemporaryAnimatedSprite
@@ -211,7 +215,7 @@ namespace StarfishMoverRecolor
                         interval = 1f,
                         delayBeforeAnimationStart = 1655,
                         texture = ___mermaidSprites,
-                        endFunction = new TemporaryAnimatedSprite.endBehavior(__instance.playClamTone),
+                        endFunction = __instance.playClamTone,
                         extraInfoForEndBehavior = 3
                     });
                     __instance.temporarySprites.Add(new TemporaryAnimatedSprite
@@ -219,7 +223,7 @@ namespace StarfishMoverRecolor
                         interval = 1f,
                         delayBeforeAnimationStart = 2040,
                         texture = ___mermaidSprites,
-                        endFunction = new TemporaryAnimatedSprite.endBehavior(__instance.playClamTone),
+                        endFunction = __instance.playClamTone,
                         extraInfoForEndBehavior = 1
                     });
                     __instance.temporarySprites.Add(new TemporaryAnimatedSprite
@@ -227,7 +231,7 @@ namespace StarfishMoverRecolor
                         interval = 1f,
                         delayBeforeAnimationStart = 2425,
                         texture = ___mermaidSprites,
-                        endFunction = new TemporaryAnimatedSprite.endBehavior(__instance.playClamTone),
+                        endFunction = __instance.playClamTone,
                         extraInfoForEndBehavior = 2
                     });
                     __instance.temporarySprites.Add(new TemporaryAnimatedSprite
@@ -302,37 +306,48 @@ namespace StarfishMoverRecolor
             }
         }
 
-        public static bool DrawAboveAlwaysFrontLayer(MermaidHouse __instance, SpriteBatch b, float ___blackBGAlpha, Stopwatch ___stopWatch, Texture2D ___mermaidSprites, float ___finalLeftMermaidAlpha, float ___finalRightMermaidAlpha, List<Vector2> ___bubbles, List<TemporaryAnimatedSprite> ___alwaysFrontTempSprites, float ___bigMermaidAlpha, float ___finalBigMermaidAlpha)
+        private static void GameLocationDrawAboveAlwaysFrontLayer(MermaidHouse __instance, SpriteBatch b)
         {
-            try
+            if (__instance.critters != null && Game1.farmEvent == null)
             {
-                if (__instance.critters != null && Game1.farmEvent == null)
+                for (int i = 0; i < __instance.critters.Count; i++)
                 {
-                    for (int i = 0; i < __instance.critters.Count; i++)
-                    {
-                        __instance.critters[i].drawAboveFrontLayer(b);
-                    }
+                    __instance.critters[i].drawAboveFrontLayer(b);
                 }
+            }
 
-                foreach (NPC npc in __instance.characters)
-                {
-                    npc.drawAboveAlwaysFrontLayer(b);
-                }
+            foreach (NPC npc in __instance.characters)
+            {
+                npc.drawAboveAlwaysFrontLayer(b);
+            }
 
+            if (__instance.TemporarySprites.Count > 0)
+            {
                 foreach (TemporaryAnimatedSprite s in __instance.TemporarySprites)
                 {
                     if (s.drawAboveAlwaysFront)
                     {
-                        s.draw(b, false, 0, 0, 1f);
+                        s.draw(b);
                     }
                 }
+            }
 
-                foreach (Projectile projectile in __instance.projectiles)
-                {
-                    projectile.draw(b);
-                }
+            if (__instance.projectiles.Count <= 0)
+            {
+                return;
+            }
+            foreach (Projectile projectile in __instance.projectiles)
+            {
+                projectile.draw(b);
+            }
+        }
 
+        public static bool DrawAboveAlwaysFrontLayer(MermaidHouse __instance, SpriteBatch b, float ___blackBGAlpha, Stopwatch ___stopWatch, Texture2D ___mermaidSprites, float ___finalLeftMermaidAlpha, float ___finalRightMermaidAlpha, List<Vector2> ___bubbles, List<TemporaryAnimatedSprite> ___alwaysFrontTempSprites, float ___bigMermaidAlpha, float ___finalBigMermaidAlpha)
+        {
+            try
+            {
                 //base.drawAboveAlwaysFrontLayer(b);
+                GameLocationDrawAboveAlwaysFrontLayer(__instance, b);
 
                 b.Draw(Game1.staminaRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * ___blackBGAlpha);
                 int spacing = Game1.graphics.GraphicsDevice.Viewport.Bounds.Height / 4;
@@ -385,5 +400,21 @@ namespace StarfishMoverRecolor
                 return true;
             }
         }
+    }
+
+    /// <summary>
+    /// Extension methods for IGameContentHelper.
+    /// </summary>
+    public static class GameContentHelperExtensions
+    {
+        /// <summary>
+        /// Invalidates both an asset and the locale-specific version of an asset.
+        /// </summary>
+        /// <param name="helper">The game content helper.</param>
+        /// <param name="assetName">The (string) asset to invalidate.</param>
+        /// <returns>if something was invalidated.</returns>
+        public static bool InvalidateCacheAndLocalized(this IGameContentHelper helper, string assetName)
+            => helper.InvalidateCache(assetName)
+                | (helper.CurrentLocaleConstant != LocalizedContentManager.LanguageCode.en && helper.InvalidateCache(assetName + "." + helper.CurrentLocale));
     }
 }

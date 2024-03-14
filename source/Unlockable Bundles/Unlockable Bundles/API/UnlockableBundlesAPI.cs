@@ -30,6 +30,12 @@ namespace Unlockable_Bundles.API
         private static IDictionary<string, IList<string>> CachedPurchasedBundlesByLocation = null;
         private static IList<string> CachedDiscoveredBundles = null;
         private static IDictionary<string, IList<IBundle>> CachedBundles = null;
+
+        private static bool _isReady = false;
+        public static bool IsReady { get => _isReady; set {
+                _isReady = value;
+                ContentPatcherHandling.DaysSincePurchaseToken.Ready = value;
+            } }
         public IList<string> PurchasedBundles => getPurchasedUnlockables();
 
         public IDictionary<string, IList<string>> PurchaseBundlesByLocation => getPurchasedUnlockablesByLocation();
@@ -49,8 +55,12 @@ namespace Unlockable_Bundles.API
 
         public static IList<string> getPurchasedUnlockables()
         {
+            if (Context.ScreenId > 0 && CachedPurchasedBundles is not null)
+                return CachedPurchasedBundles;
+
             //We are not currently loading a savegame and are not between daystart and dayending
-            if (SaveGame.loaded is null && !Context.IsWorldReady)
+            //SaveGame.loaded is null && !Context.IsWorldReady && 
+            if (!IsReady)
                 return null;
 
             if (ModData.Instance is null)
@@ -74,7 +84,10 @@ namespace Unlockable_Bundles.API
 
         public static IDictionary<string, IList<string>> getPurchasedUnlockablesByLocation()
         {
-            if (SaveGame.loaded is null && !Context.IsWorldReady)
+            if (Context.ScreenId > 0 && CachedPurchasedBundlesByLocation is not null)
+                return CachedPurchasedBundlesByLocation;
+
+            if (!IsReady)
                 return null;
 
             if (ModData.Instance is null)
@@ -104,8 +117,10 @@ namespace Unlockable_Bundles.API
 
         public static IList<string> getDiscoveredUnlockables()
         {
-            //We are not currently loading a savegame and are not between daystart and dayending
-            if (SaveGame.loaded is null && !Context.IsWorldReady)
+            if (Context.ScreenId > 0 && CachedDiscoveredBundles is not null)
+                return CachedDiscoveredBundles;
+
+            if (!IsReady)
                 return null;
 
             if (ModData.Instance is null)
@@ -181,7 +196,7 @@ namespace Unlockable_Bundles.API
         public void raiseShopPurchased(BundlePurchasedEventArgs args) => BundlePurchasedEvent?.Invoke(this, args);
         public void raiseIsReady(IsReadyEventArgs args)
         {
-            ContentPatcherHandling.DaysSincePurchaseToken.Ready = true;
+            IsReady = true;
             IsReadyEvent?.Invoke(this, args);
         }
 

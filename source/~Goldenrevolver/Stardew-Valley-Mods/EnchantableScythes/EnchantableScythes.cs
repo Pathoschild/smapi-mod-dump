@@ -8,20 +8,20 @@
 **
 *************************************************/
 
-namespace ScytheFixes
+namespace EnchantableScythesConfig
 {
     using StardewModdingAPI;
     using System;
 
     public class EnchantableScythes : Mod
     {
-        public ScytheConfig Config { get; set; }
+        public EnchantableScythesConfig Config { get; set; }
 
         public override void Entry(IModHelper helper)
         {
-            Config = Helper.ReadConfig<ScytheConfig>();
+            Config = Helper.ReadConfig<EnchantableScythesConfig>();
 
-            Helper.Events.GameLoop.GameLaunched += delegate { ScytheConfig.SetUpModConfigMenu(Config, this); };
+            Helper.Events.GameLoop.GameLaunched += delegate { EnchantableScythesConfig.SetUpModConfigMenu(Config, this); };
 
             Patcher.PatchAll(this);
         }

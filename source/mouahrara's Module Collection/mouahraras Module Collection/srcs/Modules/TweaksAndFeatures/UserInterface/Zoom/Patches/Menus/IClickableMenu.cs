@@ -33,7 +33,7 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.UserInterface.Zoom.Patche
 				return;
 			if (__instance is not CarpenterMenu && __instance is not PurchaseAnimalsMenu && __instance is not AnimalQueryMenu)
 				return;
-			if (__instance is CarpenterMenu && (bool)typeof(CarpenterMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance))
+			if (__instance is CarpenterMenu && (__instance as CarpenterMenu).freeze)
 				return;
 			if (__instance is PurchaseAnimalsMenu && (bool)typeof(PurchaseAnimalsMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance))
 				return;

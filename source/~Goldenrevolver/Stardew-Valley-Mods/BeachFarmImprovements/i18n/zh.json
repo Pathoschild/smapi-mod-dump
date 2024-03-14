@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+    "FarmImprovement_Initial_Question": "嘘……嘿，从大陆来的人。听着。如果你有硬币……我和我的伙计们可以修缮你的农场。有兴趣吗？",
+    "FarmImprovement_Yes": "多说点细节……",
+    "FarmImprovement_No": "不用了，谢谢。",
+    "FarmImprovement_Farm_Expansion_Question": "我的伙计们可以给你的农场增加一点额外的空间。只需要……{{price}} 金。你觉得如何？",
+    "FarmImprovement_Sprinkler_Question": "我的伙计们可以改善沙子的土质，让你能在上面使用洒水器。我只要 {{price}} 金。你觉得如何？",
+    "FarmImprovement_Done_Tomorrow": "嘿嘿嘿……完美。你可以期待明早的变化。"
+}

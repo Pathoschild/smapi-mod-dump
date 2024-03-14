@@ -1,0 +1,20 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+  "Name": "Beach Farm Improvements - Cut Content",
+  "Author": "Goldenrevolver",
+  "Version": "1.0",
+  "Description": "Pirates want to help you with improving the beach farm... for a price",
+  "UniqueID": "Goldenrevolver.BeachFarmImprovements",
+  "EntryDll": "BeachFarmImprovements.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": [ ]
+}

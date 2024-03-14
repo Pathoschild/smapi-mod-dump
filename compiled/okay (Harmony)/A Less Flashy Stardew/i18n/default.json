@@ -1,0 +1,47 @@
+{
+    //titles
+    "config.Monsters.name":"Monsters",
+    "config.World.name":"World",
+    "config.Menus.name":"Menus",
+    
+    //misc
+    "config.Animations.name": "Animations",
+    "config.Animations.description": "Amount of animations.",
+    "config.Animations.values.Basic": "Normal",
+    "config.Animations.values.NoFlash": "No flashing",
+    "config.Animations.values.Minimal": "Minimal",
+    "config.Animations.values.All": "All",
+
+    "config.BombLight.name":"Bomb light",
+    "config.BombLight.description":"Disables bombs' light",
+
+    //world
+    "config.Lava.name": "Lava",
+    "config.Lava.description": "Disables lava movement.",
+
+    "config.Water.name": "Water",
+    "config.Water.description": "The sea shore won't animate.",
+
+    "config.Rain.name":"Rain",
+    "config.Rain.description":"Rain transparency",
+
+    "config.FishingBubbles.name": "Fishing bubbles",
+    "config.FishingBubbles.description": "Changes fishing bubbles for an '!' icon.",
+    "config.FishingBubbles.values.Basic": "Transparent",
+    "config.FishingBubbles.values.NoFlash": "Opaque",
+    "config.FishingBubbles.values.Minimal": "Static",
+    "config.FishingBubbles.values.All": "No changes",
+ 
+    //menus
+    "config.Forge.name":"Forge",
+    "config.Sewing.name":"Sewing machine",
+    "config.Menus.description": "Disables slight glow.",
+
+    //npcs
+    "config.Bugs.name":"Bugs",
+    "config.Magma.name":"Magma",
+    "config.Projectiles.name":"Projectiles",
+    "config.Serpents.name":"Serpents",
+    "config.SlimeBall.name": "Slime balls",
+    "config.SlimeBall.description": "Disables slime hutches' balls animation."
+}

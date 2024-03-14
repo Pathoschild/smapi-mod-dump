@@ -1,10 +1,12 @@
 ﻿{
   "Name": "Show Catch Quality",
   "Author": "f4iTh",
-  "Version": "1.0.2",
+  "Version": "1.1.0",
   "Description": "Shows the quality of the fish in the speech bubble after catching a fish.",
   "UniqueID": "f4iTh.ShowCatchQuality",
   "EntryDll": "ShowCatchQuality.dll",
-  "MinimumApiVersion": "2.10",
-  "UpdateKeys": [ "Nexus:3326" ]
+  "MinimumApiVersion": "3.14.0",
+  "UpdateKeys": [
+    "Nexus:3326"
+  ]
 }

@@ -20,9 +20,9 @@ namespace BetterFestivalNotifications;
 internal class Events
 {
 
-    private string FestivalName;
-    private int StartTime;
-    private int EndTime;
+    private string _festivalName;
+    private int _startTime;
+    private int _endTime;
 
     [SEvent.DayEnding]
     private void GameLoop_DayEnding(object sender, StardewModdingAPI.Events.DayEndingEventArgs e)
@@ -42,12 +42,12 @@ internal class Events
         {
             Dictionary<string, string> festivalData = Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\Festivals\\" + Game1.currentSeason + Game1.dayOfMonth);
 
-            this.FestivalName = festivalData["name"];
+            this._festivalName = festivalData["name"];
             string startAndEnd = festivalData["conditions"].Split('/')[1];
-            this.StartTime = Convert.ToInt32(ArgUtility.SplitBySpaceAndGet(startAndEnd, 0, "-1"));
-            this.EndTime = Convert.ToInt32(ArgUtility.SplitBySpaceAndGet(startAndEnd, 1, "-1"));
+            this._startTime = Convert.ToInt32(ArgUtility.SplitBySpaceAndGet(startAndEnd, 0, "-1"));
+            this._endTime = Convert.ToInt32(ArgUtility.SplitBySpaceAndGet(startAndEnd, 1, "-1"));
 
-            if (this.StartTime < 600 || this.StartTime >= 2600 || this.EndTime < 600 || this.EndTime > 2600)
+            if (this._startTime < 600 || this._startTime >= 2600 || this._endTime < 600 || this._endTime > 2600)
             {
                 Log.Warn("Festival start or end time is invalid");
                 return;
@@ -55,16 +55,16 @@ internal class Events
         }
         else
         {
-            if (!Utility.TryGetPassiveFestivalDataForDay(Game1.dayOfMonth, Game1.season, null, out string id, out PassiveFestivalData data))
+            if (!Utility.TryGetPassiveFestivalDataForDay(Game1.dayOfMonth, Game1.season, null, out string _, out PassiveFestivalData data))
             {
                 Log.Warn("Could not load passive festival name, start, and end time");
                 return;
 
             }
 
-            this.FestivalName = data.DisplayName;
-            this.StartTime = data.StartTime;
-            this.EndTime = 2600;
+            this._festivalName = data.DisplayName;
+            this._startTime = data.StartTime;
+            this._endTime = 2600;
         }
 
         ModEntry.Instance.Helper.Events.GameLoop.TimeChanged += this.GameLoop_TimeChanged;
@@ -72,14 +72,14 @@ internal class Events
 
     private void GameLoop_TimeChanged(object sender, StardewModdingAPI.Events.TimeChangedEventArgs e)
     {
-        if (e.NewTime == this.StartTime)
+        if (e.NewTime == this._startTime)
         {
             if (ModEntry.Config.PlayStartSound)
             {
                 Game1.playSound(ModEntry.Config.StartSound);
             }
         }
-        else if (e.NewTime == this.EndTime - (100 * ModEntry.Config.WarnHoursAheadOfTime))
+        else if (e.NewTime == this._endTime - (100 * ModEntry.Config.WarnHoursAheadOfTime))
         {
             if (ModEntry.Config.PlayWarnSound)
             {
@@ -87,10 +87,10 @@ internal class Events
             }
             if (ModEntry.Config.ShowWarnNotification)
             {
-                Game1.showGlobalMessage(ModEntry.Instance.I18n.Get("festivalWarn", new { festival = this.FestivalName }));
+                Game1.showGlobalMessage(ModEntry.Instance.I18N.Get("festivalWarn", new { festival = this._festivalName }));
             }
         }
-        else if (e.NewTime == this.EndTime)
+        else if (e.NewTime == this._endTime)
         {
             if (ModEntry.Config.PlayOverSound)
             {
@@ -98,7 +98,7 @@ internal class Events
             }
             if (ModEntry.Config.ShowOverNotification)
             {
-                Game1.showGlobalMessage(ModEntry.Instance.I18n.Get("festivalOver", new { festival = this.FestivalName }));
+                Game1.showGlobalMessage(ModEntry.Instance.I18N.Get("festivalOver", new { festival = this._festivalName }));
             }
         }
     }

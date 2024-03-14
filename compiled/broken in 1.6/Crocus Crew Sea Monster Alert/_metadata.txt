@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/20486
+IDs: violetlizabet.seaMonster
+update keys: Nexus:20486, GitHub:elizabethcd/SeaMonsterAlert

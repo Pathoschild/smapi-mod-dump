@@ -1,0 +1,18 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/Goldenrevolver/Stardew-Valley-Mods
+**
+*************************************************/
+
+{
+    "FarmImprovement_Initial_Question": "Pssst... ehi, tu che vieni dal continente. Sta' a sentire. Se hai i soldi... io e i miei ragazzi possiamo migliorarti la fattoria. T'interessa?",
+    "FarmImprovement_Yes": "Dimmi di più...",
+    "FarmImprovement_No": "No, grazie.",
+    "FarmImprovement_Farm_Expansion_Question": "Posso chiedere ai ragazzi di aggiungere un po' di spazio extra nella tua fattoria. Ti costerà soltanto... {{price}}o. Che ne dici?",
+    "FarmImprovement_Sprinkler_Question": "Posso chiedere ai ragazzi di migliorare la sabbia, permettendoti di usare gli irrigatori. Mi serviranno solo {{price}}o. Che ne dici?",
+    "FarmImprovement_Done_Tomorrow": "Heh heh heh... perfetto. Aspettati i cambiamenti per domattina."
+}

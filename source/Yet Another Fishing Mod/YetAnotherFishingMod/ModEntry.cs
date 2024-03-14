@@ -8,6 +8,7 @@
 **
 *************************************************/
 
+using HarmonyLib;
 using NeverToxic.StardewMods.YetAnotherFishingMod.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -16,6 +17,7 @@ using StardewValley.GameData.Objects;
 using StardewValley.Menus;
 using StardewValley.Tools;
 using System.Collections.Generic;
+using Patches = NeverToxic.StardewMods.YetAnotherFishingMod.Framework.Patches;
 using SObject = StardewValley.Object;
 
 namespace NeverToxic.StardewMods.YetAnotherFishingMod
@@ -37,6 +39,8 @@ namespace NeverToxic.StardewMods.YetAnotherFishingMod
             I18n.Init(helper.Translation);
 
             this.Config = helper.ReadConfig<ModConfig>();
+            Harmony harmony = new(this.ModManifest.UniqueID);
+            Patches.Initialise(harmony, this.Monitor, () => this.Config, this.Helper.Reflection);
             this.FishHelper = new(() => this.Config, this.Monitor);
 
             helper.Events.GameLoop.GameLaunched += this.OnGameLaunched;

@@ -1,10 +1,10 @@
 ﻿{
   "Name": "CatsAndDogsMod",
-  "Author": "DelphinWave",
-  "Version": "2.0.3",
-  "Description": "Allows you to adopt cats and dogs to your farm",
+  "Author": "DellyBelly",
+  "Version": "2.1.0",
+  "Description": "Allows you to adopt multiple cats and dogs to your farm",
   "UniqueID": "DelphinWave.CatsAndDogsMod",
   "EntryDll": "CatsAndDogsMod.dll",
-  "MinimumApiVersion": "3.0.0",
+  "MinimumApiVersion": "3.13.0",
   "UpdateKeys": ["Nexus:7407"]
 }

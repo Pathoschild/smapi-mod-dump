@@ -6,11 +6,11 @@ mods:
    Extra Fish Information
 
 latest commit:
-   commit d11956a4da37d0f83b3114146a687249239cca5d
+   commit 3738051ddfd0c426036286990fa7002d0b440889
    Author: Jessica <jessica.sammon@hotmail.co.uk>
-   Date:   Sat Feb 13 22:50:57 2021 +0000
+   Date:   Mon Mar 4 21:32:24 2024 +0000
    
-       Version 1.2.1
+       Version 1.3.0
        
-       Update to include Portuguese translation from websterl3o
+       Updated to version 1.3.0
    

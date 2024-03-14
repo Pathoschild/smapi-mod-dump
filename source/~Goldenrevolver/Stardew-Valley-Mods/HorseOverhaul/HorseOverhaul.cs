@@ -70,7 +70,7 @@ namespace HorseOverhaul
 
         public IBetterRanchingApi BetterRanchingApi { get; set; }
 
-        public HorseConfig Config { get; set; }
+        public HorseOverhaulConfig Config { get; set; }
 
         public Texture2D CurrentStableTexture
             => usingMyTextures
@@ -91,14 +91,14 @@ namespace HorseOverhaul
 
         public override void Entry(IModHelper helper)
         {
-            Config = Helper.ReadConfig<HorseConfig>();
+            Config = Helper.ReadConfig<HorseOverhaulConfig>();
 
-            HorseConfig.VerifyConfigValues(Config, this);
+            HorseOverhaulConfig.VerifyConfigValues(Config, this);
 
             Helper.Events.GameLoop.GameLaunched += delegate
             {
                 CheckForKeybindConflict();
-                HorseConfig.SetUpModConfigMenu(Config, this);
+                HorseOverhaulConfig.SetUpModConfigMenu(Config, this);
                 BetterRanchingApi = SetupBetterRanching();
             };
 
@@ -170,14 +170,16 @@ namespace HorseOverhaul
         // this is legacy code for backwards compatibility, as we now patch GetSpriteWidthForPositioning
         private static void ResetHorses()
         {
-            foreach (Building building in Game1.getFarm().buildings)
+            Utility.ForEachBuilding(delegate (Building building)
             {
                 // also do it for tractors
                 if (building is Stable stable && stable.getStableHorse() != null)
                 {
                     stable.getStableHorse().forceOneTileWide.Value = false;
                 }
-            }
+
+                return true;
+            }, false);
         }
 
         private void OnModMessageReceived(object sender, ModMessageReceivedEventArgs e)
@@ -303,13 +305,15 @@ namespace HorseOverhaul
         {
             var horseIDs = new List<Guid>();
 
-            foreach (Building building in Game1.getFarm().buildings)
+            Utility.ForEachBuilding(delegate (Building building)
             {
                 if (building is Stable stable && !stable.IsTractorGarage())
                 {
                     horseIDs.Add(stable.HorseId);
                 }
-            }
+
+                return true;
+            }, false);
 
             if (horseIDs.Count != horseIDs.Distinct().Count())
             {
@@ -527,7 +531,7 @@ namespace HorseOverhaul
 
             // call this even if water or sprite changes are disabled to reset the texture
             // the overridden method makes sure to not change the sprite if the config disallows it
-            foreach (Building building in Game1.getFarm().buildings)
+            Utility.ForEachBuilding(delegate (Building building)
             {
                 if (building is Stable stable && !stable.IsTractorGarage())
                 {
@@ -539,7 +543,9 @@ namespace HorseOverhaul
 
                     stable.resetTexture();
                 }
-            }
+
+                return true;
+            }, false);
         }
 
         private void OnDayStarted()
@@ -549,11 +555,12 @@ namespace HorseOverhaul
 
             Horses.Clear();
 
-            foreach (Building building in Game1.getFarm().buildings)
+            // can't use ForEachBuilding, because we need the location
+            Utility.ForEachLocation(delegate (GameLocation location)
             {
-                if (building is Stable stable)
+                foreach (var building in location.buildings)
                 {
-                    if (stable.IsTractorGarage())
+                    if (building is not Stable stable || stable.IsTractorGarage())
                     {
                         continue;
                     }
@@ -583,10 +590,12 @@ namespace HorseOverhaul
 
                     if (Context.IsMainPlayer && Config.HorseHeater)
                     {
-                        CheckForHeater(stable);
+                        CheckForHeater(location, stable);
                     }
                 }
-            }
+
+                return true;
+            }, false);
 
             if (Context.IsMainPlayer)
             {
@@ -606,7 +615,7 @@ namespace HorseOverhaul
             }
         }
 
-        private void CheckForHeater(Stable stable)
+        private void CheckForHeater(GameLocation location, Stable stable)
         {
             var horse = stable.getStableHorse();
 
@@ -626,7 +635,7 @@ namespace HorseOverhaul
                     return;
                 }
 
-                var farmObjects = Game1.getFarm().Objects.Values;
+                var farmObjects = location.Objects.Values;
 
                 foreach (var item in farmObjects)
                 {

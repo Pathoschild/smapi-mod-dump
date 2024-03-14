@@ -6,9 +6,9 @@ mods:
    Fireworks Festival
 
 latest commit:
-   commit 21566b95e21a922f53201f44455f6c38dbefec9b
+   commit 7ac02e54e225db4c8bccf390e3afbeacdac6788c
    Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
-   Date:   Fri Mar 1 19:20:01 2024 -0500
+   Date:   Sat Mar 9 12:18:24 2024 -0500
    
-       Finally compiles in 1.6, partially finished updating
+       Gift tastes, map fix, license recipes
    

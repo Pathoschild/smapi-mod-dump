@@ -1,0 +1,14 @@
+{
+  "config.questionchance.name": "Question Chance",
+  "config.questionchance.tooltip": "The chance of the baby question triggering (assuming all other prerequisites are met).\nThe value must be between zero (inclusive) and one (inclusive).",
+  
+  "command.getchance.description": "Shows the current chance of the baby question appearing.",
+  "command.getchance.output": "Baby question chance is set to: {{chance}}",
+  
+  "command.setchance.description": "Adjusts the baby chance.\n  - Accepts values in the range: 0 <= {{valueStr}} <= 1.",
+  "command.setchance.output": "Baby question chance was successfully set to: {{chance}}",
+  
+  "errors.value.invalid" : "Something went wrong while parsing input. Please make sure \"{{chance}}\" is a number in the range: 0 <= {{valueStr}} <= 1",
+  "errors.value.under": "The given value was too low: {{chance}} < 0.\nPlease make sure to use a number in the range: 0 <= {{valueStr}} <= 1",
+  "errors.value.over": "The given value was too high: {{chance}} > 1.\nPlease make sure to use a number in the range: 0 <= {{valueStr}} <= 1"
+}

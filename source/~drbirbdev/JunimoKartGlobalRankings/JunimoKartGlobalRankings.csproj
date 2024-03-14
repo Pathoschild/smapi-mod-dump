@@ -3,12 +3,12 @@
 
     <PropertyGroup>
         <Description>Shares JunimoKart Endless Mode scores with the world.</Description>
-        <Version>1.0.4</Version>
+        <Version>1.1.0</Version>
         <UpdateKeys>Nexus:14856</UpdateKeys>
     </PropertyGroup>
 
     <ItemGroup>
         <SMAPIDependency Include="drbirbdev.LeaderboardLibrary" Required="true" />
     </ItemGroup>
-    
+
 </Project>

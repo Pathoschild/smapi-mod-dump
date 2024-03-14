@@ -21,9 +21,9 @@ mods:
    Tractor Mod
 
 latest commit:
-   commit ba8919ab54abf5974ed859129b27a8867e32dba5
+   commit 9efcc0f813026a7953415647070954730be3367d
    Author: Jesse Plamondon-Willard <Pathoschild@users.noreply.github.com>
-   Date:   Tue Feb 27 20:03:49 2024 -0500
+   Date:   Sun Mar 10 15:37:34 2024 -0400
    
-       update for GameMenu tabs no longer constant
+       update Data/ObjectInformation buff migration for alpha buff changes
    

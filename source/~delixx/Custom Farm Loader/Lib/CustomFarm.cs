@@ -138,6 +138,9 @@ namespace Custom_Farm_Loader.Lib
                     string value = n.Value.ToString();
 
                     switch (name.ToLower()) {
+                        case "id" or "farmtypeid":
+                            customFarm.ID = value;
+                            break;
                         case "name":
                             customFarm.Name = value;
                             break;
@@ -191,7 +194,8 @@ namespace Custom_Farm_Loader.Lib
                     }
                 }
 
-                customFarm.ID = $"{customFarm.UniqueModID}/{customFarm.Name}";
+                if (customFarm.ID is null || customFarm.ID == "")
+                    customFarm.ID = $"{customFarm.UniqueModID}/{customFarm.Name}";
 
                 return customFarm;
             } catch (Exception ex) {
@@ -393,7 +397,7 @@ namespace Custom_Farm_Loader.Lib
                 return ModFarmType;
 
             return new ModFarmType() {
-                Id = $"{this.UniqueModID}/{this.Name}",
+                Id = this.ID,
                 MapName = $"CFL_Map/{this.ID}",
                 TooltipStringPath = $"Strings/UI:CFL_Description/{this.ID}",
                 IconTexture = $"CFL_Icon/{this.ID}",

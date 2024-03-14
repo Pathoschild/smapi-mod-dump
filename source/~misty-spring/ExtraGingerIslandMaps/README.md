@@ -9,4 +9,4 @@ for queries and analysis.**
 # ExtraGingerIslandMaps
 C# component of my "Extra Ginger Island Locations" mod.
 
-The main mod (and this component) are obsolete.
+**The main mod (and this component) are obsolete.**

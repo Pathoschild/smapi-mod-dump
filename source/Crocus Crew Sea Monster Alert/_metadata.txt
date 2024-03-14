@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/elizabethcd/SeaMonsterAlert
+   Git: https://github.com/elizabethcd/SeaMonsterAlert.git
+
+mods:
+   Crocus Crew Sea Monster Alert
+
+latest commit:
+   commit 7c26ec7ed1bf2967e907849d65ec900a9ed8c8e4
+   Author: elizabethcd <55162529+elizabethcd@users.noreply.github.com>
+   Date:   Sat Mar 9 13:11:51 2024 -0500
+   
+       Create LICENSE
+   

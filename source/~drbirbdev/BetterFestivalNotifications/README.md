@@ -12,7 +12,7 @@ A mod for displaying notifications and playing warning sounds when festivals are
 
 ## New in 1.6
 
-Should now work with all custom festivals and passive festivals without needing any integration.  
+Should now work with all custom festivals and passive festivals without needing any integration, so long as those festivals integrate with vanilla correctly.
 
 ## Available Configs
 

@@ -11,10 +11,10 @@
 {
   "Name": "Forage Fantasy",
   "Author": "Goldenrevolver",
-  "Version": "3.1",
+  "Version": "4.0",
   "Description": "Tappers, mushroom boxes and berry bushes give XP and products with quality and more",
   "UniqueID": "Goldenrevolver.ForageFantasy",
   "EntryDll": "ForageFantasy.dll",
-  "MinimumApiVersion": "3.13.2",
+  "MinimumApiVersion": "4.0.0-alpha",
   "UpdateKeys": [ "Nexus:7554" ]
 }

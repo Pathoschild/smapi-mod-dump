@@ -16,9 +16,9 @@ mods:
    Winter Star Spouse
 
 latest commit:
-   commit b3f3a597b0b532274a531f26416729720c8b6d71
+   commit ff69f33cefc0c622a6772dcc5518271c35197b13
    Author: Drbirbdev <drbirbdev@gmail.com>
-   Date:   Thu Feb 29 15:22:55 2024 -0800
+   Date:   Sun Mar 10 18:21:29 2024 -0700
    
-       Remove use of var
+       Update versions
    
