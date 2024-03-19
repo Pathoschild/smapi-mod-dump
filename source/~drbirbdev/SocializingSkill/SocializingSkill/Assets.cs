@@ -18,9 +18,9 @@ namespace SocializingSkill;
 internal class Assets
 {
     [SAsset.Asset("assets/skill_texture.png")]
-    public IRawTextureData SkillTexture { get; set; }
+    public IRawTextureData SkillTexture;
 
 
     [SAsset.Asset("assets/belovedtable.json")]
-    public Dictionary<string, List<string>> BelovedTable { get; set; }
+    public Dictionary<string, List<string>> BelovedTable;
 }

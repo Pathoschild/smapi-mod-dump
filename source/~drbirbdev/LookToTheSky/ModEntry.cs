@@ -31,8 +31,8 @@ namespace LookToTheSky
         internal static Config Config;
         internal static Assets Assets;
 
-        public readonly List<SkyObject> SkyObjects = new();
-        public readonly List<SkyProjectile> Projectiles = new();
+        public readonly List<SkyObject> SkyObjects = [];
+        public readonly List<SkyProjectile> Projectiles = [];
 
         public override void Entry(IModHelper helper)
         {

@@ -24,12 +24,18 @@ internal class Events
     [SEvent.ModMessageReceived]
     private void LoadRequest(object sender, StardewModdingAPI.Events.ModMessageReceivedEventArgs e)
     {
-        if (e.FromModID == ModEntry.Instance.ModManifest.UniqueID && e.Type == "LoadRequest")
+        if (e.FromModID != ModEntry.Instance.ModManifest.UniqueID || e.Type != "LoadRequest")
         {
-            string minigameId = e.ReadAs<string>();
-            SaveState loaded = ModEntry.Instance.Helper.Data.ReadJsonFile<SaveState>($"data/{minigameId}/{Constants.SaveFolderName}/file.json");
-            ModEntry.Instance.Helper.Multiplayer.SendMessage<SaveState>(loaded, "LoadReceive", new string[] { ModEntry.Instance.ModManifest.UniqueID }, new long[] { e.FromPlayerID });
+            return;
         }
+
+        string minigameId = e.ReadAs<string>();
+        SaveState loaded =
+            ModEntry.Instance.Helper.Data.ReadJsonFile<SaveState>(
+                $"data/{minigameId}/{Constants.SaveFolderName}/file.json");
+        ModEntry.Instance.Helper.Multiplayer.SendMessage(loaded, "LoadReceive", [
+            ModEntry.Instance.ModManifest.UniqueID
+        ], [e.FromPlayerID]);
     }
 
     /// <summary>
@@ -40,16 +46,21 @@ internal class Events
     [SEvent.ModMessageReceived]
     private void SaveRequest(object sender, StardewModdingAPI.Events.ModMessageReceivedEventArgs e)
     {
-        if (e.FromModID == ModEntry.Instance.ModManifest.UniqueID && e.Type.StartsWith("SaveRequest "))
+        if (e.FromModID != ModEntry.Instance.ModManifest.UniqueID || !e.Type.StartsWith("SaveRequest "))
         {
-            string minigameId = e.Type[12..];
-            if (!ModEntry.Content.ContainsKey(minigameId))
-            {
-                Log.Error($"{e.FromPlayerID} sent save request for {minigameId}, but no such minigame exists for host computer!");
-                return;
-            }
-            SaveState save = e.ReadAs<SaveState>();
-            ModEntry.Instance.Helper.Data.WriteJsonFile<SaveState>($"data/{minigameId}/{Constants.SaveFolderName}/file.json", save);
+            return;
         }
+
+        string minigameId = e.Type[12..];
+        if (!ModEntry.Content.ContainsKey(minigameId))
+        {
+            Log.Error(
+                $"{e.FromPlayerID} sent save request for {minigameId}, but no such minigame exists for host computer!");
+            return;
+        }
+
+        SaveState save = e.ReadAs<SaveState>();
+        ModEntry.Instance.Helper.Data.WriteJsonFile(
+            $"data/{minigameId}/{Constants.SaveFolderName}/file.json", save);
     }
 }

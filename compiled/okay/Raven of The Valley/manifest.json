@@ -1,7 +1,7 @@
 {
   "Name": "Raven of The Valley",
   "Author": "nicks",
-  "Version": "1.5.0", // fixed locally
+  "Version": "1.6.0", // fixed locally
   "Description": "Adds Snowyraven to your game!",
   "UniqueID": "nicks.RavenofTheValley",
   "EntryDll": "Raven.dll",

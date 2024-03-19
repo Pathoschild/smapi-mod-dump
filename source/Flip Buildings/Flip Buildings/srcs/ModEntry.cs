@@ -12,8 +12,9 @@ using System;
 using HarmonyLib;
 using StardewModdingAPI;
 using FlipBuildings.Handlers;
-using FlipBuildings.Patches;
 using FlipBuildings.Managers;
+using FlipBuildings.Patches;
+using FlipBuildings.Utilities;
 
 namespace FlipBuildings
 {
@@ -56,11 +57,10 @@ namespace FlipBuildings
 				NPCPatch.Apply(harmony);
 
 				// Apply AlternativeTextures patches
-				// if (CompatibilityHelper.IsAlternativeTexturesLoaded)
-				// {
-				// 	Patches.AT.FarmPatch.Apply(harmony);
-				// 	Patches.AT.StablePatch.Apply(harmony);
-				// }
+				if (CompatibilityHelper.IsAlternativeTexturesLoaded)
+				{
+					Patches.AT.BuildingPatch.Apply(harmony);
+				}
 
 				// Apply SolidFoundations patches
 				// if (CompatibilityHelper.IsSolidFoundationsLoaded)

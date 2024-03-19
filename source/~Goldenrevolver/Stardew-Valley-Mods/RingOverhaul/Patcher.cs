@@ -18,7 +18,6 @@ using StardewValley.Objects;
 using StardewValley.Tools;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace RingOverhaul
 {
@@ -30,20 +29,6 @@ namespace RingOverhaul
         berserker = 3,
         iridiumBand = 4,
         paladin = 5
-    }
-
-    public struct SimpleFurnaceRecipe
-    {
-        public SimpleFurnaceRecipe(List<int> input, int output, string recipe)
-        {
-            inputIds = input;
-            outputId = output;
-            requiredRecipe = recipe;
-        }
-
-        public List<int> inputIds;
-        public int outputId;
-        public string requiredRecipe;
     }
 
     internal class Patcher
@@ -535,12 +520,20 @@ namespace RingOverhaul
             }
         }
 
+        // based on MiniJukebox.checkForAction
         public static void OnEquipJukeBoxRing(Farmer who, Ring ring)
         {
-            List<string> list = Game1.player.songsHeard.Distinct().ToList();
-            list.Insert(0, "turn_off");
-            list.Add("random");
-            Game1.activeClickableMenu = new ChooseFromListMenu(list, new ChooseFromListMenu.actionOnChoosingListOption((s) => OnSongChosen(s, ring)), true, who.currentLocation.miniJukeboxTrack.Value);
+            if (who != Game1.player)
+            {
+                return;
+            }
+
+            GameLocation location = who.currentLocation;
+
+            List<string> jukeboxTracks = Utility.GetJukeboxTracks(who, location);
+            jukeboxTracks.Insert(0, "turn_off");
+            jukeboxTracks.Add("random");
+            Game1.activeClickableMenu = new ChooseFromListMenu(jukeboxTracks, (s) => OnSongChosen(s, location, ring), isJukebox: true, location.miniJukeboxTrack.Value);
         }
 
         public static void RemoveIridiumBandLight(GameLocation environment, Ring ring)
@@ -560,25 +553,28 @@ namespace RingOverhaul
             fieldInfo.SetValue(ring, null);
         }
 
-        public static void OnSongChosen(string selection, Ring ring)
+        // based on MiniJukebox.OnSongChosen
+        public static void OnSongChosen(string selection, GameLocation location, Ring ring)
         {
-            if (Game1.player.currentLocation != null)
+            if (location == null)
             {
-                if (selection == "turn_off")
-                {
-                    Game1.player.currentLocation.miniJukeboxTrack.Value = string.Empty;
-                }
-                else
-                {
-                    Game1.player.currentLocation.miniJukeboxTrack.Value = selection;
+                return;
+            }
 
-                    if (selection == "random")
-                    {
-                        Game1.player.currentLocation.SelectRandomMiniJukeboxTrack();
-                    }
-                }
+            ring.modData[JukeBoxRingTrackKey] = selection;
 
-                ring.modData[JukeBoxRingTrackKey] = selection;
+            if (selection == "turn_off")
+            {
+                location.miniJukeboxTrack.Value = string.Empty;
+            }
+            else
+            {
+                location.miniJukeboxTrack.Value = selection;
+
+                if (selection == "random")
+                {
+                    location.SelectRandomMiniJukeboxTrack();
+                }
             }
         }
     }

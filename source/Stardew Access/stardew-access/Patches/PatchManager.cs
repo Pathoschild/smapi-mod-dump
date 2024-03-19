@@ -31,6 +31,7 @@ namespace stardew_access.Patches
                 new GameMenuPatch(),
                 new InventoryPagePatch(),
                 new OptionsPagePatch(),
+                new SkillsPagePatch(),
                 new SocialPagePatch(),
                 // Menus With Inventory
                 new ForgeMenuPatch(),
@@ -47,6 +48,7 @@ namespace stardew_access.Patches
                 new IClickableMenuPatch(),
                 new InstanceGamePatch(),
                 new NPCPatch(),
+                new SoundsHelperPatch(),
                 new TextBoxPatch(),
                 new TextEntryMenuPatch(),
                 new TileMapPatch(),

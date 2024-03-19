@@ -83,13 +83,13 @@ namespace StardewSurvivalProject.source.model
         }
 
         //update hunger after eating food
-        public void updateEating(double addValue)
+        public void updateEating(double addValue, double coolingModifier)
         {
             // modify addValue with saturation
             if (addValue > 0 && ModConfig.GetInstance().ScaleHungerRestoredWithTimeFromLastMeal)
             {
                 addValue = addValue * Math.Max(1 - hunger.saturation / 100, 0);
-                // saturation is increased by 21.6 * ln(addValue + 1), capped at 100, if saturation is > 0, attempt to get the addValue from saturation before add the current addValue
+                // saturation is increased by 18.95 * ln(addValue + 1), capped at 100, if saturation is > 0, attempt to get the addValue from saturation before add the current addValue
                 double saturationAddValue = Math.Min(18.95 * Math.Log(addValue + 1), 100 - hunger.saturation);
 
                 hunger.saturation += saturationAddValue;
@@ -98,6 +98,11 @@ namespace StardewSurvivalProject.source.model
             hunger.value = Math.Min(hunger.value + addValue, Hunger.DEFAULT_VALUE);
             if (addValue == 0) return;
             Game1.addHUDMessage(new HUDMessage($"{(addValue >= 0 ? "+" : "") + Math.Round(addValue)} Hunger", (addValue >= 0 ? HUDMessage.stamina_type : HUDMessage.error_type)));
+
+            if (addValue > 0 && coolingModifier != 0)
+            {
+                updateBodyTempOnConsumingItem(coolingModifier, addValue * 0.5);
+            }
             checkIsDangerValue();
         }
 
@@ -109,30 +114,43 @@ namespace StardewSurvivalProject.source.model
 
             if (addValue > 0)
             {
-                if (this.temp.value >= BodyTemp.DEFAULT_VALUE && cooling_modifier > 0)
-                {
-                    //cooling down player if water was drank
-                    this.temp.value -= (this.temp.value - (BodyTemp.DEFAULT_VALUE)) * (1 - 1 / (0.01 * cooling_modifier * addValue + 1));
-                }
-                if (this.temp.value < BodyTemp.DEFAULT_VALUE && cooling_modifier <= 0)
-                {
-                    //heating up player if hot drink was drank
-                    this.temp.value += ((BodyTemp.DEFAULT_VALUE) - this.temp.value) * (1 - 1 / (0.02 * (-cooling_modifier) * addValue + 1));
-                }
+                updateBodyTempOnConsumingItem(cooling_modifier, addValue);
             }
             
             checkIsDangerValue();
         }
 
+        public void updateBodyTempOnConsumingItem(double coolingModifier, double scaleValue, bool shouldScaleValue = true)
+        {
+            // should not lead to divide by zero
+            if (this.temp.value >= BodyTemp.DEFAULT_VALUE && coolingModifier > 0)
+            {
+                //cooling down player if water was drank
+                this.temp.value -= (this.temp.value - (BodyTemp.DEFAULT_VALUE)) * (1 - 1 / (0.01 * coolingModifier * (shouldScaleValue ? scaleValue : 10) + 1));
+            }
+            else if (this.temp.value < BodyTemp.DEFAULT_VALUE && coolingModifier <= 0)
+            {
+                //heating up player if hot drink was drank
+                this.temp.value += ((BodyTemp.DEFAULT_VALUE) - this.temp.value) * (1 - 1 / (0.02 * (-coolingModifier) * (shouldScaleValue ? scaleValue : 10) + 1));
+            }
+            // overheat/overchill player
+            if (Math.Abs(coolingModifier) > 4)
+            {
+                var tempModifer = (Math.Abs(coolingModifier) - 4) * (shouldScaleValue ? scaleValue : 10) * 0.02;
+                this.temp.value -= coolingModifier > 0 ? tempModifer : -tempModifer;
+            }
+        }
+
         public void updateBodyTemp(EnvTemp envTemp)
         {
-            LogHelper.Debug($"shirtIndex={bindedFarmer.GetShirtIndex()} pantIndex={bindedFarmer.GetPantsIndex()}");
             String hat_name = "", shirt_name = "", pants_name = "", boots_name = "";
             if (bindedFarmer.hat.Value != null) hat_name = bindedFarmer.hat.Value.Name;
             if (bindedFarmer.shirtItem.Value != null) shirt_name = bindedFarmer.shirtItem.Value.Name;
             if (bindedFarmer.pantsItem.Value != null) pants_name = bindedFarmer.pantsItem.Value.Name;
             if (bindedFarmer.boots.Value != null) boots_name = bindedFarmer.boots.Value.Name;
+            LogHelper.Debug($"hat={hat_name} shirt={shirt_name} pants={pants_name} boots={boots_name}");
             temp.updateComfortTemp(hat_name, shirt_name, pants_name, boots_name);
+            LogHelper.Debug($"temp={temp.MinComfortTemp} tempHi={temp.MaxComfortTemp}");
             temp.BodyTempCalc(envTemp, (rand.NextDouble() * 0.2) - 0.1);
         }
 

@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace LeaderboardLibrary;
 
-public interface ILeaderboardAPI
+public interface ILeaderboardApi
 {
     /// <summary>
     /// Upload a new score for a given stat.  Will only upload to the internet if the new score beats the old personal best.
@@ -20,7 +20,7 @@ public interface ILeaderboardAPI
     /// </summary>
     /// <param name="stat">The name of the stat</param>
     /// <param name="score">The new score of the stat</param>
-    /// <returns>True if the upload succeeded (or was unneccessary).  Doesn't account for async failures.</returns>
+    /// <returns>True if the upload succeeded (or was unnecessary).  Doesn't account for async failures.</returns>
     bool UploadScore(string stat, int score);
 
     /// <summary>

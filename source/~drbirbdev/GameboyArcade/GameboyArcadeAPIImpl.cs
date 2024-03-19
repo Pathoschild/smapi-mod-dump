@@ -12,7 +12,7 @@ using StardewValley;
 
 namespace GameboyArcade
 {
-    public class GameboyArcadeAPIImpl : IGameboyArcadeAPI
+    public class GameboyArcadeApiImpl : IGameboyArcadeApi
     {
         public string FindGame(string idOrName)
         {

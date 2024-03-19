@@ -95,7 +95,7 @@ namespace RingOverhaul
             try
             {
                 mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/CraftingRecipes");
-                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/ObjectInformation");
+                mod.Helper.GameContent.InvalidateCacheAndLocalized("Data/Objects");
                 mod.Helper.GameContent.InvalidateCacheAndLocalized("Maps/springobjects");
             }
             catch (Exception e)

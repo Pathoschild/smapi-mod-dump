@@ -21,11 +21,11 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.GeodesAutoProcess.P
 		{
 			harmony.Patch(
 				original: AccessTools.Method(typeof(MenuWithInventory), nameof(MenuWithInventory.receiveLeftClick), new Type[] { typeof(int), typeof(int), typeof(bool) }),
-				prefix: new HarmonyMethod(typeof(MenuWithInventoryPatch), nameof(ReceiveKeyPressPrefix))
+				prefix: new HarmonyMethod(typeof(MenuWithInventoryPatch), nameof(ReceiveLeftClickPrefix))
 			);
 		}
 
-		private static bool ReceiveKeyPressPrefix(MenuWithInventory __instance, int x, int y)
+		private static bool ReceiveLeftClickPrefix(MenuWithInventory __instance, int x, int y)
 		{
 			if (!ModEntry.Config.ShopsGeodesAutoProcess)
 				return true;

@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/18109
+IDs: AimonsWitchSwampOverhaulPatches
+update keys: Nexus:18109, GitHub:SimonK1122/WitchSwampOverhaulPatches

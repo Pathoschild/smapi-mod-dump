@@ -10,11 +10,11 @@ mods:
    Spouses in Ginger Island
 
 latest commit:
-   commit ea9733bd4e1d041009ebb2c9174ba7fa295f15dc
+   commit 858712d436a3875fbc8b41f1a62dc82f9e3cdac7
    Author: Mistyspring <105533011+misty-spring@users.noreply.github.com>
-   Date:   Mon Mar 4 22:06:23 2024 -0300
+   Date:   Sun Mar 17 00:48:38 2024 -0300
    
-       Upload C# port of mod
+       Prepare for 1.6
        
-       Ported Less Flashy Stardew to C# (originally a content pack), making it more compatible with retexture mods
+       Update some of the 1.6 changes to the mod
    

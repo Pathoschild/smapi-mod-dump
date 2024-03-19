@@ -9,32 +9,24 @@
 *************************************************/
 
 using StardewValley;
+using StardewValley.GameData.Objects;
 
-namespace stardew_access.Utils
+namespace stardew_access.Utils;
+
+public static class ObjectUtils
 {
-    public static class ObjectUtils
+    public static ObjectData? GetObjectById(string objectId)
     {
-        public static string GetObjectById(int objectId, int? field = 0)
-        {
-            if (objectId == -1)
-            {
-                return "";
-            }
+        if (objectId.StartsWith("(BC)")) return null;
 
-            if (Game1.objectInformation.TryGetValue(objectId, out string? objectInfo))
-            {
-                if (field == null)
-                {
-                    return objectInfo;
-                }
+        if (objectId.StartsWith("(O)"))
+            objectId = objectId.Substring(3); // "(O)" is 3 characters long, so start after it
 
-                string[] objectFields = objectInfo.Split('/');
-                return objectFields.Length > field ? objectFields[field.Value] : string.Empty;
-            }
-            else
-            {
-                throw new ArgumentException($"Object ID {objectId} does not exist.");
-            }
-        }
+        if (!Game1.objectData.TryGetValue(objectId, out ObjectData? objectInfo) || objectInfo is null)
+            Log.Error($"Object ID {objectId} does not exist.");
+
+        return objectInfo;
     }
+
+    public static ObjectData? GetObjectById(int objectId) => GetObjectById(objectId.ToString());
 }

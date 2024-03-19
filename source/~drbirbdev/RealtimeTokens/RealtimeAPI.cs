@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace RealtimeFramework;
 
-public class RealtimeAPI : IRealtimeAPI
+public class RealtimeApi : IRealtimeApi
 {
     public IEnumerable<string> GetAllHolidays()
     {
@@ -113,7 +113,7 @@ public class RealtimeAPI : IRealtimeAPI
 
     public string GetLocalName(string holiday)
     {
-        return ModEntry.Instance.I18n.Get("holiday." + holiday);
+        return ModEntry.Instance.I18N.Get("holiday." + holiday);
     }
 
     public bool IsHoliday(string holiday)

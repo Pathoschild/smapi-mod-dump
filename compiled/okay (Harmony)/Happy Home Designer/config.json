@@ -1,0 +1,11 @@
+{
+  "CloseWithKey": true,
+  "GiveModifier": "LeftShift",
+  "FavoriteModifier": "LeftControl",
+  "ExtendedCategories": true,
+  "FurnitureTooltips": true,
+  "PauseTime": true,
+  "ReplaceFurnitureCatalog": true,
+  "ReplaceWallpaperCatalog": true,
+  "ToggleShortcut": "None"
+}

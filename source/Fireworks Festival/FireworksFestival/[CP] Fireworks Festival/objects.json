@@ -35,48 +35,48 @@
             "Action": "EditData",
             "Target": "Strings/Objects",
             "Entries": {
-                "{{MainModID}}.RedFirework_Name": "{{i18n:object.RedFirework.name}}",
-                "{{MainModID}}.RedFirework_Description": "{{i18n:object.RedFirework.description}}",
-                "{{MainModID}}.OrangeFirework_Name": "{{i18n:object.OrangeFirework.name}}",
-                "{{MainModID}}.OrangeFirework_Description": "{{i18n:object.OrangeFirework.description}}",
-                "{{MainModID}}.YellowFirework_Name": "{{i18n:object.YellowFirework.name}}",
-                "{{MainModID}}.YellowFirework_Description": "{{i18n:object.YellowFirework.description}}",
-                "{{MainModID}}.GreenFirework_Name": "{{i18n:object.GreenFirework.name}}",
-                "{{MainModID}}.GreenFirework_Description": "{{i18n:object.GreenFirework.description}}",
-                "{{MainModID}}.BlueFirework_Name": "{{i18n:object.BlueFirework.name}}",
-                "{{MainModID}}.BlueFirework_Description": "{{i18n:object.BlueFirework.description}}",
-                "{{MainModID}}.PurpleFirework_Name": "{{i18n:object.PurpleFirework.name}}",
-                "{{MainModID}}.PurpleFirework_Description": "{{i18n:object.PurpleFirework.description}}",
-                "{{MainModID}}.WhiteFirework_Name": "{{i18n:object.WhiteFirework.name}}",
-                "{{MainModID}}.WhiteFirework_Description": "{{i18n:object.WhiteFirework.description}}",
-                "{{MainModID}}.StrontiumSalt_Name": "{{i18n:object.StrontiumSalt.name}}",
-                "{{MainModID}}.StrontiumSalt_Description": "{{i18n:object.StrontiumSalt.description}}",
-                "{{MainModID}}.IronSalt_Name": "{{i18n:object.IronSalt.name}}",
-                "{{MainModID}}.IronSalt_Description": "{{i18n:object.IronSalt.description}}",
-                "{{MainModID}}.BariumSalt_Name": "{{i18n:object.BariumSalt.name}}",
-                "{{MainModID}}.BariumSalt_Description": "{{i18n:object.BariumSalt.description}}",
-                "{{MainModID}}.CopperSalt_Name": "{{i18n:object.CopperSalt.name}}",
-                "{{MainModID}}.CopperSalt_Description": "{{i18n:object.CopperSalt.description}}",
-                "{{MainModID}}.IridiumSalt_Name": "{{i18n:object.IridiumSalt.name}}",
-                "{{MainModID}}.IridiumSalt_Description": "{{i18n:object.IridiumSalt.description}}",
-                "{{MainModID}}.MagnesiumSalt_Name": "{{i18n:object.MagnesiumSalt.name}}",
-                "{{MainModID}}.MagnesiumSalt_Description": "{{i18n:object.MagnesiumSalt.description}}",
-                "{{MainModID}}.RottenEgg_Name": "{{i18n:object.RottenEgg.name}}",
-                "{{MainModID}}.RottenEgg_Description": "{{i18n:object.RottenEgg.description}}",
-                "{{MainModID}}.Niter_Name": "{{i18n:object.Niter.name}}",
-                "{{MainModID}}.Niter_Description": "{{i18n:object.Niter.description}}",
-                "{{MainModID}}.Brimstone_Name": "{{i18n:object.Brimstone.name}}",
-                "{{MainModID}}.Brimstone_Description": "{{i18n:object.Brimstone.description}}",
-                "{{MainModID}}.BlackPowder_Name": "{{i18n:object.BlackPowder.name}}",
-                "{{MainModID}}.BlackPowder_Description": "{{i18n:object.BlackPowder.description}}",
-                "{{MainModID}}.Takoyaki_Name": "{{i18n:object.Takoyaki.name}}",
-                "{{MainModID}}.Takoyaki_Description": "{{i18n:object.Takoyaki.description}}",
-                "{{MainModID}}.ShavedIce_Name": "{{i18n:object.ShavedIce.name}}",
-                "{{MainModID}}.ShavedIce_Description": "{{i18n:object.ShavedIce.description}}",
-                "{{MainModID}}.Yakisoba_Name": "{{i18n:object.Yakisoba.name}}",
-                "{{MainModID}}.Yakisoba_Description": "{{i18n:object.Yakisoba.description}}",
-                "{{MainModID}}.FireworksLicense_Name": "{{i18n:object.FireworksLicense.name}}",
-                "{{MainModID}}.FireworksLicense_Description": "{{i18n:object.FireworksLicense.description}}",
+                "{{MainModID}}_RedFirework_Name": "{{i18n:object.RedFirework.name}}",
+                "{{MainModID}}_RedFirework_Description": "{{i18n:object.RedFirework.description}}",
+                "{{MainModID}}_OrangeFirework_Name": "{{i18n:object.OrangeFirework.name}}",
+                "{{MainModID}}_OrangeFirework_Description": "{{i18n:object.OrangeFirework.description}}",
+                "{{MainModID}}_YellowFirework_Name": "{{i18n:object.YellowFirework.name}}",
+                "{{MainModID}}_YellowFirework_Description": "{{i18n:object.YellowFirework.description}}",
+                "{{MainModID}}_GreenFirework_Name": "{{i18n:object.GreenFirework.name}}",
+                "{{MainModID}}_GreenFirework_Description": "{{i18n:object.GreenFirework.description}}",
+                "{{MainModID}}_BlueFirework_Name": "{{i18n:object.BlueFirework.name}}",
+                "{{MainModID}}_BlueFirework_Description": "{{i18n:object.BlueFirework.description}}",
+                "{{MainModID}}_PurpleFirework_Name": "{{i18n:object.PurpleFirework.name}}",
+                "{{MainModID}}_PurpleFirework_Description": "{{i18n:object.PurpleFirework.description}}",
+                "{{MainModID}}_WhiteFirework_Name": "{{i18n:object.WhiteFirework.name}}",
+                "{{MainModID}}_WhiteFirework_Description": "{{i18n:object.WhiteFirework.description}}",
+                "{{MainModID}}_StrontiumSalt_Name": "{{i18n:object.StrontiumSalt.name}}",
+                "{{MainModID}}_StrontiumSalt_Description": "{{i18n:object.StrontiumSalt.description}}",
+                "{{MainModID}}_IronSalt_Name": "{{i18n:object.IronSalt.name}}",
+                "{{MainModID}}_IronSalt_Description": "{{i18n:object.IronSalt.description}}",
+                "{{MainModID}}_BariumSalt_Name": "{{i18n:object.BariumSalt.name}}",
+                "{{MainModID}}_BariumSalt_Description": "{{i18n:object.BariumSalt.description}}",
+                "{{MainModID}}_CopperSalt_Name": "{{i18n:object.CopperSalt.name}}",
+                "{{MainModID}}_CopperSalt_Description": "{{i18n:object.CopperSalt.description}}",
+                "{{MainModID}}_IridiumSalt_Name": "{{i18n:object.IridiumSalt.name}}",
+                "{{MainModID}}_IridiumSalt_Description": "{{i18n:object.IridiumSalt.description}}",
+                "{{MainModID}}_MagnesiumSalt_Name": "{{i18n:object.MagnesiumSalt.name}}",
+                "{{MainModID}}_MagnesiumSalt_Description": "{{i18n:object.MagnesiumSalt.description}}",
+                "{{MainModID}}_RottenEgg_Name": "{{i18n:object.RottenEgg.name}}",
+                "{{MainModID}}_RottenEgg_Description": "{{i18n:object.RottenEgg.description}}",
+                "{{MainModID}}_Niter_Name": "{{i18n:object.Niter.name}}",
+                "{{MainModID}}_Niter_Description": "{{i18n:object.Niter.description}}",
+                "{{MainModID}}_Brimstone_Name": "{{i18n:object.Brimstone.name}}",
+                "{{MainModID}}_Brimstone_Description": "{{i18n:object.Brimstone.description}}",
+                "{{MainModID}}_BlackPowder_Name": "{{i18n:object.BlackPowder.name}}",
+                "{{MainModID}}_BlackPowder_Description": "{{i18n:object.BlackPowder.description}}",
+                "{{MainModID}}_Takoyaki_Name": "{{i18n:object.Takoyaki.name}}",
+                "{{MainModID}}_Takoyaki_Description": "{{i18n:object.Takoyaki.description}}",
+                "{{MainModID}}_ShavedIce_Name": "{{i18n:object.ShavedIce.name}}",
+                "{{MainModID}}_ShavedIce_Description": "{{i18n:object.ShavedIce.description}}",
+                "{{MainModID}}_Yakisoba_Name": "{{i18n:object.Yakisoba.name}}",
+                "{{MainModID}}_Yakisoba_Description": "{{i18n:object.Yakisoba.description}}",
+                "{{MainModID}}_FireworksLicense_Name": "{{i18n:object.FireworksLicense.name}}",
+                "{{MainModID}}_FireworksLicense_Description": "{{i18n:object.FireworksLicense.description}}",
             }
         },
         // Create fireworks objects
@@ -85,10 +85,10 @@
             "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
-                "{{MainModID}}.RedFirework": {
-                    "Name": "{{MainModID}}.RedFirework",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.RedFirework_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.RedFirework_Description]",
+                "{{MainModID}}_RedFirework": {
+                    "Name": "{{MainModID}}_RedFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_RedFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_RedFirework_Description]",
                     "Type": "Crafting",
                     "Category": -8,
                     "Price": 250,
@@ -100,10 +100,10 @@
                         "ingredient_firework"
                     ],
                 },
-                "{{MainModID}}.OrangeFirework": {
-                    "Name": "{{MainModID}}.OrangeFirework",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.OrangeFirework_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.OrangeFirework_Description]",
+                "{{MainModID}}_OrangeFirework": {
+                    "Name": "{{MainModID}}_OrangeFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_OrangeFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_OrangeFirework_Description]",
                     "Type": "Crafting",
                     "Category": -8,
                     "Price": 250,
@@ -115,10 +115,10 @@
                         "ingredient_firework"
                     ],
                 },
-                "{{MainModID}}.YellowFirework": {
-                    "Name": "{{MainModID}}.YellowFirework",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.YellowFirework_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.YellowFirework_Description]",
+                "{{MainModID}}_YellowFirework": {
+                    "Name": "{{MainModID}}_YellowFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_YellowFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_YellowFirework_Description]",
                     "Type": "Crafting",
                     "Category": -8,
                     "Price": 250,
@@ -130,10 +130,10 @@
                         "ingredient_firework"
                     ],
                 },
-                "{{MainModID}}.GreenFirework": {
-                    "Name": "{{MainModID}}.GreenFirework",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.GreenFirework_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.GreenFirework_Description]",
+                "{{MainModID}}_GreenFirework": {
+                    "Name": "{{MainModID}}_GreenFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_GreenFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_GreenFirework_Description]",
                     "Type": "Crafting",
                     "Category": -8,
                     "Price": 250,
@@ -145,10 +145,10 @@
                         "ingredient_firework"
                     ],
                 },
-                "{{MainModID}}.BlueFirework": {
-                    "Name": "{{MainModID}}.BlueFirework",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.BlueFirework_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.BlueFirework_Description]",
+                "{{MainModID}}_BlueFirework": {
+                    "Name": "{{MainModID}}_BlueFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_BlueFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_BlueFirework_Description]",
                     "Type": "Crafting",
                     "Category": -8,
                     "Price": 250,
@@ -160,10 +160,10 @@
                         "ingredient_firework"
                     ],
                 },
-                "{{MainModID}}.PurpleFirework": {
-                    "Name": "{{MainModID}}.PurpleFirework",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.PurpleFirework_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.PurpleFirework_Description]",
+                "{{MainModID}}_PurpleFirework": {
+                    "Name": "{{MainModID}}_PurpleFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_PurpleFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_PurpleFirework_Description]",
                     "Type": "Crafting",
                     "Category": -8,
                     "Price": 250,
@@ -175,10 +175,10 @@
                         "ingredient_firework"
                     ],
                 },
-                "{{MainModID}}.WhiteFirework": {
-                    "Name": "{{MainModID}}.WhiteFirework",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.WhiteFirework_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.WhiteFirework_Description]",
+                "{{MainModID}}_WhiteFirework": {
+                    "Name": "{{MainModID}}_WhiteFirework",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_WhiteFirework_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_WhiteFirework_Description]",
                     "Type": "Crafting",
                     "Category": -8,
                     "Price": 250,
@@ -190,10 +190,10 @@
                         "ingredient_firework"
                     ],
                 },
-                "{{MainModID}}.FireworksLicense": {
-                    "Name": "{{MainModID}}.FireworksLicense",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.FireworksLicense_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.FireworksLicense_Description]",
+                "{{MainModID}}_FireworksLicense": {
+                    "Name": "{{MainModID}}_FireworksLicense",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_FireworksLicense_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_FireworksLicense_Description]",
                     "Type": "Quest",
                     "Category": 0,
                     "Price": 0,
@@ -214,10 +214,10 @@
             "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
-                "{{MainModID}}.StrontiumSalt": {
-                    "Name": "{{MainModID}}.StrontiumSalt",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.StrontiumSalt_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.StrontiumSalt_Description]",
+                "{{MainModID}}_StrontiumSalt": {
+                    "Name": "{{MainModID}}_StrontiumSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_StrontiumSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_StrontiumSalt_Description]",
                     "Type": "Minerals",
                     "Category": -2,
                     "Price": 100,
@@ -230,10 +230,10 @@
                         "not_museum_donatable"
                     ],
                 },
-                "{{MainModID}}.IronSalt": {
-                    "Name": "{{MainModID}}.IronSalt",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.IronSalt_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.IronSalt_Description]",
+                "{{MainModID}}_IronSalt": {
+                    "Name": "{{MainModID}}_IronSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_IronSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_IronSalt_Description]",
                     "Type": "Minerals",
                     "Category": -2,
                     "Price": 100,
@@ -246,10 +246,10 @@
                         "not_museum_donatable"
                     ],
                 },
-                "{{MainModID}}.BariumSalt": {
-                    "Name": "{{MainModID}}.BariumSalt",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.BariumSalt_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.BariumSalt_Description]",
+                "{{MainModID}}_BariumSalt": {
+                    "Name": "{{MainModID}}_BariumSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_BariumSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_BariumSalt_Description]",
                     "Type": "Minerals",
                     "Category": -2,
                     "Price": 100,
@@ -262,10 +262,10 @@
                         "not_museum_donatable"
                     ],
                 },
-                "{{MainModID}}.CopperSalt": {
-                    "Name": "{{MainModID}}.CopperSalt",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.CopperSalt_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.CopperSalt_Description]",
+                "{{MainModID}}_CopperSalt": {
+                    "Name": "{{MainModID}}_CopperSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_CopperSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_CopperSalt_Description]",
                     "Type": "Minerals",
                     "Category": -2,
                     "Price": 100,
@@ -278,10 +278,10 @@
                         "not_museum_donatable"
                     ],
                 },
-                "{{MainModID}}.IridiumSalt": {
-                    "Name": "{{MainModID}}.IridiumSalt",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.IridiumSalt_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.IridiumSalt_Description]",
+                "{{MainModID}}_IridiumSalt": {
+                    "Name": "{{MainModID}}_IridiumSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_IridiumSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_IridiumSalt_Description]",
                     "Type": "Minerals",
                     "Category": -2,
                     "Price": 100,
@@ -294,10 +294,10 @@
                         "not_museum_donatable"
                     ],
                 },
-                "{{MainModID}}.MagnesiumSalt": {
-                    "Name": "{{MainModID}}.MagnesiumSalt",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.MagnesiumSalt_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.MagnesiumSalt_Description]",
+                "{{MainModID}}_MagnesiumSalt": {
+                    "Name": "{{MainModID}}_MagnesiumSalt",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_MagnesiumSalt_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_MagnesiumSalt_Description]",
                     "Type": "Minerals",
                     "Category": -2,
                     "Price": 100,
@@ -318,10 +318,10 @@
             "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
-                "{{MainModID}}.RottenEgg": {
-                    "Name": "{{MainModID}}.RottenEgg",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.RottenEgg_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.RottenEgg_Description]",
+                "{{MainModID}}_RottenEgg": {
+                    "Name": "{{MainModID}}_RottenEgg",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_RottenEgg_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_RottenEgg_Description]",
                     "Type": "Litter",
                     "Category": -999,
                     "Price": 5,
@@ -334,10 +334,10 @@
                         "trash_item"
                     ],
                 },
-                "{{MainModID}}.Niter": {
-                    "Name": "{{MainModID}}.Niter",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.Niter_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.Niter_Description]",
+                "{{MainModID}}_Niter": {
+                    "Name": "{{MainModID}}_Niter",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_Niter_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_Niter_Description]",
                     "Type": "Minerals",
                     "Category": -2,
                     "Price": 100,
@@ -350,10 +350,10 @@
                         "not_museum_donatable"
                     ],
                 },
-                "{{MainModID}}.Brimstone": {
-                    "Name": "{{MainModID}}.Brimstone",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.Brimstone_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.Brimstone_Description]",
+                "{{MainModID}}_Brimstone": {
+                    "Name": "{{MainModID}}_Brimstone",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_Brimstone_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_Brimstone_Description]",
                     "Type": "Minerals",
                     "Category": -2,
                     "Price": 100,
@@ -366,10 +366,10 @@
                         "not_museum_donatable"
                     ],
                 },
-                "{{MainModID}}.BlackPowder": {
-                    "Name": "{{MainModID}}.BlackPowder",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.BlackPowder_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.BlackPowder_Description]",
+                "{{MainModID}}_BlackPowder": {
+                    "Name": "{{MainModID}}_BlackPowder",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_BlackPowder_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_BlackPowder_Description]",
                     "Type": "Minerals",
                     "Category": -2,
                     "Price": 200,
@@ -390,10 +390,10 @@
             "Action": "EditData",
             "Target": "Data/Objects",
             "Entries": {
-                "{{MainModID}}.Takoyaki": {
-                    "Name": "{{MainModID}}.Takoyaki",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.Takoyaki_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.Takoyaki_Description]",
+                "{{MainModID}}_Takoyaki": {
+                    "Name": "{{MainModID}}_Takoyaki",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_Takoyaki_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_Takoyaki_Description]",
                     "Type": "Cooking",
                     "Category": -7,
                     "Price": 200,
@@ -406,10 +406,10 @@
                         "color_brown"
                     ],
                 },
-                "{{MainModID}}.ShavedIce": {
-                    "Name": "{{MainModID}}.ShavedIce",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.ShavedIce_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.ShavedIce_Description]",
+                "{{MainModID}}_ShavedIce": {
+                    "Name": "{{MainModID}}_ShavedIce",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_ShavedIce_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_ShavedIce_Description]",
                     "Type": "Cooking",
                     "Category": -7,
                     "Price": 200,
@@ -423,10 +423,10 @@
                         "color_brown"
                     ],
                 },
-                "{{MainModID}}.Yakisoba": {
-                    "Name": "{{MainModID}}.Yakisoba",
-                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}.Yakisoba_Name]",
-                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}.Yakisoba_Description]",
+                "{{MainModID}}_Yakisoba": {
+                    "Name": "{{MainModID}}_Yakisoba",
+                    "DisplayName": "[LocalizedText Strings\\Objects:{{MainModID}}_Yakisoba_Name]",
+                    "Description": "[LocalizedText Strings\\Objects:{{MainModID}}_Yakisoba_Description]",
                     "Type": "Cooking",
                     "Category": -7,
                     "Price": 200,
@@ -447,14 +447,14 @@
             "Action": "EditData",
             "Target": "Data/CraftingRecipes",
             "Entries": {
-                "{{MainModID}}.RedFirework": "{{MainModID}}.StrontiumSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.RedFirework/false/null/",
-                "{{MainModID}}.OrangeFirework": "571 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.OrangeFirework/false/null/",
-                "{{MainModID}}.YellowFirework": "{{MainModID}}.IronSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.YellowFirework/false/null/",
-                "{{MainModID}}.GreenFirework": "{{MainModID}}.BariumSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.GreenFirework/false/null/",
-                "{{MainModID}}.BlueFirework": "{{MainModID}}.CopperSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.BlueFirework/false/null/",
-                "{{MainModID}}.PurpleFirework": "{{MainModID}}.IridiumSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.PurpleFirework/false/null/",
-                "{{MainModID}}.WhiteFirework": "{{MainModID}}.MagnesiumSalt 1 {{MainModID}}.BlackPowder 1 766 5 771 5/Field/{{MainModID}}.WhiteFirework/false/null/",
-                "{{MainModID}}.BlackPowder": "{{MainModID}}.Niter 1 {{MainModID}}.Brimstone 1 382 5/Field/{{MainModID}}.BlackPowder/false/null/",
+                "{{MainModID}}_RedFirework": "{{MainModID}}_StrontiumSalt 1 {{MainModID}}_BlackPowder 1 766 5 771 5/Field/{{MainModID}}_RedFirework/false/null/",
+                "{{MainModID}}_OrangeFirework": "571 1 {{MainModID}}_BlackPowder 1 766 5 771 5/Field/{{MainModID}}_OrangeFirework/false/null/",
+                "{{MainModID}}_YellowFirework": "{{MainModID}}_IronSalt 1 {{MainModID}}_BlackPowder 1 766 5 771 5/Field/{{MainModID}}_YellowFirework/false/null/",
+                "{{MainModID}}_GreenFirework": "{{MainModID}}_BariumSalt 1 {{MainModID}}_BlackPowder 1 766 5 771 5/Field/{{MainModID}}_GreenFirework/false/null/",
+                "{{MainModID}}_BlueFirework": "{{MainModID}}_CopperSalt 1 {{MainModID}}_BlackPowder 1 766 5 771 5/Field/{{MainModID}}_BlueFirework/false/null/",
+                "{{MainModID}}_PurpleFirework": "{{MainModID}}_IridiumSalt 1 {{MainModID}}_BlackPowder 1 766 5 771 5/Field/{{MainModID}}_PurpleFirework/false/null/",
+                "{{MainModID}}_WhiteFirework": "{{MainModID}}_MagnesiumSalt 1 {{MainModID}}_BlackPowder 1 766 5 771 5/Field/{{MainModID}}_WhiteFirework/false/null/",
+                "{{MainModID}}_BlackPowder": "{{MainModID}}_Niter 1 {{MainModID}}_Brimstone 1 382 5/Field/{{MainModID}}_BlackPowder/false/null/",
             }
         },
         // Add gift tastes
@@ -467,63 +467,63 @@
                 {
                     "Operation": "Append",
                     "Target": ["Entries", "Universal_Like"],
-                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Value": "{{MainModID}}_RedFirework {{MainModID}}_OrangeFirework {{MainModID}}_YellowFirework {{MainModID}}_GreenFirework {{MainModID}}_BlueFirework {{MainModID}}_PurpleFirework {{MainModID}}_WhiteFirework",
                     "Delimiter": " "
                 },
                 // Kent hates fireworks and black powder
                 {
                     "Operation": "Append",
                     "Target": ["Fields", "Kent", 7],
-                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework {{MainModID}}.BlackPowder",
+                    "Value": "{{MainModID}}_RedFirework {{MainModID}}_OrangeFirework {{MainModID}}_YellowFirework {{MainModID}}_GreenFirework {{MainModID}}_BlueFirework {{MainModID}}_PurpleFirework {{MainModID}}_WhiteFirework {{MainModID}}_BlackPowder",
                     "Delimiter": " "
                 },
                 // Abigail loves purple fireworks
                 {
                     "Operation": "Append",
                     "Target": ["Fields", "Abigail", 1],
-                    "Value": "{{MainModID}}.PurpleFirework",
+                    "Value": "{{MainModID}}_PurpleFirework",
                     "Delimiter": " "
                 },
                 // Dwarf loves fireworks
                 {
                     "Operation": "Append",
                     "Target": ["Fields", "Dwarf", 1],
-                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Value": "{{MainModID}}_RedFirework {{MainModID}}_OrangeFirework {{MainModID}}_YellowFirework {{MainModID}}_GreenFirework {{MainModID}}_BlueFirework {{MainModID}}_PurpleFirework {{MainModID}}_WhiteFirework",
                     "Delimiter": " "
                 },
                 // Leo loves fireworks
                 {
                     "Operation": "Append",
                     "Target": ["Fields", "Leo", 1],
-                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Value": "{{MainModID}}_RedFirework {{MainModID}}_OrangeFirework {{MainModID}}_YellowFirework {{MainModID}}_GreenFirework {{MainModID}}_BlueFirework {{MainModID}}_PurpleFirework {{MainModID}}_WhiteFirework",
                     "Delimiter": " "
                 },
                 // Vincent loves fireworks
                 {
                     "Operation": "Append",
                     "Target": ["Fields", "Vincent", 1],
-                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Value": "{{MainModID}}_RedFirework {{MainModID}}_OrangeFirework {{MainModID}}_YellowFirework {{MainModID}}_GreenFirework {{MainModID}}_BlueFirework {{MainModID}}_PurpleFirework {{MainModID}}_WhiteFirework",
                     "Delimiter": " "
                 },
                 // Jas loves fireworks
                 {
                     "Operation": "Append",
                     "Target": ["Fields", "Jas", 1],
-                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Value": "{{MainModID}}_RedFirework {{MainModID}}_OrangeFirework {{MainModID}}_YellowFirework {{MainModID}}_GreenFirework {{MainModID}}_BlueFirework {{MainModID}}_PurpleFirework {{MainModID}}_WhiteFirework",
                     "Delimiter": " "
                 },
                 // Wizard loves fireworks
                 {
                     "Operation": "Append",
                     "Target": ["Fields", "Wizard", 1],
-                    "Value": "{{MainModID}}.RedFirework {{MainModID}}.OrangeFirework {{MainModID}}.YellowFirework {{MainModID}}.GreenFirework {{MainModID}}.BlueFirework {{MainModID}}.PurpleFirework {{MainModID}}.WhiteFirework",
+                    "Value": "{{MainModID}}_RedFirework {{MainModID}}_OrangeFirework {{MainModID}}_YellowFirework {{MainModID}}_GreenFirework {{MainModID}}_BlueFirework {{MainModID}}_PurpleFirework {{MainModID}}_WhiteFirework",
                     "Delimiter": " "
                 },
                 // Jas loves shaved ice
                 {
                     "Operation": "Append",
                     "Target": ["Fields", "Jas", 1],
-                    "Value": "{{MainModID}}.ShavedIce",
+                    "Value": "{{MainModID}}_ShavedIce",
                     "Delimiter": " "
                 },
             ]

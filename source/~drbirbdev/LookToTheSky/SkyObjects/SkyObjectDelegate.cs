@@ -19,28 +19,30 @@ public delegate void SkyObjectHandlerDelegate(SkyObject skyObject, string[] args
 
 public class SkyObjectEvent
 {
-    protected static readonly Dictionary<string, SkyObjectHandlerDelegate> Handlers = new Dictionary<string, SkyObjectHandlerDelegate>();
+    private static readonly Dictionary<string, SkyObjectHandlerDelegate> HANDLERS = new();
 
     private static void SetupSkyObjectHandlers()
     {
-        if (Handlers.Count == 0)
+        if (HANDLERS.Count != 0)
         {
-            MethodInfo[] array = typeof(DefaultEvents).GetMethods(BindingFlags.Static | BindingFlags.Public);
-            foreach (MethodInfo method in array)
-            {
-                Handlers.Add(method.Name, method.CreateDelegate<SkyObjectHandlerDelegate>());
-            }
+            return;
+        }
+
+        MethodInfo[] array = typeof(DefaultEvents).GetMethods(BindingFlags.Static | BindingFlags.Public);
+        foreach (MethodInfo method in array)
+        {
+            HANDLERS.Add(method.Name, method.CreateDelegate<SkyObjectHandlerDelegate>());
         }
     }
 
-    internal class DefaultEvents
+    private class DefaultEvents
     {
-        public static void SpawnItem(TemporaryAnimatedSprite sprite, string[] args)
+        public static void SpawnItem(string[] args)
         {
             if (args.Length < 1)
             {
                 ArgUtility.TryGetOptionalInt(args, 1, out int stackSize, out string error1, 1);
-                ArgUtility.TryGetOptionalInt(args, 2, out int quality, out string error2, 0);
+                ArgUtility.TryGetOptionalInt(args, 2, out int quality, out string error2);
                 if (error1 is not null || error2 is not null)
                 {
                     Log.Error($"SpawnItem got errors {error1}, {error2}");

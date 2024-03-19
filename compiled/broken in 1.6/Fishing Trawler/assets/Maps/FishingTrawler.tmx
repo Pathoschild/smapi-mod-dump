@@ -1,0 +1,2409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="80" height="50" tilewidth="16" tileheight="16" infinite="0" nextlayerid="12" nextobjectid="39">
+ <properties>
+  <property name="BrookSounds" value="44 23 2"/>
+  <property name="Outdoors" value="T"/>
+ </properties>
+ <tileset firstgid="1" name="Paths" tilewidth="16" tileheight="16" tilecount="36" columns="4">
+  <image source="paths" width="64" height="144"/>
+  <tile id="0">
+   <properties>
+    <property name="PathType" value="NE"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="PathType" value="SE"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="PathType" value="WS"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="PathType" value="WN"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="PathType" value="Crossroad"/>
+   </properties>
+  </tile>
+  <tile id="7">
+   <properties>
+    <property name="PathType" value="End"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="37" name="untitled tile sheet" tilewidth="16" tileheight="16" tilecount="527" columns="17">
+  <image source="spring_beach" width="272" height="496"/>
+  <tile id="7">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="18">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="19">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="20">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="21">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="22">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="23">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="24">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="25">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="26">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="41">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="42">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Spawnable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="43">
+   <properties>
+    <property name="Diggable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="51">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="52">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="53">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="54">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="56">
+   <properties>
+    <property name="Type" value="Stone"/>
+   </properties>
+  </tile>
+  <tile id="58">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="59">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="68">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="69">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="70">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="71">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="75">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="80">
+   <animation>
+    <frame tileid="80" duration="600"/>
+    <frame tileid="337" duration="600"/>
+    <frame tileid="338" duration="600"/>
+    <frame tileid="337" duration="600"/>
+   </animation>
+  </tile>
+  <tile id="81">
+   <properties>
+    <property name="Type" value="Grass"/>
+   </properties>
+  </tile>
+  <tile id="82">
+   <properties>
+    <property name="Type" value="Grass"/>
+   </properties>
+  </tile>
+  <tile id="85">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="86">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="87">
+   <properties>
+    <property name="Diggable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="88">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="89">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="90">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="91">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="92">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="93">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="100">
+   <properties>
+    <property name="Type" value="Grass"/>
+   </properties>
+  </tile>
+  <tile id="101">
+   <properties>
+    <property name="Type" value="Grass"/>
+   </properties>
+  </tile>
+  <tile id="107">
+   <properties>
+    <property name="Type" value="Dirt"/>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="108">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="109">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="110">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="111">
+   <properties>
+    <property name="Type" value="Stone"/>
+   </properties>
+  </tile>
+  <tile id="112">
+   <properties>
+    <property name="Type" value="Stone"/>
+   </properties>
+  </tile>
+  <tile id="113">
+   <properties>
+    <property name="Type" value="Stone"/>
+   </properties>
+  </tile>
+  <tile id="117">
+   <properties>
+    <property name="Type" value="Grass"/>
+   </properties>
+  </tile>
+  <tile id="118">
+   <properties>
+    <property name="Type" value="Grass"/>
+   </properties>
+  </tile>
+  <tile id="124">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="125">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="126">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="127">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="128">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="129">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="130">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="131">
+   <properties>
+    <property name="Passable" value="F"/>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="141">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+   <animation>
+    <frame tileid="141" duration="250"/>
+    <frame tileid="142" duration="250"/>
+    <frame tileid="143" duration="250"/>
+    <frame tileid="144" duration="250"/>
+    <frame tileid="144" duration="250"/>
+    <frame tileid="145" duration="250"/>
+    <frame tileid="146" duration="250"/>
+    <frame tileid="147" duration="250"/>
+    <frame tileid="141" duration="250"/>
+    <frame tileid="141" duration="250"/>
+    <frame tileid="141" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="142">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="143">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="144">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="145">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="146">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="147">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="148">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="158">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+   <animation>
+    <frame tileid="158" duration="250"/>
+    <frame tileid="159" duration="250"/>
+    <frame tileid="160" duration="250"/>
+    <frame tileid="161" duration="250"/>
+    <frame tileid="161" duration="250"/>
+    <frame tileid="162" duration="250"/>
+    <frame tileid="163" duration="250"/>
+    <frame tileid="164" duration="250"/>
+    <frame tileid="158" duration="250"/>
+    <frame tileid="158" duration="250"/>
+    <frame tileid="158" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="159">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="160">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="161">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="162">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="163">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="164">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="165">
+   <properties>
+    <property name="Passable" value="F"/>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="175">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+   <animation>
+    <frame tileid="175" duration="250"/>
+    <frame tileid="176" duration="250"/>
+    <frame tileid="177" duration="250"/>
+    <frame tileid="178" duration="250"/>
+    <frame tileid="178" duration="250"/>
+    <frame tileid="179" duration="250"/>
+    <frame tileid="180" duration="250"/>
+    <frame tileid="181" duration="250"/>
+    <frame tileid="175" duration="250"/>
+    <frame tileid="175" duration="250"/>
+    <frame tileid="175" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="176">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="177">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="178">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="179">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="180">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="181">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="185">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="192">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+   <animation>
+    <frame tileid="192" duration="250"/>
+    <frame tileid="193" duration="250"/>
+    <frame tileid="194" duration="250"/>
+    <frame tileid="195" duration="250"/>
+    <frame tileid="195" duration="250"/>
+    <frame tileid="196" duration="250"/>
+    <frame tileid="197" duration="250"/>
+    <frame tileid="198" duration="250"/>
+    <frame tileid="192" duration="250"/>
+    <frame tileid="192" duration="250"/>
+    <frame tileid="192" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="193">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="194">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="195">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="196">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="197">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="198">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="202">
+   <properties>
+    <property name="Diggable" value="T"/>
+   </properties>
+  </tile>
+  <tile id="203">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="209">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+   <animation>
+    <frame tileid="209" duration="250"/>
+    <frame tileid="210" duration="250"/>
+    <frame tileid="211" duration="250"/>
+    <frame tileid="212" duration="250"/>
+    <frame tileid="212" duration="250"/>
+    <frame tileid="213" duration="250"/>
+    <frame tileid="214" duration="250"/>
+    <frame tileid="215" duration="250"/>
+    <frame tileid="209" duration="250"/>
+    <frame tileid="209" duration="250"/>
+    <frame tileid="209" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="210">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="211">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="212">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="213">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="214">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="215">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="216">
+   <animation>
+    <frame tileid="216" duration="1000"/>
+    <frame tileid="267" duration="1000"/>
+   </animation>
+  </tile>
+  <tile id="217">
+   <animation>
+    <frame tileid="217" duration="1000"/>
+    <frame tileid="268" duration="1000"/>
+   </animation>
+  </tile>
+  <tile id="218">
+   <animation>
+    <frame tileid="218" duration="1000"/>
+    <frame tileid="269" duration="1000"/>
+   </animation>
+  </tile>
+  <tile id="226">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+   <animation>
+    <frame tileid="226" duration="250"/>
+    <frame tileid="227" duration="250"/>
+    <frame tileid="228" duration="250"/>
+    <frame tileid="229" duration="250"/>
+    <frame tileid="229" duration="250"/>
+    <frame tileid="230" duration="250"/>
+    <frame tileid="231" duration="250"/>
+    <frame tileid="232" duration="250"/>
+    <frame tileid="226" duration="250"/>
+    <frame tileid="226" duration="250"/>
+    <frame tileid="226" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="227">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="228">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="229">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="230">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="231">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="232">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="233">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="234">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="235">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="243">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+   <animation>
+    <frame tileid="243" duration="250"/>
+    <frame tileid="244" duration="250"/>
+    <frame tileid="245" duration="250"/>
+    <frame tileid="246" duration="250"/>
+    <frame tileid="246" duration="250"/>
+    <frame tileid="247" duration="250"/>
+    <frame tileid="248" duration="250"/>
+    <frame tileid="249" duration="250"/>
+    <frame tileid="243" duration="250"/>
+    <frame tileid="243" duration="250"/>
+    <frame tileid="243" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="244">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="245">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="246">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="247">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="248">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="249">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="250">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="251">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="252">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="260">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+   <animation>
+    <frame tileid="260" duration="250"/>
+    <frame tileid="261" duration="250"/>
+    <frame tileid="262" duration="250"/>
+    <frame tileid="263" duration="250"/>
+    <frame tileid="263" duration="250"/>
+    <frame tileid="264" duration="250"/>
+    <frame tileid="265" duration="250"/>
+    <frame tileid="266" duration="250"/>
+    <frame tileid="260" duration="250"/>
+    <frame tileid="260" duration="250"/>
+    <frame tileid="260" duration="250"/>
+   </animation>
+  </tile>
+  <tile id="261">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="262">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="263">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="264">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="265">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="266">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="277">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="278">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="279">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="280">
+   <properties>
+    <property name="Type" value="Dirt"/>
+   </properties>
+  </tile>
+  <tile id="297">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="298">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="299">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="300">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="301">
+   <properties>
+    <property name="Passable" value="T"/>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="302">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="334">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="335">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="336">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="339">
+   <properties>
+    <property name="Passable" value="F"/>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="373">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="419">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="420">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="421">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="423">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="424">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="435">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="440">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="441">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="453">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="454">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="455">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="458">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="470">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="471">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="472">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="475">
+   <properties>
+    <property name="Water" value="T"/>
+   </properties>
+  </tile>
+  <tile id="487">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="488">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="489">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="491">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="504">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="505">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="506">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="508">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="564" name="z_trawlerTiles" tilewidth="16" tileheight="16" tilecount="576" columns="24">
+  <image source="TrawlerTiles.png" width="384" height="384"/>
+  <tile id="4">
+   <animation>
+    <frame tileid="4" duration="30"/>
+    <frame tileid="28" duration="30"/>
+    <frame tileid="52" duration="30"/>
+    <frame tileid="76" duration="30"/>
+    <frame tileid="100" duration="30"/>
+   </animation>
+  </tile>
+  <tile id="5">
+   <animation>
+    <frame tileid="5" duration="60"/>
+    <frame tileid="29" duration="60"/>
+    <frame tileid="53" duration="60"/>
+    <frame tileid="77" duration="60"/>
+    <frame tileid="101" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="6">
+   <animation>
+    <frame tileid="6" duration="60"/>
+    <frame tileid="30" duration="60"/>
+    <frame tileid="54" duration="60"/>
+    <frame tileid="78" duration="60"/>
+    <frame tileid="102" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="7">
+   <animation>
+    <frame tileid="7" duration="60"/>
+    <frame tileid="31" duration="60"/>
+    <frame tileid="55" duration="60"/>
+    <frame tileid="79" duration="60"/>
+    <frame tileid="103" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="8">
+   <animation>
+    <frame tileid="8" duration="60"/>
+    <frame tileid="32" duration="60"/>
+    <frame tileid="56" duration="60"/>
+    <frame tileid="80" duration="60"/>
+    <frame tileid="104" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="9">
+   <animation>
+    <frame tileid="9" duration="90"/>
+    <frame tileid="33" duration="90"/>
+    <frame tileid="57" duration="90"/>
+    <frame tileid="81" duration="90"/>
+    <frame tileid="105" duration="90"/>
+   </animation>
+  </tile>
+  <tile id="10">
+   <animation>
+    <frame tileid="10" duration="30"/>
+    <frame tileid="34" duration="30"/>
+    <frame tileid="58" duration="30"/>
+    <frame tileid="82" duration="30"/>
+    <frame tileid="106" duration="30"/>
+   </animation>
+  </tile>
+  <tile id="60">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="61">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="62">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="63">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="64">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="65">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="66">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="67">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="68">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="69">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="70">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="71">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="84">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="85">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="86">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="87">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="88">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="89">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="90">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="91">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="92">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="93">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="94">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="95">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="96">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="108">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="109">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="110">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="111">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="112">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="113">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="114">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="115">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="116">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="117">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="118">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="119">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="132">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="133">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="134">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="135">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="136">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="137">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="138">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="139">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="140">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="141">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="142">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="158">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="159">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="160">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="161">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="162">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="163">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="164">
+   <properties>
+    <property name="Type" value="Wood"/>
+   </properties>
+  </tile>
+  <tile id="262">
+   <animation>
+    <frame tileid="262" duration="120"/>
+    <frame tileid="310" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="263">
+   <animation>
+    <frame tileid="263" duration="120"/>
+    <frame tileid="311" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="276">
+   <animation>
+    <frame tileid="276" duration="120"/>
+    <frame tileid="324" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="277">
+   <animation>
+    <frame tileid="277" duration="120"/>
+    <frame tileid="325" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="278">
+   <animation>
+    <frame tileid="278" duration="120"/>
+    <frame tileid="326" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="279">
+   <animation>
+    <frame tileid="279" duration="120"/>
+    <frame tileid="327" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="280">
+   <animation>
+    <frame tileid="280" duration="120"/>
+    <frame tileid="328" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="281">
+   <animation>
+    <frame tileid="281" duration="120"/>
+    <frame tileid="329" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="282">
+   <animation>
+    <frame tileid="282" duration="120"/>
+    <frame tileid="330" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="283">
+   <animation>
+    <frame tileid="283" duration="120"/>
+    <frame tileid="331" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="284">
+   <animation>
+    <frame tileid="284" duration="120"/>
+    <frame tileid="332" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="285">
+   <animation>
+    <frame tileid="285" duration="120"/>
+    <frame tileid="333" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="286">
+   <animation>
+    <frame tileid="286" duration="120"/>
+    <frame tileid="334" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="302">
+   <animation>
+    <frame tileid="302" duration="120"/>
+    <frame tileid="350" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="303">
+   <animation>
+    <frame tileid="303" duration="120"/>
+    <frame tileid="351" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="304">
+   <animation>
+    <frame tileid="304" duration="120"/>
+    <frame tileid="352" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="305">
+   <animation>
+    <frame tileid="305" duration="120"/>
+    <frame tileid="353" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="306">
+   <animation>
+    <frame tileid="306" duration="120"/>
+    <frame tileid="354" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="307">
+   <animation>
+    <frame tileid="307" duration="120"/>
+    <frame tileid="355" duration="120"/>
+   </animation>
+  </tile>
+  <tile id="506">
+   <animation>
+    <frame tileid="506" duration="90"/>
+    <frame tileid="507" duration="90"/>
+    <frame tileid="508" duration="90"/>
+    <frame tileid="507" duration="90"/>
+    <frame tileid="506" duration="90"/>
+    <frame tileid="509" duration="90"/>
+    <frame tileid="510" duration="90"/>
+    <frame tileid="509" duration="90"/>
+   </animation>
+  </tile>
+  <tile id="511">
+   <animation>
+    <frame tileid="511" duration="60"/>
+    <frame tileid="512" duration="60"/>
+    <frame tileid="513" duration="60"/>
+    <frame tileid="514" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="530">
+   <animation>
+    <frame tileid="530" duration="90"/>
+    <frame tileid="531" duration="90"/>
+    <frame tileid="532" duration="90"/>
+    <frame tileid="531" duration="90"/>
+    <frame tileid="530" duration="90"/>
+    <frame tileid="533" duration="90"/>
+    <frame tileid="534" duration="90"/>
+    <frame tileid="533" duration="90"/>
+   </animation>
+  </tile>
+  <tile id="552">
+   <animation>
+    <frame tileid="552" duration="30"/>
+    <frame tileid="553" duration="30"/>
+    <frame tileid="554" duration="30"/>
+    <frame tileid="555" duration="30"/>
+    <frame tileid="556" duration="30"/>
+    <frame tileid="557" duration="30"/>
+    <frame tileid="558" duration="30"/>
+    <frame tileid="559" duration="30"/>
+    <frame tileid="560" duration="30"/>
+    <frame tileid="561" duration="30"/>
+    <frame tileid="562" duration="30"/>
+    <frame tileid="563" duration="30"/>
+    <frame tileid="564" duration="30"/>
+    <frame tileid="565" duration="30"/>
+    <frame tileid="566" duration="30"/>
+    <frame tileid="567" duration="30"/>
+   </animation>
+  </tile>
+ </tileset>
+ <tileset firstgid="1140" name="z_flagsAnimated" tilewidth="16" tileheight="16" tilecount="160" columns="20">
+  <image source="FlagsAnimated.png" width="320" height="128"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="2" duration="60"/>
+    <frame tileid="22" duration="60"/>
+    <frame tileid="42" duration="60"/>
+    <frame tileid="62" duration="60"/>
+    <frame tileid="82" duration="60"/>
+    <frame tileid="102" duration="60"/>
+    <frame tileid="122" duration="60"/>
+    <frame tileid="142" duration="60"/>
+    <frame tileid="4" duration="60"/>
+    <frame tileid="24" duration="60"/>
+    <frame tileid="44" duration="60"/>
+    <frame tileid="64" duration="60"/>
+    <frame tileid="84" duration="60"/>
+    <frame tileid="104" duration="60"/>
+    <frame tileid="124" duration="60"/>
+    <frame tileid="144" duration="60"/>
+    <frame tileid="6" duration="60"/>
+    <frame tileid="26" duration="60"/>
+    <frame tileid="46" duration="60"/>
+    <frame tileid="66" duration="60"/>
+    <frame tileid="86" duration="60"/>
+    <frame tileid="106" duration="60"/>
+    <frame tileid="126" duration="60"/>
+    <frame tileid="146" duration="60"/>
+    <frame tileid="8" duration="60"/>
+    <frame tileid="28" duration="60"/>
+    <frame tileid="48" duration="60"/>
+    <frame tileid="68" duration="60"/>
+    <frame tileid="88" duration="60"/>
+    <frame tileid="108" duration="60"/>
+    <frame tileid="128" duration="60"/>
+    <frame tileid="148" duration="60"/>
+    <frame tileid="10" duration="60"/>
+    <frame tileid="30" duration="60"/>
+    <frame tileid="50" duration="60"/>
+    <frame tileid="70" duration="60"/>
+    <frame tileid="90" duration="60"/>
+    <frame tileid="110" duration="60"/>
+    <frame tileid="130" duration="60"/>
+    <frame tileid="150" duration="60"/>
+    <frame tileid="12" duration="60"/>
+    <frame tileid="32" duration="60"/>
+    <frame tileid="52" duration="60"/>
+    <frame tileid="72" duration="60"/>
+    <frame tileid="92" duration="60"/>
+    <frame tileid="112" duration="60"/>
+    <frame tileid="132" duration="60"/>
+    <frame tileid="152" duration="60"/>
+    <frame tileid="14" duration="60"/>
+    <frame tileid="34" duration="60"/>
+    <frame tileid="54" duration="60"/>
+    <frame tileid="74" duration="60"/>
+    <frame tileid="94" duration="60"/>
+    <frame tileid="114" duration="60"/>
+    <frame tileid="134" duration="60"/>
+    <frame tileid="154" duration="60"/>
+    <frame tileid="16" duration="60"/>
+    <frame tileid="36" duration="60"/>
+    <frame tileid="56" duration="60"/>
+    <frame tileid="76" duration="60"/>
+    <frame tileid="96" duration="60"/>
+    <frame tileid="116" duration="60"/>
+    <frame tileid="136" duration="60"/>
+    <frame tileid="156" duration="60"/>
+    <frame tileid="18" duration="60"/>
+    <frame tileid="38" duration="60"/>
+    <frame tileid="58" duration="60"/>
+    <frame tileid="78" duration="60"/>
+    <frame tileid="98" duration="60"/>
+    <frame tileid="118" duration="60"/>
+    <frame tileid="138" duration="60"/>
+    <frame tileid="158" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="1">
+   <animation>
+    <frame tileid="3" duration="60"/>
+    <frame tileid="23" duration="60"/>
+    <frame tileid="43" duration="60"/>
+    <frame tileid="63" duration="60"/>
+    <frame tileid="83" duration="60"/>
+    <frame tileid="103" duration="60"/>
+    <frame tileid="123" duration="60"/>
+    <frame tileid="143" duration="60"/>
+    <frame tileid="5" duration="60"/>
+    <frame tileid="25" duration="60"/>
+    <frame tileid="45" duration="60"/>
+    <frame tileid="65" duration="60"/>
+    <frame tileid="85" duration="60"/>
+    <frame tileid="105" duration="60"/>
+    <frame tileid="125" duration="60"/>
+    <frame tileid="145" duration="60"/>
+    <frame tileid="7" duration="60"/>
+    <frame tileid="27" duration="60"/>
+    <frame tileid="47" duration="60"/>
+    <frame tileid="67" duration="60"/>
+    <frame tileid="87" duration="60"/>
+    <frame tileid="107" duration="60"/>
+    <frame tileid="127" duration="60"/>
+    <frame tileid="147" duration="60"/>
+    <frame tileid="9" duration="60"/>
+    <frame tileid="29" duration="60"/>
+    <frame tileid="49" duration="60"/>
+    <frame tileid="69" duration="60"/>
+    <frame tileid="89" duration="60"/>
+    <frame tileid="109" duration="60"/>
+    <frame tileid="129" duration="60"/>
+    <frame tileid="149" duration="60"/>
+    <frame tileid="11" duration="60"/>
+    <frame tileid="31" duration="60"/>
+    <frame tileid="51" duration="60"/>
+    <frame tileid="71" duration="60"/>
+    <frame tileid="91" duration="60"/>
+    <frame tileid="111" duration="60"/>
+    <frame tileid="131" duration="60"/>
+    <frame tileid="151" duration="60"/>
+    <frame tileid="13" duration="60"/>
+    <frame tileid="33" duration="60"/>
+    <frame tileid="53" duration="60"/>
+    <frame tileid="73" duration="60"/>
+    <frame tileid="93" duration="60"/>
+    <frame tileid="113" duration="60"/>
+    <frame tileid="133" duration="60"/>
+    <frame tileid="153" duration="60"/>
+    <frame tileid="15" duration="60"/>
+    <frame tileid="35" duration="60"/>
+    <frame tileid="55" duration="60"/>
+    <frame tileid="75" duration="60"/>
+    <frame tileid="95" duration="60"/>
+    <frame tileid="115" duration="60"/>
+    <frame tileid="135" duration="60"/>
+    <frame tileid="155" duration="60"/>
+    <frame tileid="17" duration="60"/>
+    <frame tileid="37" duration="60"/>
+    <frame tileid="57" duration="60"/>
+    <frame tileid="77" duration="60"/>
+    <frame tileid="97" duration="60"/>
+    <frame tileid="117" duration="60"/>
+    <frame tileid="137" duration="60"/>
+    <frame tileid="157" duration="60"/>
+    <frame tileid="19" duration="60"/>
+    <frame tileid="39" duration="60"/>
+    <frame tileid="59" duration="60"/>
+    <frame tileid="79" duration="60"/>
+    <frame tileid="99" duration="60"/>
+    <frame tileid="119" duration="60"/>
+    <frame tileid="139" duration="60"/>
+    <frame tileid="159" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="2">
+   <animation>
+    <frame tileid="2" duration="60"/>
+    <frame tileid="22" duration="60"/>
+    <frame tileid="42" duration="60"/>
+    <frame tileid="62" duration="60"/>
+    <frame tileid="82" duration="60"/>
+    <frame tileid="102" duration="60"/>
+    <frame tileid="122" duration="60"/>
+    <frame tileid="142" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="3">
+   <animation>
+    <frame tileid="3" duration="60"/>
+    <frame tileid="23" duration="60"/>
+    <frame tileid="43" duration="60"/>
+    <frame tileid="63" duration="60"/>
+    <frame tileid="83" duration="60"/>
+    <frame tileid="103" duration="60"/>
+    <frame tileid="123" duration="60"/>
+    <frame tileid="143" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="4">
+   <animation>
+    <frame tileid="4" duration="60"/>
+    <frame tileid="24" duration="60"/>
+    <frame tileid="44" duration="60"/>
+    <frame tileid="64" duration="60"/>
+    <frame tileid="84" duration="60"/>
+    <frame tileid="104" duration="60"/>
+    <frame tileid="124" duration="60"/>
+    <frame tileid="144" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="5">
+   <animation>
+    <frame tileid="5" duration="60"/>
+    <frame tileid="25" duration="60"/>
+    <frame tileid="45" duration="60"/>
+    <frame tileid="65" duration="60"/>
+    <frame tileid="85" duration="60"/>
+    <frame tileid="105" duration="60"/>
+    <frame tileid="125" duration="60"/>
+    <frame tileid="145" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="6">
+   <animation>
+    <frame tileid="6" duration="60"/>
+    <frame tileid="26" duration="60"/>
+    <frame tileid="46" duration="60"/>
+    <frame tileid="66" duration="60"/>
+    <frame tileid="86" duration="60"/>
+    <frame tileid="106" duration="60"/>
+    <frame tileid="126" duration="60"/>
+    <frame tileid="146" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="7">
+   <animation>
+    <frame tileid="7" duration="60"/>
+    <frame tileid="27" duration="60"/>
+    <frame tileid="47" duration="60"/>
+    <frame tileid="67" duration="60"/>
+    <frame tileid="87" duration="60"/>
+    <frame tileid="107" duration="60"/>
+    <frame tileid="127" duration="60"/>
+    <frame tileid="147" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="8">
+   <animation>
+    <frame tileid="8" duration="60"/>
+    <frame tileid="28" duration="60"/>
+    <frame tileid="48" duration="60"/>
+    <frame tileid="68" duration="60"/>
+    <frame tileid="88" duration="60"/>
+    <frame tileid="108" duration="60"/>
+    <frame tileid="128" duration="60"/>
+    <frame tileid="148" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="9">
+   <animation>
+    <frame tileid="9" duration="60"/>
+    <frame tileid="29" duration="60"/>
+    <frame tileid="49" duration="60"/>
+    <frame tileid="69" duration="60"/>
+    <frame tileid="89" duration="60"/>
+    <frame tileid="109" duration="60"/>
+    <frame tileid="129" duration="60"/>
+    <frame tileid="149" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="10">
+   <animation>
+    <frame tileid="10" duration="60"/>
+    <frame tileid="30" duration="60"/>
+    <frame tileid="50" duration="60"/>
+    <frame tileid="70" duration="60"/>
+    <frame tileid="90" duration="60"/>
+    <frame tileid="110" duration="60"/>
+    <frame tileid="130" duration="60"/>
+    <frame tileid="150" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="11">
+   <animation>
+    <frame tileid="11" duration="60"/>
+    <frame tileid="31" duration="60"/>
+    <frame tileid="51" duration="60"/>
+    <frame tileid="71" duration="60"/>
+    <frame tileid="91" duration="60"/>
+    <frame tileid="111" duration="60"/>
+    <frame tileid="131" duration="60"/>
+    <frame tileid="151" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="12">
+   <animation>
+    <frame tileid="12" duration="60"/>
+    <frame tileid="32" duration="60"/>
+    <frame tileid="52" duration="60"/>
+    <frame tileid="72" duration="60"/>
+    <frame tileid="92" duration="60"/>
+    <frame tileid="112" duration="60"/>
+    <frame tileid="132" duration="60"/>
+    <frame tileid="152" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="13">
+   <animation>
+    <frame tileid="13" duration="60"/>
+    <frame tileid="33" duration="60"/>
+    <frame tileid="53" duration="60"/>
+    <frame tileid="73" duration="60"/>
+    <frame tileid="93" duration="60"/>
+    <frame tileid="113" duration="60"/>
+    <frame tileid="133" duration="60"/>
+    <frame tileid="153" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="14">
+   <animation>
+    <frame tileid="14" duration="60"/>
+    <frame tileid="34" duration="60"/>
+    <frame tileid="54" duration="60"/>
+    <frame tileid="74" duration="60"/>
+    <frame tileid="94" duration="60"/>
+    <frame tileid="114" duration="60"/>
+    <frame tileid="134" duration="60"/>
+    <frame tileid="154" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="15">
+   <animation>
+    <frame tileid="15" duration="60"/>
+    <frame tileid="35" duration="60"/>
+    <frame tileid="55" duration="60"/>
+    <frame tileid="75" duration="60"/>
+    <frame tileid="95" duration="60"/>
+    <frame tileid="115" duration="60"/>
+    <frame tileid="135" duration="60"/>
+    <frame tileid="155" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="16">
+   <animation>
+    <frame tileid="16" duration="60"/>
+    <frame tileid="36" duration="60"/>
+    <frame tileid="56" duration="60"/>
+    <frame tileid="76" duration="60"/>
+    <frame tileid="96" duration="60"/>
+    <frame tileid="116" duration="60"/>
+    <frame tileid="136" duration="60"/>
+    <frame tileid="156" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="17">
+   <animation>
+    <frame tileid="17" duration="60"/>
+    <frame tileid="37" duration="60"/>
+    <frame tileid="57" duration="60"/>
+    <frame tileid="77" duration="60"/>
+    <frame tileid="97" duration="60"/>
+    <frame tileid="117" duration="60"/>
+    <frame tileid="137" duration="60"/>
+    <frame tileid="157" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="18">
+   <animation>
+    <frame tileid="18" duration="60"/>
+    <frame tileid="38" duration="60"/>
+    <frame tileid="58" duration="60"/>
+    <frame tileid="78" duration="60"/>
+    <frame tileid="98" duration="60"/>
+    <frame tileid="118" duration="60"/>
+    <frame tileid="138" duration="60"/>
+    <frame tileid="158" duration="60"/>
+   </animation>
+  </tile>
+  <tile id="19">
+   <animation>
+    <frame tileid="19" duration="60"/>
+    <frame tileid="39" duration="60"/>
+    <frame tileid="59" duration="60"/>
+    <frame tileid="79" duration="60"/>
+    <frame tileid="99" duration="60"/>
+    <frame tileid="119" duration="60"/>
+    <frame tileid="139" duration="60"/>
+    <frame tileid="159" duration="60"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer id="1" name="Back" width="80" height="50">
+  <data encoding="csv">
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,624,625,626,627,628,629,630,631,632,633,634,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,648,649,650,651,652,653,654,655,656,657,658,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,672,673,674,675,676,677,678,679,680,681,682,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,698,699,700,701,702,703,704,705,706,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,722,723,724,725,726,727,728,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,
+1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852,1610613852
+</data>
+ </layer>
+ <layer id="2" name="Buildings" width="80" height="50">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,600,601,602,603,604,605,606,607,608,609,610,611,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,573,574,574,570,976,977,0,638,0,0,0,0,0,0,0,635,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,574,574,570,0,0,0,0,0,0,877,878,879,880,881,659,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,574,574,574,570,0,0,0,0,0,0,901,902,903,904,905,683,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,574,574,570,696,697,0,0,0,0,0,0,0,0,2147484436,707,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,574,570,720,721,2147484435,0,0,0,0,0,789,0,730,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,574,574,574,746,747,748,749,750,751,752,753,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="Front" width="80" height="50">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,924,0,926,927,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,573,569,952,953,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,571,571,623,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1075,0,0,573,571,571,571,647,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,573,571,571,571,571,671,952,0,0,0,0,0,0,0,0,0,2147484412,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3221226527,0,0,573,571,571,571,695,999,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1075,0,0,0,573,571,571,719,816,817,818,819,820,821,822,823,824,825,826,827,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,573,572,840,841,842,843,844,845,846,847,848,849,850,851,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,864,865,866,867,868,869,870,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="Paths" width="80" height="50">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,872,873,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,885,886,887,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,909,910,911,912,913,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="AlwaysFront" width="80" height="50">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,780,781,782,783,784,785,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,928,929,930,0,0,804,805,806,807,808,809,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1020,1021,950,599,999,0,954,0,0,828,829,830,831,832,833,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3221226527,3221226526,3221226525,3221226524,1044,1045,974,975,0,0,0,0,0,852,853,854,855,856,857,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3221226502,3221226501,0,1068,997,998,0,928,1001,1002,0,0,876,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1020,1021,1022,1023,999,1025,1026,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3221226526,3221226525,3221226524,1044,1045,1046,1047,1048,1049,2147484411,0,0,0,0,0,765,739,740,707,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3221226502,3221226501,0,1068,1069,0,0,720,721,794,795,796,797,798,799,800,801,730,731,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,743,744,745,746,747,748,749,750,751,752,753,754,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="11" name="Flags" width="80" height="50">
+  <properties>
+   <property name="DrawAbove" value="AlwaysFront"/>
+  </properties>
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="6" name="Back">
+  <object id="16" name="TileData" x="592" y="368" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="17" name="TileData" x="624" y="368" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="18" name="TileData" x="560" y="384" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="19" name="TileData" x="560" y="400" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="20" name="TileData" x="656" y="432" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="21" name="TileData" x="624" y="432" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="22" name="TileData" x="640" y="432" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="23" name="TileData" x="672" y="432" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="24" name="TileData" x="608" y="432" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="25" name="TileData" x="640" y="368" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="26" name="TileData" x="656" y="368" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="27" name="TileData" x="672" y="368" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="28" name="TileData" x="688" y="368" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="29" name="TileData" x="704" y="368" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="30" name="TileData" x="720" y="368" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="31" name="TileData" x="736" y="368" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="32" name="TileData" x="736" y="384" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="33" name="TileData" x="736" y="400" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="34" name="TileData" x="704" y="432" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="36" name="TileData" x="544" y="384" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="37" name="TileData" x="544" y="400" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+  <object id="38" name="TileData" x="736" y="384" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="EmptyBucketSpot"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="Buildings">
+  <object id="6" name="TileData" x="608" y="368" width="16" height="16">
+   <properties>
+    <property name="Action" value="Warp 4 4 Custom_TrawlerHull"/>
+   </properties>
+  </object>
+  <object id="7" name="TileData" x="672" y="400" width="16" height="16">
+   <properties>
+    <property name="Action" value="Warp 84 39 Beach"/>
+   </properties>
+  </object>
+  <object id="8" name="TileData" x="672" y="400" width="16" height="16">
+   <properties>
+    <property name="Action" value="Warp 2 6 Custom_TrawlerCabin"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="8" name="Front"/>
+ <objectgroup id="9" name="Paths"/>
+ <objectgroup id="10" name="AlwaysFront">
+  <object id="12" name="TileData" x="560" y="352" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="RippedNet"/>
+    <property name="IsRipped" type="bool" value="false"/>
+   </properties>
+  </object>
+  <object id="13" name="TileData" x="560" y="400" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="RippedNet"/>
+    <property name="IsRipped" type="bool" value="false"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

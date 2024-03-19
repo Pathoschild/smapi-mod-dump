@@ -1,0 +1,7 @@
+{
+  "ScienceHouse_Carpenter_CommunityUpgrade1": "...O que é isso? Você quer construir uma casa para a Pam? Essa é uma ótima ideia! Só vou precisar de {{woodPieces}} Madeiras e {{goldPieces}}g...",
+  "ScienceHouse_Carpenter_CommunityUpgrade2": "...O que foi? Você quer que eu coloque alguns atalhos pelo vale? Tudo bem, eu consigo fazer isso! Eu só vou precisar de {{goldPieces}}g...",
+  "ScienceHouse_Carpenter_NotEnoughWood3": "Desculpe... Você já tem o dinheiro, mas eu também preciso de {{woodPieces}} pedaços de madeira.",
+
+  "Robin_PamUpgrade_Accepted": "É muita generosidade sua! Vou começar a trabalhar no aprimoramento amanhã. Deve levar cerca de {{daysUpgrade}} dias."
+}

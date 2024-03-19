@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/12981
+IDs: Becks723.PhoneTravelingCart
+update keys: Nexus:12981

@@ -20,9 +20,9 @@ public class ModEntry : Mod
     internal static ModEntry Instance;
     internal static Assets Assets;
 
-    internal ITranslationHelper I18n => this.Helper.Translation;
+    internal ITranslationHelper I18N => this.Helper.Translation;
 
-    internal static IRealtimeAPI API = new RealtimeAPI();
+    internal static IRealtimeApi Api = new RealtimeApi();
 
     public override void Entry(IModHelper helper)
     {
@@ -31,6 +31,6 @@ public class ModEntry : Mod
 
     public override object GetApi()
     {
-        return API;
+        return Api;
     }
 }

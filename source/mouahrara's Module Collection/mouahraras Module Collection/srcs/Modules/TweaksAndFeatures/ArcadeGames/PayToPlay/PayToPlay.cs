@@ -11,7 +11,7 @@
 using System;
 using HarmonyLib;
 using StardewModdingAPI;
-using mouahrarasModuleCollection.TweaksAndFeatures.ArcadeGames.PayToPlay.Hooks;
+using mouahrarasModuleCollection.TweaksAndFeatures.ArcadeGames.PayToPlay.Handlers;
 using mouahrarasModuleCollection.TweaksAndFeatures.ArcadeGames.PayToPlay.Patches;
 
 namespace mouahrarasModuleCollection.Modules
@@ -33,8 +33,8 @@ namespace mouahrarasModuleCollection.Modules
 				return;
 			}
 
-			// Hook into the required events
-			ModEntry.Helper.Events.GameLoop.SaveLoaded += SaveLoadedHook.Apply;
+			// Subscribe to events
+			ModEntry.Helper.Events.GameLoop.SaveLoaded += SaveLoadedHandler.Apply;
 		}
 	}
 }

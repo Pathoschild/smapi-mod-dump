@@ -20,7 +20,7 @@ namespace FlipBuildings.Utilities
 	{
 		public static bool TryToFlip(Building building, bool drawLayers = false)
 		{
-			string modDataKey = !drawLayers ? ModDataKeys.FLIPPED :  ModDataKeys.FLIPPED_DRAWLAYERS;
+			string modDataKey = !drawLayers ? ModDataKeys.FLIPPED : ModDataKeys.FLIPPED_DRAWLAYERS;
 			string sound = !drawLayers ? "axchop" :  "axe";
 
 			if (building != null)
@@ -60,7 +60,7 @@ namespace FlipBuildings.Utilities
 				Game1.getFarm().UnsetFarmhouseValues();
 			}
 
-			// TODO: Request base game code modification
+			// Reset cached data
 			string workaround = building.buildingType.Value;
 			building.buildingType.Value = null;
 			building.buildingType.Value = workaround;

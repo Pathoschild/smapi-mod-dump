@@ -172,6 +172,33 @@ The Biome Balance special order, for the sake of simplicity, is mapped to the fo
 * Randomize house upgrade cost
 * Randomize tailoring recipes
 * Add settings for more things, such as stats that can be modified on weapons, possible random names, etc.
+
+## 0.7.0 Changelog (Next Release)
+* Updated for 1.6 compatibility
+* Randomize missing crafting recipes from 1.5
+  * Does not yet include the endgame Ginger island ones that need radioactive ore/bars
+* Recipes that roll eggs or milk will now accept any item from that category
+* Added bone fragments to the monster drop shuffle
+* Reworked fruit tree randomization to take advantage of the new options
+  * 2 trees now give items from a random category
+  * 1 tree gives a random item from the "Objects" list ("O" Sapling)
+  * 1 tree gives a random item from the "Big Craftables" list ("BC" Sapling)
+  * 2 trees work like before, and gives only a single random item type
+* Removed the old critter randomizer in favor of hue-shifting the current critters every day
+* Added Garbage Can Randomizer
+  * Places disliked/hated items in garbage cans from characters that are likely to use them
+* Revamped the music randomizer
+  * Now done in a way that won't check the played song every frame (improves performance)
+  * The same song played during screen transitions will no longer restart the song
+  * The RandomSongEachTransition setting is now RandomSongEachChange, which results in a new random song each time the song would normally change to something else
+* Reworked the RNG so that things can be added/modified without impacting everything for existing farms
+  * Turning settings off should make saves load faster, as we can skip unnecessary RNG calls
+* Allow custom weapon images to be used even if the weapons themselves aren't randomized
+* Fixed the spoiler log's names for the Transmute Iron and Gold recipes
+* Fixed shop stock issues related to loading different farms in one play session
+* Fixed tappers requiring tapper products to craft
+* Fixed the title screen text edit - the leaf animation should no longer cut it off
+  * Also redid it so it's an overlay, which eliminates the need to store each modified title screen image
   
 ## Known Issues
 * Music restarts when you transition screens, even if it's the same song

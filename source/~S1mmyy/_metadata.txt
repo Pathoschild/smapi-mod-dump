@@ -7,9 +7,9 @@ mods:
    Skull Cavern Drill
 
 latest commit:
-   commit ee9fc0059f9065913c80ea3f240c25be795306d0
+   commit 95c94087c617a2811eab51404f293abc0d4a20e8
    Author: S1mmyy <simmypoo385@gmail.com>
-   Date:   Wed Mar 30 11:02:41 2022 -0400
+   Date:   Fri Mar 15 14:56:26 2024 -0400
    
-       Added ID for Nexus page
+       Compatibility updates for SDV 1.6
    

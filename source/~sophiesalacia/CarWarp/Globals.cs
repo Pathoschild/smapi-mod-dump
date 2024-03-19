@@ -33,9 +33,9 @@ internal class Globals
     public static string UUID => Manifest.UniqueID;
     public static string WarpLocationsContentPath => "sophie.CarWarp.Locations";
 
-    public static IApi SolidFoundationsApi;
-    public static IContentPatcherAPI ContentPatcherApi;
-    public static IGenericModConfigMenuApi GMCMApi;
+    public static IApi? SolidFoundationsApi;
+    public static IContentPatcherAPI? ContentPatcherApi;
+    public static IGenericModConfigMenuApi? GMCMApi;
 
     internal static void InitializeConfig()
     {

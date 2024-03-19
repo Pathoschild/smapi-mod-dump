@@ -19,9 +19,9 @@ mods:
    Watering Grants Experience and Crops Can Wither
 
 latest commit:
-   commit 77c828677380d998bd47bc692ea07b7118a6ec70
+   commit 8a8b14fdb2a9563099c9c34befcc65205c320c34
    Author: Goldenrevolver <22944589+Goldenrevolver@users.noreply.github.com>
-   Date:   Mon Mar 11 10:53:20 2024 +0100
+   Date:   Fri Mar 15 11:13:30 2024 +0100
    
-       Ring Overhaul: Improved handling of the config values for the iridium band and jukebox ring changes (specifically rain check and crafting check)
+       Horse Overhaul: new feature: limited interaction while on riding the horse, also refactored harmony patches into multiple classes
    

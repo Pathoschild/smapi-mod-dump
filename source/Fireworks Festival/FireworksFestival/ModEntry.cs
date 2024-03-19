@@ -53,15 +53,15 @@ namespace FireworksFestival
         private static string licenseLetter = "vl.fireworkslicense";
         private static string msgTypeRemove = "fireworkRemovalMessage";
         private static string msgTypeAdd = "fireworkAddMessage";
-        private static string chemizerRecipeName = thisModID + ".Chemizer";
-        private static string blackPowderRecipeName = thisModID + ".BlackPowder";
-        private static string redFireworkRecipeName = thisModID + ".RedFirework";
-        private static string orangeFireworkRecipeName = thisModID + ".OrangeFirework";
-        private static string yellowFireworkRecipeName = thisModID + ".YellowFirework";
-        private static string greenFireworkRecipeName = thisModID + ".GreenFirework";
-        private static string blueFireworkRecipeName = thisModID + ".BlueFirework";
-        private static string purpleFireworkRecipeName = thisModID + ".PurpleFirework";
-        private static string whiteFireworkRecipeName = thisModID + ".WhiteFirework";
+        private static string chemizerRecipeName = thisModID + "_Chemizer";
+        private static string blackPowderRecipeName = thisModID + "_BlackPowder";
+        private static string redFireworkRecipeName = thisModID + "_RedFirework";
+        private static string orangeFireworkRecipeName = thisModID + "_OrangeFirework";
+        private static string yellowFireworkRecipeName = thisModID + "_YellowFirework";
+        private static string greenFireworkRecipeName = thisModID + "_GreenFirework";
+        private static string blueFireworkRecipeName = thisModID + "_BlueFirework";
+        private static string purpleFireworkRecipeName = thisModID + "_PurpleFirework";
+        private static string whiteFireworkRecipeName = thisModID + "_WhiteFirework";
 
         // Carp index
         public static string carpIndex = "142";
@@ -132,12 +132,6 @@ namespace FireworksFestival
                prefix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.broadcastSprites_Prefix))
             );
 
-            // Add fireworks recipes when purchasing fireworks license
-            harmony.Patch(
-                original: AccessTools.Method(typeof(Item), nameof(Item.actionWhenPurchased)),
-                postfix: new HarmonyMethod(typeof(ModEntry), nameof(ModEntry.actionWhenPurchased_Postfix))
-            );
-
             var Game1_multiplayer = this.Helper.Reflection.GetField<Multiplayer>(typeof(Game1), "multiplayer").GetValue();
             multiplayer = Game1_multiplayer;
 
@@ -178,6 +172,19 @@ namespace FireworksFestival
                     Game1.player.craftingRecipes.Add(blackPowderRecipeName, 0);
                     removeCraftingRecipe("FireworksFestivalBlackPowder");
                 }
+            }
+
+            // Forcibly add some recipes if needed
+            if (Game1.player.mailReceived.Contains(licenseLetter))
+            {
+                Monitor.Log("Adding fireworks recipes directly", LogLevel.Trace);
+                addCraftingRecipe(redFireworkRecipeName);
+                addCraftingRecipe(orangeFireworkRecipeName);
+                addCraftingRecipe(yellowFireworkRecipeName);
+                addCraftingRecipe(greenFireworkRecipeName);
+                addCraftingRecipe(blueFireworkRecipeName);
+                addCraftingRecipe(purpleFireworkRecipeName);
+                addCraftingRecipe(whiteFireworkRecipeName);
             }
 
             // Migrate old recipes if needed
@@ -630,22 +637,6 @@ namespace FireworksFestival
                 monitorStatic.Log("Removing firework location from dictionary", LogLevel.Trace);
                 localDict.Remove(tileLocation);
                 helperStatic.Multiplayer.SendMessage((__instance.Name,tileLocation), msgTypeRemove, modIDs: new[] { thisModID });
-            }
-        }
-
-        public static void actionWhenPurchased_Postfix(Item __instance)
-        {
-            monitorStatic.Log($"Post buy {__instance.Name}", LogLevel.Trace);
-            if (__instance.QualifiedItemId.Equals("(O)" + thisModID + ".FireworksLicense", StringComparison.OrdinalIgnoreCase) && !Game1.player.mailReceived.Contains(licenseLetter))
-            {
-                Game1.player.mailReceived.Add(licenseLetter);
-                addCraftingRecipe(redFireworkRecipeName);
-                addCraftingRecipe(orangeFireworkRecipeName);
-                addCraftingRecipe(yellowFireworkRecipeName);
-                addCraftingRecipe(greenFireworkRecipeName);
-                addCraftingRecipe(blueFireworkRecipeName);
-                addCraftingRecipe(purpleFireworkRecipeName);
-                addCraftingRecipe(whiteFireworkRecipeName);
             }
         }
 

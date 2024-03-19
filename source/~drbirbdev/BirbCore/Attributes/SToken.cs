@@ -10,6 +10,7 @@
 
 #nullable enable
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using BirbCore.APIs;
@@ -20,14 +21,9 @@ namespace BirbCore.Attributes;
 /// <summary>
 /// Specifies a method or class as a content patcher simple or advanced token.
 /// </summary>
-public class SToken : ClassHandler
+public class SToken() : ClassHandler(2)
 {
-    private static IContentPatcherApi? Api;
-
-    public SToken() : base(2)
-    {
-
-    }
+    private static IContentPatcherApi? _api;
 
     public override void Handle(Type type, object? instance, IMod mod, object[]? args = null)
     {
@@ -37,27 +33,71 @@ public class SToken : ClassHandler
             return;
         }
 
-        Api = mod.Helper.ModRegistry.GetApi<IContentPatcherApi>("Pathoschild.ContentPatcher");
-        if (Api == null)
+        _api = mod.Helper.ModRegistry.GetApi<IContentPatcherApi>("Pathoschild.ContentPatcher");
+        if (_api == null)
         {
             Log.Error("Content Patcher is not enabled, so will skip parsing");
             return;
         }
-        base.Handle(type, null, mod);
 
-        return;
+        base.Handle(type, instance, mod);
+    }
+
+    public class FieldToken : FieldHandler
+    {
+        private object? _instance;
+        private Func<object?, object?>? _getter;
+
+        protected override void Handle(string name, Type fieldType, Func<object?, object?> getter,
+            Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
+        {
+            if (_api == null)
+            {
+                Log.Error("Content Patcher is not enabled, so will skip parsing");
+                return;
+            }
+
+            this._instance = instance;
+            this._getter = getter;
+
+            _api.RegisterToken(mod.ModManifest, name, this.GetValue);
+        }
+
+        private IEnumerable<string>? GetValue()
+        {
+            object? value = this._getter?.Invoke(this._instance);
+            switch (value)
+            {
+                case null:
+                    yield return "";
+                    break;
+                case IEnumerable items:
+                {
+                    foreach (object item in items)
+                    {
+                        yield return (string)item;
+                    }
+
+                    break;
+                }
+                default:
+                    yield return value.ToString() ?? "";
+                    break;
+            }
+        }
     }
 
     public class Token : MethodHandler
     {
         public override void Handle(MethodInfo method, object? instance, IMod mod, object[]? args = null)
         {
-            if (Api == null)
+            if (_api == null)
             {
                 Log.Error("Content Patcher is not enabled, so will skip parsing");
                 return;
             }
-            Api.RegisterToken(mod.ModManifest, method.Name, method.CreateDelegate<Func<IEnumerable<string>>>(instance));
+
+            _api.RegisterToken(mod.ModManifest, method.Name, () => (IEnumerable<string>?)method.Invoke(instance, []));
         }
     }
 
@@ -68,18 +108,19 @@ public class SToken : ClassHandler
             instance = Activator.CreateInstance(type);
             if (instance is null)
             {
-                Log.Error("Content Patcher advanced api requires an instance of token class. Provided token class may be static?");
+                Log.Error("Content Patcher advanced api requires an instance of token class. " +
+                          "Provided token class may be static?");
                 return;
             }
+
             base.Handle(type, instance, mod);
-            if (Api == null)
+            if (_api == null)
             {
                 Log.Error("Content Patcher is not enabled, so will skip parsing");
                 return;
             }
-            Api.RegisterToken(mod.ModManifest, type.Name, instance);
 
-            return;
+            _api.RegisterToken(mod.ModManifest, type.Name, instance);
         }
     }
 }

@@ -41,7 +41,7 @@ internal class TTAnimals(object? arg = null) : TileTrackerBase(arg)
                         is_hungry = "Hungry ";
                     }
 
-                    AddFocusableObject(category, $"{animal.displayName}, {is_hungry}{animal.displayType}, {animal.age}", animal.getTileLocation());
+                    AddFocusableObject(category, $"{animal.displayName}, {is_hungry}{animal.displayType}, {animal.age}", animal.Tile);
                 }
             }
 

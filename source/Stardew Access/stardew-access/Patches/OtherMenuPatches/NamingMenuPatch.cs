@@ -17,6 +17,7 @@ namespace stardew_access.Patches;
 internal class NamingMenuPatch : IPatch
 {
     private static bool _firstTimeInNamingMenu = true;
+    private static string? _previousName = null;
 
     public void Apply(Harmony harmony)
     {
@@ -41,6 +42,12 @@ internal class NamingMenuPatch : IPatch
             string translationKey = "";
             object? translationTokens = null;
             int x = Game1.getMouseX(true), y = Game1.getMouseY(true); // Mouse x and y position
+            if (!string.IsNullOrEmpty(___textBox.Text) && ___textBox.Text != _previousName)
+            {    
+                MainClass.ScreenReader.Say(___textBox.Text, true);
+                _previousName = ___textBox.Text;
+                return;
+            }
 
             if (__instance.textBoxCC != null && __instance.textBoxCC.containsPoint(x, y))
             {
@@ -71,5 +78,6 @@ internal class NamingMenuPatch : IPatch
     internal static void Cleanup()
     {
         _firstTimeInNamingMenu = true;
+        _previousName = null;
     }
 }

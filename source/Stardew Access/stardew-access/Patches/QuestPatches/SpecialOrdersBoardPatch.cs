@@ -14,6 +14,7 @@ using Netcode;
 using stardew_access.Translation;
 using StardewValley;
 using StardewValley.Menus;
+using StardewValley.SpecialOrders;
 
 namespace stardew_access.Patches
 {
@@ -55,7 +56,7 @@ namespace stardew_access.Patches
 
                 if (Game1.player.team.acceptedSpecialOrderTypes.Contains(__instance.GetOrderType()))
                 {
-                    if (__instance.leftOrder.questState.Value == SpecialOrder.QuestState.InProgress)
+                    if (__instance.leftOrder.questState.Value == SpecialOrderStatus.InProgress)
                     {
                         MainClass.ScreenReader.TranslateAndSayWithMenuChecker("menu-special_orders_board-quest_in_progress", true, new
                         {
@@ -104,7 +105,7 @@ namespace stardew_access.Patches
             bool flag2 = false;
             foreach (SpecialOrder specialOrder in Game1.player.team.specialOrders)
             {
-                if (specialOrder.questState.Value == SpecialOrder.QuestState.InProgress)
+                if (specialOrder.questState.Value == SpecialOrderStatus.InProgress)
                 {
                     foreach (SpecialOrder availableSpecialOrder in Game1.player.team.availableSpecialOrders)
                     {

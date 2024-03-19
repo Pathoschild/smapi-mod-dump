@@ -82,14 +82,14 @@ namespace StardewSurvivalProject.source.model
             data.ClothingTempResistantData pantsData = data.ClothingTempResistantDictionary.GetClothingData(pants_name, "pants");
             data.ClothingTempResistantData bootsData = data.ClothingTempResistantDictionary.GetClothingData(boots_name, "boots");
 
-            minComfortTempModifier += 0.3 * ((hatData != null)? hatData.coldInsulationModifier : 0)
-                + 0.3 * ((shirtData != null) ? shirtData.coldInsulationModifier : 0)
-                + 0.2 * ((pantsData != null) ? pantsData.coldInsulationModifier : 0)
-                + 0.2 * ((bootsData != null) ? bootsData.coldInsulationModifier : 0);
-            maxComfortTempModifier += 0.3 * ((hatData != null) ? hatData.heatInsulationModifier : 0)
-                + 0.3 * ((shirtData != null) ? shirtData.heatInsulationModifier : 0)
-                + 0.2 * ((pantsData != null) ? pantsData.heatInsulationModifier : 0)
-                + 0.2 * ((bootsData != null) ? bootsData.heatInsulationModifier : 0);
+            minComfortTempModifier += ((hatData != null)? hatData.coldInsulationModifier : 0)
+                + ((shirtData != null) ? shirtData.coldInsulationModifier : 0)
+                + ((pantsData != null) ? pantsData.coldInsulationModifier : 0)
+                + ((bootsData != null) ? bootsData.coldInsulationModifier : 0);
+            maxComfortTempModifier += ((hatData != null) ? hatData.heatInsulationModifier : 0)
+                + ((shirtData != null) ? shirtData.heatInsulationModifier : 0)
+                + ((pantsData != null) ? pantsData.heatInsulationModifier : 0)
+                + ((bootsData != null) ? bootsData.heatInsulationModifier : 0);
 
             MinComfortTemp = DefaultAvgComfortTemp + (DefaultMinComfortTemp - DefaultAvgComfortTemp) * minComfortTempModifier;
             MaxComfortTemp = DefaultAvgComfortTemp + (DefaultMaxComfortTemp - DefaultAvgComfortTemp) * maxComfortTempModifier;

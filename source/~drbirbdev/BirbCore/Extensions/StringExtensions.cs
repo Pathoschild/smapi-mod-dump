@@ -23,7 +23,7 @@ public static class StringExtensions
         {
             return str.ToLowerInvariant();
         }
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new();
         sb.Append(char.ToLowerInvariant(str[0]));
         for (int i = 1; i < str.Length; i++)
         {
@@ -48,16 +48,16 @@ public static class StringExtensions
             return null;
         }
         bool nextUpper = true;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < str.Length; i++)
+        StringBuilder sb = new();
+        foreach (char c in str)
         {
-            char c = str[i];
-            if (c == '_' || c == '-' || c == ' ')
+            if (c is '_' or '-' or ' ')
             {
                 nextUpper = true;
                 continue;
             }
-            else if (nextUpper)
+
+            if (nextUpper)
             {
                 nextUpper = false;
                 sb.Append(char.ToUpperInvariant(c));
@@ -77,16 +77,16 @@ public static class StringExtensions
             return null;
         }
         bool nextUpper = false;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < str.Length; i++)
+        StringBuilder sb = new();
+        foreach (char c in str)
         {
-            char c = str[i];
-            if (c == '_' || c == '-' || c == ' ')
+            if (c is '_' or '-' or ' ')
             {
                 nextUpper = true;
                 continue;
             }
-            else if (nextUpper)
+
+            if (nextUpper)
             {
                 nextUpper = false;
                 sb.Append(char.ToUpperInvariant(c));

@@ -7,9 +7,23 @@ mods:
    Faster Path Speed
 
 latest commit:
-   commit 0c222f87b39c9040bb4ead9f9860c6c002930a88
+   commit ae6d6c485a3f3bc3ec40754e1c5d467329f802f5
    Author: Alan Perrow <65362286+alanperrow@users.noreply.github.com>
-   Date:   Sun Jan 22 14:01:57 2023 -0500
+   Date:   Mon Mar 18 19:19:58 2024 -0400
    
-       Removed ToggleableWateringCan.sln (#12)
+       Convenient inventory 1.4.0 (#13)
+       
+       * Fixed tool/attachment logic when the attachment is favorited and the tool is not. Right-clicking a favorited attachment into an unfavorited tool no longer causes the mod to think you are still holding the favorited attachment.
+       
+       * Updated content loading to use GameContent
+       
+       * Initial changes required for SDV 1.6.
+       
+       * First pass at transpiler updates.
+       
+       * First pass at fixing compiler errors.
+       
+       * Removed references to deprecated Mill type. Updated manifest's minimum SMAPI version to 4.0.0-alpha.
+       
+       * Fixed Toolbar.Draw Transpiler failing due to some fields being changed in 1.6 from private => public.
    

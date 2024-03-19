@@ -12,9 +12,9 @@ using System.Collections.Generic;
 
 namespace LeaderboardLibrary;
 
-public abstract class ChainableLeaderboardAPI : ILeaderboardAPI
+public abstract class ChainableLeaderboardApi : ILeaderboardApi
 {
-    public abstract ILeaderboardAPI Delegate { get; }
+    protected abstract ILeaderboardApi Delegate { get; }
 
     public virtual int GetLocalRank(string stat)
     {

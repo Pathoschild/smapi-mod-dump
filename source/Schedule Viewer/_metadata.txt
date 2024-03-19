@@ -6,9 +6,9 @@ mods:
    Schedule Viewer
 
 latest commit:
-   commit 96e534251e9c11882b86816561583be1b7b05ad1
+   commit 5a8cd7c2f06f94aae1b051aa999d198af64f5d3d
    Author: BinaryLip <dev@philliploveland.dev>
-   Date:   Wed Mar 13 01:48:44 2024 -0400
+   Date:   Thu Mar 14 00:16:44 2024 -0400
    
-       Tweaked gifting section.
+       Added French translation and updated readme.
    

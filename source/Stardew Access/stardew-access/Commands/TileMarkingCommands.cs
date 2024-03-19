@@ -16,6 +16,7 @@ using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Menus;
+using StardewValley.TokenizableStrings;
 
 namespace stardew_access.Commands;
 
@@ -49,14 +50,11 @@ public class TileMarkingCommands : ICustomCommand
         List<string> buildingInfos = [];
         foreach (var building in buildings)
         {
-            string? name = building.nameOfIndoorsWithoutUnique;
-            name = (name == "null") ? building.buildingType.Value : name;
-
             BuildingOperations.availableBuildings[buildingIndex] = building;
             buildingInfos.Add(Translator.Instance.Translate("commands-tile_marking-build_list-building_info", new
             {
                 index = buildingIndex,
-                name,
+                name = TokenParser.ParseText(building.GetData().Name),
                 x_position = building.tileX.Value,
                 y_position = building.tileY.Value
             }, translationCategory: TranslationCategory.CustomCommands));
@@ -103,11 +101,11 @@ public class TileMarkingCommands : ICustomCommand
             return;
         }
 
-        BuildingOperations.marked[index] = new Vector2(Game1.player.getTileX(), Game1.player.getTileY());
+        BuildingOperations.marked[index] = new Vector2(Game1.player.Tile.X, Game1.player.Tile.Y);
         Log.Info(Translator.Instance.Translate("commands-tile_marking-mark-location_marked", new
         {
-            x_position = Game1.player.getTileX(),
-            y_position = Game1.player.getTileY(),
+            x_position = Game1.player.Tile.X,
+            y_position = Game1.player.Tile.Y,
             index
         }, translationCategory: TranslationCategory.CustomCommands));
     }

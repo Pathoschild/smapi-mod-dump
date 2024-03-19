@@ -13,93 +13,93 @@
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)20", "OutputRules", "Default_Trash", "OutputItems", "(O)382" ],
+            "TargetField": [ "(BC)20", "OutputRules", "Default_Trash", "OutputItem", "(O)382" ],
             "Entries": {
-                "MinStack": 3,
-                "MaxStack": 5
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMax}}"
             }
         },
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)20", "OutputRules", "Default_Trash", "OutputItems", "(O)380" ],
+            "TargetField": [ "(BC)20", "OutputRules", "Default_Trash", "OutputItem", "(O)380" ],
             "Entries": {
-                "MinStack": 3,
-                "MaxStack": 5
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMax}}"
             }
         },
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)20", "OutputRules", "Default_Trash", "OutputItems", "(O)390" ],
+            "TargetField": [ "(BC)20", "OutputRules", "Default_Trash", "OutputItem", "(O)390" ],
             "Entries": {
-                "MinStack": 3,
-                "MaxStack": 5
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMax}}"
             }
         },
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)20", "OutputRules", "Default_Driftwood", "OutputItems", "(O)382" ],
+            "TargetField": [ "(BC)20", "OutputRules", "Default_Driftwood", "OutputItem", "(O)382" ],
             "Entries": {
-                "MinStack": 3,
-                "MaxStack": 5
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMax}}"
 
             }
         },
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)20", "OutputRules", "Default_Driftwood", "OutputItems", "(O)388" ],
+            "TargetField": [ "(BC)20", "OutputRules", "Default_Driftwood", "OutputItem", "(O)388" ],
             "Entries": {
-                "MinStack": 3,
-                "MaxStack": 5
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMax}}"
 
             }
         },
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)20", "OutputRules", "Default_BrokenGlasses", "OutputItems", "(O)338" ],
+            "TargetField": [ "(BC)20", "OutputRules", "Default_BrokenGlasses", "OutputItem", "(O)338" ],
             "Entries": {
-                "MinStack": 1,
-                "MaxStack": 3
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMax}}"
             }
         },
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)20", "OutputRules", "Default_BrokenCd", "OutputItems", "(O)338" ],
+            "TargetField": [ "(BC)20", "OutputRules", "Default_BrokenCd", "OutputItem", "(O)338" ],
             "Entries": {
-                "MinStack": 1,
-                "MaxStack": 3
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMax}}"
             }
         },
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)20", "OutputRules", "Default_SoggyNewspaper", "OutputItems", "(O)428" ],
+            "TargetField": [ "(BC)20", "OutputRules", "Default_SoggyNewspaper", "OutputItem", "(O)428" ],
             "Entries": {
-                "MinStack": 1,
-                "MaxStack": 3
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMax}}"
             }
         },
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)20", "OutputRules", "Default_SoggyNewspaper", "OutputItems", "(O)93" ],
+            "TargetField": [ "(BC)20", "OutputRules", "Default_SoggyNewspaper", "OutputItem", "(O)93" ],
             "Entries": {
-                "MinStack": 5,
-                "MaxStack": 5
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMax}}"
             }
         },
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)drbirbdev.BinningSkill_TrashCan", "OutputRules", "Default", "OutputItems", "Random Trash" ],
+            "TargetField": [ "(BC)drbirbdev.BinningSkill_TrashCan", "OutputRules", "Default", "OutputItem", "Random Trash" ],
             "Entries": {
-                "MinStack": 2,
-                "MaxStack": 4
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMax}}"
             },
             "When": {
                 "HasProfession": "{{SalvagerP}}"
@@ -108,10 +108,10 @@
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)drbirbdev.BinningSkill_RecyclingBin", "OutputRules", "Default", "OutputItems", "Random Geode" ],
+            "TargetField": [ "(BC)drbirbdev.BinningSkill_RecyclingBin", "OutputRules", "Default", "OutputItem", "Random Geode" ],
             "Entries": {
-                "MinStack": 1,
-                "MaxStack": 3
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMax}}"
             },
             "When": {
                 "HasProfession": "{{SalvagerP}}"
@@ -120,10 +120,10 @@
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)drbirbdev.BinningSkill_RecyclingBin", "OutputRules", "Default", "OutputItems", "Base Season Item" ],
+            "TargetField": [ "(BC)drbirbdev.BinningSkill_RecyclingBin", "OutputRules", "Default", "OutputItem", "Base Season Item" ],
             "Entries": {
-                "MinStack": 1,
-                "MaxStack": 3
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerRareDropMax}}"
             },
             "When": {
                 "HasProfession": "{{SalvagerP}}"
@@ -132,10 +132,10 @@
         {
             "Action": "EditData",
             "Target": "Data/Machines",
-            "TargetField": [ "(BC)drbirbdev.BinningSkill_RecyclingBin", "OutputRules", "Default", "OutputItems", "Random Trash" ],
+            "TargetField": [ "(BC)drbirbdev.BinningSkill_RecyclingBin", "OutputRules", "Default", "OutputItem", "Random Trash" ],
             "Entries": {
-                "MinStack": 2,
-                "MaxStack": 5
+                "MinStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMin}}",
+                "MaxStack": "{{drbirbdev.BinningSkill/SalvagerCommonDropMax}}"
             },
             "When": {
                 "HasProfession": "{{SalvagerP}}"

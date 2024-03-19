@@ -1,0 +1,11 @@
+﻿{
+    "Name": "Happy Home Designer",
+    "Author": "tlitookilakin",
+    "Version": "2.0.0",
+    "Description": "A mod that enhances the decorating experience by overhauling the furniture & wallpaper catalogues.",
+    "UniqueID": "tlitookilakin.HappyHomeDesigner",
+    "EntryDll": "HappyHomeDesigner.dll",
+    "UpdateKeys": ["Nexus:19675", "GitHub:tlitookilakin/HappyHomeDesigner"],
+    "AlternativeTexturesVersion": "6.10.4",
+    "MinimumApiVersion": "4.0.0-alpha"
+}

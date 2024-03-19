@@ -1,0 +1,56 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/BinaryLip/ScheduleViewer
+**
+*************************************************/
+
+{
+  "config.title.general": "Options Générales:",
+  "config.option.show_schedule_key.name": "Touche pour afficher le Planning",
+  "config.option.disable_hover.name": "Cacher les détails au survol",
+  "config.option.disable_hover.description": "Masquer les informations sur les carreaux, la direction et l'animation d'infos au survol.",
+  "config.option.use_large_font.name": "Utilisez une police plus grande",
+  "config.option.use_large_font.description": "Utilisez une police plus grande sur la page Détails du Planning. (Si activé, le texte peut être coupé en fonction du nom de l'emplacement.)",
+  "config.title.filter_sort": "Options de filtrage et de tri:",
+  "config.option.sort_options.name": "Ordre de tri des PNJ",
+  "config.option.sort_options.description": "L'ordre dans lequel les PNJ doivent être triés lors de l'affichage de leur planning.",
+  "config.option.sort_options.option_0": "Alphabétique Ascendant",
+  "config.option.sort_options.option_1": "Alphabétique Descendant",
+  "config.option.sort_options.option_2": "Coeurs ascendants",
+  "config.option.sort_options.option_3": "Coeurs descendants",
+  "config.option.only_show_met_npcs.name": "Masquer les PNJ non rencontrés",
+  "config.option.only_show_met_npcs.description": "Masquer les PNJ auxquels vous n'avez jamais parlé auparavant dans la liste.",
+  "config.option.only_show_socializable_npcs.name": "Masquer les PNJ non socialisables",
+  "config.option.only_show_socializable_npcs.description": "Masquer les PNJ non socialisables (ex : Gunther ou Sandy avant que le bus ne soit réparé) dans la liste.",
+  "error.mismatch_mods": "Avertissement! Vous et le joueur hôte avez des mods/versions de mod différents qui peuvent affecter l'exactitude des plannings. Voir le journal SMAPI pour plus de détails.",
+  "error.mismatch_game_version": "Avertissement! Vous et le joueur hôte disposez de versions de jeu différentes, ce qui peut affecter l'exactitude des plannings.",
+  "location_hover_text": "Sur le carreau ({{x}}, {{y}}) dirigé vers {{facingDirection}}",
+  "ignoring_schedule_today": "Planning du jour ignoré. Emplacement actuel:",
+  "not_following_schedule_today": "Pas de planning pour aujourd'hui. Emplacement actuel:",
+  "facing_direction_0": "le haut",
+  "facing_direction_1": "la droite",
+  "facing_direction_2": "le bas",
+  "facing_direction_3": "la gauche",
+  "schedule_details_page.header": "Planning",
+  "schedule_details_page.gifted_today.header": "Cadeau reçu?",
+  "schedule_details_page.gifted_today.weekly_limit": "Limite hebdo atteinte",
+  "schedule_details_page.current_location": "Emplacement",
+  "location_names.Club": "Casino",
+  "location_names.HarveyRoom": "Chambre d'Harvey",
+  "location_names.IslandEast": "Île Gingembre Est",
+  "location_names.IslandHut": "Hutte",
+  "location_names.IslandNorth": "Île Gingembre Nord",
+  "location_names.IslandSouth": "Île Gingembre Sud",
+  "location_names.IslandWest": "Île Gingembre Ouest",
+  "location_names.LeoTreeHouse": "Maison dans l'arbre",
+  "location_names.SandyHouse": "Oasis",
+  "location_names.SebastianRoom": "Chambre de Sébastian",
+  "location_names.SkullCave": "Caverne du Crâne",
+  "location_names.Sunroom": "Véranda de Caroline",
+  "location_names.WitchSwamp": "Marais de la sorcière",
+  "location_names.WitchWarpCave": "Hutte de la sorcière"
+}

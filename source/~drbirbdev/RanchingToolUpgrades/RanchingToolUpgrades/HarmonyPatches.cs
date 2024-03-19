@@ -29,7 +29,7 @@ class MilkPail_DoFunction
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
         }
 
     }
@@ -38,7 +38,7 @@ class MilkPail_DoFunction
 [HarmonyPatch(typeof(Shears), nameof(Shears.DoFunction))]
 class Shears_DoFunction
 {
-    public static void Prefix(Farmer who, MilkPail __instance)
+    public static void Prefix(Farmer who, Shears __instance)
     {
         try
         {
@@ -47,7 +47,7 @@ class Shears_DoFunction
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
         }
 
     }
@@ -57,53 +57,56 @@ class RanchToolUtility
 {
     public static void GetExtraEffects(FarmAnimal animal, Tool tool, Farmer farmer)
     {
-        if (animal != null && animal.currentProduce.Value != null && animal.isAdult() && animal.CanGetProduceWithTool(tool))
+        if (animal?.currentProduce.Value == null || !animal.isAdult() || !animal.CanGetProduceWithTool(tool))
         {
-            // do extra friendship effect
-            int extraFriendship = ModEntry.Config.ExtraFriendshipBase * tool.UpgradeLevel;
-            animal.friendshipTowardFarmer.Value = Math.Min(1000, animal.friendshipTowardFarmer.Value + extraFriendship);
-            Log.Debug($"Applied extra friendship {extraFriendship}.  Total friendship: {animal.friendshipTowardFarmer.Value}");
+            return;
+        }
 
-            // do quality bump effect
-            float higherQualityChance = ModEntry.Config.QualityBumpChanceBase * tool.UpgradeLevel;
-            if (higherQualityChance > Game1.random.NextDouble())
-            {
-                switch (animal.produceQuality.Value)
-                {
-                    case 0:
-                        animal.produceQuality.Set(1);
-                        break;
-                    case 1:
-                        animal.produceQuality.Set(2);
-                        break;
-                    case 2:
-                        animal.produceQuality.Set(4);
-                        break;
-                    default: break;
-                }
-                Log.Debug($"Quality Bump Chance {higherQualityChance}, succeeded.  New quality {animal.produceQuality.Value}");
-            }
-            else
-            {
-                Log.Debug($"Quality Bump Chance {higherQualityChance} failed.");
-            }
+        // do extra friendship effect
+        int extraFriendship = ModEntry.Config.ExtraFriendshipBase * tool.UpgradeLevel;
+        animal.friendshipTowardFarmer.Value = Math.Min(1000, animal.friendshipTowardFarmer.Value + extraFriendship);
+        Log.Debug($"Applied extra friendship {extraFriendship}.  Total friendship: {animal.friendshipTowardFarmer.Value}");
 
-            // do extra produce effect
-            int extraProduce = 0;
-            for (int i = 0; i < tool.UpgradeLevel; i++)
+        // do quality bump effect
+        float higherQualityChance = ModEntry.Config.QualityBumpChanceBase * tool.UpgradeLevel;
+        if (higherQualityChance > Game1.random.NextDouble())
+        {
+            switch (animal.produceQuality.Value)
             {
-                if (ModEntry.Config.ExtraProduceChance > Game1.random.NextDouble())
-                {
-                    extraProduce++;
-                }
+                case 0:
+                    animal.produceQuality.Set(1);
+                    break;
+                case 1:
+                    animal.produceQuality.Set(2);
+                    break;
+                case 2:
+                    animal.produceQuality.Set(4);
+                    break;
             }
-            Log.Debug($"Extra Produce Chance {ModEntry.Config.ExtraProduceChance} generated {extraProduce} additional produce from {tool.UpgradeLevel} draws.");
-            if (extraProduce > 0)
+            Log.Debug($"Quality Bump Chance {higherQualityChance}, succeeded.  New quality {animal.produceQuality.Value}");
+        }
+        else
+        {
+            Log.Debug($"Quality Bump Chance {higherQualityChance} failed.");
+        }
+
+        // do extra produce effect
+        int extraProduce = 0;
+        for (int i = 0; i < tool.UpgradeLevel; i++)
+        {
+            if (ModEntry.Config.ExtraProduceChance > Game1.random.NextDouble())
             {
-                SObject produce = ItemRegistry.Create<SObject>("(O)" + animal.currentProduce.Value, extraProduce, animal.produceQuality.Value);
-                produce.CanBeSetDown = false;
-                farmer.addItemToInventory(produce);
+                extraProduce++;
             }
         }
+        Log.Debug($"Extra Produce Chance {ModEntry.Config.ExtraProduceChance} generated {extraProduce} additional produce from {tool.UpgradeLevel} draws.");
+        if (extraProduce <= 0)
+        {
+            return;
+        }
+
+        SObject produce = ItemRegistry.Create<SObject>("(O)" + animal.currentProduce.Value, extraProduce, animal.produceQuality.Value);
+        produce.CanBeSetDown = false;
+        farmer.addItemToInventory(produce);
     }
 }

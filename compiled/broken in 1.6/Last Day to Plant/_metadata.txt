@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/7917
+IDs: com.dayloncrider.stardewvalley.lastdaytoplant
+update keys: Nexus:7917, GitHub:dmcrider/LastDayToPlant

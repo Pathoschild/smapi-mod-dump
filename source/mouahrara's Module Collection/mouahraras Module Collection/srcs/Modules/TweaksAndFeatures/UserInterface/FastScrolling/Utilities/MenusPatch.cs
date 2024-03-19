@@ -23,7 +23,7 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.UserInterface.FastScrolli
 				return;
 			if (__instance is CarpenterMenu && (__instance as CarpenterMenu).freeze)
 				return;
-			if (__instance is PurchaseAnimalsMenu && (bool)typeof(PurchaseAnimalsMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance))
+			if (__instance is PurchaseAnimalsMenu && (__instance as PurchaseAnimalsMenu).freeze)
 				return;
 			if (!__instance.overrideSnappyMenuCursorMovementBan())
 				return;

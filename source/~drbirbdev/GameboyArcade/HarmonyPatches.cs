@@ -21,11 +21,11 @@ class Utilities
 {
     public static void ShowArcadeMenu(string minigameId, string arcadeName)
     {
-        Response[] arcadeOptions = new Response[2]
-        {
+        Response[] arcadeOptions =
+        [
             new Response("Play", Game1.content.LoadString("Strings\\Locations:Club_CalicoJack_Play")),
-            new Response("Exit", Game1.content.LoadString("Strings\\Locations:Club_CalicoJack_Leave")),
-        };
+            new Response("Exit", Game1.content.LoadString("Strings\\Locations:Club_CalicoJack_Leave"))
+        ];
         Game1.currentLocation.createQuestionDialogue($"== {arcadeName} ==", arcadeOptions, $"drbirbdev.GameboyArcade {minigameId}");
     }
 }
@@ -37,32 +37,32 @@ class GameLocation_AnswerDialogueAction
     {
         try
         {
-            if (questionAndAnswer == "drbirbdev.GameboyArcade_Play")
+            if (questionAndAnswer != "drbirbdev.GameboyArcade_Play")
             {
-                if (questionParams is null || questionParams.Length < 2)
-                {
-                    Log.Error("drbirbdev.ArcadeGame_Play dialogueKey requires minigame id parameter");
-                    return;
-                }
-
-                Content content = null;
-
-                content = ModEntry.GetGame(questionParams[1]);
-
-                if (content is null)
-                {
-                    Log.Error($"drbirbdev.ArcadeGame_Play dialogueKey had unknown minigame id parameter {questionParams.Join(delimiter: ",")}");
-                    return;
-                }
-
-                GameboyMinigame.LoadGame(content);
-
-                __result = true;
+                return;
             }
+
+            if (questionParams is null || questionParams.Length < 2)
+            {
+                Log.Error("drbirbdev.ArcadeGame_Play dialogueKey requires minigame id parameter");
+                return;
+            }
+
+            Content content = ModEntry.GetGame(questionParams[1]);
+
+            if (content is null)
+            {
+                Log.Error($"drbirbdev.ArcadeGame_Play dialogueKey had unknown minigame id parameter {questionParams.Join(delimiter: ",")}");
+                return;
+            }
+
+            GameboyMinigame.LoadGame(content);
+
+            __result = true;
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
         }
     }
 }
@@ -70,7 +70,7 @@ class GameLocation_AnswerDialogueAction
 [HarmonyPatch(typeof(StardewValley.Object), nameof(StardewValley.Object.checkForAction))]
 class Object_CheckForAction
 {
-    internal static bool Prefix(Farmer who, bool justCheckingForActivity, StardewValley.Object __instance, ref bool __result)
+    internal static bool Prefix(bool justCheckingForActivity, StardewValley.Object __instance, ref bool __result)
     {
         try
         {

@@ -35,5 +35,5 @@ The available settings are:
 
 Name | Valid settings | Description
 -----|----------------|------------
-EnableCosmeticFloatingEffect | **true** or false | If true, items in water will appear to move up and down on "waves". Disabling this may improve performance on some systems.
-TeleportItemsOutOfWater | true or **false** | If true, items will teleport to the nearest player whenever they touch water. Enabling this makes it easier to retrieve items from water.
+FloatingAnimation | **true** or false | If true, items on water will have a cosmetic floating animation.
+TeleportItemsOutOfWater | true or **false** | If true, when items fall into water, they will teleport to the nearest player.

@@ -12,47 +12,44 @@ using StardewValley;
 
 namespace LeaderboardLibrary;
 
-class MultiplayerLeaderboardAPI : ChainableLeaderboardAPI
+class MultiplayerLeaderboardApi : ChainableLeaderboardApi
 {
-    private readonly string ModId;
-    private readonly ILeaderboardAPI DelegateApi;
-    public override ILeaderboardAPI Delegate => this.DelegateApi;
+    private readonly string _modId;
+    protected override ILeaderboardApi Delegate { get; }
 
-    public MultiplayerLeaderboardAPI(string modId)
+    public MultiplayerLeaderboardApi(string modId)
     {
-        this.ModId = modId;
-        this.DelegateApi = new CachedLeaderboardAPI(modId);
+        this._modId = modId;
+        this.Delegate = new CachedLeaderboardApi(modId);
         ModEntry.Instance.Helper.Events.Multiplayer.ModMessageReceived += this.Multiplayer_ModMessageReceived;
     }
 
     private void Multiplayer_ModMessageReceived(object sender, StardewModdingAPI.Events.ModMessageReceivedEventArgs e)
     {
-        if (e.FromModID == ModEntry.Instance.ModManifest.UniqueID && e.Type == $"{this.ModId}:UploadScore" && e.FromPlayerID != Game1.player.UniqueMultiplayerID)
+        if (e.FromModID != ModEntry.Instance.ModManifest.UniqueID || e.Type != $"{this._modId}:UploadScore" ||
+            e.FromPlayerID == Game1.player.UniqueMultiplayerID)
         {
-            string name = Game1.getFarmer(e.FromPlayerID)?.Name;
-            UploadScoreMessage message = e.ReadAs<UploadScoreMessage>();
-            ((CachedLeaderboardAPI)this.Delegate).UpdateCache(message.Stat, message.Score, message.UserUUID, name);
+            return;
         }
+
+        string name = Game1.getFarmer(e.FromPlayerID)?.Name;
+        UploadScoreMessage message = e.ReadAs<UploadScoreMessage>();
+        ((CachedLeaderboardApi)this.Delegate).UpdateCache(message.Stat, message.Score, message.UserUuid, name);
     }
 
     public override bool UploadScore(string stat, int score)
     {
-        UploadScoreMessage message = new UploadScoreMessage(stat, score, ModEntry.GlobalModData.Value.UserUUID);
-        ModEntry.Instance.Helper.Multiplayer.SendMessage<UploadScoreMessage>(message, $"{this.ModId}:UploadScore", new[] { ModEntry.Instance.ModManifest.UniqueID });
+        UploadScoreMessage message = new(stat, score, ModEntry.GLOBAL_MOD_DATA.Value.UserUuid);
+        ModEntry.Instance.Helper.Multiplayer.SendMessage(message, $"{this._modId}:UploadScore", [
+            ModEntry.Instance.ModManifest.UniqueID
+        ]);
         return this.Delegate.UploadScore(stat, score);
     }
 }
 
-class UploadScoreMessage
+class UploadScoreMessage(string stat, int score, string userUuid)
 {
-    public string Stat;
-    public int Score;
-    public string UserUUID;
-
-    public UploadScoreMessage(string stat, int score, string userUuid)
-    {
-        this.Stat = stat;
-        this.Score = score;
-        this.UserUUID = userUuid;
-    }
+    public string Stat = stat;
+    public int Score = score;
+    public string UserUuid = userUuid;
 }

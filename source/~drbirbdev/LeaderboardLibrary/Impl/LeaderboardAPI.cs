@@ -15,29 +15,19 @@ using BirbCore.Attributes;
 
 namespace LeaderboardLibrary;
 
-public class LeaderboardAPI : ChainableLeaderboardAPI
+public class LeaderboardApi(string modId) : ChainableLeaderboardApi
 {
-    private readonly string ModId;
-
-    private readonly ILeaderboardAPI DelegateAPI;
-    public override ILeaderboardAPI Delegate => this.DelegateAPI;
-
-    public LeaderboardAPI(string modId)
-    {
-        this.ModId = modId;
-        this.DelegateAPI = new ThrottledLeaderboardAPI(modId);
-    }
-
+    protected override ILeaderboardApi Delegate { get; } = new ThrottledLeaderboardApi(modId);
 
     public override int GetLocalRank(string stat)
     {
         try
         {
-            return this.Delegate.GetLocalRank($"{this.ModId}:{stat}");
+            return this.Delegate.GetLocalRank($"{modId}:{stat}");
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
             return -1;
         }
     }
@@ -50,11 +40,11 @@ public class LeaderboardAPI : ChainableLeaderboardAPI
         }
         try
         {
-            return this.Delegate.GetLocalTopN($"{this.ModId}:{stat}", count);
+            return this.Delegate.GetLocalTopN($"{modId}:{stat}", count);
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
             return null;
         }
     }
@@ -63,11 +53,11 @@ public class LeaderboardAPI : ChainableLeaderboardAPI
     {
         try
         {
-            return this.Delegate.GetPersonalBest($"{this.ModId}:{stat}");
+            return this.Delegate.GetPersonalBest($"{modId}:{stat}");
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
             return null;
         }
     }
@@ -85,11 +75,11 @@ public class LeaderboardAPI : ChainableLeaderboardAPI
         }
         try
         {
-            return this.Delegate.GetTopN($"{this.ModId}:{stat}", count);
+            return this.Delegate.GetTopN($"{modId}:{stat}", count);
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
             return null;
         }
     }
@@ -98,11 +88,11 @@ public class LeaderboardAPI : ChainableLeaderboardAPI
     {
         try
         {
-            this.Delegate.RefreshCache($"{this.ModId}:{stat}");
+            this.Delegate.RefreshCache($"{modId}:{stat}");
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
             return false;
         }
         return true;
@@ -112,11 +102,11 @@ public class LeaderboardAPI : ChainableLeaderboardAPI
     {
         try
         {
-            this.Delegate.UploadScore($"{this.ModId}:{stat}", score);
+            this.Delegate.UploadScore($"{modId}:{stat}", score);
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
             return false;
         }
         return true;

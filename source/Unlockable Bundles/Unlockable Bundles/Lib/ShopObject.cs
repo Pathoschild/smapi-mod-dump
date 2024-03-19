@@ -58,6 +58,7 @@ namespace Unlockable_Bundles.Lib
         public bool WasDiscovered { get => _wasDiscovered.Value; set => _wasDiscovered.Value = value; }
         public static Texture2D BundleDiscoveredAnimation;
         public static TemporaryAnimatedSpriteList TemporaryAnimatedSprites = new();
+        private bool TexturesWereSet = false; //Relevant for multiplayer where Unlockable isn't set when creating the object
         public static void Initialize()
         {
             Mod = ModEntry.Mod;
@@ -69,12 +70,13 @@ namespace Unlockable_Bundles.Lib
         }
         public ShopObject()
         {
+            ItemId = "DLX.Bundles.ShopObject";
             setEvents();
-            setTextures();
         }
 
         public ShopObject(Vector2 tileLocation, Unlockable unlockable)
         {
+            ItemId = "DLX.Bundles.ShopObject";
             _unlockable.Set(unlockable);
             if (ShopType == ShopType.SpeechBubble || ShopType == ShopType.ParrotPerch)
                 SpeechBubble = new SpeechBubble(this);
@@ -103,6 +105,8 @@ namespace Unlockable_Bundles.Lib
 
         private void setTextures()
         {
+            TexturesWereSet = true;
+
             if (Unlockable.ShopTexture.Trim().ToLower() != "none") {
                 var texture = Helper.GameContent.Load<Texture2D>(Unlockable.ShopTexture);
                 ShopTexture = new AnimatedTexture(texture, Unlockable.ShopAnimation, Unlockable.ShopTextureWidth, Unlockable.ShopTextureWidth * 2);
@@ -168,6 +172,8 @@ namespace Unlockable_Bundles.Lib
         {
             Vector2 position = Game1.GlobalToLocal(Game1.viewport, new Vector2(x * 64 + (float)(shakeTimer > 0 ? Game1.random.Next(-1, 2) : 0), y * 64 - 64));
 
+            if(!TexturesWereSet)
+                setTextures();
 
             if (ShopTexture is not null)
                 b.Draw(ShopTexture.Texture, position, ShopTexture.getOffsetRectangle(), Color.White, 0f, new Vector2(), 64f / Unlockable.ShopTextureWidth, Flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None, boundingBox.Bottom / 10000f);

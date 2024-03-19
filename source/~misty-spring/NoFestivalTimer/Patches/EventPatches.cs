@@ -56,6 +56,9 @@ public class EventPatches
 
     private static void CheckProgress(Event __instance)
     {
+        if (!ModEntry.Toggle)
+            return;
+        
         var score = Festivals[__instance.playerControlSequenceID].OnScore;
         var useProps = Festivals[__instance.playerControlSequenceID].Props;
 
@@ -82,6 +85,9 @@ public class EventPatches
             return;
         
         if(!Festivals.ContainsKey(__instance.playerControlSequenceID))
+            return;
+
+        if (!ModEntry.Toggle)
             return;
         
         if (Festivals[__instance.playerControlSequenceID].IgnoreTimer)

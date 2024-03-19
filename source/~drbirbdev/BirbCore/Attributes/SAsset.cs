@@ -23,37 +23,28 @@ namespace BirbCore.Attributes;
 /// </summary>
 public class SAsset : ClassHandler
 {
-    private MemberInfo? ModAssets;
-
-    public SAsset() : base(0)
-    {
-    }
+    private MemberInfo? _modAssets;
 
     public override void Handle(Type type, object? instance, IMod mod, object[]? args = null)
     {
-        this.ModAssets = mod.GetType().GetMemberOfType(type);
-        if (this.ModAssets == null)
+        if (!mod.GetType().TryGetMemberOfType(type, out MemberInfo memberInfo))
         {
             Log.Error("Mod must define an asset property");
             return;
         }
 
-        instance = Activator.CreateInstance(type);
-        Action<object?, object?>? setter = this.ModAssets.GetSetter();
-        if (setter is null)
-        {
-            Log.Error("SAsset had a null setter");
-            return;
-        }
+        this._modAssets = memberInfo;
+
+        Action<object?, object?> setter = this._modAssets.GetSetter();
+
         setter(mod, instance);
         base.Handle(type, instance, mod, args);
-        return;
     }
 
     /// <summary>
     /// A single asset. This property is synced with what is in the content pipeline, and can be used directly.
     /// This asset can be overriden by other mods, and those changes will be reflected in this property.
-    /// The path of the asset will be "Mods/<ModUniqueID>/<Property>", for instance the following property
+    /// The path of the asset will be "Mods/&lt;ModUniqueID&gt;/&lt;Property&gt;", for instance the following property
     /// <code>
     ///    [Asset(Path="assets/my_texture.png")]
     ///    public static Texture2D MyTexture;
@@ -62,73 +53,81 @@ public class SAsset : ClassHandler
     /// could be located at "Mods/drbirbdev.BirbCore/MyTexture" in the content pipeline. Other mods could then
     /// load this texture to use it, and this mod can just use the MyTexture property directly.
     /// An optional string property sharing the same name, but ending with "AssetName" can also be included.
-    /// This property will be set to the "Mods/<ModUniqueID>/<Property>" value, which is required for some methods.
+    /// This property will be set to the "Mods/&lt;ModUniqueID&gt;/&lt;Property&gt;" value, which is required for some methods.
     /// </summary>
-    public class Asset : FieldHandler
+    public class Asset(string path, AssetLoadPriority priority = AssetLoadPriority.Medium) : FieldHandler
     {
-        public string Path;
-        public AssetLoadPriority Priority;
+        private readonly string _path = PathUtilities.NormalizePath(path);
 
-        public Asset(string path, AssetLoadPriority priority = AssetLoadPriority.Medium)
+        protected override void Handle(string name, Type fieldType, Func<object?, object?> getter,
+            Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
         {
-            this.Path = PathUtilities.NormalizePath(path);
-            this.Priority = priority;
-        }
+            IAssetName assetName = mod.Helper.ModContent.GetInternalAssetName(this._path);
 
-        public override void Handle(string name, Type fieldType, Func<object?, object?> getter, Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
-        {
-
-            IAssetName assetName = mod.Helper.ModContent.GetInternalAssetName(this.Path);
-
-            Action<object, object>? assetNameSetter = instance?.GetType().GetMemberOfName(name + "AssetName")?.GetSetter();
-            if (assetNameSetter is not null && instance is not null)
+            if (instance is null)
             {
-                assetNameSetter(instance, assetName);
+                if (fieldType.DeclaringType != null &&
+                    fieldType.DeclaringType.TryGetSetterOfName(name + "AssetName", out Action<object?, object?> assetNameSetter))
+                {
+                    assetNameSetter(instance, assetName);
+                }
+            }
+            else
+            {
+                if (instance.GetType().TryGetSetterOfName(name + "AssetName", out Action<object?, object?> assetNameSetter))
+                {
+                    assetNameSetter(instance, assetName);
+                }
             }
 
-            mod.Helper.Events.Content.AssetRequested += (object? sender, AssetRequestedEventArgs e) =>
+
+            mod.Helper.Events.Content.AssetRequested += (sender, e) =>
             {
                 if (!e.Name.IsEquivalentTo(assetName))
                 {
                     return;
                 }
 
-                object? value = e?.GetType().GetMethod("LoadFromModFile")
+                //TODO: see if more specific generics are needed
+                //TODO: set onBehalfOf if SMAPI would allow it
+                // e.LoadFrom(() => mod.Helper.ModContent.Load<object>(this._path), priority);
+
+                e.GetType().GetMethod("LoadFromModFile")
                     ?.MakeGenericMethod(fieldType)
-                    .Invoke(e, new object[] { this.Path, this.Priority });
-                setter(instance, value);
+                    .Invoke(e, [this._path, priority]);
+
+                setter(instance, LoadValue(fieldType, this._path, mod));
             };
 
-            mod.Helper.Events.Content.AssetReady += (object? sender, AssetReadyEventArgs e) =>
+            mod.Helper.Events.Content.AssetReady += (sender, e) =>
             {
                 if (!e.Name.IsEquivalentTo(assetName))
                 {
                     return;
                 }
 
-                setter(instance, LoadValue(fieldType, this.Path, mod));
+                setter(instance, LoadValue(fieldType, this._path, mod));
             };
 
-            mod.Helper.Events.Content.AssetsInvalidated += (object? sender, AssetsInvalidatedEventArgs e) =>
+            mod.Helper.Events.Content.AssetsInvalidated += (sender, e) =>
             {
                 foreach (IAssetName asset in e.Names)
                 {
                     if (asset.IsEquivalentTo(assetName))
                     {
-                        setter(instance, LoadValue(fieldType, this.Path, mod));
+                        setter(instance, LoadValue(fieldType, this._path, mod));
                     }
                 }
             };
 
-            setter(instance, LoadValue(fieldType, this.Path, mod));
+            setter(instance, LoadValue(fieldType, this._path, mod));
         }
 
         private static object? LoadValue(Type fieldType, string assetPath, IMod mod)
         {
-            return mod.Helper.ModContent.GetType().GetMethod("Load", new[] { typeof(string) })
+            return mod.Helper.ModContent.GetType().GetMethod("Load", [typeof(string)])
                 ?.MakeGenericMethod(fieldType)
-                .Invoke(mod.Helper.ModContent, new string[] { assetPath });
+                .Invoke(mod.Helper.ModContent, [assetPath]);
         }
-
     }
 }

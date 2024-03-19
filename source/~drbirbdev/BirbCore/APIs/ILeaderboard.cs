@@ -67,6 +67,6 @@ public interface ILeaderboard
     /// This is an expensive operation, so only do this infrequently.  Abusing this API call can lead to your mod getting throttled or denied.
     /// </summary>
     /// <param name="stat"></param>
-    /// <returns>True if the refresh succeeded (or was unneccessary).  Doesn't account for async failures.</returns>
+    /// <returns>True if the refresh succeeded (or was unnecessary).  Doesn't account for async failures.</returns>
     bool RefreshCache(string stat);
 }

@@ -118,13 +118,6 @@ namespace StardewSurvivalProject.source.api
                 optionGet: () => ModConfig.GetInstance().UseStaminaRework,
                 optionSet: value => ModConfig.GetInstance().UseStaminaRework = value
             );
-            api.AddKeybind(
-                mod: context.ModManifest,
-                name: () => "Sprint Button",
-                tooltip: () => "Keybind to sprint - Only available with stamina rework option enabled",
-                getValue: () => ModConfig.GetInstance().SprintButton,
-                setValue: value => ModConfig.GetInstance().SprintButton = value
-            );   
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
                 optionName: "Experimental - Sanity Meter",
@@ -142,7 +135,7 @@ namespace StardewSurvivalProject.source.api
                 optionDesc: "Change UI Texture of the mod to fit better with popular re-texture mods (Default: Auto - Auto-detect re-texture mods in the game and pick the appropriate preset) - Save and restart the game to apply this change",
                 optionGet: () => ModConfig.GetInstance().RetexturePreset,
                 optionSet: value => ModConfig.GetInstance().RetexturePreset = value,
-                choices: new string[] { "auto", "default", "vintage2", "overgrown", "earthy" }
+                choices: new string[] { "auto", "default", "vintage2", "overgrown", "earthy", "legacy"}
             );
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
@@ -245,6 +238,12 @@ namespace StardewSurvivalProject.source.api
                 "Options for mod's custom buff and debuff conditions and mechanics",
                 "Custom Buff / Debuff"
             );
+            api.RegisterPageLabel(
+                context.ModManifest,
+                "Stamina / HP Rework",
+                "Options for mod's stamina and HP rework",
+                "Stamina / HP Rework"
+            );
 
             api.StartNewPage(context.ModManifest, "Thirst and Hunger");
             api.RegisterParagraph(context.ModManifest, "Options for Thirst and Hunger mechanic");
@@ -332,7 +331,7 @@ namespace StardewSurvivalProject.source.api
             api.RegisterSimpleOption(
                 mod: context.ModManifest,
                 optionName: "Hydration on Item Drinking",
-                optionDesc: "Default hydration value restored for player by drinking any items (Default: 10)",
+                optionDesc: "Default hydration value restored for player by drinking any items, items with custom hydration value also scale with this (Default: 10)",
                 optionGet: () => (float)ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems,
                 optionSet: value => ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems = (double)value
             );
@@ -824,6 +823,71 @@ namespace StardewSurvivalProject.source.api
                 optionSet: value => ModConfig.GetInstance().HealthDrainOnFrostbitePerSecond = value
             );
 
+            api.StartNewPage(context.ModManifest, "Stamina / HP Rework");
+            api.RegisterParagraph(context.ModManifest, "Options for mod's stamina rework");
+            api.AddKeybind(
+                mod: context.ModManifest,
+                name: () => "Sprint Button",
+                tooltip: () => "Keybind to sprint - Only available with stamina rework option enabled",
+                getValue: () => ModConfig.GetInstance().SprintButton,
+                setValue: value => ModConfig.GetInstance().SprintButton = value
+            );
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Health Restore on Sleep",
+                optionDesc: "How much health player restore when they sleep (Default: 20)",
+                optionGet: () => ModConfig.GetInstance().HealthRestoreOnSleep,
+                optionSet: value => ModConfig.GetInstance().HealthRestoreOnSleep = value
+            );
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Stamina Regen. on Not Moving",
+                optionDesc: "How much stamina player restore every second when they are not moving (Default: 2)",
+                optionGet: () => ModConfig.GetInstance().StaminaRegenOnNotMovingPerSecond,
+                optionSet: value => ModConfig.GetInstance().StaminaRegenOnNotMovingPerSecond = value
+            );
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Stamina Regen. on Sitting",
+                optionDesc: "How much extra stamina player restore every second when they are sitting (Default: 1)",
+                optionGet: () => ModConfig.GetInstance().StaminaExtraRegenOnSittingPerSecond,
+                optionSet: value => ModConfig.GetInstance().StaminaExtraRegenOnSittingPerSecond = value
+            );
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Stamina Regen. on Napping",
+                optionDesc: "How much extra stamina player restore every second when they are napping (Default: 2)",
+                optionGet: () => ModConfig.GetInstance().StaminaExtraRegenOnNappingPerSecond,
+                optionSet: value => ModConfig.GetInstance().StaminaExtraRegenOnNappingPerSecond = value
+            );
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Additional % Stamina Drain on Tool Use",
+                optionDesc: "How much extra stamina player lose in percentage when they use a tool (Default: 200 - 3x)",
+                optionGet: () => (float)ModConfig.GetInstance().AdditionalDrainOnToolUse,
+                optionSet: value => ModConfig.GetInstance().AdditionalDrainOnToolUse = (double)value
+            );
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Stamina Drain on Running",
+                optionDesc: "How much stamina player lose every tick when they are running (Default: 0.01)",
+                optionGet: () => ModConfig.GetInstance().StaminaDrainOnRunningPerTick,
+                optionSet: value => ModConfig.GetInstance().StaminaDrainOnRunningPerTick = value
+            );
+
+            api.RegisterSimpleOption(
+                mod: context.ModManifest,
+                optionName: "Stamina Drain on Sprinting",
+                optionDesc: "How much stamina player lose every tick when they are sprinting (Default: 0.03)",
+                optionGet: () => ModConfig.GetInstance().StaminaDrainOnSprintingPerTick,
+                optionSet: value => ModConfig.GetInstance().StaminaDrainOnSprintingPerTick = value
+            );
         }
     }
 }

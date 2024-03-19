@@ -6,9 +6,14 @@ mods:
    Lasting Conversation Topics
 
 latest commit:
-   commit 5e8a21be7cfdce9886edb61dbc3e1e683f01e810
-   Author: Nigel McKernan <nmck160@gmail.com>
-   Date:   Thu Nov 30 09:18:20 2023 -0800
+   commit 975506fab5c04564bdcee573fe663fce389b0b38
+   Author: Zash <zash@fantasymail.de>
+   Date:   Fri Mar 15 16:52:53 2024 +0100
    
-       Add The Witcher 2 support.
+       Fix for Subnautica 2.0 (#140)
+       
+       * Fix subnautica starting in VR mode by default (adding seperate exe)
+       * Fix Subnautica 2.0, QMods deprecated
+       * Add use_qmods setting: Install */.dll mods in legacy QMods folder, instead of BepInEx/plugins (default).
+       * Version bump: Subnautica [Below Zero] v2.2
    

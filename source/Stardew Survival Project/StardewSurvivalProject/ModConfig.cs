@@ -56,23 +56,23 @@ namespace StardewSurvivalProject
         public double PassiveThirstDrainRate { get; set; } = 0.3;
         public double RunningHungerDrainRate { get; set; } = 0.001;
         public double RunningThirstDrainRate { get; set; } = 0.002;
-        public double MeleeWeaponHungerDrain { get; set; } = 0.3;
-        public double MeleeWeaponThirstDrain { get; set; } = 0.2;
+        public double MeleeWeaponHungerDrain { get; set; } = 0.2;
+        public double MeleeWeaponThirstDrain { get; set; } = 0.1;
         public double SlingshotHungerDrain { get; set; } = 0.3;
         public double SlingshotThirstDrain { get; set; } = 0.2;
-        public double PickaxeHungerDrain { get; set; } = 0.5;
+        public double PickaxeHungerDrain { get; set; } = 0.4;
         public double PickaxeThirstDrain { get; set; } = 0.2;
-        public double AxeHungerDrain { get; set; } = 0.5;
+        public double AxeHungerDrain { get; set; } = 0.4;
         public double AxeThirstDrain { get; set; } = 0.2;
-        public double FishingPoleHungerDrain { get; set; } = 2.0;
+        public double FishingPoleHungerDrain { get; set; } = 1.8;
         public double FishingPoleThirstDrain { get; set; } = 0.6;
-        public double HoeHungerDrain { get; set; } = 0.5;
+        public double HoeHungerDrain { get; set; } = 0.4;
         public double HoeThirstDrain { get; set; } = 0.2;
-        public double WateringCanHungerDrain { get; set; } = 0.5;
+        public double WateringCanHungerDrain { get; set; } = 0.4;
         public double WateringCanThirstDrain { get; set; } = 0.2;
-        public double MilkPailHungerDrain { get; set; } = 0.5;
+        public double MilkPailHungerDrain { get; set; } = 0.6;
         public double MilkPailThirstDrain { get; set; } = 0.2;
-        public double ShearHungerDrain { get; set; } = 0.5;
+        public double ShearHungerDrain { get; set; } = 0.4;
         public double ShearThirstDrain { get; set; } = 0.2;
 
         public double DefaultHydrationGainOnDrinkableItems { get; set; } = 10.0;
@@ -135,11 +135,13 @@ namespace StardewSurvivalProject
         public int HealthDrainOnFrostbitePerSecond { get; set; } = 3;
 
         //Reworked Stamina
-        public double StaminaRegenOnNotMovingPerSecond { get; set; } = 2;
-        public double StaminaRegenOnNotRunningPerSecond { get; set; } = 1;
-        public double AdditionalDrainOnToolUse { get; set; } = 100;
-        public double StaminaDrainOnRunningPerTick { get; set; } = 0.002;
-        public double StaminaDrainOnSprintingPerTick { get; set; } = 0.02;
+        public float StaminaRegenOnNotMovingPerSecond { get; set; } = 2f;
+        public float StaminaExtraRegenOnSittingPerSecond { get; set; } = 1f;
+        public float StaminaExtraRegenOnNappingPerSecond { get; set; } = 2f;
+        //public float StaminaRegenOnNotRunningPerSecond { get; set; } = 1f;
+        public double AdditionalDrainOnToolUse { get; set; } = 200;
+        public float StaminaDrainOnRunningPerTick { get; set; } = 0.01f;
+        public float StaminaDrainOnSprintingPerTick { get; set; } = 0.03f;
 
         //Mood mechanic
         public double MoodThresholdForBreakdown { get; set; } = 0;

@@ -15,8 +15,8 @@ namespace CarWarp;
 /// </summary>
 class WarpLocationModel
 {
-    public string Location { get; set; }
-    public string DisplayName { get; set; }
+    public string? Location { get; set; }
+    public string? DisplayName { get; set; }
     public int X { get; set; }
     public int Y { get; set; }
 }

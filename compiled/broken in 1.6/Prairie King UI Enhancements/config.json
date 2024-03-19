@@ -1,0 +1,10 @@
+{
+  "FixLevelOverflow": true,
+  "ColoredIndicators": true,
+  "FixNumberOverflow": true,
+  "ShowDeathCounter": true,
+  "ShowPowerupTimers": true,
+  "FixBossHPOverflow": true,
+  "FixTransitionColor": true,
+  "HarderFinalBoss": true
+}

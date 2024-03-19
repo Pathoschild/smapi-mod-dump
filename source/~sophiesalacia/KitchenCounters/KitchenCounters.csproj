@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<AssemblyName>KitchenCounters</AssemblyName>
+		<RootNamespace>KitchenCounters</RootNamespace>
+		<GamePath>D:\Games\SteamLibrary\steamapps\common\Stardew Valley</GamePath>
+		<Version>0.1.0</Version>
+		<TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+		<EnableHarmony>true</EnableHarmony>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+	</ItemGroup>
+</Project>

@@ -1,0 +1,14 @@
+{
+  "Name": "PeacefulEnd.Rings.ButterflyRing",
+  "Description": "A pair of butterfly wings are affixed to the top.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 0,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "HatMouse",
+  "PurchasePrice": 100,
+  "NameLocalization": {
+    "en": "Butterfly Ring"
+  }
+}

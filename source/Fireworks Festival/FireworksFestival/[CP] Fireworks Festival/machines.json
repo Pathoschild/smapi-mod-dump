@@ -16,8 +16,8 @@
             "Action": "EditData",
             "Target": "Strings/BigCraftables",
             "Entries": {
-                "{{MainModID}}.Chemizer_Name": "{{i18n:big-craftable.Chemizer.name}}",
-                "{{MainModID}}.Chemizer_Description": "{{i18n:big-craftable.Chemizer.description}}"
+                "{{MainModID}}_Chemizer_Name": "{{i18n:big-craftable.Chemizer.name}}",
+                "{{MainModID}}_Chemizer_Description": "{{i18n:big-craftable.Chemizer.description}}"
             }
         },
         // Add chemizer big craftable
@@ -26,10 +26,10 @@
             "Action": "EditData",
             "Target": "Data/BigCraftables",
             "Entries": {
-                "{{MainModID}}.Chemizer": {
-                    "Name": "{{MainModID}}.Chemizer",
-                    "DisplayName": "[LocalizedText Strings\\BigCraftables:{{MainModID}}.Chemizer_Name]",
-                    "Description": "[LocalizedText Strings\\BigCraftables:{{MainModID}}.Chemizer_Description]",
+                "{{MainModID}}_Chemizer": {
+                    "Name": "{{MainModID}}_Chemizer",
+                    "DisplayName": "[LocalizedText Strings\\BigCraftables:{{MainModID}}_Chemizer_Name]",
+                    "Description": "[LocalizedText Strings\\BigCraftables:{{MainModID}}_Chemizer_Description]",
                     "Price": 50,
                     "CanBePlacedOutdoors": true,
                     "CanBePlacedIndoors": true,
@@ -45,7 +45,7 @@
             "Action": "EditData",
             "Target": "Data/CraftingRecipes",
             "Entries": {
-                "{{MainModID}}.Chemizer": "335 5 336 2 337 1 766 25/Field/{{MainModID}}.Chemizer/true/null/"
+                "{{MainModID}}_Chemizer": "335 5 336 2 337 1 766 25/Field/{{MainModID}}_Chemizer/true/null/"
             }
         },
         // Add machine recipes for Brimstone
@@ -54,7 +54,7 @@
             "Action": "EditData",
             "Target": "Data/Machines",
             "Entries": {
-                "(BC){{MainModID}}.Chemizer": {
+                "(BC){{MainModID}}_Chemizer": {
                   "HasInput": false,
                   "HasOutput": false,
                   "InteractMethod": null,
@@ -77,8 +77,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.RottenEgg",
-                          "ItemId": "(O){{MainModID}}.RottenEgg",
+                          "Id": "(O){{MainModID}}_RottenEgg",
+                          "ItemId": "(O){{MainModID}}_RottenEgg",
                           "Condition": null,
                         }
                       ],
@@ -92,7 +92,7 @@
                         {
                           "Id": "ItemPlacedInMachine",
                           "Trigger": "ItemPlacedInMachine",
-                          "RequiredItemId": "(O){{MainModID}}.RottenEgg",
+                          "RequiredItemId": "(O){{MainModID}}_RottenEgg",
                           "RequiredCount": 1,
                           "Condition": null
                         }
@@ -100,8 +100,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.Brimstone",
-                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Id": "(O){{MainModID}}_Brimstone",
+                          "ItemId": "(O){{MainModID}}_Brimstone",
                           "Condition": null,
                         }
                       ],
@@ -123,8 +123,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.Brimstone",
-                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Id": "(O){{MainModID}}_Brimstone",
+                          "ItemId": "(O){{MainModID}}_Brimstone",
                           "Condition": null,
                         }
                       ],
@@ -146,8 +146,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.Brimstone",
-                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Id": "(O){{MainModID}}_Brimstone",
+                          "ItemId": "(O){{MainModID}}_Brimstone",
                           "Condition": null,
                         }
                       ],
@@ -169,8 +169,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.Brimstone",
-                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Id": "(O){{MainModID}}_Brimstone",
+                          "ItemId": "(O){{MainModID}}_Brimstone",
                           "Condition": null,
                         }
                       ],
@@ -192,8 +192,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.Brimstone",
-                          "ItemId": "(O){{MainModID}}.Brimstone",
+                          "Id": "(O){{MainModID}}_Brimstone",
+                          "ItemId": "(O){{MainModID}}_Brimstone",
                           "Condition": null,
                         }
                       ],
@@ -215,8 +215,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.StrontiumSalt",
-                          "ItemId": "(O){{MainModID}}.StrontiumSalt",
+                          "Id": "(O){{MainModID}}_StrontiumSalt",
+                          "ItemId": "(O){{MainModID}}_StrontiumSalt",
                           "Condition": null,
                         }
                       ],
@@ -238,8 +238,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.StrontiumSalt",
-                          "ItemId": "(O){{MainModID}}.StrontiumSalt",
+                          "Id": "(O){{MainModID}}_StrontiumSalt",
+                          "ItemId": "(O){{MainModID}}_StrontiumSalt",
                           "Condition": null,
                         }
                       ],
@@ -311,8 +311,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.IronSalt",
-                          "ItemId": "(O){{MainModID}}.IronSalt",
+                          "Id": "(O){{MainModID}}_IronSalt",
+                          "ItemId": "(O){{MainModID}}_IronSalt",
                           "Condition": null,
                         }
                       ],
@@ -334,8 +334,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.IronSalt",
-                          "ItemId": "(O){{MainModID}}.IronSalt",
+                          "Id": "(O){{MainModID}}_IronSalt",
+                          "ItemId": "(O){{MainModID}}_IronSalt",
                           "Condition": null,
                         }
                       ],
@@ -357,8 +357,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.IronSalt",
-                          "ItemId": "(O){{MainModID}}.IronSalt",
+                          "Id": "(O){{MainModID}}_IronSalt",
+                          "ItemId": "(O){{MainModID}}_IronSalt",
                           "Condition": null,
                         }
                       ],
@@ -380,8 +380,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.IronSalt",
-                          "ItemId": "(O){{MainModID}}.IronSalt",
+                          "Id": "(O){{MainModID}}_IronSalt",
+                          "ItemId": "(O){{MainModID}}_IronSalt",
                           "Condition": null,
                         }
                       ],
@@ -403,8 +403,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.IronSalt",
-                          "ItemId": "(O){{MainModID}}.IronSalt",
+                          "Id": "(O){{MainModID}}_IronSalt",
+                          "ItemId": "(O){{MainModID}}_IronSalt",
                           "Condition": null,
                         }
                       ],
@@ -426,8 +426,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.BariumSalt",
-                          "ItemId": "(O){{MainModID}}.BariumSalt",
+                          "Id": "(O){{MainModID}}_BariumSalt",
+                          "ItemId": "(O){{MainModID}}_BariumSalt",
                           "Condition": null,
                         }
                       ],
@@ -449,8 +449,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.BariumSalt",
-                          "ItemId": "(O){{MainModID}}.BariumSalt",
+                          "Id": "(O){{MainModID}}_BariumSalt",
+                          "ItemId": "(O){{MainModID}}_BariumSalt",
                           "Condition": null,
                         }
                       ],
@@ -472,8 +472,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.BariumSalt",
-                          "ItemId": "(O){{MainModID}}.BariumSalt",
+                          "Id": "(O){{MainModID}}_BariumSalt",
+                          "ItemId": "(O){{MainModID}}_BariumSalt",
                           "Condition": null,
                         }
                       ],
@@ -495,8 +495,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.BariumSalt",
-                          "ItemId": "(O){{MainModID}}.BariumSalt",
+                          "Id": "(O){{MainModID}}_BariumSalt",
+                          "ItemId": "(O){{MainModID}}_BariumSalt",
                           "Condition": null,
                         }
                       ],
@@ -518,8 +518,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.CopperSalt",
-                          "ItemId": "(O){{MainModID}}.CopperSalt",
+                          "Id": "(O){{MainModID}}_CopperSalt",
+                          "ItemId": "(O){{MainModID}}_CopperSalt",
                           "Condition": null,
                         }
                       ],
@@ -541,8 +541,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.CopperSalt",
-                          "ItemId": "(O){{MainModID}}.CopperSalt",
+                          "Id": "(O){{MainModID}}_CopperSalt",
+                          "ItemId": "(O){{MainModID}}_CopperSalt",
                           "Condition": null,
                         }
                       ],
@@ -564,8 +564,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.CopperSalt",
-                          "ItemId": "(O){{MainModID}}.CopperSalt",
+                          "Id": "(O){{MainModID}}_CopperSalt",
+                          "ItemId": "(O){{MainModID}}_CopperSalt",
                           "Condition": null,
                         }
                       ],
@@ -587,8 +587,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.CopperSalt",
-                          "ItemId": "(O){{MainModID}}.CopperSalt",
+                          "Id": "(O){{MainModID}}_CopperSalt",
+                          "ItemId": "(O){{MainModID}}_CopperSalt",
                           "Condition": null,
                         }
                       ],
@@ -610,8 +610,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.IridiumSalt",
-                          "ItemId": "(O){{MainModID}}.IridiumSalt",
+                          "Id": "(O){{MainModID}}_IridiumSalt",
+                          "ItemId": "(O){{MainModID}}_IridiumSalt",
                           "Condition": null,
                         }
                       ],
@@ -633,8 +633,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.IridiumSalt",
-                          "ItemId": "(O){{MainModID}}.IridiumSalt",
+                          "Id": "(O){{MainModID}}_IridiumSalt",
+                          "ItemId": "(O){{MainModID}}_IridiumSalt",
                           "Condition": null,
                         }
                       ],
@@ -656,8 +656,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.IridiumSalt",
-                          "ItemId": "(O){{MainModID}}.IridiumSalt",
+                          "Id": "(O){{MainModID}}_IridiumSalt",
+                          "ItemId": "(O){{MainModID}}_IridiumSalt",
                           "Condition": null,
                         }
                       ],
@@ -679,8 +679,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.MagnesiumSalt",
-                          "ItemId": "(O){{MainModID}}.MagnesiumSalt",
+                          "Id": "(O){{MainModID}}_MagnesiumSalt",
+                          "ItemId": "(O){{MainModID}}_MagnesiumSalt",
                           "Condition": null,
                         }
                       ],
@@ -702,8 +702,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.MagnesiumSalt",
-                          "ItemId": "(O){{MainModID}}.MagnesiumSalt",
+                          "Id": "(O){{MainModID}}_MagnesiumSalt",
+                          "ItemId": "(O){{MainModID}}_MagnesiumSalt",
                           "Condition": null,
                         }
                       ],
@@ -725,8 +725,8 @@
                       "UseFirstValidOutput": false,
                       "OutputItem": [
                         {
-                          "Id": "(O){{MainModID}}.MagnesiumSalt",
-                          "ItemId": "(O){{MainModID}}.MagnesiumSalt",
+                          "Id": "(O){{MainModID}}_MagnesiumSalt",
+                          "ItemId": "(O){{MainModID}}_MagnesiumSalt",
                           "Condition": null,
                         }
                       ],

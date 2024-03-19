@@ -1,0 +1,14 @@
+{
+  "Name": "PeacefulEnd.Rings.DustRing",
+  "Description": "The ring is coated in a dark soot.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 0,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "HatMouse",
+  "PurchasePrice": 100,
+  "NameLocalization": {
+    "en": "Dust Ring"
+  }
+}

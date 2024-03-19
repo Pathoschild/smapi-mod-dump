@@ -42,7 +42,8 @@ namespace RingOverhaul
 
         internal RingOverhaulConfig Config;
 
-        // TODO double check 1.6 mini jukebox changes, especially Game1.player calls vs who calls
+        // TODO check multiplayer jukebox ring behavior
+        // TODO check ring combining jukebox ring behavior (do equip and unequip get called?)
 
         // TODO make rings of the same category type not equippable at the same time (care for compatibility with equip more rings)
 

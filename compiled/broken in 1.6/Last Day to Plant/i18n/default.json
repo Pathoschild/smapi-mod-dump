@@ -1,0 +1,6 @@
+{
+  "notification.crop.no-fertilizer": "Today is the last day to plant {{cropName}} this season without fertilizer.",
+  "notification.crop.speed-gro": "Today is the last day to plant {{cropName}} this season with Speed Gro fertilizer.",
+  "notification.crop.deluxe-speed-gro": "Today is the last day to plant {{cropName}} this season with Deluxe Speed Gro fertilizer.",
+  "notification.crop.hyper-speed-gro": "Today is the last day to plant {{cropName}} this season with Hyper Speed Gro fertilizer."
+}

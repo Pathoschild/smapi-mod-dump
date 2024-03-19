@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Messy Crops",
+  "Author": "Tlitookilakin",
+  "Version": "2.0.0",
+  "Description": "Randomly offsets crops for a more organic look.",
+  "UniqueID": "tlitookilakin.MessyCrops",
+  "EntryDll": "MessyCrops.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": [ "GitHub:tlitookilakin/MessyCrops", "Nexus:11317", "ModDrop:1123884" ]
+}

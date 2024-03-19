@@ -10,6 +10,7 @@
 
 using BirbCore.Attributes;
 using StardewModdingAPI;
+#pragma warning disable CS0414 // Field is assigned but its value is never used
 
 namespace GameboyArcade;
 
@@ -18,35 +19,35 @@ class Config
 {
 
     [SConfig.Option]
-    public SButton Up { get; set; } = SButton.W;
+    public SButton Up = SButton.W;
 
     [SConfig.Option]
-    public SButton Down { get; set; } = SButton.S;
+    public SButton Down = SButton.S;
 
     [SConfig.Option]
-    public SButton Left { get; set; } = SButton.A;
+    public SButton Left = SButton.A;
 
     [SConfig.Option]
-    public SButton Right { get; set; } = SButton.D;
+    public SButton Right = SButton.D;
 
     [SConfig.Option]
-    public SButton A { get; set; } = SButton.MouseLeft;
+    public SButton A = SButton.MouseLeft;
 
     [SConfig.Option]
-    public SButton B { get; set; } = SButton.MouseRight;
+    public SButton B = SButton.MouseRight;
 
     [SConfig.Option]
-    public SButton Start { get; set; } = SButton.Space;
+    public SButton Start = SButton.Space;
 
     [SConfig.Option]
-    public SButton Select { get; set; } = SButton.Tab;
+    public SButton Select = SButton.Tab;
 
     [SConfig.Option]
-    public SButton Power { get; set; } = SButton.Escape;
+    public SButton Power = SButton.Escape;
 
     [SConfig.Option]
-    public SButton Turbo { get; set; } = SButton.F1;
+    public SButton Turbo = SButton.F1;
 
-    [SConfig.Option(Min = 10000, Max = 22050, Interval = 1)]
-    public int MusicSampleRate { get; set; } = 22050;
+    [SConfig.Option(10000, 22050)]
+    public int MusicSampleRate = 22050;
 }

@@ -8,7 +8,7 @@
 **
 *************************************************/
 
-using mouahrarasModuleCollection.TweaksAndFeatures.UserInterface.Zoom.Hooks;
+using mouahrarasModuleCollection.TweaksAndFeatures.UserInterface.Zoom.Handlers;
 
 namespace mouahrarasModuleCollection.TweaksAndFeatures.UserInterface.Zoom.Utilities
 {
@@ -18,14 +18,14 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.UserInterface.Zoom.Utilit
 		{
 			if (!ModEntry.Config.UserInterfaceZoom)
 				return;
-			ModEntry.Helper.Events.GameLoop.UpdateTicking += UpdateTickingHook.Apply;
+			ModEntry.Helper.Events.GameLoop.UpdateTicking += UpdateTickingHandler.Apply;
 		}
 
 		internal static void LeaveFarmViewPostfix()
 		{
 			if (!ModEntry.Config.UserInterfaceZoom)
 				return;
-			ModEntry.Helper.Events.GameLoop.UpdateTicking -= UpdateTickingHook.Apply;
+			ModEntry.Helper.Events.GameLoop.UpdateTicking -= UpdateTickingHandler.Apply;
 			ZoomUtility.Reset();
 		}
 	}

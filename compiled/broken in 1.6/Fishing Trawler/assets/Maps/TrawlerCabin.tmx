@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="12" height="8" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="7">
+ <properties>
+  <property name="AmbientLight" value="170 190 90"/>
+  <property name="Light_Asdf" value="4 4 4 7 1 4 13 1 4"/>
+  <property name="Warp" value="2 8 Custom_FishingTrawler 42 26"/>
+ </properties>
+ <tileset firstgid="1" name="paths" tilewidth="16" tileheight="16" tilecount="36" columns="4">
+  <image source="paths" width="64" height="144"/>
+ </tileset>
+ <tileset firstgid="37" name="wizardhouse" tilewidth="16" tileheight="16" tilecount="2176" columns="32">
+  <image source="townInterior" width="512" height="1088"/>
+ </tileset>
+ <tileset firstgid="2213" name="z_trawlerCabin" tilewidth="16" tileheight="16" tilecount="270" columns="18">
+  <image source="TrawlerCabin.png" width="288" height="240"/>
+  <tile id="64">
+   <animation>
+    <frame tileid="64" duration="90"/>
+    <frame tileid="65" duration="90"/>
+    <frame tileid="66" duration="90"/>
+    <frame tileid="68" duration="90"/>
+    <frame tileid="69" duration="90"/>
+    <frame tileid="67" duration="90"/>
+    <frame tileid="70" duration="90"/>
+    <frame tileid="71" duration="90"/>
+   </animation>
+  </tile>
+  <tile id="76">
+   <animation>
+    <frame tileid="76" duration="1000"/>
+    <frame tileid="130" duration="1000"/>
+    <frame tileid="131" duration="1000"/>
+   </animation>
+  </tile>
+  <tile id="94">
+   <animation>
+    <frame tileid="94" duration="1000"/>
+    <frame tileid="148" duration="1000"/>
+    <frame tileid="149" duration="1000"/>
+   </animation>
+  </tile>
+  <tile id="134">
+   <animation>
+    <frame tileid="134" duration="90"/>
+    <frame tileid="135" duration="90"/>
+    <frame tileid="136" duration="90"/>
+   </animation>
+  </tile>
+  <tile id="152">
+   <animation>
+    <frame tileid="152" duration="90"/>
+    <frame tileid="153" duration="90"/>
+    <frame tileid="154" duration="90"/>
+   </animation>
+  </tile>
+  <tile id="166">
+   <animation>
+    <frame tileid="166" duration="2000"/>
+    <frame tileid="167" duration="1500"/>
+   </animation>
+  </tile>
+ </tileset>
+ <layer id="1" name="Back" width="12" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,2432,2433,0,0,2435,0,0,0,0,0,
+0,0,2450,2451,0,0,2453,0,0,0,0,0,
+2321,3221226781,1310,1309,1310,1309,1309,1310,1341,1341,1310,0,
+1341,1342,1341,1342,1341,1342,1342,1341,1342,1342,1310,0,
+2147485832,1342,1342,1342,1342,1342,1342,1342,1342,1342,1342,0,
+1373,1374,1374,1374,1374,1374,1374,1374,1374,1374,1374,0,
+0,1373,1373,1374,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="2" name="Buildings" width="12" height="8">
+  <data encoding="csv">
+2324,0,2414,2415,2417,2417,2417,0,2270,2271,2272,2218,
+2285,2286,2276,0,2435,2435,2287,2435,2288,2289,2290,2218,
+2303,2304,2294,2295,2453,2453,2314,2453,2306,2307,2308,2217,
+2152,2322,2312,2313,2258,2259,0,2429,2324,2325,2291,2233,
+2184,0,0,0,0,0,0,0,0,0,2309,2233,
+1359,0,0,0,0,0,0,0,0,0,2327,2233,
+1391,0,0,0,0,0,0,0,0,0,0,2235,
+2218,2236,0,2147485884,2218,2218,2218,2218,2218,2218,2218,2218
+</data>
+ </layer>
+ <layer id="3" name="Paths" width="12" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,9,9,9,0,
+0,0,0,0,9,9,0,0,0,0,9,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,9,0,0,0,9,0,0,9,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,9,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="4" name="Front" width="12" height="8">
+  <data encoding="csv">
+2267,2269,2269,2269,2269,2269,2269,2269,0,0,0,0,
+0,0,2287,2287,2287,2287,2296,2287,0,0,0,0,
+0,0,0,2277,2240,2241,0,2411,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,2379,0,
+2147485800,0,0,0,0,0,0,0,0,0,549,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+37,0,0,0,0,0,0,0,0,0,0,2218
+</data>
+ </layer>
+ <layer id="9" name="AlwaysFront" width="12" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,2296,2375,0,0,0,0,
+0,0,0,0,2222,2223,0,2393,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
+2249,0,0,0,0,0,0,0,0,0,0,0,
+2249,0,0,0,0,0,0,0,0,0,0,0,
+2249,0,0,0,0,0,0,0,0,0,0,0,
+2213,2147485864,0,2216,2214,2214,2214,2214,2214,2214,2250,0,
+0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="5" name="Back"/>
+ <objectgroup id="6" name="Buildings">
+  <object id="4" name="TileData" x="160" y="48" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="PathosCat"/>
+   </properties>
+  </object>
+  <object id="5" name="TileData" x="160" y="64" width="16" height="16">
+   <properties>
+    <property name="Action" value="Jukebox"/>
+   </properties>
+  </object>
+  <object id="6" name="TileData" x="32" y="32" width="16" height="16">
+   <properties>
+    <property name="CustomAction" value="RustyPipe"/>
+    <property name="IsLeaking" type="bool" value="false"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="Paths"/>
+ <objectgroup id="8" name="Front"/>
+ <objectgroup id="10" name="AlwaysFront"/>
+</map>

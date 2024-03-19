@@ -1,0 +1,8 @@
+{
+  "ScienceHouse_Carpenter_CommunityUpgrade1": "...那是什么？你想为潘姆建一间房子吗？好主意！^我只需要{{woodPieces}}块木头和{{goldPieces}}金...",
+  "ScienceHouse_Carpenter_CommunityUpgrade2": "……什么？你想让我在山谷周围加几条捷径？我当然能办到！ 我只需要 {{goldPieces}} 金……",
+  "ScienceHouse_Carpenter_NotEnoughWood3": "抱歉...钱是有，但我还缺{{woodPieces}}块木头。",
+
+  "Robin_PamUpgrade_Accepted": "你真慷慨！我明天就会开始升级。应会耗费{{daysUpgrade}}天左右时间。"
+
+}

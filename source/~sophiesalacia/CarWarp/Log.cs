@@ -12,20 +12,28 @@ using StardewModdingAPI;
 
 namespace CarWarp;
 
-// Credit to spacechase0
-internal class Log
+// Credit to kittycatcasey for initial version. i've iterated on it a bit :3
+internal static class Log
 {
     public static IMonitor Monitor;
 
-    public static void Verbose(string str) => Monitor.VerboseLog(str);
+    public static void Verbose(object obj) => Monitor.VerboseLog(obj.ToString() ?? string.Empty);
 
-    public static void Trace(string str) => Monitor.Log(str);
+    public static void Trace(object obj) => Monitor.Log(obj.ToString() ?? string.Empty);
 
-    public static void Debug(string str) => Monitor.Log(str, LogLevel.Debug);
+    // Only log Debug messages if compiled in Debug mode.
+    public static void Debug(object obj)
+    {
+#if DEBUG
 
-    public static void Info(string str) => Monitor.Log(str, LogLevel.Info);
+        Monitor.Log(obj.ToString() ?? string.Empty, LogLevel.Debug);
 
-    public static void Warn(string str) => Monitor.Log(str, LogLevel.Warn);
+#endif
+    }
 
-    public static void Error(string str) => Monitor.Log(str, LogLevel.Error);
+    public static void Info(object obj) => Monitor.Log(obj.ToString() ?? string.Empty, LogLevel.Info);
+
+    public static void Warn(object obj) => Monitor.Log(obj.ToString() ?? string.Empty, LogLevel.Warn);
+
+    public static void Error(object obj) => Monitor.Log(obj.ToString() ?? string.Empty, LogLevel.Error);
 }

@@ -14,23 +14,50 @@ using HarmonyLib;
 using NoFestivalTimer.Patches;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using StardewValley;
 
 namespace NoFestivalTimer;
 
 public class ModEntry : Mod
 {
+    private ModConfig Config { get; set; }
+    
     public override void Entry(IModHelper helper)
     {
-        helper.Events.GameLoop.SaveLoaded += this.SaveLoaded;
-        helper.Events.Content.AssetRequested += this.AssetRequested;
-        helper.Events.Content.AssetsInvalidated += this.AssetInvalidated;
+        helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+        helper.Events.GameLoop.SaveLoaded += SaveLoaded;
+        helper.Events.Content.AssetRequested += AssetRequested;
+        helper.Events.Content.AssetsInvalidated += AssetInvalidated;
+        helper.Events.Input.ButtonPressed += OnButtonPressed;
         
-        Mon = this.Monitor;
-        Help = this.Helper;
+        Config = Helper.ReadConfig<ModConfig>();
+        
+        Mon = Monitor;
+        Help = Helper;
 
-        var harmony = new Harmony(this.ModManifest.UniqueID);
+        var harmony = new Harmony(ModManifest.UniqueID);
 
         EventPatches.Apply(harmony);
+    }
+
+    private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+    {
+        var configMenu = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+        
+        // register mod
+        configMenu?.Register(
+            mod: ModManifest,
+            reset: () => Config = new ModConfig(),
+            save: () => Helper.WriteConfig(Config)
+        );
+        
+        configMenu?.AddKeybind(
+            mod: ModManifest,
+            name: () => Helper.Translation.Get("config.Keybind.name"),
+            tooltip: () => Helper.Translation.Get("config.Keybind.description"),
+            getValue: () => Config.ToggleButton,
+            setValue: value => Config.ToggleButton = value
+            );
     }
 
     private void SaveLoaded(object sender, SaveLoadedEventArgs e)
@@ -61,8 +88,20 @@ public class ModEntry : Mod
         Exclusions =Helper.GameContent.Load<Dictionary<string, ExclusionData>>($"Mods/{Help.ModRegistry.ModID}/Exclusions");
     }
 
+    private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+    {
+        if (e.Button != Config.ToggleButton)
+            return;
+        
+        Toggle = !Toggle;
+        var mode = Toggle ? "Strings/UI:Options_GamepadMode_ForceOn" : "Strings/UI:Options_GamepadMode_ForceOff";
+        Game1.addHUDMessage(new HUDMessage(Game1.content.LoadString(mode),Toggle ? 3 : 2));
+        Game1.playSound(Toggle ? "coin" : "cancel");
+    }
+
     public static Dictionary<string, ExclusionData> Exclusions { get; set; } = new();
 
     internal static IModHelper Help { get; set; }
     internal static IMonitor Mon { get; set; }
+    internal static bool Toggle { get; set; } = true;
 }

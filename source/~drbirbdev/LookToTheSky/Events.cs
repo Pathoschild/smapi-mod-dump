@@ -33,56 +33,53 @@ internal class Events
         {
             return;
         }
-        if (Game1.random.Next(100) < ModEntry.Config.SpawnChancePerSecond)
+
+        if (Game1.random.Next(100) >= ModEntry.Config.SpawnChancePerSecond)
         {
-            int rand = Game1.random.Next(100);
-            if (rand <= 10)
+            return;
+        }
+
+        int rand = Game1.random.Next(100);
+        switch (rand)
+        {
+            case <= 10 when Game1.timeOfDay >= 1800:
             {
-                if (Game1.timeOfDay >= 1800)
+                if (Game1.currentSeason == "winter" && Game1.dayOfMonth == 25)
                 {
-                    if (Game1.currentSeason == "winter" && Game1.dayOfMonth == 25)
-                    {
-                        ModEntry.Instance.SkyObjects.Add(new Santa(rand % 5 * 10, rand % 2 == 0));
-                    }
-                    else
-                    {
-                        ModEntry.Instance.SkyObjects.Add(new UFO(rand % 5 * 10, rand % 2 == 0));
-                    }
+                    ModEntry.Instance.SkyObjects.Add(new Santa(rand % 5 * 10, rand % 2 == 0));
                 }
                 else
                 {
-                    ModEntry.Instance.SkyObjects.Add(new Plane(rand % 5 * 10, rand % 2 == 0));
+                    ModEntry.Instance.SkyObjects.Add(new UFO(rand % 5 * 10, rand % 2 == 0));
                 }
+
+                break;
             }
-            else if (rand <= 20)
-            {
-                if (Game1.timeOfDay >= 1800)
+            case <= 10:
+                ModEntry.Instance.SkyObjects.Add(new Plane(rand % 5 * 10, rand % 2 == 0));
+                break;
+            case <= 20 when Game1.timeOfDay >= 1800:
+                ModEntry.Instance.SkyObjects.Add(new Witch(rand % 5 * 10, rand % 2 == 0));
+                break;
+            case <= 20:
+                ModEntry.Instance.SkyObjects.Add(new Bird(20, rand % 2 == 0));
+                Task.Delay(2000).ContinueWith(t =>
                 {
-                    ModEntry.Instance.SkyObjects.Add(new Witch(rand % 5 * 10, rand % 2 == 0));
-                }
-                else
+                    ModEntry.Instance.SkyObjects.Add(new Bird(25, rand % 2 == 0));
+                    ModEntry.Instance.SkyObjects.Add(new Bird(15, rand % 2 == 0));
+                });
+                Task.Delay(4000).ContinueWith(t =>
                 {
-                    ModEntry.Instance.SkyObjects.Add(new Bird(20, rand % 2 == 0));
-                    Task.Delay(2000).ContinueWith((t) =>
-                    {
-                        ModEntry.Instance.SkyObjects.Add(new Bird(25, rand % 2 == 0));
-                        ModEntry.Instance.SkyObjects.Add(new Bird(15, rand % 2 == 0));
-                    });
-                    Task.Delay(4000).ContinueWith((t) =>
-                    {
-                        ModEntry.Instance.SkyObjects.Add(new Bird(30, rand % 2 == 0));
-                        ModEntry.Instance.SkyObjects.Add(new Bird(10, rand % 2 == 0));
-                    });
-                }
-            }
-            else if (rand <= 30 && Game1.player.eventsSeen.Contains("10"))
-            {
+                    ModEntry.Instance.SkyObjects.Add(new Bird(30, rand % 2 == 0));
+                    ModEntry.Instance.SkyObjects.Add(new Bird(10, rand % 2 == 0));
+                });
+                break;
+            case <= 30 when Game1.player.eventsSeen.Contains("10"):
                 ModEntry.Instance.SkyObjects.Add(new Robot(rand % 5 * 10, rand % 2 == 0));
-            }
-            else
-            {
+                break;
+            default:
                 ModEntry.Instance.SkyObjects.Add(new Bird(rand, rand % 2 == 0));
-            }
+                break;
         }
     }
 
@@ -121,16 +118,12 @@ internal class Events
     [SEvent.ButtonPressed]
     private void Input_ButtonPressed(object sender, StardewModdingAPI.Events.ButtonPressedEventArgs e)
     {
-        if (Context.IsWorldReady && Context.CanPlayerMove && Game1.currentLocation.IsOutdoors && e.Button.Equals(ModEntry.Config.Button))
+        if (!Context.IsWorldReady || !Context.CanPlayerMove || !Game1.currentLocation.IsOutdoors ||
+            !e.Button.Equals(ModEntry.Config.Button))
         {
-            if (Game1.activeClickableMenu is SkyMenu)
-            {
-                Game1.activeClickableMenu = null;
-            }
-            else
-            {
-                Game1.activeClickableMenu = new SkyMenu();
-            }
+            return;
         }
+
+        Game1.activeClickableMenu = Game1.activeClickableMenu is SkyMenu ? null : new SkyMenu();
     }
 }

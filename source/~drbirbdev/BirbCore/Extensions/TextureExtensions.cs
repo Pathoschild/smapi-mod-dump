@@ -21,7 +21,7 @@ public static class TextureExtensions
     {
         if (x < 0 || y < 0 || width <= 0 || height <= 0 || x + width > texture.Width || y + height > texture.Height)
         {
-            throw new ArgumentOutOfRangeException(nameof(GetTextureRect), "subtexture rect must be within texture");
+            throw new ArgumentOutOfRangeException(nameof(texture), "subtexture rect must be within texture");
         }
 
         Color[] color = new Color[width * height];
@@ -34,8 +34,8 @@ public static class TextureExtensions
                 i++;
             }
         }
-        Texture2D result = new Texture2D(Game1.graphics.GraphicsDevice, width, height);
-        result.SetData<Color>(color);
+        Texture2D result = new(Game1.graphics.GraphicsDevice, width, height);
+        result.SetData(color);
         return result;
     }
 
@@ -43,7 +43,7 @@ public static class TextureExtensions
     {
         if (x < 0 || y < 0 || x > texture.Width || y > texture.Height)
         {
-            throw new ArgumentOutOfRangeException(nameof(GetTextureRect), "pixel must be within texture");
+            throw new ArgumentOutOfRangeException(nameof(texture), "pixel must be within texture");
         }
         return texture.Data[x + (y * texture.Width)];
     }

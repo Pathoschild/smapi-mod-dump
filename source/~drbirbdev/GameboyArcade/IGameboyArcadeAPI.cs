@@ -10,7 +10,7 @@
 
 namespace GameboyArcade
 {
-    public interface IGameboyArcadeAPI
+    public interface IGameboyArcadeApi
     {
         /// <summary>
         /// Look for the given game by id, else look for a game of the same name.

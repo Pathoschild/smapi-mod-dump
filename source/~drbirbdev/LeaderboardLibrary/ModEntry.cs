@@ -22,13 +22,13 @@ namespace LeaderboardLibrary;
 [SMod]
 public class ModEntry : Mod
 {
-    private static readonly string IDENTITY_POOL = "us-west-2:2e234341-a166-4d68-94f8-f2e1ffb14e73";
+    private const string IDENTITY_POOL = "us-west-2:2e234341-a166-4d68-94f8-f2e1ffb14e73";
+    private const string GLOBAL_DATA_KEY = "leaderboard-global";
     private static readonly RegionEndpoint REGION = RegionEndpoint.USWest2;
-    private static readonly string GLOBAL_DATA_KEY = "leaderboard-global";
+    internal static readonly PerScreen<GlobalModData> GLOBAL_MOD_DATA = new();
 
     [SMod.Instance]
     internal static ModEntry Instance;
-    internal static readonly PerScreen<GlobalModData> GlobalModData = new PerScreen<GlobalModData>();
     internal static LocalModData LocalModData;
 
     internal static AmazonDynamoDBClient DdbClient;
@@ -37,32 +37,36 @@ public class ModEntry : Mod
     {
         Parser.ParseAll(this);
 
-        GlobalModData.SetValueForScreen(0, this.Helper.Data.ReadGlobalData<GlobalModData>(GLOBAL_DATA_KEY));
-        if (GlobalModData.Value is null)
+        GLOBAL_MOD_DATA.SetValueForScreen(0, this.Helper.Data.ReadGlobalData<GlobalModData>(GLOBAL_DATA_KEY));
+        if (GLOBAL_MOD_DATA.Value is null)
         {
             Log.Debug("Creating new global leaderboard data...");
-            GlobalModData.SetValueForScreen(0, new GlobalModData());
-            this.Helper.Data.WriteGlobalData<GlobalModData>(GLOBAL_DATA_KEY, GlobalModData.Value);
+            GLOBAL_MOD_DATA.SetValueForScreen(0, new GlobalModData());
+            this.Helper.Data.WriteGlobalData(GLOBAL_DATA_KEY, GLOBAL_MOD_DATA.Value);
         }
-        Log.Debug($"Using leaderboard identity {GlobalModData?.Value?.UserUUID ?? ""} and secret staring with {GlobalModData?.Value?.Secret?[..3]}" ?? "");
+        Log.Debug($"Using leaderboard identity {GLOBAL_MOD_DATA?.Value?.UserUuid ?? ""} and secret staring with {GLOBAL_MOD_DATA?.Value?.Secret?[..3]}");
 
 
         LocalModData = this.Helper.Data.ReadJsonFile<LocalModData>("data/cached_leaderboards.json");
         if (LocalModData is null)
         {
             Log.Debug("Creating new local leaderboard cache...");
-            LocalModData = new LocalModData(GlobalModData.Value.UserUUID);
-            this.Helper.Data.WriteJsonFile<LocalModData>("data/cached_leaderboards.json", LocalModData);
+            if (GLOBAL_MOD_DATA is { Value: not null })
+            {
+                LocalModData = new LocalModData(GLOBAL_MOD_DATA.Value.UserUuid);
+            }
+
+            this.Helper.Data.WriteJsonFile("data/cached_leaderboards.json", LocalModData);
         }
 
 #pragma warning disable CA2000
-        CognitoAWSCredentials credentials = new CognitoAWSCredentials(IDENTITY_POOL, REGION);
+        CognitoAWSCredentials credentials = new(IDENTITY_POOL, REGION);
 #pragma warning restore CA2000
         Log.Debug("Using temporary credentials: " + credentials.GetIdentityId());
         DdbClient = new AmazonDynamoDBClient(credentials, REGION);
 
         this.Helper.Events.GameLoop.SaveLoaded += this.GameLoop_SaveLoaded;
-        this.Helper.Events.Multiplayer.ModMessageReceived += this.Multiplayer_ModMessageReceived;
+        this.Helper.Events.Multiplayer.ModMessageReceived += Multiplayer_ModMessageReceived;
         this.Helper.Events.Multiplayer.PeerConnected += this.Multiplayer_PeerConnected;
     }
 
@@ -70,32 +74,40 @@ public class ModEntry : Mod
     {
         if (!Context.IsMainPlayer)
         {
-            this.Helper.Multiplayer.SendMessage<string>(GlobalModData.Value.UserUUID, "ShareUUID", new[] { this.ModManifest.UniqueID });
+            this.Helper.Multiplayer.SendMessage(GLOBAL_MOD_DATA.Value.UserUuid, "ShareUUID", [this.ModManifest.UniqueID]);
         }
     }
 
     private void Multiplayer_PeerConnected(object sender, StardewModdingAPI.Events.PeerConnectedEventArgs e)
     {
-        this.Helper.Multiplayer.SendMessage<string>(GlobalModData.Value.UserUUID, "ShareUUID", new[] { this.ModManifest.UniqueID });
-        if (e.Peer.IsSplitScreen)
+        this.Helper.Multiplayer.SendMessage(GLOBAL_MOD_DATA.Value.UserUuid, "ShareUUID", [this.ModManifest.UniqueID]);
+        if (!e.Peer.IsSplitScreen)
         {
-            if (e.Peer.ScreenID != 0)
-            {
-                GlobalModData globalData = new GlobalModData()
-                {
-                    UserUUID = $"{GlobalModData.GetValueForScreen(0).UserUUID}+guest",
-                    Secret = GlobalModData.GetValueForScreen(0).Secret,
-                };
-                GlobalModData.SetValueForScreen(e.Peer.ScreenID.Value, globalData);
-            }
+            return;
+        }
+
+        if (e.Peer.ScreenID == 0)
+        {
+            return;
+        }
+
+        GlobalModData globalData = new()
+        {
+            UserUuid = $"{GLOBAL_MOD_DATA.GetValueForScreen(0).UserUuid}+guest",
+            Secret = GLOBAL_MOD_DATA.GetValueForScreen(0).Secret
+        };
+
+        if (e.Peer.ScreenID != null)
+        {
+            GLOBAL_MOD_DATA.SetValueForScreen(e.Peer.ScreenID.Value, globalData);
         }
     }
 
-    private void Multiplayer_ModMessageReceived(object sender, StardewModdingAPI.Events.ModMessageReceivedEventArgs e)
+    private static void Multiplayer_ModMessageReceived(object sender, StardewModdingAPI.Events.ModMessageReceivedEventArgs e)
     {
-        if (e.FromModID == ModEntry.Instance.ModManifest.UniqueID && e.Type == "ShareUUID" && e.FromPlayerID != Game1.player.UniqueMultiplayerID)
+        if (e.FromModID == Instance.ModManifest.UniqueID && e.Type == "ShareUUID" && e.FromPlayerID != Game1.player.UniqueMultiplayerID)
         {
-            LocalModData.MultiplayerUUIDs.Add(e.ReadAs<string>());
+            LocalModData.MultiplayerUuiDs.Add(e.ReadAs<string>());
         }
     }
 
@@ -103,12 +115,12 @@ public class ModEntry : Mod
     {
         if (TryAddModToCache(mod.Manifest.UniqueID))
         {
-            this.Helper.Data.WriteJsonFile<LocalModData>("data/cached_leaderboards.json", LocalModData);
+            this.Helper.Data.WriteJsonFile("data/cached_leaderboards.json", LocalModData);
         }
-        return new LeaderboardAPI(mod.Manifest.UniqueID);
+        return new LeaderboardApi(mod.Manifest.UniqueID);
     }
 
-    public static bool TryAddModToCache(string modId)
+    private static bool TryAddModToCache(string modId)
     {
         bool result = false;
         if (!LocalModData.LocalLeaderboards.ContainsKey(modId))
@@ -116,11 +128,13 @@ public class ModEntry : Mod
             LocalModData.LocalLeaderboards.Add(modId, new Dictionary<string, List<LeaderboardStat>>());
             result = true;
         }
-        if (!LocalModData.TopLeaderboards.ContainsKey(modId))
+
+        if (LocalModData.TopLeaderboards.ContainsKey(modId))
         {
-            LocalModData.TopLeaderboards.Add(modId, new Dictionary<string, List<LeaderboardStat>>());
-            result = true;
+            return result;
         }
-        return result;
+
+        LocalModData.TopLeaderboards.Add(modId, new Dictionary<string, List<LeaderboardStat>>());
+        return true;
     }
 }

@@ -133,6 +133,13 @@ tile-building_animal_door-suffix = {$name} Animal Door {$is_open ->
 tile-mine_shaft-coal_bag = Bag
 tile-mine_shaft-dirt = Dirt
 tile-mine_shaft-duggy_hole = Duggy Hole
+tile-pet_bowl-prefix = {$is_in_use ->
+    [0] Unused
+    *[1] {$is_empty ->
+      [0] {EMPTYSTRING()}
+      *[1] Empty
+    }
+  } {$name}
 
 ## Interactable Tiles
 
@@ -149,6 +156,10 @@ tile_name-special_quest_board = Special Quest Board
 tile-museum_piece_showcase-suffix = {$content} Showcase
 tile_name-fridge = Fridge
 tile_name-mail_box = Mail Box
+tile-mail_box-unread_mail_count-prefix = {$mail_count} {$mail_count ->
+    [1] unread mail in
+    *[0] unread mails in
+  } {$content}
 tile_name-stove = Stove
 tile_name-sink = Sink
 tile-railroad-witch_statue-name = Witch Statue
@@ -244,6 +255,7 @@ npc-farm_animal_info = {$name}, {$type}, {$age} {$age ->
     [1] month
     *[other] months
   }
+npc_name-horse_with_no_name = A horse with no name
 
 # Event Tiles
 
@@ -282,12 +294,12 @@ terrain_util-tree_type = {$type ->
     [1] Oak
     [2] Maple
     [3] Pine
-    [4] Winter Tree
-    [5] Winter Tree
-    [6] Palm Tree
-    [7] Mushroom Tree
+    [4] Oak
+    [5] Maple
+    [6] Palm
+    [7] Mushroom
     [8] Mahogany
-    [9] Palm Tree
+    [9] Palm
     *[other] Unknown tree type number {$type}
   }
 terrain_util-tree-seedling = seedling
@@ -322,28 +334,31 @@ terrain_util-fertilized = Fertilized
 
 # Object Categories
 
-object_category-farmer = Farmer
 object_category-animal = Animal
-object_category-npc = NPC
-object_category-furniture = Furniture
-object_category-flooring = Flooring
-object_category-debris = Debris
-object_category-crop = Crop
-object_category-tree = Tree
-object_category-bush = Bush
-object_category-building = Building
-object_category-mine_item = Mine item
-object_category-resource_clump = Resource clump
-object_category-container = Container
-object_category-bundle = Bundle
-object_category-door = Door
-object_category-water = Water
-object_category-interactable = Interactable
-object_category-decoration = Decoration
-object_category-machine = Machine
 object_category-bridge = Bridge
+object_category-building = Building
+object_category-bundle = Bundle
+object_category-bush = Bush
+object_category-container = Container
+object_category-crop = Crop
+object_category-debris = Debris
+object_category-decoration = Decoration
+object_category-door = Door
 object_category-dropped_item = Dropped item
+object_category-farmer = Farmer
 object_category-fishing = Fishing
+object_category-fishpond = Fish Pond
+object_category-flooring = Flooring
+object_category-furniture = Furniture
+object_category-interactable = Interactable
+object_category-machine = Machine
+object_category-mine_item = Mine item
+object_category-npc = NPC
+object_category-pending = Pending
+object_category-ready = Ready
+object_category-resource_clump = Resource clump
+object_category-tree = Tree
+object_category-water = Water
 object_category-other = Other
 
 direction-north = North

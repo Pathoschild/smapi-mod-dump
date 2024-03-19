@@ -11,10 +11,10 @@
 {
   "Name": "StardewSurvivalProject",
   "Author": "NeroYuki",
-  "Version": "0.3.5-hf1-alpha",
+  "Version": "0.4.0-alpha",
   "Description": "A mod aim to add and alter Stardew Valley's game mechanic for additional layer of realism (one may call this a bit masochist but who care lol)",
   "UniqueID": "neroyuki.rlvalley",
   "EntryDll": "StardewSurvivalProject.dll",
-  "MinimumApiVersion": "3.16.0",
+  "MinimumApiVersion": "3.18.0",
   "UpdateKeys": [ "Nexus:14183" ]
 }

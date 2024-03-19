@@ -11,10 +11,10 @@
 {
   "Name": "AutoTrash",
   "Author": "S1mmyy",
-  "Version": "1.2.0",
+  "Version": "2.0.0",
   "Description": "Trashes items specified by the player when they're picked up.",
   "UniqueID": "S1mmyy.AutoTrash",
   "EntryDll": "AutoTrash.dll",
-  "MinimumApiVersion": "3.1",
+  "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [ "Nexus:5140" ]
 }

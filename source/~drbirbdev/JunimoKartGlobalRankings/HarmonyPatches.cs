@@ -25,14 +25,14 @@ class MineCart_Die
     {
         try
         {
-            if (!ModEntry.LeaderboardAPI.UploadScore("JunimoKartScore", ___score))
+            if (!ModEntry.LeaderboardApi.UploadScore("JunimoKartScore", ___score))
             {
                 Log.Error("Failed to upload JunimoKart high score");
             }
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
         }
     }
 
@@ -47,13 +47,13 @@ class NetLeaderboards_AddScore
         {
             if (Game1.player.Name == name)
             {
-                ModEntry.LeaderboardAPI.UploadScore("JunimoKartScore", score);
+                ModEntry.LeaderboardApi.UploadScore("JunimoKartScore", score);
             }
             return false;
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
         }
         return true;
     }
@@ -66,8 +66,8 @@ class NetLeaderboards_GetScores
     {
         try
         {
-            __result = new List<KeyValuePair<string, int>>();
-            foreach (Dictionary<string, string> record in ModEntry.LeaderboardAPI.GetTopN("JunimoKartScore", 5))
+            __result = [];
+            foreach (Dictionary<string, string> record in ModEntry.LeaderboardApi.GetTopN("JunimoKartScore", 5))
             {
                 _ = int.TryParse(record["Score"], out int score);
                 __result.Add(new KeyValuePair<string, int>(record["Name"], score));
@@ -85,7 +85,7 @@ class NetLeaderboards_GetScores
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
         }
         return true;
     }
@@ -103,13 +103,13 @@ class NetLeaderboards_LoadScores
         }
         catch (Exception e)
         {
-            Log.Error($"Failed in {MethodBase.GetCurrentMethod().DeclaringType}\n{e}");
+            Log.Error($"Failed in {MethodBase.GetCurrentMethod()?.DeclaringType}\n{e}");
         }
         return true;
     }
 
     private static void GameLoop_SaveLoaded(object sender, StardewModdingAPI.Events.SaveLoadedEventArgs e)
     {
-        ModEntry.LeaderboardAPI.RefreshCache("JunimoKartScore");
+        ModEntry.LeaderboardApi.RefreshCache("JunimoKartScore");
     }
 }

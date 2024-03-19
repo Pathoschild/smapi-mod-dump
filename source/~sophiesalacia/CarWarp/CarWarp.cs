@@ -17,9 +17,9 @@ namespace CarWarp;
 
 class CarWarp
 {
-    private static Dictionary<string, WarpLocationModel> WarpLocations;
+    private static Dictionary<string, WarpLocationModel> WarpLocations = new();
 
-    private readonly Building Car;
+    private readonly Building? Car;
     private readonly Vector2 CarDriversSeat;
 
     private const float LeftSideOffset = 1f;
@@ -57,10 +57,14 @@ class CarWarp
         foreach ((string key, WarpLocationModel warpLoc) in WarpLocations)
         {
             // validate destination before adding response
-            if (IsValidLocation(warpLoc.Location))
+            if (IsValidLocation(warpLoc.Location ?? ""))
             {
                 // add response keyed to the warp location model key
-                responses.Add(new Response(key, warpLoc.DisplayName));
+                responses.Add(new Response(key, warpLoc.DisplayName ?? ""));
+            }
+            else
+            {
+                Log.Error($"Could not find valid location matching ID \"{warpLoc.Location ?? ""}\". Aborting warp.");
             }
         }
 
@@ -103,13 +107,13 @@ class CarWarp
         int enginePitch = Game1.random.Next(1000, 2000);
 
         // play engine starting up sound after 1 second
-        DelayedAction.playSoundAfterDelay("busDriveOff", 1000, Game1.currentLocation, enginePitch);
+        DelayedAction.playSoundAfterDelay("busDriveOff", 1000, Game1.currentLocation, Game1.player.Tile, enginePitch);
 
         // 5% chance to "honk" horn
         if (Game1.random.Next(99) < 5)
         {
-            DelayedAction.playSoundAfterDelay("Duck", 3000, Game1.currentLocation, enginePitch * 8);
-            DelayedAction.playSoundAfterDelay("Duck", 3250, Game1.currentLocation, enginePitch * 8);
+            DelayedAction.playSoundAfterDelay("Duck", 3000, Game1.currentLocation,  Game1.player.Tile,enginePitch * 8);
+            DelayedAction.playSoundAfterDelay("Duck", 3250, Game1.currentLocation,  Game1.player.Tile,enginePitch * 8);
         }
 
         // initiate warp after roughly 3 seconds
@@ -152,7 +156,7 @@ class CarWarp
     private float GetClosestSide()
     {
         float playerX = Game1.player.Position.X;
-        float carX = Car.tileX.Value * 64f;
+        float carX = Car?.tileX.Value * 64f ?? playerX - 32f;
         return playerX < carX ? 1f : 2f;
     }
 }

@@ -17,7 +17,6 @@ namespace PuzzleFloor;
 [HarmonyPatch(typeof(Furniture), nameof(Furniture.updateRotation))]
 internal class Furniture_UpdateRotation
 {
-
     public static bool Prefix(Furniture __instance)
     {
         if (!__instance.QualifiedItemId.StartsWith("(F)drbirbdev.PuzzleFloor"))
@@ -34,14 +33,18 @@ internal class Furniture_UpdateRotation
                 2 => new Point(-1, 1),
                 5 => new Point(-1, 0),
                 3 => new Point(-1, 1),
-                _ => Point.Zero,
+                _ => Point.Zero
             };
-            bool differentSizesFor2Rotations = (__instance.rotations.Value == 2 && __instance.furniture_type.Value == 5) || __instance.furniture_type.Value == 12 || __instance.QualifiedItemId == "(F)724" || __instance.QualifiedItemId == "(F)727";
+            bool differentSizesFor2Rotations =
+                (__instance.rotations.Value == 2 && __instance.furniture_type.Value == 5) ||
+                __instance.furniture_type.Value == 12 || __instance.QualifiedItemId == "(F)724" ||
+                __instance.QualifiedItemId == "(F)727";
             bool sourceRectRotate = __instance.defaultBoundingBox.Width != __instance.defaultBoundingBox.Height;
             if (differentSizesFor2Rotations && __instance.currentRotation.Value == 2)
             {
                 __instance.currentRotation.Value = 1;
             }
+
             if (sourceRectRotate)
             {
                 int oldBoundingBoxHeight = __instance.boundingBox.Height;
@@ -59,7 +62,9 @@ internal class Furniture_UpdateRotation
                         break;
                 }
             }
-            Point specialSpecialSourceRectOffset = (__instance.furniture_type.Value == 12) ? new Point(1, -1) : Point.Zero;
+
+            Point specialSpecialSourceRectOffset =
+                (__instance.furniture_type.Value == 12) ? new Point(1, -1) : Point.Zero;
             if (sourceRectRotate)
             {
                 switch (__instance.currentRotation.Value)
@@ -68,13 +73,29 @@ internal class Furniture_UpdateRotation
                         __instance.sourceRect.Value = __instance.defaultSourceRect.Value;
                         break;
                     case 1:
-                        __instance.sourceRect.Value = new Rectangle(__instance.defaultSourceRect.X + __instance.defaultSourceRect.Width, __instance.defaultSourceRect.Y, __instance.defaultSourceRect.Height - 16 + (specialRotationOffsets.Y * 16) + (specialSpecialSourceRectOffset.X * 16), __instance.defaultSourceRect.Width + 16 + (specialRotationOffsets.X * 16) + (specialSpecialSourceRectOffset.Y * 16));
+                        __instance.sourceRect.Value = new Rectangle(
+                            __instance.defaultSourceRect.X + __instance.defaultSourceRect.Width,
+                            __instance.defaultSourceRect.Y,
+                            __instance.defaultSourceRect.Height - 16 + (specialRotationOffsets.Y * 16) +
+                            (specialSpecialSourceRectOffset.X * 16),
+                            __instance.defaultSourceRect.Width + 16 + (specialRotationOffsets.X * 16) +
+                            (specialSpecialSourceRectOffset.Y * 16));
                         break;
                     case 2:
-                        __instance.sourceRect.Value = new Rectangle(__instance.defaultSourceRect.X + __instance.defaultSourceRect.Width + __instance.defaultSourceRect.Height - 16 + (specialRotationOffsets.Y * 16) + (specialSpecialSourceRectOffset.X * 16), __instance.defaultSourceRect.Y, __instance.defaultSourceRect.Width, __instance.defaultSourceRect.Height);
+                        __instance.sourceRect.Value = new Rectangle(
+                            __instance.defaultSourceRect.X + __instance.defaultSourceRect.Width +
+                            __instance.defaultSourceRect.Height - 16 + (specialRotationOffsets.Y * 16) +
+                            (specialSpecialSourceRectOffset.X * 16), __instance.defaultSourceRect.Y,
+                            __instance.defaultSourceRect.Width, __instance.defaultSourceRect.Height);
                         break;
                     case 3:
-                        __instance.sourceRect.Value = new Rectangle(__instance.defaultSourceRect.X + __instance.defaultSourceRect.Width, __instance.defaultSourceRect.Y, __instance.defaultSourceRect.Height - 16 + (specialRotationOffsets.Y * 16) + (specialSpecialSourceRectOffset.X * 16), __instance.defaultSourceRect.Width + 16 + (specialRotationOffsets.X * 16) + (specialSpecialSourceRectOffset.Y * 16));
+                        __instance.sourceRect.Value = new Rectangle(
+                            __instance.defaultSourceRect.X + __instance.defaultSourceRect.Width,
+                            __instance.defaultSourceRect.Y,
+                            __instance.defaultSourceRect.Height - 16 + (specialRotationOffsets.Y * 16) +
+                            (specialSpecialSourceRectOffset.X * 16),
+                            __instance.defaultSourceRect.Width + 16 + (specialRotationOffsets.X * 16) +
+                            (specialSpecialSourceRectOffset.Y * 16));
                         __instance.Flipped = true;
                         break;
                 }
@@ -82,15 +103,19 @@ internal class Furniture_UpdateRotation
             else
             {
                 __instance.Flipped = __instance.currentRotation.Value == 3;
-                if ((int)__instance.rotations.Value == 2)
-                {
-                    __instance.sourceRect.Value = new Rectangle(__instance.defaultSourceRect.X + (((__instance.currentRotation.Value == 2) ? 1 : 0) * __instance.defaultSourceRect.Width), __instance.defaultSourceRect.Y, __instance.defaultSourceRect.Width, __instance.defaultSourceRect.Height);
-                }
-                else
-                {
-                    __instance.sourceRect.Value = new Rectangle(__instance.defaultSourceRect.X + (((__instance.currentRotation.Value == 3) ? 1 : __instance.currentRotation.Value) * __instance.defaultSourceRect.Width), __instance.defaultSourceRect.Y, __instance.defaultSourceRect.Width, __instance.defaultSourceRect.Height);
-                }
+                __instance.sourceRect.Value = __instance.rotations.Value == 2
+                    ? new Rectangle(
+                        __instance.defaultSourceRect.X + (((__instance.currentRotation.Value == 2) ? 1 : 0) *
+                                                          __instance.defaultSourceRect.Width),
+                        __instance.defaultSourceRect.Y, __instance.defaultSourceRect.Width,
+                        __instance.defaultSourceRect.Height)
+                    : new Rectangle(
+                        __instance.defaultSourceRect.X +
+                        (((__instance.currentRotation.Value == 3) ? 1 : __instance.currentRotation.Value) *
+                         __instance.defaultSourceRect.Width), __instance.defaultSourceRect.Y,
+                        __instance.defaultSourceRect.Width, __instance.defaultSourceRect.Height);
             }
+
             if (differentSizesFor2Rotations && __instance.currentRotation.Value == 1)
             {
                 __instance.currentRotation.Value = 2;
@@ -101,6 +126,7 @@ internal class Furniture_UpdateRotation
             __instance.sourceRect.Value = __instance.defaultSourceRect.Value;
             __instance.boundingBox.Value = __instance.defaultBoundingBox.Value;
         }
+
         __instance.updateDrawPosition();
 
         return false;

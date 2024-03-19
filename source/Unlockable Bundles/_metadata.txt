@@ -6,9 +6,9 @@ mods:
    Unlockable Bundles
 
 latest commit:
-   commit 8e34e9fe6b551a5faa156ba44848d5d68b1fa25b
+   commit 15f1d9a8c5c6e4b3d3a43420fd7fe312107a4b3a
    Author: DeLiXx <fake122344@gmail.com>
-   Date:   Wed Mar 13 18:36:58 2024 +0100
+   Date:   Sat Mar 16 19:59:59 2024 +0100
    
-       misunderstood IsSplitscreen fix
+       fixed a bug in multiplayer
    

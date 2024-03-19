@@ -165,6 +165,7 @@ menu-inventory_page-money_info_key = {$farm_name}, {$current_funds}, {$total_ear
 menu-social_page-npc_info = {$name}{$has_talked ->
     [0] , not talked yet
     *[1] {EMPTYSTRING()}
+    [2] , not met yet
   }{$relationship_status ->
     [null] {EMPTYSTRING()}
     *[other] , {$relationship_status}
@@ -176,6 +177,10 @@ menu-social_page-npc_info = {$name}{$has_talked ->
     *[other] gifts
   } given this week.
 
+menu-social_page-player_info = {$name}{$relationship_status ->
+    [null] {EMPTYSTRING()}
+    *[other] , {$relationship_status}
+  }
 
 ### Crafting Page
 
@@ -191,6 +196,20 @@ menu-crafting_page-next_recipe_list_button = Next recipe list button
 
 menu-exit_page-exit_to_title_button = Exit to title button
 menu-exit_page-exit_to_desktop_button = Exit to desktop button
+
+### Skills Page
+
+menu-skills_page-player_info = {$name}, {$title}{$golden_walnut_count ->
+    [0] {EMPTYSTRING()}
+    [1] , 1 Golden Walnut
+    *[other] , {$golden_walnut_count} Golden Walnuts
+  }{$qi_gem_count ->
+    [0] {EMPTYSTRING()}
+    [1] , 1 Qi gem
+    *[other] , {$qi_gem_count} Qi gems
+  }
+menu-skills_page-skill_info = {$name} at level {$level},
+  {$buffs}
 
 ## Menus With Inventory
 
@@ -253,6 +272,7 @@ menu-item_grab-chest_colors =
 ### Shop menu
 
 menu-shop-buy_price_info = Buy price: {$price}g
+menu-shop-recipe_ingredients_info = Ingredients: {$ingredients_list}
 
 ### Tailoring Menu
 
@@ -418,12 +438,9 @@ menu-shipping-money_received_from_category_info = {$money}g received from {$cate
 menu-billboard-calendar-day_info = {$is_current ->
     [0] {EMPTYSTRING()}
     *[1] Current
-  } Day {$day}{$day_name ->
-    [null] {EMPTYSTRING()}
-    *[other] , {$day_name}
-  }{$day ->
-    [1] of {$season} year {$year}
-    *[other] {EMPTYSTRING()}
+  } Day {$day ->
+    [1] {$day} of {$season} year {$year}
+    *[other] {$day}
   }{$extra_info ->
     [null] {EMPTYSTRING()}
     *[other] , {$extra_info}

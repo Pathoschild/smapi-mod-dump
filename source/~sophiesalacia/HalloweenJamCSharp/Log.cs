@@ -14,21 +14,23 @@ using StardewModdingAPI;
 namespace HalloweenJamCSharp;
 
 // Credit to kittycatcasey for initial version. i've iterated on it a bit :3
-internal class Log
+internal static class Log
 {
 	public static IMonitor Monitor;
 
 	public static void Verbose(object obj) => Monitor.VerboseLog(obj.ToString() ?? string.Empty);
 
-	// Only log Trace messages if compiled in Debug mode.
+	public static void Trace(object obj) => Monitor.Log(obj.ToString() ?? string.Empty);
+
+	// Only log Debug messages if compiled in Debug mode.
 	public static void Debug(object obj)
 	{
-        #if DEBUG
-		Monitor.Log(obj.ToString() ?? string.Empty, LogLevel.Debug);
-        #endif
-	}
+		#if DEBUG
 
-	public static void Trace(object obj) => Monitor.Log(obj.ToString() ?? string.Empty);
+		Monitor.Log(obj.ToString() ?? string.Empty, LogLevel.Debug);
+
+		#endif
+	}
 
 	public static void Info(object obj) => Monitor.Log(obj.ToString() ?? string.Empty, LogLevel.Info);
 

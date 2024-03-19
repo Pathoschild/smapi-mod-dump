@@ -16,15 +16,15 @@ namespace StardewSurvivalProject.source.data
 {
     public class ItemNameCache
     {
-        public static Dictionary<string, int> name_to_id = new Dictionary<string, int>();
+        public static Dictionary<string, string> name_to_id = new Dictionary<string, string>();
         
         //return false if cant find the item
         public static bool cacheItem(string name)
         {
-            foreach (KeyValuePair<int, string> itemInfoString in Game1.objectInformation)
+            foreach (KeyValuePair<string, StardewValley.GameData.Objects.ObjectData> itemInfoString in Game1.objectData)
             {
                 //check string start for object name
-                if (itemInfoString.Value.StartsWith(name + "/"))
+                if (itemInfoString.Value.Name.StartsWith(name))
                 {
                     name_to_id.Add(name, itemInfoString.Key);
                     return true;
@@ -38,13 +38,13 @@ namespace StardewSurvivalProject.source.data
             name_to_id.Clear();
         }
 
-        public static int getIDFromCache(string name)
+        public static string getIDFromCache(string name)
         {
             if (name_to_id.ContainsKey(name))
             {
                 return name_to_id[name];
             }
-            return -1;
+            return "-1";
         }
     }
 }

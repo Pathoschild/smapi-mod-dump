@@ -16,10 +16,19 @@ using StardewValley.Projectiles;
 
 namespace LookToTheSky;
 
-public class SkyProjectile : BasicProjectile
+public class SkyProjectile(
+    int parentSheetIndex,
+    int xPos,
+    string collisionSound,
+    StardewValley.Object ammo,
+    int clickY = 0,
+    int speed = 1)
+    : BasicProjectile(0, parentSheetIndex, 0, 0, (float)(Math.PI / (64f + Game1.random.Next(-63, 64))), 0,
+        -12 * speed, new Vector2(xPos, Game1.viewport.Height), collisionSound, null, null, false, false, null,
+        Game1.player)
 {
-    public readonly static Color[] Colors = new Color[]
-    {
+    private static readonly Color[] COLORS =
+    [
         Color.White,
         Color.Red,
         Color.Yellow,
@@ -29,22 +38,13 @@ public class SkyProjectile : BasicProjectile
         Color.CornflowerBlue,
         Color.GreenYellow,
         Color.Green,
-        Color.Aquamarine,
-    };
+        Color.Aquamarine
+    ];
 
-    public int X => (int)base.position.X + 32;
-    public int Y => (int)base.position.Y + 32;
+    public int X => (int)this.position.X + 32;
+    public int Y => (int)this.position.Y + 32;
 
-    public int ClickY;
-
-    public StardewValley.Object Ammo;
-
-    public SkyProjectile(int parentSheetIndex, int xPos, string collisionSound, StardewValley.Object ammo, int clickY = 0, int speed = 1) :
-        base(0, parentSheetIndex, 0, 0, (float)(Math.PI / (double)(64f + Game1.random.Next(-63, 64))), 0, -12 * speed, new Vector2(xPos, Game1.viewport.Height), collisionSound, null, null, false, false, null, Game1.player)
-    {
-        this.Ammo = ammo;
-        this.ClickY = clickY;
-    }
+    public StardewValley.Object Ammo = ammo;
 
     public override void draw(SpriteBatch b)
     {
@@ -54,21 +54,22 @@ public class SkyProjectile : BasicProjectile
     public bool UpdatePosition(GameTime time)
     {
         this.updatePosition(time);
-        if (this.Y <= this.ClickY)
+        if (this.Y > clickY)
         {
-            if (this.currentTileSheetIndex.Value == 441)
-            {
+            return false;
+        }
+
+        switch (this.currentTileSheetIndex.Value)
+        {
+            case 441:
                 // Add firework
-                ModEntry.Instance.SkyObjects.Add(new Firework(this.X - 64, this.ClickY - 64, Colors[Game1.random.Next(Colors.Length)]));
+                ModEntry.Instance.SkyObjects.Add(new Firework(this.X - 64, clickY - 64, COLORS[Game1.random.Next(COLORS.Length)]));
                 Game1.playSound("explosion");
                 return true;
-            }
-            else if (this.currentTileSheetIndex.Value == 387)
-            {
+            case 387:
                 // Add a star
-                ModEntry.Instance.SkyObjects.Add(new Star(this.X - 10, this.ClickY - 10));
+                ModEntry.Instance.SkyObjects.Add(new Star(this.X - 10, clickY - 10));
                 return true;
-            }
         }
         return false;
     }

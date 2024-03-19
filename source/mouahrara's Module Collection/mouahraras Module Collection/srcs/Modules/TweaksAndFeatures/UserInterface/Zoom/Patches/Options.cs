@@ -36,7 +36,7 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.UserInterface.Zoom.Patche
 				return;
 			if (Game1.activeClickableMenu is CarpenterMenu && (Game1.activeClickableMenu as CarpenterMenu).freeze)
 				return;
-			if (Game1.activeClickableMenu is PurchaseAnimalsMenu && (bool)typeof(PurchaseAnimalsMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(Game1.activeClickableMenu))
+			if (Game1.activeClickableMenu is PurchaseAnimalsMenu && (Game1.activeClickableMenu as PurchaseAnimalsMenu).freeze)
 				return;
 			if (!Game1.activeClickableMenu.shouldClampGamePadCursor())
 				return;

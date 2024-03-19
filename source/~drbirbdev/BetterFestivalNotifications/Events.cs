@@ -40,7 +40,7 @@ internal class Events
 
         if (Utility.isFestivalDay())
         {
-            Dictionary<string, string> festivalData = Game1.temporaryContent.Load<Dictionary<string, string>>("Data\\Festivals\\" + Game1.currentSeason + Game1.dayOfMonth);
+            Dictionary<string, string> festivalData = Game1.temporaryContent.Load<Dictionary<string, string>>(@"Data\Festivals\" + Game1.currentSeason + Game1.dayOfMonth);
 
             this._festivalName = festivalData["name"];
             string startAndEnd = festivalData["conditions"].Split('/')[1];

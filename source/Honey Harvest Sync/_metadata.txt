@@ -1,0 +1,14 @@
+urls:
+   web: https://github.com/voltaek/StardewMods
+   Git: https://github.com/voltaek/StardewMods.git
+
+mods:
+   Honey Harvest Sync
+
+latest commit:
+   commit ab91295698cf8e3dd12d61d437566c5f7d9d837e
+   Author: voltaek <7809420+voltaek@users.noreply.github.com>
+   Date:   Sun Mar 17 16:55:09 2024 -0400
+   
+       Merge branch 'temp-remove-flower-option'
+   

@@ -21,22 +21,22 @@ internal class Config
 
     [SConfig.PageBlock("Experience")]
     [SConfig.SectionTitle("ExperienceModifiers")]
-    [SConfig.Option(Min = 0, Max = 100, Interval = 1)]
+    [SConfig.Option(0, 100, 1)]
     public int ExperienceFromSlimeKill { get; set; } = 5;
-    [SConfig.Option(Min = 0, Max = 100, Interval = 1)]
+    [SConfig.Option(0, 100, 1)]
     public int ExperienceFromToughSlimeKill { get; set; } = 20;
-    [SConfig.Option(Min = 0, Max = 100, Interval = 1)]
+    [SConfig.Option(0, 100, 1)]
     public int ExperienceFromRareSlimeKill { get; set; } = 50;
-    [SConfig.Option(Min = 0, Max = 100, Interval = 1)]
+    [SConfig.Option(0, 100, 1)]
     public int ExperienceFromSlimeEgg { get; set; } = 30;
-    [SConfig.Option(Min = 0, Max = 100, Interval = 1)]
+    [SConfig.Option(0, 100, 1)]
     public int ExperienceFromSlimeEggPress { get; set; } = 15;
-    [SConfig.Option(Min = 0, Max = 100, Interval = 1)]
+    [SConfig.Option(0, 100, 1)]
     public int ExperienceFromSlimeBall { get; set; } = 50;
 
     [SConfig.PageBlock("Perks")]
     [SConfig.SectionTitle("SkillPerkModifiers")]
-    [SConfig.Option(Min = 0, Max = 10, Interval = 1)]
+    [SConfig.Option(0, 10, 1)]
     public int ExtraSlimeValuePerLevel { get; set; } = 1;
 
     [SConfig.PageBlock("Professions")]

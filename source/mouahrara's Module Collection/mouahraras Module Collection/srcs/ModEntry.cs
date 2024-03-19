@@ -11,7 +11,7 @@
 using HarmonyLib;
 using StardewModdingAPI;
 using mouahrarasModuleCollection.Sections;
-using mouahrarasModuleCollection.Hooks;
+using mouahrarasModuleCollection.Handlers;
 using mouahrarasModuleCollection.Utilities;
 
 namespace mouahrarasModuleCollection
@@ -38,8 +38,8 @@ namespace mouahrarasModuleCollection
 			AdditionsSection.Apply(harmony);
 			OverhaulsSection.Apply(harmony);
 
-			// Hook into the required events
-			Helper.Events.GameLoop.GameLaunched += GameLaunchedHook.Apply;
+			// Subscribe to events
+			Helper.Events.GameLoop.GameLaunched += GameLaunchedHandler.Apply;
 		}
 	}
 }

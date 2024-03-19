@@ -19,7 +19,7 @@ class Config
     [SConfig.Option]
     public SButton Button { get; set; } = SButton.U;
 
-    [SConfig.Option(Min = 0, Max = 100)]
+    [SConfig.Option(0, 100)]
     public int SpawnChancePerSecond { get; set; } = 5;
 
     [SConfig.Option]

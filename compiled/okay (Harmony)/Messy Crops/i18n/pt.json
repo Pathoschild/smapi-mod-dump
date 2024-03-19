@@ -1,0 +1,6 @@
+{
+	"config.offset.name": "Variação máxima",
+	"config.offset.desc": "O número de pedaços de terra para poder ter variação",
+	"config.applyTrellis.name": "Aplicar à treliça",
+	"config.applyTrellis.desc": "Se plantas que crescem em uma treliça também deveriam ser variadas"
+}

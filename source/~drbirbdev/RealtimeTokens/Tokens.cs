@@ -57,13 +57,13 @@ internal class Tokens
     [SToken.Token]
     public static IEnumerable<string> WeekdayLocal()
     {
-        yield return ModEntry.Instance.I18n.Get("time.weekday." + DateTime.Today.DayOfWeek);
+        yield return ModEntry.Instance.I18N.Get("time.weekday." + DateTime.Today.DayOfWeek);
     }
 
     [SToken.Token]
     public static IEnumerable<string> MonthLocal()
     {
-        yield return ModEntry.Instance.I18n.Get("time.month." + DateTime.Today.Month);
+        yield return ModEntry.Instance.I18N.Get("time.month." + DateTime.Today.Month);
     }
 
     [SToken.Token]
@@ -72,7 +72,7 @@ internal class Tokens
     public static IEnumerable<string> AllHolidays()
     {
         bool empty = true;
-        foreach (string holiday in ModEntry.API.GetAllHolidays())
+        foreach (string holiday in ModEntry.Api.GetAllHolidays())
         {
             empty = false;
             yield return holiday;
@@ -87,7 +87,7 @@ internal class Tokens
     public static IEnumerable<string> ComingHolidays()
     {
         bool empty = true;
-        foreach (string holiday in ModEntry.API.GetComingHolidays())
+        foreach (string holiday in ModEntry.Api.GetComingHolidays())
         {
             empty = false;
             yield return holiday;
@@ -102,7 +102,7 @@ internal class Tokens
     public static IEnumerable<string> CurrentHolidays()
     {
         bool empty = true;
-        foreach (string holiday in ModEntry.API.GetCurrentHolidays())
+        foreach (string holiday in ModEntry.Api.GetCurrentHolidays())
         {
             empty = false;
             yield return holiday;
@@ -117,7 +117,7 @@ internal class Tokens
     public static IEnumerable<string> PassingHolidays()
     {
         bool empty = true;
-        foreach (string holiday in ModEntry.API.GetPassingHolidays())
+        foreach (string holiday in ModEntry.Api.GetPassingHolidays())
         {
             empty = false;
             yield return holiday;
@@ -132,10 +132,10 @@ internal class Tokens
     public static IEnumerable<string> AllHolidaysLocal()
     {
         bool empty = true;
-        foreach (string holiday in ModEntry.API.GetAllHolidays())
+        foreach (string holiday in ModEntry.Api.GetAllHolidays())
         {
             empty = false;
-            yield return ModEntry.API.GetLocalName(holiday);
+            yield return ModEntry.Api.GetLocalName(holiday);
         }
         if (empty)
         {
@@ -147,10 +147,10 @@ internal class Tokens
     public static IEnumerable<string> ComingHolidaysLocal()
     {
         bool empty = true;
-        foreach (string holiday in ModEntry.API.GetComingHolidays())
+        foreach (string holiday in ModEntry.Api.GetComingHolidays())
         {
             empty = false;
-            yield return ModEntry.API.GetLocalName(holiday);
+            yield return ModEntry.Api.GetLocalName(holiday);
         }
         if (empty)
         {
@@ -162,10 +162,10 @@ internal class Tokens
     public static IEnumerable<string> CurrentHolidaysLocal()
     {
         bool empty = true;
-        foreach (string holiday in ModEntry.API.GetCurrentHolidays())
+        foreach (string holiday in ModEntry.Api.GetCurrentHolidays())
         {
             empty = false;
-            yield return ModEntry.API.GetLocalName(holiday);
+            yield return ModEntry.Api.GetLocalName(holiday);
         }
         if (empty)
         {
@@ -177,10 +177,10 @@ internal class Tokens
     public static IEnumerable<string> PassingHolidaysLocal()
     {
         bool empty = true;
-        foreach (string holiday in ModEntry.API.GetPassingHolidays())
+        foreach (string holiday in ModEntry.Api.GetPassingHolidays())
         {
             empty = false;
-            yield return ModEntry.API.GetLocalName(holiday);
+            yield return ModEntry.Api.GetLocalName(holiday);
         }
         if (empty)
         {

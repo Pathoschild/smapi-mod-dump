@@ -34,19 +34,18 @@ public class ModEntry : Mod
 
     public override object GetApi()
     {
-        return new GameboyArcadeAPIImpl();
+        return new GameboyArcadeApiImpl();
     }
 
     public static IEnumerable<Content> AllGames()
     {
-        foreach (Dictionary<string, Content> modContent in ModEntry.Content.Values)
+        foreach (Dictionary<string, Content> modContent in Content.Values)
         {
             foreach (Content content in modContent.Values)
             {
                 yield return content;
             }
         }
-        yield break;
     }
 
     public static Content SearchGames(string search)
@@ -63,16 +62,18 @@ public class ModEntry : Mod
 
     public static Content GetGame(string modId, string gameId = null)
     {
-        if (gameId is null)
+        if (gameId is not null)
         {
-            string[] parts = modId.Split("_", 2);
-            if (parts.Length != 2)
-            {
-                Log.Error($"Expected a GameId in the form ModManifest_Game but got something else {modId}");
-            }
-            modId = parts[0];
-            gameId = parts[1];
+            return Content?[modId]?[gameId];
         }
+
+        string[] parts = modId.Split("_", 2);
+        if (parts.Length != 2)
+        {
+            Log.Error($"Expected a GameId in the form ModManifest_Game but got something else {modId}");
+        }
+        modId = parts[0];
+        gameId = parts[1];
 
         return Content?[modId]?[gameId];
     }

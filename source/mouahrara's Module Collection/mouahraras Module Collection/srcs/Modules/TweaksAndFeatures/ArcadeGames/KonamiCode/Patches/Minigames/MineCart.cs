@@ -75,6 +75,9 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.ArcadeGames.KonamiCode.Pa
 
 		private static void ReceiveKeyPressPostfix(MineCart __instance, Keys k)
 		{
+			if ((int)typeof(MineCart).GetField("gameMode", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance) == MineCart.infiniteMode)
+				return;
+
 			KonamiCodeUtility.ReceiveKeyPressPostfix(k);
 			if (KonamiCodeUtility.InfiniteLivesMode)
 				typeof(MineCart).GetField("livesLeft", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, 5);;

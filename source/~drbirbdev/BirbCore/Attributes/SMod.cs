@@ -13,13 +13,8 @@ using System;
 using StardewModdingAPI;
 
 namespace BirbCore.Attributes;
-public class SMod : ClassHandler
+public class SMod() : ClassHandler(1)
 {
-    public SMod() : base(1)
-    {
-
-    }
-
     public override void Handle(Type type, object? instance, IMod mod, object[]? args = null)
     {
         if (this.Priority < 1)
@@ -30,22 +25,15 @@ public class SMod : ClassHandler
         base.Handle(type, mod, mod, args);
     }
 
-    public class Api : FieldHandler
+    public class Api(string uniqueId, bool isRequired = true) : FieldHandler
     {
-        public string UniqueID;
-        public bool IsRequired;
+        public bool IsRequired = isRequired;
 
-        public Api(string uniqueID, bool isRequired = true)
+        protected override void Handle(string name, Type fieldType, Func<object?, object?> getter, Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
         {
-            this.UniqueID = uniqueID;
-            this.IsRequired = isRequired;
-        }
-
-        public override void Handle(string name, Type fieldType, Func<object?, object?> getter, Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
-        {
-            object? api = mod.Helper.ModRegistry.GetType().GetMethod("GetApi", 1, new Type[] { typeof(string) })
+            object? api = mod.Helper.ModRegistry.GetType().GetMethod("GetApi", 1, [typeof(string)])
                 ?.MakeGenericMethod(fieldType)
-                .Invoke(mod.Helper.ModRegistry, new object[] { this.UniqueID });
+                .Invoke(mod.Helper.ModRegistry, [uniqueId]);
             if (api is null && this.IsRequired)
             {
                 Log.Error($"[{name}] Can't access required API");
@@ -56,7 +44,7 @@ public class SMod : ClassHandler
 
     public class Instance : FieldHandler
     {
-        public override void Handle(string name, Type fieldType, Func<object?, object?> getter, Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
+        protected override void Handle(string name, Type fieldType, Func<object?, object?> getter, Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
         {
             setter(instance, mod);
         }

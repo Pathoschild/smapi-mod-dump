@@ -16,7 +16,7 @@ namespace AutoTrash
     class ModConfig
     {
         public bool MinesOnly { get; set; } = true;
-        public IList<int> DeleteItems { get; set; } = new List<int>();
+        public IList<string> DeleteItems { get; set; } = [];
         public SButton ToggleTrash { get; set; } = SButton.RightAlt;
     }
 }

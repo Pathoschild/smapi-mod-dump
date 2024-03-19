@@ -13,14 +13,13 @@ using Newtonsoft.Json.Linq;
 using StardewValley;
 using StardewValley.Buildings;
 using StardewValley.Locations;
+using StardewValley.SpecialOrders;
+using StardewValley.TokenizableStrings;
 
 namespace stardew_access.Utils;
 
-using static JsonLoader;
 using Translation;
-using xTile.Dimensions;
 using StardewValley.TerrainFeatures;
-using xTile.Tiles;
 
 /// <summary>
 /// Provides methods to locate tiles of interest in various game locations that are conditional or unpredictable (I.E. not static).
@@ -233,7 +232,7 @@ public class DynamicTiles
         {
             return (null, null);
         }
-        if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.getTileLocation() == new Vector2(x, y))
+        if (MainClass.ModHelper.Reflection.GetField<NPC>(beach, "oldMariner").GetValue() is NPC mariner && mariner.Tile == new Vector2(x, y))
         {
             return ("npc_name-old_mariner", CATEGORY.NPCs);
         }
@@ -241,7 +240,7 @@ public class DynamicTiles
         {
             if (!beach.bridgeFixed.Value)
             {
-                return (Translator.Instance.Translate("prefix-repair", new { content = Translator.Instance.Translate("tile_name-bridge") }), CATEGORY.Interactables);
+                return (Translator.Instance.Translate("prefix-repair", new { content = Translator.Instance.Translate("tile_name-bridge") }), CATEGORY.Pending);
             }
             else
             {
@@ -249,11 +248,10 @@ public class DynamicTiles
             }
         }
 
-        if (Game1.CurrentEvent is not null && Game1.CurrentEvent.id == 13 && x == 53 && y == 8)
+        if (Game1.CurrentEvent is not null && Game1.CurrentEvent.id == "13" && x == 53 && y == 8)
         {
             return ("item-haley_bracelet-name", CATEGORY.DroppedItems);
         }
-
         return (null, null);
     }
 
@@ -275,21 +273,27 @@ public class DynamicTiles
         {
             string mail = (x, y) switch
             {
-                (4, 9) => "willyBoatFixed",
+                (4, 9) => "willyBoatTicketMachine",
                 (6, 8) => "willyBoatHull",
                 (8, 9) => "willyBoatAnchor",
                 _ => throw new InvalidOperationException("Unexpected (x, y) values"),
             };
 
-            string itemName = (x, y) switch
-            {
-                (4, 9) => "tile_name-ticket_machine",
-                (6, 8) => "tile_name-boat_hull",
-                (8, 9) => "tile_name-boat_anchor",
-                _ => throw new InvalidOperationException("Unexpected (x, y) values"),
-            };
+            string itemName = Translator.Instance.Translate(
+                (x, y) switch
+                {
+                    (4, 9) => "tile_name-ticket_machine",
+                    (6, 8) => "tile_name-boat_hull",
+                    (8, 9) => "tile_name-boat_anchor",
+                    _ => throw new InvalidOperationException("Unexpected (x, y) values"),
+                }
+            );
 
-            CATEGORY category = (x, y) == (4, 9) ? CATEGORY.Interactables : (!HasMail(mail) ? CATEGORY.Interactables : CATEGORY.Decor);
+            CATEGORY category = (x, y) == (4, 9)
+                ? !HasMail(mail)
+                        ? CATEGORY.Pending
+                        : !HasMail("willyBoatHull") || !HasMail("willyBoatAnchor") ? CATEGORY.Decor : CATEGORY.Interactable
+                : !HasMail(mail) ? CATEGORY.Pending : CATEGORY.Decor;
 
             return ((!HasMail(mail) ? Translator.Instance.Translate("prefix-repair", new { content = itemName }) : itemName), category);
         }
@@ -325,57 +329,138 @@ public class DynamicTiles
     /// <returns>A tuple containing the name and CATEGORY of the door or building found, or (null, null) if no door or building is found.</returns>
     private static (string? name, CATEGORY? category) GetBuildingInfo(Building building, int x, int y, bool lessInfo = false)
     {
-        string name = building.buildingType.Value;
+        // Internal name; never translated. Mill stays "Mill"
+        string type = building.buildingType.Value;
+        // Translated name, E.G> "Mill" becomes "Molino" for Spanish.
+        // not all buildings have translated names, E.G. "Petbowl" and "Farmhouse" remain untranslated.
+        // TODO add translation keys for untranslated building names.
+        string name = TokenParser.ParseText(building.GetData().Name);
         int buildingTileX = building.tileX.Value;
         int buildingTileY = building.tileY.Value;
-
-        // If the building is a FishPond, prepend the fish name
-        if (building is FishPond fishPond && fishPond.fishType.Value >= 0)
-        {
-            name = $"{Game1.objectInformation[fishPond.fishType.Value].Split('/')[4]} {name}";
-        }
-
         // Calculate differences in x and y coordinates
         int offsetX = x - buildingTileX;
         int offsetY = y - buildingTileY;
 
+        // Set default category
+        CATEGORY category = CATEGORY.Buildings;
+        if (type == "Shipping Bin")
+        {
+            category = CATEGORY.Containers;
+        }
+        else if (building is PetBowl bowl)
+        {
+            category = bowl.HasPet()
+                ? !bowl.watered.Value
+                    ? CATEGORY.Pending
+                    : CATEGORY.Interactable
+                : CATEGORY.Decor;
+
+            name = Translator.Instance.Translate("tile-pet_bowl-prefix", new
+            {
+                is_in_use = bowl.HasPet() ? 1 : 0,
+                is_empty = !bowl.watered.Value ? 1 : 0,
+                name = name
+            });
+        }
+        else if (building.GetIndoors() is Cabin cabin)
+        {
+            string ownerName = cabin.owner.displayName;
+            if (offsetX is 2 && offsetY is 1)
+            {
+                name = string.IsNullOrWhiteSpace(ownerName)
+                    ? $"{name} {Translator.Instance.Translate("tile-door")}" // Cabin Door
+                    : $"{cabin.owner.Name} {name} {Translator.Instance.Translate("tile-door")}"; // [Owner] Cabin Door
+                category = CATEGORY.Doors;
+                goto PassableTilesCheck;
+            }
+
+            if (offsetX is not 4 || offsetY is not 2)
+            {
+                if (cabin.HasOwner && !cabin.IsOwnedByCurrentPlayer && !string.IsNullOrWhiteSpace(ownerName))
+                    name = $"{cabin.owner.Name} {name}";
+                goto PassableTilesCheck;
+            }
+
+            if (!cabin.IsOwnedByCurrentPlayer)
+            {
+                name = string.IsNullOrWhiteSpace(ownerName)
+                    ? $"{name} {Translator.Instance.Translate("tile_name-mail_box")}" // Cabin Mail Box
+                    : $"{cabin.owner.Name} {Translator.Instance.Translate("tile_name-mail_box")}"; // [Owner] Mail Box
+                goto PassableTilesCheck;
+            }
+
+            // Mail Box (with unread status)
+            name = Translator.Instance.Translate("tile_name-mail_box");
+            category = CATEGORY.Interactable;
+            var mailbox = Game1.player.mailbox;
+            if (mailbox is not null && mailbox.Count > 0)
+            {
+                name = Translator.Instance.Translate("tile-mail_box-unread_mail_count-prefix", new
+                {
+                    mail_count = mailbox.Count,
+                    content = name
+                });
+                category = CATEGORY.Ready;
+            }
+        }
+        else if (building.GetIndoors() is FarmHouse farmHouse && farmHouse.HasOwner && !farmHouse.IsOwnedByCurrentPlayer)
+        {
+            name = $"{farmHouse.owner.displayName} {name}";
+        }
+        // If the building is a FishPond, prepend the fish name
+        else if (building is FishPond fishPond && fishPond.fishType.Value != "0" && fishPond.fishType.Value != "")
+        {
+            name = $"{ItemRegistry.GetDataOrErrorItem(fishPond.fishType.Value).DisplayName} {name}";
+            category = CATEGORY.Fishpond;
+        }
         // Check if the position matches the human door
         if (building.humanDoor.Value.X == offsetX && building.humanDoor.Value.Y == offsetY)
         {
-            return (Translator.Instance.Translate("suffix-building_door", new {content = name}), CATEGORY.Doors);
+            name = Translator.Instance.Translate("suffix-building_door", new { content = name });
+            category = CATEGORY.Doors;
         }
         // Check if the position matches the animal door. In case of barns, as the animal door is 2 tiles wide, the following if condition checks for both animal door tiles.
-        else if ((building.animalDoor.Value.X == offsetX || (building is Barn && building.animalDoor.Value.X == offsetX - 1)) && building.animalDoor.Value.Y == offsetY)
+        else if ((building.animalDoor.Value.X == offsetX || (type == "Barn" && building.animalDoor.Value.X == offsetX - 1)) && building.animalDoor.Value.Y == offsetY)
         {
-            return (Translator.Instance.Translate("tile-building_animal_door-suffix", new
+            name = Translator.Instance.Translate("tile-building_animal_door-suffix", new
             {
                 name, // using inferred member name; silences IDE0037
                 is_open = (building.animalDoorOpen.Value) ? 1 : 0,
                 less_info = lessInfo ? 1 : 0
-            }), CATEGORY.Doors);
-        }
-        // Check if the position matches the building's top-left corner
-        else if (offsetX == 0 && offsetY == 0)
-        {
-            return (name, CATEGORY.Buildings);
+            });
+            category = CATEGORY.Doors;
         }
         // Special handling for Mill buildings
-        else if (building is Mill)
+        else if (type == "Mill")
         {
-            // Check if the position matches the input
-            if (offsetX == 1 && offsetY == 1)
+            if (offsetY == 1)
             {
-                return (Translator.Instance.Translate("suffix-mill_input", new {content = name}), CATEGORY.Buildings);
-            }
-            // Check if the position matches the output
-            else if (offsetX == 3 && offsetY == 1)
-            {
-                return (Translator.Instance.Translate("suffix-mill_output", new {content = name}), CATEGORY.Buildings);
+                // Check if the position matches the input
+                if (offsetX == 1)
+                {
+                    name = Translator.Instance.Translate("suffix-mill_input", new { content = name });
+                    category = CATEGORY.Interactable;
+                }
+                // Check if the position matches the output
+                else if (offsetX == 3)
+                {
+                    name = Translator.Instance.Translate("suffix-mill_output", new { content = name });
+                    category = CATEGORY.Interactable;
+                }
             }
         }
+    // Any building tile not matched will return building's name and Buildings category 
 
-        // Return the building name for any other position within the building's area
-        return (name, CATEGORY.Buildings);
+    PassableTilesCheck:
+        if (!building.isTilePassable(new Vector2(x, y)))
+        {
+            return (name, category);
+        }
+        else
+        {
+            // Ignore parts of buildings that are outside, I.E. Farmhouse porch.
+            return (null, null);
+        }
     }
 
     /// <summary>
@@ -393,7 +478,27 @@ public class DynamicTiles
 
         if (mainMailboxPos.X == x && mainMailboxPos.Y == y)
         {
-            return ("tile_name-mail_box", CATEGORY.Interactables);
+            string mailboxName = Translator.Instance.Translate("tile_name-mail_box");
+            CATEGORY mailboxCategory = CATEGORY.Interactable;
+
+            if (!(farm.GetMainFarmHouse().GetIndoors() as FarmHouse)!.IsOwnedByCurrentPlayer)
+            {
+                mailboxName = $"{(farm.GetMainFarmHouse().GetIndoors() as FarmHouse)!.owner.displayName} {mailboxName}";
+                return (mailboxName, mailboxCategory);
+            }
+
+            var mailbox = Game1.player.mailbox;
+            if (mailbox is not null && mailbox.Count > 0)
+            {
+                mailboxName = Translator.Instance.Translate("tile-mail_box-unread_mail_count-prefix", new
+                {
+                    mail_count = mailbox.Count,
+                    content = mailboxName
+                });
+                mailboxCategory = CATEGORY.Ready;
+            }
+
+            return (mailboxName, mailboxCategory);
         }
         else if (building is not null) // Check if there is a building at the current position
         {
@@ -405,7 +510,7 @@ public class DynamicTiles
             return (Translator.Instance.Translate("dynamic_tile-farm-grandpa_shrine", new
             {
                 candles = farm.grandpaScore.Value
-            }), CATEGORY.Interactables);
+            }), CATEGORY.Interactable);
         }
 
         return (null, null);
@@ -428,15 +533,15 @@ public class DynamicTiles
 
             if (kitchenX == x && kitchenY == y)
             {
-                return ("tile_name-stove", CATEGORY.Interactables);
+                return ("tile_name-stove", CATEGORY.Interactable);
             }
             else if (kitchenX + 1 == x && kitchenY == y)
             {
-                return ("tile_name-sink", CATEGORY.Others);
+                return ("tile_name-sink", CATEGORY.Other);
             }
             else if (farmHouse.fridgePosition.X == x && farmHouse.fridgePosition.Y == y)
             {
-                return ("tile_name-fridge", CATEGORY.Interactables);
+                return ("tile_name-fridge", CATEGORY.Containers);
             }
         }
 
@@ -455,17 +560,17 @@ public class DynamicTiles
     {
         if (forest.travelingMerchantDay && x == 27 && y == 11)
         {
-            return ("tile_name-traveling_cart", CATEGORY.Interactables);
+            return ("tile_name-traveling_cart", CATEGORY.Interactable);
         }
         else if (forest.travelingMerchantDay && x == 23 && y == 11)
         {
             return ("tile_name-traveling_cart_pig", CATEGORY.NPCs);
         }
-        else if (forest.log != null && x == 2 && y == 7)
+        else if (forest.obsolete_log != null && x == 2 && y == 7) // TODO Check for conflicts
         {
-            return ("item_name-log", CATEGORY.Interactables);
+            return ("item_name-log", CATEGORY.Interactable);
         }
-        else if (forest.log == null && x == 0 && y == 7)
+        else if (forest.obsolete_log == null && x == 0 && y == 7) // TODO Check for conflicts
         {
             return ("entrance_name-secret_woods_entrance", CATEGORY.Doors);
         }
@@ -487,15 +592,15 @@ public class DynamicTiles
         int fridgeY = islandFarmHouse.fridgePosition.Y;
         if (fridgeX - 2 == x && fridgeY == y)
         {
-            return ("tile_name-stove", CATEGORY.Interactables);
+            return ("tile_name-stove", CATEGORY.Interactable);
         }
         else if (fridgeX - 1 == x && fridgeY == y)
         {
-            return ("tile_name-sink", CATEGORY.Others);
+            return ("tile_name-sink", CATEGORY.Water);
         }
         else if (fridgeX == x && fridgeY == y)
         {
-            return ("tile_name-fridge", CATEGORY.Interactables);
+            return ("tile_name-fridge", CATEGORY.Containers);
         }
 
         return (null, null);
@@ -514,7 +619,7 @@ public class DynamicTiles
         // Check if the trader is activated and the coordinates match the trader's location
         if (islandNorth.traderActivated.Value && x == 36 && y == 71)
         {
-            return ("npc_name-island_trader", CATEGORY.Interactables);
+            return ("npc_name-island_trader", CATEGORY.Interactable);
         }
 
         // Return (null, null) if no relevant object is found
@@ -534,7 +639,7 @@ public class DynamicTiles
         // Check if the coordinates match the shipping bin's location
         if ((islandWest.shippingBinPosition.X == x || (islandWest.shippingBinPosition.X + 1) == x) && islandWest.shippingBinPosition.Y == y)
         {
-            return ("building_name-shipping_bin", CATEGORY.Interactables);
+            return ("building_name-shipping_bin", CATEGORY.Containers);
         }
 
         // Return (null, null) if no relevant object is found
@@ -555,11 +660,11 @@ public class DynamicTiles
         {
             if (dungeon.IsCooledLava(x, y))
             {
-                return ("tile-cooled_lava-name", CATEGORY.WaterTiles);
+                return ("tile-cooled_lava-name", CATEGORY.Water);
             }
             else if (StardewValley.Monsters.LavaLurk.IsLavaTile(dungeon, x, y))
             {
-                return ("tile-lava-name", CATEGORY.WaterTiles);
+                return ("tile-lava-name", CATEGORY.Water);
             }
         }
 
@@ -572,7 +677,7 @@ public class DynamicTiles
 
         if (dungeon.getTileIndexAt(new Point(x, y), "Back") is 496 or 497)
         {
-            return ("tile-volcano_dungeon-pressure_pad", CATEGORY.Interactables);
+            return ("tile-volcano_dungeon-pressure_pad", CATEGORY.Interactable);
         }
 
         if (dungeon.getTileIndexAt(new Point(x, y), "Back") is 547 && dungeon.getTileIndexAt(new Point(x, y), "Buildings") is 0)
@@ -601,11 +706,11 @@ public class DynamicTiles
         {
             if (Game1.player.team.SpecialOrderActive("QiChallenge12") && x == 1 && y == 4)
             {
-                return ("dynamic_tile-qi_nut_room-collection_box", CATEGORY.Interactables);
+                return ("dynamic_tile-qi_nut_room-collection_box", CATEGORY.Interactable);
             }
             return (null, null);
         }
-        
+
         // Unimplemented locations are logged.
         // Check if the location has already been logged
         if (!loggedLocations.Contains(locationType))
@@ -630,11 +735,11 @@ public class DynamicTiles
         // Use a switch expression to return the appropriate bird name based on the item index value
         return bird.itemIndex.Value switch
         {
-            60 => "npc_name-emerald_gem_bird",
-            62 => "npc_name-aquamarine_gem_bird",
-            64 => "npc_name-ruby_gem_bird",
-            66 => "npc_name-amethyst_gem_bird",
-            68 => "npc_name-topaz_gem_bird",
+            "60" => "npc_name-emerald_gem_bird",
+            "62" => "npc_name-aquamarine_gem_bird",
+            "64" => "npc_name-ruby_gem_bird",
+            "66" => "npc_name-amethyst_gem_bird",
+            "68" => "npc_name-topaz_gem_bird",
             _ => "npc_name-gem_bird", // Default case for when the item index does not match any of the specified values
         };
     }
@@ -654,7 +759,7 @@ public class DynamicTiles
         // If a parrot perch was found at the specified tile coordinates
         if (foundPerch != null)
         {
-            string toSpeak = Translator.Instance.Translate("building-parrot_perch-required_nuts", new {item_count = foundPerch.requiredNuts.Value});
+            string toSpeak = Translator.Instance.Translate("building-parrot_perch-required_nuts", new { item_count = foundPerch.requiredNuts.Value });
 
             // Return appropriate string based on the current state of the parrot perch
             return foundPerch.currentState.Value switch
@@ -683,9 +788,9 @@ public class DynamicTiles
     {
         var nutTracker = Game1.player.team.collectedNutTracker;
         string? parrot = GetParrotPerchAtTile(islandLocation, x, y);
-        if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.ContainsKey($"Buried_{islandLocation.Name}_{x}_{y}"))
+        if (islandLocation.IsBuriedNutLocation(new Point(x, y)) && !nutTracker.Contains($"Buried_{islandLocation.Name}_{x}_{y}"))
         {
-            return ("tile_name-diggable_spot", CATEGORY.Interactables);
+            return ("tile_name-diggable_spot", CATEGORY.Interactable);
         }
         else if (islandLocation.locationGemBird.Value is IslandGemBird bird && ((int)bird.position.X / Game1.tileSize) == x && ((int)bird.position.Y / Game1.tileSize) == y)
         {
@@ -729,14 +834,14 @@ public class DynamicTiles
     /// <returns>A tuple containing the name and CATEGORY of the object found, or (null, null) if no relevant object is found.</returns>
     private static (string? name, CATEGORY? category) GetLibraryMuseumInfo(LibraryMuseum libraryMuseum, int x, int y, bool lessInfo = false)
     {
-        if (libraryMuseum.museumPieces.TryGetValue(new Vector2(x, y), out int museumPiece))
+        if (libraryMuseum.museumPieces.TryGetValue(new Vector2(x, y), out string museumPiece))
         {
-            string displayName = Game1.objectInformation[museumPiece].Split('/')[0];
-            return (Translator.Instance.Translate("tile-museum_piece_showcase-suffix", new {content = displayName}), CATEGORY.Interactables);
+            string displayName = Game1.objectData[museumPiece].DisplayName;
+            return (Translator.Instance.Translate("tile-museum_piece_showcase-suffix", new { content = displayName }), CATEGORY.Interactable);
 
         }
 
-        int booksFound = Game1.netWorldState.Value.LostBooksFound.Value;
+        int booksFound = Game1.netWorldState.Value.LostBooksFound;
         string? action = libraryMuseum.doesTileHaveProperty(x, y, "Action", "Buildings");
         if (action != null && action.Contains("Notes"))
         {
@@ -748,9 +853,9 @@ public class DynamicTiles
                 if (booksFound >= which)
                 {
                     string message = Game1.content.LoadString("Strings\\Notes:" + which);
-                    return (Translator.Instance.Translate("item-suffix-book", new {content = message.Split('\n')[0]}), CATEGORY.Interactables);
+                    return (Translator.Instance.Translate("item-suffix-book", new { content = message.Split('\n')[0] }), CATEGORY.Interactable);
                 }
-                return ("item-lost_book-name", CATEGORY.Others);
+                return ("item-lost_book-name", CATEGORY.Other);
             }
         }
 
@@ -769,12 +874,12 @@ public class DynamicTiles
     {
         if (SpecialOrder.IsSpecialOrdersBoardUnlocked() && x == 62 && y == 93)
         {
-            return ("tile_name-special_quest_board", CATEGORY.Interactables);
+            return ("tile_name-special_quest_board", CATEGORY.Interactable);
         }
 
-    if (Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && x == 98 && y == 51)
+        if (Utility.doesMasterPlayerHaveMailReceivedButNotMailForTomorrow("ccMovieTheater") && x == 98 && y == 51)
         {
-            return ("tile_name-movie_ticket_machine", CATEGORY.Interactables);
+            return ("tile_name-movie_ticket_machine", CATEGORY.Interactable);
         }
 
         if (Game1.CurrentEvent is not null && Game1.CurrentEvent.isFestival && x == 0 && y == 54)
@@ -798,7 +903,7 @@ public class DynamicTiles
         if (!railroad.witchStatueGone.Get() && !Game1.MasterPlayer.mailReceived.Contains("witchStatueGone") &&
             x == 54 && y == 35)
         {
-            return ("tile-railroad-witch_statue-name", CATEGORY.Interactables);
+            return ("tile-railroad-witch_statue-name", CATEGORY.Interactable);
         }
 
         return (null, null);
@@ -816,9 +921,9 @@ public class DynamicTiles
     {
         if (mineShaft.getTileIndexAt(new Point(x, y), "Buildings") is 194 or 195 or 224)
         {
-            return (mineShaft.getMineArea() is MineShaft.frostArea 
-                ? "tile-mine_shaft-coal_bag" 
-                : Translator.Instance.Translate("static_tile-common-minecart", TranslationCategory.StaticTiles), CATEGORY.Interactables);
+            return (mineShaft.getMineArea() is MineShaft.frostArea
+                ? "tile-mine_shaft-coal_bag"
+                : Translator.Instance.Translate("static_tile-common-minecart", TranslationCategory.StaticTiles), CATEGORY.Interactable);
         }
 
         if (mineShaft.doesTileHaveProperty(x, y, "Type", "Back") is "Dirt")
@@ -828,7 +933,7 @@ public class DynamicTiles
                 bool hasAlreadyDug = mineShaft.terrainFeatures.FieldDict.TryGetValue(new Vector2(x, y), out var tf) && tf.Get() is HoeDirt { crop: null };
                 return hasAlreadyDug ? (null, null) : ("tile-mine_shaft-dirt", CATEGORY.Flooring);
             }
-            
+
             if (mineShaft.getTileIndexAt(new Point(x, y), "Back") is 0)
             {
                 return ("tile-mine_shaft-duggy_hole", CATEGORY.Decor);
@@ -853,7 +958,10 @@ public class DynamicTiles
         if (FeedingBenchBounds.TryGetValue(locationName, out var bounds) && x >= bounds.minX && x <= bounds.maxX && y == bounds.y)
         {
             (string? name, CATEGORY category) = TileInfo.GetObjectAtTile(currentLocation, x, y, true);
-            return (Translator.Instance.Translate("tile_name-feeding_bench", new { is_empty = (name != null && name.Contains("hay", StringComparison.OrdinalIgnoreCase) ? 0 : 1) }), category);
+            bool isEmpty = name != null && name.Contains("hay", StringComparison.OrdinalIgnoreCase);
+            if (isEmpty)
+                category = CATEGORY.Pending;
+            return (Translator.Instance.Translate("tile_name-feeding_bench", new { is_empty = (isEmpty ? 0 : 1) }), category);
         }
 
         return null;
@@ -869,7 +977,8 @@ public class DynamicTiles
     /// <returns>A tuple of (string? name, CATEGORY? category) for the object in the location, or null if not applicable.</returns>
     private static (string? name, CATEGORY? category) GetLocationByNameInfo(GameLocation currentLocation, int x, int y, bool lessInfo = false)
     {
-        object locationType = currentLocation is not null and GameLocation ? currentLocation.Name ?? "Undefined GameLocation" : currentLocation!.GetType();            string locationName = currentLocation.Name ?? "";
+        object locationType = currentLocation is not null and GameLocation ? currentLocation.Name ?? "Undefined GameLocation" : currentLocation!.GetType();
+        string locationName = currentLocation.Name ?? "";
         if (locationName.Contains("coop", StringComparison.OrdinalIgnoreCase) || locationName.Contains("barn", StringComparison.OrdinalIgnoreCase))
         {
             var feedingBenchInfo = GetFeedingBenchInfo(currentLocation, x, y);
@@ -881,7 +990,7 @@ public class DynamicTiles
 
         if (locationName.Contains("witchhut", StringComparison.OrdinalIgnoreCase) && x == 4 && y == 11 && !Game1.player.mailReceived.Contains("hasPickedUpMagicInk"))
         {
-            return ("item_name-magic_ink", CATEGORY.Interactables);
+            return ("item_name-magic_ink", CATEGORY.Interactable);
         }
 
         // Unimplemented locations are logged.
@@ -924,7 +1033,7 @@ public class DynamicTiles
         // Check for panning spots
         if (currentLocation.orePanPoint.Value != Point.Zero && currentLocation.orePanPoint.Value == new Point(x, y))
         {
-            return ("tile_name-panning_spot", CATEGORY.Interactables);
+            return ("tile_name-panning_spot", CATEGORY.Interactable);
         }
         // Check if the current location has an event
         else if (currentLocation.currentEvent is not null)
@@ -937,7 +1046,7 @@ public class DynamicTiles
                 if (coordinateDictionary.TryGetValue((x, y), value: out var interactable))
                 {
                     // If the interactable value is found, return the corresponding category and interactable name
-                    return (interactable, CATEGORY.Interactables);
+                    return (interactable, CATEGORY.Interactable);
                 }
             }
         }

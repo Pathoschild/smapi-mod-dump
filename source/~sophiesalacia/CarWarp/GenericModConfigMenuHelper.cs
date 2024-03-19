@@ -14,6 +14,12 @@ internal class GenericModConfigMenuHelper
 {
     internal static void BuildConfigMenu()
     {
+        if (Globals.GMCMApi is null)
+        {
+            Log.Info("Failed to fetch GMCM API.");
+            return;
+        }
+
         // register mod
         Globals.GMCMApi.Register(
             mod: Globals.Manifest,

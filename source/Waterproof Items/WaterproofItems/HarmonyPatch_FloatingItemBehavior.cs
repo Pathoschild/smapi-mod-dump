@@ -8,16 +8,11 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using HarmonyLib;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
-using Harmony;
+using System;
 
 namespace WaterproofItems
 {
@@ -26,7 +21,7 @@ namespace WaterproofItems
     {
         /// <summary>Applies this Harmony patch to the game through the provided instance.</summary>
         /// <param name="harmony">This mod's Harmony instance.</param>
-        public static void ApplyPatch(HarmonyInstance harmony)
+        public static void ApplyPatch(Harmony harmony)
         {
             ModEntry.Instance.Monitor.Log($"Applying Harmony patch \"{nameof(HarmonyPatch_FloatingItemBehavior)}\": prefixing SDV method \"GameLocation.sinkDebris(Debris, Vector2, Vector2)\".", LogLevel.Trace);
             harmony.Patch(
@@ -54,7 +49,7 @@ namespace WaterproofItems
                         return false; //skip the rest of the original method (note: this also skips any other patches on the method, depending on order)
                     }
                 }
-                
+
                 return true; //run the original method
 
             }

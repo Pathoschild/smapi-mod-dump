@@ -20,7 +20,7 @@ namespace AutoTrash
         internal ITranslationHelper i18n => Helper.Translation;
         internal ModConfig Config;
         public bool MinesOnly { get; private set; }
-        public IList<int> DeleteItems { get; private set; }
+        public IList<string> DeleteItems { get; private set; }
         public SButton ToggleTrash { get; private set; }
         public bool IsEnabled { get; set; } = false;
 
@@ -70,7 +70,7 @@ namespace AutoTrash
                 {
                     if (CheckItem(newStacks.Item))
                     {
-                        e.Player.removeItemsFromInventory(newStacks.Item.ParentSheetIndex, newStacks.NewSize - newStacks.OldSize);
+                        e.Player.Items.ReduceId(newStacks.Item.QualifiedItemId, newStacks.NewSize - newStacks.OldSize);
                     }
                 }
             }
@@ -79,9 +79,9 @@ namespace AutoTrash
         //Compares the item added to the list defined from the config file.
         private bool CheckItem(Item itemCheck)
         {
-            foreach (int i in DeleteItems)
+            foreach (string idNum in DeleteItems)
             {
-                if (itemCheck is Object obj && !obj.bigCraftable.Value && i == itemCheck.ParentSheetIndex)
+				if (itemCheck is Object && ItemRegistry.QualifyItemId(idNum) == itemCheck.QualifiedItemId)
                 {
                     return true;
                 }

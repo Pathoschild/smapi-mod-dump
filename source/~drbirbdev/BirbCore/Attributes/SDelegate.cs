@@ -21,16 +21,10 @@ using StardewValley.TokenizableStrings;
 
 namespace BirbCore.Attributes;
 
-public class SDelegate : ClassHandler
+public class SDelegate() : ClassHandler(2)
 {
-    public SDelegate() : base(2)
-    {
-
-    }
-
     public override void Handle(Type type, object? instance, IMod mod, object[]? args = null)
     {
-        instance = Activator.CreateInstance(type);
         base.Handle(type, instance, mod);
     }
 

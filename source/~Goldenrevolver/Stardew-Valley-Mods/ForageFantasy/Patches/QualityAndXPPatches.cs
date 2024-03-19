@@ -68,7 +68,7 @@ namespace ForageFantasy
             }
         }
 
-        public static void CheckForTwigToAxe(GameLocation location, int x, int y, Farmer who, ref bool __state)
+        public static void CheckForTwigToAxe(GameLocation location, int x, int y, ref bool __state)
         {
             __state = false;
 

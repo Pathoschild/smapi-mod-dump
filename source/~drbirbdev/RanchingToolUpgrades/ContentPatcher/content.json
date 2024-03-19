@@ -129,6 +129,22 @@
                     "ConventionalUpgradeFrom": "(T)drbirbdev.RanchingToolUpgrades_GoldShears"
                 }
             }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": ["AnimalShop", "Items", "(T)MilkPail"],
+            "Entries": {
+                "Price": "{{drbirbdev.RanchingToolUpgrades/PailBuyCost}}"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": ["AnimalShop", "Items", "(T)Shears"],
+            "Entries": {
+                "Price": "{{drbirbdev.RanchingToolUpgrades/ShearsBuyCost}}"
+            }
         }
     ]
 }

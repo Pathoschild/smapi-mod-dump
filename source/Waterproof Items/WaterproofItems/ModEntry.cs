@@ -8,16 +8,9 @@
 **
 *************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Microsoft.Xna.Framework;
+using HarmonyLib;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
-using StardewValley;
-using Harmony;
+using System;
 
 namespace WaterproofItems
 {
@@ -42,18 +35,18 @@ namespace WaterproofItems
 
             ApplyHarmonyPatches();
 
-            Helper.Events.GameLoop.GameLaunched += EnableGMCM;
+            Helper.Events.Display.RenderedActiveMenu += GMCM.Enable;
         }
 
         /// <summary>Applies any Harmony patches used by this mod.</summary>
         private void ApplyHarmonyPatches()
         {
-            HarmonyInstance harmony = HarmonyInstance.Create(ModManifest.UniqueID); //create this mod's Harmony instance
+            Harmony harmony = new Harmony(ModManifest.UniqueID); //create this mod's Harmony instance
 
             HarmonyPatch_FloatingItemBehavior.ApplyPatch(harmony);
 
             HarmonyPatch_FloatingItemVisualEffect.Instance = harmony; //pass the harmony instance to this patch (handled differently to support reuse after launch)
-            if (Config?.EnableCosmeticFloatingEffect == true) //if the cosmetic effect is enabled
+            if (Config?.FloatingAnimation == true) //if the floating animation is enabled
                 HarmonyPatch_FloatingItemVisualEffect.ApplyPatch();
         }
     }

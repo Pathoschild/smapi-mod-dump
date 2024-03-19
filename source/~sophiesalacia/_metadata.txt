@@ -12,9 +12,9 @@ mods:
    Sturdy Saplings
 
 latest commit:
-   commit 55564253ccb75e44400499c19383a456e74b238f
+   commit 61c112e966d41057a394a63e7b9de36a08427f34
    Author: sophiesalacia <sophiesalacia@users.noreply.github.com>
-   Date:   Tue Nov 28 13:51:28 2023 -0500
+   Date:   Sun Mar 17 19:08:46 2024 -0400
    
-       Fixed another typo.
+       bumped manifest number
    

@@ -6,9 +6,9 @@ mods:
    Waterproof Items
 
 latest commit:
-   commit 0f61671701f55dc0643b137fd510adfeadae5203
+   commit 4de57d0b9fe33686358cfbe06632fcd7e3129935
    Author: Esca-MMC <esca.mmc@gmail.com>
-   Date:   Mon Jul 13 16:09:12 2020 -0500
+   Date:   Sun Mar 17 09:29:35 2024 -0500
    
-       Add update keys to manifest.json
+       Update readme, license date
    

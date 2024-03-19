@@ -12,7 +12,7 @@ name: Machine Translate Mod and Create Translation Files
 on:
   push:
     branches:
-      - main
+      - none
     paths:
       - '*/i18n/**'
       - '**/i18n/default.json'

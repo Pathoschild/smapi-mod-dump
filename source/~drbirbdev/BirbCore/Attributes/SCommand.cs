@@ -22,50 +22,36 @@ namespace BirbCore.Attributes;
 /// <summary>
 /// A collection of commands in the SMAPI console.
 /// </summary>
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class SCommand : ClassHandler
+[AttributeUsage(AttributeTargets.Class)]
+public class SCommand(string name, string help = "") : ClassHandler(2)
 {
-    private readonly Dictionary<string, Action<string[]>> Commands = new();
-    private readonly Dictionary<string, string> Helps = new();
-    public string Name;
-    public string Help;
-
-    public SCommand(string name, string help = "") : base(2)
-    {
-        this.Name = name;
-        this.Help = help;
-    }
+    private readonly Dictionary<string, Action<string[]>> _commands = new();
+    private readonly Dictionary<string, string> _helps = new();
 
     public override void Handle(Type type, object? instance, IMod mod, object[]? args = null)
     {
-        instance = Activator.CreateInstance(type);
-        base.Handle(type, instance, mod, new object[] { this.Commands, this.Helps, this.Name });
+        base.Handle(type, instance, mod, [this._commands, this._helps, name]);
 
         mod.Helper.ConsoleCommands.Add(
-            name: this.Name,
+            name: name,
             documentation: this.GetHelp(),
-            callback: (s, args) => this.CallCommand(args)
+            callback: (s, commandArgs) => this.CallCommand(commandArgs)
         );
     }
 
     private string GetHelp(string? subCommand = null)
     {
-        if (subCommand is not null && this.Helps?[subCommand] is not null)
+        if (subCommand is not null)
         {
-            return this.Helps[subCommand];
-        }
-        if (this.Helps is null)
-        {
-            Log.Error("Attempting to look at null Helps dictionary");
-            return "";
+            return this._helps[subCommand];
         }
 
-        StringBuilder sb = new StringBuilder();
-        sb.Append($"{this.Name}: {this.Help}\n");
-        foreach (string sub in this.Helps.Keys)
+        StringBuilder sb = new();
+        sb.Append($"{name}: {help}\n");
+        foreach (string sub in this._helps.Keys)
         {
-            string help = this.Helps[sub];
-            sb.Append($"\t{help}\n\n");
+            string helpText = this._helps[sub];
+            sb.Append($"\t{helpText}\n\n");
         }
 
         return sb.ToString();
@@ -73,7 +59,7 @@ public class SCommand : ClassHandler
 
     private void CallCommand(string[] args)
     {
-        if (args is null || args.Length == 0)
+        if (args.Length == 0)
         {
             Log.Info(this.GetHelp());
             return;
@@ -82,7 +68,7 @@ public class SCommand : ClassHandler
         if (args[0].Equals("help", StringComparison.InvariantCultureIgnoreCase)
             || args[0].Equals("-h", StringComparison.InvariantCultureIgnoreCase))
         {
-            if (args.Length > 1 && this.Helps.ContainsKey(args[1]))
+            if (args.Length > 1 && this._helps.ContainsKey(args[1]))
             {
                 Log.Info(this.GetHelp(args[1]));
             }
@@ -90,23 +76,21 @@ public class SCommand : ClassHandler
             {
                 Log.Info(this.GetHelp());
             }
+
             return;
         }
 
         try
         {
-            this.Commands[args[0]].Invoke(args[1..]);
+            this._commands[args[0]].Invoke(args[1..]);
         }
         catch (Exception e)
         {
             Log.Info(this.GetHelp(args[0]));
             Log.Trace($"Args are:{string.Join(" ", args)}");
             Log.Trace(e.ToString());
-            return;
         }
     }
-
-
 
 
     /// <summary>
@@ -114,7 +98,7 @@ public class SCommand : ClassHandler
     /// will be converted from strings as best as possible. Supports optional numbered parameters, and
     /// variadic arguments (params parameter), and will deal with having more or fewer command line arguments
     /// compared to method arguments. Optionally includes help text.
-    /// This attribute, combined with the SCommand attribute, creates a two-command structure to seperate mod
+    /// This attribute, combined with the SCommand attribute, creates a two-command structure to separate mod
     /// commands.
     /// <code>
     /// [SCommand(Name="birb")]
@@ -131,15 +115,8 @@ public class SCommand : ClassHandler
     /// birb one arg0 arg1
     /// </code>
     /// </summary>
-    public class Command : MethodHandler
+    public class Command(string help = "") : MethodHandler
     {
-        public string Help;
-
-        public Command(string help = "")
-        {
-            this.Help = help;
-        }
-
         public override void Handle(MethodInfo method, object? instance, IMod mod, object[]? args = null)
         {
             if (instance is null)
@@ -147,59 +124,63 @@ public class SCommand : ClassHandler
                 Log.Error("SCommand class may be static? Cannot parse subcommands.");
                 return;
             }
+
             if (args is null)
             {
                 Log.Error("SCommand class didn't pass args");
                 return;
             }
-            Dictionary<string, Action<string[]>> Commands = (Dictionary<string, Action<string[]>>)args[0];
-            Dictionary<string, string> Helps = (Dictionary<string, string>)args[1];
+
+            Dictionary<string, Action<string[]>> commands = (Dictionary<string, Action<string[]>>)args[0];
+            Dictionary<string, string> helps = (Dictionary<string, string>)args[1];
             string command = (string)args[2];
 
 
             string subCommand = method.Name.ToSnakeCase();
 
-            Commands.Add(subCommand, (string[] args) =>
+            commands.Add(subCommand, commandArgs =>
             {
-                List<object> commandArgs = new();
+                List<object> commandArgsList = [];
 
                 for (int i = 0; i < method.GetParameters().Length; i++)
                 {
                     ParameterInfo parameter = method.GetParameters()[i];
-                    string? arg = args?.Length > i ? args?[i] : null;
+                    string? arg = commandArgs?.Length > i ? commandArgs[i] : null;
 
 
-                    commandArgs.Add(ParseArg(arg, parameter));
-                    if (parameter.GetCustomAttribute(typeof(ParamArrayAttribute), false) is not null)
+                    commandArgsList.Add(ParseArg(arg, parameter));
+                    if (parameter.GetCustomAttribute(typeof(ParamArrayAttribute), false) is null)
                     {
-                        for (int j = i + 1; j < (args?.Length ?? 0); j++)
-                        {
-                            commandArgs.Add(ParseArg(args?[j], parameter));
-                        }
+                        continue;
+                    }
+
+                    for (int j = i + 1; j < (commandArgs?.Length ?? 0); j++)
+                    {
+                        commandArgsList.Add(ParseArg(commandArgs?[j], parameter));
                     }
                 }
 
-                method.Invoke(instance, commandArgs.ToArray());
-
+                method.Invoke(instance, commandArgsList.ToArray());
             });
 
-            StringBuilder help = new StringBuilder();
-            help.Append($"{command} {subCommand}");
+            StringBuilder help1 = new();
+            help1.Append($"{command} {subCommand}");
             foreach (ParameterInfo parameter in method.GetParameters())
             {
                 string dotDotDot = parameter.GetCustomAttribute<ParamArrayAttribute>() is not null ? "..." : "";
                 if (parameter.IsOptional)
                 {
-                    help.Append($" [{parameter.Name}{dotDotDot}]");
+                    help1.Append($" [{parameter.Name}{dotDotDot}]");
                 }
                 else
                 {
-                    help.Append($" <{parameter.Name}{dotDotDot}>");
+                    help1.Append($" <{parameter.Name}{dotDotDot}>");
                 }
             }
-            help.Append($"\n\t\t{this.Help}");
 
-            Helps.Add(subCommand, help.ToString());
+            help1.Append($"\n\t\t{help}");
+
+            helps.Add(subCommand, help1.ToString());
         }
 
         private static object ParseArg(string? arg, ParameterInfo parameter)
@@ -208,54 +189,55 @@ public class SCommand : ClassHandler
             {
                 return Type.Missing;
             }
-            else if (parameter.ParameterType == typeof(string))
+
+            if (parameter.ParameterType == typeof(string))
             {
                 return arg;
             }
-            else if (parameter.ParameterType == typeof(int))
+
+            if (parameter.ParameterType == typeof(int))
             {
                 return int.Parse(arg);
             }
-            else if (parameter.ParameterType == typeof(double) || parameter.ParameterType == typeof(float))
+
+            if (parameter.ParameterType == typeof(double) || parameter.ParameterType == typeof(float))
             {
                 return float.Parse(arg);
             }
-            else if (parameter.ParameterType == typeof(bool))
+
+            if (parameter.ParameterType == typeof(bool))
             {
                 return bool.Parse(arg);
             }
-            else if (parameter.ParameterType == typeof(GameLocation))
+
+            if (parameter.ParameterType == typeof(GameLocation))
             {
                 return Utility.fuzzyLocationSearch(arg);
             }
-            else if (parameter.ParameterType == typeof(NPC))
+
+            if (parameter.ParameterType == typeof(NPC))
             {
                 return Utility.fuzzyCharacterSearch(arg);
             }
-            else if (parameter.ParameterType == typeof(FarmAnimal))
+
+            if (parameter.ParameterType == typeof(FarmAnimal))
             {
                 return Utility.fuzzyAnimalSearch(arg);
             }
-            else if (parameter.ParameterType == typeof(Farmer))
+
+            if (parameter.ParameterType == typeof(Farmer))
             {
                 if (long.TryParse(arg, out long playerId))
                 {
                     return Game1.getFarmerMaybeOffline(playerId);
                 }
-                else if (arg.Equals("host", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return Game1.MasterPlayer;
-                }
-                return Game1.player;
+
+                return arg.Equals("host", StringComparison.InvariantCultureIgnoreCase)
+                    ? Game1.MasterPlayer
+                    : Game1.player;
             }
-            else if (parameter.ParameterType == typeof(Item))
-            {
-                return Utility.fuzzyItemSearch(arg);
-            }
-            else
-            {
-                return Type.Missing;
-            }
+
+            return parameter.ParameterType == typeof(Item) ? Utility.fuzzyItemSearch(arg) : Type.Missing;
         }
     }
 }

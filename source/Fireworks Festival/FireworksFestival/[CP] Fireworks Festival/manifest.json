@@ -11,7 +11,7 @@
 {
   "Name": "[CP] Fireworks Festival",
   "Author": "violetlizabet",
-  "Version": "1.2.0",
+  "Version": "2.0.0-alpha",
   "Description": "Adds a fireworks festival.",
   "UniqueID": "violetlizabet.CP.FireworksFestival",
   "ContentPackFor": { 

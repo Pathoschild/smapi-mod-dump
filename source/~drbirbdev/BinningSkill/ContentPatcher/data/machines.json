@@ -205,7 +205,11 @@
                     "WobbleWhileWorking": true,
                     "LoadEffects": [
                         {
-                            "Sound": "trashcan"
+                            "Sounds": [
+                                {
+                                    "Id": "trashcan",
+                                }
+                            ],
                         }
                     ],
                     "StatsToIncrementWhenLoaded": [
@@ -456,7 +460,11 @@
                     "WobbleWhileWorking": true,
                     "LoadEffects": [
                         {
-                            "Sound": "trashcan"
+                            "Sounds": [
+                                {
+                                    "Id": "trashcan"
+                                }
+                            ],
                         }
                     ],
                     "StatsToIncrementWhenLoaded": [
@@ -505,7 +513,7 @@
                     "Category": -7,
                     "Price": 150,
                     "Texture": "Mods/drbirbdev.BinningSkill/Items",
-                    "SpriteIndex": 5,
+                    "SpriteIndex": 9,
                     "Edibility": 50,
                     "IsDrink": false,
                     "Buff": {

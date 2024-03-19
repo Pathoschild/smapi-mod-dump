@@ -11,7 +11,7 @@
 {
   "Name": "Car Warp",
   "Author": "sophie",
-  "Version": "1.2.0",
+  "Version": "2.0.0",
   "Description": "Extends skellady's decorative Car mod with warp functionality.",
   "UniqueID": "sophie.CarWarp",
   "EntryDll": "CarWarp.dll",

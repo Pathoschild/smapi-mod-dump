@@ -1,0 +1,14 @@
+{
+  "Name": "PeacefulEnd.Rings.BunnyRing",
+  "Description": "A pair of bunny ears are shaped onto the ring.",
+  "Category": "Ring",
+  "Edibility": -300,
+  "Price": 0,
+  "Recipe": null,
+  "CanPurchase": true,
+  "PurchaseFrom": "HatMouse",
+  "PurchasePrice": 100,
+  "NameLocalization": {
+    "en": "Bunny Ring"
+  }
+}

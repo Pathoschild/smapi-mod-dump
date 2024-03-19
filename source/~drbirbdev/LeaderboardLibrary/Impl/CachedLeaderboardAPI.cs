@@ -17,35 +17,32 @@ using StardewValley;
 
 namespace LeaderboardLibrary;
 
-class CachedLeaderboardAPI : ILeaderboardAPI
+sealed class CachedLeaderboardApi(string modId) : ILeaderboardApi
 {
+    private Dictionary<string, List<LeaderboardStat>> LocalLeaderboards =>
+        ModEntry.LocalModData.LocalLeaderboards[modId];
 
-    private Dictionary<string, List<LeaderboardStat>> LocalLeaderboards => ModEntry.LocalModData.LocalLeaderboards[this.ModId];
-    private Dictionary<string, List<LeaderboardStat>> TopLeaderboards => ModEntry.LocalModData.TopLeaderboards[this.ModId];
-    private readonly LeaderboardDAO LeaderboardDAO = new LeaderboardDAO();
-    private readonly string ModId;
-
-    public CachedLeaderboardAPI(string modId)
-    {
-        this.ModId = modId;
-    }
+    private Dictionary<string, List<LeaderboardStat>> TopLeaderboards => ModEntry.LocalModData.TopLeaderboards[modId];
+    private readonly LeaderboardDao _leaderboardDao = new();
 
     private void LazyInitStat(string stat)
     {
         if (!this.LocalLeaderboards.ContainsKey(stat))
         {
-            this.LocalLeaderboards[stat] = new List<LeaderboardStat>();
+            this.LocalLeaderboards[stat] = [];
         }
+
         if (!this.TopLeaderboards.ContainsKey(stat))
         {
-            this.TopLeaderboards[stat] = new List<LeaderboardStat>();
+            this.TopLeaderboards[stat] = [];
         }
     }
 
     public int GetLocalRank(string stat)
     {
         this.LazyInitStat(stat);
-        return this.LocalLeaderboards[stat].FindIndex((match) => match.UserUUID == ModEntry.GlobalModData.Value.UserUUID) + 1;
+        return this.LocalLeaderboards[stat]
+            .FindIndex(match => match.UserUUID == ModEntry.GLOBAL_MOD_DATA.Value.UserUuid) + 1;
     }
 
     public List<Dictionary<string, string>> GetLocalTopN(string stat, int count)
@@ -55,13 +52,14 @@ class CachedLeaderboardAPI : ILeaderboardAPI
         {
             count = this.LocalLeaderboards[stat].Count;
         }
+
         return LeaderboardStat.ToApiList(this.LocalLeaderboards[stat].GetRange(0, count));
     }
 
     public Dictionary<string, string> GetPersonalBest(string stat)
     {
         this.LazyInitStat(stat);
-        return this.GetPlayerStat(stat, ModEntry.GlobalModData.Value.UserUUID).ToApiShape();
+        return this.GetPlayerStat(stat, ModEntry.GLOBAL_MOD_DATA.Value.UserUuid).ToApiShape();
     }
 
     public int GetRank(string stat)
@@ -76,23 +74,25 @@ class CachedLeaderboardAPI : ILeaderboardAPI
         {
             count = this.TopLeaderboards[stat].Count;
         }
+
         return LeaderboardStat.ToApiList(this.TopLeaderboards[stat].GetRange(0, count));
     }
 
-    public virtual bool RefreshCache(string stat)
+    public bool RefreshCache(string stat)
     {
         this.LazyInitStat(stat);
-        LeaderboardDAO.GetLocalScores(stat).ContinueWith((task) =>
+        LeaderboardDao.GetLocalScores(stat).ContinueWith(task =>
         {
             if (CheckFailures(task, "GetLocalScores"))
             {
                 return;
             }
+
             this.LocalLeaderboards[stat] = task.Result;
             this.LocalLeaderboards[stat].Sort();
             try
             {
-                ModEntry.Instance.Helper.Data.WriteJsonFile($"data/cached_leaderboards.json", ModEntry.LocalModData);
+                ModEntry.Instance.Helper.Data.WriteJsonFile("data/cached_leaderboards.json", ModEntry.LocalModData);
             }
             catch (Exception)
             {
@@ -100,16 +100,17 @@ class CachedLeaderboardAPI : ILeaderboardAPI
             }
         });
 
-        LeaderboardDAO.GetTopScores(stat).ContinueWith((task) =>
+        LeaderboardDao.GetTopScores(stat).ContinueWith(task =>
         {
             if (CheckFailures(task, "GetTopScores"))
             {
                 return;
             }
+
             this.TopLeaderboards[stat] = task.Result;
             try
             {
-                ModEntry.Instance.Helper.Data.WriteJsonFile($"data/cached_leaderboards.json", ModEntry.LocalModData);
+                ModEntry.Instance.Helper.Data.WriteJsonFile("data/cached_leaderboards.json", ModEntry.LocalModData);
             }
             catch (Exception)
             {
@@ -121,86 +122,84 @@ class CachedLeaderboardAPI : ILeaderboardAPI
         return true;
     }
 
-    public virtual bool UploadScore(string stat, int score)
+    public bool UploadScore(string stat, int score)
     {
         this.LazyInitStat(stat);
-        LeaderboardStat current = this.GetPlayerStat(stat, ModEntry.GlobalModData.Value.UserUUID);
-        if (current is null || current.Score < score)
+        LeaderboardStat current = this.GetPlayerStat(stat, ModEntry.GLOBAL_MOD_DATA.Value.UserUuid);
+        if (current is not null && !(current.Score < score))
         {
-            LeaderboardDAO.UploadScore(stat, score, ModEntry.GlobalModData.Value.UserUUID, Game1.player.Name, Game1.player.farmName.Value, ModEntry.GlobalModData.Value.Secret, this);
-            return this.UpdateCache(stat, score, ModEntry.GlobalModData.Value.UserUUID, Game1.player.Name);
+            return true;
         }
-        return true;
+
+        LeaderboardDao.UploadScore(stat, score, ModEntry.GLOBAL_MOD_DATA.Value.UserUuid, Game1.player.Name,
+            Game1.player.farmName.Value, ModEntry.GLOBAL_MOD_DATA.Value.Secret, this);
+        return this.UpdateCache(stat, score, ModEntry.GLOBAL_MOD_DATA.Value.UserUuid, Game1.player.Name);
     }
 
     public bool UpdateCache(string stat, int score, string userUuid, string userName)
     {
         this.LazyInitStat(stat);
         LeaderboardStat current = this.GetPlayerStat(stat, userUuid);
-        if (current is null || current.Score < score)
+        if (current is not null && !(current.Score < score))
         {
-            if (current is null)
-            {
-                current = new LeaderboardStat()
-                {
-                    Stat = stat,
-                    UserUUID = userUuid,
-                };
-                this.LocalLeaderboards[stat].Add(current);
-            }
-            current.Name = userName;
-            current.Farm = Game1.player.farmName.Value;
-            current.Score = score;
-            current.DateTime = DateTimeOffset.Now.ToUnixTimeSeconds();
-
-            this.LocalLeaderboards[stat].Sort();
-
-            if (this.TopLeaderboards[stat].Count < 10 || this.TopLeaderboards[stat].Last<LeaderboardStat>().Score < score)
-            {
-                LeaderboardStat existing = this.TopLeaderboards[stat].Find((match) => match.UserUUID == userUuid);
-                if (existing is not null)
-                {
-                    this.TopLeaderboards[stat].Remove(existing);
-                }
-
-                this.TopLeaderboards[stat].Add(current);
-                this.TopLeaderboards[stat].Sort();
-                if (this.TopLeaderboards[stat].Count > 10)
-                {
-                    this.TopLeaderboards[stat].RemoveAt(10);
-                }
-            }
-
-            try
-            {
-                ModEntry.Instance.Helper.Data.WriteJsonFile($"data/cached_leaderboards.json", ModEntry.LocalModData);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Failed to update the cache.  Could multiple mods be updating high scores at once?.\n" +
-                    $"Score: {score}\n" +
-                    $"Stat : {stat}\n" +
-                    $"Name : {userName}\n" +
-                    $"Farm : {Game1.player.farmName}\n" +
-                    $"UUID : {userUuid}\n");
-                Log.Error(e.Message);
-            }
-
+            return true;
         }
+
+        if (current is null)
+        {
+            current = new LeaderboardStat
+            {
+                Stat = stat,
+                UserUUID = userUuid
+            };
+            this.LocalLeaderboards[stat].Add(current);
+        }
+
+        current.Name = userName;
+        current.Farm = Game1.player.farmName.Value;
+        current.Score = score;
+        current.DateTime = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+        this.LocalLeaderboards[stat].Sort();
+
+        if (this.TopLeaderboards[stat].Count < 10 || this.TopLeaderboards[stat].Last().Score < score)
+        {
+            LeaderboardStat existing = this.TopLeaderboards[stat].Find(match => match.UserUUID == userUuid);
+            if (existing is not null)
+            {
+                this.TopLeaderboards[stat].Remove(existing);
+            }
+
+            this.TopLeaderboards[stat].Add(current);
+            this.TopLeaderboards[stat].Sort();
+            if (this.TopLeaderboards[stat].Count > 10)
+            {
+                this.TopLeaderboards[stat].RemoveAt(10);
+            }
+        }
+
+        try
+        {
+            ModEntry.Instance.Helper.Data.WriteJsonFile("data/cached_leaderboards.json", ModEntry.LocalModData);
+        }
+        catch (Exception e)
+        {
+            Log.Error($"Failed to update the cache.  Could multiple mods be updating high scores at once?.\n" +
+                      $"Score: {score}\n" +
+                      $"Stat : {stat}\n" +
+                      $"Name : {userName}\n" +
+                      $"Farm : {Game1.player.farmName}\n" +
+                      $"UUID : {userUuid}\n");
+            Log.Error(e.Message);
+        }
+
         return true;
     }
 
-    protected LeaderboardStat GetPlayerStat(string stat, string userUuid)
+    private LeaderboardStat GetPlayerStat(string stat, string userUuid)
     {
         this.LazyInitStat(stat);
-        foreach (LeaderboardStat leaderboard in this.LocalLeaderboards[stat])
-        {
-            if (leaderboard.UserUUID == userUuid)
-            {
-                return leaderboard;
-            }
-        }
-        return null;
+        return this.LocalLeaderboards[stat].FirstOrDefault(leaderboard => leaderboard.UserUUID == userUuid);
     }
 
     private static bool CheckFailures(Task task, string queryName)
@@ -208,19 +207,23 @@ class CachedLeaderboardAPI : ILeaderboardAPI
         if (task.IsFaulted)
         {
             Log.Warn(queryName + " failed");
-            Log.Warn(task.Exception.Message);
+            Log.Warn(task.Exception?.Message);
             return true;
         }
+
         if (task.IsCanceled)
         {
             Log.Warn(queryName + " was canceled");
             return true;
         }
-        if (!task.IsCompleted)
+
+        if (task.IsCompleted)
         {
-            Log.Warn(queryName + " failed to complete");
-            return true;
+            return false;
         }
-        return false;
+
+        Log.Warn(queryName + " failed to complete");
+        return true;
+
     }
 }

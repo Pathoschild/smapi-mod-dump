@@ -11,7 +11,7 @@
 {
   "Name": "Fireworks Festival",
   "Author": "violetlizabet",
-  "Version": "2.0.0",
+  "Version": "2.0.0-alpha",
   "Description": "Adds a summer fireworks festival as well as craftable fireworks.",
   "UniqueID": "violetlizabet.FireworksFestival",
   "EntryDll": "FireworksFestival.dll",

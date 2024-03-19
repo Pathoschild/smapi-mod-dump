@@ -15,108 +15,147 @@ using System.Reflection;
 namespace BirbCore.Extensions;
 public static class ReflectionExtensions
 {
-    public const BindingFlags AllDeclared = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+    public const BindingFlags ALL_DECLARED = BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
-    public static MemberInfo? GetMemberOfType(this Type type, Type memberType)
+    public static bool TryGetMemberOfType(this Type type, Type memberType, out MemberInfo memberInfo)
     {
-        foreach (FieldInfo fieldInfo in type.GetFields(AllDeclared))
+        foreach (FieldInfo fieldInfo in type.GetFields(ALL_DECLARED))
         {
-            if (fieldInfo.FieldType == memberType)
+            if (fieldInfo.FieldType != memberType)
             {
-                return fieldInfo;
+                continue;
             }
+
+            memberInfo = fieldInfo;
+            return true;
         }
-        foreach (PropertyInfo propertyInfo in type.GetProperties(AllDeclared))
+        foreach (PropertyInfo propertyInfo in type.GetProperties(ALL_DECLARED))
         {
-            if (propertyInfo.PropertyType == memberType)
+            if (propertyInfo.PropertyType != memberType)
             {
-                return propertyInfo;
+                continue;
             }
+
+            memberInfo = propertyInfo;
+            return true;
         }
-        return null;
+
+        memberInfo = typeof(int);
+        return false;
     }
 
-    public static MemberInfo? GetMemberOfName(this Type type, string name)
+    public static bool TryGetMemberOfName(this Type type, string name, out MemberInfo memberInfo)
     {
-        foreach (FieldInfo fieldInfo in type.GetFields(AllDeclared))
+        foreach (FieldInfo fieldInfo in type.GetFields(ALL_DECLARED))
         {
-            if (fieldInfo.Name == name)
+            if (fieldInfo.Name != name)
             {
-                return fieldInfo;
+                continue;
             }
+
+            memberInfo = fieldInfo;
+            return true;
         }
-        foreach (PropertyInfo propertyInfo in type.GetProperties(AllDeclared))
+        foreach (PropertyInfo propertyInfo in type.GetProperties(ALL_DECLARED))
         {
-            if (propertyInfo.Name == name)
+            if (propertyInfo.Name != name)
             {
-                return propertyInfo;
+                continue;
             }
+
+            memberInfo = propertyInfo;
+            return true;
         }
-        return null;
+
+        memberInfo = typeof(int);
+        return false;
     }
 
-    public static MemberInfo? GetMemberWithCustomAttribute(this Type type, Type attributeType)
+    public static bool TryGetGetterOfName(this Type type, string name, out Func<object?, object?> getter)
     {
-        foreach (FieldInfo fieldInfo in type.GetFields(AllDeclared))
+        if (!TryGetMemberOfName(type, name, out MemberInfo memberInfo))
+        {
+            getter = null!;
+            return false;
+        }
+
+        getter = memberInfo.GetGetter();
+        return true;
+    }
+
+    public static bool TryGetSetterOfName(this Type type, string name, out Action<object?, object?> setter)
+    {
+        if (!TryGetMemberOfName(type, name, out MemberInfo memberInfo))
+        {
+            setter = null!;
+            return false;
+        }
+
+        setter = memberInfo.GetSetter();
+        return true;
+    }
+
+    public static bool TryGetMemberWithCustomAttribute(this Type type, Type attributeType, out MemberInfo memberInfo)
+    {
+        foreach (FieldInfo fieldInfo in type.GetFields(ALL_DECLARED))
         {
             foreach (Attribute attribute in fieldInfo.GetCustomAttributes())
             {
-                if (attribute.GetType() == attributeType)
+                if (attribute.GetType() != attributeType)
                 {
-                    return fieldInfo;
+                    continue;
                 }
+
+                memberInfo = fieldInfo;
+                return true;
             }
         }
-        foreach (PropertyInfo propertyInfo in type.GetProperties(AllDeclared))
+        foreach (PropertyInfo propertyInfo in type.GetProperties(ALL_DECLARED))
         {
             foreach (Attribute attribute in propertyInfo.GetCustomAttributes())
             {
-                if (attribute.GetType() == attributeType)
+                if (attribute.GetType() != attributeType)
                 {
-                    return propertyInfo;
+                    continue;
                 }
+
+                memberInfo = propertyInfo;
+                return true;
             }
         }
-        return null;
+
+        memberInfo = typeof(int);
+        return false;
     }
 
-    public static Type? GetReflectedType(this MemberInfo member)
+    public static Type GetReflectedType(this MemberInfo member)
     {
-        if (member is FieldInfo field)
+        return member switch
         {
-            return field.FieldType;
-        }
-        else if (member is PropertyInfo property)
-        {
-            return property.PropertyType;
-        }
-        return null;
+            FieldInfo field => field.FieldType,
+            PropertyInfo property => property.PropertyType,
+            _ => typeof(int) // default case shouldn't happen
+        };
     }
 
-    public static Func<object?, object?>? GetGetter(this MemberInfo member)
+    public static Func<object?, object?> GetGetter(this MemberInfo member)
     {
-        if (member is FieldInfo field)
+        return member switch
         {
-            return field.GetValue;
-        }
-        else if (member is PropertyInfo property)
-        {
-            return property.GetValue;
-        }
-        return null;
+            FieldInfo field => field.GetValue,
+            PropertyInfo property => property.GetValue,
+            _ => a => a // default case shouldn't happen
+        };
     }
 
-    public static Action<object?, object?>? GetSetter(this MemberInfo member)
+    public static Action<object?, object?> GetSetter(this MemberInfo member)
     {
-        if (member is FieldInfo field)
+        return member switch
         {
-            return field.SetValue;
-        }
-        else if (member is PropertyInfo property)
-        {
-            return property.SetValue;
-        }
-        return null;
+            FieldInfo field => field.SetValue,
+            PropertyInfo property => property.SetValue,
+            _ => (a, b) => {} // default case shouldn't happen
+        };
     }
 
     public static T InitDelegate<T>(this MethodInfo method, object? instance = null) where T : Delegate
@@ -125,9 +164,6 @@ public static class ReflectionExtensions
         {
             return (T)Delegate.CreateDelegate(typeof(T), method);
         }
-        else
-        {
-            return (T)Delegate.CreateDelegate(typeof(T), instance, method);
-        }
+        return (T)Delegate.CreateDelegate(typeof(T), instance, method);
     }
 }

@@ -1,0 +1,6 @@
+{
+  "notification.crop.no-fertilizer": "Hoje é o último dia para plantar {{cropName}} nesta estação sem fertilizantes.",
+  "notification.crop.speed-gro": "Hoje é o último dia para plantar {{cropName}} nesta estação com fertilizante Solo Foliar.",
+  "notification.crop.deluxe-speed-gro": "Hoje é o último dia para plantar {{cropName}} nesta estação com fertilizante Solo Foliar Premium.",
+  "notification.crop.hyper-speed-gro": "Hoje é o último dia para plantar {{cropName}} nesta estação com fertilizante Hiper Solo Foliar."
+}

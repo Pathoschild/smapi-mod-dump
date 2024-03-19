@@ -22,8 +22,7 @@ namespace ThongUICore.Framework.Renderer
     public class ImageRenderer : BaseRenderer
     {
 
-        public ImageRendererStyle Style { get; set; } = ImageRendererStyle.Fixed;
-
+         
         public override void Draw(SpriteBatch spriteBatch, int x, int y, int width, int height)
         {
             throw new NotImplementedException();

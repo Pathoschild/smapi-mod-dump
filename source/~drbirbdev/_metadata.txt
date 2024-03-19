@@ -16,9 +16,9 @@ mods:
    Winter Star Spouse
 
 latest commit:
-   commit ff69f33cefc0c622a6772dcc5518271c35197b13
+   commit 0bff6ac6cfd58b11bdc7759c6a477074ca433570
    Author: Drbirbdev <drbirbdev@gmail.com>
-   Date:   Sun Mar 10 18:21:29 2024 -0700
+   Date:   Mon Mar 18 16:14:18 2024 -0700
    
-       Update versions
+       WSS typo fix and i18n
    

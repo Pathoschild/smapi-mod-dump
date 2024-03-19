@@ -1,0 +1,29 @@
+/*************************************************
+**
+** You're viewing a file in the SMAPI mod dump, which contains a copy of every open-source SMAPI mod
+** for queries and analysis.
+**
+** This is *not* the original file, and not necessarily the latest version.
+** Source repository: https://github.com/voltaek/StardewMods
+**
+*************************************************/
+
+{
+  /*
+   | This file is automatically updated by ModManifestBuilder
+   | when the project is compiled.
+   | 
+   | Changes made to this file may be overwritten.
+   | 
+   */
+  "UniqueID": "voltaek.HoneyHarvestSync",
+  "Name": "Honey Harvest Sync",
+  "Author": "voltaek",
+  "Version": "1.1.1",
+  "Description": "Ready-for-harvest bee houses show the artisan honey you'll receive.",
+  "MinimumApiVersion": "3.18",
+  "EntryDll": "HoneyHarvestSync.dll",
+  "UpdateKeys": [
+    "Nexus:20493"
+  ]
+}

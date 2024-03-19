@@ -10,10 +10,10 @@ for queries and analysis.**
 #### Car Warp
 *by sophie*
 
-Adds warp functionality to skell's Car mod. Also allows the interior to be configured and seasonal overlays to be enabled.
+Adds warp functionality to skell's car mod. Also allows the interior to be configured and seasonal overlays to be enabled.
 
 [NexusMods](https://www.nexusmods.com/stardewvalley/mods/11102)  
-[GitHub]()
+[GitHub](https://github.com/sophiesalacia/StardewMods/tree/main/CarWarp)
 
 #### If you have any issues:
 * Make sure SMAPI and Content Patcher are up-to-date.

@@ -8,7 +8,7 @@ for queries and analysis.**
 
 The Mouahrara's Module Collection mod is a compilation of tweaks, features, additions, and overhauls that enhance the quality of life, improve gameplay, introduce new functionality and provide functional details.
 
-![](docs/images/main.jpg)
+![](https://raw.githubusercontent.com/wiki/mouahrara/mouahrarasModuleCollection/images/main.jpg)
 
 ## Install
  - Install the latest version of [SMAPI](https://smapi.io).
@@ -22,7 +22,7 @@ This section contains modules that add minor tweaks and features designed to enh
 
 - #### Arcade games
 
-https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/8b13e5b9-55e0-4c45-a7e8-4b17337dd1e5
+https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/ab6445ef-422e-446f-acb3-c2db22f7fb87
 
 | Module                    | Functionality                                                       | GMCM options                                                                     | Additional Information                                                                          |
 |---------------------------|---------------------------------------------------------------------|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
@@ -32,15 +32,17 @@ https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/8b13e5b
 
 - #### Machines
 
+https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/79d90415-d70e-4e57-ab54-acbfe73525e6
+
 | Module           | Functionality                                                                    | GMCM options              |
 |------------------|----------------------------------------------------------------------------------|---------------------------|
 | Safe replacement | Automatically retrieves the content of a crystalarium when you insert a new one. | <ul><li>Enabled</li></ul> |
 
 - #### Shops
 
-https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/469a20d9-cf42-4dbc-9b64-f413d3bae3c9
+https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/add5ed20-b685-4106-b4e3-c76308399d8d
 
-https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/3f85a5e0-70f3-4691-a6cb-73ab6f79cfc9
+https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/594ed452-cab8-4d83-a87b-bce4818cbb1e
 
 | Module                 | Functionality                                                             | GMCM options                                                                        |
 |------------------------|---------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
@@ -50,7 +52,7 @@ https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/3f85a5e
 
 - #### User Interface
 
-https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/007d5677-2905-4bb1-8ba4-63d134491dce
+https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/b18f9426-7f22-4689-a453-60ecd19f5295
 
 | Module         | Functionality                                                                                                                     | GMCM options                                                                                                         |
 |----------------|-----------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------|
@@ -59,7 +61,7 @@ https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/007d567
 
 - #### Other
 
-https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/65d3d199-eec3-4bdd-8bf6-29bbc07adfbc
+https://github.com/mouahrara/mouahrarasModuleCollection/assets/131559634/f01b4bd0-aead-4ca0-8529-c14a395e91fa
 
 | Module            | Functionality                                                            | GMCM options                                                                     | Additional Information                                                                                                                                                                                                                                                                                                                           |
 |-------------------|--------------------------------------------------------------------------|----------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

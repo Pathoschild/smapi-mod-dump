@@ -1,0 +1,16 @@
+﻿{
+  "Name": "猪车电话",
+  "Author": "Becks723",
+  "Version": "1.0.2",
+  "Description": "允许打电话给猪车。",
+  "UniqueID": "Becks723.PhoneTravelingCart",
+  "MinimumApiVersion": "3.14.0",
+  "EntryDll": "PhoneTravelingCart.dll",
+  "UpdateKeys": [ "Nexus:12981" ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}

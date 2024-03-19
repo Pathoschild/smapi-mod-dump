@@ -9,7 +9,7 @@
 *************************************************/
 
 using System;
-using System.Reflection;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -22,7 +22,6 @@ using StardewValley.Buildings;
 using StardewValley.Menus;
 using StardewValley.GameData.FarmAnimals;
 using StardewValley.Extensions;
-using System.Linq;
 
 namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.BetterAnimalPurchase.Patches
 {
@@ -68,15 +67,10 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.BetterAnimalPurchas
 			if (!ModEntry.Config.ShopsBetterAnimalPurchase)
 				return true;
 
-			TextBox textBox = (TextBox)typeof(PurchaseAnimalsMenu).GetField("textBox", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-			TextBoxEvent e = (TextBoxEvent)typeof(PurchaseAnimalsMenu).GetField("e", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-			FieldInfo animalBeingPurchasedField = typeof(PurchaseAnimalsMenu).GetField("animalBeingPurchased", BindingFlags.NonPublic | BindingFlags.Instance);
-			FarmAnimal animalBeingPurchased = (FarmAnimal)animalBeingPurchasedField.GetValue(__instance);
-
-			typeof(PurchaseAnimalsMenu).GetField("namingAnimal", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(__instance, false);
-			typeof(TextBox).GetEvent("OnEnterPressed").RemoveEventHandler(textBox, e);
-			typeof(TextBox).GetField("_selected", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(textBox, false);
-			animalBeingPurchasedField.SetValue(__instance, new FarmAnimal(Randomize && AlternatePurchaseTypes.Any() ? Game1.random.ChooseFrom(AlternatePurchaseTypes) : animalBeingPurchased.type.Value, Game1.Multiplayer.getNewID(), animalBeingPurchased.ownerID.Value));
+			__instance.namingAnimal = false;
+			__instance.textBox.Selected = false;
+			__instance.textBox.OnEnterPressed -= __instance.textBoxEvent;
+			__instance.animalBeingPurchased = new FarmAnimal(Randomize && AlternatePurchaseTypes.Any() ? Game1.random.ChooseFrom(AlternatePurchaseTypes) : __instance.animalBeingPurchased.type.Value, Game1.Multiplayer.getNewID(), __instance.animalBeingPurchased.ownerID.Value);
 			return false;
 		}
 
@@ -84,26 +78,21 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.BetterAnimalPurchas
 		{
 			if (!ModEntry.Config.ShopsBetterAnimalPurchase)
 				return true;
-			if (Game1.IsFading() || (bool)typeof(PurchaseAnimalsMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance))
+			if (Game1.IsFading() || __instance.freeze)
 				return true;
-
-			bool onFarm = (bool)typeof(PurchaseAnimalsMenu).GetField("onFarm", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-			bool namingAnimal = (bool)typeof(PurchaseAnimalsMenu).GetField("namingAnimal", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-			FarmAnimal animalBeingPurchased = (FarmAnimal)typeof(PurchaseAnimalsMenu).GetField("animalBeingPurchased", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-			int priceOfAnimal = (int)typeof(PurchaseAnimalsMenu).GetField("priceOfAnimal", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
 
 			Vector2 tile = new((int)((Utility.ModifyCoordinateFromUIScale(x) + Game1.viewport.X) / 64f), (int)((Utility.ModifyCoordinateFromUIScale(y) + Game1.viewport.Y) / 64f));
 			Building buildingAt = __instance.TargetLocation.getBuildingAt(tile);
 
-			if (onFarm)
+			if (__instance.onFarm)
 			{
-				if (!namingAnimal && buildingAt?.GetIndoors() is AnimalHouse animalHouse && !buildingAt.isUnderConstruction())
+				if (!__instance.namingAnimal && buildingAt?.GetIndoors() is AnimalHouse animalHouse && !buildingAt.isUnderConstruction())
 				{
-					if (animalBeingPurchased.CanLiveIn(buildingAt))
+					if (__instance.animalBeingPurchased.CanLiveIn(buildingAt))
 					{
 						if (!animalHouse.isFull())
 						{
-							if (Game1.player.Money < priceOfAnimal)
+							if (Game1.player.Money < __instance.priceOfAnimal)
 							{
 								Game1.dayTimeMoneyBox.moneyShakeTimer = 1000;
 								Game1.playSound("cancel");
@@ -143,23 +132,18 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.BetterAnimalPurchas
 
 		private static void ReceiveKeyPressPostfix(PurchaseAnimalsMenu __instance)
 		{
-			if (Game1.IsFading() || (bool)typeof(PurchaseAnimalsMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance))
+			if (Game1.IsFading() || __instance.freeze)
 				return;
 
-			bool onFarm = (bool)typeof(PurchaseAnimalsMenu).GetField("onFarm", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-			bool namingAnimal = (bool)typeof(PurchaseAnimalsMenu).GetField("namingAnimal", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-			FieldInfo animalBeingPurchasedField = typeof(PurchaseAnimalsMenu).GetField("animalBeingPurchased", BindingFlags.NonPublic | BindingFlags.Instance);
-			FarmAnimal animalBeingPurchased = (FarmAnimal)animalBeingPurchasedField.GetValue(__instance);
-
-			if (onFarm)
+			if (__instance.onFarm)
 			{
-				if (!namingAnimal)
+				if (!__instance.namingAnimal)
 				{
 					if (AlternatePurchaseTypes.Any())
 					{
 						if (new[]{ SButton.Left, SButton.Right, ModEntry.Config.ShopsBetterAnimalPurchasePreviousKey, ModEntry.Config.ShopsBetterAnimalPurchaseNextKey }.Any(button => ModEntry.Helper.Input.GetState(button) == SButtonState.Pressed))
 						{
-							int oldIndex = AlternatePurchaseTypes.FindIndex(type => type == animalBeingPurchased.type.Value);
+							int oldIndex = AlternatePurchaseTypes.FindIndex(type => type == __instance.animalBeingPurchased.type.Value);
 
 							if (oldIndex != -1)
 							{
@@ -181,7 +165,7 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.BetterAnimalPurchas
 										newIndex -= AlternatePurchaseTypes.Count;
 									}
 								}
-								animalBeingPurchasedField.SetValue(__instance, new FarmAnimal(AlternatePurchaseTypes[newIndex], animalBeingPurchased.myID.Value, animalBeingPurchased.ownerID.Value));
+								__instance.animalBeingPurchased = new FarmAnimal(AlternatePurchaseTypes[newIndex], __instance.animalBeingPurchased.myID.Value, __instance.animalBeingPurchased.ownerID.Value);
 								Game1.playSound("shwip");
 								Randomize = false;
 							}
@@ -195,12 +179,10 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.BetterAnimalPurchas
 		{
 			if (!ModEntry.Config.ShopsBetterAnimalPurchase)
 				return;
-			if (Game1.IsFading() || (bool)typeof(PurchaseAnimalsMenu).GetField("freeze", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance))
+			if (Game1.IsFading() || __instance.freeze)
 				return;
 
-			bool onFarm = (bool)typeof(PurchaseAnimalsMenu).GetField("onFarm", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(__instance);
-
-			if (onFarm)
+			if (__instance.onFarm)
 			{
 				Game1.dayTimeMoneyBox.drawMoneyBox(b, Game1.dayTimeMoneyBox.xPositionOnScreen, 0);
 			}

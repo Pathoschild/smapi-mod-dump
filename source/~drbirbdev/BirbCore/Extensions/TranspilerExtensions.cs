@@ -17,7 +17,7 @@ namespace BirbCore.Extensions;
 
 public static class TranspilerExtensions
 {
-    public static int FindBCloseToA(this IEnumerable<CodeInstruction> instructions, CodeInstruction A, CodeInstruction B, int maxDistance = 10)
+    public static int FindBCloseToA(this IEnumerable<CodeInstruction> instructions, CodeInstruction a, CodeInstruction b, int maxDistance = 10)
     {
         CodeInstruction[] instrs = instructions.ToArray();
 
@@ -26,25 +26,27 @@ public static class TranspilerExtensions
         for (int i = 0; i < instrs.Length; i++)
         {
             distanceRemaining--;
-            if (instrs[i].Is(A.opcode, A.operand))
+            if (instrs[i].Is(a.opcode, a.operand))
             {
                 distanceRemaining = maxDistance;
                 continue;
             }
 
-            if (distanceRemaining > 0 && instrs[i].Is(B.opcode, B.operand))
+            if (distanceRemaining <= 0 || !instrs[i].Is(b.opcode, b.operand))
             {
-                if (result >= 0)
-                {
-                    Log.Error($"FindBCloseToA found multiple matches within distance {maxDistance}: {A}, {B}");
-                    return -1;
-                }
-                result = i;
+                continue;
             }
+
+            if (result >= 0)
+            {
+                Log.Error($"FindBCloseToA found multiple matches within distance {maxDistance}: {a}, {b}");
+                return -1;
+            }
+            result = i;
         }
         if (result < 0)
         {
-            Log.Error($"FindBCloseToA found no matches within distance {maxDistance}: {A}, {B}");
+            Log.Error($"FindBCloseToA found no matches within distance {maxDistance}: {a}, {b}");
         }
         return result;
     }
@@ -55,12 +57,14 @@ public static class TranspilerExtensions
         for (int i = 0; i < instrs.Length; i++)
         {
             yield return instrs[i];
-            if (i == index)
+            if (i != index)
             {
-                for (int j = 0; j < toInsert.Length; j++)
-                {
-                    yield return toInsert[j];
-                }
+                continue;
+            }
+
+            foreach (var insert in toInsert)
+            {
+                yield return insert;
             }
         }
     }

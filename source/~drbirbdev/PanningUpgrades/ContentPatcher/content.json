@@ -67,7 +67,7 @@
                     "SpriteIndex": 10,
                     "UpgradeLevel": 2,
                     "ApplyUpgradeLevelToDisplayName": true,
-                    "ConventionalUpgradeFrom": "(T)drbirbdev.PanningUpgrades_CopperPan"
+                    "ConventionalUpgradeFrom": "(T)Pan"
                 },
                 "drbirbdev.PanningUpgrades_GoldPan": {
                     "ClassName": "Pan",
@@ -94,6 +94,26 @@
                     "ConventionalUpgradeFrom": "(T)drbirbdev.PanningUpgrades_GoldPan"
                 }
             }
-        }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": ["FishShop", "Items", "(T)Pan"],
+            "Entries": {
+                "Price": "{{drbirbdev.PanningUpgrades/BuyCost}}"
+            }
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Shops",
+            "TargetField": ["FishShop", "Items"],
+            "Entries": {
+                "(T)Pan": null
+            },
+            "When": {
+                "drbirbdev.PanningUpgrades/BuyablePan": "false"
+            }
+        },
+
     ]
 }

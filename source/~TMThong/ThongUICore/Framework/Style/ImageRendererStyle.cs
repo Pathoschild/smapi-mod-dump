@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace ThongUICore.Framework.Style
 {
-    public enum ImageRendererStyle : BaseStyle
+    public enum ImageRendererStyle  
     {
     }
 }

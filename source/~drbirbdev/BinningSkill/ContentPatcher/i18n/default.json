@@ -22,17 +22,17 @@
     "item.PrismaticGarbageHat.name": "Prismatic Garbage Hat",
     "item.PrismaticGarbageHat.desc": "It's shimmering with prismatic energy...but it's still a garbage can lid...",
 
-    "bc.composter.name": "Composter",
-    "bc.composter.desc": "A machine that turns edible matter into fertilizer.",
-    "bc.trashcan.name": "Trash Bin",
-    "bc.trashcan.desc": "A trash can. Put them around town and people will throw trash away in them.",
-    "bc.recyclingbin.name": "Recycling Bin",
-    "bc.recyclingbin.desc": "An environmentally friendly alternative to trash. Put them around town and people might throw out some good stuff.",
-    "bc.advancedrecyclingmachine.name": "Advanced Recycling Machine",
-    "bc.advancedrecyclingmachine.desc": "A more advanced Recycling Machine. Turns trash into resources, but require",
+    "item.Composter.name": "Composter",
+    "item.Composter.desc": "A machine that turns edible matter into fertilizer.",
+    "item.TrashBin.name": "Trash Bin",
+    "item.TrashBin.desc": "A trash can. Put them around town and people will throw trash away in them.",
+    "item.RecyclingBin.name": "Recycling Bin",
+    "item.RecyclingBin.desc": "An environmentally friendly alternative to a trash can. Put them around town and people might throw out some good stuff.",
+    "item.AdvancedRecyclingMachine.name": "Advanced Recycling Machine",
+    "item.AdvancedRecyclingMachine.desc": "A more advanced Recycling Machine. Turns trash into resources, but requires more trash and more time.",
 
     "item.GrilledCheese.name": "Grilled Cheese",
     "item.GrilledCheese.desc": "A simple cheese sandwich.",
-    "item.FishCasserol.name": "Fish Casserol",
-    "item.FishCasserol.desc": "Made from whatever was sitting around in the fridge..."
+    "item.FishCasserole.name": "Fish Casserole",
+    "item.FishCasserole.desc": "Made from whatever was sitting around in the fridge..."
 }

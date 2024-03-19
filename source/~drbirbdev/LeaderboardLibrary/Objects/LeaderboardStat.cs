@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
 using BirbCore.Attributes;
@@ -23,10 +24,11 @@ public class LeaderboardStat : IComparable
     internal const string TOP_SCORES_INDEX_NAME = "TopScores";
 
     [DynamoDBHashKey]
-    public string Stat { get; set; }
+    public string Stat { get; init; }
 
     [DynamoDBRangeKey]
-    public string UserUUID { get; set; }
+    // ReSharper disable once InconsistentNaming
+    public string UserUUID { get; init; }
 
     [DynamoDBLocalSecondaryIndexRangeKey(TOP_SCORES_INDEX_NAME)]
     public double Score { get; set; }
@@ -46,16 +48,17 @@ public class LeaderboardStat : IComparable
     public int CompareTo(object obj)
     {
         LeaderboardStat l = (LeaderboardStat)obj;
-        return this.Score.CompareTo(l.Score);
+        return this.Score.CompareTo(l?.Score);
     }
 
-    public static LeaderboardStat FromDdbShape(Dictionary<string, AttributeValue> ddb)
+    private static LeaderboardStat FromDdbShape(IReadOnlyDictionary<string, AttributeValue> ddb)
     {
         if (!int.TryParse(ddb.GetValueOrDefault("Score", new AttributeValue()).N, out int score))
         {
             Log.Warn("Failed to parse score from DDB document");
             score = 0;
         }
+        // ReSharper disable once InvertIf
         if (!int.TryParse(ddb.GetValueOrDefault("DateTime", new AttributeValue()).S, out int time))
         {
             Log.Warn("Failed to parse time from DDB document");
@@ -69,13 +72,13 @@ public class LeaderboardStat : IComparable
             Score = score,
             Name = ddb.GetValueOrDefault("Name", new AttributeValue()).S,
             Farm = ddb.GetValueOrDefault("Farm", new AttributeValue()).S,
-            DateTime = time,
+            DateTime = time
         };
     }
 
     public static List<LeaderboardStat> FromDdbList(List<Dictionary<string, AttributeValue>> ddbList)
     {
-        List<LeaderboardStat> result = new();
+        List<LeaderboardStat> result = [];
         foreach (Dictionary<string, AttributeValue> ddbItem in ddbList)
         {
             result.Add(FromDdbShape(ddbItem));
@@ -90,15 +93,15 @@ public class LeaderboardStat : IComparable
             {"Stat", this.Stat.Split(":")[1] },
             {"Name", this.Name },
             {"Farm", this.Farm },
-            {"Score", this.Score.ToString() },
-            {"DateTime", this.DateTime.ToString() },
-            {"UserUUID", this.UserUUID },
+            {"Score", this.Score.ToString(CultureInfo.InvariantCulture) },
+            {"DateTime", this.DateTime.ToString(CultureInfo.InvariantCulture) },
+            {"UserUUID", this.UserUUID }
         };
     }
 
     public static List<Dictionary<string, string>> ToApiList(List<LeaderboardStat> leaderboardStats)
     {
-        List<Dictionary<string, string>> result = new();
+        List<Dictionary<string, string>> result = [];
         foreach (LeaderboardStat leaderboard in leaderboardStats)
         {
             result.Add(leaderboard.ToApiShape());

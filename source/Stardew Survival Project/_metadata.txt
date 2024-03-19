@@ -6,9 +6,11 @@ mods:
    Stardew Survival Project
 
 latest commit:
-   commit aa57d8151a1c5c5ff87a0285bf9af23bec2be16c
-   Author: NeroYuki <neroyuki241@gmail.com>
-   Date:   Mon Nov 20 10:59:31 2023 +0700
+   commit bef4c3823082dff2e29cd81f79a7310aed65d861
+   Author: Nguyen Ngoc Dang <kingrfminecraft@gmail.com>
+   Date:   Sat Mar 16 17:01:25 2024 +0700
    
-       bump version
+       Merge pull request #3 from NeroYuki/0.4.0-alpha
+       
+       [WIP] Porting the mod to Stardew Valley 1.6 (v0.4.0-alpha)
    

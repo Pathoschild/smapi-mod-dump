@@ -50,7 +50,7 @@ class Utility_GetTrashReclamationPrice
             }
 
             float extraPercentage = ModEntry.Config.ReclaimerExtraValuePercent;
-            if (f.HasProfession("Reclaimer"))
+            if (f.HasProfession("Reclaimer", true))
             {
                 extraPercentage += ModEntry.Config.ReclaimerPrestigeExtraValuePercent;
             }
@@ -225,7 +225,7 @@ class GameLocation_CheckGarbage
         GarbageCanData allData = DataLoader.GarbageCans(Game1.content);
         allData.GarbageCans.TryGetValue(garbageCanId, out GarbageCanEntryData data);
         int noiseLevel = data?.CustomFields?.TryGetInt("drbirbdev.BinningSkill_NoiseLevel") ?? 7;
-        noiseLevel += ModEntry.Config.PrestigeNoiseIncrease;
+        noiseLevel += ModEntry.Config.SneakPrestigeNoiseIncrease;
 
         foreach (NPC villager in Utility.GetNpcsWithinDistance(tile, noiseLevel, location))
         {
@@ -271,10 +271,10 @@ class GameLocation_CheckGarbage
     {
         GarbageCanData allData = DataLoader.GarbageCans(Game1.content);
         allData.GarbageCans.TryGetValue(garbageCanId, out GarbageCanEntryData data);
-        int noiseLevel = data?.CustomFields?.TryGetInt("drbirbdev.BinningSkill_NoiseLevel") ?? 7;
+        int noiseLevel = data?.CustomFields?.TryGetInt("drbirbdev.BinningSkill_NoiseLevel") ?? tilesAway;
         if (who.HasProfession("Sneak"))
         {
-            noiseLevel -= ModEntry.Config.NoiseReduction;
+            noiseLevel -= ModEntry.Config.SneakNoiseReduction;
         }
 
         return Utility.GetNpcsWithinDistance(centerTile, noiseLevel, location);
@@ -312,14 +312,16 @@ class GameLocation_TryGetGarbageIItem
             }
 
             // Remove Mega, DoubleMega results if not meeting level requirements
-            if ((selected.IsMegaSuccess &&
-                 Game1.player.GetCustomSkillLevel("drbirbdev.Binning") < ModEntry.Config.MegaMinLevel) ||
-                (selected.IsDoubleMegaSuccess && Game1.player.GetCustomSkillLevel("drbirbdev.Binning") <
+            if ((!selected.IsMegaSuccess ||
+                 Game1.player.GetCustomSkillLevel("drbirbdev.Binning") >= ModEntry.Config.MegaMinLevel) &&
+                (!selected.IsDoubleMegaSuccess || Game1.player.GetCustomSkillLevel("drbirbdev.Binning") >=
                     ModEntry.Config.DoubleMegaMinLevel))
             {
-                item = null;
-                selected = null;
+                return;
             }
+
+            item = null;
+            selected = null;
         }
         catch (Exception e)
         {

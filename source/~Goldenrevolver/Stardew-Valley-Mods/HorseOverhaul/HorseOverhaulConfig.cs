@@ -50,6 +50,18 @@ namespace HorseOverhaul
 
         public bool HorseHeater { get; set; } = true;
 
+        public bool EnableLimitedInteractionWhileRiding { get; set; } = true;
+
+        public bool InteractWithForageWhileRiding { get; set; } = true;
+
+        public bool InteractWithBushesWhileRiding { get; set; } = true;
+
+        public bool InteractWithTappersWhileRiding { get; set; } = true;
+
+        public bool InteractWithTreesWhileRiding { get; set; } = true;
+
+        public bool InteractWithFruitTreesWhileRiding { get; set; } = true;
+
         public bool HorseHoofstepEffects { get; set; } = true;
 
         public bool Feeding { get; set; } = true;
@@ -151,6 +163,21 @@ namespace HorseOverhaul
             api.AddBoolOption(manifest, () => config.Water, (bool val) => config.Water = val, () => "Water", null);
             api.AddBoolOption(manifest, () => config.Feeding, (bool val) => config.Feeding = val, () => "Feeding", null);
             api.AddBoolOption(manifest, () => config.HorseHeater, (bool val) => config.HorseHeater = val, () => "Heater", null);
+
+            api.AddSectionTitle(manifest, () => "Interact While Riding", null);
+
+            api.AddBoolOption(manifest, () => config.EnableLimitedInteractionWhileRiding, (bool val) => config.EnableLimitedInteractionWhileRiding = val,
+                () => "Enable Limited Interaction", () => "If this is disabled, then none of the settings below do anything");
+            api.AddBoolOption(manifest, () => config.InteractWithForageWhileRiding, (bool val) => config.InteractWithForageWhileRiding = val,
+                () => "Interact With Forage", null);
+            api.AddBoolOption(manifest, () => config.InteractWithBushesWhileRiding, (bool val) => config.InteractWithBushesWhileRiding = val,
+                () => "Interact With Bushes", null);
+            api.AddBoolOption(manifest, () => config.InteractWithTappersWhileRiding, (bool val) => config.InteractWithTappersWhileRiding = val,
+                () => "Interact With Tappers", null);
+            api.AddBoolOption(manifest, () => config.InteractWithTreesWhileRiding, (bool val) => config.InteractWithTreesWhileRiding = val,
+                () => "Interact With Trees", null);
+            api.AddBoolOption(manifest, () => config.InteractWithFruitTreesWhileRiding, (bool val) => config.InteractWithFruitTreesWhileRiding = val,
+                () => "Interact With Fruit Trees", null);
 
             api.AddSectionTitle(manifest, () => "Other", null);
 

@@ -189,7 +189,7 @@ namespace FlipBuildings.Utilities
 
 		public static BuildingData GetFlippedData(Building __instance)
 		{
-			if (!TryGetFlippedData(__instance.buildingType.Value, out var data))
+			if (!TryGetFlippedData(__instance.buildingType.Value, out BuildingData data))
 			{
 				return null;
 			}

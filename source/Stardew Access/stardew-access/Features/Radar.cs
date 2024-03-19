@@ -112,7 +112,7 @@ internal class Radar : FeatureBase
         if (RadarDebug)
             Log.Debug($"\n\nRead Tile started");
 
-        Vector2 currPosition = Game1.player.getTileLocation();
+        Vector2 currPosition = Game1.player.Tile;
 
         _closed.Clear();
         _furniture.Clear();
@@ -194,8 +194,8 @@ internal class Radar : FeatureBase
         int[] dirY = [0, 1, 0, -1];
         int count = 0;
 
-        toSearch.Enqueue(Game1.player.getTileLocation());
-        searched.Add(Game1.player.getTileLocation());
+        toSearch.Enqueue(Game1.player.Tile);
+        searched.Add(Game1.player.Tile);
 
         //watch.Stop();
         //var elapsedMs = watch.ElapsedMilliseconds;
@@ -260,9 +260,9 @@ internal class Radar : FeatureBase
     {
         (string? name, CATEGORY? category) = TileInfo.GetNameWithCategoryAtTile(position, currentLocation, lessInfo);
         if (name == null)
-            return (false, null, CATEGORY.Others.ToString());
+            return (false, null, CATEGORY.Other.ToString());
 
-        category ??= CATEGORY.Others;
+        category ??= CATEGORY.Other;
 
         return (true, name, category.ToString());
     }
@@ -300,7 +300,7 @@ internal class Radar : FeatureBase
                 (string? name, CATEGORY? category) = TileInfo.GetNameWithCategoryAtTile(position, currentLocation);
                 if (name != null)
                 {
-                    category ??= CATEGORY.Others;
+                    category ??= CATEGORY.Other;
 
                     PlaySoundAt(position, name, category, currentLocation);
                 }
@@ -365,8 +365,8 @@ internal class Radar : FeatureBase
         if (RadarDebug)
             Log.Error($"{RadarFocus}\tObject:{searchQuery.ToLower().Trim()}\tPosition: X={position.X} Y={position.Y}");
 
-        int px = (int)Game1.player.getTileX(); // Player's X postion
-        int py = (int)Game1.player.getTileY(); // Player's Y postion
+        int px = (int)Game1.player.Tile.X; // Player's X postion
+        int py = (int)Game1.player.Tile.Y; // Player's Y postion
 
         int ox = (int)position.X; // Object's X postion
         int oy = (int)position.Y; // Object's Y postion
@@ -376,19 +376,19 @@ internal class Radar : FeatureBase
 
         if (dy < 0 && (Math.Abs(dy) >= Math.Abs(dx))) // Object is at top
         {
-            currentLocation.localSoundAt(GetSoundName(category, "top"), position);
+            currentLocation.localSound(GetSoundName(category, "top"), position);
         }
         else if (dx > 0 && (Math.Abs(dx) >= Math.Abs(dy))) // Object is at right
         {
-            currentLocation.localSoundAt(GetSoundName(category, "right"), position);
+            currentLocation.localSound(GetSoundName(category, "right"), position);
         }
         else if (dx < 0 && (Math.Abs(dx) > Math.Abs(dy))) // Object is at left
         {
-            currentLocation.localSoundAt(GetSoundName(category, "left"), position);
+            currentLocation.localSound(GetSoundName(category, "left"), position);
         }
         else if (dy > 0 && (Math.Abs(dy) > Math.Abs(dx))) // Object is at bottom
         {
-            currentLocation.localSoundAt(GetSoundName(category, "bottom"), position);
+            currentLocation.localSound(GetSoundName(category, "bottom"), position);
         }
     }
 
@@ -401,15 +401,15 @@ internal class Radar : FeatureBase
 
         if (category == CATEGORY.Farmers) // Villagers and farmers
             soundName = $"npc{soundName}";
-        else if (category == CATEGORY.FarmAnimals) // Farm Animals
+        else if (category == CATEGORY.Animals) // Farm Animals
             soundName = $"npc{soundName}";
         else if (category == CATEGORY.NPCs) // Other npcs, also includes enemies
             soundName = $"npc{soundName}";
-        else if (category == CATEGORY.WaterTiles) // Water tiles
+        else if (category == CATEGORY.Water) // Water tiles
             soundName = $"obj{soundName}";
-        else if (category == CATEGORY.Furnitures) // Furnitures
+        else if (category == CATEGORY.Furniture) // Furnitures
             soundName = $"obj{soundName}";
-        else if (category == CATEGORY.Others) // Other Objects
+        else if (category == CATEGORY.Other) // Other Objects
             soundName = $"obj{soundName}";
         else if (category == CATEGORY.Crops) // Crops
             soundName = $"obj{soundName}";

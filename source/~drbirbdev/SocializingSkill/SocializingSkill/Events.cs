@@ -14,6 +14,7 @@ using BirbShared;
 using SpaceCore;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Constants;
 
 namespace SocializingSkill;
 
@@ -23,32 +24,32 @@ internal class Events
     [SEvent.GameLaunchedLate]
     private void GameLaunched(object sender, GameLaunchedEventArgs e)
     {
-        BirbSkill.Register("drbirbdev.Socializing", ModEntry.Assets.SkillTexture, ModEntry.Instance.Helper, new Dictionary<string, object>()
-        {
-            {"Friendly", null},
-            {"Helpful", null },
-            {"SmoothTalker", null },
-            {"Gifter", null },
-            {"Haggler", null },
-            {"Beloved", null }
-        }, PerkText, HoverText);
+        BirbSkill.Register("drbirbdev.Socializing", ModEntry.Assets.SkillTexture, ModEntry.Instance.Helper,
+            new Dictionary<string, object>
+            {
+                { "Friendly", null },
+                { "Helpful", null },
+                { "SmoothTalker", null },
+                { "Gifter", null },
+                { "Haggler", null },
+                { "Beloved", null }
+            }, PerkText, HoverText);
 
-        SpaceCore.Events.SpaceEvents.AfterGiftGiven += this.SpaceEvents_AfterGiftGiven;
+        SpaceCore.Events.SpaceEvents.AfterGiftGiven += SpaceEvents_AfterGiftGiven;
     }
 
     private static List<string> PerkText(int level)
     {
-        List<string> result = new()
-        {
-            ModEntry.Instance.I18n.Get("skill.perk", new { bonus = ModEntry.Config.ChanceNoFriendshipDecayPerLevel })
-        };
+        List<string> result =
+            [ModEntry.Instance.I18N.Get("skill.perk", new { bonus = ModEntry.Config.ChanceNoFriendshipDecayPerLevel })];
 
         return result;
     }
 
     private static string HoverText(int level)
     {
-        return ModEntry.Instance.I18n.Get("skill.perk", new { bonus = level * ModEntry.Config.ChanceNoFriendshipDecayPerLevel });
+        return ModEntry.Instance.I18N.Get("skill.perk",
+            new { bonus = level * ModEntry.Config.ChanceNoFriendshipDecayPerLevel });
     }
 
     // Beloved Profession
@@ -56,13 +57,20 @@ internal class Events
     [SEvent.DayStarted]
     private void DayStarted(object sender, DayStartedEventArgs e)
     {
-        ModEntry.BelovedCheckedToday.Value = new List<string>();
+        ModEntry.BelovedCheckedToday.Value = [];
     }
 
-    // Grant XP
+    // Grant XP from quest completion
+    [SEvent.StatChanged(StatKeys.QuestsCompleted)]
+    private void QuestCompleted(object sender, SEvent.StatChanged.EventArgs e)
+    {
+        Skills.AddExperience(Game1.player, "drbirbdev.Socializing", ModEntry.Config.ExperienceFromQuests * e.Delta);
+    }
+
+    // Grant XP from giving gifts
     // Gifter Profession
     //  - Give extra friendship
-    private void SpaceEvents_AfterGiftGiven(object sender, SpaceCore.Events.EventArgsGiftGiven e)
+    private static void SpaceEvents_AfterGiftGiven(object sender, SpaceCore.Events.EventArgsGiftGiven e)
     {
         int taste = e.Npc.getGiftTasteForThisItem(e.Gift);
         if (Game1.player.HasProfession("Gifter"))
@@ -72,6 +80,7 @@ internal class Events
             {
                 extraFriendship += 20;
             }
+
             switch (taste)
             {
                 case 0:
@@ -84,21 +93,26 @@ internal class Events
                     extraFriendship += ModEntry.Config.GifterNeutralGiftExtraFriendship;
                     break;
             }
+
             Game1.player.changeFriendship(extraFriendship, e.Npc);
         }
 
-        if (taste <= 2)
+        if (taste > 2)
         {
-            float exp = ModEntry.Config.ExperienceFromGifts;
-            if (taste == 0)
-            {
-                exp *= ModEntry.Config.LovedGiftExpMultiplier;
-            }
-            if (e.Npc.isBirthday())
-            {
-                exp *= ModEntry.Config.BirthdayGiftExpMultiplier;
-            }
-            Skills.AddExperience(Game1.player, "drbirbdev.Socializing", (int)exp);
+            return;
         }
+
+        float exp = ModEntry.Config.ExperienceFromGifts;
+        if (taste == 0)
+        {
+            exp *= ModEntry.Config.LovedGiftExpMultiplier;
+        }
+
+        if (e.Npc.isBirthday())
+        {
+            exp *= ModEntry.Config.BirthdayGiftExpMultiplier;
+        }
+
+        Skills.AddExperience(Game1.player, "drbirbdev.Socializing", (int)exp);
     }
 }

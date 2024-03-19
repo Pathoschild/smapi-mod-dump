@@ -11,7 +11,9 @@
 using StardewValley;
 using StardewValley.Menus;
 using stardew_access.Translation;
+using StardewValley.Buffs;
 using StardewValley.Tools;
+using StardewValley.TokenizableStrings;
 
 namespace stardew_access.Utils;
 
@@ -28,14 +30,14 @@ internal static class InventoryUtils
     internal static bool NarrateHoveredSlot(InventoryMenu? inventoryMenu,
         bool? giveExtraDetails = null,
         int hoverPrice = -1,
-        int extraItemToShowIndex = -1,
+        string? extraItemToShowIndex = null,
         int extraItemToShowAmount = -1,
         string highlightedItemPrefix = "",
         string highlightedItemSuffix = "",
         int? hoverX = null,
         int? hoverY = null)
     {
-        if (NarrateHoveredSlotAndReturnIndex( inventoryMenu,
+        if (NarrateHoveredSlotAndReturnIndex(inventoryMenu,
                 giveExtraDetails,
                 hoverPrice,
                 extraItemToShowIndex,
@@ -51,10 +53,10 @@ internal static class InventoryUtils
         return true;
     }
 
-    internal static int NarrateHoveredSlotAndReturnIndex( InventoryMenu? inventoryMenu,
+    internal static int NarrateHoveredSlotAndReturnIndex(InventoryMenu? inventoryMenu,
         bool? giveExtraDetails = null,
         int hoverPrice = -1,
-        int extraItemToShowIndex = -1,
+        string? extraItemToShowIndex = null,
         int extraItemToShowAmount = -1,
         string highlightedItemPrefix = "",
         string highlightedItemSuffix = "",
@@ -105,7 +107,7 @@ internal static class InventoryUtils
         bool? isHighlighted = null,
         bool giveExtraDetails = false,
         int hoverPrice = -1,
-        int extraItemToShowIndex = -1,
+        string? extraItemToShowIndex = null,
         int extraItemToShowAmount = -1,
         string highlightedItemPrefix = "",
         string highlightedItemSuffix = "",
@@ -158,57 +160,45 @@ internal static class InventoryUtils
 
         return toReturn;
     }
+    internal static string GetPluralNameOfItem(Item item) => GetPluralNameOfItem(item.DisplayName, item.Stack);
 
-    internal static string GetPluralNameOfItem(Item item)
+    internal static string GetPluralNameOfItem(string itemName, int itemCount)
     {
-        int stack = item.Stack;
-        string name = item.DisplayName;
-        if (stack == prevStack && name == prevName)
+        if (itemCount == prevStack && itemName == prevName)
         {
-            #if DEBUG
-            Log.Trace( $"Returning cached translation \"{prevTranslatedName}\" for stack \"{stack}\" and name \"{name}\"",
+#if DEBUG
+            Log.Trace($"Returning cached translation \"{prevTranslatedName}\" for stack \"{itemCount}\" and name \"{itemName}\"",
                 true);
-            #endif
-            name = prevTranslatedName;
+#endif
+            itemName = prevTranslatedName;
         }
         else
         {
-            prevStack = stack;
-            prevName = name;
-            name = Translator.Instance.Translate("common-util-pluralize_name", new Dictionary<string, object>
+            prevStack = itemCount;
+            prevName = itemName;
+            itemName = Translator.Instance.Translate("common-util-pluralize_name", new Dictionary<string, object>
             {
-                { "item_count", stack },
-                { "name", name }
+                { "item_count", itemCount },
+                { "name", itemName }
             });
-            prevTranslatedName = name;
-            #if DEBUG
+            prevTranslatedName = itemName;
+#if DEBUG
             Log.Verbose("Updated inventory translation cache");
-            #endif
+#endif
         }
 
-        return name;
+        return itemName;
     }
 
-    internal static string GetQualityFromItem(Item item)
-    {
-        if (item is not StardewValley.Object)
-            return "";
+    internal static string GetQualityFromItem(Item item) => GetQualityFromIndex(item.Quality);
 
-        return GetQualityFromIndex(((StardewValley.Object)item).Quality);
-    }
-
-    internal static string GetQualityFromIndex(int qualityIndex)
-    {
-        if (qualityIndex <= 0)
-            return "";
-
-        return Translator.Instance.Translate("item-quality_type", new { quality_index = qualityIndex });
-    }
+    internal static string GetQualityFromIndex(int qualityIndex) => qualityIndex > 0
+        ? Translator.Instance.Translate("item-quality_type", new { quality_index = qualityIndex })
+        : "";
 
     internal static string GetEnchantmentsFromItem(Item item)
     {
-        if (item is not MeleeWeapon && item is not Tool)
-            return "";
+        if (item is not MeleeWeapon and not Tool) return "";
 
         List<string> enchantNames = [];
 
@@ -221,9 +211,9 @@ internal static class InventoryUtils
         return string.Join(", ", enchantNames);
     }
 
-    internal static string GetHealthNStaminaFromItem(Item item)
+    internal static string GetHealthNStaminaFromItem(Item? item)
     {
-        if (item is not StardewValley.Object || ((StardewValley.Object)item).Edibility == -300)
+        if (item is null or not StardewValley.Object || ((StardewValley.Object)item).Edibility == -300)
             return "";
 
         int stamina_recovery = ((StardewValley.Object)item).staminaRecoveredOnConsumption();
@@ -241,21 +231,22 @@ internal static class InventoryUtils
         return prev_stamina_and_health_recovery_on_consumption;
     }
 
-    internal static string GetBuffsFromItem(Item item)
+    internal static string GetBuffsFromItem(Item? item)
+        => (item is null or not StardewValley.Object) ? "" : GetBuffsFromItem(item.QualifiedItemId);
+
+    internal static string GetBuffsFromItem(string qualifiedItemId)
     {
-        if (item == null) return "";
-        if (item is not StardewValley.Object) return "";
-        if (((StardewValley.Object)item) == null) return "";
-
-        // These variables are taken from the game's code itself (IClickableMenu.cs -> 1016 line)
-        bool edibleItem = (int)((StardewValley.Object)item).Edibility != -300;
-        string[]? buffIconsToDisplay = (edibleItem && Game1.objectInformation[((StardewValley.Object)item).ParentSheetIndex].Split('/').Length > 7)
-                ? item.ModifyItemBuffs(
-                    Game1.objectInformation[((StardewValley.Object)item).ParentSheetIndex].Split('/')[7].Split(' '))
-                : null;
-
-        if (buffIconsToDisplay == null)
-            return "";
+        var buffs = ObjectUtils.GetObjectById(qualifiedItemId)?.Buffs;
+        string[] buffIconsToDisplay;
+        if (buffs != null && buffs.Any())
+        {
+            buffIconsToDisplay = buffs.SelectMany(buff => 
+                new BuffEffects(buff.CustomAttributes).ToLegacyAttributeFormat()).ToArray();
+        }
+        else
+        {
+            buffIconsToDisplay = new string[0];
+        }
 
         string toReturn = "";
         for (int j = 0; j < buffIconsToDisplay.Length; j++)
@@ -281,38 +272,34 @@ internal static class InventoryUtils
         return toReturn;
     }
 
-    internal static string GetExtraItemInfo(int itemIndex, int itemAmount)
+    internal static string GetExtraItemInfo(string? itemIndex, int? itemAmount)
     {
-        if (itemIndex == -1) return "";
+        if (itemIndex is null or "-1") return "";
 
-        string itemName = Game1.objectInformation[itemIndex].Split('/')[0];
+        string? itemName = ObjectUtils.GetObjectById(itemIndex)?.DisplayName;
+        if (itemName is null) return "";
+        itemName = TokenParser.ParseText(itemName);
 
-        if (itemAmount != -1)
-            return Translator.Instance.Translate("item-required_item_info",
-                new
-                {
-                    name = Translator.Instance.Translate("common-util-pluralize_name",
-                        new { name = itemName, item_count = itemAmount })
-                });
-        
-        return Translator.Instance.Translate("item-required_item_info", new { name = itemName });
+        if (itemAmount is null or <= 0)
+            return Translator.Instance.Translate("item-required_item_info", new { name = itemName });
+
+        return Translator.Instance.Translate("item-required_item_info",
+            new
+            {
+                name = Translator.Instance.Translate("common-util-pluralize_name",
+                    new { name = itemName, item_count = itemAmount })
+            });
     }
 
-    internal static string GetCraftingRecipeInfo(CraftingRecipe recipe)
-    {
-        if (recipe is null) return "";
-
-        object translationTokens = new
+    internal static string GetCraftingRecipeInfo(CraftingRecipe? recipe) => recipe is null ? ""
+        : Translator.Instance.Translate("item-crafting_recipe_info", new
         {
             name = recipe.DisplayName,
             is_cooking_recipe = recipe.isCookingRecipe ? 1 : 0,
             recipe.description,
-        };
+        });
 
-        return Translator.Instance.Translate("item-crafting_recipe_info", translationTokens);
-    }
-
-    internal static string GetIngredientsFromRecipe(CraftingRecipe recipe)
+    internal static string GetIngredientsFromRecipe(CraftingRecipe? recipe)
     {
         if (recipe is null) return "";
 
@@ -320,21 +307,17 @@ internal static class InventoryUtils
         for (int i = 0; i < recipe.recipeList.Count; i++)
         {
             int recipeCount = recipe.recipeList.ElementAt(i).Value;
-            int recipeItem = recipe.recipeList.ElementAt(i).Key;
+            string recipeItem = recipe.recipeList.ElementAt(i).Key;
             string recipeName = recipe.getNameFromIndex(recipeItem);
 
-            ingredientList.Add($"{recipeCount} {recipeName}");
+            ingredientList.Add(GetPluralNameOfItem(recipeName, recipeCount));
         }
 
         return string.Join(", ", ingredientList);
     }
 
-    internal static string GetPrice(int price)
-    {
-        if (price == -1) return "";
-
-        return Translator.Instance.Translate("item-sell_price_info", new { price });
-    }
+    internal static string GetPrice(int price) => price is -1 ? ""
+        : Translator.Instance.Translate("item-sell_price_info", new { price });
 
     internal static string HandleHighlightedItemPrefix(bool? isHighlighted, string prefix)
     {
@@ -356,8 +339,7 @@ internal static class InventoryUtils
 
     internal static string HandleUnHighlightedItem(bool? isHighlighted, int hoveredInventoryIndex)
     {
-        if (isHighlighted == null) return "";
-        if (isHighlighted == true) return "";
+        if (isHighlighted is null or true) return "";
 
         if (prevSlotIndex != hoveredInventoryIndex)
             Game1.playSound("invalid-selection");
@@ -372,7 +354,5 @@ internal static class InventoryUtils
     }
 
     private static void CheckAndSpeak(string toSpeak, int hoveredInventoryIndex)
-    {
-        MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{hoveredInventoryIndex}");
-    }
+        => MainClass.ScreenReader.SayWithMenuChecker(toSpeak, true, $"{toSpeak}:{hoveredInventoryIndex}");
 }

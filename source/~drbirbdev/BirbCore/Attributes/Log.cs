@@ -21,12 +21,14 @@ public class Log
     internal static void Init(IMonitor monitor, Assembly caller)
     {
         string assembly = caller.FullName;
-        if (Monitors.ContainsKey(assembly))
+        if (Monitors.TryAdd(assembly, monitor))
         {
-            monitor.Log($"Assembly {assembly} has already initialized Log...Are there two dlls with the same assembly name?", LogLevel.Error);
             return;
         }
-        Monitors.Add(assembly, monitor);
+
+        monitor.Log(
+            $"Assembly {assembly} has already initialized Log...Are there two dlls with the same assembly name?",
+            LogLevel.Error);
     }
     public static void Debug(string str)
     {
@@ -34,7 +36,7 @@ public class Log
     }
     public static void Trace(string str)
     {
-        Monitors[GetKey(Assembly.GetCallingAssembly())].Log(str, LogLevel.Trace);
+        Monitors[GetKey(Assembly.GetCallingAssembly())].Log(str);
     }
     public static void Info(string str)
     {
@@ -55,7 +57,7 @@ public class Log
 
     private static string GetKey(Assembly assembly)
     {
-        if (Monitors.ContainsKey(assembly.FullName))
+        if (assembly.FullName != null && Monitors.ContainsKey(assembly.FullName))
         {
             return assembly.FullName;
         }

@@ -35,20 +35,14 @@ public class SEdit : ClassHandler
         OnDayStart,
         OnLocationChange,
         OnTimeChange,
-        OnTick,
-    }
-
-    public SEdit() : base(0)
-    {
-
+        OnTick
     }
 
     public override void Handle(Type type, object? instance, IMod mod, object[]? args = null)
     {
-        instance = Activator.CreateInstance(type);
         base.Handle(type, instance, mod, args);
 
-        mod.Helper.Events.Content.AssetRequested += (object? sender, AssetRequestedEventArgs e) =>
+        mod.Helper.Events.Content.AssetRequested += (sender, e) =>
         {
             if (!e.Name.IsEquivalentTo($"Mods/{mod.ModManifest.UniqueID}/Strings"))
             {
@@ -57,7 +51,7 @@ public class SEdit : ClassHandler
 
             e.Edit(apply =>
             {
-                Dictionary<string, string> dict = new Dictionary<string, string>();
+                Dictionary<string, string> dict = new();
                 foreach (Translation translation in mod.Helper.Translation.GetTranslations())
                 {
                     dict[translation.Key] = translation.ToString();
@@ -66,59 +60,52 @@ public class SEdit : ClassHandler
             }, AssetEditPriority.Early);
         };
 
-        mod.Helper.Events.Content.LocaleChanged += (object? sender, LocaleChangedEventArgs e) =>
+        mod.Helper.Events.Content.LocaleChanged += (sender, e) =>
         {
             mod.Helper.GameContent.InvalidateCache($"Mods/{mod.ModManifest.UniqueID}/Strings");
         };
-
-        return;
     }
 
-    public abstract class BaseEdit : FieldHandler
+    public abstract class BaseEdit(
+        string target,
+        string? condition = null,
+        Frequency frequency = Frequency.Never,
+        AssetEditPriority priority = AssetEditPriority.Default)
+        : FieldHandler
     {
-        public string Target;
-        public string? Condition;
-        public Frequency Frequency;
-        public AssetEditPriority Priority;
+        private readonly string _target = target;
+        private readonly string? _condition = condition;
+        private readonly AssetEditPriority _priority = priority;
         protected IMod? Mod;
-        private bool IsApplied = false;
+        private bool _isApplied;
 
-        protected BaseEdit(string target, string? condition = null, Frequency frequency = Frequency.Never, AssetEditPriority priority = AssetEditPriority.Default)
+        protected override void Handle(string name, Type fieldType, Func<object?, object?> getter, Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
         {
-            this.Target = target;
-            this.Condition = condition;
-            this.Frequency = frequency;
-            this.Priority = priority;
-        }
-
-        public override void Handle(string name, Type fieldType, Func<object?, object?> getter, Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
-        {
-            if (GameStateQuery.IsImmutablyFalse(this.Condition))
+            if (GameStateQuery.IsImmutablyFalse(this._condition))
             {
-                Log.Error($"Condition {this.Condition} will never be true, so edit {name} will never be applied.");
+                Log.Error($"Condition {this._condition} will never be true, so edit {name} will never be applied.");
                 return;
             }
 
             this.Mod = mod;
 
-            switch (this.Frequency)
+            switch (frequency)
             {
                 case Frequency.OnDayStart: this.Mod.Helper.Events.GameLoop.DayStarted += this.InvalidateIfNeeded; break;
                 case Frequency.OnLocationChange: this.Mod.Helper.Events.Player.Warped += this.InvalidateIfNeeded; break;
                 case Frequency.OnTimeChange: this.Mod.Helper.Events.GameLoop.TimeChanged += this.InvalidateIfNeeded; break;
                 case Frequency.OnTick: this.Mod.Helper.Events.GameLoop.UpdateTicked += this.InvalidateIfNeeded; break;
-                default: break;
             }
 
             BaseEdit edit = this;
 
-            this.Mod.Helper.Events.Content.AssetRequested += (object? sender, AssetRequestedEventArgs e) =>
+            this.Mod.Helper.Events.Content.AssetRequested += (sender, e) =>
             {
-                if (!e.Name.IsEquivalentTo(edit.Target))
+                if (!e.Name.IsEquivalentTo(edit._target))
                 {
                     return;
                 }
-                if (!GameStateQuery.CheckConditions(edit.Condition))
+                if (!GameStateQuery.CheckConditions(edit._condition))
                 {
                     return;
                 }
@@ -126,19 +113,21 @@ public class SEdit : ClassHandler
                 e.Edit(asset =>
                 {
                     edit.DoEdit(asset, getter(instance), name, fieldType, instance);
-                }, edit.Priority/*, edit.Mod.ModManifest.UniqueID // Can't use this because of SMAPI limitation */);
+                }, edit._priority/*, edit.Mod.ModManifest.UniqueID // Can't use this because of SMAPI limitation */);
             };
         }
 
-        public abstract void DoEdit(IAssetData asset, object? edit, string name, Type fieldType, object? instance);
+        protected abstract void DoEdit(IAssetData asset, object? edit, string name, Type fieldType, object? instance);
 
-        public void InvalidateIfNeeded(object? sender, object e)
+        private void InvalidateIfNeeded(object? sender, object e)
         {
-            if (this.Mod is not null && this.IsApplied != GameStateQuery.CheckConditions(this.Condition))
+            if (this.Mod is null || this._isApplied == GameStateQuery.CheckConditions(this._condition))
             {
-                this.IsApplied = !this.IsApplied;
-                this.Mod.Helper.GameContent.InvalidateCache(this.Target);
+                return;
             }
+
+            this._isApplied = !this._isApplied;
+            this.Mod.Helper.GameContent.InvalidateCache(this._target);
         }
     }
 
@@ -157,46 +146,41 @@ public class SEdit : ClassHandler
     /// Frequency - the frequency to recheck the condition to see if this asset should be invalidated.
     /// Priority - the priority with which to apply this change.  Optional, default 0 (normal priority).
     /// </summary>
-    public class Data : BaseEdit
+    public class Data(
+        string target,
+        string[]? field = null,
+        string? condition = null,
+        Frequency frequency = Frequency.Never,
+        AssetEditPriority priority = AssetEditPriority.Default)
+        : BaseEdit(target, condition, frequency, priority)
     {
-        public string[]? Field;
-
-        public Data(string target, string[]? field = null, string? condition = null, Frequency frequency = Frequency.Never, AssetEditPriority priority = AssetEditPriority.Default) : base(target, condition, frequency, priority)
-        {
-            this.Field = field;
-        }
-
-        public override void DoEdit(IAssetData asset, object? edit, string name, Type fieldType, object? instance)
+        protected override void DoEdit(IAssetData asset, object? edit, string name, Type fieldType, object? instance)
         {
             if (this.Mod is null)
             {
                 return;
             }
-            List<object> toEdit = new()
-            {
-                asset.Data
-            };
+            List<object> toEdit = [asset.Data];
 
-            if (this.Field != null && this.Field.Length >= 1)
+            if (field is { Length: >= 1 })
             {
-                for (int i = 0; i < this.Field.Length; i++)
+                foreach (string t in field)
                 {
-                    List<object> nextToEdit = new();
-                    string field = this.Field[i];
+                    List<object> nextToEdit = [];
 
                     foreach (object toEditValue in toEdit)
                     {
-                        if (toEditValue is IList toEditValueList)
+                        switch (toEditValue)
                         {
-                            nextToEdit.AddRange(GetListEdits(field, toEditValueList));
-                        }
-                        else if (toEditValue is IDictionary toEditValueDictionary)
-                        {
-                            nextToEdit.AddRange(GetDictionaryEdits(field, toEditValueDictionary));
-                        }
-                        else
-                        {
-                            nextToEdit.AddRange(GetMemberEdits(field, toEditValue));
+                            case IList toEditValueList:
+                                nextToEdit.AddRange(GetListEdits(t, toEditValueList));
+                                break;
+                            case IDictionary toEditValueDictionary:
+                                nextToEdit.AddRange(GetDictionaryEdits(t, toEditValueDictionary));
+                                break;
+                            default:
+                                nextToEdit.AddRange(GetMemberEdits(t, toEditValue));
+                                break;
                         }
                     }
 
@@ -206,24 +190,24 @@ public class SEdit : ClassHandler
 
             foreach (object toEditValue in toEdit)
             {
-                if (toEditValue is IList toEditValueList)
+                switch (toEditValue)
                 {
-                    this.ApplyListEdit(toEditValueList, edit);
-                }
-                else if (toEditValue is IDictionary toEditValueDictionary)
-                {
-                    this.ApplyDictionaryEdit(toEditValueDictionary, edit, name);
-                }
-                else
-                {
-                    ApplyMemberEdit(toEditValue, edit);
+                    case IList toEditValueList:
+                        ApplyListEdit(toEditValueList, edit);
+                        break;
+                    case IDictionary toEditValueDictionary:
+                        this.ApplyDictionaryEdit(toEditValueDictionary, edit, name);
+                        break;
+                    default:
+                        ApplyMemberEdit(toEditValue, edit);
+                        break;
                 }
             }
         }
 
-        private static List<object> GetListEdits(string field, IList toEdit)
+        private static IEnumerable<object> GetListEdits(string field, IList toEdit)
         {
-            List<object> nextToEdit = new List<object>();
+            List<object> nextToEdit = [];
             if (toEdit.Count <= 0)
             {
                 return nextToEdit;
@@ -236,7 +220,8 @@ public class SEdit : ClassHandler
                 }
                 return nextToEdit;
             }
-            else if (field.StartsWith("#"))
+
+            if (field.StartsWith("#"))
             {
                 if (!int.TryParse(field[1..], out int index))
                 {
@@ -258,30 +243,37 @@ public class SEdit : ClassHandler
             }
             else
             {
-                MemberInfo? id = toEdit[0]?.GetType().GetMemberOfName("Id") ?? toEdit[0]?.GetType().GetMemberOfName("ID");
-                if (id is null)
+                Type? t = toEdit[0]?.GetType();
+                if (t is null)
                 {
-                    Log.Error($"SEdit.Data could not find key field for list");
+                    Log.Error("SEdit.Data could not find type of index 0");
+                    return nextToEdit;
+                }
+                if (!t.TryGetMemberOfName("Id", out MemberInfo id) && !t.TryGetMemberOfName("ID", out id))
+                {
+                    Log.Error("SEdit.Data could not find key field for list");
                     return nextToEdit;
                 }
 
                 foreach (object item in toEdit)
                 {
-                    if ((string)id.GetValue(item) == field)
+                    if ((string)id.GetValue(item) != field)
                     {
-                        nextToEdit.Add(item);
-                        return nextToEdit;
+                        continue;
                     }
+
+                    nextToEdit.Add(item);
+                    return nextToEdit;
                 }
             }
             return nextToEdit;
         }
 
-        private static List<object> GetDictionaryEdits(string field, IDictionary toEdit)
+        private static IEnumerable<object> GetDictionaryEdits(string field, IDictionary toEdit)
         {
             if (field == "*")
             {
-                List<object> edits = new List<object>();
+                List<object> edits = [];
                 foreach (object toEditItem in toEdit.Values)
                 {
                     edits.Add(toEditItem);
@@ -292,46 +284,63 @@ public class SEdit : ClassHandler
             if (!toEdit.Contains(field))
             {
                 Log.Error($"SEdit.Data could not find dictionary key with value {field}");
-                return new List<object>();
+                return [];
             }
             object? item = toEdit[field];
-            if (item is null)
+            if (item is not null)
             {
-                Log.Error($"SEdit.Data dictionary contained null value for {field}");
-                return new List<object>();
+                return [item];
             }
-            return new List<object> { item };
+
+            Log.Error($"SEdit.Data dictionary contained null value for {field}");
+            return [];
         }
 
-        private static List<object> GetMemberEdits(string field, object toEdit)
+        private static IEnumerable<object> GetMemberEdits(string field, object toEdit)
         {
-            object? nextToEdit = toEdit.GetType().GetMemberOfName(field)?.GetValue(toEdit);
-            if (nextToEdit is null)
+            if (!toEdit.GetType().TryGetMemberOfName(field, out MemberInfo memberInfo))
             {
                 Log.Error($"SEdit.Data could not find field or property of name {field}");
-                return new List<object>();
+                return [];
             }
-            return new List<object> { nextToEdit };
+
+            object? nextToEdit = memberInfo.GetValue(toEdit);
+            if (nextToEdit is not null)
+            {
+                return [nextToEdit];
+            }
+
+            Log.Error($"SEdit.Data could not find field or property of name {field}");
+            return [];
         }
 
-        private void ApplyListEdit(IList toEdit, object? edit)
+        private static void ApplyListEdit(IList toEdit, object? edit)
         {
-            MemberInfo? id = toEdit[0]?.GetType().GetMemberOfName("Id") ?? toEdit[0]?.GetType().GetMemberOfName("ID");
+            Type? t = toEdit[0]?.GetType();
+            if (t is null)
+            {
+                Log.Error("SEdit.Data could not find edits");
+                return;
+            }
+
+            bool hasId = t.TryGetMemberOfName("Id", out MemberInfo id) || t.TryGetMemberOfName("ID", out id);
 
             if (edit is not IList editList)
             {
-                if (id is null)
+                if (!hasId)
                 {
                     toEdit.Add(edit);
                     return;
                 }
                 for (int i = 0; i < toEdit.Count; i++)
                 {
-                    if (id.GetValue(toEdit[i]) == id.GetValue(edit))
+                    if (id.GetValue(toEdit[i]) != id.GetValue(edit))
                     {
-                        toEdit[i] = edit;
-                        return;
+                        continue;
                     }
+
+                    toEdit[i] = edit;
+                    return;
                 }
                 toEdit.Add(edit);
                 return;
@@ -339,7 +348,7 @@ public class SEdit : ClassHandler
 
             foreach (object editListItem in editList)
             {
-                if (id is null)
+                if (!hasId)
                 {
                     toEdit.Add(editListItem);
                     return;
@@ -347,11 +356,13 @@ public class SEdit : ClassHandler
 
                 for (int i = 0; i < toEdit.Count; i++)
                 {
-                    if (id.GetValue(toEdit[i]) == id.GetValue(editListItem))
+                    if (id.GetValue(toEdit[i]) != id.GetValue(editListItem))
                     {
-                        toEdit[i] = editListItem;
-                        return;
+                        continue;
                     }
+
+                    toEdit[i] = editListItem;
+                    return;
                 }
                 toEdit.Add(editListItem);
             }
@@ -381,16 +392,15 @@ public class SEdit : ClassHandler
     /// <summary>
     /// Expects a relative path to a source image file as the string field value.
     /// </summary>
-    public class Image : BaseEdit
+    public class Image(
+        string target,
+        PatchMode patchMode,
+        string? condition = null,
+        Frequency frequency = Frequency.Never,
+        AssetEditPriority priority = AssetEditPriority.Default)
+        : BaseEdit(target, condition, frequency, priority)
     {
-        public PatchMode PatchMode;
-
-        public Image(string target, PatchMode patchMode, string? condition = null, Frequency frequency = Frequency.Never, AssetEditPriority priority = AssetEditPriority.Default) : base(target, condition, frequency, priority)
-        {
-            this.PatchMode = patchMode;
-        }
-
-        public override void Handle(string name, Type fieldType, Func<object?, object?> getter, Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
+        protected override void Handle(string name, Type fieldType, Func<object?, object?> getter, Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
         {
             if (fieldType != typeof(string))
             {
@@ -401,7 +411,7 @@ public class SEdit : ClassHandler
             base.Handle(name, fieldType, getter, setter, instance, mod, args);
         }
 
-        public override void DoEdit(IAssetData asset, object? edit, string name, Type fieldType, object? instance)
+        protected override void DoEdit(IAssetData asset, object? edit, string name, Type fieldType, object? instance)
         {
             if (edit is null || this.Mod is null)
             {
@@ -411,38 +421,31 @@ public class SEdit : ClassHandler
             IAssetDataForImage image = asset.AsImage();
 
             IRawTextureData source = this.Mod.Helper.ModContent.Load<IRawTextureData>(filePath);
-            if (source is null)
-            {
-                return;
-            }
             Rectangle? sourceRect = null;
             Rectangle? targetRect = null;
 
-            Func<object?, object?>? rectGetter = fieldType.GetMemberOfName(name + "SourceArea")?.GetGetter();
-            if (rectGetter is not null)
+            if (fieldType.TryGetGetterOfName(name + "SourceArea", out Func<object?, object?> rectGetter))
             {
                 sourceRect = (Rectangle?)rectGetter(instance);
             }
-            rectGetter = instance?.GetType().GetMemberOfName(name + "TargetArea")?.GetGetter();
-            if (rectGetter is not null)
+            if (fieldType.TryGetGetterOfName(name + "TargetArea", out rectGetter))
             {
                 targetRect = (Rectangle?)rectGetter(instance);
             }
 
-            image.PatchImage(source, sourceRect, targetRect, this.PatchMode);
+            image.PatchImage(source, sourceRect, targetRect, patchMode);
         }
     }
 
-    public class Map : BaseEdit
+    public class Map(
+        string target,
+        PatchMapMode patchMode = PatchMapMode.Overlay,
+        string? condition = null,
+        Frequency frequency = Frequency.Never,
+        AssetEditPriority priority = AssetEditPriority.Default)
+        : BaseEdit(target, condition, frequency, priority)
     {
-        public PatchMapMode PatchMode;
-
-        public Map(string target, PatchMapMode patchMode = PatchMapMode.Overlay, string? condition = null, Frequency frequency = Frequency.Never, AssetEditPriority priority = AssetEditPriority.Default) : base(target, condition, frequency, priority)
-        {
-            this.PatchMode = patchMode;
-        }
-
-        public override void Handle(string name, Type fieldType, Func<object?, object?> getter, Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
+        protected override void Handle(string name, Type fieldType, Func<object?, object?> getter, Action<object?, object?> setter, object? instance, IMod mod, object[]? args = null)
         {
             if (fieldType != typeof(string))
             {
@@ -453,7 +456,7 @@ public class SEdit : ClassHandler
             base.Handle(name, fieldType, getter, setter, instance, mod, args);
         }
 
-        public override void DoEdit(IAssetData asset, object? edit, string name, Type fieldType, object? instance)
+        protected override void DoEdit(IAssetData asset, object? edit, string name, Type fieldType, object? instance)
         {
             if (edit is null || this.Mod is null)
             {
@@ -466,18 +469,16 @@ public class SEdit : ClassHandler
 
             Rectangle? sourceRect = null;
             Rectangle? targetRect = null;
-            Func<object?, object?>? rectGetter = fieldType.GetMemberOfName(name + "SourceArea")?.GetGetter();
-            if (rectGetter is not null)
+            if (fieldType.TryGetGetterOfName(name + "SourceArea", out Func<object?, object?> rectGetter))
             {
                 sourceRect = (Rectangle?)rectGetter(instance);
             }
-            rectGetter = instance?.GetType().GetMemberOfName(name + "TargetArea")?.GetGetter();
-            if (rectGetter is not null)
+            if (fieldType.TryGetGetterOfName(name + "TargetArea", out rectGetter))
             {
                 targetRect = (Rectangle?)rectGetter(instance);
             }
 
-            map.PatchMap(source, sourceRect, targetRect, this.PatchMode);
+            map.PatchMap(source, sourceRect, targetRect, patchMode);
         }
     }
 }

@@ -22,5 +22,6 @@ internal class ModEntry : Mod
         Instance = this;
         Parser.InitEvents();
         Parser.ParseAll(this);
+        Log.Trace("=== Running Priority 0 events ===");
     }
 }

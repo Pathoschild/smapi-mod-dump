@@ -17,6 +17,8 @@ using StardewValley;
 
 internal class GameStateNarrator : FeatureBase
 {
+    public static GameLocation? lastLocation;
+
     private static Item? currentSlotItem;
     private static Item? previousSlotItem;
 
@@ -104,10 +106,11 @@ internal class GameStateNarrator : FeatureBase
             if (previousLocation == currentLocation)
                 return;
 
+            lastLocation = previousLocation;
             previousLocation = currentLocation;
             MainClass.ScreenReader.Say(
                 Translator.Instance.Translate("feature-speak_location_name",
-                    new { location_name = currentLocation.Name }),
+                    new { location_name = currentLocation.DisplayName }),
                 true
             );
         }
@@ -130,10 +133,8 @@ internal class GameStateNarrator : FeatureBase
                 HUDMessage lastMessage = Game1.hudMessages[lastIndex];
                 if (!lastMessage.noIcon)
                 {
-                    string toSpeak = lastMessage.Message;
-                    string searchQuery = toSpeak;
-
-                    searchQuery = (Regex.Replace(toSpeak, @"[\d+]", string.Empty)).Trim();
+                    string toSpeak = lastMessage.message;
+                    var searchQuery = (Regex.Replace(toSpeak, @"[\d+]", string.Empty)).Trim();
 
                     if (hudMessageQueryKey != searchQuery)
                     {

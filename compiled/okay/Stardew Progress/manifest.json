@@ -1,0 +1,10 @@
+{
+  "Name": "Stardew Progress",
+  "Author": "seeinggreen",
+  "Version": "2.0.0-alpha.0",
+  "Description": "Shows progress of the player(s) towards perfection",
+  "UniqueID": "seeinggreen.StardewProgress",
+  "EntryDll": "StardewProgress.dll",
+  "MinimumApiVersion": "4.0.0-alpha",
+  "UpdateKeys": [ "Nexus:9786" ]
+}

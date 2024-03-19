@@ -14,16 +14,29 @@
     "value": 8
   },
   {
+    "name": "Joja Sport Drink",
+    "value": 18
+  },
+  {
     "name": "Full Canteen",
     "value": 20
   },
   {
     "name": "Dirty Canteen",
-    "value": 20
+    "value": 15
   },
   {
     "name": "Ice Water Canteen",
-    "value": 20,
+    "value": 22,
+    "coolingModifier": 5
+  },
+  {
+    "name": "Ionized Full Canteen",
+    "value": 30
+  },
+  {
+    "name": "Ice Ionized Water Canteen",
+    "value": 35,
     "coolingModifier": 5
   },
   {
@@ -99,7 +112,28 @@
     "name": "Coffee",
     "value": 5
   },
+  {
+    "name": "Joja Cola",
+    "value": 5
+  },
   //PPJA Items
+  {
+    "name": "*Soda",
+    "value": 8
+  },
+  {
+    "name": "*Cocktail",
+    "value": 5
+  },
+  {
+    "name": "*Tea",
+    "value": 5
+  },
+  {
+    "name": "*Hot Cocoa",
+    "value": 5,
+    "coolingModifier": -2
+  },
   {
     "name": "Algae Soup",
     "value": 3,
@@ -116,7 +150,7 @@
   },
   {
     "name": "Beef Stock",
-    "value": 3
+    "value": 8
   },
   {
     "name": "Broth",
@@ -124,7 +158,90 @@
   },
   {
     "name": "Chicken Stock",
+    "value": 8
+  },
+  {
+    "name": "Cream of Chestnut Soup",
     "value": 3
+  },
+  {
+    "name": "Dashi Stock",
+    "value": 5
+  },
+  {
+    "name":"Fish Stew",
+    "value": 5
+  },
+  {
+    "name": "Fruit Soup",
+    "value": 5
+  },
+  {
+    "name": "Hot Cocoa",
+    "value": 3,
+    "coolingModifier": -2
+  },
+  {
+    "name": "Lobster Bisque",
+    "value": 5
+  },
+  {
+    "name": "Lobster Stock",
+    "value": 3
+  },
+  {
+    "name": "Miso Soup",
+    "value": 5
+  },
+  {
+    "name": "Moonshine Cherries",
+    "value": 2
+  },
+  {
+    "name": "Mushroom Soup",
+    "value": 5
+  },
+  {
+    "name": "Noodle Soup",
+    "value": 4
+  },
+  {
+    "name": "Onion Pumpkin Soup",
+    "value": 4
+  },
+  {
+    "name": "Pawpaw Milkshake",
+    "value": 6
+  },
+  {
+    "name": "Peppermint Hot Chocolate",
+    "value": 3,
+    "coolingModifier": -2
+  },
+  {
+    "name": "Ramen",
+    "value": 5
+  },
+  {
+    "name": "Shrimp Stock",
+    "value": 5
+  },
+  {
+    "name": "Sorrel Soup",
+    "value": 5
+  },
+  {
+    "name": "Southern Sweet Tea",
+    "value": 5,
+    "coolingModifier": -2
+  },
+  {
+    "name": "Spoopy Soup",
+    "value": 3
+  },
+  {
+    "name": "Strawberry Ice Cream Soda",
+    "value": 8
   }
   //{
   //  "name": "Alexander Cocktail",

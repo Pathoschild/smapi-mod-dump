@@ -51,13 +51,6 @@ public class Command
     {
         Game1.MasterPlayer.mailReceived.Add("ccFishTank");
         Game1.currentLocation.orePanPoint.Value = Point.Zero;
-        for (int i = 0; i < 100; i++)
-        {
-            Game1.currentLocation.performOrePanTenMinuteUpdate(new Random());
-            if (Game1.currentLocation.orePanPoint.Value != Point.Zero)
-            {
-                break;
-            }
-        }
+        Game1.currentLocation.orePanPoint.Value = Game1.player.GetGrabTile().ToPoint();
     }
 }

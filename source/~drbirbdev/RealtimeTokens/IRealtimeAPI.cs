@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace RealtimeFramework;
 
-public interface IRealtimeAPI
+public interface IRealtimeApi
 {
     /// <summary>
     /// Returns whether the given holiday exists.

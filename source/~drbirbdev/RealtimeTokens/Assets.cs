@@ -17,18 +17,18 @@ namespace RealtimeFramework;
 class Assets
 {
     [SAsset.Asset("assets/holidays.json")]
-    public Dictionary<string, HolidayModel> Holidays { get; set; }
+    public Dictionary<string, HolidayModel> Holidays;
 }
 
 class HolidayModel
 {
-    public int ComingDays { get; set; } = 7;
-    public int PassingDays { get; set; } = 1;
+    public int ComingDays = 7;
+    public int PassingDays = 1;
 
-    public int StartDelayHours { get; set; } = 0;
+    public int StartDelayHours = 0;
 
-    public int EndDelayHours { get; set; } = 0;
+    public int EndDelayHours = 0;
 
-    public int[] Date { get; set; } = { 1, 1 };
-    public Dictionary<string, int[]> VaryingDates { get; set; } = null;
+    public int[] Date = [1, 1];
+    public Dictionary<string, int[]> VaryingDates = null;
 }

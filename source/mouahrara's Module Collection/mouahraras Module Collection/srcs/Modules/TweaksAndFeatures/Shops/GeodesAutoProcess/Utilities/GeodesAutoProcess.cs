@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
-using mouahrarasModuleCollection.TweaksAndFeatures.Shops.GeodesAutoProcess.Hooks;
+using mouahrarasModuleCollection.TweaksAndFeatures.Shops.GeodesAutoProcess.Handlers;
 
 namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.GeodesAutoProcess.Utilities
 {
@@ -58,12 +58,12 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.GeodesAutoProcess.U
 			GeodeBeingProcessed = GeodeMenu.heldItem;
 			GeodeMenu.heldItem = null;
 			GeodeMenu.inventory.highlightMethod = (Item _) => false;
-			ModEntry.Helper.Events.GameLoop.UpdateTicking += UpdateTickingHook.Apply;
+			ModEntry.Helper.Events.GameLoop.UpdateTicking += UpdateTickingHandler.Apply;
 		}
 
 		internal static void EndGeodeProcessing()
 		{
-			ModEntry.Helper.Events.GameLoop.UpdateTicking -= UpdateTickingHook.Apply;
+			ModEntry.Helper.Events.GameLoop.UpdateTicking -= UpdateTickingHandler.Apply;
 			GeodeMenu.inventory.highlightMethod = GeodeMenu.highlightGeodes;
 			if (IsProcessing())
 				Game1.player.addItemToInventory(GeodeBeingProcessed);
@@ -80,21 +80,18 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.GeodesAutoProcess.U
 			if (!CanProcess())
 				return;
 
-			GeodeMenu geodeMenu = GeodeMenu;
-			Item geodeBeingProcessed = GeodeBeingProcessed;
-
-			geodeMenu.geodeSpot.item = ItemRegistry.Create(geodeBeingProcessed.QualifiedItemId);
-			if (geodeMenu.geodeSpot.item.QualifiedItemId == "(O)791" && !Game1.netWorldState.Value.GoldenCoconutCracked)
+			GeodeMenu.geodeSpot.item = ItemRegistry.Create(GeodeBeingProcessed.QualifiedItemId);
+			if (GeodeMenu.geodeSpot.item.QualifiedItemId == "(O)791" && !Game1.netWorldState.Value.GoldenCoconutCracked)
 			{
-				geodeMenu.waitingForServerResponse = true;
+				GeodeMenu.waitingForServerResponse = true;
 				Game1.player.team.goldenCoconutMutex.RequestLock(delegate
 				{
-					geodeMenu.waitingForServerResponse = false;
-					geodeMenu.geodeTreasureOverride = ItemRegistry.Create("(O)73");
+					GeodeMenu.waitingForServerResponse = false;
+					GeodeMenu.geodeTreasureOverride = ItemRegistry.Create("(O)73");
 					CrackGeode();
 				}, delegate
 				{
-					geodeMenu.waitingForServerResponse = false;
+					GeodeMenu.waitingForServerResponse = false;
 					CrackGeode();
 				});
 			}
@@ -107,24 +104,21 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.GeodesAutoProcess.U
 
 		private static bool CanProcess()
 		{
-			GeodeMenu geodeMenu = GeodeMenu;
-			Item geodeBeingProcessed = GeodeBeingProcessed;
-
-			if (geodeMenu.waitingForServerResponse)
+			if (GeodeMenu.waitingForServerResponse)
 			{
 				return false;
 			}
-			if (geodeBeingProcessed.Stack <= 0 || Game1.player.Money < 25)
+			if (GeodeBeingProcessed.Stack <= 0 || Game1.player.Money < 25)
 			{
 				EndGeodeProcessing();
 				return false;
 			}
-			if (!(Game1.player.freeSpotsInInventory() > 1 || (Game1.player.freeSpotsInInventory() == 1 && geodeBeingProcessed.Stack == 1)))
+			if (!(Game1.player.freeSpotsInInventory() > 1 || (Game1.player.freeSpotsInInventory() == 1 && GeodeBeingProcessed.Stack == 1)))
 			{
 				EndGeodeProcessing();
-				geodeMenu.descriptionText = Game1.content.LoadString("Strings\\UI:GeodeMenu_InventoryFull");
-				geodeMenu.wiggleWordsTimer = 500;
-				geodeMenu.alertTimer = 1500;
+				GeodeMenu.descriptionText = Game1.content.LoadString("Strings\\UI:GeodeMenu_InventoryFull");
+				GeodeMenu.wiggleWordsTimer = 500;
+				GeodeMenu.alertTimer = 1500;
 				return false;
 			}
 			return true;
@@ -132,14 +126,11 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.GeodesAutoProcess.U
 
 		private static void CrackGeode()
 		{
-			GeodeMenu geodeMenu = GeodeMenu;
-			Item geodeBeingProcessed = GeodeBeingProcessed;
-
-			geodeBeingProcessed.Stack--;
+			GeodeBeingProcessed.Stack--;
 			Game1.player.Money -= 25;
 			Game1.playSound("stoneStep");
-			geodeMenu.geodeAnimationTimer = 2700;
-			geodeMenu.clint.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>
+			GeodeMenu.geodeAnimationTimer = 2700;
+			GeodeMenu.clint.setCurrentAnimation(new List<FarmerSprite.AnimationFrame>
 			{
 				new(8, 300),
 				new(9, 200),
@@ -148,7 +139,7 @@ namespace mouahrarasModuleCollection.TweaksAndFeatures.Shops.GeodesAutoProcess.U
 				new(12, 100),
 				new(8, 300)
 			});
-			geodeMenu.clint.loop = false;
+			GeodeMenu.clint.loop = false;
 		}
 	}
 }

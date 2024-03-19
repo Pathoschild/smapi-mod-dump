@@ -8,14 +8,14 @@
 **
 *************************************************/
 
+using System;
+using ConvenientInventory.Compatibility;
+using ConvenientInventory.Patches;
 using GenericModConfigMenu;
 using HarmonyLib;
 using Microsoft.Xna.Framework.Graphics;
-using ConvenientInventory.Patches;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using System;
-using ConvenientInventory.Compatibility;
 
 namespace ConvenientInventory
 {

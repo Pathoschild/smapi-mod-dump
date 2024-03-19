@@ -50,7 +50,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DaysSinceModInstalledToken"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinesTokens", "MinesTokens\MinesTokens.csproj", "{392780C6-2003-4F71-9FA7-8F855F09EAA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HalloweenJamCSharp", "HalloweenJamCSharp\HalloweenJamCSharp.csproj", "{B014DB9A-957C-4CCB-8F19-7559F69B8367}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HalloweenJamCSharp", "HalloweenJamCSharp\HalloweenJamCSharp.csproj", "{B014DB9A-957C-4CCB-8F19-7559F69B8367}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KitchenCounters", "KitchenCounters\KitchenCounters.csproj", "{731BC985-928C-4A86-9DAF-4554C9C619A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calcifer", "Calcifer\Calcifer.csproj", "{8837DAF8-6652-47A1-B453-C3E784A080A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CustomAchievementsRedux", "CustomAchievementsRedux\CustomAchievementsRedux.csproj", "{2B10C5F6-F3CF-4DA8-8120-8DECDC83DAA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThankYouCA", "ThankYouCA\ThankYouCA.csproj", "{7556F156-870C-4ADB-82D8-6321FE79367C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,6 +146,22 @@ Global
 		{B014DB9A-957C-4CCB-8F19-7559F69B8367}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B014DB9A-957C-4CCB-8F19-7559F69B8367}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B014DB9A-957C-4CCB-8F19-7559F69B8367}.Release|Any CPU.Build.0 = Release|Any CPU
+		{731BC985-928C-4A86-9DAF-4554C9C619A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{731BC985-928C-4A86-9DAF-4554C9C619A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{731BC985-928C-4A86-9DAF-4554C9C619A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{731BC985-928C-4A86-9DAF-4554C9C619A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8837DAF8-6652-47A1-B453-C3E784A080A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8837DAF8-6652-47A1-B453-C3E784A080A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8837DAF8-6652-47A1-B453-C3E784A080A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8837DAF8-6652-47A1-B453-C3E784A080A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B10C5F6-F3CF-4DA8-8120-8DECDC83DAA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B10C5F6-F3CF-4DA8-8120-8DECDC83DAA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B10C5F6-F3CF-4DA8-8120-8DECDC83DAA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B10C5F6-F3CF-4DA8-8120-8DECDC83DAA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7556F156-870C-4ADB-82D8-6321FE79367C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7556F156-870C-4ADB-82D8-6321FE79367C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7556F156-870C-4ADB-82D8-6321FE79367C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7556F156-870C-4ADB-82D8-6321FE79367C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

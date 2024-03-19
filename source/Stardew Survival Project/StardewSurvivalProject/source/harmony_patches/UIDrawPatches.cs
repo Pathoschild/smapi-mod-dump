@@ -19,6 +19,7 @@ using StardewValley;
 using StardewValley.Menus;
 using SObject = StardewValley.Object;
 using Newtonsoft.Json;
+using Netcode;
 
 namespace StardewSurvivalProject.source.harmony_patches
 {
@@ -31,7 +32,17 @@ namespace StardewSurvivalProject.source.harmony_patches
             Monitor = monitor;
         }
 
-        public static void DrawHoverText_Postfix(IClickableMenu __instance, SpriteBatch b, StringBuilder text, SpriteFont font, int xOffset, int yOffset, int moneyAmountToDisplayAtBottom, string boldTitleText, int healAmountToDisplay, string[] buffIconsToDisplay, ref Item hoveredItem, int currencySymbol, int extraItemToShowIndex, int extraItemToShowAmount, int overrideX, int overrideY, float alpha, CraftingRecipe craftingIngredients, IList<Item> additional_craft_materials)
+        public static string getTempAdjustmentDescription(double coolingModifier)
+        {
+            if (coolingModifier > 4) return $"Cool you down significantly";
+            else if (coolingModifier < -4) return $"Warm you up significantly";
+            else if (coolingModifier > 1) return $"Cool you down slightly";
+            else if (coolingModifier < -1) return $"Warm you up slightly";
+
+            return "";
+        }
+
+        public static void DrawHoverText_Postfix(IClickableMenu __instance, SpriteBatch b, StringBuilder text, SpriteFont font, int xOffset, int yOffset, int moneyAmountToDisplayAtBottom, string boldTitleText, int healAmountToDisplay, string[] buffIconsToDisplay, ref Item hoveredItem, int currencySymbol, string extraItemToShowIndex, int extraItemToShowAmount, int overrideX, int overrideY, float alpha, CraftingRecipe craftingIngredients, IList<Item> additional_craft_materials, Texture2D boxTexture, Rectangle? boxSourceRect, Color? textColor, Color? textShadowColor, float boxScale, int boxWidthOverride, int boxHeightOverride)
         {
             if (ModConfig.GetInstance().DisableModItemInfo) return;
             try
@@ -40,6 +51,8 @@ namespace StardewSurvivalProject.source.harmony_patches
                 double addHunger = 0;
                 double heatResistant = 0;
                 double coldResistant = 0;
+                string tempAdjustmentDescription = "";
+                double tempModifer = 0;
                 double coreTemp = -274;
                 string deviceType = "general";
                 double effectiveRange = 0;
@@ -53,27 +66,24 @@ namespace StardewSurvivalProject.source.harmony_patches
                     //LogHelper.Debug("bigcraftable");
                     tempControlData = data.TempControlObjectDictionary.GetTempControlData(hoveredItem.Name);
 
-                    //edible and drinkable data
-                    addThirst = data.CustomHydrationDictionary.getHydrationValue(hoveredItem.Name);
-                    int edibility = ((SObject)hoveredItem).Edibility;
-                    addHunger = (edibility >= 0) ? edibility * ModConfig.GetInstance().HungerGainMultiplierFromItemEdibility : 0;
-
-                    //band-aid fix coming, if edibility is 1 and healing value is not 0, dont add hunger
-                    //TODO: document this weird anomaly
-                    if (data.HealingItemDictionary.getHealingValue(hoveredItem.Name) > 0 && edibility == 1) addHunger = 0;
-
-                    //FIXME: not all object info is in objectInformation dict
-                    string[] arrInfo = { };
-                    if (Game1.objectInformation.ContainsKey(hoveredItem.ParentSheetIndex))
+                    if (Game1.objectData.ContainsKey(hoveredItem.ItemId))
                     {
-                        arrInfo = Game1.objectInformation[hoveredItem.ParentSheetIndex].Split('/');
-                        if (arrInfo.Length > 6)
+                        var itemObj = Game1.objectData[hoveredItem.ItemId];
+                        var isDrink = itemObj.IsDrink;
+                        //edible and drinkable data
+                        (addThirst, double coolingModifier)  = data.CustomHydrationDictionary.getHydrationAndCoolingModifierValue(hoveredItem.Name, isDrink);
+                        (addHunger, double hungerCoolingModifier) = data.CustomHungerDictionary.getHungerModifierAndCoolingModifierValue(hoveredItem as SObject, isDrink);
+
+                        int edibility = itemObj.Edibility;
+                        if (isDrink)
                         {
-                            if (arrInfo[6].Equals("drink") && addThirst == 0)
-                            {
-                                addThirst = ModConfig.GetInstance().DefaultHydrationGainOnDrinkableItems;
-                            }
+                            tempModifer = coolingModifier != 0 ? coolingModifier : 1;
                         }
+                        else
+                        {
+                            tempModifer = hungerCoolingModifier;
+                        }
+                        tempAdjustmentDescription = getTempAdjustmentDescription(tempModifer);
                     }
 
                 }
@@ -88,9 +98,9 @@ namespace StardewSurvivalProject.source.harmony_patches
 
                     StardewValley.Objects.Clothing clothingInfo = (StardewValley.Objects.Clothing)hoveredItem;
                     //using DisplayName instead of Name, may break on other languages usage
-                    if (clothingInfo.clothesType.Value == 0)
+                    if (clothingInfo.clothesType.Value == StardewValley.Objects.Clothing.ClothesType.SHIRT)
                         tempResistData = getClothingTempResistInfo(hoveredItem.DisplayName, "shirt");
-                    else if (clothingInfo.clothesType.Value == 1)
+                    else if (clothingInfo.clothesType.Value == StardewValley.Objects.Clothing.ClothesType.PANTS)
                         tempResistData = getClothingTempResistInfo(hoveredItem.DisplayName, "pants");
                 }
                 else if (hoveredItem is StardewValley.Objects.Hat)
@@ -139,6 +149,8 @@ namespace StardewSurvivalProject.source.harmony_patches
                 int UIWidth = 0;
                 if (addThirst > 0 || addHunger > 0) { UIHeight = 64; UIWidth = 256; }
                 if (addHunger > 0 && addThirst > 0) { UIHeight += 40; }
+                if (tempAdjustmentDescription != "") { UIHeight += 40; UIWidth = 384; }
+
                 
                 //temporary fit
                 if (heatResistant != 0 || coldResistant != 0) { UIHeight = 64; UIWidth = 296; }
@@ -167,16 +179,23 @@ namespace StardewSurvivalProject.source.harmony_patches
                 int startY = y4 + 20;
                 if (addThirst > 0)
                 {
-                    string thirstText = $"+{addThirst} Hydration";
+                    string thirstText = $"+{addThirst.ToString("#.##")} Hydration";
                     Utility.drawWithShadow(b, ModEntry.InfoIcon, new Vector2(startX, startY), new Rectangle(0, 0, 10, 10), Color.White, 0f, Vector2.Zero, 3f, flipped: false, 0.95f);
                     Utility.drawTextWithShadow(b, thirstText, font, new Vector2(startX + 34, startY), Game1.textColor);
                     startY += 36;
                 }
                 if (addHunger > 0)
                 {
-                    string hungerText = $"+{addHunger} Hunger";
+                    string hungerText = $"+{addHunger.ToString("#.##")} Hunger";
                     Utility.drawWithShadow(b, ModEntry.InfoIcon, new Vector2(startX, startY), new Rectangle(10, 0, 10, 10), Color.White, 0f, Vector2.Zero, 3f, flipped: false, 0.95f);
                     Utility.drawTextWithShadow(b, hungerText, font, new Vector2(startX + 34, startY), Game1.textColor);
+                    startY += 36;
+                }
+                if (tempAdjustmentDescription != "")
+                {
+                    Utility.drawWithShadow(b, ModEntry.InfoIcon, new Vector2(startX, startY), new Rectangle(tempModifer > 0 ? 90 : 80, 0, 10, 10), Color.White, 0f, Vector2.Zero, 3f, flipped: false, 0.95f);
+                    Utility.drawTextWithShadow(b, tempAdjustmentDescription, font, new Vector2(startX + 34, startY), Game1.textColor);
+                    startY += 36;
                 }
 
                 if (heatResistant != 0)

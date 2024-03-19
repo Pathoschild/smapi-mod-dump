@@ -9,45 +9,40 @@
 *************************************************/
 
 using BirbCore.Attributes;
+#pragma warning disable CS0414 // Field is assigned but its value is never used
 
 namespace PanningUpgrades;
 
 [SConfig]
+[SToken]
 internal class Config
 {
 
     [SConfig.Option]
-    public bool BuyablePan { get; set; } = false;
+    [SToken.FieldToken]
+    public bool BuyablePan = false;
 
-    [SConfig.Option(Min = 0, Max = 100000, Interval = 500)]
-    public int BuyCost { get; set; } = 1000;
+    [SConfig.Option(0, 100000, 500)]
+    [SToken.FieldToken]
+    public int BuyCost = 1000;
 
-    [SConfig.Option(Min = 0, Max = 3, Interval = 0.1f)]
-    public float UpgradeCostMultiplier { get; set; } = 1.0f;
+    [SConfig.Option(0, 1, 0.01f)]
+    public float ExtraDrawBaseChance = 0.7f;
 
-    [SConfig.Option(Min = 1, Max = 20, Interval = 1)]
-    public int UpgradeCostBars { get; set; } = 5;
+    [SConfig.Option(0, 1, 0.01f)]
+    public float DailyLuckMultiplier = 1.0f;
 
-    [SConfig.Option(Min = 1, Max = 5, Interval = 1)]
-    public int UpgradeDays { get; set; } = 2;
-
-    [SConfig.Option(Min = 0, Max = 1, Interval = 0.01f)]
-    public float ExtraDrawBaseChance { get; set; } = 0.7f;
-
-    [SConfig.Option(Min = 0, Max = 1, Interval = 0.01f)]
-    public float DailyLuckMultiplier { get; set; } = 1.0f;
-
-    [SConfig.Option(Min = 0, Max = 1, Interval = 0.01f)]
-    public float LuckLevelMultiplier { get; set; } = 0.1f;
+    [SConfig.Option(0, 1, 0.01f)]
+    public float LuckLevelMultiplier = 0.1f;
 
     [SConfig.SectionTitle("AnimationSection")]
 
     [SConfig.Paragraph("AnimationSectionText")]
 
     [SConfig.Option]
-    public int AnimationFrameDuration { get; set; } = 140;
+    public int AnimationFrameDuration = 140;
 
     [SConfig.Option]
-    public int AnimationYOffset { get; set; } = -8;
+    public int AnimationYOffset = -8;
 
 }

@@ -25,7 +25,7 @@ internal class EventHookManager
         Globals.EventHelper.GameLoop.GameLaunched += HookIntoApis;
     }
 
-    private static void LoadAssets(object sender, AssetRequestedEventArgs e)
+    private static void LoadAssets(object? sender, AssetRequestedEventArgs e)
     {
         if (e.NameWithoutLocale.IsEquivalentTo(Globals.WarpLocationsContentPath))
         {
@@ -41,17 +41,17 @@ internal class EventHookManager
     /// Tries to get and utilize all APIs.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1304:Specify CultureInfo", Justification = "<Pending>")]
-    private static void HookIntoApis(object sender, GameLaunchedEventArgs e)
+    private static void HookIntoApis(object? sender, GameLaunchedEventArgs e)
     {
-        if (!Globals.InitializeSFApi())
+        if (!Globals.InitializeSFApi() || Globals.SolidFoundationsApi is null)
         {
-            Log.Error("Failed to fetch SolidFoundations API.");
+            Log.Warn("Failed to fetch SolidFoundations API.");
             return;
         }
 
-        if (!Globals.InitializeCPApi())
+        if (!Globals.InitializeCPApi() || Globals.ContentPatcherApi is null)
         {
-            Log.Error("Failed to fetch ContentPatcher API.");
+            Log.Warn("Failed to fetch ContentPatcher API.");
             return;
         }
 
@@ -91,7 +91,7 @@ internal class EventHookManager
     /// <summary>
     /// Intercepts the Broadcast message from skell's Car, triggering the warp dialogue.
     /// </summary>
-    private static void OnBroadcastTriggered(object sender, BroadcastEventArgs e)
+    private static void OnBroadcastTriggered(object? sender, BroadcastEventArgs e)
     {
         if (e.BuildingId is "skellady.SF.cars_Car")
         {

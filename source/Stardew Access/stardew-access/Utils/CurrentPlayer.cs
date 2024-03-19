@@ -82,7 +82,7 @@ namespace stardew_access.Utils
                 if (Game1.player == null)
                     return Vector2.Zero;
 
-                return Game1.player.getTileLocation();
+                return Game1.player.Tile;
             }
         }
 

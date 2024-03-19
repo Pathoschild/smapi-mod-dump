@@ -1,0 +1,3 @@
+page URL: https://www.nexusmods.com/stardewvalley/mods/8450
+IDs: Vertigon.EarlyCommunityUpgrades
+update keys: Nexus:8450, GitHub:dtomlinson-ga/EarlyCommunityUpgrades
